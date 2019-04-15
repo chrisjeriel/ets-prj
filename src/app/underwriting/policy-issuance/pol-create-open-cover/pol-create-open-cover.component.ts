@@ -276,7 +276,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.router.navigate(['/create-open-cover-letter', { 
                                                                 line: this.splitQuoteNo[0],
                                                                 policyIdOc: this.openPolicyInfo.policyIdOc,
-                                                                openPolNo: this.openPolicyInfo.openPolNo,
+                                                                policyNo: this.openPolicyInfo.openPolNo,
                                                                 inquiryFlag: false,
                                                                 fromBtn: 'create'
                                                            }

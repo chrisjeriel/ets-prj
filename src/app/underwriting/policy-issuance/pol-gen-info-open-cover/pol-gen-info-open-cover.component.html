@@ -33,49 +33,37 @@
 									<div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
 										<div class="input-group ig-row" style="margin-top: 9px ! important" >
 											<label class="form-control-sm col-sm-2" style="margin-left: 6px !important">Open Cover Pol No</label>
-											<input type="text" class="form-control form-control-sm col-sm-10 cap-input" style="font-weight: bold;" readonly>
-											<!-- <input type="text" class="form-control form-control-sm col-sm-1 cap-input input-ig-row"
-											 ngbTooltip="Line">
-											  <input type="text" class="form-control form-control-sm col-sm-1 cap-input input-ig-row"
-											 ngbTooltip="Year">
-											<input type="text" class="form-control form-control-sm col-sm-4 cap-input input-ig-row"
-											 ngbTooltip="Sequence No">
-											<input type="text" class="form-control form-control-sm col-sm-1 cap-input input-ig-row"
-											 ngbTooltip="Co Code">
-											<input type="text" class="form-control form-control-sm col-sm-2 cap-input input-ig-row" 
-											 ngbTooltip="Co Series No">
-											<input type="text" class="form-control form-control-sm col-sm-1 cap-input input-ig-row" 
-											 ngbTooltip="Alt No"> -->
+											<input type="text" class="form-control form-control-sm col-sm-10 cap-input" style="font-weight: bold;" readonly tabindex="-1" [ngModel]="genInfoOcData.openPolicyNo" name="genInfoOcData.openPolicyNo">
 										</div>
 										<div class="input-group ig-row">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Ref Open Pol No</label>
-											<input type="text" class="form-control form-control-sm col-sm">
+											<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="genInfoOcData.refOpPolNo" name="genInfoOcData.refOpPolNo">
 										</div>
 										<div class="input-group ig-row">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Type of Cession</label>
-											<input type="text" class="form-control form-control-sm">
+											<input type="text" class="form-control form-control-sm" [ngModel]="genInfoOcData.cessionDesc" readonly tabindex="-1" name="genInfoOcData.cessionDesc">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
-											<input type="text" class="form-control form-control-sm">
+											<input type="text" class="form-control form-control-sm" [ngModel]="genInfoOcData.lineClassDesc" readonly tabindex="-1" name="genInfoOcData.lineClassDesc">
 										</div>
 										<div class="input-group ig-row">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Quotation No</label>
-											<input type="text" class="form-control form-control-sm">
+											<input type="text" class="form-control form-control-sm" [ngModel]="genInfoOcData.quoteNo" readonly tabindex="-1" name="genInfoOcData.quoteNo">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Status</label>
-											<input type="text" class="form-control form-control-sm">
+											<input type="text" class="form-control form-control-sm" [ngModel]="genInfoOcData.statusDesc" readonly tabindex="-1" name="genInfoOcData.statusDesc">
 										</div>
 										<div class="input-group ig-row">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Ceding Company</label>
-											<input type="text" class="form-control form-control-sm col-sm-2">
-											<input type="text" class="form-control form-control-sm col-sm input-ig-row">
+											<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoOcData.cedingId" readonly tabindex="-1" name="genInfoOcData.cedingId">
+											<input type="text" class="form-control form-control-sm col-sm input-ig-row" [ngModel]="genInfoOcData.cedingName" readonly tabindex="-1" name="genInfoOcData.cedingName">
 										</div>
 										<div class="input-group ig-row">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Co Ref No</label>
-											<input type="text" class="form-control form-control-sm col-sm">
+											<input type="text" class="form-control form-control-sm col-sm" name="coRefNo">
 										</div>
 										<div class="input-group ig-row" style="margin-bottom: 2px !important">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Intermediary</label>
-											<input type="text" class="form-control form-control-sm col-sm-2">
-											<input type="text" class="form-control form-control-sm col-sm input-ig-row">
+											<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoOcData.intmId" readonly tabindex="-1" name="genInfoOcData.intmId">
+											<input type="text" class="form-control form-control-sm col-sm input-ig-row" [ngModel]="genInfoOcData.intmName" readonly tabindex="-1" name="genInfoOcData.intmName">
 										</div>
 								</div>
 							</div>
@@ -89,62 +77,62 @@
 					<legend class="scheduler-border">Period of Issurance</legend>
 					<div class="col-sm-1">
 					</div>
-					<div class="col-sm" style="margin-top: 3.5px !important; margin-bottom: 11px !important">
+					<div style="margin-top: 3.5px !important; margin-bottom: 11px !important; padding-left: 10px;">
 						<div class="form-row " style="margin-right: 0px; margin-bottom: 1px;">
 							<div class="input-group col-sm-6 ig-row" style="margin-top: 16px ! important;">
-								<label class="form-control-sm col-sm-4 cust-lbl-left-offset">Inception Date</label>
-								<input type="date" class="form-control form-control-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2 input-ig-row">
+								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Inception Date</label>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="inceptionDateParams.date" appRequired name="inceptionDateParams.date">
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="inceptionDateParams.time" appRequired name="inceptionDateParams.time">
 							</div>
 							<div class="input-group col-sm-6 ig-row" style="margin-top: 13px ! important;">
-								<label class="form-control-sm col-sm-4 cust-lbl-left-offset">Expiry Date</label>
-								<input type="date" class="form-control form-control-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2 input-ig-row">
+								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Expiry Date</label>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="expiryDateParams.date" appRequired name="expiryDateParams.date">
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="expiryDateParams.time" appRequired name="expiryDateParams.time">
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-bottom: 13px;">
 							<div class="input-group col-sm-6 ig-row">
-								<label class="form-control-sm col-sm-4 cust-lbl-left-offset">Lapse From</label>
-								<input type="date" class="form-control form-control-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2 input-ig-row">
+								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Lapse From</label>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="lapseFromParams.date" name="lapseFromParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}">
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="lapseFromParams.time" name="lapseFromParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}">
 							</div>
 							<div class="input-group col-sm-6 ig-row">
-								<label class="form-control-sm col-sm-4 cust-lbl-left-offset">Lapse To</label>
-								<input type="date" class="form-control form-control-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2 input-ig-row">
+								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Lapse To</label>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="lapseToParams.date" name="lapseToParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}">
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="lapseToParams.time" name="lapseToParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}">
 							</div>
 						</div>
 					</div>
 				</fieldset>
 
-				<fieldset class="scheduler-border cust-fs-padlr-offset" style="margin-top: 6.5px !important;">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" style="margin-top: -3.5px !important;">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border">Production Booking</legend>
 					<div class="col-sm-1">
 					</div>
-					<div class="col-sm" style="margin-top: 3.5px !important; margin-bottom: 11px">
+					<div style="margin-top: 3.5px !important; margin-bottom: 11px; padding-left: 10px">
 						<div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
 							<div class="input-group col-sm-6 ig-row" style="margin-top: 16px ! important;">
-								<label class="form-control-sm col-sm-4 cust-lbl-left-offset">Issue Date</label>
-								<input type="date" class="form-control form-control-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2 input-ig-row" >
+								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Issue Date</label>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="issueDateParams.date" name="issueDateParams.date" appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="issueDateParams.time" name="issueDateParams.time" appRequired>
 							</div>
 							<div class="input-group col-sm-6 ig-row" style="margin-top: 13px ! important;">
-								<label class="form-control-sm col-sm-4 cust-lbl-left-offset">Distribution Date</label>
-								<input type="date" class="form-control form-control-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2 input-ig-row">
+								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Distribution Date</label>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="distributionDateParams.date" name="distributionDateParams.date" appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="distributionDateParams.time" name="distributionDateParams.time" appRequired>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-bottom: 13px;">
 							<div class="input-group col-sm-6 ig-row">
-								<label class="form-control-sm col-sm-4 cust-lbl-left-offset">Effective Date</label>
-								<input type="date" class="form-control form-control-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2 input-ig-row">
+								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Effective Date</label>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="effDateParams.date" name="effDateParams.date" appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="effDateParams.time" name="effDateParams.time" appRequired>
 							</div>
 							<div class="input-group col-sm-6 ig-row">
-								<label class="form-control-sm col-sm-4">Accounting Date</label>
-								<input type="date" class="form-control form-control-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2 input-ig-row">
+								<label class="form-control-sm col-sm-3">Accounting Date</label>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="accDateParams.date" name="accDateParams.date" appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="accDateParams.time" name="accDateParams.time" appRequired>
 							</div>
 						</div>
 					</div>
@@ -163,64 +151,64 @@
 						<div class="form-row">
 							<div class="input-group ig-row" style="margin-top: 9px ! important">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Principal</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
-								<input type="text" class="form-control form-control-sm input-ig-row">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.prinId" name="genInfoOcData.prinId">
+								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.prinName" name="genInfoOcData.prinName">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Contractor</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
-								<input type="text" class="form-control form-control-sm input-ig-row">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.contractorId" name="genInfoOcData.contractorId">
+								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.contractorName" name="genInfoOcData.contractorName">
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Insured</label>
-								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoOcData.insuredDesc" name="genInfoOcData.insuredDesc" appRequired></textarea>
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Risk</label>
-								<input type="text" class="form-control form-control-sm">
+								<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.riskName" name="projectOcData.riskName">
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Object</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
-									<input type="text" class="form-control form-control-sm col-sm-8 input-ig-row">
+									<input type="text" class="form-control form-control-sm col-sm-2" readonly tabindex="-1" [ngModel]="projectOcData.objectId" name="projectOcData.objectId">
+									<input type="text" class="form-control form-control-sm col-sm-8 input-ig-row" readonly tabindex="-1" [ngModel]="projectOcData.objectName" name="projectOcData.objectName">
 								</div>
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Region</label>
-									<input type="text" class="form-control form-control-sm col-sm-10">
+									<input type="text" class="form-control form-control-sm col-sm-10" readonly tabindex="-1" [ngModel]="projectOcData.regionDesc" name="projectOcData.regionDesc">
 								</div>
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Nature of Work</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired [(ngModel)]="projectOcData.projDesc" name="projectOcData.projDesc"></textarea>
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.provinceDesc" name="projectOcData.provinceDesc">
 									</div> 
 									<div class="input-group" style="margin-top: -6px ! important"> 
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.cityDesc" name="projectOcData.cityDesc">
 									</div>	
 								</div>
 							</div>
 							<div class="input-group ig-row" style="margin-bottom: 2px !important">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Site</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 5px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 5px;" [(ngModel)]="projectOcData.site" name="projectOcData.site" appRequired></textarea>
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group" style="margin-top: 0px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.districtDesc" name="projectOcData.districtDesc">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.blockDesc" name="projectOcData.blockDesc">
 									</div>
 									<div class="input-group" style="margin-top: -6px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Lat</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.latitude" name="projectOcData.latitude">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Long</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.longitude" name="projectOcData.longitude">
 									</div>
 								</div>
 							</div>
@@ -238,70 +226,66 @@
 						<div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
 							<div class="input-group ig-row" style="margin-top: 9px ! important">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Principal</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
-								<!--<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<span>&nbsp;</span>-->
-								<input type="text" class="form-control form-control-sm input-ig-row">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.prinId" name="genInfoOcData.prinId">
+								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.prinName" name="genInfoOcData.prinName">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Contractor</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
-								<!--<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<span>&nbsp;</span>-->
-								<input type="text" class="form-control form-control-sm input-ig-row">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.contractorId" name="genInfoOcData.contractorId">
+								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.contractorName" name="genInfoOcData.contractorName">
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Insured</label>
-								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoOcData.insuredDesc" name="genInfoOcData.insuredDesc" appRequired></textarea>
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Risk</label>
-								<input type="text" class="form-control form-control-sm">
+								<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.riskName" name="projectOcData.riskName" readonly tabindex="-1">
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Object</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="projectOcData.objectId" name="projectOcData.objectId" readonly tabindex="-1">
 									<!--<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>-->
-                                    <input type="text" class="form-control form-control-sm input-ig-row">
+                                    <input type="text" class="form-control form-control-sm input-ig-row" [ngModel]="projectOcData.objectDesc" name="projectOcData.objectDesc" readonly tabindex="-1">
 								</div>
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Region</label>
-									<input type="text" class="form-control form-control-sm col-sm-10">
+									<input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="projectOcData.regionDesc" name="projectOcData.regionDesc" readonly tabindex="-1">
 								</div>
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Nature of Work</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired [(ngModel)]="projectOcData.projDesc" name="projectOcData.projDesc"></textarea>
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.provinceDesc" name="projectOcData.provinceDesc" readonly tabindex="-1">
 									</div> 
 									<div class="input-group" style="margin-top: -6px ! important"> 
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.cityDesc" name="projectOcData.cityDesc" readonly tabindex="-1">
 									</div>	
 								</div>
 							</div>
 							<div class="input-group ig-row" style="margin-bottom: 2px !important">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Site</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 3px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 3px;" appRequired [(ngModel)]="projectOcData.site" name="projectOcData.site"></textarea>
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group" style="margin-top: 0px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.districtDesc" name="projectOcData.districtDesc" readonly tabindex="-1">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.blockDesc" name="projectOcData.blockDesc" readonly tabindex="-1">
 									</div>
 									<div class="input-group" style="margin-top: -6px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Lat</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.latitude" name="projectOcData.latitude" readonly tabindex="-1">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Long</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.longitude" name="projectOcData.longitude" readonly tabindex="-1">
 									</div>
 								</div>
 							</div>
@@ -325,25 +309,26 @@
 						<div class="form-row">
 							<div class="input-group ig-row" style="margin-top: 5px ! important">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Insured</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
+								<input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="genInfoOcData.prinId" name="genInfoOcData.prinId" readonly tabindex="-1">
 								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 								<span>&nbsp;</span>
-								<input type="text" class="form-control form-control-sm input-ig-row">
+								<input type="text" class="form-control form-control-sm input-ig-row" [ngModel]="genInfoOcData.prinName" name="genInfoOcData.prinName" readonly tabindex="-1">
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1"></label>
-								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" appRequired [(ngModel)]="genInfoOcData.insuredDesc" name="genInfoOcData.insuredDesc"></textarea>
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 ig-row cust-lbl-left-offset">Risk</label>
-								<input type="text" class="form-control form-control-sm">
+								<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.riskName" name="projectOcData.riskName" readonly tabindex="-1">
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Object</label>
-									<input type="text" class="form-control form-control-sm">
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<span>&nbsp;</span>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="projectOcData.objectId" name="projectOcData.objectId" readonly tabindex="-1">
+									<!--<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>-->
+                                    <input type="text" class="form-control form-control-sm input-ig-row" [ngModel]="projectOcData.objectDesc" name="projectOcData.objectDesc" readonly tabindex="-1">
 								</div>
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Region</label>
@@ -353,38 +338,38 @@
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Items to be Insured</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
-									<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
-								<span>&nbsp;</span>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired [(ngModel)]="projectOcData.projDesc" name="projectOcData.projDesc"></textarea>
+									<!-- <div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
+								<span>&nbsp;</span> -->
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.provinceDesc" name="projectOcData.provinceDesc">
 									</div> 
 									<div class="input-group" style="margin-top: -6px ! important"> 
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.cityDesc" name="projectOcData.cityDesc">
 									</div>	
 								</div>
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Site</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 3px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 3px;" appRequired [(ngModel)]="projectOcData.site" name="projectOcData.site"></textarea>
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group" style="margin-top: 0px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.districtDesc" name="projectOcData.districtDesc">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.blockDesc" name="projectOcData.blockDesc">
 									</div>
 									<div class="input-group" style="margin-top: -6px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Lat</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.latitude" name="projectOcData.latitude">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Long</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.longitude" name="projectOcData.longitude">
 									</div>
 								</div>
 							</div>
@@ -402,60 +387,59 @@
 						<div class="form-row">
 							<div class="input-group ig-row" style="margin-top: 5px ! important">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Insured</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<span>&nbsp;</span>
-								<input type="text" class="form-control form-control-sm input-ig-row">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.prinId" name="genInfoOcData.prinId">
+								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.prinName" name="genInfoOcData.prinName">
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1"></label>
-								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" appRequired [(ngModel)]="genInfoOcData.insuredDesc" name="genInfoOcData.insuredDesc"></textarea>
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 ig-row cust-lbl-left-offset">Risk</label>
-								<input type="text" class="form-control form-control-sm">
+								<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.riskName" name="projectOcData.riskName" readonly tabindex="-1">
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Object</label>
-									<input type="text" class="form-control form-control-sm">
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<span>&nbsp;</span>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="projectOcData.objectId" name="projectOcData.objectId" readonly tabindex="-1">
+									<!--<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>-->
+                                    <input type="text" class="form-control form-control-sm input-ig-row" [ngModel]="projectOcData.objectDesc" name="projectOcData.objectDesc" readonly tabindex="-1">
 								</div>
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Region</label>
-									<input type="text" class="form-control form-control-sm col-sm-10">
+									<input type="text" class="form-control form-control-sm col-sm-10" readonly tabindex="-1" [ngModel]="projectOcData.regionDesc" name="projectOcData.regionDesc">
 								</div>
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Items to be Insured</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
-									<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
-								<span>&nbsp;</span>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired [(ngModel)]="projectOcData.projDesc" name="projectOcData.projDesc"></textarea>
+									<!-- <div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
+								<span>&nbsp;</span> -->
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.provinceDesc" name="projectOcData.provinceDesc">
 									</div> 
 									<div class="input-group" style="margin-top: -6px ! important"> 
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.cityDesc" name="projectOcData.cityDesc">
 									</div>	
 								</div>
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Site</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 10px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 10px;" appRequired [(ngModel)]="projectOcData.site" name="projectOcData.site"></textarea>
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group" style="margin-top: 0px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.districtDesc" name="projectOcData.districtDesc">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.blockDesc" name="projectOcData.blockDesc">
 									</div>
 								</div>
 							</div>
@@ -473,60 +457,59 @@
 						<div class="form-row">
 							<div class="input-group ig-row" style="margin-top: 5px ! important">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Insured</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<span>&nbsp;</span>
-								<input type="text" class="form-control form-control-sm input-ig-row">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.prinId" name="genInfoOcData.prinId">
+								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.prinName" name="genInfoOcData.prinName">
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1"></label>
-								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" appRequired [(ngModel)]="genInfoOcData.insuredDesc" name="genInfoOcData.insuredDesc"></textarea>
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 ig-row cust-lbl-left-offset">Risk</label>
-								<input type="text" class="form-control form-control-sm">
+								<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.riskName" name="projectOcData.riskName" readonly tabindex="-1">
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Object</label>
-									<input type="text" class="form-control form-control-sm">
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<span>&nbsp;</span>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="projectOcData.objectId" name="projectOcData.objectId" readonly tabindex="-1">
+									<!--<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>-->
+                                    <input type="text" class="form-control form-control-sm input-ig-row" [ngModel]="projectOcData.objectDesc" name="projectOcData.objectDesc" readonly tabindex="-1">
 								</div>
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Region</label>
-									<input type="text" class="form-control form-control-sm col-sm-10">
+									<input type="text" class="form-control form-control-sm col-sm-10" readonly tabindex="-1" [ngModel]="projectOcData.regionDesc" name="projectOcData.regionDesc">
 								</div>
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Items to be Insured</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
-									<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
-								<span>&nbsp;</span>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired [(ngModel)]="projectOcData.projDesc" name="projectOcData.projDesc"></textarea>
+									<!-- <div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
+								<span>&nbsp;</span> -->
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.provinceDesc" name="projectOcData.provinceDesc">
 									</div> 
 									<div class="input-group" style="margin-top: -6px ! important"> 
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.cityDesc" name="projectOcData.cityDesc">
 									</div>	
 								</div>
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Site</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 3px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 3px;" appRequired [(ngModel)]="projectOcData.site" name="projectOcData.site"></textarea>
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group" style="margin-top: 0px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.districtDesc" name="projectOcData.districtDesc">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.blockDesc" name="projectOcData.blockDesc">
 									</div>
 									<div class="input-group" style="margin-top: -6px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Time Exc.</label>
@@ -550,58 +533,59 @@
 						<div class="form-row">
 							<div class="input-group ig-row" style="margin-top: 5px ! important">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Insured</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<span>&nbsp;</span>
-								<input type="text" class="form-control form-control-sm input-ig-row">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.prinId" name="genInfoOcData.prinId">
+								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.prinName" name="genInfoOcData.prinName">
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1"></label>
-								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" appRequired [(ngModel)]="genInfoOcData.insuredDesc" name="genInfoOcData.insuredDesc"></textarea>
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 ig-row cust-lbl-left-offset">Risk</label>
-								<input type="text" class="form-control form-control-sm">
+								<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.riskName" name="projectOcData.riskName" readonly tabindex="-1">
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Object</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="projectOcData.objectId" name="projectOcData.objectId" readonly tabindex="-1">
+									<!--<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>-->
+                                    <input type="text" class="form-control form-control-sm input-ig-row" [ngModel]="projectOcData.objectDesc" name="projectOcData.objectDesc" readonly tabindex="-1">
 								</div>
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Region</label>
-									<input type="text" class="form-control form-control-sm col-sm-10">
+									<input type="text" class="form-control form-control-sm col-sm-10" readonly tabindex="-1" [ngModel]="projectOcData.regionDesc" name="projectOcData.regionDesc">
 								</div>
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Items to be Insured</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
-									<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
-								<span>&nbsp;</span>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired [(ngModel)]="projectOcData.projDesc" name="projectOcData.projDesc"></textarea>
+									<!-- <div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
+								<span>&nbsp;</span> -->
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.provinceDesc" name="projectOcData.provinceDesc">
 									</div> 
 									<div class="input-group" style="margin-top: -6px ! important"> 
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.cityDesc" name="projectOcData.cityDesc">
 									</div>	
 								</div>
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Site</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 3px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 3px;" appRequired [(ngModel)]="projectOcData.site" name="projectOcData.site"></textarea>
 								</div>
 								<div class="col-sm-6 input-group">
 									<div class="input-group" style="margin-top: 0px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.districtDesc" name="projectOcData.districtDesc">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.blockDesc" name="projectOcData.blockDesc">
 									</div>
 									<div class="input-group" style="margin-top: -6px ! important">
 										<label class="form-control-sm col-sm-2">No Claim</label>
@@ -618,42 +602,40 @@
 		<div class="col-sm-4" style="padding-left: 0px;">
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-				<div class="form-row custom-row-inline-inset" style="margin-bottom: 5px ! important;margin-top: 12px ! important; margin-right: -2px !important; margin-left: -19px !important;">
+				<div class="form-row custom-row-inline-inset" style="margin-bottom: 25px ! important;margin-top: 31px ! important; margin-right: -2px !important; margin-left: -19px !important;">
 					<div class="input-group  ig-row" >
 						<label class="form-control-sm col-sm-2" for="xx">Currency</label>
-						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-						readonly>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" readonly [ngModel]="genInfoOcData.currencyCd" name="genInfoOcData.currencyCd" tabindex="-1">
 						<label class="form-control-sm col-sm-2" for="xx">Exch. Rt.</label>
-						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' readonly>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" readonly [ngModel]="genInfoOcData?.currencyRt | number: '1.6-6'" name="genInfoOcData.currencyRt" tabindex="-1" style="text-align: right;">
 					</div>
 					<div class="input-group  ig-row">
 						<label class="form-control-sm col-sm-2" for="xx">Max SI</label>
-						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-						readonly>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" readonly [ngModel]="projectOcData?.totalSi | number: '1.2-2'" name="projectOcData.totalSi" tabindex="-1" style="text-align: right;">
 					</div>
 				</div>
 			</fieldset>
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-					<div class="custom-row-inline-inset">
+					<div class="custom-row-inline-inset" style="margin-top: 15.9px !important; margin-bottom: 15.9px !important;">
 						<div class="form-row" style="margin-top: 12px">
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
 								<label class="form-control-sm top-label">Created By</label>
-								<input type="text" class="form-control form-control-sm cust-sm">
+								<input type="text" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.createUser" name="genInfoOcData.createUser">
 							</div>
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
 								<label class="form-control-sm top-label">Last Update By</label>
-								<input type="text" class="form-control form-control-sm cust-sm">
+								<input type="text" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.updateUser" name="genInfoOcData.updateUser">
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-sm-6" style="margin-bottom: 10px;">
 								<label class="form-control-sm top-label">Date Created</label>
-								<input type="date" class="form-control form-control-sm cust-sm">
+								<input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.createDate" name="genInfoOcData.createDate">
 							</div>
 							<div class="form-group col-sm-6" style="margin-bottom: 10px;">
 								<label class="form-control-sm top-label">Last Update</label>
-								<input type="date" class="form-control form-control-sm cust-sm">
+								<input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.updateDate" name="genInfoOcData.updateDate">
 							</div>
 						</div>
 					</div>

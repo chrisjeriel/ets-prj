@@ -86,6 +86,46 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     prUpdateDate: ''
   }
 
+  inceptionDateParams: any = {
+    date: '',
+    time: ''
+  }
+
+  expiryDateParams: any = {
+    date: '',
+    time: ''
+  }
+
+  lapseFromParams: any = {
+    date: '',
+    time: ''
+  }
+
+  lapseToParams: any = {
+    date: '',
+    time: ''
+  }
+
+  issueDateParams: any = {
+    date: '',
+    time: ''
+  }
+
+  distributionDateParams: any = {
+    date: '',
+    time: ''
+  }
+
+  effDateParams: any = {
+    date: '',
+    time: ''
+  }
+
+  accDateParams: any = {
+    date: '',
+    time: ''
+  }
+
   constructor( private modalService: NgbModal, private underwritingService: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -100,7 +140,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
 
   retrievePolGenInfoOc(policyIdOc: string, openPolicyNo: string){
       this.underwritingService.getPolGenInfoOc(policyIdOc, openPolicyNo).subscribe((data: any)=>{
-          //console.log(data);
+          console.log(data);
           this.genInfoOcData.policyIdOc         =  data.policyOc.policyIdOc;
           this.genInfoOcData.openPolicyNo       =  data.policyOc.openPolicyNo;
           this.genInfoOcData.lineCd             =  data.policyOc.lineCd;
@@ -130,8 +170,8 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.genInfoOcData.intmName           =  data.policyOc.intmName;
           this.genInfoOcData.inceptDate         =  data.policyOc.inceptDate;
           this.genInfoOcData.expiryDate         =  data.policyOc.expiryDate;
-          this.genInfoOcData.lapseFrom          =  data.policyOc.lapseFrom;
-          this.genInfoOcData.lapseTo            =  data.policyOc.lapseTo;
+          this.genInfoOcData.lapseFrom          =  data.policyOc.lapseFrom === null ? data.policyOc.inceptDate : data.policyOc.lapseFrom;
+          this.genInfoOcData.lapseTo            =  data.policyOc.lapseTo === null ? data.policyOc.expiryDate : data.policyOc.lapseTo;
           this.genInfoOcData.issueDate          =  data.policyOc.issueDate;
           this.genInfoOcData.effDate            =  data.policyOc.effDate;
           this.genInfoOcData.distDate           =  data.policyOc.distDate;
@@ -139,9 +179,9 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.genInfoOcData.currencyCd         =  data.policyOc.currencyCd;
           this.genInfoOcData.currencyRt         =  data.policyOc.currencyRt;
           this.genInfoOcData.createUser         =  data.policyOc.createUser;
-          this.genInfoOcData.createDate         =  data.policyOc.createDate;
+          this.genInfoOcData.createDate         =  this.ns.toDateTimeString(data.policyOc.createDate);
           this.genInfoOcData.updateUser         =  data.policyOc.updateUser;
-          this.genInfoOcData.updateDate         =  data.policyOc.updateDate;
+          this.genInfoOcData.updateDate         =  this.ns.toDateTimeString(data.policyOc.updateDate);
 
           this.projectOcData.projId             =  data.policyOc.project.projId;
           this.projectOcData.projDesc           =  data.policyOc.project.projDesc;
@@ -169,6 +209,23 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.projectOcData.prCreateDate       =  data.policyOc.project.prCreateDate;
           this.projectOcData.prUpdateUser       =  data.policyOc.project.prUpdateUser;
           this.projectOcData.prUpdateDate       =  data.policyOc.project.prUpdateDate;
+
+          this.inceptionDateParams.date         =  this.ns.toDateTimeString(this.genInfoOcData.inceptDate).split('T')[0];
+          this.inceptionDateParams.time         =  this.ns.toDateTimeString(this.genInfoOcData.inceptDate).split('T')[1];
+          this.expiryDateParams.date            =  this.ns.toDateTimeString(this.genInfoOcData.expiryDate).split('T')[0];
+          this.expiryDateParams.time            =  this.ns.toDateTimeString(this.genInfoOcData.expiryDate).split('T')[1];
+          this.lapseFromParams.date             =  this.ns.toDateTimeString(this.genInfoOcData.lapseFrom).split('T')[0];
+          this.lapseFromParams.time             =  this.ns.toDateTimeString(this.genInfoOcData.lapseFrom).split('T')[1];
+          this.lapseToParams.date               =  this.ns.toDateTimeString(this.genInfoOcData.lapseTo).split('T')[0];
+          this.lapseToParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.lapseTo).split('T')[1];
+          this.issueDateParams.date             =  this.ns.toDateTimeString(this.genInfoOcData.issueDate).split('T')[0];
+          this.issueDateParams.time             =  this.ns.toDateTimeString(this.genInfoOcData.issueDate).split('T')[1];
+          this.distributionDateParams.date      =  this.ns.toDateTimeString(this.genInfoOcData.distDate).split('T')[0];
+          this.distributionDateParams.time      =  this.ns.toDateTimeString(this.genInfoOcData.distDate).split('T')[1];
+          this.effDateParams.date               =  this.ns.toDateTimeString(this.genInfoOcData.effDate).split('T')[0];
+          this.effDateParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.effDate).split('T')[1];
+          this.accDateParams.date               =  this.ns.toDateTimeString(this.genInfoOcData.acctDate).split('T')[0];
+          this.accDateParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.acctDate).split('T')[1];
 
           console.log(this.genInfoOcData);
           console.log(this.projectOcData);
