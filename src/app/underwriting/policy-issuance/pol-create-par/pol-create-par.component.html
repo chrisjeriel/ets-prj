@@ -88,7 +88,7 @@
                             <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Sequence No"  appRequired[disabled]="fromQuotation">
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-                            <input type="text" [ngModel]="hcNo[0]" (ngModelChange)="hcNo[0]=$event.toUpperCase()" class="form-control form-control-sm cap-input col-sm-2 req" (change)="search('hc',$event)" appRequired>
+                            <input type="text" [ngModel]="hcNo[0]" (ngModelChange)="hcNo[0]=$event.toUpperCase()" class="form-control form-control-sm cap-input col-sm-2" (change)="search('hc',$event)" readonly>
                             <input type="text" [ngModel]="hcNo[1]" (ngModelChange)="hcNo[1]=$event.toUpperCase()" (change)="getCutOffTime($event); search('lineCd',$event)" class="form-control form-control-sm input-ig-row cap-input col-sm req" ngbTooltip="Line" appRequired>
                             <input type="text" [(ngModel)]="hcNo[2]" (change)="search('year',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Year" appRequired>
                             <input type="text" [(ngModel)]="hcNo[3]" (change)="search('seqNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Sequence No" appRequired>
@@ -98,7 +98,7 @@
                         </div>
                         <div class="input-group ig-row" *ngIf="oc">
                             <label class="form-control-sm col-sm-2">Open Cover Policy No</label>
-                            <input type="text" [ngModel]="ocNo[0]" (ngModelChange)="ocNo[0]=$event.toUpperCase()" (change)="search('oc',$event)" class="form-control form-control-sm cap-input col-sm-2 req" appRequired>
+                            <input type="text" [ngModel]="ocNo[0]" (ngModelChange)="ocNo[0]=$event.toUpperCase()" (change)="search('oc',$event)" class="form-control form-control-sm cap-input col-sm-2" readonly>
                             <input type="text" [ngModel]="ocNo[1]" (ngModelChange)="ocNo[1]=$event.toUpperCase()" class="form-control form-control-sm input-ig-row cap-input col-sm req" ngbTooltip="Line" (change)="getCutOffTime($event); search('lineCd',$event)" appRequired>
                             <input type="text" [(ngModel)]="ocNo[2]" (change)="search('year',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Year" appRequired>
                             <input type="text" [(ngModel)]="ocNo[3]" (change)="search('seqNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Sequence No" appRequired>

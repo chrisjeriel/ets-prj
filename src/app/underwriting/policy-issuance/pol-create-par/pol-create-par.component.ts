@@ -131,6 +131,12 @@ export class PolCreatePARComponent implements OnInit {
           this.clearFields();
           this.getQuoteListing();
           this.showLOV();
+        } else if(this.searchArr.includes('%%')) {
+          this.optionId = '';
+          this.condition = '';
+          this.cedingName = '';
+          this.insuredDesc = '';
+          this.riskName = '';
         }
       }
     });    
@@ -173,13 +179,19 @@ export class PolCreatePARComponent implements OnInit {
       this.lovTable.refreshTable();
 
       if(param !== undefined) {
-        if(this.holCovList.length === 1 && this.hcNo.length == 5 && !this.hcNo.includes('%%')) {  
+        if(this.holCovList.length === 1 && this.hcNo.length == 5 && !this.searchArr.includes('%%')) {  
           this.selected = this.holCovList[0];
           this.setDetails();
-        } else if(this.holCovList.length === 0 && this.hcNo.length == 5 && !this.hcNo.includes('%%')) {
+        } else if(this.holCovList.length === 0 && this.hcNo.length == 5 && !this.searchArr.includes('%%')) {
           this.clearFields();
           this.getHoldCovListing();
           this.showLOV();
+        } else if(this.searchArr.includes('%%')) {
+          this.optionId = '';
+          this.condition = '';
+          this.cedingName = '';
+          this.insuredDesc = '';
+          this.riskName = '';
         }
       }
     });
@@ -188,7 +200,6 @@ export class PolCreatePARComponent implements OnInit {
   getPolOCListing(param?) {
     this.lovTable.loadingFlag = true;
     this.underwritingService.getPolListingOc(param === undefined ? [] : param).subscribe(data => {
-      console.log(data);
       this.polOcList = data['policyList'];
       this.passDataLOV.tHeader = ['Open Cover Policy No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['openPolicyNo','cedingName','insuredDesc','riskName'];
@@ -197,20 +208,25 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-      // this.polOcList = this.polOcList.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
-      //                                .map(oc => { oc.riskName = oc.project.riskName; return oc; });
-      this.polOcList = this.polOcList.map(oc => { oc.riskName = oc.project.riskName; return oc; });;      
+      this.polOcList = this.polOcList//.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
+                                     .map(oc => { oc.riskName = oc.project.riskName; return oc; });
       this.passDataLOV.tableData = this.polOcList;
       this.lovTable.refreshTable();
 
       if(param !== undefined) {
-        if(this.polOcList.length === 1 && this.ocNo.length == 7 && !this.ocNo.includes('%%')) {  
+        if(this.polOcList.length === 1 && this.ocNo.length == 7 && !this.searchArr.includes('%%')) {  
           this.selected = this.polOcList[0];
           this.setDetails();
-        } else if(this.polOcList.length === 0 && this.ocNo.length == 7 && !this.ocNo.includes('%%')) {
+        } else if(this.polOcList.length === 0 && this.ocNo.length == 7 && !this.searchArr.includes('%%')) {
           this.clearFields();
           this.getPolOCListing();
           this.showLOV();
+        } else if(this.searchArr.includes('%%')) {
+          this.optionId = '';
+          this.condition = '';
+          this.cedingName = '';
+          this.insuredDesc = '';
+          this.riskName = '';
         }
       }
     });    
@@ -253,6 +269,7 @@ export class PolCreatePARComponent implements OnInit {
         this.getHoldCovListing();
         this.clearFields();
         this.searchArr = Array(5).fill('');
+        this.hcNo[0] = 'HC';
 
         this.qu = false;
         this.hc = true;
@@ -263,6 +280,7 @@ export class PolCreatePARComponent implements OnInit {
         this.getPolOCListing();
         this.clearFields();
         this.searchArr = Array(7).fill('');
+        this.ocNo[0] = 'OC';
 
         this.qu = false;
         this.hc = false;
@@ -272,7 +290,6 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   showLOV() {
-    // this.getQuoteListing();
     $('#polLovMdl > #modalBtn').trigger('click');
   }
 
@@ -310,15 +327,17 @@ export class PolCreatePARComponent implements OnInit {
 
         if(fromMdl !== undefined) {
           this.searchArr = this.quNo.map((a, i) => {
-            if(i === 0) {
-              a = a + '%';
-            } else if(i === this.quNo.length - 1) {
-              a = '%' + a;
-            } else {
-              a = '%' + a + '%';
-            }
+            // if(i === 0) {
+            //   a = a + '%';
+            // } else if(i === this.quNo.length - 1) {
+            //   a = '%' + a;
+            // } else {
+            //   a = '%' + a + '%';
+            // }
 
-            return a;
+            // return a;
+
+            return (i == 0) ? a + '%' : (i == this.quNo.length - 1) ? '%' + a : '%' + a + '%';
           });
 
           this.search('forceSearch',{ target: { value: '' } });
@@ -457,7 +476,9 @@ export class PolCreatePARComponent implements OnInit {
     this.searchArr = [];
     this.quNo = [];
     this.hcNo = [];
+    this.hcNo[0] = 'HC';
     this.ocNo = [];
+    this.ocNo[0] = 'OC';
     this.optionId = "";
     this.condition = "";
     this.cedingName = "";
@@ -551,14 +572,12 @@ export class PolCreatePARComponent implements OnInit {
         this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
       }
 
-      console.log(this.searchArr);
-      console.log(this.searchArr.join('-'));
-      console.log(!this.searchArr.includes('%%'));
-
       this.getQuoteListing([{ key: 'quotationNo', search: this.searchArr.join('-') }]);      
     } else if(this.hc) {
+      this.searchArr[0] = 'HC%';
+
       if(key === 'hc') {
-        this.searchArr[0] = a.toUpperCase() + '%';
+        this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
       } else if(key === 'lineCd') {
         this.searchArr[1] = '%' + a.toUpperCase() + '%';
       } else if(key === 'year') {
@@ -566,17 +585,21 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'seqNo') {
         this.searchArr[3] = '%' + a + '%';
       } else if(key === 'revNo') {
-        this.searchArr[4] = '%' + a + '%';
+        this.searchArr[4] = a === '' ? '%%' : '%' + a;
       }
 
       if(this.searchArr.includes('')) {
         this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
       }
 
+      console.log(this.searchArr);
+
       this.getHoldCovListing([{ key: 'holdCoverNo', search: this.searchArr.join('-') }]);
     } else {
+      this.searchArr[0] = 'OC%';
+
       if(key === 'oc') {
-        this.searchArr[0] = a.toUpperCase() + '%';
+        this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
       } else if(key === 'lineCd') {
         this.searchArr[1] = '%' + a.toUpperCase() + '%';
       } else if(key === 'year') {
@@ -584,16 +607,18 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'seqNo') {
         this.searchArr[3] = '%' + a + '%';
       } else if(key === 'cedingId') {
-        this.searchArr[4] = '%' + a === '' ? '' : a.padStart(3, '0') + '%';
+        this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
       } else if(key === 'coSeriesNo') {
         this.searchArr[5] = '%' + a + '%';
       } else if(key === 'altNo') {
-        this.searchArr[6] = '%' + a + '%';
+        this.searchArr[6] = a === '' ? '%%' : '%' + a;
       }
 
       if(this.searchArr.includes('')) {
         this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
       }
+
+      console.log(this.searchArr);
 
       this.getPolOCListing([{ key: 'policyNo', search: this.searchArr.join('-') }]);
     }
@@ -614,7 +639,6 @@ export class PolCreatePARComponent implements OnInit {
 
   focusBlur() {
     setTimeout(() => {
-      $('.globalLoading').css('display','none');
       $('.req').focus();
       $('.req').blur();
     },0);
