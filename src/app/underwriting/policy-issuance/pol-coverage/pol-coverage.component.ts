@@ -66,7 +66,7 @@ export class PolCoverageComponent implements OnInit {
         searchFlag:true,
         magnifyingGlass: ['coverCode'],
         widths:[1,1,228,200,75,1,1,1],
-        uneditable:[true,true,true,false,false,false,false,false],
+        uneditable:[true,true,true,true,true,false,false,true],
         keys:['section','bulletNo','description','sumInsured','premRt','premAmt','discountTag','addSi']
     };
 
@@ -207,8 +207,9 @@ export class PolCoverageComponent implements OnInit {
       "createUser": JSON.parse(window.localStorage.currentUser).username,
       "updateDate": this.ns.toDateTimeString(0),
       "updateUser":JSON.parse(window.localStorage.currentUser).username,
+      "showMG":1
     },
-    keys:['section','bulletNo','description','sumInsured','premRt','premAmt','altSumInsured','altRate','altPremium','discountTag','addSi','comSumInsured','comRate','comPremium'],
+    keys:['section','bulletNo','description','comSumInsured','comRate','comPremium','sumInsured','premRt','premAmt','discountTag','addSi','comSumInsuredEdt','comRate','comPremium'],
     uneditable:[true,true,false,true,true,true,false,false,false,false,false,true,true,true],
     widths:[55,65,140,90,90,90,90,90,90,80,50,90,90,90],
     pageLength:'unli'
@@ -269,6 +270,9 @@ export class PolCoverageComponent implements OnInit {
   @Input() policyInfo:any = {};
   disabledFlag: boolean = true;
   errorFlag: boolean = false;
+  parameters : any =[];
+  hideSectionCoverArray: any[] = [];
+  sectionCoverLOVRow: number;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router) { }
@@ -277,6 +281,17 @@ export class PolCoverageComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
     this.policyId = this.policyInfo.policyId;
+
+    this.sub = this.route.params.subscribe(params => {
+      console.log(params)
+            this.line = params['line'];
+            this.policyIdAlt = params['policyId'];
+
+            this.parameters = params.policyNo.split(/[-]/g);
+            console.log(this.parameters)
+
+        });
+
     if (!this.alteration) {
       
       this.getPolCoverage();
@@ -322,14 +337,90 @@ export class PolCoverageComponent implements OnInit {
       this.getPolCoverageAlt();
     }
 
-    this.sub = this.route.params.subscribe(params => {
-            this.line = params['line'];
-            this.policyIdAlt = params['policyId'];
-        });
   }
 
   getPolCoverageAlt(){
-    this.underwritingservice.getUWCoverageInfos(null,'40').subscribe((data:any) => {
+
+    this.underwritingservice.getUWCoverageAlt(this.parameters[0],this.parameters[1],this.parameters[2],this.parameters[3],this.parameters[4],this.parameters[5]).subscribe((data: any) => {
+
+      this.passData.tableData = [];  
+      this.prevtotalSi = 0;
+      this.prevtotalPrem = 0;
+      this.projId = data.policy.project.projId;
+      this.riskId = data.policy.project.riskId;
+      this.altCoverageData = data.policy.project.coverage;
+
+
+      var dataTable = data.policy.project.coverage.sectionCovers
+        for (var i = 0; i< dataTable.length;i++){
+          this.passData.tableData.push(dataTable[i])
+          /*this.passData.tableData[i].sumInsured = dataTable[i].comSumInsured;
+          this.passData.tableData[i].premRt = dataTable[i].comRate;
+          this.passData.tableData[i].premAmt = dataTable [i].comPrem;*/
+          if(dataTable[i].addSi == 'Y'){
+            this.prevtotalSi += dataTable[i].sumInsured;
+            this.prevtotalPrem += dataTable[i].premAmt;
+          }
+        }
+          this.altCoverageData.prevtotalSi = this.prevtotalSi;
+          this.altCoverageData.prevtotalPrem = this.prevtotalPrem;
+
+        for(var j=0;j<this.passData.tableData.length;j++){
+          if(this.passData.tableData[j].section == 'I' && this.passData.tableData[j].addSi == 'Y'){
+            this.prevsectionISi += this.passData.tableData[j].sumInsured;
+            this.prevsectionIPrem += this.passData.tableData[j].premAmt;
+            this.altsectionISi += this.passData.tableData[j].altSumInsured;
+            this.altsectionIPrem += this.passData.tableData[j].altPremium;
+          }
+
+          if(this.passData.tableData[j].section == 'II' && this.passData.tableData[j].addSi == 'Y'){
+            this.prevsectionIISi += this.passData.tableData[j].sumInsured;
+            this.prevsectionIIPrem += this.passData.tableData[j].premAmt;
+          }
+
+          if(this.passData.tableData[j].section == 'III' && this.passData.tableData[j].addSi == 'Y'){
+            this.prevsectionIIISi += this.passData.tableData[j].sumInsured;
+            this.prevsectionIIIPrem += this.passData.tableData[j].premAmt;
+          }
+
+          this.passData.tableData[j].comSumInsured = this.passData.tableData[j].sumInsured
+          this.passData.tableData[j].comRate = this.passData.tableData[j].premRt
+          this.passData.tableData[j].comPremium = isNaN(this.passData.tableData[j].altPremium) ? this.passData.tableData[j].premAmt : this.passData.tableData[j].premAmt + this.passData.tableData[j].altPremium;
+
+          this.comtotalSi += this.passData.tableData[j].comSumInsured;
+          this.comtotalPrem += this.passData.tableData[j].comPremium;
+        }
+        this.table.refreshTable();
+
+        
+        this.altCoverageData.comtotalSi = this.comtotalSi;
+        this.altCoverageData.comtotalPrem = this.comtotalPrem;
+
+        this.passData2.tableData[0].section = 'SECTION I';
+        this.passData2.tableData[0].prevSi = this.prevsectionISi;
+        this.passData2.tableData[0].prevAmt = this.prevsectionIPrem;
+        this.passData2.tableData[0].altSi = 0;
+        this.passData2.tableData[0].altAmt = 0;
+        this.passData2.tableData[0].comSi = this.prevsectionISi;
+        this.passData2.tableData[0].comAmt = this.prevsectionIPrem;
+        this.passData2.tableData[1].section = 'SECTION II';
+        this.passData2.tableData[1].prevSi = this.prevsectionIISi;
+        this.passData2.tableData[1].prevAmt = this.prevsectionIIPrem;
+        this.passData2.tableData[1].altSi = 0;
+        this.passData2.tableData[1].altAmt = 0;
+        this.passData2.tableData[1].comSi = this.prevsectionIISi;
+        this.passData2.tableData[1].comAmt = this.prevsectionIIPrem;
+        this.passData2.tableData[2].section = 'SECTION III';
+        this.passData2.tableData[2].prevSi =  this.prevsectionIIISi;
+        this.passData2.tableData[2].prevAmt = this.prevsectionIIIPrem;
+        this.passData2.tableData[2].altSi = 0;
+        this.passData2.tableData[2].altAmt = 0;
+        this.passData2.tableData[2].comSi = this.prevsectionIIISi;
+        this.passData2.tableData[2].comAmt = this.prevsectionIIIPrem;
+
+        this.getEditable();
+    });
+    /*this.underwritingservice.getUWCoverageInfos(null,'41').subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];  
       this.prevtotalSi = 0;
@@ -406,7 +497,7 @@ export class PolCoverageComponent implements OnInit {
 
         this.getEditable();
         //this.focusBlur();
-    });
+    });*/
   }
 
   getPolCoverage(){
@@ -456,8 +547,14 @@ export class PolCoverageComponent implements OnInit {
               this.passDataTotalPerSection.tableData[2].sumInsured = this.sectionIIISi;
               this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
 
-
-              this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
+              if(this.line == 'CAR' || this.line == 'EAR'){
+                this.coverageData.totalSi = this.sectionISi + this.sectionIIISi;
+              } else if(this.line == 'EEI'){
+                this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
+              }else {
+                this.coverageData.totalSi = this.sectionISi ;
+              }
+              
               this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;
               this.coverageData.sectionISi = this.sectionISi;
               this.coverageData.sectionIISi = this.sectionIISi;
@@ -467,7 +564,22 @@ export class PolCoverageComponent implements OnInit {
               this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
            
              //this.focusBlur();
+             this.getEditableCov();
       });
+  }
+
+  getEditableCov(){
+    for(let data of this.passDataSectionCover.tableData){
+      if(data.uneditable === undefined){
+        data.uneditable = [];
+      }
+      if(data.discountTag == 'Y'){
+        data.uneditable.pop();
+      }else if(data.discountTag == 'N' ) {
+        if(data.uneditable.length ==0)
+          data.uneditable.push('premAmt');
+      }
+    }
   }
 
   showTextEditorModal(content) {
@@ -556,6 +668,13 @@ export class PolCoverageComponent implements OnInit {
       this.dialogIcon = 'info'
       this.successDlg.open();
       return;
+    }
+    for(let ded of params.saveDeductibleList){
+      if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+        this.dialogIcon = "error";
+        setTimeout(a=>this.successDiag.open(),0);
+        return null;
+      }
     }
     this.deductiblesTable.loadingFlag = true;
     this.underwritingservice.savePolDeductibles(params).subscribe(data=>{
@@ -675,6 +794,7 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.sectionIIPrem = this.sectionIIPrem;
     this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
 
+    this.getEditableCov();
 /*    setTimeout(() => {
       this.focusBlur();
     }, 0)*/
@@ -786,6 +906,23 @@ export class PolCoverageComponent implements OnInit {
       }
     }
 
+    /*if(this.passDataSectionCover.tableData[0].sumInsured > 0){
+            for(var i = 1; i< this.passDataSectionCover.tableData.length;i++){
+              if(this.passDataSectionCover.tableData[i].sumInsured < 0){
+                this.errorFlag = true;
+              }
+            }
+
+        }else if(this.passDataSectionCover.tableData[0].sumInsured < 0){
+          console.log('pasok')
+            for(var i = 1 ; i< this.passDataSectionCover.tableData[i].length;i++){
+              if(this.passDataSectionCover.tableData[i].sumInsured > 0 ){
+                console.log(this.errorFlag)
+                this.errorFlag = true;
+              }
+            }
+        }*/
+
     if(this.errorFlag){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Please check Sum Insured.';
@@ -854,6 +991,7 @@ export class PolCoverageComponent implements OnInit {
 
           this.passData.tableData[j].comSumInsured    = isNaN(this.altsectionIISi) ? 0:this.prevsectionIISi + this.altsectionIISi;
           this.passData.tableData[j].comRate          = isNaN(this.passData.tableData[j].altRate) ? this.passData.tableData[j].premRt: this.passData.tableData[j].altRate;
+          this.passData.tableData[j].comPremium        = isNaN((this.passData.tableData[j].altRate && this.passData.tableData[j].altPremium)) ? this.prevsectionIIPrem :  this.prevsectionIIPrem + this.altsectionIIPrem;
           
           this.comsectionIISi                        += this.passData.tableData[j].comSumInsured;
           this.comsectionIIPrem                      += this.passData.tableData[j].comPremium;
@@ -868,6 +1006,7 @@ export class PolCoverageComponent implements OnInit {
 
           this.passData.tableData[j].comSumInsured    = isNaN(this.altsectionIIISi) ? 0:this.prevsectionIIISi + this.altsectionIIISi;
           this.passData.tableData[j].comRate          = isNaN(this.passData.tableData[j].altRate) ? this.passData.tableData[j].premRt: this.passData.tableData[j].altRate;
+          this.passData.tableData[j].comPremium        = isNaN((this.passData.tableData[j].altRate && this.passData.tableData[j].altPremium)) ? this.prevsectionIIIPrem :  this.prevsectionIIIPrem + this.altsectionIIIPrem;
           
           this.comsectionIIISi                       += this.passData.tableData[j].comSumInsured;
           this.comsectionIIIPrem                     += this.passData.tableData[j].comPremium;
@@ -996,4 +1135,76 @@ export class PolCoverageComponent implements OnInit {
       }
     }
   }
+
+   onClickSaveAlt(){
+    /*if((this.passData.tableData[0].altSumInsured > 0 && !(this.passData.tableData[1].altSumInsured > 0)) || (this.passData.tableData[0].altSumInsured < 0 && !(this.passData.tableData[0].altSumInsured < 0))){
+      this.errorFlag = true;
+    }*/
+
+    /*if(this.passData.tableData[0].altSumInsured > 0){
+        for(var i = 1; i< this.passData.tableData.length;i++){
+          if(this.passData.tableData[i].altSumInsured < 0){
+            this.errorFlag = true;
+          }
+        }
+
+    }else if(this.passData.tableData[0].altSumInsured < 0){
+        for(var i = 1 ; i< this.passData.tableData[i].length;i++){
+          if(this.passData.tableData[i].altSumInsured > 0 ){
+            this.errorFlag = true;
+          }
+        }
+    }
+
+    
+
+    if(this.errorFlag){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Please check Sum Insured.';
+      this.successDiag.open();
+      this.errorFlag = false;
+    }else {
+      $('#confirm-save #alterationSaving').trigger('click');
+    }*/
+    $('#confirm-save #alterationSaving').trigger('click');
+  }
+
+  sectionCoversLOV(data){
+        this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
+        $('#sectionCoversLOV #modalBtn').trigger('click');
+        //data.tableData = this.passData.tableData;
+        this.sectionCoverLOVRow = data.index;
+  }
+
+   selectedSectionCoversLOV(data){
+    console.log(data)
+      if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
+        this.sectionCoverLOVRow = data[0].ev.index;
+        this.ns.lovLoader(data[0].ev, 0);
+      }
+
+      $('#cust-table-container').addClass('ng-dirty');
+      // this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
+      // this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
+      // this.passData.tableData[this.sectionCoverLOVRow].section = data[0].section;
+      // this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
+      // this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
+      // this.passData.tableData[this.sectionCoverLOVRow].edited = true;
+
+      if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
+        //HIDE THE POWERFUL MAGNIFYING GLASS
+        this.passData.tableData[this.sectionCoverLOVRow].showMG = 1;
+      }
+      this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
+      //this.validateSectionCover();
+      for(var i = 0; i<data.length;i++){
+        this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+        this.passData.tableData[this.passData.tableData.length - 1].description = data[i].description;
+        this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
+        this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
+        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+        console.log(this.passData.tableData);
+      }
+      this.table.refreshTable();
+    }
 }

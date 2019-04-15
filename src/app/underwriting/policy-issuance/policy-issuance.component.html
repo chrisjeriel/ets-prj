@@ -9,7 +9,7 @@
 		</ngb-tab>
 		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
 			<ng-template ngbTabContent>
-				<app-pol-item></app-pol-item>
+				<app-pol-item [policyInfo]="policyInfo"></app-pol-item>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Coverage">
@@ -17,7 +17,7 @@
 				<app-pol-coverage [alteration]="false" [policyInfo]="policyInfo"></app-pol-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="ALOP">
+		<ngb-tab title="ALOP" *ngIf="policyInfo.showPolAlop">
 			<ng-template ngbTabContent>
 				<app-pol-alop [policyInfo]="policyInfo" [alterFlag]="true"></app-pol-alop>
 			</ng-template>

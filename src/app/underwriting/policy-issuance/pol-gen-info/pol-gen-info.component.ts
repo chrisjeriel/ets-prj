@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -14,6 +15,19 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
   styleUrls: ['./pol-gen-info.component.css']
 })
 export class PolGenInfoComponent implements OnInit, OnDestroy {
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  //add by paul for deductibles
+  @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
+  @ViewChild('deductiblesModal') deductiblesModal :ModalComponent;
+  @ViewChild('dedSuccess') successDlg: SucessDialogComponent;
+  @ViewChild('dedLov') lov :LovComponent;
+  lovCheckBox:boolean;
+  passLOVData:any = {
+    selector: '',
+
+  }
+  dialogMsg:string;
+
   tableData: any;
   tHeader: any[] = [];
   dataTypes: any[] = [];
@@ -21,6 +35,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   @Input() mode;
   @Input() alteration: boolean = false;
+
   policyInfo:any = {
     policyId: null,
     policyNo: null,
@@ -136,6 +151,38 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       updateDate: null
     }
   };
+
+  passDataDeductibles: any = {
+    tHeader: ["Deductible Code","Deductible Title", "Deductible Text", "Rate(%)", "Amount"],
+    dataTypes: ["text","text","text", "percent", "currency"],
+    pageLength:10,
+    addFlag: true,
+    deleteFlag: true,
+    searchFlag: true,
+    checkFlag: true,
+    infoFlag: true,
+    paginateFlag: true,
+    widths: [1, 1, 1, 1, 1, 1],
+    magnifyingGlass: ['deductibleCd'],
+    keys:['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
+    tableData:[],
+    pageID:'deductibles',
+    nData: {
+      "coverCd": 0,
+      "createDate": this.ns.toDateTimeString(0),
+      "createUser": JSON.parse(window.localStorage.currentUser).username,
+      "deductibleAmt": 0,
+      "deductibleCd": null,
+      "deductibleRt": 0,
+      "deductibleTxt": '',
+      "endtCd": "0",
+      "updateDate": this.ns.toDateTimeString(0),
+      "updateUser":JSON.parse(window.localStorage.currentUser).username,
+      showMG : 1
+    },
+    uneditable: [true,true,false,false,false]
+  };
+
   line: string;
   private sub: any;
   hcChecked: boolean = false;
@@ -144,6 +191,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   typeOfCession: string = "";
   policyId: string;
   policyNo: string;
+  dialogIcon: string = "";
+  dialogMessage: string = "";
+  loading: boolean = false;
+  cancelFlag: boolean;
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
@@ -162,8 +213,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.policyId = params['policyId'];
       this.policyNo = params['policyNo'];
     });
-    this.checkPolCoverage();
-    console.log(this.policyInfo.showPolAlop);
     this.getPolGenInfo();
     
   }
@@ -196,6 +245,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.acctDate = this.ns.toDateTimeString(this.policyInfo.acctDate);
         this.policyInfo.createDate = this.ns.toDateTimeString(this.policyInfo.createDate);
         this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
+        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.policyInfo.project.createDate);
+        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
@@ -208,17 +259,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   checkPolIdF(event){
-      this.emitPolicyInfoId.emit({
-        policyId: event,
-        policyNo: this.policyInfo.policyNo,
-        riskName: this.policyInfo.project.riskName,
-        insuredDesc: this.policyInfo.insuredDesc,
-        riskId: this.policyInfo.project.riskIdz,
-        showPolAlop: this.policyInfo.showPolAlop
-      });    
-  }
-
-  checkPolCoverage() {
     this.underwritingService.getUWCoverageInfos(null, this.policyId).subscribe((data:any)=>{
       if(data.policy !== null){
         let alopFlag = false;
@@ -242,7 +282,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         riskId: this.policyInfo.project.riskIdz,
         showPolAlop: this.policyInfo.showPolAlop
       });    
-      
+
     });
   }
 
@@ -253,50 +293,104 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
   }
 
+  prepareParam(cancelFlag?) {
+    this.cancelFlag = cancelFlag !== undefined;
 
-  //add by paul for deductibles
-  @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
-  @ViewChild('deductiblesModal') deductiblesModal :ModalComponent;
-  dialogIcon:string = '';
-  @ViewChild('dedSuccess') successDlg: SucessDialogComponent;
-  @ViewChild('dedLov') lov :LovComponent;
-  lovCheckBox:boolean;
-  passLOVData:any = {
-    selector: '',
+    var savePolGenInfoParam = {
+      "acctDate"        : this.policyInfo.acctDate,
+      "altNo"           : this.policyInfo.altNo,
+      "altTag"          : this.policyInfo.altTag,
+      "bookedTag"       : this.policyInfo.bookedTag,
+      "cedingId"        : this.policyInfo.cedingId,
+      "cessionId"       : this.policyInfo.cessionId,
+      "coRefNo"         : this.policyInfo.coRefNo,
+      "coSeriesNo"      : this.policyInfo.coSeriesNo,
+      "contractorId"    : this.policyInfo.contractorId,
+      "createDate"      : this.policyInfo.createDate,
+      "createUser"      : this.policyInfo.createUser,
+      "currencyCd"      : this.policyInfo.currencyCd,
+      "currencyRt"      : this.policyInfo.currencyRt,
+      "declarationTag"  : this.policyInfo.declarationTag,
+      "distDate"        : this.policyInfo.distDate,
+      "duration"        : this.policyInfo.project.duration,
+      "effDate"         : this.policyInfo.effDate,
+      "excludeDistTag"  : this.policyInfo.excludeDistTag,
+      "expiryDate"      : this.policyInfo.expiryDate,
+      "extensionTag"    : this.policyInfo.extensionTag,
+      "govtTag"         : this.policyInfo.govtTag,
+      "holdCoverTag"    : this.policyInfo.holdCoverTag,
+      "inceptDate"      : this.policyInfo.inceptDate,
+      "instTag"         : this.policyInfo.instTag,
+      "insuredDesc"     : this.policyInfo.insuredDesc,
+      "intmId"          : this.policyInfo.intmId,
+      "ipl"             : this.policyInfo.project.ipl,
+      "issueDate"       : this.policyInfo.issueDate,
+      "lapseFrom"       : this.policyInfo.lapseFrom,
+      "lapseTo"         : this.policyInfo.lapseTo,
+      "lineCd"          : this.policyInfo.lineCd,
+      "lineClassCd"     : this.policyInfo.lineClassCd,
+      "maintenanceFrom" : this.policyInfo.maintenanceFrom,
+      "maintenanceTo"   : this.policyInfo.maintenanceTo,
+      "mbiRefNo"        : this.policyInfo.mbiRefNo,
+      "minDepTag"       : this.policyInfo.minDepTag,
+      "noClaimPd"       : this.policyInfo.project.noClaimPd,
+      "objectId"        : this.policyInfo.project.objectId,
+      "openCoverTag"    : this.policyInfo.openCoverTag,
+      "polSeqNo"        : this.policyInfo.polSeqNo,
+      "polYear"         : this.policyInfo.polYear,
+      "policyId"        : this.policyInfo.policyId,
+      "policyIdOc"      : this.policyInfo.policyIdOc,
+      "principalId"     : this.policyInfo.principalId,
+      "prjCreateDate"   : this.policyInfo.project.createDate,
+      "prjCreateUser"   : this.policyInfo.project.createUser,
+      "prjUpdateDate"   : this.ns.toDateTimeString(0),
+      "prjUpdateUser"   : JSON.parse(window.localStorage.currentUser).username,
+      "projDesc"        : this.policyInfo.project.projDesc,
+      "projId"          : this.policyInfo.project.projId,
+      "quoteId"         : this.policyInfo.quoteId,
+      "refOpenPolNo"    : this.policyInfo.refOpenPolNo,
+      "reinsurerId"     : this.policyInfo.reinsurerId,
+      "riBinderNo"      : this.policyInfo.riBinderNo,
+      "riskId"          : this.policyInfo.project.riskId,
+      "site"            : this.policyInfo.project.site,
+      "specialPolicyTag": this.policyInfo.specialPolicyTag,
+      "status"          : this.policyInfo.status,
+      "testing"         : this.policyInfo.project.testing,
+      "timeExc"         : this.policyInfo.project.timeExc,
+      "totalSi"         : this.policyInfo.project.totalSi,
+      "updateDate"      : this.ns.toDateTimeString(0),
+      "updateUser"      : JSON.parse(window.localStorage.currentUser).username,
+      "wordings"        : this.policyInfo.wordings
+    }
 
-  }
-  dialogMsg:string;
+    console.log(savePolGenInfoParam);
+    //ADD VALIDATION
+    this.loading = true;
+    this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe(data => {
+      console.log(data);
+      this.loading = false;
 
+      if(data['returnCode'] === 0) {
+          this.dialogIcon = 'error';
+          this.dialogMessage = data['errorList'][0].errorMessage;
 
-  passDataDeductibles: any = {
-        tHeader: ["Deductible Code","Deductible Title", "Deductible Text", "Rate(%)", "Amount"],
-        dataTypes: ["text","text","text", "percent", "currency"],
-        pageLength:10,
-        addFlag: true,
-        deleteFlag: true,
-        searchFlag: true,
-        checkFlag: true,
-        infoFlag: true,
-        paginateFlag: true,
-        widths: [1, 1, 1, 1, 1, 1],
-        magnifyingGlass: ['deductibleCd'],
-        keys:['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
-        tableData:[],
-        pageID:'deductibles',
-        nData: {
-          "coverCd": 0,
-          "createDate": this.ns.toDateTimeString(0),
-          "createUser": JSON.parse(window.localStorage.currentUser).username,
-          "deductibleAmt": 0,
-          "deductibleCd": null,
-          "deductibleRt": 0,
-          "deductibleTxt": '',
-          "endtCd": "0",
-          "updateDate": this.ns.toDateTimeString(0),
-          "updateUser":JSON.parse(window.localStorage.currentUser).username,
-          showMG : 1
+          $('#polGenInfo #successModalBtn').trigger('click');
+        } else if (data['returnCode'] === -1) {               
+          this.policyInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          this.policyInfo.updateDate  = this.ns.toDateTimeString(0);
+
+          $('#polGenInfo #successModalBtn').trigger('click');
         }
-    };
+    });
+  }
+
+  onClickSave(){
+    $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
+  }
 
   showDeductiblesModal(deductibles){
     // setTimeout(()=>{this.getDeductibles();},0);
@@ -343,7 +437,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.successDlg.open();
       return;
     }
-
+    for(let ded of params.saveDeductibleList){
+      if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+        this.dialogIcon = "error";
+        setTimeout(a=>this.successDlg.open(),0);
+        return null;
+      }
+    }
     this.deductiblesTable.loadingFlag = true;
     this.underwritingService.savePolDeductibles(params).subscribe(data=>{
         if(data['returnCode'] == -1){
@@ -391,6 +491,5 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     }
     this.lov.openLOV();
   }
-
 
 }
