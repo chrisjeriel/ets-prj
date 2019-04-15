@@ -346,7 +346,7 @@ export class ReadyForPrintingComponent implements OnInit {
            finalize(() => this.batchPrinting(length) )
            )
          .subscribe( data => {
-              var newBlob = new Blob([data], { type: "image/jpeg" });
+              var newBlob = new Blob([data], { type: "application/json" });
               this.arrayBlob.push(newBlob);
               this.resultPrint.push( {status: '0' , quoteId: quoteId })
              /* var downloadURL = window.URL.createObjectURL(data);
@@ -376,56 +376,43 @@ export class ReadyForPrintingComponent implements OnInit {
 
       var fileReader = new FileReader();
       var buffers = [];
+      var tmpresult;
       fileReader.onload = (function(i,fileReader) {
         return function(){
           printLoaded++;
           buffers.push(fileReader.result);
-
+         
           if ( printLoaded == inputCount ){
            var byteLength = 0;
-            
             buffers.forEach(function(buffer) { 
                 byteLength += buffer.byteLength;
             });
-
             for(var i=0; i < buffers.length; i++) {
-              console.log(buffers[i]);
-             /* tmpResult = appendBuffer(tmpResult, buffers[i]);*/
+              console.log(buffers);
             } 
+    
+            var finalBlob = new Blob(buffers,{ type: "application/pdf" } );
+
+            
+             var downloadURL = window.URL.createObjectURL(finalBlob);
+             window.open(downloadURL);
 
 
-            console.log(buffers);
-
-
-
-            var newBlob = new Blob([tmpResult], { type: "application/pdf" });
-            var downloadURL = window.URL.createObjectURL(newBlob);
-            const iframe = document.createElement('iframe');
+            
+           /* const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
             iframe.src = downloadURL;
             document.body.appendChild(iframe);
-            iframe.contentWindow.print(); 
+            iframe.contentWindow.print(); */
           }
         }
       })(i,fileReader);
-        fileReader.readAsDataURL(this.arrayBlob[i]);
+        fileReader.readAsArrayBuffer(this.arrayBlob[i]);
    }
 
 }
 
 
-
-   /*if (i == length){
-       console.log(this.arrayBlob);
-       console.log(this.errorPrint);
-   }
-
-/*    var downloadURL = window.URL.createObjectURL();
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = downloadURL;
-    document.body.appendChild(iframe);
-    iframe.contentWindow.print();*/
 }
 
 
@@ -452,22 +439,6 @@ export class ReadyForPrintingComponent implements OnInit {
 
   changeQuoteStatus() {
 
-    if (this.printType == 'PRINTER'){
-        this.resultPrint = [];
-        this.arrayBlob = [];
-                    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
-                      if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
-                        var selectedReport = this.reportsList[0].val
-                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.saveData.changeQuoteStatus.length);
-                      } else {
-                        var selectedReport = this.reportsList[1].val
-                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.saveData.changeQuoteStatus.length);
-                      }
-                    }
-
-                     this.searchQuery(this.searchParams);
-   }
-/*
     this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
         this.changeQuoteError = data['returnCode'];
         if(data['returnCode'] == 0) {
@@ -488,14 +459,16 @@ export class ReadyForPrintingComponent implements OnInit {
                          }
                      }
                      this.searchQuery(this.searchParams);
-                }else if (this.printType == 'PRINTER'){
+                }else  if (this.printType == 'PRINTER'){
+                        this.resultPrint = [];
+                        this.arrayBlob = [];
                     for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
                       if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
                         var selectedReport = this.reportsList[0].val
-                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
+                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.saveData.changeQuoteStatus.length);
                       } else {
                         var selectedReport = this.reportsList[1].val
-                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
+                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.saveData.changeQuoteStatus.length);
                       }
                     }
                      this.searchQuery(this.searchParams);
@@ -514,7 +487,7 @@ export class ReadyForPrintingComponent implements OnInit {
                  this.table.refreshTable("first");
         }
         this.btnDisabled = true;
-    });*/
+    });
   }
 
   export(){
