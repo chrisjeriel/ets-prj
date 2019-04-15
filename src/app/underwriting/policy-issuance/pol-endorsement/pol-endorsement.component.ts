@@ -301,7 +301,13 @@ export class PolEndorsementComponent implements OnInit {
                 }
             }
         }
-        console.log(params)
+        for(let ded of params.saveDeductibleList){
+          if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+            this.dialogIcon = "error";
+            setTimeout(a=>this.successDiag.open();,0);
+            return null;
+          }
+        }
         if(this.ocFlag){
             params.policyId = this.policyInfo.policyIdOc;
             this.underwritingService.savePolEndtOc(params).subscribe(data=>{
