@@ -334,51 +334,6 @@ export class QuoteOptionComponent implements OnInit {
         return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
     }
 
-    // updateDeductibles(data) {
-    //     if(data==null || data.optionId==null){
-    //       this.deductiblesData.tableData = [];
-    //       this.deductibleTable.refreshTable();
-    //     }else if (data.deductiblesList != null || data.deductiblesList != undefined ){
-    //       this.deductiblesData.nData.optionId = data.optionId;
-    //       this.deductiblesData.tableData = data.deleted? []:data.deductiblesList;
-    //       this.deductibleTable.refreshTable();
-    //     }
-    // }
-
-// saveQuoteDeductibles(){
-//   let params: any = {
-//        quoteId:this.quoteId,
-//        optionId: this.selectedOption.optionId,
-//        saveDeductibleList:[],
-//        deleteDeductibleList:[]
-       
-//    }
-//     for (var i = 0 ; this.deductiblesData.tableData.length > i; i++) {
-//         if(this.deductiblesData.tableData[i].edited && !this.deductiblesData.tableData[i].deleted ) {
-//             params.saveDeductibleList.push(this.deductiblesData.tableData[i]);
-//             params.saveDeductibleList[params.saveDeductibleList.length-1].createDate = new Date(params.saveDeductibleList[params.saveDeductibleList.length-1].createDate[0],params.saveDeductibleList[params.saveDeductibleList.length-1].createDate[1]-1,params.saveDeductibleList[params.saveDeductibleList.length-1].createDate[2]).toISOString();
-//             params.saveDeductibleList[params.saveDeductibleList.length-1].updateDate = new Date(params.saveDeductibleList[params.saveDeductibleList.length-1].updateDate[0],params.saveDeductibleList[params.saveDeductibleList.length-1].updateDate[1]-1,params.saveDeductibleList[params.saveDeductibleList.length-1].updateDate[2]).toISOString();
-//         } else if(this.deductiblesData.tableData[i].edited && this.deductiblesData.tableData[i].deleted){
-//           params.deleteDeductibleList.push(this.deductiblesData.tableData[i]);
-//           params.deleteDeductibleList[params.deleteDeductibleList.length-1].createDate = new Date(params.deleteDeductibleList[params.deleteDeductibleList.length-1].createDate[0],params.deleteDeductibleList[params.deleteDeductibleList.length-1].createDate[1]-1,params.deleteDeductibleList[params.deleteDeductibleList.length-1].createDate[2]).toISOString();
-//           params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate = new Date(params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate[0],params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate[1]-1,params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate[2]).toISOString();
-//         }
-//       }
-//      this.quotationService.saveQuoteDeductibles(JSON.stringify(params)).subscribe((data: any) => {
-//         if(data['returnCode'] == 0) {  
-//             this.dialogMessage = data['errorList'][0].errorMessage;
-//             this.dialogIcon = "error";
-//             $('#quote-option #successModalBtn').trigger('click');
-//         }else if(data['returnCode'] == -1){
-//             this.dialogMessage="";
-//             this.dialogIcon = "";
-//             $('#quote-option #successModalBtn').trigger('click');
-//             this.deductibleTable.markAsPristine();
-//             this.showDeductiblesOptions(this.fromCovers ? this.selectedCover :this.selectedOption, this.fromCovers ? '':undefined);
-//        }
-//      });
-//    }
-
 
 clickDeductiblesLOV(data,from){
     this.passLOVData.from = from
@@ -510,6 +465,8 @@ saveQuoteOptionAll(cancelFlag?){
 
    for (var i = 0 ; this.optionsData.tableData.length > i; i++) {
       if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null) {
+        if(this.optionsData.tableData[i].condition == null || this.optionsData.tableData[i].condition.length == 0)
+          this.optionsData.tableData[i].condition = parseFloat(this.optionsData.tableData[i].optionRt)+'% rate' 
         params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
         params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username
         params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[2]).toISOString();
@@ -640,12 +597,13 @@ saveQuoteOptionAll(cancelFlag?){
       }
       if(data.changeTag == 'Y'){
         data.uneditable.pop();
-      }else if(data.changeTag == 'N' ) {
+      }else if(data.changeTag == 'N' && data.amount !== 0) {
+        if(data.rate != this.selectedOption.optionRt)
+          data.edited = true;
         data.rate = this.selectedOption.optionRt;
         if(data.uneditable.length ==0)
           data.uneditable.push('rate');
-      }
-      if(data.amount == 0){
+      }else if(data.amount == 0){
         data.rate = 0;
       }
     }
@@ -656,81 +614,6 @@ saveQuoteOptionAll(cancelFlag?){
     }
     this.otherRatesTable.onRowClick(null,null);
   }
-
-  // showDeductiblesOptions(data,fromCovers?){
-    
-    
-  //   this.fromCovers = fromCovers !== undefined;
-
-  //   if(this.fromCovers){
-  //       this.deductiblesData.tHeader = ['Deductible Code','Deductible Title', 'Sum Insured', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount'];
-  //       this.deductiblesData.dataTypes = ['text','text', 'currency', 'text', 'percent','currency'];
-  //       this.deductiblesData.keys = ['deductibleCd','deductibleTitle','sumInsured','deductibleTxt','deductibleRt','deductibleAmt'];
-  //       this.deductiblesData.uneditable = [true,true,true];
-  //       this.deductiblesData.widths = [60,'auto',120,'auto',120,120];
-  //   }else{
-  //       this.deductiblesData.tHeader = ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount'];
-  //       this.deductiblesData.dataTypes = ['text','text', 'text', 'percent','currency'];
-  //       this.deductiblesData.keys = ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'];
-  //       this.deductiblesData.widths = [60,'auto','auto',120,120];
-  //       this.deductiblesData.uneditable = [true,true,false];
-  //   }
-    
-    
-  //   if(this.deductibleTable!==undefined){
-  //     this.deductibleTable.loadingFlag = true;
-  //     let params:any ={
-  //         quoteId:this.quoteId,
-  //         optionId:this.selectedOption.optionId,
-  //         coverCd: data.coverCd === undefined ? 0 : data.coverCd,
-  //         quotationNo: '',
-  //         endtCd: 0
-  //       };
-  //     this.quotationService.getDeductibles(params).subscribe((data)=>{
-  //         if(data['quotation'].optionsList != null){
-  //           this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList.filter((a)=>{
-  //               a.sumInsured = this.fromCovers ? this.selectedCover.amount : null;
-  //               return true;
-  //             });
-  //           this.deductibleTable.refreshTable();
-  //         }
-  //         else
-  //           this.getDefaultDeductibles();
-  //       });
-  //   }else{
-  //     if((this.fromCovers && this.selectedCover!==null) || (!this.fromCovers && this.selectedOption!==null)){
-  //       this.showModal = true;
-  //       setTimeout(()=>{
-  //         this.deductiblesModal.openNoClose();
-  //       },0)
-
-  //       if(!this.fromCovers){
-  //         this.deductiblesData.nData.coverCd = 0;
-  //       }else{
-  //         this.deductiblesData.nData.coverCd = data.coverCd;
-  //       }
-  //       let params:any ={
-  //         quoteId:this.quoteId,
-  //         optionId:this.selectedOption.optionId,
-  //         coverCd: data.coverCd === undefined ? 0 : data.coverCd,
-  //         quotationNo: '',
-  //         endtCd: 0
-  //       };
-  //       this.quotationService.getDeductibles(params).subscribe((data)=>{
-  //         if(data['quotation'].optionsList != null){
-  //           this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList.filter((a)=>{
-  //               a.sumInsured = this.fromCovers ? this.selectedCover.amount : null;
-  //               return true;
-  //             });
-  //           this.deductibleTable.refreshTable();
-  //         }
-  //         else
-  //           this.getDefaultDeductibles();
-  //       });
-  //   }
-  //   }
-    
-  // }
 
   onClickSaveDeductibles(){
     $('#deductibles #confirm-save #modalBtn2').trigger('click');

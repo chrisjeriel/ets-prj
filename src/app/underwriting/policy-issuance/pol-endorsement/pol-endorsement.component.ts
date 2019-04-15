@@ -106,7 +106,7 @@ export class PolEndorsementComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Endorsement");
-        if((this.alteration || this.ocFlag) && this.policyInfo.fromInq!='true'){
+        if(this.policyInfo.fromInq!='true'){
             //do something
             this.passData.magnifyingGlass = ['endtCd'];
             this.passData.checkFlag = false;
