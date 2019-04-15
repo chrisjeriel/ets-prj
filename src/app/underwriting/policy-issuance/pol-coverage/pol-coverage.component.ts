@@ -585,7 +585,7 @@ export class PolCoverageComponent implements OnInit {
                 }
               }
               this.totalPrem += this.passDataSectionCover.tableData[j].premAmt;
-
+            }
             this.table.refreshTable();
               this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
               this.passDataTotalPerSection.tableData[0].sumInsured = this.sectionISi;
@@ -738,7 +738,7 @@ export class PolCoverageComponent implements OnInit {
     if(data.key=="deductibleCd"){
       this.lovCheckBox = true;
       this.passLOVData.selector = 'deductibles';
-      this.passLOVData.lineCd = 'CAR'//this.quotationNum.substring(0,3);
+      this.passLOVData.lineCd = this.line;
       this.passLOVData.params = {
         coverCd : data.data.coverCd == null ? 0: data.data.coverCd,
         endtCd: '0',
@@ -879,7 +879,7 @@ export class PolCoverageComponent implements OnInit {
         this.editedData[this.editedData.length - 1].cumPrem = this.passDataSectionCover.tableData[i].premAmt;
         this.editedData[this.editedData.length - 1].createDateSec =  this.ns.toDateTimeString(0)
         this.editedData[this.editedData.length - 1].updateDateSec = this.ns.toDateTimeString(0); 
-        this.editedData[this.editedData.length - 1].lineCd = 'CAR'
+        this.editedData[this.editedData.length - 1].lineCd = this.line;
       }
     }
     this.coverageData.cumSecISi = this.coverageData.sectionISi;
@@ -1199,7 +1199,7 @@ export class PolCoverageComponent implements OnInit {
     for(var i=0; i < this.passData.tableData.length;i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         this.editedData.push(this.passData.tableData[i]);
-        this.editedData[this.editedData.length - 1].lineCd        = 'CAR';
+        this.editedData[this.editedData.length - 1].lineCd        = this.line;
         this.editedData[this.editedData.length - 1].sumInsured    = this.passData.tableData[i].sumInsured;
         this.editedData[this.editedData.length - 1].premRt        = this.passData.tableData[i].premRt;
         this.editedData[this.editedData.length - 1].premAmt       = this.passData.tableData[i].premAmt;
@@ -1212,7 +1212,7 @@ export class PolCoverageComponent implements OnInit {
 
       if(this.passData.tableData[i].deleted){
         this.deletedData.push(this.passData.tableData[i]);
-        this.deletedData[this.deletedData.length - 1].lineCd = 'CAR';
+        this.deletedData[this.deletedData.length - 1].lineCd = this.line;
       }
     }
     this.altCoverageData.saveSectionCovers = this.editedData;
