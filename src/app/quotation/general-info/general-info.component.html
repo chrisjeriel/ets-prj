@@ -754,7 +754,7 @@
 							<span>&nbsp;</span> -->
 
 							<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-right: 6px !important;">
-             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" [required]="!inquiryFlag && genInfoData.statusDesc.toUpperCase() != 'APPROVED'">
+             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2"  [required]="!inquiryFlag && genInfoData.statusDesc.toUpperCase() != 'APPROVED'">
              						<ng-container icon-1>
              							<a (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
              						</ng-container>

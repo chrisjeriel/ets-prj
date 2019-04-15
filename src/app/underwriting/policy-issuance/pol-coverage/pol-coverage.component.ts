@@ -532,9 +532,14 @@ export class PolCoverageComponent implements OnInit {
                 }
             }
 
-            for( var j=0; j < this.passDataSectionCover.tableData.length;j++){
+           /*for( var j=0; j < this.passDataSectionCover.tableData.length;j++){
               this.passDataSectionCover.tableData[j].premAmt = this.passDataSectionCover.tableData[j].sumInsured * (this.passDataSectionCover.tableData[j].premRt /100 )
             }
+*/
+
+            for( var j=0; j < this.passDataSectionCover.tableData.length;j++){
+             this.passDataSectionCover.tableData[j].premAmt = this.passDataSectionCover.tableData[j].addSi == 'Y' ? this.passDataSectionCover.tableData[j].premAmt:this.passDataSectionCover.tableData[j].sumInsured * (this.passDataSectionCover.tableData[j].premRt /100 )
+           }
 
             this.table.refreshTable();
               this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
@@ -769,7 +774,8 @@ export class PolCoverageComponent implements OnInit {
        }
        this.totalPrem += this.passDataSectionCover.tableData [i].premAmt;
        this.totalSi += this.passDataSectionCover.tableData [i].sumInsured;
-       this.passDataSectionCover.tableData[i].premAmt = this.passDataSectionCover.tableData[i].sumInsured * (this.passDataSectionCover.tableData[i].premRt /100 )
+       this.passDataSectionCover.tableData[i].premAmt = this.passDataSectionCover.tableData[i].edited || this.passDataSectionCover.tableData[i].addSi == 'Y'?  this.passDataSectionCover.tableData[i].premAmt:this.passDataSectionCover.tableData[i].sumInsured * (this.passDataSectionCover.tableData[i].premRt /100 )
+      
     }
 
     this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
