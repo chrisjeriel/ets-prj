@@ -7,8 +7,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '@environments/environment';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
 import * as alasql from 'alasql';
-import { ConcatenateBlobs } from 'concatenateblobs';
 import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-ready-for-printing',
@@ -55,7 +55,7 @@ export class ReadyForPrintingComponent implements OnInit {
   typeOfCession: any = null;
   arrayBlob=new Array();
   finishPrint: boolean = false;
-
+  resultPrint: any [] = [];
 
   passData: any = {
     tHeader: [
@@ -173,7 +173,6 @@ export class ReadyForPrintingComponent implements OnInit {
   retrieveQuoteListingMethod(){
     this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
-            console.log(this.records);
             for(let rec of this.records){
               if(rec.status === 'Approved'){
                 this.passData.tableData.push(
@@ -209,7 +208,6 @@ export class ReadyForPrintingComponent implements OnInit {
   //Method for DB query
   searchQuery(searchParams){
         this.searchParams = searchParams;
-        console.log(this.searchParams);
         this.passData.tableData = [];
         this.btnDisabled = true;
         this.retrieveQuoteListingMethod();
@@ -338,19 +336,19 @@ export class ReadyForPrintingComponent implements OnInit {
                          this.dialogMessage = "Error generating PDF file(s)";
                          this.selectedOnOk = true;
                          $('#readyPrinting #successModalBtn').trigger('click');
-                         setTimeout(()=>{$('.globalLoading').css('display','none');},0);
         }    
      });   
   }
 
-  printPDF(reportName : string, quoteId : string){
+  printPDF(reportName : string, quoteId : string, length: any){
          this.quotationService.downloadPDF(reportName,quoteId)
          .pipe(
-           finalize(() => this.batchPrinting() )
+           finalize(() => this.batchPrinting(length) )
            )
          .subscribe( data => {
-              var newBlob = new Blob([data], { type: "application/pdf" });
+              var newBlob = new Blob([data], { type: "image/jpeg" });
               this.arrayBlob.push(newBlob);
+              this.resultPrint.push( {status: '0' , quoteId: quoteId })
              /* var downloadURL = window.URL.createObjectURL(data);
               downloadURL = downloadURL + downloadURL;
               window.open(downloadURL, '_blank').print();    */
@@ -358,17 +356,69 @@ export class ReadyForPrintingComponent implements OnInit {
         error => {
             if (this.isEmptyObject(error)) {
             } else {
-               this.dialogIcon = "error-message";
-               this.dialogMessage = "Error printing file";
-                this.selectedOnOk = true;
-               $('#readyPrinting #successModalBtn').trigger('click');
-               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+               this.resultPrint.push( {status: '1' , quoteId: quoteId })
             }          
        });
   }
 
-  batchPrinting(){
-   console.log(this.arrayBlob);
+  batchPrinting(obj){
+   if (this.resultPrint.length === obj){
+
+     var printLoaded = 0;
+     var inputCount = Number(this.arrayBlob.length);
+     var tmpResult = new Uint8Array();
+     console.log(this.arrayBlob);
+    /* for(var i=0; i < this.arrayBlob.length; i++) {
+        buffers.push(new Uint8Array()); 
+     }*/
+
+    for(var i=0; i < this.arrayBlob.length; i++) {
+
+      var fileReader = new FileReader();
+      var buffers = [];
+      fileReader.onload = (function(i,fileReader) {
+        return function(){
+          printLoaded++;
+          buffers.push(fileReader.result);
+
+          if ( printLoaded == inputCount ){
+           var byteLength = 0;
+            
+            buffers.forEach(function(buffer) { 
+                byteLength += buffer.byteLength;
+            });
+
+            for(var i=0; i < buffers.length; i++) {
+              console.log(buffers[i]);
+             /* tmpResult = appendBuffer(tmpResult, buffers[i]);*/
+            } 
+
+
+            console.log(buffers);
+
+
+
+            var newBlob = new Blob([tmpResult], { type: "application/pdf" });
+            var downloadURL = window.URL.createObjectURL(newBlob);
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = downloadURL;
+            document.body.appendChild(iframe);
+            iframe.contentWindow.print(); 
+          }
+        }
+      })(i,fileReader);
+        fileReader.readAsDataURL(this.arrayBlob[i]);
+   }
+
+}
+
+
+
+   /*if (i == length){
+       console.log(this.arrayBlob);
+       console.log(this.errorPrint);
+   }
 
 /*    var downloadURL = window.URL.createObjectURL();
     const iframe = document.createElement('iframe');
@@ -376,8 +426,9 @@ export class ReadyForPrintingComponent implements OnInit {
     iframe.src = downloadURL;
     document.body.appendChild(iframe);
     iframe.contentWindow.print();*/
+}
 
-  }
+
 
   validate(obj){
           var req = ['printerName','noOfcopies'];
@@ -402,18 +453,17 @@ export class ReadyForPrintingComponent implements OnInit {
   changeQuoteStatus() {
 
     if (this.printType == 'PRINTER'){
-
-
+        this.resultPrint = [];
+        this.arrayBlob = [];
                     for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
                       if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
                         var selectedReport = this.reportsList[0].val
-                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
+                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.saveData.changeQuoteStatus.length);
                       } else {
                         var selectedReport = this.reportsList[1].val
-                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
+                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.saveData.changeQuoteStatus.length);
                       }
                     }
-
 
                      this.searchQuery(this.searchParams);
    }
