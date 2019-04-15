@@ -215,6 +215,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     });
     this.getPolGenInfo();
     
+    setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') },1000);
   }
 
   ngOnDestroy() {
@@ -233,20 +234,20 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
       if(data.policy != null) {
         this.policyInfo = data.policy;
-        this.policyInfo.inceptDate = this.ns.toDateTimeString(this.policyInfo.inceptDate);
-        this.policyInfo.expiryDate = this.ns.toDateTimeString(this.policyInfo.expiryDate);
-        this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.policyInfo.lapseFrom);
-        this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.policyInfo.lapseTo);
-        this.policyInfo.maintenanceFrom = this.policyInfo.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.policyInfo.maintenanceFrom);
-        this.policyInfo.maintenanceTo = this.policyInfo.maintenanceTo == null ? '' : this.ns.toDateTimeString(this.policyInfo.maintenanceTo);
-        this.policyInfo.issueDate = this.ns.toDateTimeString(this.policyInfo.issueDate);
-        this.policyInfo.effDate = this.ns.toDateTimeString(this.policyInfo.effDate);
-        this.policyInfo.distDate = this.ns.toDateTimeString(this.policyInfo.distDate);
-        this.policyInfo.acctDate = this.ns.toDateTimeString(this.policyInfo.acctDate);
-        this.policyInfo.createDate = this.ns.toDateTimeString(this.policyInfo.createDate);
-        this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
-        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.policyInfo.project.createDate);
-        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
+        this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
+        this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
+        this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
+        this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseTo));
+        this.policyInfo.maintenanceFrom = this.policyInfo.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.maintenanceFrom));
+        this.policyInfo.maintenanceTo = this.policyInfo.maintenanceTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.maintenanceTo));
+        this.policyInfo.issueDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.issueDate));
+        this.policyInfo.effDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.effDate));
+        this.policyInfo.distDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.distDate));
+        this.policyInfo.acctDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.acctDate));
+        this.policyInfo.createDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.createDate));
+        this.policyInfo.updateDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.updateDate));
+        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.project.createDate));
+        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.project.updateDate));
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
@@ -492,4 +493,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.lov.openLOV();
   }
 
+  setSec(d) {
+    d = new Date(d);
+    return d.setSeconds(0);
+  }
 }

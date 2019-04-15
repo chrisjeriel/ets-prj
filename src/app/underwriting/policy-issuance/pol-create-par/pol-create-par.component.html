@@ -105,9 +105,9 @@
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Option No</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1" appRequired [(ngModel)]="optionId" [class.mg-r]="!qu || (qu && noSelected)" [readonly]="!qu || (qu && noSelected)" [class.req]="qu">
+                            <input type="text" class="form-control form-control-sm col-sm-1" appRequired [(ngModel)]="optionId" [class.mg-r]="!qu || (qu && noSelected)" [readonly]="!qu || (qu && noSelected)" [class.req]="qu" (change)="checkCode($event)" mask="999">
                             <div class="text-search-ico-inner"><a><i class="fa fa-search" (click)="showOptionLOV()" [class.d-none]="!qu || (qu && noSelected)"></i></a></div>
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 7px;" [(ngModel)]="condition" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm-2 text-right" style="margin-left: 7px;" [ngModel]="optionRt | number:'1.10-10'" readonly>
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Ceding Company</label>
@@ -121,7 +121,8 @@
                             <label class="form-control-sm col-sm-2">Risk</label>
                             <input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
                         </div>
-                        <div class="input-group ig-row">
+                        <!-- REMOVED 4/15/2019 -->
+                        <div class="input-group ig-row d-none">
                             <label class="form-control-sm col-sm-2">Inception Date</label>
                             <input type="date" class="form-control form-control-sm col-sm-3 req" [(ngModel)]="inceptionDate" (change)="updateExpiryDate();" appRequired>
                             <input type="time" class="form-control form-control-sm input-ig-row col-sm-2 req" [(ngModel)]="inceptionTime" appRequired>
