@@ -191,6 +191,8 @@ export class QuoAlopComponent implements OnInit {
            }else{
               // for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
                 for(var i = 0; i < data.quotation.optionsList.length; i++){
+                 console.log(data.quotation.optionsList[i].otherRatesList);
+                 data.quotation.optionsList[i].optionRt = data.quotation.optionsList[i].otherRatesList.find(a=>a.coverCdDesc==='Advance Loss of Profit').rate;
                  this.quoteOptionsData.tableData.push(data.quotation.optionsList[i]);
               }
               
