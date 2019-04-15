@@ -1,7 +1,7 @@
 <app-modal class="d-none" (modalOpened)="openModal()" id="lovMdl">
 	<div header>List of Values</div>
 	<div body *ngIf="modalOpen" style="position: relative;">
-		<button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="maintainDeductibles()" *ngIf="passData.selector == 'deductibles' && showButton">Maintain Deductibles</button>
+		<button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="maintainDeductibles()" *ngIf="passData.selector == 'deductibles' && showButton" appChangetheme>Maintain Deductibles</button>
 		<app-cust-non-datatable [passData]="passTable" (rowClick)="select($event)">
 		</app-cust-non-datatable>
 	</div>

@@ -9,7 +9,7 @@
 		</ngb-tab>
 		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
 			<ng-template ngbTabContent>
-				<app-pol-item></app-pol-item>
+				<app-pol-item [policyInfo]="policyInfo"></app-pol-item>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Coverage">
@@ -17,19 +17,19 @@
 				<app-pol-coverage [alteration]="false" [policyInfo]="policyInfo"></app-pol-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="ALOP">
+		<ngb-tab title="ALOP" *ngIf="policyInfo.showPolAlop">
 			<ng-template ngbTabContent>
 				<app-pol-alop [policyInfo]="policyInfo" [alterFlag]="true"></app-pol-alop>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Inward Pol Balance">
 			<ng-template ngbTabContent>
-				<app-inward-pol-balance [fromInq]="fromInq"></app-inward-pol-balance>
+				<app-inward-pol-balance [policyInfo]="policyInfo" [fromInq]="fromInq"></app-inward-pol-balance>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Endorsement">
 			<ng-template ngbTabContent>
-				<app-pol-endorsement></app-pol-endorsement>
+				<app-pol-endorsement [policyInfo]="policyInfo"></app-pol-endorsement>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="CoInsurance">
@@ -39,7 +39,7 @@
 		</ngb-tab>
 		<ngb-tab title="Attachment">
 			<ng-template ngbTabContent>
-				<app-pol-attachment [alterationFlag]="true"></app-pol-attachment>
+				<app-pol-attachment [policyInfo]="policyInfo" [alterationFlag]="true"></app-pol-attachment>
 			</ng-template>
 		</ngb-tab>
 
@@ -156,7 +156,7 @@
 												<div class="col-sm-8" style="padding:0">
 												  <div class="input-group">
 													<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
-												    <input type="text" tabindex="-1" [(ngModel)]="this.policyInfo.status" readonly id="xx" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+												    <input id="status" type="text" tabindex="-1" [(ngModel)]="status" readonly id="xx" class="form-control form-control-sm col-sm" style="margin-left: 5px">
 												  </div>
 											    </div>
 											</div>

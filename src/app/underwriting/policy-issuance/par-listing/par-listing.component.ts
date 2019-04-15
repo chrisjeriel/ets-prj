@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import * as alasql from 'alasql';
 
+
 @Component({
     selector: 'app-par-listing',
     templateUrl: './par-listing.component.html',
@@ -30,6 +31,8 @@ export class ParListingComponent implements OnInit {
     statusDesc: any;
     riskName: any;
     insuredDesc: any;
+    showPolAlop: boolean;
+    theme =  window.localStorage.getItem("selectedTheme");
 
     constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router, private ns: NotesService) { }
     passDataListing: any = {
@@ -191,7 +194,6 @@ export class ParListingComponent implements OnInit {
                }
                 this.table.forEach(table => { table.refreshTable() });
        });
-
    }
     //Method for DB query
     searchQuery(searchParams){
@@ -200,7 +202,6 @@ export class ParListingComponent implements OnInit {
         this.selectedPolicy = {};
         this.passDataListing.btnDisabled = true;
         this.retrievePolListing();
-
     }
 
     onRowDblClick(event) {
@@ -219,21 +220,23 @@ export class ParListingComponent implements OnInit {
         this.polLine = this.uwService.rowData[0].split("-")[0];
         this.policyNo = this.uwService.rowData[0];
 
+        this.uwService.getPolAlop(this.policyId, this.policyNo).subscribe((data: any) => {
 
-        if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
+            if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
-             setTimeout(() => {
-               this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
-             },100); 
-        } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
-            this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
-        }
+             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
+            } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
+                this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
+            }
+        
+        });
+        
     }
 
     onClickAdd(event){
         setTimeout(() => {
-               this.router.navigate(['/create-policy'],{ skipLocationChange: true });
+               this.router.navigate(['/create-policy'],{ skipLocationChange: false });
         },100); 
     }
 
@@ -245,13 +248,17 @@ export class ParListingComponent implements OnInit {
         this.riskName = this.selectedPolicy.riskName;
         this.insuredDesc = this.selectedPolicy.insured;
 
-        if (this.selectedPolicy.status === 'In Progress' || this.selectedPolicy.status === 'Approved') {
+        this.uwService.getPolAlop(this.policyId, this.policyNo).subscribe((data: any) => {
+            if (this.selectedPolicy.status === 'In Progress' || this.selectedPolicy.status === 'Approved') {
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
-             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
-        } else {
-             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
-        }
+             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, showPolAlop: this.showPolAlop}], { skipLocationChange: true });
+            } else {
+                 this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, showPolAlop: this.showPolAlop}], { skipLocationChange: true }); 
+            }
+
+        });
+
     }
 
     onRowClick(event){

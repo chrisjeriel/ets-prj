@@ -2,11 +2,11 @@
 	<h4 *ngIf="!inquiryFlag">Quotation / Quotation Processing {{ header }}</h4>
 	<h4 *ngIf="inquiryFlag">Quotation / Quotation Inquiry</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
-		<ngb-tabset  (tabChange)="onTabChange($event)">
+		<ngb-tabset #tabset  (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
 				<app-general-info (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"
-					(enblEndtTab)="enblEndtTab=$event"></app-general-info>
+					(enblEndtTab)="enblEndtTab=$event" (enblOptTab)="enblOptTab=$event"></app-general-info>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="idko" [disabled]="quoteInfo.quoteId == ''">
@@ -14,10 +14,10 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblEndtTab)="enblEndtTab=$event"></app-coverage>
+				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblEndtTab)="enblOptTab=$event"></app-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblEndtTab">
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblOptTab">
 			<ng-template ngbTabTitle>
 				<div>Quote Option</div>
 			</ng-template>
@@ -37,7 +37,7 @@
 		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop" [disabled]="quoteInfo.quoteId == ''">
 	<!-- 	<ngb-tab> -->
 			<ng-template ngbTabTitle>
-				<div>ALOP</div>
+				<div appChangetheme>ALOP</div>
 			</ng-template>
 			<ng-template ngbTabContent>
 				<app-quo-alop [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-quo-alop>
@@ -82,7 +82,7 @@
 							<fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
 								<div class="custom-row-inline-inset">
 									<div class="input-group" style="margin-top : 13px ! important">
-										<div class="col-sm-8" style="padding-left : 0px ! important; padding-right : 0px ! important;">
+										<div class="col-sm-7" style="padding-left : 0px ! important; padding-right : 0px ! important;">
 											<div class="input-group" style="margin-bottom : -8px ! important">
 												<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
 												<input type="text" tabindex="-1" [(ngModel)]="this.quoteInfo.statusDesc" readonly id="xx" class="form-control form-control-sm col-sm">
@@ -97,9 +97,19 @@
 													<option>CPI</option>
 													<option>PMMSC-Admin</option>
 												</select> -->
+<!-- <<<<<<< HEAD
+											<div class="col-sm-7" style="padding-left : 0px ! important; padding-right : 0px ! important;">
+												<div class="input-group" style="margin-bottom : -8px ! important">
+													<select class="form-control form-control-sm cust-sm" [(ngModel)]="approver">
+			                                        	<option *ngFor="let approver of approverList; let i = index" [value]="approver.userId" >{{ approver.userId + ' - ' + approver.userName }}</option>
+			                                    	</select>
+												</div>
+											</div>
+======= -->
 												<select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="approver" (ngModelChange)="approver = $event;validateApproval()">
 			                                        <option *ngFor="let approver of approverList; let i = index" [value]="approver.userId" >{{ approver.userId + ' - ' + approver.userName }}</option>
 			                                    </select>
+<!-- >>>>>>> dc3949c4744baa5b4cdeb823b2772b8643eb0776 -->
 												<button class="cust" (click)="approveQuotation();">{{ approveText }}</button>
 											</div>
 										</div>

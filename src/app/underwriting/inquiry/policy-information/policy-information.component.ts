@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UnderwritingService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-policy-information',
@@ -53,6 +54,7 @@ export class PolicyInformationComponent implements OnInit {
   }
   policyId:string;
   constructor(private UwService : UnderwritingService, private ns : NotesService, private route: ActivatedRoute, private router: Router) { }
+  selectedPol:any = null;
 
   ngOnInit() {
     this.route.params.subscribe(data=>{
@@ -85,8 +87,36 @@ export class PolicyInformationComponent implements OnInit {
   }
 
   goToPolicy(){
-    this.router.navigate(['/policy-issuance', {policyId:this.policyId,fromInq:true}], { skipLocationChange: true });
+    this.router.navigate(['/policy-issuance', {policyId:this.selectedPol.policyId,
+                                              fromInq:true,
+                                              policyNo: this.selectedPol.policyNo,
+                                              line: this.policyInfo.lineCd,
+                                              statusDesc:this.policyInfo.statusDesc,
+                                              riskName: this.policyInfo.project.riskName,
+                                              insured: this.selectedPol.insured,
+                                              editPol: true
+                                              }], { skipLocationChange: true });
+
+
+   // line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
   }
   
+  rowLick(data){
+    console.log(data)
+    this.selectedPol = data;
+
+  }
+
+  onTabChange($event:NgbTabChangeEvent) {
+     // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+     //     $event.preventDefault();
+   //   }                     
+   console.log($event)
+      if ($event.nextId === 'Exit') {
+        $event.preventDefault();
+        this.router.navigateByUrl('/policy-inquiry');
+   }
+ }
+
 
 }

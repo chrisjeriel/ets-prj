@@ -27,3 +27,7 @@ fieldset{
 .ig-cust {
 	margin-bottom: -7px !important;
 }
+
+.white-bg {
+	background: white !important;
+}

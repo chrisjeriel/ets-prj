@@ -44,6 +44,7 @@ export class QuotationService {
     }*/
 
     savingType: string = 'normal';
+    currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
 
     constructor(private http: HttpClient) {
 
@@ -200,7 +201,7 @@ export class QuotationService {
     getSelectedQuotationHoldCoverInfo(quotationNo) {
         const params = new HttpParams()
              .set('quotationNo',quotationNo)
-             .set('status','I')
+             .set('status','')
              .set('cedingName','')
              .set('holdCoverNo','')
              .set('riskName','')
@@ -952,7 +953,8 @@ export class QuotationService {
     downloadPDF(reportName : string, quoteId : string){
          const params = new HttpParams()
              .set('reportName', reportName)
-             .set('quoteId', quoteId);
+             .set('quoteId', quoteId)
+             .set('userId', this.currentUserId);
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
@@ -960,7 +962,8 @@ export class QuotationService {
          const params = new HttpParams()
              .set('reportName', 'QUOTER007')
              .set('adviceNo', adviceNo)
-             .set('quoteId', quoteId);
+             .set('quoteId', quoteId)
+             .set('userId', this.currentUserId);
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
@@ -968,7 +971,8 @@ export class QuotationService {
          const params = new HttpParams()
              .set('reportName', reportName)
              .set('quoteId', quoteId)
-             .set('holdCovId', holdCoverId);
+             .set('holdCovId', holdCoverId)
+             .set('userId', this.currentUserId);
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 

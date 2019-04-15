@@ -4,15 +4,15 @@
 		<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
 			<label class="col-sm-1"></label>
 			<label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-			<input type="text" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2" placeholder=""
+			<input type="text" [value]="policyInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-2" placeholder=""
 			 readonly>
 			<label class="form-control-sm col-sm-1" for="xx">Insured</label>
-			<input type="text" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+			<input type="text" [value]="policyInfo.insured" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
 		</div>
 		<div class="input-group" style="margin-bottom: -13px !important;">
 			<label class="col-sm-1"></label>
 			<label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-			<input type="text" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder="" readonly>
+			<input type="text" [value]="policyInfo.riskName" class="form-control form-control-sm cust-sm col-sm-8" placeholder="" readonly>
 		</div>
 	</div>
 </fieldset>
@@ -37,7 +37,7 @@
 	<div class="row" style="margin-bottom: 5px;">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-8">
-			<app-cust-editable-non-datatable #instllmentTable [passData]="passData" (newClick)="updateOtherCharges($event)" (tableDataChange)="compute()">
+			<app-cust-editable-non-datatable #instllmentTable [passData]="passData" (newClick)="updateOtherCharges($event)" (tableDataChange)="compute()" (onDelete)="delInst()">
 			</app-cust-editable-non-datatable>
 		</div>
 		<div class="col-sm-2"></div>
@@ -49,13 +49,13 @@
 	<div class="row" style="margin-bottom: 5px;">
 		<div class="col-sm-3"></div>
 		<div class="col-sm-6">
-			<app-cust-editable-non-datatable #otherTable [passData]="passData2" (clickLOV)="clickLOV($event)" (tableDataChange)="compute()">
+			<app-cust-editable-non-datatable #otherTable [passData]="passData2" (clickLOV)="clickLOV($event)" (tableDataChange)="compute();instllmentTable.indvSelect.otherCharges=$event" (onDelete)="delOth()">
 			</app-cust-editable-non-datatable>
 		</div>
 		<div class="col-sm-3"></div>
 	</div>
 </fieldset>
-<div class="form-row">
+<div class="form-row" *ngIf="policyInfo.fromInq!='true'">
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container">

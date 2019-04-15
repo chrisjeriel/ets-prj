@@ -50,6 +50,9 @@
     </ngb-tabset>
 </div>
 <br>
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
+</div>
 <div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
@@ -60,21 +63,21 @@
                     <div class="input-group">
                         <div class="input-group ig-row">
                             <div class="col-sm text-center">
-                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="qu" (click)="toggle('qu')">
+                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="qu" (change)="toggle('qu')">
                                     <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Quotation</label>
-                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="hc" (click)="toggle('hc')" style="margin-left: 14px;">
+                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="hc" (change)="toggle('hc')" style="margin-left: 14px;">
                                     <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Hold Cover</label>
-                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="oc" (click)="toggle('oc')" style="margin-left: 14px;">
+                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="oc" (change)="toggle('oc')" style="margin-left: 14px;">
                                     <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Open Cover</label>
                             </div>
                         </div>
                         <div class="input-group ig-row" *ngIf="qu">
                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                            <input type="text" [ngModel]="quNo[0]" (ngModelChange)="quNo[0]=$event.toUpperCase()" class="form-control form-control-sm col-sm-2" ngbTooltip="Line" (change)="getCutOffTime($event)" appRequired>
-                            <input type="text" [(ngModel)]="quNo[1]" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" appRequired>
-                            <input type="text" [(ngModel)]="quNo[2]" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" appRequired>
-                            <input type="text" [(ngModel)]="quNo[3]" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" appRequired>
-                            <input type="text" [(ngModel)]="quNo[4]" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" appRequired>
+                            <input type="text" [ngModel]="quNo[0]" (ngModelChange)="quNo[0]=$event.toUpperCase()" class="form-control form-control-sm col-sm-2 req" ngbTooltip="Line" (change)="getCutOffTime($event); search('lineCd',$event)" mask="SSS" appRequired>
+                            <input type="text" [(ngModel)]="quNo[1]" (change)="search('year',$event)" class="form-control form-control-sm input-ig-row cap-input col-sm req" ngbTooltip="Year" mask="9999" appRequired>
+                            <input type="text" [(ngModel)]="quNo[2]" (change)="search('seqNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Sequence No" mask="99999" appRequired>
+                            <input type="text" [(ngModel)]="quNo[3]" (change)="search('revNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Revision No" mask="99" appRequired>
+                            <input type="text" [(ngModel)]="quNo[4]" (change)="search('cedingId',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Company No" mask="999" appRequired>
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV()"></i></a></div>
                         </div>
@@ -85,30 +88,30 @@
                             <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Sequence No"  appRequired[disabled]="fromQuotation">
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-                            <input type="text" [ngModel]="hcNo[0]" (ngModelChange)="hcNo[0]=$event.toUpperCase()" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" (change)="getCutOffTime($event)" appRequired>
-                            <input type="text" [(ngModel)]="hcNo[1]" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" appRequired>
-                            <input type="text" [(ngModel)]="hcNo[2]" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" appRequired>
-                            <input type="text" [(ngModel)]="hcNo[3]" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" appRequired>
-                            <input type="text" [(ngModel)]="hcNo[4]" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" appRequired>
+                            <input type="text" [ngModel]="hcNo[0]" (ngModelChange)="hcNo[0]=$event.toUpperCase()" class="form-control form-control-sm cap-input col-sm-2 req" (change)="search('hc',$event)" appRequired>
+                            <input type="text" [ngModel]="hcNo[1]" (ngModelChange)="hcNo[1]=$event.toUpperCase()" (change)="getCutOffTime($event); search('lineCd',$event)" class="form-control form-control-sm input-ig-row cap-input col-sm req" ngbTooltip="Line" appRequired>
+                            <input type="text" [(ngModel)]="hcNo[2]" (change)="search('year',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Year" appRequired>
+                            <input type="text" [(ngModel)]="hcNo[3]" (change)="search('seqNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Sequence No" appRequired>
+                            <input type="text" [(ngModel)]="hcNo[4]" (change)="search('revNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Revision No" appRequired>
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
                         </div>
                         <div class="input-group ig-row" *ngIf="oc">
                             <label class="form-control-sm col-sm-2">Open Cover Policy No</label>
-                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm cap-input col-sm-2" appRequired>
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Line" (change)="getCutOffTime($event)" appRequired>
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Year" appRequired>
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" appRequired>
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" appRequired>
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Co Series No" appRequired>
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Alt No" appRequired>
+                            <input type="text" [ngModel]="ocNo[0]" (ngModelChange)="ocNo[0]=$event.toUpperCase()" (change)="search('oc',$event)" class="form-control form-control-sm cap-input col-sm-2 req" appRequired>
+                            <input type="text" [ngModel]="ocNo[1]" (ngModelChange)="ocNo[1]=$event.toUpperCase()" class="form-control form-control-sm input-ig-row cap-input col-sm req" ngbTooltip="Line" (change)="getCutOffTime($event); search('lineCd',$event)" appRequired>
+                            <input type="text" [(ngModel)]="ocNo[2]" (change)="search('year',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Year" appRequired>
+                            <input type="text" [(ngModel)]="ocNo[3]" (change)="search('seqNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Sequence No" appRequired>
+                            <input type="text" [(ngModel)]="ocNo[4]" (change)="search('cedingId',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Company No" appRequired>
+                            <input type="text" [(ngModel)]="ocNo[5]" (change)="search('coSeriesNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Co Series No" appRequired>
+                            <input type="text" [(ngModel)]="ocNo[6]" (change)="search('altNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Alt No" appRequired>
                             <span>&nbsp;</span>
-                            <div class="text-search-ico"><a><i class="fa fa-search" (click)="getPolOCListing();"></i></a></div>
+                            <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Option No</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1" appRequired [(ngModel)]="optionId" [class.mg-r]="!qu" [readonly]="!qu">
-                            <div class="text-search-ico-inner"><a><i class="fa fa-search" (click)="showOptionLOV()" [class.d-none]="!qu"></i></a></div>
+                            <input type="text" class="form-control form-control-sm col-sm-1" appRequired [(ngModel)]="optionId" [class.mg-r]="!qu || (qu && noSelected)" [readonly]="!qu || (qu && noSelected)" [class.req]="qu">
+                            <div class="text-search-ico-inner"><a><i class="fa fa-search" (click)="showOptionLOV()" [class.d-none]="!qu || (qu && noSelected)"></i></a></div>
                             <input type="text" class="form-control form-control-sm" style="margin-left: 7px;" [(ngModel)]="condition" readonly>
                         </div>
                         <div class="input-group ig-row">
@@ -125,11 +128,11 @@
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Inception Date</label>
-                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="inceptionDate" (change)="updateExpiryDate();" appRequired>
-                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="inceptionTime" appRequired>
+                            <input type="date" class="form-control form-control-sm col-sm-3 req" [(ngModel)]="inceptionDate" (change)="updateExpiryDate();" appRequired>
+                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2 req" [(ngModel)]="inceptionTime" appRequired>
                             <label class="form-control-sm col-sm-1" style="margin-left: 25px !important;">Expiry Date</label>
-                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="expiryDate" min="{{ inceptionDate }}" appRequired>
-                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="expiryTime" min="{{ inceptionTime }}" appRequired>
+                            <input type="date" class="form-control form-control-sm col-sm-3 req" [(ngModel)]="expiryDate" min="{{ inceptionDate }}" appRequired>
+                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2 req" [(ngModel)]="expiryTime" min="{{ inceptionTime }}" appRequired>
                         </div>
                     </div>
                 </div>
@@ -143,7 +146,7 @@
         <div class="col-md-13 text-center">
             <div class="cust-btn-container" style="margin-top:10px">
                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" (click)="prepareParams()" class="cust-btn"><a>Convert</a></button>
+                <button type="button" (click)="onClickConvert()" class="cust-btn"><a>Convert</a></button>                
             </div>
         </div>
     </div>
@@ -153,14 +156,12 @@
     <div header>List Of Values</div>
     <div body>
        <!-- <app-cust-non-datatable [passData]="passDataLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable> -->
-       <app-cust-non-datatable [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);"></app-cust-non-datatable>
+       <app-cust-non-datatable [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
     </div>
     <div footer class="text-center w-100">
         <div class="col-sm-12 text-center">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button *ngIf="qu" class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails('qu');"><a>Ok</a></button>
-        <button *ngIf="hc" class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails('hc');"><a>Ok</a></button>
-        <button *ngIf="oc" class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails('oc');"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails();"><a>Ok</a></button>        
         </div>
     </div>
 </app-modal>
@@ -186,14 +187,14 @@
             <div class="custom-row-inline-inset" style="text-align: center">
                 <p *ngIf="qu" class="mg-b">Quotation No. <strong>{{ quNo.join('-') }}</strong></p>
                 <p *ngIf="hc" class="mg-b">Hold Cover No. <strong>{{ hcNo.join('-') }}</strong></p>
-                <p *ngIf="oc" class="mg-b">Open Cover Policy No. <strong>{{ 'OC-CAR-2019-00001-028-0001-000' }}</strong></p>
-                <p>was successfully converted to Policy No.</p>                
+                <p *ngIf="oc" class="mg-b">Open Cover Policy No. <strong>{{ ocNo.join('-') }}</strong></p>
+                <p>was successfully converted to Policy No.</p>
                 <p><strong>{{ policyNo }}</strong></p>
             </div>
         </fieldset>
     </div>
     <div footer class="w-100 text-center">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); toPolGenInfo();"><a>Ok</a></button>
     </div>
 </app-modal>
 

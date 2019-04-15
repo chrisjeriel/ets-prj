@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { PolItem_MLP, PolItem_EEI_MBI_CEC, PolItem_BPV, PolGoods_DOS, PolMachinery_DOS, PolItem_CEC } from '@app/_models';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -45,6 +45,7 @@ export class PolItemComponent implements OnInit {
     nData_EEI_MBI_CEC: PolItem_EEI_MBI_CEC = new PolItem_EEI_MBI_CEC(null, null, null, null, null, null);
     nData_BPV: PolItem_BPV = new PolItem_BPV(null, null, null, null, null);
 
+    @Input() policyInfo: any;
 
 
     eeiPassData:any={
@@ -243,12 +244,14 @@ export class PolItemComponent implements OnInit {
             this.line = params['line'];
         });
 
+        console.log("policyInfo: " + JSON.stringify(this.policyInfo));
+
         this.getItem();
     }
 
     getItem(){
         
-        this.underwritingService.getItemInfoData(null,this.policyId).subscribe((data:any) => {
+        this.underwritingService.getItemInfoData(null,this.policyInfo.policyId).subscribe((data:any) => {
             console.log(data)
             if(this.line == 'EEI' || this.line == 'MBI'){
                 this.eeiPassData.tableData = [];

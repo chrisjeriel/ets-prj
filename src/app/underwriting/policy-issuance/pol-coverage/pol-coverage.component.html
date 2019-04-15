@@ -10,7 +10,7 @@
       <input type="text" id="xx" [(ngModel)]="policyInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-2"
       placeholder="" readonly>
       <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-      <input type="text" id="xx" [(ngModel)]="policyInfo.riskName" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+      <input type="text" id="xx" [(ngModel)]="policyInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
       readonly>
     </div>
     <div class="input-group" style="margin-bottom: -13px !important;">
@@ -83,7 +83,7 @@
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Value</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.totalValue"  style="text-align: right !important" (ngModelChange)="coverageData.totalValue = $event" (blur)="coverageData.pctShare = (coverageData.totalSi/coverageData.totalValue*100); " appRequired appCurrency>
+       <input type="text" mask="comma_separator.2" class="form-control form-control-sm req" [ngModel]="coverageData?.totalValue"  style="text-align: right !important" (ngModelChange)="coverageData.totalValue = $event" (blur)="coverageData.pctShare = (coverageData.totalSi/coverageData.totalValue*100); " appRequired>
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -240,7 +240,7 @@
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm req" appCurrency appRequired [ngModel] = "altCoverageData.totalValue"  (ngModelChange) = "altCoverageData.totalValue = $event" (blur)="altCoverageData.pctShare = (comtotalSi/altCoverageData.totalValue)*100">
+       <input type="text" mask="comma_separator.2" class="form-control form-control-sm req" appCurrency appRequired [ngModel] = "altCoverageData.totalValue | number:'1.2-2'"  (ngModelChange) = "altCoverageData.totalValue">
        <span class="col-sm-1"></span>
      </div>
    </div>

@@ -22,6 +22,7 @@ export class InwardPolBalanceComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
   @Input()fromInq: boolean = false;
+  @Input() policyInfo: any;
 
   passData: any = {
     tableData: [],
@@ -48,7 +49,7 @@ export class InwardPolBalanceComponent implements OnInit {
     widths: ["1", "1", "1", "auto", "auto", "auto"],
     pageID:'installment',
     pageLength: 5,
-    checkFlag: true
+    checkFlag: false
   };
 
   passData2: any = {
@@ -74,14 +75,13 @@ export class InwardPolBalanceComponent implements OnInit {
       updateDate: this.ns.toDateTimeString(0),
       showMG :1
     },
-    checkFlag: true
+    checkFlag: false
   };
 
   passLOVData:any = {
     selector: 'otherCharges',
 
   }
-  policyId = 8;
   dialogIcon:string;
 
   totalPrem: string = "";
@@ -96,13 +96,15 @@ export class InwardPolBalanceComponent implements OnInit {
    
     this.titleService.setTitle("Pol | Inward Pol Balance");
     this.fetchData();
-    if(this.fromInq){
+    if(this.policyInfo.fromInq){
       this.passData.addFlag=false;
       this.passData.deleteFlag=false;
       this.passData2.addFlag=false;
       this.passData2.deleteFlag=false;
       this.passData.uneditable = [];
       this.passData2.uneditable = [];
+      this.passData2.checkFlag= false;
+      this.passData.checkFlag= false;
       for(let key of this.passData.keys)
         this.passData.uneditable.push(true);
       for(let key of this.passData2.keys)
@@ -111,7 +113,8 @@ export class InwardPolBalanceComponent implements OnInit {
   }
 
   fetchData(){
-    this.underwritingservice.getInwardPolBalance(this.policyId).subscribe((data:any)=>{
+    console.log(this.policyInfo.policyId)
+    this.underwritingservice.getInwardPolBalance(this.policyInfo.policyId).subscribe((data:any)=>{
       this.currency = data.policyList[0].project.coverage.currencyCd;
       this.totalPrem = data.policyList[0].project.coverage.totalPrem;
       if(data.policyList[0].inwPolBalance.length !=0){
@@ -121,28 +124,11 @@ export class InwardPolBalanceComponent implements OnInit {
           a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
           return true;
         });
-        
-      }else{
-        this.passData.tableData.push(
-          {
-            "instNo": 1,
-            "bookingDate": this.ns.toDateTimeString(data.policyList[0].issueDate),
-            "dueDate": this.ns.toDateTimeString(data.policyList[0].inceptDate),
-            "premAmt": this.totalPrem,
-            "otherChargesInw": 0,
-            "amtDue": this.totalPrem,
-            "createUser": JSON.parse(window.localStorage.currentUser).username,
-            "createDate": this.ns.toDateTimeString(0),
-            "updateUser": JSON.parse(window.localStorage.currentUser).username,
-            "updateDate": this.ns.toDateTimeString(0),
-            otherCharges:[],
-            edited: true
-          }
-        );
-        this.instllmentTable.markAsDirty();
+
+        this.passData.nData.dueDate = this.ns.toDateTimeString(data.policyList[0].inceptDate);
+        this.passData.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate); 
       }
       this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
-      this.compute();
       this.instllmentTable.refreshTable();
     })
   }
@@ -183,16 +169,16 @@ export class InwardPolBalanceComponent implements OnInit {
   compute(){
     for(let rec of this.passData.tableData){
       if(rec.otherCharges.length != 0)
-        rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr);
+        rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr,0);
       rec.amtDue = rec.premAmt + rec.otherChargesInw;
     }
-
+    this.instllmentTable.refreshTable();
   }
 
   save(can?){
     this.cancelFlag = can !== undefined;
     let params:any = {
-      policyId:this.policyId,
+      policyId:this.policyInfo.policyId,
       savePolInward : [],
       delPolInward : [],
       saveOtherCharges : [],
@@ -211,15 +197,26 @@ export class InwardPolBalanceComponent implements OnInit {
         params.delPolInward.push(inst);
       }
       if(!inst.deleted && inst.instNo!==null ){
+        let instFlag: boolean = false;
         for(let chrg of inst.otherCharges){
           if(chrg.edited && !chrg.deleted ){
             chrg.createDate     = this.ns.toDateTimeString(chrg.createDate);
             chrg.updateDate = this.ns.toDateTimeString(chrg.updateDate);
             chrg.updateUser = JSON.parse(window.localStorage.currentUser).username;
             params.saveOtherCharges.push(chrg);
+            instFlag = true;
           }else if(chrg.deleted){
             params.delOtherCharges.push(chrg);
+            instFlag = true;
           }
+        }
+        if(instFlag){
+          inst.dueDate     = this.ns.toDateTimeString(inst.dueDate);
+          inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
+          inst.createDate     = this.ns.toDateTimeString(inst.createDate);
+          inst.updateDate = this.ns.toDateTimeString(inst.updateDate);
+          inst.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          params.savePolInward.push(inst);
         }
       }
       if(inst.instNo==null){
@@ -247,17 +244,57 @@ export class InwardPolBalanceComponent implements OnInit {
   }
 
   onClickSave(){
-    if(this.instllmentTable.getSum('premAmt') === this.totalPrem)
+    if(this.instllmentTable.getSum('premAmt') == this.totalPrem)
       this.confirmSave.confirmModal();
     else{
       this.dialogIcon = 'error-message';
-      this.dialogMsg = 'Total Premium does not match.';
+      this.dialogMsg = 'Total Premium must be equal to the sum of premium per installment.';
       this.successDiag.open();
     }
   }
 
   onClickCancel(){
     this.cancel.clickCancel();
+  }
+
+  delInst(){
+    if(this.passData.tableData.filter(a=>!a.deleted).length == 1){
+      this.dialogIcon = 'error-message';
+      this.dialogMsg = 'A policy must have one or more installments.';
+      this.successDiag.open();
+      return null;
+    }
+
+    if(this.passData.tableData[this.passData.tableData.length -1 ].add){
+      this.passData.tableData.pop();
+    }else{
+      this.passData.tableData.forEach(a=>{
+        if(a==this.instllmentTable.displayData[this.instllmentTable.displayData.filter(a=>a!=this.instllmentTable.fillData).length -1 ]){
+          a.deleted = true;
+          a.edited = true;
+        }
+      })
+    }
+    this.instllmentTable.markAsDirty();
+    this.instllmentTable.refreshTable();
+  }
+
+  delOth(){
+    if(this.passData2.tableData[this.passData2.tableData.length -1 ].add){
+      this.passData2.tableData.pop();
+    }else{
+      this.passData2.tableData.forEach(a=>{
+        if(a==this.otherTable.displayData[this.otherTable.displayData.filter(a=>a!=this.otherTable.fillData).length -1 ]){
+          a.deleted = true;
+          a.edited = true;
+        }
+      })
+    }
+    this.instllmentTable.indvSelect.otherCharges = this.passData2.tableData;
+    console.log(this.passData2.tableData)
+    this.otherTable.markAsDirty();
+    this.otherTable.refreshTable();
+    this.compute();
   }
 
 

@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 export class PolicyToHoldCoverComponent implements OnInit {
 
 	private policyHoldCoverInfo: PolicyHoldCoverInfo;
+	private userName: string = JSON.parse(window.localStorage.currentUser).username;
 
 	@ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -66,6 +67,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	holdCoverNo: string = '';
 	statusDesc: string = '';
 	modalOpen: boolean = false;
+	isType: boolean = false;
+	isIncomplete: boolean = true;
+	noDataFound: boolean = false;
+	isForViewing: boolean = false;
 
 	selectedPolicy: any;
 	emptySelect: boolean = false;
@@ -75,7 +80,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		policyNo: '',
 		cedingName: '',
 		insuredDesc: '',
-		riskName: ''
+		riskName: '',
+		totalSi: 0
 	}
 
 	dialogIcon: string = '';
@@ -83,6 +89,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	cancelFlag: boolean = false;
 
 	authorization: string = 'UNAUTHORIZED';
+
+	tempPolNo: string[] = ['','','','','',''];
 
 	ngOnInit() {
 		//set default report type for Hold Cover Letter
@@ -105,7 +113,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.us.retrievePolHoldCover(policyId, '').subscribe((data: any)=>{
 			console.log(data);
 			for(let rec of data.policy.holdCoverList){
-				if(rec.status !== 'X'){
+				if(rec.status !== '6' || rec.status !== '5'){
 					this.polHoldCoverParams.policyId				= rec.policyId;
 					this.polHoldCoverParams.holdCovId				= rec.holdCovId;
 					this.polHoldCoverParams.lineCd					= rec.lineCd;
@@ -134,16 +142,29 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			this.periodToDate.date 							= this.polHoldCoverParams.periodTo.split('T')[0];
 			this.periodToDate.time 							= this.polHoldCoverParams.periodTo.split('T')[1];
 			console.log(this.polHoldCoverParams);
+			this.isIncomplete = false;
+			this.isForViewing = false;
+			if(this.polHoldCoverParams.status === '2'){
+				$('#modificationModal > #modalBtn').trigger('click');
+			}
 		});
 	}
 
 	retrievePolListing(){
+		/*this.tempPolNo[1] = this.tempPolNo[1] === '' ? ' ' : this.tempPolNo[1];
+		this.tempPolNo[2] = this.tempPolNo[2] === '' ? ' ' : this.tempPolNo[2];
+		this.tempPolNo[3] = this.tempPolNo[3] === '' ? ' ' : this.tempPolNo[3];
+		this.tempPolNo[4] = this.tempPolNo[4] === '' ? ' ' : this.tempPolNo[4];
+		this.tempPolNo[5] = this.tempPolNo[5] === '' ? ' ' : this.tempPolNo[5];*/
 		this.table.loadingFlag = true;
 		this.policyListingData.tableData = [];
+		console.log(this.tempPolNo.join().replace(/,/g, '%-%'));
+		console.log(this.noDataFound);
 		setTimeout(()=>{
-			this.us.getParListing([{key: '', search: ''}]).subscribe((data: any) =>{
+			this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join().replace(/,/g, '%')}]).subscribe((data: any) =>{
 				console.log(data);
 				if(data.policyList.length !== 0){
+					this.noDataFound = false;
 					for(var rec of data.policyList){
 						this.policyListingData.tableData.push({
 							policyId: rec.policyId,
@@ -151,12 +172,38 @@ export class PolicyToHoldCoverComponent implements OnInit {
 							cedingName: rec.cedingName,
 							insuredDesc: rec.insuredDesc,
 							riskName: rec.project.riskName,
-							statusDesc: rec.statusDesc
+							statusDesc: rec.statusDesc,
+							totalSi: rec.project.coverage.totalSi
 						});
 					}
 					this.policyListingData.tableData = this.policyListingData.tableData.filter(a=> {return a.statusDesc === 'Expired' || a.statusDesc === 'On Hold Cover'});
-					this.table.refreshTable();
+					if(this.isType && !this.isIncomplete){
+						this.isIncomplete = false;
+						this.policyInfo 					= this.policyListingData.tableData[0];
+						this.polHoldCoverParams.policyId 	= this.policyInfo.policyId;
+						this.polHoldCoverParams.lineCd 		= this.policyInfo.policyNo.split('-')[0];
+						this.tempPolNo						= this.policyInfo.policyNo.split('-');
+						//if selected policy is already in hold cover
+						if(this.policyInfo.statusDesc === 'On Hold Cover'){
+							this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo);
+						}
+					}
+				}else{
+					this.noDataFound = true;
+					this.policyListingData.tableData = [];
+					if(this.isType){
+						this.clearHcFields();
+						this.policyInfo.cedingName = '';
+						this.policyInfo.insuredDesc = '';
+						this.policyInfo.riskName = '';
+						this.policyInfo.statusDesc = '';
+						//this.tempPolNoContainer = ['','','','','',''];
+						setTimeout(()=>{
+							this.openModal();
+						}, 100);
+					}
 				}
+				this.table.refreshTable();
 				this.modalOpen = true;
 				this.table.loadingFlag = false;
 			});
@@ -170,31 +217,38 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		console.log(this.polHoldCoverParams);
 		this.us.savePolHoldCover(this.polHoldCoverParams).subscribe((data: any)=>{
 			console.log(data);
-			this.holdCoverNo = data.polHoldCoverNo;
-			this.polHoldCoverParams.holdCovId = data.polHoldCoverId;
-			//get seq and rev no
-			let generatedNum: string[] = data.polHoldCoverNo.split('-');
-			this.polHoldCoverParams.holdCovSeqNo = parseInt(generatedNum[3]).toString();
-			this.polHoldCoverParams.holdCovRevNo = parseInt(generatedNum[4]).toString();
-			this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo);
-			this.dialogIcon = '';
-			this.dialogMessage = '';
-			$('app-sucess-dialog #modalBtn').trigger('click');
-			this.form.control.markAsPristine();
+			if(data.returnCode === 0){
+				this.dialogIcon = 'error';
+				this.dialogMessage = 'An error has occured.';
+				$('app-sucess-dialog #modalBtn').trigger('click');
+			}else{
+				this.holdCoverNo = data.polHoldCoverNo;
+				this.polHoldCoverParams.holdCovId = data.polHoldCoverId;
+				//get seq and rev no
+				let generatedNum: string[] = data.polHoldCoverNo.split('-');
+				this.polHoldCoverParams.holdCovSeqNo = parseInt(generatedNum[3]).toString();
+				this.polHoldCoverParams.holdCovRevNo = parseInt(generatedNum[4]).toString();
+				this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo);
+				this.dialogIcon = '';
+				this.dialogMessage = '';
+				$('app-sucess-dialog #modalBtn').trigger('click');
+				this.form.control.markAsPristine();
+			}
 		});
 	}
 
 	prepareParams(){
 		this.polHoldCoverParams.periodFrom = this.periodFromDate.date + 'T' + this.periodFromDate.time;
 		this.polHoldCoverParams.periodTo = this.periodToDate.date + 'T' + this.periodToDate.time;
-		this.polHoldCoverParams.preparedBy = JSON.parse(window.localStorage.currentUser).username;
-		this.polHoldCoverParams.createUser = JSON.parse(window.localStorage.currentUser).username;
-		this.polHoldCoverParams.updateUser = JSON.parse(window.localStorage.currentUser).username;
+		this.polHoldCoverParams.preparedBy = this.userName;
+		this.polHoldCoverParams.createUser = this.userName;
+		this.polHoldCoverParams.updateUser = this.userName;
 		this.polHoldCoverParams.createDate = this.noteService.toDateTimeString(0);
 		this.polHoldCoverParams.updateDate = this.noteService.toDateTimeString(0);
 	}
 
 	onRowClick(data){
+		console.log(data);
 		this.selectedPolicy = data;
 		this.selectedPolicy = this.selectedPolicy === null ? {} : this.selectedPolicy;
 		if(Object.keys(this.selectedPolicy).length === 0){
@@ -205,13 +259,17 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	}
 
 	openModal(){
+		this.isType = false;
+		//this.tempPolNo[0] = this.tempPolNo[0].length === 0 ? ' '
 		$('#lovMdl #modalBtn').trigger('click');
 		this.selectedPolicy = null;
 		console.log("openModal");
-		//this.retrievePolListing();
+		this.retrievePolListing();
 	}
 
 	selectPol(){
+		this.isIncomplete = false;
+		this.noDataFound = false;
 		console.log(this.selectedPolicy);
 		this.policyInfo = this.selectedPolicy;
 		this.modalService.dismissAll();
@@ -235,7 +293,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		let params = {
 			policyId: this.policyInfo.policyId,
 			holdCovId: this.polHoldCoverParams.holdCovId,
-			updateUser: JSON.parse(window.localStorage.currentUser).username,
+			updateUser: this.userName,
 			updateDate: this.noteService.toDateTimeString(0)
 		}
 
@@ -305,6 +363,79 @@ export class PolicyToHoldCoverComponent implements OnInit {
   			this.statusDesc = 'Pending Approval';
   		}else if(this.authorization === 'AUTHORIZED'){
   			this.statusDesc = 'Approved';
+  			this.polHoldCoverParams.approvedBy = this.userName;
+  		}
+  	}
+
+  	policySearchParams(data:string, key:string){
+  		this.isType = true;
+
+  		if(data.length === 0){
+  			this.isIncomplete = true;
+  			this.clearHcFields();
+			this.policyInfo.cedingName = '';
+			this.policyInfo.insuredDesc = '';
+			this.policyInfo.riskName = '';
+			this.policyInfo.statusDesc = '';
+			this.policyInfo.policyId = '';
+  			console.log('not filled');
+  		}
+
+  		if(key === 'lineCd'){
+  			this.tempPolNo[0] = data.toUpperCase();
+  		}else if(key === 'year'){
+  			this.tempPolNo[1] = data;
+  		}else if(key === 'seqNo'){
+  			this.tempPolNo[2] = data;
+  		}else if(key === 'cedingId'){
+  			this.tempPolNo[3] = data;
+  		}else if(key === 'coSeriesNo'){
+  			this.tempPolNo[4] = data;
+  		}else if(key === 'altNo'){
+  			this.tempPolNo[5] = data;
+  		}
+  	}
+
+  	checkPolParams(){
+  		if(this.isIncomplete){
+  			console.log(this.tempPolNo);
+	  		if(this.tempPolNo[0].length !== 0 &&
+	  		   this.tempPolNo[1].length !== 0 &&
+	  		   this.tempPolNo[2].length !== 0 &&
+	  		   this.tempPolNo[3].length !== 0 &&
+	  		   this.tempPolNo[4].length !== 0 &&
+	  		   this.tempPolNo[5].length !== 0){
+	  			console.log('filled');
+	  			this.isIncomplete = false;
+	  			this.retrievePolListing();
+	  		}else{
+	  			this.isIncomplete = true;
+	  			this.clearHcFields();
+				this.policyInfo.cedingName = '';
+				this.policyInfo.insuredDesc = '';
+				this.policyInfo.riskName = '';
+				this.policyInfo.statusDesc = '';
+	  			console.log('not filled');
+	  		}
+  		}
+  	}
+
+  	modificationOption(option: string){
+  		if(option === 'cancel'){
+  			this.isIncomplete = true;
+  			this.clearHcFields();
+			this.policyInfo.cedingName = '';
+			this.policyInfo.insuredDesc = '';
+			this.policyInfo.riskName = '';
+			this.policyInfo.statusDesc = '';
+			this.policyInfo.policyId = '';
+			this.policyInfo.policyNo = '';
+			this.tempPolNo = ['', '', '', '', '', ''];
+
+  		}else if(option === 'view'){
+  			this.isForViewing = true;
+  		}else if(option === 'mod'){
+  			this.isForViewing = false;
   		}
   	}
 

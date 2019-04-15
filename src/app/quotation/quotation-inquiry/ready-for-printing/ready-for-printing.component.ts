@@ -42,18 +42,24 @@ export class ReadyForPrintingComponent implements OnInit {
         statusCd: "3",
         reasonCd: ""
     };
+  line: any = null;    
+  quotationNo: any = null;
+  typeOfCession: any = null;
+
+
+
   passData: any = {
     tHeader: [
-      "Quotation No", "Approved By", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Currency", "Quote Date", "Valid Until", "Requested By"
+      "Quotation No", "Approved By", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Currency", "Quote Date", "Valid Until", "Requested By","Created By"
     ],
     resizable: [
-      true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true
+      true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,true
     ],
     dataTypes: [
-      "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "date", "text"
+      "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "date", "text","text"
     ],
     filters: [
-        {
+                {
             key: 'quotationNo',
             title: 'Quotation No.',
             dataType: 'text'
@@ -109,19 +115,12 @@ export class ReadyForPrintingComponent implements OnInit {
             dataType: 'text'
         },
         {
-            key: 'policyNo',
-            title: 'Policy No.',
-            dataType: 'text'
-        },
-        {
-            key: 'currencyCd',
-            title: 'Currency',
-            dataType: 'text'
-        },
-        {
-            key: 'issueDate',
+            keys: {
+                    from: 'issueDateFrom',
+                    to: 'issueDateTo'
+                },
             title: 'Quote Date',
-            dataType: 'date'
+            dataType: 'datespan'
         },
         {
             key: 'expiryDate',
@@ -133,7 +132,7 @@ export class ReadyForPrintingComponent implements OnInit {
             title: 'Requested By',
             dataType: 'text'
         },
-        {
+       {
             key: 'createUser',
             title: 'Created By',
             dataType: 'text'
@@ -145,11 +144,13 @@ export class ReadyForPrintingComponent implements OnInit {
     checkFlag: true,
     pagination: true,
     pageStatus: true,
-    keys: ['quotationNo','approvedBy','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy']
+    keys: ['quotationNo','approvedBy','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createdBy']
 
   }
 
   searchParams: any[] = [];
+
+  currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
 
   ngOnInit() {
     this.btnDisabled = true;
@@ -160,7 +161,7 @@ export class ReadyForPrintingComponent implements OnInit {
     this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
             for(let rec of this.records){
-              if(rec.status === 'In Progress'){
+              if(rec.status === 'Approved'){
                 this.passData.tableData.push(
                     {
                       quoteId: rec.quoteId,
@@ -179,7 +180,8 @@ export class ReadyForPrintingComponent implements OnInit {
                       currencyCd: rec.currencyCd,
                       issueDate:  this.dateParser(rec.issueDate),
                       expiryDate: this.dateParser(rec.expiryDate),
-                      reqBy: rec.reqBy
+                      reqBy: rec.reqBy,
+                      createdBy: rec.createUser
                     }
                 );
               }  
@@ -193,21 +195,36 @@ export class ReadyForPrintingComponent implements OnInit {
   //Method for DB query
   searchQuery(searchParams){
         this.searchParams = searchParams;
+        console.log(this.searchParams);
         this.passData.tableData = [];
         this.btnDisabled = true;
         this.retrieveQuoteListingMethod();
-    }
+  }
 
   refresh(){       
        this.searchQuery(this.searchParams);
        this.table.refreshTable("first");
   }
 
+  onRowDblClick(event) {
+    this.line = event.quotationNo.split("-")[0];
+    this.quotationNo = event.quotationNo;
+    this.typeOfCession = event.cessionDesc;
+    this.quotationService.toGenInfo = [];
+    this.quotationService.toGenInfo.push("edit", this.line);
+    this.quotationService.savingType = 'normal';
+
+    setTimeout(() => {
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+    },100); 
+
+}
+
+
   dateParser(arr){
     var dateString = new Date(arr).toLocaleDateString();
     return dateString ;   
   }
-
 
 
   onRowClick(event){
@@ -360,7 +377,7 @@ export class ReadyForPrintingComponent implements OnInit {
             } else {
                 if (this.printType == 'SCREEN'){  
                      for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
-                        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
+                        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId + '&userId=' + this.currentUserId, '_blank');
                      }
                      this.searchQuery(this.searchParams);
                 }else if (this.printType == 'PRINTER'){

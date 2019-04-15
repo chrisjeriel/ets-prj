@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, HostListener } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -115,6 +115,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     isDirty: boolean = false;
     selectAllFlag:boolean = false;
     @Input() tabIndex: string[] = []; //0 - Tabbable | -1 - Untabbable
+    @Output() onDelete: EventEmitter<any> = new EventEmitter();
 
     refreshTable(initLoad?){
         if(initLoad === undefined){
@@ -221,37 +222,32 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickDelete() {
-        // for (var i = 0; i < this.passData.tableData.length; ++i) {
-        //     if(this.passData.tableData[i].checked){
-        //         this.passData.tableData[i].checked = false;
-        //         this.passData.tableData[i].deleted = true;
-        //         this.passData.tableData[i].edited = true;
-        //     }
-        // }
-        for(let i = 0; i<this.selected.length;i++){
-           if(!this.selected[i].add){
-               this.selected[i].checked = false;
-               this.selected[i].deleted = true;
-               this.selected[i].edited = true;
-           }else {
-               this.passData.tableData = this.passData.tableData.filter(a => a!= this.selected[i])
-               if(this.filesToUpload.length !== 0){
-                   this.filesToUpload = this.filesToUpload.filter(b => b[0].name != this.selected[i].fileName);
+        if(this.passData.checkFlag){
+            for(let i = 0; i<this.selected.length;i++){
+               if(!this.selected[i].add){
+                   this.selected[i].checked = false;
+                   this.selected[i].deleted = true;
+                   this.selected[i].edited = true;
+               }else {
+                   this.passData.tableData = this.passData.tableData.filter(a => a!= this.selected[i])
+                   if(this.filesToUpload.length !== 0){
+                       this.filesToUpload = this.filesToUpload.filter(b => b[0].name != this.selected[i].fileName);
+                   }
                }
-           }
-
+            }
+            this.selectAllFlag = false;
+            this.form.control.markAsDirty();
+            $('#cust-scroll').addClass('ng-dirty');
+            this.selected = [];
+            this.refreshTable();
+            this.search(this.searchString);
+            this.tableDataChange.emit(this.passData.tableData);
+            this.uploadedFiles.emit(this.filesToUpload);
+        }else{
+            this.onDelete.emit();
         }
-        console.log(this.selected);
-        console.log(this.filesToUpload);
-        this.selectAllFlag = false;
-        this.form.control.markAsDirty();
-        $('#cust-scroll').addClass('ng-dirty');
-        this.selected = [];
-        this.refreshTable();
-        this.search(this.searchString);
-        this.tableDataChange.emit(this.passData.tableData);
-        this.uploadedFiles.emit(this.filesToUpload);
     }
+
     private onMouseDown(event){
         this.start = event.target;
         this.pressed = true;
@@ -374,14 +370,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
    }
 
    getSum(data){
-        let sum = 0;
+        let sum = 0.0;
         if(this.dataKeys.indexOf(data)==-1){
             return data;
         }
         else{
             for (var i = this.displayData.length - 1; i >= 0; i--) {
                 if(this.displayData[i][data] !== null){
-                    sum += this.displayData[i][data];
+                    sum += parseFloat(this.displayData[i][data]);
                 }            
             }
             return sum;
@@ -431,6 +427,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             delete this.passData.tableData.index;
             delete this.passData.tableData.lovInput;
         }
+        this.markAsDirty();
 
         data.edited = true;
         setTimeout(() => { 
@@ -499,7 +496,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     confirmDelete(){
-        if(this.selected.length != 0 ){
+        if(this.selected.length != 0 || !this.passData.checkFlag){
             $('#confirm-delete'+this.passData.pageID+' #modalBtn2').trigger('click');
         }
     }
@@ -553,6 +550,5 @@ export class CustEditableNonDatatableComponent implements OnInit {
     markAsDirty(){
         this.form.control.markAsDirty();
     }
-
  
 }
