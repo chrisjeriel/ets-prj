@@ -1153,7 +1153,7 @@
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
 							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
-							<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
@@ -1923,7 +1923,8 @@
 
 <app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
 <app-sucess-dialog id="polGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="prepareParam('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
+<app-cancel-button *ngIf="!alteration" (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-cancel-button *ngIf="alteration" (onYes)="prepareParam('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
 
 <app-lov #dedLov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 <app-sucess-dialog #dedSuccess [message]="dialogMsg" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
