@@ -22,8 +22,8 @@ export class PolicyIssuanceComponent implements OnInit {
         insuredDesc:'',
         riskId: '',
         fromInq: '',
-        showPolAlop: false
-
+        showPolAlop: false,
+        coInsuranceFlag: false
   }
 
 
@@ -89,7 +89,9 @@ export class PolicyIssuanceComponent implements OnInit {
       this.policyInfo.insuredDesc =  event.insuredDesc;
       this.policyInfo.riskId =  event.riskId;
       this.policyInfo.showPolAlop = event.showPolAlop;
-
+      this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
+      this.policyInfo.insuredDesc = event.insuredDesc;
+      this.policyInfo.riskName = event.riskName
   }
 
   returnOnModal(){

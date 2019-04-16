@@ -16,7 +16,6 @@ export class PolCoInsuranceComponent implements OnInit {
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 
     @Input() policyInfo:any = {};
-    insured:string = '';
 
     polCoInsurance: any = {
         coRefNo: null,
@@ -56,9 +55,6 @@ export class PolCoInsuranceComponent implements OnInit {
 
     ngOnInit(): void {
         this.titleService.setTitle("Pol | Co-Insurance");
-
-        this.insured = this.policyInfo.principalName + " / " + this.policyInfo.contractorName;
-
         this.getPolCoInsurance();
     }
 
@@ -74,10 +70,10 @@ export class PolCoInsuranceComponent implements OnInit {
         this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
            this.coInsuranceData.tableData = [];
            if (data.policy != null) {
-               var dataInfos = data.policy.coInsurance;
+               var dataInfos = data.policy;
 
                for (let rec of dataInfos) {
-                   this.coInsuranceData.tableData.push( {policyNo: data.policy.policyNo, 
+                   this.coInsuranceData.tableData.push( {policyNo: rec.policyNo, 
                                                          coRefNo: rec.coRefNo, 
                                                          cedingName: rec.cedingName,
                                                          pctShare: rec.pctShare, 
