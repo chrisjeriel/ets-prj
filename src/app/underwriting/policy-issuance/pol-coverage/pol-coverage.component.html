@@ -39,19 +39,19 @@
         </div>
         <div class="input-group" style="margin-bottom: -13px !important">
           <label class="form-control-sm col-sm-3">Currency</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyCd" readonly>
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyCd" readonly tabindex="-1">
           <label class="form-control-sm col-sm-2">Exch. Rt.</label>
-          <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt" readonly appCurrencyRate>
+          <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt" readonly appCurrencyRate tabindex="-1">
           <span class="col-sm-1"></span>
         </div>
         <div class="input-group" style="margin-bottom: -13px !important">
          <label class="form-control-sm col-sm-3">Total Sum Insured</label>
-         <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalSi  | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event" readonly appCurrency>
+         <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalSi  | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event" readonly appCurrency tabindex="-1">
          <span class="col-sm-1"></span>
        </div>
        <div class="input-group" style="margin-bottom: 2px !important">
          <label class="form-control-sm col-sm-3">Total Premium</label>
-         <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalPrem  | number:'1.2-2'" (ngModelChange)="coverageData.totalPrem = $event" readonly appCurrency>
+         <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalPrem  | number:'1.2-2'" (ngModelChange)="coverageData.totalPrem = $event" readonly appCurrency tabindex="-1">
          <span class="col-sm-1"></span>
        </div>
      </div>
@@ -76,9 +76,9 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare | number:'1.10-10'" (ngModelChange)="coverageData.pctShare = $event" style="text-align: right !important" appRequired>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare" (ngModelChange)="coverageData.pctShare = $event" style="text-align: right !important" appRequired appCurrencyRate>
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.pctPml | number:'1.10-10'" (ngModelChange)=" coverageData.pctPml = $event" >
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.pctPml" (ngModelChange)=" coverageData.pctPml = $event" appCurrencyRate>
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
@@ -100,7 +100,7 @@
       </div>
       <div class="input-group" style="margin-top: -5px;">
        <label class="form-control-sm col-sm-1">Remarks</label>
-       <textarea class="form-control-sm form-control" [(ngModel)]="coverageData.remarks" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+       <textarea class="form-control-sm form-control" [ngModel]="coverageData.remarks" (ngModelChange)="coverageData.remarks = $event" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
      </div>
      <div class="input-group">
       <span class="col-sm-3"></span>
@@ -151,11 +151,10 @@
         <div class="input-group" style="margin-bottom: -13px !important; margin-top: 0px !important">
           <label class="col-sm-1"></label>
           <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-          <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
-          placeholder="" readonly>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly [(ngModel)]="policyInfo.policyNo">
           <label class="form-control-sm col-sm-1" for="xx">Insured</label>
           <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
-          readonly>
+          readonly [(ngModel)]="policyInfo.riskName">
         </div>
         <div class="input-group" style="margin-bottom: -13px !important;">
             <label class="col-sm-1"></label>
@@ -234,7 +233,7 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" appCurrencyRate appRequired [ngModel] = "altCoverageData.pctShare | number:'1.2-2'" (ngModelChange) = "altCoverageData.pctShare = $event">
+       <input type="text" class="form-control form-control-sm req" appCurrencyRate appRequired [ngModel] = "altCoverageData.pctShare" (ngModelChange) = "altCoverageData.pctShare = $event">
        <label class="form-control-sm col-sm-2">PML(%)</label>
        <input type="text" class="form-control form-control-sm req" appCurrencyRate [ngModel] = "altCoverageData.pctPml | number:'1.2-2'" (ngModelChange)="altCoverageData.pctPml">
        <span class="col-sm-1"></span>

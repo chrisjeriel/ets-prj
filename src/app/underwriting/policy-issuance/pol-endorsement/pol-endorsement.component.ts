@@ -37,7 +37,8 @@ export class PolEndorsementComponent implements OnInit {
             updateDate: this.ns.toDateTimeString(0),
             createUser: JSON.parse(window.localStorage.currentUser).username,
             updateUser: JSON.parse(window.localStorage.currentUser).username,
-            deductibles: []
+            deductibles: [],
+            deductiblesOc: []
         },
         addFlag: true,
         deleteFlag: true,
@@ -106,10 +107,10 @@ export class PolEndorsementComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Endorsement");
-        if((this.alteration || this.ocFlag) && this.policyInfo.fromInq!='true'){
+        if(this.policyInfo.fromInq!='true'){
             //do something
             this.passData.magnifyingGlass = ['endtCd'];
-            this.passData.checkFlag = false;
+            this.passData.checkFlag = true;
             this.deductiblesData.checkFlag = true;
             this.deductiblesData.magnifyingGlass = ['deductibleCd'];
             this.passData.uneditable = [true,true,true,false];
@@ -300,7 +301,13 @@ export class PolEndorsementComponent implements OnInit {
                 }
             }
         }
-        console.log(params)
+        for(let ded of params.saveDeductibleList){
+          if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+            this.dialogIcon = "error";
+            setTimeout(a=>this.successDiag.open(),0);
+            return null;
+          }
+        }
         if(this.ocFlag){
             params.policyId = this.policyInfo.policyIdOc;
             this.underwritingService.savePolEndtOc(params).subscribe(data=>{
