@@ -11,6 +11,7 @@ import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-
 export class PolGenInfoOpenCoverComponent implements OnInit {
 
   line: string;
+  loading: boolean = false;
 
   @Input() policyInfo : any;
 
@@ -138,6 +139,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     console.log(this.policyInfo);
     this.line = this.policyInfo.line;
     //this.line = 'EAR';
+    this.loading = true;
     this.retrievePolGenInfoOc(this.policyInfo.policyIdOc, this.policyInfo.policyNo);
   }
 
@@ -239,6 +241,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
 
           console.log(this.genInfoOcData);
           console.log(this.projectOcData);
+          this.loading = false;
         });
   }
 
