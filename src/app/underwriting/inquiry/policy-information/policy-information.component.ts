@@ -43,7 +43,7 @@ export class PolicyInformationComponent implements OnInit {
     };
 
   passData:any = {
-  	tHeader: ['Alt No','Effective Date','Issue Date','Quotation No','Sum Insured','Premium','Status'],
+  	tHeader: ['Policy No / Alt No','Effective Date','Issue Date','Quotation No','Sum Insured','Premium','Status'],
   	tableData:[],
   	dataTypes:['text','datetime','datetime','text','currency','currency','text'],
   	pageLength:10,

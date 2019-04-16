@@ -465,8 +465,6 @@ saveQuoteOptionAll(cancelFlag?){
    }
 
    for (var i = 0 ; this.optionsData.tableData.length > i; i++) {
-     if(this.optionsData.tableData[i].condition == null || this.optionsData.tableData[i].condition.length == 0)
-          this.optionsData.tableData[i].condition = parseFloat(this.optionsData.tableData[i].optionRt)+'% rate' 
       if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null) {
         params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
         params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username
