@@ -1,13 +1,20 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
+import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component';
+import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
+import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 
 @Component({
   selector: 'app-pol-gen-info',
@@ -20,6 +27,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
   @ViewChild('deductiblesModal') deductiblesModal :ModalComponent;
   @ViewChild('dedSuccess') successDlg: SucessDialogComponent;
+  @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
+  @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
+  @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
+  @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
+  @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
+  @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
+  @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
   @ViewChild('dedLov') lov :LovComponent;
   lovCheckBox:boolean;
   passLOVData:any = {
@@ -100,6 +114,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     updateUser: null,
     updateDate: null,
     showPolAlop: false,
+    coInsuranceFlag: false,
     project: {
       projId: null,
       projDesc: null,
@@ -195,6 +210,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   dialogMessage: string = "";
   loading: boolean = false;
   cancelFlag: boolean;
+  saveBtnClicked: boolean = false;
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
@@ -213,8 +229,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.policyId = params['policyId'];
       this.policyNo = params['policyNo'];
     });
+
     this.getPolGenInfo();
     
+    setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') },1000);
   }
 
   ngOnDestroy() {
@@ -233,20 +251,20 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
       if(data.policy != null) {
         this.policyInfo = data.policy;
-        this.policyInfo.inceptDate = this.ns.toDateTimeString(this.policyInfo.inceptDate);
-        this.policyInfo.expiryDate = this.ns.toDateTimeString(this.policyInfo.expiryDate);
-        this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.policyInfo.lapseFrom);
-        this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.policyInfo.lapseTo);
-        this.policyInfo.maintenanceFrom = this.policyInfo.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.policyInfo.maintenanceFrom);
-        this.policyInfo.maintenanceTo = this.policyInfo.maintenanceTo == null ? '' : this.ns.toDateTimeString(this.policyInfo.maintenanceTo);
-        this.policyInfo.issueDate = this.ns.toDateTimeString(this.policyInfo.issueDate);
-        this.policyInfo.effDate = this.ns.toDateTimeString(this.policyInfo.effDate);
-        this.policyInfo.distDate = this.ns.toDateTimeString(this.policyInfo.distDate);
-        this.policyInfo.acctDate = this.ns.toDateTimeString(this.policyInfo.acctDate);
-        this.policyInfo.createDate = this.ns.toDateTimeString(this.policyInfo.createDate);
-        this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
-        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.policyInfo.project.createDate);
-        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
+        this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
+        this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
+        this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
+        this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseTo));
+        this.policyInfo.maintenanceFrom = this.policyInfo.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.maintenanceFrom));
+        this.policyInfo.maintenanceTo = this.policyInfo.maintenanceTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.maintenanceTo));
+        this.policyInfo.issueDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.issueDate));
+        this.policyInfo.effDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.effDate));
+        this.policyInfo.distDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.distDate));
+        this.policyInfo.acctDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.acctDate));
+        this.policyInfo.createDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.createDate));
+        this.policyInfo.updateDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.updateDate));
+        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.project.createDate));
+        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.project.updateDate));
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
@@ -257,6 +275,113 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  showLineClassLOV(){
+    $('#lineClassLOV #modalBtn').trigger('click');
+    $('#lineClassLOV #modalBtn').addClass('ng-dirty')
+  }
+
+  setLineClass(data){
+    this.policyInfo.lineClassCd = data.lineClassCd;
+    this.policyInfo.lineClassDesc = data.lineClassCdDesc;
+    this.focusBlur();
+  }
+
+  checkCode(ev, field) {
+    this.ns.lovLoader(ev, 1);
+      $(ev.target).addClass('ng-dirty');
+
+      if(field === 'cedingCo') {
+        this.policyInfo.cedingId = this.pad(this.policyInfo.cedingId);              
+
+        this.cedingCoLov.checkCode(this.policyInfo.cedingId, ev);
+      } else if(field === 'cedingCoNotMember') {
+        this.policyInfo.reinsurerId = this.pad(this.policyInfo.reinsurerId);
+
+        this.cedingCoNotMemberLov.checkCode(this.policyInfo.reinsurerId, ev);
+      } else if(field === 'intermediary') {
+        this.intermediaryLov.checkCode(this.policyInfo.intmId, ev);
+      } else if(field === 'principal') {
+        this.insuredLovs['first'].checkCode(this.policyInfo.principalId, '#principalLOV', ev);
+      } else if(field === 'contractor') {
+        this.insuredLovs['last'].checkCode(this.policyInfo.contractorId, '#contractorLOV', ev);
+      } else if(field === 'object') {
+        this.objectLov.checkCode(this.line, this.policyInfo.project.objectId, ev);
+      } else if(field === 'currency') {
+        this.currencyLov.checkCode(this.policyInfo.currencyCd, ev);
+      } else if(field === 'preparedBy') {
+        this.usersLov.checkCode(this.policyInfo.preparedBy, ev);
+      }
+  }
+
+  pad(str) {
+    if(str === '' || str == null){
+      return '';
+    }
+    
+    return String(str).padStart(3, '0');
+  }
+
+  focusBlur() {
+      if(this.saveBtnClicked){
+        setTimeout(()=>{
+          $('.req').focus();
+        $('.req').blur();
+        },0)  
+      }
+  }
+
+  showPrincipalLOV() {
+    $('#principalLOV #modalBtn').trigger('click');
+    $('#principalLOV #modalBtn').addClass('ng-dirty');
+  }
+
+  showContractorLOV(){
+    $('#contractorLOV #modalBtn').trigger('click');
+    $('#contractorLOV #modalBtn').addClass('ng-dirty');
+  }
+
+  showObjectLOV() {
+    $('#objIdLov #modalBtn').trigger('click');
+    $('#objIdLov #modalBtn').addClass('ng-dirty');
+  }
+
+  setPrincipal(data){
+    this.policyInfo.principalName = data.insuredName;
+    this.policyInfo.principalId = data.insuredId;
+    this.ns.lovLoader(data.ev, 0);
+
+    this.updateInsuredDesc();
+    this.focusBlur();
+  }
+
+  setObj(data){
+      this.policyInfo.project.objectId = data.objectId;
+      this.policyInfo.project.objectDesc = data.description;
+      this.ns.lovLoader(data.ev, 0);
+
+      this.focusBlur();
+   }
+
+  setContractor(data){
+    this.policyInfo.contractorName = data.insuredName;
+    this.policyInfo.contractorId = data.insuredId;
+    this.ns.lovLoader(data.ev, 0);
+
+    this.updateInsuredDesc();
+    this.focusBlur();
+    
+  }
+
+  updateInsuredDesc() {
+      if(this.line == 'CAR' || this.line == 'EAR'){
+        if(this.policyInfo.principalName != '' && this.policyInfo.contractorName != ''){
+          this.policyInfo.insuredDesc = this.policyInfo.principalName.trim() + ' / ' + this.policyInfo.contractorName.trim();
+        }
+      } else {
+        this.policyInfo.insuredDesc = this.policyInfo.principalName.trim();
+      }
+    }
 
   checkPolIdF(event){
     this.underwritingService.getUWCoverageInfos(null, this.policyId).subscribe((data:any)=>{
@@ -274,14 +399,19 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                this.policyInfo.showPolAlop = alopFlag;
       }
 
-      this.emitPolicyInfoId.emit({
-        policyId: event,
-        policyNo: this.policyInfo.policyNo,
-        riskName: this.policyInfo.project.riskName,
-        insuredDesc: this.policyInfo.insuredDesc,
-        riskId: this.policyInfo.project.riskIdz,
-        showPolAlop: this.policyInfo.showPolAlop
-      });    
+      this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
+           this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+
+           this.emitPolicyInfoId.emit({
+            policyId: event,
+            policyNo: this.policyInfo.policyNo,
+            riskName: this.policyInfo.project.riskName,
+            insuredDesc: this.policyInfo.insuredDesc,
+            riskId: this.policyInfo.project.riskIdz,
+            showPolAlop: this.policyInfo.showPolAlop,
+            coInsuranceFlag: this.policyInfo.coInsuranceFlag
+          }); 
+      });   
 
     });
   }
@@ -295,6 +425,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   prepareParam(cancelFlag?) {
     this.cancelFlag = cancelFlag !== undefined;
+    this.saveBtnClicked = true;
 
     var savePolGenInfoParam = {
       "acctDate"        : this.policyInfo.acctDate,
@@ -363,10 +494,29 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "wordings"        : this.policyInfo.wordings
     }
 
-    console.log(savePolGenInfoParam);
     //ADD VALIDATION
     this.loading = true;
-    this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe(data => {
+    if(this.validate()){
+      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) =>{
+        if(data.returnCode === 0){
+          this.dialogMessage="The system has encountered an unspecified error.";
+          this.dialogIcon = "error";
+          $('#polGenInfo > #successModalBtn').trigger('click');
+        }else{
+          this.dialogMessage="";
+          this.dialogIcon = "";
+          $('#polGenInfo > #successModalBtn').trigger('click');
+          /*this.form.control.markAsPristine();*/
+        }
+      });
+    }else{
+      console.log('Please fill all required fields');
+    }
+    
+
+    console.log(savePolGenInfoParam);
+    
+    /*this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe(data => {
       console.log(data);
       this.loading = false;
 
@@ -381,11 +531,17 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
           $('#polGenInfo #successModalBtn').trigger('click');
         }
-    });
+    });*/
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    if(!this.validate()){
+      this.dialogMessage="Please fill all required fields.";
+      this.dialogIcon = "info";
+      $('#polGenInfo > #successModalBtn').trigger('click');
+    }else{
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
   }
 
   cancel(){
@@ -490,6 +646,52 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.passLOVData.hide = this.passDataDeductibles.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
     }
     this.lov.openLOV();
+  }
+
+  setSec(d) {
+    d = new Date(d);
+    return d.setSeconds(0);
+  }
+
+  cbToggle(ev) {
+    $(ev.target).addClass('ng-dirty');
+  }
+
+  //validates params before going to web service
+  validate(){
+    if(this.policyInfo.polYear == ''    || this.policyInfo.polSeqNo == '' || this.policyInfo.cedingId == ''  ||
+       this.policyInfo.coSeriesNo == ''   || this.policyInfo.cessionId == '' ||
+       this.policyInfo.lineClassCd == ''  || this.policyInfo.quoteId == ''       || this.policyInfo.status == ''      ||
+       this.policyInfo.principalId == ''         || this.policyInfo.insuredDesc == ''       || this.policyInfo.inceptDate == '' ||
+       this.policyInfo.expiryDate == '' || this.policyInfo.issueDate == '' || this.policyInfo.effDate == '' || this.policyInfo.distDate == '' ||
+       this.policyInfo.acctDate == '' || this.policyInfo.currencyCd == '' || this.policyInfo.currencyRt == ''  || 
+       this.policyInfo.project.projDesc == '' || this.policyInfo.project.site == ''){
+      return false;
+    }else{
+      //Validate Required fields on a specific line code
+      if(this.policyInfo.lineCd === 'CAR'){
+        return true;
+      }
+      else if(this.policyInfo.lineCd === 'EAR'){
+        if(this.policyInfo.project.testing == ''){
+          return false;
+        }else{
+          return true;
+        }
+      }
+    }
+  }
+
+  showIntLOV(){
+    $('#intLOV #modalBtn').trigger('click');
+    $('#intLOV #modalBtn').addClass('ng-dirty')
+  }
+
+  setInt(event){
+        this.policyInfo.intmId = event.intmId;
+        this.policyInfo.intmName = event.intmName;
+        this.ns.lovLoader(event.ev, 0);
+        /*this.focusBlur();*/
   }
 
 }

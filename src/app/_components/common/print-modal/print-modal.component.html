@@ -9,7 +9,7 @@
                                  <ng-container >
                                     <div class="input-group" style="margin-bottom : -12px ! important">
                                     	<div class="col-sm-4" style="padding: 0">
-                                    		<div  class="input-group" style="margin-bottom : -14px ! important">
+                                    		<div *ngIf="default"  class="input-group" style="margin-bottom : -14px ! important">
                                     			 <label class="form-control-sm" for="xx">Report</label>
                                     		</div>
                                     		<div class="input-group" style="margin-bottom : -14px ! important">
@@ -20,7 +20,7 @@
                                     		</div>
                                     	</div>
                                     	<div class ="col-sm" style="padding: 0">
-                                    		<div  class="input-group" style="margin-bottom : 0px ! important">
+                                    		<div *ngIf="default" class="input-group" style="margin-bottom : 0px ! important">
                                     			<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedReport" (change)="tabSelectedReportController($event);" appRequired [disabled]="reports">
 		                                           <option *ngFor="let report of reportsList" [value]="report.val">{{report.desc}}</option>
                                         		</select>
