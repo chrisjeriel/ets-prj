@@ -853,10 +853,10 @@
 						<div class="form-group col-sm-6">
 							<div id="radioBtnSet" class="input-group-text" style="display: block; margin-top: -4px; padding-left: 33px; padding-right: 0px;">
 								<div class="input-group">
-									<input type="radio" name="option" disabled value="Y" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
+									<input type="radio" name="option" [disabled]="policyInfo.declarationTag !== 'Y'" value="Y" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
 								</div>
 								<div class="input-group">
-									<input type="radio" name="option" disabled value="N" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
+									<input type="radio" name="option" [disabled]="policyInfo.declarationTag !== 'Y'" value="N" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
 								</div>
 							</div>
 						</div>
@@ -903,10 +903,10 @@
 			</div>
 		</div>
 
-		<app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
+		<!-- <app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
 
 		<app-sucess-dialog id="polGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo() : null"></app-sucess-dialog>
-		<app-cancel-button (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+		<app-cancel-button (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button> -->
 
 		<ng-template #content>
 			<div class="modal-header">
