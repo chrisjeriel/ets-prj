@@ -1153,7 +1153,7 @@
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
 							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
