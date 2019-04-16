@@ -2,6 +2,8 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { FormsModule }   from '@angular/forms';
 
 @Component({
   selector: 'app-pol-gen-info-open-cover',
@@ -12,10 +14,18 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
 
   line: string;
   loading: boolean = false;
+  cancelFlag: boolean = false;
+
+  dialogMessage: string = '';
+  dialogIcon: string = '';
 
   @Input() policyInfo : any;
 
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('myForm') form:any;
+
+  currentUser: string = JSON.parse(window.localStorage.currentUser).username;
 
   genInfoOcData: any = {
     policyIdOc: '',
@@ -246,8 +256,49 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
   }
 
   prepareParams(){
+    this.genInfoOcData.inceptDate = this.inceptionDateParams.date + 'T' + this.inceptionDateParams.time;
+    this.genInfoOcData.expiryDate = this.expiryDateParams.date + 'T' + this.expiryDateParams.time;
+    this.genInfoOcData.lapseFrom = this.lapseFromParams.date + 'T' + this.lapseFromParams.time;
+    this.genInfoOcData.lapseTo = this.lapseToParams.date + 'T' + this.lapseToParams.time;
+    this.genInfoOcData.issueDate = this.issueDateParams.date + 'T' + this.issueDateParams.time;
+    this.genInfoOcData.distDate = this.distributionDateParams.date + 'T' + this.distributionDateParams.time;
+    this.genInfoOcData.effDate = this.effDateParams.date + 'T' + this.effDateParams.time;
+    this.genInfoOcData.acctDate = this.accDateParams.date + 'T' + this.accDateParams.time;
+    this.genInfoOcData.updateDate = this.ns.toDateTimeString(0);
+    this.genInfoOcData.updateUser = this.currentUser;
+    this.projectOcData.prUpdateDate = this.ns.toDateTimeString(0);
+    this.projectOcData.prUpdateUser = this.currentUser;
+
+    console.log(this.genInfoOcData.effDate.length);
     console.log(this.genInfoOcData);
     console.log(this.projectOcData);
+  }
+
+  onClickSave(){
+    this.prepareParams();
+    if(this.projectOcData.projDesc.length === 0 || this.genInfoOcData.insuredDesc.length === 0 ||
+       this.projectOcData.site.length === 0 ||
+       this.genInfoOcData.inceptDate.length < 16 || this.genInfoOcData.expiryDate.length < 16 ||
+       this.genInfoOcData.lapseFrom.length < 16 || this.genInfoOcData.lapseTo.length < 16 ||
+       this.genInfoOcData.issueDate.length < 16 || this.genInfoOcData.distDate.length < 16 ||
+       this.genInfoOcData.effDate.length < 16 || this.genInfoOcData.acctDate.length < 16){
+
+      this.dialogMessage = 'Please fill all required fields';
+      this.dialogIcon = 'info';
+      $('#successDialog #modalBtn').trigger('click');
+    }else{
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
+  }
+
+  saveQuoteGenInfoOc(cancelFlag?){
+      this.cancelFlag = cancelFlag !== undefined;
+      setTimeout(()=>{
+        this.dialogIcon = '';
+        this.dialogMessage = '';
+        $('#successDialog #modalBtn').trigger('click'); 
+        this.form.control.markAsPristine();
+      }, 100);
   }
 
   showIntLOV(){
@@ -275,6 +326,10 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
       if(field === 'intermediary') {
         this.intermediaryLov.checkCode(this.genInfoOcData.intmId, ev);
       }
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 
 }
