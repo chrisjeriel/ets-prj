@@ -286,12 +286,21 @@ export class HoldCoverComponent implements OnInit {
 		this.rowRec = event;
 	}
 
+	getQuGenInfo(){
+		this.quotationService.getSelectedQuote(this.quoteNo)
+		.subscribe(data => {
+			console.log(data);
+			this.quoteId = data['quotationList'][0].quoteId;
+		});
+	}
+
 	onSaveClickLOV(){
+
 		this.sliceQuoteNo(this.rowRec.quotationNo);
 		this.quoteNo = this.rowRec.quotationNo;
 		if(this.quoteNo != null || this.quoteNo != undefined || this.quoteNo != ''){
 		}
-
+		this.getQuGenInfo();
 		this.modalService.dismissAll();
 		this.btnApprovalEnabled = false;
 		this.quotationService.getSelectedQuotationHoldCoverInfo(this.quoteNo)
@@ -303,8 +312,6 @@ export class HoldCoverComponent implements OnInit {
 			this.hcLine  = this.qLine;
 			this.hcYear  =  String(new Date().getFullYear());
 			this.showAll = true;
-			this.quoteId = data['quotationList'][0].quoteId;
-			console.log(this.quoteId);
 
 			if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){ 
 				this.holdCover.holdCoverId = '';
