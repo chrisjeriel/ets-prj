@@ -56,13 +56,24 @@
 											<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoOcData.cedingId" readonly tabindex="-1" name="genInfoOcData.cedingId">
 											<input type="text" class="form-control form-control-sm col-sm input-ig-row" [ngModel]="genInfoOcData.cedingName" readonly tabindex="-1" name="genInfoOcData.cedingName">
 										</div>
+										<div class="input-group ig-row" *ngIf="genInfoOcData.cessionDesc.toUpperCase() === 'RETROCESSION'">
+											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Reinsurance From</label>
+											<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoOcData.reinsurerId" readonly tabindex="-1" name="genInfoOcData.reinsurerId">
+											<input type="text" class="form-control form-control-sm col-sm input-ig-row" [ngModel]="genInfoOcData.reinsurerName" readonly tabindex="-1" name="genInfoOcData.reinsurerName">
+										</div>
 										<div class="input-group ig-row">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Co Ref No</label>
-											<input type="text" class="form-control form-control-sm col-sm" name="coRefNo">
+											<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="genInfoOcData.coRefNo" name="coRefNo">
+										</div>
+										<div class="input-group ig-row" *ngIf="genInfoOcData.cessionDesc.toUpperCase() === 'RETROCESSION'">
+											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">RI Binder No</label>
+											<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="genInfoOcData.riBinderNo" name="riBindNo">
 										</div>
 										<div class="input-group ig-row" style="margin-bottom: 2px !important">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Intermediary</label>
-											<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoOcData.intmId" readonly tabindex="-1" name="genInfoOcData.intmId">
+											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoOcData.intmId" name="genInfoOcData.intmId" mask="999" (blur)="genInfoOcData.intmId=pad(genInfoOcData.intmId)" (change)="checkCode($event,'intermediary')">
+											<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
+											<span>&nbsp;</span>
 											<input type="text" class="form-control form-control-sm col-sm input-ig-row" [ngModel]="genInfoOcData.intmName" readonly tabindex="-1" name="genInfoOcData.intmName">
 										</div>
 								</div>
@@ -93,13 +104,13 @@
 						<div class="form-row" style="margin-right: 0px; margin-bottom: 13px;">
 							<div class="input-group col-sm-6 ig-row">
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Lapse From</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="lapseFromParams.date" name="lapseFromParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}">
-								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="lapseFromParams.time" name="lapseFromParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}">
+								<input type="date" class="form-control form-control-sm" appRequired [(ngModel)]="lapseFromParams.date" name="lapseFromParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}">
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" appRequired [(ngModel)]="lapseFromParams.time" name="lapseFromParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}">
 							</div>
 							<div class="input-group col-sm-6 ig-row">
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Lapse To</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="lapseToParams.date" name="lapseToParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}">
-								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="lapseToParams.time" name="lapseToParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}">
+								<input type="date" class="form-control form-control-sm" appRequired [(ngModel)]="lapseToParams.date" name="lapseToParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}">
+								<input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" appRequired [(ngModel)]="lapseToParams.time" name="lapseToParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}">
 							</div>
 						</div>
 					</div>
@@ -163,13 +174,13 @@
 							</div>
 							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Risk</label>
-								<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.riskName" name="projectOcData.riskName">
+								<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.riskName" name="projectOcData.riskName" readonly tabindex="-1">
 							</div>
 							<div class="input-group ig-row">
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Object</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" readonly tabindex="-1" [ngModel]="projectOcData.objectId" name="projectOcData.objectId">
-									<input type="text" class="form-control form-control-sm col-sm-8 input-ig-row" readonly tabindex="-1" [ngModel]="projectOcData.objectName" name="projectOcData.objectName">
+									<input type="text" class="form-control form-control-sm col-sm-8 input-ig-row" readonly tabindex="-1" [ngModel]="projectOcData.objectDesc" name="projectOcData.objectDesc">
 								</div>
 								<div class="col-sm-6 input-group">
 									<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Region</label>
@@ -206,11 +217,16 @@
 									</div>
 									<div class="input-group" style="margin-top: -6px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Lat</label>
-										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.latitude" name="projectOcData.latitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOcData.latitude" name="projectOcData.latitude">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Long</label>
-										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.longitude" name="projectOcData.longitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOcData.longitude" name="projectOcData.longitude">
 									</div>
 								</div>
+							</div>
+							<div class="input-group ig-row">
+								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Duration</label>
+								<input type="text" class="form-control form-control-sm col-sm-5" style="margin-right: -5px !important;" [ngModel]="projectOcData.duration" name="projectOcData.duration" readonly tabindex="-1">
+								<label class="form-control-sm col-sm-6 cust-lbl-left-offset"></label>
 							</div>
 						</div>
 					</div>
@@ -283,18 +299,18 @@
 									</div>
 									<div class="input-group" style="margin-top: -6px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Lat</label>
-										<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.latitude" name="projectOcData.latitude" readonly tabindex="-1">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOcData.latitude" name="projectOcData.latitude">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Long</label>
-										<input type="text" class="form-control form-control-sm" [ngModel]="projectOcData.longitude" name="projectOcData.longitude" readonly tabindex="-1">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOcData.longitude" name="projectOcData.longitude">
 									</div>
 								</div>
 							</div>
-							<!--<div class="input-group ig-row">
+							<div class="input-group ig-row">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Duration</label>
-								<input type="text" class="form-control form-control-sm col-sm-5">
+								<input type="text" class="form-control form-control-sm col-sm-5" [ngModel]="projectOcData.duration" name="projectOcData.duration" readonly tabindex="-1">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Testing</label>
-								<input type="text" class="form-control form-control-sm col-sm-5">
-							</div>-->
+								<input type="text" class="form-control form-control-sm col-sm-5" [ngModel]="projectOcData.testing" name="projectOcData.testing" readonly tabindex="-1">
+							</div>
 						</div>
 					</div>
 					<div class="col-sm-1">
@@ -367,9 +383,9 @@
 									</div>
 									<div class="input-group" style="margin-top: -6px ! important">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Lat</label>
-										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.latitude" name="projectOcData.latitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOcData.latitude" name="projectOcData.latitude">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Long</label>
-										<input type="text" class="form-control form-control-sm" readonly tabindex="-1" [ngModel]="projectOcData.longitude" name="projectOcData.longitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOcData.longitude" name="projectOcData.longitude">
 									</div>
 								</div>
 							</div>
@@ -617,7 +633,7 @@
 			</fieldset>
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-					<div class="custom-row-inline-inset" style="margin-top: 15.9px !important; margin-bottom: 15.9px !important;">
+					<div class="custom-row-inline-inset" style="margin-top: 28.5px !important;margin-bottom: 28.8px !important;">
 						<div class="form-row" style="margin-top: 12px">
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
 								<label class="form-control-sm top-label">Created By</label>
@@ -649,7 +665,7 @@
 				<br>
 				<div class="cust-btn-container">
 					<button type="button" class="cust-btn"><a>Cancel</a></button>
-					<button type="button" class="cust-btn"><a>Save</a></button>
+					<button type="button" class="cust-btn" (click)="prepareParams();"><a>Save</a></button>
 				</div>
 			</div>
 		</div>
@@ -684,3 +700,5 @@
 		</div>
 </ng-template>
 
+
+<app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>

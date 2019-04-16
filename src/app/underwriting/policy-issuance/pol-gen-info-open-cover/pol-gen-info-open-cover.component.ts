@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService, NotesService } from '../../../_services';
+import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
 
 @Component({
   selector: 'app-pol-gen-info-open-cover',
@@ -12,6 +13,8 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
   line: string;
 
   @Input() policyInfo : any;
+
+  @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
 
   genInfoOcData: any = {
     policyIdOc: '',
@@ -39,6 +42,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     status: '',
     statusDesc: '',
     reinsurerId: '',
+    reinsurerName: '',
     intmId: '',
     intmName: '',
     inceptDate: '',
@@ -51,6 +55,8 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     acctDate: '',
     currencyCd: '',
     currencyRt: '',
+    coRefNo: '',
+    riBinderNo: '',
     createUser: '',
     createDate: '',
     updateUser: '',
@@ -131,6 +137,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
   ngOnInit() {
     console.log(this.policyInfo);
     this.line = this.policyInfo.line;
+    //this.line = 'EAR';
     this.retrievePolGenInfoOc(this.policyInfo.policyIdOc, this.policyInfo.policyNo);
   }
 
@@ -166,6 +173,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.genInfoOcData.status             =  data.policyOc.status;
           this.genInfoOcData.statusDesc         =  data.policyOc.statusDesc;
           this.genInfoOcData.reinsurerId        =  data.policyOc.reinsurerId;
+          this.genInfoOcData.reinsurerName      =  data.policyOc.reinsurerName;
           this.genInfoOcData.intmId             =  data.policyOc.intmId;
           this.genInfoOcData.intmName           =  data.policyOc.intmName;
           this.genInfoOcData.inceptDate         =  data.policyOc.inceptDate;
@@ -178,6 +186,8 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.genInfoOcData.acctDate           =  data.policyOc.acctDate;
           this.genInfoOcData.currencyCd         =  data.policyOc.currencyCd;
           this.genInfoOcData.currencyRt         =  data.policyOc.currencyRt;
+          this.genInfoOcData.coRefNo            =  data.policyOc.coRefNo;
+          this.genInfoOcData.riBinderNo         =  data.policyOc.riBinderNo;
           this.genInfoOcData.createUser         =  data.policyOc.createUser;
           this.genInfoOcData.createDate         =  this.ns.toDateTimeString(data.policyOc.createDate);
           this.genInfoOcData.updateUser         =  data.policyOc.updateUser;
@@ -230,6 +240,38 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           console.log(this.genInfoOcData);
           console.log(this.projectOcData);
         });
+  }
+
+  prepareParams(){
+    console.log(this.genInfoOcData);
+    console.log(this.projectOcData);
+  }
+
+  showIntLOV(){
+      $('#intLOV #modalBtn').trigger('click');
+      $('#intLOV #modalBtn').addClass('ng-dirty')
+  }
+
+  setInt(data){
+    this.genInfoOcData.intmId = data.intmId;
+    this.genInfoOcData.intmName = data.intmName;
+    this.ns.lovLoader(data.ev, 0);
+  }
+
+  pad(str) {
+    if(str === '' || str == null){
+      return '';
+    }
+    
+    return String(str).padStart(3, '0');
+  }
+
+  checkCode(ev, field) {
+      this.ns.lovLoader(ev, 1);
+      $(ev.target).addClass('ng-dirty');
+      if(field === 'intermediary') {
+        this.intermediaryLov.checkCode(this.genInfoOcData.intmId, ev);
+      }
   }
 
 }
