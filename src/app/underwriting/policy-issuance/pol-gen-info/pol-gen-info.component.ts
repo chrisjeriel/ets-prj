@@ -669,16 +669,23 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       return false;
     }else{
       //Validate Required fields on a specific line code
-      if(this.policyInfo.lineCd === 'CAR'){
-        return true;
-      }
-      else if(this.policyInfo.lineCd === 'EAR'){
-        if(this.policyInfo.project.testing == ''){
-          return false;
-        }else{
-          return true;
-        }
-      }
+      // if(this.policyInfo.lineCd === 'CAR'){
+      //   return true;
+      // }
+      // else if(this.policyInfo.lineCd === 'EAR'){
+      //   if(this.policyInfo.project.testing == ''){
+      //     return false;
+      //   }else{
+      //     return true;
+      //   }
+      // } else {
+      //   return true;
+      // }
+      if(!this.alteration) {
+         return true;
+      } else {
+        //validation for alteration
+      }           
     }
   }
 
