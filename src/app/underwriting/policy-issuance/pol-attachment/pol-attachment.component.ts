@@ -196,10 +196,9 @@ export class PolAttachmentComponent implements OnInit {
       for(let check of this.attachmentData.tableData){
         if(check.description === null || check.description === undefined || check.description.length === 0){
           return false;
-        }else{
-          return true;
         }
       }
+      return true;
     }
 
 }
