@@ -97,7 +97,7 @@ div.filler{
     color: black;
 }
 .selected{
-    background-color: #67b4fc82 !important; /*#67b4fc !important;*/
+    background-color: #67b4fc82; /*#67b4fc !important;*/
 }
 
 .headcol {

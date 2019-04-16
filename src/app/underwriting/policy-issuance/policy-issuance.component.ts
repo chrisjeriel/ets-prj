@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-policy-issuance',
@@ -33,10 +32,9 @@ export class PolicyIssuanceComponent implements OnInit {
   approveText: string = "For Approval";
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
-  theme =  window.localStorage.getItem("selectedTheme");
   status: string = "";
   
-  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router,private app: AppComponent) { }
+  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
@@ -58,7 +56,6 @@ export class PolicyIssuanceComponent implements OnInit {
     this.status = this.policyInfo.status;
     setTimeout(() => {
          this.showEditModal(JSON.parse(this.policyInfo.editPol));
-         this.app.changeTheme(this.theme);
      });
   }
 
