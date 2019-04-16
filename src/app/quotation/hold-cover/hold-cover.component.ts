@@ -8,7 +8,7 @@ import { DecimalPipe } from '@angular/common';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { Router } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
-
+import { Subject } from 'rxjs';
 
 
 
@@ -22,6 +22,7 @@ export class HoldCoverComponent implements OnInit {
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 	@ViewChild('opt') opt: CustNonDatatableComponent;
+	@ViewChild('tabset') tabset: any;
 
 	tableData: any[] = [];
 	tHeader: any[] = [];
@@ -191,6 +192,8 @@ export class HoldCoverComponent implements OnInit {
 		this.passDataQuoteLOV.filters[0].enabled = false;
 		this.showAll = true;
 		this.cancelHcBtnEnabled = false;
+
+
 	}
 
 
@@ -223,7 +226,9 @@ export class HoldCoverComponent implements OnInit {
 	}
 
 	searchMatchingQuote(){
+		this.table.loadingFlag = true;
 		this.passDataQuoteLOV.tableData = [];
+		$('#lovMdl > #modalBtn').trigger('click');
 		this.qLine = (this.qLine === '' || this.qLine === null || this.qLine === undefined)? '' : this.qLine;
 		this.qYear = (this.qYear === '' || this.qYear === null || this.qYear === undefined)? '' : this.qYear;
 		this.qSeqNo = (this.qSeqNo === '' || this.qSeqNo === null || this.qSeqNo === undefined)? '' : this.qSeqNo;
@@ -234,7 +239,7 @@ export class HoldCoverComponent implements OnInit {
 			console.log(data);
 			var rec = data['quotation'];
 			if(rec !== '' ||  rec !== null || rec !== undefined){
-				for(let i of rec){
+				for(let i of rec){	
 					this.passDataQuoteLOV.tableData.push({
 						quotationNo: i.quotationNo,
 						cedingName:  i.cedingName,
@@ -243,20 +248,22 @@ export class HoldCoverComponent implements OnInit {
 					});
 				}
 				this.table.refreshTable();
-				$('#lovMdl > #modalBtn').trigger('click');
+				
 			}
 		});
 	}
 
 	search() {
+		this.table.loadingFlag = true;
+		this.passDataQuoteLOV.tableData = [];
+		$('#lovMdl > #modalBtn').trigger('click');
 		var quoFiltSearch = this.passDataQuoteLOV.filters[0].search;
 		var quoFiltEnabled = this.passDataQuoteLOV.filters[0].enabled;
 		if(quoFiltEnabled === true){
-			this.passDataQuoteLOV.tableData = [];
 			this.quotationService.getQuoProcessingData(this.searchParams)
 			.subscribe(val => {
 				var records = val['quotationList'];
-
+				this.passDataQuoteLOV.tableData = [];
 				if(records === null  || records === '' || records === undefined){
 					this.showAll = false;
 				}else{
@@ -274,7 +281,7 @@ export class HoldCoverComponent implements OnInit {
 				this.table.refreshTable();
 			});
 
-			$('#lovMdl > #modalBtn').trigger('click');
+			
 			
 		}else{
 			this.searchMatchingQuote();
@@ -333,9 +340,8 @@ export class HoldCoverComponent implements OnInit {
 				//this.quoteId = (data['quotationList'][0] === undefined) ? '' : data['quotationList'][0].quoteId;
 				this.cancelHcBtnEnabled = false;
 				this.btnApprovalEnabled = false;
-
 			}else{
-				this.prepBeforeSave(data);
+				this.prepBeforeSave(data);		
 			}
 
 		});
@@ -494,7 +500,6 @@ export class HoldCoverComponent implements OnInit {
 				console.log(data);
 				var rec = data['quotation'];
 				if(rec === '' ||  rec === null || rec === undefined || rec.length === 0){
-					console.log('-');
 					if(this.qLine !== '' && this.qYear !== '' && this.qSeqNo !== '' && this.qRevNo !== '' && this.qCedingId !== ''){
 						this.quoteNo = '';
 						this.insured = '';
@@ -510,11 +515,9 @@ export class HoldCoverComponent implements OnInit {
 						this.qCedingId = '' ;
 						this.searchMatchingQuote();
 						this.clearAll();
-						console.log('-');
 					}
 				}else{
 					if(rec.length === 1){
-						console.log('-');
 						this.newHc(false);
 						this.quoteNo = (rec[0].quotationNo === null || rec[0].quotationNo === undefined) ? '' : rec[0].quotationNo;
 						this.insured = (rec[0].insuredDesc  === null || rec[0].insuredDesc === undefined) ? '' : rec[0].insuredDesc;
@@ -530,9 +533,8 @@ export class HoldCoverComponent implements OnInit {
 								this.cancelHcBtnEnabled = false;
 								this.disableFieldsHc(true);
 								this.newHc(true);
-								console.log('-');
 							}else{
-								this.prepBeforeSave(data);
+								this.prepBeforeSave(data);	
 							}
 						});
 					}
@@ -545,7 +547,7 @@ export class HoldCoverComponent implements OnInit {
 
 		prepBeforeSave(data){
 			var rec = data['quotationList'][0].holdCover;
-				if((rec.status).toUpperCase() === 'CANCELLED' || (rec.status).toUpperCase() === 'REPLACED'){
+				if((rec.status).toUpperCase() === 'CANCELLED' || (rec.status).toUpperCase() === 'REPLACED VIA HOLD COVER MODIFICATION'){
 				}else{
 					this.holdCover.holdCoverNo = rec.holdCoverNo;
 					this.splitHcNo(rec.holdCoverNo);
@@ -575,6 +577,10 @@ export class HoldCoverComponent implements OnInit {
 
 					if(rec.status.toUpperCase() === 'RELEASED'){
 						$('#modifMdl > #modalBtn').trigger('click');
+					}else if(rec.status.toUpperCase() === 'CONVERTED' || rec.status.toUpperCase() === 'EXPIRED'){
+						this.clickView = true;
+						this.disableFieldsHc(true);
+						this.cancelHcBtnEnabled = false;
 					}
 
 				} 
@@ -621,32 +627,18 @@ export class HoldCoverComponent implements OnInit {
 			}else{
 				this.hcPrefix = 'HC';
 				this.type = 'date';
-				this.typeTime = 'time';
+				this.typeTime = 'time';	
 				this.disableFieldsHc(false);
 			}
 		}
 
 		disableFieldsHc(isDisabled:boolean){
 			if(isDisabled === true){
-				$("#periodFrom").prop('readonly', true);
-				$("#periodTo").prop('readonly', true);
-				$("#reqBy").prop('readonly', true);
-				$("#reqDate").prop('readonly', true);
-				$("#coRef").prop('readonly', true);
-				$("#periodFromTime").prop('readonly',true);
-				$("#periodToTime").prop('readonly',true);
-				$("#optionId").prop('readonly',true);
+				$(".r-only").prop('readonly', true);
 				this.optLovEnabled = false;
 
 			}else{
-				$("#periodFrom").prop('readonly', false);
-				$("#periodTo").prop('readonly', false);
-				$("#reqBy").prop('readonly', false);
-				$("#reqDate").prop('readonly', false);
-				$("#coRef").prop('readonly', false);
-				$("#periodFromTime").prop('readonly',false);
-				$("#periodToTime").prop('readonly',false);
-				$("#optionId").prop('readonly',false);
+				$(".r-only").prop('readonly', false);
 				this.optLovEnabled = true;  
 			}
 		}
@@ -703,7 +695,26 @@ export class HoldCoverComponent implements OnInit {
 		onTabChange($event: NgbTabChangeEvent) {
 			if ($event.nextId === 'Exit') {
 				$event.preventDefault();
-			} 
+			}else{
+				if($('.ng-dirty').length != 0 ){
+			        $event.preventDefault();
+			        const subject = new Subject<boolean>();
+			        const modal = this.modalService.open(ConfirmLeaveComponent,{
+			            centered: true, 
+			            backdrop: 'static', 
+			            windowClass : 'modal-size'
+			        });
+			        modal.componentInstance.subject = subject;
+
+			        subject.subscribe(a=>{
+			          if(a){
+			            $('.ng-dirty').removeClass('ng-dirty');
+			            this.tabset.select($event.nextId)
+			          }
+			        })
+      			}
+			}
+
 		}
 
 		onClickCancelHoldCover(){
@@ -711,8 +722,9 @@ export class HoldCoverComponent implements OnInit {
 			this.modalService.dismissAll();
 			this.loading = true;
 			this.ids = {
-				"quoteId":(this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId,
-				"holdCoverId":this.holdCover.holdCoverId
+				"quoteId"     : (this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId,
+				"holdCoverId" : this.holdCover.holdCoverId,
+				"updateUser"  : this.holdCover.updateUser
 			};
 
 			if(this.quoteId === null || this.quoteId === undefined){
@@ -745,6 +757,7 @@ export class HoldCoverComponent implements OnInit {
 		}
 
 		onClickOptionLOV(){
+			this.opt.loadingFlag = true;
 			this.passDataQuoteOptionsLOV.tableData = [];
 			$('#optionMdl #modalBtn2').trigger('click');
 			console.log(this.quoteId);
@@ -828,6 +841,8 @@ export class HoldCoverComponent implements OnInit {
 			this.disableFieldsHc(true);
 			this.cancelHcBtnEnabled = false;
 			this.btnApprovalEnabled = false;
+			this.clickView = false;
 		}
+
 
 }
