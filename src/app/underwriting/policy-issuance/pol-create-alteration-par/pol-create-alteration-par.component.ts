@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
 import { CreateAlterationParInfo } from '../../../_models/CreateAlterationPolicy';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 
 @Component({
   selector: 'app-pol-create-alteration-par',
@@ -11,6 +12,7 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./pol-create-alteration-par.component.css']
 })
 export class PolCreateAlterationPARComponent implements OnInit {
+  @ViewChild('altPolLov') lovTable: CustNonDatatableComponent;
 
   private createAlterationPar: CreateAlterationParInfo;
   tableData: any[] = [];
@@ -19,47 +21,32 @@ export class PolCreateAlterationPARComponent implements OnInit {
   fromQuotation: boolean = true;
   policyLine: any;
 
+  polNo: any[] = [];
+  searchArr: any[] = Array(6).fill('');;
+  cedingName: any = '';
+  insuredDesc: any = '';
+  riskName: any = '';
+  selected: any = null;
+
+  passDataLOV: any = {
+    tableData: [],
+    tHeader:["Policy No", "Ceding Company", "Insured", "Risk"],  
+    dataTypes: ["text","text","text","text"],
+    pageLength: 10,
+    resizable: [false,false,false,false],
+    tableOnly: false,
+    keys: ['policyNo','cedingName','insuredDesc','riskName'],
+    pageStatus: true,
+    pagination: true,
+    filters: [],
+    pageID: 'createAltPolLov'
+  }
+
   constructor(private underwritingService: UnderwritingService, private router: Router,
     private modalService: NgbModal, private titleService: Title) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Pol | Create Alteration");
-    this.tHeader.push("Quotation No");
-    this.tHeader.push("Branch");
-    this.tHeader.push("Line Class");
-    this.tHeader.push("Quote Status");
-    this.tHeader.push("Ceding Company");
-    this.tHeader.push("Principal");
-    this.tHeader.push("Contractor");
-    this.tHeader.push("Insured");
-    this.tHeader.push("Quote Date");
-    this.tHeader.push("Validity Date");
-    this.tHeader.push("Requested By");
-    this.tHeader.push("Created By");
-
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("date");
-    this.dataTypes.push("date");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-
-    this.tableData = this.underwritingService.getAlterationFromQuotation();
-
-    this.createAlterationPar = new CreateAlterationParInfo();
-    this.createAlterationPar.line = "test";
-    this.createAlterationPar.year = new Date();
-    this.createAlterationPar.seqNo = 0;
-    this.createAlterationPar.altNo = 0;
-    this.createAlterationPar.cedingCompany = "test";
-    this.createAlterationPar.principal = "test";
-    this.createAlterationPar.contractor = "test";
+    this.getPolListing();
   }
 
 
@@ -85,5 +72,91 @@ export class PolCreateAlterationPARComponent implements OnInit {
       console.log(this.policyLine);
       this.router.navigate(['/policy-issuance-alt', { line: pLine }], { skipLocationChange: true });
     }
+  }
+
+  getPolListing(param?) {
+    this.lovTable.loadingFlag = true;
+    this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
+      var polList = data['policyList'];
+
+      polList = polList//.filter(p => p.statusDesc.toUpperCase() === 'DISTRIBUTED')
+                       .map(p => { p.riskName = p.project.riskName; return p; });
+      this.passDataLOV.tableData = polList;
+      this.lovTable.refreshTable();
+
+      if(param !== undefined) {
+        if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  
+          this.selected = polList[0];
+          this.setDetails();
+        } else if(polList.length === 0 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {
+          this.clearFields();
+          this.getPolListing();
+          this.showLOV();
+        } else if(this.searchArr.includes('%%')) {     
+          this.cedingName = '';
+          this.insuredDesc = '';
+          this.riskName = '';
+        }
+      }
+    });    
+  }
+
+  showLOV() {
+    $('#altPolLovMdl > #modalBtn').trigger('click');
+  }
+
+  onRowClick(event) {    
+    if(Object.entries(event).length === 0 && event.constructor === Object){
+      this.selected = null;
+    } else {
+      this.selected = event;
+    }    
+  }
+
+  setDetails() {
+    if(this.selected != null) {
+      console.log(this.selected);
+      this.polNo = this.selected.policyNo.split('-');
+      this.cedingName = this.selected.cedingName;
+      this.insuredDesc = this.selected.insuredDesc;
+      this.riskName = this.selected.riskName;
+    }
+  }
+
+  search(key,ev) {
+    var a = ev.target.value;
+
+    if(key === 'lineCd') {
+      this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
+    } else if(key === 'year') {
+      this.searchArr[1] = '%' + a + '%';
+    } else if(key === 'seqNo') {
+      this.searchArr[2] = '%' + a + '%';
+    } else if(key === 'cedingId') {
+      this.searchArr[3] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
+    } else if(key === 'coSeriesNo') {
+      this.searchArr[4] = '%' + a + '%';
+    } else if(key === 'altNo') {
+      this.searchArr[5] = a === '' ? '%%' : '%' + a;
+    }
+
+    if(this.searchArr.includes('')) {
+      this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+    }
+
+    this.getPolListing([{ key: 'policyNo', search: this.searchArr.join('-') }]);
+  }
+
+  clearFields() {
+    this.polNo = Array(6).fill('');
+    this.cedingName = '';
+    this.insuredDesc = '';
+    this.riskName = '';
+  }
+
+  checkPolicyAlteration() {
+    this.underwritingService.getAlterationsPerPolicy(this.selected.policyId).subscribe(data => {
+      console.log(data);
+    });
   }
 }

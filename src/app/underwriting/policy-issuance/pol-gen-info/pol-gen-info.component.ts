@@ -261,10 +261,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.effDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.effDate));
         this.policyInfo.distDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.distDate));
         this.policyInfo.acctDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.acctDate));
-        this.policyInfo.createDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.createDate));
-        this.policyInfo.updateDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.updateDate));
-        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.project.createDate));
-        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.project.updateDate));
+        this.policyInfo.createDate = this.ns.toDateTimeString(this.policyInfo.createDate);
+        this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
+        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.policyInfo.project.createDate);
+        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
