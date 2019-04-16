@@ -852,4 +852,15 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolGenInfoOc",{params});
     }
 
+    savePolGenInfoOc(params:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolGenInfoOc', params, header);
+        //return this.http.post('http://192.10.10.130:8888/api/underwriting-service/savePolGenInfoOc', params, header);
+    }
+
 }            

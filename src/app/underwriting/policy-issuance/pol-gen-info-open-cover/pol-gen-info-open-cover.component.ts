@@ -143,6 +143,8 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     time: ''
   }
 
+  saveParams: any = {};
+
   constructor( private modalService: NgbModal, private underwritingService: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -228,9 +230,9 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.projectOcData.duration           =  data.policyOc.project.duration;
           this.projectOcData.testing            =  data.policyOc.project.testing;
           this.projectOcData.prCreateUser       =  data.policyOc.project.prCreateUser;
-          this.projectOcData.prCreateDate       =  data.policyOc.project.prCreateDate;
+          this.projectOcData.prCreateDate       =  this.ns.toDateTimeString(data.policyOc.project.prCreateDate);
           this.projectOcData.prUpdateUser       =  data.policyOc.project.prUpdateUser;
-          this.projectOcData.prUpdateDate       =  data.policyOc.project.prUpdateDate;
+          this.projectOcData.prUpdateDate       =  this.ns.toDateTimeString(data.policyOc.project.prUpdateDate);
 
           this.inceptionDateParams.date         =  this.ns.toDateTimeString(this.genInfoOcData.inceptDate).split('T')[0];
           this.inceptionDateParams.time         =  this.ns.toDateTimeString(this.genInfoOcData.inceptDate).split('T')[1];
@@ -269,9 +271,6 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     this.projectOcData.prUpdateDate = this.ns.toDateTimeString(0);
     this.projectOcData.prUpdateUser = this.currentUser;
 
-    console.log(this.genInfoOcData.effDate.length);
-    console.log(this.genInfoOcData);
-    console.log(this.projectOcData);
   }
 
   onClickSave(){
@@ -287,18 +286,80 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
       this.dialogIcon = 'info';
       $('#successDialog #modalBtn').trigger('click');
     }else{
+      this.saveParams = {
+        "acctDate": this.genInfoOcData.acctDate,
+        "altNo": this.genInfoOcData.altNo,
+        "cedingId": this.genInfoOcData.cedingId,
+        "cessionId": this.genInfoOcData.cessionId,
+        "coRefNo": this.genInfoOcData.coRefNo,
+        "coSeriesNo": this.genInfoOcData.coSeriesNo,
+        "contractorId": this.genInfoOcData.contractorId,
+        "createDate": this.genInfoOcData.createDate,
+        "createUser": this.genInfoOcData.createUser,
+        "currencyCd": this.genInfoOcData.currencyCd,
+        "currencyRt": this.genInfoOcData.currencyRt,
+        "distDate": this.genInfoOcData.distDate,
+        "duration": this.projectOcData.duration,
+        "effDate": this.genInfoOcData.effDate,
+        "expiryDate": this.genInfoOcData.expiryDate,
+        "inceptDate": this.genInfoOcData.inceptDate,
+        "insuredDesc": this.genInfoOcData.insuredDesc,
+        "intmId": this.genInfoOcData.intmId,
+        "issueDate": this.genInfoOcData.issueDate,
+        "lapseFrom": this.genInfoOcData.lapseFrom,
+        "lapseTo": this.genInfoOcData.lapseTo,
+        "lineCd": this.genInfoOcData.lineCd,
+        "lineClassCd": this.genInfoOcData.lineClassCd,
+        "maxSi": this.projectOcData.totalSi,
+        "objectId": this.projectOcData.objectId,
+        "ocSeqNo": this.genInfoOcData.ocSeqNo,
+        "ocYear": this.genInfoOcData.ocYear,
+        "policyIdOc": this.genInfoOcData.policyIdOc,
+        "prinId": this.genInfoOcData.prinId,
+        "projUpdateDate": this.projectOcData.prUpdateDate,
+        "projUpdateUser": this.projectOcData.prCreateUser,
+        "projCreateDate": this.projectOcData.prCreateDate,
+        "projCreateUser": this.projectOcData.prCreateUser,
+        "projDesc": this.projectOcData.projDesc,
+        "projId": this.projectOcData.projId,
+        "quoteId": this.genInfoOcData.quoteId,
+        "refOpPolNo": this.genInfoOcData.refOpPolNo,
+        "reinsurerId": this.genInfoOcData.reinsurerId,
+        "riBinderNo": this.genInfoOcData.riBinderNo,
+        "riskId": this.projectOcData.riskId,
+        "site": this.projectOcData.site,
+        "status": this.genInfoOcData.status,
+        "testing": this.projectOcData.testing,
+        "updateDate": this.genInfoOcData.updateDate,
+        "updateUser":this.genInfoOcData.updateUser 
+      };
+
       $('#confirm-save #modalBtn2').trigger('click');
     }
   }
 
   saveQuoteGenInfoOc(cancelFlag?){
       this.cancelFlag = cancelFlag !== undefined;
-      setTimeout(()=>{
+      /*setTimeout(()=>{
         this.dialogIcon = '';
         this.dialogMessage = '';
         $('#successDialog #modalBtn').trigger('click'); 
         this.form.control.markAsPristine();
-      }, 100);
+      }, 100);*/
+      this.underwritingService.savePolGenInfoOc(this.saveParams).subscribe((data: any)=>{
+        console.log(data);
+        if(data.returnCode === 0){
+          this.dialogIcon = 'error';
+          this.dialogMessage = 'An unspecified error has occured';
+          $('#successDialog #modalBtn').trigger('click'); 
+          //this.form.control.markAsPristine();
+        }else{
+          this.dialogIcon = '';
+          this.dialogMessage = '';
+          $('#successDialog #modalBtn').trigger('click'); 
+          this.form.control.markAsPristine();
+        }
+      });
   }
 
   showIntLOV(){
