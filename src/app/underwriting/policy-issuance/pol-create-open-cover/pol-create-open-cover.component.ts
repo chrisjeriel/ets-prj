@@ -319,6 +319,10 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
       }else{
         this.clearFields();
+        this.selectedOpt.optionId = '';
+        this.selectedOpt.condition = '';
+        this.passDataOptionLOV.tableData = [];
+        this.optListTable.refreshTable();
       }
     }
 }
