@@ -191,6 +191,8 @@ export class QuoAlopComponent implements OnInit {
            }else{
               // for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
                 for(var i = 0; i < data.quotation.optionsList.length; i++){
+                 console.log(data.quotation.optionsList[i].otherRatesList);
+                 data.quotation.optionsList[i].optionRt = data.quotation.optionsList[i].otherRatesList.find(a=>a.coverCdDesc==='Advance Loss of Profit').rate;
                  this.quoteOptionsData.tableData.push(data.quotation.optionsList[i]);
               }
               
@@ -201,6 +203,7 @@ export class QuoAlopComponent implements OnInit {
 
     getAlop(){
       this.quotationService.getALop(this.quotationInfo.quoteId,'').subscribe((data: any) => {
+        console.log(data)
              this.loading = false;
              if(data.quotation != null){
               this.quoteId = data.quotation.quoteId;
@@ -473,7 +476,7 @@ export class QuoAlopComponent implements OnInit {
      this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
        var sectionCover = data.quotation.project.coverage.sectionCovers;
        for(var i=0;i < sectionCover.length;i++){
-         if(sectionCover[i].coverCdAbbr == 'ALOP'){
+         if(sectionCover[i].description == 'Advance Loss of Profit'){
              this.alopSI = sectionCover[i].sumInsured;
          }
        }
