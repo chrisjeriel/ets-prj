@@ -118,12 +118,14 @@ export class SpoilPolAltComponent implements OnInit {
 			console.log(data);
 			var rec = data['policyList'];
 			for(let i of rec){
-				this.passData.tableData.push({
-					policyNo		: i.policyNo,
-					cedingName		: i.cedingName,
-					insuredDesc		: i.insuredDesc,
-					riskName		: i.project.riskName
-				});
+				//if(i.statusDesc.toUpperCase() === 'IN FORCE' || i.statusDesc.toUpperCase() === 'DISTRIBUTED'){
+					this.passData.tableData.push({
+						policyNo		: i.policyNo,
+						cedingName		: i.cedingName,
+						insuredDesc		: i.insuredDesc,
+						riskName		: i.project.riskName
+					});
+				//}
 			}
 			this.table.refreshTable();
 		});
@@ -217,6 +219,7 @@ export class SpoilPolAltComponent implements OnInit {
 		this.spoilPolRecord.reasonDesc		= '';
 		this.type 							= "text";
 		this.postBtnEnabled					= false;
+		this.reasonLovEnabled				= false;
 	}
 
 }

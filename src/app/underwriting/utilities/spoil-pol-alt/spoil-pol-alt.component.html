@@ -148,10 +148,9 @@
 							<div class="input-group">
 								<div class="col-sm-1" style="margin-right: 49px !important"></div>
 								<label class="form-control-sm col-sm-2">Reason for Spoilage</label>
-									<input class="form-control form-control-sm  col-sm-1" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason()"  *ngIf="reasonLovEnabled">
-									<div *ngIf="reasonLovEnabled" style="z-index: -1"><div class="text-search-ico" style="padding-left: 1px" (click)="getSpoilList()" ><a><i class="fa fa-search"></i></a></div>&nbsp;</div>
-									<input class="form-control form-control-sm  col-sm-1 dsbld" readonly type="text" *ngIf="!reasonLovEnabled">
-									<div *ngIf="!reasonLovEnabled" style="z-index: -1"><div class="text-search-ico" style="padding-left: 1px" ><i class="fa fa-search"></i></div>&nbsp;</div>
+									<input *ngIf="reasonLovEnabled" class="form-control form-control-sm  col-sm-1" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason()">
+									<div *ngIf="reasonLovEnabled" class="text-search-ico" style="padding-left: 1px" (click)="getSpoilList()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+									<input  *ngIf="!reasonLovEnabled" class="form-control form-control-sm  col-sm-1" readonly type="text" style="margin-right: 1px !important;     margin-left: -5px !important;">
 								<input class="form-control form-control-sm col-sm" type="text" style="margin-left: 2px;" readonly [(ngModel)]="spoilPolRecord.reasonDesc">
 								<div class="col-sm-2" style="margin-left: 50px !important;"></div>
 							</div>
