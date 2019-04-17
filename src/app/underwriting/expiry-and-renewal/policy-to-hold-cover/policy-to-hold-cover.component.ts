@@ -122,7 +122,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	retrievePolHoldCov(policyId: string, policyNo: string){
 		this.approveListMethod(policyId);
-		this.us.retrievePolHoldCover(policyId, '').subscribe((data: any)=>{
+		this.us.retrievePolHoldCover(policyId,'').subscribe((data: any)=>{
 			console.log(data);
 			for(let rec of data.policy.holdCoverList){
 				if(rec.status !== '6' || rec.status !== '5'){
@@ -288,6 +288,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.modalService.dismissAll();
 		this.polHoldCoverParams.policyId = this.policyInfo.policyId;
 		this.polHoldCoverParams.lineCd = this.policyInfo.policyNo.split('-')[0];
+		this.tempPolNo = this.policyInfo.policyNo.split('-');
 		//if selected policy is already in hold cover
 		if(this.policyInfo.statusDesc === 'On Hold Cover'){
 			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo);

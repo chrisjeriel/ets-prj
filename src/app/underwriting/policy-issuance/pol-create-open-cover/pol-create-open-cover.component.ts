@@ -98,6 +98,10 @@ export class PolCreateOpenCoverComponent implements OnInit {
     cancelFlag: boolean = false;
 
     currentLineCd: string = '';
+
+    isType: boolean = false;
+    isIncomplete: boolean = true;
+    noDataFound: boolean = false;
     
     constructor(private titleService: Title, private router: Router, private ns: NotesService, 
                 private us: UnderwritingService, private qs: QuotationService, private modalService: NgbModal,
@@ -134,8 +138,11 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     setDetails(){
+        this.noDataFound = false;
+        this.isIncomplete = false;
         this.quoteData.quoteId = this.selectedQuote.quoteId;
         this.quoteData.quoteNo = this.selectedQuote.quotationNo;
+        this.tempQuoteNo = this.quoteData.quoteNo.split('-');
         this.currentLineCd = this.selectedQuote.quotationNo.split('-')[0];
         this.quoteData.cedingName = this.selectedQuote.cedingName;
         this.quoteData.insuredDesc = this.selectedQuote.insuredDesc;
@@ -180,6 +187,8 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     showLOV() {
+      this.isType = false;
+      this.selectedQuote = null;
       this.getQuoteListing();
       $('#polLovMdl > #modalBtn').trigger('click');
     }
@@ -190,13 +199,52 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     getQuoteListing() {
       this.quListTable.loadingFlag = true;
-      this.qs.getQuoProcessingData([{key: 'status', search: 'RELEASED'}]).subscribe(data => {
+      console.log(this.noDataFound);
+      this.qs.getQuoProcessingData([{key: 'status', search: 'RELEASED'},{key: 'quotationNo', search: this.noDataFound ? '' : this.tempQuoteNo.join('%-%')}]).subscribe(data => {
         this.quotationList = data['quotationList'];
-        this.passDataLOV.tableData = this.quotationList.filter(a=>{return a.openCoverTag === 'Y';}).map(q => { q.riskName = q.project.riskName; return q; });
-        setTimeout(()=>{
-            this.quListTable.refreshTable();
-            this.quListTable.loadingFlag = false;
-        }, 0)
+        if(this.quotationList.length !== 0){
+          this.noDataFound = false;
+          this.passDataLOV.tableData = this.quotationList.filter(a=>{return a.openCoverTag === 'Y';}).map(q => { q.riskName = q.project.riskName; return q; });
+          if(this.isType && !this.isIncomplete){
+            console.log('isType');
+            this.isIncomplete = false;
+            this.quoteData                     = this.passDataLOV.tableData[0];
+            this.quoteData.quoteNo             = this.quoteData.quotationNo;
+            this.currentLineCd                 = this.quoteData.quoteNo.split('-')[0];
+            this.tempQuoteNo                   = this.quoteData.quoteNo.split('-');
+            this.splitQuoteNo                  = this.quoteData.quoteNo.split('-');
+            this.optionData.optionId           = '';
+            this.optionData.condition          = '';
+            this.selectedOpt.optionId          = '';
+            this.selectedOpt.condition         = '';
+            this.inceptDate.date               = this.ns.toDateTimeString(0).split('T')[0];
+            //this.inceptDate.time = new Date();
+            this.expiryDate.date               = this.ns.toDateTimeString(new Date().setFullYear(new Date().getFullYear() + 1)).split('T')[0];
+            //this.expiryDate.time = new Date();
+            this.getCutOffTime(this.currentLineCd);
+            this.getOptionLOV(this.quoteData.quoteId);
+            this.form.control.markAsDirty();
+          }
+          setTimeout(()=>{
+              this.quListTable.refreshTable();
+              this.quListTable.loadingFlag = false;
+          }, 0)
+        }
+        else{
+          this.noDataFound = true;
+          this.passDataLOV.tableData = [];
+          if(this.isType){
+            this.clearFields();
+            this.selectedOpt.optionId = '';
+            this.selectedOpt.condition = '';
+            this.passDataOptionLOV.tableData = [];
+            this.optListTable.refreshTable();
+            //this.tempPolNoContainer = ['','','','','',''];
+            setTimeout(()=>{
+              this.showLOV();
+            }, 100);
+          }
+        }
       });
     }
 
@@ -284,6 +332,17 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     searchQuoteNoFields(data: string, key: string){
+      this.isType = true;
+
+      if(data.length === 0 ){
+        this.isIncomplete = true;
+        this.clearFields();
+        this.selectedOpt.optionId = '';
+        this.selectedOpt.condition = '';
+        this.passDataOptionLOV.tableData = [];
+        this.optListTable.refreshTable();
+      }
+
       if(key === 'lineCd'){
         this.tempQuoteNo[0] = data.toUpperCase();
       }else if(key === 'year'){
@@ -310,19 +369,23 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     checkQuoteNoParams(){
-      console.log(this.tempQuoteNo);
-      if(this.tempQuoteNo[0].length !== 0 &&
-         this.tempQuoteNo[1].length !== 0 &&
-         this.tempQuoteNo[2].length !== 0 &&
-         this.tempQuoteNo[3].length !== 0 &&
-         this.tempQuoteNo[4].length !== 0){
-
-      }else{
-        this.clearFields();
-        this.selectedOpt.optionId = '';
-        this.selectedOpt.condition = '';
-        this.passDataOptionLOV.tableData = [];
-        this.optListTable.refreshTable();
-      }
+       if(this.isIncomplete){
+         console.log(this.tempQuoteNo);
+         if(this.tempQuoteNo[0].length !== 0 &&
+            this.tempQuoteNo[1].length !== 0 &&
+            this.tempQuoteNo[2].length !== 0 &&
+            this.tempQuoteNo[3].length !== 0 &&
+            this.tempQuoteNo[4].length !== 0){
+             this.isIncomplete = false;
+             this.getQuoteListing();
+         }else{
+           this.isIncomplete = true;
+           this.clearFields();
+           this.selectedOpt.optionId = '';
+           this.selectedOpt.condition = '';
+           this.passDataOptionLOV.tableData = [];
+           this.optListTable.refreshTable();
+         }
+       }
     }
 }
