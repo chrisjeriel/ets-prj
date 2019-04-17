@@ -119,7 +119,7 @@ export class PolEndorsementComponent implements OnInit {
             this.deductiblesData.uneditable = [true,true,false,false,false];
         }else{
             this.passData.dataTypes[0] = 'checkbox';
-            this.passData.uneditable = [true,true,true,true];
+            this.passData.uneditable = [true,true,true,true,true,true,true];
             this.passData.addFlag = false;
             this.passData.deleteFlag = false;
 

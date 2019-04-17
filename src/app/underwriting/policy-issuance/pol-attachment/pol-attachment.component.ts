@@ -25,7 +25,7 @@ export class PolAttachmentComponent implements OnInit {
     attachmentData: any = {
         tableData: [],
         tHeader: ['File Name', 'Description', 'Actions'],
-        dataTypes: ['string', 'string', 'Actions'],
+        dataTypes: ['string', 'string'],
         nData: new PolAttachmentInfo(null, null),
         checkFlag: true,
         addFlag: true,
@@ -60,7 +60,12 @@ export class PolAttachmentComponent implements OnInit {
           console.log('opencover');
           this.retrievePolAttachmentOc();
         }
-        console.log(this.policyInfo);
+        if(this.policyInfo.fromInq == 'true'){
+          this.attachmentData.checkFlag = false;
+          this.attachmentData.addFlag = false;
+          this.attachmentData.deleteFlag = false;
+          this.attachmentData.uneditable = [true,true,true,true];
+        }
     }
 
     retrievePolAttachment(){

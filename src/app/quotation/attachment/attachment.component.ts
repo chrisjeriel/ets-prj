@@ -148,12 +148,13 @@ export class AttachmentComponent implements OnInit {
 
     //neco
         if(this.inquiryFlag){
-          this.passData.tHeader.pop();
           this.passData.opts = [];
           this.passData.uneditable = [];
           this.passData.magnifyingGlass = [];
           this.passData.addFlag = false;
           this.passData.deleteFlag = false;
+          this.passData.checkFlag = false;
+          this.passData.uneditable=[true,true,true,true,true,]
           for(var count = 0; count < this.passData.tHeader.length; count++){
             this.passData.uneditable.push(true);
           }

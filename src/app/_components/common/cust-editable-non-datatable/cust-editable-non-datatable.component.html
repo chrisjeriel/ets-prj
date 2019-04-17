@@ -274,7 +274,7 @@ span.ui-column-resizer {
                                 </select>
                             </td>
                             <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
-                                <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData)">
+                                <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData) && (passData.uneditable===undefined || !passData.uneditable[passData.uneditable.length-1])">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="upload(data,$event)">
                                 </button>
                                <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">

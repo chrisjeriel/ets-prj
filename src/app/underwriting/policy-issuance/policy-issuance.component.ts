@@ -29,12 +29,13 @@ export class PolicyIssuanceComponent implements OnInit {
 
 
   alterFlag: boolean = false;
-  fromInq:boolean = false;
+  fromInq:any = false;
   approveText: string = "For Approval";
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
   theme =  window.localStorage.getItem("selectedTheme");
   status: string = "";
+  title: string = "Policy / Policy Issuance / Create Policy";
   
   constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router,private app: AppComponent) { }
 
@@ -50,6 +51,9 @@ export class PolicyIssuanceComponent implements OnInit {
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
+            if(this.fromInq == 'true'){
+              this.title = "Policy / Inquiry / Policy Inquiry";
+            }
         });   
 
   }
@@ -82,6 +86,13 @@ export class PolicyIssuanceComponent implements OnInit {
       if ($event.nextId === 'Exit') {
         this.router.navigateByUrl('');
       } 
+      if(this.fromInq=='true'){
+        setTimeout(a=>{
+          $('input').attr('readonly','readonly');
+          $('textarea').attr('readonly','readonly');
+          $('select').attr('readonly','readonly');
+        },0)
+      }
   
   }
 

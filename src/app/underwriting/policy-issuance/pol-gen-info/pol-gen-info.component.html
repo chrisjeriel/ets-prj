@@ -896,8 +896,8 @@
 				<div class="col-md-12 text-center">
 					<div class="cust-btn-container">
 						<button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
-						<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-						<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+						<button type="button" class="cust-btn" (click)="cancel()"  *ngIf="!fromInq"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="onClickSave()"  *ngIf="!fromInq"><a>Save</a></button>
 					</div>
 				</div>
 			</div>
@@ -1816,8 +1816,8 @@
 		<div class="col-md-12 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px;">
 				<button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
-				<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
-				<button type="button" class="cust-btn"><a>Save</a></button>
+				<button type="button" class="cust-btn" (click)="pol($event)"  *ngIf="!fromInq"><a>Cancel</a></button>
+				<button type="button" class="cust-btn"  *ngIf="!fromInq"><a>Save</a></button>
 			</div>
 		</div>
 	</div>
@@ -1863,7 +1863,7 @@
   </div>
   <div footer>
     <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-    <button class="cust-btn" type="button" (click)="saveDeductibles();"><a>Save</a></button>
+    <button class="cust-btn" type="button" (click)="saveDeductibles();" *ngIf="!fromInq"><a>Save</a></button>
   </div>
 </app-modal>
 
