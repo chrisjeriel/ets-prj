@@ -132,14 +132,14 @@
 								<div class="input-group">
 									<div class="col-sm-4"></div>
 									<label class="form-control-sm col-sm-3">User</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="spoilPolRecord.user" readonly>
 									<div class="col-sm-1"></div>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-3">Spoiled Date</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="{{ type }}" class="form-control form-control-sm col-sm" [(ngModel)]="spoilPolRecord.spoiledDate" readonly>
 									<div class="col-sm-5"></div>
 								</div>
 							</div>
@@ -162,8 +162,8 @@
 					<div class="form-group col-sm">
 						<div class="col-md-12 text-center">
 							<div class="cust-btn-container">
-								<button type="button" class="cust-btn"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" *ngIf="postBtnEnabled"><a>Post Spoilage</a></button>
+								<button type="button" class="cust-btn" (click)="validatePolicy()"><a>Cancel</a></button>
+								<button type="button" class="cust-btn" *ngIf="postBtnEnabled" (click)="onClickPostSpoilage()"><a>Post Spoilage</a></button>
 								<button type="button" class="cust-btn dsbld" disabled="disabled" *ngIf="!postBtnEnabled">Post Spoilage</button>
 							</div>
 						</div>
@@ -211,8 +211,21 @@
                         </div>
                     </div>
                 </div>
-
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
 </div>
+
+<app-modal class="d-none" id="warnMdl">
+    <div header style="width: 400px !important;">Warning</div>
+    <div body class="container-flex text-center">
+        <fieldset class="scheduler-border" style="padding-top: 10px !important;"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg1 }}</b></p>
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg2 }}</b></p>
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg3 }}</b></p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Ok</a></button>
+    </div>
+</app-modal>

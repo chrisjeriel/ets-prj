@@ -11,7 +11,6 @@ import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/con
 import { Subject } from 'rxjs';
 
 
-
 @Component({
 	selector: 'app-hold-cover',
 	templateUrl: './hold-cover.component.html',
@@ -23,6 +22,7 @@ export class HoldCoverComponent implements OnInit {
 	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 	@ViewChild('opt') opt: CustNonDatatableComponent;
 	@ViewChild('tabset') tabset: any;
+	@ViewChild(ConfirmLeaveComponent) conleave : ConfirmLeaveComponent;
 
 	tableData: any[] = [];
 	tHeader: any[] = [];
@@ -86,7 +86,7 @@ export class HoldCoverComponent implements OnInit {
 	searchParams2: any[] = [];
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
-		private decPipe: DecimalPipe, private ns : NotesService, private router: Router ) { 
+		private decPipe: DecimalPipe, private ns : NotesService, private router: Router) { 
 	}
 
 	qLine: string;
@@ -192,7 +192,6 @@ export class HoldCoverComponent implements OnInit {
 		this.passDataQuoteLOV.filters[0].enabled = false;
 		this.showAll = true;
 		this.cancelHcBtnEnabled = false;
-
 
 	}
 
@@ -669,6 +668,7 @@ export class HoldCoverComponent implements OnInit {
 			this.holdCover.preparedBy = '';
 			this.holdCover.approvedBy = '';
 			this.holdCover.optionId = '';
+			$('.ng-dirty').removeClass('ng-dirty');
 		}
 
 		onClickSave(){
@@ -694,8 +694,15 @@ export class HoldCoverComponent implements OnInit {
 
 		onTabChange($event: NgbTabChangeEvent) {
 			if ($event.nextId === 'Exit') {
-				$event.preventDefault();
+				if($('.ng-dirty').length != 0 ){
+					$event.preventDefault();
+				}else{
+					console.log('DIRTY');
+					$event.preventDefault();
+					this.router.navigateByUrl('hold-cover-monitoring');
+				}
 			}else{
+				console.log('EVENT ELSE ON TAB CHANGE');
 				if($('.ng-dirty').length != 0 ){
 			        $event.preventDefault();
 			        const subject = new Subject<boolean>();
@@ -843,6 +850,19 @@ export class HoldCoverComponent implements OnInit {
 			this.btnApprovalEnabled = false;
 			this.clickView = false;
 		}
+
+		// show(event){
+		// 	if($('.ng-dirty').length != 0 ){
+		// 	    event.preventDefault();
+		// 	 	const modal = this.modalService.open(ConfirmLeaveComponent,{
+		// 	            centered: true, 
+		// 	            backdrop: 'static', 
+		// 	            windowClass : 'modal-size'
+		// 	 	});
+		// 	}
+
+			       
+		// }
 
 
 }

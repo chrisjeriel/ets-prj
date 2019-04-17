@@ -7,7 +7,6 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <fieldset class="scheduler-border">
-                            <button type="button" (click)="show()">Click</button>
                             <legend class="scheduler-border">Quotation Info</legend>
                             <div class="col-sm-1"></div>
                             <div class="col-sm">
@@ -214,7 +213,7 @@
                 </div>
             </ng-template>
         </ngb-tab>
-         <ngb-tab id="Exit">
+         <ngb-tab id="Exit"  (click) = "onClickCancel()">
                 <ng-template ngbTabTitle>
                     <div (click) = "onClickCancel()">Exit</div>
                 </ng-template>

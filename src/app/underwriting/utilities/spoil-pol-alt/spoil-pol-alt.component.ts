@@ -74,17 +74,24 @@ export class SpoilPolAltComponent implements OnInit {
 		reasonDesc		 : null
 	}
 
-	rowRec			: any;
-	rowRecSpoil		: any;
-	searchParams	: any[] = [];
-	type			: string;
-	postBtnEnabled	: boolean = false;
-	reasonLovEnabled: boolean = false;
+	rowRec				: any;
+	rowRecSpoil			: any;
+	searchParams		: any[] = [];
+	type				: string;
+	postBtnEnabled		: boolean = false;
+	reasonLovEnabled	: boolean = false;
+	postSpoilage 		: any;
+	polStatus			: any;
+	polId				: any;
+	warnMsg1			: string = '';
+	warnMsg2			: string = '';
+	warnMsg3			: string = '';
 
 	constructor(private underwritingService: UnderwritingService, private ns: NotesService,private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Pol | Spoil Policy/Alteration');
+		
 	}
 
 	getPolGenInfo(){
@@ -105,6 +112,8 @@ export class SpoilPolAltComponent implements OnInit {
 			this.spoilPolRecord.acctDate 		 = this.ns.toDateTimeString(rec.acctDate).split('T')[0];
 			this.type 							 = "date";
 			this.reasonLovEnabled				 = true;
+			this.polStatus						 = rec.statusDesc;
+			this.polId							 = rec.policyId;
 		});
 	}
 
@@ -220,6 +229,36 @@ export class SpoilPolAltComponent implements OnInit {
 		this.type 							= "text";
 		this.postBtnEnabled					= false;
 		this.reasonLovEnabled				= false;
+	}
+
+	onClickPostSpoilage(){
+		const spoilStatus = 99 ; // status 99 = SPOILED in POL GEN INFO STATUS
+		if(this.polStatus.toUpperCase() === 'IN FORCE' || this.polStatus.toUpperCase() === 'DISTRIBUTED'){
+			this.spoilPolRecord.user  		= JSON.parse(window.localStorage.currentUser).username;
+			this.spoilPolRecord.spoiledDate = this.ns.toDateTimeString(0).split('T')[0];
+
+			this.postSpoilage = {
+				"policyId"		: this.polId,
+				"status"		: spoilStatus,
+				"updateUser"	: this.spoilPolRecord.user
+			}
+
+			this.underwritingService.updatePolicyStatus(JSON.stringify(this.postSpoilage))
+			.subscribe(data => {
+				console.log(data);
+				console.log('POSTING SPOILAGE SUCCESSFUL!');
+			});
+		}else{
+			console.log('POSTING SPOILAGE FAILED');
+		}
+		
+	}
+
+	validatePolicy(){
+		this.warnMsg1 = 'Policy/Alteration cannot be spoiled,';
+		this.warnMsg2 = 'creation of alteration connected';
+		this.warnMsg3 = 'to this record is on going.';
+		$('#warnMdl > #modalBtn').trigger('click');
 	}
 
 }
