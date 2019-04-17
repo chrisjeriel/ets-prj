@@ -219,6 +219,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
         }
         this.form.control.markAsDirty();
+        console.log(this.displayData)
     }
 
     onClickDelete() {
@@ -437,8 +438,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
             delete this.passData.tableData.lovInput;
         });
     }
-
-
 
     onClickLOV(data,key){
         let retData:any = {};

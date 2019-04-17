@@ -183,7 +183,8 @@ export class InwardPolBalanceComponent implements OnInit {
       delPolInward : [],
       saveOtherCharges : [],
       delOtherCharges : [],
-      newSavePolInward: []
+      newSavePolInward: [],
+      user: JSON.parse(window.localStorage.currentUser).username
     }
     for(let inst of this.passData.tableData){
       if(inst.edited && !inst.deleted && inst.instNo!==null){
