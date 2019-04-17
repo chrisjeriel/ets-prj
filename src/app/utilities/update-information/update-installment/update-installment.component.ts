@@ -42,12 +42,15 @@ export class UpdateInstallmentComponent implements OnInit {
   dialogIcon:string;
   dialogMsg: string = "";
   cancelFlag : boolean = false;
+  monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+  ];
 
   passDataInstallmentInfo: any = {
     tableData: [],
     tHeader: ["Inst No", "Due Date", "Booking Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
     dataTypes: ["number", "date", "date", "currency", "percent", "currency", "currency", "currency"],
-    total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],
+    /*total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],*/
     addFlag: true,
     deleteFlag: true,
     pageID: 1,
@@ -175,8 +178,31 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   onClickSave() {
-    if(this.instllmentTable.getSum('premAmt') == this.totalPrem) {
-      this.confirmSave
+    var hasError = false;
+    for(var i=0; i<this.instllmentTable.passData.tableData.length; i++) {
+      if(this.instllmentTable.passData.tableData[i].add != undefined || this.instllmentTable.passData.tableData[i].edited) {
+        var d = new Date();
+        d.setDate(d.getDate() + 1);
+        if((new Date(this.instllmentTable.passData.tableData[i].bookingDate)).getTime() < d.getTime()) {
+          hasError = true;
+          this.dialogIcon = 'error-message';
+          this.dialogMsg = 'The booking date is already closed. The earliest open booking month is ' 
+                        + this.monthNames[d.getMonth()] + ' ' + (d.getFullYear());
+          break;
+        }
+      }
+    }
+
+    if(this.instllmentTable.getSum('premAmt') != this.totalPrem) {
+      hasError = true;
+      this.dialogIcon = 'error-message';
+      this.dialogMsg = 'Total Premium must be equal to the sum of premium per installment.';
+    }
+
+    if(!hasError) {
+      this.confirmSave.confirmModal();
+    }else {
+      this.successDialog.open();
     }
   }
 

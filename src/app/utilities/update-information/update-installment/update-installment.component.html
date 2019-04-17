@@ -12,29 +12,28 @@
                 <div class="col-sm-8">
                   <div class="input-group " style="margin-bottom: -4px !important;">
                     <label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Policy No</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[0]" ngbTooltip="Line">
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[1]" style="margin-left: 3px;"
-                      ngbTooltip="Year">
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[0]" ngbTooltip="Line" (change)="search('lineCd', $event)" appRequired>
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[1]" style="margin-left: 3px;" (change)="search('seqNo',$event)"
+                      ngbTooltip="Year" appRequired>
                     <input type="text" class="form-control form-control-sm col-sm-3 cap-input" [ngModel]="polNo[2]" style="margin-left: 3px;"
-                      ngbTooltip="Sequence No">
+                      ngbTooltip="Sequence No" appRequired>
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[3]" style="margin-left: 3px;"
-                      ngbTooltip="Co Code">
+                      ngbTooltip="Co Code" appRequired>
                     <input type="text" class="form-control form-control-sm col-sm-2 cap-input" [ngModel]="polNo[4]" style="margin-left: 3px;"
-                      ngbTooltip="Co Series No">
+                      ngbTooltip="Co Series No" appRequired>
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[5]" style="margin-left: 3px;"
-                      ngbTooltip="Alt No">
+                      ngbTooltip="Alt No" appRequired>
                     <span>&nbsp;</span>
                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
+                    <span>&nbsp;</span>
+                    <div class="text-center">
+                    <div class="cust-btn-container">
+                      <button type="button" class="cust-btn"><a>Clear</a></button>
+                    </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-2"></div>
               </div>
-              <!-- <div class="text-center" style="margin-top: 3px !important;">
-                <div class="cust-btn-container">
-                  <button type="button" class="cust-btn"><a>Clear</a></button>
-                  <button type="button" class="cust-btn"><a>Search</a></button>
-                </div>
-              </div> -->
             </div>
           </fieldset>
         </div>
@@ -47,13 +46,13 @@
                 <div class="col-sm-6">
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3" style="margin-left: -17px !important;">Ceding Company</label>
-                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="cedingName">
+                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="cedingName" readonly>
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="input-group" style="padding-right: 38px !important;">
                     <label class="form-control-sm col-sm-3" style="margin-left: -86px !important;">Risk</label>
-                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="riskName">
+                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="riskName" readonly>
                   </div>
                 </div>
               </div>
@@ -62,7 +61,7 @@
                 <div class="col-sm-6">
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3" style="margin-left: -17px !important;">Insured</label>
-                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredDesc">
+                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredDesc" readonly>
                   </div>
                 </div>
                 <div class="col-sm-6">
@@ -70,13 +69,13 @@
                     <div class="col-sm-4">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-4" style="margin-left: -14px !important;">Currency</label>
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;" [(ngModel)]="currency">
+                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;" [(ngModel)]="currency" readonly>
                       </div>
                     </div>
                     <div class="col-sm-8" style="padding-right: 53px !important;">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-4" style="margin-left: -36px !important;">Total Premium</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="totalPrem | number:'1.2-2'">
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="totalPrem | number:'1.2-2'" readonly>
                       </div>
                     </div>
                   </div>
@@ -115,7 +114,7 @@
             <div class="text-center" style="margin-top: 8px !important;">
               <div class="cust-btn-container">
                 <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-                <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
               </div>
             </div>
           </div>

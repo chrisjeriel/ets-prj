@@ -1025,7 +1025,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (change)="checkCode($event, 'intermediary')">
 										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.intmName" readonly>
 									</div>
@@ -1059,8 +1059,8 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-5" for="xx">Previous Inception
 										Date</label>
-										<input type="date" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" readonly>
-										<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]" readonly>
+										<input type="date" class="form-control form-control-sm col-sm" [ngModel]="prevInceptDate?.split('T')[0]" (ngModelChange)="prevInceptDate=$event+'T'+prevInceptDate.split('T')[1]" readonly>
+										<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="prevInceptDate?.split('T')[1]" readonly>
 										<div class="col-sm-1"></div>
 									</div>
 									<div class="input-group">
@@ -1630,8 +1630,8 @@
 							<div class="custom-row-inline-inset">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">Previous Effective Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" readonly>
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" readonly>
+									<input type="date" class="form-control form-control-sm" [ngModel]="prevEffDate?.split('T')[0]" (ngModelChange)="prevEffDate=$event+'T'+prevEffDate.split('T')[1]" readonly>
+									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="prevEffDate?.split('T')[1]" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">This Alteration Effective Date</label>
