@@ -151,7 +151,7 @@ const appRoutes: Routes = [
     { path: 'pol-dist-list', component: PolDistListComponent },
     { path: 'pol-dist', component: PolDistComponent },
     { path: 'policy-dist', component: PolicyDistributionComponent },
-    { path: 'create-open-cover', component: PolCreateOpenCoverComponent },
+    { path: 'create-open-cover', component: PolCreateOpenCoverComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent },
     { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
     { path: 'update-info', component: UpdateInformationComponent },

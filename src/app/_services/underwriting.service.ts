@@ -559,6 +559,24 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachment', JSON.stringify(params), header);
     }
 
+    savePolAttachmentOc(policyIdOc:number ,savePolAttachments: any[], deletePolAttachments: any[]){
+        /*const params = new HttpParams()
+             .set('quoteId',quoteId.toString())
+             .set('attachmentsList',JSON.stringify(attachmentList))*/
+             
+        let params:any  = {
+            policyId: policyIdOc,
+            savePolAttachments: savePolAttachments,
+            deletePolAttachments: deletePolAttachments
+        }
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachmentOc', JSON.stringify(params), header);
+    }
+
     savePolHoldCover(holdCoverParams: any){
         let header : any = {
             headers: new HttpHeaders({
@@ -825,6 +843,24 @@ export class UnderwritingService {
              .set('altNo',(altNo === null || altNo === undefined ? '' : altNo));
         //return   this.http.get("http://localhost:8888/api/undewriting-service/retrievePolCoverage",{params});
         return  this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolCoverageAlt",{params});
+    }
+
+    getPolGenInfoOc(policyIdOc: string, openPolicyNo: string){
+        const params = new HttpParams()
+            .set('policyIdOc', policyIdOc)
+            .set('openPolicyNo', openPolicyNo)
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolGenInfoOc",{params});
+    }
+
+    savePolGenInfoOc(params:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolGenInfoOc', params, header);
+        //return this.http.post('http://192.10.10.130:8888/api/underwriting-service/savePolGenInfoOc', params, header);
     }
 
 }            
