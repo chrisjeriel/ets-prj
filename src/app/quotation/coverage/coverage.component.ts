@@ -61,7 +61,7 @@ export class CoverageComponent implements OnInit {
       showMG: 1,
       createDate: '',
       createUser: JSON.parse(window.localStorage.currentUser).username,
-      description:null,
+      coverName:null,
       section:null,
       bulletNo:null,
       sumInsured:null,
@@ -76,9 +76,9 @@ export class CoverageComponent implements OnInit {
     checkboxFlag: true,
     pageLength: 'unli',
     widths:[60,90,225,110,1],
-    magnifyingGlass: ['description'],
+    magnifyingGlass: ['coverName'],
     uneditable: [true,false,false,false,false],
-    keys:['section','bulletNo','description','sumInsured','addSi'],
+    keys:['section','bulletNo','coverName','sumInsured','addSi'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -151,7 +151,6 @@ export class CoverageComponent implements OnInit {
       this.table.refreshTable();
         if(data.quotation.project == null){
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
-            console.log(data)
               for(var i=0; i< data.sectionCovers.length;i++){
                 if(data.sectionCovers[i].defaultTag == 'Y' ){
                    data.sectionCovers[i].sumInsured = 0;
@@ -206,7 +205,7 @@ export class CoverageComponent implements OnInit {
           }, 0)
 
       this.table.refreshTable();
-
+      this.getEditableCov();
       
     });
 
@@ -227,8 +226,6 @@ export class CoverageComponent implements OnInit {
           }
           this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         }
-
-
           setTimeout(() => {
             this.focusBlur();
           }, 0)
@@ -238,7 +235,6 @@ export class CoverageComponent implements OnInit {
   }
 
   validateSectionCover(){
-// start 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
       this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
         if(data.quotation.project != null){
           var matches = false;
@@ -250,7 +246,6 @@ export class CoverageComponent implements OnInit {
                  matches = true;
                  break;
               }
-// END 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
             }
             if(!matches){
               this.deletedData.push(InitialDatas[i])
@@ -276,6 +271,7 @@ export class CoverageComponent implements OnInit {
               this.editedData[this.editedData.length-1].createDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].createDate) ;
                this.editedData[this.editedData.length-1].updateDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].updateDate);
                this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
+               this.editedData[this.editedData.length -1].coverName = this.passData.tableData[i].coverName
           }else if(this.passData.tableData[i].deleted){
              this.deletedData.push(this.passData.tableData[i]);
              this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].createDate);
@@ -317,6 +313,19 @@ export class CoverageComponent implements OnInit {
 
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
+
+    for (var i =0; i < this.passData.tableData.length;i++){
+      if(this.passData.tableData[i].sumInsured == 0  && this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
+        this.errorFlag = true;
+      }
+    }
+
+    if(this.errorFlag){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Please check Sum Insured.';
+      this.successDiag.open();
+      return;
+    }
     this.prepareSaveData();
     /*if (this.editedData.length != 0 || this.deletedData.length!=0 || this.initialData.length != 0) {*/
       this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
@@ -350,7 +359,7 @@ export class CoverageComponent implements OnInit {
     });
   }
   cancel(){
-    this.cancelBtn.clickCancel();
+      this.cancelBtn.clickCancel();
   }
   
   sectionCoversLOV(data){
@@ -385,22 +394,22 @@ export class CoverageComponent implements OnInit {
     for(var i = 0; i<data.length;i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
       this.passData.tableData[this.passData.tableData.length - 1].coverCd = data[i].coverCd; 
-      this.passData.tableData[this.passData.tableData.length - 1].description = data[i].description;
+      this.passData.tableData[this.passData.tableData.length - 1].coverName = data[i].coverName;
       this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
       this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
       this.passData.tableData[this.passData.tableData.length - 1].sumInsured = 0;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
 
       //HIDE THE POWERFUL MAGNIFYING GLASS
-      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-      console.log(this.passData.tableData);
+      if(data[i].coverCd == 11){
+        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+        this.getEditableCov()
+
+      }else{
+        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      }
     }
     this.table.refreshTable();
-    
-    /*setTimeout(() => {
-      $('#2').find("input:text").focus();
-      console.log("Focused.");
-    }, 3000);*/
   }
 
   update(data){
@@ -444,6 +453,7 @@ export class CoverageComponent implements OnInit {
      
      //this.focusBlur();
      this.validateSectionCover();
+     this.getEditableCov();
      //this.cancel();  
   }
 
@@ -462,21 +472,32 @@ export class CoverageComponent implements OnInit {
   }
 
   onClickSave(){
-    for (var i =0; i < this.passData.tableData.length;i++){
-      if(this.passData.tableData[i].sumInsured == 0  && this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
-        this.errorFlag = true;
+      for (var i =0; i < this.passData.tableData.length;i++){
+         if(this.passData.tableData[i].sumInsured == 0  && this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
+           this.errorFlag = true;
+         }
+       }
+
+       if(this.errorFlag){
+         this.dialogIcon = 'error-message';
+         this.dialogMessage = 'Please check Sum Insured.';
+         this.successDiag.open();
+         this.errorFlag = false;
+       }else {
+          $('#confirm-save #modalBtn2').trigger('click');
+      }
+  }
+
+  getEditableCov(){
+    console.log(this.passData.tableData)
+    for(let data of this.passData.tableData){
+      if(data.uneditable === undefined){
+        data.uneditable = [];
+      }
+      if(data.coverCd == 11){    
+        data.uneditable.pop();
       }
     }
-
-    if(this.errorFlag){
-      this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Please check Sum Insured.';
-      this.successDiag.open();
-      this.errorFlag = false;
-    }else {
-      $('#confirm-save #modalBtn2').trigger('click');
-    }
-    
   }
 
 }
