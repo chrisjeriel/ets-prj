@@ -13,19 +13,19 @@
 							<div class="col-sm">
 								<div class="input-group " style="margin-bottom: -4px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Policy No</label>
-									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line" appRequired placement="bottom">
-									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Year" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' maxlength="4">
-									<input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Sequence No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='5' maxlength="5">
-									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Co Code" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='3' maxlength="3">
-									<input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Co Series No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='4' maxlength="4">
-									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Alt No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='3' maxlength="3">
+									<input id=line type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line" appRequired placement="bottom" [(ngModel)]="splitPolNo[0]" (ngModelChange)="searchPolNoFields($event, 'lineCd')" (change)="checkPolNoParams($event);">
+									<input id=year  [disabled]="disabledSearch" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Year" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' maxlength="4" [(ngModel)]="splitPolNo[1]" (ngModelChange)="searchPolNoFields($event, 'year')" (change)="checkPolNoParams($event);">
+									<input id=seqNo [disabled]="disabledSearch" type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Sequence No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='5' maxlength="5" [(ngModel)]="splitPolNo[2]" (ngModelChange)="searchPolNoFields($event, 'seqNo')" (change)="checkPolNoParams($event);">
+									<input id=coCode [disabled]="disabledSearch" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Co Code" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='3' maxlength="3" [(ngModel)]="splitPolNo[3]" (ngModelChange)="searchPolNoFields($event, 'coCode')" (change)="checkPolNoParams($event);">
+									<input id=coSeriesNo  [disabled]="disabledSearch" type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Co Series No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='4' maxlength="4" [(ngModel)]="splitPolNo[4]" (ngModelChange)="searchPolNoFields($event, 'coSeriesNo')" (change)="checkPolNoParams($event);">
+									<input id=altNo disabled type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Alt No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='3' maxlength="3" [(ngModel)]="splitPolNo[5]" (ngModelChange)="searchPolNoFields($event, 'altNo')" (change)="checkPolNoParams($event);">
 									<span>&nbsp;</span>
-									<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
+									<div id=search class="text-search-ico"><a><i id=searchicon class="fa fa-search" (click)="showLOV();"></i></a></div>
 									<button type="button" class="cust" style="margin-left: 10px ! important" (click)="clear()"><a>Clear</a></button>
 								</div>
 							</div>
@@ -112,7 +112,7 @@
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Insured</label>
-								<textarea class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [ngModel]="policyInfo.insuredDesc" style="font-size: 11px;" appRequired rows="3"></textarea>
+								<textarea id=insured class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [ngModel]="policyInfo.insuredDesc" style="font-size: 11px;" appRequired rows="3"></textarea>
 							</div>
 							<div class="input-group" style="margin-top: -3px">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Risk</label>

@@ -198,6 +198,7 @@ export class ParListingComponent implements OnInit {
     //Method for DB query
     searchQuery(searchParams){
         this.searchParams = searchParams;
+        console.log(this.searchParams);
         this.passDataListing.tableData = [];
         this.selectedPolicy = {};
         this.passDataListing.btnDisabled = true;

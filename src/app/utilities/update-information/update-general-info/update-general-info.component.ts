@@ -4,7 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-
+import { finalize } from 'rxjs/operators';
+ 
 @Component({
   selector: 'app-update-general-info',
   templateUrl: './update-general-info.component.html',
@@ -14,12 +15,16 @@ export class UpdateGeneralInfoComponent implements OnInit {
   @ViewChild('polLov') quListTable : CustNonDatatableComponent;
   typeOfCession:string='';
   searchParams: any[] = [];
+  searchParams2: any[] = [];
   fetchedData: any;
   selectedPolicy: any = {};
   disabledBool: boolean = true;
+  disabledSearch: boolean = false;
   disabledOldBool: boolean;
   chosenPolicy: any = [];
-
+  splitPolNo: string[] = [];
+  tempPolNo: string[] = ['', '', '', '', '','0'];
+  
   passDataLOV: any = {
       tableData: [],
       tHeader:["Policy No","Type of Cession","Ceding Company", "Insured", "Risk"],  
@@ -210,8 +215,35 @@ export class UpdateGeneralInfoComponent implements OnInit {
         this.policyInfo.project = {};
         this.disabledBool = true;
         this.typeOfCession = null;
+        this.splitPolNo = [];
+        this.tempPolNo = ['','','','','','0'];
+         $('#searchicon').removeClass('fa-spinner fa-spin')
+         $('#search').css('pointer-events', 'initial');
+         this.disabledSearch = false;
+         this.searchParams =[];
+         this.clearFields();
+         this.unhighlight();
      }
    
+  }
+
+  clearFields(){
+    $('#line').val("");
+    $('#year').val("");
+    $('#seqNo').val("");
+    $('#coCode').val("");
+    $('#coSeriesNo').val("");
+    $('#altNo').val("");
+  }
+
+  unhighlight(){
+    $('#line').css({"box-shadow": ""});
+    $('#year').css({"box-shadow": ""});
+    $('#seqNo').css({"box-shadow": ""});
+    $('#coCode').css({"box-shadow": ""});
+    $('#coSeriesNo').css({"box-shadow": ""});
+    $('#altNo').css({"box-shadow": ""});
+    $('#insured').css({"box-shadow": ""});
   }
 
   showLOV() {
@@ -258,12 +290,24 @@ export class UpdateGeneralInfoComponent implements OnInit {
 
        var res = Math.max.apply(Math,this.chosenPolicy.map(function(o){return o.policyid;}))
        console.log(res);
+       this.getPolicyDetails(res);
+        
+        }
 
-        this.us.getPolGenInfo(res,null).subscribe(data => {
+        this.passDataLOV.tableData = [];
+        this.unhighlight();
+        this.quListTable.refreshTable();
+    }
+
+    getPolicyDetails(obj){
+
+      this.us.getPolGenInfo(obj,null).subscribe(data => {
           var records = data['policy'];
           console.log(records);
           this.policyInfo.policyId = records.policyId;
           this.policyInfo.policyNo = records.policyNo;
+          this.splitPolNo = records.policyNo.split('-');
+          this.tempPolNo = records.policyNo.split('-');
           this.typeOfCession = records.cessionDesc;
           this.policyInfo.lineClassDesc = records.lineClassDesc;
           this.policyInfo.quotationNo = records.quotationNo;
@@ -294,15 +338,9 @@ export class UpdateGeneralInfoComponent implements OnInit {
           this.policyInfo.project.latitude = records.project.latitude;
           this.policyInfo.project.longitude = records.project.longitude;
         });
-        
-
-        }
-
-        this.passDataLOV.tableData = [];
-        this.quListTable.refreshTable();
-
-       
     }
+
+
 
 
     isEmptyObject(obj) {
@@ -322,7 +360,106 @@ export class UpdateGeneralInfoComponent implements OnInit {
     pad(num, size) {
       var s = num+"";
       while (s.length < size) s = "0" + s;
-      return s;
+
+      if (num === null){
+       return s ='';
+      } else {
+        return s;
+      }
     }
+
+    pad2(num, size) {
+    
+      if (this.isEmptyObject(num)){
+       return s = '';
+      } else {
+        var s = num+"";
+        while (s.length < size) s = "0" + s;
+
+
+        return s;
+      }
+    }
+
+    searchPolNoFields(data: string, key: string){
+      if(key === 'lineCd'){
+        this.tempPolNo[0] = data.toUpperCase();
+      }else if(key === 'year'){
+        this.tempPolNo[1] = data;
+      }else if(key === 'seqNo'){
+        this.tempPolNo[2] = this.pad2(data,5);
+      }else if(key === 'coCode'){
+        this.tempPolNo[3] = this.pad2(data,3);
+      }else if(key === 'coSeriesNo'){
+        this.tempPolNo[4] = this.pad2(data,4);
+      }else if(key === 'altNo'){
+        this.tempPolNo[5] = this.pad2(data,3);
+      }
+    }
+
+    checkPolNoParams(ev){
+
+      if(this.tempPolNo[0].length !== 0 &&
+         this.tempPolNo[1].length !== 0 &&
+         this.tempPolNo[2].length !== 0 &&
+         this.tempPolNo[3].length !== 0 &&
+         this.tempPolNo[4].length !== 0 &&
+         this.tempPolNo[5].length !== 0){
+         this.searchParams2 =[];
+         $('#searchicon').addClass('fa-spinner fa-spin');
+         $('#search').css('pointer-events', 'none');
+         var tempPolNum =  this.tempPolNo.join('-');
+         this.searchParams2.push(
+                               {
+                                 key: 'policyNo' , search: this.policyNo(tempPolNum) + '%'
+                               }
+                               );
+         console.log(this.searchParams2);
+         var records : any;
+         this.us.getParListing(this.searchParams2)
+         .pipe(
+           finalize(() => this.setDetailsPolicy(records) )
+           )
+         .subscribe(data => {
+            if(this.isEmptyObject(data['policyList'])) {
+              this.searchParams2 = [];
+              this.getPolListing();
+              this.clear();
+              $('#polLovMdl > #modalBtn').trigger('click');
+            } else {
+              records = data['policyList'];
+            }    
+         });
+
+      }else{
+         $('#searchicon').removeClass('fa-spinner fa-spin')
+         $('#search').css('pointer-events', 'initial');
+         this.tempPolNo[5] = this.pad(0,3);
+         this.splitPolNo[5] = this.pad(0,3);
+      }
+    }
+
+    setDetailsPolicy(obj){
+      this.chosenPolicy = [];
+      this.disabledBool = false;
+      $('#searchicon').removeClass('fa-spinner fa-spin')
+      $('#search').css('pointer-events', 'initial');
+       for(let rec of obj){
+            this.chosenPolicy.push(
+                                  {
+                                    policyid: rec.policyId, 
+                                    altNo : parseInt(rec.altNo)
+                                    }
+                                  );
+
+      }
+
+       console.log(this.chosenPolicy);
+       var res = Math.max.apply(Math,this.chosenPolicy.map(function(o){return o.policyid;}))
+       console.log(res);
+       this.getPolicyDetails(res);
+
+    }
+
 
 }
