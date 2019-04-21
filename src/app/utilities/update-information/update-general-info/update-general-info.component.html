@@ -67,21 +67,21 @@
 							</div>
 							<div class="input-group">
 								<label class="col-sm-1"></label>
-								<label class="form-control-sm col-sm-2" for="inputQuonum">Co Ref No</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [ngModel]="policyInfo.coRefNo">
+								<label class="form-control-sm col-sm-2" for="coRefNo">Co Ref No</label>
+								<input id=coRefNo type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [(ngModel)]="policyInfo.coRefNo" (change)="addNgDirty('coRefNo');">
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group" *ngIf="checkRetrocession()">
 								<label class="col-sm-1"></label>
-								<label class="form-control-sm col-sm-2" for="inputQuonum">Reinsurance From</label>
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Reinsurance From</label>  
 								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled>
 								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled>
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group" *ngIf="checkRetrocession()">
 								<label class="col-sm-1"></label>
-								<label class="form-control-sm col-sm-2" for="inputQuonum">RI Binder No</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm" >
+								<label class="form-control-sm col-sm-2" for="riBinderNo">RI Binder No</label>
+								<input id=riBinderNo type="text" class="form-control form-control-sm cust-sm col-sm" (change)="addNgDirty('riBinderNo');" >
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group">
@@ -111,8 +111,8 @@
 								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled [ngModel]="policyInfo.contractorName">
 							</div>
 							<div class="input-group">
-								<label class="form-control-sm col-sm-2" for="inputQuonum">Insured</label>
-								<textarea id=insured class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [ngModel]="policyInfo.insuredDesc" style="font-size: 11px;" appRequired rows="3"></textarea>
+								<label class="form-control-sm col-sm-2" for="insured">Insured</label>
+								<textarea id=insured class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [(ngModel)]="policyInfo.insuredDesc" style="font-size: 11px;" appRequired rows="3" (change)="addNgDirty('insured');"></textarea>
 							</div>
 							<div class="input-group" style="margin-top: -3px">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Risk</label>
@@ -145,10 +145,10 @@
 								<label class="form-control-sm col-sm-1" for="inputQuonum">Block</label>
 								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled [ngModel]="policyInfo.project.blockDesc">
 								<div class="input-group latLong" style="margin-top: -3px;">
-									<label class="form-control-sm col-sm-2" for="inputQuonum">Lat</label>
-									<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-4" [disabled]="disabledBool" [ngModel]="policyInfo.project.latitude" >
-									<label class="form-control-sm col-sm-2" for="inputQuonum">Long</label>
-									<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-4" [disabled]="disabledBool" [ngModel]="policyInfo.project.longitude">
+									<label class="form-control-sm col-sm-2" for="inputLat">Lat</label>
+									<input id=inputLat class="form-control form-control-sm cust-sm col-sm-4" [disabled]="disabledBool" [(ngModel)]="policyInfo.project.latitude" (change)="addNgDirty('inputLat');"  >
+									<label class="form-control-sm col-sm-2" for="inputLong">Long</label>
+									<input id=inputLong class="form-control form-control-sm cust-sm col-sm-4" [disabled]="disabledBool" [(ngModel)]="policyInfo.project.longitude" (change)="addNgDirty('inputLong');">
 								</div>
 							</div>
 						</div>
@@ -159,8 +159,8 @@
 
 				<div class="col-md-13 text-center" style="margin-top: 10px; margin-bottom: 5px;">
 					<div class="cust-btn-container">
-						<button type="button" class="cust-btn"><a>Cancel</a></button>
-						<button type="button" class="cust-btn"><a>Save</a></button>
+						<button type="button" class="cust-btn" (click)= onClickCancel()><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)= onClickSave()><a>Save</a></button>
 					</div>
 				</div>
 			</ng-template>
@@ -180,3 +180,7 @@
         </div>
     </div>
 </app-modal>
+
+<app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
+<app-sucess-dialog id="updatePolGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

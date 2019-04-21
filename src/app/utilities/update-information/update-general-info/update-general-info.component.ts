@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { finalize } from 'rxjs/operators';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+
  
 @Component({
   selector: 'app-update-general-info',
@@ -13,6 +15,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class UpdateGeneralInfoComponent implements OnInit {
   @ViewChild('polLov') quListTable : CustNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   typeOfCession:string='';
   searchParams: any[] = [];
   searchParams2: any[] = [];
@@ -24,15 +27,19 @@ export class UpdateGeneralInfoComponent implements OnInit {
   chosenPolicy: any = [];
   splitPolNo: string[] = [];
   tempPolNo: string[] = ['', '', '', '', '','0'];
+  cancelFlag: boolean;
+  loading: boolean = false;
+  dialogIcon: string = "";
+  dialogMessage: string = "";
   
   passDataLOV: any = {
       tableData: [],
-      tHeader:["Policy No","Type of Cession","Ceding Company", "Insured", "Risk"],  
+      tHeader:["Policy No","Type of Cession","Ceding Company", "Insured", "Risk", "Status"],  
       dataTypes: ["text","text","text","text","text"],
       pageLength: 10,
       resizable: [false,false,false,false,false],
       tableOnly: false,
-      keys: ['policyNo','cessionDesc','cedingName','insuredDesc','riskName'],
+      keys: ['policyNo','cessionDesc','cedingName','insuredDesc','riskName','status'],
       pageStatus: true,
       pagination: true,
       filters: [
@@ -326,6 +333,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
           this.policyInfo.insuredDesc = records.insuredDesc;
           this.policyInfo.riskName = records.project.riskName;
           this.policyInfo.projDesc = records.project.projDesc;
+          this.policyInfo.project.riskId = records.project.riskId;
           this.policyInfo.project.object = records.project.objectDesc;
           this.policyInfo.project.objectId = records.project.objectId;
           this.policyInfo.project.site = records.project.site;
@@ -405,6 +413,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
          this.tempPolNo[3].length !== 0 &&
          this.tempPolNo[4].length !== 0 &&
          this.tempPolNo[5].length !== 0){
+
          this.searchParams2 =[];
          $('#searchicon').addClass('fa-spinner fa-spin');
          $('#search').css('pointer-events', 'none');
@@ -414,7 +423,6 @@ export class UpdateGeneralInfoComponent implements OnInit {
                                  key: 'policyNo' , search: this.policyNo(tempPolNum) + '%'
                                }
                                );
-         console.log(this.searchParams2);
          var records : any;
          this.us.getParListing(this.searchParams2)
          .pipe(
@@ -422,10 +430,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
            )
          .subscribe(data => {
             if(this.isEmptyObject(data['policyList'])) {
-              this.searchParams2 = [];
-              this.getPolListing();
-              this.clear();
-              $('#polLovMdl > #modalBtn').trigger('click');
+              this.callModal();
             } else {
               records = data['policyList'];
             }    
@@ -440,26 +445,93 @@ export class UpdateGeneralInfoComponent implements OnInit {
     }
 
     setDetailsPolicy(obj){
+
       this.chosenPolicy = [];
       this.disabledBool = false;
       $('#searchicon').removeClass('fa-spinner fa-spin')
       $('#search').css('pointer-events', 'initial');
        for(let rec of obj){
-            this.chosenPolicy.push(
+           if (rec.statusDesc === 'In Force' || rec.statusDesc === 'Distributed') {
+                this.chosenPolicy.push(
                                   {
                                     policyid: rec.policyId, 
                                     altNo : parseInt(rec.altNo)
                                     }
                                   );
 
-      }
-
+            }  
+       }
+      
        console.log(this.chosenPolicy);
-       var res = Math.max.apply(Math,this.chosenPolicy.map(function(o){return o.policyid;}))
-       console.log(res);
-       this.getPolicyDetails(res);
+
+       if (this.isEmptyObject(this.chosenPolicy)){
+         this.callModal();
+       } else {
+         var res = Math.max.apply(Math,this.chosenPolicy.map(function(o){return o.policyid;}))
+         console.log(res);
+         this.getPolicyDetails(res);
+       }
+    
 
     }
+
+    callModal(){
+              this.disabledBool = false;
+              this.searchParams2 = [];
+              this.getPolListing();
+              this.clear();
+              $('#polLovMdl > #modalBtn').trigger('click');
+    }
+
+    prepareParam(cancelFlag?){
+      this.cancelFlag = cancelFlag !== undefined;
+
+       var savePolGenInfoParam = {
+         "policyId"        : this.policyInfo.policyId,
+         "riskId"          : this.policyInfo.project.riskId,
+         "coRefNo"         : this.policyInfo.coRefNo,
+         "riBinderNo"      : this.policyInfo.riBinderNo,
+         "insuredDesc"     : this.policyInfo.insuredDesc,
+         "latitude"        : this.policyInfo.project.latitude,
+         "longitude"      : this.policyInfo.project.longitude,
+         "updateDate"      : this.ns.toDateTimeString(0),
+         "updateUser"      : JSON.parse(window.localStorage.currentUser).username
+       }
+
+       console.log(savePolGenInfoParam);
+/*       this.loading = true;*/
+
+        this.us.updatePolGenInfo(savePolGenInfoParam).subscribe(data => {
+           console.log(data);
+      /*     this.loading = false;*/
+           if(data['returnCode'] === 0) {
+              this.dialogIcon = 'error';
+              this.dialogMessage = data['errorList'][0].errorMessage;
+              $('#updatePolGenInfo #successModalBtn').trigger('click');
+          } else if (data['returnCode'] === -1) {           
+              this.dialogIcon = 'success-message';
+              this.dialogMessage = "Successfully Saved";
+              this.policyInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
+              this.policyInfo.updateDate  = this.ns.toDateTimeString(0);
+              $('#updatePolGenInfo #successModalBtn').trigger('click');
+        }
+
+        });
+
+    }
+
+   onClickSave(){
+    $('#confirm-save #modalBtn2').trigger('click');
+   }
+
+   onClickCancel(){
+    this.cancelBtn.clickCancel();
+  }
+
+  addNgDirty(obj){
+    $('#'+obj).addClass("ng-dirty");
+  }
+
 
 
 }
