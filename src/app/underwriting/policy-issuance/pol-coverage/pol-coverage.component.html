@@ -1,7 +1,7 @@
 
 
 <ng-container *ngIf="!alteration">
- <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
+ <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;" *ngIf="!policyInfo.fromSummary">
   <legend class="scheduler-border">Policy Record Info</legend>
   <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
     <div class="input-group" style="margin-bottom: -13px !important; margin-top: 0px !important">

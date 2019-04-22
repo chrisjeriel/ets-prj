@@ -218,7 +218,7 @@ export class QuoteOptionComponent implements OnInit {
            for(var count = 0; count < this.otherRatesData.tHeader.length; count++){
              this.otherRatesData.uneditable.push(true);
            }
-
+           delete this.optionsData.genericBtn;
          }
          //neco end
 

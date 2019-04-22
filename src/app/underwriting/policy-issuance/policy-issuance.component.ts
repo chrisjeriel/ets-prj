@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit, Input } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
@@ -23,10 +23,11 @@ export class PolicyIssuanceComponent implements OnInit {
         insuredDesc:'',
         riskId: '',
         fromInq: '',
-        showPolAlop: false
+        showPolAlop: false,
+        fromSummary:false
 
   }
-
+  @Input() fromSummary = false;
 
   alterFlag: boolean = false;
   fromInq:any = false;
@@ -54,6 +55,7 @@ export class PolicyIssuanceComponent implements OnInit {
             if(this.fromInq == 'true'){
               this.title = "Policy / Inquiry / Policy Inquiry";
             }
+            this.policyInfo.fromSummary = this.fromSummary;
         });   
 
   }

@@ -20,6 +20,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
         editPol:'',
         insuredDesc:'',
         riskId:'',
+        fromInq:''
     }
 
     alterFlag: boolean = false;
@@ -41,6 +42,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
+            this.policyInfo.fromInq = params['fromInq'];
         });
         /* Test Data */
         /*this.policyInfo.policyId = 9; 

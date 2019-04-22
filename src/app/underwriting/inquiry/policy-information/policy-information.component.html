@@ -90,6 +90,9 @@
                 	</div>
                 </div>
                 <fieldset class="scheduler-border"  style="padding-top: 5px !important;">
+                    <div class="w-100 text-center pb-1">
+                        <button (click)="gotoSum()" [disabled]="selectedPol!=null" class="cust-btn">Summarized Details</button>
+                    </div>
                 	<legend class="scheduler-border">Policy Details</legend>
                 	<app-cust-editable-non-datatable #alterationTable [passData]="passData" (newClick)="rowLick($event)"></app-cust-editable-non-datatable>
                 </fieldset>
@@ -98,7 +101,7 @@
                         <div class="col-md-13 text-center">
                             <div class="cust-btn-container" style="margin-top: 10px">
                                 <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="goToPolicy()" [disabled]="selectedPol===null"><a>Policy/Alteration</a></button>
-                                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="goToPDistribution()"><a>Distribution</a></button>
+                                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="goToPDistribution()" [disabled]="selectedPol===null"><a>Distribution</a></button>
                             </div>
                         </div>
                     </div>

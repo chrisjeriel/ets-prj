@@ -121,6 +121,7 @@ import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol
 import { PolOpenCovListComponent } from './underwriting/policy-issuance/pol-open-cov-list/pol-open-cov-list.component';
 import { PolHoldCovMonitoringComponent } from './underwriting/expiry-and-renewal/pol-hold-cov-monitoring/pol-hold-cov-monitoring.component';
 import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spoil-pol-alt.component';
+import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
 
 const appRoutes: Routes = [
 
@@ -251,6 +252,7 @@ const appRoutes: Routes = [
     { path: 'open-cover-list', component: PolOpenCovListComponent},
     { path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent},
     { path: 'spoil-pol-alt', component: SpoilPolAltComponent},
+    { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
