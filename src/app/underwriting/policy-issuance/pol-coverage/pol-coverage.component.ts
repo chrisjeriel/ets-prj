@@ -335,6 +335,23 @@ export class PolCoverageComponent implements OnInit {
       this.getPolCoverageAlt();
     }
 
+    //paul
+    if(this.policyInfo.fromInq =='true'){
+      console.log(this.policyInfo.fromInq)
+      this.passDataSectionCover.uneditable = [];
+      for(let i:number=0;i<this.passDataSectionCover.keys.length;i++){
+        this.passDataSectionCover.uneditable.push('true');
+      }
+      this.passDataSectionCover.checkFlag = false;
+      this.passDataSectionCover.addFlag = false;
+      this.passDataSectionCover.editFlag = false;
+      this.passDataDeductibles.addFlag = false;
+      this.passDataDeductibles.deleteFlag= false;
+      this.passDataDeductibles.checkFlag = false;
+      this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
+      this.passDataCATPerils.uneditable = [true,true,true]
+    }
+
   }
 
   getPolCoverageAlt(){

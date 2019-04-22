@@ -94,7 +94,8 @@ export class PolicyInformationComponent implements OnInit {
                                               statusDesc:this.policyInfo.statusDesc,
                                               riskName: this.policyInfo.project.riskName,
                                               insured: this.selectedPol.insured,
-                                              editPol: true
+                                              editPol: true,
+                                              status: this.selectedPol.status
                                               }], { skipLocationChange: true });
 
 
@@ -102,9 +103,7 @@ export class PolicyInformationComponent implements OnInit {
   }
   
   rowLick(data){
-    console.log(data)
     this.selectedPol = data;
-
   }
 
   onTabChange($event:NgbTabChangeEvent) {

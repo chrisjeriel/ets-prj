@@ -418,6 +418,7 @@ saveQuoteOptionAll(cancelFlag?){
        quoteId:this.quoteId,
        projId:this.projId,
        riskId:this.riskId,
+       user: JSON.parse(window.localStorage.currentUser).username,
        saveQuoteOptionsList:[],
        deleteQuoteOptionsList:[],
        saveDeductibleList:[],
