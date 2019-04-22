@@ -245,8 +245,36 @@ export class PolItemComponent implements OnInit {
         });
 
         console.log("policyInfo: " + JSON.stringify(this.policyInfo));
-
+        //paul
+        if(this.policyInfo.fromInq=='true'){
+            this.eeiPassData.checkFlag = false;
+            this.eeiPassData.addFlag = false;
+            this.eeiPassData.deleteFlag = false;
+            this.eeiPassData.uneditable = [true,true,true,true,true,true]
+            this.bpvPassData.checkFlag = false;
+            this.bpvPassData.addFlag = false;
+            this.bpvPassData.deleteFlag = false;
+            this.bpvPassData.uneditable = [true,true,true,true,true,true]
+            this.mlpPassData.checkFlag = false;
+            this.mlpPassData.addFlag = false;
+            this.mlpPassData.deleteFlag = false;
+            this.mlpPassData.uneditable = [true,true,true,true,true,true]
+            this.dosGoodsPassData.checkFlag = false;
+            this.dosGoodsPassData.addFlag = false;
+            this.dosGoodsPassData.deleteFlag = false;
+            this.dosGoodsPassData.uneditable = [true,true,true,true,true,true]
+            this.dosMachineryPassData.checkFlag = false;
+            this.dosMachineryPassData.addFlag = false;
+            this.dosMachineryPassData.deleteFlag = false;
+            this.dosMachineryPassData.uneditable = [true,true,true,true,true,true]
+            this.cecPassData.checkFlag = false;
+            this.cecPassData.addFlag = false;
+            this.cecPassData.deleteFlag = false;
+            this.cecPassData.uneditable = [true,true,true,true,true,true]
+        }
         this.getItem();
+
+
     }
 
     getItem(){
