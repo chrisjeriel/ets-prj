@@ -331,7 +331,16 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
         "status": this.genInfoOcData.status,
         "testing": this.projectOcData.testing,
         "updateDate": this.genInfoOcData.updateDate,
-        "updateUser":this.genInfoOcData.updateUser 
+        "updateUser":this.genInfoOcData.updateUser,
+
+        "regionCd":this.projectOcData.regionCd,
+        "provinceCd":this.projectOcData.provinceCd,
+        "cityCd":this.projectOcData.cityCd,
+        "districtCd":this.projectOcData.districtCd,
+        "blockCd":this.projectOcData.blockCd,
+        "latitude":this.projectOcData.latitude,
+        "longitude":this.projectOcData.longitude,
+
       };
 
       $('#confirm-save #modalBtn2').trigger('click');
