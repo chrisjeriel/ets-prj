@@ -89,7 +89,7 @@
           <fieldset class="scheduler-border">
             <legend class="scheduler-border">Installment Info</legend>
             <div class="custom-row-inline-inset">
-              <app-cust-editable-non-datatable #instllmentTable [passData]="passDataInstallmentInfo" (newClick)="updateOtherCharges($event)" (tableDataChange)="compute()" (onDelete)="delInst()"></app-cust-editable-non-datatable>
+              <app-cust-editable-non-datatable #instllmentTable [passData]="passDataInstallmentInfo" (newClick)="updateOtherCharges($event)" (tableDataChange)="calcComm(); compute();" (onDelete)="delInst()"></app-cust-editable-non-datatable>
             </div>
           </fieldset>
         </div>
@@ -142,4 +142,4 @@
 <app-lov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 <app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
 <app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/update-installment'" ></app-cancel-button>

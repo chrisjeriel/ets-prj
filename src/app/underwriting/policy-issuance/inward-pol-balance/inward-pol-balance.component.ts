@@ -186,6 +186,8 @@ export class InwardPolBalanceComponent implements OnInit {
       newSavePolInward: []
     }
     for(let inst of this.passData.tableData){
+        inst.commAmt = '';
+        inst.commRt = '';
       if(inst.edited && !inst.deleted && inst.instNo!==null){
         inst.dueDate     = this.ns.toDateTimeString(inst.dueDate);
         inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);

@@ -278,9 +278,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
               this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
             });
-          } else {
-            this.prevInceptDate = this.policyInfo.inceptDate;
-            this.prevEffDate = this.policyInfo.effDate;
           }
         }
 
@@ -530,6 +527,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.dialogMessage="Please check field values.";
       this.dialogIcon = "error";
       $('#polGenInfo > #successModalBtn').trigger('click');
+
+      setTimeout(()=>{$('.globalLoading').css('display','none');},0);
     }
     
     /*this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe(data => {

@@ -1167,10 +1167,10 @@
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
-								<label class="form-control-sm col-sm-2">Object</label>
+								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
 								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
-								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
+								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
@@ -1257,13 +1257,17 @@
 							<label class="form-control-sm col-sm-1">Risk</label>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
-							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
-							<label class="form-control-sm col-sm-1">Region</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+						<div class="input-group" style="margin-bottom: 0px !important;">
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
+								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
+							</div>
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
@@ -1339,13 +1343,17 @@
 							<label class="form-control-sm col-sm-1">Risk</label>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
-							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
-							<label class="form-control-sm col-sm-1">Region</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc">
+						<div class="input-group" style="margin-bottom: 0px !important;">
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
+								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
+							</div>
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items to be Insured</label>
@@ -1356,13 +1364,13 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly="">
 									</div>
 								</div>
 							</div>
@@ -1375,9 +1383,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
@@ -1416,13 +1424,17 @@
 							<label class="form-control-sm col-sm-1">Risk</label>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName">
 						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
-							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
-							<label class="form-control-sm col-sm-1">Region</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc">
+						<div class="input-group" style="margin-bottom: 0px !important;">
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
+								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
+							</div>
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items to be Insured</label>
@@ -1433,13 +1445,13 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
@@ -1452,9 +1464,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 							</div>
@@ -1485,13 +1497,17 @@
 							<label class="form-control-sm col-sm-1">Risk</label>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName">
 						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
-							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
-							<label class="form-control-sm col-sm-1">Region</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc">
+						<div class="input-group" style="margin-bottom: 0px !important;">
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
+								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
+							</div>
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items to be Insured</label>
@@ -1502,13 +1518,13 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
@@ -1521,9 +1537,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
@@ -1562,13 +1578,17 @@
 							<label class="form-control-sm col-sm-1">Risk</label>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName">
 						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm col-sm-5" [(ngModel)]="policyInfo.project.objectID" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
-							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
-							<label class="form-control-sm col-sm-1">Region</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc">
+						<div class="input-group" style="margin-bottom: 0px !important;">
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
+								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
+							</div>
+							<div class="col-sm-6 input-group" style="padding: 0px;">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items to be Insured</label>
@@ -1579,13 +1599,13 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
@@ -1598,9 +1618,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
