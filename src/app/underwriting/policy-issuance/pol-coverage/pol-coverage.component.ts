@@ -189,7 +189,7 @@ export class PolCoverageComponent implements OnInit {
     searchFlag: true,
     pageID: 'altCoverage',
     checkFlag: true,
-    magnifyingGlass: ['description'],
+    magnifyingGlass: ['coverName'],
     nData:{
       'section': null,
       'bulletNo': null,
@@ -211,7 +211,7 @@ export class PolCoverageComponent implements OnInit {
       "updateUser":JSON.parse(window.localStorage.currentUser).username,
       "showMG":1
     },
-    keys:['section','bulletNo','description','prevSumInsured','prevPremRt','prevPremAmt','sumInsured','premRt','premAmt','discountTag','addSi','cumSi','cumPremRt','cumPrem'],
+    keys:['section','bulletNo','coverName','prevSumInsured','prevPremRt','prevPremAmt','sumInsured','premRt','premAmt','discountTag','addSi','cumSi','cumPremRt','cumPrem'],
     uneditable:[true,true,false,true,true,true,false,false,false,false,false,true,true,true],
     widths:[55,65,140,90,90,90,90,90,90,80,50,90,90,90],
     pageLength:'unli'
@@ -967,10 +967,8 @@ export class PolCoverageComponent implements OnInit {
   saveCoverage(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    console.log(this.coverageData)
     this.underwritingservice.savePolCoverage(this.coverageData).subscribe((data: any) => {
       if(data['returnCode'] == 0) {
-        console.log('Check error')
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
         $('#successModalBtn').trigger('click');
@@ -978,7 +976,6 @@ export class PolCoverageComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         $('app-sucess-dialog #modalBtn').trigger('click');
-        console.log('Success')
         this.getPolCoverage();
         this.table.markAsPristine();
         this.editedData = [];
@@ -1003,7 +1000,6 @@ export class PolCoverageComponent implements OnInit {
     }  
     this.underwritingservice.saveCatPeril(this.catPerilData).subscribe((data:any) => {
       if(data['returnCode'] == 0) {
-        console.log('Check error')
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
         $('#successModalBtn').trigger('click');
@@ -1011,7 +1007,6 @@ export class PolCoverageComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         $('#successModalBtn').trigger('click');
-        console.log('Success')
         this.getPolCoverage();
         this.table.markAsPristine();
         this.editedData = [];
@@ -1419,7 +1414,7 @@ export class PolCoverageComponent implements OnInit {
       //this.validateSectionCover();
       for(var i = 0; i<data.length;i++){
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-        this.passData.tableData[this.passData.tableData.length - 1].description = data[i].description;
+        this.passData.tableData[this.passData.tableData.length - 1].coverName = data[i].coverName;
         this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
         this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
         this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;

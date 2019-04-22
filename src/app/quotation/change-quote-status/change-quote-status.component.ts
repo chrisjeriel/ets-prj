@@ -96,6 +96,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     getChangeQuote(){
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe((data:any) => {
+            this.passData.tableData = [];
             this.records = data.quotationList;
             console.log(this.records)
             for(let rec of this.records){
