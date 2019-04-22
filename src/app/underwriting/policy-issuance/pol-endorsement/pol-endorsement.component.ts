@@ -300,6 +300,7 @@ export class PolEndorsementComponent implements OnInit {
         }
         for(let endt of this.passData.tableData){
             if(!this.ocFlag){
+                console.log(endt.endtText);
                 let endtTextSplit = endt.endtText.match(/(.|[\r\n]){1,2000}/g);
                 endt.endtText = new Object();
                 if(endtTextSplit!== null)
@@ -359,7 +360,7 @@ export class PolEndorsementComponent implements OnInit {
                 }
             })
         }
-        else
+        else{
             this.underwritingService.savePolEndt(params).subscribe(data=>{
                 if(data['returnCode'] == -1){
                     this.dialogIcon = "success";
@@ -368,31 +369,34 @@ export class PolEndorsementComponent implements OnInit {
                 }else{
                     this.dialogIcon = "error";
                     this.successDiag.open();
-                    this.passData.tableData.forEach(a=>{
-                        if(a.endtText!=null){
-                            a.endtText =  (a.endtText.endtText01 === null ? '' :a.endtText.endtText01) + 
-                                         (a.endtText.endtText02 === null ? '' :a.endtText.endtText02) + 
-                                         (a.endtText.endtText03 === null ? '' :a.endtText.endtText03) + 
-                                         (a.endtText.endtText04 === null ? '' :a.endtText.endtText04) + 
-                                         (a.endtText.endtText05 === null ? '' :a.endtText.endtText05) + 
-                                         (a.endtText.endtText06 === null ? '' :a.endtText.endtText06) + 
-                                         (a.endtText.endtText07 === null ? '' :a.endtText.endtText07) + 
-                                         (a.endtText.endtText08 === null ? '' :a.endtText.endtText08) + 
-                                         (a.endtText.endtText09 === null ? '' :a.endtText.endtText09) + 
-                                         (a.endtText.endtText10 === null ? '' :a.endtText.endtText10) + 
-                                         (a.endtText.endtText11 === null ? '' :a.endtText.endtText11) + 
-                                         (a.endtText.endtText12 === null ? '' :a.endtText.endtText12) + 
-                                         (a.endtText.endtText13 === null ? '' :a.endtText.endtText13) + 
-                                         (a.endtText.endtText14 === null ? '' :a.endtText.endtText14) + 
-                                         (a.endtText.endtText15 === null ? '' :a.endtText.endtText15) + 
-                                         (a.endtText.endtText16 === null ? '' :a.endtText.endtText16) + 
-                                         (a.endtText.endtText17 === null ? '' :a.endtText.endtText17) ;
-                        }else{    
-                           a.endtText = ""
-                        }
-                    })
-            }
-        })
+                    
+                }
+            })
+            this.passData.tableData.forEach(a=>{
+                if(a.endtText!=null){
+                    a.endtText =  ""+(a.endtText.endtText01 == undefined || a.endtText.endtText01 == null ? '' :a.endtText.endtText01) + 
+                                 (a.endtText.endtText02 == undefined || a.endtText.endtText02 == null ? '' :a.endtText.endtText02) + 
+                                 (a.endtText.endtText03 == undefined || a.endtText.endtText03 == null ? '' :a.endtText.endtText03) + 
+                                 (a.endtText.endtText04 == undefined || a.endtText.endtText04 == null ? '' :a.endtText.endtText04) + 
+                                 (a.endtText.endtText05 == undefined || a.endtText.endtText05 == null ? '' :a.endtText.endtText05) + 
+                                 (a.endtText.endtText06 == undefined || a.endtText.endtText06 == null ? '' :a.endtText.endtText06) + 
+                                 (a.endtText.endtText07 == undefined || a.endtText.endtText07 == null ? '' :a.endtText.endtText07) + 
+                                 (a.endtText.endtText08 == undefined || a.endtText.endtText08 == null ? '' :a.endtText.endtText08) + 
+                                 (a.endtText.endtText09 == undefined || a.endtText.endtText09 == null ? '' :a.endtText.endtText09) + 
+                                 (a.endtText.endtText10 == undefined || a.endtText.endtText10 == null ? '' :a.endtText.endtText10) + 
+                                 (a.endtText.endtText11 == undefined || a.endtText.endtText11 == null ? '' :a.endtText.endtText11) + 
+                                 (a.endtText.endtText12 == undefined || a.endtText.endtText12 == null ? '' :a.endtText.endtText12) + 
+                                 (a.endtText.endtText13 == undefined || a.endtText.endtText13 == null ? '' :a.endtText.endtText13) + 
+                                 (a.endtText.endtText14 == undefined || a.endtText.endtText14 == null ? '' :a.endtText.endtText14) + 
+                                 (a.endtText.endtText15 == undefined || a.endtText.endtText15 == null ? '' :a.endtText.endtText15) + 
+                                 (a.endtText.endtText16 == undefined || a.endtText.endtText16 == null ? '' :a.endtText.endtText16) + 
+                                 (a.endtText.endtText17 == undefined || a.endtText.endtText17 == null ? '' :a.endtText.endtText17) ;
+                }else{    
+                   a.endtText = ""
+                }
+            })
+        }
+        
     }
 
 }
