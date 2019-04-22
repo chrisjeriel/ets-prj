@@ -10,7 +10,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 	styleUrls: ['./spoil-pol-alt.component.css']
 })
 export class SpoilPolAltComponent implements OnInit {
-	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+	@ViewChild('p') table: CustNonDatatableComponent;
 	@ViewChild('spoil') spoil: CustNonDatatableComponent;
 
 	passData : any = {
@@ -86,12 +86,16 @@ export class SpoilPolAltComponent implements OnInit {
 	warnMsg1			: string = '';
 	warnMsg2			: string = '';
 	warnMsg3			: string = '';
+	searchArr			: any[] = Array(6).fill('');
+	checkSpoilCd 		: number;
+
 
 	constructor(private underwritingService: UnderwritingService, private ns: NotesService,private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Pol | Spoil Policy/Alteration');
-		
+		this.getPolicyList();
+		this.getSpoilList();
 	}
 
 	getPolGenInfo(){
@@ -117,44 +121,82 @@ export class SpoilPolAltComponent implements OnInit {
 		});
 	}
 
-	getPolicyList(){
-		this.table.loadingFlag = true;
+	getPolicyList(param?){
+		console.log('here 1');
 		this.passData.tableData = [];
-		$('#polLov > #modalBtn').trigger('click');
-		this.underwritingService.getParListing(this.searchParams)
+		this.searchParams = param;
+		if(this.table) { this.table.loadingFlag = true; }
+		this.underwritingService.getParListing(this.searchParams === undefined ? [] : this.searchParams)
 		.subscribe(data => {
 			this.passData.tableData = [];
-			console.log(data);
 			var rec = data['policyList'];
-			for(let i of rec){
-				//if(i.statusDesc.toUpperCase() === 'IN FORCE' || i.statusDesc.toUpperCase() === 'DISTRIBUTED'){
-					this.passData.tableData.push({
-						policyNo		: i.policyNo,
-						cedingName		: i.cedingName,
-						insuredDesc		: i.insuredDesc,
-						riskName		: i.project.riskName
-					});
-				//}
-			}
+			rec = rec.filter(data => data.statusDesc.toUpperCase() === 'IN FORCE' || data.statusDesc.toUpperCase() === 'DISTRIBUTED')
+					 .map(data => {data.riskName = data.project.riskName; return data;});
+			this.passData.tableData = rec;
 			this.table.refreshTable();
+
+			if(rec.length === 0){
+				console.log('NO DATA FOUND');
+				if(this.spoilPolRecord.line !== null && this.spoilPolRecord.year !== null && this.spoilPolRecord.seqNo !== null && this.spoilPolRecord.coCode !== null && this.spoilPolRecord.coSeriesNo !== null && this.spoilPolRecord.altNo !== null ||
+					this.spoilPolRecord.line !== '' && this.spoilPolRecord.year !== '' && this.spoilPolRecord.seqNo !== '' && this.spoilPolRecord.coCode !== '' && this.spoilPolRecord.coSeriesNo !== '' && this.spoilPolRecord.altNo !== ''){
+					this.clearAll();
+					this.getPolicyList();
+					$('#polLov > #modalBtn').trigger('click');
+				}
+			}else{
+				if(rec.length === 1){
+					this.spoilPolRecord.policyNo = rec[0].policyNo;
+					this.getPolGenInfo();
+				}
+			}			
+
 		});
 	}
 
+	show(){
+		$('#polLov > #modalBtn').trigger('click');
+	}
+
+
 	getSpoilList(){
-		this.spoil.loadingFlag = true;
+		if(this.spoil){ this.spoil.loadingFlag = true; } 
 		this.passDataSpoilageReason.tableData = [];	
-		$('#spoilLov > #modalBtn').trigger('click')
 		this.mtnService.getMtnSpoilageReason('')
 		.subscribe(data => {
 			this.passDataSpoilageReason.tableData = []
 			console.log(data)
 			var rec = data['spoilageReason'];
-			this.passDataSpoilageReason.tableData = rec
-			this.spoil.refreshTable()
+
+			for(let i of rec){	
+				if(i.spoilCd === this.spoilPolRecord.reason){
+					this.checkSpoilCd++;
+					this.spoilPolRecord.reason = i.spoilCd;
+					this.spoilPolRecord.reasonDesc = i.description;
+				}
+			}
+			console.log(this.checkSpoilCd);
+			if(this.checkSpoilCd !== 1  && this.checkSpoilCd !== undefined){
+				this.spoilPolRecord.reason = '';
+				this.spoilPolRecord.reasonDesc = '';
+				this.passDataSpoilageReason.tableData = rec;
+				this.spoil.refreshTable();
+				this.showLovSpoil();
+			}else{
+				this.passDataSpoilageReason.tableData = rec;
+				this.spoil.refreshTable();
+			}
+			
+			
 		});
 	}
 
+	showLovSpoil(){
+		$('#spoilLov > #modalBtn').trigger('click');
+	}
+
 	onChangeReason(){
+		this.checkSpoilCd = 0;
+		this.getSpoilList();
 		if(this.spoilPolRecord.reasonDesc === '' || this.spoilPolRecord.reasonDesc === null){
 			this.postBtnEnabled = false;
 		}else{
@@ -229,6 +271,7 @@ export class SpoilPolAltComponent implements OnInit {
 		this.type 							= "text";
 		this.postBtnEnabled					= false;
 		this.reasonLovEnabled				= false;
+		this.getPolicyList();
 	}
 
 	onClickPostSpoilage(){
@@ -260,5 +303,31 @@ export class SpoilPolAltComponent implements OnInit {
 		this.warnMsg3 = 'to this record is on going.';
 		$('#warnMdl > #modalBtn').trigger('click');
 	}
+
+	
+	search(key,ev) {
+	    var a = ev.target.value;
+
+	    if(key === 'lineCd') {
+	      this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
+	    } else if(key === 'year') {
+	      this.searchArr[1] = '%' + a + '%';
+	    } else if(key === 'seqNo') {
+	      this.searchArr[2] = '%' + a + '%';
+	    } else if(key === 'cedingId') {
+	      this.searchArr[3] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
+	    } else if(key === 'coSeriesNo') {
+	      this.searchArr[4] = '%' + a + '%';
+	    } else if(key === 'altNo') {
+	      this.searchArr[5] = a === '' ? '%%' : '%' + a;
+	    }
+
+
+	    if(this.searchArr.includes('')) {
+	      this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+	    }
+
+	    this.getPolicyList([{ key: 'policyNo', search: this.searchArr.join('-') }]);
+  	}
 
 }

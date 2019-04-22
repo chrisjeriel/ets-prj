@@ -171,7 +171,7 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-      this.holCovList = this.holCovList//.filter(hc => hc.holdCover.status.toUpperCase() === 'EXPIRED')
+      this.holCovList = this.holCovList.filter(hc => hc.holdCover.status.toUpperCase() === 'EXPIRED')
                                        .map(hc => { hc.riskName = hc.project.riskName; 
                                                     hc.holdCoverNo = hc.holdCover.holdCoverNo;
                                                     return hc; });
@@ -208,7 +208,7 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-      this.polOcList = this.polOcList//.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
+      this.polOcList = this.polOcList.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
                                      .map(oc => { oc.riskName = oc.project.riskName; return oc; });
       this.passDataLOV.tableData = this.polOcList;
       this.lovTable.refreshTable();

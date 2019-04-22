@@ -8,14 +8,14 @@
 						<div class="input-group">
 							<div class="col-sm-2"></div>
 							<label class="form-control-sm col-sm-1">Policy No</label>
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "spoilPolRecord.line">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "spoilPolRecord.year">
-							<input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "spoilPolRecord.seqNo" >
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Code" [(ngModel)] = "spoilPolRecord.coCode" >
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "spoilPolRecord.coSeriesNo" >
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "spoilPolRecord.altNo" >
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "spoilPolRecord.line" (change)="search('lineCd',$event)">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "spoilPolRecord.year" (change)="search('year',$event)">
+							<input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "spoilPolRecord.seqNo" (change)="search('seqNo',$event)">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company Code" [(ngModel)] = "spoilPolRecord.coCode" (change)="search('cedingId',$event)">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "spoilPolRecord.coSeriesNo" (change)="search('coSeriesNo',$event)">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "spoilPolRecord.altNo" (change)="search('altNo',$event)">
 							<span>&nbsp;</span>
-							<div><a (click)="getPolicyList()"><i class="fa fa-search"></i></a></div>
+							<div><a (click)="show()"><i class="fa fa-search"></i></a></div>
 							<div class="form-row">
 								<div class="form-group">
 									<div class="col-md-12 text-center">
@@ -149,7 +149,7 @@
 								<div class="col-sm-1" style="margin-right: 49px !important"></div>
 								<label class="form-control-sm col-sm-2">Reason for Spoilage</label>
 									<input *ngIf="reasonLovEnabled" class="form-control form-control-sm  col-sm-1" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason()">
-									<div *ngIf="reasonLovEnabled" class="text-search-ico" style="padding-left: 1px" (click)="getSpoilList()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+									<div *ngIf="reasonLovEnabled" class="text-search-ico" style="padding-left: 1px" (click)="showLovSpoil()"><a><i class="fa fa-search"></i></a></div>&nbsp;
 									<input  *ngIf="!reasonLovEnabled" class="form-control form-control-sm  col-sm-1" readonly type="text" style="margin-right: 1px !important;     margin-left: -5px !important;">
 								<input class="form-control form-control-sm col-sm" type="text" style="margin-left: 2px;" readonly [(ngModel)]="spoilPolRecord.reasonDesc">
 								<div class="col-sm-2" style="margin-left: 50px !important;"></div>
@@ -177,7 +177,7 @@
                                 <app-modal hidden [btnTitle]="'List Of Values'" id="polLov">
                                     <div header>List Of Values</div>
                                     <div body>
-                                       <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+                                       <app-cust-non-datatable [passData]="passData" #p (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
                                     </div>
                                     <div footer class="text-center w-100">
                                         <div class="col-sm-12 text-center">

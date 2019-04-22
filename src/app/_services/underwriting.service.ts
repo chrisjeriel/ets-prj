@@ -907,6 +907,13 @@ export class UnderwritingService {
          return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolicyStatus',params,header);
     }
 
+    getAlterationsPerPolicy(policyId) {
+        const params = new HttpParams()
+            .set('policyId', policyId)
+
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrieveAlterationsPerPolicy",{params});
+    }
+    
 }            
 
             

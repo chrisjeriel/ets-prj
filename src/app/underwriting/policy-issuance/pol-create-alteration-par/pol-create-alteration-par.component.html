@@ -60,14 +60,14 @@
 
                         <div class="input-group">
                             <label class="form-control-sm col-sm-2">Policy No</label>
-                            <input type="text" [(ngModel)]="policyLine" style="margin-left: 3px;" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line">
-                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Year">
-                            <input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No">
-                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">
-                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No">
-                             <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No">
+                            <input type="text" [ngModel]="polNo[0]" (ngModelChange)="polNo[0]=$event.toUpperCase()" style="margin-left: 3px;" (change)="search('lineCd',$event)" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line">
+                            <input type="text" [(ngModel)]="polNo[1]" (change)="search('year',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Year">
+                            <input type="text" [(ngModel)]="polNo[2]" (change)="search('seqNo',$event)" class="form-control form-control-sm col-sm-3 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No">
+                            <input type="text" [(ngModel)]="polNo[3]" (change)="search('cedingId',$event)" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company No">
+                            <input type="text" [(ngModel)]="polNo[4]" (change)="search('coSeriesNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No">
+                             <input type="text" [(ngModel)]="polNo[5]" (change)="search('altNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No">
                             <span>&nbsp;</span>
-                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                            <div class="text-search-ico"><a><i (click)="showLOV()" class="fa fa-search"></i></a></div>
                         </div>
                         <!-- <div class="input-group">
                            			<div class="col-sm-2"></div>
@@ -98,15 +98,15 @@
                     -->
                         <div class="input-group ig-row" style="margin-top: -6px !important;">
                             <label class="form-control-sm col-sm-2">Ceding Company</label>
-                            <input type="text" class="form-control form-control-sm">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="cedingName" readonly>
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Insured</label>
-                            <input type="text" class="form-control form-control-sm">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="insuredDesc" readonly>
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Risk</label>
-                            <input type="text" class="form-control form-control-sm">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
                         </div>
                     </div>
                 </div>
@@ -120,8 +120,22 @@
         <div class="col-md-12 text-center">
             <div class="cust-btn-container" style="margin-top:10px">
                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" (click)="navigateToGenInfo()" class="cust-btn"><a>Next</a></button>
+                <button type="button" (click)="checkPolicyAlteration()" class="cust-btn"><a>Next</a></button>
             </div>
         </div>
     </div>
 </div>
+
+<app-modal hidden [btnTitle]="'List Of Values'" id="altPolLovMdl">
+    <div header>List Of Values</div>
+    <div body>
+       <!-- <app-cust-non-datatable [passData]="passDataLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable> -->
+       <app-cust-non-datatable [passData]="passDataLOV" #altPolLov (rowClick)="onRowClick($event);" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails();"><a>Ok</a></button>        
+        </div>
+    </div>
+</app-modal>
