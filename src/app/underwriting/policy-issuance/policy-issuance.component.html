@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Policy Issuance / Create Policy</h4>
-	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)">
+	<h4 *ngIf="!fromSummary">{{title}}</h4>
+	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)" [justify]="fromSummary?'center':'start'">
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
@@ -44,7 +44,7 @@
 		</ngb-tab>
 
 
-		<ngb-tab id="print-tab">
+		<ngb-tab id="print-tab" *ngIf="!fromSummary">
 			<ng-template #content>
 				<div class="modal-header">
 					<span class="modal-title" id="modal-basic-title">&nbsp;</span>
@@ -126,17 +126,27 @@
 
 		</ngb-tab>
 
-		<ngb-tab title="Post">
+		<ngb-tab title="Post" *ngIf="!fromSummary">
 			<ng-template ngbTabContent>
 				<app-pol-post [alterationFlag]="false"></app-pol-post>
 			</ng-template>
 		</ngb-tab>
-		 <ngb-tab id="Exit">
+		 <ngb-tab id="Exit" *ngIf="!fromSummary">
 				<ng-template ngbTabTitle>
 					<div>Exit</div>
 				</ng-template>
     			<ng-template ngbTabContent></ng-template>
   		</ngb-tab>
+  		<ngb-tab title="Premium Coll" *ngIf="fromSummary">
+			<ng-template ngbTabContent>
+				
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Claims" *ngIf="fromSummary">
+			<ng-template ngbTabContent>
+				
+			</ng-template>
+		</ngb-tab>
 	</ngb-tabset>
 </div>
 

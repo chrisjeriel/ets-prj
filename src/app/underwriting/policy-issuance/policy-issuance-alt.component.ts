@@ -20,7 +20,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
         insuredDesc:'',
         riskId:'',
         showPolAlop: false,
-        coInsuranceFlag: false
+        coInsuranceFlag: false,
+        fromInq:'',
     }
 
     alterFlag: boolean = false;
@@ -41,6 +42,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
+            this.policyInfo.fromInq = params['fromInq'];
         });
 
     }

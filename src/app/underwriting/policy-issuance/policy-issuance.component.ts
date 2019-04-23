@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit, Input } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -23,16 +23,18 @@ export class PolicyIssuanceComponent implements OnInit {
         riskId: '',
         fromInq: '',
         showPolAlop: false,
-        coInsuranceFlag: false
+        coInsuranceFlag: false,
+        fromSummary:false,
   }
-
+  @Input() fromSummary = false;
 
   alterFlag: boolean = false;
-  fromInq:boolean = false;
+  fromInq:any = false;
   approveText: string = "For Approval";
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
   status: string = "";
+  title: string = "Policy / Policy Issuance / Create Policy";
   
   constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
 
@@ -48,6 +50,10 @@ export class PolicyIssuanceComponent implements OnInit {
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
+            if(this.fromInq == 'true'){
+              this.title = "Policy / Inquiry / Policy Inquiry";
+            }
+            this.policyInfo.fromSummary = this.fromSummary;
         });   
 
   }
@@ -79,6 +85,13 @@ export class PolicyIssuanceComponent implements OnInit {
       if ($event.nextId === 'Exit') {
         this.router.navigateByUrl('');
       } 
+      if(this.fromInq=='true'){
+        setTimeout(a=>{
+          $('input').attr('readonly','readonly');
+          $('textarea').attr('readonly','readonly');
+          $('select').attr('readonly','readonly');
+        },0)
+      }
   
   }
 
