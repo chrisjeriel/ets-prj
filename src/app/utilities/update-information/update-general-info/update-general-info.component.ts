@@ -479,7 +479,6 @@ export class UpdateGeneralInfoComponent implements OnInit {
     }
 
     callModal(){
-              this.removeNgDirty();
               this.disabledBool = false;
               this.searchParams2 = [];
               this.getPolListing();

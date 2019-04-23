@@ -75,13 +75,13 @@
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Reinsurance From</label>  
 								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled  [(ngModel)]="policyInfo.reinsurerName" >
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group" *ngIf="checkRetrocession()">
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-2" for="riBinderNo">RI Binder No</label>
-								<input id=riBinderNo type="text" class="form-control form-control-sm cust-sm col-sm" (change)="addNgDirty('riBinderNo');" >
+								<input id=riBinderNo type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" (change)="addNgDirty('riBinderNo');" [(ngModel)]="policyInfo.riBinderNo"  >
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group">
@@ -183,4 +183,4 @@
 
 <app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
 <app-sucess-dialog id="updatePolGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-cancel-button (onYes)="prepareParam('cancel')" [url]="''" ></app-cancel-button>

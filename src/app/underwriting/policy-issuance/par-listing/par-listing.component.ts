@@ -65,7 +65,7 @@ export class ParListingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'cedingCompany',
+                key: 'cedingName',
                 title: 'Ceding Company',
                 dataType: 'text'
             },
