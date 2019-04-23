@@ -315,6 +315,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.focusBlur();
   }
 
+  showOpeningWordingLov(){
+    $('#wordingOpeningIdLov #modalBtn').trigger('click');
+    $('#wordingOpeningIdLov #modalBtn').addClass('ng-dirty');
+  }
+
+  setOpeningWording(data) {
+      this.policyInfo.wordings = data.wording;
+      this.focusBlur();
+  }
+
   checkCode(ev, field) {
     this.ns.lovLoader(ev, 1);
       $(ev.target).addClass('ng-dirty');
@@ -706,7 +716,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
    var entries = Object.entries(obj);
 
    for(var[key, val] of entries) {
-     if((val == '' || val == null) && req.includes(key)) {
+     if((val === '' || val == null) && req.includes(key)) {
        return false;
      }
    }
