@@ -430,6 +430,17 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                this.policyInfo.showPolAlop = alopFlag;
       }
 
+
+    /*  this.emitPolicyInfoId.emit({
+        policyId: event,
+        policyNo: this.policyInfo.policyNo,
+        riskName: this.policyInfo.project.riskName,
+        insuredDesc: this.policyInfo.insuredDesc,
+        riskId: this.policyInfo.project.riskId,
+        showPolAlop: this.policyInfo.showPolAlop,
+        principalId: this.policyInfo.principalId
+      });  */  
+
       this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
            this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
 
@@ -440,7 +451,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             insuredDesc: this.policyInfo.insuredDesc,
             riskId: this.policyInfo.project.riskIdz,
             showPolAlop: this.policyInfo.showPolAlop,
-            coInsuranceFlag: this.policyInfo.coInsuranceFlag
+            coInsuranceFlag: this.policyInfo.coInsuranceFlag,
+            principalId: this.policyInfo.principalId
           }); 
       });   
 
