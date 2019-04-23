@@ -8,12 +8,12 @@
 						<div class="input-group">
 							<div class="col-sm-2"></div>
 							<label class="form-control-sm col-sm-1">Policy No</label>
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "spoilPolRecord.line" (change)="search('lineCd',$event)">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "spoilPolRecord.year" (change)="search('year',$event)">
-							<input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "spoilPolRecord.seqNo" (change)="search('seqNo',$event)">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company Code" [(ngModel)] = "spoilPolRecord.coCode" (change)="search('cedingId',$event)">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "spoilPolRecord.coSeriesNo" (change)="search('coSeriesNo',$event)">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "spoilPolRecord.altNo" (change)="search('altNo',$event)">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "spoilPolRecord.line" (change)="search('lineCd',$event)" maxlength="7">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "spoilPolRecord.year" (change)="search('year',$event)" numbers-only maxlength="4">
+							<input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "spoilPolRecord.seqNo" (change)="search('seqNo',$event)" numbers-only maxlength="5">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company Code" [(ngModel)] = "spoilPolRecord.coCode" (change)="search('cedingId',$event)" maxlength="3">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "spoilPolRecord.coSeriesNo" (change)="search('coSeriesNo',$event)" numbers-only maxlength="4">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "spoilPolRecord.altNo" (change)="search('altNo',$event)" numbers-only maxlength="3">
 							<span>&nbsp;</span>
 							<div><a (click)="show()"><i class="fa fa-search"></i></a></div>
 							<div class="form-row">
@@ -148,7 +148,7 @@
 							<div class="input-group">
 								<div class="col-sm-1" style="margin-right: 49px !important"></div>
 								<label class="form-control-sm col-sm-2">Reason for Spoilage</label>
-									<input *ngIf="reasonLovEnabled" class="form-control form-control-sm  col-sm-1" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason()">
+									<input *ngIf="reasonLovEnabled" class="form-control form-control-sm  col-sm-1 dirty" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason()">
 									<div *ngIf="reasonLovEnabled" class="text-search-ico" style="padding-left: 1px" (click)="showLovSpoil()"><a><i class="fa fa-search"></i></a></div>&nbsp;
 									<input  *ngIf="!reasonLovEnabled" class="form-control form-control-sm  col-sm-1" readonly type="text" style="margin-right: 1px !important;     margin-left: -5px !important;">
 								<input class="form-control form-control-sm col-sm" type="text" style="margin-left: 2px;" readonly [(ngModel)]="spoilPolRecord.reasonDesc">
@@ -162,8 +162,8 @@
 					<div class="form-group col-sm">
 						<div class="col-md-12 text-center">
 							<div class="cust-btn-container">
-								<button type="button" class="cust-btn" (click)="validatePolicy()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" *ngIf="postBtnEnabled" (click)="onClickPostSpoilage()"><a>Post Spoilage</a></button>
+								<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+								<button type="button" class="cust-btn" *ngIf="postBtnEnabled" (click)="onClickSave()"><a>Post Spoilage</a></button>
 								<button type="button" class="cust-btn dsbld" disabled="disabled" *ngIf="!postBtnEnabled">Post Spoilage</button>
 							</div>
 						</div>
@@ -217,15 +217,21 @@
 </div>
 
 <app-modal class="d-none" id="warnMdl">
-    <div header style="width: 400px !important;">Warning</div>
-    <div body class="container-flex text-center">
-        <fieldset class="scheduler-border" style="padding-top: 10px !important;"> 
+    <div header>Warning</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
             <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg1 }}</b></p>
-            <!-- <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg2 }}</b></p>
-            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg3 }}</b></p> -->
         </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Ok</a></button>
     </div>
 </app-modal>
+
+
+<app-confirm-save (onYes)="onClickPostSpoilage()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickPostSpoilage('cancel')" [url]="'/'" ></app-cancel-button>
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
