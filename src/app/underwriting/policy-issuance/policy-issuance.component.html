@@ -126,7 +126,7 @@
 
 		</ngb-tab>
 
-		<ngb-tab title="Post" *ngIf="!fromSummary">
+		<ngb-tab title="Post" *ngIf="!fromSummary && policyInfo.fromInq != 'true'">
 			<ng-template ngbTabContent>
 				<app-pol-post [alterationFlag]="false"></app-pol-post>
 			</ng-template>
