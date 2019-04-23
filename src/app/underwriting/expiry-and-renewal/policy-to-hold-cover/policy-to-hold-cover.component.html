@@ -156,7 +156,7 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
-                                <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
+                                <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted' || statusDesc === 'Expired'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted' || statusDesc === 'Expired'" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
                                 <button type="button" class="cust-btn" [disabled]="statusDesc === 'Released' || statusDesc === ''" [class.cust-btn-disabled]="statusDesc === 'Released' || statusDesc === ''" (click)="test(content)"><a>Approval</a></button>
                                 <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="statusDesc === 'Released' && !this.isModify" [class.cust-btn-disabled]="statusDesc === 'Released' && !this.isModify"><a>Save</a></button>
                             </div>
