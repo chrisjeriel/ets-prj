@@ -321,22 +321,23 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   calcComm() {
-    var inputWithChanges = $('.ng-dirty:not([type="search"]):not(.not-form)');
-    console.log($('.ng-dirty:not([type="search"]):not(.not-form)')[1]);
-    console.log("prevCommRt: " + this.prevCommRt);
-    console.log("prevCommAmt: " + this.prevCommAmt);
-    /*for(let rec of this.passDataInstallmentInfo.tableData) {
-      rec.commAmt = '';
-      rec.commAmt = rec.premAmt * (rec.commRt / 100);
-      console.log("commAmt: " + rec.commAmt);
+    if ("commRt" === this.instllmentTable.instllmentKey) {
+      for (let rec of this.passDataInstallmentInfo.tableData) {
+        if (this.instllmentTable.instllmentNo === rec.instNo) {
+          rec.commAmt = rec.premAmt * rec.commRt / 100;
+        }
+      }
     }
+
+    if ("commAmt" === this.instllmentTable.instllmentKey) {
+      for (let rec of this.passDataInstallmentInfo.tableData) {
+        if (this.instllmentTable.instllmentNo === rec.instNo) {
+          rec.commRt = rec.commAmt / rec.premAmt * 100;
+        }
+      }
+    }
+    
     this.instllmentTable.refreshTable();
-    for(let rec of this.passDataInstallmentInfo.tableData) {
-      rec.commRt = '';
-      rec.commRt = rec.commAmt / rec.premAmt * 100;
-      console.log("commRt: " + rec.commRt);
-    }
-    this.instllmentTable.refreshTable();*/
   }
 
   delInst(){

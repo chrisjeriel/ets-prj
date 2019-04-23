@@ -91,6 +91,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
     selected: any[] = [];
     fileName: string ='';
 
+    instllmentKey: string;
+    instllmentNo: any;
+
     displayData:any[] = [];
     newData: any = new DummyInfo(null,null,null,null,null,null,null);
     sortBy:boolean = true;
@@ -428,6 +431,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
             delete this.passData.tableData.lovInput;
         }
         this.markAsDirty();
+
+        this.instllmentKey = key;
+        this.instllmentNo = data.instNo;
 
         data.edited = true;
         setTimeout(() => { 
