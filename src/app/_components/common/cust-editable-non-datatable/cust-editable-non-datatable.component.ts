@@ -274,10 +274,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event,data) {
-        if(data != this.fillData && data != this.indvSelect){
-            this.indvSelect = data;
-        }else if(data != this.fillData && data == this.indvSelect){
-            this.indvSelect = null;
+        if(event.target.tagName!=="INPUT"){
+            if(data != this.fillData && data != this.indvSelect){
+                this.indvSelect = data;
+            }else if(data != this.fillData && data == this.indvSelect){
+                this.indvSelect = null;
+            }
         }
         if(data != this.fillData)
             setTimeout(() => this.newClick.emit(this.indvSelect),0) ;
@@ -581,5 +583,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
             if(this.displayData[this.displayData.indexOf(data)-1] != this.fillData && this.displayData[this.displayData.indexOf(data)-1] !== undefined)
                 setTimeout(a=>this.indvSelect = this.displayData[this.displayData.indexOf(data)-1],0)
         }
+    }
+
+    focus(data){
+        this.indvSelect=data;
     }
 }
