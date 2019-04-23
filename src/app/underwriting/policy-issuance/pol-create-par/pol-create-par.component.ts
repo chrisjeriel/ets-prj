@@ -232,22 +232,6 @@ export class PolCreatePARComponent implements OnInit {
     });    
   }
 
-  navigateToGenInfo() {
-    var qLine = this.quoteLine.toUpperCase();
-
-    if (qLine === 'CAR' ||
-      qLine === 'EAR' ||
-      qLine === 'EEI' ||
-      qLine === 'CEC' ||
-      qLine === 'MBI' ||
-      qLine === 'BPV' ||
-      qLine === 'MLP' ||
-      qLine === 'DOS') {
-      this.router.navigate(['/policy-issuance', { line: qLine }], { skipLocationChange: true });
-    }
-
-  }
-
   toggle(str) {
     $('.req').css('boxShadow', 'none');
     $('.req').focus(function() {

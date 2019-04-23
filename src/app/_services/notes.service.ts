@@ -46,5 +46,9 @@ export class NotesService {
       }  
     }       
   }
+
+  getCurrentUser() {
+    return JSON.parse(window.localStorage.currentUser).username;
+  }
   
 }

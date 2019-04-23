@@ -996,14 +996,14 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc"[style.margin-right.px]="1" appRequired>
-										<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc" style="margin-right: 3px !important;" appRequired>
+										<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'" style="margin-right: 3px !important; margin-left: -18px !important;"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Quotation No</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.quotationNo" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Status</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.statusDesc" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.statusDesc" style="margin-right: 1px !important;" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Ceding Company</label>
@@ -1027,7 +1027,7 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (change)="checkCode($event, 'intermediary')">
 										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.intmName" readonly>
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;" [(ngModel)]="policyInfo.intmName" readonly>
 									</div>
 									<div *ngIf="policyInfo.holdCoverTag === 'Y'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Hold Cover No</label>
@@ -1738,7 +1738,7 @@
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
 						<label class="form-control-sm top-label">Date Created</label>
-						<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate?.split('T')[0]" readonly>
+						<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly>
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
 						<label class="form-control-sm top-label">Last Update By</label>
@@ -1746,7 +1746,7 @@
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
 						<label class="form-control-sm top-label">Last Update</label>
-						<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate?.split('T')[0]" readonly>
+						<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly>
 					</div>
 				</div>
 			</div>

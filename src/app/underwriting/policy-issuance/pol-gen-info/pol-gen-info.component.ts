@@ -67,6 +67,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     lineClassDesc: null,
     quoteId: null,
     quotationNo: null,
+    optionId: null,
     holdCoverNo: null,
     status: null,
     statusDesc: null,
@@ -214,6 +215,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   saveBtnClicked: boolean = false;
   prevInceptDate: string;
   prevEffDate: string;
+  refPolicyId: string = '';
+  newAlt: boolean = false;
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
@@ -232,6 +235,11 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.policyId = params['policyId'];
       this.policyNo = params['policyNo'];
       this.prevPolicyId = params['prevPolicyId'];
+
+      if(params['alteration'] != undefined) {
+        this.alteration = params['alteration'];
+        this.newAlt = params['alteration'];
+      }
     });
 
     this.getPolGenInfo();
@@ -265,10 +273,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.effDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.effDate));
         this.policyInfo.distDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.distDate));
         this.policyInfo.acctDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.acctDate));
-        this.policyInfo.createDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.createDate));
-        this.policyInfo.updateDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.updateDate));
-        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.project.createDate));
-        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.project.updateDate));
+        this.policyInfo.createDate = this.ns.toDateTimeString(this.policyInfo.createDate);
+        this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
+        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.policyInfo.project.createDate);
+        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
@@ -285,6 +293,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           $('input[appCurrencyRate]').focus();
           $('input[appCurrencyRate]').blur();
         },0) 
+      }
+
+      if(this.newAlt) {
+        this.refPolicyId = this.policyInfo.policyId;
+        this.policyInfo.policyNo = "";
+        this.policyInfo.policyId = "";
       }
     });
 
@@ -442,6 +456,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.saveBtnClicked = true;
 
     var savePolGenInfoParam = {
+      "savingType"      : this.alteration ? 'alteration' : 'normal',
+      "refPolicyId"     : this.refPolicyId,
       "acctDate"        : this.policyInfo.acctDate,
       "altNo"           : this.policyInfo.altNo,
       "altTag"          : this.policyInfo.altTag,
@@ -451,8 +467,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "coRefNo"         : this.policyInfo.coRefNo,
       "coSeriesNo"      : this.policyInfo.coSeriesNo,
       "contractorId"    : this.policyInfo.contractorId,
-      "createDate"      : this.policyInfo.createDate,
-      "createUser"      : this.policyInfo.createUser,
+      "createDate"      : this.newAlt ? this.ns.toDateTimeString(0) : this.policyInfo.createDate,
+      "createUser"      : this.newAlt ? this.ns.getCurrentUser() : this.policyInfo.createUser,
       "currencyCd"      : this.policyInfo.currencyCd,
       "currencyRt"      : this.policyInfo.currencyRt,
       "declarationTag"  : this.policyInfo.declarationTag,
@@ -481,15 +497,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "noClaimPd"       : this.policyInfo.project.noClaimPd,
       "objectId"        : this.policyInfo.project.objectId,
       "openCoverTag"    : this.policyInfo.openCoverTag,
+      "optionId"        : this.policyInfo.optionId,
       "polSeqNo"        : this.policyInfo.polSeqNo,
       "polYear"         : this.policyInfo.polYear,
       "policyId"        : this.policyInfo.policyId,
       "policyIdOc"      : this.policyInfo.policyIdOc,
       "principalId"     : this.policyInfo.principalId,
-      "prjCreateDate"   : this.policyInfo.project.createDate,
-      "prjCreateUser"   : this.policyInfo.project.createUser,
+      "prjCreateDate"   : this.newAlt ? this.ns.toDateTimeString(0) : this.policyInfo.createDate,
+      "prjCreateUser"   : this.newAlt ? this.ns.getCurrentUser() : this.policyInfo.createUser,
       "prjUpdateDate"   : this.ns.toDateTimeString(0),
-      "prjUpdateUser"   : JSON.parse(window.localStorage.currentUser).username,
+      "prjUpdateUser"   : this.ns.getCurrentUser(),
       "projDesc"        : this.policyInfo.project.projDesc,
       "projId"          : this.policyInfo.project.projId,
       "quoteId"         : this.policyInfo.quoteId,
@@ -504,53 +521,45 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "timeExc"         : this.policyInfo.project.timeExc,
       "totalSi"         : this.policyInfo.project.totalSi,
       "updateDate"      : this.ns.toDateTimeString(0),
-      "updateUser"      : JSON.parse(window.localStorage.currentUser).username,
+      "updateUser"      : this.ns.getCurrentUser(),
       "wordings"        : this.policyInfo.wordings
     }
 
     //ADD VALIDATION
-    this.loading = true;
-    if(this.validate(savePolGenInfoParam)){
-      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) =>{
-        if(data.returnCode === 0){
-          this.dialogMessage="The system has encountered an unspecified error.";
-          this.dialogIcon = "error";
-          $('#polGenInfo > #successModalBtn').trigger('click');
-        }else{
-          this.dialogMessage="";
-          this.dialogIcon = "";
-          $('#polGenInfo > #successModalBtn').trigger('click');
-          /*this.form.control.markAsPristine();*/
-        }
-      });
-    }else{
-      this.dialogMessage="Please check field values.";
-      this.dialogIcon = "error";
-      $('#polGenInfo > #successModalBtn').trigger('click');
+   this.loading = true;
+   if(this.validate(savePolGenInfoParam)){
+     this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
+       if(data.returnCode === 0){
+         this.dialogMessage="The system has encountered an unspecified error.";
+         this.dialogIcon = "error";
+         $('#polGenInfo > #successModalBtn').trigger('click');
+       }else{
+         // this.policyInfo.policyId = data['policyId'];
+         // this.policyInfo.policyNo = data['policyNo'];
+         // this.policyInfo.altNo = data['policyNo'].split('-')[5];
 
-      setTimeout(()=>{$('.globalLoading').css('display','none');},0);
-    }
-    
-    /*this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe(data => {
-      console.log(data);
-      this.loading = false;
+         this.policyId = data['policyId'];
+         this.policyNo = data['policyNo'];
+         this.newAlt = false;
+         this.getPolGenInfo();
 
-      if(data['returnCode'] === 0) {
-          this.dialogIcon = 'error';
-          this.dialogMessage = data['errorList'][0].errorMessage;
+         this.dialogMessage="";
+         this.dialogIcon = "";
+         $('#polGenInfo > #successModalBtn').trigger('click');        
+         /*this.form.control.markAsPristine();*/
+       }
+     });
+   }else{
+     this.dialogMessage="Please check field values.";
+     this.dialogIcon = "error";
+     $('#polGenInfo > #successModalBtn').trigger('click');
 
-          $('#polGenInfo #successModalBtn').trigger('click');
-        } else if (data['returnCode'] === -1) {               
-          this.policyInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
-          this.policyInfo.updateDate  = this.ns.toDateTimeString(0);
-
-          $('#polGenInfo #successModalBtn').trigger('click');
-        }
-    });*/
+     setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+   }
   }
 
   onClickSave(){
-    $("#confirm-save #modalBtn2").trigger('click');
+    $('#confirm-save #modalBtn2').trigger('click');  
   }
 
   cancel(){
@@ -668,42 +677,42 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   //validates params before going to web service
   validate(obj) {
-    var req = ['cedingId', 'coSeriesNo', 'cessionId', 'lineClassCd', 'quoteId', 'status', 'principalId', 'insuredDesc',
-               'inceptDate', 'expiryDate', 'issueDate', 'effDate', 'distDate', 'acctDate', 'currencyCd', 'currencyRt',
-               'projDesc', 'site'];
+   var req = ['cedingId', 'coSeriesNo', 'cessionId', 'lineClassCd', 'quoteId', 'status', 'principalId', 'insuredDesc',
+              'inceptDate', 'expiryDate', 'issueDate', 'effDate', 'distDate', 'acctDate', 'currencyCd', 'currencyRt',
+              'projDesc', 'site'];
 
-    switch(obj.lineCd) {
-      case 'CAR':
-        req.push('contractorId', 'duration');
-        break;
-      case 'EAR':
-        req.push('testing');
-        break;
-      case 'MLP':
-        req.push('ipl', 'timeExc', 'mbiRefNo');
-        break;
-      case 'DOS':
-        req.push('noClaimPd', 'mbiRefNo');
-    }
+   switch(obj.lineCd) {
+     case 'CAR':
+       req.push('contractorId', 'duration');
+       break;
+     case 'EAR':
+       req.push('testing');
+       break;
+     case 'MLP':
+       req.push('ipl', 'timeExc', 'mbiRefNo');
+       break;
+     case 'DOS':
+       req.push('noClaimPd', 'mbiRefNo');
+   }
 
-    if(obj.cessionId == 2) {
-      req.push('reinsurerId');
-    }
+   if(obj.cessionId == 2) {
+     req.push('reinsurerId');
+   }
 
-    if(this.alteration) {
-      req.push('insuredId', 'insuredName', 'objectId', 'projDesc', 'wordings');
-    }
+   if(this.alteration) {
+     req.push('insuredId', 'insuredName', 'objectId', 'projDesc', 'wordings');
+   }
 
-    var entries = Object.entries(obj);
+   var entries = Object.entries(obj);
 
-    for(var[key, val] of entries) {
-      if((val == '' || val == null) && req.includes(key)) {
-        return false;
-      }
-    }
+   for(var[key, val] of entries) {
+     if((val == '' || val == null) && req.includes(key)) {
+       return false;
+     }
+   }
 
-    return true;
-  }
+   return true;
+ }
 
   showIntLOV(){
     $('#intLOV #modalBtn').trigger('click');
