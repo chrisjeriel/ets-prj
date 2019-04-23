@@ -164,6 +164,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
     this.insuredDesc = '';
     this.riskName = '';
     this.selected = null;
+
+    this.getPolListing();
   }
 
   checkPolicyAlteration() {
@@ -172,11 +174,12 @@ export class PolCreateAlterationPARComponent implements OnInit {
     this.underwritingService.getAlterationsPerPolicy(this.selected.policyId).subscribe(data => {
       console.log(data);
       var polList = data['policyList'];
+      var coIns = data['coInsAlt'];
       
       var a = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS' || p.statusDesc.toUpperCase() === 'IN FORCE');
       var b = polList.filter(p => p.statusDesc.toUpperCase() != 'IN PROGRESS' || p.statusDesc.toUpperCase() != 'IN FORCE');
 
-      if(a.length == 0) {
+      if(a.length == 0 && coIns != 1) {
         var line = this.polNo[0];
 
         this.underwritingService.toPolInfo = [];
@@ -192,11 +195,11 @@ export class PolCreateAlterationPARComponent implements OnInit {
           var x = b[b.length-1];
           this.router.navigate(['/policy-issuance', { line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
         }
-      } else if(data['coInsAlt'] == 1) {
-        this.warningMsg = 1;
-        this.showWarningMdl();
-      } else {
+      } else if(a.length > 0) {
         this.warningMsg = 0;
+        this.showWarningMdl();
+      } else if(coIns == 1){
+        this.warningMsg = 1;
         this.showWarningMdl();
       }
 
