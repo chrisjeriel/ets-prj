@@ -189,8 +189,12 @@ export class PolCreateAlterationPARComponent implements OnInit {
           //to gen info using latest alteration from b
           b.sort((a, b) => a.altNo - b.altNo);
           //use b[b.length-1] (max altNo)
-          this.router.navigate(['/policy-issuance', { line: line, policyNo: b[b.length-1].policyNo, policyId: b[b.length-1].policyId, editPol: true, alteration: true }], { skipLocationChange: true });
+          var x = b[b.length-1];
+          this.router.navigate(['/policy-issuance', { line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
         }
+      } else if(data['coInsAlt'] == 1) {
+        this.warningMsg = 1;
+        this.showWarningMdl();
       } else {
         this.warningMsg = 0;
         this.showWarningMdl();
