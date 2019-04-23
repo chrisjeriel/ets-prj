@@ -291,7 +291,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	prepareParams(){
 		this.polHoldCoverParams.periodFrom = this.periodFromDate.date + 'T' + this.periodFromDate.time;
 		this.polHoldCoverParams.periodTo = this.periodToDate.date + 'T' + this.periodToDate.time;
-		this.polHoldCoverParams.preparedBy = this.userName;
+		if(this.approveType.length === 0){
+			this.polHoldCoverParams.preparedBy = this.userName;
+		}
 		this.polHoldCoverParams.createUser = this.userName;
 		this.polHoldCoverParams.updateUser = this.userName;
 		this.polHoldCoverParams.createDate = this.noteService.toDateTimeString(0);
