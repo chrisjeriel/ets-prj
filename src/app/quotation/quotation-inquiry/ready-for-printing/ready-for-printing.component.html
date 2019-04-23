@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-sm-12">
         <button type="button" class="cust-btn refresh" (click)="refresh()"><a>Refresh</a></button>
-        <app-cust-non-datatable id="table" [passData]="passData" (searchToDb)="searchQuery($event)" (newRowDblClick)="onRowDblClick($event)"  (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+        <app-cust-non-datatable id="table" [passData]="passData" (searchToDb)="searchQuery($event)" (newRowDblClick)="onRowDblClick($event)"  (rowClick)="onRowClick($event)" (export)="export()"></app-cust-non-datatable>
 
     </div>
 </div>

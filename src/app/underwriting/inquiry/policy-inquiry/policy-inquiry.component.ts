@@ -182,7 +182,7 @@ export class PolicyInquiryComponent implements OnInit {
   }
 
   gotoInfo(data) {
-       this.router.navigate(['/policy-information', {policyId:data.policyId}], { skipLocationChange: true });
+       this.router.navigate(['/policy-information', {policyId:data.policyId, policyNo:data.policyNo}], { skipLocationChange: true });
   }
 
   onRowClick(data){

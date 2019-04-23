@@ -1,7 +1,7 @@
 
 
 <ng-container *ngIf="!alteration">
- <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
+ <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;" *ngIf="!policyInfo.fromSummary">
   <legend class="scheduler-border">Policy Record Info</legend>
   <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
     <div class="input-group" style="margin-bottom: -13px !important; margin-top: 0px !important">
@@ -118,8 +118,8 @@
         <div class="cust-btn-container">
           <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Deductibles</a></button>
           <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
-          <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-          <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+          <button type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
+          <button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@
     </div>                
     <div footer style="margin-right: 145px !important;">
       <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-      <button class="cust-btn" type="button" (click)="saveCatPeril();"><a>Save</a></button>
+      <button class="cust-btn" type="button" (click)="saveCatPeril();" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
     </div>
 </app-modal>
 
@@ -275,8 +275,8 @@
             <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Deductibles</a></button>
             <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
             
-            <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
-            <button type="button" class="cust-btn" (click)="alterationSave()"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="pol($event)" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
+            <button type="button" class="cust-btn" (click)="alterationSave()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
           </div>
         </div>
       </div>
@@ -291,7 +291,7 @@
     </div>                
     <div footer style="margin-right: 145px !important;">
       <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-      <button class="cust-btn" type="button" (click)=" saveCatPeril()"><a>Save</a></button>
+      <button class="cust-btn" type="button" (click)=" saveCatPeril()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
     </div>
 </app-modal>
 </ng-container>
@@ -302,7 +302,7 @@
   </div>
   <div footer>
     <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-    <button class="cust-btn" type="button" (click)="saveDeductibles();"><a>Save</a></button>
+    <button class="cust-btn" type="button" (click)="saveDeductibles();" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
   </div>
 </app-modal>
 

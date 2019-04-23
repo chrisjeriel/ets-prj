@@ -254,6 +254,16 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           console.log(this.genInfoOcData);
           console.log(this.projectOcData);
           this.loading = false;
+          setTimeout(a=>{
+            this.form.control.markAsPristine();
+            if(this.policyInfo.fromInq=='true'){
+              $('input').attr('readonly','readonly');
+              $('input[type="checkbox"]').attr('disabled','disabled');
+              $('textarea').attr('readonly','readonly');
+              $('select').attr('readonly','readonly');
+            }
+          },0)
+          
         });
   }
 

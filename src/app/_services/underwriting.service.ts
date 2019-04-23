@@ -828,6 +828,34 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAttachmentOc',{params});
     }
 
+    getPolHoldCoverList(searchParams: any[]) {
+         var params;
+
+          if(searchParams.length < 1){
+            params = new HttpParams()
+                .set('holdCovNo','')
+                .set('status','')
+                .set('cedingName','')
+                .set('policyNo','')
+                .set('riskName','')
+                .set('insuredName','')
+                .set('periodFrom','')
+                .set('periodTo','')
+                .set('compRefHoldCovNo','')
+                .set('reqBy','')
+                .set('reqDateFrom','')
+                .set('reqDateTo','')
+                .set('expiringInDays','')
+        }
+         else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+            return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCoverListing',{params});
+    }
+
     getUWCoverageAlt(lineCd:any , polYear: any,seqNo: any,cedingId: any,coSeriesNo: any,altNo: any) {
         /*this.uwcoverageInfoData = [
             new UnderwritingCoverageInfo("1", "I", "3", "1000000", "12.2", "69000", "70000"),
@@ -852,6 +880,14 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolGenInfoOc",{params});
     }
 
+
+    getAlterationsPerPolicy(policyId) {
+        const params = new HttpParams()
+            .set('policyId', policyId)
+
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrieveAlterationsPerPolicy",{params});
+    }
+
     savePolGenInfoOc(params:any){
         let header : any = {
             headers: new HttpHeaders({
@@ -860,7 +896,8 @@ export class UnderwritingService {
         };
 
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolGenInfoOc', params, header);
-        //return this.http.post('http://192.10.10.130:8888/api/underwriting-service/savePolGenInfoOc', params, header);
     }
 
 }            
+
+            

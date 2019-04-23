@@ -166,6 +166,18 @@ export class PolAlopComponent implements OnInit {
     });
 
     this.getPolAlop();
+
+    //paul
+    if(this.policyInfo.fromInq=='true'){
+      this.passDataCar.uneditable = [true,true,true,true,true,true];
+      this.passDataEar.uneditable = [true,true,true,true,true,true];
+      this.passDataCar.checkFlag = false;
+      this.passDataEar.checkFlag = false;
+      this.passDataCar.addFlag = false;
+      this.passDataEar.addFlag = false;
+      this.passDataCar.deleteFlag = false;
+      this.passDataEar.deleteFlag = false;
+    }
   }
 
   savePolAlop(cancelFlag?) {
@@ -298,9 +310,8 @@ export class PolAlopComponent implements OnInit {
                                               "updateUser": dataInfos[i].updateUser } );
           }
         }
-        
-        this.table.refreshTable();
       }
+      this.table.refreshTable();
     });
   }
 

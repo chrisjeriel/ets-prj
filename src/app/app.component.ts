@@ -88,105 +88,65 @@ export class AppComponent  {
     }
         
     changeTheme(color : string){
-       let colorList: any[]
-       if (color == 'red'){
-           window.localStorage.removeItem("selectedTheme");
-           window.localStorage.setItem("selectedTheme", 'red');
-           this.theme = window.localStorage.getItem("selectedTheme");
-           colorList = ['#F44336','#D32F2F','#C62828'];
-           this.setColorTheme(colorList[0],colorList[1],colorList[2],colorList[3]);
-       } else if (color == 'pink'){
-           window.localStorage.removeItem("selectedTheme");
-           window.localStorage.setItem("selectedTheme", 'pink');
-           this.theme = window.localStorage.getItem("selectedTheme");
-           colorList = ['#E91E63','#F50057','#A61646'];
-           this.setColorTheme(colorList[0],colorList[1],colorList[2],colorList[3]);
-       } else if (color == 'green'){
-           window.localStorage.removeItem("selectedTheme");
-           window.localStorage.setItem("selectedTheme", 'green');
-           this.theme = window.localStorage.getItem("selectedTheme");
-           colorList = ['#4CAF50','#388E3C','#2E7D32', '#B2FF59'];
-           this.setColorTheme(colorList[0],colorList[1],colorList[2],colorList[3]);
-       } else if (color == 'indigo'){
-           window.localStorage.removeItem("selectedTheme");
-           window.localStorage.setItem("selectedTheme", 'indigo');
-           this.theme = window.localStorage.getItem("selectedTheme");
-           colorList = ['#3F51B5','#303F9F','#283593'];
-           this.setColorTheme(colorList[0],colorList[1],colorList[2],colorList[3]);
-       } else {
-           window.localStorage.removeItem("selectedTheme");
-           window.localStorage.setItem("selectedTheme", 'undefined');
-           this.theme = window.localStorage.getItem("selectedTheme");
-           this.setDefaultColorTheme();
-       }
 
-    }
+      if(color == 'green'){
+        window.localStorage.removeItem("selectedTheme");
+        window.localStorage.setItem("selectedTheme", 'green');
+        let head  = document.getElementsByTagName('head')[0];
+        let link  = document.createElement('link');
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'assets/css/stylesGreen.css'; // you may want to get this from local storage or location
+        head.appendChild(link);
+      } else if (color == 'red'){
+        window.localStorage.removeItem("selectedTheme");
+        window.localStorage.setItem("selectedTheme", 'red');
+        let head  = document.getElementsByTagName('head')[0];
+        let link  = document.createElement('link');
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'assets/css/stylesRed.css'; // you may want to get this from local storage or location
+        head.appendChild(link);
+      } else if (color == 'pink'){
+        window.localStorage.removeItem("selectedTheme");
+        window.localStorage.setItem("selectedTheme", 'pink');
+        let head  = document.getElementsByTagName('head')[0];
+        let link  = document.createElement('link');
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'assets/css/stylesPink.css'; // you may want to get this from local storage or location
+        head.appendChild(link);
+      } else if (color == 'indigo'){
+        window.localStorage.removeItem("selectedTheme");
+        window.localStorage.setItem("selectedTheme", 'indigo');
+        let head  = document.getElementsByTagName('head')[0];
+        let link  = document.createElement('link');
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'assets/css/stylesIndigo.css'; // you may want to get this from local storage or location
+        head.appendChild(link);
+      } else {
+        window.localStorage.removeItem("selectedTheme");
+        window.localStorage.setItem("selectedTheme", 'undefined');
+        let head  = document.getElementsByTagName('head')[0];
+        let link  = document.createElement('link');
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'assets/css/stylesDefault.css'; // you may want to get this from local storage or location
+        head.appendChild(link);
 
-    setDefaultColorTheme(){
-         $('.modal-header').css({"background-color":"#557a95"});
-         $('.cust-side-nav-bg').css({"background-color":"#00194A"});
-         $('.cust-ng-sidebar').css({"background-color":"#00194A"});
-         $("button.btn.btn-link").css({"color":"#0003B4"});    
-         $('.cust-btn').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'});     
-          $(".cust-btn").hover(function() {
-            $(this).css("background",'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)');
-            }, function() {
-            $(this).css("background",'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)');
-            });
-         $('.cust-filter').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'});    
-          $(".cust-filter").hover(function() {
-            $(this).css("background",'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)');
-            }, function() {
-            $(this).css("background",'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)');
-            }); 
-         $('.dataTables_wrapper .dataTables_paginate .paginate_button.current').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'});
-           $(".progress-bar").each(function () {
-                 this.style.setProperty('background', '#557a95', 'important');
-           });
-         $('legend.scheduler-border').css({"color":"#2D5986"});
-         $(' aside.ng-sidebar ').css({"background-color":"#00194A"});
-         $('.nav-link').css({"color":""});
-         $('.ngx-pagination .current').css({"background":'linear-gradient(to bottom, #4080bf 0%, #2d5986 100%)'});
-         $('.cust').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'}); 
-         $('.cust-export').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'}); 
-    }
-
-    setColorTheme(color1 : string , color2 : string, color3 : string , color4 : string){
-            $('.modal-header').css({"background-color":color1});
-            $('.cust-side-nav-bg').css({"background-color":color3});
-            $('.cust-ng-sidebar').css({"background-color":color3});
-            $("button.btn.btn-link").css({"color":color2});
-            $('.cust-btn').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
-            $(".cust-btn").hover(function() {
-            $(this).css("background",'linear-gradient(to bottom,'+color1+' 0%, '+color2+' 100%)');
-            }, function() {
-            $(this).css("background",'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)');
-            });
-            $('.cust-filter').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
-            $(".cust-filter").hover(function() {
-            $(this).css("background",'linear-gradient(to bottom,'+color1+' 0%, '+color2+' 100%)');
-            }, function() {
-            $(this).css("background",'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)');
-            }); 
-            setTimeout(() => {    
-                $('.dataTables_wrapper .dataTables_paginate .paginate_button.current').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
-            });
-            $(".progress-bar").each(function () {
-                 this.style.setProperty('background', color1, 'important');
-            });
-            $('legend.scheduler-border').css({"color":color2});
-            $(' aside.ng-sidebar ').css({"background-color":color3});    
-            $('.nav-link').css({"color":color2});
-            $('.nav-link.active ').css({"color":"#495057"});
-            $('.nav-link.disabled').css({"color":"#6c757d"});  
-            $('.ngx-pagination .current').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
-            $('.cust').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
-            $('.cust-export').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});   
+      }
 
     }
 
     applyTheme(){
-            this.theme = window.localStorage.getItem("selectedTheme");
+      this.theme = window.localStorage.getItem("selectedTheme");
+    }
+
+
+    ngOnInit(){
+      this.theme = window.localStorage.getItem("selectedTheme");
+      this.changeTheme(this.theme);
     }
 
      /*@HostListener('document:click', ['$event'])
@@ -205,24 +165,10 @@ export class AppComponent  {
               }
     }*/
 
-     ngOnInit(){
-       this.theme = window.localStorage.getItem("selectedTheme");
-           setTimeout(() => { this.changeTheme(this.theme);});
-
-       this.router.events.subscribe(path => {
-           setTimeout(() => { this.changeTheme(this.theme);});
-        });
-
-      }
-
+    
     @HostListener('window:unload', ['$event'])
     unloadHandler(event) {
         window.localStorage.setItem("selectedTheme", this.theme);
-    }
-
-    @HostListener('window:popstate', ['$event'])
-    onPopState(event) {
-        this.changeTheme(this.theme);
     }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -19,6 +19,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChild('myForm') form:any;
     @ViewChild('api') pagination: any;
+    @ViewChild('table') table: ElementRef;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -438,8 +439,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         });
     }
 
-
-
     onClickLOV(data,key){
         let retData:any = {};
         retData.key = key;
@@ -550,5 +549,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
     markAsDirty(){
         this.form.control.markAsDirty();
     }
- 
+     
+    focusFirst(){
+        this.table.nativeElement.rows[1].click();
+        this.table.nativeElement.rows[1].focus();
+    }
 }

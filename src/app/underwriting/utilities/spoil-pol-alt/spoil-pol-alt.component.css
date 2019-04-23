@@ -11,3 +11,8 @@
 	z-index: 200;
 	font-size: 14px;
 }
+
+.dsbld {
+    background: gray !important;
+    cursor: unset;
+}

@@ -1,7 +1,6 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppComponent } from 'src/app/app.component';
 
 @Component({
     selector: 'app-policy-issuance-alt',
@@ -20,6 +19,9 @@ export class PolicyIssuanceAltComponent implements OnInit {
         editPol:'',
         insuredDesc:'',
         riskId:'',
+        showPolAlop: false,
+        coInsuranceFlag: false,
+        fromInq:'',
     }
 
     alterFlag: boolean = false;
@@ -27,10 +29,10 @@ export class PolicyIssuanceAltComponent implements OnInit {
     approveText: string = "For Approval";
     currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
     approverList: any[];
-    theme =  window.localStorage.getItem("selectedTheme");
     status: string = "";
+    title:string = "Policy / Policy Issuance / Create Alteration"
 
-    constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router,private app: AppComponent) {}
+    constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router) {}
 
     ngOnInit() {
          this.sub = this.route.params.subscribe(params => {
@@ -41,14 +43,11 @@ export class PolicyIssuanceAltComponent implements OnInit {
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
+            this.policyInfo.fromInq = params['fromInq'];
+            if(this.policyInfo.fromInq == 'true'){
+              this.title = "Policy / Inquiry / Policy Inquiry";
+            }
         });
-        /* Test Data */
-        /*this.policyInfo.policyId = 9; 
-        this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
-        this.policyInfo.insuredDesc = 'insured5';
-        this.policyInfo.riskName = 'riskName';
-        this.policyInfo.principalName = 'principal';
-        this.policyInfo.contractorName = 'contractor';*/
 
     }
 
@@ -56,7 +55,6 @@ export class PolicyIssuanceAltComponent implements OnInit {
         this.status = this.policyInfo.status;
         setTimeout(() => {
              this.showEditModal(JSON.parse(this.policyInfo.editPol));
-             this.app.changeTheme(this.theme);
          });
     }  
 
@@ -81,6 +79,13 @@ export class PolicyIssuanceAltComponent implements OnInit {
         if ($event.nextId === 'Exit') {
             this.router.navigateByUrl('');
         } 
+        if(this.policyInfo.fromInq=='true'){
+            setTimeout(a=>{
+              $('input').attr('readonly','readonly');
+              $('textarea').attr('readonly','readonly');
+              $('select').attr('readonly','readonly');
+            },0)
+          }
     }
 
     getPolInfo(event){      
@@ -88,6 +93,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
       this.policyInfo.policyId = event.policyId;
       this.policyInfo.insuredDesc =  event.insuredDesc;
       this.policyInfo.riskId =  event.riskId;
+      this.policyInfo.showPolAlop = event.showPolAlop;
+      this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
     }
 
    returnOnModal(){

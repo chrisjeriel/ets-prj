@@ -239,5 +239,12 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnDeductibles',params,header);
     }
 
+    getMtnSpoilageReason(spoilCd){
+    	const params = new HttpParams()
+			.set('spoilCd', spoilCd)
+
+       	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSpoilageReason', {params});
+    }
+
 }
 

@@ -1,4 +1,4 @@
-<fieldset class="scheduler-border">
+<fieldset class="scheduler-border" *ngIf="!policyInfo.fromSummary">
 	<legend class="scheduler-border">Policy Record Info</legend>
 	<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
 		<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
@@ -7,7 +7,7 @@
 			<input type="text" [value]="policyInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-2" placeholder=""
 			 readonly>
 			<label class="form-control-sm col-sm-1" for="xx">Insured</label>
-			<input type="text" [value]="policyInfo.insured" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+			<input type="text" [value]="policyInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
 		</div>
 		<div class="input-group" style="margin-bottom: -13px !important;">
 			<label class="col-sm-1"></label>

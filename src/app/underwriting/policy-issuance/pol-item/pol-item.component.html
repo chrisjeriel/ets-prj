@@ -1,4 +1,4 @@
-<fieldset class="scheduler-border">
+<fieldset class="scheduler-border" *ngIf="!policyInfo.fromSummary">
     <legend class="scheduler-border">Policy Record Info</legend>
     <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
         <div class="input-group">
@@ -76,8 +76,8 @@
 
 <div class="col-md-13 text-center">
     <div class="cust-btn-container" style="margin-top: 10px;">
-        <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-        <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+        <button type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
     </div>
 </div>  
 
