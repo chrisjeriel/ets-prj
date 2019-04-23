@@ -6,6 +6,7 @@ import { NotesService, UnderwritingService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { FormsModule }   from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -23,6 +24,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	//@ViewChild(PrintModalComponent) print : PrintModalComponent;
 	@ViewChild('myForm') form:any;
+	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
 	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal, private router: Router) { }
 
@@ -405,6 +407,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
   			this.polHoldCoverParams.approvedBy = this.approveType === 'Approve' ? this.authorization : '';
   			this.isApproval = true;
   			this.onClickSave();
+  			this.dialogIcon = 'success-message';
+  			this.dialogMessage = this.approveType === 'Approve' ? 'Hold Cover No ' + this.holdCoverNo + ' has been approved.' : 'Pending Approval';
+  			//$('app-sucess-dialog #modalBtn').trigger('click');
+  			this.successDiag.open();
   			//this.isApproval = false;
   		});
   	}
