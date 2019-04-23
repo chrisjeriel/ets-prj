@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Policy Issuance / Create Alteration</h4>
+	<h4>{{title}}</h4>
 	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)">
 
 		<ngb-tab class="ngb-tab" title="General Info">
@@ -14,7 +14,7 @@
 		</ngb-tab>
 		<ngb-tab title="Coverage">
 			<ng-template ngbTabContent>
-				<app-pol-coverage [alteration]="true"></app-pol-coverage>
+				<app-pol-coverage [policyInfo]="policyInfo" [alteration]="true"></app-pol-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="ALOP" *ngIf="policyInfo.showPolAlop">
@@ -132,7 +132,7 @@
 			</ng-template>
 
 		</ngb-tab>
-		<ngb-tab title="Post">
+		<ngb-tab title="Post" *ngIf="policyInfo.fromInq != 'true'">
 			<ng-template ngbTabContent>
 				<app-pol-post></app-pol-post>
 			</ng-template>
