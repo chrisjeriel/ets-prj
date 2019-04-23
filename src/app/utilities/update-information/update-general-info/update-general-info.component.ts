@@ -230,6 +230,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
          this.searchParams =[];
          this.clearFields();
          this.unhighlight();
+         this.removeNgDirty();
      }
    
   }
@@ -307,7 +308,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
     }
 
     getPolicyDetails(obj){
-
+      this.removeNgDirty();
       this.us.getPolGenInfo(obj,null).subscribe(data => {
           var records = data['policy'];
           console.log(records);
@@ -415,6 +416,8 @@ export class UpdateGeneralInfoComponent implements OnInit {
          this.tempPolNo[5].length !== 0){
 
          this.searchParams2 =[];
+         this.disabledBool = true;
+  
          $('#searchicon').addClass('fa-spinner fa-spin');
          $('#search').css('pointer-events', 'none');
          var tempPolNum =  this.tempPolNo.join('-');
@@ -447,7 +450,6 @@ export class UpdateGeneralInfoComponent implements OnInit {
     setDetailsPolicy(obj){
 
       this.chosenPolicy = [];
-      this.disabledBool = false;
       $('#searchicon').removeClass('fa-spinner fa-spin')
       $('#search').css('pointer-events', 'initial');
        for(let rec of obj){
@@ -467,6 +469,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
        if (this.isEmptyObject(this.chosenPolicy)){
          this.callModal();
        } else {
+         this.disabledBool = false;
          var res = Math.max.apply(Math,this.chosenPolicy.map(function(o){return o.policyid;}))
          console.log(res);
          this.getPolicyDetails(res);
@@ -476,6 +479,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
     }
 
     callModal(){
+              this.removeNgDirty();
               this.disabledBool = false;
               this.searchParams2 = [];
               this.getPolListing();
@@ -500,24 +504,23 @@ export class UpdateGeneralInfoComponent implements OnInit {
 
        console.log(savePolGenInfoParam);
 /*       this.loading = true;*/
-
-        this.us.updatePolGenInfo(savePolGenInfoParam).subscribe(data => {
+          this.us.updatePolGenInfo(savePolGenInfoParam).subscribe(data => {
            console.log(data);
-      /*     this.loading = false;*/
-           if(data['returnCode'] === 0) {
-              this.dialogIcon = 'error';
-              this.dialogMessage = data['errorList'][0].errorMessage;
-              $('#updatePolGenInfo #successModalBtn').trigger('click');
-          } else if (data['returnCode'] === -1) {           
-              this.dialogIcon = 'success-message';
-              this.dialogMessage = "Successfully Saved";
-              this.policyInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
-              this.policyInfo.updateDate  = this.ns.toDateTimeString(0);
-              $('#updatePolGenInfo #successModalBtn').trigger('click');
-        }
+        /*     this.loading = false;*/
+             if(data['returnCode'] === 0) {
+                this.dialogIcon = 'error';
+                this.dialogMessage = data['errorList'][0].errorMessage;
+                $('#updatePolGenInfo #successModalBtn').trigger('click');
+            } else if (data['returnCode'] === -1) {           
+                this.dialogIcon = 'success-message';
+                this.dialogMessage = "Successfully Saved";
+                this.policyInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
+                this.policyInfo.updateDate  = this.ns.toDateTimeString(0);
+                $('#updatePolGenInfo #successModalBtn').trigger('click');
+            }
+          });
 
-        });
-
+    
     }
 
    onClickSave(){
@@ -531,6 +534,16 @@ export class UpdateGeneralInfoComponent implements OnInit {
   addNgDirty(obj){
     $('#'+obj).addClass("ng-dirty");
   }
+
+  removeNgDirty(){
+    $('#insured').removeClass('ng-dirty');
+    $('#coRefNo').removeClass('ng-dirty');
+    $('#riBinderNo').removeClass('ng-dirty');
+    $('#inputLat').removeClass('ng-dirty');
+    $('#inputLong').removeClass('ng-dirty');
+  }
+
+
 
 
 

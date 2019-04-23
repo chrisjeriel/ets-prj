@@ -160,7 +160,7 @@
 				<div class="col-md-13 text-center" style="margin-top: 10px; margin-bottom: 5px;">
 					<div class="cust-btn-container">
 						<button type="button" class="cust-btn" (click)= onClickCancel()><a>Cancel</a></button>
-						<button type="button" class="cust-btn" (click)= onClickSave()><a>Save</a></button>
+						<button type="button" class="cust-btn" (click)= onClickSave() [disabled]="disabledBool"><a>Save</a></button>
 					</div>
 				</div>
 			</ng-template>
