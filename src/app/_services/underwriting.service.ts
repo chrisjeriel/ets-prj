@@ -856,6 +856,24 @@ export class UnderwritingService {
             return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCoverListing',{params});
     }
 
+    getSelectedPolHc(holdcovNo){
+        var params = new HttpParams()
+                .set('holdCovNo',holdcovNo)
+                .set('status','')
+                .set('cedingName','')
+                .set('policyNo','')
+                .set('riskName','')
+                .set('insuredName','')
+                .set('periodFrom','')
+                .set('periodTo','')
+                .set('compRefHoldCovNo','')
+                .set('reqBy','')
+                .set('reqDateFrom','')
+                .set('reqDateTo','')
+                .set('expiringInDays','')
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCoverListing',{params});
+    }
+
     getUWCoverageAlt(lineCd:any , polYear: any,seqNo: any,cedingId: any,coSeriesNo: any,altNo: any) {
         /*this.uwcoverageInfoData = [
             new UnderwritingCoverageInfo("1", "I", "3", "1000000", "12.2", "69000", "70000"),
@@ -880,6 +898,14 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolGenInfoOc",{params});
     }
 
+     updatePolicyStatus(params){
+        let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolicyStatus',params,header);
+    }
 
     getAlterationsPerPolicy(policyId) {
         const params = new HttpParams()
@@ -896,6 +922,15 @@ export class UnderwritingService {
         };
 
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolGenInfoOc', params, header);
+    }
+
+    updatePolGenInfoSpoilage(params){
+        let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolGenInfoSpoilage',params,header);
     }
 
 }            
