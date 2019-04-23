@@ -479,7 +479,6 @@ export class PolCreatePARComponent implements OnInit {
     if(this.validate(this.prepareParam())){
       this.underwritingService.savePolicyDetails(this.prepareParam()).subscribe(data => {
         this.loading = false;
-        console.log(data);
         if(data['returnCode'] === 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
 
@@ -489,6 +488,8 @@ export class PolCreatePARComponent implements OnInit {
           this.policyNo = data['policyNo'];
 
           $('#convSuccessModal > #modalBtn').trigger('click');
+        } else if (data['coInsStatus'] === 1) {
+          $('#convWarningModal > #modalBtn').trigger('click');
         }
       });
     } else {

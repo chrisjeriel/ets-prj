@@ -22,6 +22,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
         showPolAlop: false,
         coInsuranceFlag: false,
         fromInq:'',
+        prevPolicyId: ''
     }
 
     alterFlag: boolean = false;
@@ -47,6 +48,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
             if(this.policyInfo.fromInq == 'true'){
               this.title = "Policy / Inquiry / Policy Inquiry";
             }
+            this.policyInfo.prevPolicyId = params['prevPolicyId'];
         });
 
     }
