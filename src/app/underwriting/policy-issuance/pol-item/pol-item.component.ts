@@ -50,10 +50,9 @@ export class PolItemComponent implements OnInit {
 
     eeiPassData:any={
         tableData:[],
-        tHeader: ['Item No.', 'Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
-        dataTypes:['string', 'number', 'string', 'string', 'string', 'currency'],
+        tHeader: ['Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
+        dataTypes:['number', 'string', 'string', 'string', 'currency'],
         nData: {
-            "itemNo":null,
             "quantity": null,
             "itemDesc": null,
             "makeYear": null,
@@ -67,11 +66,11 @@ export class PolItemComponent implements OnInit {
         checkFlag:true,
         addFlag:true,
         deleteFlag:true,
-        total:[null,null,null,null,'Total','sumInsured'],
-        widths: ["1","1","auto","2","auto","228"],
+        total:[null,null,null,'Total','sumInsured'],
+        widths: ["1","auto","2","auto","228"],
         searchFlag:true,
-        keys:['itemNo','quantity','itemDesc','makeYear','deductibleTxt','sumInsured'],
-        uneditable: [true,false,false,false,false,false],
+        keys:['quantity','itemDesc','makeYear','deductibleTxt','sumInsured'],
+        uneditable: [false,false,false,false,false],
         pageLength:'unli'
 
     }
@@ -245,8 +244,36 @@ export class PolItemComponent implements OnInit {
         });
 
         console.log("policyInfo: " + JSON.stringify(this.policyInfo));
-
+        //paul
+        if(this.policyInfo.fromInq=='true'){
+            this.eeiPassData.checkFlag = false;
+            this.eeiPassData.addFlag = false;
+            this.eeiPassData.deleteFlag = false;
+            this.eeiPassData.uneditable = [true,true,true,true,true,true]
+            this.bpvPassData.checkFlag = false;
+            this.bpvPassData.addFlag = false;
+            this.bpvPassData.deleteFlag = false;
+            this.bpvPassData.uneditable = [true,true,true,true,true,true]
+            this.mlpPassData.checkFlag = false;
+            this.mlpPassData.addFlag = false;
+            this.mlpPassData.deleteFlag = false;
+            this.mlpPassData.uneditable = [true,true,true,true,true,true]
+            this.dosGoodsPassData.checkFlag = false;
+            this.dosGoodsPassData.addFlag = false;
+            this.dosGoodsPassData.deleteFlag = false;
+            this.dosGoodsPassData.uneditable = [true,true,true,true,true,true]
+            this.dosMachineryPassData.checkFlag = false;
+            this.dosMachineryPassData.addFlag = false;
+            this.dosMachineryPassData.deleteFlag = false;
+            this.dosMachineryPassData.uneditable = [true,true,true,true,true,true]
+            this.cecPassData.checkFlag = false;
+            this.cecPassData.addFlag = false;
+            this.cecPassData.deleteFlag = false;
+            this.cecPassData.uneditable = [true,true,true,true,true,true]
+        }
         this.getItem();
+
+
     }
 
     getItem(){

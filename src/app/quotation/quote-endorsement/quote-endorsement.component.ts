@@ -241,6 +241,9 @@ export class QuoteEndorsementComponent implements OnInit {
           for(var count = 0; count < this.endorsementData.tHeader.length; count++){
             this.endorsementData.uneditable.push(true);
           }
+          this.deductiblesData.addFlag = false;
+          this.deductiblesData.checkFlag = false;
+          this.deductiblesData.deleteFlag = false;
         }else if(this.inquiryFlag && this.endorsementType === 'OC'){
           this.endorsementOCData.opts = [];
           this.endorsementOCData.uneditable = [];

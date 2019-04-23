@@ -123,7 +123,7 @@ export class DummyComponent implements OnInit {
         dataTypes: ['text', 'text'],
         pageLength: 3,
         tableOnly: false,
-        checkFlag: true,
+        checkFlag: false,
     }
 
     passDataEditable: any = {
