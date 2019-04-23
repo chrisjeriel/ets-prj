@@ -180,7 +180,7 @@ span.ui-column-resizer {
                     </thead>
 
                     <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)" id="{{ ti }}">
+                        <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data,ti)" (dblclick)="onRowDblClick($event)" id="{{ ti }}">
                             <td *ngIf="passData.checkFlag" class="checkbox align-middle">
                                 
                                  <div *ngIf="passData.checkFlag" style="text-align: center;">

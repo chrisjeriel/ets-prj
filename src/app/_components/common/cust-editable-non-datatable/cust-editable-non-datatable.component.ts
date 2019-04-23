@@ -273,10 +273,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
         });
     }
 
-    onRowClick(event,data) {
-        if(event.target.tagName!=="INPUT"){
+    onRowClick(event,data,ti?) {
+        if(event !== null && event.target.tagName!=="INPUT"){
             if(data != this.fillData && data != this.indvSelect){
                 this.indvSelect = data;
+                $(event.target.closest('tr')).find("input:not([tabindex='-1']):not([type='checkbox'])").first().click()
             }else if(data != this.fillData && data == this.indvSelect){
                 this.indvSelect = null;
             }
