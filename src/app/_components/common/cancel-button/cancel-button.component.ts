@@ -21,11 +21,11 @@ export class CancelButtonComponent implements OnInit {
   	if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
   		this.saveModal.openNoClose();
   	} else {
-      if (this.url != null) { 
-        this.router.navigate([this.url]); 
+      if (this.url != null) {
+        this.router.navigate([this.url]);
       } else {
         this.modalService.dismissAll();
-      } 
+      }
   	}
   }
 

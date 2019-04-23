@@ -74,6 +74,12 @@ export class MtnAdviceWordingsComponent implements OnInit {
     }
   }
 
+  cancel(){
+      this.passDataAdvice.tableData = [];
+      this.table.refreshTable();
+     //console.log('popped');
+  }
+
  openModal(){
    this.mtnService.getAdviceWordings().subscribe((data: any) => {
      console.log(data);

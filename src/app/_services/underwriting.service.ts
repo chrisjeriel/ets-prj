@@ -559,6 +559,24 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachment', JSON.stringify(params), header);
     }
 
+    savePolAttachmentOc(policyIdOc:number ,savePolAttachments: any[], deletePolAttachments: any[]){
+        /*const params = new HttpParams()
+             .set('quoteId',quoteId.toString())
+             .set('attachmentsList',JSON.stringify(attachmentList))*/
+             
+        let params:any  = {
+            policyId: policyIdOc,
+            savePolAttachments: savePolAttachments,
+            deletePolAttachments: deletePolAttachments
+        }
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachmentOc', JSON.stringify(params), header);
+    }
+
     savePolHoldCover(holdCoverParams: any){
         let header : any = {
             headers: new HttpHeaders({
@@ -810,6 +828,34 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAttachmentOc',{params});
     }
 
+    getPolHoldCoverList(searchParams: any[]) {
+         var params;
+
+          if(searchParams.length < 1){
+            params = new HttpParams()
+                .set('holdCovNo','')
+                .set('status','')
+                .set('cedingName','')
+                .set('policyNo','')
+                .set('riskName','')
+                .set('insuredName','')
+                .set('periodFrom','')
+                .set('periodTo','')
+                .set('compRefHoldCovNo','')
+                .set('reqBy','')
+                .set('reqDateFrom','')
+                .set('reqDateTo','')
+                .set('expiringInDays','')
+        }
+         else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+            return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCoverListing',{params});
+    }
+
     getUWCoverageAlt(lineCd:any , polYear: any,seqNo: any,cedingId: any,coSeriesNo: any,altNo: any) {
         /*this.uwcoverageInfoData = [
             new UnderwritingCoverageInfo("1", "I", "3", "1000000", "12.2", "69000", "70000"),
@@ -827,4 +873,19 @@ export class UnderwritingService {
         return  this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolCoverageAlt",{params});
     }
 
+    getPolGenInfoOc(policyIdOc: string, openPolicyNo: string){
+        const params = new HttpParams()
+            .set('policyIdOc', policyIdOc)
+            .set('openPolicyNo', openPolicyNo)
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolGenInfoOc",{params});
+    }
+
+    getAlterationsPerPolicy(policyId) {
+        const params = new HttpParams()
+            .set('policyId', policyId)
+
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrieveAlterationsPerPolicy",{params});
+    }
 }            
+
+            

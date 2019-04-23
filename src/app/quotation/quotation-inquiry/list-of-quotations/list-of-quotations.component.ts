@@ -157,7 +157,6 @@ export class ListOfQuotationsComponent implements OnInit {
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, pageID: 1, exportFlag: true,
         keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd'],
     }
-    theme =  window.localStorage.getItem("selectedTheme");
 
     constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private notes: NotesService) { 
     }
@@ -253,10 +252,7 @@ export class ListOfQuotationsComponent implements OnInit {
              this.status = rec.status;
           } 
         }
-
-        setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo,quoteId: this.quoteId,status: this.status, from: 'quo-processing', inquiry: true}], { skipLocationChange: true });
-        },100); 
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo,quoteId: this.quoteId,status: this.status, from: 'quo-processing', inquiry: true}], { skipLocationChange: true }); 
     }
 
     export(){
