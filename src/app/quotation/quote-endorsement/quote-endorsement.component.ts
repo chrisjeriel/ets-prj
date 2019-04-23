@@ -343,7 +343,6 @@ export class QuoteEndorsementComponent implements OnInit {
                          }
                        this.tableNonEditable.forEach(table => {table.refreshTable()});
                             this.table.refreshTable();
-                            this.optionTable.onRowClick(null,this.quoteOptionsData.tableData[0]);
                     });
                 }  
 
@@ -838,7 +837,6 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     updateDed(data){
-      console.log(data)
         if(data==null || data.endtCd ==null){
             this.deductiblesData.disableAdd = true;
             this.deductiblesData.tableData = [];
