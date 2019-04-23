@@ -89,13 +89,15 @@ export class SpoilPolAltComponent implements OnInit {
 	searchArr			: any[] = Array(6).fill('');
 	checkSpoilCd 		: number;
 
-
-	constructor(private underwritingService: UnderwritingService, private ns: NotesService,private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService) { }
+	constructor(private underwritingService: UnderwritingService, private ns: NotesService,
+		private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Pol | Spoil Policy/Alteration');
 		this.getPolicyList();
 		this.getSpoilList();
+
+
 	}
 
 	getPolGenInfo(){
@@ -174,7 +176,6 @@ export class SpoilPolAltComponent implements OnInit {
 					this.spoilPolRecord.reasonDesc = i.description;
 				}
 			}
-			console.log(this.checkSpoilCd);
 			if(this.checkSpoilCd !== 1  && this.checkSpoilCd !== undefined){
 				this.spoilPolRecord.reason = '';
 				this.spoilPolRecord.reasonDesc = '';
@@ -282,11 +283,12 @@ export class SpoilPolAltComponent implements OnInit {
 
 			this.postSpoilage = {
 				"policyId"		: this.polId,
+				"spldUser"		: this.spoilPolRecord.user,
 				"status"		: spoilStatus,
 				"updateUser"	: this.spoilPolRecord.user
 			}
 
-			this.underwritingService.updatePolicyStatus(JSON.stringify(this.postSpoilage))
+			this.underwritingService.updatePolGenInfoSpoilage(JSON.stringify(this.postSpoilage))
 			.subscribe(data => {
 				console.log(data);
 				console.log('POSTING SPOILAGE SUCCESSFUL!');
@@ -298,7 +300,8 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	validatePolicy(){
-		this.warnMsg1 = 'Policy/Alteration cannot be spoiled,';
+		this.warnMsg1 = 'Policy/Alteration cannot be spoiled,creation of alteration connected \n to this record is on going.';
+		console.log(this.warnMsg1);
 		this.warnMsg2 = 'creation of alteration connected';
 		this.warnMsg3 = 'to this record is on going.';
 		$('#warnMdl > #modalBtn').trigger('click');

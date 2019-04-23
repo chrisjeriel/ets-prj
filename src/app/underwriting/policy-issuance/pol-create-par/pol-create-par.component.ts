@@ -208,7 +208,7 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-      this.polOcList = this.polOcList.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
+      this.polOcList = this.polOcList//.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
                                      .map(oc => { oc.riskName = oc.project.riskName; return oc; });
       this.passDataLOV.tableData = this.polOcList;
       this.lovTable.refreshTable();

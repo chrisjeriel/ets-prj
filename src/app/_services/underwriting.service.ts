@@ -913,6 +913,15 @@ export class UnderwritingService {
 
         return this.http.get(environment.prodApiUrl + "/underwriting-service/retrieveAlterationsPerPolicy",{params});
     }
+
+    updatePolGenInfoSpoilage(params){
+        let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolGenInfoSpoilage',params,header);
+    }
     
 }            
 
