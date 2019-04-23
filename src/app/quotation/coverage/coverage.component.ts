@@ -77,7 +77,7 @@ export class CoverageComponent implements OnInit {
     pageLength: 'unli',
     widths:[60,90,225,110,1],
     magnifyingGlass: ['coverName'],
-    uneditable: [true,false,false,false,false],
+    uneditable: [true,true,false,false,false],
     keys:['section','bulletNo','coverName','sumInsured','addSi'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
@@ -378,12 +378,6 @@ export class CoverageComponent implements OnInit {
     }
 
     $('#cust-table-container').addClass('ng-dirty');
-    // this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
-    // this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
-    // this.passData.tableData[this.sectionCoverLOVRow].section = data[0].section;
-    // this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
-    // this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
-    // this.passData.tableData[this.sectionCoverLOVRow].edited = true;
 
     if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
       //HIDE THE POWERFUL MAGNIFYING GLASS
@@ -402,17 +396,20 @@ export class CoverageComponent implements OnInit {
 
       //HIDE THE POWERFUL MAGNIFYING GLASS
       if(data[i].coverCd == 11){
-        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+        //this.passData.tableData[this.passData.tableData.length - 1].showMG = 1;
+        delete this.passData.tableData[this.passData.tableData.length - 1].showMG;
         this.getEditableCov()
 
       }else{
         this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       }
     }
+
     this.table.refreshTable();
   }
 
   update(data){
+    console.log(this.passData.tableData)
     if(data.hasOwnProperty('lovInput')) {
       this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
 
@@ -489,14 +486,17 @@ export class CoverageComponent implements OnInit {
   }
 
   getEditableCov(){
-    console.log(this.passData.tableData)
     for(let data of this.passData.tableData){
       if(data.uneditable === undefined){
         data.uneditable = [];
       }
-      if(data.coverCd == 11){    
-        data.uneditable.pop();
+      if(data.uneditable.length == 0 && data.coverName != null){
+        data.uneditable.push('coverName');
       }
+      if(data.coverCd == 11){    
+        data.uneditable.pop();  
+      }
+      
     }
   }
 

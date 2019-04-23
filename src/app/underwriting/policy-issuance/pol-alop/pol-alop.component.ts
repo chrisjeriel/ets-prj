@@ -281,11 +281,12 @@ export class PolAlopComponent implements OnInit {
         this.polAlopData.updateUser = JSON.parse(window.localStorage.currentUser).username
       }
     });
-    //this.getSumInsured();
+    this.getSumInsured();
   }
 
   getSumInsured(){
     this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+      console.log(data)
       var sectionCovers = data.policy.project.coverage.sectionCovers;
       for( var i = 0; i <sectionCovers.length;i++){
         if(sectionCovers[i].description == 'Advance Loss of Profit'){

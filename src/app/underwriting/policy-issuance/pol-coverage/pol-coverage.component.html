@@ -24,13 +24,14 @@
   <div class="test row" style="margin-top: 0px !important; margin-bottom: 2px;">
     <div class="col-sm-6" style="margin-top: 2px !important;"> 
       <fieldset class="scheduler-border" style="padding-bottom: 41px !important;">
-        <app-cust-editable-non-datatable [passData]="passDataSectionCover" (tableDataChange)="update($event);" (newClick)="onrowClick($event)"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable #sectionTable [passData]="passDataSectionCover" (tableDataChange)="passDataSectionCover.tableData=$event;update($event);" (newClick)="onrowClick($event)" class="d-block py-2" (clickLOV)="sectionCoversLOV($event)"></app-cust-editable-non-datatable>
       </fieldset>
     </div>
     <div class="col-sm-6" style="margin-top: -15px;">
       <fieldset class="scheduler-border" style="padding-bottom: 0px !important;">
         <legend class="scheduler-border">Deductibles</legend>
-          <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+          <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (tableDataChange)="passDataDeductibles.tableData=$event" (clickLOV)="clickDeductiblesLOV($event,'section')"
+          class="d-block py-2"></app-cust-editable-non-datatable>
       </fieldset>
     </div>
   </div>
@@ -148,7 +149,7 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveCoverage()"></app-confirm-save>
 <app-cancel-button (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
-
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
 </ng-container>
 
 <ng-container *ngIf="alteration">
@@ -173,7 +174,7 @@
     </fieldset>
     <fieldset class="scheduler-border" >
       <legend class="scheduler-border">Section Covers</legend>
-      <app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="updateAlteration($event);" (clickLOV)="sectionCoversLOV($event)"></app-cust-editable-non-datatable>
+      <app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="updateAlteration($event);" (clickLOV)="sectionCoversLOVAlt($event)"></app-cust-editable-non-datatable>
     </fieldset>
     <div class="row">
       <div class="col-sm-12">
@@ -317,4 +318,3 @@
 <!-- <app-confirm-save  id = "alterationSaving" (onYes)="alterationSave()"></app-confirm-save> -->
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 <app-sucess-dialog id="deductibles-success" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
