@@ -1,0 +1,169 @@
+.modal-header {
+    padding: inherit;
+    background-color: #F44336;
+    color: white;
+}
+
+.cust-side-nav-bg {
+    background-color: #C62828;/*#557a95;*/
+    color: white;
+    height: 100%;
+    position: static;
+    flex-grow: 100;
+    min-height: 650px;
+}
+
+.cust-ng-sidebar {
+    border: 1px solid gray !important;
+    color: white;
+    background-color: #C62828; /*#557a95;*/
+    height: 100%;
+}
+
+aside.ng-sidebar{
+    background-color: #C62828;
+}
+
+
+.cust-btn {
+    font-size: 11px;
+    font-weight: bold;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    z-index: 9999 !important;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, #D32F2F 0%, #C62828 100%) ! important;
+    min-width: 60px;
+    max-width: 120px;
+    padding-top: 5px;
+    padding-bottom: 2px;
+    margin-right: 3px;
+}
+
+.cust-btn:hover {
+    background: linear-gradient(to bottom, #F44336 0%, #D32F2F 100%);
+}
+
+button.btn.btn-link{
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0px 6px 2px 6px;
+    color: #D32F2F;
+}
+
+button.btn.btn-link:hover{
+    color: #D32F2F;
+}
+
+.cust-filter {
+    height: calc(1.3rem + 1px) !important;
+    position: absolute !important;
+    right: 3px;
+    top: 2.9px;
+    font-size: 0.7rem !important;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    border-radius: 0px 3px 3px 0px;
+    z-index: 1000 !important;
+    background: linear-gradient(to bottom, #D32F2F 0%, #C62828 100%) ! important;
+}
+
+.cust-filter:hover {
+    background: linear-gradient(to bottom, #F44336 0%, #D32F2F 100%) ! important;
+}
+
+.cust-export {
+    height: calc(1.3rem + 1px) !important;
+    position: absolute !important;
+    right: -14px;
+    top: 2.9px;
+    font-size: 0.7rem !important;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    border-radius: 3px 3px 3px 3px;
+    z-index: 1000 !important;
+    background: linear-gradient(to bottom, #D32F2F 0%, #C62828 100%) ! important;
+}
+
+.cust-export:hover {
+    background: linear-gradient(to bottom, #F44336 0%, #D32F2F 100%) ! important;
+}
+
+.progress-bar{
+    background-color:#F44336 !important;  
+}
+
+legend.scheduler-border {
+    font-size: 10.5px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:10px 10px;
+    margin-bottom: -14px;
+    color: #D32F2F ! important;
+}
+
+.nav-link {
+    padding: 5px 10px !important;
+    color: #D32F2F;
+}
+
+.nav-link:hover {
+    color: #F44336;
+}
+
+.my-pagination /deep/ .ngx-pagination .current {
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #D32F2F 0%, #C62828 100%) ! important;
+}
+
+.my-pagination /deep/ .ngx-pagination .current:hover {
+    background: linear-gradient(to bottom, #F44336 0%, #D32F2F 100%) ! important;
+}
+
+.cust {
+    background: linear-gradient(to bottom, #D32F2F 0%, #C62828 100%) ! important;
+}
+
+.cust:hover {
+   background: linear-gradient(to bottom, #F44336 0%, #D32F2F 100%) ! important;
+}
+
+.selected {
+    background-color: #ffa4a4 ! important; 
+}
+
+#non-datatable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #c9d9d9 ! important;
+    color: black; 
+}
+
+
+
+
+
+
+
+
+
+
+
+

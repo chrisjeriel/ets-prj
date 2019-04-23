@@ -3,6 +3,7 @@
     <ngb-tabset>
         <ngb-tab title="Hold Cover Monitoring">
             <ng-template ngbTabContent>
+            	<!-- <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)=" onRowDblClick($event)" (searchToDb)="searchQuery($event)" (export)="export()" ></app-cust-non-datatable> -->
                 <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)=" onRowDblClick($event)" (searchToDb)="searchQuery($event)" (export)="export()" ></app-cust-non-datatable>
             </ng-template>
         </ngb-tab>

@@ -121,6 +121,7 @@ import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol
 import { PolOpenCovListComponent } from './underwriting/policy-issuance/pol-open-cov-list/pol-open-cov-list.component';
 import { PolHoldCovMonitoringComponent } from './underwriting/expiry-and-renewal/pol-hold-cov-monitoring/pol-hold-cov-monitoring.component';
 import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spoil-pol-alt.component';
+import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
 
 const appRoutes: Routes = [
 
@@ -151,8 +152,8 @@ const appRoutes: Routes = [
     { path: 'pol-dist-list', component: PolDistListComponent },
     { path: 'pol-dist', component: PolDistComponent },
     { path: 'policy-dist', component: PolicyDistributionComponent },
-    { path: 'create-open-cover', component: PolCreateOpenCoverComponent },
-    { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent },
+    { path: 'create-open-cover', component: PolCreateOpenCoverComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
     { path: 'update-info', component: UpdateInformationComponent },
     { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
@@ -251,6 +252,7 @@ const appRoutes: Routes = [
     { path: 'open-cover-list', component: PolOpenCovListComponent},
     { path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent},
     { path: 'spoil-pol-alt', component: SpoilPolAltComponent},
+    { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

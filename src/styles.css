@@ -601,3 +601,14 @@ textarea {
     color: black !important;
 }
 
+.my-pagination /deep/ .ngx-pagination .current {
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
+}
+
+.my-pagination /deep/ .ngx-pagination .current:hover {
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
+}
+

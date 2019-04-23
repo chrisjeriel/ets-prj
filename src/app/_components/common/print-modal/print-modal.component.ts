@@ -51,6 +51,7 @@ export class PrintModalComponent implements OnInit {
   dialogIcon:string  = "";
   dialogMessage:string  = "";
   btnDisabled: boolean;
+  default: boolean = true;
 
   ngOnInit() {
 

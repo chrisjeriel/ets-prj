@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit, Input } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-policy-issuance',
@@ -24,20 +23,21 @@ export class PolicyIssuanceComponent implements OnInit {
         riskId: '',
         fromInq: '',
         showPolAlop: false,
-        principalId: ''
-
+        principalId: '',
+        coInsuranceFlag: false,
+        fromSummary:false
   }
-
+  @Input() fromSummary = false;
 
   alterFlag: boolean = false;
-  fromInq:boolean = false;
+  fromInq:any = false;
   approveText: string = "For Approval";
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
-  theme =  window.localStorage.getItem("selectedTheme");
   status: string = "";
+  title: string = "Policy / Policy Issuance / Create Policy";
   
-  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router,private app: AppComponent) { }
+  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
@@ -51,6 +51,10 @@ export class PolicyIssuanceComponent implements OnInit {
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
+            if(this.fromInq == 'true'){
+              this.title = "Policy / Inquiry / Policy Inquiry";
+            }
+            this.policyInfo.fromSummary = this.fromSummary;
         });   
 
   }
@@ -59,7 +63,6 @@ export class PolicyIssuanceComponent implements OnInit {
     this.status = this.policyInfo.status;
     setTimeout(() => {
          this.showEditModal(JSON.parse(this.policyInfo.editPol));
-         this.app.changeTheme(this.theme);
      });
   }
 
@@ -83,6 +86,13 @@ export class PolicyIssuanceComponent implements OnInit {
       if ($event.nextId === 'Exit') {
         this.router.navigateByUrl('');
       } 
+      if(this.fromInq=='true'){
+        setTimeout(a=>{
+          $('input').attr('readonly','readonly');
+          $('textarea').attr('readonly','readonly');
+          $('select').attr('readonly','readonly');
+        },0)
+      }
   
   }
 
@@ -94,7 +104,9 @@ export class PolicyIssuanceComponent implements OnInit {
       this.policyInfo.riskId =  event.riskId;
       this.policyInfo.showPolAlop = event.showPolAlop;
       this.policyInfo.principalId = event.principalId;
-
+      this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
+      this.policyInfo.insuredDesc = event.insuredDesc;
+      this.policyInfo.riskName = event.riskName
   }
 
   returnOnModal(){

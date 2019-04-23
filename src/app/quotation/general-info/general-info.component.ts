@@ -520,6 +520,7 @@ export class GeneralInfoComponent implements OnInit {
 		if(this.validate(this.prepareParam())){
 			this.focusBlur();
 
+			console.log(this.genInfoData.status);
 			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
 				this.loading = false;
 				if(data['returnCode'] == 0) {
@@ -605,7 +606,7 @@ export class GeneralInfoComponent implements OnInit {
 			"lineClassCd"	: this.genInfoData.lineClassCd,
 			"mbiRefNo"		: this.genInfoData.mbiRefNo,
 			"noClaimPd"		: this.project.noClaimPd,
-			"objectId"		: this.project.objectId,
+			"objectId"		: this.pad(this.project.objectId),
 			"openCoverTag"	: this.genInfoData.openCoverTag,
 			"openingParag"	: this.genInfoData.openingParag.trim(),
 			"pctShare"		: this.project.pctShare,
@@ -799,7 +800,7 @@ export class GeneralInfoComponent implements OnInit {
   			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV', ev);
   		} else if(field === 'contractor') {
   			this.insuredLovs['last'].checkCode(this.genInfoData.contractorId, '#contractorLOV', ev);
-  		} else if(field === 'object') {
+  		} else if(field === 'object') {  			
   			this.objectLov.checkCode(this.line, this.project.objectId, ev);
   		} else if(field === 'currency') {
   			this.currencyLov.checkCode(this.genInfoData.currencyCd, ev);
