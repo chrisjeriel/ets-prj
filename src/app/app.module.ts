@@ -346,6 +346,8 @@ import { PolHoldCovMonitoringComponent } from './underwriting/expiry-and-renewal
 import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spoil-pol-alt.component';
 import { WfReminderFormComponent } from './home/wf-reminders/wf-reminder-form/wf-reminder-form.component';
 import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
+import { PremiumCollComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/premium-coll/premium-coll.component';
+import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-inq-claims/pol-inq-claims.component';
 
 
 
@@ -701,6 +703,8 @@ import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-informa
         SpoilPolAltComponent,
         WfReminderFormComponent,
         PolSummarizedInqComponent,
+        PremiumCollComponent,
+        PolInqClaimsComponent,
     ],
 
     providers: [
