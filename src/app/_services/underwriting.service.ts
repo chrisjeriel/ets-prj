@@ -880,12 +880,24 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolGenInfoOc",{params});
     }
 
+
     getAlterationsPerPolicy(policyId) {
         const params = new HttpParams()
             .set('policyId', policyId)
 
         return this.http.get(environment.prodApiUrl + "/underwriting-service/retrieveAlterationsPerPolicy",{params});
     }
+
+    savePolGenInfoOc(params:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolGenInfoOc', params, header);
+    }
+
 }            
 
             

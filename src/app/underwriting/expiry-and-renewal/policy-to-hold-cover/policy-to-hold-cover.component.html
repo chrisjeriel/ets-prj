@@ -158,7 +158,7 @@
                             <div class="cust-btn-container">
                                 <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
                                 <button type="button" class="cust-btn" [disabled]="statusDesc === 'Released' || statusDesc === ''" [class.cust-btn-disabled]="statusDesc === 'Released' || statusDesc === ''" (click)="test(content)"><a>Approval</a></button>
-                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="statusDesc === 'Released'" [class.cust-btn-disabled]="statusDesc === 'Released'"><a>Save</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="statusDesc === 'Released' && !this.isModify" [class.cust-btn-disabled]="statusDesc === 'Released' && !this.isModify"><a>Save</a></button>
                             </div>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
                                         <select class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="authorization">
                                             <option *ngFor="let list of approveList" [value]="list.userId">{{list.userName}}</option>
                                         </select>
-                                        <button class="cust" (click)="approve()" [class.cust-btn-disabled]="authorization === ''" [disabled]="authorization === ''">Approve</button>
+                                        <button class="cust" (click)="approve($event)" [class.cust-btn-disabled]="authorization === ''" [disabled]="authorization === ''">{{authorization !== userName ? 'For Approval' : 'Approve'}}</button>
                                     </div>
                                 </div>
                                 <!-- <div class="col-sm-4" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
