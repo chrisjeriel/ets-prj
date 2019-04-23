@@ -176,7 +176,7 @@ export class CustNonDatatableComponent implements OnInit {
         console.log(data);
         console.log('indvSelect');
         console.log(this.indvSelect);*/
-        console.log(this.indvSelect);
+        //console.log(this.indvSelect);
         this.rowClick.emit(this.indvSelect);
     }
 
