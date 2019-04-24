@@ -685,6 +685,7 @@ export class PolCoverageComponent implements OnInit {
               }
             }
             this.table.refreshTable();
+              this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
               this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
               this.passDataTotalPerSection.tableData[0].sumInsured = this.sectionISi;
               this.passDataTotalPerSection.tableData[0].premium = this.sectionIPrem;
