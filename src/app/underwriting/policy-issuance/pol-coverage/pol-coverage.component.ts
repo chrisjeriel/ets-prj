@@ -120,6 +120,7 @@ export class PolCoverageComponent implements OnInit {
         searchFlag: true,
         checkFlag: true,
         infoFlag: true,
+        pageId: 'deductibles',
         paginateFlag: true,
         widths: [1, 1, 1, 1, 1, 1],
         magnifyingGlass: ['deductibleCd'],
@@ -684,6 +685,7 @@ export class PolCoverageComponent implements OnInit {
               }
             }
             this.table.refreshTable();
+             this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
               this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
               this.passDataTotalPerSection.tableData[0].sumInsured = this.sectionISi;
               this.passDataTotalPerSection.tableData[0].premium = this.sectionIPrem;
@@ -976,7 +978,9 @@ export class PolCoverageComponent implements OnInit {
       this.deductiblesTable.refreshTable();
     }else{
       this.passDataDeductibles.disableAdd = false;
-      console.log(this.passDataDeductibles.disableAdd)
+      /*this.passDataDeductibles.nData.coverCd = this.table.indvSelect.coverCd;
+      this.passDataDeductibles.tableData = data.deductiblesSec;
+      this.deductiblesTable.refreshTable();*/
       this.getDeductibles();
     }
   }
@@ -1140,7 +1144,7 @@ export class PolCoverageComponent implements OnInit {
         this.passData.tableData[j].premAmt     = this.passData.tableData[j].discountTag == 'Y' ? this.passData.tableData[j].premAmt:this.passData.tableData[j].sumInsured * (this.passData.tableData[j].premRt / 100);
         
         this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
-        this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].premRt) ? this.passData.tableData[j].prevPremRt:this.passData.tableData[j].prevPremRt
+        this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].premRt) || this.passData.tableData[j].premRt == 0 ? this.passData.tableData[j].prevPremRt:this.passData.tableData[j].premRt 
         this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].premAmt) ? this.passData.tableData[j].prevPremAmt : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt;
         
         if(this.line == 'EAR' || this.line == 'CAR'){
