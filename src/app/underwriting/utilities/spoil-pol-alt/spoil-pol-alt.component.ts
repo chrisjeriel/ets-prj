@@ -92,7 +92,7 @@ export class SpoilPolAltComponent implements OnInit {
 	dialogIcon			: string = '';
 	dialogMessage		: string = '';
 	cancelFlag			: boolean;
-	valResult			: number = 0;
+	valResult			: number;
 
 	constructor(private underwritingService: UnderwritingService, private ns: NotesService,
 		private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService) { }
@@ -144,7 +144,7 @@ export class SpoilPolAltComponent implements OnInit {
 			this.passData.tableData = [];
 			var rec = data['policyList'];
 			rec = rec.filter(data => data.statusDesc.toUpperCase() === 'IN FORCE' || data.statusDesc.toUpperCase() === 'DISTRIBUTED')
-			.map(data => {data.riskName = data.project.riskName; return data;});
+					 .map(data => {data.riskName = data.project.riskName; return data;});
 			this.passData.tableData = rec;
 			this.table.refreshTable();
 			console.log(rec);
@@ -158,7 +158,7 @@ export class SpoilPolAltComponent implements OnInit {
 					this.getPolGenInfo();
 				}
 			}else{
-				console.log('ELSEEEE');
+				
 			}
 			
 		});
@@ -171,6 +171,7 @@ export class SpoilPolAltComponent implements OnInit {
 
 	getSpoilList(){
 		if(this.spoil){ this.spoil.loadingFlag = true; } 
+		
 		this.passDataSpoilageReason.tableData = [];	
 		this.mtnService.getMtnSpoilageReason('')
 		.subscribe(data => {
@@ -224,10 +225,16 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	onClickOkLov(){
+		this.spoilPolRecord.reason  	= '';
+		this.spoilPolRecord.reasonDesc 	= '';
+		this.spoilPolRecord.user  		= '';
+		this.spoilPolRecord.spoiledDate = '';
+		this.postBtnEnabled 			= false;
 		this.spoilPolRecord.policyNo = this.rowRec.policyNo;
 		this.splitPolNo(this.spoilPolRecord.policyNo);
 		this.getPolGenInfo();
 		this.modalService.dismissAll();
+		$('.dirty').addClass('ng-dirty');
 	}
 
 	searchQuery(searchParams){
@@ -288,63 +295,89 @@ export class SpoilPolAltComponent implements OnInit {
 
 
 	onClickPostSpoilage(cancelFlag?){
-
-		this.dialogIcon = '';
-		this.dialogMessage = '';
 		this.cancelFlag = cancelFlag !== undefined;
-		
-		const spoilStatus = 99 ; // status 99 = "SPOILED" in POL GEN INFO STATUS
-		this.spoilPolRecord.user  		= JSON.parse(window.localStorage.currentUser).username;
-		this.spoilPolRecord.spoiledDate = this.ns.toDateTimeString(0).split('T')[0];
-
+		this.valResult = 0; 
+		var stats = '';
 		this.warnMsg1 = '';
+
+		var inProg = false;
+		var dist = false;
+		var msgA = 'Policy/Alteration cannot be spoiled, creation of alteration connected to this record is on going.';
+		var msgB = 'Policy with existing valid alteration cannot be spoiled.';
+
 		this.underwritingService.getAlterationsPerPolicy(this.polId)
 		.subscribe(data => {
 			console.log(data);
 			var rec = data['policyList'];
-			for(let i of rec){
-				console.log(i.altNo + " : " +i.statusDesc);
-				if(i.statusDesc.toUpperCase() === 'IN PROGRESS'){
-					this.valResult = 12;
-					this.warnMsg1 = 'Policy/Alteration cannot be spoiled, creation of alteration connected to this record is on going.';
-				}else{
-					console.log('NO MESSAGE YET');
+			rec.sort((a,b) => a.altNo - b.altNo);
+
+			for(var i=0;i<rec.length;i++){
+				if(parseInt(this.spoilPolRecord.altNo) === 0){
+					if(rec[i].statusDesc.toUpperCase() === 'DISTRIBUTED'){
+						dist = true;
+					}else if(rec[i].statusDesc.toUpperCase() === 'IN PROGRESS'){
+						inProg = true;
+					}
+				}else {
+					if(parseInt(this.spoilPolRecord.altNo) === rec[i].altNo){
+						if(rec[i+1] !== undefined && rec[i+1].statusDesc.toUpperCase() === 'IN PROGRESS'){
+							inProg = true;
+						}else{
+							this.validPolicyAlt();
+						}	
+					}
 				}
-				console.log(this.valResult);
+				
 			}
-			console.log(this.valResult);
+
+			if(rec.length === 0){
+				this.validPolicyAlt();
+			}else{
+				if(inProg === true){
+					this.warnMsg1 = msgA;
+					this.showWarnLov();
+				}
+				if(dist === true && inProg === false){
+					this.warnMsg1 = msgB;
+					this.showWarnLov();
+				}
+				if(dist === false && inProg === false){
+					this.validPolicyAlt();
+				}
+			}
+
 		});
-
-		console.log(this.warnMsg1);
-
-		// if(this.valResult === 1){
-		// 	$('#warnMdl > #modalBtn').trigger('click');
-		// }else {
-		// 	console.log('DATA RETRIEVED');
-			// this.postSpoilage = {
-			// 	"policyId"		: this.polId,
-			// 	"spldUser"		: this.spoilPolRecord.user,
-			// 	"spoilCd"		: this.spoilPolRecord.reason,
-			// 	"status"		: spoilStatus,
-			// 	"updateUser"	: this.spoilPolRecord.user
-			// }
-
-			// this.underwritingService.updatePolGenInfoSpoilage(JSON.stringify(this.postSpoilage))
-			// .subscribe(data => {
-			// 	console.log(data);
-			// 	console.log('POSTING SPOILAGE SUCCESSFUL!');
-			// 	this.dialogIcon = '';
-			// 	this.dialogMessage = '';
-			// 	$('app-sucess-dialog #modalBtn').trigger('click');
-			// });
-		//}
 
 	}
 
+	showWarnLov(){
+		$('#warnMdl > #modalBtn').trigger('click');
+	}
+
+	validPolicyAlt(){
+
+		const spoilStatus = 99 ; // status 99 = "SPOILED" in POL GEN INFO STATUS
+		this.spoilPolRecord.user  		= JSON.parse(window.localStorage.currentUser).username;
+		this.spoilPolRecord.spoiledDate = this.ns.toDateTimeString(0).split('T')[0];
+
+		this.postSpoilage = {
+			"policyId"		: this.polId,
+			"spldUser"		: this.spoilPolRecord.user,
+			"spoilCd"		: this.spoilPolRecord.reason,
+			"status"		: spoilStatus,
+			"updateUser"	: this.spoilPolRecord.user
+		}
+
+		this.underwritingService.updatePolGenInfoSpoilage(JSON.stringify(this.postSpoilage))
+		.subscribe(data => {
+			console.log(data);
+			$('app-sucess-dialog #modalBtn').trigger('click');
+			this.getPolicyList();
+		});
+	}
+
 	onClickSave(){
-		console.log('before');
 		$('#confirm-save #modalBtn2').trigger('click');
-		console.log('after');
 	}
 
 	onClickCancel(){
@@ -378,7 +411,7 @@ export class SpoilPolAltComponent implements OnInit {
 		if(this.searchArr.includes('')) {
 			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
 		}
-		console.log(this.searchArr);
+		
 		this.getPolicyList([{ key: 'policyNo', search: this.searchArr.join('-') }]);
 	}
 
