@@ -305,7 +305,7 @@ export class SpoilPolAltComponent implements OnInit {
 		var msgA = 'Policy/Alteration cannot be spoiled, creation of alteration connected to this record is on going.';
 		var msgB = 'Policy with existing valid alteration cannot be spoiled.';
 
-		this.underwritingService.getAlterationsPerPolicy(this.polId)
+		this.underwritingService.getAlterationsPerPolicy(this.polId,'')
 		.subscribe(data => {
 			console.log(data);
 			var rec = data['policyList'];
