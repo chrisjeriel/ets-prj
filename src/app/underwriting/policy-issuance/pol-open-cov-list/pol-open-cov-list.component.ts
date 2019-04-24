@@ -162,7 +162,8 @@ export class PolOpenCovListComponent implements OnInit {
    														 insured: this.selected.insuredDesc,
    														 riskName: this.selected.riskName,
    														 policyNo: this.selected.openPolicyNo ,
-   														 inqFlag: false}], { skipLocationChange: true });
+   														 inqFlag: false,
+   														 exitLink: '/open-cover-list'}], { skipLocationChange: true });
    }
 
    searchQuery(searchParams){

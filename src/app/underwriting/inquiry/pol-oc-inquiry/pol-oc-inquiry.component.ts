@@ -186,7 +186,8 @@ export class PolOcInquiryComponent implements OnInit {
                                 riskName: data.riskName,
                                 policyNo: data.openPolicyNo,
                                 inqFlag: true,
-                                fromInq:true, }], { skipLocationChange: true });
+                                fromInq:true,
+                                exitLink: '/pol-oc-inquiry' }], { skipLocationChange: true });
        //this.router.navigate(['/policy-information', {policyId:data.policyId}], { skipLocationChange: true });
   }
 
