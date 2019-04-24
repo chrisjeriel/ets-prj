@@ -28,7 +28,7 @@ export class MtnSectionCoversComponent implements OnInit {
     fixedCol: false,
     pageID: 1,
     colSize:['59px','69px','81px','180px'],
-    keys:['section','bulletNo','coverCd','description']
+    keys:['section','bulletNo','coverCd','coverName']
   };
 
   @Input() lovCheckBox: boolean = false;

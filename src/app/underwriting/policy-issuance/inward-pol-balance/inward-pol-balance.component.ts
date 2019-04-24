@@ -26,11 +26,11 @@ export class InwardPolBalanceComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Inst No','Due Date','Booking Date','Premium','Other Charges','Amount Due'],
+    tHeader: ['Inst No','Due Date','Booking Date','Premium','Other Charges'],
     uneditable: [true,false,false,false,true,true],
-    total:[null,null,'Total','premAmt','otherChargesInw','amtDue'],
+    total:[null,null,'Total','premAmt','otherChargesInw'],
     dataTypes: ["number","date","date","currency","currency","currency",],
-    keys:['instNo','dueDate','bookingDate','premAmt','otherChargesInw','amtDue'],
+    keys:['instNo','dueDate','bookingDate','premAmt','otherChargesInw'],
     nData: {
       "instNo": null,
       "bookingDate": this.ns.toDateTimeString(0),
@@ -96,6 +96,11 @@ export class InwardPolBalanceComponent implements OnInit {
    
     this.titleService.setTitle("Pol | Inward Pol Balance");
     this.fetchData();
+    if(this.policyInfo.fromInq && this.policyInfo.status == "Distributed"){
+      this.passData.tHeader.push("Amount Due");
+      this.passData.keys.push("amtDue");
+      this.passData.total.push("amtDue");
+    }
     if(this.policyInfo.fromInq){
       this.passData.addFlag=false;
       this.passData.deleteFlag=false;
@@ -110,10 +115,10 @@ export class InwardPolBalanceComponent implements OnInit {
       for(let key of this.passData2.keys)
         this.passData2.uneditable.push(true);
     }
+
   }
 
   fetchData(){
-    console.log(this.policyInfo.policyId)
     this.underwritingservice.getInwardPolBalance(this.policyInfo.policyId).subscribe((data:any)=>{
       this.currency = data.policyList[0].project.coverage.currencyCd;
       this.totalPrem = data.policyList[0].project.coverage.totalPrem;
@@ -183,7 +188,8 @@ export class InwardPolBalanceComponent implements OnInit {
       delPolInward : [],
       saveOtherCharges : [],
       delOtherCharges : [],
-      newSavePolInward: []
+      newSavePolInward: [],
+      user: JSON.parse(window.localStorage.currentUser).username
     }
     for(let inst of this.passData.tableData){
         inst.commAmt = '';
@@ -293,7 +299,6 @@ export class InwardPolBalanceComponent implements OnInit {
       })
     }
     this.instllmentTable.indvSelect.otherCharges = this.passData2.tableData;
-    console.log(this.passData2.tableData)
     this.otherTable.markAsDirty();
     this.otherTable.refreshTable();
     this.compute();

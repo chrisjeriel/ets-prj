@@ -54,7 +54,7 @@
 						</div>
 
 						<div class="input-group textarea">
-							<textarea [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="alopData.insuredBusiness" appRequired name="insuredBusiness"></textarea>
+							<textarea [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="alopData.insuredBusiness" name="insuredBusiness"></textarea>
 						</div>
 					</div>
 				</fieldset>
@@ -155,15 +155,7 @@
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
 
-
-
-
-
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save id="alop" (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
-
-
-
-
 <app-confirm-save id="alopItem" (onYes)="saveAlopItem()"></app-confirm-save>

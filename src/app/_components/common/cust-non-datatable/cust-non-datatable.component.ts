@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Renderer, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../../_services';
@@ -44,6 +44,8 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() gnrc1: EventEmitter<any> = new EventEmitter();
     @Output() gnrc2: EventEmitter<any> = new EventEmitter();
     @Output() export: EventEmitter<any> = new EventEmitter();
+
+    @ViewChild('paw') page: any;
 
     //DB Search Query
     searchQuery: any[] = [];
@@ -127,6 +129,69 @@ export class CustNonDatatableComponent implements OnInit {
         config.autoClose = false;
         
     }
+    currentIndex: number;
+    tablePress(event: KeyboardEvent, data: any, index){
+        //console.log(this.page.getCurrent());
+        //console.log(index);
+        event.preventDefault();
+        if(this.currentIndex === undefined){
+            if(event.key === 'ArrowUp' && index !== 0){
+                this.currentIndex = index - 1;
+                this.indvSelect = this.displayData[index-1];
+            }else if(event.key === 'ArrowDown' && index !== this.passData.tableData.length-1){
+                this.currentIndex = index + 1;
+                this.indvSelect = this.passData.tableData[index+1];
+            }else if((event.key === 'ArrowUp' && index === 0) || (event.key === 'ArrowDown' && index === this.passData.tableData.length-1)){
+                this.currentIndex = index;
+                this.indvSelect = this.passData.tableData[index];
+            }
+        }else{
+            if(event.key === 'ArrowUp' && this.currentIndex !== 0){
+                this.currentIndex = this.currentIndex - 1;
+                this.indvSelect = this.passData.tableData[this.currentIndex];
+            }else if(event.key === 'ArrowDown' && this.currentIndex !== this.passData.tableData.length-1){
+                this.currentIndex = this.currentIndex + 1;
+                this.indvSelect = this.passData.tableData[this.currentIndex];
+            }else if((event.key === 'ArrowUp' && this.currentIndex === 0) || (event.key === 'ArrowDown' && this.currentIndex === this.passData.tableData.length-1)){
+                this.indvSelect = this.passData.tableData[this.currentIndex];
+            }
+        }
+
+        if((this.p - 1) * this.passData.pageLength > this.currentIndex ){
+            //this.page.previous();
+            this.p -= 1;
+            setTimeout(()=>{$('#tableRow').focus();},100);
+            console.log('prev');
+        }else if(this.p * this.passData.pageLength -1 < this.currentIndex){
+            //this.page.next();
+            this.p += 1;
+            setTimeout(()=>{$('#tableRow').focus();},100);
+            console.log('next');
+        }
+        
+        //this.indvSelect = this.displayData[index];
+        /*console.log('currentIndex');
+        console.log(this.currentIndex);
+        console.log('data');
+        console.log(data);
+        console.log('indvSelect');
+        console.log(this.indvSelect);*/
+        //console.log(this.indvSelect);
+        this.rowClick.emit(this.indvSelect);
+    }
+
+    //when enter key is pressed
+    enterKey(event, data){
+        //console.log(this.indvSelect);
+        console.log(event);
+       this.onRowDblClick(event,this.indvSelect);
+    }
+
+    /*@Output() pageEmit: EventEmitter<any> = new EventEmitter(); 
+    pageChange(event){
+        console.log(event);
+        this.pageEmit.emit(event);
+    }*/
 
     refreshTable(initLoad?){
         
@@ -270,8 +335,13 @@ export class CustNonDatatableComponent implements OnInit {
             }
         });
     }
+/*<<<<<<< Updated upstream
     onRowClick(event, data) {
         
+=======*/
+    onRowClick(event, data, index?) {
+        this.currentIndex = index + ((this.p - 1) * 10 );   //this.p is the current page number
+/*>>>>>>> Stashed changes*/
         if(this.passData.checkFlag === undefined || !this.passData.checkFlag){
             if(data !== null){
                 this.nullRow = false;

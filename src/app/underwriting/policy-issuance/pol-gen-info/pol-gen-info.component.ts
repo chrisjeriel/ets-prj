@@ -217,6 +217,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   prevEffDate: string;
   refPolicyId: string = '';
   newAlt: boolean = false;
+  fromInq:any = false;
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
@@ -240,6 +241,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.alteration = params['alteration'];
         this.newAlt = params['alteration'];
       }
+
+      this.fromInq = params['fromInq']=='true';
+
+      if(this.fromInq){
+        this.passDataDeductibles.addFlag = false;
+        this.passDataDeductibles.deleteFlag= false;
+        this.passDataDeductibles.checkFlag = false;
+        this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
+      }
+      
     });
 
     this.getPolGenInfo();
@@ -292,6 +303,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           $('input[appCurrencyRate]').focus();
           $('input[appCurrencyRate]').blur();
+          if(this.fromInq){
+            $('input').attr('readonly','readonly');
+            $('input[type="checkbox"]').attr('disabled','disabled');
+            $('textarea').attr('readonly','readonly');
+            $('select').attr('readonly','readonly');
+          }
         },0) 
       }
 
@@ -437,6 +454,17 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                this.policyInfo.showPolAlop = alopFlag;
       }
 
+
+    /*  this.emitPolicyInfoId.emit({
+        policyId: event,
+        policyNo: this.policyInfo.policyNo,
+        riskName: this.policyInfo.project.riskName,
+        insuredDesc: this.policyInfo.insuredDesc,
+        riskId: this.policyInfo.project.riskId,
+        showPolAlop: this.policyInfo.showPolAlop,
+        principalId: this.policyInfo.principalId
+      });  */  
+
       this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
            this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
 
@@ -447,7 +475,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             insuredDesc: this.policyInfo.insuredDesc,
             riskId: this.policyInfo.project.riskId,
             showPolAlop: this.policyInfo.showPolAlop,
-            coInsuranceFlag: this.policyInfo.coInsuranceFlag
+            coInsuranceFlag: this.policyInfo.coInsuranceFlag,
+            principalId: this.policyInfo.principalId
           }); 
       });   
 

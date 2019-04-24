@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Issuance / Create Open Cover / <strong>{{policyInfo.policyNo}}</strong></h4>
-	<ngb-tabset>
+	<h4>{{title}} <strong>{{policyInfo.policyNo}}</strong></h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
 				<app-pol-gen-info-open-cover [policyInfo]="policyInfo"></app-pol-gen-info-open-cover>
@@ -31,7 +31,7 @@
 				
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Exit">
+		<ngb-tab title="Exit" id="Exit">
 			<ng-template ngbTabContent>
 				
 			</ng-template>

@@ -22,6 +22,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
         showPolAlop: false,
         coInsuranceFlag: false,
         prevPolicyId: ''
+        fromInq:'',
     }
 
     alterFlag: boolean = false;
@@ -30,6 +31,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
     currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
     approverList: any[];
     status: string = "";
+    title:string = "Policy / Policy Issuance / Create Alteration"
 
     constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router) {}
 
@@ -43,6 +45,10 @@ export class PolicyIssuanceAltComponent implements OnInit {
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
             this.policyInfo.prevPolicyId = params['prevPolicyId'];
+            this.policyInfo.fromInq = params['fromInq'];
+            if(this.policyInfo.fromInq == 'true'){
+              this.title = "Policy / Inquiry / Policy Inquiry";
+            }
         });
 
     }
@@ -75,6 +81,13 @@ export class PolicyIssuanceAltComponent implements OnInit {
         if ($event.nextId === 'Exit') {
             this.router.navigateByUrl('');
         } 
+        if(this.policyInfo.fromInq=='true'){
+            setTimeout(a=>{
+              $('input').attr('readonly','readonly');
+              $('textarea').attr('readonly','readonly');
+              $('select').attr('readonly','readonly');
+            },0)
+          }
     }
 
     getPolInfo(event){      

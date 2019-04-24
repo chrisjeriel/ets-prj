@@ -211,7 +211,7 @@ export class UpdateInstallmentComponent implements OnInit {
 
   onClickSave() {
     var hasError = false;
-    for(var i=0; i<this.instllmentTable.passData.tableData.length; i++) {
+    /*for(var i=0; i<this.instllmentTable.passData.tableData.length; i++) {
       if(this.instllmentTable.passData.tableData[i].add != undefined || this.instllmentTable.passData.tableData[i].edited 
         && this.instllmentTable.passData.tableData[i].deleted == undefined) {
         var d = new Date();
@@ -224,7 +224,7 @@ export class UpdateInstallmentComponent implements OnInit {
           break;
         }
       }
-    }
+    }*/
 
     if(this.instllmentTable.getSum('premAmt') != this.totalPrem) {
       hasError = true;
@@ -321,7 +321,18 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   calcComm() {
-    if ("commRt" === this.instllmentTable.instllmentKey) {
+    for (let rec of this.passDataInstallmentInfo.tableData) {
+        if (this.instllmentTable.instllmentNo === rec.instNo) {
+          if ("commRt" === this.instllmentTable.instllmentKey) {
+            rec.commAmt = rec.premAmt * rec.commRt / 100;
+          }
+          if ("commAmt" === this.instllmentTable.instllmentKey) {
+            rec.commRt = rec.commAmt / rec.premAmt * 100;
+          }
+        }
+    }
+
+    /*if ("commRt" === this.instllmentTable.instllmentKey) {
       for (let rec of this.passDataInstallmentInfo.tableData) {
         if (this.instllmentTable.instllmentNo === rec.instNo) {
           rec.commAmt = rec.premAmt * rec.commRt / 100;
@@ -335,7 +346,7 @@ export class UpdateInstallmentComponent implements OnInit {
           rec.commRt = rec.commAmt / rec.premAmt * 100;
         }
       }
-    }
+    }*/
     
     this.instllmentTable.refreshTable();
   }
@@ -366,6 +377,7 @@ export class UpdateInstallmentComponent implements OnInit {
      this.cancelFlag = can !== undefined;
      let params:any = {
       policyId:this.policyId,
+      user:JSON.parse(window.localStorage.currentUser).username,
       savePolInward : [],
       delPolInward : [],
       saveOtherCharges : [],
