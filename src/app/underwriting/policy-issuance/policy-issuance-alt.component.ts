@@ -21,8 +21,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
         riskId:'',
         showPolAlop: false,
         coInsuranceFlag: false,
-        prevPolicyId: ''
-        fromInq:'',
+        prevPolicyId: '',
+        fromInq:''
     }
 
     alterFlag: boolean = false;

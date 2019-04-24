@@ -292,7 +292,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.toggleRadioBtnSet();
 
         if(this.alteration) {
-          if (this.prevPolicyId !== "undefined") {
+          if (this.prevPolicyId !== 'null') {
             this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
               this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));

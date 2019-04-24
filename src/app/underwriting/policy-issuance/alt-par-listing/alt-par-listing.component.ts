@@ -216,14 +216,24 @@ export class AltParListingComponent implements OnInit {
         this.riskName = this.selectedPolicy.riskName;
         this.insuredDesc = this.selectedPolicy.insured;
 
-        if (this.selectedPolicy.status === 'In Progress' || this.selectedPolicy.status === 'Approved'){
-             this.uwService.toPolInfo = [];
-             this.uwService.toPolInfo.push("edit", this.polLine);
-             this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
-        } else {
-             this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
-        }
+        this.uwService.getAlterationsPerPolicy(this.policyId).subscribe(data => {
+            var polList = data['policyList'];
+                  
+            var a = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS' || p.statusDesc.toUpperCase() === 'IN FORCE');
+            var b = polList.filter(p => p.statusDesc.toUpperCase() != 'IN PROGRESS' || p.statusDesc.toUpperCase() != 'IN FORCE');
 
+            b.sort((a, b) => a.altNo - b.altNo);
+
+            this.prevPolicyId = (b.length > 1)? b[b.length-2].policyId : null;
+
+            if (this.selectedPolicy.status === 'In Progress' || this.selectedPolicy.status === 'Approved'){
+                this.uwService.toPolInfo = [];
+                this.uwService.toPolInfo.push("edit", this.polLine);
+                this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, prevPolicyId: this.prevPolicyId }], { skipLocationChange: true });
+            } else {
+                this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, prevPolicyId: this.prevPolicyId }], { skipLocationChange: true }); 
+            }
+        });
     }
 
      onRowClick(event){
@@ -240,17 +250,7 @@ export class AltParListingComponent implements OnInit {
         }
 
         for(let rec of this.fetchedData){
-
               if(rec.policyNo === this.uwService.rowData[0]) {
-
-                var max = +(rec.policyNo.substring(24, rec.policyNo.length));
-
-                for(let data of this.fetchedData) {
-                    if (data.policyNo === rec.policyNo.substring(0, 23) + "-00" + (max-1)) {
-                        this.prevPolicyId = data.policyId;
-                    }
-                }
-                      
                 this.policyId = rec.policyId;
                 this.statusDesc = rec.statusDesc;
                 this.riskName = rec.project.riskName;
@@ -260,13 +260,25 @@ export class AltParListingComponent implements OnInit {
         this.polLine = this.uwService.rowData[0].split("-")[0];
         this.policyNo = this.uwService.rowData[0];
 
-        if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
-             this.uwService.toPolInfo = [];
-             this.uwService.toPolInfo.push("edit", this.polLine);
-             this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, prevPolicyId: this.prevPolicyId }], { skipLocationChange: true });
-        } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
-             this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, prevPolicyId: this.prevPolicyId }], { skipLocationChange: true }); 
-        }
+        this.uwService.getAlterationsPerPolicy(this.policyId).subscribe(data => {
+            var polList = data['policyList'];
+                  
+            var a = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS' || p.statusDesc.toUpperCase() === 'IN FORCE');
+            var b = polList.filter(p => p.statusDesc.toUpperCase() != 'IN PROGRESS' || p.statusDesc.toUpperCase() != 'IN FORCE');
+
+            b.sort((a, b) => a.altNo - b.altNo);
+
+            this.prevPolicyId = (b.length > 1)? b[b.length-2].policyId : null;
+
+            if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
+                this.uwService.toPolInfo = [];
+                this.uwService.toPolInfo.push("edit", this.polLine);
+                this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, prevPolicyId: this.prevPolicyId }], { skipLocationChange: true });
+            } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
+                this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, prevPolicyId: this.prevPolicyId }], { skipLocationChange: true }); 
+            }
+
+        });
     }
 
      isEmptyObject(obj) {

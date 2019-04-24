@@ -183,16 +183,41 @@ export class UpdateInstallmentComponent implements OnInit {
 
   setDetails() {
     if(this.selected != null) {
-        this.polNo = this.selected.policyNo.split('-');
-        this.policyId = this.selected.policyId;
-        this.cedingName = this.selected.cedComp;
-        this.insuredDesc = this.selected.insured;
-        this.riskName = this.selected.risk;
-        this.currency = this.selected.currency;
-        this.totalPrem = this.selected.premium;
-        this.createUser = this.selected.createUser;
 
-        this.retrievePolInwardBal();
+      this.underwritingService.getAlterationsPerPolicy(this.selected.policyId).subscribe(data => {
+            var polList = data['policyList'];
+                  
+            var a = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS');
+            var b = polList.filter(p => p.statusDesc.toUpperCase() !== 'IN PROGRESS');
+
+            if (a.length > 0) {
+              this.dialogIcon = 'error-message';
+              this.dialogMsg = `Policy No has a pending alteration in Alteration List Screen. 
+                                All iterations must be posted before updating the installment`;
+              this.successDialog.open();
+            }
+
+            b.sort((a, b) => a.altNo - b.altNo);
+
+            this.policyId = b[b.length-1].policyId;
+            this.polNo = b[b.length-1].policyNo.split('-');
+
+            for (let rec of this.fetchedData) {
+              if(rec.policyId == this.policyId && rec.policyNo === b[b.length-1].policyNo) {
+                this.cedingName = rec.cedingName;
+                this.insuredDesc = rec.insuredDesc;
+                this.riskName = rec.project.riskName;
+                this.currency = rec.project.coverage.currencyCd;
+                this.totalPrem = rec.project.coverage.totalPrem;
+              }
+            }
+
+            this.underwritingService.getPolGenInfo(this.policyId, b[b.length-1].policyNo).subscribe((data:any) => {
+              this.createUser = data.policy.createUser;
+            });
+
+            this.retrievePolInwardBal();
+      });
     }
   }
 
@@ -210,8 +235,8 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   onClickSave() {
-    var hasError = false;
-    /*for(var i=0; i<this.instllmentTable.passData.tableData.length; i++) {
+    /*var hasError = false;
+    for(var i=0; i<this.instllmentTable.passData.tableData.length; i++) {
       if(this.instllmentTable.passData.tableData[i].add != undefined || this.instllmentTable.passData.tableData[i].edited 
         && this.instllmentTable.passData.tableData[i].deleted == undefined) {
         var d = new Date();
@@ -224,7 +249,7 @@ export class UpdateInstallmentComponent implements OnInit {
           break;
         }
       }
-    }*/
+    }
 
     if(this.instllmentTable.getSum('premAmt') != this.totalPrem) {
       hasError = true;
@@ -236,6 +261,14 @@ export class UpdateInstallmentComponent implements OnInit {
       this.confirmSave.confirmModal();
     }else {
       this.successDialog.open();
+    }*/
+
+    if(this.instllmentTable.getSum('premAmt') != this.totalPrem) {
+      this.dialogIcon = 'error-message';
+      this.dialogMsg = 'Total Premium must be equal to the sum of premium per installment.';
+      this.successDialog.open();
+    } else {
+      this.confirmSave.confirmModal();
     }
   }
 
@@ -331,22 +364,6 @@ export class UpdateInstallmentComponent implements OnInit {
           }
         }
     }
-
-    /*if ("commRt" === this.instllmentTable.instllmentKey) {
-      for (let rec of this.passDataInstallmentInfo.tableData) {
-        if (this.instllmentTable.instllmentNo === rec.instNo) {
-          rec.commAmt = rec.premAmt * rec.commRt / 100;
-        }
-      }
-    }
-
-    if ("commAmt" === this.instllmentTable.instllmentKey) {
-      for (let rec of this.passDataInstallmentInfo.tableData) {
-        if (this.instllmentTable.instllmentNo === rec.instNo) {
-          rec.commRt = rec.commAmt / rec.premAmt * 100;
-        }
-      }
-    }*/
     
     this.instllmentTable.refreshTable();
   }
