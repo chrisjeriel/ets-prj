@@ -78,15 +78,7 @@ export class PolOpenCovListComponent implements OnInit {
 	                  from: 'totalSiLess',
 	                  to: 'totalSiGrt'
 	              },
-	              title: 'Sum Insured',
-	              dataType: 'textspan'
-	          },
-	          {
-	              keys: {
-	                  from: 'totalPremLess',
-	                  to: 'totalPremGrt'
-	              },
-	              title: 'Premium',
+	              title: 'Max Si',
 	              dataType: 'textspan'
 	          },
 	          {
@@ -198,7 +190,7 @@ export class PolOpenCovListComponent implements OnInit {
                 (parts[1] ? "." + parts[1] : "");
             return num
       };
-      alasql('SELECT openPolicyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS SumInsured , datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+      alasql('SELECT openPolicyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS MaxSi , datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 
 }
