@@ -156,9 +156,9 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
-                                <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted' || statusDesc === 'Expired'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted' || statusDesc === 'Expired'" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
-                                <button type="button" class="cust-btn" [disabled]="statusDesc === 'Released' || statusDesc === ''" [class.cust-btn-disabled]="statusDesc === 'Released' || statusDesc === ''" (click)="test(content)"><a>Approval</a></button>
-                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="statusDesc === 'Released' && !this.isModify" [class.cust-btn-disabled]="statusDesc === 'Released' && !this.isModify"><a>Save</a></button>
+                                <button type="button" class="cust-btn" [disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status)" [class.cust-btn-disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status)" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
+                                <button type="button" class="cust-btn" [disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" [class.cust-btn-disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" (click)="test(content)"><a>Approval</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify" [class.cust-btn-disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify"><a>Save</a></button>
                             </div>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
                                         <select class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="authorization">
                                             <option *ngFor="let list of approveList" [value]="list.userId">{{list.userName}}</option>
                                         </select>
-                                        <button class="cust" (click)="approve($event)" [class.cust-btn-disabled]="authorization === ''" [disabled]="authorization === ''">{{authorization !== userName ? 'For Approval' : 'Approve'}}</button>
+                                        <button class="cust-btn" (click)="approve($event)" [class.cust-btn-disabled]="authorization === ''" [disabled]="authorization === ''">{{authorization !== userName ? 'For Approval' : 'Approve'}}</button>
                                     </div>
                                 </div>
                                 <!-- <div class="col-sm-4" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
@@ -249,10 +249,10 @@
                         <div class="custom-row-inline-inset" style="padding: 15px 0px 15px 0px;">
                             <div class="input-group" style="margin-bottom : -14px ! important" >
                                 <label class="form-control-sm" for="xx">Destination</label>
-                                <select class="form-control form-control-sm cust-sm" style="margin: 0px 0px 14.5px 11px;" [(ngModel)]="printType">
-                                    <option>SCREEN</option>
-                                    <option>PDF</option>
-                                    <option>PRINTER</option>
+                                <select class="form-control form-control-sm cust-sm" style="margin: 0px 0px 14.5px 11px;" appRequired [(ngModel)]="printType">
+                                    <option [value]="'SCREEN'">SCREEN</option>
+                                    <option [value]="'PDF'">PDF</option>
+                                    <option [value]="'PRINTER'">PRINTER</option>
                                 </select>
                             </div>
                         </div>

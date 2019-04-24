@@ -119,7 +119,7 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 					periodTo   			: this.ns.toDateTimeString(i.holdCoverList[0].periodTo),
 					compRefHoldCovNo 	: i.holdCoverList[0].compRefHoldCovNo,
 					reqBy	 			: i.holdCoverList[0].reqBy,
-					reqDate  			: this.ns.toDateTimeString(i.holdCoverList[0].reqDate),
+					reqDate  			: i.holdCoverList[0].reqDate === null ? null : this.ns.toDateTimeString(i.holdCoverList[0].reqDate),
 					createUser			: i.holdCoverList[0].createUser,
 					createDate			: this.ns.toDateTimeString(i.holdCoverList[0].createDate),
 					updateUser			: i.holdCoverList[0].updateUser,
