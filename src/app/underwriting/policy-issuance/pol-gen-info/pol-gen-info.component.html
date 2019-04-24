@@ -125,13 +125,13 @@
 						<div class="form-row ig-cust" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Inception Date</label>
-								<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
-								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.inceptDate?.split('T')[1]" (ngModelChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" appRequired>
+								<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.inceptDate?.split('T')[1]" (ngModelChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" appRequired>
 							</div>
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
-								<input type="date" class="form-control form-control-sm" min="{{ policyInfo.inceptDate?.split('T')[0] }}" [(ngModel)]="policyInfo.expiryDate?.split('T')[0]"  appRequired>
-								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.expiryDate?.split('T')[1]" appRequired>
+								<input type="date" class="form-control form-control-sm req" min="{{ policyInfo.inceptDate?.split('T')[0] }}" [(ngModel)]="policyInfo.expiryDate?.split('T')[0]"  appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.expiryDate?.split('T')[1]" appRequired>
 							</div>
 							<!-- <div class="input-group col-sm-6" style="margin-top: 10px; margin-bottom: -20px !important;">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
@@ -174,25 +174,25 @@
 						<div class="form-row ig-cust" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Issue Date</label>
-								<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.issueDate?.split('T')[0]" (ngModelChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]" appRequired>
-								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.issueDate?.split('T')[1]" (ngModelChange)="policyInfo.issueDate=policyInfo.issueDate.split('T')[0]+'T'+$event" appRequired>
+								<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.issueDate?.split('T')[0]" (ngModelChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]" appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.issueDate?.split('T')[1]" (ngModelChange)="policyInfo.issueDate=policyInfo.issueDate.split('T')[0]+'T'+$event" appRequired>
 							</div>
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Distribution Date</label>
-								<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.distDate?.split('T')[0]" (ngModelChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]" appRequired>
-								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.distDate?.split('T')[1]" (ngModelChange)="policyInfo.distDate=policyInfo.distDate.split('T')[0]+'T'+$event" appRequired>
+								<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.distDate?.split('T')[0]" (ngModelChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]" appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.distDate?.split('T')[1]" (ngModelChange)="policyInfo.distDate=policyInfo.distDate.split('T')[0]+'T'+$event" appRequired>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Effective Date</label>
-								<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" appRequired>
-								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.effDate?.split('T')[1]" (ngModelChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" appRequired>
+								<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.effDate?.split('T')[1]" (ngModelChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" appRequired>
 							</div>
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Accounting Date</label>
-								<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]" appRequired>
-								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.acctDate?.split('T')[1]" (ngModelChange)="policyInfo.acctDate=policyInfo.acctDate.split('T')[0]+'T'+$event" appRequired>
+								<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]" appRequired>
+								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.acctDate?.split('T')[1]" (ngModelChange)="policyInfo.acctDate=policyInfo.acctDate.split('T')[0]+'T'+$event" appRequired>
 							</div>
 						</div>
 					</div>
@@ -243,7 +243,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -262,7 +262,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>							
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>							
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
@@ -280,7 +280,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 12px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 12px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -324,7 +324,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -343,7 +343,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -362,7 +362,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -412,7 +412,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -431,7 +431,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
@@ -449,7 +449,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
@@ -488,7 +488,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -507,7 +507,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
@@ -525,7 +525,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
@@ -556,7 +556,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -575,7 +575,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -594,7 +594,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -634,7 +634,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -653,7 +653,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -672,7 +672,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
@@ -996,7 +996,7 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc" style="margin-right: 3px !important;" appRequired>
+										<input type="text" class="form-control form-control-sm req" [(ngModel)]="policyInfo.lineClassDesc" style="margin-right: 3px !important;" appRequired>
 										<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'" style="margin-right: 3px !important; margin-left: -18px !important;"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div>
 									</div>
 									<div class="input-group">
@@ -1031,7 +1031,7 @@
 									</div>
 									<div *ngIf="policyInfo.holdCoverTag === 'Y'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Hold Cover No</label>
-										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.holdCoverNo" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm req" [(ngModel)]="policyInfo.holdCoverNo" appRequired>
 										<!-- <span class="form-control-sm col-sm-2">&nbsp;</span>
 										<span class="form-control-sm col-sm">&nbsp;</span> -->
 									</div>
@@ -1065,8 +1065,8 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-5" for="xx">This Alteration Inception Date</label>
-										<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" appRequired>
-										<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]" appRequired>
+										<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" appRequired>
+										<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]" appRequired>
 										<div class="col-sm-1"></div>
 									</div>
 								</div>
@@ -1077,8 +1077,8 @@
 						">
 						<div class="input-group col-sm-6">
 							<label class="form-control-sm col-sm-4">Expiry Date</label>
-							<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.expiryDate?.split('T')[0]" (ngModelChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
-							<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.expiryDate?.split('T')[1]" appRequired>
+							<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.expiryDate?.split('T')[0]" (ngModelChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
+							<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.expiryDate?.split('T')[1]" appRequired>
 						</div>
 						<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 
@@ -1148,17 +1148,17 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -1167,7 +1167,7 @@
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
@@ -1178,7 +1178,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
@@ -1196,7 +1196,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1245,17 +1245,17 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -1264,7 +1264,7 @@
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
@@ -1275,7 +1275,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1294,7 +1294,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1335,13 +1335,13 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -1351,7 +1351,7 @@
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
@@ -1362,7 +1362,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1382,7 +1382,7 @@
 
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1418,14 +1418,14 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -1435,7 +1435,7 @@
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
@@ -1446,7 +1446,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1466,7 +1466,7 @@
 
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1502,13 +1502,13 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -1517,7 +1517,7 @@
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
@@ -1528,7 +1528,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1548,7 +1548,7 @@
 
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1584,13 +1584,13 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -1599,7 +1599,7 @@
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2 col-sm-1">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="policyInfo.project.objectId" (ngModelChange)="policyInfo.project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
@@ -1610,7 +1610,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea> 
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1630,7 +1630,7 @@
 
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
@@ -1676,8 +1676,8 @@
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">This Alteration Effective Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" appRequired>
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" appRequired>
+									<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" appRequired>
+									<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" appRequired>
 								</div>
 							</div>
 						</div>
@@ -1690,18 +1690,18 @@
 							<div class="custom-row-inline-inset">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">Issue Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.issueDate?.split('T')[0]" (ngModelChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]" appRequired>
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]" appRequired>
+									<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.issueDate?.split('T')[0]" (ngModelChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]" appRequired>
+									<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]" appRequired>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">Distribution Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.distDate?.split('T')[0]" (ngModelChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]" appRequired>
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.distDate?.split('T')[1]" appRequired>
+									<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.distDate?.split('T')[0]" (ngModelChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]" appRequired>
+									<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.distDate?.split('T')[1]" appRequired>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">Accounting Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]" appRequired>
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]" appRequired>
+									<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]" appRequired>
+									<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]" appRequired>
 								</div>
 							</div>
 						</div>

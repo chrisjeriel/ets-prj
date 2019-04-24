@@ -63,12 +63,12 @@
 
                         <div class="input-group">
                             <label class="form-control-sm col-sm-2">Policy No</label>
-                            <input type="text" [ngModel]="polNo[0]" (ngModelChange)="polNo[0]=$event.toUpperCase()" style="margin-left: 3px;" (change)="search('lineCd',$event)" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line">
-                            <input type="text" [(ngModel)]="polNo[1]" (change)="search('year',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Year">
-                            <input type="text" [(ngModel)]="polNo[2]" (change)="search('seqNo',$event)" class="form-control form-control-sm col-sm-3 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No">
-                            <input type="text" [(ngModel)]="polNo[3]" (change)="search('cedingId',$event)" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company No">
-                            <input type="text" [(ngModel)]="polNo[4]" (change)="search('coSeriesNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No">
-                             <input type="text" [(ngModel)]="polNo[5]" (change)="search('altNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No">
+                            <input type="text" [ngModel]="polNo[0]" mask="SSS" (ngModelChange)="polNo[0]=$event.toUpperCase()" style="margin-left: 3px;" (change)="search('lineCd',$event)" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line" appRequired>
+                            <input type="text" [(ngModel)]="polNo[1]" mask="9999" (change)="search('year',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Year" appRequired>
+                            <input type="text" [(ngModel)]="polNo[2]" mask="99999" (blur)="polNo[2]=pad($event,5)" (change)="search('seqNo',$event)" class="form-control form-control-sm col-sm-3 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" appRequired>
+                            <input type="text" [(ngModel)]="polNo[3]" mask="999" (blur)="polNo[3]=pad($event,3)" (change)="search('cedingId',$event)" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company No" appRequired>
+                            <input type="text" [(ngModel)]="polNo[4]" mask="9999" (blur)="polNo[4]=pad($event,4)" (change)="search('coSeriesNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" appRequired>
+                             <input type="text" [(ngModel)]="polNo[5]" mask="999" (blur)="polNo[5]=pad($event,3)" (change)="search('altNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" appRequired>
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i (click)="showLOV()" class="fa fa-search"></i></a></div>
                         </div>                    

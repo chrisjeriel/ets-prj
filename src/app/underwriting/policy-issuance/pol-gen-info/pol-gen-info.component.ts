@@ -251,12 +251,15 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.passDataDeductibles.checkFlag = false;
         this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       }
-      
+            
     });
 
     this.getPolGenInfo();
-    
-    setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') },1000);
+    if(this.newAlt) {
+      setTimeout(() => { $('.req').addClass('ng-dirty') }, 0);
+    } else {
+      setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') }, 1000);  
+    }        
   }
 
   ngOnDestroy() {

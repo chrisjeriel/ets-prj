@@ -134,6 +134,10 @@ export class PolCreateAlterationPARComponent implements OnInit {
   }
 
   search(key,ev) {
+    if(!this.searchArr.includes('%%')) {
+      this.selected = null;
+    }
+
     var a = ev.target.value;
 
     if(key === 'lineCd') {
@@ -188,13 +192,13 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
         if(b.length == 0) {
           //to gen info using base policy          
-          this.router.navigate(['/policy-issuance', { line: line, policyNo: this.polNo.join('-'), policyId: this.selected.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
+          this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: this.polNo.join('-'), policyId: this.selected.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
         } else {
           //to gen info using latest alteration from b
           b.sort((a, b) => a.altNo - b.altNo);
           //use b[b.length-1] (max altNo)
           var x = b[b.length-1];
-          this.router.navigate(['/policy-issuance', { line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
+          this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
         }
       } else if(coInsStatus == 1) {
         this.warningMsg = 2;
@@ -213,5 +217,13 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
   showWarningMdl() {
     $('#altWarningModal > #modalBtn').trigger('click');
+  }
+
+  pad(ev,num) {
+    if(ev.target.value === '') {
+      return '';
+    }
+
+    return String(ev.target.value).padStart(num, '0');
   }
 }
