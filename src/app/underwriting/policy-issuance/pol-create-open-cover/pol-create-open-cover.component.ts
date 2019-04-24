@@ -254,8 +254,8 @@ export class PolCreateOpenCoverComponent implements OnInit {
         let fetchedOptData: any[] = data['quotation']['optionsList'];
         if(fetchedOptData.length === 1){
           console.log('here');
-          this.selectedOpt.optionId = fetchedOptData[0].optionId;
-          this.selectedOpt.condition = fetchedOptData[0].condition;
+          this.optionData.optionId = fetchedOptData[0].optionId;
+          this.optionData.condition = fetchedOptData[0].condition;
           this.setOption();
         }
         this.passDataOptionLOV.tableData = data['quotation']['optionsList'];
