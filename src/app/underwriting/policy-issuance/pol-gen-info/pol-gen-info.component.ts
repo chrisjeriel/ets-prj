@@ -215,6 +215,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   refPolicyId: string = '';
   newAlt: boolean = false;
   fromInq:any = false;
+  showPolicyNo: string;
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
@@ -238,6 +239,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.newAlt = params['alteration'];
       }
 
+      //edit by paul
       this.fromInq = params['fromInq']=='true';
 
       if(this.fromInq){
@@ -246,7 +248,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.passDataDeductibles.checkFlag = false;
         this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       }
-      
+      this.showPolicyNo = params['showPolicyNo'];
+      console.log(this.showPolicyNo);
+
     });
 
     this.getPolGenInfo();
@@ -270,6 +274,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
       if(data.policy != null) {
         this.policyInfo = data.policy;
+        this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
         this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
