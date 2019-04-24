@@ -23,67 +23,23 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 		dataTypes: ["text","text","text","text","text","text","date","date","text","text","date"],
 		resizable: [false, false, true, false, true, true, false, false, false, true, false],
 		filters: [
-		{
-			key: 'holdCovNo',
-			title: 'Hold Cover No.',
-			dataType: 'text'
-		},
-		{
-			key: 'status',
-			title: 'Status',
-			dataType: 'text'
-		},
-		{
-			key: 'cedingName',
-			title: 'Ceding Co',
-			dataType: 'text'
-		},
-		{
-			key: 'policyNo',
-			title: 'Policy No',
-			dataType: 'text'
-		},
-		{
-			key: 'riskName',
-			title: 'Risk',
-			dataType: 'text'
-		},
-		{
-			key: 'insuredDesc',
-			title: 'Insured',
-			dataType: 'text'
-		},
-		{
-			keys: {
-				from: 'periodFrom',
-				to: 'periodTo'
-			},
-			title: 'Period',
-			dataType: 'datespan'
-		},
-		{
-			key: 'coRefHoldCovNo',
-			title: 'CR Hold Cov No.',
-			dataType: 'text'
-		},
-		{
-			key: 'reqBy',
-			title: 'Requested By',
-			dataType: 'text'
-		},
-		{
-			keys: {
-				from: 'reqDateFrom',
-				to: 'reqDateTo'
-			},
-			title: 'Request Date',
-			dataType: 'datespan'
-		},
-		{
-			key: 'expiringInDays',
-			title: 'Expires in (Days)',
-			dataType: 'expire'
-		},
+		{ key: 'holdCovNo', 	title: 'Hold Cover No.', 	dataType: 'text'},
+		{ key: 'status',    	title: 'Status',         	dataType: 'text'},
+		{ key: 'cedingName',	title: 'Ceding Co',		 	dataType: 'text'},
+		{ key: 'policyNo', 		title: 'Policy No',		 	dataType: 'text'},
+		{ key: 'riskName',		title: 'Risk',			 	dataType: 'text'},
+		{ key: 'insuredDesc',	title: 'Insured',		 	dataType: 'text'},
+		{ keys: {
+			from: 'periodFrom',
+			to: 'periodTo'
+		},					    title: 'Period',		 	dataType: 'datespan'},
+		{ key: 'coRefHoldCovNo',title: 'CR Hold Cov No.',	dataType: 'text'},
+		{ key: 'reqBy',title: 'Requested By',			 	dataType: 'text'},
+		{ keys: {
+			from: 'reqDateFrom',
+			to: 'reqDateTo'
+		},						title: 'Request Date',	 	dataType: 'datespan'},
+		{ key: 'expiringInDays',title: 'Expires in (Days)',	dataType: 'expire'},
 
 		],
 		pageLength: 10,
@@ -108,6 +64,31 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 			console.log(data);
 			var rec = data['policyList'];
 			for(let i of rec){
+				/*if((i.holdCoverList[0].statusDesc).toUpperCase() !== 'CANCELLED'){
+					this.passData.tableData.push({
+						holdCovNo  			: i.holdCoverList[0].holdCovNo,
+						statusDesc	   		: i.holdCoverList[0].statusDesc,
+						cedingName 			: i.cedingName,
+						policyNo   			: i.policyNo,
+						riskName   			: i.project.riskName,
+						insuredDesc			: i.insuredDesc,
+						periodFrom 			: this.ns.toDateTimeString(i.holdCoverList[0].periodFrom),
+						periodTo   			: this.ns.toDateTimeString(i.holdCoverList[0].periodTo),
+						compRefHoldCovNo 	: i.holdCoverList[0].compRefHoldCovNo,
+						reqBy	 			: i.holdCoverList[0].reqBy,
+						reqDate  			: this.ns.toDateTimeString(i.holdCoverList[0].reqDate),
+						createUser			: i.holdCoverList[0].createUser,
+						createDate			: this.ns.toDateTimeString(i.holdCoverList[0].createDate),
+						updateUser			: i.holdCoverList[0].updateUser,
+						updateDate			: this.ns.toDateTimeString(i.holdCoverList[0].updateDate),
+						approvedBy			: i.holdCoverList[0].approvedBy,
+						preparedBy			: i.holdCoverList[0].preparedBy,
+						status				: i.holdCoverList[0].status,
+						policyId			: i.policyId,
+						holdCovId			: i.holdCoverList[0].holdCovId
+
+					});
+				}*/
 				this.passData.tableData.push({
 					holdCovNo  			: i.holdCoverList[0].holdCovNo,
 					statusDesc	   		: i.holdCoverList[0].statusDesc,
@@ -150,7 +131,7 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 		var yyyy = today.getFullYear();
 		var currDate = mm + dd+ yyyy;
-		var filename = 'HolCoverMonitoringList_'+currDate+'.xlsx'
+		var filename = 'PolHolCoverMonitoringList_'+currDate+'.xlsx'
 		var mystyle = {
 			headers:true, 
 			column: {style:{Font:{Bold:"1"}}}
@@ -160,6 +141,7 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 			var date = new Date(dateStr);
 			return date.toLocaleString();
 		};
+
 
 		alasql('SELECT holdCovNo AS HoldCoverNo, statusDesc AS Status, cedingName AS CedingCompany, policyNo AS PolicyNo, riskName AS Risk, insuredDesc AS Insured, datetime(periodFrom) AS PeriodFrom, datetime(periodTo) AS PeriodTo, compRefHoldCovNo AS CompRefHoldCoverNo, reqBy AS RequestedBy, datetime(reqDate) AS RequestedDate INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
 	}

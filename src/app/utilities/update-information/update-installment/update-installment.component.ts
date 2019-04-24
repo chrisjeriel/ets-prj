@@ -41,13 +41,18 @@ export class UpdateInstallmentComponent implements OnInit {
   fetchedData: any;
   dialogIcon:string;
   dialogMsg: string = "";
+  prevCommRt: any;
+  prevCommAmt: any;
   cancelFlag : boolean = false;
+  monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+  ];
 
   passDataInstallmentInfo: any = {
     tableData: [],
     tHeader: ["Inst No", "Due Date", "Booking Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
     dataTypes: ["number", "date", "date", "currency", "percent", "currency", "currency", "currency"],
-    total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],
+    /*total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],*/
     addFlag: true,
     deleteFlag: true,
     pageID: 1,
@@ -68,6 +73,36 @@ export class UpdateInstallmentComponent implements OnInit {
         otherCharges:[]
     },
     keys: ['instNo', 'dueDate', 'bookingDate', 'premAmt', 'commRt', 'commAmt', 'otherChargesInw', 'amtDue'],
+    uneditable:[true, false, false, false, false, false, true, true],
+    pageLength: 5
+  };
+
+  prevInstallmentData: any = {
+    tableData: [],
+    tHeader: ["Inst No", "Due Date", "Booking Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
+    dataTypes: ["number", "date", "date", "currency", "percent", "currency", "currency", "currency"],
+    /*total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],*/
+    addFlag: true,
+    deleteFlag: true,
+    pageID: 1,
+    widths: ["1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
+    nData: {
+        instNo: '',
+        dueDate: '',
+        bookingDate: '',
+        premAmt: '',
+        commRt: '',
+        commAmt: '',
+        otherChargesInw: 0,
+        amtDue: '',
+        "createUser": JSON.parse(window.localStorage.currentUser).username,
+        "createDate": this.ns.toDateTimeString(0),
+        "updateUser": JSON.parse(window.localStorage.currentUser).username,
+        "updateDate": this.ns.toDateTimeString(0),
+        otherCharges:[]
+    },
+    keys: ['instNo', 'dueDate', 'bookingDate', 'premAmt', 'commRt', 'commAmt', 'otherChargesInw', 'amtDue'],
+    uneditable:[true, false, false, false, false, false, true, true],
     pageLength: 5
   };
 
@@ -175,8 +210,32 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   onClickSave() {
-    if(this.instllmentTable.getSum('premAmt') == this.totalPrem) {
-      this.confirmSave
+    var hasError = false;
+    for(var i=0; i<this.instllmentTable.passData.tableData.length; i++) {
+      if(this.instllmentTable.passData.tableData[i].add != undefined || this.instllmentTable.passData.tableData[i].edited 
+        && this.instllmentTable.passData.tableData[i].deleted == undefined) {
+        var d = new Date();
+        if((new Date(this.instllmentTable.passData.tableData[i].bookingDate)).getTime() < new Date(this.ns.toDateTimeString(new Date())).getTime()) {
+          d.setDate(d.getDate() + 1);
+          hasError = true;
+          this.dialogIcon = 'error-message';
+          this.dialogMsg = 'The booking date is already closed. The earliest open booking month is ' 
+                        + this.monthNames[d.getMonth()] + ' ' + (d.getFullYear());
+          break;
+        }
+      }
+    }
+
+    if(this.instllmentTable.getSum('premAmt') != this.totalPrem) {
+      hasError = true;
+      this.dialogIcon = 'error-message';
+      this.dialogMsg = 'Total Premium must be equal to the sum of premium per installment.';
+    }
+
+    if(!hasError) {
+      this.confirmSave.confirmModal();
+    }else {
+      this.successDialog.open();
     }
   }
 
@@ -256,9 +315,28 @@ export class UpdateInstallmentComponent implements OnInit {
     for(let rec of this.passDataInstallmentInfo.tableData){
       if(rec.otherCharges.length != 0)
         rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr,0);
-      rec.amtDue = rec.premAmt + rec.otherChargesInw;
+      rec.amtDue = rec.premAmt - rec.commAmt + rec.otherChargesInw;
     }
     this.instllmentTable.refreshTable();
+  }
+
+  calcComm() {
+    var inputWithChanges = $('.ng-dirty:not([type="search"]):not(.not-form)');
+    console.log($('.ng-dirty:not([type="search"]):not(.not-form)')[1]);
+    console.log("prevCommRt: " + this.prevCommRt);
+    console.log("prevCommAmt: " + this.prevCommAmt);
+    /*for(let rec of this.passDataInstallmentInfo.tableData) {
+      rec.commAmt = '';
+      rec.commAmt = rec.premAmt * (rec.commRt / 100);
+      console.log("commAmt: " + rec.commAmt);
+    }
+    this.instllmentTable.refreshTable();
+    for(let rec of this.passDataInstallmentInfo.tableData) {
+      rec.commRt = '';
+      rec.commRt = rec.commAmt / rec.premAmt * 100;
+      console.log("commRt: " + rec.commRt);
+    }
+    this.instllmentTable.refreshTable();*/
   }
 
   delInst(){
@@ -339,19 +417,25 @@ export class UpdateInstallmentComponent implements OnInit {
       }
     }
 
-     this.underwritingService.saveInwardPolBal(params).subscribe((data:any)=>{
-        if(data.returnCode == -1){
-          this.dialogIcon = 'success';
-          this.successDialog.open();
-          this.otherTable.markAsPristine();
-          this.instllmentTable.markAsPristine();
-          this.retrievePolInwardBal();
-        }else{
-          this.dialogIcon = 'error';
-          this.successDialog.open();
-        }
-      });
+    if (this.validate(params)) {
+      this.underwritingService.saveInwardPolBal(params).subscribe((data:any)=>{
+          if(data.returnCode == -1){
+            this.dialogIcon = 'success';
+            this.successDialog.open();
+            this.otherTable.markAsPristine();
+            this.instllmentTable.markAsPristine();
+            this.retrievePolInwardBal();
+          }else{
+            this.dialogIcon = 'error';
+            this.successDialog.open();
+          }
+        });
+    } else {
+          this.dialogMsg = "Please check field values.";
+          this.dialogIcon = "error";
+          $('#inward > #successModalBtn').trigger('click');
     }
+   }
 
    delOth(){
     if(this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length -1 ].add){
@@ -368,6 +452,20 @@ export class UpdateInstallmentComponent implements OnInit {
     this.otherTable.markAsDirty();
     this.otherTable.refreshTable();
     this.compute();
+  }
+
+  validate(obj) {
+    var req = ['bookingDate', 'dueDate', 'premAmt', 'commRt', 'commAmt'];
+
+    var entries = Object.entries(obj);
+
+    for(var[key, val] of entries) {
+      if((val == '' || val == null) && req.includes(key)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
 }

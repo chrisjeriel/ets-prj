@@ -235,7 +235,6 @@ export class QuoteOptionComponent implements OnInit {
         this.quotationService.getCoverageInfo('',this.quoteId).subscribe((data: any) => {
           if(data.quotation.project!==null){
             this.defaultSectionCvrs = data.quotation.project.coverage.sectionCovers.filter((a)=>{
-              console.log(a);
               a.amount = a.sumInsured;
               a.coverCdDesc = a.description;
               a.changeTag = 'N';
