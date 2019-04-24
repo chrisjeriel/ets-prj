@@ -165,15 +165,17 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 
 	onRowClick(event){
 		this.tableInfo = event;
-		if(this.tableInfo !== null){
+	}
+
+	//Moved router navigation to onRowDblClick (Neco 4/24/2019)
+	onRowDblClick(data){
+		console.log(data);
+		if(data !== null){
 			setTimeout(() => {
-	            this.router.navigate(['/policy-holdcover', { tableInfo : JSON.stringify(this.tableInfo) , from: 'pol-hold-cov-monitoring' }], { skipLocationChange: true });
+	            this.router.navigate(['/policy-holdcover', { tableInfo : JSON.stringify(data) , from: 'pol-hold-cov-monitoring' }], { skipLocationChange: true });
 	            this.location.go('/policy-holdcover') // temporary, to display the correct url for pol-to-hold-cover
         	},100);
 		}
-	}
-	onRowDblClick(event){
-		//do not delete
 	}
 
 }

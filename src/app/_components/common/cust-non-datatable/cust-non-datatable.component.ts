@@ -353,7 +353,6 @@ export class CustNonDatatableComponent implements OnInit {
         
 =======*/
     onRowClick(event, data, index?) {
-        console.log(data);
         this.currentIndex = index + ((this.p - 1) * this.passData.pageLength );   //this.p is the current page number
 /*>>>>>>> Stashed changes*/
         if(this.passData.checkFlag === undefined || !this.passData.checkFlag){

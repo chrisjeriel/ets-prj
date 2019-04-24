@@ -175,7 +175,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 					this.polHoldCoverParams.compRefHoldCovNo		= rec.compRefHoldCovNo;
 					this.polHoldCoverParams.status					= rec.status;
 					this.polHoldCoverParams.reqBy					= rec.reqBy;
-					this.polHoldCoverParams.reqDate					= this.noteService.toDateTimeString(rec.reqDate);
+					this.polHoldCoverParams.reqDate					= rec.reqDate === null ? null : this.noteService.toDateTimeString(rec.reqDate);
 					this.polHoldCoverParams.preparedBy				= rec.preparedBy;
 					this.polHoldCoverParams.approvedBy				= rec.approvedBy;
 					this.polHoldCoverParams.createUser				= rec.createUser;
@@ -396,8 +396,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	onClickSaveBtn(){
 		if(this.policyInfo.policyNo === '' || this.policyInfo.cedingName === '' || this.policyInfo.insuredDesc === '' ||
 		   this.policyInfo.riskName === '' || this.policyInfo.policyId === 0 || this.periodFromDate.date === '' ||
-		   this.periodFromDate.time === '' || this.periodToDate.date === '' || this.periodToDate.time === '' ||
-		   this.polHoldCoverParams.reqBy === '' || this.polHoldCoverParams.reqDate === '' || this.polHoldCoverParams.compRefHoldCovNo === ''){
+		   this.periodFromDate.time === '' || this.periodToDate.date === '' || this.periodToDate.time === ''){
 
 				this.dialogMessage = 'Please fill all required fields';
 				this.dialogIcon = 'info';
@@ -545,6 +544,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
   		}else if(option === 'mod'){
   			this.isForViewing = false;
   			this.isModify = true;
+  			this.polHoldCoverParams.approvedBy = '';
   		}
   	}
 

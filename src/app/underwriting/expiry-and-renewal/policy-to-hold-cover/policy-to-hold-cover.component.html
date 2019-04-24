@@ -113,7 +113,7 @@
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Requested By</label>
-                                                     <input type="text" name="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" appRequired [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                                     <input type="text" name="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
                                                 </div>
                                             </div>
                                         </div>
@@ -128,13 +128,13 @@
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Request Date</label>
-                                                    <input type="date" name="reqDate" class="form-control form-control-sm cust-sm col-sm warn" appRequired [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                                    <input type="date" name="reqDate" class="form-control form-control-sm cust-sm col-sm warn" [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="input-group ig-row" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
-                                            <input name="crhcno" type="text" class="form-control form-control-sm warn" appRequired [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                            <input name="crhcno" type="text" class="form-control form-control-sm warn" [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Prepared By</label>
                                             <input type="text" name="preparedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.preparedBy" readonly tabindex="-1">
                                         </div>
