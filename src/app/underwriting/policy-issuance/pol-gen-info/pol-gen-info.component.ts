@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UnderwritingService, NotesService } from '../../../_services';
+import { UnderwritingService, NotesService, MaintenanceService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
@@ -15,6 +15,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
+import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 
 @Component({
   selector: 'app-pol-gen-info',
@@ -35,6 +36,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
   @ViewChild('dedLov') lov :LovComponent;
+  @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
   lovCheckBox:boolean;
   passLOVData:any = {
     selector: '',
@@ -216,11 +218,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   newAlt: boolean = false;
   fromInq:any = false;
   showPolicyNo: string;
+  lineClasses: any[] = [];
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
   constructor(private route: ActivatedRoute, private modalService: NgbModal,
-    private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService) { }
+    private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService,
+    private mtnService: MaintenanceService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | General Info");
@@ -249,8 +253,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       }
       this.showPolicyNo = params['showPolicyNo'];
-      console.log(this.showPolicyNo);
-
+      this.getLineClass();
     });
 
     this.getPolGenInfo();
@@ -323,6 +326,18 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.focusBlur();
   }
 
+  showRiskLOV(){
+    $('#riskLOV #modalBtn').trigger('click');
+    $('#riskLOV #modalBtn').addClass('ng-dirty')
+  }
+
+  setRisk(data){
+    this.policyInfo.project.riskId = data.riskId;
+    this.policyInfo.project.riskName = data.riskName;
+    this.ns.lovLoader(data.ev, 0);
+    this.focusBlur();
+  }
+
   checkCode(ev, field) {
     this.ns.lovLoader(ev, 1);
       $(ev.target).addClass('ng-dirty');
@@ -347,6 +362,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.currencyLov.checkCode(this.policyInfo.currencyCd, ev);
       } else if(field === 'preparedBy') {
         this.usersLov.checkCode(this.policyInfo.preparedBy, ev);
+      } else if(field === 'risk') {
+        this.riskLOV.checkCode(this.policyInfo.project.riskId, '#riskLOV', ev);
       }
   }
 
@@ -703,7 +720,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
    switch(obj.lineCd) {
      case 'CAR':
-       req.push('contractorId', 'duration');
+       //req.push('contractorId', 'duration');
        break;
      case 'EAR':
        req.push('testing');
@@ -727,6 +744,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
    for(var[key, val] of entries) {
      if((val == '' || val == null) && req.includes(key)) {
+       console.log(key)
        return false;
      }
    }
@@ -744,6 +762,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.intmName = event.intmName;
         this.ns.lovLoader(event.ev, 0);
         /*this.focusBlur();*/
+  }
+
+  //edit by paul
+  getLineClass(){
+    this.mtnService.getLineClassLOV(this.line).subscribe(a=>{
+      this.lineClasses = a['lineClass'];
+    })
   }
 
 }
