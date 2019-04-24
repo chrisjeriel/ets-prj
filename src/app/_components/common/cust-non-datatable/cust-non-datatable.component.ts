@@ -230,6 +230,10 @@ export class CustNonDatatableComponent implements OnInit {
         }
         $('#tableRow').focus();
         //end select the first row
+
+        if(this.passData.tableData.length !== 0 ){
+            this.loadingFlag = false;
+        }
     }
 
     ngOnInit(): void {
