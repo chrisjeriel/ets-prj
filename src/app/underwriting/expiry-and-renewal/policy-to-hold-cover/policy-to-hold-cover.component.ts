@@ -108,7 +108,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	cancelBtnDisabledStatus: string[] = ['3','4','5','6', ''];
 	approveBtnDisabledStatus: string[] = ['2','3','4','5','6','R', ''];
-	saveBtnDisabledStatus: string[] = ['2','3','4','5','6', ''];
+	saveBtnDisabledStatus: string[] = ['2','3','4','5','6'];
 
 	ngOnInit() {
 		this.printType = 'SCREEN';
