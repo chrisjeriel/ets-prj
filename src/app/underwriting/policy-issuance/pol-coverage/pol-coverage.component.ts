@@ -407,6 +407,7 @@ export class PolCoverageComponent implements OnInit {
       this.projId = data.policy.project.projId;
       this.riskId = data.policy.project.riskId;
       this.altCoverageData = data.policy.project.coverage;
+      this.altCoverageData.pctShare = this.altCoverageData.pctShare == null || this.altCoverageData.pctShare == 0 ? 100:this.altCoverageData.pctShare;
 
       var dataTable = data.policy.project.coverage.sectionCovers;
         for (var i = 0; i< dataTable.length;i++){
@@ -1126,6 +1127,8 @@ export class PolCoverageComponent implements OnInit {
     this.comsectionIIPrem = 0;
     this.comsectionIIISi = 0;
     this.comsectionIIIPrem = 0;
+    this.prevtotalSi = 0;
+    this.prevtotalPrem = 0;  
     this.alttotalSi = 0;
     this.alttotalPrem = 0;
     this.comtotalSi = 0;
@@ -1315,6 +1318,9 @@ export class PolCoverageComponent implements OnInit {
     this.passData2.tableData[2].comSi    = this.comsectionIIISi;
     this.passData2.tableData[2].comAmt   = this.comsectionIIIPrem;
 
+    this.altCoverageData.prevtotalSi      = this.prevtotalSi;
+    this.altCoverageData.prevtotalPrem    = this.prevtotalPrem;
+    this.altCoverageData.alttotalSi       = this.alttotalSi;
     this.altCoverageData.alttotalSi       = this.alttotalSi;
     this.altCoverageData.alttotalPrem     = this.alttotalPrem;
     this.altCoverageData.comtotalSi       = this.comtotalSi;
@@ -1371,6 +1377,8 @@ export class PolCoverageComponent implements OnInit {
     }
     this.altCoverageData.saveSectionCovers = this.editedData;
     this.altCoverageData.deleteSectionCovers = this.deletedData;
+    this.altCoverageData.deleteDeductibleList = [];
+    this.altCoverageData.saveDeductibleList = [];
   }
 
   alterationSave(){
