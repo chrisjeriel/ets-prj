@@ -140,10 +140,11 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			this.statusDesc 							= JSON.parse(this.fromHcMonitoring).statusDesc;
 			this.polHoldCoverParams.preparedBy 			= JSON.parse(this.fromHcMonitoring).preparedBy;
 			this.polHoldCoverParams.approvedBy 			= JSON.parse(this.fromHcMonitoring).approvedBy;
+			this.polHoldCoverParams.holdCovId			= JSON.parse(this.fromHcMonitoring).holdCovId;
 
 			this.isIncomplete = false;
 			this.tempPolNo = this.policyInfo.policyNo.split('-');
-			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo);
+			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, this.polHoldCoverParams.holdCovId);
 		}
 		// END ARNEILLE
 		/*if(this.polHoldCoverParams.status === '2'){
@@ -176,9 +177,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		});
 	}
 
-	retrievePolHoldCov(policyId: string, policyNo: string){
+	retrievePolHoldCov(policyId: string, policyNo: string, holdCovId: string){
 		//this.approveListMethod(policyId);
-		this.us.retrievePolHoldCover(policyId,'').subscribe((data: any)=>{
+		this.us.retrievePolHoldCover(policyId,'', holdCovId).subscribe((data: any)=>{
 			console.log(data);
 			for(let rec of data.policy.holdCoverList){
 				if(rec.status !== '6' && rec.status !== '5'){
@@ -204,11 +205,14 @@ export class PolicyToHoldCoverComponent implements OnInit {
 					this.holdCoverNo 								= rec.holdCovNo;
 				}
 			}
+
+			if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
+				this.periodFromDate.date 						= this.polHoldCoverParams.periodFrom.split('T')[0];
+				this.periodFromDate.time 						= this.polHoldCoverParams.periodFrom.split('T')[1];
+				this.periodToDate.date 							= this.polHoldCoverParams.periodTo.split('T')[0];
+				this.periodToDate.time 							= this.polHoldCoverParams.periodTo.split('T')[1];
+			}
 			
-			this.periodFromDate.date 						= this.polHoldCoverParams.periodFrom.split('T')[0];
-			this.periodFromDate.time 						= this.polHoldCoverParams.periodFrom.split('T')[1];
-			this.periodToDate.date 							= this.polHoldCoverParams.periodTo.split('T')[0];
-			this.periodToDate.time 							= this.polHoldCoverParams.periodTo.split('T')[1];
 			console.log(this.polHoldCoverParams);
 			this.isIncomplete = false;
 			this.isForViewing = false;
@@ -251,7 +255,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 						this.tempPolNo						= this.policyInfo.policyNo.split('-');
 						//if selected policy is already in hold cover
 						if(this.policyInfo.statusDesc === 'On Hold Cover'){
-							this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo);
+							this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 						}
 					}
 				}else{
@@ -309,7 +313,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				let generatedNum: string[] = data.polHoldCoverNo.split('-');
 				this.polHoldCoverParams.holdCovSeqNo = parseInt(generatedNum[3]).toString();
 				this.polHoldCoverParams.holdCovRevNo = parseInt(generatedNum[4]).toString();
-				this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo);
+				this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo, this.polHoldCoverParams.holdCovId);
 				if(!this.isApproval && !this.isReleasing){
 					this.dialogIcon = '';
 					this.dialogMessage = '';
@@ -369,7 +373,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.tempPolNo = this.policyInfo.policyNo.split('-');
 		//if selected policy is already in hold cover
 		if(this.policyInfo.statusDesc === 'On Hold Cover'){
-			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo);
+			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 		}
 		//else clear all fields
 		else{
@@ -504,7 +508,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	  			//this.polHoldCoverParams.approvedBy = this.authorization;
 	  			this.isReleasing = true;
 	  			//this.onClickSave();
-	  			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo);
+	  			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 	  			//this.isReleasing = false;
 	  		});
   		}else{

@@ -132,6 +132,7 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 
 				});
 			}
+			this.passData.tableData = this.passData.tableData.filter((a)=>{return a.status !== '5' && a.status !== '6';}); //added by Neco 04/24/2019 Purpose: To filter out Cancelled and Replace Status
 			this.table.refreshTable();
 		});
 	}
@@ -165,6 +166,7 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 
 	onRowClick(event){
 		this.tableInfo = event;
+		console.log(event);
 	}
 
 	//Moved router navigation to onRowDblClick (Neco 4/24/2019)
