@@ -109,6 +109,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     instTag: null,
     extensionTag: null,
     excludeDistTag: null,
+    coinsGrpId: null,
     wordings: null,
     createUser: null,
     createDate: null,
@@ -207,11 +208,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   typeOfCession: string = "";
   policyId: string;
   policyNo: string;
+  prevPolicyId: string;
   dialogIcon: string = "";
   dialogMessage: string = "";
   loading: boolean = false;
   cancelFlag: boolean;
   saveBtnClicked: boolean = false;
+  prevInceptDate: string;
+  prevEffDate: string;
   refPolicyId: string = '';
   newAlt: boolean = false;
   fromInq:any = false;
@@ -232,6 +236,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.line = params['line'];
       this.policyId = params['policyId'];
       this.policyNo = params['policyNo'];
+      this.prevPolicyId = params['prevPolicyId'];
 
       if(params['alteration'] != undefined) {
         this.alteration = params['alteration'];
@@ -246,12 +251,15 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.passDataDeductibles.checkFlag = false;
         this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       }
-      
+            
     });
 
     this.getPolGenInfo();
-    
-    setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') },1000);
+    if(this.newAlt) {
+      setTimeout(() => { $('.req').addClass('ng-dirty') }, 0);
+    } else {
+      setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') }, 1000);  
+    }        
   }
 
   ngOnDestroy() {
@@ -287,6 +295,15 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
+        if(this.alteration) {
+          if (this.prevPolicyId !== "undefined") {
+            this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+              this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
+              this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
+            });
+          }
+        }
+
         setTimeout(() => {
           $('input[appCurrencyRate]').focus();
           $('input[appCurrencyRate]').blur();
@@ -305,6 +322,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.policyId = "";
       }
     });
+
   }
 
   showLineClassLOV(){
@@ -316,6 +334,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.policyInfo.lineClassCd = data.lineClassCd;
     this.policyInfo.lineClassDesc = data.lineClassCdDesc;
     this.focusBlur();
+  }
+
+  showOpeningWordingLov(){
+    $('#wordingOpeningIdLov #modalBtn').trigger('click');
+    $('#wordingOpeningIdLov #modalBtn').addClass('ng-dirty');
+  }
+
+  setOpeningWording(data) {
+      this.policyInfo.wordings = data.wording;
+      this.focusBlur();
   }
 
   checkCode(ev, field) {
@@ -449,7 +477,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             policyNo: this.policyInfo.policyNo,
             riskName: this.policyInfo.project.riskName,
             insuredDesc: this.policyInfo.insuredDesc,
-            riskId: this.policyInfo.project.riskIdz,
+            riskId: this.policyInfo.project.riskId,
             showPolAlop: this.policyInfo.showPolAlop,
             coInsuranceFlag: this.policyInfo.coInsuranceFlag,
             principalId: this.policyInfo.principalId
@@ -475,10 +503,11 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "refPolicyId"     : this.refPolicyId,
       "acctDate"        : this.policyInfo.acctDate,
       "altNo"           : this.policyInfo.altNo,
-      "altTag"          : this.policyInfo.altTag,
+      "altTag"          : this.newAlt ? 'Y' : this.policyInfo.altTag,
       "bookedTag"       : this.policyInfo.bookedTag,
       "cedingId"        : this.policyInfo.cedingId,
       "cessionId"       : this.policyInfo.cessionId,
+      "coinsGrpId"      : this.policyInfo.coinsGrpId,
       "coRefNo"         : this.policyInfo.coRefNo,
       "coSeriesNo"      : this.policyInfo.coSeriesNo,
       "contractorId"    : this.policyInfo.contractorId,
@@ -537,7 +566,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "totalSi"         : this.policyInfo.project.totalSi,
       "updateDate"      : this.ns.toDateTimeString(0),
       "updateUser"      : this.ns.getCurrentUser(),
-      "wordings"        : this.policyInfo.wordings
+      "wordings"        : this.policyInfo.wordings.trim()
     }
 
     //ADD VALIDATION
@@ -721,7 +750,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
    var entries = Object.entries(obj);
 
    for(var[key, val] of entries) {
-     if((val == '' || val == null) && req.includes(key)) {
+     if((val === '' || val == null) && req.includes(key)) {
        return false;
      }
    }
@@ -738,7 +767,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.intmId = event.intmId;
         this.policyInfo.intmName = event.intmName;
         this.ns.lovLoader(event.ev, 0);
-        /*this.focusBlur();*/
+        this.focusBlur();
   }
 
 }
