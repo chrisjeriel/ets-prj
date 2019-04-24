@@ -379,7 +379,8 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   prepareParam() {    
-    var savePolicyDetailsParam = {    
+    var savePolicyDetailsParam = { 
+      "checkingType"  : 'normal',
       "expiryDate"    : this.expiryDate + 'T' + this.expiryTime,
       "holdCoverNo"   : this.hc ? this.hcNo.join('-') : '',
       "inceptDate"    : this.inceptionDate + 'T' + this.inceptionTime,

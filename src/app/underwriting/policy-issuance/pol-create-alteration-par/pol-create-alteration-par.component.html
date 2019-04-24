@@ -123,7 +123,10 @@
                 <p *ngIf="warningMsg == 0">The Policy No. cannot be altered. Creation of alteration<br />
                 connected to this record is ongoing.</p>
                 <p *ngIf="warningMsg == 1">The Policy No. cannot be altered. Policy No. has co-insurance/s.<br />
-                Creation of alteration connected to one of the policies under this<br />
+                Creation of <strong>alteration</strong> connected to one of the policies under this<br />
+                co-insurance is ongoing.</p>
+                <p *ngIf="warningMsg == 2">The Policy No. cannot be altered. Policy No. has co-insurance/s.<br />
+                Creation of <strong>policy</strong> connected to one of the policies under this<br />
                 co-insurance is ongoing.</p>
             </div>
         </fieldset>
