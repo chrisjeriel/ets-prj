@@ -27,6 +27,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
   insuredDesc: any = '';
   riskName: any = '';
   selected: any = null;
+  loading: boolean = false;
+  warningMsg: any = null;
 
   passDataLOV: any = {
     tableData: [],
@@ -79,7 +81,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
     this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
       var polList = data['policyList'];
 
-      polList = polList//.filter(p => p.statusDesc.toUpperCase() === 'DISTRIBUTED')
+      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'DISTRIBUTED' && p.altNo == 0)
                        .map(p => { p.riskName = p.project.riskName; return p; });
       this.passDataLOV.tableData = polList;
       this.lovTable.refreshTable();
@@ -96,6 +98,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
           this.cedingName = '';
           this.insuredDesc = '';
           this.riskName = '';
+          this.selected = null;
         }
       }
     });    
@@ -113,17 +116,28 @@ export class PolCreateAlterationPARComponent implements OnInit {
     }    
   }
 
-  setDetails() {
+  setDetails(fromMdl?) {
     if(this.selected != null) {
-      console.log(this.selected);
       this.polNo = this.selected.policyNo.split('-');
       this.cedingName = this.selected.cedingName;
       this.insuredDesc = this.selected.insuredDesc;
       this.riskName = this.selected.riskName;
+
+      if(fromMdl !== undefined) {
+        this.searchArr = this.polNo.map((a, i) => {
+          return (i == 0) ? a + '%' : (i == this.polNo.length - 1) ? '%' + a : '%' + a + '%';
+        });
+
+        this.search('forceSearch',{ target: { value: '' } });
+      }
     }
   }
 
   search(key,ev) {
+    if(!this.searchArr.includes('%%')) {
+      this.selected = null;
+    }
+
     var a = ev.target.value;
 
     if(key === 'lineCd') {
@@ -143,20 +157,73 @@ export class PolCreateAlterationPARComponent implements OnInit {
     if(this.searchArr.includes('')) {
       this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
     }
-
+    
     this.getPolListing([{ key: 'policyNo', search: this.searchArr.join('-') }]);
   }
 
   clearFields() {
+    this.searchArr = Array(6).fill('');
     this.polNo = Array(6).fill('');
     this.cedingName = '';
     this.insuredDesc = '';
     this.riskName = '';
+    this.selected = null;
+
+    this.getPolListing();
   }
 
   checkPolicyAlteration() {
-    this.underwritingService.getAlterationsPerPolicy(this.selected.policyId).subscribe(data => {
+    this.loading = true;
+    this.warningMsg = null;    
+    this.underwritingService.getAlterationsPerPolicy(this.selected.policyId, 'alteration').subscribe(data => {
       console.log(data);
+      var polList = data['policyList'];
+      var coInsAlt = data['coInsAlt'];
+      var coInsStatus = data['coInsStatus'];
+      
+      var a = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS' || p.statusDesc.toUpperCase() === 'IN FORCE');
+      var b = polList.filter(p => p.statusDesc.toUpperCase() != 'IN PROGRESS' || p.statusDesc.toUpperCase() != 'IN FORCE');
+
+      if(a.length == 0 && coInsAlt != 1 && coInsStatus != 1) {
+        var line = this.polNo[0];
+
+        this.underwritingService.toPolInfo = [];
+        this.underwritingService.toPolInfo.push("edit", line);
+
+        if(b.length == 0) {
+          //to gen info using base policy          
+          this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: this.polNo.join('-'), policyId: this.selected.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
+        } else {
+          //to gen info using latest alteration from b
+          b.sort((a, b) => a.altNo - b.altNo);
+          //use b[b.length-1] (max altNo)
+          var x = b[b.length-1];
+          this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
+        }
+      } else if(coInsStatus == 1) {
+        this.warningMsg = 2;
+        this.showWarningMdl();
+      } else if(a.length > 0) {
+        this.warningMsg = 0;
+        this.showWarningMdl();
+      } else if(coInsAlt == 1){
+        this.warningMsg = 1;
+        this.showWarningMdl();
+      }
+
+      this.loading = false;
     });
+  }
+
+  showWarningMdl() {
+    $('#altWarningModal > #modalBtn').trigger('click');
+  }
+
+  pad(ev,num) {
+    if(ev.target.value === '') {
+      return '';
+    }
+
+    return String(ev.target.value).padStart(num, '0');
   }
 }

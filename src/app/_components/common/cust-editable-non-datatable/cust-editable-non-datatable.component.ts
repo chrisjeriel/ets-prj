@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -19,6 +19,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChild('myForm') form:any;
     @ViewChild('api') pagination: any;
+    @ViewChild('table') table: ElementRef;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -273,10 +274,15 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event,data) {
-        if(data != this.fillData && data != this.indvSelect){
+        if(event !== null && event.target.tagName!=="INPUT"){
+            if(data != this.fillData && data != this.indvSelect){
+                this.indvSelect = data;
+                $(event.target.closest('tr')).find("input:not([tabindex='-1']):not([type='checkbox'])").first().click()
+            }else if(data != this.fillData && data == this.indvSelect){
+                this.indvSelect = null;
+            }
+        }else{
             this.indvSelect = data;
-        }else if(data != this.fillData && data == this.indvSelect){
-            this.indvSelect = null;
         }
         if(data != this.fillData)
             setTimeout(() => this.newClick.emit(this.indvSelect),0) ;
@@ -438,8 +444,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         });
     }
 
-
-
     onClickLOV(data,key){
         let retData:any = {};
         retData.key = key;
@@ -550,5 +554,41 @@ export class CustEditableNonDatatableComponent implements OnInit {
     markAsDirty(){
         this.form.control.markAsDirty();
     }
- 
+     
+    focusFirst(){
+        this.table.nativeElement.rows[1].click();
+        this.table.nativeElement.rows[1].focus();
+    }
+
+    traverse(event,data,key,ti:number){
+        if(event.key=="ArrowUp" && ti==0 && this.p2!=1){
+            this.p2-=1;
+            ti = this.passData.pageLength;
+        }else if((event.key=="ArrowDown" || event.key=="Enter") && ti==this.passData.pageLength-1 && !this.pagination.isLastPage()){
+             this.p2+=1;
+             ti = -1;
+        }
+
+        if((event.key=="ArrowDown" || event.key=="Enter")){
+            if(event.target.type!='checkbox')
+                setTimeout(a=>$('[ng-reflect-name="'+key+(ti+1)+'"]').click(),0)
+            else
+                setTimeout(a=>$('[ng-reflect-name="'+key+(ti+1)+'"]').focus(),0)
+            event.preventDefault();
+            if(this.displayData[this.displayData.indexOf(data)+1] != this.fillData && this.displayData[this.displayData.indexOf(data)+1]!==undefined)
+                setTimeout(a=>this.indvSelect = this.displayData[this.displayData.indexOf(data)+1],0)
+        }else if(event.key=="ArrowUp"){
+            if(event.target.type!='checkbox')
+                setTimeout(a=>$('[ng-reflect-name="'+key+(ti-1)+'"]').click(),0)
+            else
+                setTimeout(a=>$('[ng-reflect-name="'+key+(ti-1)+'"]').focus(),0)
+            event.preventDefault();
+            if(this.displayData[this.displayData.indexOf(data)-1] != this.fillData && this.displayData[this.displayData.indexOf(data)-1] !== undefined)
+                setTimeout(a=>this.indvSelect = this.displayData[this.displayData.indexOf(data)-1],0)
+        }
+    }
+
+    focus(data){
+        this.indvSelect=data;
+    }
 }

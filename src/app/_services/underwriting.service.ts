@@ -671,10 +671,11 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyInformation',{params})
     }
 
-    retrievePolHoldCover(policyId: string, policyNo: string){
+    retrievePolHoldCover(policyId: string, policyNo: string, holdCovId: string){
         const params = new HttpParams()
             .set('policyId',policyId === undefined || policyId === null || policyId === '' ? '' : policyId)
-            .set('policyNo',policyNo === undefined || policyNo === null || policyNo === '' ? '' : policyNo);
+            .set('policyNo',policyNo === undefined || policyNo === null || policyNo === '' ? '' : policyNo)
+            .set('holdCovId',holdCovId === undefined || holdCovId === null || holdCovId === '' ? '' : holdCovId);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCover',{params});
     }
 
@@ -907,11 +908,22 @@ export class UnderwritingService {
          return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolicyStatus',params,header);
     }
 
-    getAlterationsPerPolicy(policyId) {
+    getAlterationsPerPolicy(policyId, checkingType) {
         const params = new HttpParams()
             .set('policyId', policyId)
+            .set('checkingType', checkingType);
 
         return this.http.get(environment.prodApiUrl + "/underwriting-service/retrieveAlterationsPerPolicy",{params});
+    }
+
+    savePolGenInfoOc(params:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolGenInfoOc', params, header);
     }
 
     updatePolGenInfoSpoilage(params){
@@ -922,7 +934,7 @@ export class UnderwritingService {
          };
          return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolGenInfoSpoilage',params,header);
     }
-    
+
 }            
 
             

@@ -232,22 +232,6 @@ export class PolCreatePARComponent implements OnInit {
     });    
   }
 
-  navigateToGenInfo() {
-    var qLine = this.quoteLine.toUpperCase();
-
-    if (qLine === 'CAR' ||
-      qLine === 'EAR' ||
-      qLine === 'EEI' ||
-      qLine === 'CEC' ||
-      qLine === 'MBI' ||
-      qLine === 'BPV' ||
-      qLine === 'MLP' ||
-      qLine === 'DOS') {
-      this.router.navigate(['/policy-issuance', { line: qLine }], { skipLocationChange: true });
-    }
-
-  }
-
   toggle(str) {
     $('.req').css('boxShadow', 'none');
     $('.req').focus(function() {
@@ -395,7 +379,8 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   prepareParam() {    
-    var savePolicyDetailsParam = {    
+    var savePolicyDetailsParam = { 
+      "checkingType"  : 'normal',
       "expiryDate"    : this.expiryDate + 'T' + this.expiryTime,
       "holdCoverNo"   : this.hc ? this.hcNo.join('-') : '',
       "inceptDate"    : this.inceptionDate + 'T' + this.inceptionTime,
@@ -495,7 +480,6 @@ export class PolCreatePARComponent implements OnInit {
     if(this.validate(this.prepareParam())){
       this.underwritingService.savePolicyDetails(this.prepareParam()).subscribe(data => {
         this.loading = false;
-        console.log(data);
         if(data['returnCode'] === 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
 
@@ -505,6 +489,8 @@ export class PolCreatePARComponent implements OnInit {
           this.policyNo = data['policyNo'];
 
           $('#convSuccessModal > #modalBtn').trigger('click');
+        } else if (data['coInsStatus'] === 1) {
+          $('#convWarningModal > #modalBtn').trigger('click');
         }
       });
     } else {
