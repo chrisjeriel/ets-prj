@@ -304,7 +304,6 @@ export class PolEndorsementComponent implements OnInit {
         }
         for(let endt of this.passData.tableData){
             if(!this.ocFlag){
-                console.log(endt.endtText);
                 let endtTextSplit = endt.endtText.match(/(.|[\r\n]){1,2000}/g);
                 endt.endtText = new Object();
                 if(endtTextSplit!== null)

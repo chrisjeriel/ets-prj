@@ -119,6 +119,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     updateDate: null,
     showPolAlop: false,
     coInsuranceFlag: false,
+    polWordings:{},
     project: {
       projId: null,
       projDesc: null,
@@ -300,6 +301,33 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
         this.policyInfo.project.createDate = this.ns.toDateTimeString(this.policyInfo.project.createDate);
         this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
+        //edit by paul
+        this.policyInfo.principalId = String(this.policyInfo.principalId).padStart(6,'0')
+        this.policyInfo.contractorId = String(this.policyInfo.contractorId).padStart(6,'0')
+        if(this.policyInfo.polWordings !== null){
+          this.policyInfo.polWordings.text = "";
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText01 == null? '' : this.policyInfo.polWordings.polwText01;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText02 == null? '' : this.policyInfo.polWordings.polwText02;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText03 == null? '' : this.policyInfo.polWordings.polwText03;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText04 == null? '' : this.policyInfo.polWordings.polwText04;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText05 == null? '' : this.policyInfo.polWordings.polwText05;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText06 == null? '' : this.policyInfo.polWordings.polwText06;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText07 == null? '' : this.policyInfo.polWordings.polwText07;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText08 == null? '' : this.policyInfo.polWordings.polwText08;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText09 == null? '' : this.policyInfo.polWordings.polwText09;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText10 == null? '' : this.policyInfo.polWordings.polwText10;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText11 == null? '' : this.policyInfo.polWordings.polwText11;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText12 == null? '' : this.policyInfo.polWordings.polwText12;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText13 == null? '' : this.policyInfo.polWordings.polwText13;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText14 == null? '' : this.policyInfo.polWordings.polwText14;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText15 == null? '' : this.policyInfo.polWordings.polwText15;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText16 == null? '' : this.policyInfo.polWordings.polwText16;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText17 == null? '' : this.policyInfo.polWordings.polwText17;
+        }else{
+          this.policyInfo.polWordings = {
+            text: ''
+          };
+        }
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
@@ -312,7 +340,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           }
         }
 
-        setTimeout(() => {
+        setTimeout(() => {  
           $('input[appCurrencyRate]').focus();
           $('input[appCurrencyRate]').blur();
           if(this.fromInq){
@@ -711,7 +739,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
         this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length - 1].showMG = 0;
       }
-    }else if (data.selector == 'otherRates'){
+    }else if (data == 'polWordings'){
 
     }
     this.deductiblesTable.refreshTable();
@@ -728,6 +756,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         activeTag:'Y'
       }
       this.passLOVData.hide = this.passDataDeductibles.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
+    }else if(data == 'polWordings'){
+      this.passLOVData.selector = 'polWordings';
+      this.passLOVData.params = {
+        activeTag:'Y',
+        ocTag : 'N',
+        lineCd : this.policyInfo.lineCd,
+      }
     }
     this.lov.openLOV();
   }

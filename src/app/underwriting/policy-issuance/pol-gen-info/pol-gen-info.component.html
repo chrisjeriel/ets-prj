@@ -746,29 +746,7 @@
 				<div class="col-sm-1">
 				</div>
 			</fieldset>
-			<fieldset class="scheduler-border" style="padding-bottom: 12px !important;">
-				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-				<div class="custom-row-inline-inset">
-					<div class="form-row ig-cust">
-						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
-							<label class="form-control-sm top-label">&nbsp;Created By</label>
-							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createUser" readonly>
-						</div>
-						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
-							<label class="form-control-sm top-label">&nbsp;Date Created</label>
-							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly>
-						</div>
-						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
-							<label class="form-control-sm top-label">&nbsp;Last Update By</label>
-							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateUser" readonly>
-						</div>						
-						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
-							<label class="form-control-sm top-label">&nbsp;Last Update</label>
-							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly>
-						</div>
-					</div>
-				</div>
-			</fieldset>
+			<!-- -->
 		</div>
 		<div class="col-sm-4" style="padding-left: 0px;">
 			<fieldset class="scheduler-border">
@@ -787,9 +765,9 @@
 					</div>
 				</div>
 			</fieldset>
-			<fieldset class="scheduler-border" style="padding-top: 25px !important; padding-bottom: 18px !important;">
+			<fieldset class="scheduler-border" >
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-				<div class="custom-row-inline-inset">
+				<div >
 					<div class="form-row" style="margin-top: 10px; margin-bottom: -4px;">
 						<div class="form-group col-sm-6">
 							<div class="input-group">
@@ -943,7 +921,71 @@
 				</div>
 			</fieldset> -->
 		</div>
+		<div class="row">
+			<div class="col-sm-8">
+				<fieldset class="scheduler-border" style="padding-bottom: 12px !important;">
+					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+					<div class="custom-row-inline-inset">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-1">Wordings</label>
+						<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
+						<div class="form-control-sm col-sm-11 edtr-cont" style="height: 65px; padding-right: 6px !important; min-height: 60px;">
+             					<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [required]="true">
+             						<ng-container icon-1>
+             							<a (click)="clickDeductiblesLOV('polWordings')"><i class="fa fa-search"></i></a>
+             						</ng-container>
+             					</text-editor>
+          				</div>
+
+						<div class="col-sm-1"></div>
+					</div>
+				</div>
+
+				</fieldset>
+				
+
+			</div>
+			<div class="col-sm-4 pl-0">
+				<fieldset class="scheduler-border" style="padding-bottom: 12px !important;">
+					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+					<div class="custom-row-inline-inset">
+						<div class="form-row ig-cust">
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
+								<label class="form-control-sm">&nbsp;Created By</label>
+							</div>
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
+								<label class="form-control-sm">&nbsp;Last Update By</label>
+							</div>
+						</div>
+						<div class="form-row ig-cust">
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
+								<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createUser" readonly>
+							</div>
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
+								<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateUser" readonly>
+							</div>
+						</div>
+						<div class="form-row ig-cust">
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; ">
+								<label class="form-control-sm">&nbsp;Date Created</label>
+							</div>						
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; ">
+								<label class="form-control-sm">&nbsp;Last Update</label>
+							</div>
+						</div>
+						<div class="form-row ig-cust">
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
+								<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly>
+							</div>						
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
+								<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly>
+							</div>
+						</div>
+					</div>
+				</fieldset> 
+			</div>	
+		</div>
 		<div class="form-row" style="margin-top: 13px !important;">
 			<div class="form-group col-sm">
 				<div class="col-md-12 text-center">

@@ -86,6 +86,7 @@ export class PolicyIssuanceComponent implements OnInit {
 
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
+        $event.preventDefault();
         this.router.navigate([this.exitLink,{policyId: this.policyInfo.policyId}]);
       } 
       if(this.fromInq=='true'){

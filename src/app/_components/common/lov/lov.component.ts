@@ -426,6 +426,34 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = data.mtnChargesList.filter((data)=>{return this.passData.hide.indexOf(data.chargeCd)==-1});
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'polWordings'){
+      this.passTable.tHeader = [ 'Wording Code','Wording Title','Text'];
+      this.passTable.dataTypes = [ 'text','text','text'];
+      this.passTable.keys = ['wordingCd','wordingTitle','text']
+      this.mtnService.getMtnPolWordings(this.passData.params).subscribe((data:any)=>{
+        for(let a of data.mtnPolWordings){
+            a.text = '';
+            a.text += a.wordText01 == null? '' : a.wordText01;
+            a.text += a.wordText02 == null? '' : a.wordText02;
+            a.text += a.wordText03 == null? '' : a.wordText03;
+            a.text += a.wordText04 == null? '' : a.wordText04;
+            a.text += a.wordText05 == null? '' : a.wordText05;
+            a.text += a.wordText06 == null? '' : a.wordText06;
+            a.text += a.wordText07 == null? '' : a.wordText07;
+            a.text += a.wordText08 == null? '' : a.wordText08;
+            a.text += a.wordText09 == null? '' : a.wordText09;
+            a.text += a.wordText10 == null? '' : a.wordText10;
+            a.text += a.wordText11 == null? '' : a.wordText11;
+            a.text += a.wordText12 == null? '' : a.wordText12;
+            a.text += a.wordText13 == null? '' : a.wordText13;
+            a.text += a.wordText14 == null? '' : a.wordText14;
+            a.text += a.wordText15 == null? '' : a.wordText15;
+            a.text += a.wordText16 == null? '' : a.wordText16;
+            a.text += a.wordText17 == null? '' : a.wordText17;
+        }
+        this.passTable.tableData = data.mtnPolWordings;
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;
