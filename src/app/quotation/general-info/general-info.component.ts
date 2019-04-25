@@ -797,7 +797,12 @@ export class GeneralInfoComponent implements OnInit {
   		} else if(field === 'intermediary') {
   			this.intermediaryLov.checkCode(this.genInfoData.intmId, ev);
   		} else if(field === 'principal') {
+  			this.genInfoData.principalId = this.pad(this.genInfoData.principalId, 6);
+
   			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV', ev);
+
+/*  			setTimeout(() => { this.genInfoData.principalId = this.pad(this.genInfoData.principalId, 6) },800);*/
+
   		} else if(field === 'contractor') {
   			this.insuredLovs['last'].checkCode(this.genInfoData.contractorId, '#contractorLOV', ev);
   		} else if(field === 'object') {  			
@@ -817,12 +822,12 @@ export class GeneralInfoComponent implements OnInit {
 		this.cancelBtn.clickCancel();
 	}
 
-	pad(str) {
+	pad(str, num?) {
 		if(str === '' || str == null){
 			return '';
 		}
 		
-		return String(str).padStart(3, '0');
+		return String(str).padStart(num != null ? num : 3, '0');
 	}
 
 	showUsersLOV() {

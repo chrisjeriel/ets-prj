@@ -671,10 +671,11 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyInformation',{params})
     }
 
-    retrievePolHoldCover(policyId: string, policyNo: string){
+    retrievePolHoldCover(policyId: string, policyNo: string, holdCovId: string){
         const params = new HttpParams()
             .set('policyId',policyId === undefined || policyId === null || policyId === '' ? '' : policyId)
-            .set('policyNo',policyNo === undefined || policyNo === null || policyNo === '' ? '' : policyNo);
+            .set('policyNo',policyNo === undefined || policyNo === null || policyNo === '' ? '' : policyNo)
+            .set('holdCovId',holdCovId === undefined || holdCovId === null || holdCovId === '' ? '' : holdCovId);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCover',{params});
     }
 
