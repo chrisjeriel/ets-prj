@@ -8,7 +8,7 @@
       <input type="text" id="xx" [(ngModel)]="policyInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-2"
       placeholder="" readonly>
       <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-      <input type="text" id="xx" [(ngModel)]="policyInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+      <input type="text" id="xx" [(ngModel)]="policyInfo.insured" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
       readonly>
     </div>
     <div class="input-group" style="margin-bottom: -13px !important;">
@@ -30,7 +30,7 @@
     <div class="col-sm-6" style="margin-top: -15px;">
       <fieldset class="scheduler-border" style="padding-bottom: 0px !important;">
         <legend class="scheduler-border">Deductibles</legend>
-          <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (tableDataChange)="passDataDeductibles.tableData=$event" (clickLOV)="clickDeductiblesLOV($event,'section')"
+          <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (tableDataChange)="passDataDeductibles.tableData=$event;sectionTable.indvSelect.deductiblesSec=$event" (clickLOV)="clickDeductiblesLOV($event,'section')"
           class="d-block py-2"></app-cust-editable-non-datatable>
       </fieldset>
     </div>
@@ -242,7 +242,7 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" appCurrencyRate appRequired [ngModel] = "altCoverageData.pctShare" (ngModelChange) = "altCoverageData.pctShare = $event">
+       <input type="text" class="form-control form-control-sm calc" appCurrencyRate appRequired [ngModel] = "altCoverageData.pctShare | number:'1.6-6'" (ngModelChange) = "altCoverageData.pctShare = $event">
        <label class="form-control-sm col-sm-2">PML(%)</label>
        <input type="text" class="form-control form-control-sm req" appCurrencyRate [ngModel] = "altCoverageData.pctPml | number:'1.2-2'" (ngModelChange)="altCoverageData.pctPml">
        <span class="col-sm-1"></span>

@@ -120,6 +120,7 @@ export class PolCoverageComponent implements OnInit {
         searchFlag: true,
         checkFlag: true,
         infoFlag: true,
+        pageId: 'deductibles',
         paginateFlag: true,
         widths: [1, 1, 1, 1, 1, 1],
         magnifyingGlass: ['deductibleCd'],
@@ -407,6 +408,7 @@ export class PolCoverageComponent implements OnInit {
       this.projId = data.policy.project.projId;
       this.riskId = data.policy.project.riskId;
       this.altCoverageData = data.policy.project.coverage;
+      this.altCoverageData.pctShare = this.altCoverageData.pctShare == null || this.altCoverageData.pctShare == 0 ? 100:this.altCoverageData.pctShare;
 
       var dataTable = data.policy.project.coverage.sectionCovers;
         for (var i = 0; i< dataTable.length;i++){
@@ -685,7 +687,7 @@ export class PolCoverageComponent implements OnInit {
               }
             }
             this.table.refreshTable();
-              this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
+             this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
               this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
               this.passDataTotalPerSection.tableData[0].sumInsured = this.sectionISi;
               this.passDataTotalPerSection.tableData[0].premium = this.sectionIPrem;
@@ -978,7 +980,9 @@ export class PolCoverageComponent implements OnInit {
       this.deductiblesTable.refreshTable();
     }else{
       this.passDataDeductibles.disableAdd = false;
-      console.log(this.passDataDeductibles.disableAdd)
+      /*this.passDataDeductibles.nData.coverCd = this.table.indvSelect.coverCd;
+      this.passDataDeductibles.tableData = data.deductiblesSec;
+      this.deductiblesTable.refreshTable();*/
       this.getDeductibles();
     }
   }
@@ -1124,6 +1128,8 @@ export class PolCoverageComponent implements OnInit {
     this.comsectionIIPrem = 0;
     this.comsectionIIISi = 0;
     this.comsectionIIIPrem = 0;
+    this.prevtotalSi = 0;
+    this.prevtotalPrem = 0;  
     this.alttotalSi = 0;
     this.alttotalPrem = 0;
     this.comtotalSi = 0;
@@ -1142,7 +1148,7 @@ export class PolCoverageComponent implements OnInit {
         this.passData.tableData[j].premAmt     = this.passData.tableData[j].discountTag == 'Y' ? this.passData.tableData[j].premAmt:this.passData.tableData[j].sumInsured * (this.passData.tableData[j].premRt / 100);
         
         this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
-        this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].premRt) ? this.passData.tableData[j].prevPremRt:this.passData.tableData[j].prevPremRt
+        this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].premRt) || this.passData.tableData[j].premRt == 0 ? this.passData.tableData[j].prevPremRt:this.passData.tableData[j].premRt 
         this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].premAmt) ? this.passData.tableData[j].prevPremAmt : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt;
         
         if(this.line == 'EAR' || this.line == 'CAR'){
@@ -1313,6 +1319,9 @@ export class PolCoverageComponent implements OnInit {
     this.passData2.tableData[2].comSi    = this.comsectionIIISi;
     this.passData2.tableData[2].comAmt   = this.comsectionIIIPrem;
 
+    this.altCoverageData.prevtotalSi      = this.prevtotalSi;
+    this.altCoverageData.prevtotalPrem    = this.prevtotalPrem;
+    this.altCoverageData.alttotalSi       = this.alttotalSi;
     this.altCoverageData.alttotalSi       = this.alttotalSi;
     this.altCoverageData.alttotalPrem     = this.alttotalPrem;
     this.altCoverageData.comtotalSi       = this.comtotalSi;
@@ -1369,6 +1378,8 @@ export class PolCoverageComponent implements OnInit {
     }
     this.altCoverageData.saveSectionCovers = this.editedData;
     this.altCoverageData.deleteSectionCovers = this.deletedData;
+    this.altCoverageData.deleteDeductibleList = [];
+    this.altCoverageData.saveDeductibleList = [];
   }
 
   alterationSave(){
