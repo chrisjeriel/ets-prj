@@ -24,6 +24,7 @@ export class UpdateInstallmentComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
   @ViewChild(LovComponent)lov:LovComponent;
   selectedPolicy: any = null;
+  searchArr: any[] = Array(6).fill('');
   polNo: any[] = [];
   policyId: any = "";
   condition: any = "";
@@ -136,7 +137,7 @@ export class UpdateInstallmentComponent implements OnInit {
     pageLength: 10,
     resizable: [false,false,false,false],
     tableOnly: false,
-    keys: ['policyNo','cedComp','insured','risk'],
+    keys: ['policyNo','cedingName','insuredDesc','riskName'],
     // keys: ['openPolicyNo','cedingName','insuredDesc','riskName'],
     pageStatus: true,
     pagination: true,
@@ -184,7 +185,7 @@ export class UpdateInstallmentComponent implements OnInit {
   setDetails() {
     if(this.selected != null) {
 
-      this.underwritingService.getAlterationsPerPolicy(this.selected.policyId).subscribe(data => {
+      this.underwritingService.getAlterationsPerPolicy(this.selected.policyId, 'alteration').subscribe(data => {
             var polList = data['policyList'];
                   
             var a = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS');
@@ -213,6 +214,7 @@ export class UpdateInstallmentComponent implements OnInit {
             }
 
             this.underwritingService.getPolGenInfo(this.policyId, b[b.length-1].policyNo).subscribe((data:any) => {
+              console.log(data);
               this.createUser = data.policy.createUser;
             });
 
@@ -272,38 +274,72 @@ export class UpdateInstallmentComponent implements OnInit {
     }
   }
 
-  retrievePolListing(){
-       this.underwritingService.getParListing(this.searchParams).subscribe(data => {
-         var records = data['policyList'];
-          this.fetchedData = records;
-               for(let rec of records){
-                   if(rec.altNo === 0){
-                      if (rec.statusDesc === 'In Force') {
-                         this.passDataLOV.tableData.push(
-                                                    {
-                                                        policyId: rec.policyId,
-                                                        policyNo: rec.policyNo,
-                                                        cessionDesc: rec.cessionDesc,
-                                                        cedComp: rec.cedingName, 
-                                                        insured: rec.insuredDesc,
-                                                        risk: (rec.project == null) ? '' : rec.project.riskName,
-                                                        object: (rec.project == null) ? '' : rec.project.objectDesc,
-                                                        site: (rec.project == null) ? '' : rec.project.site,
-                                                        currency: rec.currencyCd,
-                                                        sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
-                                                        premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
-                                                        issueDate: this.ns.toDateTimeString(rec.issueDate),
-                                                        inceptDate: this.ns.toDateTimeString(rec.inceptDate),
-                                                        expiryDate: this.ns.toDateTimeString(rec.expiryDate),
-                                                        accDate: this.ns.toDateTimeString(rec.acctDate),
-                                                        status: rec.statusDesc,
-                                                        createUser: rec.createUser
-                                                    }
-                                                );  
-                     }
-                   }
-               }
-               this.table.forEach(table => { table.refreshTable() });
+  search(key,ev) {
+    if(!this.searchArr.includes('%%')) {
+      this.selected = null;
+    }
+
+    var a = ev.target.value;
+
+    if(key === 'lineCd') {
+      this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
+    } else if(key === 'year') {
+      this.searchArr[1] = '%' + a + '%';
+    } else if(key === 'seqNo') {
+      this.searchArr[2] = '%' + a + '%';
+    } else if(key === 'cedingId') {
+      this.searchArr[3] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
+    } else if(key === 'coSeriesNo') {
+      this.searchArr[4] = '%' + a + '%';
+    } else if(key === 'altNo') {
+      this.searchArr[5] = a === '' ? '%%' : '%' + a;
+    }
+
+    if(this.searchArr.includes('')) {
+      this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+    }
+    
+    this.retrievePolListing([{ key: 'policyNo', search: this.searchArr.join('-') }]);
+  }
+
+  clearFields() {
+    this.searchArr = Array(6).fill('');
+    this.polNo = Array(6).fill('');
+    this.cedingName = '';
+    this.insuredDesc = '';
+    this.riskName = '';
+    this.selected = null;
+
+    this.retrievePolListing();
+  }
+
+  retrievePolListing(param?){
+       this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
+
+         var polList = data['policyList'];
+         this.fetchedData = polList;
+
+         polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE' && p.altNo == 0)
+                       .map(p => { p.riskName = p.project.riskName; return p; });
+
+         this.passDataLOV.tableData = polList;
+         this.table.forEach(table => { table.refreshTable() });
+
+         if(param !== undefined) {
+           if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  
+             this.selected = polList[0];
+             this.setDetails();
+           } else if(polList.length === 0 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {
+             this.clearFields();
+             this.retrievePolListing();
+             this.showLOV();
+           } else if(this.searchArr.includes('%%')) {     
+             this.cedingName = '';
+             this.insuredDesc = '';
+             this.riskName = '';
+             this.selected = null;
+           }
+        }
        });
    }
 
@@ -376,18 +412,26 @@ export class UpdateInstallmentComponent implements OnInit {
       return null;
     }
 
-    if(this.passDataInstallmentInfo.tableData[this.passDataInstallmentInfo.tableData.length -1 ].add){
-      this.passDataInstallmentInfo.tableData.pop();
-    }else{
-      this.passDataInstallmentInfo.tableData.forEach(a=>{
-        if(a==this.instllmentTable.displayData[this.instllmentTable.displayData.filter(a=>a!=this.instllmentTable.fillData).length -1 ]){
-          a.deleted = true;
-          a.edited = true;
+    for(var i=0; i<this.passDataInstallmentInfo.tableData.length; i++) {
+      if(this.passDataInstallmentInfo.tableData[i].instNo == this.instllmentTable.indvSelect.instNo) {
+        this.passDataInstallmentInfo.tableData[i].deleted = true;
+        this.passDataInstallmentInfo.tableData[i].edited = true;
+        
+        for(var j=0; j<this.passDataOtherCharges.tableData.length; j++) {
+          if(this.passDataOtherCharges.tableData[i].instNo == this.passDataInstallmentInfo.tableData[i].instNo) {
+            this.passDataOtherCharges.tableData[i].deleted = true;
+            this.passDataOtherCharges.tableData[i].edited = true;
+          }
         }
-      })
+      } 
     }
+
     this.instllmentTable.markAsDirty();
     this.instllmentTable.refreshTable();
+
+    this.otherTable.markAsDirty();
+    this.otherTable.refreshTable();
+    this.compute();
   }
 
    save(can?){

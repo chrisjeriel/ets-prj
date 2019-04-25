@@ -236,7 +236,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.line = params['line'];
       this.policyId = params['policyId'];
       this.policyNo = params['policyNo'];
-      this.prevPolicyId = params['prevPolicyId'];
+      this.prevPolicyId = params['prevPolicyId'] == undefined? '' : params['prevPolicyId'];
 
       if(params['alteration'] != undefined) {
         this.alteration = params['alteration'];
@@ -296,7 +296,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.toggleRadioBtnSet();
 
         if(this.alteration) {
-          if (this.prevPolicyId !== 'null') {
+          if (this.prevPolicyId != '') {
             this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
               this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
