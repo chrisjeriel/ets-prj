@@ -461,15 +461,28 @@
                                 <fa name="wrench"></fa>&nbsp;Maintenance
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
-                                <br />
-                                <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding
-                                    Companies</button>
-                                <br />
-                                <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
-                                <br />
-                                <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
-                                <br />
+                                <!--  -->
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Quotation & Policy
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding
+                                                Companies</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-insured']" class="button btn btn-link">Insured</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                                <!--  -->
                                 <ngb-accordion #acc="ngbAccordion">
 
                                     <ngb-panel>

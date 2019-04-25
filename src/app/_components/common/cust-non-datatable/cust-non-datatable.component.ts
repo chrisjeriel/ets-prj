@@ -698,4 +698,5 @@ export class CustNonDatatableComponent implements OnInit {
         
         this.gnrc2.emit(ev);
     }
+
 }
