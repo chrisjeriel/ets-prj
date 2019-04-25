@@ -236,14 +236,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.line = params['line'];
       this.policyId = params['policyId'];
       this.policyNo = params['policyNo'];
-      this.prevPolicyId = params['prevPolicyId'];
+      this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];
 
-      if(params['alteration'] != undefined) {
-        this.alteration = params['alteration'];
-        this.newAlt = params['alteration'];
+      if(this.underwritingService.fromCreateAlt) {
+        this.alteration = true;
+        this.newAlt = true;
       }
 
-      this.fromInq = params['fromInq']=='true';
+      this.fromInq = params['fromInq'] == 'true';
 
       if(this.fromInq){
         this.passDataDeductibles.addFlag = false;
@@ -255,6 +255,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     });
 
     this.getPolGenInfo();
+
     if(this.newAlt) {
       setTimeout(() => { $('.req').addClass('ng-dirty') }, 0);
     } else {
@@ -295,8 +296,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
-        if(this.alteration) {
-          if (this.prevPolicyId !== "undefined") {
+        if(this.alteration && !this.newAlt) {
+          if (this.prevPolicyId !== '') {
             this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
               this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
@@ -322,6 +323,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.policyId = "";
         this.policyInfo.statusDesc = "";
         this.policyInfo.wordings = "";
+        this.policyInfo.issueDate = this.ns.toDateTimeString(0);
+        this.policyInfo.effDate = this.ns.toDateTimeString(0);
       }
     });
 
@@ -585,18 +588,24 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          // this.policyInfo.altNo = data['policyNo'].split('-')[5];
 
          this.policyId = data['policyId'];
-         this.policyNo = data['policyNo'];
-         this.newAlt = false;
+         this.policyNo = data['policyNo'];         
+
+         if(this.newAlt) {
+           this.newAlt = false;
+           this.checkPolIdF(this.policyId);
+           this.underwritingService.fromCreateAlt = false;
+         }
+
          this.getPolGenInfo();
 
-         this.dialogMessage="";
+         this.dialogMessage = "";
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');        
          /*this.form.control.markAsPristine();*/
        }
      });
    }else{
-     this.dialogMessage="Please check field values.";
+     this.dialogMessage = "Please check field values.";
      this.dialogIcon = "error";
      $('#polGenInfo > #successModalBtn').trigger('click');
 

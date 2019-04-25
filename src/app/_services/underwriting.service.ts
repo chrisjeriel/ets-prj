@@ -43,6 +43,7 @@ export class UnderwritingService {
 
     rowData: any[] = [];
     toPolInfo: any[] = [];
+    fromCreateAlt: boolean = false;
 
     constructor(private http: HttpClient) {
 

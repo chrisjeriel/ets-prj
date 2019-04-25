@@ -1351,7 +1351,7 @@
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Insured</label>
+							<label class="form-control-sm col-sm-1"></label>
 							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
@@ -1900,7 +1900,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
+									<input type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
 							<input type="text" style="font-size: 11px !important;" value="Exclude Distribution" disabled class="form-control form-control-sm white-bg">

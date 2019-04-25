@@ -176,7 +176,6 @@ export class PolCreateAlterationPARComponent implements OnInit {
     this.loading = true;
     this.warningMsg = null;    
     this.underwritingService.getAlterationsPerPolicy(this.selected.policyId, 'alteration').subscribe(data => {
-      console.log(data);
       var polList = data['policyList'];
       var coInsAlt = data['coInsAlt'];
       var coInsStatus = data['coInsStatus'];
@@ -191,13 +190,15 @@ export class PolCreateAlterationPARComponent implements OnInit {
         this.underwritingService.toPolInfo.push("edit", line);
 
         if(b.length == 0) {
-          //to gen info using base policy          
+          //to gen info using base policy
+          this.underwritingService.fromCreateAlt = true;        
           this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: this.polNo.join('-'), policyId: this.selected.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
         } else {
           //to gen info using latest alteration from b
           b.sort((a, b) => a.altNo - b.altNo);
           //use b[b.length-1] (max altNo)
           var x = b[b.length-1];
+          this.underwritingService.fromCreateAlt = true;
           this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true, alteration: true }], { skipLocationChange: true });
         }
       } else if(coInsStatus == 1) {
@@ -220,10 +221,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
   }
 
   pad(ev,num) {
-    if(ev.target.value === '') {
-      return '';
-    }
+    var str = ev.target.value;    
 
-    return String(ev.target.value).padStart(num, '0');
+    return str === '' ? '' : String(str).padStart(num, '0');
   }
 }
