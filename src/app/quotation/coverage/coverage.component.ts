@@ -123,9 +123,6 @@ export class CoverageComponent implements OnInit {
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.uneditable =  [true,true,true,true,true];
-      /*for(var count = 0; count < this.passData.tHeader.length; count++){
-        this.passData.uneditable.push(true);
-      }*/
     }
     //neco end
 
@@ -205,7 +202,6 @@ export class CoverageComponent implements OnInit {
           }, 0)
 
       this.table.refreshTable();
-      this.getEditableCov();
       
     });
 
@@ -327,7 +323,6 @@ export class CoverageComponent implements OnInit {
       return;
     }
     this.prepareSaveData();
-    /*if (this.editedData.length != 0 || this.deletedData.length!=0 || this.initialData.length != 0) {*/
       this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
@@ -346,11 +341,6 @@ export class CoverageComponent implements OnInit {
             //this.getCoverageInfo();
            }
       });
-/*    }else{
-        this.dialogMessage = "Nothing to save.";
-        this.dialogIcon = "info"
-        $('#successModalBtn').trigger('click');
-    }*/
   }
 
   testing(){
@@ -395,12 +385,9 @@ export class CoverageComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
 
       //HIDE THE POWERFUL MAGNIFYING GLASS
-      if(data[i].coverCd == 11){
-        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-        this.getEditableCov()
-
-      }else{
-        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      if(data[i].coverName !== undefined && 'OTHERS' === data[i].coverName.substring(0,6).toUpperCase()) {
+         this.passData.tableData[this.passData.tableData.length - 1].others = true;
       }
     }
     this.table.refreshTable();
@@ -447,7 +434,6 @@ export class CoverageComponent implements OnInit {
      
      //this.focusBlur();
      this.validateSectionCover();
-     this.getEditableCov();
      //this.cancel();  
   }
 
@@ -480,18 +466,6 @@ export class CoverageComponent implements OnInit {
        }else {
           $('#confirm-save #modalBtn2').trigger('click');
       }
-  }
-
-  getEditableCov(){
-    console.log(this.passData.tableData)
-    for(let data of this.passData.tableData){
-      if(data.uneditable === undefined){
-        data.uneditable = [];
-      }
-      if(data.coverCd == 11){    
-        data.uneditable.pop();
-      }
-    }
   }
 
 }

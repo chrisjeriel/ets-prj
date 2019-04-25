@@ -9,6 +9,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { MtnSectionCoversComponent } from '@app/maintenance/mtn-section-covers/mtn-section-covers.component';
 
 @Component({
   selector: 'app-pol-coverage',
@@ -25,6 +26,7 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('catPerils') catPerilstable: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -62,7 +64,7 @@ export class PolCoverageComponent implements OnInit {
         tableData: [],
         tHeader: [ "Section","Bullet No","Cover Name",  "Sum Insured", "Rate", "Premium", "D/S","Add Sl"],
         dataTypes: [
-                    "text", "text", "text", "currency", "percent", "currency", "checkbox", "checkbox"
+                    "text", "text", "lovInput", "currency", "percent", "currency", "checkbox", "checkbox"
                    ],
         tooltip:[null,null,null,null,null,null,'Discount / Surcharge',null],
         pageLength: 'unli',
@@ -92,7 +94,7 @@ export class PolCoverageComponent implements OnInit {
         //widths:[1,1,228,200,75,1,1,1],
         uneditable:[true,true,true,false,false,false,false,false],
         keys:['section','bulletNo','coverName','cumSi','premRt','cumPrem','discountTag','addSi'],
-        //widths:[50,58,80,80,100,70,35]
+        widths:[50,58,80,125,100,125,35]
     };
 
 
@@ -142,7 +144,7 @@ export class PolCoverageComponent implements OnInit {
           "endtCd": "0",
           "updateDate": this.ns.toDateTimeString(0),
           "updateUser":JSON.parse(window.localStorage.currentUser).username,
-          showMG : 1
+          "showMG" : 1
         }
     };
 
@@ -712,6 +714,7 @@ export class PolCoverageComponent implements OnInit {
               this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
            
              this.focusBlur();
+             this.focusCalc();
              this.getEditableCov();
       });
   }
@@ -871,6 +874,15 @@ export class PolCoverageComponent implements OnInit {
   }
 
   update(data){
+    if(data.hasOwnProperty('lovInput')) {
+      this.hideSectionCoverArray = this.passDataSectionCover.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
+
+      data.ev['index'] = data.index;
+      data.ev['filter'] = this.hideSectionCoverArray;
+
+      this.secCoversLov.checkCode(data.ev.target.value, data.ev);
+    }   
+
     this.sectionISi = 0;
     this.sectionIPrem = 0;
     this.sectionIISi = 0;
@@ -1112,6 +1124,10 @@ export class PolCoverageComponent implements OnInit {
 
   focusBlur(){
     setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+  }
+
+  focusCalc(){
+    setTimeout(() => {$('.calc').focus();$('.calc').blur()},0)
   }
 
   onClickSave(){
@@ -1478,20 +1494,45 @@ export class PolCoverageComponent implements OnInit {
       if(!this.alteration){
           this.hideSectionCoverArray = this.passDataSectionCover.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
           $('#sectionCoversLOV #modalBtn').trigger('click');
-          //data.tableData = this.passData.tableData;
           this.sectionCoverLOVRow = data.index;
       }else{
           this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
           $('#sectionCoversLOVAlt #modalBtn').trigger('click');
-          //data.tableData = this.passData.tableData;
           this.sectionCoverLOVRow = data.index;
       }
         
   }
 
    selectedSectionCoversLOV(data){
-     console.log(data)
-     if(this.alteration){
+     if(!this.alteration){
+         if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
+           console.log('eeeeeyyyy')
+           this.sectionCoverLOVRow = data[0].ev.index;
+           this.ns.lovLoader(data[0].ev, 0);
+         }
+         $('#cust-table-container').addClass('ng-dirty');
+
+         if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
+           //HIDE THE POWERFUL MAGNIFYING GLASS
+           this.passDataSectionCover.tableData[this.sectionCoverLOVRow].showMG = 1;
+         }
+         this.passDataSectionCover.tableData = this.passDataSectionCover.tableData.filter(a=>a.showMG!=1);
+         //this.validateSectionCover();
+         for(var i = 0; i<data.length;i++){
+           this.passDataSectionCover.tableData.push(JSON.parse(JSON.stringify(this.passDataSectionCover.nData)));
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].coverCd = data[i].coverCd;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].coverName = data[i].coverName;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].section = data[i].section;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].bulletNo = data[i].bulletNo;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].edited = true;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].showMG = 0;
+
+           if(data[i].coverName !== undefined && data[i].coverName.substring(0,6).toUpperCase()){
+                this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].others = true;
+           }
+         }
+         this.table.refreshTable();
+     }else {
          if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
            console.log('true')
            this.sectionCoverLOVRow = data[0].ev.index;
@@ -1518,31 +1559,12 @@ export class PolCoverageComponent implements OnInit {
            this.passData.tableData[this.passData.tableData.length - 1].coverName = data[i].coverName;
            this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
            this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
-           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].edited = true;
+           this.passData.tableData[this.passData.tableData.length - 1].edited = true;
            this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-         }
-         this.table.refreshTable();
-     }else {
-         if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
-           this.sectionCoverLOVRow = data[0].ev.index;
-           this.ns.lovLoader(data[0].ev, 0);
-         }
-         $('#cust-table-container').addClass('ng-dirty');
 
-         if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
-           //HIDE THE POWERFUL MAGNIFYING GLASS
-           this.passDataSectionCover.tableData[this.sectionCoverLOVRow].showMG = 1;
-         }
-         this.passDataSectionCover.tableData = this.passDataSectionCover.tableData.filter(a=>a.showMG!=1);
-         //this.validateSectionCover();
-         for(var i = 0; i<data.length;i++){
-           this.passDataSectionCover.tableData.push(JSON.parse(JSON.stringify(this.passDataSectionCover.nData)));
-           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].coverCd = data[i].coverCd;
-           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].coverName = data[i].coverName;
-           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].section = data[i].section;
-           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].bulletNo = data[i].bulletNo;
-           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].edited = true;
-           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].showMG = 0;
+           if(data[i].coverName !== undefined && data[i].coverName.substring(0,6).toUpperCase()){
+                this.passData.tableData[this.passData.tableData.length - 1].others = true;
+           }
          }
          this.table.refreshTable();
      }
