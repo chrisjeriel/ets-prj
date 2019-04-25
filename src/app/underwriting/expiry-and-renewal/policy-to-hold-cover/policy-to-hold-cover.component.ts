@@ -70,6 +70,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	holdCoverNo: string = '';
 	statusDesc: string = '';
 	approveType: string = '';
+	printType: string ;
 	modalOpen: boolean = false;
 	isType: boolean = false;
 	isIncomplete: boolean = true;
@@ -78,6 +79,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	isApproval: boolean = false;
 	isReleasing: boolean = false;
 	isModify: boolean = false;
+
+	btnDisabled: boolean = false; //button for print
 
 	selectedPolicy: any;
 	emptySelect: boolean = false;
@@ -103,19 +106,45 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	private sub: any;			// ARNEILLE DATE: Apr.10, 2019
 	fromHcMonitoring: any;		// ARNEILLE DATE: Apr.10, 2019
 
+	cancelBtnDisabledStatus: string[] = ['3','4','5','6', ''];
+	approveBtnDisabledStatus: string[] = ['2','3','4','5','6','R', ''];
+	saveBtnDisabledStatus: string[] = ['2','3','4','5','6', ''];
+
 	ngOnInit() {
+		this.printType = 'SCREEN';
 		//set default report type for Hold Cover Letter
 		//this.print.selectedReport = 'QUOTER012';
 		//this.print.reports = true;
 		//console.log(this.print.reports);
 
-		// ARNEILLE DATE: Apr.10, 2019 FROM: POL HOLD COVER MONITORNING
+		// ARNEILLE DATE: Apr.10, 2019, UPDATE: Apr.17,2019 FROM: POL HOLD COVER MONITORNING
 		this.sub = this.activatedRoute.params.subscribe(params => {
 			this.fromHcMonitoring = params['tableInfo'];
+
+/*			if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
+			}else{
+				this.policyInfo.policyNo 					= JSON.parse(this.fromHcMonitoring).policyNo;;
+				this.policyInfo.cedingName 					= JSON.parse(this.fromHcMonitoring).cedingName;
+				this.policyInfo.insuredDesc 				= JSON.parse(this.fromHcMonitoring).insuredDesc;
+				this.policyInfo.riskName 					= JSON.parse(this.fromHcMonitoring).project.riskName;
+				this.holdCoverNo 							= JSON.parse(this.fromHcMonitoring).holdCoverList[0].holdCovNo;
+				this.periodFromDate.date 					= (this.noteService.toDateTimeString(JSON.parse(this.fromHcMonitoring).holdCoverList[0].periodFrom)).split('T')[0];
+				this.periodFromDate.time 					= (this.noteService.toDateTimeString(JSON.parse(this.fromHcMonitoring).holdCoverList[0].periodFrom)).split('T')[1];
+				this.periodToDate.date	 					= (this.noteService.toDateTimeString(JSON.parse(this.fromHcMonitoring).holdCoverList[0].periodTo)).split('T')[0];
+				this.periodToDate.time 						= (this.noteService.toDateTimeString(JSON.parse(this.fromHcMonitoring).holdCoverList[0].periodTo)).split('T')[1];
+				this.polHoldCoverParams.reqBy 				= JSON.parse(this.fromHcMonitoring).holdCoverList[0].reqBy;
+				this.polHoldCoverParams.reqDate 			= (this.noteService.toDateTimeString(JSON.parse(this.fromHcMonitoring).holdCoverList[0].reqDate)).split('T')[0];
+				this.polHoldCoverParams.compRefHoldCovNo 	= JSON.parse(this.fromHcMonitoring).holdCoverList[0].compRefHoldCovNo;
+				this.statusDesc 							= JSON.parse(this.fromHcMonitoring).holdCoverList[0].statusDesc;
+				this.polHoldCoverParams.preparedBy 			= JSON.parse(this.fromHcMonitoring).holdCoverList[0].preparedBy;
+				this.polHoldCoverParams.approvedBy 			= JSON.parse(this.fromHcMonitoring).holdCoverList[0].approvedBy;
+			}*/
 		});
+
 		if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
 		}else{
 			this.policyInfo.policyNo 					= JSON.parse(this.fromHcMonitoring).policyNo;
+			this.policyInfo.policyId 					= JSON.parse(this.fromHcMonitoring).policyId;
 			this.policyInfo.cedingName 					= JSON.parse(this.fromHcMonitoring).cedingName;
 			this.policyInfo.insuredDesc 				= JSON.parse(this.fromHcMonitoring).insuredDesc;
 			this.policyInfo.riskName 					= JSON.parse(this.fromHcMonitoring).riskName;
@@ -125,13 +154,25 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			this.periodToDate.date	 					= JSON.parse(this.fromHcMonitoring).periodTo.split('T')[0];
 			this.periodToDate.time 						= JSON.parse(this.fromHcMonitoring).periodTo.split('T')[1];
 			this.polHoldCoverParams.reqBy 				= JSON.parse(this.fromHcMonitoring).reqBy;
-			this.polHoldCoverParams.reqDate 			= JSON.parse(this.fromHcMonitoring).reqDate.split('T')[0];
+			this.polHoldCoverParams.reqDate 			= JSON.parse(this.fromHcMonitoring).reqDate === null ? null : JSON.parse(this.fromHcMonitoring).reqDate.split('T')[0];
 			this.polHoldCoverParams.compRefHoldCovNo 	= JSON.parse(this.fromHcMonitoring).compRefHoldCovNo;
+			this.polHoldCoverParams.status				= JSON.parse(this.fromHcMonitoring).status;
 			this.statusDesc 							= JSON.parse(this.fromHcMonitoring).statusDesc;
 			this.polHoldCoverParams.preparedBy 			= JSON.parse(this.fromHcMonitoring).preparedBy;
 			this.polHoldCoverParams.approvedBy 			= JSON.parse(this.fromHcMonitoring).approvedBy;
+			this.polHoldCoverParams.holdCovId			= JSON.parse(this.fromHcMonitoring).holdCovId;
+
+			this.isIncomplete = false;
+			this.tempPolNo = this.policyInfo.policyNo.split('-');
+			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, this.polHoldCoverParams.holdCovId);
 		}
 		// END ARNEILLE
+		/*if(this.polHoldCoverParams.status === '2'){
+			setTimeout(()=>{$('#modificationModal > #modalBtn').trigger('click');}, 0);
+		}*/
+
+
+		
 
 	}
 
@@ -158,9 +199,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		});
 	}
 
-	retrievePolHoldCov(policyId: string, policyNo: string){
+	retrievePolHoldCov(policyId: string, policyNo: string, holdCovId: string){
 		//this.approveListMethod(policyId);
-		this.us.retrievePolHoldCover(policyId,'').subscribe((data: any)=>{
+		this.us.retrievePolHoldCover(policyId,'', holdCovId).subscribe((data: any)=>{
 			console.log(data);
 			for(let rec of data.policy.holdCoverList){
 				if(rec.status !== '6' && rec.status !== '5'){
@@ -175,7 +216,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 					this.polHoldCoverParams.compRefHoldCovNo		= rec.compRefHoldCovNo;
 					this.polHoldCoverParams.status					= rec.status;
 					this.polHoldCoverParams.reqBy					= rec.reqBy;
-					this.polHoldCoverParams.reqDate					= this.noteService.toDateTimeString(rec.reqDate);
+					this.polHoldCoverParams.reqDate					= rec.reqDate === null ? null : this.noteService.toDateTimeString(rec.reqDate);
 					this.polHoldCoverParams.preparedBy				= rec.preparedBy;
 					this.polHoldCoverParams.approvedBy				= rec.approvedBy;
 					this.polHoldCoverParams.createUser				= rec.createUser;
@@ -186,14 +227,18 @@ export class PolicyToHoldCoverComponent implements OnInit {
 					this.holdCoverNo 								= rec.holdCovNo;
 				}
 			}
+
+			if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
+				this.periodFromDate.date 						= this.polHoldCoverParams.periodFrom.split('T')[0];
+				this.periodFromDate.time 						= this.polHoldCoverParams.periodFrom.split('T')[1];
+				this.periodToDate.date 							= this.polHoldCoverParams.periodTo.split('T')[0];
+				this.periodToDate.time 							= this.polHoldCoverParams.periodTo.split('T')[1];
+			}
 			
-			this.periodFromDate.date 						= this.polHoldCoverParams.periodFrom.split('T')[0];
-			this.periodFromDate.time 						= this.polHoldCoverParams.periodFrom.split('T')[1];
-			this.periodToDate.date 							= this.polHoldCoverParams.periodTo.split('T')[0];
-			this.periodToDate.time 							= this.polHoldCoverParams.periodTo.split('T')[1];
 			console.log(this.polHoldCoverParams);
 			this.isIncomplete = false;
 			this.isForViewing = false;
+			this.btnDisabled = false;
 			if(this.polHoldCoverParams.status === '2' && !this.isReleasing){
 				$('#modificationModal > #modalBtn').trigger('click');
 			}else if(this.polHoldCoverParams.status === '2' && this.isReleasing){
@@ -232,7 +277,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 						this.tempPolNo						= this.policyInfo.policyNo.split('-');
 						//if selected policy is already in hold cover
 						if(this.policyInfo.statusDesc === 'On Hold Cover'){
-							this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo);
+							this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 						}
 					}
 				}else{
@@ -262,6 +307,21 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.cancelFlag = cancelFlag !== undefined;
 		this.prepareParams();
 		console.log(this.polHoldCoverParams);
+		let toInforce: string[] = ['P', 'A', 'R'];
+		if(toInforce.includes(this.polHoldCoverParams.status) && !this.btnDisabled){
+			let params = {
+				policyId: this.policyInfo.policyId,
+				holdCovId: this.polHoldCoverParams.holdCovId,
+				updateType: 'inforce',
+				updateUser: this.userName,
+				updateDate: this.noteService.toDateTimeString(0)
+			}
+	  		this.us.updatePolHoldCoverStatus(params).subscribe((data: any)=>{
+	  			console.log(data);
+	  			//this.polHoldCoverParams.approvedBy = this.authorization;
+	  			//this.isReleasing = false;
+	  		});
+		}
 		this.us.savePolHoldCover(this.polHoldCoverParams).subscribe((data: any)=>{
 			console.log(data);
 			if(data.returnCode === 0){
@@ -275,7 +335,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				let generatedNum: string[] = data.polHoldCoverNo.split('-');
 				this.polHoldCoverParams.holdCovSeqNo = parseInt(generatedNum[3]).toString();
 				this.polHoldCoverParams.holdCovRevNo = parseInt(generatedNum[4]).toString();
-				this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo);
+				this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo, this.polHoldCoverParams.holdCovId);
 				if(!this.isApproval && !this.isReleasing){
 					this.dialogIcon = '';
 					this.dialogMessage = '';
@@ -284,6 +344,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 					this.isApproval = false;
 				}
 				this.form.control.markAsPristine();
+				if(this.isModify){
+					this.isModify = false;
+				}
 			}
 		});
 	}
@@ -332,7 +395,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.tempPolNo = this.policyInfo.policyNo.split('-');
 		//if selected policy is already in hold cover
 		if(this.policyInfo.statusDesc === 'On Hold Cover'){
-			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo);
+			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 		}
 		//else clear all fields
 		else{
@@ -396,17 +459,14 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	onClickSaveBtn(){
 		if(this.policyInfo.policyNo === '' || this.policyInfo.cedingName === '' || this.policyInfo.insuredDesc === '' ||
 		   this.policyInfo.riskName === '' || this.policyInfo.policyId === 0 || this.periodFromDate.date === '' ||
-		   this.periodFromDate.time === '' || this.periodToDate.date === '' || this.periodToDate.time === '' ||
-		   this.polHoldCoverParams.reqBy === '' || this.polHoldCoverParams.reqDate === '' || this.polHoldCoverParams.compRefHoldCovNo === ''){
+		   this.periodFromDate.time === '' || this.periodToDate.date === '' || this.periodToDate.time === ''){
 
 				this.dialogMessage = 'Please fill all required fields';
 				this.dialogIcon = 'info';
 				$('app-sucess-dialog #modalBtn').trigger('click');
 		}else{
 			$('#confirm-save #modalBtn2').trigger('click');
-			if(this.isModify){
-				this.isModify = false;
-			}
+			
 		}
 	}
 
@@ -418,6 +478,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
   	approve(event){
   		this.approveType = event.target.innerText;
+  		this.btnDisabled = true;
   		//do something
   		/*if(this.authorization === 'UNAUTHORIZED'){
   			this.statusDesc = 'Pending Approval';
@@ -426,12 +487,13 @@ export class PolicyToHoldCoverComponent implements OnInit {
   			this.polHoldCoverParams.approvedBy = this.userName;
   		}*/
   		let params = {
-			policyId: this.policyInfo.policyId,
+			policyId: this.policyInfo.policyId.toString(),
 			holdCovId: this.polHoldCoverParams.holdCovId,
 			updateType: this.approveType === 'Approve' ? 'approve' : 'pending',
 			updateUser: this.userName,
 			updateDate: this.noteService.toDateTimeString(0)
 		}
+		console.log(JSON.stringify(params));
   		this.us.updatePolHoldCoverStatus(params).subscribe((data: any)=>{
   			console.log(data);
   			this.polHoldCoverParams.approvedBy = this.approveType === 'Approve' ? this.authorization : '';
@@ -453,11 +515,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
   			this.statusDesc = 'Approved';
   			this.polHoldCoverParams.approvedBy = this.userName;
   		}*/
-  		if(this.statusDesc.toUpperCase() === 'PENDING APPROVAL'){
-  			//DO DRAFT PRINTING
-  			console.log('draft print');
-  		}else{
-	  		let params = {
+  		if(this.statusDesc.toUpperCase() === 'APPROVED'){
+  			//DO OFFICIAL PRINTING
+  			console.log('RELEASE');
+  			let params = {
 				policyId: this.policyInfo.policyId,
 				holdCovId: this.polHoldCoverParams.holdCovId,
 				updateType: 'release',
@@ -468,9 +529,13 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	  			console.log(data);
 	  			//this.polHoldCoverParams.approvedBy = this.authorization;
 	  			this.isReleasing = true;
-	  			this.onClickSave();
+	  			//this.onClickSave();
+	  			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 	  			//this.isReleasing = false;
 	  		});
+  		}else{
+	  		//DO DRAFT PRINTING
+	  		console.log('draft print');
   		}
   	}
 
@@ -545,6 +610,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
   		}else if(option === 'mod'){
   			this.isForViewing = false;
   			this.isModify = true;
+  			this.polHoldCoverParams.approvedBy = '';
   		}
   	}
 

@@ -3,6 +3,7 @@ import { UnderwritingService, NotesService, MaintenanceService } from '@app/_ser
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
 	selector: 'app-spoil-pol-alt',
@@ -10,8 +11,9 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 	styleUrls: ['./spoil-pol-alt.component.css']
 })
 export class SpoilPolAltComponent implements OnInit {
-	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+	@ViewChild('p') table: CustNonDatatableComponent;
 	@ViewChild('spoil') spoil: CustNonDatatableComponent;
+	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
 	passData : any = {
 		tableData: [],
@@ -24,10 +26,10 @@ export class SpoilPolAltComponent implements OnInit {
 		pageStatus: true,
 		pagination: true,
 		filters: [
-			{key: 'policyNo', title: 'Policy No',dataType: 'seq'},
-			{key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
-			{key: 'insuredDesc',title: 'Insured',dataType: 'text'},
-			{key: 'riskName',title: 'Risk',dataType: 'text'},
+		{key: 'policyNo', title: 'Policy No',dataType: 'seq'},
+		{key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+		{key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+		{key: 'riskName',title: 'Risk',dataType: 'text'},
 		],
 		colSize: ['', '250px', '250px', '250px'],
 		pageID: 'policyList101'
@@ -44,8 +46,8 @@ export class SpoilPolAltComponent implements OnInit {
 		pageStatus: true,
 		pagination: true,
 		filters: [
-			{key: 'spoilCd', title: 'Spoil',dataType: 'text'},
-			{key: 'description',title: 'Description',dataType: 'text'}
+		{key: 'spoilCd', title: 'Spoil',dataType: 'text'},
+		{key: 'description',title: 'Description',dataType: 'text'}
 		],
 		colSize: ['', '250px'],
 		pageID: 'spoilList101'
@@ -74,17 +76,31 @@ export class SpoilPolAltComponent implements OnInit {
 		reasonDesc		 : null
 	}
 
-	rowRec			: any;
-	rowRecSpoil		: any;
-	searchParams	: any[] = [];
-	type			: string;
-	postBtnEnabled	: boolean = false;
-	reasonLovEnabled: boolean = false;
+	rowRec				: any;
+	rowRecSpoil			: any;
+	searchParams		: any[] = [];
+	type				: string;
+	postBtnEnabled		: boolean = false;
+	reasonLovEnabled	: boolean = false;
+	postSpoilage 		: any;
+	polStatus			: any;
+	polId				: any;
+	warnMsg1			: string = '';
+	searchArr			: any[] = Array(6).fill('');
+	checkSpoilCd 		: number;
+	loading				: boolean;
+	dialogIcon			: string = '';
+	dialogMessage		: string = '';
+	cancelFlag			: boolean;
+	valResult			: number;
 
-	constructor(private underwritingService: UnderwritingService, private ns: NotesService,private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService) { }
+	constructor(private underwritingService: UnderwritingService, private ns: NotesService,
+		private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Pol | Spoil Policy/Alteration');
+		this.getPolicyList();
+		this.getSpoilList();
 	}
 
 	getPolGenInfo(){
@@ -105,48 +121,95 @@ export class SpoilPolAltComponent implements OnInit {
 			this.spoilPolRecord.acctDate 		 = this.ns.toDateTimeString(rec.acctDate).split('T')[0];
 			this.type 							 = "date";
 			this.reasonLovEnabled				 = true;
+			this.polStatus						 = rec.statusDesc;
+			this.polId							 = rec.policyId;
 		});
 	}
 
-	getPolicyList(){
-		this.table.loadingFlag = true;
+	getPolicyList(param?){
+		console.log(param);
+		var parameter;
 		this.passData.tableData = [];
-		$('#polLov > #modalBtn').trigger('click');
-		this.underwritingService.getParListing(this.searchParams)
+
+		if(param !== undefined){
+			parameter = param;		
+		}else{
+			parameter = this.searchParams;
+		}
+
+		if(this.table) { this.table.loadingFlag = true; }
+
+		this.underwritingService.getParListing(parameter)
 		.subscribe(data => {
 			this.passData.tableData = [];
-			console.log(data);
 			var rec = data['policyList'];
-			for(let i of rec){
-				//if(i.statusDesc.toUpperCase() === 'IN FORCE' || i.statusDesc.toUpperCase() === 'DISTRIBUTED'){
-					this.passData.tableData.push({
-						policyNo		: i.policyNo,
-						cedingName		: i.cedingName,
-						insuredDesc		: i.insuredDesc,
-						riskName		: i.project.riskName
-					});
-				//}
-			}
+			rec = rec.filter(data => data.statusDesc.toUpperCase() === 'IN FORCE' || data.statusDesc.toUpperCase() === 'DISTRIBUTED')
+					 .map(data => {data.riskName = data.project.riskName; return data;});
+			this.passData.tableData = rec;
 			this.table.refreshTable();
+			console.log(rec);
+			if(rec.length === 0){
+				this.clearAll();
+				this.getPolicyList();
+				$('#polLov > #modalBtn').trigger('click');
+			}else if(rec.length === 1){
+				this.spoilPolRecord.policyNo = rec[0].policyNo;
+				if(this.spoilPolRecord.line !== '' && this.spoilPolRecord.year !== '' && this.spoilPolRecord.seqNo !== '' && this.spoilPolRecord.coCode !== '' && this.spoilPolRecord.coSeriesNo !== '' && this.spoilPolRecord.altNo !== ''){
+					this.getPolGenInfo();
+				}
+			}else{
+				
+			}
+			
 		});
 	}
 
+	show(){
+		$('#polLov > #modalBtn').trigger('click');
+	}
+
+
 	getSpoilList(){
-		this.spoil.loadingFlag = true;
+		if(this.spoil){ this.spoil.loadingFlag = true; } 
+		
 		this.passDataSpoilageReason.tableData = [];	
-		$('#spoilLov > #modalBtn').trigger('click')
 		this.mtnService.getMtnSpoilageReason('')
 		.subscribe(data => {
 			this.passDataSpoilageReason.tableData = []
 			console.log(data)
 			var rec = data['spoilageReason'];
-			this.passDataSpoilageReason.tableData = rec
-			this.spoil.refreshTable()
+
+			for(let i of rec){	
+				if(i.spoilCd === this.spoilPolRecord.reason){
+					this.checkSpoilCd++;
+					this.spoilPolRecord.reason = i.spoilCd;
+					this.spoilPolRecord.reasonDesc = i.description;
+				}
+			}
+			if(this.checkSpoilCd !== 1  && this.checkSpoilCd !== undefined){
+				this.postBtnEnabled = false;
+				this.spoilPolRecord.reason = '';
+				this.spoilPolRecord.reasonDesc = '';
+				this.passDataSpoilageReason.tableData = rec;
+				this.spoil.refreshTable();
+				this.showLovSpoil();
+			}else{
+				this.passDataSpoilageReason.tableData = rec;
+				this.spoil.refreshTable();
+			}
+
+
 		});
 	}
 
+	showLovSpoil(){
+		$('#spoilLov > #modalBtn').trigger('click');
+	}
+
 	onChangeReason(){
-		if(this.spoilPolRecord.reasonDesc === '' || this.spoilPolRecord.reasonDesc === null){
+		this.checkSpoilCd = 0;
+		this.getSpoilList();
+		if(this.spoilPolRecord.reason === '' || this.spoilPolRecord.reason === null){
 			this.postBtnEnabled = false;
 		}else{
 			this.postBtnEnabled = true;
@@ -158,17 +221,23 @@ export class SpoilPolAltComponent implements OnInit {
 		this.spoilPolRecord.reason 		= this.rowRecSpoil.spoilCd;
 		this.spoilPolRecord.reasonDesc 	= this.rowRecSpoil.description;
 		this.onChangeReason();
+		$('.dirty').addClass('ng-dirty');
 	}
 
 	onClickOkLov(){
+		this.spoilPolRecord.reason  	= '';
+		this.spoilPolRecord.reasonDesc 	= '';
+		this.spoilPolRecord.user  		= '';
+		this.spoilPolRecord.spoiledDate = '';
+		this.postBtnEnabled 			= false;
 		this.spoilPolRecord.policyNo = this.rowRec.policyNo;
 		this.splitPolNo(this.spoilPolRecord.policyNo);
 		this.getPolGenInfo();
 		this.modalService.dismissAll();
+		$('.dirty').addClass('ng-dirty');
 	}
 
 	searchQuery(searchParams){
-		console.log(searchParams[0].search);
 		this.searchParams = searchParams;
 		this.passData.tableData = [];
 		this.getPolicyList();
@@ -220,6 +289,130 @@ export class SpoilPolAltComponent implements OnInit {
 		this.type 							= "text";
 		this.postBtnEnabled					= false;
 		this.reasonLovEnabled				= false;
+		this.searchArr 						= Array(6).fill('');
+		this.getPolicyList();
+	}
+
+
+	onClickPostSpoilage(cancelFlag?){
+		this.cancelFlag = cancelFlag !== undefined;
+		this.valResult = 0; 
+		var stats = '';
+		this.warnMsg1 = '';
+
+		var inProg = false;
+		var dist = false;
+		var msgA = 'Policy/Alteration cannot be spoiled, creation of alteration connected to this record is on going.';
+		var msgB = 'Policy with existing valid alteration cannot be spoiled.';
+
+		this.underwritingService.getAlterationsPerPolicy(this.polId,'')
+		.subscribe(data => {
+			console.log(data);
+			var rec = data['policyList'];
+			rec.sort((a,b) => a.altNo - b.altNo);
+
+			for(var i=0;i<rec.length;i++){
+				if(parseInt(this.spoilPolRecord.altNo) === 0){
+					if(rec[i].statusDesc.toUpperCase() === 'DISTRIBUTED'){
+						dist = true;
+					}else if(rec[i].statusDesc.toUpperCase() === 'IN PROGRESS'){
+						inProg = true;
+					}
+				}else {
+					if(parseInt(this.spoilPolRecord.altNo) === rec[i].altNo){
+						if(rec[i+1] !== undefined && rec[i+1].statusDesc.toUpperCase() === 'IN PROGRESS'){
+							inProg = true;
+						}else{
+							this.validPolicyAlt();
+						}	
+					}
+				}
+				
+			}
+
+			if(rec.length === 0){
+				this.validPolicyAlt();
+			}else{
+				if(inProg === true){
+					this.warnMsg1 = msgA;
+					this.showWarnLov();
+				}
+				if(dist === true && inProg === false){
+					this.warnMsg1 = msgB;
+					this.showWarnLov();
+				}
+				if(dist === false && inProg === false){
+					this.validPolicyAlt();
+				}
+			}
+
+		});
+
+	}
+
+	showWarnLov(){
+		$('#warnMdl > #modalBtn').trigger('click');
+	}
+
+	validPolicyAlt(){
+
+		const spoilStatus = 99 ; // status 99 = "SPOILED" in POL GEN INFO STATUS
+		this.spoilPolRecord.user  		= JSON.parse(window.localStorage.currentUser).username;
+		this.spoilPolRecord.spoiledDate = this.ns.toDateTimeString(0).split('T')[0];
+
+		this.postSpoilage = {
+			"policyId"		: this.polId,
+			"spldUser"		: this.spoilPolRecord.user,
+			"spoilCd"		: this.spoilPolRecord.reason,
+			"status"		: spoilStatus,
+			"updateUser"	: this.spoilPolRecord.user
+		}
+
+		this.underwritingService.updatePolGenInfoSpoilage(JSON.stringify(this.postSpoilage))
+		.subscribe(data => {
+			console.log(data);
+			$('app-sucess-dialog #modalBtn').trigger('click');
+			this.getPolicyList();
+		});
+	}
+
+	onClickSave(){
+		$('#confirm-save #modalBtn2').trigger('click');
+	}
+
+	onClickCancel(){
+		this.cancelBtn.clickCancel();
+	}
+
+	search(key,ev) {
+		this.spoilPolRecord.year		= (this.spoilPolRecord.year === '' || this.spoilPolRecord.year === null)?'':this.spoilPolRecord.year;
+		this.spoilPolRecord.seqNo		= (this.spoilPolRecord.seqNo === '' || this.spoilPolRecord.seqNo === null)?'':this.spoilPolRecord.seqNo.padStart(5,'0');						
+		this.spoilPolRecord.coCode		= (this.spoilPolRecord.coCode === '' || this.spoilPolRecord.coCode === null)?'':this.spoilPolRecord.coCode.padStart(3,'0');						
+		this.spoilPolRecord.coSeriesNo	= (this.spoilPolRecord.coSeriesNo === '' || this.spoilPolRecord.coSeriesNo === null)?'':this.spoilPolRecord.coSeriesNo.padStart(4,'0');						
+		this.spoilPolRecord.altNo		= (this.spoilPolRecord.altNo === '' || this.spoilPolRecord.altNo === null)?'':this.spoilPolRecord.altNo.padStart(3,'0');						
+
+		var a = ev.target.value;
+
+		if(key === 'lineCd') {
+			this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
+		} else if(key === 'year') {
+			this.searchArr[1] = '%' + a + '%';
+		} else if(key === 'seqNo') {
+			this.searchArr[2] = '%' + a + '%';
+		} else if(key === 'cedingId') {
+			this.searchArr[3] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
+		} else if(key === 'coSeriesNo') {
+			this.searchArr[4] = '%' + a + '%';
+		} else if(key === 'altNo') {
+			this.searchArr[5] = a === '' ? '%%' : '%' + a;
+		}
+
+
+		if(this.searchArr.includes('')) {
+			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+		}
+		
+		this.getPolicyList([{ key: 'policyNo', search: this.searchArr.join('-') }]);
 	}
 
 }
