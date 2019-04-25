@@ -396,20 +396,17 @@ export class CoverageComponent implements OnInit {
 
       //HIDE THE POWERFUL MAGNIFYING GLASS
       if(data[i].coverCd == 11){
-        //this.passData.tableData[this.passData.tableData.length - 1].showMG = 1;
-        delete this.passData.tableData[this.passData.tableData.length - 1].showMG;
+        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
         this.getEditableCov()
 
       }else{
         this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       }
     }
-
     this.table.refreshTable();
   }
 
   update(data){
-    console.log(this.passData.tableData)
     if(data.hasOwnProperty('lovInput')) {
       this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
 
@@ -486,17 +483,14 @@ export class CoverageComponent implements OnInit {
   }
 
   getEditableCov(){
+    console.log(this.passData.tableData)
     for(let data of this.passData.tableData){
       if(data.uneditable === undefined){
         data.uneditable = [];
       }
-      if(data.uneditable.length == 0 && data.coverName != null){
-        data.uneditable.push('coverName');
-      }
       if(data.coverCd == 11){    
-        data.uneditable.pop();  
+        data.uneditable.pop();
       }
-      
     }
   }
 
