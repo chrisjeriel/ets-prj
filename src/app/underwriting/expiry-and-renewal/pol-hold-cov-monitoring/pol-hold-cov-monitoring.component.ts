@@ -64,7 +64,7 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 			console.log(data);
 			var rec = data['policyList'];
 			for(let i of rec){
-				if((i.holdCoverList[0].statusDesc).toUpperCase() !== 'CANCELLED'){
+				/*if((i.holdCoverList[0].statusDesc).toUpperCase() !== 'CANCELLED'){
 					this.passData.tableData.push({
 						holdCovNo  			: i.holdCoverList[0].holdCovNo,
 						statusDesc	   		: i.holdCoverList[0].statusDesc,
@@ -88,8 +88,32 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 						holdCovId			: i.holdCoverList[0].holdCovId
 
 					});
-				}
+				}*/
+				this.passData.tableData.push({
+					holdCovNo  			: i.holdCoverList[0].holdCovNo,
+					statusDesc	   		: i.holdCoverList[0].statusDesc,
+					cedingName 			: i.cedingName,
+					policyNo   			: i.policyNo,
+					riskName   			: i.project.riskName,
+					insuredDesc			: i.insuredDesc,
+					periodFrom 			: this.ns.toDateTimeString(i.holdCoverList[0].periodFrom),
+					periodTo   			: this.ns.toDateTimeString(i.holdCoverList[0].periodTo),
+					compRefHoldCovNo 	: i.holdCoverList[0].compRefHoldCovNo,
+					reqBy	 			: i.holdCoverList[0].reqBy,
+					reqDate  			: i.holdCoverList[0].reqDate === null ? null : this.ns.toDateTimeString(i.holdCoverList[0].reqDate),
+					createUser			: i.holdCoverList[0].createUser,
+					createDate			: this.ns.toDateTimeString(i.holdCoverList[0].createDate),
+					updateUser			: i.holdCoverList[0].updateUser,
+					updateDate			: this.ns.toDateTimeString(i.holdCoverList[0].updateDate),
+					approvedBy			: i.holdCoverList[0].approvedBy,
+					preparedBy			: i.holdCoverList[0].preparedBy,
+					status				: i.holdCoverList[0].status,
+					policyId			: i.policyId,
+					holdCovId			: i.holdCoverList[0].holdCovId
+
+				});
 			}
+			this.passData.tableData = this.passData.tableData.filter((a)=>{return a.status !== '5' && a.status !== '6';}); //added by Neco 04/24/2019 Purpose: To filter out Cancelled and Replace Status
 			this.table.refreshTable();
 		});
 	}
@@ -124,21 +148,18 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 
 	onRowClick(event){
 		this.tableInfo = event;
-	}
-	onRowDblClick(event){
-        var hcNo  = event.target.closest("tr").children[0].innerText;
-        this.retSelectedPolHc(hcNo);
+		console.log(event);
 	}
 
-	retSelectedPolHc(holdCovNo){
-		this.underwritingService.getSelectedPolHc(holdCovNo)
-		.subscribe(data => {
-			var record 		=  data['policyList'][0];
+	//Moved router navigation to onRowDblClick (Neco 4/24/2019)
+	onRowDblClick(data){
+		console.log(data);
+		if(data !== null){
 			setTimeout(() => {
-	            this.router.navigate(['/policy-holdcover', { tableInfo : JSON.stringify(record) , from: 'pol-hold-cov-monitoring' }], { skipLocationChange: true });
+	            this.router.navigate(['/policy-holdcover', { tableInfo : JSON.stringify(data) , from: 'pol-hold-cov-monitoring' }], { skipLocationChange: true });
 	            this.location.go('/policy-holdcover') // temporary, to display the correct url for pol-to-hold-cover
         	},100);
-		});
+		}
 	}
 
 }

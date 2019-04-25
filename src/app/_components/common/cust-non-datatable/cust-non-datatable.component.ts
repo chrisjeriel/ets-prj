@@ -133,11 +133,12 @@ export class CustNonDatatableComponent implements OnInit {
     tablePress(event: KeyboardEvent, data: any, index){
         //console.log(this.page.getCurrent());
         //console.log(index);
+
         event.preventDefault();
         if(this.currentIndex === undefined){
             if(event.key === 'ArrowUp' && index !== 0){
                 this.currentIndex = index - 1;
-                this.indvSelect = this.displayData[index-1];
+                this.indvSelect = this.passData.tableData[index-1];
             }else if(event.key === 'ArrowDown' && index !== this.passData.tableData.length-1){
                 this.currentIndex = index + 1;
                 this.indvSelect = this.passData.tableData[index+1];
@@ -156,6 +157,7 @@ export class CustNonDatatableComponent implements OnInit {
                 this.indvSelect = this.passData.tableData[this.currentIndex];
             }
         }
+        //console.log(this.currentIndex);
 
         if((this.p - 1) * this.passData.pageLength > this.currentIndex ){
             //this.page.previous();
@@ -221,6 +223,17 @@ export class CustNonDatatableComponent implements OnInit {
         //this.appComponent.ngOnInit();
         this.loadingTableFlag = false;
         this.selected = [];
+
+        //select the first row
+        if(this.passData.tableData.length !== 0){
+            this.onRowClick('event',this.passData.tableData[0], 0);
+        }
+        $('#tableRow').focus();
+        //end select the first row
+
+        if(this.passData.tableData.length !== 0 ){
+            this.loadingFlag = false;
+        }
     }
 
     ngOnInit(): void {
@@ -233,7 +246,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.passData.tHeader = typeof this.passData.tHeader == 'undefined' ? ['No Data'] : this.passData.tHeader;
         this.passData.tableData = typeof this.passData.tableData == 'undefined' ? [['No Data']] : this.passData.tableData;
         this.unliTableLength();
-        
+
         if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 ) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
@@ -289,7 +302,7 @@ export class CustNonDatatableComponent implements OnInit {
         }
 
         //temporary fix delete this later
-        setTimeout(()=>{this.refreshTable()},2000)
+        //setTimeout(()=>{this.refreshTable();},2000)
     }
 
     processData(key: any, data: any) {
@@ -340,7 +353,7 @@ export class CustNonDatatableComponent implements OnInit {
         
 =======*/
     onRowClick(event, data, index?) {
-        this.currentIndex = index + ((this.p - 1) * 10 );   //this.p is the current page number
+        this.currentIndex = index + ((this.p - 1) * this.passData.pageLength );   //this.p is the current page number
 /*>>>>>>> Stashed changes*/
         if(this.passData.checkFlag === undefined || !this.passData.checkFlag){
             if(data !== null){
