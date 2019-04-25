@@ -19,6 +19,97 @@
 
 <div style="border: 1px solid #c5c3c3; margin-bottom: .75em; padding: 13px 1em;">
 	<button class="btn-action"><a><img src="app/resources/images/wfm-icons/calendar.png"></a></button>
-	<button class="btn-action"><a><img src="app/resources/images/wfm-icons/reminder.png"></a></button>
+	<button class="btn-action" (click)="open(content)"><a><img src="app/resources/images/wfm-icons/reminder.png"></a></button>
 	<button class="btn-action"><a><img src="app/resources/images/wfm-icons/notes.png"></a></button>
 </div>
+
+<ng-template #content let-modal>
+    <div class="modal-body">
+        <div layout="row" layout-wrap layout-align="center center">
+            <p style="font-size: 15px; text-align: center; margin-bottom: 15px"><b>REMINDER</b></p>
+        </div>
+        <div layout="row" layout-wrap layout-align="center center">
+            <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
+                <fieldset class="scheduler-border col-sm" style="width: 550px">
+                		<div class="form-row custom-row-inline-inset">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2" for="inputDate">Reminder Date</label>
+								<input type="date" id="inputDate" class="form-control form-control-sm cust-sm col-sm-3" appRequired>
+								<input type="time" id="inputDate" class="form-control form-control-sm cust-sm col-sm-2" style="margin: 0 0 0 5px;" appRequired>
+								<label class="form-control-sm col-sm-2" for="inputAlarm" style="margin: 0 0 0 -5px;">Alarm Time</label>
+								<input type="time" id="inputAlarm" class="form-control form-control-sm cust-sm col-sm-2">
+							</div>
+							<div class="input-group" style="margin: -10px 0 0 0;">
+								<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
+								<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10">
+							</div>
+							<div class="input-group" style="margin: -10px 0 -20px 0 ! important;">
+								<label class="form-control-sm col-sm-2" for="inputReminder">Reminder</label>
+								<textarea id="inputReminder" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired> </textarea>
+							</div>
+						</div>
+                </fieldset>
+            </div>
+        </div>
+        <div layout="row" layout-wrap layout-align="center center">
+            <div class="form-row" style="justify-content: center; margin: 15px 0 0 0px">
+        	    <fieldset class="scheduler-border col-sm" style="width: 550px">
+                	<div class="form-row custom-row-inline-inset">
+							<div class="input-group">
+								<input id="radio1" class="form-control-sm" type="radio" name="reminderOption" value="1" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)">
+								<label class="form-control-sm">Assign to me</label>
+							</div>
+							<div class="input-group" style="margin: -10px 0 0 0;">
+								<input id="radio2" class="form-control-sm" type="radio" name="reminderOption" value="2" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [checked]=!disableAssignTo>
+								<label class="form-control-sm">Assign to</label>
+							</div>
+							<div class="input-group" style="margin: -10px 0 0 0;">
+								<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" >
+								<div id=search class="text-search-ico"><a class="disabled-a"><i id=searchicon class="fa fa-search" (click)="showUsersLOV();"></i></a></div>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" disabled [(ngModel)]="userInfo.userName" >
+							</div>
+							<div class="input-group" style="margin: 10px 0 0 0;">
+								<input id="radio3" class="form-control-sm" type="radio" name="reminderOption" value="3" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)">
+								<label class="form-control-sm">Assign to many</label>
+							</div>
+							<div class="input-group" style="margin: -10px 0 0 0;">
+								 <button type="button" class="cust-btn col-sm-2" style="margin: 0 0 0 65px;" (click)="showUsersLOV();" [disabled]= disableAssignToMany><a>Users</a></button>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled placeholder="Assigned to 6 users" style="margin: 0 0 0 4px;">
+							</div>
+							<div class="input-group" style="margin: 10px 0 0 0;">
+								<input id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)">
+								<label class="form-control-sm">Assign to all</label>
+							</div>
+							<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
+								 <button type="button" class="cust-btn" (click)="modal.close('Close click');cancelReminder();"><a>Cancel</a></button>
+								 <button type="button" class="cust-btn" (click)="saveReminder();" [disabled]= disablebtnBool><a>Save</a></button>
+							</div>
+				 	</div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="justify-content: center;margin: -8px 0 0 0 ! important">
+      <fieldset class="scheduler-border col-sm" style="width: 550px! important;padding: 0 ! important; margin-top: -8px ! important">
+        <div class="row col-sm" style="margin: 0px 0 0px 0 ! important">
+            <div class="input-group">
+				<label class="form-control-sm " style="margin: 0 0 0 -7px" >Created By</label>
+				<label class="form-control-sm col-sm-3" style="margin: 0 0 0 10px">Date Created</label>
+				<label class="form-control-sm col-sm-3" style="margin: 0 0 0 12px">Last Update By</label>
+				<label class="form-control-sm col-sm-3" style="margin: 0 0 0 -15px">Last Update</label>
+			</div>
+			 <div class="input-group" style="margin: 0px 0 12px 0 ! important">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled placeholder="ENGEL">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled placeholder="01/01/2019 09:00 AM" style="margin: 0 0 0 5px">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled placeholder="ENGEL" style="margin: 0 0 0 5px">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled placeholder="01/01/2019 09:00 AM" style="margin: 0 0 0 5px">
+			</div>
+
+        </div>
+      </fieldset>
+    </div>
+</ng-template>
+
+<app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)"></app-mtn-users>
+
+
