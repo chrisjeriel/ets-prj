@@ -36,12 +36,12 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     passDataOptionLOV: any = {
       tableData: [],
-      tHeader:["Option Id", "Condition"],  
-      dataTypes: ["text","text"],
+      tHeader:["Option Id", "Rate"],  
+      dataTypes: ["text","percent"],
       pageLength: 10,
       //resizable: [false,false],
       tableOnly: false,
-      keys: ['optionId','condition'],
+      keys: ['optionId','optionRt'],
       pageStatus: true,
       pagination: true,
       filters: [
@@ -182,7 +182,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     setOption(){
         this.optionData.optionId = this.selectedOpt.optionId;
-        this.optionData.condition = this.selectedOpt.condition;
+        this.optionData.condition = this.selectedOpt.optionRt;
         this.form.control.markAsDirty();
     }
 
@@ -255,7 +255,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
         if(fetchedOptData.length === 1){
           console.log('here');
           this.optionData.optionId = fetchedOptData[0].optionId;
-          this.optionData.condition = fetchedOptData[0].condition;
+          this.optionData.condition = fetchedOptData[0].optionRt;
           this.setOption();
         }
         this.passDataOptionLOV.tableData = data['quotation']['optionsList'];
