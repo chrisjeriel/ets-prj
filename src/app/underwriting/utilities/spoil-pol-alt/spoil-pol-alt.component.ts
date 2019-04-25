@@ -3,6 +3,7 @@ import { UnderwritingService, NotesService, MaintenanceService } from '@app/_ser
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
 	selector: 'app-spoil-pol-alt',
@@ -12,6 +13,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 export class SpoilPolAltComponent implements OnInit {
 	@ViewChild('p') table: CustNonDatatableComponent;
 	@ViewChild('spoil') spoil: CustNonDatatableComponent;
+	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
 	passData : any = {
 		tableData: [],
@@ -24,10 +26,10 @@ export class SpoilPolAltComponent implements OnInit {
 		pageStatus: true,
 		pagination: true,
 		filters: [
-			{key: 'policyNo', title: 'Policy No',dataType: 'seq'},
-			{key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
-			{key: 'insuredDesc',title: 'Insured',dataType: 'text'},
-			{key: 'riskName',title: 'Risk',dataType: 'text'},
+		{key: 'policyNo', title: 'Policy No',dataType: 'seq'},
+		{key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+		{key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+		{key: 'riskName',title: 'Risk',dataType: 'text'},
 		],
 		colSize: ['', '250px', '250px', '250px'],
 		pageID: 'policyList101'
@@ -44,8 +46,8 @@ export class SpoilPolAltComponent implements OnInit {
 		pageStatus: true,
 		pagination: true,
 		filters: [
-			{key: 'spoilCd', title: 'Spoil',dataType: 'text'},
-			{key: 'description',title: 'Description',dataType: 'text'}
+		{key: 'spoilCd', title: 'Spoil',dataType: 'text'},
+		{key: 'description',title: 'Description',dataType: 'text'}
 		],
 		colSize: ['', '250px'],
 		pageID: 'spoilList101'
@@ -84,10 +86,13 @@ export class SpoilPolAltComponent implements OnInit {
 	polStatus			: any;
 	polId				: any;
 	warnMsg1			: string = '';
-	warnMsg2			: string = '';
-	warnMsg3			: string = '';
 	searchArr			: any[] = Array(6).fill('');
 	checkSpoilCd 		: number;
+	loading				: boolean;
+	dialogIcon			: string = '';
+	dialogMessage		: string = '';
+	cancelFlag			: boolean;
+	valResult			: number;
 
 	constructor(private underwritingService: UnderwritingService, private ns: NotesService,
 		private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService) { }
@@ -96,8 +101,6 @@ export class SpoilPolAltComponent implements OnInit {
 		this.titleService.setTitle('Pol | Spoil Policy/Alteration');
 		this.getPolicyList();
 		this.getSpoilList();
-
-
 	}
 
 	getPolGenInfo(){
@@ -124,11 +127,19 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	getPolicyList(param?){
-		console.log('here 1');
+		console.log(param);
+		var parameter;
 		this.passData.tableData = [];
-		this.searchParams = param;
+
+		if(param !== undefined){
+			parameter = param;		
+		}else{
+			parameter = this.searchParams;
+		}
+
 		if(this.table) { this.table.loadingFlag = true; }
-		this.underwritingService.getParListing(this.searchParams === undefined ? [] : this.searchParams)
+
+		this.underwritingService.getParListing(parameter)
 		.subscribe(data => {
 			this.passData.tableData = [];
 			var rec = data['policyList'];
@@ -136,22 +147,20 @@ export class SpoilPolAltComponent implements OnInit {
 					 .map(data => {data.riskName = data.project.riskName; return data;});
 			this.passData.tableData = rec;
 			this.table.refreshTable();
-
+			console.log(rec);
 			if(rec.length === 0){
-				console.log('NO DATA FOUND');
-				if(this.spoilPolRecord.line !== null && this.spoilPolRecord.year !== null && this.spoilPolRecord.seqNo !== null && this.spoilPolRecord.coCode !== null && this.spoilPolRecord.coSeriesNo !== null && this.spoilPolRecord.altNo !== null ||
-					this.spoilPolRecord.line !== '' && this.spoilPolRecord.year !== '' && this.spoilPolRecord.seqNo !== '' && this.spoilPolRecord.coCode !== '' && this.spoilPolRecord.coSeriesNo !== '' && this.spoilPolRecord.altNo !== ''){
-					this.clearAll();
-					this.getPolicyList();
-					$('#polLov > #modalBtn').trigger('click');
-				}
-			}else{
-				if(rec.length === 1){
-					this.spoilPolRecord.policyNo = rec[0].policyNo;
+				this.clearAll();
+				this.getPolicyList();
+				$('#polLov > #modalBtn').trigger('click');
+			}else if(rec.length === 1){
+				this.spoilPolRecord.policyNo = rec[0].policyNo;
+				if(this.spoilPolRecord.line !== '' && this.spoilPolRecord.year !== '' && this.spoilPolRecord.seqNo !== '' && this.spoilPolRecord.coCode !== '' && this.spoilPolRecord.coSeriesNo !== '' && this.spoilPolRecord.altNo !== ''){
 					this.getPolGenInfo();
 				}
-			}			
-
+			}else{
+				
+			}
+			
 		});
 	}
 
@@ -162,6 +171,7 @@ export class SpoilPolAltComponent implements OnInit {
 
 	getSpoilList(){
 		if(this.spoil){ this.spoil.loadingFlag = true; } 
+		
 		this.passDataSpoilageReason.tableData = [];	
 		this.mtnService.getMtnSpoilageReason('')
 		.subscribe(data => {
@@ -177,6 +187,7 @@ export class SpoilPolAltComponent implements OnInit {
 				}
 			}
 			if(this.checkSpoilCd !== 1  && this.checkSpoilCd !== undefined){
+				this.postBtnEnabled = false;
 				this.spoilPolRecord.reason = '';
 				this.spoilPolRecord.reasonDesc = '';
 				this.passDataSpoilageReason.tableData = rec;
@@ -186,8 +197,8 @@ export class SpoilPolAltComponent implements OnInit {
 				this.passDataSpoilageReason.tableData = rec;
 				this.spoil.refreshTable();
 			}
-			
-			
+
+
 		});
 	}
 
@@ -198,7 +209,7 @@ export class SpoilPolAltComponent implements OnInit {
 	onChangeReason(){
 		this.checkSpoilCd = 0;
 		this.getSpoilList();
-		if(this.spoilPolRecord.reasonDesc === '' || this.spoilPolRecord.reasonDesc === null){
+		if(this.spoilPolRecord.reason === '' || this.spoilPolRecord.reason === null){
 			this.postBtnEnabled = false;
 		}else{
 			this.postBtnEnabled = true;
@@ -210,17 +221,23 @@ export class SpoilPolAltComponent implements OnInit {
 		this.spoilPolRecord.reason 		= this.rowRecSpoil.spoilCd;
 		this.spoilPolRecord.reasonDesc 	= this.rowRecSpoil.description;
 		this.onChangeReason();
+		$('.dirty').addClass('ng-dirty');
 	}
 
 	onClickOkLov(){
+		this.spoilPolRecord.reason  	= '';
+		this.spoilPolRecord.reasonDesc 	= '';
+		this.spoilPolRecord.user  		= '';
+		this.spoilPolRecord.spoiledDate = '';
+		this.postBtnEnabled 			= false;
 		this.spoilPolRecord.policyNo = this.rowRec.policyNo;
 		this.splitPolNo(this.spoilPolRecord.policyNo);
 		this.getPolGenInfo();
 		this.modalService.dismissAll();
+		$('.dirty').addClass('ng-dirty');
 	}
 
 	searchQuery(searchParams){
-		console.log(searchParams[0].search);
 		this.searchParams = searchParams;
 		this.passData.tableData = [];
 		this.getPolicyList();
@@ -272,65 +289,130 @@ export class SpoilPolAltComponent implements OnInit {
 		this.type 							= "text";
 		this.postBtnEnabled					= false;
 		this.reasonLovEnabled				= false;
+		this.searchArr 						= Array(6).fill('');
 		this.getPolicyList();
 	}
 
-	onClickPostSpoilage(){
-		const spoilStatus = 99 ; // status 99 = SPOILED in POL GEN INFO STATUS
-		if(this.polStatus.toUpperCase() === 'IN FORCE' || this.polStatus.toUpperCase() === 'DISTRIBUTED'){
-			this.spoilPolRecord.user  		= JSON.parse(window.localStorage.currentUser).username;
-			this.spoilPolRecord.spoiledDate = this.ns.toDateTimeString(0).split('T')[0];
 
-			this.postSpoilage = {
-				"policyId"		: this.polId,
-				"spldUser"		: this.spoilPolRecord.user,
-				"status"		: spoilStatus,
-				"updateUser"	: this.spoilPolRecord.user
+	onClickPostSpoilage(cancelFlag?){
+		this.cancelFlag = cancelFlag !== undefined;
+		this.valResult = 0; 
+		var stats = '';
+		this.warnMsg1 = '';
+
+		var inProg = false;
+		var dist = false;
+		var msgA = 'Policy/Alteration cannot be spoiled, creation of alteration connected to this record is on going.';
+		var msgB = 'Policy with existing valid alteration cannot be spoiled.';
+
+		this.underwritingService.getAlterationsPerPolicy(this.polId,'')
+		.subscribe(data => {
+			console.log(data);
+			var rec = data['policyList'];
+			rec.sort((a,b) => a.altNo - b.altNo);
+
+			for(var i=0;i<rec.length;i++){
+				if(parseInt(this.spoilPolRecord.altNo) === 0){
+					if(rec[i].statusDesc.toUpperCase() === 'DISTRIBUTED'){
+						dist = true;
+					}else if(rec[i].statusDesc.toUpperCase() === 'IN PROGRESS'){
+						inProg = true;
+					}
+				}else {
+					if(parseInt(this.spoilPolRecord.altNo) === rec[i].altNo){
+						if(rec[i+1] !== undefined && rec[i+1].statusDesc.toUpperCase() === 'IN PROGRESS'){
+							inProg = true;
+						}else{
+							this.validPolicyAlt();
+						}	
+					}
+				}
+				
 			}
 
-			this.underwritingService.updatePolGenInfoSpoilage(JSON.stringify(this.postSpoilage))
-			.subscribe(data => {
-				console.log(data);
-				console.log('POSTING SPOILAGE SUCCESSFUL!');
-			});
-		}else{
-			console.log('POSTING SPOILAGE FAILED');
-		}
-		
+			if(rec.length === 0){
+				this.validPolicyAlt();
+			}else{
+				if(inProg === true){
+					this.warnMsg1 = msgA;
+					this.showWarnLov();
+				}
+				if(dist === true && inProg === false){
+					this.warnMsg1 = msgB;
+					this.showWarnLov();
+				}
+				if(dist === false && inProg === false){
+					this.validPolicyAlt();
+				}
+			}
+
+		});
+
 	}
 
-	validatePolicy(){
-		this.warnMsg1 = 'Policy/Alteration cannot be spoiled,creation of alteration connected \n to this record is on going.';
-		console.log(this.warnMsg1);
-		this.warnMsg2 = 'creation of alteration connected';
-		this.warnMsg3 = 'to this record is on going.';
+	showWarnLov(){
 		$('#warnMdl > #modalBtn').trigger('click');
 	}
 
-	
+	validPolicyAlt(){
+
+		const spoilStatus = 99 ; // status 99 = "SPOILED" in POL GEN INFO STATUS
+		this.spoilPolRecord.user  		= JSON.parse(window.localStorage.currentUser).username;
+		this.spoilPolRecord.spoiledDate = this.ns.toDateTimeString(0).split('T')[0];
+
+		this.postSpoilage = {
+			"policyId"		: this.polId,
+			"spldUser"		: this.spoilPolRecord.user,
+			"spoilCd"		: this.spoilPolRecord.reason,
+			"status"		: spoilStatus,
+			"updateUser"	: this.spoilPolRecord.user
+		}
+
+		this.underwritingService.updatePolGenInfoSpoilage(JSON.stringify(this.postSpoilage))
+		.subscribe(data => {
+			console.log(data);
+			$('app-sucess-dialog #modalBtn').trigger('click');
+			this.getPolicyList();
+		});
+	}
+
+	onClickSave(){
+		$('#confirm-save #modalBtn2').trigger('click');
+	}
+
+	onClickCancel(){
+		this.cancelBtn.clickCancel();
+	}
+
 	search(key,ev) {
-	    var a = ev.target.value;
+		this.spoilPolRecord.year		= (this.spoilPolRecord.year === '' || this.spoilPolRecord.year === null)?'':this.spoilPolRecord.year;
+		this.spoilPolRecord.seqNo		= (this.spoilPolRecord.seqNo === '' || this.spoilPolRecord.seqNo === null)?'':this.spoilPolRecord.seqNo.padStart(5,'0');						
+		this.spoilPolRecord.coCode		= (this.spoilPolRecord.coCode === '' || this.spoilPolRecord.coCode === null)?'':this.spoilPolRecord.coCode.padStart(3,'0');						
+		this.spoilPolRecord.coSeriesNo	= (this.spoilPolRecord.coSeriesNo === '' || this.spoilPolRecord.coSeriesNo === null)?'':this.spoilPolRecord.coSeriesNo.padStart(4,'0');						
+		this.spoilPolRecord.altNo		= (this.spoilPolRecord.altNo === '' || this.spoilPolRecord.altNo === null)?'':this.spoilPolRecord.altNo.padStart(3,'0');						
 
-	    if(key === 'lineCd') {
-	      this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
-	    } else if(key === 'year') {
-	      this.searchArr[1] = '%' + a + '%';
-	    } else if(key === 'seqNo') {
-	      this.searchArr[2] = '%' + a + '%';
-	    } else if(key === 'cedingId') {
-	      this.searchArr[3] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
-	    } else if(key === 'coSeriesNo') {
-	      this.searchArr[4] = '%' + a + '%';
-	    } else if(key === 'altNo') {
-	      this.searchArr[5] = a === '' ? '%%' : '%' + a;
-	    }
+		var a = ev.target.value;
+
+		if(key === 'lineCd') {
+			this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
+		} else if(key === 'year') {
+			this.searchArr[1] = '%' + a + '%';
+		} else if(key === 'seqNo') {
+			this.searchArr[2] = '%' + a + '%';
+		} else if(key === 'cedingId') {
+			this.searchArr[3] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
+		} else if(key === 'coSeriesNo') {
+			this.searchArr[4] = '%' + a + '%';
+		} else if(key === 'altNo') {
+			this.searchArr[5] = a === '' ? '%%' : '%' + a;
+		}
 
 
-	    if(this.searchArr.includes('')) {
-	      this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
-	    }
-
-	    this.getPolicyList([{ key: 'policyNo', search: this.searchArr.join('-') }]);
-  	}
+		if(this.searchArr.includes('')) {
+			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+		}
+		
+		this.getPolicyList([{ key: 'policyNo', search: this.searchArr.join('-') }]);
+	}
 
 }

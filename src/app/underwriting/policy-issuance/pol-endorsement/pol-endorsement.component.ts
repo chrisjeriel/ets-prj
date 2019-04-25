@@ -169,9 +169,10 @@ export class PolEndorsementComponent implements OnInit {
                 });
                 
             } 
-            this.endtTable.onRowClick(null,this.passData.tableData[0]);
+            
             this.endtTable.refreshTable();
-        });
+            setTimeout(a=>this.endtTable.onRowClick(null,this.passData.tableData[0]),0);
+        }); 
     }
 
     retrieveEndtOC(){
