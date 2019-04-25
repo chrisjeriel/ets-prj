@@ -320,6 +320,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.refPolicyId = this.policyInfo.policyId;
         this.policyInfo.policyNo = "";
         this.policyInfo.policyId = "";
+        this.policyInfo.statusDesc = "";
+        this.policyInfo.wordings = "";
       }
     });
 
@@ -566,7 +568,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "totalSi"         : this.policyInfo.project.totalSi,
       "updateDate"      : this.ns.toDateTimeString(0),
       "updateUser"      : this.ns.getCurrentUser(),
-      "wordings"        : this.policyInfo.wordings.trim()
+      "wordings"        : String(this.policyInfo.wordings).trim()
     }
 
     //ADD VALIDATION

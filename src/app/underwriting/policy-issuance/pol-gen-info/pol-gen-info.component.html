@@ -29,6 +29,17 @@
 	padding-top: 7px !important;
 	padding-bottom: 6px !important;
 }
+
+.nm-c {
+	padding-top: 28px !important;
+	padding-bottom: 28px !important;
+}
+
+.nm-d {
+	padding-top: 13px !important;
+	padding-bottom: 13px !important;
+}
+
 </style>
 <input type="text" class="d-none t" [ngModel]="policyInfo.policyNo" (ngModelChange)="checkPolIdF($event)" >
 <ng-container *ngIf="!alteration">
@@ -980,7 +991,7 @@
 										<div class="input-group" style="    margin-top: -2px !important;
 										margin-bottom: -12px !important;">
 										<label class="form-control-sm col-sm-2">Policy No</label>
-										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" ngbTooltip="Line" [(ngModel)]="policyInfo.policyNo" readonly>
+										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo" readonly>
 										<!-- <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
 										ngbTooltip="Year">
 										<input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
@@ -1031,7 +1042,7 @@
 									</div>
 									<div *ngIf="policyInfo.holdCoverTag === 'Y'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Hold Cover No</label>
-										<input type="text" class="form-control form-control-sm col-sm req" [(ngModel)]="policyInfo.holdCoverNo" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm req" [(ngModel)]="policyInfo.holdCoverNo" readonly>
 										<!-- <span class="form-control-sm col-sm-2">&nbsp;</span>
 										<span class="form-control-sm col-sm">&nbsp;</span> -->
 									</div>
@@ -1046,7 +1057,7 @@
 				</div>
 			</div>
 			<div class="col-sm-6" style="padding-left: 0px;">
-				<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 13px !important; padding-bottom: 13px !important;">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" [ngClass]="{ 'nm-c': line != 'CAR' && line != 'EAR', 'nm-d': line == 'CAR' || line == 'EAR' }">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border" style="margin-left: 16px !important;">Period of Insurance</legend>
 					<div class="col-sm-1">
@@ -1054,7 +1065,7 @@
 					<div class="col-sm">
 						<div class="row" style="margin-bottom: -13px !important;">
 							<div class="col-sm-1"></div>
-							<div class="col-sm-10">
+							<div class="col-sm-10" [style.margin-bottom.px]="line != 'CAR' && line != 'EAR' ? 7 : 0">
 								<div class="custom-row-inline-inset" style=" margin-top: 4px !important;">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-5" for="xx">Previous Inception
@@ -1504,7 +1515,7 @@
 							<label class="form-control-sm col-sm-1">Insured</label>
 							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
@@ -1713,7 +1724,7 @@
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
-						<label class="form-control-sm" for="xx" style="margin-right:2px !important;">Currency</label>
+						<label class="form-control-sm" style="margin-right:2px !important;">Currency</label>
 						<select class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.currencyCd" disabled>
 							<option value=""></option>
 							<option value="USD">USD</option>
@@ -1721,13 +1732,13 @@
 							<option value="EUR">EUR</option>
 						</select>
 
-						<label class="form-control-sm" for="xx">Exch. Rt.</label>
-						<input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.currencyRt"
+						<label class="form-control-sm">Exch. Rt.</label>
+						<input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required appCurrencyRate onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.currencyRt"
 						readonly>
 					</div>
 					<div class="input-group">&nbsp;
-						<label class="form-control-sm" for="xx">Total &nbsp;SI</label>
-						<input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="policyInfo.project.totalSi | number:'1.2-2'"
+						<label class="form-control-sm">Total SI</label>
+						<input type="text" class="form-control form-control-sm cust-sm text-right" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="policyInfo.project.totalSi | number:'1.2-2'"
 						readonly>
 					</div>
 				</div>
