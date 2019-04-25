@@ -263,6 +263,30 @@ export class PolCreateOpenCoverComponent implements OnInit {
       });
     }
 
+    checkCode(event){
+      if(this.optionData.optionId == ''){
+        this.optionData.condition = '';
+      }else{
+        this.ns.lovLoader(event, 1);
+        this.qs.getQuoteOptions(this.quoteData.quoteId).subscribe(data =>{
+          var options = data['quotation']['optionsList'];
+          
+          options = options.filter(opt => opt.optionId == this.optionData.optionId);
+
+          if(options.length == 1) {
+            this.optionData.optionId = options[0].optionId;
+            this.optionData.condition = options[0].optionRt;
+          } else {
+            this.optionData.optionId = '';
+            this.optionData.condition = '';
+
+            this.showOptionLOV();
+          }
+          this.ns.lovLoader(event, 0);
+        });
+      }
+    }
+
     prepareParams(){
         //check if required fields are filled
         if(this.splitQuoteNo.length === 5 && this.optionData.optionId !== '' && 

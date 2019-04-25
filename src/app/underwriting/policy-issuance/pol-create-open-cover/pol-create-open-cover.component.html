@@ -24,7 +24,7 @@
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Option No</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="optionData.optionId" name="optId" appRequired >
+                                            <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="optionData.optionId" name="optId" appRequired (change)="checkCode($event)">
                                             <div class="text-search-ico-inner"><a><i class="fa fa-search" (click)="showOptionLOV()"></i></a></div>
                                             <input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 7px; text-align: right;" [ngModel]="optionData.condition | number: '1.10-10'" name="condition" readonly tabindex="-1">
                                         </div>
