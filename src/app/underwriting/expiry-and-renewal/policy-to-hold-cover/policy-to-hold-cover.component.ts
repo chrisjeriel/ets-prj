@@ -255,6 +255,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		setTimeout(()=>{
 			this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any) =>{
 				console.log(data);
+				data.policyList = data.policyList === null ? [] : data.policyList.filter(a=>{return parseInt(a.policyNo.split('-')[5]) === 0}); //filter out all policies with alteration
 				if(data.policyList.length !== 0){
 					this.noDataFound = false;
 					for(var rec of data.policyList){
