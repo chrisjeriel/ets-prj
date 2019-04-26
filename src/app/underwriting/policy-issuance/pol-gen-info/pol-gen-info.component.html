@@ -1752,8 +1752,22 @@
 			<fieldset class="scheduler-border cust-fs-padlr-offset">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Alteration</legend>
 				<div class="custom-row-inline-inset">
+					<div class="input-group" style="margin-bottom: -10px !important;">
+						<label class="form-control-sm col-sm-2">Policy</label>
+						<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
+
+						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
+             					<text-editor [editorContent]="policyInfo.wordings" (fetchContent)="policyInfo.wordings = $event" [edtrOpnrPos]="2">
+             						<ng-container icon-1>
+             							<a (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
+             						</ng-container>
+             					</text-editor>
+          				</div>
+
+						<div class="col-sm-1"></div>
+					</div>
 					<div class="input-group">
-						<label class="form-control-sm col-sm-2">Wordings</label>
+						<label class="form-control-sm col-sm-2">Alteration</label>
 						<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
 						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
@@ -1794,7 +1808,7 @@
 		</fieldset>
 	</div>
 	<div class="col-sm-4" style="padding-left: 0px;">
-		<fieldset class="scheduler-border" style="padding-bottom:4px !important;">
+		<fieldset class="scheduler-border" style="padding-top: 12px !important; padding-bottom:4px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="custom-row-inline-inset">
 				<div class="form-row" style="margin-top: 10px; margin-bottom: -4px;">
@@ -1911,10 +1925,10 @@
 					<div class="form-group col-sm-6">
 							<div id="radioBtnSet" class="input-group-text" style="display: block; margin-top: -4px; padding-left: 33px; padding-right: 0px;">
 							<div class="input-group">
-								<input type="radio" name="option" disabled value="Y" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
+								<input type="radio" name="option" [disabled]="policyInfo.declarationTag !== 'Y'" value="Y" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
 							</div>
 							<div class="input-group">
-								<input type="radio" name="option" disabled value="N" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
+								<input type="radio" name="option" [disabled]="policyInfo.declarationTag !== 'Y'" value="N" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
 							</div>
 						</div>
 					</div>
