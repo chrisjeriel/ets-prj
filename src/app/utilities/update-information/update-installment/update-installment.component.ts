@@ -45,6 +45,7 @@ export class UpdateInstallmentComponent implements OnInit {
   prevCommRt: any;
   prevCommAmt: any;
   cancelFlag : boolean = false;
+  warningMsg: number;
   monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
   ];
@@ -56,6 +57,7 @@ export class UpdateInstallmentComponent implements OnInit {
     /*total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],*/
     addFlag: true,
     deleteFlag: true,
+    clickFlag:true,
     pageID: 1,
     widths: ["1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
     nData: {
@@ -78,11 +80,11 @@ export class UpdateInstallmentComponent implements OnInit {
     pageLength: 5
   };
 
-  prevInstallmentData: any = {
+  /*prevInstallmentData: any = {
     tableData: [],
     tHeader: ["Inst No", "Due Date", "Booking Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
     dataTypes: ["number", "date", "date", "currency", "percent", "currency", "currency", "currency"],
-    /*total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],*/
+    /*total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],*
     addFlag: true,
     deleteFlag: true,
     pageID: 1,
@@ -105,7 +107,7 @@ export class UpdateInstallmentComponent implements OnInit {
     keys: ['instNo', 'dueDate', 'bookingDate', 'premAmt', 'commRt', 'commAmt', 'otherChargesInw', 'amtDue'],
     uneditable:[true, false, false, false, false, false, true, true],
     pageLength: 5
-  };
+  };*/
 
   passDataOtherCharges: any = {
     tableData: [["101", "Description 101", "50000"]],
@@ -113,6 +115,7 @@ export class UpdateInstallmentComponent implements OnInit {
     dataTypes: ["text", "text", "currency"],
     addFlag: true,
     deleteFlag: true,
+    clickFlag:true,
     pageID:'otherCharges',
     uneditable:[true,true],
     nData:{
@@ -192,10 +195,8 @@ export class UpdateInstallmentComponent implements OnInit {
             var b = polList.filter(p => p.statusDesc.toUpperCase() !== 'IN PROGRESS');
 
             if (a.length > 0) {
-              this.dialogIcon = 'error-message';
-              this.dialogMsg = `Policy No has a pending alteration in Alteration List Screen. 
-                                All iterations must be posted before updating the installment`;
-              this.successDialog.open();
+              this.warningMsg = 1;
+              this.showWarningMdl();
             }
 
             b.sort((a, b) => a.altNo - b.altNo);
@@ -214,7 +215,6 @@ export class UpdateInstallmentComponent implements OnInit {
             }
 
             this.underwritingService.getPolGenInfo(this.policyId, b[b.length-1].policyNo).subscribe((data:any) => {
-              console.log(data);
               this.createUser = data.policy.createUser;
             });
 
@@ -266,9 +266,8 @@ export class UpdateInstallmentComponent implements OnInit {
     }*/
 
     if(this.instllmentTable.getSum('premAmt') != this.totalPrem) {
-      this.dialogIcon = 'error-message';
-      this.dialogMsg = 'Total Premium must be equal to the sum of premium per installment.';
-      this.successDialog.open();
+      this.warningMsg = 2;
+      this.showWarningMdl();
     } else {
       this.confirmSave.confirmModal();
     }
@@ -303,14 +302,29 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   clearFields() {
-    this.searchArr = Array(6).fill('');
-    this.polNo = Array(6).fill('');
-    this.cedingName = '';
-    this.insuredDesc = '';
-    this.riskName = '';
-    this.selected = null;
+    if (this.warningMsg == 1 || this.warningMsg == null) {
+      this.searchArr = Array(6).fill('');
+      this.polNo = Array(6).fill('');
+      this.cedingName = '';
+      this.insuredDesc = '';
+      this.riskName = '';
+      this.currency = '';
+      this.totalPrem = '';
+      this.passDataInstallmentInfo.tableData = [];
+      this.passDataOtherCharges.tableData = [];
+      this.selected = null;
 
-    this.retrievePolListing();
+      this.instllmentTable.refreshTable();
+      this.otherTable.refreshTable();
+
+      this.retrievePolListing();
+    }
+
+    this.warningMsg = null;
+  }
+
+  showWarningMdl() {
+    $("#altWarningModal > #modalBtn").trigger('click');
   }
 
   retrievePolListing(param?){
@@ -406,9 +420,8 @@ export class UpdateInstallmentComponent implements OnInit {
 
   delInst(){
     if(this.passDataInstallmentInfo.tableData.filter(a=>!a.deleted).length == 1){
-      this.dialogIcon = 'error-message';
-      this.dialogMsg = 'A policy must have one or more installments.';
-      this.successDialog.open();
+      this.warningMsg = 0;
+      this.showWarningMdl();
       return null;
     }
 
@@ -508,20 +521,20 @@ export class UpdateInstallmentComponent implements OnInit {
           this.dialogMsg = "Please check field values.";
           this.dialogIcon = "error";
           $('#inward > #successModalBtn').trigger('click');
+          setTimeout(()=>{$('.globalLoading').css('display','none');},0);
     }
    }
 
    delOth(){
-    if(this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length -1 ].add){
-      this.passDataOtherCharges.tableData.pop();
-    }else{
-      this.passDataOtherCharges.tableData.forEach(a=>{
-        if(a==this.otherTable.displayData[this.otherTable.displayData.filter(a=>a!=this.otherTable.fillData).length -1 ]){
-          a.deleted = true;
-          a.edited = true;
-        }
-      })
-    }
+     if (this.otherTable.indvSelect != undefined) {
+       for (let rec of this.passDataOtherCharges.tableData) {
+         if (this.otherTable.indvSelect.chargeCd == rec.chargeCd) {
+           rec.deleted = true;
+           rec.edited = true; 
+         }
+       }
+     }
+
     this.instllmentTable.indvSelect.otherCharges = this.passDataOtherCharges.tableData;
     this.otherTable.markAsDirty();
     this.otherTable.refreshTable();
@@ -529,14 +542,62 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   validate(obj) {
-    var req = ['bookingDate', 'dueDate', 'premAmt', 'commRt', 'commAmt'];
+    var req = [];
+    var entries = [];
 
-    var entries = Object.entries(obj);
+    if (obj.savePolInward.length > 0) {
+      req = ['bookingDate', 'dueDate', 'premAmt', 'commRt', 'commAmt'];
 
-    for(var[key, val] of entries) {
-      if((val == '' || val == null) && req.includes(key)) {
-        return false;
+      for (let rec of obj.savePolInward) {
+        entries = Object.entries(rec);
+
+        for(var[key, val] of entries) {
+          if (key === 'premAmt' || key === 'commAmt' || key === 'commRt') {
+              if (isNaN(val)) {
+                return false;
+              }
+          } else {
+            if ((val == '' || val == null) && req.includes(key)) {
+              return false;
+            }
+          }
+        }
       }
+    } 
+
+    if (obj.newSavePolInward.length > 0) {
+      req = ['bookingDate', 'dueDate', 'premAmt', 'commRt', 'commAmt'];
+
+      for (let rec of obj.newSavePolInward) {
+        entries = Object.entries(rec);
+
+        for(var[key, val] of entries) {
+          if (key === 'premAmt' || key === 'commAmt' || key === 'commRt') {
+              if (isNaN(val)) {
+                return false;
+              }
+          } else {
+            if ((val == '' || val == null) && req.includes(key)) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+
+    if (obj.saveOtherCharges.length > 0) {
+      req = ['amount'];
+
+      for (let rec of obj.saveOtherCharges) {
+        entries = Object.entries(rec);
+
+        for(var[key, val] of entries) {
+          if((val == '' || val == null || (val.toString() === 'NaN')) && req.includes(key)) {
+            return false;
+          }
+        }
+      }
+      
     }
 
     return true;
