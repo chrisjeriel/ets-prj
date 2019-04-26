@@ -640,6 +640,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "polWordings"     : this.policyInfo.polWordings
     }
     let wordingSplit = this.policyInfo.polWordings.text.match(/(.|[\r\n]){1,2000}/g);
+    if(savePolGenInfoParam.polWordings.createUser == undefined){
+      savePolGenInfoParam.polWordings.createUser = this.ns.getCurrentUser();
+      savePolGenInfoParam.polWordings.createDate = this.ns.toDateTimeString(0);
+    }else{
+      savePolGenInfoParam.polWordings.createDate = this.ns.toDateTimeString(savePolGenInfoParam.polWordings.createDate);
+    }
     for(let key of this.wordingsKeys){
       savePolGenInfoParam.polWordings[key]='';
     }
