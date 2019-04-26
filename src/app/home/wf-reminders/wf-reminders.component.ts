@@ -90,6 +90,7 @@ export class WfRemindersComponent implements OnInit {
        this.reminderBool = true;
        this.reminderList = [];
        this.loadingFlag = true;
+       this.reminderNull = false;
        $("#reminderDiv").css({"height": "auto"});
        this.workFlowManagerService.retrieveWfmReminders('',this.currentUser,'').pipe(finalize(() => this.setReminderList()))
        .subscribe((data)=>{
@@ -109,6 +110,7 @@ export class WfRemindersComponent implements OnInit {
       this.reminderBool = false;
       this.reminderList = [];
       this.loadingFlag = true;
+      this.reminderNull = false;
       $("#reminderDiv").css({"height": "auto"});
        this.workFlowManagerService.retrieveWfmReminders('','',this.currentUser).pipe(finalize(() => this.setReminderList()))
        .subscribe((data)=>{

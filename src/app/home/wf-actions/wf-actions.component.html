@@ -34,8 +34,8 @@
                 		<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2" for="inputDate">Reminder Date</label>
-								<input type="date" id="inputDate" class="form-control form-control-sm cust-sm col-sm-3" appRequired>
-								<input type="time" id="inputDate" class="form-control form-control-sm cust-sm col-sm-2" style="margin: 0 0 0 5px;" appRequired>
+								<input type="datetime-local" id="inputDate" class="form-control form-control-sm cust-sm col-sm-5" appRequired>
+								<!-- <input type="time" id="inputDate" class="form-control form-control-sm cust-sm col-sm-2" style="margin: 0 0 0 5px;" appRequired> -->
 								<label class="form-control-sm col-sm-2" for="inputAlarm" style="margin: 0 0 0 -5px;">Alarm Time</label>
 								<input type="time" id="inputAlarm" class="form-control form-control-sm cust-sm col-sm-2">
 							</div>
@@ -56,28 +56,28 @@
         	    <fieldset class="scheduler-border col-sm" style="width: 550px">
                 	<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
-								<input id="radio1" class="form-control-sm" type="radio" name="reminderOption" value="1" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)">
+								<input id="radio1" class="form-control-sm" type="radio" name="reminderOption" value="1" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="reminderValue">
 								<label class="form-control-sm">Assign to me</label>
 							</div>
 							<div class="input-group" style="margin: -10px 0 0 0;">
-								<input id="radio2" class="form-control-sm" type="radio" name="reminderOption" value="2" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [checked]=!disableAssignTo>
+								<input id="radio2" class="form-control-sm" type="radio" name="reminderOption" value="2" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="reminderValue">
 								<label class="form-control-sm">Assign to</label>
 							</div>
 							<div class="input-group" style="margin: -10px 0 0 0;">
-								<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" >
-								<div id=search class="text-search-ico"><a class="disabled-a"><i id=searchicon class="fa fa-search" (click)="showUsersLOV();"></i></a></div>
+								<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" (change)="checkCode($event)">
+								<div id=search class="text-search-ico"><a [ngClass]="{'disabled-a': disableAssignTo}" ><i id=searchicon class="fa fa-search" (click)="showUsersLOV('1');"></i></a></div>
 								<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" disabled [(ngModel)]="userInfo.userName" >
 							</div>
 							<div class="input-group" style="margin: 10px 0 0 0;">
-								<input id="radio3" class="form-control-sm" type="radio" name="reminderOption" value="3" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)">
+								<input id="radio3" class="form-control-sm" type="radio" name="reminderOption" value="3" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="reminderValue">
 								<label class="form-control-sm">Assign to many</label>
 							</div>
 							<div class="input-group" style="margin: -10px 0 0 0;">
-								 <button type="button" class="cust-btn col-sm-2" style="margin: 0 0 0 65px;" (click)="showUsersLOV();" [disabled]= disableAssignToMany><a>Users</a></button>
-								<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled placeholder="Assigned to 6 users" style="margin: 0 0 0 4px;">
+								 <button type="button" class="cust-btn col-sm-2" style="margin: 0 0 0 65px;" (click)="showUsersLOV('0');" [disabled]= disableAssignToMany><a>Users</a></button>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled placeholder="Assigned to 6 users" style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToMany">
 							</div>
 							<div class="input-group" style="margin: 10px 0 0 0;">
-								<input id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)">
+								<input id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="reminderValue">
 								<label class="form-control-sm">Assign to all</label>
 							</div>
 							<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
@@ -99,10 +99,10 @@
 				<label class="form-control-sm col-sm-3" style="margin: 0 0 0 -15px">Last Update</label>
 			</div>
 			 <div class="input-group" style="margin: 0px 0 12px 0 ! important">
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled placeholder="ENGEL">
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled placeholder="01/01/2019 09:00 AM" style="margin: 0 0 0 5px">
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled placeholder="ENGEL" style="margin: 0 0 0 5px">
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled placeholder="01/01/2019 09:00 AM" style="margin: 0 0 0 5px">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled placeholder="ENGEL" [(ngModel)]="createInfo.createdBy">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [ngModel]="createInfo.dateCreated  | date:'MM-dd-yyyy hh:mm:ss a'" style="margin: 0 0 0 5px">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [(ngModel)]="updateInfo.updatedBy" style="margin: 0 0 0 5px">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [ngModel]="updateInfo.lastUpdate  | date:'MM-dd-yyyy hh:mm:ss a'" style="margin: 0 0 0 5px">
 			</div>
 
         </div>
@@ -110,6 +110,25 @@
     </div>
 </ng-template>
 
-<app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)"></app-mtn-users>
+<app-modal class="d-none" (modalOpened)="openModal()" id="usersToManyMdl">
+	<div header>List of Values</div>
+	<div body>
+		<app-cust-non-datatable [passData]="usersListing"></app-cust-non-datatable>
+	</div>
+	<div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); cancel();"><a>Cancel</a></button>  
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); confirm();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+
+<app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)" (cancelMdl)="open(content);"></app-mtn-users>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="showUsersLOV('0');"></app-sucess-dialog>
+
+
+
+
 
 
