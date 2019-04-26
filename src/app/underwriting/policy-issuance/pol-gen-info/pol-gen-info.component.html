@@ -249,12 +249,12 @@
 							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" readonly>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly> -->
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
@@ -263,8 +263,8 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
@@ -275,7 +275,12 @@
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+								<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.regionCd" (ngModelChange)="policyInfo.project.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'region')">
+                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
+                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.regionDesc" style="margin-left: 6px !important">
+
+								
+								<!-- <input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly> -->
 							</div>
 						</div>
 						<div class="input-group">
@@ -285,13 +290,19 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.provinceCd" (ngModelChange)="policyInfo.project.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'province')">
+		                                <div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y'"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.provinceDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly> -->
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.cityCd" (ngModelChange)="policyInfo.project.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'city')">
+		                                <div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y'"><a><i class="fa fa-search" (click)="openGenericLOV('city')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.cityDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly> -->
 									</div>
 								</div>
 							</div>
@@ -304,17 +315,27 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.districtCd" (ngModelChange)="policyInfo.project.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'district')">
+		                                <div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y'"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.districtDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly> -->
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.blockCd" (ngModelChange)="policyInfo.project.blockCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'block')">
+		                                <div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y'"><a><i class="fa fa-search" (click)="openGenericLOV('block')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.blockDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly> -->
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" >
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude" >
 									</div>
 								</div>
 							</div>
@@ -340,12 +361,12 @@
 							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" readonly>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly> -->
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
@@ -354,8 +375,8 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
@@ -366,7 +387,9 @@
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+								<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.regionCd" (ngModelChange)="policyInfo.project.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'region')">
+                                <div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y'"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
+                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.regionDesc" style="margin-left: 6px !important">
 							</div>
 						</div>
 						<div class="input-group">
@@ -377,13 +400,18 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.provinceCd" (ngModelChange)="policyInfo.project.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'province')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.provinceDesc" style="margin-left: 6px !important">
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.cityCd" (ngModelChange)="policyInfo.project.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'city')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.cityDesc" style="margin-left: 6px !important">
+
 									</div>
 								</div>
 							</div>
@@ -396,17 +424,27 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.districtCd" (ngModelChange)="policyInfo.project.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'district')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.districtDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly> -->
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.blockCd" (ngModelChange)="policyInfo.project.blockCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'block')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('block')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.blockDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly> -->
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude">
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude">
 									</div>
 								</div>
 							</div>
@@ -438,8 +476,8 @@
 							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly> -->
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							
 						</div>
@@ -449,8 +487,8 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
@@ -461,7 +499,9 @@
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+								<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.regionCd" (ngModelChange)="policyInfo.project.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'region')">
+                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
+                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.regionDesc" style="margin-left: 6px !important">
 							</div>
 						</div>
 						<div class="input-group">
@@ -471,13 +511,18 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.provinceCd" (ngModelChange)="policyInfo.project.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'province')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.provinceDesc" style="margin-left: 6px !important">
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.cityCd" (ngModelChange)="policyInfo.project.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'city')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.cityDesc" style="margin-left: 6px !important">
+
 									</div>
 								</div>
 							</div>
@@ -489,17 +534,27 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.districtCd" (ngModelChange)="policyInfo.project.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'district')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.districtDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly> -->
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.blockCd" (ngModelChange)="policyInfo.project.blockCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'block')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('block')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.blockDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly> -->
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" >
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude">
 									</div>
 								</div>
 							</div>
@@ -521,8 +576,8 @@
 							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly> -->
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
@@ -543,7 +598,9 @@
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+								<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.regionCd" (ngModelChange)="policyInfo.project.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'region')">
+                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
+                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.regionDesc" style="margin-left: 6px !important">
 							</div>
 						</div>
 						<div class="input-group">
@@ -553,13 +610,18 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.provinceCd" (ngModelChange)="policyInfo.project.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'province')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.provinceDesc" style="margin-left: 6px !important">
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.cityCd" (ngModelChange)="policyInfo.project.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'city')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.cityDesc" style="margin-left: 6px !important">
+
 									</div>
 								</div>
 							</div>
@@ -571,9 +633,19 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.districtCd" (ngModelChange)="policyInfo.project.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'district')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.districtDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly> -->
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.blockCd" (ngModelChange)="policyInfo.project.blockCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'block')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('block')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.blockDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly> -->
 									</div>
 								</div>
 							</div>
@@ -595,8 +667,8 @@
 							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly> -->
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
@@ -605,8 +677,8 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
@@ -617,7 +689,9 @@
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+								<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.regionCd" (ngModelChange)="policyInfo.project.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'region')">
+                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
+                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.regionDesc" style="margin-left: 6px !important">
 							</div>
 						</div>
 						<div class="input-group">
@@ -628,13 +702,18 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.provinceCd" (ngModelChange)="policyInfo.project.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'province')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.provinceDesc" style="margin-left: 6px !important">
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.cityCd" (ngModelChange)="policyInfo.project.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'city')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.cityDesc" style="margin-left: 6px !important">
+
 									</div>
 								</div>
 							</div>
@@ -647,9 +726,19 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.districtCd" (ngModelChange)="policyInfo.project.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'district')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.districtDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly> -->
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.blockCd" (ngModelChange)="policyInfo.project.blockCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'block')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('block')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.blockDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly> -->
 									</div>
 								</div>
 								<div class="row">
@@ -679,8 +768,8 @@
 							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly> -->
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
@@ -689,8 +778,8 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'"  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
@@ -701,7 +790,9 @@
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
+								<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.regionCd" (ngModelChange)="policyInfo.project.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'region')">
+                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
+                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.regionDesc" style="margin-left: 6px !important">
 							</div>
 						</div>
 						<div class="input-group">
@@ -712,13 +803,18 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.provinceCd" (ngModelChange)="policyInfo.project.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'province')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.provinceDesc" style="margin-left: 6px !important">
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" appRequired type="text" [ngModel]="policyInfo.project.cityCd" (ngModelChange)="policyInfo.project.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'city')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.cityDesc" style="margin-left: 6px !important">
+
 									</div>
 								</div>
 							</div>
@@ -730,10 +826,28 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.districtCd" (ngModelChange)="policyInfo.project.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'district')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.districtDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly> -->
+									</div>
+								</div>
+								<div class="row">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Block</label>
+										<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" [ngModel]="policyInfo.project.blockCd" (ngModelChange)="policyInfo.project.blockCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCodeLoc($event, 'block')">
+		                                <div [class.d-none]="policyInfo.openCoverTag != 'Y'" class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('block')"></i></a></div>
+		                                <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.project.blockDesc" style="margin-left: 6px !important">
+										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly> -->
+									</div>
+								</div>
+								<div class="row">
+									<!-- <div class="input-group">
+										<label class="form-control-sm col-sm-2">District</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
-									</div>
+									</div> -->
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">No Claim Period</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hours" readonly>
@@ -1035,7 +1149,9 @@
 
 		</ng-container>
 
-<!-- START ALTERATION -->
+<!-- START ALTERATION ----------------------------------------------------------------------------------------------------------- -->
+<!-- START ALTERATION ----------------------------------------------------------------------------------------------------------- -->
+<!-- START ALTERATION ----------------------------------------------------------------------------------------------------------- -->
 
 		<ng-container *ngIf="alteration">
 
@@ -1263,8 +1379,8 @@
 							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
+							<input [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
@@ -1419,9 +1535,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude">
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude">
 									</div>
 								</div>
 							</div>
@@ -1507,9 +1623,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude">
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude">
 									</div>
 								</div>
 							</div>

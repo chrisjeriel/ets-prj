@@ -323,7 +323,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
         //edit by paul
         this.policyInfo.principalId = String(this.policyInfo.principalId).padStart(6,'0')
-        this.policyInfo.contractorId = String(this.policyInfo.contractorId).padStart(6,'0')
+        this.policyInfo.contractorId = this.policyInfo.contractorId != null ? String(this.policyInfo.contractorId).padStart(6,'0'):null;
         if(this.policyInfo.polWordings !== null){
           this.policyInfo.polWordings.text = "";
           this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText01 == null? '' : this.policyInfo.polWordings.polwText01;
@@ -637,7 +637,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "updateDate"      : this.ns.toDateTimeString(0),
       "updateUser"      : this.ns.getCurrentUser(),
       //" wordings"        : this.policyInfo.wordings.trim(),
-      "polWordings"     : this.policyInfo.polWordings
+      "polWordings"     : this.policyInfo.polWordings,
+      "regionCd"        : this.policyInfo.project.regionCd,
+      "provinceCd"      : this.policyInfo.project.provinceCd,
+      "cityCd"          : this.policyInfo.project.cityCd,
+      "districtCd"      : this.policyInfo.project.districtCd,
+      "blockCd"         : this.policyInfo.project.blockCd,
+      "latitude"        : this.policyInfo.project.latitude,
+      "longitude"       : this.policyInfo.project.longitude
     }
     let wordingSplit = this.policyInfo.polWordings.text.match(/(.|[\r\n]){1,2000}/g);
     if(savePolGenInfoParam.polWordings.createUser == undefined){
@@ -649,9 +656,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     for(let key of this.wordingsKeys){
       savePolGenInfoParam.polWordings[key]='';
     }
-    for(let i=0;i<wordingSplit.length;i++){
-      savePolGenInfoParam.polWordings[this.wordingsKeys[i]] = wordingSplit[i];
-    }
+    if(wordingSplit != null)
+      for(let i=0;i<wordingSplit.length;i++){
+        savePolGenInfoParam.polWordings[this.wordingsKeys[i]] = wordingSplit[i];
+      }
 
     //ADD VALIDATION
    this.loading = true;
@@ -777,6 +785,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.policyInfo.polWordings.text = data.data.text;
       this.policyInfo.polWordings.wordingCd = data.data.wordingCd;
 
+    }else{
+      this.setLocation(data)
     }
     this.deductiblesTable.refreshTable();
   }
@@ -800,6 +810,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         ocTag : 'N',
         lineCd : this.policyInfo.lineCd,
       }
+    }else{
+      
     }
     $('#lov').addClass('ng-dirty');
     this.lov.openLOV();
@@ -872,4 +884,259 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     })
   }
 
+  // ----------------------------from risk-----------------------------------------------------------
+  oldValue:any;
+  checkCodeLoc(ev, field){
+        if(field === 'region'){
+            this.oldValue = this.policyInfo.project.regionCd;
+            if (this.policyInfo.project.regionCd == null || this.policyInfo.project.regionCd == '') {
+                this.policyInfo.project.regionCd = '';
+                this.policyInfo.project.regionDesc = '';
+                this.policyInfo.project.provinceCd = '';
+                this.policyInfo.project.provinceDesc = '';
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('region', this.policyInfo.project.regionCd, '', '', '', '', ev);
+            }
+        } else if(field === 'province'){
+            this.oldValue = this.policyInfo.project.provinceCd;
+            if (this.policyInfo.project.provinceCd == null || this.policyInfo.project.provinceCd == '') {
+                this.policyInfo.project.provinceCd = '';
+                this.policyInfo.project.provinceDesc = '';
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('province', this.policyInfo.project.regionCd, this.policyInfo.project.provinceCd, '', '', '', ev);
+            }
+        } else if(field === 'city'){
+            this.oldValue = this.policyInfo.project.cityCd;
+            if (this.policyInfo.project.cityCd == null || this.policyInfo.project.cityCd == '') {
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('city', this.policyInfo.project.regionCd, this.policyInfo.project.provinceCd, this.policyInfo.project.cityCd, '', '', ev);
+            }
+        } else if(field === 'district') {
+            this.oldValue = this.policyInfo.project.districtCd;
+            if (this.policyInfo.project.districtCd == null || this.policyInfo.project.districtCd == '') {
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('district',this.policyInfo.project.regionCd, this.policyInfo.project.provinceCd, this.policyInfo.project.cityCd, this.policyInfo.project.districtCd, '', ev);
+            }
+        } else if(field === 'block') {
+            this.oldValue = this.policyInfo.project.blockCd;
+            if (this.policyInfo.project.blockCd == null || this.policyInfo.project.blockCd == '') {
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('block',this.policyInfo.project.regionCd, this.policyInfo.project.provinceCd, this.policyInfo.project.cityCd, this.policyInfo.project.districtCd, this.policyInfo.project.blockCd, ev);
+            }
+        } /*else if(field === 'risk') {
+            this.riskLov.checkCode(this.riskCd, ev);
+        }      */        
+    }
+
+     setLocation(data){
+        this.ns.lovLoader(data.ev, 0);
+        var resetSucceedingFields = false;
+
+        if(data.selector == 'region'){
+            if (data.data == null) {
+                this.setRegion(data);
+                if (this.oldValue = data.regionCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                if (this.oldValue = data.data.regionCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.policyInfo.project.provinceCd = '';
+                this.policyInfo.project.provinceDesc = '';
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            }
+
+        } else if(data.selector == 'province'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                if (this.oldValue = data.provinceList[0].provinceCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                if (this.oldValue = data.data.provinceCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            }
+
+        } else if(data.selector == 'city'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                this.setCity(data.provinceList[0].cityList[0]);
+                if (this.oldValue = data.provinceList[0].cityList[0].cityCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                this.setCity(data.data);
+                if (this.oldValue = data.data.cityCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+            }
+
+        } else if(data.selector == 'district'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                this.setCity(data.provinceList[0].cityList[0]);
+                this.setDistrict(data.provinceList[0].cityList[0].districtList[0]);
+                if (this.oldValue = data.provinceList[0].cityList[0].districtList[0].districtCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                this.setCity(data.data);
+                this.setDistrict(data.data);
+                if (this.oldValue = data.data.cityCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+            }
+
+        } else if(data.selector == 'block'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                this.setCity(data.provinceList[0].cityList[0]);
+                this.setDistrict(data.provinceList[0].cityList[0].districtList[0]);
+                this.setBlock(data.provinceList[0].cityList[0].districtList[0].blockList[0]);
+                if (this.oldValue = data.provinceList[0].cityList[0].districtList[0].blockList[0].blockCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                this.setCity(data.data);
+                this.setDistrict(data.data);
+                this.setBlock(data.data);
+                if (this.oldValue = data.data.blockCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+
+            }
+        }
+
+        this.ns.lovLoader(data.ev, 0);
+    }
+
+
+    setDistrict(data){
+        this.policyInfo.project.districtCd = data.districtCd;
+        this.policyInfo.project.districtDesc = data.districtDesc;
+    }
+    setCity(data){
+        this.policyInfo.project.cityCd = data.cityCd;
+        this.policyInfo.project.cityDesc = data.cityDesc;
+    }
+    setBlock(data){
+        this.policyInfo.project.blockCd = data.blockCd;
+        this.policyInfo.project.blockDesc = data.blockDesc;
+    }
+
+    setRegion(data){
+        this.policyInfo.project.regionCd = data.regionCd;
+        this.policyInfo.project.regionDesc = data.regionDesc;
+    }
+    setProvince(data){
+        this.policyInfo.project.provinceCd = data.provinceCd;
+        this.policyInfo.project.provinceDesc = data.provinceDesc;
+    }
+
+    openGenericLOV(selector){
+        this.lovCheckBox = false;
+        if(selector == 'province'){
+            this.passLOVData.regionCd = this.policyInfo.project.regionCd;
+        }else if(selector == "city"){
+            this.passLOVData.regionCd = this.policyInfo.project.regionCd;
+            this.passLOVData.provinceCd = this.policyInfo.project.provinceCd;
+        }else if(selector == 'district'){
+            this.passLOVData.regionCd = this.policyInfo.project.regionCd;
+            this.passLOVData.provinceCd = this.policyInfo.project.provinceCd;
+            this.passLOVData.cityCd = this.policyInfo.project.cityCd;
+        }else if(selector == 'block'){
+            this.passLOVData.regionCd = this.policyInfo.project.regionCd;
+            this.passLOVData.provinceCd = this.policyInfo.project.provinceCd;
+            this.passLOVData.cityCd = this.policyInfo.project.cityCd;
+            this.passLOVData.districtCd = this.policyInfo.project.districtCd;
+        }
+        this.passLOVData.selector = selector;
+        this.lov.openLOV();
+    }
 }
