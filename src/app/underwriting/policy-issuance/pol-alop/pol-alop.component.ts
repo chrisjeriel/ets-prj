@@ -301,7 +301,7 @@ export class PolAlopComponent implements OnInit {
       console.log(data)
       var sectionCovers = data.policy.project.coverage.sectionCovers;
       for( var i = 0; i <sectionCovers.length;i++){
-        if(sectionCovers[i].description == 'Advance Loss of Profit'){
+        if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
           this.polAlopData.annSi = sectionCovers[i].sumInsured;
         }
       }
