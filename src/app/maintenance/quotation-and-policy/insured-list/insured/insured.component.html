@@ -12,9 +12,9 @@
 			                    <div class="form-row custom-row-inline-inset">
 			                    	<div class="input-group">
 			                    		<div class="col-sm"></div>
-			                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag"><label class="form-control-sm">Individual</label></div>
-			                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag"><label class="form-control-sm">Corporate</label></div>
-			                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag"><label class="form-control-sm">Joint</label></div>	
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag" value="I" [(ngModel)]="insuredRecord.corpTag"><label class="form-control-sm">Individual</label></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag" value="C" [(ngModel)]="insuredRecord.corpTag"><label class="form-control-sm">Corporate</label></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag" value="J" [(ngModel)]="insuredRecord.corpTag"><label class="form-control-sm">Joint</label></div>	
 			                    		<div class="col-sm"></div>
 			                    	</div>
 			                    </div>
@@ -24,9 +24,9 @@
 			                    <div class="form-row custom-row-inline-inset">
 			                    	<div class="input-group">
 			                    		<div class="col-sm"></div>
-			                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType"><label class="form-control-sm">VAT Rate</label></div>
-			                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType"><label class="form-control-sm">VAT Exempt</label></div>
-			                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType"><label class="form-control-sm">Zero VAT</label></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType" value="3" [(ngModel)]="insuredRecord.vatTag"><label class="form-control-sm">VAT Rate</label></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType" value="1" [(ngModel)]="insuredRecord.vatTag"><label class="form-control-sm">VAT Exempt</label></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType" value="2" [(ngModel)]="insuredRecord.vatTag"><label class="form-control-sm">Zero VAT</label></div>
 			                    		<div class="col-sm"></div>
 			                    	</div>
 			                    </div>
@@ -38,13 +38,132 @@
 			                			<div class="col-sm-6">
 			                				<div class="form-row">
 			                					<label class="form-control-sm col-sm-5">Insured No</label>
-                        						<input type="text" class="form-control form-control-sm col-sm">
-                        						<input type="checkbox" style="margin-top: 5px !important;margin-left: 5px !important;"><label class="form-control-sm col-sm-1">Active</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.insuredId">
+                        						<input type="checkbox" style="margin-top: 5px !important;margin-left: 5px !important;" [(ngModel)]="insuredRecord.activeTag"><label class="form-control-sm col-sm-1">Active</label>
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Insured Type</label>
+                        						<select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="insuredRecord.insuredType">
+                        							<option value="P">Principal/Insured</option>
+                        							<option value="C">Contractor</option>
+                        						</select>
+			                				</div>
+			                			</div>
+			                		</div>
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important">Name</label>
+                        				<input type="text" class="form-control form-control-sm col-sm" style="margin-right: 10px !important" [(ngModel)]="insuredRecord.insuredName">
+			                		</div>
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Abbreviation</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.insuredAbbr">
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Old Insured No</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.oldInsId">
+			                				</div>
+			                			</div>
+			                		</div>
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">First Name</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.firstName">
+                        						<label class="form-control-sm">M.I.</label>
+                        						<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="insuredRecord.middleInitial">
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Last Name</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.lastName">
+			                				</div>
+			                			</div>
+			                		</div>
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important">Address</label>
+                        				<input type="text" class="form-control form-control-sm col-sm" style="margin-right: 10px !important" [(ngModel)]="insuredRecord.addrLine1">
+			                		</div>
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important"></label>
+                        				<input type="text" class="form-control form-control-sm col-sm" style="margin-right: 10px !important" [(ngModel)]="insuredRecord.addrLine2">
+			                		</div>
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important"></label>
+                        				<input type="text" class="form-control form-control-sm col-sm" style="margin-right: 10px !important" [(ngModel)]="insuredRecord.addrLine3">
+                        				<label class="form-control-sm">Zip Code</label>
+                        				<input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 10px !important" [(ngModel)]="insuredRecord.zipCd">
+			                		</div>
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Contact No</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.contactNo">
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Email Address</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.emailAdd">
 			                				</div>
 			                			</div>
 			                		</div>
 			                	</div>
 			                </fieldset>
+			                <fieldset class="scheduler-border">
+			                	<legend class="scheduler-border">Other Info</legend>
+			                	<div class="form-row custom-row-inline-inset">
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important">Remarks</label>
+                        				<input type="text" class="form-control form-control-sm col-sm" style="margin-right: 10px !important" [(ngModel)]="insuredRecord.remarks">
+			                		</div>
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Created By</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.createUser">
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Date Created</label>
+                        						<input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.createDate">
+			                				</div>
+			                			</div>
+			                		</div>
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Last Update By</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.updateUser">
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Last Update</label>
+                        						<input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.updateDate">
+			                				</div>
+			                			</div>
+			                		</div>
+			                	</div>
+			                </fieldset>
+			                <div class="form-row" style="margin-top: 10px !important;">
+                                <div class="form-group col-sm">
+                                    <div class="text-center">
+                                        <div class="cust-btn-container">
+                                            <button type="button" class="cust-btn"><a>Cancel</a></button>
+                                            <button type="button" class="cust-btn" (click)="onSaveMtnInsured()"><a>Save</a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 						</div>
 						<div class="col-sm"></div>
 					</div>

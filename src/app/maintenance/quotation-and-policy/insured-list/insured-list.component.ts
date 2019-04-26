@@ -38,6 +38,7 @@ export class InsuredListComponent implements OnInit {
 	}
 
 	insuredRecord : any = {
+		insuredId		: null,
 		createUser		: null,
 	    createDate		: null,
 	    updateUser		: null,
@@ -63,9 +64,9 @@ export class InsuredListComponent implements OnInit {
 	            insuredName   	: i.insuredName,
 	            insuredAbbr		: i.insuredAbbr,
 	            activeTag     	: this.cbFunc(i.activeTag),
-	            insuredType    	: i.insuredType,
-	            corpTag         : i.corpTag,
-	            vatTag         	: i.vatTag,
+	            insuredType    	: i.insuredTypeDesc,
+	            corpTag         : i.corpTagDesc,
+	            vatTag         	: i.vatTagDesc,
 	            address    		: i.address,
 
 	            createUser		: i.createUser,
@@ -85,6 +86,7 @@ export class InsuredListComponent implements OnInit {
   onRowClick(event){
   	console.log(event);
   	if(event !== null){
+  		this.insuredRecord.insuredId	= event.insuredId;
 	  	this.insuredRecord.createUser	= event.createUser;
 	  	this.insuredRecord.createDate	= this.ns.toDateTimeString(event.createDate);
 	  	this.insuredRecord.updateUser	= event.updateUser;
@@ -92,9 +94,15 @@ export class InsuredListComponent implements OnInit {
   	}
   }
 
+  onRowDblClick(event){
+  	this.insuredRecord.insuredId = parseInt(event.target.closest("tr").children[0].innerText);
+  	this.router.navigate(['/insured-mtn', { insuredId : this.insuredRecord.insuredId }], { skipLocationChange: true });
+
+  }
+
   onClickAdd(event){
   	console.log('add');
-  	this.router.navigate(['/insured-mtn', { tableInfo : ''}], { skipLocationChange: true });
+  	this.router.navigate(['/insured-mtn', { insuredId : '' }], { skipLocationChange: true });
   }
 
 }
