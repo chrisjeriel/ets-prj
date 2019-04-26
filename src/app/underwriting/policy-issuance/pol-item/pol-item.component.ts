@@ -102,8 +102,8 @@ export class PolItemComponent implements OnInit {
     
     mlpPassData: any = {
         tableData: [],
-        tHeader:  ['Item No', 'Quantity', 'Description of Machinery', 'Indemnity Period(months)', 'Relative Importance(%)', 'Spare Parts in stock standby Units'],
-        dataTypes:  ['text', 'number', 'text', 'number', 'percent', 'number'],
+        tHeader:  ['Quantity', 'Description of Machinery', 'Indemnity Period(months)', 'Relative Importance(%)', 'Spare Parts in stock standby Units'],
+        dataTypes:  [ 'number', 'text', 'number', 'percent', 'number'],
         nData:  {
             "itemNo":null,
             "quantity": null,
@@ -119,16 +119,16 @@ export class PolItemComponent implements OnInit {
         checkFlag:"true",
         addFlag:"true",
         deleteFlag:"true",
-        widths:  ['1','1','auto','1','1','195'],
+        widths:  ['1','auto','1','1','195'],
         searchFlag : true,
-        keys:['itemNo','quantity','itemDesc','ipl','relativeImp','standbyUnit'],
+        keys:['quantity','itemDesc','ipl','relativeImp','standbyUnit'],
         pageLength: 'unli'
     }
     
     dosGoodsPassData: any = {
         tableData: [],
-        tHeader: ["Item No", "Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
-        dataTypes: ["text", "text", "text", "text", "currency"],
+        tHeader: ["Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
+        dataTypes: [ "text", "text", "text", "currency"],
         nData: {
             "itemNo":null,
             "chamberNo": null,
@@ -140,21 +140,21 @@ export class PolItemComponent implements OnInit {
             "updateDate": this.ns.toDateTimeString(0),
             "updateUser":JSON.parse(window.localStorage.currentUser).username
         },
-        widths: ['1','1','auto','1','228'],
+        widths: ['1','auto','1','228'],
         // pageLength: 5,
         checkFlag:true,
         addFlag:true,
         deleteFlag:true,
-        total:[null,null,null,'Total','sumInsured'],
-        keys:['itemNo','chamberNo','stockType','noClaimPd','sumInsured'],
+        total:[null,null,'Total','sumInsured'],
+        keys:['chamberNo','stockType','noClaimPd','sumInsured'],
         pageLength: 5,
         searchFlag:true
     }
 
     dosMachineryPassData: any = {
         tableData: [],
-        tHeader: ["Item No", "Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"],
-        dataTypes: ["text", "number", "text", "text", "currency"],
+        tHeader: ["Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"],
+        dataTypes: [ "number", "text", "text", "currency"],
         nData: {
             "itemNo":null,
             "standbyUnit": null,
@@ -166,20 +166,20 @@ export class PolItemComponent implements OnInit {
             "updateDate": this.ns.toDateTimeString(0),
             "updateUser":JSON.parse(window.localStorage.currentUser).username
         } ,
-        widths:  ['1','1','auto','1','228'],
+        widths:  ['1','auto','1','228'],
         pageLength: 5,
         checkFlag:true,
         addFlag:true,
         deleteFlag:true,
-        total:[null,null,null,'Total','sumInsured'],
-        keys:['itemNo','standbyUnit','itemDesc','makeYear','sumInsured'],
+        total:[null,null,'Total','sumInsured'],
+        keys:['standbyUnit','itemDesc','makeYear','sumInsured'],
         searchFlag: true
     }
 
     cecPassData: any = {
         tableData:[],
-        tHeader: ['Item No.', 'Insured Item and Location', 'Deductible', 'Sum Insured'],
-        dataTypes:['string','string', 'string', 'currency'],
+        tHeader: [ 'Insured Item and Location', 'Deductible', 'Sum Insured'],
+        dataTypes:['string', 'string', 'currency'],
         nData: {
             "itemNo":null,
             "quantity": null,
@@ -194,10 +194,10 @@ export class PolItemComponent implements OnInit {
         checkFlag:true,
         addFlag:true,
         deleteFlag:true,
-        total:[null,null,'Total','sumInsured'],
-        widths: ["1","auto","auto","228"],
+        total:[null,'Total','sumInsured'],
+        widths: ["auto","auto","228"],
         searchFlag:true,
-        keys:['itemNo','itemDesc','deductibleTxt','sumInsured'],
+        keys:['itemDesc','deductibleTxt','sumInsured'],
         pageLength:'unli'
     }
 
