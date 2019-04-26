@@ -35,7 +35,9 @@ export class LovComponent implements OnInit {
 
   modalOpen: boolean = false;
 
-  @Input() lovCheckBox: boolean = false;
+  @Input() set lovCheckBox(val:boolean){
+    this.passTable.checkFlag = val;
+  }
   showButton: boolean = false;
   theme =  window.localStorage.getItem("selectedTheme");
 
@@ -43,9 +45,9 @@ export class LovComponent implements OnInit {
     private quotationService: QuotationService, private router: Router) { }
 
   ngOnInit() {
-  	  if(this.lovCheckBox){
-        this.passTable.checkFlag = true;
-      }
+  	  // if(this.lovCheckBox){
+     //    this.passTable.checkFlag = true;
+     //  }
   }
 
   select(data){

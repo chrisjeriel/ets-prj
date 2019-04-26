@@ -225,6 +225,26 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   showPolicyNo: string;
   lineClasses: any[] = [];
 
+  wordingsKeys:string[] = [
+    'polwText01',
+    'polwText02',
+    'polwText03',
+    'polwText04',
+    'polwText05',
+    'polwText06',
+    'polwText07',
+    'polwText08',
+    'polwText09',
+    'polwText10',
+    'polwText11',
+    'polwText12',
+    'polwText13',
+    'polwText14',
+    'polwText15',
+    'polwText16',
+    'polwText17'
+  ]
+
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
   constructor(private route: ActivatedRoute, private modalService: NgbModal,
@@ -616,7 +636,15 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "totalSi"         : this.policyInfo.project.totalSi,
       "updateDate"      : this.ns.toDateTimeString(0),
       "updateUser"      : this.ns.getCurrentUser(),
-      "wordings"        : this.policyInfo.wordings.trim()
+      //" wordings"        : this.policyInfo.wordings.trim(),
+      "polWordings"     : this.policyInfo.polWordings
+    }
+    let wordingSplit = this.policyInfo.polWordings.text.match(/(.|[\r\n]){1,2000}/g);
+    for(let key of this.wordingsKeys){
+      savePolGenInfoParam.polWordings[key]='';
+    }
+    for(let i=0;i<wordingSplit.length;i++){
+      savePolGenInfoParam.polWordings[this.wordingsKeys[i]] = wordingSplit[i];
     }
 
     //ADD VALIDATION
@@ -739,7 +767,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
         this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length - 1].showMG = 0;
       }
-    }else if (data == 'polWordings'){
+    }else if (data.selector == 'polWordings'){
+      this.policyInfo.polWordings.text = data.data.text;
+      this.policyInfo.polWordings.wordingCd = data.data.wordingCd;
 
     }
     this.deductiblesTable.refreshTable();
@@ -757,6 +787,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }
       this.passLOVData.hide = this.passDataDeductibles.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
     }else if(data == 'polWordings'){
+      this.lovCheckBox = false;
       this.passLOVData.selector = 'polWordings';
       this.passLOVData.params = {
         activeTag:'Y',
@@ -764,6 +795,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         lineCd : this.policyInfo.lineCd,
       }
     }
+    $('#lov').addClass('ng-dirty');
     this.lov.openLOV();
   }
 

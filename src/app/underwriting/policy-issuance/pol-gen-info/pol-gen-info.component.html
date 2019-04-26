@@ -2087,7 +2087,7 @@
 <app-cancel-button *ngIf="!alteration" (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
 <app-cancel-button *ngIf="alteration" (onYes)="prepareParam('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
 
-<app-lov #dedLov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+<app-lov #dedLov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="lovCheckBox"></app-lov>
 <app-sucess-dialog #dedSuccess [message]="dialogMsg" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <!-- end edit by paul -->
