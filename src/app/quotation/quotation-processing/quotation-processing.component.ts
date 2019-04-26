@@ -23,7 +23,8 @@ export class QuotationProcessingComponent implements OnInit {
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
     @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
     @ViewChild('copyRiskLOV') copyRiskLOV: MtnRiskComponent;
-    @ViewChildren(CedingCompanyComponent) cedingCoLovs: QueryList<CedingCompanyComponent>;
+    @ViewChild('ceding') cedingLov: CedingCompanyComponent;
+    @ViewChild('cedingIntComp') cedingIntLov: CedingCompanyComponent;
 
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -611,9 +612,9 @@ showCedingCompanyIntCompLOV() {
         } else if(field === 'copyRisk') {
             this.copyRiskLOV.checkCode(this.copyRiskId, '#copyRiskLOV', ev);
         } else if(field === 'cedingCo') {
-            this.cedingCoLovs['first'].checkCode(this.copyCedingId, ev);
+            this.cedingLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev, '#cedingCompanyLOV');            
         } else if(field === 'cedingCoIntComp') {
-            this.cedingCoLovs['last'].checkCode(this.copyCedingId, ev);
+            this.cedingIntLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev, '#cedingCompanyIntCompLOV');
         } 
     }
 

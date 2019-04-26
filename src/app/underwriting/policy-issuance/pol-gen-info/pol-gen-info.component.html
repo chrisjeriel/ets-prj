@@ -57,7 +57,7 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-2">Policy No</label>
-										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo" readonly>
+										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo" readonly style="font-weight: bold;">
 										<!-- <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
 										ngbTooltip="Year">
 										<input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
@@ -991,7 +991,7 @@
 										<div class="input-group" style="    margin-top: -2px !important;
 										margin-bottom: -12px !important;">
 										<label class="form-control-sm col-sm-2">Policy No</label>
-										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo" readonly>
+										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo" readonly style="font-weight: bold;">
 										<!-- <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
 										ngbTooltip="Year">
 										<input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
@@ -1724,13 +1724,14 @@
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
-						<label class="form-control-sm" style="margin-right:2px !important;">Currency</label>
-						<select class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.currencyCd" disabled>
+						<label class="form-control-sm" style="margin-right: -3px !important;">Currency</label>
+						<!-- <select class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.currencyCd" disabled>
 							<option value=""></option>
 							<option value="USD">USD</option>
 							<option value="PHP">PHP</option>
 							<option value="EUR">EUR</option>
-						</select>
+						</select> -->
+						<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.currencyCd" readonly>
 
 						<label class="form-control-sm">Exch. Rt.</label>
 						<input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required appCurrencyRate onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.currencyRt"
