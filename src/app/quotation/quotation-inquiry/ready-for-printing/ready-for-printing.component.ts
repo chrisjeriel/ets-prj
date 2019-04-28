@@ -393,7 +393,6 @@ export class ReadyForPrintingComponent implements OnInit {
     
             var finalBlob = new Blob(buffers,{ type: "application/pdf" } );
 
-            
              var downloadURL = window.URL.createObjectURL(finalBlob);
              window.open(downloadURL);
 

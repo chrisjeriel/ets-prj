@@ -13,31 +13,24 @@
 							<div class="col-sm">
 								<div class="input-group " style="margin-bottom: -4px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Policy No</label>
-									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
-									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Year">
-									<input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Sequence No">
-									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Co Code">
-									<input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Co Series No">
-									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-									 ngbTooltip="Alt No">
+									<input id=line type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line" appRequired placement="bottom" [(ngModel)]="splitPolNo[0]" (ngModelChange)="searchPolNoFields($event, 'lineCd')" (change)="checkPolNoParams($event);">
+									<input id=year  [disabled]="disabledSearch" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Year" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' maxlength="4" [(ngModel)]="splitPolNo[1]" (ngModelChange)="searchPolNoFields($event, 'year')" (change)="checkPolNoParams($event);">
+									<input id=seqNo [disabled]="disabledSearch" type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Sequence No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='5' maxlength="5" [(ngModel)]="splitPolNo[2]" (ngModelChange)="searchPolNoFields($event, 'seqNo')" (change)="checkPolNoParams($event);">
+									<input id=coCode [disabled]="disabledSearch" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Co Code" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='3' maxlength="3" [(ngModel)]="splitPolNo[3]" (ngModelChange)="searchPolNoFields($event, 'coCode')" (change)="checkPolNoParams($event);">
+									<input id=coSeriesNo  [disabled]="disabledSearch" type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Co Series No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='4' maxlength="4" [(ngModel)]="splitPolNo[4]" (ngModelChange)="searchPolNoFields($event, 'coSeriesNo')" (change)="checkPolNoParams($event);">
+									<input id=altNo disabled type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Alt No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='3' maxlength="3" [(ngModel)]="splitPolNo[5]" (ngModelChange)="searchPolNoFields($event, 'altNo')" (change)="checkPolNoParams($event);">
 									<span>&nbsp;</span>
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								</div>
-								<div class="btn-cont text-center">
-									<div class="cust-btn-container">
-										<button type="button" class="cust-btn"><a>Clear</a></button>
-										<button type="button" class="cust-btn"><a>Search</a></button>
-									</div>
+									<div id=search class="text-search-ico"><a><i id=searchicon class="fa fa-search" (click)="showLOV();"></i></a></div>
+									<button type="button" class="cust" style="margin-left: 10px ! important" (click)="clear()"><a>Clear</a></button>
 								</div>
 							</div>
 							<div class="col-sm-1">
-
 							</div>
-
 						</div>
 
 					</fieldset>
@@ -52,50 +45,50 @@
 							<div class="input-group">
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Type of Cession</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="typeOfCession">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="typeOfCession" disabled="disabled">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Line Class</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" disabled [ngModel]="policyInfo.lineClassDesc">
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group">
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" disabled [ngModel]="policyInfo.quotationNo">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Status</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" disabled [ngModel]="policyInfo.statusDesc">
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group">
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Ceding Company</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled [ngModel]="policyInfo.cedingId">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled="disabled" [ngModel]="policyInfo.cedingName" >
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group">
 								<label class="col-sm-1"></label>
-								<label class="form-control-sm col-sm-2" for="inputQuonum">Co Ref No</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm">
+								<label class="form-control-sm col-sm-2" for="coRefNo">Co Ref No</label>
+								<input id=coRefNo type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [(ngModel)]="policyInfo.coRefNo" (change)="addNgDirty('coRefNo');">
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group" *ngIf="checkRetrocession()">
 								<label class="col-sm-1"></label>
-								<label class="form-control-sm col-sm-2" for="inputQuonum">Reinsurance From</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled="disabled">
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Reinsurance From</label>  
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled  [(ngModel)]="policyInfo.reinsurerName" >
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group" *ngIf="checkRetrocession()">
 								<label class="col-sm-1"></label>
-								<label class="form-control-sm col-sm-2" for="inputQuonum">RI Binder No</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm">
+								<label class="form-control-sm col-sm-2" for="riBinderNo">RI Binder No</label>
+								<input id=riBinderNo type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" (change)="addNgDirty('riBinderNo');" [(ngModel)]="policyInfo.riBinderNo"  >
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group">
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Intermediary</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled  [ngModel]="policyInfo.intmId">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled [ngModel]="policyInfo.intmName">
 								<label class="col-sm-1"></label>
 							</div>
 						</div>
@@ -111,51 +104,51 @@
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Principal</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3 sec-input" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled [ngModel]="policyInfo.principalId" appSequence='2'>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3 sec-input" disabled="disabled" [ngModel]="policyInfo.principalName">
 								<label class="form-control-sm col-sm-1" for="inputQuonum">Contractor</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled [ngModel]="policyInfo.contractorId" appSequence='2'>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled [ngModel]="policyInfo.contractorName">
 							</div>
 							<div class="input-group">
-								<label class="form-control-sm col-sm-2" for="inputQuonum">Insured</label>
-								<textarea class="form-control form-control-sm cust-sm col-sm"></textarea>
+								<label class="form-control-sm col-sm-2" for="insured">Insured</label>
+								<textarea id=insured class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [(ngModel)]="policyInfo.insuredDesc" style="font-size: 11px;" appRequired rows="3" (change)="addNgDirty('insured');"></textarea>
 							</div>
-							<div class="input-group">
+							<div class="input-group" style="margin-top: -3px">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Risk</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm" disabled [ngModel]="policyInfo.riskName">
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Object</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3 sec-input" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled [ngModel]="policyInfo.project.objectId">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3 sec-input" disabled [ngModel]="policyInfo.project.object">
 								<label class="form-control-sm col-sm-1" for="inputQuonum">Region</label>
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-5" disabled="disabled">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-5" disabled [ngModel]="policyInfo.project.regionDesc">
 							</div>
 
 
 							<div class="input-group cont2">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Nature of Work / Items</label>
-								<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3" disabled="disabled"></textarea>
+								<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3" disabled [ngModel]="policyInfo.projDesc" style="font-size: 12px;"> </textarea>
 								<label class="form-control-sm col-sm-1" for="inputQuonum">Province</label>
-								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-5" disabled="disabled">
-								<div class="input-group latLong">
+								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-5" disabled [ngModel]="policyInfo.project.provinceDesc">
+								<div class="input-group latLong" style="margin-top: -3px;">
 									<label class="form-control-sm col-sm-2" for="inputQuonum">City/Town</label>
-									<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-10" disabled="disabled">
+									<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-10" disabled [ngModel]="policyInfo.project.cityDesc">
 								</div>
 							</div>
-							<div class="input-group cont1">
+							<div class="input-group cont1" style="margin-top: 0px;">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Site</label>
-								<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3" disabled="disabled"></textarea>
+								<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3" disabled [ngModel]="policyInfo.project.site" style="font-size: 12px;"></textarea>
 								<label class="form-control-sm col-sm-1" for="inputQuonum">District</label>
-								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled="disabled">
+								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled [ngModel]="policyInfo.project.districtDesc">
 								<label class="form-control-sm col-sm-1" for="inputQuonum">Block</label>
-								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled="disabled">
-								<div class="input-group latLong">
-									<label class="form-control-sm col-sm-2" for="inputQuonum">Lat</label>
-									<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-4">
-									<label class="form-control-sm col-sm-2" for="inputQuonum">Long</label>
-									<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-4">
+								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled [ngModel]="policyInfo.project.blockDesc">
+								<div class="input-group latLong" style="margin-top: -3px;">
+									<label class="form-control-sm col-sm-2" for="inputLat">Lat</label>
+									<input id=inputLat class="form-control form-control-sm cust-sm col-sm-4" [disabled]="disabledBool" [(ngModel)]="policyInfo.project.latitude" (change)="addNgDirty('inputLat');"  >
+									<label class="form-control-sm col-sm-2" for="inputLong">Long</label>
+									<input id=inputLong class="form-control form-control-sm cust-sm col-sm-4" [disabled]="disabledBool" [(ngModel)]="policyInfo.project.longitude" (change)="addNgDirty('inputLong');">
 								</div>
 							</div>
 						</div>
@@ -166,11 +159,28 @@
 
 				<div class="col-md-13 text-center" style="margin-top: 10px; margin-bottom: 5px;">
 					<div class="cust-btn-container">
-						<button type="button" class="cust-btn"><a>Cancel</a></button>
-						<button type="button" class="cust-btn"><a>Save</a></button>
+						<button type="button" class="cust-btn" (click)= onClickCancel()><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)= onClickSave() [disabled]="disabledBool"><a>Save</a></button>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
 </div>
+
+<app-modal hidden [btnTitle]="'List Of Values'" id="polLovMdl">
+    <div header>List Of Values</div>
+    <div body>
+       <app-cust-non-datatable [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);"></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();cancel();"><a>Cancel</a></button>
+        <button  class="cust-btn" type="button" (click)="modalService.dismissAll();setDetails($event);"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
+<app-sucess-dialog id="updatePolGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="prepareParam('cancel')" [url]="''" ></app-cancel-button>

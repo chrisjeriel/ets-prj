@@ -802,7 +802,17 @@ export class UnderwritingService {
         };
 
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolGenInfo', JSON.stringify(savePolGenInfoParam), header);
-    }    
+    }  
+
+    updatePolGenInfo(savePolGenInfoParam:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolGenInfo', JSON.stringify(savePolGenInfoParam), header);
+    }  
 
     getPolicyEndorsementOC(policyId: string, policyNo: string) {
         const params = new HttpParams()

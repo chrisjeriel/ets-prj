@@ -348,6 +348,7 @@ import { WfReminderFormComponent } from './home/wf-reminders/wf-reminder-form/wf
 import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
 import { PremiumCollComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/premium-coll/premium-coll.component';
 import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-inq-claims/pol-inq-claims.component';
+import { SequenceDirective } from './_directives/sequence.directive';
 
 
 
@@ -705,6 +706,7 @@ import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information
         PolSummarizedInqComponent,
         PremiumCollComponent,
         PolInqClaimsComponent,
+        SequenceDirective,
     ],
 
     providers: [
