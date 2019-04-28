@@ -390,12 +390,13 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.isModify = false;
 		this.policyInfo = this.selectedPolicy;
 		this.modalService.dismissAll();
-		console.log(this.policyInfo.policyNo);
+		console.log(this.policyInfo);
 		this.polHoldCoverParams.policyId = this.policyInfo.policyId;
 		this.polHoldCoverParams.lineCd = this.policyInfo.policyNo.split('-')[0];
 		this.tempPolNo = this.policyInfo.policyNo.split('-');
 		//if selected policy is already in hold cover
 		if(this.policyInfo.statusDesc === 'On Hold Cover'){
+			console.log('toretrievepolholdcover');
 			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 		}
 		//else clear all fields
