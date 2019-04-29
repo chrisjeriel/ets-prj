@@ -619,9 +619,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">IPL</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Months" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Month/s" readonly>
 										<label class="form-control-sm col-sm-2">Time Excess</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Days" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Day/s" readonly>
 									</div>
 								</div>
 							</div>
@@ -694,7 +694,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">No Claim Period</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hours" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" readonly>
 									</div>
 								</div>
 							</div>
@@ -1151,7 +1151,7 @@
 	<div class="row">
 		<div class="col-sm-8">
 			<!-- LINE: CAR -->
-			<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 6px !important; padding-top: 6px !important;">
+			<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 6px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -1338,7 +1338,7 @@
 				</div>
 			</fieldset>
 
-			<fieldset *ngIf="line === 'EEI' || line === 'CEC'" class="scheduler-border cust-fs-padlr-offset">
+			<fieldset *ngIf="line === 'EEI' || line === 'CEC'" class="scheduler-border cust-fs-padlr-offset" style="padding-top: 13px !important; padding-bottom: 12px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -1421,7 +1421,7 @@
 				</div>
 			</fieldset>
 
-			<fieldset *ngIf="line === 'MBI' || line === 'BPV'" class="scheduler-border cust-fs-padlr-offset">
+			<fieldset *ngIf="line === 'MBI' || line === 'BPV'" class="scheduler-border cust-fs-padlr-offset" style="padding-top: 13px !important; padding-bottom: 12px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -1435,7 +1435,7 @@
 						</div>
 
 						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Insured</label>
+							<label class="form-control-sm col-sm-1"></label>
 							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
@@ -1505,7 +1505,7 @@
 				</div>
 			</fieldset>
 
-			<fieldset *ngIf="line === 'MLP'" class="scheduler-border cust-fs-padlr-offset">
+			<fieldset *ngIf="line === 'MLP'" class="scheduler-border cust-fs-padlr-offset" style="padding-top: 13px !important; padding-bottom: 12px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -1518,7 +1518,7 @@
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Insured</label>
+							<label class="form-control-sm col-sm-1"></label>
 							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
@@ -1572,10 +1572,10 @@
 								</div>
 								<div class="row">
 									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Time Exc. </label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" readonly>
 										<label class="form-control-sm col-sm-2">IPL</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" readonly ngbTooltip="Month/s">
+										<label class="form-control-sm col-sm-2">Time Excess</label>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" readonly ngbTooltip="Day/s">
 									</div>
 								</div>
 							</div>
@@ -1587,7 +1587,7 @@
 				</div>
 			</fieldset>
 
-			<fieldset *ngIf="line === 'DOS'" class="scheduler-border cust-fs-padlr-offset">
+			<fieldset *ngIf="line === 'DOS'" class="scheduler-border cust-fs-padlr-offset" style="padding-top: 13px !important; padding-bottom: 12px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -1600,7 +1600,7 @@
 							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
 						</div>
 						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Insured</label>
+							<label class="form-control-sm col-sm-1"></label>
 							<textarea class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
@@ -1655,7 +1655,7 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">No Claim Period </label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" readonly ngbTooltip="Hour/s">
 										<!-- <label class="form-control-sm col-sm-2">IPL</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" readonly> -->
 									</div>
@@ -1670,8 +1670,7 @@
 			</fieldset>
 		</div>
 		<div class="col-sm-4" style="padding-left: 0px;">
-			<fieldset class="scheduler-border cust-fs-padlr-offset">
-				<!-- style="height: 100%;" -->
+			<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 5px !important; padding-bottom: 4px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Production Booking</legend>
 				<div class="col-sm-1">
 				</div>
@@ -1809,7 +1808,7 @@
 		</fieldset>
 	</div>
 	<div class="col-sm-4" style="padding-left: 0px;">
-		<fieldset class="scheduler-border" style="padding-top: 12px !important; padding-bottom:4px !important;">
+		<fieldset class="scheduler-border" style="padding-top: 14px !important; padding-bottom: 2px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="custom-row-inline-inset">
 				<div class="form-row" style="margin-top: 10px; margin-bottom: -4px;">

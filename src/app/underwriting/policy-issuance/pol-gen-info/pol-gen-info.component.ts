@@ -251,7 +251,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.passDataDeductibles.checkFlag = false;
         this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       }
-            
+
     });
 
     this.getPolGenInfo();
