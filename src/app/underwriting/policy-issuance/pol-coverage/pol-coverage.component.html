@@ -85,14 +85,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare" (ngModelChange)="coverageData.pctShare = $event" style="text-align: right !important" appRequired appCurrencyRate>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare | number:'1.6-6'" (ngModelChange)="coverageData.pctShare = $event" style="text-align: right !important" appRequired appCurrencyRate>
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.pctPml" (ngModelChange)=" coverageData.pctPml = $event" appCurrencyRate>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.pctPml | number:'1.6-6'" (ngModelChange)=" coverageData.pctPml = $event" appCurrencyRate>
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Value</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.totalValue"  style="text-align: right !important" (ngModelChange)="coverageData.totalValue = $event" (blur)="coverageData.pctShare = (coverageData.totalSi/coverageData.totalValue*100); " appRequired appCurrency>
+       <input type="text" class="form-control form-control-sm calc" [ngModel]="coverageData?.totalValue | number:'1.2-2'"  style="text-align: right !important" (ngModelChange)="coverageData.totalValue = $event" (blur)="coverageData.pctShare = (coverageData.totalSi/coverageData.totalValue*100);focusBlur() " appRequired appCurrency>
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -241,14 +241,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm calc" appCurrencyRate appRequired [ngModel] = "altCoverageData.pctShare | number:'1.6-6'" (ngModelChange) = "altCoverageData.pctShare = $event">
+       <input type="text" class="form-control form-control-sm req" appCurrencyRate appRequired [ngModel] = "altCoverageData.pctShare | number:'1.6-6'" (ngModelChange) = "altCoverageData.pctShare = $event">
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm req" appCurrencyRate [ngModel] = "altCoverageData.pctPml | number:'1.2-2'" (ngModelChange)="altCoverageData.pctPml">
+       <input type="text" class="form-control form-control-sm req" appCurrencyRate [ngModel] = "altCoverageData.pctPml | number:'1.2-2'" (ngModelChange)="altCoverageData.pctPml = $event">
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm req" appCurrency appRequired [ngModel] = "altCoverageData.totalValue"  (ngModelChange) = "altCoverageData.totalValue = $event" (blur)="altCoverageData.pctShare = (comtotalSi/altCoverageData.totalValue)*100">
+       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [ngModel] = "altCoverageData.totalValue"  (ngModelChange) = "altCoverageData.totalValue = $event" (blur)="altCoverageData.pctShare = (comtotalSi/altCoverageData.totalValue)*100;focusBlur()">
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -284,7 +284,7 @@
             <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
             
             <button type="button" class="cust-btn" (click)="pol($event)" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
-            <button type="button" class="cust-btn" (click)="alterationSave()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="onClickSaveAlt()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
           </div>
         </div>
       </div>
@@ -302,6 +302,7 @@
       <button class="cust-btn" type="button" (click)=" saveCatPeril()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
     </div>
 </app-modal>
+<app-confirm-save #confirmSave (onYes)="alterationSave()"></app-confirm-save>
 </ng-container>
 
 <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
