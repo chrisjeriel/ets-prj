@@ -84,13 +84,12 @@ export class InsuredListComponent implements OnInit {
   }
 
   onRowClick(event){
-  	console.log(event);
   	if(event !== null){
   		this.insuredRecord.insuredId	= event.insuredId;
 	  	this.insuredRecord.createUser	= event.createUser;
-	  	this.insuredRecord.createDate	= this.ns.toDateTimeString(event.createDate);
+	  	this.insuredRecord.createDate	= this.ns.toDateTimeString(event.createDate).substring(0,16);
 	  	this.insuredRecord.updateUser	= event.updateUser;
-	  	this.insuredRecord.updateDate	= this.ns.toDateTimeString(event.updateDate);
+	  	this.insuredRecord.updateDate	= this.ns.toDateTimeString(event.updateDate).substring(0,16);
   	}
   }
 
@@ -101,8 +100,12 @@ export class InsuredListComponent implements OnInit {
   }
 
   onClickAdd(event){
-  	console.log('add');
   	this.router.navigate(['/insured-mtn', { insuredId : '' }], { skipLocationChange: true });
+  }
+
+  onClickEdit(event){
+  	this.insuredRecord.insuredId = parseInt(event.target.closest("tr").children[0].innerText);
+  	this.router.navigate(['/insured-mtn', { insuredId : this.insuredRecord.insuredId }], { skipLocationChange: true });
   }
 
 }

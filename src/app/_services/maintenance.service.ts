@@ -241,7 +241,7 @@ export class MaintenanceService{
 
     getMtnSpoilageReason(spoilCd){
     	const params = new HttpParams()
-			.set('spoilCd', spoilCd)
+			.set('spoilCd', spoilCd);
 
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSpoilageReason', {params});
     }
