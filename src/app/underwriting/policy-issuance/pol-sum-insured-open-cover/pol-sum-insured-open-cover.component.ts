@@ -28,6 +28,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   };
   dialogIcon: string = "";
   cancelFlag : boolean = false;
+  loading: boolean = false;
   @Input() policyInfo:any;
   @Input() inqFlag: boolean;
 
@@ -44,6 +45,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   }
 
   fetchData(){
+  	this.loading = true;
 	this.uw.getSumInsOc(this.policyId).subscribe(data=>{
 		this.coverageInfo.currencyCd	= data['policyOc'].projectOc.coverageOc.currencyCd;
 		this.coverageInfo.currencyRt	= data['policyOc'].projectOc.coverageOc.currencyRt;
@@ -52,6 +54,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 		this.coverageInfo.pctPml		= data['policyOc'].projectOc.coverageOc.pctPml;
 		this.coverageInfo.totalValue	= data['policyOc'].projectOc.coverageOc.totalValue;
 		setTimeout(a=>{
+			this.loading = false;
 			$('[appCurrency]').focus()
 			$('[appCurrency]').blur()
 			$('[appOtherRates]').focus()
