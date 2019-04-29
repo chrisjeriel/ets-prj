@@ -120,18 +120,22 @@ export class InwardPolBalanceComponent implements OnInit {
 
   fetchData(){
     this.underwritingservice.getInwardPolBalance(this.policyInfo.policyId).subscribe((data:any)=>{
-      this.currency = data.policyList[0].project.coverage.currencyCd;
-      this.totalPrem = data.policyList[0].project.coverage.totalPrem;
-      if(data.policyList[0].inwPolBalance.length !=0){
-        this.passData.tableData = data.policyList[0].inwPolBalance.filter(a=>{
-          a.dueDate     = this.ns.toDateTimeString(a.dueDate);
-          a.bookingDate = this.ns.toDateTimeString(a.bookingDate);
-          a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
-          return true;
-        });
+      console.log(data);
+      if(data.policyList.length != 0){
+        this.currency = data.policyList[0].project.coverage.currencyCd;
+        this.totalPrem = data.policyList[0].project.coverage.totalPrem;
+        if(data.policyList[0].inwPolBalance.length !=0){
+          this.passData.tableData = data.policyList[0].inwPolBalance.filter(a=>{
+            a.dueDate     = this.ns.toDateTimeString(a.dueDate);
+            a.bookingDate = this.ns.toDateTimeString(a.bookingDate);
+            a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
+            return true;
+          });
 
-        this.passData.nData.dueDate = this.ns.toDateTimeString(data.policyList[0].inceptDate);
-        this.passData.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate); 
+          this.passData.nData.dueDate = this.ns.toDateTimeString(data.policyList[0].inceptDate);
+          this.passData.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate); 
+        }
+        
       }
       this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       this.instllmentTable.refreshTable();
