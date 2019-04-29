@@ -203,7 +203,6 @@ export class GeneralInfoComponent implements OnInit {
 			this.sub = this.route.params.subscribe(params => {
 				this.from = params['from'];
 				if (this.from == "quo-processing") {
-					//this.typeOfCession = params['typeOfCession'];
 					this.quotationNo = (this.quoteInfo.quotationNo === '') ? params['quotationNo'] : this.quoteInfo.quotationNo;
 
 					if(params['exclude'] != undefined) {

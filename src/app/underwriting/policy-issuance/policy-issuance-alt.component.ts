@@ -1,6 +1,7 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UnderwritingService } from '@app/_services';
 
 @Component({
     selector: 'app-policy-issuance-alt',
@@ -34,15 +35,15 @@ export class PolicyIssuanceAltComponent implements OnInit {
     title:string = "Policy / Policy Issuance / Create Alteration"
     exitLink:string;
 
-    constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router) {}
+    constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, private us: UnderwritingService) {}
 
     ngOnInit() {
          this.sub = this.route.params.subscribe(params => {
             this.alterFlag = params['alteration'];
             this.policyInfo.editPol = JSON.parse(params['editPol']);
             this.policyInfo.status = params['statusDesc'];
-            this.policyInfo.policyId = params['policyId'];
-            this.policyInfo.policyNo = params['policyNo'];
+            // this.policyInfo.policyId = params['policyId'];
+            // this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
             this.policyInfo.fromInq = params['fromInq'];
@@ -51,6 +52,10 @@ export class PolicyIssuanceAltComponent implements OnInit {
             }
             this.exitLink = params['exitLink'];
             this.policyInfo.prevPolicyId = params['prevPolicyId'];
+
+            // if(this.us.fromCreateAlt) {
+
+            // }
         });
 
     }
@@ -95,8 +100,10 @@ export class PolicyIssuanceAltComponent implements OnInit {
     getPolInfo(event){      
         //this.policyInfo = event;
       this.policyInfo.policyId = event.policyId;
-      this.policyInfo.insuredDesc =  event.insuredDesc;
+      this.policyInfo.policyNo = event.policyNo;
+      this.policyInfo.insuredDesc = event.insuredDesc;
       this.policyInfo.riskId =  event.riskId;
+      this.policyInfo.riskName =  event.riskName;
       this.policyInfo.showPolAlop = event.showPolAlop;
       this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
     }

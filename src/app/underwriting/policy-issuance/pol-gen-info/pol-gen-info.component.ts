@@ -51,6 +51,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   @Input() mode;
   @Input() alteration: boolean = false;
+  @Input() polInfo: any = {
+    policyId: '',
+    policyNo: '',
+    riskName: '',
+    insuredDesc: '',
+    riskId: '',
+    showPolAlop: '',
+    coInsuranceFlag: false,
+    principalId: ''
+  }
 
   policyInfo:any = {
     policyId: null,
@@ -190,14 +200,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     nData: {
       "coverCd": 0,
       "createDate": this.ns.toDateTimeString(0),
-      "createUser": JSON.parse(window.localStorage.currentUser).username,
+      "createUser": this.ns.getCurrentUser(),
       "deductibleAmt": 0,
       "deductibleCd": null,
       "deductibleRt": 0,
       "deductibleTxt": '',
       "endtCd": "0",
       "updateDate": this.ns.toDateTimeString(0),
-      "updateUser":JSON.parse(window.localStorage.currentUser).username,
+      "updateUser":this.ns.getCurrentUser(),
       showMG : 1
     },
     uneditable: [true,true,false,false,false]
@@ -251,7 +261,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService,
     private mtnService: MaintenanceService) { }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.titleService.setTitle("Pol | General Info");
     this.tHeader.push("Item No", "Description of Items");
     this.dataTypes.push("text", "text");
@@ -260,8 +270,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
-      this.policyId = params['policyId'];
-      this.policyNo = params['policyNo'];
+      this.policyId = this.polInfo.policyId === '' ? params['policyId'] : this.polInfo.policyId;
+      this.policyNo = this.polInfo.policyNo === '' ? params['policyNo'] : this.polInfo.policyNo;
       this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];
 
       if(this.underwritingService.fromCreateAlt) {
@@ -304,8 +314,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     $('#radioBtnSet').css('backgroundColor', (this.policyInfo.declarationTag === 'Y') ? '#ffffff' : '#f5f5f5');
   }
 
-  getPolGenInfo() {
+  getPolGenInfo(fromSave?) {
+    if(fromSave === undefined) {
+      $('.globalLoading').css('display','block');
+    }
+
     this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
+      $('.globalLoading').css('display','none');
       if(data.policy != null) {
         this.policyInfo = data.policy;
         this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
@@ -461,7 +476,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       if(this.saveBtnClicked){
         setTimeout(()=>{
           $('.req').focus();
-        $('.req').blur();
+          $('.req').blur();
         },0)  
       }
   }
@@ -550,14 +565,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
            this.emitPolicyInfoId.emit({
             policyId: event,
-            policyNo: this.policyInfo.policyNo,
+            policyNo: this.policyNo,
             riskName: this.policyInfo.project.riskName,
             insuredDesc: this.policyInfo.insuredDesc,
             riskId: this.policyInfo.project.riskId,
             showPolAlop: this.policyInfo.showPolAlop,
             coInsuranceFlag: this.policyInfo.coInsuranceFlag,
             principalId: this.policyInfo.principalId
-          }); 
+          });
       });   
 
     });
@@ -668,7 +683,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }
 
     //ADD VALIDATION
-   this.loading = true;
    if(this.validate(savePolGenInfoParam)){
      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
        if(data.returnCode === 0){
@@ -679,22 +693,20 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          // this.policyInfo.policyId = data['policyId'];
          // this.policyInfo.policyNo = data['policyNo'];
          // this.policyInfo.altNo = data['policyNo'].split('-')[5];
-
          this.policyId = data['policyId'];
          this.policyNo = data['policyNo'];         
 
          if(this.newAlt) {
            this.newAlt = false;
-           this.checkPolIdF(this.policyId);
+           // this.checkPolIdF(this.policyId);
            this.underwritingService.fromCreateAlt = false;
-         }
-
-         this.getPolGenInfo();
+         }        
 
          this.dialogMessage = "";
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');        
          /*this.form.control.markAsPristine();*/
+         this.getPolGenInfo('noLoading');
        }
      });
    }else{
