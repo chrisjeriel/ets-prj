@@ -39,7 +39,6 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 	this.coverageInfo.policyId = this.policyId;
 	this.coverageInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
 	this.coverageInfo.updateDate = this.ns.toDateTimeString(0);
-	console.log(this.inqFlag);
 	this.fetchData();
 
   }

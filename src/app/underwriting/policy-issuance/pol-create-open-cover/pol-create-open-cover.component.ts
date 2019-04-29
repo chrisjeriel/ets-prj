@@ -199,14 +199,12 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     getQuoteListing() {
       this.quListTable.loadingFlag = true;
-      console.log(this.noDataFound);
       this.qs.getQuoProcessingData([{key: 'status', search: 'RELEASED'},{key: 'quotationNo', search: this.noDataFound ? '' : this.tempQuoteNo.join('%-%')}]).subscribe(data => {
         this.quotationList = data['quotationList'];
         if(this.quotationList.length !== 0){
           this.noDataFound = false;
           this.passDataLOV.tableData = this.quotationList.filter(a=>{return a.openCoverTag === 'Y';}).map(q => { q.riskName = q.project.riskName; return q; });
           if(this.isType && !this.isIncomplete){
-            console.log('isType');
             this.isIncomplete = false;
             this.quoteData                     = this.passDataLOV.tableData[0];
             this.quoteData.quoteNo             = this.quoteData.quotationNo;
@@ -250,10 +248,8 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     getOptionLOV(quoteId) {
       this.qs.getQuoteOptions(quoteId).subscribe(data => {
-        console.log(data['quotation']['optionsList']);
         let fetchedOptData: any[] = data['quotation']['optionsList'];
         if(fetchedOptData.length === 1){
-          console.log('here');
           this.optionData.optionId = fetchedOptData[0].optionId;
           this.optionData.condition = fetchedOptData[0].optionRt;
           this.setOption();
@@ -295,12 +291,6 @@ export class PolCreateOpenCoverComponent implements OnInit {
             $('#confirm-save #modalBtn2').trigger('click');
         }else{
             //please fill required fields
-            console.log(this.splitQuoteNo.length);
-            console.log(this.optionData.optionId);
-            console.log(this.inceptDate.date);
-            console.log(this.inceptDate.time);
-            console.log(this.expiryDate.date);
-            console.log(this.expiryDate.time);
             this.dialogIcon = 'info';
             this.dialogMessage = 'Please fill all the required fields.';
             $('#dialogPopup > #successModalBtn').trigger('click');
@@ -326,7 +316,6 @@ export class PolCreateOpenCoverComponent implements OnInit {
         };
         //save to DB
         this.us.saveOpenPolDetails(this.saveParams).subscribe((data: any)=>{
-            console.log(data);
             if(data.returnCode === 0){
               this.dialogIcon = "info";
               this.dialogMessage = "Conversion error. Invalid Quotation data.";
@@ -394,7 +383,6 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     checkQuoteNoParams(){
        if(this.isIncomplete){
-         console.log(this.tempQuoteNo);
          if(this.tempQuoteNo[0].length !== 0 &&
             this.tempQuoteNo[1].length !== 0 &&
             this.tempQuoteNo[2].length !== 0 &&

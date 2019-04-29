@@ -148,7 +148,6 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
   constructor( private modalService: NgbModal, private underwritingService: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
-    console.log(this.policyInfo);
     this.line = this.policyInfo.line;
     //this.line = 'EAR';
     this.loading = true;
@@ -161,7 +160,6 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
 
   retrievePolGenInfoOc(policyIdOc: string, openPolicyNo: string){
       this.underwritingService.getPolGenInfoOc(policyIdOc, openPolicyNo).subscribe((data: any)=>{
-          console.log(data);
           this.genInfoOcData.policyIdOc         =  data.policyOc.policyIdOc;
           this.genInfoOcData.openPolicyNo       =  data.policyOc.openPolicyNo;
           this.genInfoOcData.lineCd             =  data.policyOc.lineCd;
@@ -251,8 +249,6 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.accDateParams.date               =  this.ns.toDateTimeString(this.genInfoOcData.acctDate).split('T')[0];
           this.accDateParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.acctDate).split('T')[1];
 
-          console.log(this.genInfoOcData);
-          console.log(this.projectOcData);
           this.loading = false;
           setTimeout(a=>{
             this.form.control.markAsPristine();
@@ -366,7 +362,6 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
         this.form.control.markAsPristine();
       }, 100);*/
       this.underwritingService.savePolGenInfoOc(this.saveParams).subscribe((data: any)=>{
-        console.log(data);
         if(data.returnCode === 0){
           this.dialogIcon = 'error';
           this.dialogMessage = 'An unspecified error has occured';
