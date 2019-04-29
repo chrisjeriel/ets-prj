@@ -595,11 +595,9 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   pad(ev,num) {
-    if(ev.target.value === '') {
-      return '';
-    }
+    var str = ev.target.value;    
 
-    return String(ev.target.value).padStart(num, '0');
+    return str === '' ? '' : String(str).padStart(num, '0');
   }
 
   checkCode(ev) {

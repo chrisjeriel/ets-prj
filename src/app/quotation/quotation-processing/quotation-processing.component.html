@@ -193,8 +193,8 @@
 
 <app-mtn-risk id="riskLOV" #riskLOV (selectedData)="setRisks($event)"></app-mtn-risk>
 <app-mtn-risk id="copyRiskLOV" #copyRiskLOV (selectedData)="setCopyRisks($event)"></app-mtn-risk>
-<app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-ceding-company id="cedingCompanyIntCompLOV" (selectedData)="setCedingIntCompCompany($event)" [exclude]="exclude"></app-ceding-company>
+<app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-ceding-company id="cedingCompanyIntCompLOV" #cedingIntComp (selectedData)="setCedingIntCompCompany($event)" [exclude]="exclude"></app-ceding-company>
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
 <app-sucess-dialog id="quoProcessing" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>

@@ -7,6 +7,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-pol-endorsement',
@@ -102,13 +103,16 @@ export class PolEndorsementComponent implements OnInit {
     endtTextKeys:string[] = ['endtText01','endtText02','endtText03','endtText04','endtText05','endtText06','endtText07','endtText08','endtText09','endtText10','endtText11','endtText12','endtText13','endtText14','endtText15','endtText16','endtText17'];
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService
-    ) {
+        , private route: ActivatedRoute) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Endorsement");
+        this.route.params.subscribe(params => {
+            this.currentLine = params['line'];
+        })
         if(this.policyInfo.fromInq!='true'){
             //do something
             this.passData.magnifyingGlass = ['endtCd'];
@@ -127,7 +131,7 @@ export class PolEndorsementComponent implements OnInit {
             this.deductiblesData.addFlag = false;
             this.deductiblesData.deleteFlag = false;
         }
-        this.currentLine = this.ocFlag ? this.policyInfo.policyNo.substring(3,6) : this.policyInfo.policyNo.substring(0,3);
+        //this.currentLine = this.ocFlag ? this.policyInfo.policyNo.substring(3,6) : this.policyInfo.policyNo.substring(0,3);
         if(this.ocFlag){
             this.passData.tHeader =  ['C', 'Endt Code', 'Endt Title', 'Remarks'];
             this.passData.dataTypes =  ['checkbox', 'text', 'text', 'text'];
@@ -167,11 +171,10 @@ export class PolEndorsementComponent implements OnInit {
                        a.endtText = ""
                     }
                 });
-                
+                this.endtTable.onRowClick(null,this.passData.tableData[0])
             } 
             
             this.endtTable.refreshTable();
-            setTimeout(a=>this.endtTable.onRowClick(null,this.passData.tableData[0]),0);
         }); 
     }
 
@@ -180,8 +183,8 @@ export class PolEndorsementComponent implements OnInit {
             console.log(data)
             if(data.endtList !== null){
                 this.passData.tableData = data.endtOcList.endorsementsOc;
+                this.endtTable.onRowClick(null,this.passData.tableData[0]);
             } 
-            this.endtTable.onRowClick(null,this.passData.tableData[0]);
             this.endtTable.refreshTable();
         });
     }
@@ -301,7 +304,6 @@ export class PolEndorsementComponent implements OnInit {
         }
         for(let endt of this.passData.tableData){
             if(!this.ocFlag){
-                console.log(endt.endtText);
                 let endtTextSplit = endt.endtText.match(/(.|[\r\n]){1,2000}/g);
                 endt.endtText = new Object();
                 if(endtTextSplit!== null)

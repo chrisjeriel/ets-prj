@@ -289,7 +289,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.statusDesc 	= 'Requested';
 				this.genInfoData.issueDate		= this.ns.toDateTimeString(0);
 				this.genInfoData.reqDate		= this.ns.toDateTimeString(0);
-				this.genInfoData.preparedBy		= JSON.parse(window.localStorage.currentUser).username;
+				this.genInfoData.preparedBy		= this.ns.getCurrentUser();
 				
 				var date = new Date();
 				var millis = date.setDate(date.getDate() + 30);
@@ -520,7 +520,6 @@ export class GeneralInfoComponent implements OnInit {
 		if(this.validate(this.prepareParam())){
 			this.focusBlur();
 
-			console.log(this.genInfoData.status);
 			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
 				this.loading = false;
 				if(data['returnCode'] == 0) {
@@ -533,10 +532,10 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
 					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 					if(this.quotationService.toGenInfo[0] === 'add') {
-						this.genInfoData.createUser = JSON.parse(window.localStorage.currentUser).username;
+						this.genInfoData.createUser = this.ns.getCurrentUser();
 						this.genInfoData.createDate = this.ns.toDateTimeString(0);
 					}
-					this.genInfoData.updateUser = JSON.parse(window.localStorage.currentUser).username;
+					this.genInfoData.updateUser = this.ns.getCurrentUser();
 					this.genInfoData.updateDate	= this.ns.toDateTimeString(0);
 
 					this.checkQuoteIdF(this.genInfoData.quoteId);
@@ -556,10 +555,10 @@ export class GeneralInfoComponent implements OnInit {
 							  cedingId: this.genInfoData.cedingId,
 							  cedingRepId: 0,
 							  createDate: this.ns.toDateTimeString(0),
-							  createUser: JSON.parse(window.localStorage.currentUser).username,
+							  createUser: this.ns.getCurrentUser(),
 							  quoteId: this.genInfoData.quoteId,
 							  updateDate: this.ns.toDateTimeString(0),
-							  updateUser: JSON.parse(window.localStorage.currentUser).username,
+							  updateUser: this.ns.getCurrentUser(),
 							}];
 					        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
 					          console.log(result);
@@ -641,18 +640,18 @@ export class GeneralInfoComponent implements OnInit {
 		}
 
 		if(this.quotationService.toGenInfo[0] === 'edit') {
-			saveQuoteGeneralInfoParam.updateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjUpdateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		} else if (this.quotationService.toGenInfo[0] === 'add') {
-			saveQuoteGeneralInfoParam.createUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.createUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.createDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.updateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjCreateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjCreateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.prjCreateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjUpdateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		}
 

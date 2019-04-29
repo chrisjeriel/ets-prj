@@ -98,7 +98,8 @@ export class PolicyInformationComponent implements OnInit {
                                               riskName: this.policyInfo.project.riskName,
                                               insured: this.selectedPol.insured,
                                               editPol: true,
-                                              status: this.selectedPol.status
+                                              status: this.selectedPol.status,
+                                              exitLink: '/policy-information'
                                               }], { skipLocationChange: true });
 
 
@@ -113,7 +114,6 @@ export class PolicyInformationComponent implements OnInit {
      // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
      //     $event.preventDefault();
    //   }                     
-   console.log($event)
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
         this.router.navigateByUrl('/policy-inquiry');
@@ -123,7 +123,7 @@ export class PolicyInformationComponent implements OnInit {
  gotoSum(){
    this.router.navigate(['/pol-summarized-inq', {policyId:this.policyInfo.policyId,
                                              fromInq:true,
-                                             policyNo: this.policyInfo.policyNo,
+                                             showPolicyNo: this.policyInfo.policyNo,
                                              line: this.policyInfo.lineCd,
                                              statusDesc:this.policyInfo.statusDesc,
                                              riskName: this.policyInfo.project.riskName,

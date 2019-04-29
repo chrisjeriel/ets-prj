@@ -73,6 +73,7 @@ export class QuotationComponent implements OnInit {
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
   approver:string = '';
+  exitLink:string;
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
@@ -80,6 +81,7 @@ export class QuotationComponent implements OnInit {
             this.inquiryFlag = params['inquiry'];
             console.log("params['inquiry'] " + params['inquiry']);
             console.log("QUOTATION COMPONENT: " + JSON.stringify(params));
+            this.exitLink = params['exitLink'];
         });
 	}
 
@@ -129,7 +131,7 @@ export class QuotationComponent implements OnInit {
    //   }                     
   		if ($event.nextId === 'Exit') {
         $event.preventDefault();
-    		this.router.navigateByUrl('');
+    		this.router.navigateByUrl(this.exitLink);
   		} else 
 
   		if ($event.nextId === 'approval-tab') {
@@ -141,7 +143,7 @@ export class QuotationComponent implements OnInit {
         $('#printListQuotation > #printModalBtn').trigger('click');
       } else
 
-     if($('.ng-dirty').length != 0 ){
+     if($('.ng-dirty.ng-touched').length != 0 ){
         $event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{

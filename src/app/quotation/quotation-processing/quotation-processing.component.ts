@@ -23,7 +23,8 @@ export class QuotationProcessingComponent implements OnInit {
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
     @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
     @ViewChild('copyRiskLOV') copyRiskLOV: MtnRiskComponent;
-    @ViewChildren(CedingCompanyComponent) cedingCoLovs: QueryList<CedingCompanyComponent>;
+    @ViewChild('ceding') cedingLov: CedingCompanyComponent;
+    @ViewChild('cedingIntComp') cedingIntLov: CedingCompanyComponent;
 
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -306,7 +307,7 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.savingType = 'normal';
 
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal', exitLink:'/quotation-processing' }], { skipLocationChange: true });
         },100);
     }
 
@@ -403,7 +404,7 @@ export class QuotationProcessingComponent implements OnInit {
             this.quotationService.savingType = 'normal';
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
             },100); 
         }
         //neco's influence ends here
@@ -468,7 +469,7 @@ onRowDblClick(event) {
     this.quotationService.savingType = 'normal';
 
     setTimeout(() => {
-        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
     },100); 
 
 }
@@ -537,7 +538,7 @@ showCedingCompanyIntCompLOV() {
             }
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing' ,exitLink:'/quotation-processing'}], { skipLocationChange: true });
             },100); 
         }
     }
@@ -594,7 +595,7 @@ showCedingCompanyIntCompLOV() {
             this.quotationService.savingType = savingType;
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo[0], from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo[0], from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId, exitLink:'/quotation-processing' }], { skipLocationChange: true });
             },100);
         }
     }
@@ -611,9 +612,9 @@ showCedingCompanyIntCompLOV() {
         } else if(field === 'copyRisk') {
             this.copyRiskLOV.checkCode(this.copyRiskId, '#copyRiskLOV', ev);
         } else if(field === 'cedingCo') {
-            this.cedingCoLovs['first'].checkCode(this.copyCedingId, ev);
+            this.cedingLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev, '#cedingCompanyLOV');            
         } else if(field === 'cedingCoIntComp') {
-            this.cedingCoLovs['last'].checkCode(this.copyCedingId, ev);
+            this.cedingIntLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev, '#cedingCompanyIntCompLOV');
         } 
     }
 
@@ -780,7 +781,7 @@ showCedingCompanyIntCompLOV() {
         this.quotationService.savingType = 'normal';
 
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, quotationNo : this.quotationNo, from: 'quo-processing', exitLink: '/quotation-processing' }], { skipLocationChange: true });
         },100); 
     }
 
