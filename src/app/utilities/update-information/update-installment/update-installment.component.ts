@@ -57,7 +57,6 @@ export class UpdateInstallmentComponent implements OnInit {
     /*total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],*/
     addFlag: true,
     deleteFlag: true,
-    clickFlag:true,
     pageID: 1,
     widths: ["1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
     nData: {
@@ -80,42 +79,12 @@ export class UpdateInstallmentComponent implements OnInit {
     pageLength: 5
   };
 
-  /*prevInstallmentData: any = {
-    tableData: [],
-    tHeader: ["Inst No", "Due Date", "Booking Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
-    dataTypes: ["number", "date", "date", "currency", "percent", "currency", "currency", "currency"],
-    /*total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],*
-    addFlag: true,
-    deleteFlag: true,
-    pageID: 1,
-    widths: ["1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
-    nData: {
-        instNo: '',
-        dueDate: '',
-        bookingDate: '',
-        premAmt: '',
-        commRt: '',
-        commAmt: '',
-        otherChargesInw: 0,
-        amtDue: '',
-        "createUser": JSON.parse(window.localStorage.currentUser).username,
-        "createDate": this.ns.toDateTimeString(0),
-        "updateUser": JSON.parse(window.localStorage.currentUser).username,
-        "updateDate": this.ns.toDateTimeString(0),
-        otherCharges:[]
-    },
-    keys: ['instNo', 'dueDate', 'bookingDate', 'premAmt', 'commRt', 'commAmt', 'otherChargesInw', 'amtDue'],
-    uneditable:[true, false, false, false, false, false, true, true],
-    pageLength: 5
-  };*/
-
   passDataOtherCharges: any = {
     tableData: [["101", "Description 101", "50000"]],
     tHeader: ["Code", "Charge Description", "Amount"],
     dataTypes: ["text", "text", "currency"],
     addFlag: true,
     deleteFlag: true,
-    clickFlag:true,
     pageID:'otherCharges',
     uneditable:[true,true],
     nData:{
@@ -374,6 +343,8 @@ export class UpdateInstallmentComponent implements OnInit {
           this.passDataInstallmentInfo.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate); 
         }
 
+        this.instllmentTable.btnDisabled = false;
+        this.otherTable.btnDisabled = true;
         this.instllmentTable.onRowClick(null,this.passDataInstallmentInfo.tableData[0]);
         this.instllmentTable.refreshTable();
      }); 
