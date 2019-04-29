@@ -102,6 +102,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     isType: boolean = false;
     isIncomplete: boolean = true;
     noDataFound: boolean = false;
+    loading: boolean = false;
     
     constructor(private titleService: Title, private router: Router, private ns: NotesService, 
                 private us: UnderwritingService, private qs: QuotationService, private modalService: NgbModal,
@@ -138,6 +139,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     setDetails(){
+      this.loading = true;
         this.noDataFound = false;
         this.isIncomplete = false;
         this.quoteData.quoteId = this.selectedQuote.quoteId;
@@ -250,12 +252,13 @@ export class PolCreateOpenCoverComponent implements OnInit {
       this.qs.getQuoteOptions(quoteId).subscribe(data => {
         let fetchedOptData: any[] = data['quotation']['optionsList'];
         if(fetchedOptData.length === 1){
-          this.optionData.optionId = fetchedOptData[0].optionId;
-          this.optionData.condition = fetchedOptData[0].optionRt;
+          this.selectedOpt.optionId = fetchedOptData[0].optionId;
+          this.selectedOpt.optionRt = fetchedOptData[0].optionRt;
           this.setOption();
         }
         this.passDataOptionLOV.tableData = data['quotation']['optionsList'];
         this.optListTable.refreshTable();
+        this.loading = false;
       });
     }
 
@@ -351,7 +354,9 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.isIncomplete = true;
         this.clearFields();
         this.selectedOpt.optionId = '';
-        this.selectedOpt.condition = '';
+        this.selectedOpt.optionRt = '';
+        this.optionData.optionId = '';
+        this.optionData.condition = '';
         this.passDataOptionLOV.tableData = [];
         this.optListTable.refreshTable();
       }
@@ -389,6 +394,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
             this.tempQuoteNo[3].length !== 0 &&
             this.tempQuoteNo[4].length !== 0){
              this.isIncomplete = false;
+             this.loading = true;
              this.getQuoteListing();
          }else{
            this.isIncomplete = true;
