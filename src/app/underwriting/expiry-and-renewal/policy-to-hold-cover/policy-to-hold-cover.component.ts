@@ -112,6 +112,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	ngOnInit() {
 		this.printType = 'SCREEN';
+		console.log(this.userName);
 		//set default report type for Hold Cover Letter
 		//this.print.selectedReport = 'QUOTER012';
 		//this.print.reports = true;
@@ -200,6 +201,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	retrievePolHoldCov(policyId: string, policyNo: string, holdCovId: string){
 		//this.approveListMethod(policyId);
 		this.us.retrievePolHoldCover(policyId,'', holdCovId).subscribe((data: any)=>{
+			console.log(data.policy.holdCoverList);
 			for(let rec of data.policy.holdCoverList){
 				if(rec.status !== '6' && rec.status !== '5'){
 					this.polHoldCoverParams.policyId				= rec.policyId;
@@ -271,6 +273,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 						this.tempPolNo						= this.policyInfo.policyNo.split('-');
 						//if selected policy is already in hold cover
 						if(this.policyInfo.statusDesc === 'On Hold Cover'){
+							console.log(this.policyInfo.policyId);
+							console.log(this.policyInfo.policyNo);
 							this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 						}
 					}

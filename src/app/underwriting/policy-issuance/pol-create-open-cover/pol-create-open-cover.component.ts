@@ -241,6 +241,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
             this.optListTable.refreshTable();
             //this.tempPolNoContainer = ['','','','','',''];
             setTimeout(()=>{
+              this.loading = false;
               this.showLOV();
             }, 100);
           }
