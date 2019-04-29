@@ -89,12 +89,12 @@ export class PolCoverageComponent implements OnInit {
           "createUserSec": JSON.parse(window.localStorage.currentUser).username,
           "updateDate": this.ns.toDateTimeString(0),
           "updateUserSec":JSON.parse(window.localStorage.currentUser).username,
-          "showMG":1
+          'showMG':1
         },
         //widths:[1,1,228,200,75,1,1,1],
-        uneditable:[true,true,true,false,false,false,false,false],
+        uneditable:[true,true,false,false,false,false,false,false],
         keys:['section','bulletNo','coverName','cumSi','premRt','cumPrem','discountTag','addSi'],
-        widths:[50,58,80,125,100,125,35]
+        widths:[50,58,220,125,100,125,35]
     };
 
 
@@ -236,7 +236,7 @@ export class PolCoverageComponent implements OnInit {
       "createUser": JSON.parse(window.localStorage.currentUser).username,
       "updateDate": this.ns.toDateTimeString(0),
       "updateUser":JSON.parse(window.localStorage.currentUser).username,
-      "showMG":1
+      'showMG':1
     },
     keys:['section','bulletNo','coverName','prevSumInsured','prevPremRt','prevPremAmt','sumInsured','premRt','premAmt','discountTag','addSi','cumSi','cumPremRt','cumPrem'],
     uneditable:[true,true,false,true,true,true,false,false,false,false,false,true,true,true],
@@ -1506,7 +1506,6 @@ export class PolCoverageComponent implements OnInit {
    selectedSectionCoversLOV(data){
      if(!this.alteration){
          if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
-           console.log('eeeeeyyyy')
            this.sectionCoverLOVRow = data[0].ev.index;
            this.ns.lovLoader(data[0].ev, 0);
          }
@@ -1527,7 +1526,7 @@ export class PolCoverageComponent implements OnInit {
            this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].edited = true;
            this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].showMG = 0;
 
-           if(data[i].coverName !== undefined && data[i].coverName.substring(0,6).toUpperCase()){
+           if(data[i].coverName !== undefined && 'OTHERS' === data[i].coverName.substring(0,6).toUpperCase()){
                 this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].others = true;
            }
          }
