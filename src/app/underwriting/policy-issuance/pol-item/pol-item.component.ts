@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ViewChildren, QueryList } from '@angular/core';
 import { PolItem_MLP, PolItem_EEI_MBI_CEC, PolItem_BPV, PolGoods_DOS, PolMachinery_DOS, PolItem_CEC } from '@app/_models';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
     styleUrls: ['./pol-item.component.css']
 })
 export class PolItemComponent implements OnInit {
-    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     dtOptions: DataTables.Settings = {};
     tableData_EEI_MBI_CEC: any[] = [
@@ -61,7 +61,8 @@ export class PolItemComponent implements OnInit {
             "createDate": this.ns.toDateTimeString(0),
             "createUser": JSON.parse(window.localStorage.currentUser).username,
             "updateDate": this.ns.toDateTimeString(0),
-            "updateUser":JSON.parse(window.localStorage.currentUser).username
+            "updateUser":JSON.parse(window.localStorage.currentUser).username,
+            "stockType" : 'N'
         },
         checkFlag:true,
         addFlag:true,
@@ -88,7 +89,8 @@ export class PolItemComponent implements OnInit {
              "createDate": this.ns.toDateTimeString(0),
              "createUser": JSON.parse(window.localStorage.currentUser).username,
              "updateDate": this.ns.toDateTimeString(0),
-             "updateUser":JSON.parse(window.localStorage.currentUser).username
+             "updateUser":JSON.parse(window.localStorage.currentUser).username,
+             "stockType" : 'N'
         },
         checkFlag:true,
         addFlag:true,
@@ -97,7 +99,8 @@ export class PolItemComponent implements OnInit {
         widths: ["1","228","auto","1","228"],
         pageLength: 'unli',
         keys:['serialNo','location','itemDesc','makeYear','sumInsured'],
-        total:[null,null,null,'Total','sumInsured']
+        total:[null,null,null,'Total','sumInsured'],
+
     }
     
     mlpPassData: any = {
@@ -114,7 +117,8 @@ export class PolItemComponent implements OnInit {
             "createDate": this.ns.toDateTimeString(0),
             "createUser": JSON.parse(window.localStorage.currentUser).username,
             "updateDate": this.ns.toDateTimeString(0),
-            "updateUser":JSON.parse(window.localStorage.currentUser).username
+            "updateUser":JSON.parse(window.localStorage.currentUser).username,
+            "stockType" : 'N'
         },
         checkFlag:"true",
         addFlag:"true",
@@ -132,13 +136,14 @@ export class PolItemComponent implements OnInit {
         nData: {
             "itemNo":null,
             "chamberNo": null,
-            "stockType": null,
+            "itemDesc": null,
             "noClaimPd": null,
             "sumInsured": null,
             "createDate": this.ns.toDateTimeString(0),
             "createUser": JSON.parse(window.localStorage.currentUser).username,
             "updateDate": this.ns.toDateTimeString(0),
-            "updateUser":JSON.parse(window.localStorage.currentUser).username
+            "updateUser":JSON.parse(window.localStorage.currentUser).username,
+            "stockType" : 'G'
         },
         widths: ['1','auto','1','228'],
         // pageLength: 5,
@@ -146,9 +151,10 @@ export class PolItemComponent implements OnInit {
         addFlag:true,
         deleteFlag:true,
         total:[null,null,'Total','sumInsured'],
-        keys:['chamberNo','stockType','noClaimPd','sumInsured'],
+        keys:['chamberNo','itemDesc','noClaimPd','sumInsured'],
         pageLength: 5,
-        searchFlag:true
+        searchFlag:true,
+        pageID: 'dosGoods'
     }
 
     dosMachineryPassData: any = {
@@ -164,7 +170,8 @@ export class PolItemComponent implements OnInit {
             "createDate": this.ns.toDateTimeString(0),
             "createUser": JSON.parse(window.localStorage.currentUser).username,
             "updateDate": this.ns.toDateTimeString(0),
-            "updateUser":JSON.parse(window.localStorage.currentUser).username
+            "updateUser":JSON.parse(window.localStorage.currentUser).username,
+            "stockType" : 'M'
         } ,
         widths:  ['1','auto','1','228'],
         pageLength: 5,
@@ -173,7 +180,8 @@ export class PolItemComponent implements OnInit {
         deleteFlag:true,
         total:[null,null,'Total','sumInsured'],
         keys:['standbyUnit','itemDesc','makeYear','sumInsured'],
-        searchFlag: true
+        searchFlag: true,
+        pageID: 'dosMachinery'
     }
 
     cecPassData: any = {
@@ -189,7 +197,8 @@ export class PolItemComponent implements OnInit {
             "createDate": this.ns.toDateTimeString(0),
             "createUser": JSON.parse(window.localStorage.currentUser).username,
             "updateDate": this.ns.toDateTimeString(0),
-            "updateUser":JSON.parse(window.localStorage.currentUser).username
+            "updateUser":JSON.parse(window.localStorage.currentUser).username,
+            "stockType" : 'N'
         },
         checkFlag:true,
         addFlag:true,
@@ -331,15 +340,18 @@ export class PolItemComponent implements OnInit {
                 this.itemDetails.projId = data.policy.project.projId;
                 var tableDatas = data.policy.project.items;
 
-                for(var i = 0 ; i < tableDatas.length; i++ ){
-                    this.dosGoodsPassData.tableData.push(tableDatas[i]);
-                }
+                // for(var i = 0 ; i < tableDatas.length; i++ ){
+                //     this.dosGoodsPassData.tableData.push(tableDatas[i]);
+                // }
 
-                for(var j = 0 ; j < tableDatas.length; j++ ){
-                    this.dosMachineryPassData.tableData.push(tableDatas[j]);
-                }
+                // for(var j = 0 ; j < tableDatas.length; j++ ){
+                //     this.dosMachineryPassData.tableData.push(tableDatas[j]);
+                // }
+
+                this.dosGoodsPassData.tableData = tableDatas.filter(a => a.stockType == 'G' );
+                this.dosMachineryPassData.tableData = tableDatas.filter(a => a.stockType == 'M' );
             }
-            this.table.refreshTable();    
+            this.table.forEach(a=>a.refreshTable());    
         });
     }
 
@@ -463,7 +475,7 @@ export class PolItemComponent implements OnInit {
               console.log('Success')
               this.emptyVar();
               this.getItem();
-              this.table.markAsPristine();
+              this.table.forEach(a=>a.markAsPristine());
               //this.getCoverageInfo();
             }
         })
