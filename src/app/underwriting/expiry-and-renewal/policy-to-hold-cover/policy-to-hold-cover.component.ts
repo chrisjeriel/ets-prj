@@ -79,6 +79,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	isApproval: boolean = false;
 	isReleasing: boolean = false;
 	isModify: boolean = false;
+	loading: boolean = false;
 
 	btnDisabled: boolean = false; //button for print
 
@@ -200,6 +201,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	retrievePolHoldCov(policyId: string, policyNo: string, holdCovId: string){
 		//this.approveListMethod(policyId);
+		this.loading = true;
 		this.us.retrievePolHoldCover(policyId,'', holdCovId).subscribe((data: any)=>{
 			console.log(data.policy.holdCoverList);
 			for(let rec of data.policy.holdCoverList){
@@ -242,6 +244,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			}else if(this.polHoldCoverParams.status === '2' && this.isReleasing){
 				this.isReleasing = false;
 			}
+			this.loading = false;
 		});
 	}
 
@@ -580,6 +583,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
   	modificationOption(option: string){
   		if(option === 'cancel'){
   			this.isIncomplete = true;
+  			this.fromHcMonitoring = null;
   			this.clearHcFields();
 			this.policyInfo.cedingName = '';
 			this.policyInfo.insuredDesc = '';

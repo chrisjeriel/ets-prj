@@ -43,6 +43,8 @@
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
+                            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                            <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
                           <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Policy Info</legend>
                             <div class="col-sm-1"></div>
