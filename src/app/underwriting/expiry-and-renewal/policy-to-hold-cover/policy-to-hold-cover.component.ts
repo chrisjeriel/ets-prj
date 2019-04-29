@@ -108,7 +108,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	cancelBtnDisabledStatus: string[] = ['3','4','5','6', ''];
 	approveBtnDisabledStatus: string[] = ['2','3','4','5','6','R', ''];
-	saveBtnDisabledStatus: string[] = ['2','3','4','5','6', ''];
+	saveBtnDisabledStatus: string[] = ['2','3','4','5','6'];
 
 	ngOnInit() {
 		this.printType = 'SCREEN';
@@ -234,7 +234,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				this.periodToDate.date 							= this.polHoldCoverParams.periodTo.split('T')[0];
 				this.periodToDate.time 							= this.polHoldCoverParams.periodTo.split('T')[1];
 			}
-			
+
 			console.log(this.polHoldCoverParams);
 			this.isIncomplete = false;
 			this.isForViewing = false;
@@ -387,9 +387,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.isIncomplete = false;
 		this.noDataFound = false;
 		this.isModify = false;
-		console.log(this.selectedPolicy);
 		this.policyInfo = this.selectedPolicy;
 		this.modalService.dismissAll();
+		console.log(this.policyInfo.policyNo);
 		this.polHoldCoverParams.policyId = this.policyInfo.policyId;
 		this.polHoldCoverParams.lineCd = this.policyInfo.policyNo.split('-')[0];
 		this.tempPolNo = this.policyInfo.policyNo.split('-');
@@ -540,6 +540,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
   	}
 
   	policySearchParams(data:string, key:string){
+  		this.fromHcMonitoring = '';
   		this.isType = true;
 
   		if(data.length === 0){
