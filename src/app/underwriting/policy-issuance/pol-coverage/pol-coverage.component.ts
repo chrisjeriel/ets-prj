@@ -26,7 +26,7 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('catPerils') catPerilstable: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
-   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
+  @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -208,7 +208,7 @@ export class PolCoverageComponent implements OnInit {
     tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','Discount Tag','Add SI','Sum Insured','Rate','Premium'],
     tHeaderWithColspan:[],
     options:[],
-    dataTypes:['text','text','text','currency','percent','currency','currency','percent','currency','checkbox','checkbox','currency','percent','currency'],
+    dataTypes:['text','text','lovInput','currency','percent','currency','currency','percent','currency','checkbox','checkbox','currency','percent','currency'],
     opts:[],
     addFlag: true,
     deleteFlag: true,
@@ -691,7 +691,7 @@ export class PolCoverageComponent implements OnInit {
                 }
               }
             }
-            this.table.refreshTable();
+            this.sectionTable.refreshTable();
              this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
               this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
               this.passDataTotalPerSection.tableData[0].sumInsured = this.sectionISi;
@@ -740,7 +740,6 @@ export class PolCoverageComponent implements OnInit {
   showDeductiblesModal(deductibles){
     // setTimeout(()=>{this.getDeductibles();},0);
     // this.modalService.open(deductibles, { centered: true, backdrop: 'static', windowClass: "modal-size" });
-    console.log(deductibles)
     this.getDeductibles();
     this.deductiblesModal.openNoClose();
   }
@@ -1179,6 +1178,15 @@ export class PolCoverageComponent implements OnInit {
     this.comtotalSi = 0;
     this.comtotalPrem = 0;
 
+    if(data.hasOwnProperty('lovInput')) {
+      this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
+
+      data.ev['index'] = data.index;
+      data.ev['filter'] = this.hideSectionCoverArray;
+
+      this.secCoversLov.checkCode(data.ev.target.value, data.ev);
+    }   
+
     this.getEditableAlt();
 
     for(var j=0;j<this.passData.tableData.length;j++){
@@ -1497,7 +1505,7 @@ export class PolCoverageComponent implements OnInit {
           this.sectionCoverLOVRow = data.index;
       }else{
           this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
-          $('#sectionCoversLOVAlt #modalBtn').trigger('click');
+          $('#sectionCoversLOV #modalBtn').trigger('click');
           this.sectionCoverLOVRow = data.index;
       }
         
@@ -1530,7 +1538,7 @@ export class PolCoverageComponent implements OnInit {
                 this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].others = true;
            }
          }
-         this.table.refreshTable();
+         this.sectionTable.refreshTable();
      }else {
          if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
            console.log('true')
@@ -1565,8 +1573,17 @@ export class PolCoverageComponent implements OnInit {
                 this.passData.tableData[this.passData.tableData.length - 1].others = true;
            }
          }
-         this.table.refreshTable();
+         this.sectionTable.refreshTable();
      }
       
+    }
+
+    onrowClickAlt(data){
+      if(data != null){
+        this.disabledFlag = false
+        this.passDataDeductibles.disableAdd = false;
+      }else {
+        this.disabledFlag = true;
+      }
     }
 }

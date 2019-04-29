@@ -149,7 +149,6 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveCoverage()"></app-confirm-save>
 <app-cancel-button (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
-<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
 </ng-container>
 
 <ng-container *ngIf="alteration">
@@ -174,7 +173,7 @@
     </fieldset>
     <fieldset class="scheduler-border" >
       <legend class="scheduler-border">Section Covers</legend>
-      <app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="updateAlteration($event);" (clickLOV)="sectionCoversLOVAlt($event)"></app-cust-editable-non-datatable>
+      <app-cust-editable-non-datatable #sectionTable [passData]="passData" (tableDataChange)="updateAlteration($event);" (clickLOV)="sectionCoversLOV($event)" (newClick)="onrowClickAlt($event)"></app-cust-editable-non-datatable>
     </fieldset>
     <div class="row">
       <div class="col-sm-12">
@@ -304,6 +303,8 @@
     </div>
 </app-modal>
 </ng-container>
+
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
 <app-modal class="d-none" #deductiblesModal>
   <div header>Deductibles</div>
   <div body>
