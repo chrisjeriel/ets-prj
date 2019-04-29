@@ -342,6 +342,8 @@ export class PolCreateOpenCoverComponent implements OnInit {
                                                                 policyIdOc: this.openPolicyInfo.policyIdOc,
                                                                 policyNo: this.openPolicyInfo.openPolNo,
                                                                 inquiryFlag: false,
+                                                                insured: this.quoteData.insuredDesc,
+                                                                riskName: this.quoteData.riskName,
                                                                 fromBtn: 'create'
                                                            }
                              ], { skipLocationChange: true });
