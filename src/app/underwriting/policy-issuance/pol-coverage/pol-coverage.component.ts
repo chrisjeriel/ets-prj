@@ -308,7 +308,8 @@ export class PolCoverageComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       console.log(params)
             this.line = params['line'];
-            this.policyIdAlt = params['policyId'];
+            if(this.alteration)
+              this.policyIdAlt = params['policyId'];
             this.parameters = params.policyNo.split(/[-]/g);
 
     });

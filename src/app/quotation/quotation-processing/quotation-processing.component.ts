@@ -307,7 +307,7 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.savingType = 'normal';
 
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal', exitLink:'/quotation-processing' }], { skipLocationChange: true });
         },100);
     }
 
@@ -404,7 +404,7 @@ export class QuotationProcessingComponent implements OnInit {
             this.quotationService.savingType = 'normal';
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
             },100); 
         }
         //neco's influence ends here
@@ -469,7 +469,7 @@ onRowDblClick(event) {
     this.quotationService.savingType = 'normal';
 
     setTimeout(() => {
-        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
     },100); 
 
 }
@@ -538,7 +538,7 @@ showCedingCompanyIntCompLOV() {
             }
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing' ,exitLink:'/quotation-processing'}], { skipLocationChange: true });
             },100); 
         }
     }
@@ -595,7 +595,7 @@ showCedingCompanyIntCompLOV() {
             this.quotationService.savingType = savingType;
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo[0], from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo[0], from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId, exitLink:'/quotation-processing' }], { skipLocationChange: true });
             },100);
         }
     }
@@ -781,7 +781,7 @@ showCedingCompanyIntCompLOV() {
         this.quotationService.savingType = 'normal';
 
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, quotationNo : this.quotationNo, from: 'quo-processing', exitLink: '/quotation-processing' }], { skipLocationChange: true });
         },100); 
     }
 

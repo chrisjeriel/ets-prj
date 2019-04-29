@@ -252,7 +252,7 @@ export class ListOfQuotationsComponent implements OnInit {
              this.status = rec.status;
           } 
         }
-        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo,quoteId: this.quoteId,status: this.status, from: 'quo-processing', inquiry: true}], { skipLocationChange: true }); 
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo,quoteId: this.quoteId,status: this.status, from: 'quo-processing', inquiry: true,exitLink:'/quotation-inquiry'}], { skipLocationChange: true }); 
     }
 
     export(){
