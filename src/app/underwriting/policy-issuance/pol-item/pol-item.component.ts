@@ -467,6 +467,7 @@ export class PolItemComponent implements OnInit {
               console.log('Check error')
               this.dialogMessage = data['errorList'][0].errorMessage;
               this.dialogIcon = "error";
+              this.emptyVar();
               $('#successModalBtn').trigger('click');
             } else{
               this.dialogMessage = "";
