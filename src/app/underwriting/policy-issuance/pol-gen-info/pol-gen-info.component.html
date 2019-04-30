@@ -335,7 +335,7 @@
 									<div class="row">
 										<label class="form-control-sm col-sm-2">Duration</label>
 										<div class="col-sm-10" style="padding: 0 2px 0 0 !important;">
-											<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.duration" readonly>
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.duration" appRequired>
 										</div>
 									</div>								
 								</div>
@@ -461,13 +461,13 @@
 									<div class="row" style="margin-bottom: -22px !important;">
 										<label class="form-control-sm col-sm-2" style="margin-bottom: 16px !important;">Duration</label>
 										<div class="col-sm-10" style="padding: 0 2px 0 0 !important;">
-											<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.duration" readonly>
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.duration" appRequired>
 										</div>
 									</div>
 									<div class="row">
 										<label class="form-control-sm col-sm-2">Testing</label>
 										<div class="col-sm-10" style="padding: 0 2px 0 0 !important;">
-											<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.testing" readonly>
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.testing" appRequired>
 										</div>
 									</div>
 								</div>
@@ -786,9 +786,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">IPL</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Month/s" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Month/s" appRequired>
 										<label class="form-control-sm col-sm-2">Time Excess</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Day/s" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Day/s" appRequired>
 									</div>
 								</div>
 							</div>
@@ -892,7 +892,7 @@
 									</div> -->
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">No Claim Period</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" appRequired>
 									</div>
 								</div>
 							</div>
@@ -2236,7 +2236,7 @@
 									<input type="checkbox" [checked]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Booked" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Booked" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -2246,7 +2246,7 @@
 									<input type="checkbox" [checked]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Alteration" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Alteration" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 				</div>
@@ -2258,7 +2258,7 @@
 									<input type="checkbox" [checked]="policyInfo.govtTag === 'Y'" (change)="policyInfo.govtTag = (policyInfo.govtTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Government" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -2268,7 +2268,7 @@
 									<input type="checkbox" [checked]="policyInfo.specialPolicyTag === 'Y'" (change)="policyInfo.specialPolicyTag = (policyInfo.specialPolicyTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Special Policy" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Special Policy" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 				</div>
@@ -2280,7 +2280,7 @@
 									<input type="checkbox" [checked]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Open Cover" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -2290,7 +2290,7 @@
 									<input type="checkbox" [checked]="policyInfo.instTag === 'Y'" (change)="policyInfo.instTag = (policyInfo.instTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Installment" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Installment" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 				</div>
@@ -2302,7 +2302,7 @@
 									<input type="checkbox" [checked]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Hold Cover" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Hold Cover" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -2312,7 +2312,7 @@
 									<input type="checkbox" [checked]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Extension" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Extension" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 				</div>
@@ -2324,7 +2324,7 @@
 									<input type="checkbox" [checked]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y')? 'N' : 'Y'; toggleRadioBtnSet();" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Declaration" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -2334,7 +2334,7 @@
 									<input type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Exclude Distribution" disabled class="form-control form-control-sm white-bg">
+							<input type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Exclude Distribution" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>	
 				</div>

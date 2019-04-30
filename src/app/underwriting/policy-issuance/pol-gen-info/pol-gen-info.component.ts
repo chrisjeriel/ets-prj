@@ -940,6 +940,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
      req.push('insuredId', 'insuredName', 'objectId', 'projDesc', 'wordings');
    }
 
+   if(this.policyInfo.openCoverTag === 'Y') {
+     req.push('riskId', 'regionCd', 'provinceCd', 'cityCd');
+   }
+
    var entries = Object.entries(obj);
 
    for(var[key, val] of entries) {
@@ -973,6 +977,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   // ----------------------------from risk-----------------------------------------------------------
   oldValue:any;
   checkCodeLoc(ev, field){
+        $(ev).addClass('ng-dirty');
         if(field === 'region'){
             this.oldValue = this.policyInfo.project.regionCd;
             if (this.policyInfo.project.regionCd == null || this.policyInfo.project.regionCd == '') {
