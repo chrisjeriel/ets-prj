@@ -43,8 +43,10 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 
   }
 
-  fetchData(){
-  	this.loading = true;
+  fetchData(save?){
+  	if(save === undefined){
+  		this.loading = true;
+  	}
 	this.uw.getSumInsOc(this.policyId).subscribe(data=>{
 		this.coverageInfo.currencyCd	= data['policyOc'].projectOc.coverageOc.currencyCd;
 		this.coverageInfo.currencyRt	= data['policyOc'].projectOc.coverageOc.currencyRt;
@@ -70,7 +72,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 		this.dialogIcon = 'success';
 		this.successDiag.open();
 		this.myForm.control.markAsPristine();
-		this.fetchData();
+		this.fetchData('save');
 	  }else{
 		this.dialogIcon = 'error';
 		this.successDiag.open();
@@ -87,7 +89,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   }
 
   cmptShrPct(data){
-	this.coverageInfo.pctShare = parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100;
+	this.coverageInfo.pctShare = (parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100).toFixed(10);
   }
 
 }
