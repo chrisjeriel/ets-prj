@@ -872,6 +872,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.lovCheckBox = false;
       this.passLOVData.selector = 'polWordings';
       this.passLOVData.params = {
+        wordType: 'P',
         activeTag:'Y',
         ocTag : 'N',
         lineCd : this.policyInfo.lineCd,
