@@ -178,8 +178,12 @@
     </fieldset>
     <fieldset class="scheduler-border" >
       <legend class="scheduler-border">Section Covers</legend>
-      <app-cust-editable-non-datatable #sectionTable [passData]="passData" (tableDataChange)="updateAlteration($event);" (clickLOV)="sectionCoversLOV($event)" (newClick)="onrowClickAlt($event)"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable #sectionTable [passData]="passData" (tableDataChange)="updateAlteration($event);" (clickLOV)="sectionCoversLOV($event)" (newClick)="onrowClickAlt($event)"></app-cust-editable-non-datatable>
     </fieldset>
+   <!--  <fieldset class="scheduler-border" >
+      <legend class="scheduler-border">Section Covers</legend>
+        <app-cust-editable-non-datatable #deductiblesTable [passData]="passDatasamp" (tableDataChange)="updateAlterationsamp($event);" (clickLOV)="sectionCoversLOVsamp($event)" (newClick)="onrowClickAlt($event)"></app-cust-editable-non-datatable>
+    </fieldset> -->
     <div class="row">
       <div class="col-sm-12">
         <fieldset class="scheduler-border" style="margin-top: 6px !important;">
@@ -246,14 +250,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" appCurrencyRate appRequired [ngModel] = "altCoverageData.pctShare | number:'1.6-6'" (ngModelChange) = "altCoverageData.pctShare = $event">
+       <input type="text" class="form-control form-control-sm req" appOtherRates appRequired [ngModel] = "altCoverageData.pctShare" (ngModelChange) = "altCoverageData.pctShare = $event">
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm req" appCurrencyRate [ngModel] = "altCoverageData.pctPml | number:'1.2-2'" (ngModelChange)="altCoverageData.pctPml = $event">
+       <input type="text" class="form-control form-control-sm req" appOtherRates [ngModel] = "altCoverageData.pctPml" (ngModelChange)="altCoverageData.pctPml = $event">
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [ngModel] = "altCoverageData.totalValue"  (ngModelChange) = "altCoverageData.totalValue = $event" (blur)="altCoverageData.pctShare = (comtotalSi/altCoverageData.totalValue)*100;focusBlur()">
+       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [ngModel] = "altCoverageData.totalValue"  (ngModelChange) = "altCoverageData.totalValue = $event" (blur)="pctShare($event)">
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -310,7 +314,7 @@
 <app-confirm-save #confirmSave (onYes)="alterationSave()"></app-confirm-save>
 </ng-container>
 
-<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOVsamp($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
 <app-modal class="d-none" #deductiblesModal>
   <div header>Deductibles</div>
   <div body>
