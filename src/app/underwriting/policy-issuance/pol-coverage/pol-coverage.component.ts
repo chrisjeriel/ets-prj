@@ -760,6 +760,8 @@ export class PolCoverageComponent implements OnInit {
              /*this.focusCalc();
              this.focusBlur();*/
              this.getEditableCov();
+             this.focusCalc();
+             this.focusBlur();
       });
   }
 
@@ -1025,11 +1027,16 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
 
     this.getEditableCov();
+    this.pctShare(data);
     /*this.focusCalc()
     this.focusBlur();*/
 /*    setTimeout(() => {
       this.focusBlur();
     }, 0)*/
+  }
+
+  pctShare(data){
+    this.coverageData.pctShare = (this.coverageData.totalSi/this.coverageData.totalValue*100).toFixed(10);
   }
 
   onrowClick(data){
@@ -1073,7 +1080,7 @@ export class PolCoverageComponent implements OnInit {
       if(this.passDataSectionCover.tableData[i].edited && !this.passDataSectionCover.tableData[i].deleted){
         this.editedData.push(this.passDataSectionCover.tableData[i]);
         if(this.passDataSectionCover.tableData[i].discountTag != 'Y'){
-          this.editedData[this.editedData.length - 1].cumPrem =  this.editedData[this.editedData.length - 1].cumSi /this.editedData[this.editedData.length - 1].premRt;
+          this.editedData[this.editedData.length - 1].cumPrem =  this.editedData[this.editedData.length - 1].cumSi *(this.editedData[this.editedData.length - 1].premRt/100);
         }else{
           this.editedData[this.editedData.length - 1].cumPrem =  this.passDataSectionCover.tableData[i].cumPrem;
         }
