@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
                     <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-						<app-cust-editable-non-datatable [passData]="passDataInsuredList" (tableDataChange)="passDataInsuredList.tableData=$event" (newClick)="onRowClick($event)" (add)="onClickAdd($event)" (rowDblClick)="onRowDblClick($event)" (edit)="onClickEdit($event)"></app-cust-editable-non-datatable>
+						<app-cust-non-datatable [passData]="passDataInsuredList" (tableDataChange)="passDataInsuredList.tableData=$event" (rowClick)="onRowClick($event)" (add)="onClickAdd($event)" (newRowDblClick)="insuredRecord=$event;onRowDblClick()" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (export)="export()"></app-cust-non-datatable>
 					</div>
 				</fieldset>
 
