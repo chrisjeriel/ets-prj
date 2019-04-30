@@ -720,6 +720,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         savePolGenInfoParam.polWordings[this.wordingsKeys[i]] = wordingSplit[i];
       }
 
+    let wordingSplitAlt = this.policyInfo.polWordings.altText.match(/(.|[\r\n]){1,2000}/g);
+    var x = this.wordingsKeys.length/2;
+    if(wordingSplitAlt != null)
+      for(let i=0;i<wordingSplitAlt.length;i++){        
+        savePolGenInfoParam.polWordings[this.wordingsKeys[x]] = wordingSplitAlt[i];
+        x++;
+      }
+
     //ADD VALIDATION
    if(this.validate(savePolGenInfoParam)){
      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
@@ -855,6 +863,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.setLocation(data)
     }
     this.deductiblesTable.refreshTable();
+
+    console.log(this.policyInfo.polWordings);
   }
 
   clickDeductiblesLOV(data){
@@ -910,10 +920,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
    switch(obj.lineCd) {
      case 'CAR':
-       //req.push('contractorId', 'duration');
+       req.push('contractorId', 'duration');
        break;
      case 'EAR':
-       req.push('testing');
+       req.push('contractorId', 'duration', 'testing');
        break;
      case 'MLP':
        req.push('ipl', 'timeExc', 'mbiRefNo');

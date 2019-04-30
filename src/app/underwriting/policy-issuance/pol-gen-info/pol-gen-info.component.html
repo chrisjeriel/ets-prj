@@ -76,16 +76,16 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
-										<select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="policyInfo.lineClassCd">
+										<!-- <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="policyInfo.lineClassCd">
 											<option *ngFor="let lc of lineClasses" [value]="lc.lineClassCd">{{lc.lineClassCdDesc}}</option>
-										</select>
-										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc" readonly> -->
+										</select> -->
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc" readonly style="margin-right: 1px !important;">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Quotation No</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.quotationNo" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Status</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.statusDesc" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.statusDesc" readonly style="margin-right: 1px !important;">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Ceding Company</label>
@@ -1247,11 +1247,12 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc" readonly>
-										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
-
-										<select class="form-control form-control-sm cust-sm col-sm-4 req" [(ngModel)]="policyInfo.lineClassCd">
-											<option *ngFor="let lc of lineClasses" [value]="lc.lineClassCd">{{lc.lineClassCdDesc}}</option>
-										</select>
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 1px;">Line Class</label>
+										<div class="col-sm-4" style="padding: 0 0 0 1px;">
+											<select class="form-control form-control-sm cust-sm req" [(ngModel)]="policyInfo.lineClassCd" appRequired>
+												<option *ngFor="let lc of lineClasses" [value]="lc.lineClassCd">{{lc.lineClassCdDesc}}</option>
+											</select>
+										</div>
 										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc" style="margin-right: 3px !important;" appRequired>
 											<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'" style="margin-right: 3px !important; margin-left: -18px !important;"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div> -->
 
@@ -2187,7 +2188,7 @@
 						<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
 						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
-							<text-editor [editorContent]="policyInfo?.polWordings.altText" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [required]="true">
+							<text-editor [editorContent]="policyInfo?.polWordings.altText" (fetchContent)="policyInfo?.polWordings.altText = $event" [edtrOpnrPos]="2" [required]="true">
 								<ng-container icon-1>
 									<a (click)="clickDeductiblesLOV('polWordingsAlt')"><i class="fa fa-search"></i></a>
 								</ng-container>
