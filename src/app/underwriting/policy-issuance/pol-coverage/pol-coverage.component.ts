@@ -61,9 +61,48 @@ export class PolCoverageComponent implements OnInit {
     pctShrPrm: 0,
     saveCATPerilList:[]
   };
-  passDataSectionCover: any = {
+
+   passDataSectionCover: any = {
+    tHeader: [ "Section","Bullet No","Cover Name",  "Sum Insured", "Rate", "Premium", "D/S","Add SI"],
+    tableData:[],
+    dataTypes: ['text','text','lovInput','currency',"percent", "currency", "checkbox",'checkbox'],
+    tabIndexes: [false,false,false,true,true,true,true,true],
+    tooltip:[null,null,null,null,null,null,'Discount / Surcharge',null],
+    nData: {
+      showMG: 1,
+      addSi:'N',
+      bulletNo:null,
+      coverCd:'',
+      coverName:null,
+      createDateSec: '',
+      createUserSec: JSON.parse(window.localStorage.currentUser).username,
+      deductiblesSec:[],
+      description: null,
+      discountTag:'N',
+      premRt: null,
+      premAmt: null,
+      section:null,
+      sumInsured:null,
+      updateDateSec: '',
+      updateUserSec: JSON.parse(window.localStorage.currentUser).username
+    },
+    pageID: 'sectionCovers',
+    checkFlag: true,
+    addFlag: true,
+    deleteFlag: true,
+    searchFlag: true,
+    checkboxFlag: true,
+    pageLength: 'unli',
+    widths:[50,58,220,125,100,125,35],
+    magnifyingGlass: ['coverName'],
+    uneditable:[true,true,false,false,false,false,false,false],
+    keys:['section','bulletNo','coverName','cumSi','premRt','cumPrem','discountTag','addSi'],
+    //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
+  };
+
+  /*passDataSectionCover: any = {
         tableData: [],
-        tHeader: [ "Section","Bullet No","Cover Name",  "Sum Insured", "Rate", "Premium", "D/S","Add Sl"],
+        tHeader: [ "Section","Bullet No","Cover Name",  "Sum Insured", "Rate", "Premium", "D/S","Add SI"],
         dataTypes: [
                     "text", "text", "lovInput", "currency", "percent", "currency", "checkbox", "checkbox"
                    ],
@@ -97,7 +136,7 @@ export class PolCoverageComponent implements OnInit {
         uneditable:[true,true,false,false,false,false,false,false],
         keys:['section','bulletNo','coverName','cumSi','premRt','cumPrem','discountTag','addSi'],
         widths:[50,58,220,125,100,125,35]
-    };
+    };*/
 
 
   passDataTotalPerSection: any = {
@@ -727,12 +766,6 @@ export class PolCoverageComponent implements OnInit {
   getEditableCov(){
     for(let data of this.passDataSectionCover.tableData){
       data.uneditable = [];
-      if(data.coverName !== ''){
-        data.uneditable.push('coverName')
-      }else{
-        data.uneditable.pop()
-      }
-
       if(data.discountTag == 'Y'){
         data.uneditable.pop();
         console.log(data.uneditable)
@@ -1041,6 +1074,8 @@ export class PolCoverageComponent implements OnInit {
         this.editedData.push(this.passDataSectionCover.tableData[i]);
         if(this.passDataSectionCover.tableData[i].discountTag != 'Y'){
           this.editedData[this.editedData.length - 1].cumPrem =  this.editedData[this.editedData.length - 1].cumSi /this.editedData[this.editedData.length - 1].premRt;
+        }else{
+          this.editedData[this.editedData.length - 1].cumPrem =  this.passDataSectionCover.tableData[i].cumPrem;
         }
         this.editedData[this.editedData.length - 1].sumInsured = this.passDataSectionCover.tableData[i].cumSi;
         this.editedData[this.editedData.length - 1].premAmt = this.passDataSectionCover.tableData[i].cumPrem;
@@ -1532,7 +1567,7 @@ export class PolCoverageComponent implements OnInit {
 
    selectedSectionCoversLOV(data){
      if(!this.alteration){
-         if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
+         /*if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
            this.sectionCoverLOVRow = data[0].ev.index;
            this.ns.lovLoader(data[0].ev, 0);
          }
@@ -1557,6 +1592,32 @@ export class PolCoverageComponent implements OnInit {
            if(data[i].coverName !== undefined && 'OTHERS' === data[i].coverName.substring(0,6).toUpperCase()){
                 this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].others = true;
                 this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].uneditable = [];
+           }
+         }
+         this.sectionTable.refreshTable();*/
+         console.log(data)
+         if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
+           this.sectionCoverLOVRow = data[0].ev.index;
+           this.ns.lovLoader(data[0].ev, 0);
+         }
+         $('#cust-table-container').addClass('ng-dirty');
+
+         if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
+           //HIDE THE POWERFUL MAGNIFYING GLASS
+           this.passDataSectionCover.tableData[this.sectionCoverLOVRow].showMG = 1;
+         }
+         this.passDataSectionCover.tableData = this.passDataSectionCover.tableData.filter(a=>{return a.showMG !== 1});
+         //this.validateSectionCover();
+         for(var i = 0; i<data.length;i++){
+           this.passDataSectionCover.tableData.push(JSON.parse(JSON.stringify(this.passDataSectionCover.nData)));
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].coverCd = data[i].coverCd;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].coverName = data[i].coverName;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].section = data[i].section;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].bulletNo = data[i].bulletNo;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].edited = true;
+           this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].showMG = 0;
+           if(data[i].coverName !== undefined && 'OTHERS' === data[i].coverName.substring(0,6).toUpperCase()){
+                this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].others = true;
            }
          }
          this.sectionTable.refreshTable();
