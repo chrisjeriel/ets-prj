@@ -259,6 +259,9 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
               $('select').attr('readonly','readonly');
             }
           },0)
+
+          $('#intm').focus();
+          $('#intm').blur();
           
         });
   }
@@ -385,14 +388,21 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     this.genInfoOcData.intmId = data.intmId;
     this.genInfoOcData.intmName = data.intmName;
     this.ns.lovLoader(data.ev, 0);
+    $('#intm').focus();
+    $('#intm').blur();
   }
 
-  pad(str) {
+  pad(str, field) {
     if(str === '' || str == null){
       return '';
+    }else{
+      if(field === 'intm'){
+        return String(str).padStart(6, '0');
+      }else if(field === 'insured'){
+        return String(str).padStart(6, '0');
+      }
     }
     
-    return String(str).padStart(3, '0');
   }
 
   checkCode(ev, field) {
