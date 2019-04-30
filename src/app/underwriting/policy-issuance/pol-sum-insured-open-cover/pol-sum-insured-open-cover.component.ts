@@ -28,6 +28,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   };
   dialogIcon: string = "";
   cancelFlag : boolean = false;
+  loading: boolean = false;
   @Input() policyInfo:any;
   @Input() inqFlag: boolean;
 
@@ -38,12 +39,14 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 	this.coverageInfo.policyId = this.policyId;
 	this.coverageInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
 	this.coverageInfo.updateDate = this.ns.toDateTimeString(0);
-	console.log(this.inqFlag);
 	this.fetchData();
 
   }
 
-  fetchData(){
+  fetchData(save?){
+  	if(save === undefined){
+  		this.loading = true;
+  	}
 	this.uw.getSumInsOc(this.policyId).subscribe(data=>{
 		this.coverageInfo.currencyCd	= data['policyOc'].projectOc.coverageOc.currencyCd;
 		this.coverageInfo.currencyRt	= data['policyOc'].projectOc.coverageOc.currencyRt;
@@ -52,6 +55,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 		this.coverageInfo.pctPml		= data['policyOc'].projectOc.coverageOc.pctPml;
 		this.coverageInfo.totalValue	= data['policyOc'].projectOc.coverageOc.totalValue;
 		setTimeout(a=>{
+			this.loading = false;
 			$('[appCurrency]').focus()
 			$('[appCurrency]').blur()
 			$('[appOtherRates]').focus()
@@ -68,7 +72,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 		this.dialogIcon = 'success';
 		this.successDiag.open();
 		this.myForm.control.markAsPristine();
-		this.fetchData();
+		this.fetchData('save');
 	  }else{
 		this.dialogIcon = 'error';
 		this.successDiag.open();
@@ -85,7 +89,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   }
 
   cmptShrPct(data){
-	this.coverageInfo.pctShare = parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100;
+	this.coverageInfo.pctShare = (parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100).toFixed(10);
   }
 
 }

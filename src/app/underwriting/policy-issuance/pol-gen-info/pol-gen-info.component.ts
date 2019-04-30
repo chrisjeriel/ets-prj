@@ -35,7 +35,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
-  @ViewChild('dedLov') lov :LovComponent;
+  @ViewChild('dedLov') lov : LovComponent;
   @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
   lovCheckBox:boolean;
   passLOVData:any = {
@@ -252,7 +252,24 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     'polwText14',
     'polwText15',
     'polwText16',
-    'polwText17'
+    'polwText17',
+    'altwText01',
+    'altwText02',
+    'altwText03',
+    'altwText04',
+    'altwText05',
+    'altwText06',
+    'altwText07',
+    'altwText08',
+    'altwText09',
+    'altwText10',
+    'altwText11',
+    'altwText12',
+    'altwText13',
+    'altwText14',
+    'altwText15',
+    'altwText16',
+    'altwText17'
   ]
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
@@ -299,7 +316,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       setTimeout(() => { $('.req').addClass('ng-dirty') }, 0);
     } else {
       setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') }, 1000);  
-    }        
+    }
   }
 
   ngOnDestroy() {
@@ -343,6 +360,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.contractorId = this.policyInfo.contractorId != null ? String(this.policyInfo.contractorId).padStart(6,'0'):null;
         if(this.policyInfo.polWordings !== null){
           this.policyInfo.polWordings.text = "";
+          this.policyInfo.polWordings.altText = "";
+
           this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText01 == null? '' : this.policyInfo.polWordings.polwText01;
           this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText02 == null? '' : this.policyInfo.polWordings.polwText02;
           this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText03 == null? '' : this.policyInfo.polWordings.polwText03;
@@ -360,9 +379,28 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText15 == null? '' : this.policyInfo.polWordings.polwText15;
           this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText16 == null? '' : this.policyInfo.polWordings.polwText16;
           this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText17 == null? '' : this.policyInfo.polWordings.polwText17;
+
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText01 == null? '' : this.policyInfo.polWordings.altwText01;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText02 == null? '' : this.policyInfo.polWordings.altwText02;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText03 == null? '' : this.policyInfo.polWordings.altwText03;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText04 == null? '' : this.policyInfo.polWordings.altwText04;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText05 == null? '' : this.policyInfo.polWordings.altwText05;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText06 == null? '' : this.policyInfo.polWordings.altwText06;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText07 == null? '' : this.policyInfo.polWordings.altwText07;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText08 == null? '' : this.policyInfo.polWordings.altwText08;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText09 == null? '' : this.policyInfo.polWordings.altwText09;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText10 == null? '' : this.policyInfo.polWordings.altwText10;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText11 == null? '' : this.policyInfo.polWordings.altwText11;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText12 == null? '' : this.policyInfo.polWordings.altwText12;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText13 == null? '' : this.policyInfo.polWordings.altwText13;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText14 == null? '' : this.policyInfo.polWordings.altwText14;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText15 == null? '' : this.policyInfo.polWordings.altwText15;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText16 == null? '' : this.policyInfo.polWordings.altwText16;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText17 == null? '' : this.policyInfo.polWordings.altwText17;
         }else{
           this.policyInfo.polWordings = {
-            text: ''
+            text: '',
+            altText: ''
           };
         }
         this.checkPolIdF(this.policyInfo.policyId);
@@ -809,6 +847,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.policyInfo.polWordings.text = data.data.text;
       this.policyInfo.polWordings.wordingCd = data.data.wordingCd;
 
+    }else if (data.selector == 'polWordingsAlt'){
+      this.policyInfo.polWordings.altText = data.data.text;
+      this.policyInfo.polWordings.wordingCd = data.data.wordingCd;
+
     }else{
       this.setLocation(data)
     }
@@ -830,6 +872,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.lovCheckBox = false;
       this.passLOVData.selector = 'polWordings';
       this.passLOVData.params = {
+        wordType: 'P',
+        activeTag:'Y',
+        ocTag : 'N',
+        lineCd : this.policyInfo.lineCd,
+      }
+    }else if(data == 'polWordingsAlt'){
+      this.lovCheckBox = false;
+      this.passLOVData.selector = 'polWordingsAlt';
+      this.passLOVData.params = {
+        wordType: 'A',
         activeTag:'Y',
         ocTag : 'N',
         lineCd : this.policyInfo.lineCd,

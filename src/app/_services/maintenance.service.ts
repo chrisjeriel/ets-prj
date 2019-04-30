@@ -250,12 +250,13 @@ export class MaintenanceService{
     	const params = new HttpParams()
 			.set('lineCd', pass.lineCd == undefined ? '' : pass.lineCd)
 			.set('wordingCd', pass.wordingCd == undefined ? '' : pass.wordingCd)
+			.set('wordType', pass.wordType == undefined ? '' : pass.wordType)
 			.set('activeTag', pass.activeTag == undefined ? '' : pass.activeTag)
 			.set('defaultTag', pass.defaultTag == undefined ? '' : pass.defaultTag)
 			.set('ocTag', pass.ocTag == undefined ? '' : pass.ocTag)
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnPolWordings', {params});
     }
-    
+
     saveMtnInsured(params){
     	let header : any = {
             headers: new HttpHeaders({
