@@ -7,6 +7,8 @@
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
+                        <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                        <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
                         <fieldset class="scheduler-border" style="padding-top: 6px !important;padding-bottom: 7px !important;margin-top: 18px !important;">
                             <div class="col-sm-1"></div>
                             <div class="col-sm" style="padding: 13px 4em 5px 3em;">
@@ -24,9 +26,9 @@
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Option No</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="optionData.optionId" name="optId" appRequired >
+                                            <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="optionData.optionId" name="optId" appRequired (change)="checkCode($event)">
                                             <div class="text-search-ico-inner"><a><i class="fa fa-search" (click)="showOptionLOV()"></i></a></div>
-                                            <input type="text" class="form-control form-control-sm" style="margin-left: 7px;" [ngModel]="optionData.condition" name="condition" readonly tabindex="-1">
+                                            <input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 7px; text-align: right;" [ngModel]="optionData.condition | number: '1.10-10'" name="condition" readonly tabindex="-1">
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>

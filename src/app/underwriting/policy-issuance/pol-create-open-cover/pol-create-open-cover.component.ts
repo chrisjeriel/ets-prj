@@ -36,12 +36,12 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     passDataOptionLOV: any = {
       tableData: [],
-      tHeader:["Option Id", "Condition"],  
-      dataTypes: ["text","text"],
+      tHeader:["Option Id", "Rate"],  
+      dataTypes: ["text","percent"],
       pageLength: 10,
       //resizable: [false,false],
       tableOnly: false,
-      keys: ['optionId','condition'],
+      keys: ['optionId','optionRt'],
       pageStatus: true,
       pagination: true,
       filters: [
@@ -102,6 +102,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     isType: boolean = false;
     isIncomplete: boolean = true;
     noDataFound: boolean = false;
+    loading: boolean = false;
     
     constructor(private titleService: Title, private router: Router, private ns: NotesService, 
                 private us: UnderwritingService, private qs: QuotationService, private modalService: NgbModal,
@@ -138,6 +139,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     setDetails(){
+      this.loading = true;
         this.noDataFound = false;
         this.isIncomplete = false;
         this.quoteData.quoteId = this.selectedQuote.quoteId;
@@ -182,7 +184,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     setOption(){
         this.optionData.optionId = this.selectedOpt.optionId;
-        this.optionData.condition = this.selectedOpt.condition;
+        this.optionData.condition = this.selectedOpt.optionRt;
         this.form.control.markAsDirty();
     }
 
@@ -199,14 +201,12 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     getQuoteListing() {
       this.quListTable.loadingFlag = true;
-      console.log(this.noDataFound);
       this.qs.getQuoProcessingData([{key: 'status', search: 'RELEASED'},{key: 'quotationNo', search: this.noDataFound ? '' : this.tempQuoteNo.join('%-%')}]).subscribe(data => {
         this.quotationList = data['quotationList'];
         if(this.quotationList.length !== 0){
           this.noDataFound = false;
           this.passDataLOV.tableData = this.quotationList.filter(a=>{return a.openCoverTag === 'Y';}).map(q => { q.riskName = q.project.riskName; return q; });
           if(this.isType && !this.isIncomplete){
-            console.log('isType');
             this.isIncomplete = false;
             this.quoteData                     = this.passDataLOV.tableData[0];
             this.quoteData.quoteNo             = this.quoteData.quotationNo;
@@ -241,6 +241,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
             this.optListTable.refreshTable();
             //this.tempPolNoContainer = ['','','','','',''];
             setTimeout(()=>{
+              this.loading = false;
               this.showLOV();
             }, 100);
           }
@@ -250,17 +251,40 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     getOptionLOV(quoteId) {
       this.qs.getQuoteOptions(quoteId).subscribe(data => {
-        console.log(data['quotation']['optionsList']);
         let fetchedOptData: any[] = data['quotation']['optionsList'];
         if(fetchedOptData.length === 1){
-          console.log('here');
-          this.optionData.optionId = fetchedOptData[0].optionId;
-          this.optionData.condition = fetchedOptData[0].condition;
+          this.selectedOpt.optionId = fetchedOptData[0].optionId;
+          this.selectedOpt.optionRt = fetchedOptData[0].optionRt;
           this.setOption();
         }
         this.passDataOptionLOV.tableData = data['quotation']['optionsList'];
         this.optListTable.refreshTable();
+        this.loading = false;
       });
+    }
+
+    checkCode(event){
+      if(this.optionData.optionId == ''){
+        this.optionData.condition = '';
+      }else{
+        this.ns.lovLoader(event, 1);
+        this.qs.getQuoteOptions(this.quoteData.quoteId).subscribe(data =>{
+          var options = data['quotation']['optionsList'];
+          
+          options = options.filter(opt => opt.optionId == this.optionData.optionId);
+
+          if(options.length == 1) {
+            this.optionData.optionId = options[0].optionId;
+            this.optionData.condition = options[0].optionRt;
+          } else {
+            this.optionData.optionId = '';
+            this.optionData.condition = '';
+
+            this.showOptionLOV();
+          }
+          this.ns.lovLoader(event, 0);
+        });
+      }
     }
 
     prepareParams(){
@@ -271,12 +295,6 @@ export class PolCreateOpenCoverComponent implements OnInit {
             $('#confirm-save #modalBtn2').trigger('click');
         }else{
             //please fill required fields
-            console.log(this.splitQuoteNo.length);
-            console.log(this.optionData.optionId);
-            console.log(this.inceptDate.date);
-            console.log(this.inceptDate.time);
-            console.log(this.expiryDate.date);
-            console.log(this.expiryDate.time);
             this.dialogIcon = 'info';
             this.dialogMessage = 'Please fill all the required fields.';
             $('#dialogPopup > #successModalBtn').trigger('click');
@@ -302,7 +320,6 @@ export class PolCreateOpenCoverComponent implements OnInit {
         };
         //save to DB
         this.us.saveOpenPolDetails(this.saveParams).subscribe((data: any)=>{
-            console.log(data);
             if(data.returnCode === 0){
               this.dialogIcon = "info";
               this.dialogMessage = "Conversion error. Invalid Quotation data.";
@@ -326,6 +343,8 @@ export class PolCreateOpenCoverComponent implements OnInit {
                                                                 policyIdOc: this.openPolicyInfo.policyIdOc,
                                                                 policyNo: this.openPolicyInfo.openPolNo,
                                                                 inquiryFlag: false,
+                                                                insured: this.quoteData.insuredDesc,
+                                                                riskName: this.quoteData.riskName,
                                                                 fromBtn: 'create'
                                                            }
                              ], { skipLocationChange: true });
@@ -338,7 +357,9 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.isIncomplete = true;
         this.clearFields();
         this.selectedOpt.optionId = '';
-        this.selectedOpt.condition = '';
+        this.selectedOpt.optionRt = '';
+        this.optionData.optionId = '';
+        this.optionData.condition = '';
         this.passDataOptionLOV.tableData = [];
         this.optListTable.refreshTable();
       }
@@ -370,13 +391,13 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     checkQuoteNoParams(){
        if(this.isIncomplete){
-         console.log(this.tempQuoteNo);
          if(this.tempQuoteNo[0].length !== 0 &&
             this.tempQuoteNo[1].length !== 0 &&
             this.tempQuoteNo[2].length !== 0 &&
             this.tempQuoteNo[3].length !== 0 &&
             this.tempQuoteNo[4].length !== 0){
              this.isIncomplete = false;
+             this.loading = true;
              this.getQuoteListing();
          }else{
            this.isIncomplete = true;

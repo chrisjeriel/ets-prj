@@ -14,6 +14,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
   policyInfo:any;
   inqFlag:any;
   title:string = "Policy / Issuance / Create Open Cover /";
+  exitLink:string;
 
   ngOnInit() {
   	this.route.params.subscribe(a=>{
@@ -22,6 +23,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
       if(this.inqFlag){
         this.title = "Policy / Inquiry / Open Cover Inquiry /"
       }
+      this.exitLink = a['exitLink']
 
   	})    
   }
@@ -32,7 +34,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
    //   }                     
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl(this.exitLink);
       }
     }
 

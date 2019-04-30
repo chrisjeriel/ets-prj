@@ -231,9 +231,9 @@ export class CustNonDatatableComponent implements OnInit {
         $('#tableRow').focus();
         //end select the first row
 
-        if(this.passData.tableData.length !== 0 ){
+        /*if(this.passData.tableData.length !== 0 ){
             this.loadingFlag = false;
-        }
+        }*/
     }
 
     ngOnInit(): void {
@@ -302,7 +302,7 @@ export class CustNonDatatableComponent implements OnInit {
         }
 
         //temporary fix delete this later
-        //setTimeout(()=>{this.refreshTable();},2000)
+        setTimeout(()=>{this.loadingFlag = false;},2000)
     }
 
     processData(key: any, data: any) {

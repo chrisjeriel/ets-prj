@@ -111,7 +111,7 @@ export class CedingCompanyComponent implements OnInit {
      this.modalOpen = true;
   }
 
-  checkCode(code, ev) {
+  checkCode(code, ev, id?) {
     if(String(code).trim() === ''){
       this.selectedData.emit({
         cedingId: '',
@@ -125,7 +125,11 @@ export class CedingCompanyComponent implements OnInit {
         ev: ev
       });
 
-      $('#cedingCompanyMdl > #modalBtn').trigger('click');
+      if(id != undefined) {
+        $(id + ' #modalBtn').trigger('click');  
+      } else {
+        $('#cedingCompanyMdl > #modalBtn').trigger('click');  
+      }      
     } else {
       this.underwritingService.getCedingCompanyList(code,'','','','','','','','','Y').subscribe(data => {     
         if(data['cedingcompany'].length > 0 && !this.exclude.includes(String(data['cedingcompany'][0].cedingId).padStart(3, '0'))) {
@@ -139,7 +143,11 @@ export class CedingCompanyComponent implements OnInit {
             ev: ev
           });
 
-          $('#cedingCompanyMdl > #modalBtn').trigger('click');
+          if(id != undefined) {
+            $(id + ' #modalBtn').trigger('click');  
+          } else {
+            $('#cedingCompanyMdl > #modalBtn').trigger('click');  
+          }   
         }      
       });
     }

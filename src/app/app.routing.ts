@@ -146,7 +146,7 @@ const appRoutes: Routes = [
     { path: 'policy-listing', component: ParListingComponent },
     { path: 'alt-policy-listing', component: AltParListingComponent },
     { path: 'expiry-listing', component: ExpiryListingComponent },
-    { path: 'quotation-holdcover', component: HoldCoverComponent },
+    { path: 'quotation-holdcover', component: HoldCoverComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'policy-printing', component: PolicyPrintingComponent },
     { path: 'policy-holdcover', component: PolicyToHoldCoverComponent },
     { path: 'change-quote-status', component: ChangeQuoteStatusComponent },
