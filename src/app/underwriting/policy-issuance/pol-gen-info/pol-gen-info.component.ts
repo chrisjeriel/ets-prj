@@ -35,7 +35,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
-  @ViewChild('dedLov') lov :LovComponent;
+  @ViewChild('dedLov') lov : LovComponent;
   @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
   lovCheckBox:boolean;
   passLOVData:any = {
@@ -847,6 +847,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.policyInfo.polWordings.text = data.data.text;
       this.policyInfo.polWordings.wordingCd = data.data.wordingCd;
 
+    }else if (data.selector == 'polWordingsAlt'){
+      this.policyInfo.polWordings.altText = data.data.text;
+      this.policyInfo.polWordings.wordingCd = data.data.wordingCd;
+
     }else{
       this.setLocation(data)
     }
@@ -868,6 +872,15 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.lovCheckBox = false;
       this.passLOVData.selector = 'polWordings';
       this.passLOVData.params = {
+        activeTag:'Y',
+        ocTag : 'N',
+        lineCd : this.policyInfo.lineCd,
+      }
+    }else if(data == 'polWordingsAlt'){
+      this.lovCheckBox = false;
+      this.passLOVData.selector = 'polWordingsAlt';
+      this.passLOVData.params = {
+        wordType: 'A',
         activeTag:'Y',
         ocTag : 'N',
         lineCd : this.policyInfo.lineCd,
