@@ -6,7 +6,7 @@
        
     </div>
     <div class="modal-body">
-    	<p class="text-center" style="margin-bottom: 2px ! important; font-size: 14px;">Saving {{TabName[showTab]}} </p>
+    	<p class="text-center" style="margin-bottom: 2px ! important; font-size: 14px;">{{loadMsg}} </p>
     	<p style="width: 300px"><ngb-progressbar [value]="progress" type="info" ></ngb-progressbar></p>
 	</div>
 </ng-template>
@@ -26,15 +26,13 @@
     	<div class="form-row" style="width: 400px;">
     		<div class="input-group" >
         		<b class=" form-control-sm col-sm-4">Policy No.:</b>
-        		<p  class=" form-control-sm col-sm-8" >CAR-2018-5081-077-0177 
+        		<p  class=" form-control-sm col-sm-8" >{{policyInfo.policyNo}}
                 </p>
         	</div>
         	<div class="input-group" >
         		<b class=" form-control-sm col-sm-4">Alteration No.: 
         		</b >
-        		<p *ngIf="alterationFlag" class="col-sm-8 form-control-sm">{{alterNum}}
-                </p>
-                <p *ngIf="!alterationFlag" class="col-sm-8 form-control-sm">00
+        		<p class="col-sm-8 form-control-sm">{{alterNum}}
                 </p>
         	</div>
         	<div class="input-group" >
@@ -46,7 +44,7 @@
         	<div class="input-group">
         		<b  class=" form-control-sm col-sm-4">Insured: 
         		</b>
-        		<p  class="form-control-sm col-sm-8">Penthouse, Henrys Building, 80 Ortigas Avenue, Greenhills, San Juan City, Metro Manila, Philippines 1502
+        		<p  class="form-control-sm col-sm-8">{{policyInfo.insured}}
         	</div>
       	</div>
     </div>
