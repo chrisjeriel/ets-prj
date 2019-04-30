@@ -3,11 +3,14 @@
         <div class="modal-title" id="modal-basic-title">
              Post
         </div>
-       
     </div>
     <div class="modal-body">
     	<p class="text-center" style="margin-bottom: 2px ! important; font-size: 14px;">{{loadMsg}} </p>
-    	<p style="width: 300px"><ngb-progressbar [value]="progress" type="info" ></ngb-progressbar></p>
+    	<p style="width: auto"><ngb-progressbar [value]="progress" type="info" ></ngb-progressbar></p>
+        <div class="w-100 text-center mt-3">
+           <button class="cust-btn" (click)="close()">Cancel</button>
+           <button [disabled]="postBtn" class="cust-btn" (click)="checkAcctDate()">Post</button> 
+        </div>
 	</div>
 </ng-template>
 
@@ -38,7 +41,7 @@
         	<div class="input-group" >
         		<b  class="form-control-sm  col-sm-4">Ced Company: 
         		</b >
-        		<p  class=" form-control-sm col-sm-8">Computer Professionals Inc. 
+        		<p  class=" form-control-sm col-sm-8">{{policyInfo.cedingName}}
                 </p>
         	</div>
         	<div class="input-group">
@@ -50,8 +53,8 @@
     </div>
     <div class="modal-footer" style="justify-content: center; padding-top: 10px;">
         <div class="row">
-            <button type="button" class="cust-btn" (click)="modal.close('Close click')"><a>Print</a></button>
-            <button type="button" class="cust-btn" (click)="modal.close('Close click')" routerLink="''" ><a>Ok</a></button>
+            <button type="button" class="cust-btn" (click)="close()"><a>Print</a></button>
+            <button type="button" class="cust-btn" (click)="goToListing()"><a>Ok</a></button>
         </div>
     </div>
 </ng-template>

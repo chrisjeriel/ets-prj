@@ -11,7 +11,8 @@ export class PolicyIssuanceComponent implements OnInit {
   @ViewChild('contentEditPol') contentEditPol;
   line: string;
   sub: any;
-  
+  post:boolean = false;
+
   policyInfo = {
         policyId: '',
         policyNo: '',
@@ -25,7 +26,8 @@ export class PolicyIssuanceComponent implements OnInit {
         showPolAlop: false,
         principalId: '',
         coInsuranceFlag: false,
-        fromSummary:false
+        fromSummary:false,
+        cedingName:''
   }
   @Input() fromSummary = false;
 
@@ -88,7 +90,10 @@ export class PolicyIssuanceComponent implements OnInit {
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
         this.router.navigate([this.exitLink,{policyId: this.policyInfo.policyId}]);
-      } 
+      } else if($event.nextId === 'post'){
+        $event.preventDefault();
+        this.openPost();
+      }
       if(this.fromInq=='true'){
         setTimeout(a=>{
           $('input').attr('readonly','readonly');
@@ -109,11 +114,16 @@ export class PolicyIssuanceComponent implements OnInit {
       this.policyInfo.principalId = event.principalId;
       this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
       this.policyInfo.insuredDesc = event.insuredDesc;
-      this.policyInfo.riskName = event.riskName
+      this.policyInfo.riskName = event.riskName;
+      this.policyInfo.cedingName = event.cedingName;
   }
 
   returnOnModal(){
      this.router.navigate(['/policy-listing'],{ skipLocationChange: true }); 
+  }
+
+  openPost(){
+    this.post = true;
   }
   
 }
