@@ -74,7 +74,7 @@
 										</div>
 										<div class="input-group ig-row" style="margin-bottom: 2px !important">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 6px !important">Intermediary</label>
-											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoOcData.intmId" name="genInfoOcData.intmId" mask="999" (blur)="genInfoOcData.intmId=pad(genInfoOcData.intmId)" (change)="checkCode($event,'intermediary')">
+											<input id="intm" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoOcData.intmId" name="genInfoOcData.intmId" mask="999999" (blur)="genInfoOcData.intmId=pad(genInfoOcData.intmId, 'intm')" (change)="checkCode($event,'intermediary')">
 											<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 											<span>&nbsp;</span>
 											<input type="text" class="form-control form-control-sm col-sm input-ig-row" [ngModel]="genInfoOcData.intmName" readonly tabindex="-1" name="genInfoOcData.intmName">
@@ -165,10 +165,10 @@
 						<div class="form-row">
 							<div class="input-group ig-row" style="margin-top: 9px ! important">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Principal</label>
-								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.prinId" name="genInfoOcData.prinId">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="pad(genInfoOcData.prinId, 'insured')" name="genInfoOcData.prinId" mask="999999">
 								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.prinName" name="genInfoOcData.prinName">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Contractor</label>
-								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.contractorId" name="genInfoOcData.contractorId">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="pad(genInfoOcData.contractorId, 'insured')" name="genInfoOcData.contractorId" mask="999999">
 								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.contractorName" name="genInfoOcData.contractorName">
 							</div>
 							<div class="input-group ig-row">
@@ -245,10 +245,10 @@
 						<div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
 							<div class="input-group ig-row" style="margin-top: 9px ! important">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Principal</label>
-								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.prinId" name="genInfoOcData.prinId">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="pad(genInfoOcData.prinId,'insured')" name="genInfoOcData.prinId">
 								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.prinName" name="genInfoOcData.prinName">
 								<label class="form-control-sm col-sm-1 cust-lbl-left-offset">Contractor</label>
-								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="genInfoOcData.contractorId" name="genInfoOcData.contractorId">
+								<input type="text" class="form-control form-control-sm col-sm-1" readonly tabindex="-1" [ngModel]="pad(genInfoOcData.contractorId,'insured')" name="genInfoOcData.contractorId">
 								<input type="text" class="form-control form-control-sm input-ig-row" readonly tabindex="-1" [ngModel]="genInfoOcData.contractorName" name="genInfoOcData.contractorName">
 							</div>
 							<div class="input-group ig-row">

@@ -51,6 +51,8 @@ export class PolCoverageComponent implements OnInit {
   totalSi: number = 0;
   editedData: any[] = [];
   deletedData: any[] = [];
+  editedDedt:any = [];
+  deletedDedt:any = [];
   catPerilData: any = {
     catPrlId: 0,
     pctShrPrm: 0,
@@ -69,9 +71,11 @@ export class PolCoverageComponent implements OnInit {
         searchFlag:true,
         checkFlag: true,
         magnifyingGlass: ['coverName'],
-        pageId: 'sectionCovers',
+        pageID: 'sectionCovers',
         nData:{
+          'coverCd':'',
           'discountTag':'N',
+          'deductiblesSec':[],
           'addSi':'N',
           'section': null,
           'bulletNo': null,
@@ -86,7 +90,7 @@ export class PolCoverageComponent implements OnInit {
           "showMG":1
         },
         //widths:[1,1,228,200,75,1,1,1],
-        uneditable:[true,true,false,false,false,false,false,false],
+        uneditable:[true,true,true,false,false,false,false,false],
         keys:['section','bulletNo','coverName','cumSi','premRt','cumPrem','discountTag','addSi'],
         //widths:[50,58,80,80,100,70,35]
     };
@@ -120,7 +124,6 @@ export class PolCoverageComponent implements OnInit {
         searchFlag: true,
         checkFlag: true,
         infoFlag: true,
-        pageId: 'deductibles',
         paginateFlag: true,
         widths: [1, 1, 1, 1, 1, 1],
         magnifyingGlass: ['deductibleCd'],
@@ -195,6 +198,7 @@ export class PolCoverageComponent implements OnInit {
   riskId:any;
   dialogMessage:string;
   cancelFlag:boolean;
+  currentCoverCd:'';
 
 
   passData: any = {
@@ -603,7 +607,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   getPolCoverage(){
-      this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
+     // this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
         console.log(data)
           this.passDataSectionCover.tableData = [];
@@ -795,7 +799,7 @@ export class PolCoverageComponent implements OnInit {
         this.passDataDeductibles.tableData = [];
       this.deductiblesTable.refreshTable();
     });
-    this.deductiblesTable.markAsDirty();
+    //this.deductiblesTable.markAsDirty();
   }
 
   saveDeductibles(){
@@ -855,14 +859,16 @@ export class PolCoverageComponent implements OnInit {
         this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
         this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length - 1].showMG = 0;
       }
-    }else if (data.selector == 'otherRates'){
-
+      this.sectionTable.indvSelect.deductiblesSec = this.passDataDeductibles.tableData;
+      this.deductiblesTable.tableDataChange.emit(this.deductiblesTable.passData.tableData);
+      this.deductiblesTable.refreshTable();
     }
-    this.deductiblesTable.refreshTable();
+    this.deductiblesTable.markAsDirty();
   }
 
   cancel(){
-    this.cancelBtn.clickCancel();
+    //this.cancelBtn.clickCancel();
+    console.log(this.passDataSectionCover.tableData);
   }
 
   update(data){
@@ -966,7 +972,6 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
 
     this.getEditableCov();
-    this.getDeductibles();
 /*    setTimeout(() => {
       this.focusBlur();
     }, 0)*/
@@ -980,15 +985,28 @@ export class PolCoverageComponent implements OnInit {
       this.deductiblesTable.refreshTable();
     }else{
       this.passDataDeductibles.disableAdd = false;
+      this.currentCoverCd = data.coverCd;
       /*this.passDataDeductibles.nData.coverCd = this.table.indvSelect.coverCd;
       this.passDataDeductibles.tableData = data.deductiblesSec;
       this.deductiblesTable.refreshTable();*/
-      this.getDeductibles();
+      this.deductibleData(data);
     }
+  }
+
+  deductibleData(data){
+    if(data !== null && data.deductiblesSec !== undefined){
+      this.passDataDeductibles.nData.coverCd = this.currentCoverCd
+      this.passDataDeductibles.tableData = data.deductiblesSec;
+    }else {
+      this.passDataDeductibles.tableData = [];
+    }
+    this.deductiblesTable.refreshTable();
   }
 
   prepareData(){
     this.editedData = [];
+    this.deletedData = [];
+    this.editedDedt = [];
     this.deletedData = [];
     this.coverageData.policyId = this.policyId;
     this.coverageData.projId = this.projId;
@@ -1012,7 +1030,16 @@ export class PolCoverageComponent implements OnInit {
         this.deletedData[this.deletedData.length - 1].updateDateSec = this.ns.toDateTimeString(0); 
         this.deletedData[this.deletedData.length - 1].lineCd = this.line;
       }
+
+      for(var j = 0 ; j < this.passDataSectionCover.tableData[i].deductiblesSec.length;j++){
+          if(this.passDataSectionCover.tableData[i].deductiblesSec[j].edited && !this.passDataSectionCover.tableData[i].deductiblesSec[j].deleted){
+            this.editedDedt.push(this.passDataSectionCover.tableData[i].deductiblesSec[j]);
+          }else if(this.passDataSectionCover.tableData[i].deductiblesSec[j].deleted){
+            this.deletedDedt.push(this.passDataSectionCover.tableData[i].deductiblesSec[j]);
+          }
+      }
     }
+
     console.log(this.editedData)
     this.coverageData.cumSecISi = this.coverageData.sectionISi;
     this.coverageData.cumSecIISi = this.coverageData.sectionIISi;
@@ -1025,9 +1052,12 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.cumTPrem = this.coverageData.totalPrem;
     this.coverageData.saveSectionCovers = this.editedData;
     this.coverageData.deleteSectionCovers = this.deletedData;
-    this.coverageData.saveDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && !a.deleted && a.deductibleCd!==null);
+    this.coverageData.saveDeductibleList = this.editedDedt;
+    this.coverageData.deleteDeductibleList = this.deletedDedt;
+    
+    /*this.coverageData.saveDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && !a.deleted && a.deductibleCd!==null);
     this.coverageData.deleteDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && a.deleted && a.deductibleCd!==null);
-
+*/
   }
 
   saveCoverage(cancelFlag?){
@@ -1042,11 +1072,10 @@ export class PolCoverageComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         $('app-sucess-dialog #modalBtn').trigger('click');
-        this.getPolCoverage();
-        this.deductiblesTable.refreshTable();
-        this.table.markAsPristine();
         this.sectionTable.markAsPristine();
         this.deductiblesTable.markAsPristine();
+        this.getPolCoverage();
+        this.deductiblesTable.refreshTable();
       }
     });
   }
