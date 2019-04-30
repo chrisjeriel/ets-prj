@@ -241,7 +241,7 @@ export class MaintenanceService{
 
     getMtnSpoilageReason(spoilCd){
     	const params = new HttpParams()
-			.set('spoilCd', spoilCd)
+			.set('spoilCd', spoilCd);
 
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSpoilageReason', {params});
     }
@@ -254,6 +254,15 @@ export class MaintenanceService{
 			.set('defaultTag', pass.defaultTag == undefined ? '' : pass.defaultTag)
 			.set('ocTag', pass.ocTag == undefined ? '' : pass.ocTag)
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnPolWordings', {params});
+    }
+    
+    saveMtnInsured(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnInsured',params,header);
     }
 
 }
