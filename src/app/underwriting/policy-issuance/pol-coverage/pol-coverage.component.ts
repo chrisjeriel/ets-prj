@@ -1066,6 +1066,7 @@ export class PolCoverageComponent implements OnInit {
     }
 
     console.log(this.editedData)
+    this.coverageData.changeTag = 'N';
     this.coverageData.cumSecISi = this.coverageData.sectionISi;
     this.coverageData.cumSecIISi = this.coverageData.sectionIISi;
     this.coverageData.cumSecIIISi = this.coverageData.sectionIIISi;
