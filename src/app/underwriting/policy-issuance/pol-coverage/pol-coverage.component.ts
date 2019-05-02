@@ -1043,15 +1043,24 @@ export class PolCoverageComponent implements OnInit {
         this.altCoverageData.totalValue = (this.altCoverageData.totalSi/this.altCoverageData.pctShare*100).toFixed(2)
       }
     }
+    this.focusCalc()
   }
 
   totalValue(data){
     if(!this.alteration){
       this.coverageData.pctShare = (this.coverageData.totalSi/this.coverageData.totalValue*100).toFixed(10);
+      if(this.coverageData.pctShare > 100){
+        this.coverageData.pctShare = (100).toFixed(10);
+        this.coverageData.totalValue = (this.coverageData.totalSi/this.coverageData.pctShare*100).toFixed(2)
+      }
     }else {
       this.altCoverageData.pctShare =  (this.altCoverageData.comtotalSi/this.altCoverageData.totalValue*100).toFixed(10);
+      if(this.altCoverageData.pctShare > 100){
+        this.altCoverageData.pctShare =  (this.altCoverageData.comtotalSi/this.altCoverageData.totalValue*100).toFixed(10);
+        this.altCoverageData.pctShare = (100).toFixed(10);
+        this.altCoverageData.totalValue = (this.altCoverageData.totalSi/this.altCoverageData.pctShare*100).toFixed(2)
+      }
     }
-    
   }
 
   onrowClick(data){
