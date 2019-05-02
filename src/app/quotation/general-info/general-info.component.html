@@ -806,7 +806,7 @@
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
 						<div class="form-group col-sm-3">
 							<label tabindex="-1" class="form-control-sm top-label">% Share</label>
-							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" [(ngModel)]="project.pctShare" (change)="compute($event,'pctShare')">
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" [(ngModel)]="project.pctShare" (change)="compute($event,'pctShare')" mask="999">
 						</div>
 						<div class="form-group col-sm" style="margin-left: -6px !important;">
 							<label tabindex="-1" class="form-control-sm top-label">100% Value</label>

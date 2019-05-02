@@ -502,7 +502,7 @@ export class GeneralInfoComponent implements OnInit {
     }
 
     setInt(event){
-        this.genInfoData.intmId = event.intmId;
+        this.genInfoData.intmId = event.intmId != null && event.intmId != '' ? String(event.intmId).padStart(6, '0') : '';
         this.genInfoData.intmName = event.intmName;
         this.ns.lovLoader(event.ev, 0);
         this.focusBlur();
