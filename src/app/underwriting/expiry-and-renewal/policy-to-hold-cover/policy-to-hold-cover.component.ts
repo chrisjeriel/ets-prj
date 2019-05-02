@@ -199,9 +199,11 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		});
 	}
 
-	retrievePolHoldCov(policyId: string, policyNo: string, holdCovId: string){
+	retrievePolHoldCov(policyId: string, policyNo: string, holdCovId: string, save?){
 		//this.approveListMethod(policyId);
-		this.loading = true;
+		if(save === undefined){
+			this.loading = true;
+		}
 		this.us.retrievePolHoldCover(policyId,'', holdCovId).subscribe((data: any)=>{
 			console.log(data.policy.holdCoverList);
 			for(let rec of data.policy.holdCoverList){
@@ -333,7 +335,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				let generatedNum: string[] = data.polHoldCoverNo.split('-');
 				this.polHoldCoverParams.holdCovSeqNo = parseInt(generatedNum[3]).toString();
 				this.polHoldCoverParams.holdCovRevNo = parseInt(generatedNum[4]).toString();
-				this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo, this.polHoldCoverParams.holdCovId);
+				this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo, this.polHoldCoverParams.holdCovId, 'save');
 				if(!this.isApproval && !this.isReleasing){
 					this.dialogIcon = '';
 					this.dialogMessage = '';

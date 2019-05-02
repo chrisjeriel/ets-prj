@@ -101,8 +101,9 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     isType: boolean = false;
     isIncomplete: boolean = true;
-    noDataFound: boolean = false;
+    noDataFound: boolean = true;
     loading: boolean = false;
+    btnDisabled: boolean = false;
     
     constructor(private titleService: Title, private router: Router, private ns: NotesService, 
                 private us: UnderwritingService, private qs: QuotationService, private modalService: NgbModal,
@@ -117,11 +118,14 @@ export class PolCreateOpenCoverComponent implements OnInit {
         if(data !== null){
             if(Object.keys(data).length !== 0){
                 this.selectedQuote = data;
+                this.btnDisabled = false;
             }else{
                 this.selectedQuote = {};
+                this.btnDisabled = true;
             }
         }else{
             this.selectedQuote = {};
+            this.btnDisabled = true;
         }
     }
 
@@ -130,11 +134,14 @@ export class PolCreateOpenCoverComponent implements OnInit {
         if(data !== null){
             if(Object.keys(data).length !== 0){
                 this.selectedOpt = data;
+                this.btnDisabled = false;
             }else{
                 this.selectedOpt = {};
+                this.btnDisabled = true;
             }
         }else{
             this.selectedOpt = {};
+            this.btnDisabled = true;
         }
     }
 
@@ -355,6 +362,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
       if(data.length === 0 ){
         this.isIncomplete = true;
+        this.noDataFound = true;
         this.clearFields();
         this.selectedOpt.optionId = '';
         this.selectedOpt.optionRt = '';
