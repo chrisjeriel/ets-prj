@@ -1328,7 +1328,7 @@
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-5" for="xx">This Alteration Inception Date</label>
-											<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" appRequired>
+											<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
 											<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]" appRequired>
 											<div class="col-sm-1"></div>
 										</div>
@@ -1340,7 +1340,7 @@
 							">
 							<div class="input-group col-sm-6">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
-								<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.expiryDate?.split('T')[0]" (ngModelChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
+								<input type="date" class="form-control form-control-sm req" min="{{ policyInfo.inceptDate?.split('T')[0] }}" [ngModel]="policyInfo.expiryDate?.split('T')[0]" (ngModelChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.expiryDate?.split('T')[1]" appRequired>
 							</div>
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
@@ -2103,7 +2103,7 @@
 												</div>
 												<div class="input-group">
 													<label class="form-control-sm col-sm-4" for="xx">This Alteration Effective Date</label>
-													<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" appRequired>
+													<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" (change)="updateDate('lapseTo')" appRequired>
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" appRequired>
 												</div>
 											</div>
@@ -2116,17 +2116,17 @@
 										<div class="col-sm-10">
 											<div class="custom-row-inline-inset">
 												<div class="input-group">
-													<label class="form-control-sm col-sm-4" for="xx">Issue Date</label>
-													<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.issueDate?.split('T')[0]" (ngModelChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]" appRequired>
+													<label class="form-control-sm col-sm-4">Issue Date</label>
+													<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.issueDate?.split('T')[0]" (ngModelChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]" (change)="updateDate('lapseFrom')" appRequired>
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]" appRequired>
 												</div>
 												<div class="input-group">
-													<label class="form-control-sm col-sm-4" for="xx">Distribution Date</label>
+													<label class="form-control-sm col-sm-4">Distribution Date</label>
 													<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.distDate?.split('T')[0]" (ngModelChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]" appRequired>
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.distDate?.split('T')[1]" appRequired>
 												</div>
 												<div class="input-group">
-													<label class="form-control-sm col-sm-4" for="xx">Accounting Date</label>
+													<label class="form-control-sm col-sm-4">Accounting Date</label>
 													<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]" appRequired>
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]" appRequired>
 												</div>
