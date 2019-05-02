@@ -42,10 +42,15 @@
 										 appRequired [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">
 										<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div>
 										<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span> -->
-										<select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="genInfoData.lineClassCd"
-											[disabled]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">
+										<!-- <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="genInfoData.lineClassCd"
+											[disabled]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" appRequired>
 											<option *ngFor="let lc of lineClasses" [value]="lc.lineClassCd">{{lc.lineClassCdDesc}}</option>
-										</select>
+										</select> -->
+										<div class="col-sm-4" style="padding: 0;">
+											<select class="form-control form-control-sm cust-sm req" [(ngModel)]="genInfoData.lineClassCd" [disabled]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" appRequired>
+												<option *ngFor="let lc of lineClasses" [value]="lc.lineClassCd">{{lc.lineClassCdDesc}}</option>
+											</select>
+										</div>
 									</div>
 									<div class="input-group ig-cust">
 										<label tabindex="-1" class="form-control-sm col-sm-2">Policy Number</label>
@@ -311,9 +316,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude">
 								</div>
 							</div>
 						</div>
@@ -404,9 +409,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude">
 								</div>
 							</div>
 						</div>
@@ -494,9 +499,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude">
 								</div>
 							</div>
 						</div>
@@ -801,11 +806,11 @@
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
 						<div class="form-group col-sm-3">
 							<label tabindex="-1" class="form-control-sm top-label">% Share</label>
-							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" [(ngModel)]="project.pctShare">
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" [(ngModel)]="project.pctShare" (change)="compute($event,'pctShare')">
 						</div>
 						<div class="form-group col-sm" style="margin-left: -6px !important;">
 							<label tabindex="-1" class="form-control-sm top-label">100% Value</label>
-							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" [(ngModel)]="project.totalValue" mask="comma_separator.2">
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" [(ngModel)]="project.totalValue" mask="comma_separator.2" (change)="compute($event,'totalValue')" (blur)="checkDecimal('totalValue')">
 						</div>
 					</div>
 				</div>
