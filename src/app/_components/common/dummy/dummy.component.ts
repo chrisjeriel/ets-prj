@@ -370,4 +370,18 @@ export class DummyComponent implements OnInit {
             }
           )
       }
+
+
+
+      paulsData:any = {
+          tHeader: ['Insured Id','Insured Name','Address'],
+          dataTypes: ['sequence-3', 'text', 'text'],
+          pageLength: 10,
+          searchFlag: true,
+          pageStatus: true,
+          pagination: true,
+          tableData: [],
+          pageID: 'Insured',
+          keys:['insuredId', 'insuredName','address']
+      }
 }
