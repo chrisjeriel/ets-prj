@@ -76,7 +76,7 @@ export class PolPostComponent implements OnInit {
       this.checkCoverage();
     }
 
-    checkSign():string{
+    checkSign(secCvrs):string{
       
       return "";
     }

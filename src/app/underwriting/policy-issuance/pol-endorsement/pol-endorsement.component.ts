@@ -29,7 +29,7 @@ export class PolEndorsementComponent implements OnInit {
         magnifyingGlass: ['endtCd'],
         dataTypes: ['checkbox', 'text', 'text','text-editor', 'text'],
         nData: {
-            changeTag: 'Y',
+            changeTag: 'N',
             endtCd: '',
             endtTitle: '',
             remarks: '',
@@ -113,6 +113,9 @@ export class PolEndorsementComponent implements OnInit {
         this.route.params.subscribe(params => {
             this.currentLine = params['line'];
         })
+        if(this.alteration){
+            this.passData.nData.changeTag = 'Y';
+        }
         if(this.policyInfo.fromInq!='true'){
             //do something
             this.passData.magnifyingGlass = ['endtCd'];
