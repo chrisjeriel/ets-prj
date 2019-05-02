@@ -46,7 +46,7 @@
 			                				<div class="form-row">
 			                					<label class="form-control-sm col-sm-5">Insured Type</label>
                         						<select class="form-control form-control-sm cust-sm col-sm warn cus-dirty" (change)="addDirty()" appRequired [(ngModel)]="insuredRecord.insuredType">
-                        							<option value="P">Principal/Insured</option>
+                        							<option value="P">Principal</option>
                         							<option value="C">Contractor</option>
                         						</select>
 			                				</div>
@@ -76,7 +76,7 @@
 			                					<label class="form-control-sm col-sm-5">First Name</label>
                         						<input type="text" class="form-control form-control-sm col-sm ind-name cus-dirty" appRequired readonly (change)="addDirty()" maxlength="248" [(ngModel)]="insuredRecord.firstName" (keyup)="concatName()">
                         						<label class="form-control-sm">M.I.</label>
-                        						<input type="text" class="form-control form-control-sm col-sm-1 cap-input ind-name cus-dirty" appRequired readonly (change)="addDirty()" maxlength="3" [(ngModel)]="insuredRecord.middleInitial" (keyup)="concatName()">
+                        						<input type="text" class="form-control form-control-sm col-sm-1 cap-input ind-name cus-dirty midInit" appRequired readonly (change)="addDirty()" maxlength="3" [(ngModel)]="insuredRecord.middleInitial" (keyup)="concatName()">
 			                				</div>
 			                			</div>
 			                			<div class="col-sm-6">
@@ -170,11 +170,6 @@
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Exit">
-		<ng-template>
-			
-		</ng-template>
-	</ngb-tab>
 	</ngb-tabset>
 </div>
 

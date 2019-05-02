@@ -140,4 +140,13 @@ export class InsuredListComponent implements OnInit {
   	}
   }
 
+  onTabChange($event: NgbTabChangeEvent) {
+
+  	if($event.nextId === 'Exit'){
+  		$event.preventDefault();
+		this.router.navigate(['']);
+  	}
+  	
+  }
+
 }

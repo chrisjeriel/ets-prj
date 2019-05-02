@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Quotation & Policy</h4>
-	<ngb-tabset>
+	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="Insured List">
 			<ng-template ngbTabContent>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
@@ -24,10 +24,11 @@
 
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Exit">
-		<ng-template>
-			
-		</ng-template>
-	</ngb-tab>
+		<ngb-tab id="Exit">
+            <ng-template ngbTabTitle>
+                <div>Exit</div>
+            </ng-template>
+            <ng-template ngbTabContent></ng-template>
+        </ngb-tab>
 	</ngb-tabset>
 </div>

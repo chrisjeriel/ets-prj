@@ -85,13 +85,16 @@ export class InsuredComponent implements OnInit {
 
   	onSaveMtnInsured(cancelFlag?){
   		this.cancelFlag = cancelFlag !== undefined;
+  		this.insuredRecord.insuredName 	= (this.insuredRecord.insuredName === null || this.insuredRecord.insuredId === undefined)? '' : this.insuredRecord.insuredName.trim();
+  		this.insuredRecord.insuredAbbr 	= (this.insuredRecord.insuredAbbr === null || this.insuredRecord.insuredAbbr === undefined)?'':this.insuredRecord.insuredAbbr;
+  		this.insuredRecord.zipCd		= (this.insuredRecord.zipCd === null || this.insuredRecord.zipCd === undefined)?'':this.insuredRecord.zipCd;
+  		this.insuredRecord.insuredType	= (this.insuredRecord.insuredType === null || this.insuredRecord.insuredType === undefined)?'':this.insuredRecord.insuredType;
+  		this.insuredRecord.firstName 	= (this.insuredRecord.firstName === null || this.insuredRecord.firstName === undefined)?'':this.insuredRecord.firstName;
+  		this.insuredRecord.lastName		= (this.insuredRecord.lastName === null || this.insuredRecord.lastName === undefined)?'':this.insuredRecord.lastName;
 
-  		if(this.insuredRecord.insuredName.trim() === '' || this.insuredRecord.insuredName.trim() === null || this.insuredRecord.insuredName.trim() === undefined ||
-  		   	this.insuredRecord.insuredAbbr === '' || this.insuredRecord.insuredAbbr === null || this.insuredRecord.insuredAbbr === undefined ||
-  		   	this.insuredRecord.zipCd === '' || this.insuredRecord.zipCd === null || this.insuredRecord.zipCd === undefined ||
-  		   	this.insuredRecord.insuredType === '' || this.insuredRecord.insuredType === null || this.insuredRecord.insuredType === undefined ||
-  		   	this.insuredRecord.corpTag === null || this.insuredRecord.vatTag === null){
-
+  		if(this.insuredRecord.insuredName === '' || this.insuredRecord.insuredAbbr === '' || this.insuredRecord.zipCd === '' || this.insuredRecord.insuredType === '' ||
+  		   this.insuredRecord.corpTag === null || this.insuredRecord.vatTag === null || 
+  		   (this.insuredRecord.corpTag === 'I' && (this.insuredRecord.firstName === '' || this.insuredRecord.lastName === '') )){
 	  			setTimeout(()=>{
                     $('.globalLoading').css('display','none');
                     this.dialogIcon = 'error';
@@ -168,6 +171,7 @@ export class InsuredComponent implements OnInit {
   			$('.name').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
   			$('.ind-name').prop('readonly',false);
   			$('.ind-name').addClass('warn');
+  			$('.midInit').removeClass('warn');
   			
   		}else{
   			$('.name').prop('readonly',false);
