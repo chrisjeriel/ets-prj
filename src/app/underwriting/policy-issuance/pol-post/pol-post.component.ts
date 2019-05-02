@@ -91,13 +91,20 @@ export class PolPostComponent implements OnInit {
         }
         let covData = a['policy'].project.coverage;
         let secCvrs = covData.sectionCovers;
-        if(!this.alteration && !coveragaAmts.every(a=>covData[a]>=0)){
+        if(this.alterationFlag){
+          if(secCvrs.every(a=>a.premAmt>=0 && a.sumInsured>=0)){
+            this.altSign = 'positive';
+          }else if(secCvrs.every(a=>a.premAmt<=0 && a.sumInsured<=0)){
+            this.altSign = 'negative';
+          }else{
+            this.loadMsg = 'Invalid amounts. Please create separate alteration for positive and negative amounts in Coverage tab.';
+            return;
+          }
+        }
+
+        if(!this.alterationFlag && !coveragaAmts.every(a=>covData[a]>=0)){
           this.loadMsg = 'Invalid amounts. All amounts must be positive. Please go to Coverage tab';
-        }
-        else if(this.alterationFlag ){
-            //todo
-        }
-        else if(
+        }else if(
             ((this.lineCd=='CAR'|| this.lineCd=='EAR') && secCvrs.reduce((a,b)=>a+( (b.section=="I" || b.section=="III") && b.addSi == 'Y' ?b.cumSi:0) , 0) != covData.cumTSi) ||
             ((this.lineCd=='EEI') && secCvrs.reduce((a,b)=>a+(b.addSi == 'Y' ? b.cumSi:0) , 0)  != covData.cumTSi) ||
             (['CAR','EAR','EEI'].indexOf(this.lineCd)== -1 && secCvrs.reduce((a,b)=>a+(b.section=="I" && b.addSi == 'Y' ? b.cumSi:0 ), 0) != covData.cumTSi)
@@ -178,6 +185,9 @@ export class PolPostComponent implements OnInit {
 
     goToListing(){
       this.modalService.dismissAll();
-      this.router.navigate(['policy-listing'])
+      if(this.alterationFlag)
+        this.router.navigate(['alt-policy-listing']);
+      else
+        this.router.navigate(['policy-listing'])
     }
 }

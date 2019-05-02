@@ -23,7 +23,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
         showPolAlop: false,
         coInsuranceFlag: false,
         fromInq:'',
-        prevPolicyId: ''
+        prevPolicyId: '',
+        cedingName:''
     }
 
     alterFlag: boolean = false;
@@ -106,6 +107,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
       this.policyInfo.riskName =  event.riskName;
       this.policyInfo.showPolAlop = event.showPolAlop;
       this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
+      this.policyInfo.cedingName = event.cedingName;
     }
 
    returnOnModal(){

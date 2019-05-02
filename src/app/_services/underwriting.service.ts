@@ -857,8 +857,8 @@ export class UnderwritingService {
                 .set('reqBy','')
                 .set('reqDateFrom','')
                 .set('reqDateTo','')
-                .set('expiringInDays','')
-        }
+                .set('expiringInDays','')        }
+
          else{
              params = new HttpParams();
             for(var i of searchParams){
