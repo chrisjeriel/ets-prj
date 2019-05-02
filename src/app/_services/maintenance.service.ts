@@ -25,6 +25,29 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInsured", {params});
 	}
 
+	getMtnInsuredList(searchParams : any[]){
+		var params;
+
+		if(searchParams.length < 1){
+			params = new HttpParams()
+				.set('insured','')
+				.set('insuredName','')
+				.set('insuredAbbr','')
+				.set('activeTag','')
+				.set('insuredType','')
+				.set('corpTag','')
+				.set('vatTag','')
+				.set('address','')
+		}else{
+			params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+		}
+		
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInsured", {params});
+	}
+
 	// getEndtCode(lineCd?:string,endtCd?:number){
 	// 	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveEndtCode"
 	// 		+(lineCd!==undefined ? '?lineCd='+lineCd : '')
