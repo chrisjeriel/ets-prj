@@ -1,11 +1,11 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Quotation & Policy</h4>
-	<ngb-tabset>
+	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="Insured List">
 			<ng-template ngbTabContent>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
                     <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-						<app-cust-editable-non-datatable [passData]="passDataInsuredList" (tableDataChange)="passDataInsuredList.tableData=$event" (newClick)="onRowClick($event)" (add)="onClickAdd($event)" (rowDblClick)="onRowDblClick($event)" (edit)="onClickEdit($event)"></app-cust-editable-non-datatable>
+						<app-cust-non-datatable [passData]="passDataInsuredList" (tableDataChange)="passDataInsuredList.tableData=$event" (rowClick)="onRowClick($event)" (add)="onClickAdd($event)" (newRowDblClick)="insuredRecord=$event;onRowDblClick()" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (export)="export()"></app-cust-non-datatable>
 					</div>
 				</fieldset>
 
@@ -24,10 +24,11 @@
 
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Exit">
-		<ng-template>
-			
-		</ng-template>
-	</ngb-tab>
+		<ngb-tab id="Exit">
+            <ng-template ngbTabTitle>
+                <div>Exit</div>
+            </ng-template>
+            <ng-template ngbTabContent></ng-template>
+        </ngb-tab>
 	</ngb-tabset>
 </div>

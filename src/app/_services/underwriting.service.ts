@@ -857,8 +857,8 @@ export class UnderwritingService {
                 .set('reqBy','')
                 .set('reqDateFrom','')
                 .set('reqDateTo','')
-                .set('expiringInDays','')
-        }
+                .set('expiringInDays','')        }
+
          else{
              params = new HttpParams();
             for(var i of searchParams){
@@ -944,6 +944,15 @@ export class UnderwritingService {
              })
          };
          return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolGenInfoSpoilage',params,header);
+    }
+
+    post(params){
+        let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/underwriting-service/postPolicy',JSON.stringify(params),header);
     }
 
 }            

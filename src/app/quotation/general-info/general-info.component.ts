@@ -219,7 +219,9 @@ export class GeneralInfoComponent implements OnInit {
 				this.loading = false;
 				console.log(data);
 				if(data['quotationGeneralInfo'] != null) {
-					this.genInfoData = data['quotationGeneralInfo'];						
+					this.genInfoData = data['quotationGeneralInfo'];
+					this.genInfoData.principalId = String(this.genInfoData.principalId).padStart(6,'0')
+        			this.genInfoData.contractorId = this.genInfoData.contractorId != null ? String(this.genInfoData.contractorId).padStart(6,'0'):null;						
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.expiryDate);
 					this.genInfoData.issueDate 	= (this.genInfoData.issueDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.issueDate);
@@ -295,6 +297,7 @@ export class GeneralInfoComponent implements OnInit {
 
 				this.genInfoData.expiryDate		= this.ns.toDateTimeString(millis);	
 				this.project.projId 			= '1';
+				this.project.pctShare  			= 100;
 
 				this.maintenanceService.getMtnCurrency('PHP','Y').subscribe(data => {
 					var curr = data['currency'][0];
@@ -362,7 +365,7 @@ export class GeneralInfoComponent implements OnInit {
 		$('.ng-dirty').removeClass('ng-dirty');
 		},1000);
 
-		
+		this.getLineClass();
 	}
 
 
@@ -887,6 +890,13 @@ export class GeneralInfoComponent implements OnInit {
 	cbToggle(ev) {
 		$(ev.target).addClass('ng-dirty');
 	}
+
+	lineClasses: any[] = [];
+	getLineClass(){
+    this.maintenanceService.getLineClassLOV(this.line).subscribe(a=>{
+      this.lineClasses = a['lineClass'];
+    })
+  }
 
 }
 export interface SelectRequestMode {
