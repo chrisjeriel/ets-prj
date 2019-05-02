@@ -179,7 +179,7 @@
                                     <span *ngSwitchCase="'time'" class="unclickable">{{data[key] | date: 'HH:mm'}}</span>
                                     <span *ngSwitchCase="'datetime'" class="unclickable">{{data[key] | date: 'yyyy-MM-ddTHH:mm'}}</span>
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                        <input  type="checkbox" [checked]="data[key]">
+                                        <input  type="checkbox" [checked]="data[key]" class="unclickable" >
                                     </div>
                                     <span *ngSwitchDefault class="unclickable">{{data[key] }}</span>
                                 </div>
@@ -319,7 +319,7 @@
                                     <span class="unclickable">{{data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
                                     </div>
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                        <input  type="checkbox" [checked]="data[key] && data[key]!= 'N'">
+                                        <input  type="checkbox" [checked]="data[key] && data[key]!= 'N'" class="unclickable">
                                     </div>
                                     <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
 <!-- >>>>>>> 52f0de4d81d86a7c64b1a521d9cfffd09d471ab1 -->

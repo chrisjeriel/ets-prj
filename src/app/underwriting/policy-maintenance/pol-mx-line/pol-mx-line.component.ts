@@ -40,6 +40,7 @@ export class PolMxLineComponent implements OnInit {
 		infoFlag			: true,
 		pageLength			: 10,
 		resizable			: [true, true, true, false, true, true, false,true],
+		uneditable			: [false,false,false,false,false,false,false,false],
 		pageID				: 'line-mtn-line',
 		keys				: ['lineCd','description','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks'],
 	};

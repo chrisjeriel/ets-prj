@@ -8,12 +8,12 @@
 						<div class="input-group">
 							<div class="col-sm-2"></div>
 							<label class="form-control-sm col-sm-1">Policy No</label>
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "spoilPolRecord.line" (change)="search('lineCd',$event)" maxlength="7">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "spoilPolRecord.year" (change)="search('year',$event)" numbers-only maxlength="4">
-							<input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "spoilPolRecord.seqNo" (change)="search('seqNo',$event)" numbers-only maxlength="5">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company Code" [(ngModel)] = "spoilPolRecord.coCode" (change)="search('cedingId',$event)" maxlength="3">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "spoilPolRecord.coSeriesNo" (change)="search('coSeriesNo',$event)" numbers-only maxlength="4">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "spoilPolRecord.altNo" (change)="search('altNo',$event)" numbers-only maxlength="3">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "spoilPolRecord.line" (change)="search('lineCd',$event)" maxlength="7" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "spoilPolRecord.year" (change)="search('year',$event)" numbers-only maxlength="4" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "spoilPolRecord.seqNo" (change)="search('seqNo',$event)" numbers-only maxlength="5" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company Code" [(ngModel)] = "spoilPolRecord.coCode" (change)="search('cedingId',$event)" maxlength="3" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "spoilPolRecord.coSeriesNo" (change)="search('coSeriesNo',$event)" numbers-only maxlength="4" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "spoilPolRecord.altNo" (change)="search('altNo',$event)" numbers-only maxlength="3" appRequired>
 							<span>&nbsp;</span>
 							<div><a (click)="show()"><i class="fa fa-search"></i></a></div>
 							<div class="form-row">
@@ -148,7 +148,7 @@
 							<div class="input-group">
 								<div class="col-sm-1" style="margin-right: 49px !important"></div>
 								<label class="form-control-sm col-sm-2">Reason for Spoilage</label>
-									<input *ngIf="reasonLovEnabled" class="form-control form-control-sm  col-sm-1 dirty" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason()">
+									<input *ngIf="reasonLovEnabled" class="form-control form-control-sm  col-sm-1 dirty" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason()" appRequired>
 									<div *ngIf="reasonLovEnabled" class="text-search-ico" style="padding-left: 1px" (click)="showLovSpoil()"><a><i class="fa fa-search"></i></a></div>&nbsp;
 									<input  *ngIf="!reasonLovEnabled" class="form-control form-control-sm  col-sm-1" readonly type="text" style="margin-right: 1px !important;     margin-left: -5px !important;">
 								<input class="form-control form-control-sm col-sm" type="text" style="margin-left: 2px;" readonly [(ngModel)]="spoilPolRecord.reasonDesc">
