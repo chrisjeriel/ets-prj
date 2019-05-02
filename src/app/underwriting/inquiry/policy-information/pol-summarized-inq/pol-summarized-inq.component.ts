@@ -9,13 +9,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PolSummarizedInqComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router) { }
-  policyNo:string;
+  showPolicyNo:string;
   policyId:string;
 
   ngOnInit() {
   	this.route.params.subscribe(params => {
-
-  	        this.policyNo = params['policyNo'];
+          console.log(params);
+  	        this.showPolicyNo = params['showPolicyNo'];
             this.policyId = params['policyId'];
   	});   
   }
@@ -26,7 +26,7 @@ export class PolSummarizedInqComponent implements OnInit {
    //   }                     
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
-        this.router.navigate(['/policy-information', {policyId:this.policyId, policyNo:this.policyNo}], { skipLocationChange: true });
+        this.router.navigate(['/policy-information', {policyId:this.policyId, showPolicyNo:this.showPolicyNo}], { skipLocationChange: true });
      }
  }
 }

@@ -66,8 +66,8 @@ export class PolCreatePARComponent implements OnInit {
     pageID: 'createPolOptionLov'
   }
 
-  selected: any;
-  selectedOption: any;
+  selected: any = null;
+  selectedOption: any = null;
   quNo: any[] = [];
   hcNo: any[] = [];
   ocNo: any[] = [];
@@ -208,7 +208,7 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-      this.polOcList = this.polOcList//.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
+      this.polOcList = this.polOcList.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
                                      .map(oc => { oc.riskName = oc.project.riskName; return oc; });
       this.passDataLOV.tableData = this.polOcList;
       this.lovTable.refreshTable();
@@ -388,9 +388,9 @@ export class PolCreatePARComponent implements OnInit {
       "openPolicyNo"  : this.oc ? this.ocNo.join('-') : '',
       "optionId"      : this.optionId,
       "quotationNo"   : this.qu ? this.quNo.join('-') : '',
-      "createUser"    : JSON.parse(window.localStorage.currentUser).username,
+      "createUser"    : this.ns.getCurrentUser(),
       "createDate"    : this.ns.toDateTimeString(0),
-      "updateUser"    : JSON.parse(window.localStorage.currentUser).username,
+      "updateUser"    : this.ns.getCurrentUser(),
       "updateDate"    : this.ns.toDateTimeString(0)
     }
 
@@ -595,11 +595,9 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   pad(ev,num) {
-    if(ev.target.value === '') {
-      return '';
-    }
+    var str = ev.target.value;    
 
-    return String(ev.target.value).padStart(num, '0');
+    return str === '' ? '' : String(str).padStart(num, '0');
   }
 
   checkCode(ev) {

@@ -230,7 +230,8 @@ export class AltParListingComponent implements OnInit {
                 policyId: this.policyId, 
                 statusDesc: this.statusDesc, 
                 riskName: this.riskName, 
-                insured: this.insuredDesc, 
+                insured: this.insuredDesc,
+                exitLink:'/alt-policy-listing'
             }
 
             if ((b.length > 1)) {
@@ -288,7 +289,8 @@ export class AltParListingComponent implements OnInit {
                 policyId: this.policyId, 
                 statusDesc: this.statusDesc, 
                 riskName: this.riskName, 
-                insured: this.insuredDesc, 
+                insured: this.insuredDesc,
+                exitLink:'/alt-policy-listing'
             }
 
             if ((b.length > 1)) {

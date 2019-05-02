@@ -236,7 +236,7 @@ export class QuoteOptionComponent implements OnInit {
           if(data.quotation.project!==null){
             this.defaultSectionCvrs = data.quotation.project.coverage.sectionCovers.filter((a)=>{
               a.amount = a.sumInsured;
-              a.coverCdDesc = a.description;
+              a.coverCdDesc = a.coverName;
               a.changeTag = 'N';
               a.rate = data.optionRt;
               a.edited = true;

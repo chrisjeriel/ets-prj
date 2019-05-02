@@ -309,9 +309,13 @@ export class UpdateGeneralInfoComponent implements OnInit {
 
     getPolicyDetails(obj){
       this.removeNgDirty();
-      this.us.getPolGenInfo(obj,null).subscribe(data => {
+      this.us.getPolGenInfo(obj,'').subscribe(data => {
           var records = data['policy'];
           console.log(records);
+
+          if(this.isEmptyObject(records)){
+            this.clear();
+          } else {
           this.policyInfo.policyId = records.policyId;
           this.policyInfo.policyNo = records.policyNo;
           this.splitPolNo = records.policyNo.split('-');
@@ -346,6 +350,10 @@ export class UpdateGeneralInfoComponent implements OnInit {
           this.policyInfo.project.blockDesc = records.project.blockDesc;
           this.policyInfo.project.latitude = records.project.latitude;
           this.policyInfo.project.longitude = records.project.longitude;
+
+          }
+
+         
         });
     }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UnderwritingService, NotesService } from '../../../_services';
+import { UnderwritingService, NotesService, MaintenanceService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
@@ -15,6 +15,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
+import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 
 @Component({
   selector: 'app-pol-gen-info',
@@ -34,7 +35,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
-  @ViewChild('dedLov') lov :LovComponent;
+  @ViewChild('dedLov') lov : LovComponent;
+  @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
   lovCheckBox:boolean;
   passLOVData:any = {
     selector: '',
@@ -49,6 +51,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   @Input() mode;
   @Input() alteration: boolean = false;
+  @Input() polInfo: any = {
+    policyId: '',
+    policyNo: '',
+    riskName: '',
+    insuredDesc: '',
+    riskId: '',
+    showPolAlop: '',
+    coInsuranceFlag: false,
+    principalId: ''
+  }
 
   policyInfo:any = {
     policyId: null,
@@ -117,6 +129,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     updateDate: null,
     showPolAlop: false,
     coInsuranceFlag: false,
+    polWordings:{},
     project: {
       projId: null,
       projDesc: null,
@@ -187,14 +200,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     nData: {
       "coverCd": 0,
       "createDate": this.ns.toDateTimeString(0),
-      "createUser": JSON.parse(window.localStorage.currentUser).username,
+      "createUser": this.ns.getCurrentUser(),
       "deductibleAmt": 0,
       "deductibleCd": null,
       "deductibleRt": 0,
       "deductibleTxt": '',
       "endtCd": "0",
       "updateDate": this.ns.toDateTimeString(0),
-      "updateUser":JSON.parse(window.localStorage.currentUser).username,
+      "updateUser":this.ns.getCurrentUser(),
       showMG : 1
     },
     uneditable: [true,true,false,false,false]
@@ -219,13 +232,53 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   refPolicyId: string = '';
   newAlt: boolean = false;
   fromInq:any = false;
+  showPolicyNo: string;
+  lineClasses: any[] = [];
+
+  wordingsKeys:string[] = [
+    'polwText01',
+    'polwText02',
+    'polwText03',
+    'polwText04',
+    'polwText05',
+    'polwText06',
+    'polwText07',
+    'polwText08',
+    'polwText09',
+    'polwText10',
+    'polwText11',
+    'polwText12',
+    'polwText13',
+    'polwText14',
+    'polwText15',
+    'polwText16',
+    'polwText17',
+    'altwText01',
+    'altwText02',
+    'altwText03',
+    'altwText04',
+    'altwText05',
+    'altwText06',
+    'altwText07',
+    'altwText08',
+    'altwText09',
+    'altwText10',
+    'altwText11',
+    'altwText12',
+    'altwText13',
+    'altwText14',
+    'altwText15',
+    'altwText16',
+    'altwText17'
+  ]
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
   constructor(private route: ActivatedRoute, private modalService: NgbModal,
-    private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService) { }
+    private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService,
+    private mtnService: MaintenanceService) { }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.titleService.setTitle("Pol | General Info");
     this.tHeader.push("Item No", "Description of Items");
     this.dataTypes.push("text", "text");
@@ -234,32 +287,36 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
-      this.policyId = params['policyId'];
-      this.policyNo = params['policyNo'];
-      this.prevPolicyId = params['prevPolicyId'] == undefined? '' : params['prevPolicyId'];
+      this.policyId = this.polInfo.policyId === '' ? params['policyId'] : this.polInfo.policyId;
+      this.policyNo = this.polInfo.policyNo === '' ? params['policyNo'] : this.polInfo.policyNo;
+      this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];
 
-      if(params['alteration'] != undefined) {
-        this.alteration = params['alteration'];
-        this.newAlt = params['alteration'];
+      if(this.underwritingService.fromCreateAlt) {
+        this.alteration = true;
+        this.newAlt = true;
       }
 
-      this.fromInq = params['fromInq']=='true';
+      //edit by paul
+      this.fromInq = params['fromInq'] == 'true';
 
       if(this.fromInq){
         this.passDataDeductibles.addFlag = false;
-        this.passDataDeductibles.deleteFlag= false;
+        this.passDataDeductibles.deleteFlag = false;
         this.passDataDeductibles.checkFlag = false;
         this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       }
-            
+
+      this.showPolicyNo = params['showPolicyNo'];
+      this.getLineClass();
     });
 
     this.getPolGenInfo();
+
     if(this.newAlt) {
       setTimeout(() => { $('.req').addClass('ng-dirty') }, 0);
     } else {
       setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') }, 1000);  
-    }        
+    }
   }
 
   ngOnDestroy() {
@@ -274,10 +331,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     $('#radioBtnSet').css('backgroundColor', (this.policyInfo.declarationTag === 'Y') ? '#ffffff' : '#f5f5f5');
   }
 
-  getPolGenInfo() {
+  getPolGenInfo(fromSave?) {
+    if(fromSave === undefined) {
+      $('.globalLoading').css('display','block');
+    }
+
     this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
+      $('.globalLoading').css('display','none');
       if(data.policy != null) {
         this.policyInfo = data.policy;
+        this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
         this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
@@ -292,11 +355,60 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
         this.policyInfo.project.createDate = this.ns.toDateTimeString(this.policyInfo.project.createDate);
         this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
+        //edit by paul
+        this.policyInfo.principalId = String(this.policyInfo.principalId).padStart(6,'0')
+        this.policyInfo.contractorId = this.policyInfo.contractorId != null ? String(this.policyInfo.contractorId).padStart(6,'0'):null;
+        if(this.policyInfo.polWordings !== null){
+          this.policyInfo.polWordings.text = "";
+          this.policyInfo.polWordings.altText = "";
+
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText01 == null? '' : this.policyInfo.polWordings.polwText01;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText02 == null? '' : this.policyInfo.polWordings.polwText02;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText03 == null? '' : this.policyInfo.polWordings.polwText03;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText04 == null? '' : this.policyInfo.polWordings.polwText04;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText05 == null? '' : this.policyInfo.polWordings.polwText05;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText06 == null? '' : this.policyInfo.polWordings.polwText06;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText07 == null? '' : this.policyInfo.polWordings.polwText07;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText08 == null? '' : this.policyInfo.polWordings.polwText08;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText09 == null? '' : this.policyInfo.polWordings.polwText09;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText10 == null? '' : this.policyInfo.polWordings.polwText10;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText11 == null? '' : this.policyInfo.polWordings.polwText11;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText12 == null? '' : this.policyInfo.polWordings.polwText12;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText13 == null? '' : this.policyInfo.polWordings.polwText13;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText14 == null? '' : this.policyInfo.polWordings.polwText14;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText15 == null? '' : this.policyInfo.polWordings.polwText15;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText16 == null? '' : this.policyInfo.polWordings.polwText16;
+          this.policyInfo.polWordings.text += this.policyInfo.polWordings.polwText17 == null? '' : this.policyInfo.polWordings.polwText17;
+
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText01 == null? '' : this.policyInfo.polWordings.altwText01;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText02 == null? '' : this.policyInfo.polWordings.altwText02;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText03 == null? '' : this.policyInfo.polWordings.altwText03;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText04 == null? '' : this.policyInfo.polWordings.altwText04;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText05 == null? '' : this.policyInfo.polWordings.altwText05;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText06 == null? '' : this.policyInfo.polWordings.altwText06;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText07 == null? '' : this.policyInfo.polWordings.altwText07;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText08 == null? '' : this.policyInfo.polWordings.altwText08;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText09 == null? '' : this.policyInfo.polWordings.altwText09;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText10 == null? '' : this.policyInfo.polWordings.altwText10;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText11 == null? '' : this.policyInfo.polWordings.altwText11;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText12 == null? '' : this.policyInfo.polWordings.altwText12;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText13 == null? '' : this.policyInfo.polWordings.altwText13;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText14 == null? '' : this.policyInfo.polWordings.altwText14;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText15 == null? '' : this.policyInfo.polWordings.altwText15;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText16 == null? '' : this.policyInfo.polWordings.altwText16;
+          this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText17 == null? '' : this.policyInfo.polWordings.altwText17;
+        }else{
+          this.policyInfo.polWordings = {
+            text: '',
+            altText: ''
+          };
+        }
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
-        if(this.alteration) {
-          if (this.prevPolicyId != '') {
+
+        if(this.alteration && !this.newAlt) {
+          if (this.prevPolicyId !== '') {
             this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
               this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
@@ -304,7 +416,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           }
         }
 
-        setTimeout(() => {
+        setTimeout(() => {  
           $('input[appCurrencyRate]').focus();
           $('input[appCurrencyRate]').blur();
           if(this.fromInq){
@@ -320,6 +432,19 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.refPolicyId = this.policyInfo.policyId;
         this.policyInfo.policyNo = "";
         this.policyInfo.policyId = "";
+        this.policyInfo.statusDesc = "";
+
+        // this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag:'Y', ocTag : this.policyInfo.openCoverTag, lineCd : this.policyInfo.lineCd })
+        //                .subscribe(data =>{
+        //                  console.log(data);
+        //                  Object.keys(data['mtnPolWordings']).forEach(function(key) {
+        //                    if(key)
+        //                  });          
+        //                });
+        this.policyInfo.wordings = "";
+
+        this.policyInfo.issueDate = this.ns.toDateTimeString(0);
+        this.policyInfo.effDate = this.ns.toDateTimeString(0);
       }
     });
 
@@ -333,6 +458,18 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   setLineClass(data){
     this.policyInfo.lineClassCd = data.lineClassCd;
     this.policyInfo.lineClassDesc = data.lineClassCdDesc;
+    this.focusBlur();
+  }
+
+  showRiskLOV(){
+    $('#riskLOV #modalBtn').trigger('click');
+    $('#riskLOV #modalBtn').addClass('ng-dirty')
+  }
+
+  setRisk(data){
+    this.policyInfo.project.riskId = data.riskId;
+    this.policyInfo.project.riskName = data.riskName;
+    this.ns.lovLoader(data.ev, 0);
     this.focusBlur();
   }
 
@@ -370,6 +507,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.currencyLov.checkCode(this.policyInfo.currencyCd, ev);
       } else if(field === 'preparedBy') {
         this.usersLov.checkCode(this.policyInfo.preparedBy, ev);
+      } else if(field === 'risk') {
+        this.riskLOV.checkCode(this.policyInfo.project.riskId, '#riskLOV', ev);
       }
   }
 
@@ -385,7 +524,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       if(this.saveBtnClicked){
         setTimeout(()=>{
           $('.req').focus();
-        $('.req').blur();
+          $('.req').blur();
         },0)  
       }
   }
@@ -474,14 +613,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
            this.emitPolicyInfoId.emit({
             policyId: event,
-            policyNo: this.policyInfo.policyNo,
+            policyNo: this.policyNo,
             riskName: this.policyInfo.project.riskName,
             insuredDesc: this.policyInfo.insuredDesc,
             riskId: this.policyInfo.project.riskId,
             showPolAlop: this.policyInfo.showPolAlop,
             coInsuranceFlag: this.policyInfo.coInsuranceFlag,
             principalId: this.policyInfo.principalId
-          }); 
+          });
       });   
 
     });
@@ -492,6 +631,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     d.setFullYear(d.getFullYear() + 1);
 
     this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
+  }
+
+  updateDate(str) {
+    if(str === 'lapseFrom') {
+      this.policyInfo.lapseFrom = this.ns.toDateTimeString(new Date(this.policyInfo.issueDate));
+    } else if(str === 'lapseTo') {
+      this.policyInfo.lapseTo = this.ns.toDateTimeString(new Date(this.policyInfo.effDate));
+    }
   }
 
   prepareParam(cancelFlag?) {
@@ -566,11 +713,40 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "totalSi"         : this.policyInfo.project.totalSi,
       "updateDate"      : this.ns.toDateTimeString(0),
       "updateUser"      : this.ns.getCurrentUser(),
-      "wordings"        : this.policyInfo.wordings.trim()
+      //" wordings"        : this.policyInfo.wordings.trim(),
+      "polWordings"     : this.policyInfo.polWordings,
+      "regionCd"        : this.policyInfo.project.regionCd,
+      "provinceCd"      : this.policyInfo.project.provinceCd,
+      "cityCd"          : this.policyInfo.project.cityCd,
+      "districtCd"      : this.policyInfo.project.districtCd,
+      "blockCd"         : this.policyInfo.project.blockCd,
+      "latitude"        : this.policyInfo.project.latitude,
+      "longitude"       : this.policyInfo.project.longitude
     }
+    let wordingSplit = this.policyInfo.polWordings.text.match(/(.|[\r\n]){1,2000}/g);
+    if(savePolGenInfoParam.polWordings.createUser == undefined){
+      savePolGenInfoParam.polWordings.createUser = this.ns.getCurrentUser();
+      savePolGenInfoParam.polWordings.createDate = this.ns.toDateTimeString(0);
+    }else{
+      savePolGenInfoParam.polWordings.createDate = this.ns.toDateTimeString(savePolGenInfoParam.polWordings.createDate);
+    }
+    for(let key of this.wordingsKeys){
+      savePolGenInfoParam.polWordings[key]='';
+    }
+    if(wordingSplit != null)
+      for(let i=0;i<wordingSplit.length;i++){
+        savePolGenInfoParam.polWordings[this.wordingsKeys[i]] = wordingSplit[i];
+      }
+
+    let wordingSplitAlt = this.policyInfo.polWordings.altText.match(/(.|[\r\n]){1,2000}/g);
+    var x = this.wordingsKeys.length/2;
+    if(wordingSplitAlt != null)
+      for(let i=0;i<wordingSplitAlt.length;i++){        
+        savePolGenInfoParam.polWordings[this.wordingsKeys[x]] = wordingSplitAlt[i];
+        x++;
+      }
 
     //ADD VALIDATION
-   this.loading = true;
    if(this.validate(savePolGenInfoParam)){
      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
        if(data.returnCode === 0){
@@ -581,20 +757,24 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          // this.policyInfo.policyId = data['policyId'];
          // this.policyInfo.policyNo = data['policyNo'];
          // this.policyInfo.altNo = data['policyNo'].split('-')[5];
-
          this.policyId = data['policyId'];
-         this.policyNo = data['policyNo'];
-         this.newAlt = false;
-         this.getPolGenInfo();
+         this.policyNo = data['policyNo'];         
 
-         this.dialogMessage="";
+         if(this.newAlt) {
+           this.newAlt = false;
+           // this.checkPolIdF(this.policyId);
+           this.underwritingService.fromCreateAlt = false;
+         }        
+
+         this.dialogMessage = "";
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');        
          /*this.form.control.markAsPristine();*/
+         this.getPolGenInfo('noLoading');
        }
      });
    }else{
-     this.dialogMessage="Please check field values.";
+     this.dialogMessage = "Please check field values.";
      this.dialogIcon = "error";
      $('#polGenInfo > #successModalBtn').trigger('click');
 
@@ -689,8 +869,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
         this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length - 1].showMG = 0;
       }
-    }else if (data.selector == 'otherRates'){
+    }else if (data.selector == 'polWordings'){
+      this.policyInfo.polWordings.text = data.data.text;
+      this.policyInfo.polWordings.wordingCd = data.data.wordingCd;
 
+    }else if (data.selector == 'polWordingsAlt'){
+      this.policyInfo.polWordings.altText = data.data.text;
+      this.policyInfo.polWordings.wordingCd = data.data.wordingCd;
+
+    }else{
+      this.setLocation(data)
     }
     this.deductiblesTable.refreshTable();
   }
@@ -706,7 +894,28 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         activeTag:'Y'
       }
       this.passLOVData.hide = this.passDataDeductibles.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
+    }else if(data == 'polWordings'){
+      this.lovCheckBox = false;
+      this.passLOVData.selector = 'polWordings';
+      this.passLOVData.params = {
+        wordType: 'P',
+        activeTag:'Y',
+        ocTag : 'N',
+        lineCd : this.policyInfo.lineCd,
+      }
+    }else if(data == 'polWordingsAlt'){
+      this.lovCheckBox = false;
+      this.passLOVData.selector = 'polWordingsAlt';
+      this.passLOVData.params = {
+        wordType: 'A',
+        activeTag:'Y',
+        ocTag : 'N',
+        lineCd : this.policyInfo.lineCd,
+      }
+    }else{
+      
     }
+    $('#lov').addClass('ng-dirty');
     this.lov.openLOV();
   }
 
@@ -730,7 +939,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
        req.push('contractorId', 'duration');
        break;
      case 'EAR':
-       req.push('testing');
+       req.push('contractorId', 'duration', 'testing');
        break;
      case 'MLP':
        req.push('ipl', 'timeExc', 'mbiRefNo');
@@ -747,9 +956,21 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
      req.push('insuredId', 'insuredName', 'objectId', 'projDesc', 'wordings');
    }
 
+   if(this.policyInfo.openCoverTag === 'Y') {
+     req.push('riskId', 'regionCd', 'provinceCd', 'cityCd');
+   }
+
    var entries = Object.entries(obj);
 
    for(var[key, val] of entries) {
+     if(key === 'polWordings') {
+       if(!this.alteration && val['text'].trim() === '') {
+         return false;
+       } else if(this.alteration && val['altText'].trim() === '') {
+         return false;
+       }
+     }
+
      if((val === '' || val == null) && req.includes(key)) {
        return false;
      }
@@ -770,4 +991,267 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.focusBlur();
   }
 
+  //edit by paul
+  getLineClass(){
+    this.mtnService.getLineClassLOV(this.line).subscribe(a=>{
+      this.lineClasses = a['lineClass'];
+    })
+  }
+
+  // ----------------------------from risk-----------------------------------------------------------
+  oldValue:any;
+  checkCodeLoc(ev, field){
+        $(ev).addClass('ng-dirty');
+        if(field === 'region'){
+            this.oldValue = this.policyInfo.project.regionCd;
+            if (this.policyInfo.project.regionCd == null || this.policyInfo.project.regionCd == '') {
+                this.policyInfo.project.regionCd = '';
+                this.policyInfo.project.regionDesc = '';
+                this.policyInfo.project.provinceCd = '';
+                this.policyInfo.project.provinceDesc = '';
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('region', this.policyInfo.project.regionCd, '', '', '', '', ev);
+            }
+        } else if(field === 'province'){
+            this.oldValue = this.policyInfo.project.provinceCd;
+            if (this.policyInfo.project.provinceCd == null || this.policyInfo.project.provinceCd == '') {
+                this.policyInfo.project.provinceCd = '';
+                this.policyInfo.project.provinceDesc = '';
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('province', this.policyInfo.project.regionCd, this.policyInfo.project.provinceCd, '', '', '', ev);
+            }
+        } else if(field === 'city'){
+            this.oldValue = this.policyInfo.project.cityCd;
+            if (this.policyInfo.project.cityCd == null || this.policyInfo.project.cityCd == '') {
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('city', this.policyInfo.project.regionCd, this.policyInfo.project.provinceCd, this.policyInfo.project.cityCd, '', '', ev);
+            }
+        } else if(field === 'district') {
+            this.oldValue = this.policyInfo.project.districtCd;
+            if (this.policyInfo.project.districtCd == null || this.policyInfo.project.districtCd == '') {
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('district',this.policyInfo.project.regionCd, this.policyInfo.project.provinceCd, this.policyInfo.project.cityCd, this.policyInfo.project.districtCd, '', ev);
+            }
+        } else if(field === 'block') {
+            this.oldValue = this.policyInfo.project.blockCd;
+            if (this.policyInfo.project.blockCd == null || this.policyInfo.project.blockCd == '') {
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lov.checkCode('block',this.policyInfo.project.regionCd, this.policyInfo.project.provinceCd, this.policyInfo.project.cityCd, this.policyInfo.project.districtCd, this.policyInfo.project.blockCd, ev);
+            }
+        } /*else if(field === 'risk') {
+            this.riskLov.checkCode(this.riskCd, ev);
+        }      */        
+    }
+
+     setLocation(data){
+        this.ns.lovLoader(data.ev, 0);
+        var resetSucceedingFields = false;
+
+        if(data.selector == 'region'){
+            if (data.data == null) {
+                this.setRegion(data);
+                if (this.oldValue = data.regionCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                if (this.oldValue = data.data.regionCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.policyInfo.project.provinceCd = '';
+                this.policyInfo.project.provinceDesc = '';
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            }
+
+        } else if(data.selector == 'province'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                if (this.oldValue = data.provinceList[0].provinceCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                if (this.oldValue = data.data.provinceCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.policyInfo.project.cityCd = '';
+                this.policyInfo.project.cityDesc = '';
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+                this.policyInfo.project.zoneCd = '';
+                this.policyInfo.project.zoneDesc = '';
+            }
+
+        } else if(data.selector == 'city'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                this.setCity(data.provinceList[0].cityList[0]);
+                if (this.oldValue = data.provinceList[0].cityList[0].cityCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                this.setCity(data.data);
+                if (this.oldValue = data.data.cityCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.policyInfo.project.districtCd = '';
+                this.policyInfo.project.districtDesc = '';
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+            }
+
+        } else if(data.selector == 'district'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                this.setCity(data.provinceList[0].cityList[0]);
+                this.setDistrict(data.provinceList[0].cityList[0].districtList[0]);
+                if (this.oldValue = data.provinceList[0].cityList[0].districtList[0].districtCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                this.setCity(data.data);
+                this.setDistrict(data.data);
+                if (this.oldValue = data.data.cityCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.policyInfo.project.blockCd = '';
+                this.policyInfo.project.blockDesc = '';
+            }
+
+        } else if(data.selector == 'block'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                this.setCity(data.provinceList[0].cityList[0]);
+                this.setDistrict(data.provinceList[0].cityList[0].districtList[0]);
+                this.setBlock(data.provinceList[0].cityList[0].districtList[0].blockList[0]);
+                if (this.oldValue = data.provinceList[0].cityList[0].districtList[0].blockList[0].blockCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                this.setCity(data.data);
+                this.setDistrict(data.data);
+                this.setBlock(data.data);
+                if (this.oldValue = data.data.blockCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+
+            }
+        }
+
+        this.ns.lovLoader(data.ev, 0);
+    }
+
+
+    setDistrict(data){
+        this.policyInfo.project.districtCd = data.districtCd;
+        this.policyInfo.project.districtDesc = data.districtDesc;
+    }
+    setCity(data){
+        this.policyInfo.project.cityCd = data.cityCd;
+        this.policyInfo.project.cityDesc = data.cityDesc;
+    }
+    setBlock(data){
+        this.policyInfo.project.blockCd = data.blockCd;
+        this.policyInfo.project.blockDesc = data.blockDesc;
+    }
+
+    setRegion(data){
+        this.policyInfo.project.regionCd = data.regionCd;
+        this.policyInfo.project.regionDesc = data.regionDesc;
+    }
+    setProvince(data){
+        this.policyInfo.project.provinceCd = data.provinceCd;
+        this.policyInfo.project.provinceDesc = data.provinceDesc;
+    }
+
+    openGenericLOV(selector){
+        this.lovCheckBox = false;
+        if(selector == 'province'){
+            this.passLOVData.regionCd = this.policyInfo.project.regionCd;
+        }else if(selector == "city"){
+            this.passLOVData.regionCd = this.policyInfo.project.regionCd;
+            this.passLOVData.provinceCd = this.policyInfo.project.provinceCd;
+        }else if(selector == 'district'){
+            this.passLOVData.regionCd = this.policyInfo.project.regionCd;
+            this.passLOVData.provinceCd = this.policyInfo.project.provinceCd;
+            this.passLOVData.cityCd = this.policyInfo.project.cityCd;
+        }else if(selector == 'block'){
+            this.passLOVData.regionCd = this.policyInfo.project.regionCd;
+            this.passLOVData.provinceCd = this.policyInfo.project.provinceCd;
+            this.passLOVData.cityCd = this.policyInfo.project.cityCd;
+            this.passLOVData.districtCd = this.policyInfo.project.districtCd;
+        }
+        this.passLOVData.selector = selector;
+        this.lov.openLOV();
+    }
 }

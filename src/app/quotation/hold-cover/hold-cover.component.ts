@@ -668,7 +668,7 @@ export class HoldCoverComponent implements OnInit {
 			this.holdCover.preparedBy = '';
 			this.holdCover.approvedBy = '';
 			this.holdCover.optionId = '';
-			$('.ng-dirty').removeClass('ng-dirty');
+			//$('.ng-dirty').removeClass('ng-dirty');
 		}
 
 		onClickSave(){
@@ -694,13 +694,13 @@ export class HoldCoverComponent implements OnInit {
 
 		onTabChange($event: NgbTabChangeEvent) {
 			if ($event.nextId === 'Exit') {
-				if($('.ng-dirty').length != 0 ){
+				// if($('.ng-dirty').length != 0 ){
+				// 	$event.preventDefault();
+				// }else{
+				// 	console.log('DIRTY');
 					$event.preventDefault();
-				}else{
-					console.log('DIRTY');
-					$event.preventDefault();
-					this.router.navigateByUrl('hold-cover-monitoring');
-				}
+					this.router.navigate(['']);
+				// }
 			}else{
 				console.log('EVENT ELSE ON TAB CHANGE');
 				if($('.ng-dirty').length != 0 ){

@@ -142,7 +142,7 @@
         <div class="col-md-13 text-center">
             <div class="cust-btn-container" style="margin-top:10px">
                 <button type="button" class="cust-btn" [routerLink]="['']"><a>Cancel</a></button>
-                <button type="button" (click)="onClickConvert()" class="cust-btn"><a>Convert</a></button>                
+                <button type="button" (click)="onClickConvert()" class="cust-btn" [disabled]="selected == null || optionRt == ''"><a>Convert</a></button>                
             </div>
         </div>
     </div>
