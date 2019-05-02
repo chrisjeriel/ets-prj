@@ -66,7 +66,7 @@
 									</div>
 									<div class="input-group">
 										<label tabindex="-1" class="form-control-sm col-sm-2">Intermediary</label>
-										<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" (blur)="genInfoData.intmId=pad(genInfoData.intmId)" (change)="checkCode($event,'intermediary')" mask="999">
+										<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" (blur)="genInfoData.intmId=pad(genInfoData.intmId,6)" (change)="checkCode($event,'intermediary')" mask="999999">
 										<!-- <input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')"> -->
 										<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span>
