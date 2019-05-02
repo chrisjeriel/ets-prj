@@ -272,10 +272,14 @@
           <div class="input-group" style="margin-top: -16px;">
             &nbsp;
           </div>
+          <!-- <div class="input-group" style="margin-top: -5px;">
+            <label class="form-control-sm col-sm-1">Remarks</label>
+            <textarea class="form-control-sm form-control" [ngModel]="altCoverageData.remarks" (ngModelChange)="altCoverageData.remarks = $event" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+          </div> -->
           <div class="input-group" style="margin-top: -5px;">
            <label class="form-control-sm col-sm-1" style="margin-right: 10px">Remarks</label>
            <div class="form-control-sm col-sm edtr-cont" style="height: 60px; margin-bottom: 10px;">
-             <text-editor [editorContent]="altCoverageData.remarks" (fetchContent)="altCoverageData.remarks = $event"></text-editor>
+             <textarea class="form-control-sm form-control" [ngModel]="altCoverageData.remarks" (ngModelChange)="altCoverageData.remarks = $event" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
            </div>
          </div>
        </div>
@@ -314,7 +318,7 @@
 <app-confirm-save #confirmSave (onYes)="alterationSave()"></app-confirm-save>
 </ng-container>
 
-<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOVsamp($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
 <app-modal class="d-none" #deductiblesModal>
   <div header>Deductibles</div>
   <div body>

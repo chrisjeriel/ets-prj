@@ -1205,7 +1205,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   updateAlteration(data){
-    console.log('eeeeyyyyy')
     this.prevsectionISi = 0;
     this.prevsectionIPrem = 0;
     this.altsectionIPrem = 0;
@@ -1600,6 +1599,7 @@ export class PolCoverageComponent implements OnInit {
          }
          this.sectionTable.refreshTable();
      }else {
+       console.log(data)
          if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
            console.log('true')
            this.sectionCoverLOVRow = data[0].ev.index;
@@ -1619,6 +1619,7 @@ export class PolCoverageComponent implements OnInit {
            this.passData.tableData[this.sectionCoverLOVRow].showMG = 1;
          }
          this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
+
          //this.validateSectionCover();
          for(var i = 0; i<data.length;i++){
            this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -1633,7 +1634,7 @@ export class PolCoverageComponent implements OnInit {
                 this.passData.tableData[this.passData.tableData.length - 1].others = true;
            }
          }
-         this.deductiblesTable.refreshTable();
+         this.sectionTable.refreshTable();
      }
       
     }
