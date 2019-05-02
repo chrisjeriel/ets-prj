@@ -156,6 +156,38 @@ legend.scheduler-border {
     color: black; 
 }
 
+div.span-div {
+        float: right; 
+        width: 70px; 
+        text-align: center; 
+        background-color: #D32F2F !important;
+        padding: 2px 5px; 
+        color: white
+}
+
+ul a {
+        font-size: 12px !important;
+        font-weight: 700;
+         color: #D32F2F;
+    }
+
+
+ul a:hover {
+    color: #F44336;
+    cursor: pointer;
+}
+
+ul.timeline > li:before {
+ border: 3px solid #C62828 ! important;
+}
+
+.table th {
+        font-weight: 700;
+        color: #D32F2F ! important;
+}
+
+
+
 
 
 

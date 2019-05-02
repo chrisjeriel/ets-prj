@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angu
 import { UserService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-mtn-users',
@@ -10,6 +11,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class MtnUsersComponent implements OnInit {
 
+@Output() cancelMdl: EventEmitter<any> = new EventEmitter();
 selected: any = null;
 
   usersListing: any = {
@@ -79,7 +81,7 @@ selected: any = null;
     if(!this.lovCheckBox){
       this.selectedData.emit(this.selected);
       this.usersListing.tableData = [];
-      this.table.refreshTable();
+      this.table.refreshTable('');
       this.selected = null;
     }
     else{
@@ -97,6 +99,11 @@ selected: any = null;
     this.usersListing.tableData = [];
     this.table.refreshTable();
   }
+
+  cancelClicked(event) {
+       this.cancelMdl.next(event);
+   }
+
 
   openModal(){
       /*for(var j = 0; j < this.passDataAttention.tableData.length; j++){
@@ -130,8 +137,8 @@ selected: any = null;
             userId: '',
             ev: ev
           });
-
           $('#usersMdl > #modalBtn').trigger('click');
+          this.table.refreshTable('');
         }
         
       });

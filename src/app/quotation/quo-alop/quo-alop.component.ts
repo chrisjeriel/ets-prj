@@ -483,6 +483,7 @@ export class QuoAlopComponent implements OnInit {
        for(var i=0;i < sectionCover.length;i++){
          if(sectionCover[i].coverName == 'Advance Loss of Profit'){
              this.alopSI = sectionCover[i].sumInsured;
+             this.alopDetails.annSi = this.alopSI;
          }
        }
      });

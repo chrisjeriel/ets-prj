@@ -38,7 +38,6 @@
 	}
 
 	.cust-btn {
-		background: #E76B6F !important;
 		border: 0px;
 	    border-radius: 2px !important;
 	    font-size: 11px;
@@ -107,8 +106,10 @@
 
 				<div style="float: left;">
 					<button [disabled]="selectedData == null" class="cust-btn" (click)="redirectToQuoteGenInfo()">View Details</button>
-					<button [disabled]="selectedData == null" class="cust-btn" (click)="approveRecord()" style="background: #E76B6F !important;">Approve</button>
-					<button [disabled]="selectedData == null" class="cust-btn" (click)="rejectRecord()" style="background: #E76B6F !important;">Reject</button>
+					<!-- <button [disabled]="selectedData == null" class="cust-btn" (click)="approveRecord()" style="background: #E76B6F !important;">Approve</button> -->
+					<button [disabled]="selectedData == null" class="cust-btn" (click)="approveRecord()">Approve</button> 
+				<!-- 	<button [disabled]="selectedData == null" class="cust-btn" (click)="rejectRecord()" style="background: #E76B6F !important;">Reject</button> -->
+					<button [disabled]="selectedData == null" class="cust-btn" (click)="rejectRecord()" >Reject</button>
 				</div>
 				<div class="pagination">
 		            <!--<div class="pagination" *ngIf="passData.hasPagination">-->

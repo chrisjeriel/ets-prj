@@ -301,7 +301,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
       if(this.fromInq){
         this.passDataDeductibles.addFlag = false;
-        this.passDataDeductibles.deleteFlag= false;
+        this.passDataDeductibles.deleteFlag = false;
         this.passDataDeductibles.checkFlag = false;
         this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       }
@@ -432,7 +432,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.policyNo = "";
         this.policyInfo.policyId = "";
         this.policyInfo.statusDesc = "";
+
+        // this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag:'Y', ocTag : this.policyInfo.openCoverTag, lineCd : this.policyInfo.lineCd })
+        //                .subscribe(data =>{
+        //                  console.log(data);
+        //                  Object.keys(data['mtnPolWordings']).forEach(function(key) {
+        //                    if(key)
+        //                  });          
+        //                });
         this.policyInfo.wordings = "";
+
         this.policyInfo.issueDate = this.ns.toDateTimeString(0);
         this.policyInfo.effDate = this.ns.toDateTimeString(0);
       }
@@ -609,7 +618,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             riskId: this.policyInfo.project.riskId,
             showPolAlop: this.policyInfo.showPolAlop,
             coInsuranceFlag: this.policyInfo.coInsuranceFlag,
-            principalId: this.policyInfo.principalId
+            principalId: this.policyInfo.principalId,
+            cedingName: this.policyInfo.cedingName //add by paul
           });
       });   
 
@@ -621,6 +631,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     d.setFullYear(d.getFullYear() + 1);
 
     this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
+  }
+
+  updateDate(str) {
+    if(str === 'lapseFrom') {
+      this.policyInfo.lapseFrom = this.ns.toDateTimeString(new Date(this.policyInfo.issueDate));
+    } else if(str === 'lapseTo') {
+      this.policyInfo.lapseTo = this.ns.toDateTimeString(new Date(this.policyInfo.effDate));
+    }
   }
 
   prepareParam(cancelFlag?) {
@@ -863,8 +881,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.setLocation(data)
     }
     this.deductiblesTable.refreshTable();
-
-    console.log(this.policyInfo.polWordings);
   }
 
   clickDeductiblesLOV(data){
@@ -947,6 +963,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
    var entries = Object.entries(obj);
 
    for(var[key, val] of entries) {
+     if(key === 'polWordings') {
+       if(!this.alteration && val['text'].trim() === '') {
+         return false;
+       } else if(this.alteration && val['altText'].trim() === '') {
+         return false;
+       }
+     }
+
      if((val === '' || val == null) && req.includes(key)) {
        return false;
      }

@@ -55,12 +55,12 @@
           <label class="form-control-sm col-sm-3">Currency</label>
           <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyCd" readonly tabindex="-1">
           <label class="form-control-sm col-sm-2">Exch. Rt.</label>
-          <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt" readonly appCurrencyRate tabindex="-1">
+          <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt" readonly appOtherRates tabindex="-1">
           <span class="col-sm-1"></span>
         </div>
         <div class="input-group" style="margin-bottom: -13px !important">
          <label class="form-control-sm col-sm-3">Total Sum Insured</label>
-         <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalSi  | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event" readonly appCurrency tabindex="-1">
+         <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalSi  | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event;" readonly appOtherRates tabindex="-1">
          <span class="col-sm-1"></span>
        </div>
        <div class="input-group" style="margin-bottom: 2px !important">
@@ -90,14 +90,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare | number:'1.6-6'" (ngModelChange)="coverageData.pctShare = $event" style="text-align: right !important" appRequired appCurrencyRate>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare" (ngModelChange)="coverageData.pctShare = $event" style="text-align: right !important" appRequired appOtherRates>
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.pctPml | number:'1.6-6'" (ngModelChange)=" coverageData.pctPml = $event" appCurrencyRate>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.pctPml" (ngModelChange)=" coverageData.pctPml = $event" appOtherRates>
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Value</label>
-       <input type="text" class="form-control form-control-sm calc" [ngModel]="coverageData?.totalValue | number:'1.2-2'"  style="text-align: right !important" (ngModelChange)="coverageData.totalValue = $event" (blur)="coverageData.pctShare = (coverageData.totalSi/coverageData.totalValue*100);focusBlur() " appRequired appCurrency>
+       <input type="text" class="form-control form-control-sm calc" [ngModel]="coverageData?.totalValue"  style="text-align: right !important" (ngModelChange)="coverageData.totalValue = $event" (blur)="pctShare($event)" appRequired appCurrency>
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -178,8 +178,12 @@
     </fieldset>
     <fieldset class="scheduler-border" >
       <legend class="scheduler-border">Section Covers</legend>
-      <app-cust-editable-non-datatable #sectionTable [passData]="passData" (tableDataChange)="updateAlteration($event);" (clickLOV)="sectionCoversLOV($event)" (newClick)="onrowClickAlt($event)"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable #sectionTable [passData]="passData" (tableDataChange)="updateAlteration($event);" (clickLOV)="sectionCoversLOV($event)" (newClick)="onrowClickAlt($event)"></app-cust-editable-non-datatable>
     </fieldset>
+   <!--  <fieldset class="scheduler-border" >
+      <legend class="scheduler-border">Section Covers</legend>
+        <app-cust-editable-non-datatable #deductiblesTable [passData]="passDatasamp" (tableDataChange)="updateAlterationsamp($event);" (clickLOV)="sectionCoversLOVsamp($event)" (newClick)="onrowClickAlt($event)"></app-cust-editable-non-datatable>
+    </fieldset> -->
     <div class="row">
       <div class="col-sm-12">
         <fieldset class="scheduler-border" style="margin-top: 6px !important;">
@@ -246,14 +250,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" appCurrencyRate appRequired [ngModel] = "altCoverageData.pctShare | number:'1.6-6'" (ngModelChange) = "altCoverageData.pctShare = $event">
+       <input type="text" class="form-control form-control-sm req" appOtherRates appRequired [ngModel] = "altCoverageData.pctShare" (ngModelChange) = "altCoverageData.pctShare = $event">
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm req" appCurrencyRate [ngModel] = "altCoverageData.pctPml | number:'1.2-2'" (ngModelChange)="altCoverageData.pctPml = $event">
+       <input type="text" class="form-control form-control-sm req" appOtherRates [ngModel] = "altCoverageData.pctPml" (ngModelChange)="altCoverageData.pctPml = $event">
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [ngModel] = "altCoverageData.totalValue"  (ngModelChange) = "altCoverageData.totalValue = $event" (blur)="altCoverageData.pctShare = (comtotalSi/altCoverageData.totalValue)*100;focusBlur()">
+       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [ngModel] = "altCoverageData.totalValue"  (ngModelChange) = "altCoverageData.totalValue = $event" (blur)="pctShare($event)">
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -268,10 +272,14 @@
           <div class="input-group" style="margin-top: -16px;">
             &nbsp;
           </div>
+          <!-- <div class="input-group" style="margin-top: -5px;">
+            <label class="form-control-sm col-sm-1">Remarks</label>
+            <textarea class="form-control-sm form-control" [ngModel]="altCoverageData.remarks" (ngModelChange)="altCoverageData.remarks = $event" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+          </div> -->
           <div class="input-group" style="margin-top: -5px;">
            <label class="form-control-sm col-sm-1" style="margin-right: 10px">Remarks</label>
            <div class="form-control-sm col-sm edtr-cont" style="height: 60px; margin-bottom: 10px;">
-             <text-editor [editorContent]="altCoverageData.remarks" (fetchContent)="altCoverageData.remarks = $event"></text-editor>
+             <textarea class="form-control-sm form-control" [ngModel]="altCoverageData.remarks" (ngModelChange)="altCoverageData.remarks = $event" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
            </div>
          </div>
        </div>
