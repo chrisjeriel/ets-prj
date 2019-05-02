@@ -35,6 +35,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
     status: string = "";
     title:string = "Policy / Policy Issuance / Create Alteration"
     exitLink:string;
+    post:boolean = false;
 
     constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, private us: UnderwritingService) {}
 
@@ -87,8 +88,12 @@ export class PolicyIssuanceAltComponent implements OnInit {
 
     onTabChange($event: NgbTabChangeEvent) {
         if ($event.nextId === 'Exit') {
+            $event.preventDefault();
             this.router.navigate([this.exitLink,{policyId: this.policyInfo.policyId}]);
-        } 
+        } else if($event.nextId === 'Post'){
+            $event.preventDefault();
+            this.post = true;
+        }
         if(this.policyInfo.fromInq=='true'){
             setTimeout(a=>{
               $('input').attr('readonly','readonly');

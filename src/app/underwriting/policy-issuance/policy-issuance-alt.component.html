@@ -132,9 +132,9 @@
 			</ng-template>
 
 		</ngb-tab>
-		<ngb-tab title="Post" *ngIf="policyInfo.fromInq != 'true'">
+		<ngb-tab id="Post" title="Post" *ngIf="policyInfo.fromInq != 'true'">
 			<ng-template ngbTabContent>
-				<app-pol-post [policyInfo]="policyInfo" [alterationFlag]="true"></app-pol-post>
+				
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="Exit">
@@ -193,3 +193,5 @@
 				</div>
 </ng-template>
 
+
+<app-pol-post *ngIf="post" [policyInfo]="policyInfo" [alterationFlag]="true" (showPost)="post = $event"></app-pol-post>

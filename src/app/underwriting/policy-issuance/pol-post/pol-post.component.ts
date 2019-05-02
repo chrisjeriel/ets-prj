@@ -147,11 +147,32 @@ export class PolPostComponent implements OnInit {
       const inwAmts: string[] = ['premAmt','otherChargesInw','amtDue','commAmt'];
       this.uwService.getInwardPolBalance(this.policyInfo.policyId).subscribe(a=>{
         let inwBals = a['policyList'][0].inwPolBalance;
-        for(let inwBal of inwBals){
-          if(!inwAmts.every(a=> inwBal[a]>=0) || !inwBal.otherCharges.every(a=>a.amount >= 0)){
-            this.loadMsg = 'Invalid amounts. All amounts must be positive. Please go to Inward Pol Balance tab';
-            return;
+        if(!this.alterationFlag){
+          for(let inwBal of inwBals){
+            if(!inwAmts.every(a=> inwBal[a]>=0) || !inwBal.otherCharges.every(a=>a.amount >= 0)){
+              this.loadMsg = 'Invalid amounts. All amounts must be positive. Please go to Inward Pol Balance tab';
+              return;
+            }
           }
+        }else{
+          console.log(this.altSign)
+          console.log(inwBals);
+          if(this.altSign=='positive'){
+            for(let inwBal of inwBals){
+              if(!inwAmts.every(a=> inwBal[a]>=0) || !inwBal.otherCharges.every(a=>a.amount >= 0)){
+                this.loadMsg = 'Invalid premium amount. Please create separate alteration for positive and negative amounts in Inward Pol Balance tab.';
+                return;
+              }
+            }
+          }else if(this.altSign=='negative'){
+            for(let inwBal of inwBals){
+              if(!inwAmts.every(a=> inwBal[a]<=0) || !inwBal.otherCharges.every(a=>a.amount <= 0)){
+                this.loadMsg = 'Invalid premium amount. Please create separate alteration for positive and negative amounts in Inward Pol Balance tab.';
+                return;
+              }
+            }
+          }
+
         }
         if(inwBals.reduce((a,b)=>a+b.premAmt,0) != a['policyList'][0].project.coverage.totalPrem){
           this.loadMsg = 'Total Premium is not equal to the sum of premium per installment. Please check Inward Pol balance tab.';
