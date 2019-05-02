@@ -96,7 +96,7 @@
         <div class="col-md-12 text-center">
             <div class="cust-btn-container" style="margin-top:10px">
                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" (click)="checkPolicyAlteration()" class="cust-btn" [disabled]="selected == null"><a>Next</a></button>
+                <button type="button" (click)="checkPolicyAlteration()" class="cust-btn" [disabled]="selected == null || cedingName == '' || insuredDesc == '' || riskName == ''"><a>Next</a></button>
             </div>
         </div>
     </div>

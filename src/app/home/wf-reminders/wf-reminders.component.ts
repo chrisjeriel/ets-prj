@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { WorkFlowManagerService,NotesService } from '@app/_services';
+import { finalize } from 'rxjs/operators';
+
 
 interface Country {
   name: string;
@@ -60,10 +63,104 @@ const COUNTRIES: Country[] = [
 export class WfRemindersComponent implements OnInit {
 
   countries = COUNTRIES;
+  currentUser : string;
+  alarmTime: string;
+  reminder: string;
+  reminderDate: string;
+  title: string;
+  reminderList: any[] = [];
+  reminderBool: boolean = true;
+  selectedReminder: any = null;
+  reminderNull: boolean = false;
+  loadingFlag: boolean;
+  content: any;
 
-  constructor() { }
+  constructor(private workFlowManagerService: WorkFlowManagerService, private ns: NotesService) { }
 
   ngOnInit() {
+     this.selectedReminder = 'atm';
+     this.retrieveReminders('atm');
   }
+
+  retrieveReminders(obj){
+       this.currentUser = JSON.parse(window.localStorage.currentUser).username;
+       console.log(obj);
+       
+    if (obj === 'atm'){
+       this.reminderBool = true;
+       this.reminderList = [];
+       this.loadingFlag = true;
+       this.reminderNull = false;
+       $("#reminderDiv").css({"height": "auto"});
+       this.workFlowManagerService.retrieveWfmReminders('',this.currentUser,'').pipe(finalize(() => this.setReminderList()))
+       .subscribe((data)=>{
+           console.log(data);
+           var records = data['reminderList'];
+               for(let rec of records){
+                 if(rec.assignedTo === this.currentUser){
+                   this.reminderList.push(rec);
+                 }
+               }
+        },
+            error => {
+              console.log("ERROR:::" + JSON.stringify(error));
+       });
+
+    } else if(obj === 'mr') {
+      this.reminderBool = false;
+      this.reminderList = [];
+      this.loadingFlag = true;
+      this.reminderNull = false;
+      $("#reminderDiv").css({"height": "auto"});
+       this.workFlowManagerService.retrieveWfmReminders('','',this.currentUser).pipe(finalize(() => this.setReminderList()))
+       .subscribe((data)=>{
+           console.log(data);
+           var records = data['reminderList'];
+               for(let rec of records){
+                 if(rec.createUser === this.currentUser){
+                   this.reminderList.push(rec);
+                 }
+               }
+        },
+            error => {
+              console.log("ERROR:::" + JSON.stringify(error));
+       });
+    }
+  }
+
+  setReminderList(){
+    console.log(this.reminderList);
+    this.loadingFlag = false;
+    if(this.isEmptyObject(this.reminderList)){
+      $("#reminderDiv").css({"height": "auto"});
+      this.reminderNull = true;
+    } else if (this.reminderList.length <= 3) {
+      $("#reminderDiv").css({"height": "auto"});
+      this.reminderNull = false;
+    } else {
+      $("#reminderDiv").css({"height": "400px"});
+      this.reminderNull = false;
+    }
+
+  }
+
+  tabSelectedRemindersController(event){
+     if (this.selectedReminder == "atm"){
+          this.retrieveReminders('atm');
+     } else {
+          this.retrieveReminders('mr');
+     }
+  }
+
+   isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+    }
+
+ 
 
 }
