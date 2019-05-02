@@ -146,6 +146,8 @@ export class PolAlopComponent implements OnInit {
       this.line = params['line'];
     });
 
+    console.log(this.line);
+
     if(this.line == 'EAR'){
       this.passDataCar.tHeader = ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Minimization"];
       this.passDataCar.dataTypes = ["text", "text", "text", "text", "text"]
@@ -175,7 +177,8 @@ export class PolAlopComponent implements OnInit {
     this.polAlopData.policyId = this.policyInfo.policyId;
     this.polAlopData.policyNo = this.policyInfo.policyNo;
     
-    this.underwritingService.savePolAlop(this.polAlopData).subscribe((data: any) => {
+    if (this.validateALOPFields(this.polAlopData)) {
+      this.underwritingService.savePolAlop(this.polAlopData).subscribe((data: any) => {
       if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
@@ -187,7 +190,15 @@ export class PolAlopComponent implements OnInit {
           this.form.control.markAsPristine()
           this.getPolAlop();
         }
-    });
+      });
+    } else {
+      this.dialogMessage="Please check field values.";
+      this.dialogIcon = "error";
+      $('#polAlopSuccess > #successModalBtn').trigger('click');
+
+      setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+    }
+    
   }
 
   savePolAlopItem(cancelFlag?){
@@ -255,21 +266,31 @@ export class PolAlopComponent implements OnInit {
        }
      }*/
 
-    this.underwritingService.savePolAlopItem(savedData).subscribe((data: any) => {
-        if(data['returnCode'] == 0) {
-          this.dialogMessage = data['errorList'][0].errorMessage;
-          this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
-        } else{
-          this.dialogIcon = "success";
-          $('#successModalBtn').trigger('click');
-          this.table.markAsPristine();
-          this.getPolAlopItem();
-        }
-      });
+     if (this.validateALOPItemFields(savedData)) {
+       this.underwritingService.savePolAlopItem(savedData).subscribe((data: any) => {
+          if(data['returnCode'] == 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            $('#successModalBtn').trigger('click');
+          } else{
+            this.dialogIcon = "success";
+            $('#successModalBtn').trigger('click');
+            this.table.markAsPristine();
+            this.getPolAlopItem();
+          }
+        });
+     } else {
+       this.dialogMessage="Please check field values.";
+       this.dialogIcon = "error";
+       $('#polAlopSuccess > #successModalBtn').trigger('click');
+
+       setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+     }
+      
   }
 
   getPolAlop() {
+    console.log(this.policyInfo);
     this.underwritingService.getPolAlop(this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
       if (data.policy != null) {
         this.policyId = data.policy.policyId;
@@ -298,7 +319,6 @@ export class PolAlopComponent implements OnInit {
 
   getSumInsured(){
     this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
-      console.log(data)
       var sectionCovers = data.policy.project.coverage.sectionCovers;
       for( var i = 0; i <sectionCovers.length;i++){
         if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
@@ -427,5 +447,31 @@ export class PolAlopComponent implements OnInit {
       this.polAlopData.expiryDate = null
     }
   }
+
+  validateALOPFields(obj) {
+    var req = ['insuredDesc', 'maxIndemPd', 'timeExc', 'repInterval'];
+    var entries = Object.entries(obj);
+
+    for (var[key, val] of entries) {
+      if ((val == '' || val == null) && req.includes(key)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  validateALOPItemFields(obj) {
+    for (let rec of obj.savePolAlopItemList) {
+       var entries = Object.entries(rec);
+
+       for (var[key, val] of entries) {
+         if ((val == '' || val == null) && 'description' === key) {
+           return false;
+         }
+       }
+    }
+    return true;
+  } 
 
 }
