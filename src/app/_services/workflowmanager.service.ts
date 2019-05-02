@@ -13,4 +13,16 @@ export class WorkFlowManagerService {
 
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveWfmApprovals', {params});
     }
+
+
+    retrieveWfmReminders(reminderId: string, assignedTo: string , createUser: string ){
+         const params = new HttpParams()
+                .set('reminderId', reminderId)
+                .set('assignedTo', assignedTo)
+                .set('createUser', createUser);
+
+        return this.http.get(environment.prodApiUrl + '/work-flow-service/retReminders', {params});
+    }
+
+
 }

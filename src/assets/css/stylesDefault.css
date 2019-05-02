@@ -685,3 +685,33 @@ textarea {
     background-color: #c9d9d9 ! important;
     color: black;
 }
+
+div.span-div {
+        float: right; 
+        width: 70px; 
+        text-align: center; 
+        background-color: #4080bf ! important;
+        padding: 2px 5px; 
+        color: white
+    }
+
+ul a {
+        font-size: 12px !important;
+        font-weight: 700;
+        color : #007bff;
+    }
+
+ul a:hover {
+    color: #0056b3;
+    cursor: pointer;
+}
+
+ul.timeline > li:before {
+ border: 3px solid #22c0e8 ! important;
+}
+
+.table th {
+        font-weight: 700;
+        color: #007bff ! important;
+}
+
