@@ -1,80 +1,105 @@
-<style>
-	.table th, .table td {
-    	padding: 5px !important;
-	}
+<div id="reminderDiv" class="reminder-container" style="border: 1px solid #c5c3c3; margin-bottom: .75em; padding: 1em; max-height: 400px; overflow: auto; overflow-y:scroll  ">
+	<div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="input-group">
+					<div class="col-sm-4 text-center">
+						<div class="selectdiv ">
+			        		<select  [(ngModel)]="selectedReminder" (change)="tabSelectedRemindersController($event);">
+					            <option value="atm"><a>Assigned To Me</a></option>
+					            <option value="mr"><a>My Reminders</a></option>
+			        		</select>
+			        	</div>
+					</div>
+					<div class="col-sm-8">
+						<h4 class="text-center" style="margin-top: 5px ! important">Reminders</h4>
+					</div>
+				</div>
 
-	ul.timeline {
-    list-style-type: none;
-    position: relative;
-	}
-	ul.timeline:before {
-	    content: ' ';
-	    background: #d4d9df;
-	    display: inline-block;
-	    position: absolute;
-	    left: 174px;
-	    width: 2px;
-	    height: 100%;
-	    z-index: 400;
-	}
-	ul.timeline > li {
-	    margin: 5px 0 5px -38px;
-	    padding: 5px 0;
-	    /*padding-left: 20px;*/
-	}
+				<div class="row"  *ngIf="loadingFlag">       
+    				<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 8px !important">
+				</div>
 
-	ul.timeline > li:hover {
-	    background-color: rgba(82, 168, 236, 0.23); /*#a6d6e24d;*/
-	    cursor: pointer;
-	    /*padding-left: 20px;*/
-	}
+				<ul class="timeline">
+			        <li *ngFor="let reminder of reminderList; let i = index">
+			        	<div>
+							<div class="float-left a-date">
+								<a href="#">
+									{{ reminder.reminderDate | date:'MMM dd, yyyy hh:mm:ss a' }}<br>
+									<div class="span-div"><span>{{ reminder.alarmTime }}</span></div>
+								</a>
+							</div>
 
-	ul.timeline > li:before {
-	    content: ' ';
-	    background: white;
-	    display: inline-block;
-	    position: absolute;
-	    border-radius: 50%;
-	    border: 3px solid #22c0e8;
-	    left: 165px;
-	    width: 20px;
-	    height: 20px;
-	    z-index: 400;
-	}
 
-	.btn-action {
-		margin-right: 1px;
-		text-decoration: none;
-		border: none;
-		background-color: white;
-		padding: 0px 2px;
-	}
 
-	.btn-action a {
-		font-size: 14px !important;
-		font-weight: 700;
-	}
 
-	ul a {
-		font-size: 12px !important;
-		font-weight: 700;
-	}
 
-	p {
-		font-size: 13px;
-    	font-weight: 400;
-    	margin: 0 0 0 191px;
-	}
-	.a-date {
-		margin-left: -55px;
-		text-align: right;
-		width: 210px;
-	}
+							<div class="float-right" *ngIf="reminderBool">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="eye"></fa></a></button>
+<!-- 							<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button> -->
+							</div>
 
-</style>
+							<div class="float-right" *ngIf="!reminderBool">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="eye"></fa></a></button>
+  							    <button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button> 
+							</div>
+						</div>
+<!-- 
+						<a>&nbsp;</a> -->
+						<p><b>{{ reminder.title }}</b></p>
+						<p>{{ reminder.reminder }}</p>
+						
+						<div  *ngIf="reminderBool">
+						<p style="font-size: 12px">Assigned by <b>{{ reminder.createUser }}</b> - {{ reminder.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
+					    </div>
 
-<div class="reminder-container" style="border: 1px solid #c5c3c3; margin-bottom: .75em; padding: 1em">
-	<!-- <table class="table table-striped">
+					    <div  *ngIf="!reminderBool">
+						<p style="font-size: 12px">Assigned to <b>{{ reminder.assignedTo }}</b> - {{ reminder.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
+					    </div>
+
+
+
+			        </li>
+			        <li *ngIf="reminderNull">
+			        	<div>
+			        		<p class="text-center">No Records for reminders.</p>
+			        	</div>
+			        </li>
+			    </ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <table class="table table-striped">
 	  <thead>
 	  <tr>
 	    <th scope="col">#</th>
@@ -95,17 +120,15 @@
 	  </tr>
 	  </tbody>
 	</table> -->
-	<div>
-		<div class="row">
-			<div class="col-md-12">
-				<h4>Reminders</h4>
+
+<!-- 
 				<ul class="timeline">
 					<li>
 						<div>
 							<div class="float-left a-date">
 								<a href="#">
-									21 April, 2014 12:30 PM<br>
-									<div style="float: right; width: 70px; text-align: center; background-color: #E76B6F;padding: 2px 5px; color: white;"><span>11:30 AM</span></div>
+									21 Sept, 2014 12:30 PM<br>
+									<div class="span-div"><span>11:30 AM</span></div>
 								</a>
 							</div>
 							<div class="float-right">
@@ -115,14 +138,14 @@
 							</div>
 						</div>
 						<a>&nbsp;</a>
-						<p>Client meeting on April 21st regarding sales results for the previous year, Monica please examine sales trends in them marketing and products. Below please find the current status of the sale.</p>
+						<p>Client meeting on April 21st regarding sales results for the previous year, Monica please examine sales trends in them marketing and products. Below please find the current status of the sale.Scrum planning on April 4th regarding the sales results for the previous year, Monica please examine sales trends in them marketing and products. Below please find the current status of the sale.</p>
 					</li>
 					<li>
 						<div>
 							<div class="float-left a-date">
 								<a href="#">
 									4 April, 2014 4:00 PM<br>
-									<div style="float: right; width: 70px; text-align: center; background-color: #E76B6F;padding: 2px 5px; color: white;"><span>3:00 AM</span></div>
+									<div class="span-div" ><span>3:00 AM</span></div>
 								</a>
 							</div>
 							<div class="float-right">
@@ -139,7 +162,7 @@
 							<div class="float-left a-date">
 								<a href="#">
 									21 March, 2014 1:00 PM<br>
-									<div style="float: right; width: 70px; text-align: center; background-color: #E76B6F;padding: 2px 5px; color: white;"><span>12:30 PM</span></div>
+									<div class="span-div" ><span>12:30 PM</span></div>
 								</a>
 							</div>
 							<div class="float-right">
@@ -156,7 +179,7 @@
 							<div class="float-left a-date">
 								<a href="#">
 									1 March, 2014 12:30 PM<br>
-									<div style="float: right; width: 70px; text-align: center; background-color: #E76B6F;padding: 2px 5px; color: white;"><span>11:30 AM</span></div>
+									<div class="span-div" ><span>11:30 AM</span></div>
 								</a>
 							</div>
 							<div class="float-right">
@@ -168,8 +191,8 @@
 						<a>&nbsp;</a>
 						<p>Client meeting on March 1st regarding sales results for the previous year, Monica please examine sales trends in them marketing and products. Below please find the current status of the sale.</p>
 					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
+				</ul> -->
+
+
+
+
