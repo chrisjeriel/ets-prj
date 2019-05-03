@@ -26,13 +26,23 @@
 			        	<div>
 							<div class="float-left a-date">
 								<a href="#">
-									{{ reminder.reminderDate | date:'MMM dd, yyyy hh:mm:ss a' }}<br>
+									{{ reminder.reminderDate | date:'MMM dd, yyyy hh:mm a' }}<br>
 									<div class="span-div"><span>{{ reminder.alarmTime }}</span></div>
 								</a>
 							</div>
 
 							<div class="float-right" *ngIf="reminderBool">
-								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"(click)="updateReminderModal(reminder.reminderId,
+																					  reminder.reminder,
+																					  reminder.reminderDate,
+																					  reminder.title,
+																					  reminder.alarmTime,
+																					  reminder.assignedTo, 
+																					  reminder.createUser,
+																					  reminder.createDate,
+																					  reminder.updateUser,
+																					  reminder.updateDate,
+																					  true)"><a href="#"><fa name="check"></fa></a></button>
 								<button class="btn-action" (click)="showReminderModal(reminder.reminderId,
 																					  reminder.reminder,
 																					  reminder.reminderDate,
@@ -42,16 +52,55 @@
 																					  reminder.createUser,
 																					  reminder.createDate,
 																					  reminder.updateUser,
-																					  reminder.updateDate)"><a href="#"><fa name="eye"></fa></a></button>
-<!-- 							<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
-								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button> -->
+																					  reminder.updateDate,
+																					  true)"><a href="#"><fa name="eye"></fa></a></button>
 							</div>
 
 							<div class="float-right" *ngIf="!reminderBool">
-								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
-								<button class="btn-action"><a href="#"><fa name="eye"></fa></a></button>
-  							    <button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
-								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button> 
+								<button class="btn-action" (click)="updateReminderModal(reminder.reminderId,
+																					  reminder.reminder,
+																					  reminder.reminderDate,
+																					  reminder.title,
+																					  reminder.alarmTime,
+																					  reminder.assignedTo, 
+																					  reminder.createUser,
+																					  reminder.createDate,
+																					  reminder.updateUser,
+																					  reminder.updateDate,
+																					  true)"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action" (click)="showReminderModal(reminder.reminderId,
+																					  reminder.reminder,
+																					  reminder.reminderDate,
+																					  reminder.title,
+																					  reminder.alarmTime,
+																					  reminder.assignedTo, 
+																					  reminder.createUser,
+																					  reminder.createDate,
+																					  reminder.updateUser,
+																					  reminder.updateDate,
+																					  true)"><a href="#"><fa name="eye"></fa></a></button>
+  							    <button class="btn-action" (click)="showReminderModal(reminder.reminderId,
+																					  reminder.reminder,
+																					  reminder.reminderDate,
+																					  reminder.title,
+																					  reminder.alarmTime,
+																					  reminder.assignedTo, 
+																					  reminder.createUser,
+																					  reminder.createDate,
+																					  reminder.updateUser,
+																					  reminder.updateDate,
+																					  false)"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action" (click)="updateReminderModal(reminder.reminderId,
+																					  reminder.reminder,
+																					  reminder.reminderDate,
+																					  reminder.title,
+																					  reminder.alarmTime,
+																					  reminder.assignedTo, 
+																					  reminder.createUser,
+																					  reminder.createDate,
+																					  reminder.updateUser,
+																					  reminder.updateDate,
+																					  false)"><a href="#"><fa name="trash"></fa></a></button> 
 							</div>
 						</div>
 <!-- 
@@ -79,7 +128,19 @@
 	</div>
 </div>
 
-<app-wf-reminder-form id="reminderModal"></app-wf-reminder-form>
+<app-modal class="d-none" id="confirmModal">
+    <div header>Confirmation</div>
+    <div body *ngIf=updateMode>Are you sure you want to complete this reminder?</div>
+    <div body *ngIf=!updateMode>Are you sure you want to delete this reminder?</div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="onClickYes(updateMode)">Yes</button>
+        <button class="cust-btn" (click)="onClickNo()">No</button>
+    </div>
+</app-modal>
+
+<app-wf-reminder-form id="reminderModal" (onYes)="saveReminder($event)"></app-wf-reminder-form>
+<app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar);"></app-sucess-dialog>
 
 
 

@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { WorkFlowManagerService,NotesService } from '@app/_services';
+import { WorkFlowManagerService, NotesService } from '@app/_services';
 import { finalize } from 'rxjs/operators';
 import { WfReminderFormComponent } from '@app/home/wf-reminders/wf-reminder-form/wf-reminder-form.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 
 interface Country {
@@ -62,6 +65,8 @@ const COUNTRIES: Country[] = [
   styleUrls: ['./wf-reminders.component.css']
 })
 export class WfRemindersComponent implements OnInit {
+  @ViewChild(WfReminderFormComponent) wfReminder : WfReminderFormComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
   countries = COUNTRIES;
   currentUser : string;
@@ -76,10 +81,14 @@ export class WfRemindersComponent implements OnInit {
   loadingFlag: boolean;
   content: any;
   reminderInfo: any[] =[];
+  cancelFlag: boolean;
+  dialogIcon:string  = "";
+  dialogMessage:string  = "";
+  onOkVar: string = "";
+  updateMode: boolean;
+  updateReminderInfoParam = {};
 
-  @ViewChild(WfReminderFormComponent) wfReminder : WfReminderFormComponent;
-
-  constructor(private workFlowManagerService: WorkFlowManagerService, private ns: NotesService) { }
+  constructor(private workFlowManagerService: WorkFlowManagerService, private ns: NotesService,private modalService: NgbModal) { }
     
   ngOnInit() {
      this.selectedReminder = 'atm';
@@ -100,7 +109,7 @@ export class WfRemindersComponent implements OnInit {
        .subscribe((data)=>{
            var records = data['reminderList'];
                for(let rec of records){
-                 if(rec.assignedTo === this.currentUser){
+                 if(rec.assignedTo === this.currentUser && rec.status === "A"){
                    this.reminderList.push(rec);
                  }
                }
@@ -119,7 +128,7 @@ export class WfRemindersComponent implements OnInit {
        .subscribe((data)=>{
            var records = data['reminderList'];
                for(let rec of records){
-                 if(rec.createUser === this.currentUser){
+                 if(rec.createUser === this.currentUser && rec.status === "A"){
                    this.reminderList.push(rec);
                  }
                }
@@ -172,40 +181,160 @@ export class WfRemindersComponent implements OnInit {
     createUser: string,
     createDate : string,
     updateUser : string,
-    updateDate : string  ){
-   
+    updateDate : string ,
+    viewMode : boolean){
 
-/*    this.wfReminder.reminderDate = reminderDate;*/
-    console.log(this.formatDate(reminderDate));
-    this.wfReminder.reminderDate = this.formatDate(reminderDate);
-    this.wfReminder.alarmDate = alarmTime + ":00"
+    this.reminderInfo = [];
+
+    this.reminderInfo.push({
+                            reminderId : reminderId,
+                            createDate : createDate,
+                          });
+    
+    this.wfReminder.reminderDate = this.ns.toDateTimeString(reminderDate);
+    this.wfReminder.alarmDate = alarmTime;
     this.wfReminder.title = title;
     this.wfReminder.reminder = reminder;
     this.wfReminder.userId = assignedTo;
     this.wfReminder.createdBy = createUser;
     this.wfReminder.updatedBy = updateUser;
-    this.wfReminder.dateCreated = this.formatDate(createDate) + ':' + ("00" + new Date(createDate).getSeconds()).slice(-2);
-    this.wfReminder.lastUpdate = this.formatDate(updateDate) + ':'  + ("00" + new Date(createDate).getSeconds()).slice(-2);
+    this.wfReminder.dateCreated = this.formatDate(createDate);
+    this.wfReminder.lastUpdate = this.formatDate(updateDate);
 
 
+    if (viewMode){
+       this.wfReminder.ViewMode = true;
+       this.wfReminder.disablebtnBool = true;
+     } else {
+       this.wfReminder.ViewMode = false;
+       this.wfReminder.disablebtnBool = false;
+     }
 
-
-/*    this.wfReminder.reminder = reminder;
-    this.wfReminder.userId = assignedTo;
-
-    this.wfReminder.createInfo.createdBy = createUser;
-    this.wfReminder.createInfo.dateCreated = createDate;
-    this.wfReminder.updateInfo.updatedBy = updateUser;
-    this.wfReminder.updateInfo.lastUpdate = updateDate;*/
-    this.wfReminder.ViewMode = true;
-    $('#reminderModal #modalBtn').trigger('click');
+     $('#reminderModal #modalBtn').trigger('click');
+   
   }
+
+   updateReminderModal( reminderId : string,
+    reminder : string, 
+    reminderDate : string, 
+    title : string,
+    alarmTime : string, 
+    assignedTo : string, 
+    createUser: string,
+    createDate : string,
+    updateUser : string,
+    updateDate : string ,
+    updateMode : boolean){
+
+    this.updateMode = updateMode;
+    var status : any ;
+
+    if (updateMode){
+      status = 'C';
+      $('#confirmModal #modalBtn').trigger('click');
+    } else {
+      status = 'D';
+      $('#confirmModal #modalBtn').trigger('click');
+    }
+    this.updateReminderInfoParam = {};
+
+    this.updateReminderInfoParam = {
+       "alarmTime"  : alarmTime,
+       "assignedTo" : assignedTo,
+       "createDate" : this.ns.toDateTimeString(createDate),
+       "createUser" : createUser,
+       "remiderDate": this.ns.toDateTimeString(reminderDate),
+       "reminder"   : reminder,
+       "reminderId" : reminderId,
+       "status"     : status,
+       "title"      : title,
+       "updateUser" : JSON.parse(window.localStorage.currentUser).username,
+       "updateDate" : this.ns.toDateTimeString(0),
+     }
+  }
+
+  onClickYes(updateMode){
+    this.modalService.dismissAll();
+    this.saveReminderParams(this.updateReminderInfoParam);
+  }
+
+  onClickNo(){
+     this.modalService.dismissAll();
+  }
+
+
+
 
   formatDate(date) {
     var d = new Date(date);
-    return d.getFullYear()+ "-" + ("00" + (d.getMonth() + 1)).slice(-2) + "-" +("00" + d.getDate()).slice(-2)+"T"+("00" + d.getHours()).slice(-2) + ":" +("00" + d.getMinutes()).slice(-2)
+    return  ("00" + (d.getMonth() + 1)).slice(-2) + "/" +("00" + d.getDate()).slice(-2)+ "/" + d.getFullYear()+ " "+("00" + d.getHours()).slice(-2) + ":" +("00" + d.getMinutes()).slice(-2) 
+    +":" + ("00" + d.getSeconds()).slice(-2) 
   }
 
- 
+  saveReminder(event){        
+    $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+  prepareParam(cancelFlag?){
+      this.cancelFlag = cancelFlag !== undefined;
+
+       var saveReminderInfoParam = {
+       "alarmTime"  : this.wfReminder.alarmDate,
+       "assignedTo" : this.wfReminder.userId,
+       "createDate" : this.ns.toDateTimeString(this.reminderInfo[0].createDate),
+       "createUser" : this.wfReminder.createdBy,
+       "remiderDate": this.wfReminder.reminderDate,
+       "reminder"   : this.wfReminder.reminder,
+       "reminderId" : this.reminderInfo[0].reminderId,
+       "status"     : "A",
+       "title"      : this.wfReminder.title,
+       "updateUser" : JSON.parse(window.localStorage.currentUser).username,
+       "updateDate" : this.ns.toDateTimeString(0),
+       }
+
+       console.log(saveReminderInfoParam);
+       this.saveReminderParams(saveReminderInfoParam);
+
+    }
+
+    saveReminderParams(obj){
+     this.workFlowManagerService.saveWfmReminders(obj).pipe(finalize(() => this.saveFinalProcess())).
+     subscribe(data => {
+             console.log(data);
+
+            if(data['returnCode'] === 0) {
+                 this.dialogIcon = 'error-message';
+                 this.dialogMessage = "Error saving reminder";
+                 this.modalService.dismissAll();
+                 this.onOkVar = 'openReminderMdl';
+                 this.successDiag.open();
+            } else if (data['returnCode'] === -1) {  
+                 this.dialogIcon = 'success-message';
+                 this.dialogMessage = "Successfully Saved";;
+                 this.modalService.dismissAll();
+                 this.onOkVar = 'closeReminderMdl';
+                 this.successDiag.open();     
+            }
+     })        
+    }
+  
+   saveFinalProcess(){
+      if (this.selectedReminder == "atm"){
+          this.retrieveReminders('atm');
+      } else {
+          this.retrieveReminders('mr');
+      }
+   }
+
+
+
+  onOkSuccessDiag(obj){
+    if (obj === 'openReminderMdl'){
+      this.modalService.dismissAll();
+      $('#reminderModal #modalBtn').trigger('click');
+    }else if(obj === 'closeReminderMdl'){
+        this.modalService.dismissAll();
+    }
+  }
 
 }

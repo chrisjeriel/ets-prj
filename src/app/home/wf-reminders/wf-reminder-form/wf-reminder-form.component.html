@@ -33,9 +33,9 @@
                     <div class="form-row custom-row-inline-inset">
               <div class="input-group">
                 <label class="form-control-sm col-sm-2" for="inputDate">Reminder Date</label>
-                <input type="datetime-local" id="inputDate" class="form-control form-control-sm cust-sm col-sm-5" appRequired [(ngModel)]="reminderDate" [disabled]="ViewMode">
+                <input type="datetime-local" id="inputDate" class="form-control form-control-sm cust-sm col-sm-5" appRequired [(ngModel)]="reminderDate" [disabled]="ViewMode" (change)=checkValidTime($event);>
                 <label class="form-control-sm col-sm-2" for="inputAlarm" style="margin: 0 0 0 -5px;">Alarm Time</label>
-                <input type="time" id="inputAlarm" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="alarmDate" [disabled]="ViewMode">
+                <input type="time" id="inputAlarm" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="alarmDate" [disabled]="ViewMode" (change)=checkValidTime($event);>
               </div>
               <div class="input-group" style="margin: -8px 0 0 0;">
                 <label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
@@ -54,7 +54,7 @@
             </div>
             <div class="input-group" style="margin: 5px 0 -10px 0 ! important;justify-content: center;" >
                  <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Close</a></button>
-                 <button type="button" class="cust-btn" (click)="saveReminderValidation();" [disabled]= disablebtnBool><a>Save</a></button>
+                 <button type="button" class="cust-btn" (click)="onClickSave();" [disabled]= disablebtnBool><a>Save</a></button>
             </div>
         </div>
     </div>
@@ -76,6 +76,8 @@
         </div>
       </fieldset>
     </div>
+    <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag();"></app-sucess-dialog>
 </app-modal>
+
 
 
