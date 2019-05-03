@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { WorkFlowManagerService,NotesService } from '@app/_services';
 import { finalize } from 'rxjs/operators';
+import { WfReminderFormComponent } from '@app/home/wf-reminders/wf-reminder-form/wf-reminder-form.component';
 
 
 interface Country {
@@ -75,9 +76,11 @@ export class WfRemindersComponent implements OnInit {
   loadingFlag: boolean;
   content: any;
   reminderInfo: any[] =[];
-  
-  constructor(private workFlowManagerService: WorkFlowManagerService, private ns: NotesService) { }
 
+  @ViewChild(WfReminderFormComponent) wfReminder : WfReminderFormComponent;
+
+  constructor(private workFlowManagerService: WorkFlowManagerService, private ns: NotesService) { }
+    
   ngOnInit() {
      this.selectedReminder = 'atm';
      this.retrieveReminders('atm');
@@ -170,48 +173,38 @@ export class WfRemindersComponent implements OnInit {
     createDate : string,
     updateUser : string,
     updateDate : string  ){
-    this.reminderInfo = [];
+   
 
-    this.reminderInfo.push({
-                                          reminderId   : reminderId,       
-                                          title        : title,
-                                          reminder     : reminder,
-                                          reminderDate : reminderDate,
-                                          alarmTime    : alarmTime,
-                                          assignedTo   : assignedTo,
-                                          createUser   : createUser,
-                                          createDate   : createDate,
-                                          updateUser   : updateUser,
-                                          updateDate   : updateDate
-                                        });
+/*    this.wfReminder.reminderDate = reminderDate;*/
+    console.log(this.formatDate(reminderDate));
+    this.wfReminder.reminderDate = this.formatDate(reminderDate);
+    this.wfReminder.alarmDate = alarmTime + ":00"
+    this.wfReminder.title = title;
+    this.wfReminder.reminder = reminder;
+    this.wfReminder.userId = assignedTo;
+    this.wfReminder.createdBy = createUser;
+    this.wfReminder.updatedBy = updateUser;
+    this.wfReminder.dateCreated = this.formatDate(createDate) + ':' + ("00" + new Date(createDate).getSeconds()).slice(-2);
+    this.wfReminder.lastUpdate = this.formatDate(updateDate) + ':'  + ("00" + new Date(createDate).getSeconds()).slice(-2);
 
 
-    console.log(this.reminderInfo);
+
+
+/*    this.wfReminder.reminder = reminder;
+    this.wfReminder.userId = assignedTo;
+
+    this.wfReminder.createInfo.createdBy = createUser;
+    this.wfReminder.createInfo.dateCreated = createDate;
+    this.wfReminder.updateInfo.updatedBy = updateUser;
+    this.wfReminder.updateInfo.lastUpdate = updateDate;*/
+    this.wfReminder.ViewMode = true;
     $('#reminderModal #modalBtn').trigger('click');
   }
 
-  /*retReminders(reminderId : any){
-   this.workFlowManagerService.retrieveWfmReminders(reminderId,'','')
-       .subscribe((data)=>{
-           var records = data['reminderList'];
-               for(let rec of records){
-                  this.reminderInfo.push({
-                                          title    : rec.title,
-                                          reminder : rec.reminder,
-                                          reminderDate : rec.reminderDate,
-                                          alarmTime    : rec.alarmTime,
-                                          assignedTo   : rec.assignedTo,
-                                          createUser   : rec.createUser,
-                                          createDate   : rec.createDate,
-                                          updateUser   : rec.updateUser,
-                                          updateDate   : rec.updateDate
-                                        });
-               }
-        },
-            error => {
-              console.log("ERROR:::" + JSON.stringify(error));
-       }); 
-  }*/
+  formatDate(date) {
+    var d = new Date(date);
+    return d.getFullYear()+ "-" + ("00" + (d.getMonth() + 1)).slice(-2) + "-" +("00" + d.getDate()).slice(-2)+"T"+("00" + d.getHours()).slice(-2) + ":" +("00" + d.getMinutes()).slice(-2)
+  }
 
  
 

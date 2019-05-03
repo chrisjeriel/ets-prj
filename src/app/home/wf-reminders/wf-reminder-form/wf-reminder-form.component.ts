@@ -8,44 +8,24 @@ import { WorkFlowManagerService,NotesService } from '@app/_services';
   styleUrls: ['./wf-reminder-form.component.css']
 })
 export class WfReminderFormComponent implements OnInit {
-  @Input() reminderInfo: {
-  	    alarmTime: '',
-		assignedTo: '',
-		createDate: '',
-		createUser: '',
-		reminder: '',
-		reminderDate:'',
-		reminderId: '',
-		title: '',
-		updateDate: '',
-		updateUser: ''
-  }
-  
+
   reminderDate: any;
-  alarmDate: any;
+  alarmDate: any; 
   title: string = "";
   reminder: string = "";
   userId: string = "";
+  createdBy: string = "";
+  dateCreated: string = "";
+  updatedBy: string = "";
+  lastUpdate: string = "";
   ViewMode: boolean = true;	
-
-  createInfo:any = {
-	createdBy: null,
-	dateCreated: null
-  }
-
-  updateInfo: any = {
-  	updatedBy: null,
-  	lastUpdate: null
-  }
+  disablebtnBool: boolean = true;
 
   constructor(config: NgbModalConfig,
      private modalService: NgbModal,private workFlowManagerService: WorkFlowManagerService, private ns: NotesService) { }
 
   ngOnInit() {
-  	console.log(this.reminderInfo);
   }
-
   
-
 
 }

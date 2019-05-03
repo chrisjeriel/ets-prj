@@ -47,7 +47,7 @@
               </div>
                <div class="input-group" style="margin: -10px 0 0 0;">
                 <label class="form-control-sm col-sm-2" for="inputAssignTo">Assign To</label>
-                <input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="userId" [disabled]="ViewMode">
+                <input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="userId" disabled>
               </div>
             </div>
                 </fieldset>
@@ -68,10 +68,10 @@
         <label class="form-control-sm col-sm-3" style="margin: 0 0 0 -15px">Last Update</label>
       </div>
        <div class="input-group" style="margin: 0px 0 12px 0 ! important">
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="createInfo.createUser" [disabled]="ViewMode">
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="createInfo.createDate" style="margin: 0 0 0 5px" [disabled]="ViewMode">
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="updateInfo.updatedBy" style="margin: 0 0 0 5px" [disabled]="ViewMode">
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminderInfo.updateDate" style="margin: 0 0 0 5px" [disabled]="ViewMode">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="createdBy" disabled >
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="dateCreated" style="margin: 0 0 0 5px" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="updatedBy" style="margin: 0 0 0 5px" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="lastUpdate" style="margin: 0 0 0 5px" disabled >
       </div>
         </div>
       </fieldset>
