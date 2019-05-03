@@ -147,7 +147,8 @@ export class PolAlopComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.policyNo = params['policyNo']
       this.line = params['line'];
-      this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];
+      //this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];;
+      this.prevPolicyId = this.policyInfo.prevPolicyId
     });
 
     console.log(this.prevPolicyId);

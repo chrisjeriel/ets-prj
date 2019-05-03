@@ -154,7 +154,7 @@ export class UpdateInstallmentComponent implements OnInit {
     }   
   }
 
-  setDetails() {
+  setDetails(fromMdl?) {
     if(this.selected != null) {
       this.underwritingService.getAlterationsPerPolicy(this.selected.policyId, 'alteration').subscribe(data => {
             var polList = data['policyList'];
@@ -187,17 +187,26 @@ export class UpdateInstallmentComponent implements OnInit {
                 this.createUser = data.policy.createUser;
               });
             } else {
-              this.policyId = this.selected.policyId;
-              this.polNo = this.selected.policyNo.split('-');
-              this.cedingName = this.selected.cedingName;
-              this.insuredDesc = this.selected.insuredDesc;
-              this.riskName = this.selected.riskName;
-              this.currency = this.selected.project.coverage.currencyCd;
-              this.totalPrem = this.selected.project.coverage.totalPrem;
+                this.policyId = this.selected.policyId;
+                this.polNo = this.selected.policyNo.split('-');
+                this.cedingName = this.selected.cedingName;
+                this.insuredDesc = this.selected.insuredDesc;
+                this.riskName = this.selected.riskName;
+                this.currency = this.selected.project.coverage.currencyCd;
+                this.totalPrem = this.selected.project.coverage.totalPrem;
 
-               this.underwritingService.getPolGenInfo(this.policyId, this.selected.policyNo).subscribe((data:any) => {
-                this.createUser = data.policy.createUser;
-              });
+                 this.underwritingService.getPolGenInfo(this.policyId, this.selected.policyNo).subscribe((data:any) => {
+                  if (data.policy != null) {
+                    this.createUser = data.policy.createUser;
+                  }
+                });
+
+              if(fromMdl !== undefined) {
+                this.searchArr = this.polNo.map((a, i) => {
+                  return (i == 0) ? a + '%' : (i == this.polNo.length - 1) ? '%' + a : '%' + a + '%';
+                });
+                this.search('forceSearch',{ target: { value: '' } });
+              }
             }
 
             this.retrievePolInwardBal();
@@ -261,7 +270,6 @@ export class UpdateInstallmentComponent implements OnInit {
     }
 
     var a = ev.target.value;
-
     if(key === 'lineCd') {
       this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
     } else if(key === 'year') {
@@ -322,10 +330,10 @@ export class UpdateInstallmentComponent implements OnInit {
          this.table.forEach(table => { table.refreshTable() });
 
          if(param !== undefined) {
-           if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  
+           if(polList.length === 1 && !this.searchArr.includes('%%')) {  
              this.selected = polList[0];
              this.setDetails();
-           } else if(polList.length === 0 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {
+           } else if(polList.length === 0 && !this.searchArr.includes('%%')) {
              this.clearFields();
              this.retrievePolListing();
              this.showLOV();
@@ -590,6 +598,12 @@ export class UpdateInstallmentComponent implements OnInit {
     }
 
     return true;
+  }
+
+  pad(ev,num) {
+    var str = ev.target.value;    
+
+    return str === '' ? '' : String(str).padStart(num, '0');
   }
 
 }

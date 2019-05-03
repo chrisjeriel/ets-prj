@@ -13,15 +13,15 @@
                   <div class="input-group " style="margin-bottom: -4px !important;">
                     <label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Policy No</label>
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[0]" ngbTooltip="Line" (change)="search('lineCd', $event)" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[1]" style="margin-left: 3px;" (change)="search('seqNo',$event)"
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[1]" style="margin-left: 3px;" (change)="search('year',$event)"
                       ngbTooltip="Year" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-3 cap-input" [ngModel]="polNo[2]" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-3 cap-input" [ngModel]="polNo[2]" style="margin-left: 3px;" (change)="search('seqNo',$event)" mask="99999" (blur)="polNo[2]=pad($event,5)"
                       ngbTooltip="Sequence No" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[3]" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[3]" style="margin-left: 3px;" mask="999" (blur)="polNo[3]=pad($event,3)" (change)="search('cedingId',$event)"
                       ngbTooltip="Co Code" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-2 cap-input" [ngModel]="polNo[4]" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-2 cap-input" [ngModel]="polNo[4]" style="margin-left: 3px;" mask="9999" (blur)="polNo[4]=pad($event,4)" (change)="search('coSeriesNo',$event)"
                       ngbTooltip="Co Series No" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[5]" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[5]" style="margin-left: 3px;" (change)="search('altNo',$event)"
                       ngbTooltip="Alt No" appRequired>
                     <span>&nbsp;</span>
                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
@@ -134,7 +134,7 @@
     <div footer class="text-center w-100">
         <div class="col-sm-12 text-center">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails();"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails('mdlOk');"><a>Ok</a></button>
         </div>
     </div>
 </app-modal>
