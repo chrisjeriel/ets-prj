@@ -152,6 +152,13 @@ export class PolEndorsementComponent implements OnInit {
             if(data.endtList !== null){
                 this.passData.tableData = data.endtList.endorsements
                 this.passData.tableData.forEach(a=>{
+                    if(a.policyId!= this.policyInfo.policyId){
+                        a.policyId = this.policyInfo.policyId;
+                        a.edited = true;
+                        this.endtTable.markAsDirty();
+                    }
+                })
+                this.passData.tableData.forEach(a=>{
                     if(a.endtText!=null){
                         a.text =  (a.endtText.endtText01 === null ? '' :a.endtText.endtText01) + 
                                      (a.endtText.endtText02 === null ? '' :a.endtText.endtText02) + 
