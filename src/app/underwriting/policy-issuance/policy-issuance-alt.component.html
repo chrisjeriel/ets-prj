@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>{{title}}</h4>
-	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)">
+	<ngb-tabset #tabset (tabChange)="beforeChange($event);onTabChange($event)">
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
@@ -19,7 +19,7 @@
 		</ngb-tab>
 		<ngb-tab title="ALOP" *ngIf="policyInfo.showPolAlop">
 			<ng-template ngbTabContent>
-				<app-pol-alop [policyInfo]="policyInfo" [alterFlag]="false"></app-pol-alop>
+				<app-pol-alop [policyInfo]="policyInfo" [alterFlag]="true"></app-pol-alop>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Inward Pol Balance">
@@ -195,3 +195,7 @@
 
 
 <app-pol-post *ngIf="post" [policyInfo]="policyInfo" [alterationFlag]="true" (showPost)="post = $event"></app-pol-post>
+
+<ng-template #confirmLeave>
+	<app-confirm-leave></app-confirm-leave>
+</ng-template>

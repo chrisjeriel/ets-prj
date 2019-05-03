@@ -98,7 +98,7 @@ export class MtnObjectComponent implements OnInit {
   }
 
   checkCode(line, code, ev) {
-    if(code.trim() === ''){
+    if(String(code).trim() === ''){
       this.selectedData.emit({
         objectId: '',
         objectDesc: '',

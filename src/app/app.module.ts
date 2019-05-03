@@ -352,6 +352,7 @@ import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information
 import { SequenceDirective } from './_directives/sequence.directive';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
 
 
 
@@ -712,6 +713,7 @@ import { InsuredComponent } from './maintenance/quotation-and-policy/insured-lis
         SequenceDirective,
         InsuredListComponent,
         InsuredComponent,
+        SpecialLovComponent,
     ],
 
     providers: [
