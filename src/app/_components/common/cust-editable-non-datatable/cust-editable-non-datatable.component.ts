@@ -58,7 +58,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         opts:[],
         nData:{},
         checkFlag:false,
-
+        btnDisabled: true,
 
         selectFlag:false,
         addFlag:false,
@@ -83,6 +83,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     tableLoad: boolean = true;
     nextId: number = 0;
     exists:Boolean = false;
+    btnDisabled: boolean = false;
 
     start:    any;
     pressed:  any;
@@ -91,6 +92,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
     autoFill: number[];
     selected: any[] = [];
     fileName: string ='';
+
+    instllmentKey: string;
+    instllmentNo: any;
 
     displayData:any[] = [];
     newData: any = new DummyInfo(null,null,null,null,null,null,null);
@@ -143,6 +147,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.passData.btnDisabled = false;
         this.passData.magnifyingGlass = typeof this.passData.magnifyingGlass == 'undefined'? [] : this.passData.magnifyingGlass;
         this.unliFlag = typeof this.passData.pageLength == "string" && this.passData.pageLength.split("-")[0] == 'unli';
         this.passData.pageLength = typeof this.passData.pageLength == 'number' ? this.passData.pageLength : (this.passData.pageLength===undefined || this.passData.pageLength.split("-")[1]===undefined? 10 : parseInt(this.passData.pageLength.split("-")[1]));
@@ -245,6 +250,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.tableDataChange.emit(this.passData.tableData);
             this.uploadedFiles.emit(this.filesToUpload);
         }else{
+            this.btnDisabled = true;
             this.onDelete.emit();
         }
     }
@@ -284,6 +290,40 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }else{
             this.indvSelect = data;
         }
+
+        if(this.passData.checkFlag == undefined || !this.passData.checkFlag){
+            if(data != null){
+                if( Object.entries(data).length != 0){
+                        this.btnDisabled = true;
+
+                        if(this.indvSelect == data) {
+                            var entries1 = [];
+                            entries1 = Object.entries(this.fillData);
+
+                            var entries2 = [];
+                            entries2 = Object.entries(data);
+                            var isDisabled = false;
+
+                             for(var[key, val] of entries1) {
+                                for (var[key2, val2] of entries2) {
+                                    if (key == key2 && val == val2) {
+                                        isDisabled = true;
+                                    }
+                                }
+                             }
+
+                            this.btnDisabled = isDisabled;
+                        }
+                }
+                else{
+                     this.indvSelect = "";
+                 }
+            }
+            else{
+                 this.indvSelect = "";
+            }
+        }
+
         if(data != this.fillData)
             setTimeout(() => this.newClick.emit(this.indvSelect),0) ;
         //this.rowClick.next(event);
@@ -433,7 +473,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 this.passData.tableData['ev'] = ev;
                 this.passData.tableData['index'] = retData.index;
                 this.passData.tableData['lovInput'] = true;
-            } else {
+            /*} else {
                 delete this.passData.tableData.ev;
                 delete this.passData.tableData.index;
                 delete this.passData.tableData.lovInput;
@@ -446,24 +486,27 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 delete this.passData.tableData.ev;
                 delete this.passData.tableData.index;
                 delete this.passData.tableData.lovInput;
-            });
+            });*/
         }else{ //Earl
             delete this.passData.tableData.ev;
             delete this.passData.tableData.index;
             delete this.passData.tableData.lovInput;
 
-            this.markAsDirty();
+        this.instllmentKey = key;
+        this.instllmentNo = data.instNo;
 
-            data.edited = true;
-            setTimeout(() => { 
-                this.tableDataChange.emit(this.passData.tableData),0
-                delete this.passData.tableData.ev;
-                delete this.passData.tableData.index;
-                delete this.passData.tableData.lovInput;
-            });
-        }
-       
+        this.markAsDirty();
+
+        data.edited = true;
+        setTimeout(() => { 
+            this.tableDataChange.emit(this.passData.tableData),0
+            delete this.passData.tableData.ev;
+            delete this.passData.tableData.index;
+            delete this.passData.tableData.lovInput;
+        });
     }
+    }
+}
 
     onClickLOV(data,key){
         let retData:any = {};
@@ -479,7 +522,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.form.control.markAsDirty();
         this.clickLOV.emit(retData);
     }
-
+    
     removeSelected(event, data){
         data.checked = event.target.checked;
         if(!event.target.checked){

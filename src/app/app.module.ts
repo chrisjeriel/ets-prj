@@ -10,6 +10,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { QuillModule } from 'ngx-quill';
+import { DecimalPipe } from '@angular/common';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -351,6 +352,7 @@ import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information
 import { SequenceDirective } from './_directives/sequence.directive';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
 
 
 
@@ -711,6 +713,7 @@ import { InsuredComponent } from './maintenance/quotation-and-policy/insured-lis
         SequenceDirective,
         InsuredListComponent,
         InsuredComponent,
+        SpecialLovComponent,
     ],
 
     providers: [
@@ -718,7 +721,8 @@ import { InsuredComponent } from './maintenance/quotation-and-policy/insured-lis
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         UnsavedChangesGuard,
         // provider used to create fake backend
-        fakeBackendProvider
+        fakeBackendProvider,
+        DecimalPipe
     ],
     entryComponents: [
 	    ConfirmLeaveComponent,

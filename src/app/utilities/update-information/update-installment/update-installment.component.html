@@ -28,7 +28,7 @@
                     <span>&nbsp;</span>
                     <div class="text-center">
                     <div class="cust-btn-container">
-                      <button type="button" class="cust-btn"><a>Clear</a></button>
+                      <button type="button" class="cust-btn" (click)="clearFields()"><a>Clear</a></button>
                     </div>
                     </div>
                   </div>
@@ -143,3 +143,20 @@
 <app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
 <app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/update-installment'" ></app-cancel-button>
+
+<app-modal class="d-none" id="altWarningModal">
+    <div header>Warning Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p *ngIf="warningMsg == 0">A policy must have one or more installments.</p>
+                <p *ngIf="warningMsg == 1">Policy No has a pending alteration in Alteration List Screen. <br>
+                All alterations must be posted before updating the installment.</p>
+                <p *ngIf="warningMsg == 2">Total premium must be equal to the sum of premium per installment.</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearFields();"><a>Ok</a></button>
+    </div>
+</app-modal>
