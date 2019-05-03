@@ -217,7 +217,6 @@ export class GeneralInfoComponent implements OnInit {
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				this.loading = false;
-				console.log(data);
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];
 					this.genInfoData.principalId = String(this.genInfoData.principalId).padStart(6,'0')
@@ -251,6 +250,7 @@ export class GeneralInfoComponent implements OnInit {
 					this.project = data['project'];
 					this.project.createDate = this.ns.toDateTimeString(this.project.createDate);
 					this.project.updateDate = this.ns.toDateTimeString(this.project.updateDate);
+					this.project.objectId = this.pad(this.project.objectId);
 					this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 && this.project.totalValue != null ? String(this.project.totalValue) + '.00' : this.project.totalValue;
 				}
 
@@ -502,7 +502,7 @@ export class GeneralInfoComponent implements OnInit {
     }
 
     setInt(event){
-        this.genInfoData.intmId = event.intmId != null && event.intmId != '' ? String(event.intmId).padStart(6, '0') : '';
+        this.genInfoData.intmId = this.pad(event.intmId, 6);
         this.genInfoData.intmName = event.intmName;
         this.ns.lovLoader(event.ev, 0);
         this.focusBlur();
@@ -609,7 +609,7 @@ export class GeneralInfoComponent implements OnInit {
 			"lineClassCd"	: this.genInfoData.lineClassCd,
 			"mbiRefNo"		: this.genInfoData.mbiRefNo,
 			"noClaimPd"		: this.project.noClaimPd,
-			"objectId"		: this.pad(this.project.objectId),
+			"objectId"		: this.project.objectId,
 			"openCoverTag"	: this.genInfoData.openCoverTag,
 			"openingParag"	: this.genInfoData.openingParag.trim(),
 			"pctShare"		: this.project.pctShare,
@@ -683,7 +683,7 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setObj(data){
-    	this.project.objectId = data.objectId;
+    	this.project.objectId = this.pad(String(data.objectId));
     	this.project.objectDesc = data.description;
     	this.ns.lovLoader(data.ev, 0);
 
@@ -815,7 +815,7 @@ export class GeneralInfoComponent implements OnInit {
 
   		} else if(field === 'contractor') {
   			this.insuredLovs['last'].checkCode(this.genInfoData.contractorId, '#contractorLOV', ev);
-  		} else if(field === 'object') {  			
+  		} else if(field === 'object') {	
   			this.objectLov.checkCode(this.line, this.project.objectId, ev);
   		} else if(field === 'currency') {
   			this.currencyLov.checkCode(this.genInfoData.currencyCd, ev);
@@ -911,24 +911,34 @@ export class GeneralInfoComponent implements OnInit {
   	$(ev.target).addClass('ng-dirty');
 
   	if(str === 'pctShare' && this.project.totalSi != '') {
-  		var val = Number(this.project.totalSi) / (Number(this.project.pctShare)/100);
-  		this.project.totalValue = String(val).indexOf('.') === -1 && String(val) != 'Infinity' ? String(val) + '.00' : String(val) === 'Infinity' ? '' : val;
+  		if(Number(this.project.pctShare) > 100) {
+  			this.project.pctShare = '';
+  			this.project.totalValue = '';
+  		} else {
+  			var val = Number(this.project.totalSi) / (Number(this.project.pctShare)/100);
+  			this.project.totalValue = String(val).indexOf('.') === -1 && String(val) != 'Infinity' ? String(val) + '.00' : String(val) === 'Infinity' ? '' : val;	
+  		}  		
   	} else if (str === 'totalValue' && this.project.totalSi != '') {
   		if(Number(this.project.totalValue) < Number(this.project.totalSi)) {
   			this.project.pctShare = '';
   			this.project.totalValue = '';
   		} else {
-  			var val = (Number(this.project.totalSi) / Number(this.project.totalValue)) * 100;
-  			this.project.pctShare = val;	
+  			var val = Math.round(((Number(this.project.totalSi) / Number(this.project.totalValue)) * 100) * 1e10) / 1e10;
+  			this.project.pctShare = String(val);
+  			this.checkDecimal('pctShare');
   		}  		
   	}
   }
 
   checkDecimal(str) {
-  	if(str === 'totalValue') {
-  		console.log(this.project.totalValue);
-  		console.log(String(this.project.totalValue));
+  	if(str === 'totalValue') {  		
   		this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 && String(this.project.totalValue) != '' ? String(this.project.totalValue) + '.00' : String(this.project.totalValue);
+  	} else if(str === 'pctShare') {
+  		if(String(this.project.pctShare) != '') {
+  			var pctArr = String(this.project.pctShare).split('.');
+  			pctArr[1] = pctArr[1] === undefined ? '0000000000' : pctArr[1].padEnd(10, '0');
+  			this.project.pctShare = pctArr.join('.');
+  		}
   	}
   }
 
