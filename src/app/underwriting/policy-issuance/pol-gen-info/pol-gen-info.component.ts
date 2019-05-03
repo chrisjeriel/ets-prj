@@ -131,7 +131,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     updateDate: null,
     showPolAlop: false,
     coInsuranceFlag: false,
-    polWordings:{},
+    polWordings:{
+      text: '',
+      altText: ''
+    },
     project: {
       projId: null,
       projDesc: null,
@@ -430,22 +433,32 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }
 
       if(this.newAlt) {
+        console.log('hehe');
         this.refPolicyId = this.policyInfo.policyId;
         this.policyInfo.policyNo = "";
         this.policyInfo.policyId = "";
         this.policyInfo.statusDesc = "";
+        this.policyInfo.polWordings.altText = "";
 
-        // this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag:'Y', ocTag : this.policyInfo.openCoverTag, lineCd : this.policyInfo.lineCd })
-        //                .subscribe(data =>{
-        //                  console.log(data);
-        //                  Object.keys(data['mtnPolWordings']).forEach(function(key) {
-        //                    if(key)
-        //                  });          
-        //                });
-        this.policyInfo.wordings = "";
+        this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag:'Y', ocTag : this.policyInfo.openCoverTag, lineCd : this.policyInfo.lineCd })
+                       .subscribe(data =>{
+                         var wordings = data['mtnPolWordings'].filter(a => a.defaultTag === 'Y');
+
+                         this.policyInfo.polWordings.wordingCd = wordings[0].wordingCd;
+                         var altText = '';
+                         Object.keys(wordings[0]).forEach(function(key) {
+                           if(/wordText/.test(key)) {
+                             altText += wordings[0][key] === null ? '' : wordings[0][key];
+                           }
+                         });
+
+                         this.policyInfo.polWordings.altText = altText;
+                       });
 
         this.policyInfo.issueDate = this.ns.toDateTimeString(0);
+        this.updateDate('lapseFrom');
         this.policyInfo.effDate = this.ns.toDateTimeString(0);
+        this.updateDate('lapseTo');
       }
     });
 
