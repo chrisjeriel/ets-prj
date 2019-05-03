@@ -982,7 +982,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
    for(var[key, val] of entries) {
      if(key === 'polWordings') {
        if(!this.alteration && val['text'].trim() === '') {
-         return false;
+         //return false;
        } else if(this.alteration && val['altText'].trim() === '') {
          return false;
        }
