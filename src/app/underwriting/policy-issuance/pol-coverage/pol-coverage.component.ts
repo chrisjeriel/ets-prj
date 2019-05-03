@@ -1474,7 +1474,7 @@ export class PolCoverageComponent implements OnInit {
     this.deletedData = [];
     this.editedDedt = [];
     this.deletedDedt = []
-    this.altCoverageData.policyId       = this.policyIdAlt;
+    this.altCoverageData.policyId       = this.policyInfo.policyId;
     this.altCoverageData.projId         = this.projId;
     this.altCoverageData.riskId         = this.riskId;
     this.altCoverageData.sectionISi     = this.altsectionISi;
