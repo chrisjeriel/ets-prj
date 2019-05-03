@@ -50,12 +50,12 @@ export class PolCreatePARComponent implements OnInit {
 
   passDataOptionLOV: any = {
     tableData: [],
-    tHeader:["Option No", "Rate"],  
-    dataTypes: ["text","percent"],
+    tHeader:["Option No", "Rate", "Condition"],  
+    dataTypes: ["text","percent","text"],
     pageLength: 10,
     //resizable: [false,false],
     tableOnly: false,
-    keys: ['optionId','optionRt'],
+    keys: ['optionId','optionRt','condition'],
     pageStatus: true,
     pagination: true,
     filters: [
