@@ -1,3 +1,4 @@
+
 <div id="reminderDiv" class="reminder-container" style="border: 1px solid #c5c3c3; margin-bottom: .75em; padding: 1em; max-height: 400px; overflow: auto; overflow-y:scroll  ">
 	<div>
 		<div class="row">
@@ -30,13 +31,18 @@
 								</a>
 							</div>
 
-
-
-
-
 							<div class="float-right" *ngIf="reminderBool">
 								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
-								<button class="btn-action"><a href="#"><fa name="eye"></fa></a></button>
+								<button class="btn-action" (click)="showReminderModal(reminder.reminderId,
+																					  reminder.reminder,
+																					  reminder.reminderDate,
+																					  reminder.title,
+																					  reminder.alarmTime,
+																					  reminder.assignedTo , 
+																					  reminder.createUser,
+																					  reminder.createDate,
+																					  reminder.updateUser,
+																					  reminder.updateDate)"><a href="#"><fa name="eye"></fa></a></button>
 <!-- 							<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
 								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button> -->
 							</div>
@@ -61,8 +67,6 @@
 						<p style="font-size: 12px">Assigned to <b>{{ reminder.assignedTo }}</b> - {{ reminder.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
 					    </div>
 
-
-
 			        </li>
 			        <li *ngIf="reminderNull">
 			        	<div>
@@ -74,6 +78,9 @@
 		</div>
 	</div>
 </div>
+
+<app-wf-reminder-form id="reminderModal" [reminderInfo]="reminderInfo"></app-wf-reminder-form>
+
 
 
 

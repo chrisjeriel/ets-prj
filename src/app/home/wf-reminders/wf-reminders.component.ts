@@ -74,7 +74,8 @@ export class WfRemindersComponent implements OnInit {
   reminderNull: boolean = false;
   loadingFlag: boolean;
   content: any;
-
+  reminderInfo: any[] =[];
+  
   constructor(private workFlowManagerService: WorkFlowManagerService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -94,7 +95,6 @@ export class WfRemindersComponent implements OnInit {
        $("#reminderDiv").css({"height": "auto"});
        this.workFlowManagerService.retrieveWfmReminders('',this.currentUser,'').pipe(finalize(() => this.setReminderList()))
        .subscribe((data)=>{
-           console.log(data);
            var records = data['reminderList'];
                for(let rec of records){
                  if(rec.assignedTo === this.currentUser){
@@ -114,7 +114,6 @@ export class WfRemindersComponent implements OnInit {
       $("#reminderDiv").css({"height": "auto"});
        this.workFlowManagerService.retrieveWfmReminders('','',this.currentUser).pipe(finalize(() => this.setReminderList()))
        .subscribe((data)=>{
-           console.log(data);
            var records = data['reminderList'];
                for(let rec of records){
                  if(rec.createUser === this.currentUser){
@@ -160,6 +159,59 @@ export class WfRemindersComponent implements OnInit {
       }
       return true;
     }
+
+  showReminderModal( reminderId : string,
+    reminder : string, 
+    reminderDate : string, 
+    title : string,
+    alarmTime : string, 
+    assignedTo : string, 
+    createUser: string,
+    createDate : string,
+    updateUser : string,
+    updateDate : string  ){
+    this.reminderInfo = [];
+
+    this.reminderInfo.push({
+                                          reminderId   : reminderId,       
+                                          title        : title,
+                                          reminder     : reminder,
+                                          reminderDate : reminderDate,
+                                          alarmTime    : alarmTime,
+                                          assignedTo   : assignedTo,
+                                          createUser   : createUser,
+                                          createDate   : createDate,
+                                          updateUser   : updateUser,
+                                          updateDate   : updateDate
+                                        });
+
+
+    console.log(this.reminderInfo);
+    $('#reminderModal #modalBtn').trigger('click');
+  }
+
+  /*retReminders(reminderId : any){
+   this.workFlowManagerService.retrieveWfmReminders(reminderId,'','')
+       .subscribe((data)=>{
+           var records = data['reminderList'];
+               for(let rec of records){
+                  this.reminderInfo.push({
+                                          title    : rec.title,
+                                          reminder : rec.reminder,
+                                          reminderDate : rec.reminderDate,
+                                          alarmTime    : rec.alarmTime,
+                                          assignedTo   : rec.assignedTo,
+                                          createUser   : rec.createUser,
+                                          createDate   : rec.createDate,
+                                          updateUser   : rec.updateUser,
+                                          updateDate   : rec.updateDate
+                                        });
+               }
+        },
+            error => {
+              console.log("ERROR:::" + JSON.stringify(error));
+       }); 
+  }*/
 
  
 

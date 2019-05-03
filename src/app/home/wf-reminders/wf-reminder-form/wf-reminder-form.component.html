@@ -1,10 +1,10 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
   Launch demo modal
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -22,4 +22,60 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
+<button id="reminderModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button>
+<app-modal id="showReminder" class="d-none" [modalSize]="'success-modal-size'" #modal>
+      <div header>View Reminder</div>
+   <div body>
+        <div layout="row" layout-wrap layout-align="center center">
+            <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
+                <fieldset class="scheduler-border col-sm" style="width: 550px">
+                    <div class="form-row custom-row-inline-inset">
+              <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputDate">Reminder Date</label>
+                <input type="datetime-local" id="inputDate" class="form-control form-control-sm cust-sm col-sm-5" appRequired [(ngModel)]="reminderDate" [disabled]="ViewMode">
+                <label class="form-control-sm col-sm-2" for="inputAlarm" style="margin: 0 0 0 -5px;">Alarm Time</label>
+                <input type="time" id="inputAlarm" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="alarmDate" [disabled]="ViewMode">
+              </div>
+              <div class="input-group" style="margin: -8px 0 0 0;">
+                <label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
+                <input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="title" [disabled]="ViewMode">
+              </div>
+              <div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
+                <label class="form-control-sm col-sm-2" for="inputReminder">Reminder</label>
+                <textarea id="inputReminder" class="form-control form-control-sm cust-sm col-sm-10" rows="6" style="font-size: 11px;" appRequired [(ngModel)]="reminder" [disabled]="ViewMode"> </textarea>
+              </div>
+               <div class="input-group" style="margin: -10px 0 0 0;">
+                <label class="form-control-sm col-sm-2" for="inputAssignTo">Assign To</label>
+                <input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="userId" [disabled]="ViewMode">
+              </div>
+            </div>
+                </fieldset>
+            </div>
+            <div class="input-group" style="margin: 5px 0 -10px 0 ! important;justify-content: center;" >
+                 <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Close</a></button>
+                 <button type="button" class="cust-btn" (click)="saveReminderValidation();" [disabled]= disablebtnBool><a>Save</a></button>
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center w-100" style="justify-content: center;margin: 0px 0 0 6px ! important">
+      <fieldset class="scheduler-border col-sm" style="width: 550px! important;padding: 0 ! important; margin-top: 0px ! important">
+        <div class="row col-sm" style="margin: 0px 0 0px 0 ! important">
+            <div class="input-group">
+        <label class="form-control-sm " style="margin: 0 0 0 -7px" >Created By</label>
+        <label class="form-control-sm col-sm-3" style="margin: 0 0 0 10px">Date Created</label>
+        <label class="form-control-sm col-sm-3" style="margin: 0 0 0 12px">Last Update By</label>
+        <label class="form-control-sm col-sm-3" style="margin: 0 0 0 -15px">Last Update</label>
+      </div>
+       <div class="input-group" style="margin: 0px 0 12px 0 ! important">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="createInfo.createUser" [disabled]="ViewMode">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="createInfo.createDate" style="margin: 0 0 0 5px" [disabled]="ViewMode">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="updateInfo.updatedBy" style="margin: 0 0 0 5px" [disabled]="ViewMode">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminderInfo.updateDate" style="margin: 0 0 0 5px" [disabled]="ViewMode">
+      </div>
+        </div>
+      </fieldset>
+    </div>
+</app-modal>
+
+

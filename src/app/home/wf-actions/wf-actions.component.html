@@ -82,7 +82,7 @@
 							</div>
 							<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
 								 <button type="button" class="cust-btn" (click)="modal.close('Close click');cancelReminder();"><a>Cancel</a></button>
-								 <button type="button" class="cust-btn" (click)="saveReminder();" [disabled]= disablebtnBool><a>Save</a></button>
+								 <button type="button" class="cust-btn" (click)="saveReminderValidation();" [disabled]= disablebtnBool><a>Save</a></button>
 							</div>
 				 	</div>
                 </fieldset>
@@ -126,8 +126,6 @@
 
 <app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)" (cancelMdl)="open(content);"></app-mtn-users>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar);"></app-sucess-dialog>
-
-
 
 
 
