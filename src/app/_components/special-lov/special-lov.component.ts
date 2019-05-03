@@ -240,6 +240,8 @@ export class SpecialLovComponent implements OnInit {
             sortKey:this.request.sortKey,
             order:this.request.order
         }
+        this.p = 1;
+        
         this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
             this.count = a['count'];
             this.addFiller();
