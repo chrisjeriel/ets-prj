@@ -94,33 +94,39 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 
   cmptShrPct(data){
   	//this.checkTotalValueRange();
-	this.coverageInfo.pctShare = (parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100).toFixed(10);
+	this.coverageInfo.pctShare = (parseFloat(this.coverageInfo.totalSi) / parseFloat(data.toString().split(',').join('')) * 100).toFixed(10);
 	this.coverageInfo.pctShare = this.dp.transform(this.coverageInfo.pctShare,'1.10-10');
   }
 
   cmptValue(data){
   	//this.checkPctShareRange();
-  	this.coverageInfo.totalValue = (parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100).toFixed(2);
+  	this.coverageInfo.totalValue = (parseFloat(this.coverageInfo.totalSi) / parseFloat(data.toString().split(',').join('')) * 100).toFixed(2);
   	this.coverageInfo.totalValue = this.dp.transform(this.coverageInfo.totalValue, '1.2-2');
   }
 
   checkPctShareRange(){
-  	if(parseFloat(this.coverageInfo.pctShare) > parseFloat('100')){
+  	console.log(this.coverageInfo.pctShare);
+  	if(parseFloat(this.coverageInfo.pctShare.toString().split(',').join('')) > parseFloat('100.0000000000')){
+  		console.log('test');
   		this.coverageInfo.pctShare = parseFloat('100');
   		this.cmptValue(this.coverageInfo.pctShare);
+  		this.coverageInfo.pctShare = this.dp.transform(this.coverageInfo.pctShare,'1.10-10');
+  	}else{
   		this.coverageInfo.pctShare = this.dp.transform(this.coverageInfo.pctShare,'1.10-10');
   	}
   }
 
   checkPMLRange(){
-  	if(parseFloat(this.coverageInfo.pctPml) > parseFloat('100')){
+  	if(parseFloat(this.coverageInfo.pctPml.toString().split(',').join('')) > parseFloat('100.0000000000')){
   		this.coverageInfo.pctPml = parseFloat('100');
+  		this.coverageInfo.pctPml = this.dp.transform(this.coverageInfo.pctPml,'1.10-10');
+  	}else{
   		this.coverageInfo.pctPml = this.dp.transform(this.coverageInfo.pctPml,'1.10-10');
   	}
   }
 
   checkTotalValueRange(){
-  	if(parseFloat(this.coverageInfo.totalValue) < parseFloat(this.coverageInfo.totalSi)){
+  	if(parseFloat(this.coverageInfo.totalValue.toString().split(',').join('')) < parseFloat(this.coverageInfo.totalSi)){
   		this.coverageInfo.totalValue = this.coverageInfo.totalSi;
   		this.cmptShrPct(this.coverageInfo.totalValue);
   		this.coverageInfo.totalValue = this.dp.transform(this.coverageInfo.totalValue, '1.2-2');
