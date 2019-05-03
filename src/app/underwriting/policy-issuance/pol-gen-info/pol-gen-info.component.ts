@@ -619,7 +619,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             riskId: this.policyInfo.project.riskId,
             showPolAlop: this.policyInfo.showPolAlop,
             coInsuranceFlag: this.policyInfo.coInsuranceFlag,
-            principalId: this.policyInfo.principalId
+            principalId: this.policyInfo.principalId,
+            cedingName: this.policyInfo.cedingName //add by paul
           });
       });   
 
