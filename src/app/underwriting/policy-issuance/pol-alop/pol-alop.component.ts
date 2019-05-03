@@ -150,6 +150,10 @@ export class PolAlopComponent implements OnInit {
       this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];
     });
 
+    console.log(this.prevPolicyId);
+
+    console.log(this.policyInfo);
+
     if(this.line == 'EAR'){
       this.passDataCar.tHeader = ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Minimization"];
       this.passDataCar.dataTypes = ["text", "text", "text", "text", "text"]
@@ -318,7 +322,8 @@ export class PolAlopComponent implements OnInit {
         this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
         this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
       }else { 
-          this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+          if(this.alterFlag && this.prevPolicyId != '') {
+            this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
             if (data.policy != null) {
               this.underwritingService.getPolAlop(this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
                 if (data.policy != null) {
@@ -332,7 +337,9 @@ export class PolAlopComponent implements OnInit {
                 }
               });
             }
-          });
+            });
+          }
+          
 
           
           /*this.mtnService.getMtnInsured(this.policyInfo.principalId).subscribe((data: any) => {
@@ -378,10 +385,9 @@ export class PolAlopComponent implements OnInit {
         for(var i=0;i<dataInfos.length;i++){
           this.passDataCar.tableData.push(dataInfos[i]);
         }
-
-        this.table.refreshTable();
       } else {
-         this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+        if (this.alterFlag && this.prevPolicyId != '') {
+          this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
            if (data != null) {
              this.underwritingService.getPolAlopItem(this.policyNo, this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
                  if (data.policy != null) {
@@ -390,13 +396,14 @@ export class PolAlopComponent implements OnInit {
                     for(var i=0;i<dataInfos.length;i++){
                       this.passDataCar.tableData.push(dataInfos[i]);
                     }
-
-                    this.table.refreshTable();
                  }
              });
            }
          });
+        }
       }
+
+      this.table.refreshTable();
       
       /*this.passDataCar.tableData = [];
       this.passDataEar.tableData = [];

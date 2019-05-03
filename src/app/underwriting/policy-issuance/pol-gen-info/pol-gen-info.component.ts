@@ -596,6 +596,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   checkPolIdF(event){
     this.underwritingService.getUWCoverageInfos(null, this.policyId).subscribe((data:any)=>{
+      console.log(data);
       if(data.policy !== null){
         let alopFlag = false;
         if(data.policy.project !== null){
