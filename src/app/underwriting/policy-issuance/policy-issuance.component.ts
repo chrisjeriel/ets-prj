@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild,AfterViewInit, Input } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-policy-issuance',
@@ -9,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class PolicyIssuanceComponent implements OnInit {
   @ViewChild('contentEditPol') contentEditPol;
+  @ViewChild('tabset') tabset: any;
   line: string;
   sub: any;
   post:boolean = false;
@@ -93,7 +96,25 @@ export class PolicyIssuanceComponent implements OnInit {
       } else if($event.nextId === 'post'){
         $event.preventDefault();
         this.openPost();
+      } else 
+       if($('.ng-dirty.ng-touched').length != 0 ){
+          $event.preventDefault();
+          const subject = new Subject<boolean>();
+          const modal = this.modalService.open(ConfirmLeaveComponent,{
+              centered: true, 
+              backdrop: 'static', 
+              windowClass : 'modal-size'
+          });
+          modal.componentInstance.subject = subject;
+
+          subject.subscribe(a=>{
+            if(a){
+              $('.ng-dirty').removeClass('ng-dirty');
+              this.tabset.select($event.nextId)
+            }
+          })
       }
+
       if(this.fromInq=='true'){
         setTimeout(a=>{
           $('input').attr('readonly','readonly');
