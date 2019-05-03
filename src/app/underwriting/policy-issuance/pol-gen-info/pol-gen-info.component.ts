@@ -361,6 +361,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         //edit by paul
         this.policyInfo.principalId = String(this.policyInfo.principalId).padStart(6,'0')
         this.policyInfo.contractorId = this.policyInfo.contractorId != null ? String(this.policyInfo.contractorId).padStart(6,'0'):null;
+        this.policyInfo.intmId = this.pad(this.policyInfo.intmId, 6);
         if(this.policyInfo.polWordings !== null){
           this.policyInfo.polWordings.text = "";
           this.policyInfo.polWordings.altText = "";
@@ -432,14 +433,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }
 
       if(this.newAlt) {
-        console.log('hehe');
         this.refPolicyId = this.policyInfo.policyId;
         this.policyInfo.policyNo = "";
         this.policyInfo.policyId = "";
         this.policyInfo.statusDesc = "";
         this.policyInfo.polWordings.altText = "";
 
-        this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag:'Y', ocTag : this.policyInfo.openCoverTag, lineCd : this.policyInfo.lineCd })
+        this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag: 'Y', ocTag: this.policyInfo.openCoverTag, lineCd: this.policyInfo.lineCd })
                        .subscribe(data =>{
                          var wordings = data['mtnPolWordings'].filter(a => a.defaultTag === 'Y');
 
@@ -525,12 +525,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }
   }
 
-  pad(str) {
+  pad(str, num?) {
     if(str === '' || str == null){
       return '';
     }
     
-    return String(str).padStart(3, '0');
+    return String(str).padStart(num != undefined ? num : 3, '0');
   }
 
   focusBlur() {
@@ -625,6 +625,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
            this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
 
            this.emitPolicyInfoId.emit({
+            refPolicyId: this.refPolicyId,
             policyId: event,
             policyNo: this.policyNo,
             riskName: this.policyInfo.project.riskName,
@@ -999,7 +1000,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   setInt(event){
-        this.policyInfo.intmId = event.intmId;
+        this.policyInfo.intmId = this.pad(event.intmId, 6);
         this.policyInfo.intmName = event.intmName;
         this.ns.lovLoader(event.ev, 0);
         this.focusBlur();

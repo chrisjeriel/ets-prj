@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>{{title}}</h4>
-	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)">
+	<ngb-tabset #tabset (tabChange)="beforeChange($event);onTabChange($event)">
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
@@ -195,3 +195,7 @@
 
 
 <app-pol-post *ngIf="post" [policyInfo]="policyInfo" [alterationFlag]="true" (showPost)="post = $event"></app-pol-post>
+
+<ng-template #confirmLeave>
+	<app-confirm-leave></app-confirm-leave>
+</ng-template>

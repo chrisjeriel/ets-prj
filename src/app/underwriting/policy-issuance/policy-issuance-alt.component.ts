@@ -2,6 +2,9 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UnderwritingService } from '@app/_services';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
+
 
 @Component({
     selector: 'app-policy-issuance-alt',
@@ -9,7 +12,8 @@ import { UnderwritingService } from '@app/_services';
     styleUrls: ['./policy-issuance-alt.component.css']
 })
 export class PolicyIssuanceAltComponent implements OnInit {
-     @ViewChild('contentEditPol') contentEditPol;
+    @ViewChild('contentEditPol') contentEditPol;
+    @ViewChild('tabset') tabset: any;
 
     policyInfo = {
         policyId: '',
@@ -94,7 +98,26 @@ export class PolicyIssuanceAltComponent implements OnInit {
         } else if($event.nextId === 'Post'){
             $event.preventDefault();
             this.post = true;
+        } else
+          if($('.ng-dirty.ng-touched').length != 0 ){
+          $event.preventDefault();
+          const subject = new Subject<boolean>();
+          const modal = this.modalService.open(ConfirmLeaveComponent,{
+              centered: true, 
+              backdrop: 'static', 
+              windowClass : 'modal-size'
+          });
+          modal.componentInstance.subject = subject;
+
+          subject.subscribe(a=>{
+            if(a){
+              $('.ng-dirty').removeClass('ng-dirty');
+              this.tabset.select($event.nextId)
+            }
+          })
         }
+
+
         if(this.policyInfo.fromInq=='true'){
             setTimeout(a=>{
               $('input').attr('readonly','readonly');

@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4 *ngIf="!fromSummary">{{title}}</h4>
-	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)" [justify]="fromSummary?'center':'start'">
+	<ngb-tabset #tabset (tabChange)="beforeChange($event);onTabChange($event)" [justify]="fromSummary?'center':'start'">
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
@@ -200,3 +200,7 @@
 
 
 <app-pol-post *ngIf="post" [policyInfo]="policyInfo" [alterationFlag]="false" (showPost)="post = $event"></app-pol-post>
+
+<ng-template #confirmLeave>
+	<app-confirm-leave></app-confirm-leave>
+</ng-template>
