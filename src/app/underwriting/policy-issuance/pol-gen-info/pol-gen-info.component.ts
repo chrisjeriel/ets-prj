@@ -410,6 +410,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
+
         if(this.alteration && !this.newAlt) {
           if (this.prevPolicyId !== '') {
             this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
