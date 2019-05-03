@@ -121,6 +121,9 @@ import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol
 import { PolOpenCovListComponent } from './underwriting/policy-issuance/pol-open-cov-list/pol-open-cov-list.component';
 import { PolHoldCovMonitoringComponent } from './underwriting/expiry-and-renewal/pol-hold-cov-monitoring/pol-hold-cov-monitoring.component';
 import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spoil-pol-alt.component';
+import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
+import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
+import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 
 const appRoutes: Routes = [
 
@@ -143,7 +146,7 @@ const appRoutes: Routes = [
     { path: 'policy-listing', component: ParListingComponent },
     { path: 'alt-policy-listing', component: AltParListingComponent },
     { path: 'expiry-listing', component: ExpiryListingComponent },
-    { path: 'quotation-holdcover', component: HoldCoverComponent },
+    { path: 'quotation-holdcover', component: HoldCoverComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'policy-printing', component: PolicyPrintingComponent },
     { path: 'policy-holdcover', component: PolicyToHoldCoverComponent },
     { path: 'change-quote-status', component: ChangeQuoteStatusComponent },
@@ -151,8 +154,8 @@ const appRoutes: Routes = [
     { path: 'pol-dist-list', component: PolDistListComponent },
     { path: 'pol-dist', component: PolDistComponent },
     { path: 'policy-dist', component: PolicyDistributionComponent },
-    { path: 'create-open-cover', component: PolCreateOpenCoverComponent },
-    { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent },
+    { path: 'create-open-cover', component: PolCreateOpenCoverComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
     { path: 'update-info', component: UpdateInformationComponent },
     { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
@@ -251,6 +254,9 @@ const appRoutes: Routes = [
     { path: 'open-cover-list', component: PolOpenCovListComponent},
     { path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent},
     { path: 'spoil-pol-alt', component: SpoilPolAltComponent},
+    { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
+    { path: 'maintenance-insured', component: InsuredListComponent},
+    { path: 'insured-mtn', component: InsuredComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

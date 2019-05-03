@@ -203,7 +203,6 @@ export class GeneralInfoComponent implements OnInit {
 			this.sub = this.route.params.subscribe(params => {
 				this.from = params['from'];
 				if (this.from == "quo-processing") {
-					//this.typeOfCession = params['typeOfCession'];
 					this.quotationNo = (this.quoteInfo.quotationNo === '') ? params['quotationNo'] : this.quoteInfo.quotationNo;
 
 					if(params['exclude'] != undefined) {
@@ -220,7 +219,10 @@ export class GeneralInfoComponent implements OnInit {
 				this.loading = false;
 				console.log(data);
 				if(data['quotationGeneralInfo'] != null) {
-					this.genInfoData = data['quotationGeneralInfo'];						
+					this.genInfoData = data['quotationGeneralInfo'];
+					this.genInfoData.principalId = String(this.genInfoData.principalId).padStart(6,'0')
+        			this.genInfoData.contractorId = this.genInfoData.contractorId != null ? String(this.genInfoData.contractorId).padStart(6,'0'):null;
+        			this.genInfoData.intmId = this.genInfoData.intmId != null ? String(this.genInfoData.intmId).padStart(6, '0') : '';			
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.expiryDate);
 					this.genInfoData.issueDate 	= (this.genInfoData.issueDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.issueDate);
@@ -249,6 +251,7 @@ export class GeneralInfoComponent implements OnInit {
 					this.project = data['project'];
 					this.project.createDate = this.ns.toDateTimeString(this.project.createDate);
 					this.project.updateDate = this.ns.toDateTimeString(this.project.updateDate);
+					this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 && this.project.totalValue != null ? String(this.project.totalValue) + '.00' : this.project.totalValue;
 				}
 
 
@@ -289,13 +292,14 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.statusDesc 	= 'Requested';
 				this.genInfoData.issueDate		= this.ns.toDateTimeString(0);
 				this.genInfoData.reqDate		= this.ns.toDateTimeString(0);
-				this.genInfoData.preparedBy		= JSON.parse(window.localStorage.currentUser).username;
+				this.genInfoData.preparedBy		= this.ns.getCurrentUser();
 				
 				var date = new Date();
 				var millis = date.setDate(date.getDate() + 30);
 
 				this.genInfoData.expiryDate		= this.ns.toDateTimeString(millis);	
 				this.project.projId 			= '1';
+				this.project.pctShare  			= 100;
 
 				this.maintenanceService.getMtnCurrency('PHP','Y').subscribe(data => {
 					var curr = data['currency'][0];
@@ -363,7 +367,7 @@ export class GeneralInfoComponent implements OnInit {
 		$('.ng-dirty').removeClass('ng-dirty');
 		},1000);
 
-		
+		this.getLineClass();
 	}
 
 
@@ -498,7 +502,7 @@ export class GeneralInfoComponent implements OnInit {
     }
 
     setInt(event){
-        this.genInfoData.intmId = event.intmId;
+        this.genInfoData.intmId = event.intmId != null && event.intmId != '' ? String(event.intmId).padStart(6, '0') : '';
         this.genInfoData.intmName = event.intmName;
         this.ns.lovLoader(event.ev, 0);
         this.focusBlur();
@@ -520,7 +524,6 @@ export class GeneralInfoComponent implements OnInit {
 		if(this.validate(this.prepareParam())){
 			this.focusBlur();
 
-			console.log(this.genInfoData.status);
 			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
 				this.loading = false;
 				if(data['returnCode'] == 0) {
@@ -533,10 +536,10 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
 					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 					if(this.quotationService.toGenInfo[0] === 'add') {
-						this.genInfoData.createUser = JSON.parse(window.localStorage.currentUser).username;
+						this.genInfoData.createUser = this.ns.getCurrentUser();
 						this.genInfoData.createDate = this.ns.toDateTimeString(0);
 					}
-					this.genInfoData.updateUser = JSON.parse(window.localStorage.currentUser).username;
+					this.genInfoData.updateUser = this.ns.getCurrentUser();
 					this.genInfoData.updateDate	= this.ns.toDateTimeString(0);
 
 					this.checkQuoteIdF(this.genInfoData.quoteId);
@@ -556,10 +559,10 @@ export class GeneralInfoComponent implements OnInit {
 							  cedingId: this.genInfoData.cedingId,
 							  cedingRepId: 0,
 							  createDate: this.ns.toDateTimeString(0),
-							  createUser: JSON.parse(window.localStorage.currentUser).username,
+							  createUser: this.ns.getCurrentUser(),
 							  quoteId: this.genInfoData.quoteId,
 							  updateDate: this.ns.toDateTimeString(0),
-							  updateUser: JSON.parse(window.localStorage.currentUser).username,
+							  updateUser: this.ns.getCurrentUser(),
 							}];
 					        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
 					          console.log(result);
@@ -606,7 +609,7 @@ export class GeneralInfoComponent implements OnInit {
 			"lineClassCd"	: this.genInfoData.lineClassCd,
 			"mbiRefNo"		: this.genInfoData.mbiRefNo,
 			"noClaimPd"		: this.project.noClaimPd,
-			"objectId"		: this.project.objectId,
+			"objectId"		: this.pad(this.project.objectId),
 			"openCoverTag"	: this.genInfoData.openCoverTag,
 			"openingParag"	: this.genInfoData.openingParag.trim(),
 			"pctShare"		: this.project.pctShare,
@@ -630,6 +633,13 @@ export class GeneralInfoComponent implements OnInit {
 			"reqDate"		: this.genInfoData.reqDate,
 			"reqMode"		: this.genInfoData.reqMode,
 			"riskId"		: this.project.riskId,
+			"regionCd"		: this.project.regionCd,
+			"provinceCd"	: this.project.provinceCd,
+			"cityCd"		: this.project.cityCd,
+			"districtCd"	: this.project.districtCd,
+			"blockCd"		: this.project.blockCd,
+			"latitude"		: this.project.latitude,
+			"longitude"		: this.project.longitude,
 			"site"			: this.project.site,
 			"status"		: this.genInfoData.status,
 			"testing"		: this.project.testing,
@@ -641,18 +651,18 @@ export class GeneralInfoComponent implements OnInit {
 		}
 
 		if(this.quotationService.toGenInfo[0] === 'edit') {
-			saveQuoteGeneralInfoParam.updateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjUpdateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		} else if (this.quotationService.toGenInfo[0] === 'add') {
-			saveQuoteGeneralInfoParam.createUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.createUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.createDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.updateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjCreateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjCreateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.prjCreateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjUpdateUser = JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateUser = this.ns.getCurrentUser();
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		}
 
@@ -797,10 +807,15 @@ export class GeneralInfoComponent implements OnInit {
   		} else if(field === 'intermediary') {
   			this.intermediaryLov.checkCode(this.genInfoData.intmId, ev);
   		} else if(field === 'principal') {
+  			this.genInfoData.principalId = this.pad(this.genInfoData.principalId, 6);
+
   			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV', ev);
+
+/*  			setTimeout(() => { this.genInfoData.principalId = this.pad(this.genInfoData.principalId, 6) },800);*/
+
   		} else if(field === 'contractor') {
   			this.insuredLovs['last'].checkCode(this.genInfoData.contractorId, '#contractorLOV', ev);
-  		} else if(field === 'object') {
+  		} else if(field === 'object') {  			
   			this.objectLov.checkCode(this.line, this.project.objectId, ev);
   		} else if(field === 'currency') {
   			this.currencyLov.checkCode(this.genInfoData.currencyCd, ev);
@@ -817,12 +832,12 @@ export class GeneralInfoComponent implements OnInit {
 		this.cancelBtn.clickCancel();
 	}
 
-	pad(str) {
+	pad(str, num?) {
 		if(str === '' || str == null){
 			return '';
 		}
 		
-		return String(str).padStart(3, '0');
+		return String(str).padStart(num != null ? num : 3, '0');
 	}
 
 	showUsersLOV() {
@@ -884,6 +899,31 @@ export class GeneralInfoComponent implements OnInit {
 	cbToggle(ev) {
 		$(ev.target).addClass('ng-dirty');
 	}
+
+	lineClasses: any[] = [];
+	getLineClass(){
+    this.maintenanceService.getLineClassLOV(this.line).subscribe(a=>{
+      this.lineClasses = a['lineClass'];
+    })
+  }
+
+  compute(ev,str) {
+  	$(ev.target).addClass('ng-dirty');
+
+  	if(str === 'pctShare' && this.project.totalSi != '') {
+  		var val = Number(this.project.totalSi) / (Number(this.project.pctShare)/100);
+  		this.project.totalValue = String(val).indexOf('.') === -1 ? String(val) + '.00' : val;
+  	} else if (str === 'totalValue' && this.project.totalSi != '') {
+  		var val = (Number(this.project.totalSi) / Number(this.project.totalValue)) * 100;
+  		this.project.pctShare = val;
+  	}
+  }
+
+  checkDecimal(str) {
+  	if(str === 'totalValue') {
+  		this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 ? String(this.project.totalValue) + '.00' : String(this.project.totalValue);
+  	}
+  }
 
 }
 export interface SelectRequestMode {

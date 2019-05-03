@@ -17,6 +17,7 @@ export class PolAttachmentComponent implements OnInit {
 
     @Input() alterationFlag: true;
     @Input() policyInfo: any;
+    @Input() openCoverFlag: boolean = false;
 
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -24,7 +25,7 @@ export class PolAttachmentComponent implements OnInit {
     attachmentData: any = {
         tableData: [],
         tHeader: ['File Name', 'Description', 'Actions'],
-        dataTypes: ['string', 'string', 'Actions'],
+        dataTypes: ['string', 'string'],
         nData: new PolAttachmentInfo(null, null),
         checkFlag: true,
         addFlag: true,
@@ -40,6 +41,10 @@ export class PolAttachmentComponent implements OnInit {
     savedData: any[];
     deletedData: any[];
 
+    cancelFlag: boolean;
+    dialogMessage: string = "";
+    dialogIcon: string = "";
+
     filesList: any [] = [];
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private notes: NotesService, private upload: UploadService) {
@@ -49,8 +54,18 @@ export class PolAttachmentComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Attachment");
-        this.retrievePolAttachment();
-        console.log(this.policyInfo);
+        if(!this.openCoverFlag){
+          this.retrievePolAttachment();
+        }else{
+          console.log('opencover');
+          this.retrievePolAttachmentOc();
+        }
+        if(this.policyInfo.fromInq == 'true'){
+          this.attachmentData.checkFlag = false;
+          this.attachmentData.addFlag = false;
+          this.attachmentData.deleteFlag = false;
+          this.attachmentData.uneditable = [true,true,true,true];
+        }
     }
 
     retrievePolAttachment(){
@@ -66,9 +81,18 @@ export class PolAttachmentComponent implements OnInit {
         });
     }
 
-    cancelFlag: boolean;
-    dialogMessage: string = "";
-    dialogIcon: string = "";
+    retrievePolAttachmentOc(){
+      this.underwritingService.getPolAttachmentOc(this.policyInfo.policyIdOc,this.policyInfo.policyNo).subscribe((data: any) =>{
+            console.log(data);
+            this.attachmentData.tableData = [];
+            if(data.attachmentsList !== null){
+                for(var i of data.attachmentsList.attachmentsOc){
+                    this.attachmentData.tableData.push(i);
+                }
+            }
+            this.table.refreshTable();
+        });
+    }
 
     saveData(cancelFlag?){
 
@@ -91,19 +115,38 @@ export class PolAttachmentComponent implements OnInit {
           }
 
         }
-        this.underwritingService.savePolAttachment(this.policyInfo.policyId,this.savedData,this.deletedData).subscribe((data: any) => {
-          console.log(data);
-          if(data.returnCode === 0){
-              this.dialogMessage="The system has encountered an unspecified error.";
-              this.dialogIcon = "error";
-              $('#polAttachment > #successModalBtn').trigger('click');
-          }else{
-              this.dialogMessage="";
-              this.dialogIcon = "";
-              $('#polAttachment > #successModalBtn').trigger('click');
-              this.retrievePolAttachment();
-          }
-        });
+
+        if(this.openCoverFlag){
+          this.underwritingService.savePolAttachmentOc(this.policyInfo.policyIdOc,this.savedData,this.deletedData).subscribe((data: any) => {
+            console.log(data);
+            if(data.returnCode === 0){
+                this.dialogMessage="The system has encountered an unspecified error.";
+                this.dialogIcon = "error";
+                $('#polAttachment > #successModalBtn').trigger('click');
+            }else{
+                this.dialogMessage="";
+                this.dialogIcon = "";
+                $('#polAttachment > #successModalBtn').trigger('click');
+                this.retrievePolAttachmentOc();
+            }
+          });
+        }else{
+          this.underwritingService.savePolAttachment(this.policyInfo.policyId,this.savedData,this.deletedData).subscribe((data: any) => {
+            console.log(data);
+            if(data.returnCode === 0){
+                this.dialogMessage="The system has encountered an unspecified error.";
+                this.dialogIcon = "error";
+                $('#polAttachment > #successModalBtn').trigger('click');
+            }else{
+                this.dialogMessage="";
+                this.dialogIcon = "";
+                $('#polAttachment > #successModalBtn').trigger('click');
+                this.retrievePolAttachment();
+            }
+          });
+        }
+
+
         //upload
         for(let files of this.filesList){
           if (files.length == 0) {
@@ -140,12 +183,27 @@ export class PolAttachmentComponent implements OnInit {
     }
 
     onClickSave(){
+      if(this.checkFields()){
        $('#confirm-save #modalBtn2').trigger('click');
+      }else{
+        this.dialogMessage="Please fill up required fields.";
+        this.dialogIcon = "info";
+        $('#polAttachment > #successModalBtn').trigger('click');
+      }
     }
 
     //get the emitted files from the table
     uploads(event){
       this.filesList = event;
+    }
+
+    checkFields(){
+      for(let check of this.attachmentData.tableData){
+        if(check.description === null || check.description === undefined || check.description.length === 0){
+          return false;
+        }
+      }
+      return true;
     }
 
 }

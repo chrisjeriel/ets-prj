@@ -1,5 +1,11 @@
-.text-search-ico {
+/*.text-search-ico {
 	margin-left: -18px;
+	z-index: 200;
+	font-size: 14px;
+}*/
+.text-search-ico {
+	margin-left: -15px;
+	margin-right: 2px;
 	z-index: 200;
 	font-size: 14px;
 }

@@ -241,6 +241,9 @@ export class QuoteEndorsementComponent implements OnInit {
           for(var count = 0; count < this.endorsementData.tHeader.length; count++){
             this.endorsementData.uneditable.push(true);
           }
+          this.deductiblesData.addFlag = false;
+          this.deductiblesData.checkFlag = false;
+          this.deductiblesData.deleteFlag = false;
         }else if(this.inquiryFlag && this.endorsementType === 'OC'){
           this.endorsementOCData.opts = [];
           this.endorsementOCData.uneditable = [];
@@ -340,7 +343,7 @@ export class QuoteEndorsementComponent implements OnInit {
                          }
                        this.tableNonEditable.forEach(table => {table.refreshTable()});
                             this.table.refreshTable();
-                            this.optionTable.onRowClick(null,this.quoteOptionsData.tableData[0]);
+                       //this.optionTable.onRowClick(null,this.quoteOptionsData.tableData[0]);
                     });
                 }  
 
@@ -835,7 +838,6 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     updateDed(data){
-      console.log(data)
         if(data==null || data.endtCd ==null){
             this.deductiblesData.disableAdd = true;
             this.deductiblesData.tableData = [];

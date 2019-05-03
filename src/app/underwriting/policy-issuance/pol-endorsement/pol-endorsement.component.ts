@@ -7,6 +7,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-pol-endorsement',
@@ -23,12 +24,12 @@ export class PolEndorsementComponent implements OnInit {
 
     passData: any = {
         tableData: [],
-        tHeader: ['C', 'Endt Code', 'Endt Title', 'Remarks'],
-        tooltip:['Change Tag',null,null,null],
+        tHeader: ['C', 'Endt Code', 'Endt Title','Endt Wordings', 'Remarks'],
+        tooltip:['Change Tag',null,null,null,null],
         magnifyingGlass: ['endtCd'],
-        dataTypes: ['checkbox', 'text', 'text', 'text', 'text'],
+        dataTypes: ['checkbox', 'text', 'text','text-editor', 'text'],
         nData: {
-            changeTag: 'Y',
+            changeTag: 'N',
             endtCd: '',
             endtTitle: '',
             remarks: '',
@@ -38,7 +39,8 @@ export class PolEndorsementComponent implements OnInit {
             createUser: JSON.parse(window.localStorage.currentUser).username,
             updateUser: JSON.parse(window.localStorage.currentUser).username,
             deductibles: [],
-            deductiblesOc: []
+            deductiblesOc: [],
+            endtText:{}
         },
         addFlag: true,
         deleteFlag: true,
@@ -48,8 +50,8 @@ export class PolEndorsementComponent implements OnInit {
         pageLength: 10,
         pageID: 'endt',
         widths: [1, 'auto', 'auto', 'auto'],
-        keys: ['changeTag','endtCd', 'endtTitle', 'remarks'],
-        uneditable: [false, false, true, false]
+        keys: ['changeTag','endtCd', 'endtTitle','text', 'remarks'],
+        uneditable: [false, false, true, false,false]
     };
 
     deductiblesData: any = {
@@ -98,15 +100,22 @@ export class PolEndorsementComponent implements OnInit {
     cancelFlag : boolean = false;
     @Input() policyInfo: any;
     @Input() ocFlag: false;
+    endtTextKeys:string[] = ['endtText01','endtText02','endtText03','endtText04','endtText05','endtText06','endtText07','endtText08','endtText09','endtText10','endtText11','endtText12','endtText13','endtText14','endtText15','endtText16','endtText17'];
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService
-    ) {
+        , private route: ActivatedRoute) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Endorsement");
+        this.route.params.subscribe(params => {
+            this.currentLine = params['line'];
+        })
+        if(this.alteration){
+            this.passData.nData.changeTag = 'Y';
+        }
         if(this.policyInfo.fromInq!='true'){
             //do something
             this.passData.magnifyingGlass = ['endtCd'];
@@ -117,7 +126,7 @@ export class PolEndorsementComponent implements OnInit {
             this.deductiblesData.uneditable = [true,true,false,false,false];
         }else{
             this.passData.dataTypes[0] = 'checkbox';
-            this.passData.uneditable = [true,true,true,true];
+            this.passData.uneditable = [true,true,true,true,true,true,true];
             this.passData.addFlag = false;
             this.passData.deleteFlag = false;
 
@@ -125,9 +134,13 @@ export class PolEndorsementComponent implements OnInit {
             this.deductiblesData.addFlag = false;
             this.deductiblesData.deleteFlag = false;
         }
-        this.currentLine = this.ocFlag ? this.policyInfo.policyNo.substring(3,6) : this.policyInfo.policyNo.substring(0,3);
-        if(this.ocFlag)
+        //this.currentLine = this.ocFlag ? this.policyInfo.policyNo.substring(3,6) : this.policyInfo.policyNo.substring(0,3);
+        if(this.ocFlag){
+            // this.passData.tHeader =  ['C', 'Endt Code', 'Endt Title', 'Remarks'];
+            // this.passData.dataTypes =  ['checkbox', 'text', 'text', 'text'];
+            // this.passData.keys =  ['changeTag','endtCd', 'endtTitle', 'remarks'];
             this.retrieveEndtOC();
+        }
         else 
             this.retrieveEndt();
     }
@@ -135,13 +148,45 @@ export class PolEndorsementComponent implements OnInit {
     //retrieve Endorsement
     retrieveEndt(){
         this.underwritingService.getPolicyEndorsement(this.policyInfo.policyId, '').subscribe((data: any) =>{
+            console.log(data)
             if(data.endtList !== null){
-                this.passData.tableData = data.endtList.endorsements;
-                
+                this.passData.tableData = data.endtList.endorsements
+                this.passData.tableData.forEach(a=>{
+                    if(a.policyId!= this.policyInfo.policyId){
+                        a.policyId = this.policyInfo.policyId;
+                        a.edited = true;
+                        this.endtTable.markAsDirty();
+                    }
+                })
+                this.passData.tableData.forEach(a=>{
+                    if(a.endtText!=null){
+                        a.text =  (a.endtText.endtText01 === null ? '' :a.endtText.endtText01) + 
+                                     (a.endtText.endtText02 === null ? '' :a.endtText.endtText02) + 
+                                     (a.endtText.endtText03 === null ? '' :a.endtText.endtText03) + 
+                                     (a.endtText.endtText04 === null ? '' :a.endtText.endtText04) + 
+                                     (a.endtText.endtText05 === null ? '' :a.endtText.endtText05) + 
+                                     (a.endtText.endtText06 === null ? '' :a.endtText.endtText06) + 
+                                     (a.endtText.endtText07 === null ? '' :a.endtText.endtText07) + 
+                                     (a.endtText.endtText08 === null ? '' :a.endtText.endtText08) + 
+                                     (a.endtText.endtText09 === null ? '' :a.endtText.endtText09) + 
+                                     (a.endtText.endtText10 === null ? '' :a.endtText.endtText10) + 
+                                     (a.endtText.endtText11 === null ? '' :a.endtText.endtText11) + 
+                                     (a.endtText.endtText12 === null ? '' :a.endtText.endtText12) + 
+                                     (a.endtText.endtText13 === null ? '' :a.endtText.endtText13) + 
+                                     (a.endtText.endtText14 === null ? '' :a.endtText.endtText14) + 
+                                     (a.endtText.endtText15 === null ? '' :a.endtText.endtText15) + 
+                                     (a.endtText.endtText16 === null ? '' :a.endtText.endtText16) + 
+                                     (a.endtText.endtText17 === null ? '' :a.endtText.endtText17) ;
+                    }else{    
+                       a.text = "";
+                       a.endtText = {};
+                    }
+                });
+                this.endtTable.onRowClick(null,this.passData.tableData[0])
             } 
-            this.endtTable.onRowClick(null,this.passData.tableData[0]);
+            
             this.endtTable.refreshTable();
-        });
+        }); 
     }
 
     retrieveEndtOC(){
@@ -149,8 +194,32 @@ export class PolEndorsementComponent implements OnInit {
             console.log(data)
             if(data.endtList !== null){
                 this.passData.tableData = data.endtOcList.endorsementsOc;
+                this.endtTable.onRowClick(null,this.passData.tableData[0]);
+                this.passData.tableData.forEach(a=>{
+                    if(a.endtText!=null){
+                        a.text =  (a.endtText.endtText01 === null ? '' :a.endtText.endtText01) + 
+                                     (a.endtText.endtText02 === null ? '' :a.endtText.endtText02) + 
+                                     (a.endtText.endtText03 === null ? '' :a.endtText.endtText03) + 
+                                     (a.endtText.endtText04 === null ? '' :a.endtText.endtText04) + 
+                                     (a.endtText.endtText05 === null ? '' :a.endtText.endtText05) + 
+                                     (a.endtText.endtText06 === null ? '' :a.endtText.endtText06) + 
+                                     (a.endtText.endtText07 === null ? '' :a.endtText.endtText07) + 
+                                     (a.endtText.endtText08 === null ? '' :a.endtText.endtText08) + 
+                                     (a.endtText.endtText09 === null ? '' :a.endtText.endtText09) + 
+                                     (a.endtText.endtText10 === null ? '' :a.endtText.endtText10) + 
+                                     (a.endtText.endtText11 === null ? '' :a.endtText.endtText11) + 
+                                     (a.endtText.endtText12 === null ? '' :a.endtText.endtText12) + 
+                                     (a.endtText.endtText13 === null ? '' :a.endtText.endtText13) + 
+                                     (a.endtText.endtText14 === null ? '' :a.endtText.endtText14) + 
+                                     (a.endtText.endtText15 === null ? '' :a.endtText.endtText15) + 
+                                     (a.endtText.endtText16 === null ? '' :a.endtText.endtText16) + 
+                                     (a.endtText.endtText17 === null ? '' :a.endtText.endtText17) ;
+                    }else{    
+                       a.text = "";
+                       a.endtText = {};
+                    }
+                });
             } 
-            this.endtTable.onRowClick(null,this.passData.tableData[0]);
             this.endtTable.refreshTable();
         });
     }
@@ -231,6 +300,24 @@ export class PolEndorsementComponent implements OnInit {
            this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
            this.passData.tableData[this.passData.tableData.length - 1].edited = true;
            this.passData.tableData[this.passData.tableData.length - 1].add = true;
+           this.passData.tableData[this.passData.tableData.length - 1].text =  (data[k].endtText01 === null ? '' :data[k].endtText01) + 
+                                     (data[k].endtText02 === null ? '' :data[k].endtText02) + 
+                                     (data[k].endtText03 === null ? '' :data[k].endtText03) + 
+                                     (data[k].endtText04 === null ? '' :data[k].endtText04) + 
+                                     (data[k].endtText05 === null ? '' :data[k].endtText05) + 
+                                     (data[k].endtText06 === null ? '' :data[k].endtText06) + 
+                                     (data[k].endtText07 === null ? '' :data[k].endtText07) + 
+                                     (data[k].endtText08 === null ? '' :data[k].endtText08) + 
+                                     (data[k].endtText09 === null ? '' :data[k].endtText09) + 
+                                     (data[k].endtText10 === null ? '' :data[k].endtText10) + 
+                                     (data[k].endtText11 === null ? '' :data[k].endtText11) + 
+                                     (data[k].endtText12 === null ? '' :data[k].endtText12) + 
+                                     (data[k].endtText13 === null ? '' :data[k].endtText13) + 
+                                     (data[k].endtText14 === null ? '' :data[k].endtText14) + 
+                                     (data[k].endtText15 === null ? '' :data[k].endtText15) + 
+                                     (data[k].endtText16 === null ? '' :data[k].endtText16) + 
+                                     (data[k].endtText17 === null ? '' :data[k].endtText17) ;
+
         }
         this.endtTable.refreshTable();
     }
@@ -255,7 +342,7 @@ export class PolEndorsementComponent implements OnInit {
            this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].edited = true;
         }
         this.endtTable.indvSelect.deductibles = this.deductiblesData.tableData;
-        console.log(this.deductiblesData.tableData);
+        this.dedTable.tableDataChange.emit(this.dedTable.passData.tableData);
         this.dedTable.refreshTable();
     }
 
@@ -269,6 +356,13 @@ export class PolEndorsementComponent implements OnInit {
             deleteDeductibleList: []
         }
         for(let endt of this.passData.tableData){
+            
+            let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
+            if(endtTextSplit!== null)
+                for (var i = 0; i < endtTextSplit.length; ++i) {
+                    endt.endtText[this.endtTextKeys[i]] = endtTextSplit[i];
+                }
+            
             if(endt.edited && !endt.deleted){
                 endt.createDate = this.ns.toDateTimeString(endt.createDate);
                 endt.updateDate = this.ns.toDateTimeString(endt.updateDate);
@@ -321,7 +415,7 @@ export class PolEndorsementComponent implements OnInit {
                 }
             })
         }
-        else
+        else{
             this.underwritingService.savePolEndt(params).subscribe(data=>{
                 if(data['returnCode'] == -1){
                     this.dialogIcon = "success";
@@ -330,8 +424,34 @@ export class PolEndorsementComponent implements OnInit {
                 }else{
                     this.dialogIcon = "error";
                     this.successDiag.open();
+                    
                 }
             })
+            this.passData.tableData.forEach(a=>{
+                if(a.endtText!=null){
+                    a.endtText =  ""+(a.endtText.endtText01 == undefined || a.endtText.endtText01 == null ? '' :a.endtText.endtText01) + 
+                                 (a.endtText.endtText02 == undefined || a.endtText.endtText02 == null ? '' :a.endtText.endtText02) + 
+                                 (a.endtText.endtText03 == undefined || a.endtText.endtText03 == null ? '' :a.endtText.endtText03) + 
+                                 (a.endtText.endtText04 == undefined || a.endtText.endtText04 == null ? '' :a.endtText.endtText04) + 
+                                 (a.endtText.endtText05 == undefined || a.endtText.endtText05 == null ? '' :a.endtText.endtText05) + 
+                                 (a.endtText.endtText06 == undefined || a.endtText.endtText06 == null ? '' :a.endtText.endtText06) + 
+                                 (a.endtText.endtText07 == undefined || a.endtText.endtText07 == null ? '' :a.endtText.endtText07) + 
+                                 (a.endtText.endtText08 == undefined || a.endtText.endtText08 == null ? '' :a.endtText.endtText08) + 
+                                 (a.endtText.endtText09 == undefined || a.endtText.endtText09 == null ? '' :a.endtText.endtText09) + 
+                                 (a.endtText.endtText10 == undefined || a.endtText.endtText10 == null ? '' :a.endtText.endtText10) + 
+                                 (a.endtText.endtText11 == undefined || a.endtText.endtText11 == null ? '' :a.endtText.endtText11) + 
+                                 (a.endtText.endtText12 == undefined || a.endtText.endtText12 == null ? '' :a.endtText.endtText12) + 
+                                 (a.endtText.endtText13 == undefined || a.endtText.endtText13 == null ? '' :a.endtText.endtText13) + 
+                                 (a.endtText.endtText14 == undefined || a.endtText.endtText14 == null ? '' :a.endtText.endtText14) + 
+                                 (a.endtText.endtText15 == undefined || a.endtText.endtText15 == null ? '' :a.endtText.endtText15) + 
+                                 (a.endtText.endtText16 == undefined || a.endtText.endtText16 == null ? '' :a.endtText.endtText16) + 
+                                 (a.endtText.endtText17 == undefined || a.endtText.endtText17 == null ? '' :a.endtText.endtText17) ;
+                }else{    
+                   a.endtText = ""
+                }
+            })
+        }
+        
     }
 
 }

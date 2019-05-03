@@ -11,7 +11,7 @@ import { RequiredDirective } from '@app/_directives/required.directive';
 import { FormsModule }   from '@angular/forms';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
-
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
  
 @Component({
     selector: 'app-quo-alop',
@@ -27,6 +27,7 @@ export class QuoAlopComponent implements OnInit {
   @ViewChildren(RequiredDirective) inputs: QueryList<RequiredDirective>;
   @ViewChild('myForm') form:any;
   @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
 
 
@@ -191,7 +192,6 @@ export class QuoAlopComponent implements OnInit {
            }else{
               // for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
                 for(var i = 0; i < data.quotation.optionsList.length; i++){
-                 console.log(data.quotation.optionsList[i].otherRatesList);
                  data.quotation.optionsList[i].optionRt = data.quotation.optionsList[i].otherRatesList.find(a=>a.coverCdDesc==='Advance Loss of Profit').rate;
                  this.quoteOptionsData.tableData.push(data.quotation.optionsList[i]);
               }
@@ -279,35 +279,42 @@ export class QuoAlopComponent implements OnInit {
     save(cancel?) {
       this.cancelFlag = cancel !== undefined;
 
-      this.alopData.quoteId = this.quotationInfo.quoteId;
-      this.alopData.alopDetails = [];
-      console.log(this.optionsList)
-      for(let option of this.optionsList){
-          option.alopDetails.optionId = option.optionId;
-          option.alopDetails.createDateAlop = this.ns.toDateTimeString(option.alopDetails.createDateAlop);
-          console.log(option.alopDetails.indemFromDate)
-          option.alopDetails.indemFromDate = this.ns.toDateTimeString(option.alopDetails.indemFromDate);
-          option.alopDetails.updateDateAlop = this.ns.toDateTimeString(option.alopDetails.updateDateAlop);
-          option.alopDetails.expiryDate = this.ns.toDateTimeString(option.alopDetails.expiryDate);
-          option.alopDetails.issueDate = this.ns.toDateTimeString(option.alopDetails.issueDate);
-          this.alopData.alopDetails.push(option.alopDetails);
+      if(this.dateErFlag){
+          this.dialogIcon = 'error-message';
+          this.dialogMessage = 'Please Check Field Values.';
+          this.successDiag.open();
+          return;
       }
-      this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
-        if(data['returnCode'] == 0) {
-          this.dialogMessage = data['errorList'][0].errorMessage;
-          this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
-        } else{
-          this.dialogMessage = "";
-          this.dialogIcon = "success";
-          $('#successModalBtn').trigger('click');
-          this.form.control.markAsPristine()
-          this.getAlop();
-          //this.emptyVar();
-          this.alopDetails = this.alopData.alopDetails.filter(a => a.optionId == this.alopDetails.optionId)[0];
-          this.optionsList = this.optionsList.filter(a => a.optionId == this.optionsList.optionId)[0];
+        this.alopData.quoteId = this.quotationInfo.quoteId;
+        this.alopData.alopDetails = [];
+        console.log(this.optionsList)
+        for(let option of this.optionsList){
+            option.alopDetails.optionId = option.optionId;
+            option.alopDetails.createDateAlop = this.ns.toDateTimeString(option.alopDetails.createDateAlop);
+            console.log(option.alopDetails.indemFromDate)
+            option.alopDetails.indemFromDate = this.ns.toDateTimeString(option.alopDetails.indemFromDate);
+            option.alopDetails.updateDateAlop = this.ns.toDateTimeString(option.alopDetails.updateDateAlop);
+            option.alopDetails.expiryDate = this.ns.toDateTimeString(option.alopDetails.expiryDate);
+            option.alopDetails.issueDate = this.ns.toDateTimeString(option.alopDetails.issueDate);
+            this.alopData.alopDetails.push(option.alopDetails);
         }
-      });
+          this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
+            if(data['returnCode'] == 0) {
+              this.dialogMessage = data['errorList'][0].errorMessage;
+              this.dialogIcon = "error";
+              $('#successModalBtn').trigger('click');
+            } else{
+              this.dialogMessage = "";
+              this.dialogIcon = "success";
+              $('#successModalBtn').trigger('click');
+              this.form.control.markAsPristine()
+              this.getAlop();
+              //this.emptyVar();
+              this.alopDetails = this.alopData.alopDetails.filter(a => a.optionId == this.alopDetails.optionId)[0];
+              this.optionsList = this.optionsList.filter(a => a.optionId == this.optionsList.optionId)[0];
+            }
+          });
+      
       // this.ngOnInit();
     }
 
@@ -434,12 +441,10 @@ export class QuoAlopComponent implements OnInit {
     }
   }*/
   cancel(){
-    this.cancelBtn.clickCancel();
+       this.cancelBtn.clickCancel();
   }
 
   checkDates(){
-    console.log(new Date(this.alopDetails.issueDate))
-
     if((new Date(this.alopDetails.issueDate) >= new Date(this.alopDetails.expiryDate))){
      highlight(this.to);
      highlight(this.from);
@@ -458,12 +463,12 @@ export class QuoAlopComponent implements OnInit {
   }
 
   onClickSave(){
-    if(!this.dateErFlag)
+    if(this.dateErFlag){
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Please Check Field Values.';
+        this.successDiag.open();
+    }else{
       $('#alop #confirm-save #modalBtn2').trigger('click');
-    else{
-      this.dialogMessage = "Please check date fields";
-      this.dialogIcon = "error";
-      $('#successModalBtn').trigger('click');
     }
   }
 
@@ -476,8 +481,9 @@ export class QuoAlopComponent implements OnInit {
      this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
        var sectionCover = data.quotation.project.coverage.sectionCovers;
        for(var i=0;i < sectionCover.length;i++){
-         if(sectionCover[i].description == 'Advance Loss of Profit'){
+         if(sectionCover[i].coverName == 'Advance Loss of Profit'){
              this.alopSI = sectionCover[i].sumInsured;
+             this.alopDetails.annSi = this.alopSI;
          }
        }
      });

@@ -218,7 +218,7 @@ export class QuoteOptionComponent implements OnInit {
            for(var count = 0; count < this.otherRatesData.tHeader.length; count++){
              this.otherRatesData.uneditable.push(true);
            }
-
+           delete this.optionsData.genericBtn;
          }
          //neco end
 
@@ -235,9 +235,8 @@ export class QuoteOptionComponent implements OnInit {
         this.quotationService.getCoverageInfo('',this.quoteId).subscribe((data: any) => {
           if(data.quotation.project!==null){
             this.defaultSectionCvrs = data.quotation.project.coverage.sectionCovers.filter((a)=>{
-              console.log(a);
               a.amount = a.sumInsured;
-              a.coverCdDesc = a.description;
+              a.coverCdDesc = a.coverName;
               a.changeTag = 'N';
               a.rate = data.optionRt;
               a.edited = true;
@@ -418,6 +417,7 @@ saveQuoteOptionAll(cancelFlag?){
        quoteId:this.quoteId,
        projId:this.projId,
        riskId:this.riskId,
+       user: JSON.parse(window.localStorage.currentUser).username,
        saveQuoteOptionsList:[],
        deleteQuoteOptionsList:[],
        saveDeductibleList:[],
@@ -465,8 +465,6 @@ saveQuoteOptionAll(cancelFlag?){
    }
 
    for (var i = 0 ; this.optionsData.tableData.length > i; i++) {
-     if(this.optionsData.tableData[i].condition == null || this.optionsData.tableData[i].condition.length == 0)
-          this.optionsData.tableData[i].condition = parseFloat(this.optionsData.tableData[i].optionRt)+'% rate' 
       if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null) {
         params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
         params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username

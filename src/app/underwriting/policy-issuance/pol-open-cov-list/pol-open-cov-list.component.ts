@@ -78,15 +78,7 @@ export class PolOpenCovListComponent implements OnInit {
 	                  from: 'totalSiLess',
 	                  to: 'totalSiGrt'
 	              },
-	              title: 'Sum Insured',
-	              dataType: 'textspan'
-	          },
-	          {
-	              keys: {
-	                  from: 'totalPremLess',
-	                  to: 'totalPremGrt'
-	              },
-	              title: 'Premium',
+	              title: 'Max Si',
 	              dataType: 'textspan'
 	          },
 	          {
@@ -162,7 +154,8 @@ export class PolOpenCovListComponent implements OnInit {
    														 insured: this.selected.insuredDesc,
    														 riskName: this.selected.riskName,
    														 policyNo: this.selected.openPolicyNo ,
-   														 inqFlag: false}], { skipLocationChange: true });
+   														 inqFlag: false,
+   														 exitLink: '/open-cover-list'}], { skipLocationChange: true });
    }
 
    searchQuery(searchParams){
@@ -175,11 +168,15 @@ export class PolOpenCovListComponent implements OnInit {
 
    export(){
         //do something
-    var today = new Date();
+     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
-    var currDate = mm + dd+ yyyy;
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
     var filename = 'PolicyList_'+currDate+'.xlsx'
     var mystyle = {
         headers:true, 
@@ -197,7 +194,7 @@ export class PolOpenCovListComponent implements OnInit {
                 (parts[1] ? "." + parts[1] : "");
             return num
       };
-      alasql('SELECT openPolicyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS SumInsured , datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+      alasql('SELECT openPolicyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS MaxSi , datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 
 }

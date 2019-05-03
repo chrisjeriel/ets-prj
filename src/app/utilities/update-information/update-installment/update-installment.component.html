@@ -12,27 +12,26 @@
                 <div class="col-sm-8">
                   <div class="input-group " style="margin-bottom: -4px !important;">
                     <label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Policy No</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-                      ngbTooltip="Year">
-                    <input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;"
-                      ngbTooltip="Sequence No">
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-                      ngbTooltip="Co Code">
-                    <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;"
-                      ngbTooltip="Co Series No">
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-                      ngbTooltip="Alt No">
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[0]" ngbTooltip="Line" (change)="search('lineCd', $event)" appRequired>
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[1]" style="margin-left: 3px;" (change)="search('seqNo',$event)"
+                      ngbTooltip="Year" appRequired>
+                    <input type="text" class="form-control form-control-sm col-sm-3 cap-input" [ngModel]="polNo[2]" style="margin-left: 3px;"
+                      ngbTooltip="Sequence No" appRequired>
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[3]" style="margin-left: 3px;"
+                      ngbTooltip="Co Code" appRequired>
+                    <input type="text" class="form-control form-control-sm col-sm-2 cap-input" [ngModel]="polNo[4]" style="margin-left: 3px;"
+                      ngbTooltip="Co Series No" appRequired>
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[5]" style="margin-left: 3px;"
+                      ngbTooltip="Alt No" appRequired>
                     <span>&nbsp;</span>
-                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
+                    <span>&nbsp;</span>
+                    <div class="text-center">
+                    <div class="cust-btn-container">
+                      <button type="button" class="cust-btn"><a>Clear</a></button>
+                    </div>
+                    </div>
                   </div>
-                </div>
-                <div class="col-sm-2"></div>
-              </div>
-              <div class="text-center" style="margin-top: 3px !important;">
-                <div class="cust-btn-container">
-                  <button type="button" class="cust-btn"><a>Clear</a></button>
-                  <button type="button" class="cust-btn"><a>Search</a></button>
                 </div>
               </div>
             </div>
@@ -47,13 +46,13 @@
                 <div class="col-sm-6">
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3" style="margin-left: -17px !important;">Ceding Company</label>
-                    <input type="text" class="form-control form-control-sm col-sm">
+                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="cedingName" readonly>
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="input-group" style="padding-right: 38px !important;">
                     <label class="form-control-sm col-sm-3" style="margin-left: -86px !important;">Risk</label>
-                    <input type="text" class="form-control form-control-sm col-sm">
+                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="riskName" readonly>
                   </div>
                 </div>
               </div>
@@ -62,7 +61,7 @@
                 <div class="col-sm-6">
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3" style="margin-left: -17px !important;">Insured</label>
-                    <input type="text" class="form-control form-control-sm col-sm">
+                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredDesc" readonly>
                   </div>
                 </div>
                 <div class="col-sm-6">
@@ -70,13 +69,13 @@
                     <div class="col-sm-4">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-4" style="margin-left: -14px !important;">Currency</label>
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;">
+                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;" [(ngModel)]="currency" readonly>
                       </div>
                     </div>
                     <div class="col-sm-8" style="padding-right: 53px !important;">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-4" style="margin-left: -36px !important;">Total Premium</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="totalPrem | number:'1.2-2'" readonly>
                       </div>
                     </div>
                   </div>
@@ -90,7 +89,7 @@
           <fieldset class="scheduler-border">
             <legend class="scheduler-border">Installment Info</legend>
             <div class="custom-row-inline-inset">
-              <app-cust-editable-non-datatable [passData]="passDataInstallmentInfo"></app-cust-editable-non-datatable>
+              <app-cust-editable-non-datatable #instllmentTable [passData]="passDataInstallmentInfo" (newClick)="updateOtherCharges($event)" (tableDataChange)="calcComm(); compute();" (onDelete)="delInst()"></app-cust-editable-non-datatable>
             </div>
           </fieldset>
         </div>
@@ -102,7 +101,7 @@
               <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                  <app-cust-editable-non-datatable [passData]="passDataOtherCharges"></app-cust-editable-non-datatable>
+                  <app-cust-editable-non-datatable #otherTable [passData]="passDataOtherCharges" (clickLOV)="clickLOV($event)" (tableDataChange)="compute();instllmentTable.indvSelect.otherCharges=$event" (onDelete)="delOth()"></app-cust-editable-non-datatable>
                 </div>
                 <div class="col-sm-2"></div>
               </div>
@@ -114,8 +113,8 @@
           <div class="form-group col-sm">
             <div class="text-center" style="margin-top: 8px !important;">
               <div class="cust-btn-container">
-                <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" class="cust-btn"><a>Save</a></button>
+                <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
               </div>
             </div>
           </div>
@@ -125,3 +124,22 @@
     </ngb-tab>
   </ngb-tabset>
 </div>
+
+<app-modal hidden [btnTitle]="'List Of Values'" id="polLovMdl">
+    <div header>List Of Values</div>
+    <div body>
+       <!-- <app-cust-non-datatable [passData]="passDataLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable> -->
+       <app-cust-non-datatable [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);"></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-lov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+<app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
+<app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/update-installment'" ></app-cancel-button>

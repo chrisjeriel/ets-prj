@@ -35,101 +35,93 @@ export class PolOcInquiryComponent implements OnInit {
     pageStatus: true,
     // printBtn: true,
     filters: [
-            {
-                key: 'policyNo',
-                title: 'Policy No.',
-                dataType: 'text'
-            },
-            {
-                key: 'cessionDesc',
-                title: 'Type of Cession',
-                dataType: 'text'
-            },
-            {
-                key: 'cedingName',
-                title: 'Ceding Company',
-                dataType: 'text'
-            },
-            {
-                key: 'insuredDesc',
-                title: 'Insured',
-                dataType: 'text'
-            },
-            {
-                key: 'riskName',
-                title: 'Risk',
-                dataType: 'text'
-            },
-            {
-                key: 'objectDesc',
-                title: 'Object',
-                dataType: 'text'
-            },
-            {
-                key: 'site',
-                title: 'Site',
-                dataType: 'text'
-            },
-            {
-                key: 'currencyCd',
-                title: 'Currency',
-                dataType: 'text'
-            },
-            {
-               keys: {
-                    from: 'totalSiLess',
-                    to: 'totalSiGrt'
-                },
-                title: 'Sum Insured',
-                dataType: 'textspan'
-            },
-            {
-                keys: {
-                    from: 'totalPremLess',
-                    to: 'totalPremGrt'
-                },
-                title: 'Premium',
-                dataType: 'textspan'
-            },
-            {
+              {
+                  key: 'policyNo',
+                  title: 'Policy No.',
+                  dataType: 'text'
+              },
+              {
+                  key: 'cessionDesc',
+                  title: 'Type of Cession',
+                  dataType: 'text'
+              },
+              {
+                  key: 'cedingName',
+                  title: 'Ceding Company',
+                  dataType: 'text'
+              },
+              {
+                  key: 'insuredDesc',
+                  title: 'Insured',
+                  dataType: 'text'
+              },
+              {
+                  key: 'riskName',
+                  title: 'Risk',
+                  dataType: 'text'
+              },
+              {
+                  key: 'objectDesc',
+                  title: 'Object',
+                  dataType: 'text'
+              },
+              {
+                  key: 'site',
+                  title: 'Site',
+                  dataType: 'text'
+              },
+              {
+                  key: 'currencyCd',
+                  title: 'Currency',
+                  dataType: 'text'
+              },
+              {
                  keys: {
-                    from: 'issueDateFrom',
-                    to: 'issueDateTo'
-                },
-                title: 'Issue Date',
-                dataType: 'datespan'
-            },
-            {
+                      from: 'totalSiLess',
+                      to: 'totalSiGrt'
+                  },
+                  title: 'Max Si',
+                  dataType: 'textspan'
+              },
+              {
+                   keys: {
+                      from: 'issueDateFrom',
+                      to: 'issueDateTo'
+                  },
+                  title: 'Issue Date',
+                  dataType: 'datespan'
+              },
+              {
 
-                 keys: {
-                    from: 'inceptDateFrom',
-                    to: 'inceptDateTo'
-                },
-                title: 'Inception Date',
-                dataType: 'datespan'
-            },
-            {
-                keys: {
-                    from: 'expiryDateFrom',
-                    to: 'expiryDateTo'
-                },
-                title: 'Expiry Date',
-                dataType: 'datespan'
-            },
-            {
-                keys: {
-                    from: 'acctDateFrom',
-                    to: 'acctDateTo'
-                },
-                title: 'Accounting Date',
-                dataType: 'datespan'
-            },
-            {
-                key: 'status',
-                title: 'Status',
-                dataType: 'text'
-            },
-        ],
+                   keys: {
+                      from: 'inceptDateFrom',
+                      to: 'inceptDateTo'
+                  },
+                  title: 'Inception Date',
+                  dataType: 'datespan'
+              },
+              {
+                  keys: {
+                      from: 'expiryDateFrom',
+                      to: 'expiryDateTo'
+                  },
+                  title: 'Expiry Date',
+                  dataType: 'datespan'
+              },
+              {
+                  keys: {
+                      from: 'acctDateFrom',
+                      to: 'acctDateTo'
+                  },
+                  title: 'Accounting Date',
+                  dataType: 'datespan'
+              },
+              {
+                  key: 'status',
+                  title: 'Status',
+                  dataType: 'text'
+              },
+          ],
   };
 
   policyInfo:any = {
@@ -186,7 +178,8 @@ export class PolOcInquiryComponent implements OnInit {
                                 riskName: data.riskName,
                                 policyNo: data.openPolicyNo,
                                 inqFlag: true,
-                                fromInq:true, }], { skipLocationChange: true });
+                                fromInq:true,
+                                exitLink: '/pol-oc-inquiry' }], { skipLocationChange: true });
        //this.router.navigate(['/policy-information', {policyId:data.policyId}], { skipLocationChange: true });
   }
 

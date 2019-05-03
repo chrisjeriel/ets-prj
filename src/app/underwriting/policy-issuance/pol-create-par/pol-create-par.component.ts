@@ -50,12 +50,12 @@ export class PolCreatePARComponent implements OnInit {
 
   passDataOptionLOV: any = {
     tableData: [],
-    tHeader:["Option No", "Condition"],  
-    dataTypes: ["text","text"],
+    tHeader:["Option No", "Rate"],  
+    dataTypes: ["text","percent"],
     pageLength: 10,
     //resizable: [false,false],
     tableOnly: false,
-    keys: ['optionId','condition'],
+    keys: ['optionId','optionRt'],
     pageStatus: true,
     pagination: true,
     filters: [
@@ -66,13 +66,13 @@ export class PolCreatePARComponent implements OnInit {
     pageID: 'createPolOptionLov'
   }
 
-  selected: any;
-  selectedOption: any;
+  selected: any = null;
+  selectedOption: any = null;
   quNo: any[] = [];
   hcNo: any[] = [];
   ocNo: any[] = [];
   optionId: any = "";
-  condition: any = "";
+  optionRt: any = "";
   cedingName: any = "";
   insuredDesc: any = "";
   riskName: any = "";
@@ -107,6 +107,7 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   getQuoteListing(param?) {
+    this.lovTable.loadingFlag = true;
     this.quoteService.getQuoProcessingData(param === undefined ? [] : param).subscribe(data => {
       this.quotationList = data['quotationList'];
       this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
@@ -122,14 +123,20 @@ export class PolCreatePARComponent implements OnInit {
       this.lovTable.refreshTable();
 
       if(param !== undefined) {
-        if(this.quotationList.length == 1 && this.quNo.length == 5 && !this.quNo.includes('%%')) {  
+        if(this.quotationList.length == 1 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {  
           this.selected = this.quotationList[0];
           this.setDetails();
           this.noSelected = false;
-        } else if(this.quotationList.length == 0 && this.quNo.length == 5 && !this.quNo.includes('%%')) {
+        } else if(this.quotationList.length == 0 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {
           this.clearFields();
           this.getQuoteListing();
           this.showLOV();
+        } else if(this.searchArr.includes('%%')) {
+          this.optionId = '';
+          this.optionRt = '';
+          this.cedingName = '';
+          this.insuredDesc = '';
+          this.riskName = '';
         }
       }
     });    
@@ -148,12 +155,13 @@ export class PolCreatePARComponent implements OnInit {
         this.setOption();
       } else {
         this.optionId = '';
-        this.condition = '';
+        this.optionRt = '';
       }
     });
   }
 
   getHoldCovListing(param?) {
+    this.lovTable.loadingFlag = true;
     this.quoteService.getQuotationHoldCoverList(param === undefined ? [] : param).subscribe(data => {
       this.holCovList = data['quotationList'];
       this.passDataLOV.tHeader = ['Hold Cover No', 'Ceding Company', 'Insured', 'Risk'];
@@ -163,7 +171,7 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-      this.holCovList = this.holCovList//.filter(hc => hc.holdCover.status.toUpperCase() === 'RELEASED' || hc.holdCover.status.toUpperCase() === 'EXPIRED')
+      this.holCovList = this.holCovList.filter(hc => hc.holdCover.status.toUpperCase() === 'EXPIRED')
                                        .map(hc => { hc.riskName = hc.project.riskName; 
                                                     hc.holdCoverNo = hc.holdCover.holdCoverNo;
                                                     return hc; });
@@ -171,21 +179,27 @@ export class PolCreatePARComponent implements OnInit {
       this.lovTable.refreshTable();
 
       if(param !== undefined) {
-        if(this.holCovList.length === 1 && this.hcNo.length == 5 && !this.hcNo.includes('%%')) {  
+        if(this.holCovList.length === 1 && this.hcNo.length == 5 && !this.searchArr.includes('%%')) {  
           this.selected = this.holCovList[0];
           this.setDetails();
-        } else if(this.holCovList.length === 0 && this.hcNo.length == 5 && !this.hcNo.includes('%%')) {
+        } else if(this.holCovList.length === 0 && this.hcNo.length == 5 && !this.searchArr.includes('%%')) {
           this.clearFields();
           this.getHoldCovListing();
           this.showLOV();
+        } else if(this.searchArr.includes('%%')) {
+          this.optionId = '';
+          this.optionRt = '';
+          this.cedingName = '';
+          this.insuredDesc = '';
+          this.riskName = '';
         }
       }
     });
   }
 
   getPolOCListing(param?) {
+    this.lovTable.loadingFlag = true;
     this.underwritingService.getPolListingOc(param === undefined ? [] : param).subscribe(data => {
-      console.log(data);
       this.polOcList = data['policyList'];
       this.passDataLOV.tHeader = ['Open Cover Policy No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['openPolicyNo','cedingName','insuredDesc','riskName'];
@@ -194,39 +208,28 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-      // this.polOcList = this.polOcList.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
-      //                                .map(oc => { oc.riskName = oc.project.riskName; return oc; });
-      this.polOcList = this.polOcList.map(oc => { oc.riskName = oc.project.riskName; return oc; });;      
+      this.polOcList = this.polOcList.filter(oc => oc.statusDesc.toUpperCase() === 'IN FORCE')
+                                     .map(oc => { oc.riskName = oc.project.riskName; return oc; });
       this.passDataLOV.tableData = this.polOcList;
       this.lovTable.refreshTable();
 
       if(param !== undefined) {
-        if(this.polOcList.length === 1 && this.ocNo.length == 7 && !this.ocNo.includes('%%')) {  
+        if(this.polOcList.length === 1 && this.ocNo.length == 7 && !this.searchArr.includes('%%')) {  
           this.selected = this.polOcList[0];
           this.setDetails();
-        } else if(this.polOcList.length === 0 && this.ocNo.length == 7 && !this.ocNo.includes('%%')) {
+        } else if(this.polOcList.length === 0 && this.ocNo.length == 7 && !this.searchArr.includes('%%')) {
           this.clearFields();
           this.getPolOCListing();
           this.showLOV();
+        } else if(this.searchArr.includes('%%')) {
+          this.optionId = '';
+          this.optionRt = '';
+          this.cedingName = '';
+          this.insuredDesc = '';
+          this.riskName = '';
         }
       }
     });    
-  }
-
-  navigateToGenInfo() {
-    var qLine = this.quoteLine.toUpperCase();
-
-    if (qLine === 'CAR' ||
-      qLine === 'EAR' ||
-      qLine === 'EEI' ||
-      qLine === 'CEC' ||
-      qLine === 'MBI' ||
-      qLine === 'BPV' ||
-      qLine === 'MLP' ||
-      qLine === 'DOS') {
-      this.router.navigate(['/policy-issuance', { line: qLine }], { skipLocationChange: true });
-    }
-
   }
 
   toggle(str) {
@@ -250,6 +253,7 @@ export class PolCreatePARComponent implements OnInit {
         this.getHoldCovListing();
         this.clearFields();
         this.searchArr = Array(5).fill('');
+        this.hcNo[0] = 'HC';
 
         this.qu = false;
         this.hc = true;
@@ -260,6 +264,7 @@ export class PolCreatePARComponent implements OnInit {
         this.getPolOCListing();
         this.clearFields();
         this.searchArr = Array(7).fill('');
+        this.ocNo[0] = 'OC';
 
         this.qu = false;
         this.hc = false;
@@ -269,7 +274,6 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   showLOV() {
-    // this.getQuoteListing();
     $('#polLovMdl > #modalBtn').trigger('click');
   }
 
@@ -293,7 +297,7 @@ export class PolCreatePARComponent implements OnInit {
     }  
   }
 
-  setDetails() {
+  setDetails(fromMdl?) {
     if(this.selected != null) {
       if(this.qu) {
         this.quNo = this.selected.quotationNo.split('-');
@@ -304,16 +308,18 @@ export class PolCreatePARComponent implements OnInit {
         this.getOptionLOV(this.selected.quoteId);
         this.noSelected = false;
         this.getCutOffTime({ target: { value: this.quNo[0] } });
-      } else if (this.hc) {       
-        console.log(this.selected);
 
-        // this.quoteService.getQuoteOptions(this.selected.quoteId).subscribe(data => {
-        //   console.log(data);
-        // });
+        if(fromMdl !== undefined) {
+          this.searchArr = this.quNo.map((a, i) => {
+            return (i == 0) ? a + '%' : (i == this.quNo.length - 1) ? '%' + a : '%' + a + '%';
+          });
 
+          this.search('forceSearch',{ target: { value: '' } });
+        }               
+      } else if (this.hc) {
         this.hcNo = this.selected.holdCoverNo.split('-');
         this.optionId = this.selected.holdCover.optionId;
-        this.condition = 'WALANG CONDITION!'
+        this.optionRt = this.selected.holdCover.optionRt;
         this.cedingName = this.selected.cedingName;
         this.insuredDesc = this.selected.insuredDesc;
         this.riskName = this.selected.riskName;
@@ -327,19 +333,36 @@ export class PolCreatePARComponent implements OnInit {
           this.inceptionDate = this.ns.toDateTimeString(0).split('T')[0];
           this.updateExpiryDate();
           this.getCutOffTime({ target: { value: this.hcNo[1] } });
-        }        
+        }
+
+        if(fromMdl !== undefined) {
+          this.searchArr = this.hcNo.map((a, i) => {
+            return (i == 0) ? a + '%' : (i == this.hcNo.length - 1) ? '%' + a : '%' + a + '%';
+          });
+
+          this.search('forceSearch',{ target: { value: '' } });
+        }
         
       } else if (this.oc) {
         this.ocNo = this.selected.openPolicyNo.split('-');
         this.optionId = this.selected.optionId;
-        this.condition = this.selected.condition;
+        this.optionRt = this.selected.optionRt;
         this.cedingName = this.selected.cedingName;
         this.insuredDesc = this.selected.insuredDesc;
         this.riskName = this.selected.project.riskName; //update
 
         this.getCutOffTime({ target: { value: this.ocNo[1] } });
+
+        if(fromMdl !== undefined) {
+          this.searchArr = this.ocNo.map((a, i) => {
+            return (i == 0) ? a + '%' : (i == this.ocNo.length - 1) ? '%' + a : '%' + a + '%';
+          });
+
+          this.search('forceSearch',{ target: { value: '' } });
+        }
       }
       
+      this.focusBlur();
     } else {
       this.clearFields();
     }
@@ -349,12 +372,15 @@ export class PolCreatePARComponent implements OnInit {
   setOption() {
     if(this.selectedOption != null) {
       this.optionId = this.selectedOption.optionId;
-      this.condition = this.selectedOption.condition;
+      this.optionRt = this.selectedOption.optionRt;
     }
+
+    this.focusBlur();
   }
 
   prepareParam() {    
-    var savePolicyDetailsParam = {    
+    var savePolicyDetailsParam = { 
+      "checkingType"  : 'normal',
       "expiryDate"    : this.expiryDate + 'T' + this.expiryTime,
       "holdCoverNo"   : this.hc ? this.hcNo.join('-') : '',
       "inceptDate"    : this.inceptionDate + 'T' + this.inceptionTime,
@@ -362,9 +388,9 @@ export class PolCreatePARComponent implements OnInit {
       "openPolicyNo"  : this.oc ? this.ocNo.join('-') : '',
       "optionId"      : this.optionId,
       "quotationNo"   : this.qu ? this.quNo.join('-') : '',
-      "createUser"    : JSON.parse(window.localStorage.currentUser).username,
+      "createUser"    : this.ns.getCurrentUser(),
       "createDate"    : this.ns.toDateTimeString(0),
-      "updateUser"    : JSON.parse(window.localStorage.currentUser).username,
+      "updateUser"    : this.ns.getCurrentUser(),
       "updateDate"    : this.ns.toDateTimeString(0)
     }
 
@@ -403,9 +429,11 @@ export class PolCreatePARComponent implements OnInit {
     this.searchArr = [];
     this.quNo = [];
     this.hcNo = [];
+    this.hcNo[0] = 'HC';
     this.ocNo = [];
+    this.ocNo[0] = 'OC';
     this.optionId = "";
-    this.condition = "";
+    this.optionRt = "";
     this.cedingName = "";
     this.insuredDesc = "";
     this.riskName = "";
@@ -424,8 +452,6 @@ export class PolCreatePARComponent implements OnInit {
 
   validate(obj) {
     var entries = Object.entries(obj);
-    console.log(entries);
-    var ctr = 0;
 
     for(var [key, val] of entries) {
       if (this.qu && key === 'quotationNo' && String(val).split('-').includes('')) {
@@ -454,7 +480,6 @@ export class PolCreatePARComponent implements OnInit {
     if(this.validate(this.prepareParam())){
       this.underwritingService.savePolicyDetails(this.prepareParam()).subscribe(data => {
         this.loading = false;
-        console.log(data);
         if(data['returnCode'] === 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
 
@@ -464,6 +489,8 @@ export class PolCreatePARComponent implements OnInit {
           this.policyNo = data['policyNo'];
 
           $('#convSuccessModal > #modalBtn').trigger('click');
+        } else if (data['coInsStatus'] === 1) {
+          $('#convWarningModal > #modalBtn').trigger('click');
         }
       });
     } else {
@@ -472,8 +499,7 @@ export class PolCreatePARComponent implements OnInit {
       $('#createPol #successModalBtn').trigger('click');
       setTimeout(() => {
         $('.globalLoading').css('display','none');
-        $('.req').focus();
-        $('.req').blur();
+        this.focusBlur();
       },0);
     }
   }
@@ -485,7 +511,7 @@ export class PolCreatePARComponent implements OnInit {
       this.noSelected = true;
 
       if(key === 'lineCd') {
-        this.searchArr[0] = a.toUpperCase() + '%';
+        this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
       } else if(key === 'year') {
         this.searchArr[1] = '%' + a + '%';
       } else if(key === 'seqNo') {
@@ -493,7 +519,7 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'revNo') {
         this.searchArr[3] = '%' + a + '%';
       } else if(key === 'cedingId') {
-        this.searchArr[4] = '%' + a.padStart(3, '0');
+        this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0');
       }
 
       if(this.searchArr.includes('')) {
@@ -502,8 +528,10 @@ export class PolCreatePARComponent implements OnInit {
 
       this.getQuoteListing([{ key: 'quotationNo', search: this.searchArr.join('-') }]);      
     } else if(this.hc) {
+      this.searchArr[0] = 'HC%';
+
       if(key === 'hc') {
-        this.searchArr[0] = a.toUpperCase() + '%';
+        this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
       } else if(key === 'lineCd') {
         this.searchArr[1] = '%' + a.toUpperCase() + '%';
       } else if(key === 'year') {
@@ -511,17 +539,19 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'seqNo') {
         this.searchArr[3] = '%' + a + '%';
       } else if(key === 'revNo') {
-        this.searchArr[4] = '%' + a + '%';
+        this.searchArr[4] = a === '' ? '%%' : '%' + a;
       }
 
       if(this.searchArr.includes('')) {
         this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
       }
 
-      this.getHoldCovListing([{ key: 'holdCoverNo', search: this.searchArr.join('%-%') }]);
+      this.getHoldCovListing([{ key: 'holdCoverNo', search: this.searchArr.join('-') }]);
     } else {
+      this.searchArr[0] = 'OC%';
+
       if(key === 'oc') {
-        this.searchArr[0] = a.toUpperCase() + '%';
+        this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
       } else if(key === 'lineCd') {
         this.searchArr[1] = '%' + a.toUpperCase() + '%';
       } else if(key === 'year') {
@@ -529,18 +559,18 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'seqNo') {
         this.searchArr[3] = '%' + a + '%';
       } else if(key === 'cedingId') {
-        this.searchArr[4] = '%' + a.padStart(3, '0') + '%';
+        this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
       } else if(key === 'coSeriesNo') {
         this.searchArr[5] = '%' + a + '%';
       } else if(key === 'altNo') {
-        this.searchArr[6] = '%' + a + '%';
+        this.searchArr[6] = a === '' ? '%%' : '%' + a;
       }
 
       if(this.searchArr.includes('')) {
         this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
       }
 
-      this.getPolOCListing([{ key: 'policyNo', search: this.searchArr.join('%-%') }]);
+      this.getPolOCListing([{ key: 'policyNo', search: this.searchArr.join('-') }]);
     }
 
   }
@@ -553,8 +583,50 @@ export class PolCreatePARComponent implements OnInit {
     } else if(this.hc) {
       this.getHoldCovListing(this.filtSearch);
     } else {
-
+      this.getPolOCListing(this.filtSearch);
     }    
   }
 
+  focusBlur() {
+    setTimeout(() => {
+      $('.req').focus();
+      $('.req').blur();
+    },0);
+  }
+
+  pad(ev,num) {
+    var str = ev.target.value;    
+
+    return str === '' ? '' : String(str).padStart(num, '0');
+  }
+
+  checkCode(ev) {
+    if(this.optionId === '') {
+        this.optionId = '';
+        this.optionRt = '';
+      } else {
+        this.ns.lovLoader(ev, 1);
+
+        this.quoteService.getQuoteOptions(this.selected.quoteId).subscribe(data => {
+          console.log(data);
+          var options = data['quotation']['optionsList'];
+
+          
+          options = options.filter(opt => opt.optionId == this.optionId);
+
+          if(options.length == 1) {
+            this.optionId = options[0].optionId;
+            this.optionRt = options[0].optionRt;
+          } else {
+            this.optionId = '';
+            this.optionRt = '';
+
+            this.showOptionLOV();
+          }
+             
+
+          this.ns.lovLoader(ev, 0);
+        });
+      }
+  }
 }

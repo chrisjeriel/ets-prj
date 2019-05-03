@@ -252,16 +252,20 @@ export class ListOfQuotationsComponent implements OnInit {
              this.status = rec.status;
           } 
         }
-        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo,quoteId: this.quoteId,status: this.status, from: 'quo-processing', inquiry: true}], { skipLocationChange: true }); 
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo,quoteId: this.quoteId,status: this.status, from: 'quo-processing', inquiry: true,exitLink:'/quotation-inquiry'}], { skipLocationChange: true }); 
     }
 
     export(){
         //do something
-    var today = new Date();
+     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
-    var currDate = mm + dd+ yyyy;
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
     var filename = 'QuotationInquiryList_'+currDate+'.xlsx'
     var mystyle = {
         headers:true, 

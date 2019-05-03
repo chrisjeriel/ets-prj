@@ -148,12 +148,13 @@ export class AttachmentComponent implements OnInit {
 
     //neco
         if(this.inquiryFlag){
-          this.passData.tHeader.pop();
           this.passData.opts = [];
           this.passData.uneditable = [];
           this.passData.magnifyingGlass = [];
           this.passData.addFlag = false;
           this.passData.deleteFlag = false;
+          this.passData.checkFlag = false;
+          this.passData.uneditable=[true,true,true,true,true,]
           for(var count = 0; count < this.passData.tHeader.length; count++){
             this.passData.uneditable.push(true);
           }
@@ -312,11 +313,26 @@ export class AttachmentComponent implements OnInit {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    if(this.checkFields()){
+       $('#confirm-save #modalBtn2').trigger('click');
+      }else{
+        this.dialogMessage="Please fill up required fields.";
+        this.dialogIcon = "info";
+        $('#attchmntMdl #successModalBtn').trigger('click');
+      }
   }
 
    //get the emitted files from the table
     uploads(event){
       this.filesList = event;
+    }
+
+    checkFields(){
+      for(let check of this.passData.tableData){
+        if(check.description === null || check.description === undefined || check.description.length === 0){
+          return false;
+        }
+      }
+      return true;
     }
 }

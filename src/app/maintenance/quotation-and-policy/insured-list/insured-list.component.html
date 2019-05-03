@@ -1,0 +1,34 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Insured List">
+			<ng-template ngbTabContent>
+				<fieldset class="scheduler-border" style="margin-top: 10px !important">
+                    <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
+						<app-cust-non-datatable [passData]="passDataInsuredList" (tableDataChange)="passDataInsuredList.tableData=$event" (rowClick)="onRowClick($event)" (add)="onClickAdd($event)" (newRowDblClick)="insuredRecord=$event;onRowDblClick()" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (export)="export()"></app-cust-non-datatable>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.createDate" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.updateDate" readonly>
+                    </div>
+                </fieldset>
+
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="Exit">
+            <ng-template ngbTabTitle>
+                <div>Exit</div>
+            </ng-template>
+            <ng-template ngbTabContent></ng-template>
+        </ngb-tab>
+	</ngb-tabset>
+</div>

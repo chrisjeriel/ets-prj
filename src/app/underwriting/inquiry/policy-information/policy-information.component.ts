@@ -43,7 +43,7 @@ export class PolicyInformationComponent implements OnInit {
     };
 
   passData:any = {
-  	tHeader: ['Alt No','Effective Date','Issue Date','Quotation No','Sum Insured','Premium','Status'],
+  	tHeader: ['Policy No / Alt No','Effective Date','Issue Date','Quotation No','Sum Insured','Premium','Status'],
   	tableData:[],
   	dataTypes:['text','datetime','datetime','text','currency','currency','text'],
   	pageLength:10,
@@ -55,6 +55,7 @@ export class PolicyInformationComponent implements OnInit {
   policyId:string;
   constructor(private UwService : UnderwritingService, private ns : NotesService, private route: ActivatedRoute, private router: Router) { }
   selectedPol:any = null;
+  policyNo:string;
 
   ngOnInit() {
     this.route.params.subscribe(data=>{
@@ -87,14 +88,18 @@ export class PolicyInformationComponent implements OnInit {
   }
 
   goToPolicy(){
-    this.router.navigate(['/policy-issuance', {policyId:this.selectedPol.policyId,
+    let link:string = this.selectedPol.policyNo.split('-')[5] == '000' ? '/policy-issuance' : '/policy-issuance-alt';
+    
+    this.router.navigate([link, {policyId:this.selectedPol.policyId,
                                               fromInq:true,
                                               policyNo: this.selectedPol.policyNo,
                                               line: this.policyInfo.lineCd,
                                               statusDesc:this.policyInfo.statusDesc,
                                               riskName: this.policyInfo.project.riskName,
                                               insured: this.selectedPol.insured,
-                                              editPol: true
+                                              editPol: true,
+                                              status: this.selectedPol.status,
+                                              exitLink: '/policy-information'
                                               }], { skipLocationChange: true });
 
 
@@ -102,20 +107,30 @@ export class PolicyInformationComponent implements OnInit {
   }
   
   rowLick(data){
-    console.log(data)
     this.selectedPol = data;
-
   }
 
   onTabChange($event:NgbTabChangeEvent) {
      // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
      //     $event.preventDefault();
    //   }                     
-   console.log($event)
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
         this.router.navigateByUrl('/policy-inquiry');
    }
+ }
+
+ gotoSum(){
+   this.router.navigate(['/pol-summarized-inq', {policyId:this.policyInfo.policyId,
+                                             fromInq:true,
+                                             showPolicyNo: this.policyInfo.policyNo,
+                                             line: this.policyInfo.lineCd,
+                                             statusDesc:this.policyInfo.statusDesc,
+                                             riskName: this.policyInfo.project.riskName,
+                                             insured: this.policyInfo.insuredDesc,
+                                             editPol: true,
+                                             status: this.policyInfo.status,
+                                             }], { skipLocationChange: true });
  }
 
 

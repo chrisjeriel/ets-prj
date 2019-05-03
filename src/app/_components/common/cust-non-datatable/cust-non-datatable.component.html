@@ -198,7 +198,7 @@
         <div [id]="'notPin'+passData.pageID">
             
             <div class="table-scroll table-scroll-unli" id="cust-scroll" *ngIf="!passData.fixedCol">
-                <table id="non-datatable" class="content-container" [ngClass]="{'margin-table': passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly, 'table-scroll-unli': unliFlag}">
+                <table id="non-datatable" class="content-container keypress-class" [ngClass]="{'margin-table': passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly, 'table-scroll-unli': unliFlag}" >
                     <thead >
                         <tr>
                             <th *ngIf="passData.checkFlag && pinKeys.length==0" class="checkbox-container-header isCheckBox">
@@ -285,10 +285,17 @@
                         </tr>
                     </thead>
                     <tbody>
+<!-- <<<<<<< Updated upstream
                         <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event,data)" [class.selected]="data === indvSelect || selected.includes(data) || data?.checked">
                             <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (change)="removeSelected($event, data)" [ngModelOptions]="{standalone: true}" [ngModel]="data.checked"></td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
                                 <div *ngIf="!(data===fillData)">
+======= -->
+                        <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }; let a = index;" (click)="onRowClick($event, data, a);" (dblclick)="onRowDblClick($event, data)" [class.selected]="data === indvSelect || selected.includes(data) || data?.checked" (keydown.ArrowUp)="tablePress($event, data, a)" (keydown.ArrowDown)="tablePress($event, data, a)" tabindex="0" style="outline: none" id="tableRow" (keydown.Enter)="enterKey($event, data)">
+                            <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (change)="removeSelected($event, data)" [ngModelOptions]="{standalone: true}" [ngModel]="data.checked"></td>
+                            <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
+                                <div *ngIf="!(data===fillData)">
+<!-- >>>>>>> Stashed changes -->
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
                                         <span class="unclickable">{{data[key] | number: '1.10-10'}}</span>
                                     </div>
@@ -351,7 +358,7 @@
         <div class="pagination" *ngIf="passData.pagination">
             <!--<div class="pagination" *ngIf="passData.hasPagination">-->
             <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>-->
-            <pagination-controls [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event;" previousLabel="" nextLabel="">
+            <pagination-controls #paw [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="" (click)="testClick()">
             </pagination-controls>
             <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
         </div>

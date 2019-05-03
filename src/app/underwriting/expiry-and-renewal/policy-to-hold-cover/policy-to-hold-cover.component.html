@@ -43,6 +43,8 @@
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
+                            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                            <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
                           <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Policy Info</legend>
                             <div class="col-sm-1"></div>
@@ -113,7 +115,7 @@
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Requested By</label>
-                                                     <input type="text" name="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" appRequired [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                                     <input type="text" name="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="50">
                                                 </div>
                                             </div>
                                         </div>
@@ -128,13 +130,13 @@
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Request Date</label>
-                                                    <input type="date" name="reqDate" class="form-control form-control-sm cust-sm col-sm warn" appRequired [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                                    <input type="date" name="reqDate" class="form-control form-control-sm cust-sm col-sm warn" [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="input-group ig-row" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
-                                            <input name="crhcno" type="text" class="form-control form-control-sm warn" appRequired [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                            <input name="crhcno" type="text" class="form-control form-control-sm warn" [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="25">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Prepared By</label>
                                             <input type="text" name="preparedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.preparedBy" readonly tabindex="-1">
                                         </div>
@@ -156,9 +158,9 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
-                                <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
-                                <button type="button" class="cust-btn" [disabled]="statusDesc === 'Released' || statusDesc === ''" [class.cust-btn-disabled]="statusDesc === 'Released' || statusDesc === ''" (click)="test(content)"><a>Approval</a></button>
-                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="statusDesc === 'Released'" [class.cust-btn-disabled]="statusDesc === 'Released'"><a>Save</a></button>
+                                <button type="button" class="cust-btn" [disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status)" [class.cust-btn-disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status)" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
+                                <button type="button" class="cust-btn" [disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" [class.cust-btn-disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" (click)="test(content)"><a>Approval</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify" [class.cust-btn-disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify"><a>Save</a></button>
                             </div>
                         </div>
                     </div>
@@ -232,10 +234,9 @@
                                 <div class="col-sm" style="padding-left : 0px ! important; padding-right : 0px ! important">
                                     <div class="input-group">
                                         <select class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="authorization">
-                                            <option value="UNAUTHORIZED">CPI</option>
-                                            <option value="AUTHORIZED">PMMSC-Admin</option>
+                                            <option *ngFor="let list of approveList" [value]="list.userId">{{list.userName}}</option>
                                         </select>
-                                        <button class="cust" (click)="approve()">Approve</button>
+                                        <button class="cust-btn" (click)="approve($event)" [class.cust-btn-disabled]="authorization === ''" [disabled]="authorization === ''">{{authorization !== userName ? 'For Approval' : 'Approve'}}</button>
                                     </div>
                                 </div>
                                 <!-- <div class="col-sm-4" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
@@ -250,10 +251,10 @@
                         <div class="custom-row-inline-inset" style="padding: 15px 0px 15px 0px;">
                             <div class="input-group" style="margin-bottom : -14px ! important" >
                                 <label class="form-control-sm" for="xx">Destination</label>
-                                <select class="form-control form-control-sm cust-sm" style="margin: 0px 0px 14.5px 11px;" [(ngModel)]="printType">
-                                    <option>SCREEN</option>
-                                    <option>PDF</option>
-                                    <option>PRINTER</option>
+                                <select class="form-control form-control-sm cust-sm" style="margin: 0px 0px 14.5px 11px;" appRequired [(ngModel)]="printType">
+                                    <option [value]="'SCREEN'">SCREEN</option>
+                                    <option [value]="'PDF'">PDF</option>
+                                    <option [value]="'PRINTER'">PRINTER</option>
                                 </select>
                             </div>
                         </div>
@@ -265,7 +266,7 @@
         <div class="modal-footer" style="justify-content: center;">
             <div >
                 <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-                <button class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+                <button class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" type="button" (click)="modalService.dismissAll(); release();"><a>Print</a></button>
             </div>
         </div>
     </ng-template>

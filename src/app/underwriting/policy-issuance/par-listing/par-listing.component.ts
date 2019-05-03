@@ -226,9 +226,9 @@ export class ParListingComponent implements OnInit {
             if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
-             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
+             this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
             } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
-                this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
+                this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
             }
         
         });
@@ -253,9 +253,9 @@ export class ParListingComponent implements OnInit {
             if (this.selectedPolicy.status === 'In Progress' || this.selectedPolicy.status === 'Approved') {
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
-             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, showPolAlop: this.showPolAlop}], { skipLocationChange: true });
+             this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, showPolAlop: this.showPolAlop}], { skipLocationChange: true });
             } else {
-                 this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, showPolAlop: this.showPolAlop}], { skipLocationChange: true }); 
+                 this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, showPolAlop: this.showPolAlop}], { skipLocationChange: true }); 
             }
 
         });
@@ -274,11 +274,15 @@ export class ParListingComponent implements OnInit {
 
     export(){
         //do something
-    var today = new Date();
+     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
-    var currDate = mm + dd+ yyyy;
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
     var filename = 'PolicyList_'+currDate+'.xlsx'
     var mystyle = {
         headers:true, 
