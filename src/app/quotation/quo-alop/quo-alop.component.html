@@ -95,9 +95,9 @@
 			<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-					<input #from [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="alopDetails?.issueDate?.split('T')[0]" (ngModelChange)="alopDetails.issueDate=$event" (change)="checkDates()" name="from">
+					<input #from [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="alopDetails?.issueDate?.split('T')[0]" (ngModelChange)="alopDetails.issueDate=$event;test($event)"  (change)="checkDates()" name="from">
 					<label class="form-control-sm col-sm-1" style="margin-left: -5.19%; z-index: -1;" for="periodTo" >to</label>
-					<input #to [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="alopDetails?.expiryDate?.split('T')[0]" (ngModelChange)="alopDetails.expiryDate=$event"  (change)="checkDates()" name="to">
+					<input #to [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="alopDetails?.expiryDate?.split('T')[0]" (ngModelChange)="alopDetails.expiryDate=$event; test($event)"  (change)="checkDates()" name="to">
 					<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
 
 				</div>
@@ -108,7 +108,7 @@
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
-					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event"  name="fromIndem">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event; test($event)"  name="fromIndem">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
