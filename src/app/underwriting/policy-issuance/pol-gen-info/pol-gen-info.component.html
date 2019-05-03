@@ -106,7 +106,7 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
 										<!-- <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId">
 											<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.intmName"> -->
-											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId)" (change)="checkCode($event,'intermediary')" mask="999">
+											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId, 6)" (change)="checkCode($event,'intermediary')" mask="999999">
 											<!-- <input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')"> -->
 											<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 											<span>&nbsp;</span>
@@ -1283,7 +1283,7 @@
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId)" (change)="checkCode($event,'intermediary')" mask="999">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId, 6)" (change)="checkCode($event,'intermediary')" mask="999999">
 										<!-- <input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')"> -->
 										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 										<span>&nbsp;</span>

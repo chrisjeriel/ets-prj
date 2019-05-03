@@ -912,16 +912,23 @@ export class GeneralInfoComponent implements OnInit {
 
   	if(str === 'pctShare' && this.project.totalSi != '') {
   		var val = Number(this.project.totalSi) / (Number(this.project.pctShare)/100);
-  		this.project.totalValue = String(val).indexOf('.') === -1 ? String(val) + '.00' : val;
+  		this.project.totalValue = String(val).indexOf('.') === -1 && String(val) != 'Infinity' ? String(val) + '.00' : String(val) === 'Infinity' ? '' : val;
   	} else if (str === 'totalValue' && this.project.totalSi != '') {
-  		var val = (Number(this.project.totalSi) / Number(this.project.totalValue)) * 100;
-  		this.project.pctShare = val;
+  		if(Number(this.project.totalValue) < Number(this.project.totalSi)) {
+  			this.project.pctShare = '';
+  			this.project.totalValue = '';
+  		} else {
+  			var val = (Number(this.project.totalSi) / Number(this.project.totalValue)) * 100;
+  			this.project.pctShare = val;	
+  		}  		
   	}
   }
 
   checkDecimal(str) {
   	if(str === 'totalValue') {
-  		this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 ? String(this.project.totalValue) + '.00' : String(this.project.totalValue);
+  		console.log(this.project.totalValue);
+  		console.log(String(this.project.totalValue));
+  		this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 && String(this.project.totalValue) != '' ? String(this.project.totalValue) + '.00' : String(this.project.totalValue);
   	}
   }
 
