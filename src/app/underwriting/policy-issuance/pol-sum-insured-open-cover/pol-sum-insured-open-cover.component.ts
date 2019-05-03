@@ -4,6 +4,7 @@ import { FormsModule }   from '@angular/forms';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { DecimalPipe } from '@angular/common'
 
 @Component({
   selector: 'app-pol-sum-insured-open-cover',
@@ -32,7 +33,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   @Input() policyInfo:any;
   @Input() inqFlag: boolean;
 
-  constructor(private uw: UnderwritingService, private ns: NotesService) { }
+  constructor(private uw: UnderwritingService, private ns: NotesService, private dp: DecimalPipe) { }
 
   ngOnInit() {
 	this.policyId = this.policyInfo.policyIdOc;
@@ -67,6 +68,9 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   }
 
   save(){
+  	this.coverageInfo.pctShare = parseFloat(this.coverageInfo.pctShare.toString().split(',').join(''));
+  	this.coverageInfo.totalValue = parseFloat(this.coverageInfo.totalValue.toString().split(',').join(''));
+  	this.coverageInfo.pctPml = parseFloat(this.coverageInfo.pctPml.toString().split(',').join(''));
 	this.uw.saveSumInsOC(this.coverageInfo).subscribe((data:any)=>{
 	if(data.returnCode == -1){
 		this.dialogIcon = 'success';
@@ -89,7 +93,38 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   }
 
   cmptShrPct(data){
+  	//this.checkTotalValueRange();
 	this.coverageInfo.pctShare = (parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100).toFixed(10);
+	this.coverageInfo.pctShare = this.dp.transform(this.coverageInfo.pctShare,'1.10-10');
+  }
+
+  cmptValue(data){
+  	//this.checkPctShareRange();
+  	this.coverageInfo.totalValue = (parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100).toFixed(2);
+  	this.coverageInfo.totalValue = this.dp.transform(this.coverageInfo.totalValue, '1.2-2');
+  }
+
+  checkPctShareRange(){
+  	if(parseFloat(this.coverageInfo.pctShare) > parseFloat('100')){
+  		this.coverageInfo.pctShare = parseFloat('100');
+  		this.cmptValue(this.coverageInfo.pctShare);
+  		this.coverageInfo.pctShare = this.dp.transform(this.coverageInfo.pctShare,'1.10-10');
+  	}
+  }
+
+  checkPMLRange(){
+  	if(parseFloat(this.coverageInfo.pctPml) > parseFloat('100')){
+  		this.coverageInfo.pctPml = parseFloat('100');
+  		this.coverageInfo.pctPml = this.dp.transform(this.coverageInfo.pctPml,'1.10-10');
+  	}
+  }
+
+  checkTotalValueRange(){
+  	if(parseFloat(this.coverageInfo.totalValue) < parseFloat(this.coverageInfo.totalSi)){
+  		this.coverageInfo.totalValue = this.coverageInfo.totalSi;
+  		this.cmptShrPct(this.coverageInfo.totalValue);
+  		this.coverageInfo.totalValue = this.dp.transform(this.coverageInfo.totalValue, '1.2-2');
+  	}
   }
 
 }
