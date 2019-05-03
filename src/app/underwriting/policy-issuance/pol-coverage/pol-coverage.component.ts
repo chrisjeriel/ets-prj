@@ -349,7 +349,7 @@ export class PolCoverageComponent implements OnInit {
   sectionCoverLOVRow: number;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
-                private route: ActivatedRoute, private ns: NotesService,  private router: Router; private decimal : DecimalPipe) { }
+                private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe) { }
 
 
   ngOnInit() {
@@ -357,6 +357,7 @@ export class PolCoverageComponent implements OnInit {
     this.policyId = this.policyInfo.policyId;
 
     this.sub = this.route.params.subscribe(params => {
+            console.log(params)
             this.line = params['line'];
             if(this.alteration)
               this.policyIdAlt = params['policyId'];

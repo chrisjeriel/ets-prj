@@ -250,14 +250,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" appOtherRates appRequired [ngModel] = "altCoverageData.pctShare" (ngModelChange) = "altCoverageData.pctShare = $event" (blur) = "pctShare($event)">
+       <input type="text" class="form-control form-control-sm req" appOtherRates appRequired [(ngModel)] = "altCoverageData.pctShare" (blur)="checkPctShare()" (ngModelChange)="pctShare($event)">
        <label class="form-control-sm col-sm-2">PML(%)</label>
        <input type="text" class="form-control form-control-sm req" appOtherRates [ngModel] = "altCoverageData.pctPml" (ngModelChange)="altCoverageData.pctPml = $event">
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [ngModel] = "altCoverageData.totalValue"  (ngModelChange) = "altCoverageData.totalValue = $event" (blur)="totalValue($event)">
+       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [(ngModel)] = "altCoverageData.totalValue"  (ngModelChange) = "totalValue" (blur)="checktotalValue($event)">
        <span class="col-sm-1"></span>
      </div>
    </div>
