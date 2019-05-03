@@ -17,6 +17,8 @@ import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 
+import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.component';
+
 @Component({
   selector: 'app-pol-gen-info',
   templateUrl: './pol-gen-info.component.html',
@@ -30,7 +32,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('dedSuccess') successDlg: SucessDialogComponent;
   @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
-  @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
+  @ViewChildren(SpecialLovComponent) insuredLovs: QueryList<SpecialLovComponent>;
   @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
@@ -543,11 +545,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   showPrincipalLOV() {
-    $('#principalLOV #modalBtn').trigger('click');
+    this.insuredLovs.first.openLOV();
+    //$('#principalLOV #modalBtn').trigger('click');
     $('#principalLOV #modalBtn').addClass('ng-dirty');
   }
 
   showContractorLOV(){
+    this.insuredLovs.last.openLOV();
     $('#contractorLOV #modalBtn').trigger('click');
     $('#contractorLOV #modalBtn').addClass('ng-dirty');
   }
@@ -980,7 +984,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
    for(var[key, val] of entries) {
      if(key === 'polWordings') {
        if(!this.alteration && val['text'].trim() === '') {
-         return false;
+         //return false;
        } else if(this.alteration && val['altText'].trim() === '') {
          return false;
        }

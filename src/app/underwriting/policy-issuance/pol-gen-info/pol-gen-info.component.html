@@ -1083,7 +1083,7 @@
 							<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
 							<div class="form-control-sm col-sm-11 edtr-cont" style="height: 65px; padding-right: 6px !important; min-height: 60px;">
-								<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [required]="true">
+								<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2">
 									<ng-container icon-1>
 										<a (click)="clickDeductiblesLOV('polWordings')"><i class="fa fa-search"></i></a>
 									</ng-container>
@@ -2420,8 +2420,10 @@
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <!-- end edit by paul -->
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
-<app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
-<app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured>
+<!-- <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
+<app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> -->
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
 <app-mtn-risk #riskLOV id="riskLOV" (selectedData)="setRisk($event)"></app-mtn-risk>
 <app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event);" [line]="line" [type]="'O'"></app-mtn-quotation-wordings>
+<app-special-lov (selectedData)="setPrincipal($event)"></app-special-lov>
+<app-special-lov id="contractorLOV" (selectedData)="setContractor($event)"></app-special-lov>
