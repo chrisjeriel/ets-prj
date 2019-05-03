@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuotationService, UploadService } from '@app/_services';
 import { DummyInfo } from '../../../_models';
 import { ModalComponent } from '../../../_components/common/modal/modal.component';
+import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.component';
 import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
 import { RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
@@ -16,6 +17,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class DummyComponent implements OnInit {
     //@ViewChild('content') content;
     @ViewChild(ModalComponent) modalComp: ModalComponent;
+    @ViewChild(SpecialLovComponent) specLov: SpecialLovComponent;
 
     tableData: any[] = [];
     tableData2: any[] = [];

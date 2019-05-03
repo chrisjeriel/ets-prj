@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Renderer, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { AppComponent } from '@app/app.component';
+
 import { MaintenanceService } from '@app/_services';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 
 @Component({
@@ -12,27 +13,25 @@ import { MaintenanceService } from '@app/_services';
 export class SpecialLovComponent implements OnInit {
     
     
-    unselect: boolean = false;
-
-    nullRow: boolean = false;
-
-    @Output() rowClick: EventEmitter<any> = new EventEmitter();
-    @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
-    @Output() newRowDblClick: EventEmitter<any> = new EventEmitter();
+    @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('paw') page: any;
+    @ViewChild(ModalComponent) modal : ModalComponent;
 
- 
+    nullRow: boolean = false;
+    unselect: boolean = false;
+
     passData: any = {
-        tableData: [],          //REQUIRED. 
+        tableData: [],   
         tHeader: ['Insured Id', 'Insured Name','Address'],
         dataTypes: ['sequence-3', 'text', 'text'],
 		keys:['insuredId', 'insuredName','address'],
         resizable: [],     
-        colSize: [],      
+        colSize: ['74px','374px','374px'],      
         tabIndexes: [],   
         pageLength: 10,         
-        pageID: 1,               
+        pageID: 1,
+        dbKeys:['INSURED_ID','INSURED_NAME','ADDRESS']               
     }
 
     start:    any;
@@ -43,21 +42,21 @@ export class SpecialLovComponent implements OnInit {
 
     sortBy:boolean = true;
     sortIndex:number;
-    searchString: string;
+    searchString: string = "";
     p:number = 1;
     checked:boolean;
     selected: any[] = [];
-    indvSelect: any;
+    indvSelect: any = "";
     fillData:any = {};
-    nullKey: any;
-    keyCounter: number = 0;
 
     loadingFlag:boolean = true;
     loadingTableFlag: boolean = false;
 
     count:number;
 
-    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent, private mtnService:MaintenanceService) {
+    modalOpen: boolean = false;
+
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private mtnService:MaintenanceService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
         
@@ -101,22 +100,30 @@ export class SpecialLovComponent implements OnInit {
             console.log('next');
         }
         
-        this.rowClick.emit(this.indvSelect);
     }
 
     //when enter key is pressed
 
-    ngOnInit(): void {
-        
+    ngOnInit(): void {}
 
-        if(this.passData.tableData.length != 0)
-            this.loadingFlag = false;
-        
+    openModal(): void {
+        this.modalOpen = true;
+        this.fillData = new Object();
+        for(let key of this.passData.keys){
+            this.fillData[key] = "";
+        }
 
-
-        this.updateData();
+        this.search();
         //temporary fix delete this later
         //setTimeout(()=>{this.loadingFlag = false;},2000)
+    }
+
+    request:any = {
+        lovParam:'',
+        count:'10',
+        position:'1',
+        sortKey:'',
+        order:''
     }
 
 
@@ -171,7 +178,6 @@ export class SpecialLovComponent implements OnInit {
                  this.indvSelect = "";
                  this.nullRow = true;
             }
-            this.rowClick.emit(data);
         }
     }
 
@@ -181,43 +187,39 @@ export class SpecialLovComponent implements OnInit {
         
         this.selected.push(data);
     }
-
-    removeSelected(event, data){
-        
-        data.checked = event.target.checked;
-        if(!event.target.checked){
-            this.selected.splice(this.selected.indexOf(data), 1);
-        }else{
-            this.selected.push(data);
-        }
-        this.rowClick.emit(this.selected);
-        
-    }
     
 
     sort(str,sortBy){
-        
-        this.passData.tableData = this.passData.tableData.sort(function(a, b) {
-            if(sortBy){
-                if(a[str] < b[str]) { return -1; }
-                if(a[str] > b[str]) { return 1; }
-            }else{
-                if(a[str] < b[str]) { return 1; }
-                if(a[str] > b[str]) { return -1; }
-            }
-        });
+        this.request.sortKey = str;
+        this.request.order = sortBy ? 'ASC' :'DESC';
+
+        // this.passData.tableData = this.passData.tableData.sort(function(a, b) {
+        //     if(sortBy){
+        //         if(a[str] < b[str]) { return -1; }
+        //         if(a[str] > b[str]) { return 1; }
+        //     }else{
+        //         if(a[str] < b[str]) { return 1; }
+        //         if(a[str] > b[str]) { return -1; }
+        //     }
+        // });
+        // this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
+        //     this.addFiller();
+        //     this.placeData(a['list'])
+        //     this.loadingFlag = false;
+        // })
+        this.search();
         this.sortBy = !this.sortBy;
     }
 
     showSort(sortBy,i){
-        
+
         return sortBy && i==this.sortIndex;
     }
 
     
 
     addFiller(){
-        
+
         this.passData.tableData = Array(this.count + this.passData.pageLength - (this.count%this.passData.pageLength)).fill(this.fillData);
         // if(this.passData.tableData.length%this.passData.pageLength != 0){
         //     this.autoFill = Array().fill(this.fillData);
@@ -226,37 +228,90 @@ export class SpecialLovComponent implements OnInit {
         // if((typeof this.autoFill != "undefined" && this.passData.tableData.length%this.passData.pageLength != 0) || this.passData.tableData.length==0)
         //     this.passData.tableData = this.passData.tableData.concat(this.autoFill);
     }
+    
+    
 
-    addCheckFlag(cell){
-        
-        return !(cell===this.fillData);
+    search(){
+        this.loadingTableFlag = true;
+        this.request = {
+            lovParam:this.searchString,
+            count:this.passData.pageLength,
+            position:'1',
+            sortKey:this.request.sortKey,
+            order:this.request.order
+        }
+        this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
+            this.count = a['count'];
+            this.addFiller();
+            this.placeData(a['list'])
+            this.loadingFlag = false;
+            this.loadingTableFlag = false;
+        })
+    }
+
+    placeData(items){
+        var start = (this.p - 1) * this.passData.pageLength;
+        for(let itm of items){
+            this.passData.tableData[start] = itm;
+            start++;
+        }
+    }
+
+    updatePage(){
+        this.request.position = this.p;
+        if(this.passData.tableData[(this.p - 1) * this.passData.pageLength] == this.fillData){
+            this.loadingTableFlag = true;
+        	this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
+        		this.placeData(a['list']);
+        		this.loadingTableFlag = false;
+        	})
+        }
+    }
+
+    openLOV(){
+      this.modal.openNoClose();
+    }
+
+    
+    okBtnClick(){
+      this.indvSelect.insuredId = this.pad(this.indvSelect.insuredId,6);
+      this.selectedData.emit(this.indvSelect);
+    
+    }
+
+
+  checkCode(code, id, ev) {
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        insuredId: '',
+        insuredName: '',
+        ev: ev
+      });
+    } else {
+      this.mtnService.getMtnInsured(code).subscribe(data => {
+        if(data['insured'].length > 0) {
+          data['insured'][0]['ev'] = ev;
+          data['insured'][0].insuredId = this.pad(data['insured'][0].insuredId, 6); //Ensures 6 digit for insured ID
+          this.selectedData.emit(data['insured'][0]);
+        } else {
+          this.selectedData.emit({
+            insuredId: '',
+            insuredName: '',
+            ev: ev
+          });        
+
+          this.openLOV();
+        }      
+      });
+    }
+  }
+
+  pad(str, num?) {
+    if(str === '' || str == null){
+      return '';
     }
     
-    request:any = {
-    	lovParam:'',
-    	count:'10',
-    	position:'1',
-    	sortKey:'',
-    	order:''
-    }
-
-    updateFiller(){
-
-    }
-
-    updateData(){
-    	this.loadingFlag = true;
-    	this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
-    		this.count = a['count'];
-    		var start = (this.p - 1) * this.passData.pageLength + 1
-    		for(let itm of a['list']){
-    			this.passData.tableData[start] = itm;
-    			start++;
-    		}
-    		this.addFiller();
-    		this.passData.tableData = a['list'].concat(this.autoFill);
-    		this.loadingFlag = false;
-    	})
-    }
+    return String(str).padStart(num != null ? num : 3, '0');
+  }
 
 }

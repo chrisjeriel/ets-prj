@@ -15,67 +15,83 @@
     }
 </style>
 
-<div class="row"  *ngIf="loadingFlag">
-    <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
-</div>
-<div id="cust-table-container" [style.display]="!loadingFlag? 'block':'none'">
-    <div class="search-filter">
-        <label>Search: &nbsp;
-            <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" >
-        </label>
-    </div>
 
-    <div class="row"  *ngIf="loadingTableFlag">
-        <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
-    </div>
+<app-modal class="d-none" (modalOpened)="openModal()" id="lovMdl">
+    <div header>List of Values</div>
+    <div body *ngIf="modalOpen" style="position: relative;width: 800px;">
+        <div class="row"  *ngIf="loadingFlag">
+            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
+        </div>
+        <div id="cust-table-container" [style.display]="!loadingFlag? 'block':'none'">
+            <div class="w-100 text-right">
+                <div >
+                    <label>Search: &nbsp;
+                        <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (keydown.enter)="search()">
+                    </label>
+                </div>
+            </div>
+            
 
-    <div *ngIf="!loadingTableFlag"> <!-- Div of table -->
-        <div [id]="'special-lov'+passData.pageID">
-            <div class="table-scroll table-scroll-unli" id="cust-scroll">
-                <table id="non-datatable" class="content-container keypress-class margin-table">
-                    <thead >
-                        <tr>
-                            <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
-                                <!-- <i class="fa fa-map-pin" (click)="pinColumn($event,i)"></i> -->
-                                <span *ngSwitchDefault class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
-                                 <i *ngIf="sortBy && i==sortIndex" class="fa fa-caret-down"></i>
-                                 <i *ngIf="!sortBy && i==sortIndex" class="fa fa-caret-up"></i>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of passData.tableData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }; let a = index;" (click)="onRowClick($event, data, a);" (dblclick)="onRowDblClick($event, data)" [class.selected]="data === indvSelect || selected.includes(data) || data?.checked" (keydown.ArrowUp)="tablePress($event, data, a)" (keydown.ArrowDown)="tablePress($event, data, a)" tabindex="0" style="outline: none" id="tableRow" (keydown.Enter)="enterKey($event, data)">
-                            <td *ngFor="let key of passData.keys; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
-                                <div *ngIf="!(data===fillData)">
-                                    <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
-                                    <span class="unclickable">{{data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
-                                    </div>
-                                    <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
+            <div class="row"  *ngIf="loadingTableFlag" style="margin-bottom: -148px;padding-top: 74px;">
+                <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
+            </div>
 
-                                </div>
-                                <div *ngIf="data===fillData" class="filler">
-                                    <span></span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div [class.loading]="loadingTableFlag"> <!-- Div of table -->
+                <div [id]="'special-lov'+passData.pageID">
+                    <div class="table-scroll table-scroll-unli" id="cust-scroll">
+                        <table id="non-datatable" class="content-container keypress-class margin-table">
+                            <thead >
+                                <tr>
+                                    <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngStyle]="{'width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
+                                        <!-- <i class="fa fa-map-pin" (click)="pinColumn($event,i)"></i> -->
+                                        <span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
+                                        <span *ngSwitchDefault class="gridHeader" (click)="sort(passData.dbKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
+                                         <i *ngIf="sortBy && i==sortIndex" class="fa fa-caret-down"></i>
+                                         <i *ngIf="!sortBy && i==sortIndex" class="fa fa-caret-up"></i>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of passData.tableData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }; let a = index;" (click)="onRowClick($event, data, a);" (dblclick)="onRowDblClick($event, data)" [class.selected]="data === indvSelect || selected.includes(data) || data?.checked" (keydown.ArrowUp)="tablePress($event, data, a)" (keydown.ArrowDown)="tablePress($event, data, a)" tabindex="0" style="outline: none" id="tableRow" (keydown.Enter)="enterKey($event, data)">
+                                    <td *ngFor="let key of passData.keys; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
+                                        <div *ngIf="!(data===fillData)">
+                                            <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
+                                            <span class="unclickable">{{data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                            </div>
+                                            <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
+
+                                        </div>
+                                        <div *ngIf="data===fillData" class="filler">
+                                            <span></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="pagingStatus">
+                    <pagination-template #paw="paginationApi" [id]="'non-editable'+passData.pageID" (pageChange)="p = $event">
+                        <label *ngIf="!paw.isLastPage() && count > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{count}} entries </label>
+                        <label *ngIf="paw.isLastPage() && count > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{count}} of {{count}} entries</label>
+                        <label *ngIf="count < 1">Showing 0 - 0 of 0 entries</label>
+                    </pagination-template>
+                </div>
+                <div class="pagination" >
+                    <pagination-controls [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event;updatePage()" previousLabel="" nextLabel="" >
+                    </pagination-controls>
+                </div>
+                <div style="height: 42px;float: right;">
+                </div>
             </div>
         </div>
-
-        <div class="pagingStatus">
-            <pagination-template #paw="paginationApi" [id]="'non-editable'+passData.pageID" (pageChange)="p = $event">
-                <label *ngIf="!paw.isLastPage() && count > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{count}} entries </label>
-                <label *ngIf="paw.isLastPage() && count > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{count}} of {{count}} entries</label>
-                <label *ngIf="count < 1">Showing 0 - 0 of 0 entries</label>
-            </pagination-template>
-        </div>
-        <div class="pagination">
-            <pagination-controls [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="" >
-            </pagination-controls>
-        </div>
-        <div style="height: 42px;float: right;">
+    </div>
+    <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modal.closeModal();modalOpen=false;"><a>Cancel</a></button>
+            <button [disabled]="indvSelect == ''" class="cust-btn" type="button" (click)="modal.closeModal();modalOpen=false;okBtnClick($event);"><a>Ok</a></button>
         </div>
     </div>
-</div>
+</app-modal>
 
