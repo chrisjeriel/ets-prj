@@ -358,6 +358,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
         this.policyInfo.project.createDate = this.ns.toDateTimeString(this.policyInfo.project.createDate);
         this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
+        this.policyInfo.project.totalSi = String(this.policyInfo.project.totalSi).indexOf('.') === -1 && this.policyInfo.project.totalSi != null ? String(this.policyInfo.project.totalSi) + '.00' : this.policyInfo.project.totalSi;
         //edit by paul
         this.policyInfo.principalId = String(this.policyInfo.principalId).padStart(6,'0')
         this.policyInfo.contractorId = this.policyInfo.contractorId != null ? String(this.policyInfo.contractorId).padStart(6,'0'):null;
@@ -437,6 +438,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.policyId = "";
         this.policyInfo.statusDesc = "";
         this.policyInfo.polWordings.altText = "";
+        this.prevInceptDate = this.policyInfo.inceptDate;
+        this.prevEffDate = this.policyInfo.effDate;
 
         this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag: 'Y', ocTag: this.policyInfo.openCoverTag, lineCd: this.policyInfo.lineCd })
                        .subscribe(data =>{
@@ -454,9 +457,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                        });
 
         this.policyInfo.issueDate = this.ns.toDateTimeString(0);
-        this.updateDate('lapseFrom');
         this.policyInfo.effDate = this.ns.toDateTimeString(0);
-        this.updateDate('lapseTo');
       }
     });
 
@@ -945,8 +946,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   //validates params before going to web service
   validate(obj) {
    var req = ['cedingId', 'coSeriesNo', 'cessionId', 'lineClassCd', 'quoteId', 'status', 'principalId', 'insuredDesc',
-              'inceptDate', 'expiryDate', 'issueDate', 'effDate', 'distDate', 'acctDate', 'currencyCd', 'currencyRt',
-              'projDesc', 'site'];
+               'currencyCd', 'currencyRt', 'projDesc', 'site', ];
+   var reqDates = ['inceptDate', 'expiryDate', 'issueDate', 'effDate', 'distDate', 'acctDate', 'lapseFrom', 'lapseTo'];
 
    switch(obj.lineCd) {
      case 'CAR':
@@ -978,9 +979,11 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
    for(var[key, val] of entries) {
      if(key === 'polWordings') {
-       if(!this.alteration && val['text'].trim() === '') {
+       if(this.alteration && val['altText'].trim() === '') {
          return false;
-       } else if(this.alteration && val['altText'].trim() === '') {
+       }
+     } else if(reqDates.includes(key)) {
+       if(String(val).split('T').includes('')) {
          return false;
        }
      }
