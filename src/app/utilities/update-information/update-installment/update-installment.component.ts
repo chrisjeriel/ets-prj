@@ -24,6 +24,7 @@ export class UpdateInstallmentComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
   @ViewChild(LovComponent)lov:LovComponent;
   selectedPolicy: any = null;
+  searchArr: any[] = Array(6).fill('');
   polNo: any[] = [];
   policyId: any = "";
   condition: any = "";
@@ -44,40 +45,12 @@ export class UpdateInstallmentComponent implements OnInit {
   prevCommRt: any;
   prevCommAmt: any;
   cancelFlag : boolean = false;
+  warningMsg: number;
   monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
   ];
 
   passDataInstallmentInfo: any = {
-    tableData: [],
-    tHeader: ["Inst No", "Due Date", "Booking Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
-    dataTypes: ["number", "date", "date", "currency", "percent", "currency", "currency", "currency"],
-    /*total:[null, null,'Total','premAmt', 'commRt', 'commAmt', 'otherChargesInw','amtDue'],*/
-    addFlag: true,
-    deleteFlag: true,
-    pageID: 1,
-    widths: ["1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
-    nData: {
-        instNo: '',
-        dueDate: '',
-        bookingDate: '',
-        premAmt: '',
-        commRt: '',
-        commAmt: '',
-        otherChargesInw: 0,
-        amtDue: '',
-        "createUser": JSON.parse(window.localStorage.currentUser).username,
-        "createDate": this.ns.toDateTimeString(0),
-        "updateUser": JSON.parse(window.localStorage.currentUser).username,
-        "updateDate": this.ns.toDateTimeString(0),
-        otherCharges:[]
-    },
-    keys: ['instNo', 'dueDate', 'bookingDate', 'premAmt', 'commRt', 'commAmt', 'otherChargesInw', 'amtDue'],
-    uneditable:[true, false, false, false, false, false, true, true],
-    pageLength: 5
-  };
-
-  prevInstallmentData: any = {
     tableData: [],
     tHeader: ["Inst No", "Due Date", "Booking Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
     dataTypes: ["number", "date", "date", "currency", "percent", "currency", "currency", "currency"],
@@ -136,7 +109,7 @@ export class UpdateInstallmentComponent implements OnInit {
     pageLength: 10,
     resizable: [false,false,false,false],
     tableOnly: false,
-    keys: ['policyNo','cedComp','insured','risk'],
+    keys: ['policyNo','cedingName','insuredDesc','riskName'],
     // keys: ['openPolicyNo','cedingName','insuredDesc','riskName'],
     pageStatus: true,
     pagination: true,
@@ -183,21 +156,57 @@ export class UpdateInstallmentComponent implements OnInit {
 
   setDetails() {
     if(this.selected != null) {
-        this.polNo = this.selected.policyNo.split('-');
-        this.policyId = this.selected.policyId;
-        this.cedingName = this.selected.cedComp;
-        this.insuredDesc = this.selected.insured;
-        this.riskName = this.selected.risk;
-        this.currency = this.selected.currency;
-        this.totalPrem = this.selected.premium;
-        this.createUser = this.selected.createUser;
+      this.underwritingService.getAlterationsPerPolicy(this.selected.policyId, 'alteration').subscribe(data => {
+            var polList = data['policyList'];
+                  
+            var a = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS');
+            var b = polList.filter(p => p.statusDesc.toUpperCase() !== 'IN PROGRESS');
 
-        this.retrievePolInwardBal();
+            if (a.length > 0) {
+              this.warningMsg = 1;
+              this.showWarningMdl();
+            }
+
+            b.sort((a, b) => a.altNo - b.altNo);
+
+            if (b.length > 0) {
+              this.policyId = b[b.length-1].policyId;
+              this.polNo = b[b.length-1].policyNo.split('-');
+
+              for (let rec of this.fetchedData) {
+                if(rec.policyId == this.policyId && rec.policyNo === b[b.length-1].policyNo) {
+                  this.cedingName = rec.cedingName;
+                  this.insuredDesc = rec.insuredDesc;
+                  this.riskName = rec.project.riskName;
+                  this.currency = rec.project.coverage.currencyCd;
+                  this.totalPrem = rec.project.coverage.totalPrem;
+                }
+              }
+
+              this.underwritingService.getPolGenInfo(this.policyId, b[b.length-1].policyNo).subscribe((data:any) => {
+                this.createUser = data.policy.createUser;
+              });
+            } else {
+              this.policyId = this.selected.policyId;
+              this.polNo = this.selected.policyNo.split('-');
+              this.cedingName = this.selected.cedingName;
+              this.insuredDesc = this.selected.insuredDesc;
+              this.riskName = this.selected.riskName;
+              this.currency = this.selected.project.coverage.currencyCd;
+              this.totalPrem = this.selected.project.coverage.totalPrem;
+
+               this.underwritingService.getPolGenInfo(this.policyId, this.selected.policyNo).subscribe((data:any) => {
+                this.createUser = data.policy.createUser;
+              });
+            }
+
+            this.retrievePolInwardBal();
+      });
     }
   }
 
   updateOtherCharges(data){
-    if(data == null){
+    if(data == null || data == ''){
         this.passDataOtherCharges.disableAdd = true;
         this.passDataOtherCharges.tableData = [];
       }
@@ -210,7 +219,7 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   onClickSave() {
-    var hasError = false;
+    /*var hasError = false;
     for(var i=0; i<this.instllmentTable.passData.tableData.length; i++) {
       if(this.instllmentTable.passData.tableData[i].add != undefined || this.instllmentTable.passData.tableData[i].edited 
         && this.instllmentTable.passData.tableData[i].deleted == undefined) {
@@ -236,63 +245,126 @@ export class UpdateInstallmentComponent implements OnInit {
       this.confirmSave.confirmModal();
     }else {
       this.successDialog.open();
+    }*/
+
+    if(this.instllmentTable.getSum('premAmt') != this.totalPrem) {
+      this.warningMsg = 2;
+      this.showWarningMdl();
+    } else {
+      this.confirmSave.confirmModal();
     }
   }
 
-  retrievePolListing(){
-       this.underwritingService.getParListing(this.searchParams).subscribe(data => {
-         var records = data['policyList'];
-          this.fetchedData = records;
-               for(let rec of records){
-                   if(rec.altNo === 0){
-                      if (rec.statusDesc === 'In Force') {
-                         this.passDataLOV.tableData.push(
-                                                    {
-                                                        policyId: rec.policyId,
-                                                        policyNo: rec.policyNo,
-                                                        cessionDesc: rec.cessionDesc,
-                                                        cedComp: rec.cedingName, 
-                                                        insured: rec.insuredDesc,
-                                                        risk: (rec.project == null) ? '' : rec.project.riskName,
-                                                        object: (rec.project == null) ? '' : rec.project.objectDesc,
-                                                        site: (rec.project == null) ? '' : rec.project.site,
-                                                        currency: rec.currencyCd,
-                                                        sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
-                                                        premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
-                                                        issueDate: this.ns.toDateTimeString(rec.issueDate),
-                                                        inceptDate: this.ns.toDateTimeString(rec.inceptDate),
-                                                        expiryDate: this.ns.toDateTimeString(rec.expiryDate),
-                                                        accDate: this.ns.toDateTimeString(rec.acctDate),
-                                                        status: rec.statusDesc,
-                                                        createUser: rec.createUser
-                                                    }
-                                                );  
-                     }
-                   }
-               }
-               this.table.forEach(table => { table.refreshTable() });
+  search(key,ev) {
+    if(!this.searchArr.includes('%%')) {
+      this.selected = null;
+    }
+
+    var a = ev.target.value;
+
+    if(key === 'lineCd') {
+      this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
+    } else if(key === 'year') {
+      this.searchArr[1] = '%' + a + '%';
+    } else if(key === 'seqNo') {
+      this.searchArr[2] = '%' + a + '%';
+    } else if(key === 'cedingId') {
+      this.searchArr[3] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
+    } else if(key === 'coSeriesNo') {
+      this.searchArr[4] = '%' + a + '%';
+    } else if(key === 'altNo') {
+      this.searchArr[5] = a === '' ? '%%' : '%' + a;
+    }
+
+    if(this.searchArr.includes('')) {
+      this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+    }
+    
+    this.retrievePolListing([{ key: 'policyNo', search: this.searchArr.join('-') }]);
+  }
+
+  clearFields() {
+    if (this.warningMsg == 1 || this.warningMsg == null) {
+      this.searchArr = Array(6).fill('');
+      this.polNo = Array(6).fill('');
+      this.cedingName = '';
+      this.insuredDesc = '';
+      this.riskName = '';
+      this.currency = '';
+      this.totalPrem = '';
+      this.passDataInstallmentInfo.tableData = [];
+      this.passDataOtherCharges.tableData = [];
+      this.selected = null;
+
+      this.instllmentTable.refreshTable();
+      this.otherTable.refreshTable();
+
+      this.retrievePolListing();
+    }
+
+    this.warningMsg = null;
+  }
+
+  showWarningMdl() {
+    $("#altWarningModal > #modalBtn").trigger('click');
+  }
+
+  retrievePolListing(param?){
+       this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
+
+         var polList = data['policyList'];
+         this.fetchedData = polList;
+
+         polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE' && p.altNo == 0)
+                       .map(p => { p.riskName = p.project.riskName; return p; });
+
+         this.passDataLOV.tableData = polList;
+         this.table.forEach(table => { table.refreshTable() });
+
+         if(param !== undefined) {
+           if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  
+             this.selected = polList[0];
+             this.setDetails();
+           } else if(polList.length === 0 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {
+             this.clearFields();
+             this.retrievePolListing();
+             this.showLOV();
+           } else if(this.searchArr.includes('%%')) {     
+             this.cedingName = '';
+             this.insuredDesc = '';
+             this.riskName = '';
+             this.selected = null;
+           }
+        }
        });
    }
 
    retrievePolInwardBal() {
      this.passDataInstallmentInfo.tableData = [];
      this.underwritingService.getInwardPolBalance(this.policyId).subscribe((data:any) => {
-       this.currency = data.policyList[0].project.coverage.currencyCd;
-        this.totalPrem = data.policyList[0].project.coverage.totalPrem;
-        if(data.policyList[0].inwPolBalance.length !=0){
-          this.passDataInstallmentInfo.tableData = data.policyList[0].inwPolBalance.filter(a=>{
-            a.dueDate     = this.ns.toDateTimeString(a.dueDate);
-            a.bookingDate = this.ns.toDateTimeString(a.bookingDate);
-            a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
-            return true;
-          });
+        this.instllmentTable.btnDisabled = true;
+        this.otherTable.btnDisabled = true;
+        if (data.policyList.length > 0) {
+          this.currency = data.policyList[0].project.coverage.currencyCd;
+          this.totalPrem = data.policyList[0].project.coverage.totalPrem;
+          if(data.policyList[0].inwPolBalance.length !=0){
+            this.passDataInstallmentInfo.tableData = data.policyList[0].inwPolBalance.filter(a=>{
+              a.dueDate     = this.ns.toDateTimeString(a.dueDate);
+              a.bookingDate = this.ns.toDateTimeString(a.bookingDate);
+              a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
+              return true;
+            });
 
-          this.passDataInstallmentInfo.nData.dueDate = this.ns.toDateTimeString(data.policyList[0].inceptDate);
-          this.passDataInstallmentInfo.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate); 
+            this.passDataInstallmentInfo.nData.dueDate = this.ns.toDateTimeString(data.policyList[0].inceptDate);
+            this.passDataInstallmentInfo.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate); 
+          }
+
+          this.instllmentTable.btnDisabled = false;
+          this.otherTable.btnDisabled = true;
+          this.instllmentTable.onRowClick(null,this.passDataInstallmentInfo.tableData[0]);
         }
 
-        this.instllmentTable.onRowClick(null,this.passDataInstallmentInfo.tableData[0]);
-        this.instllmentTable.refreshTable();
+          this.instllmentTable.refreshTable();
      }); 
    }
 
@@ -321,50 +393,54 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   calcComm() {
-    var inputWithChanges = $('.ng-dirty:not([type="search"]):not(.not-form)');
-    console.log($('.ng-dirty:not([type="search"]):not(.not-form)')[1]);
-    console.log("prevCommRt: " + this.prevCommRt);
-    console.log("prevCommAmt: " + this.prevCommAmt);
-    /*for(let rec of this.passDataInstallmentInfo.tableData) {
-      rec.commAmt = '';
-      rec.commAmt = rec.premAmt * (rec.commRt / 100);
-      console.log("commAmt: " + rec.commAmt);
+    for (let rec of this.passDataInstallmentInfo.tableData) {
+        if (this.instllmentTable.instllmentNo === rec.instNo) {
+          if ("commRt" === this.instllmentTable.instllmentKey) {
+            rec.commAmt = rec.premAmt * rec.commRt / 100;
+          }
+          if ("commAmt" === this.instllmentTable.instllmentKey) {
+            rec.commRt = rec.commAmt / rec.premAmt * 100;
+          }
+        }
     }
+    
     this.instllmentTable.refreshTable();
-    for(let rec of this.passDataInstallmentInfo.tableData) {
-      rec.commRt = '';
-      rec.commRt = rec.commAmt / rec.premAmt * 100;
-      console.log("commRt: " + rec.commRt);
-    }
-    this.instllmentTable.refreshTable();*/
   }
 
   delInst(){
     if(this.passDataInstallmentInfo.tableData.filter(a=>!a.deleted).length == 1){
-      this.dialogIcon = 'error-message';
-      this.dialogMsg = 'A policy must have one or more installments.';
-      this.successDialog.open();
+      this.warningMsg = 0;
+      this.showWarningMdl();
       return null;
     }
 
-    if(this.passDataInstallmentInfo.tableData[this.passDataInstallmentInfo.tableData.length -1 ].add){
-      this.passDataInstallmentInfo.tableData.pop();
-    }else{
-      this.passDataInstallmentInfo.tableData.forEach(a=>{
-        if(a==this.instllmentTable.displayData[this.instllmentTable.displayData.filter(a=>a!=this.instllmentTable.fillData).length -1 ]){
-          a.deleted = true;
-          a.edited = true;
+    for(var i=0; i<this.passDataInstallmentInfo.tableData.length; i++) {
+      if(this.passDataInstallmentInfo.tableData[i].instNo == this.instllmentTable.indvSelect.instNo) {
+        this.passDataInstallmentInfo.tableData[i].deleted = true;
+        this.passDataInstallmentInfo.tableData[i].edited = true;
+        
+        for(var j=0; j<this.passDataOtherCharges.tableData.length; j++) {
+          if(this.passDataOtherCharges.tableData[i].instNo == this.passDataInstallmentInfo.tableData[i].instNo) {
+            this.passDataOtherCharges.tableData[i].deleted = true;
+            this.passDataOtherCharges.tableData[i].edited = true;
+          }
         }
-      })
+      } 
     }
+
     this.instllmentTable.markAsDirty();
     this.instllmentTable.refreshTable();
+
+    this.otherTable.markAsDirty();
+    this.otherTable.refreshTable();
+    this.compute();
   }
 
    save(can?){
      this.cancelFlag = can !== undefined;
      let params:any = {
       policyId:this.policyId,
+      user:JSON.parse(window.localStorage.currentUser).username,
       savePolInward : [],
       delPolInward : [],
       saveOtherCharges : [],
@@ -434,20 +510,20 @@ export class UpdateInstallmentComponent implements OnInit {
           this.dialogMsg = "Please check field values.";
           this.dialogIcon = "error";
           $('#inward > #successModalBtn').trigger('click');
+          setTimeout(()=>{$('.globalLoading').css('display','none');},0);
     }
    }
 
    delOth(){
-    if(this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length -1 ].add){
-      this.passDataOtherCharges.tableData.pop();
-    }else{
-      this.passDataOtherCharges.tableData.forEach(a=>{
-        if(a==this.otherTable.displayData[this.otherTable.displayData.filter(a=>a!=this.otherTable.fillData).length -1 ]){
-          a.deleted = true;
-          a.edited = true;
-        }
-      })
-    }
+     if (this.otherTable.indvSelect != undefined) {
+       for (let rec of this.passDataOtherCharges.tableData) {
+         if (this.otherTable.indvSelect.chargeCd == rec.chargeCd) {
+           rec.deleted = true;
+           rec.edited = true; 
+         }
+       }
+     }
+
     this.instllmentTable.indvSelect.otherCharges = this.passDataOtherCharges.tableData;
     this.otherTable.markAsDirty();
     this.otherTable.refreshTable();
@@ -455,14 +531,62 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   validate(obj) {
-    var req = ['bookingDate', 'dueDate', 'premAmt', 'commRt', 'commAmt'];
+    var req = [];
+    var entries = [];
 
-    var entries = Object.entries(obj);
+    if (obj.savePolInward.length > 0) {
+      req = ['bookingDate', 'dueDate', 'premAmt', 'commRt', 'commAmt'];
 
-    for(var[key, val] of entries) {
-      if((val == '' || val == null) && req.includes(key)) {
-        return false;
+      for (let rec of obj.savePolInward) {
+        entries = Object.entries(rec);
+
+        for(var[key, val] of entries) {
+          if (key === 'premAmt' || key === 'commAmt' || key === 'commRt') {
+              if (isNaN(val)) {
+                return false;
+              }
+          } else {
+            if ((val == '' || val == null) && req.includes(key)) {
+              return false;
+            }
+          }
+        }
       }
+    } 
+
+    if (obj.newSavePolInward.length > 0) {
+      req = ['bookingDate', 'dueDate', 'premAmt', 'commRt', 'commAmt'];
+
+      for (let rec of obj.newSavePolInward) {
+        entries = Object.entries(rec);
+
+        for(var[key, val] of entries) {
+          if (key === 'premAmt' || key === 'commAmt' || key === 'commRt') {
+              if (isNaN(val)) {
+                return false;
+              }
+          } else {
+            if ((val == '' || val == null) && req.includes(key)) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+
+    if (obj.saveOtherCharges.length > 0) {
+      req = ['amount'];
+
+      for (let rec of obj.saveOtherCharges) {
+        entries = Object.entries(rec);
+
+        for(var[key, val] of entries) {
+          if((val == '' || val == null || (val.toString() === 'NaN')) && req.includes(key)) {
+            return false;
+          }
+        }
+      }
+      
     }
 
     return true;

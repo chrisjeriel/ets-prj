@@ -289,6 +289,7 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnInsured',params,header);
     }
 
+
     saveMtnTypeOfCession(params){
     	let header : any = {
             headers: new HttpHeaders({
@@ -296,6 +297,17 @@ export class MaintenanceService{
             })
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTypeOfCession',params,header);
+    }
+
+    getMtnInsuredLov(pass){
+    	const params = new HttpParams()
+			.set('lovParam', pass.lovParam == undefined ? '' : pass.lovParam)
+			.set('paginationRequest.count', pass.count == undefined ? '' : pass.count)
+			.set('paginationRequest.position', pass.position == undefined ? '' : pass.position)
+			.set('sortRequest.sortKey', pass.sortKey == undefined ? '' : pass.sortKey)
+			.set('sortRequest.order', pass.order == undefined ? '' : pass.order)
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnInsuredLov', {params});
     }
 
 }

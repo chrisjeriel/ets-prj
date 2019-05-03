@@ -116,6 +116,9 @@ export class PolAlopComponent implements OnInit {
   polURL:string = "";
   dialogIcon: string = "";
   showAlopItem:boolean = false;
+  newAlt: boolean = false;
+  prevPolicyId: string;
+  prevPolNo: string;
 
   @Input() policyInfo:any = {};
   @Input() alterFlag: boolean;
@@ -144,12 +147,17 @@ export class PolAlopComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.policyNo = params['policyNo']
       this.line = params['line'];
+      this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];
     });
 
     if(this.line == 'EAR'){
       this.passDataCar.tHeader = ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Minimization"];
       this.passDataCar.dataTypes = ["text", "text", "text", "text", "text"]
       this.passDataCar.keys = ['itemNo','quantity','description','importance','lossMin']
+    }
+
+    if(this.underwritingService.fromCreateAlt) {
+        this.newAlt = true;
     }
 
     this.polURL =  (this.alterFlag) ? 'alt-policy-listing' : 'policy-listing'; 
@@ -175,7 +183,8 @@ export class PolAlopComponent implements OnInit {
     this.polAlopData.policyId = this.policyInfo.policyId;
     this.polAlopData.policyNo = this.policyInfo.policyNo;
     
-    this.underwritingService.savePolAlop(this.polAlopData).subscribe((data: any) => {
+    if (this.validateALOPFields(this.polAlopData)) {
+      this.underwritingService.savePolAlop(this.polAlopData).subscribe((data: any) => {
       if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
@@ -184,10 +193,24 @@ export class PolAlopComponent implements OnInit {
           this.dialogMessage = "";
           this.dialogIcon = "success";
           $('#successModalBtn').trigger('click');
+
+          if(this.newAlt) {
+            this.newAlt = false;
+            this.underwritingService.fromCreateAlt = false;
+          }
+
           this.form.control.markAsPristine()
           this.getPolAlop();
         }
-    });
+      });
+    } else {
+      this.dialogMessage="Please check field values.";
+      this.dialogIcon = "error";
+      $('#polAlopSuccess > #successModalBtn').trigger('click');
+
+      setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+    }
+    
   }
 
   savePolAlopItem(cancelFlag?){
@@ -255,18 +278,33 @@ export class PolAlopComponent implements OnInit {
        }
      }*/
 
-    this.underwritingService.savePolAlopItem(savedData).subscribe((data: any) => {
-        if(data['returnCode'] == 0) {
-          this.dialogMessage = data['errorList'][0].errorMessage;
-          this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
-        } else{
-          this.dialogIcon = "success";
-          $('#successModalBtn').trigger('click');
-          this.table.markAsPristine();
-          this.getPolAlopItem();
-        }
-      });
+     if (this.validateALOPItemFields(savedData)) {
+       this.underwritingService.savePolAlopItem(savedData).subscribe((data: any) => {
+          if(data['returnCode'] == 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            $('#successModalBtn').trigger('click');
+          } else{
+            this.dialogIcon = "success";
+            $('#successModalBtn').trigger('click');
+            this.table.markAsPristine();
+
+            if(this.newAlt) {
+              this.newAlt = false;
+              this.underwritingService.fromCreateAlt = false;
+            }
+
+            this.getPolAlopItem();
+          }
+        });
+     } else {
+       this.dialogMessage="Please check field values.";
+       this.dialogIcon = "error";
+       $('#polAlopSuccess > #successModalBtn').trigger('click');
+
+       setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+     }
+      
   }
 
   getPolAlop() {
@@ -279,8 +317,25 @@ export class PolAlopComponent implements OnInit {
         this.polAlopData.indemFromDate = this.polAlopData.indemFromDate == null? null:this.ns.toDateTimeString(this.polAlopData.indemFromDate);
         this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
         this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
-      }else {
-        this.mtnService.getMtnInsured(this.policyInfo.principalId).subscribe((data: any) => {
+      }else { 
+          this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+            if (data.policy != null) {
+              this.underwritingService.getPolAlop(this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
+                if (data.policy != null) {
+                  this.policyId = data.policy.policyId;
+                  this.polAlopData = data.policy.alop;
+                  this.polAlopData.issueDate = this.polAlopData.issueDate == null? null:this.ns.toDateTimeString(this.polAlopData.issueDate);
+                  this.polAlopData.expiryDate = this.polAlopData.expiryDate == null? null:this.ns.toDateTimeString(this.polAlopData.expiryDate);
+                  this.polAlopData.indemFromDate = this.polAlopData.indemFromDate == null? null:this.ns.toDateTimeString(this.polAlopData.indemFromDate);
+                  this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
+                  this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
+                }
+              });
+            }
+          });
+
+          
+          /*this.mtnService.getMtnInsured(this.policyInfo.principalId).subscribe((data: any) => {
           this.polAlopData.insId = data.insured[0].insuredId;
           this.polAlopData.insuredName = data.insured[0].insuredAbbr;
           this.polAlopData.insuredDesc = data.insured[0].insuredName;
@@ -290,7 +345,7 @@ export class PolAlopComponent implements OnInit {
         this.polAlopData.createUser = JSON.parse(window.localStorage.currentUser).username
         this.polAlopData.createDate = this.ns.toDateTimeString(new Date());
         this.polAlopData.updateDate = this.ns.toDateTimeString(new Date());
-        this.polAlopData.updateUser = JSON.parse(window.localStorage.currentUser).username
+        this.polAlopData.updateUser = JSON.parse(window.localStorage.currentUser).username*/
       }
     });
     this.getSumInsured();
@@ -298,24 +353,26 @@ export class PolAlopComponent implements OnInit {
 
   getSumInsured(){
     this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
-      console.log(data)
-      var sectionCovers = data.policy.project.coverage.sectionCovers;
-      for( var i = 0; i <sectionCovers.length;i++){
-        if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
-          this.polAlopData.annSi = sectionCovers[i].sumInsured;
+      if (data.policy != null) {
+        var sectionCovers = data.policy.project.coverage.sectionCovers;
+        for( var i = 0; i <sectionCovers.length;i++){
+          if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
+            this.polAlopData.annSi = sectionCovers[i].sumInsured;
+          }
         }
+        this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
+      } else {
+
       }
-      this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
+      
     });
   }
 
   getPolAlopItem() {
     this.underwritingService.getPolAlopItem(this.policyNo, this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
-      console.log(data)
-
       this.passDataCar.tableData = [];
 
-      if(data.policy.alop != null){
+      if(data.policy != null){
         var dataInfos = data.policy.alop.alopItem;
 
         for(var i=0;i<dataInfos.length;i++){
@@ -323,6 +380,22 @@ export class PolAlopComponent implements OnInit {
         }
 
         this.table.refreshTable();
+      } else {
+         this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+           if (data != null) {
+             this.underwritingService.getPolAlopItem(this.policyNo, this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
+                 if (data.policy != null) {
+                     var dataInfos = data.policy.alop.alopItem;
+
+                    for(var i=0;i<dataInfos.length;i++){
+                      this.passDataCar.tableData.push(dataInfos[i]);
+                    }
+
+                    this.table.refreshTable();
+                 }
+             });
+           }
+         });
       }
       
       /*this.passDataCar.tableData = [];
@@ -427,5 +500,31 @@ export class PolAlopComponent implements OnInit {
       this.polAlopData.expiryDate = null
     }
   }
+
+  validateALOPFields(obj) {
+    var req = ['insuredDesc', 'maxIndemPd', 'timeExc', 'repInterval'];
+    var entries = Object.entries(obj);
+
+    for (var[key, val] of entries) {
+      if ((val == '' || val == null) && req.includes(key)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  validateALOPItemFields(obj) {
+    for (let rec of obj.savePolAlopItemList) {
+       var entries = Object.entries(rec);
+
+       for (var[key, val] of entries) {
+         if ((val == '' || val == null) && 'description' === key) {
+           return false;
+         }
+       }
+    }
+    return true;
+  } 
 
 }

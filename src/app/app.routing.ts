@@ -132,7 +132,7 @@ const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard], canDeactivate: [UnsavedChangesGuard] },
     { path: 'policy-issuance', component: PolicyIssuanceComponent ,canDeactivate: [UnsavedChangesGuard]},
-    { path: 'policy-issuance-alt', component: PolicyIssuanceAltComponent },
+    { path: 'policy-issuance-alt', component: PolicyIssuanceAltComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
