@@ -221,7 +221,8 @@ export class GeneralInfoComponent implements OnInit {
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];
 					this.genInfoData.principalId = String(this.genInfoData.principalId).padStart(6,'0')
-        			this.genInfoData.contractorId = this.genInfoData.contractorId != null ? String(this.genInfoData.contractorId).padStart(6,'0'):null;						
+        			this.genInfoData.contractorId = this.genInfoData.contractorId != null ? String(this.genInfoData.contractorId).padStart(6,'0'):null;
+        			this.genInfoData.intmId = this.genInfoData.intmId != null ? String(this.genInfoData.intmId).padStart(6, '0') : '';			
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.expiryDate);
 					this.genInfoData.issueDate 	= (this.genInfoData.issueDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.issueDate);
@@ -250,6 +251,7 @@ export class GeneralInfoComponent implements OnInit {
 					this.project = data['project'];
 					this.project.createDate = this.ns.toDateTimeString(this.project.createDate);
 					this.project.updateDate = this.ns.toDateTimeString(this.project.updateDate);
+					this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 && this.project.totalValue != null ? String(this.project.totalValue) + '.00' : this.project.totalValue;
 				}
 
 
@@ -500,7 +502,7 @@ export class GeneralInfoComponent implements OnInit {
     }
 
     setInt(event){
-        this.genInfoData.intmId = event.intmId;
+        this.genInfoData.intmId = event.intmId != null && event.intmId != '' ? String(event.intmId).padStart(6, '0') : '';
         this.genInfoData.intmName = event.intmName;
         this.ns.lovLoader(event.ev, 0);
         this.focusBlur();
@@ -631,6 +633,13 @@ export class GeneralInfoComponent implements OnInit {
 			"reqDate"		: this.genInfoData.reqDate,
 			"reqMode"		: this.genInfoData.reqMode,
 			"riskId"		: this.project.riskId,
+			"regionCd"		: this.project.regionCd,
+			"provinceCd"	: this.project.provinceCd,
+			"cityCd"		: this.project.cityCd,
+			"districtCd"	: this.project.districtCd,
+			"blockCd"		: this.project.blockCd,
+			"latitude"		: this.project.latitude,
+			"longitude"		: this.project.longitude,
 			"site"			: this.project.site,
 			"status"		: this.genInfoData.status,
 			"testing"		: this.project.testing,
@@ -896,6 +905,24 @@ export class GeneralInfoComponent implements OnInit {
     this.maintenanceService.getLineClassLOV(this.line).subscribe(a=>{
       this.lineClasses = a['lineClass'];
     })
+  }
+
+  compute(ev,str) {
+  	$(ev.target).addClass('ng-dirty');
+
+  	if(str === 'pctShare' && this.project.totalSi != '') {
+  		var val = Number(this.project.totalSi) / (Number(this.project.pctShare)/100);
+  		this.project.totalValue = String(val).indexOf('.') === -1 ? String(val) + '.00' : val;
+  	} else if (str === 'totalValue' && this.project.totalSi != '') {
+  		var val = (Number(this.project.totalSi) / Number(this.project.totalValue)) * 100;
+  		this.project.pctShare = val;
+  	}
+  }
+
+  checkDecimal(str) {
+  	if(str === 'totalValue') {
+  		this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 ? String(this.project.totalValue) + '.00' : String(this.project.totalValue);
+  	}
   }
 
 }
