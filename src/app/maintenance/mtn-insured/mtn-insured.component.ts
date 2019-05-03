@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Input, Renderer, Output, EventEmitter, ViewChild } from '@angular/core';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+
 import { MaintenanceService } from '@app/_services';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-mtn-insured',
@@ -9,75 +10,275 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
   styleUrls: ['./mtn-insured.component.css']
 })
 export class MtnInsuredComponent implements OnInit {
+
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
-  @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
-  passData: any = {
-        tableData: [],
+
+    @ViewChild('paw') page: any;
+    @ViewChild(ModalComponent) modal : ModalComponent;
+
+    nullRow: boolean = false;
+    unselect: boolean = false;
+
+    passData: any = {
+        tableData: [],   
         tHeader: ['Insured Id', 'Insured Name','Address'],
         dataTypes: ['sequence-3', 'text', 'text'],
-        resizable: [false, true, false, true, true, false, false],
-        pageLength: 10,
-        searchFlag: true,
-        pageStatus: true,
-        pagination: true,
-        fixedCol: false,
-        pageID: 'Insured',
-        keys:['insuredId', 'insuredName','address']
-
+    keys:['insuredId', 'insuredName','address'],
+        resizable: [],     
+        colSize: ['74px','374px','374px'],      
+        tabIndexes: [],   
+        pageLength: 10,         
+        pageID: 1,
+        dbKeys:['INSURED_ID','INSURED_NAME','ADDRESS']               
     }
 
-  selected: any = null;
-  modalOpen: boolean = false;
+    start:    any;
+    pressed:  any;
+    startX:   any;
+    startWidth: any;
+    autoFill: number[];
 
-  @Input() lovCheckBox: boolean = false;
-  selects: any[] = [];
+    sortBy:boolean = true;
+    sortIndex:number;
+    searchString: string = "";
+    p:number = 1;
+    checked:boolean;
+    selected: any[] = [];
+    indvSelect: any = "";
+    fillData:any = {};
 
+    loadingFlag:boolean = true;
+    loadingTableFlag: boolean = false;
 
-  constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
+    count:number;
 
-  ngOnInit() {
-    if(this.lovCheckBox){
-      this.passData.checkFlag = true;
+    modalOpen: boolean = false;
+
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private mtnService:MaintenanceService) {
+        config.placement = 'bottom-right';
+        config.autoClose = false;
+        
     }
-  	  	
-  }
+    currentIndex: number;
+    tablePress(event: KeyboardEvent, data: any, index){
 
-  select(data){
-  	// if(Object.is(this.selected, data)){
-    if(Object.entries(data).length === 0 && data.constructor === Object){
-      this.selected = null
-    } else {
-      this.selected = data;
-    }
-  }
-
-  okBtnClick(){
-    if(!this.lovCheckBox){
-      this.selectedData.emit(this.selected);
-    }
-    else{
-      for(var i = 0; i < this.passData.tableData.length; i++){
-        if(this.passData.tableData[i].checked){
-          this.selects.push(this.passData.tableData[i]);
+        event.preventDefault();
+        if(this.currentIndex === undefined){
+            if(event.key === 'ArrowUp' && index !== 0){
+                this.currentIndex = index - 1;
+                this.indvSelect = this.passData.tableData[index-1];
+            }else if(event.key === 'ArrowDown' && index !== this.passData.tableData.length-1){
+                this.currentIndex = index + 1;
+                this.indvSelect = this.passData.tableData[index+1];
+            }else if((event.key === 'ArrowUp' && index === 0) || (event.key === 'ArrowDown' && index === this.passData.tableData.length-1)){
+                this.currentIndex = index;
+                this.indvSelect = this.passData.tableData[index];
+            }
+        }else{
+            if(event.key === 'ArrowUp' && this.currentIndex !== 0){
+                this.currentIndex = this.currentIndex - 1;
+                this.indvSelect = this.passData.tableData[this.currentIndex];
+            }else if(event.key === 'ArrowDown' && this.currentIndex !== this.passData.tableData.length-1){
+                this.currentIndex = this.currentIndex + 1;
+                this.indvSelect = this.passData.tableData[this.currentIndex];
+            }else if((event.key === 'ArrowUp' && this.currentIndex === 0) || (event.key === 'ArrowDown' && this.currentIndex === this.passData.tableData.length-1)){
+                this.indvSelect = this.passData.tableData[this.currentIndex];
+            }
         }
-      }
-      this.selectedData.emit(this.selects);
-      this.selects = [];
-    } 
-  }
 
-  openModal(){
-    while(this.passData.tableData.length>0){
-      this.passData.tableData.pop();
+        if((this.p - 1) * this.passData.pageLength > this.currentIndex ){
+            //this.page.previous();
+            this.p -= 1;
+            setTimeout(()=>{$('#tableRow').focus();},100);
+            console.log('prev');
+        }else if(this.p * this.passData.pageLength -1 < this.currentIndex){
+            //this.page.next();
+            this.p += 1;
+            setTimeout(()=>{$('#tableRow').focus();},100);
+            console.log('next');
+        }
+        
     }
-    this.mtnService.getMtnInsured('').subscribe((data: any) => {      
-          this.passData.tableData = data.insured;
-          this.table.refreshTable();
-          this.modalOpen = true;
-        });
-    this.modalOpen = true;
 
-  }
+    //when enter key is pressed
+
+    ngOnInit(): void {}
+
+    openModal(): void {
+        this.modalOpen = true;
+        this.fillData = new Object();
+        for(let key of this.passData.keys){
+            this.fillData[key] = "";
+        }
+
+        this.search();
+        //temporary fix delete this later
+        //setTimeout(()=>{this.loadingFlag = false;},2000)
+    }
+
+    request:any = {
+        lovParam:'',
+        count:'10',
+        position:'1',
+        sortKey:'',
+        order:''
+    }
+
+
+    private onMouseDown(event){
+        
+        this.start = event.target;
+        this.pressed = true;
+        this.startX = event.x;
+        this.startWidth = $(this.start).parent().width();
+        this.initResizableColumns();
+    }
+
+    private initResizableColumns() {
+        
+        this.renderer.listenGlobal('body', 'mousemove', (event) => {
+            if(this.pressed) {
+                let width = this.startWidth + (event.x - this.startX);
+                $(this.start).parent().css({'min-width': width, 'max-width': width, 'width': width});
+                let index = $(this.start).parent().index() + 1;
+                $('#notPin'+this.passData.pageID+' .content-container tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width, 'width': width});
+                
+            }
+        });
+        this.renderer.listenGlobal('body', 'mouseup', (event) => {
+            if(this.pressed) {
+                this.pressed = false;
+            }
+        });
+    }
+
+    onRowClick(event, data, index?) {
+        this.currentIndex = index + ((this.p - 1) * this.passData.pageLength );   //this.p is the current page number
+
+        if(this.passData.checkFlag === undefined || !this.passData.checkFlag){
+            if(data !== null){
+                this.nullRow = false;
+                if( Object.entries(data).length !== 0){
+                        if(this.indvSelect == data){
+                            this.unselect = true;
+                            this.indvSelect = "";
+                            data = {};
+                        }else{
+                           
+                            this.indvSelect = data;
+                        }
+                }
+                else{
+                     this.indvSelect = "";
+                 }
+            }
+            else{
+                 this.indvSelect = "";
+                 this.nullRow = true;
+            }
+        }
+    }
+
+    
+    
+    highlight(data){
+        
+        this.selected.push(data);
+    }
+    
+
+    sort(str,sortBy){
+        this.request.sortKey = str;
+        this.request.order = sortBy ? 'ASC' :'DESC';
+
+        // this.passData.tableData = this.passData.tableData.sort(function(a, b) {
+        //     if(sortBy){
+        //         if(a[str] < b[str]) { return -1; }
+        //         if(a[str] > b[str]) { return 1; }
+        //     }else{
+        //         if(a[str] < b[str]) { return 1; }
+        //         if(a[str] > b[str]) { return -1; }
+        //     }
+        // });
+        // this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
+        //     this.addFiller();
+        //     this.placeData(a['list'])
+        //     this.loadingFlag = false;
+        // })
+        this.search();
+        this.sortBy = !this.sortBy;
+    }
+
+    showSort(sortBy,i){
+
+        return sortBy && i==this.sortIndex;
+    }
+
+    
+
+    addFiller(){
+
+        this.passData.tableData = Array(this.count + this.passData.pageLength - (this.count%this.passData.pageLength)).fill(this.fillData);
+        // if(this.passData.tableData.length%this.passData.pageLength != 0){
+        //     this.autoFill = Array().fill(this.fillData);
+        // }
+        //this.passData.tableData = this.passData.tableData.length;
+        // if((typeof this.autoFill != "undefined" && this.passData.tableData.length%this.passData.pageLength != 0) || this.passData.tableData.length==0)
+        //     this.passData.tableData = this.passData.tableData.concat(this.autoFill);
+    }
+    
+    
+
+    search(){
+        this.loadingTableFlag = true;
+        this.request = {
+            lovParam:this.searchString,
+            count:this.passData.pageLength,
+            position:'1',
+            sortKey:this.request.sortKey,
+            order:this.request.order
+        }
+        this.p = 1;
+        
+        this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
+            this.count = a['count'];
+            this.addFiller();
+            this.placeData(a['list'])
+            this.loadingFlag = false;
+            this.loadingTableFlag = false;
+        })
+    }
+
+    placeData(items){
+        var start = (this.p - 1) * this.passData.pageLength;
+        for(let itm of items){
+            this.passData.tableData[start] = itm;
+            start++;
+        }
+    }
+
+    updatePage(){
+        this.request.position = this.p;
+        if(this.passData.tableData[(this.p - 1) * this.passData.pageLength] == this.fillData){
+            this.loadingTableFlag = true;
+          this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
+            this.placeData(a['list']);
+            this.loadingTableFlag = false;
+          })
+        }
+    }
+
+    openLOV(){
+      this.modal.openNoClose();
+    }
+
+    
+    okBtnClick(){
+      this.indvSelect.insuredId = this.pad(this.indvSelect.insuredId,6);
+      this.selectedData.emit(this.indvSelect);
+    
+    }
+
 
   checkCode(code, id, ev) {
     if(code.trim() === ''){
@@ -99,7 +300,7 @@ export class MtnInsuredComponent implements OnInit {
             ev: ev
           });        
 
-          $(id + ' #modalBtn').trigger('click');
+          this.openLOV();
         }      
       });
     }
