@@ -351,6 +351,7 @@ import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information
 import { SequenceDirective } from './_directives/sequence.directive';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 
 
 
@@ -711,6 +712,7 @@ import { InsuredComponent } from './maintenance/quotation-and-policy/insured-lis
         SequenceDirective,
         InsuredListComponent,
         InsuredComponent,
+        TypeOfCessionComponent,
     ],
 
     providers: [

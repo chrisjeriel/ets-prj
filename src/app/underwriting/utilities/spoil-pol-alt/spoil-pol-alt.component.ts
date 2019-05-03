@@ -4,6 +4,10 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { Router } from '@angular/router';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
+
 
 @Component({
 	selector: 'app-spoil-pol-alt',
@@ -14,6 +18,8 @@ export class SpoilPolAltComponent implements OnInit {
 	@ViewChild('p') table: CustNonDatatableComponent;
 	@ViewChild('spoil') spoil: CustNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	@ViewChild('tabset') tabset: any;
+	@ViewChild(ConfirmLeaveComponent) conleave : ConfirmLeaveComponent;
 
 	passData : any = {
 		tableData: [],
@@ -95,7 +101,7 @@ export class SpoilPolAltComponent implements OnInit {
 	valResult			: number;
 
 	constructor(private underwritingService: UnderwritingService, private ns: NotesService,
-		private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService) { }
+		private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService, private router:Router) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Pol | Spoil Policy/Alteration');
@@ -413,6 +419,32 @@ export class SpoilPolAltComponent implements OnInit {
 		}
 		
 		this.getPolicyList([{ key: 'policyNo', search: this.searchArr.join('-') }]);
+	}
+
+	onTabChange($event: NgbTabChangeEvent) {
+		
+		if ($event.nextId === 'mainScreen') {
+			console.log('main screen');
+		}else{
+				console.log('EVENT ELSE ON TAB CHANGE');
+				if($('.ng-dirty').length != 0 ){
+				    $event.preventDefault();
+				    const subject = new Subject<boolean>();
+				    const modal = this.modalService.open(ConfirmLeaveComponent,{
+				        centered: true, 
+				        backdrop: 'static', 
+				        windowClass : 'modal-size'
+				    });
+				    modal.componentInstance.subject = subject;
+
+				    subject.subscribe(a=>{
+				        if(a){
+				           $('.ng-dirty').removeClass('ng-dirty');
+			               this.tabset.select($event.nextId)
+					    }
+				    })
+	      		}	
+		}
 	}
 
 }
