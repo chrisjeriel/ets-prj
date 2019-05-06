@@ -471,12 +471,14 @@ export class PolCoverageComponent implements OnInit {
         }
         if(data.policy.policyId != this.policyInfo.policyId){
           console.log(data)
+          console.log(data.policy.policyId + ' - '+this.policyInfo.policyId)
            this.passData.tableData.forEach(a=>{   
            a.edited = true;
            this.sectionTable.markAsDirty();
              a.sumInsured = 0;
              a.premAmt = 0;
-             a.discountTag = 0;
+             a.premRt = 0;
+             a.discountTag = 'N';
             
         })
         }
