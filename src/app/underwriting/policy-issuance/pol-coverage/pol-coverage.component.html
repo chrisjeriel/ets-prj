@@ -257,7 +257,7 @@
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [(ngModel)] = "altCoverageData.totalValue"  (ngModelChange) = "totalValue" (blur)="checktotalValue($event)">
+       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [(ngModel)] = "altCoverageData.totalValue"  (ngModelChange) = "totalValue($event)" (blur)="checktotalValue()">
        <span class="col-sm-1"></span>
      </div>
    </div>
