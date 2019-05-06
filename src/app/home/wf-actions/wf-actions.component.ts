@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, UserService } from '../../_services';
+import { NotesService, UserService, WorkFlowManagerService } from '../../_services';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { finalize } from 'rxjs/operators';
+import { unHighlight, highlight, hideTooltip, showTooltip} from '@app/_directives/highlight';
+
 
 @Component({
   selector: 'app-wf-actions',
@@ -24,6 +26,12 @@ export class WfActionsComponent implements OnInit {
   reminderValue: any;
   dialogIcon:string  = "";
   dialogMessage:string  = "";
+  reminderDate: any;
+  alarmDate: any;
+  title: string = "";
+  reminder: string = "";
+  onOkVar: any;
+  disableAlarmTime: boolean = true;
 
   userInfo:any = {
 	userId: null,
@@ -70,10 +78,13 @@ export class WfActionsComponent implements OnInit {
     checkFlag: true
   };
 
+  resultReminder: any [] = [];
+
   constructor(config: NgbModalConfig,
      private modalService: NgbModal,
      private ns: NotesService,
-     private userService: UserService){ }
+     private userService: UserService,
+     private workFlowService: WorkFlowManagerService){ }
 
 ngOnInit() {
 
@@ -130,15 +141,16 @@ cancel(){
 
 confirm(){
 	  this.selects = [];
-      for(var i = 0; i < this.usersListing.tableData.length; i++){
+    for(var i = 0; i < this.usersListing.tableData.length; i++){
         if(this.usersListing.tableData[i].checked){
           this.selects.push(this.usersListing.tableData[i]);
         }
-      }
+    }
 
     if (this.selects.length === 0 || this.selects.length === 1 ){
     	this.dialogIcon = "error-message";
         this.dialogMessage = "Please select at least 2 users";
+        this.onOkVar = "showUsersLOV";
         this.successDiag.open();
     }else {
     var records = this.selects;
@@ -149,10 +161,7 @@ confirm(){
 	this.userInfoToMany = temp;
 	this.open(this.contentMdl);
     }
-
-    
  }
-
 
 radioBtnChange(obj){
 	if (this.isEmptyObject(obj)){
@@ -249,7 +258,6 @@ showUsersLOV(obj){
 setPreparedBy(event){
 	this.userInfo.userId = event.userId;
 	this.userInfo.userName = event.userName;
-
     this.modalService.dismissAll();
 	this.open(this.contentMdl);
 }
@@ -269,6 +277,216 @@ checkCode(ev) {
     var userId = this.userInfo.userId;
     this.userInfo = [];
   	this.usersLov.checkCode(userId, ev);		
+}
+
+saveReminderValidation(){
+	if (this.isEmptyObject(this.reminderDate) || this.isEmptyObject(this.reminder)){
+		this.openErrorDiag();
+	} else {
+        var reminderTime = this.toTimeString(Date.parse(this.reminderDate));
+        if (this.isEmptyObject(this.alarmDate)){
+          this.resultReminder = [];
+        	this.saveReminder(this.reminderValue);
+        }else {
+        	 if(this.setAlarmTime(reminderTime,this.alarmDate)){
+		        this.resultReminder = [];
+            this.saveReminder(this.reminderValue);
+		     }
+        }
+    }
+}
+
+
+saveReminder(obj){
+	switch(obj) { 
+	   		case '1': { 
+	   		   this.prepareParam(this.createInfo.createdBy,1);
+	        break; 
+	        } 
+	        case '2': { 
+	          if (this.isEmptyObject(this.userInfo.userName)){
+    			   this.openErrorDiag();
+    			  } else {
+    			 	this.prepareParam(this.userInfo.userId,1);
+    			  }
+	        break; 
+	        } 
+	        case '3': { 
+	       	  if (this.isEmptyObject(this.userInfoToMany)){
+    			   this.openErrorDiag();
+    			  } else {
+            var array = this.userInfoToMany.split(',');
+              for(let i=0;i<array.length-1 ;i++){ 
+                  this.prepareParam(array[i],array.length-1);
+              }
+    			  }
+	        break; 
+	        } 
+	         case '4': { 
+	        
+	        break;
+	        } 
+	         default: { 
+	        //statements; 
+	        break; 
+	        } 
+	    }
+}
+
+checkValidTime(event){
+	if(this.isEmptyObject(event.target.value)){
+    } else {
+    	var reminderTime = this.toTimeString(Date.parse(this.reminderDate));	
+		if(this.isEmptyObject(this.alarmDate)){
+		} else {
+		  this.setAlarmTime(reminderTime,this.alarmDate);
+		}
+    }
+}
+
+
+checkValidDate(event){
+	if(this.isEmptyObject(event.target.value)){
+		this.disableAlarmTime = true;
+		this.alarmDate = null;
+	}else {
+		this.disableAlarmTime = false;
+		var reminderTime = this.toTimeString(Date.parse(this.reminderDate));	    
+
+		if(this.isEmptyObject(this.alarmDate)){
+		} else {
+		  this.setAlarmTime(reminderTime,this.alarmDate);
+		}
+
+	}
+}
+
+
+setAlarmTime(reminderTime: string, alarmTime: string){
+  var arrayTime = reminderTime.split(':');
+  var arrayAlarmTime = alarmTime.split(':');
+  var endHour = new Date();
+  var startHour = new Date();
+  var alarmHour = new Date();
+  startHour.setHours(0,0);
+  endHour.setHours(parseInt(arrayTime[0]),parseInt(arrayTime[1]));
+  alarmHour.setHours(parseInt(arrayAlarmTime[0]),parseInt(arrayAlarmTime[1]))
+
+  if (alarmHour >= startHour && alarmHour <= endHour){
+  	return true;
+  } else {
+  	this.dialogIcon = "error-message";
+    this.dialogMessage = "Please choose alarm time between 00:00 to " + this.toTimeString(Date.parse(this.reminderDate));
+    this.onOkVar = "openReminderMdl";
+    this.successDiag.open();
+    return false;
+  }
+
+}
+
+toTimeString(millis: any) {
+    var d = (millis == 0) ? new Date() : new Date(millis);
+
+    function pad(num) {
+      return (num < 10) ? '0' + num : num;
+    }
+
+    return pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+
+openErrorDiag(){
+		this.dialogIcon = "error-message";
+        this.dialogMessage = "Please fill required fields";
+        this.onOkVar = "openReminderMdl";
+        this.successDiag.open();
+}
+
+onOkSuccessDiag(obj){
+	if(obj === 'showUsersLOV'){
+		this.showUsersLOV('0');
+	}else if (obj === 'openReminderMdl'){
+		this.modalService.dismissAll();
+		this.open(this.content);
+	}else if(obj === 'closeReminderMdl'){
+	    this.modalService.dismissAll();
+	}
+}
+
+prepareParam(assignedTo : string, length : number){
+    
+       var saveReminderInfoParam = {
+       "alarmTime"  : this.alarmDate === null || this.alarmDate === undefined ? '' : this.alarmDate,
+		   "assignedTo" : assignedTo,
+		   "createDate" : this.createInfo.dateCreated,
+		   "createUser" : this.createInfo.createdBy,
+		   "remiderDate": this.reminderDate,
+		   "reminder"   : this.reminder,
+		   "reminderId" : "",
+		   "status"     : "",
+		   "title"      : this.title,
+		   "updateUser" : this.updateInfo.updatedBy,
+		   "updateDate" : this.updateInfo.lastUpdate
+       }
+
+       console.log(saveReminderInfoParam);
+/*       this.loading = true;*/
+
+	   this.saveReminderParams(saveReminderInfoParam,length);
+	  
+}
+
+saveReminderParams(obj, length: number){
+     this.workFlowService.saveWfmReminders(obj) .pipe(
+           finalize(() => this.saveRemindersFinal(length) )
+           ).subscribe(data => {
+             console.log(data);
+            if(data['returnCode'] === 0) {
+                this.resultReminder.push(0)
+            } else if (data['returnCode'] === -1) {  
+                this.resultReminder.push(-1)         
+            }
+
+     })        
+}
+
+saveRemindersFinal(obj){
+   if (this.resultReminder.length === obj){
+     console.log(this.resultReminder);
+     if(this.ifAnyNonZero(this.resultReminder)){
+       this.saveSuccessReminder();
+     } else {
+       this.dialogIcon = 'error-message';
+       this.dialogMessage = "Error saving reminder";
+       this.successDiag.open();
+     }
+
+   }
+
+}
+
+ifAnyNonZero (array) {
+  for(var i = 0; i < array.length; ++i) {
+    if(array[i] !== 0) {
+      return true;
+      break;
+    }
+  }
+  return false;
+}
+
+saveSuccessReminder(){
+        this.dialogIcon = 'success-message';
+        this.dialogMessage = "Successfully Saved";;
+        this.onOkVar = "closeReminderMdl";
+        this.successDiag.open();
+        this.alarmDate = null;
+        this.title = null; 
+        this.reminderDate = null;
+        this.reminder = null;
+        this.userInfo = {};
+        this.userInfoToMany = null;
+        this.reminderValue = null;
+        this.clear('disable');
 }
 
 

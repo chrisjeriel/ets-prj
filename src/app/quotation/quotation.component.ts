@@ -172,12 +172,11 @@ export class QuotationComponent implements OnInit {
       this.passData.quoteId = this.quoteInfo.quoteId;
       this.passData.reasonCd = this.quoteInfo.reasonCd;
   		setTimeout(() => { this.header = "/ " + (this.quoteInfo.quotationNo == '' ? this.quoteInfo.lineCd : this.quoteInfo.quotationNo) }, 0);
+      this.reportsList = [];
 
   	if(this.quoteInfo.typeOfCession.toUpperCase() == 'RETROCESSION'){
   			/*this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" })*/
-  			this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" },
-  								  {val:"QUOTER009B", desc:"RI Confirmation of Acceptance Letter" });
- 
+  			this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" });
   		}
   		if(this.quoteInfo.status == '10'){
   			this.reportsList.push({val:"QUOTER009C", desc:"Risk Not Commensurate" });

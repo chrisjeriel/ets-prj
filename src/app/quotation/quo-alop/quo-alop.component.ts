@@ -275,11 +275,43 @@ export class QuoAlopComponent implements OnInit {
               this.dialogIcon = "success";
               $('#successModalBtn').trigger('click');
               this.form.control.markAsPristine()
-              this.getAlop();
+              //this.getAlop();
               //this.emptyVar();
               this.alopDetails = this.alopData.alopDetails.filter(a => a.optionId == this.alopDetails.optionId)[0];
-              this.optionsList = this.optionsList.filter(a => a.optionId == this.optionsList.optionId)[0];
-              this.clickRow(this.quoteOptionsData.tableData[0]);
+              //this.optionsList = this.optionsList.filter(a => a.optionId == this.optionsList.optionId)[0];
+              console.log(this.optionsList);
+              setTimeout(()=>{
+                //this.tableNonEditable.refreshTable();
+                //console.log(this.tableNonEditable.passData.tableData[0]);
+                //this.tableNonEditable.onRowClick({},this.tableNonEditable.passData.tableData[0], 0);
+                //this.clickRow(this.quoteOptionsData.tableData[0]);
+                this.tableNonEditable.refreshTable();
+                this.getAlopSumInsured();
+                unHighlight(this.to);
+                unHighlight(this.from);
+                this.disabledFlag = false;
+                this.readonlyFlag = false;
+                this.alopDetails.optionId = this.quoteOptionsData.tableData[0].optionId;
+                  if(this.optionsList.filter(a => a.optionId == this.quoteOptionsData.tableData[0].optionId)[0] != undefined){
+                      this.alopDetails = this.optionsList.filter(a => a.optionId == this.quoteOptionsData.tableData[0].optionId)[0].alopDetails
+                      this.alopDetails.annSi = this.alopSI;
+                      this.alopDetails.issueDate = this.alopDetails.issueDate == '' || this.alopDetails.issueDate == null? '':this.ns.toDateTimeString(this.alopDetails.issueDate);
+                      this.alopDetails.expiryDate = this.alopDetails.expiryDate == '' || this.alopDetails.expiryDate == null? '':this.ns.toDateTimeString(this.alopDetails.expiryDate);
+                      this.alopDetails.indemFromDate = this.alopDetails.indemFromDate == '' || this.alopDetails.indemFromDate == null? '':this.ns.toDateTimeString(this.alopDetails.indemFromDate);
+                      this.alopDetails.maxIndemPdSi = ((this.alopDetails.maxIndemPd/12)*this.alopDetails.annSi);
+                  }else{
+                    //this.optionsList = []
+                    this.optionsList.push({
+                      optionId: this.quoteOptionsData.tableData[0].optionId,
+                      alopDetails: JSON.parse(JSON.stringify(this.newAlopDetails))
+                    })
+                    this.alopDetails = this.optionsList[this.optionsList.length-1].alopDetails;
+                    this.alopDetails.annSi = this.alopSI;
+                    this.alopDetails.maxIndemPdSi = 0;
+                  }
+
+                setTimeout(() => this.focusBlur(),0);
+              },100);
             }
           });
         
@@ -484,9 +516,9 @@ export class QuoAlopComponent implements OnInit {
           if(this.optionsList.filter(a => a.optionId == data.optionId)[0] != undefined){
               this.alopDetails = this.optionsList.filter(a => a.optionId == data.optionId)[0].alopDetails
               this.alopDetails.annSi = this.alopSI;
-              this.alopDetails.issueDate = this.alopDetails.issueDate == '' ? '':this.ns.toDateTimeString(this.alopDetails.issueDate);
-              this.alopDetails.expiryDate = this.alopDetails.expiryDate == '' ? '':this.ns.toDateTimeString(this.alopDetails.expiryDate);
-              this.alopDetails.indemFromDate = this.alopDetails.indemFromDate == '' ? '':this.ns.toDateTimeString(this.alopDetails.indemFromDate);
+              this.alopDetails.issueDate = this.alopDetails.issueDate == '' || this.alopDetails.issueDate == null? '':this.ns.toDateTimeString(this.alopDetails.issueDate);
+              this.alopDetails.expiryDate = this.alopDetails.expiryDate == '' || this.alopDetails.expiryDate == null? '':this.ns.toDateTimeString(this.alopDetails.expiryDate);
+              this.alopDetails.indemFromDate = this.alopDetails.indemFromDate == '' || this.alopDetails.indemFromDate == null? '':this.ns.toDateTimeString(this.alopDetails.indemFromDate);
               this.alopDetails.maxIndemPdSi = ((this.alopDetails.maxIndemPd/12)*this.alopDetails.annSi);
           }else{
             //this.optionsList = []
