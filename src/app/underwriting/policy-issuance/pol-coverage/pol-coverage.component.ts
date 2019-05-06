@@ -476,7 +476,7 @@ export class PolCoverageComponent implements OnInit {
            this.sectionTable.markAsDirty();
              a.sumInsured = 0;
              a.premAmt = 0;
-             a.discountTag = 0;
+             a.discountTag = 'N';
             
         })
         }
