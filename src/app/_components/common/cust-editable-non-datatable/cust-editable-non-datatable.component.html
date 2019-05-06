@@ -40,8 +40,8 @@ span.ui-column-resizer {
         <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button>
         <div class="search-filter" *ngIf="passData.searchFlag">
             <label [class.searchWithFilter]="passData.filters !== undefined">Search: &nbsp;
-                <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString"
-                (ngModelChange)="search($event)">
+                <input type="search" class="form-control-sm cust-search-form " [(ngModel)]="searchString"
+                (ngModelChange)="search($event)" novalidate>
             </label>
             <div ngbDropdown *ngIf="passData.filters !== undefined">
                 <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
