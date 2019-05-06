@@ -32,7 +32,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('dedSuccess') successDlg: SucessDialogComponent;
   @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
-  @ViewChildren(SpecialLovComponent) insuredLovs: QueryList<SpecialLovComponent>;
+  @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
   @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
