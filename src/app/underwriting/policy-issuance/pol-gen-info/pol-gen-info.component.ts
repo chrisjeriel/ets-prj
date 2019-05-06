@@ -283,7 +283,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService,
     private mtnService: MaintenanceService) { }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.titleService.setTitle("Pol | General Info");
     this.tHeader.push("Item No", "Description of Items");
     this.dataTypes.push("text", "text");
@@ -291,6 +291,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.tableData = this.underwritingService.getItemInfoData();
 
     this.sub = this.route.params.subscribe(params => {
+      console.log(params);
       this.line = params['line'];
       this.policyId = this.polInfo.policyId === '' ? params['policyId'] : this.polInfo.policyId;
       this.policyNo = this.polInfo.policyNo === '' ? params['policyNo'] : this.polInfo.policyNo;
@@ -415,12 +416,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
 
         if(this.alteration && !this.newAlt) {
-          if (this.prevPolicyId !== '') {
-            this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+          var polNo = this.policyInfo.policyNo.split('-');
+          polNo[polNo.length-1] = String(Number(polNo[polNo.length-1]) - 1).padStart(3, '0');
+          // if (this.prevPolicyId !== '') {
+            this.underwritingService.getPolGenInfo(null, polNo.join('-')).subscribe((data:any) => {
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
               this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
             });
-          }
+          // }
         }
 
         setTimeout(() => {  
