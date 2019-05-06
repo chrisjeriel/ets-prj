@@ -601,50 +601,97 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   checkPolIdF(event){
     let parameters = this.policyInfo.policyNo.split(/[-]/g);
-    this.underwritingService.getUWCoverageAlt(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],parameters[5]).subscribe((data: any) => {
-      if(data.policy !== null){
-        let alopFlag = false;
-        if(data.policy.project !== null){
-          for(let sectionCover of data.policy.project.coverage.sectionCovers){
-                if(sectionCover.section == 'III'){
-                    alopFlag = true;
-                   break;
-                 }
+    if(this.alteration)
+      {this.underwritingService.getUWCoverageAlt(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],parameters[5]).subscribe((data: any) => {
+              if(data.policy !== null){
+                let alopFlag = false;
+                if(data.policy.project !== null){
+                  for(let sectionCover of data.policy.project.coverage.sectionCovers){
+                        if(sectionCover.section == 'III'){
+                            alopFlag = true;
+                           break;
+                         }
+                  }
+                }
+                    
+                       this.policyInfo.showPolAlop = alopFlag;
+              }
+      
+      
+            /*  this.emitPolicyInfoId.emit({
+                policyId: event,
+                policyNo: this.policyInfo.policyNo,
+                riskName: this.policyInfo.project.riskName,
+                insuredDesc: this.policyInfo.insuredDesc,
+                riskId: this.policyInfo.project.riskId,
+                showPolAlop: this.policyInfo.showPolAlop,
+                principalId: this.policyInfo.principalId
+              });  */  
+      
+              this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
+                   this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+      
+                   this.emitPolicyInfoId.emit({
+                    refPolicyId: this.refPolicyId,
+                    policyId: event,
+                    policyNo: this.policyNo,
+                    riskName: this.policyInfo.project.riskName,
+                    insuredDesc: this.policyInfo.insuredDesc,
+                    riskId: this.policyInfo.project.riskId,
+                    showPolAlop: this.policyInfo.showPolAlop,
+                    coInsuranceFlag: this.policyInfo.coInsuranceFlag,
+                    principalId: this.policyInfo.principalId,
+                    cedingName: this.policyInfo.cedingName //add by paul
+                  });
+              });   
+      
+            });}
+    else{
+      this.underwritingService.getUWCoverageInfos(null, this.policyInfo.policyId).subscribe((data: any) => {
+        if(data.policy !== null){
+          let alopFlag = false;
+          if(data.policy.project !== null){
+            for(let sectionCover of data.policy.project.coverage.sectionCovers){
+                  if(sectionCover.section == 'III'){
+                      alopFlag = true;
+                     break;
+                   }
+            }
           }
+              
+                 this.policyInfo.showPolAlop = alopFlag;
         }
-            
-               this.policyInfo.showPolAlop = alopFlag;
-      }
 
 
-    /*  this.emitPolicyInfoId.emit({
-        policyId: event,
-        policyNo: this.policyInfo.policyNo,
-        riskName: this.policyInfo.project.riskName,
-        insuredDesc: this.policyInfo.insuredDesc,
-        riskId: this.policyInfo.project.riskId,
-        showPolAlop: this.policyInfo.showPolAlop,
-        principalId: this.policyInfo.principalId
-      });  */  
+      /*  this.emitPolicyInfoId.emit({
+          policyId: event,
+          policyNo: this.policyInfo.policyNo,
+          riskName: this.policyInfo.project.riskName,
+          insuredDesc: this.policyInfo.insuredDesc,
+          riskId: this.policyInfo.project.riskId,
+          showPolAlop: this.policyInfo.showPolAlop,
+          principalId: this.policyInfo.principalId
+        });  */  
 
-      this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
-           this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+        this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
+             this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
 
-           this.emitPolicyInfoId.emit({
-            refPolicyId: this.refPolicyId,
-            policyId: event,
-            policyNo: this.policyNo,
-            riskName: this.policyInfo.project.riskName,
-            insuredDesc: this.policyInfo.insuredDesc,
-            riskId: this.policyInfo.project.riskId,
-            showPolAlop: this.policyInfo.showPolAlop,
-            coInsuranceFlag: this.policyInfo.coInsuranceFlag,
-            principalId: this.policyInfo.principalId,
-            cedingName: this.policyInfo.cedingName //add by paul
-          });
-      });   
+             this.emitPolicyInfoId.emit({
+              refPolicyId: this.refPolicyId,
+              policyId: event,
+              policyNo: this.policyNo,
+              riskName: this.policyInfo.project.riskName,
+              insuredDesc: this.policyInfo.insuredDesc,
+              riskId: this.policyInfo.project.riskId,
+              showPolAlop: this.policyInfo.showPolAlop,
+              coInsuranceFlag: this.policyInfo.coInsuranceFlag,
+              principalId: this.policyInfo.principalId,
+              cedingName: this.policyInfo.cedingName //add by paul
+            });
+        });   
 
-    });
+      });
+    }
   }
 
   updateExpiryDate() {

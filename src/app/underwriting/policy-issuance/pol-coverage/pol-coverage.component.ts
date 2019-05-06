@@ -32,6 +32,7 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
   @ViewChild('info') mdl : ModalComponent;
   @ViewChild('infoCov') modal : ModalComponent;
+  @ViewChild('secDetails') form : any;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -1079,6 +1080,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   pctShare(data){
+    this.form.control.markAsDirty();
     if(!this.alteration){
         this.coverageData.totalValue = (parseFloat(this.coverageData.totalSi) / parseFloat(data.toString().split(',').join('')) * 100).toFixed(2);
         this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
@@ -1089,6 +1091,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   checkPctShare(){
+    this.form.control.markAsDirty();
     if(!this.alteration){
         if(parseFloat(this.coverageData.pctShare.toString().split(',').join('')) > parseFloat('100.0000000000')){
                   /*this.coverageData.pctShare = parseFloat('100');
@@ -1116,6 +1119,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   totalValue(data){
+    this.form.control.markAsDirty();
     if(!this.alteration){
       this.coverageData.pctShare = (parseFloat(this.coverageData.totalSi) / parseFloat(data.toString().split(',').join('')) * 100).toFixed(10);
       this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
@@ -1126,6 +1130,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   checktotalValue(){
+    this.form.control.markAsDirty();
     if(!this.alteration){
       /*if(parseFloat(this.coverageData.totalValue.toString().split(',').join('')) > parseFloat(this.coverageData.totalSi)){
         // this.coverageData.totalValue = this.coverageData.totalSi;
@@ -1256,6 +1261,7 @@ export class PolCoverageComponent implements OnInit {
         $('app-sucess-dialog #modalBtn').trigger('click');
         this.sectionTable.markAsPristine();
         this.deductiblesTable.markAsPristine();
+        this.form.control.markAsPristine();
         this.getPolCoverage();
         this.deductiblesTable.refreshTable();
       }
@@ -1640,6 +1646,7 @@ export class PolCoverageComponent implements OnInit {
           $('app-sucess-dialog  #modalBtn').trigger('click');
           this.emptyVar();
           this.getPolCoverageAlt();
+          this.form.control.markAsPristine();
           this.table.markAsPristine();
           //this.getCoverageInfo();
         }
