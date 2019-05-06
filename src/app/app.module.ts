@@ -10,6 +10,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { QuillModule } from 'ngx-quill';
+import { DecimalPipe } from '@angular/common';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -720,7 +721,8 @@ import { SpecialLovComponent } from './_components/special-lov/special-lov.compo
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         UnsavedChangesGuard,
         // provider used to create fake backend
-        fakeBackendProvider
+        fakeBackendProvider,
+        DecimalPipe
     ],
     entryComponents: [
 	    ConfirmLeaveComponent,

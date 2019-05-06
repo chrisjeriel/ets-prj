@@ -32,3 +32,8 @@ fieldset {
 .hidden {
     display: none;
 }
+
+.forced-col-sm{
+    padding-right: 48px !important;
+    margin-left: 35px !important;
+}

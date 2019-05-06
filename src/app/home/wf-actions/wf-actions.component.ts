@@ -110,13 +110,14 @@ setCheckRecords(){
 	}else{
 	    var array = this.userInfoToMany.split(",");
 	}
-       for( var j = 0; j < array.length; j ++){
-       	   for(var i = 0; i < this.usersListing.tableData.length; i++){
-		      if(array[j] === this.usersListing.tableData[i].userId){
-	       	   this.usersListing.tableData[i].checked = true;
-	       	  }
-           }  
-       }
+
+  for( var j = 0; j < array.length; j ++){
+   	   for(var i = 0; i < this.usersListing.tableData.length; i++){
+      if(array[j] === this.usersListing.tableData[i].userId){
+     	   this.usersListing.tableData[i].checked = true;
+     	  }
+       }  
+  }
     
 
 }

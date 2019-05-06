@@ -52,6 +52,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
             // this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
+
             this.policyInfo.fromInq = params['fromInq'];
             if(this.policyInfo.fromInq == 'true'){
               this.title = "Policy / Inquiry / Policy Inquiry";
