@@ -317,7 +317,7 @@ export class PolAlopComponent implements OnInit {
         this.polAlopData.indemFromDate = this.polAlopData.indemFromDate == null? null:this.ns.toDateTimeString(this.polAlopData.indemFromDate);
         this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
         this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
-        if(data.policy.policyId != this.policyInfo.policyId){
+        if(data.policy.policyId != this.policyInfo.policyId && this.policyInfo.fromInq!='true'){
           this.form.control.markAsDirty()
         }
       }else 
