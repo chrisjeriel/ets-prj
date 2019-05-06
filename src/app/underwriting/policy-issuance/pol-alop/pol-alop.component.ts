@@ -317,22 +317,26 @@ export class PolAlopComponent implements OnInit {
         this.polAlopData.indemFromDate = this.polAlopData.indemFromDate == null? null:this.ns.toDateTimeString(this.polAlopData.indemFromDate);
         this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
         this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
-      }else { 
-          this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
-            if (data.policy != null) {
-              this.underwritingService.getPolAlop(this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
-                if (data.policy != null) {
-                  this.policyId = data.policy.policyId;
-                  this.polAlopData = data.policy.alop;
-                  this.polAlopData.issueDate = this.polAlopData.issueDate == null? null:this.ns.toDateTimeString(this.polAlopData.issueDate);
-                  this.polAlopData.expiryDate = this.polAlopData.expiryDate == null? null:this.ns.toDateTimeString(this.polAlopData.expiryDate);
-                  this.polAlopData.indemFromDate = this.polAlopData.indemFromDate == null? null:this.ns.toDateTimeString(this.polAlopData.indemFromDate);
-                  this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
-                  this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
-                }
-              });
-            }
-          });
+        if(data.policy.policyId != this.policyInfo.policyId){
+          this.form.control.markAsDirty()
+        }
+      }else 
+      { 
+          // this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+          //   if (data.policy != null) {
+          //     this.underwritingService.getPolAlop(this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
+          //       if (data.policy != null) {
+          //         this.policyId = data.policy.policyId;
+          //         this.polAlopData = data.policy.alop;
+          //         this.polAlopData.issueDate = this.polAlopData.issueDate == null? null:this.ns.toDateTimeString(this.polAlopData.issueDate);
+          //         this.polAlopData.expiryDate = this.polAlopData.expiryDate == null? null:this.ns.toDateTimeString(this.polAlopData.expiryDate);
+          //         this.polAlopData.indemFromDate = this.polAlopData.indemFromDate == null? null:this.ns.toDateTimeString(this.polAlopData.indemFromDate);
+          //         this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
+          //         this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
+          //       }
+          //     });
+          //   }
+          // });
 
           
           /*this.mtnService.getMtnInsured(this.policyInfo.principalId).subscribe((data: any) => {
