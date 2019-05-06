@@ -144,6 +144,12 @@
 						<div class="form-row ig-cust" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Inception Date</label>
+								<!-- <div class="col-sm dp-cont">
+									<datepicker [type]="'date'" [required]="true" [showIcon]="true"  [value]="policyInfo.inceptDate?.split('T')[0]" (outVal)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]"></datepicker>
+								</div>
+								<div class="col-sm-3 dp-cont">
+									<datepicker [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (outVal)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+								</div>	 -->							
 								<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.inceptDate?.split('T')[1]" (ngModelChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" appRequired>
 							</div>

@@ -612,3 +612,85 @@ textarea {
     background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
 }
 
+.ui-button {
+    float: right;
+    height: calc(1.3rem + 1px) !important;
+    background-color: transparent !important;
+    border-color: #ced4da !important;
+    color: black !important;
+}
+
+.ui-inputtext {
+    border-color: #ced4da !important;
+}
+
+.ui-inputtext:enabled:focus {
+    border-color: #ced4da !important;
+}
+
+.ui-inputtext:enabled:hover {
+    border-color: #ced4da !important;
+}
+
+body .ui-state-disabled, body .ui-widget:disabled {
+    opacity: 1 !important;
+    cursor: not-allowed;
+    background-color: #f5f5f5 !important;
+}
+
+body .ui-datepicker table {
+    font-size: 13px !important;
+    margin: 0 !important;
+}
+
+body .ui-datepicker table th {
+    padding: 0.1em !important;
+}
+
+body .ui-datepicker table td {
+    padding: 0.1em !important;
+}
+
+body .ui-datepicker {
+    padding: 0.6em 0.6em 0 0.6em !important;
+}
+
+body .ui-datepicker .ui-timepicker {
+    font-size: 12px !important;
+    margin-top: 5px !important;
+    padding: 0 !important;
+}
+
+body .ui-datepicker.ui-datepicker-timeonly .ui-timepicker {
+    border-top: 0 none !important;
+    margin-top: 2px !important;
+}
+
+body .ui-widget {
+    font-size: 14px !important;
+}
+
+body .ui-datepicker table td > a, body .ui-datepicker table td > span {
+    padding: 0.4em !important;
+}
+
+body .ui-button.ui-button-text-only .ui-button-text {
+    padding: 0 !important;
+}
+
+body .ui-datepicker-buttonbar .ui-g .ui-g-6 {
+    padding: 0px 7px !important;
+}
+
+body .ui-datepicker-buttonbar .ui-g .ui-g-6  button{
+    width: 100% !important;
+}
+
+.dp-cont {
+    padding: 0 !important;
+    margin-left: 2px !important;
+}
+
+body .ui-datepicker.ui-datepicker-timeonly {
+    min-width: 170% !important;
+}

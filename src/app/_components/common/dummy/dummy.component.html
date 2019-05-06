@@ -127,3 +127,36 @@
 </div>
 
 <app-special-lov></app-special-lov>
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>Test</p>
+
+<div class="container">
+    <br/>
+    <div class="input-group">
+        <div class="col-sm-3">
+            <datepicker [value]="testVal" (outVal)="testVal=$event"></datepicker>
+        </div>
+        <div class="col-sm-3">
+            <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+        </div>
+        <div class="col-sm-2">
+            <datepicker [showIcon]="true" [type]="'date'" [required]="true" [value]="testDate" (outVal)="testDate=$event" [minDate]="'2019-05-06'"></datepicker>
+        </div>
+        <div class="col-sm-2">
+            <datepicker [type]="'time'" [value]="testTime" (outVal)="testTime=$event"></datepicker>
+        </div>
+        <div class="col-sm-2">
+            <datepicker [type]="'time'" [textAlign]="'center'" [disabled]="true"></datepicker>
+        </div>
+    </div>
+</div>
+
+<button (click)="test()">Test</button>
