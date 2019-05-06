@@ -236,7 +236,7 @@
                                         <!-- <select class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="authorization">
                                             <option *ngFor="let list of approveList" [value]="list.userId">{{list.userName}}</option>
                                         </select> -->
-                                        <button class="cust-btn" (click)="approve($event)" style="margin-left: 38px;">{{authorization !== userName ? 'For Approval' : 'Approve'}}</button>
+                                        <button class="cust-btn" (click)="approve($event)" style="margin-left: 38px;" [class.cust-btn-disabled]="this.statusDesc.toUpperCase() === 'APPROVED'">{{authorization !== userName ? 'For Approval' : 'Approve'}}</button>
                                     </div>
                                 </div>
                                 <!-- <div class="col-sm-4" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
