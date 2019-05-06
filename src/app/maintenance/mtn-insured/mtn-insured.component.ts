@@ -22,7 +22,7 @@ export class MtnInsuredComponent implements OnInit {
     passData: any = {
         tableData: [],   
         tHeader: ['Insured Id', 'Insured Name','Address'],
-        dataTypes: ['sequence-3', 'text', 'text'],
+        dataTypes: ['sequence-6', 'text', 'text'],
     keys:['insuredId', 'insuredName','address'],
         resizable: [],     
         colSize: ['74px','374px','374px'],      
