@@ -6,6 +6,8 @@
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
 					<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
 						<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="passData.tableData=$event">
+							<button controls-l class="cust-btn" class="cust cust-btn" *ngIf="isChecked" (click)="confirmDelete()">Delete</button>
+							<button controls-l class="cust-btn" class="cust cust-btn dsbld" *ngIf="!isChecked" tabindex="-1">Delete</button>
 						</app-cust-editable-non-datatable>
 
 						<div class="form-row" style="margin-top: 40px !important;">
@@ -21,7 +23,6 @@
 
 					</div>
 				</fieldset>
-
 				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
 					<div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
 						<label class="form-control-sm col-sm-1">Created By</label>
@@ -54,3 +55,7 @@
 <app-confirm-save (onYes)="saveTypeOfCession()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveTypeOfCession('cancel')" [url]="'/'" ></app-cancel-button>
+
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">

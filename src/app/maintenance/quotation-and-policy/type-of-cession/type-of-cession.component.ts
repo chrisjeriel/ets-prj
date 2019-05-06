@@ -32,7 +32,7 @@ export class TypeOfCessionComponent implements OnInit {
         searchFlag          : true,
         pageLength          : 10,
         addFlag             : true,
-        deleteFlag          : true,
+        //deleteFlag          : true,
         keys                : ['cessionId','cessionAbbr','description','activeTag','remarks'],
         uneditable          : [true,false,false,false,false],
         pageID              : 'mtn-cession',
@@ -52,9 +52,13 @@ export class TypeOfCessionComponent implements OnInit {
     dialogMessage	: string = '';
     cancelFlag      : boolean;
     warnMsg			: string = '';
-    arrCessionDesc	: any[];
+    arrTableDesc	: any[] = [];
+    isChecked		: boolean = false;
+    usedInQuote		: boolean = false;
+    loading			: boolean;
 
-  	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns : NotesService, private quotationService: QuotationService) { }
+
+  	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns : NotesService, private quotationService: QuotationService, private modalService : NgbModal) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Mtn | Type of Cession'); 
@@ -75,10 +79,9 @@ export class TypeOfCessionComponent implements OnInit {
 		this.cancelFlag = cancelFlag !== undefined;
 		this.dialogIcon = '';
         this.dialogMessage = '';
-
+        
 		for(var i=0;i<this.passData.tableData.length;i++){
             var rec = this.passData.tableData[i];
-            console.log(rec);
             if(rec.cessionAbbr === '' || rec.cessionAbbr === null || rec.description === '' || rec.description === null){
             	 setTimeout(()=>{
                     $('.globalLoading').css('display','none');
@@ -111,42 +114,33 @@ export class TypeOfCessionComponent implements OnInit {
 					});
             	}else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
             		this.cessionReq = {
-					  	"deleteTypeOfCession": [
+						"deleteTypeOfCession": [
 							{
-					      	"activeTag"		: '',
-					      	"cessionAbbr"	: '',
-					      	"cessionId"		: rec.cessionId,
-					      	"createDate"	: '',
-					      	"createUser"	: '',
-					      	"description"	: '',
-					      	"remarks"		: '',
-					      	"updateDate"	: '',
-					      	"updateUser"	: ''
-					    	}
-					  	],
-					  	"saveTypeOfCession": []
-            		}
-            		this.mtnService.saveMtnTypeOfCession(JSON.stringify(this.cessionReq))
+						   	"activeTag"		: '',
+						   	"cessionAbbr"	: '',
+						   	"cessionId"		: rec.cessionId,
+						   	"createDate"	: '',
+						   	"createUser"	: '',
+						   	"description"	: '',
+						   	"remarks"		: '',
+						   	"updateDate"	: '',
+						   	"updateUser"	: ''
+						  	}
+						],
+						"saveTypeOfCession": []
+	            	}
+
+	            	this.mtnService.saveMtnTypeOfCession(JSON.stringify(this.cessionReq))
 					.subscribe(data => {
 						console.log(data);
 						$('app-sucess-dialog #modalBtn').trigger('click');
 						this.getTypeofCession();
 					});
+	         
             	}
             }
         }
 
-	}
-
-	getQuotationProcessing(){
-		this.quotationService.getQuoProcessingData([])
-		.subscribe(data => {
-			console.log(data);
-			var rec = data['quotationList'];
-			for(let i of rec){
-				this.arrCessionDesc.push(i.cessionDesc);
-			}
-		});
 	}
 
 	onRowClick(event){
@@ -155,6 +149,22 @@ export class TypeOfCessionComponent implements OnInit {
 	        this.cessionData.updateUser = event.updateUser;
 	        this.cessionData.createDate = this.ns.toDateTimeString(event.createDate);
 	        this.cessionData.createUser = event.createUser;
+		}
+
+		var counter = 0;
+		this.arrTableDesc = [];
+		for(var i = 0 ; i<this.passData.tableData.length; i++){
+			if(this.passData.tableData[i].checked === true){
+				counter++;
+				this.arrTableDesc.push(this.passData.tableData[i].description);
+			}
+		}
+
+		if(counter<1){
+			this.isChecked = false;
+
+		}else{	
+			this.isChecked = true;
 		}
 	}
 
@@ -167,7 +177,37 @@ export class TypeOfCessionComponent implements OnInit {
 	}
 
 	showWarnLov(){
+		this.table.refreshTable();
+		this.warnMsg = 'You are not allowed to delete a Type of Cession that is already used in quotation processing.';
 		$('#warnMdl > #modalBtn').trigger('click');
+	}
+
+	confirmDelete(){
+		this.loading = true;
+		this.quotationService.getQuoProcessingData([])
+		.subscribe(data => {
+
+			var rec = data['quotationList'];
+			this.loading = false;
+			this.usedInQuote = false;
+			for(let i of rec){
+				for(var j=0;j<this.arrTableDesc.length;j++){
+					if(this.arrTableDesc[j].toUpperCase() === i.cessionDesc.toUpperCase()){
+						this.usedInQuote = true;
+						break;
+					}
+				}
+				
+			}
+
+			if(this.usedInQuote === true){
+				this.showWarnLov();
+			}else{
+				this.table.confirmDelete();
+			}
+
+		});
+	
 	}
 
 }

@@ -228,6 +228,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickDelete() {
+        console.log('wweeeererererererererere');
         if(this.passData.checkFlag){
             for(let i = 0; i<this.selected.length;i++){
                if(!this.selected[i].add){
