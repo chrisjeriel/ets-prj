@@ -378,64 +378,30 @@ export class PolAlopComponent implements OnInit {
 
       if(data.policy != null){
         var dataInfos = data.policy.alop.alopItem;
-
+        
         for(var i=0;i<dataInfos.length;i++){
           this.passDataCar.tableData.push(dataInfos[i]);
         }
 
         this.table.refreshTable();
       } else {
-         this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
-           if (data != null) {
-             this.underwritingService.getPolAlopItem(this.policyNo, this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
-                 if (data.policy != null) {
-                     var dataInfos = data.policy.alop.alopItem;
+         // this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+         //   if (data != null) {
+         //     this.underwritingService.getPolAlopItem(this.policyNo, this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
+         //         if (data.policy != null) {
+         //             var dataInfos = data.policy.alop.alopItem;
 
-                    for(var i=0;i<dataInfos.length;i++){
-                      this.passDataCar.tableData.push(dataInfos[i]);
-                    }
+         //            for(var i=0;i<dataInfos.length;i++){
+         //              this.passDataCar.tableData.push(dataInfos[i]);
+         //            }
 
-                    this.table.refreshTable();
-                 }
-             });
-           }
-         });
+         //            this.table.refreshTable();
+         //         }
+         //     });
+         //   }
+         // });
       }
       
-      /*this.passDataCar.tableData = [];
-      this.passDataEar.tableData = [];
-
-      if (data.policy != null && data.policy.alop.length > 0) {
-        var dataInfos = data.policy.alop[0].alopItem;
-
-        if(this.policyNo === "CAR") {
-          for(var i=0; i< dataInfos.length; i++){
-            this.passDataCar.tableData.push( {"itemNo": dataInfos[i].itemNo, 
-                                              "description": dataInfos[i].description, 
-                                              "lossMin": dataInfos[i].lossMin,
-                                              "quantity": dataInfos[i].quantity,
-                                              "importance": dataInfos[i].importance,
-                                              "createDate": dataInfos[i].createDate,
-                                              "createUser": dataInfos[i].createUser,
-                                              "updateDate": dataInfos[i].updateDate,
-                                              "updateUser": dataInfos[i].updateUser} );
-          }
-        } else {
-          for(var i=0; i< dataInfos.length; i++){
-            this.passDataEar.tableData.push( {"itemNo": dataInfos[i].itemNo, 
-                                              "quantity": dataInfos[i].quantity, 
-                                              "description": dataInfos[i].description, 
-                                              "importance": dataInfos[i].importance, 
-                                              "lossMin": dataInfos[i].lossMin,
-                                              "createDate": dataInfos[i].createDate,
-                                              "createUser": dataInfos[i].createUser,
-                                              "updateDate": dataInfos[i].updateDate,
-                                              "updateUser": dataInfos[i].updateUser } );
-          }
-        }
-        
-        this.table.refreshTable();
-      }*/
     });
   }
 
