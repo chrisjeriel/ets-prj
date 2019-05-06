@@ -125,6 +125,7 @@ import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-informa
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
+import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 
 const appRoutes: Routes = [
 
@@ -259,6 +260,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-insured', component: InsuredListComponent},
     { path: 'insured-mtn', component: InsuredComponent },
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent },
+    { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

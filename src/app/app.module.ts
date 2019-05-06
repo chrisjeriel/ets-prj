@@ -354,6 +354,7 @@ import { InsuredListComponent } from './maintenance/quotation-and-policy/insured
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
+import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 
 
 
@@ -716,6 +717,7 @@ import { SpecialLovComponent } from './_components/special-lov/special-lov.compo
         InsuredComponent,
         TypeOfCessionComponent,
         SpecialLovComponent,
+        IntermediaryListComponent,
     ],
 
     providers: [

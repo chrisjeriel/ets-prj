@@ -310,5 +310,28 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnInsuredLov', {params});
     }
 
+    getMtnIntmList(searchParams : any[]){
+		var params;
+
+		if(searchParams.length < 1){
+			params = new HttpParams()
+				.set('intmId','')
+				.set('intmName','')
+				.set('activeTag','')
+				.set('corpTag','')
+				.set('vatTag','')
+				.set('address','')
+				.set('contactNo','')
+				.set('oldIntmId','')
+		}else{
+			params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+		}
+		
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMntIntermediary", {params});
+	}
+
 }
 
