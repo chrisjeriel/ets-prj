@@ -49,7 +49,7 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
     }
 
 
-    open(content) {
+    open(content?) {
         $('.globalLoading').css('display','none');
         this.modalService.dismissAll();
         this.modalRef = this.modalService.open(this.test, this.mdlOptions);
