@@ -448,6 +448,7 @@ export class PolCoverageComponent implements OnInit {
 
   getPolCoverageAlt(){
     this.underwritingservice.getUWCoverageAlt(this.parameters[0],this.parameters[1],this.parameters[2],this.parameters[3],this.parameters[4],this.parameters[5]).subscribe((data: any) => {
+      console.log(data)
       this.passData.tableData = [];  
       this.prevtotalSi = 0;
       this.prevtotalPrem = 0;
@@ -638,12 +639,12 @@ export class PolCoverageComponent implements OnInit {
           }
         }
 
-        this.deductiblesTable.refreshTable();
+        this.sectionTable.refreshTable();
 
         this.altCoverageData.prevtotalSi     = this.prevtotalSi;
         this.altCoverageData.prevtotalPrem   = this.prevtotalPrem;
-        this.altCoverageData.alttotalSi     = this.alttotalSi;
-        this.altCoverageData.alttotalPrem   = this.alttotalPrem;
+        this.altCoverageData.alttotalSi      = this.alttotalSi;
+        this.altCoverageData.alttotalPrem    = this.alttotalPrem;
         this.altCoverageData.comtotalSi      = this.comtotalSi;
         this.altCoverageData.comtotalPrem    = this.comtotalPrem;
         //this.altCoverageData.pctShare        = this.altCoverageData.totalValue == 0 || isNaN(this.altCoverageData.totalValue)? 0:(this.altCoverageData.comtotalSi/this.altCoverageData.totalValue)*100; 
@@ -672,9 +673,9 @@ export class PolCoverageComponent implements OnInit {
 
         this.getEditableAlt();
 
-        this.altCoverageData.pctShare = (this.comtotalSi / parseFloat(this.altCoverageData.totalValue.toString().split(',').join(''))*100);
+        //this.altCoverageData.pctShare = (this.comtotalSi / parseFloat(this.altCoverageData.totalValue.toString().split(',').join(''))*100);
         this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
-        this.altCoverageData.totalValue = (this.comtotalSi / parseFloat(this.altCoverageData.pctShare.toString().split(',').join(''))*100);
+        //this.altCoverageData.totalValue = (this.comtotalSi / parseFloat(this.altCoverageData.pctShare.toString().split(',').join(''))*100);
         this.altCoverageData.totalValue = this.decimal.transform(this.altCoverageData.totalValue, '1.2-2');
         this.altCoverageData.pctPml = this.decimal.transform(this.altCoverageData.pctPml,'1.2-2');
         /*this.focusCalc();
@@ -1048,12 +1049,12 @@ export class PolCoverageComponent implements OnInit {
     this.passDataTotalPerSection.tableData[2].sumInsured = this.sectionIIISi;
     this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
 
-    console.log(this.coverageData.totalSi)
+    /*console.log(this.coverageData.totalSi)
     console.log(this.coverageData.totalValue)
     this.coverageData.pctShare = (this.totalSi / parseFloat(this.coverageData.totalValue.toString().split(',').join(''))*100);
     this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
     this.coverageData.totalValue = (this.totalSi / parseFloat(this.coverageData.pctShare.toString().split(',').join(''))*100);
-    this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
+    this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');*/
     /*this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
     this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;*/
     this.coverageData.totalSi = this.totalSi;
