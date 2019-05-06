@@ -790,9 +790,9 @@ export class PolCoverageComponent implements OnInit {
               this.coverageData.sectionIIPrem = this.sectionIIPrem;
               this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
              
-              this.coverageData.pctShare   = (this.totalSi / parseFloat(this.coverageData.totalValue.toString().split(',').join(''))*100);
+              //this.coverageData.pctShare   = (this.totalSi / parseFloat(this.coverageData.totalValue.toString().split(',').join(''))*100);
               this.coverageData.pctShare   = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
-              this.coverageData.totalValue = (this.totalSi / parseFloat(this.coverageData.pctShare.toString().split(',').join(''))*100);
+              //this.coverageData.totalValue = (this.totalSi / parseFloat(this.coverageData.pctShare.toString().split(',').join(''))*100);
               this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
               this.coverageData.pctPml     = this.decimal.transform(this.coverageData.pctPml,'1.2-2');
              this.getEditableCov();
@@ -1058,6 +1058,8 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');*/
     /*this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
     this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;*/
+    this.coverageData.pctShare = (this.totalSi / parseFloat(this.coverageData.totalValue.toString().split(',').join(''))*100);
+    this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
     this.coverageData.totalSi = this.totalSi;
     this.coverageData.totalPrem = this.totalPrem;
     this.coverageData.sectionISi = this.sectionISi;
@@ -1070,9 +1072,9 @@ export class PolCoverageComponent implements OnInit {
     this.getEditableCov();
 
     if(this.coverageData.totalSi > parseFloat(this.coverageData.totalValue.toString().split(',').join(''))){
-      this.dialogIcon = 'info';
-      this.dialogMessage = 'Total Sum Insured exceeds contract value.';
-      this.successDiag.open();
+      this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";
+      this.promptType = "totalval";
+      this.modal.open();
     }
   }
 
