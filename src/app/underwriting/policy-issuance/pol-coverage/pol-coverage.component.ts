@@ -469,16 +469,18 @@ export class PolCoverageComponent implements OnInit {
         for (var i = 0; i< dataTable.length;i++){
           this.passData.tableData.push(dataTable[i]);
         }
-
-        this.passData.tableData.forEach(a=>{
-                    console.log(data.policy.policyId + " - " + this.policyInfo.policyId);
-
-                    if(data.policy.policyId!= this.policyInfo.policyId){
-                         // a.policyId = this.policyInfo.policyId;
-                         a.edited = true;
-                         this.sectionTable.markAsDirty();
-                    }
-                })
+        if(data.policy.policyId != this.policyInfo.policyId){
+          console.log(data)
+           this.passData.tableData.forEach(a=>{   
+           a.edited = true;
+           this.sectionTable.markAsDirty();
+             a.sumInsured = 0;
+             a.premAmt = 0;
+             a.discountTag = 0;
+            
+        })
+        }
+       
           
         for(var j=0;j<this.passData.tableData.length;j++){ 
 
