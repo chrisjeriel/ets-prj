@@ -658,7 +658,7 @@ saveQuoteOptionAll(cancelFlag?){
     else
       this.coversDeductiblesData.disableAdd = true
 
-    if(data == null)
+    if(data == null || data ==  '')
       this.coversDeductiblesData.tableData  = [];
     else if( data.deductiblesList == undefined){
       this.getDefaultDeductibles(this.coversDeductiblesData,this.covDeductibleTable,data);
