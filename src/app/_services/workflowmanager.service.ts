@@ -33,6 +33,24 @@ export class WorkFlowManagerService {
         return this.http.post(environment.prodApiUrl +'/work-flow-service/saveReminders',JSON.stringify(params),header);
     }
 
+    retrieveWfmNotes(noteId: string, assignedTo: string , createUser: string ){
+         const params = new HttpParams()
+                .set('noteId', noteId)
+                .set('assignedTo', assignedTo)
+                .set('createUser', createUser);
+
+        return this.http.get(environment.prodApiUrl + '/work-flow-service/retNotes', {params});
+    }
+
+    saveWfmNotes(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl +'/work-flow-service/saveNotes',JSON.stringify(params),header);
+    }
+
 
 
 }

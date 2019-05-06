@@ -5,6 +5,7 @@ import { WfReminderFormComponent } from '@app/home/wf-reminders/wf-reminder-form
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 
 interface Country {
@@ -67,6 +68,7 @@ const COUNTRIES: Country[] = [
 export class WfRemindersComponent implements OnInit {
   @ViewChild(WfReminderFormComponent) wfReminder : WfReminderFormComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(ConfirmSaveComponent) confirmsaveDiag: ConfirmSaveComponent;
 
   countries = COUNTRIES;
   currentUser : string;
@@ -231,10 +233,12 @@ export class WfRemindersComponent implements OnInit {
 
     if (updateMode){
       status = 'C';
-      $('#confirmModal #modalBtn').trigger('click');
+      console.log(status);
+      $('#confirmModalReminder #modalBtn').trigger('click');
     } else {
       status = 'D';
-      $('#confirmModal #modalBtn').trigger('click');
+      console.log(status);
+      $('#confirmModalReminder #modalBtn').trigger('click');
     }
     this.updateReminderInfoParam = {};
 
@@ -272,10 +276,11 @@ export class WfRemindersComponent implements OnInit {
   }
 
   saveReminder(event){        
-    $('#confirm-save #modalBtn2').trigger('click');
+    this.confirmsaveDiag.saveModal.openNoClose();
   }
 
-  prepareParam(cancelFlag?){
+  prepareParamReminder(cancelFlag?){
+      this.modalService.dismissAll();
       this.cancelFlag = cancelFlag !== undefined;
 
        var saveReminderInfoParam = {
@@ -294,7 +299,6 @@ export class WfRemindersComponent implements OnInit {
 
        console.log(saveReminderInfoParam);
        this.saveReminderParams(saveReminderInfoParam);
-
     }
 
     saveReminderParams(obj){
@@ -328,7 +332,7 @@ export class WfRemindersComponent implements OnInit {
 
 
 
-  onOkSuccessDiag(obj){
+  onOkSuccessDiagReminder(obj){
     if (obj === 'openReminderMdl'){
       this.modalService.dismissAll();
       $('#reminderModal #modalBtn').trigger('click');

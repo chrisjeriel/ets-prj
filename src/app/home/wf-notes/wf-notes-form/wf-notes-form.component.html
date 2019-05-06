@@ -1,0 +1,49 @@
+<button id="noteModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button>
+<app-modal id="showNote" class="d-none" [modalSize]="'success-modal-size'" #modal>
+      <div header>View Note</div>
+   <div body>
+        <div layout="row" layout-wrap layout-align="center center">
+            <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
+                <fieldset class="scheduler-border col-sm" style="width: 550px">
+                    <div class="form-row custom-row-inline-inset">
+              <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
+                <input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="title" [disabled]="ViewMode">
+              </div>
+              <div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
+                <label class="form-control-sm col-sm-2" for="inputReminder">Notes</label>
+                <textarea id="inputReminder" class="form-control form-control-sm cust-sm col-sm-10" rows="6" style="font-size: 11px;" appRequired [(ngModel)]="notes" [disabled]="ViewMode"> </textarea>
+              </div>
+               <div class="input-group" style="margin: -10px 0 0 0;">
+                <label class="form-control-sm col-sm-2" for="inputAssignTo">Assign To</label>
+                <input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="userId" disabled>
+              </div>
+            </div>
+                </fieldset>
+            </div>
+            <div class="input-group" style="margin: 5px 0 -10px 0 ! important;justify-content: center;" >
+                 <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Close</a></button>
+                 <button type="button" class="cust-btn" (click)="onClickSave();" [disabled]= disablebtnBool><a>Save</a></button>
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center w-100" style="justify-content: center;margin: 0px 0 0 6px ! important">
+      <fieldset class="scheduler-border col-sm" style="width: 550px! important;padding: 0 ! important; margin-top: 0px ! important">
+        <div class="row col-sm" style="margin: 0px 0 0px 0 ! important">
+            <div class="input-group">
+        <label class="form-control-sm " style="margin: 0 0 0 -7px" >Created By</label>
+        <label class="form-control-sm col-sm-3" style="margin: 0 0 0 10px">Date Created</label>
+        <label class="form-control-sm col-sm-3" style="margin: 0 0 0 12px">Last Update By</label>
+        <label class="form-control-sm col-sm-3" style="margin: 0 0 0 -15px">Last Update</label>
+      </div>
+       <div class="input-group" style="margin: 0px 0 12px 0 ! important">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="createdBy" disabled >
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="dateCreated" style="margin: 0 0 0 5px" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="updatedBy" style="margin: 0 0 0 5px" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="lastUpdate" style="margin: 0 0 0 5px" disabled >
+      </div>
+        </div>
+      </fieldset>
+    </div>
+    <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag();"></app-sucess-dialog>
+</app-modal>

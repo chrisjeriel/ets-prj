@@ -1,4 +1,3 @@
-
 <div id="reminderDiv" class="reminder-container" style="border: 1px solid #c5c3c3; margin-bottom: .75em; padding: 1em; max-height: 400px; overflow: auto; overflow-y:scroll  ">
 	<div>
 		<div class="row">
@@ -128,7 +127,11 @@
 	</div>
 </div>
 
-<app-modal class="d-none" id="confirmModal">
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="globalLoading" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999;display: none">
+<div class="globalLoading" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);display: none">
+</div>
+
+<app-modal class="d-none" id="confirmModalReminder">
     <div header>Confirmation</div>
     <div body *ngIf=updateMode>Are you sure you want to complete this reminder?</div>
     <div body *ngIf=!updateMode>Are you sure you want to delete this reminder?</div>
@@ -138,9 +141,10 @@
     </div>
 </app-modal>
 
+
 <app-wf-reminder-form id="reminderModal" (onYes)="saveReminder($event)"></app-wf-reminder-form>
-<app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar);"></app-sucess-dialog>
+<app-confirm-save (onYes)="prepareParamReminder();"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiagReminder(onOkVar);"></app-sucess-dialog>
 
 
 
