@@ -95,7 +95,7 @@ export class PolCoverageComponent implements OnInit {
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 'unli',
-    widths:[50,58,220,125,100,125,35],
+    widths:[0,0,210,125,100,125,0,0],
     magnifyingGlass: ['coverName'],
     uneditable:[true,true,false,false,false,false,false,false],
     keys:['section','bulletNo','coverName','cumSi','premRt','cumPrem','discountTag','addSi'],
@@ -147,7 +147,8 @@ export class PolCoverageComponent implements OnInit {
         tableData: [["SECTION I",null,null],["SECTION II",null,null],["SECTION III",null,null]],
         keys:['section','sumInsured','premium'],
         uneditable:[true,true,true],
-        pageLength:3
+        pageLength:3,
+        widths: [1,'auto','auto']
     };
 
   passDataCATPerils: any = {
@@ -354,6 +355,12 @@ export class PolCoverageComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
+    //added by Neco 05/03/2019
+      if(!this.alteration){
+        this.passDataDeductibles.pageLength = 5;
+      }
+    //end neco
+
     this.policyId = this.policyInfo.policyId;
 
     this.sub = this.route.params.subscribe(params => {

@@ -1,3 +1,4 @@
+<!-- NON-ALTERATION SCREEN -->
 <ng-container *ngIf="!alteration">
  <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;" *ngIf="!policyInfo.fromSummary">
   <legend class="scheduler-border">Policy Record Info</legend>
@@ -19,31 +20,122 @@
     </div>
   </div>
 </fieldset>
-<fieldset class="scheduler-border">
-  <legend class="scheduler-border">Section Covers</legend>
-  <div class="test row" style="margin-top: 0px !important; margin-bottom: 2px;">
-    <div class="col-sm-6" style="margin-top: 2px !important;padding-left: 5px; padding-right: 5px"> 
-      <fieldset class="scheduler-border" style="padding-bottom: 10px !important;">
-        <!-- <app-cust-editable-non-datatable #sectionTable [passData]="passDataSectionCover" (tableDataChange)="passDataSectionCover.tableData=$event;update($event);" (newClick)="onrowClick($event)" class="d-block py-2" (clickLOV)="sectionCoversLOV($event)"></app-cust-editable-non-datatable> -->
-        <app-cust-editable-non-datatable  #sectionTable [passData]="passDataSectionCover" (newClick)="onrowClick($event)" class="d-block py-2" (tableDataChange)="passDataSectionCover.tableData=$event;update($event);" (clickLOV)="sectionCoversLOV($event)"></app-cust-editable-non-datatable>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8" style="padding-left: 0px !important; padding-right: 0px !important;min-width: 820px !important; margin-right: -29px !important;">
+      <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Section Covers</legend>
+        <div class="test row" style="margin-top: 0px !important; margin-bottom: 14px;">
+          <div class="col-sm-12" style="margin-top: 2px !important;padding-left: 5px; padding-right: 5px"> 
+            <fieldset class="scheduler-border" style="padding-bottom: 10px !important; padding-left: 7px !important; padding-right: 7px!important;">
+              <app-cust-editable-non-datatable  #sectionTable [passData]="passDataSectionCover" (newClick)="onrowClick($event)" class="d-block py-2" (tableDataChange)="passDataSectionCover.tableData=$event;update($event);" (clickLOV)="sectionCoversLOV($event)"></app-cust-editable-non-datatable>
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12" style="margin-top: -15px;padding-left: 5px;padding-right: 5px">
+            <fieldset class="scheduler-border" style="padding-bottom: 0px !important;padding-left: 7px !important;padding-right: 7px !important;">
+              <legend class="scheduler-border">Deductibles</legend>
+                <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (tableDataChange)="passDataDeductibles.tableData=$event;sectionTable.indvSelect.deductiblesSec=$event" (clickLOV)="clickDeductiblesLOV($event,'section')" class="d-block py-2"></app-cust-editable-non-datatable>
+            </fieldset>
+          </div>
+        </div>
       </fieldset>
     </div>
-    <!-- <div class="col-sm-6" style="margin-top: -15px;padding-left: 5px;padding-right: 5px">
-      <fieldset class="scheduler-border" style="padding-bottom: 0px !important;">
-        <app-cust-editable-non-datatable  #sectionTable [passData]="passDataSectionCover" (newClick)="onrowClick($event)" class="d-block py-2" (tableDataChange)="passDataSectionCover.tableData=$event;update($event);" (clickLOV)="sectionCoversLOV($event)"></app-cust-editable-non-datatable>
-      </fieldset>
-    </div> -->
-    <div class="col-sm-6" style="margin-top: -15px;padding-left: 5px;padding-right: 5px">
-      <fieldset class="scheduler-border" style="padding-bottom: 0px !important;">
-        <legend class="scheduler-border">Deductibles</legend>
-          <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (tableDataChange)="passDataDeductibles.tableData=$event;sectionTable.indvSelect.deductiblesSec=$event" (clickLOV)="clickDeductiblesLOV($event,'section')" class="d-block py-2"></app-cust-editable-non-datatable>
-      </fieldset>
+    <div class="col-sm-4" style="padding: 0px !important">
+        <div class="row">
+           <div class="col-sm-12 forced-col-sm">
+             <fieldset class="scheduler-border">
+               <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+               <div class="cust-sm">
+                 <div class="input-group" style="margin-top: -7px;">
+                   &nbsp;
+                 </div>
+                 <div class="input-group" style="margin-bottom: -13px !important">
+                   <label class="form-control-sm col-sm-4">Currency</label>
+                   <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyCd" readonly tabindex="-1">
+                   <label class="form-control-sm col-sm-3">Exch. Rt.</label>
+                   <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt" readonly appOtherRates tabindex="-1">
+                 </div>
+                 <div class="input-group" style="margin-bottom: -13px !important">
+                  <label class="form-control-sm col-sm-4">Total Sum Insured</label>
+                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalSi  | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event;" readonly appOtherRates tabindex="-1">
+                </div>
+                <div class="input-group" style="margin-bottom: 2px !important">
+                  <label class="form-control-sm col-sm-4">Total Premium</label>
+                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalPrem  | number:'1.2-2'" (ngModelChange)="coverageData.totalPrem = $event" readonly appCurrency tabindex="-1">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 forced-col-sm">
+             <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+               <legend class="scheduler-border">Total Per Section</legend>
+               <div class="cust-sm totalPerSection" >
+                <app-cust-editable-non-datatable #totalPerSection [passData]="passDataTotalPerSection"></app-cust-editable-non-datatable>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 forced-col-sm">
+            <fieldset class="scheduler-border">
+               <legend class="scheduler-border">Share Details</legend>
+               <div class="cust-sm">
+                <div class="input-group" style="margin-top: -14px;">
+                  &nbsp;
+                </div>
+                <div class="input-group" style="margin-bottom: -13px !important">
+                 <label class="form-control-sm col-sm-3">Share(%)</label>
+                 <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare" (ngModelChange)="coverageData.pctShare = $event" (blur)="pctShare($event)" style="text-align: right !important" appRequired appOtherRates>
+                 
+                 <span class="col-sm-1"></span>
+               </div>
+               <div class="input-group" style="margin-bottom: -6px !important">
+                 <label class="form-control-sm col-sm-3" style="margin-bottom: 1px;">100% Value</label>
+                 <input type="text" class="form-control form-control-sm calc" [ngModel]="coverageData?.totalValue"  style="text-align: right !important" (ngModelChange)="coverageData.totalValue = $event" (blur)="totalValue($event)" appRequired appCurrency>
+                 <span class="col-sm-1"></span>
+               </div>
+               <div class="input-group" style="margin-bottom: -6px !important">
+                 <label class="form-control-sm col-sm-3">PML(%)</label>
+                 <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.pctPml" (ngModelChange)=" coverageData.pctPml = $event" appOtherRates>
+                 <span class="col-sm-1"></span>
+               </div>
+             </div>
+           </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 forced-col-sm">
+            <fieldset class="scheduler-border" style="padding-bottom: 9px !important;">
+               <legend class="scheduler-border">Remarks</legend>
+               <div class="cust-sm">
+                 <div class="cust-sm col-sm-1"></div>
+                 <div class="row" style="margin-right: 0px; margin-bottom: 0px;">
+                  <div class="input-group" style="margin-top: -16px;">
+                    &nbsp;
+                  </div>
+                  <div class="input-group" style="margin-top: -5px;">
+                   <textarea class="form-control-sm form-control" [ngModel]="coverageData.remarks" (ngModelChange)="coverageData.remarks = $event" style="font-size: 11px; min-height: 161.5px; margin-bottom: 10px; margin-left: 13px"></textarea> 
+                 </div>
+                 <div class="input-group">
+                  <span class="col-sm-3"></span>
+                  <span class="cust-sm"></span>
+                </div>
+              </div>
+            </div>
+           </fieldset>
+          </div>
+        </div>
     </div>
   </div>
-</fieldset>
+</div>
 
 
-<div class="row">
+
+<!-- <div class="row">
   <div class="col-sm-6">
     <fieldset class="scheduler-border">
       <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
@@ -130,7 +222,35 @@
     <div class="form-group col-sm">
       <div class="col-md-13 text-center" style="margin-top: 10px;">
         <div class="cust-btn-container">
-          <!-- <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Deductibles</a></button> -->
+          <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
+          <button type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
+          <button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<app-modal class="hidden" id="CATPerils">
+    <div header>CAT Perils Exposure</div>
+    <div body style=" margin-top: -10px !important; width: 400px ! important">
+       <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
+    </div>                
+    <div footer style="margin-right: 145px !important;">
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="saveCatPeril();" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveCoverage()"></app-confirm-save>
+<app-cancel-button (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+</ng-container> -->
+
+<div class="form-row">
+    <div class="form-group col-sm">
+      <div class="col-md-13 text-center" style="margin-top: 10px;">
+        <div class="cust-btn-container">
           <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
           <button type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
           <button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
@@ -155,6 +275,10 @@
 <app-confirm-save (onYes)="saveCoverage()"></app-confirm-save>
 <app-cancel-button (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
 </ng-container>
+
+
+<!-- ALTERATION SCREEN -->
+
 
 <ng-container *ngIf="alteration">
   <div>
