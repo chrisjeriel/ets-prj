@@ -31,6 +31,7 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('confirmSave') confirmSave: ConfirmSaveComponent;
   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
   @ViewChild('info') mdl : ModalComponent;
+  @ViewChild('infoCov') modal : ModalComponent;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -1091,9 +1092,9 @@ export class PolCoverageComponent implements OnInit {
                   /*this.coverageData.pctShare = parseFloat('100');
                   this.pctShare(this.coverageData.pctShare);
                   this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');*/
-            this.dialogIcon = 'info';
-            this.dialogMessage = 'Share (%) will exceed to 100%.';
-            this.successDiag.open();
+            this.promptMessage = "Share (%) will exceed 100%";
+            this.promptType = "pctshare";
+            this.modal.open();
         }else{
           this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
         }
@@ -1130,9 +1131,9 @@ export class PolCoverageComponent implements OnInit {
         // this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
       }*/
       if(parseFloat(this.coverageData.totalValue.toString().split(',').join('')) < this.coverageData.totalSi){
-        this.dialogIcon = 'info';
-        this.dialogMessage = 'Total Sum Insured of the policy exceeded the total contract value of the project.';
-        this.successDiag.open();
+        this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";
+        this.promptType = "totalval";
+        this.modal.open();
       }
     }else{
       /*if(parseFloat(this.altCoverageData.totalValue.toString().split(',').join('')) < parseFloat(this.altCoverageData.comtotalSi)){
