@@ -32,7 +32,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('dedSuccess') successDlg: SucessDialogComponent;
   @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
-  @ViewChildren(SpecialLovComponent) insuredLovs: QueryList<SpecialLovComponent>;
+  @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
   @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
@@ -600,7 +600,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     }
 
   checkPolIdF(event){
-    this.underwritingService.getUWCoverageInfos(null, this.policyId).subscribe((data:any)=>{
+    let parameters = this.policyInfo.policyNo.split(/[-]/g);
+    this.underwritingService.getUWCoverageAlt(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],parameters[5]).subscribe((data: any) => {
       if(data.policy !== null){
         let alopFlag = false;
         if(data.policy.project !== null){

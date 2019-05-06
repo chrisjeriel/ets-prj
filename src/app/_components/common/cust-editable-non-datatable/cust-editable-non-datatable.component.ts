@@ -207,7 +207,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.passData.nData.add = true;
         //temporary fix delete this later
         setTimeout(()=>{this.refreshTable()},2000)
-        
+
     }
 
     processData(key: any, data: any) {
@@ -357,6 +357,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     search(event){
+        setTimeout(()=>{$('[type="search"]').removeClass('ng-dirty')},0)
         this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => !item.deleted && item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
         // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
         // if(this.displayData.length%this.passData.pageLength != 0){
