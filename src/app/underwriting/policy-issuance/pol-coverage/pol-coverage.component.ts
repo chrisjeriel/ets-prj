@@ -664,8 +664,14 @@ export class PolCoverageComponent implements OnInit {
         this.passData2.tableData[2].comAmt   = this.comsectionIIIPrem;
 
         this.getEditableAlt();
-        this.focusCalc();
-        this.focusBlur();
+
+        this.altCoverageData.pctShare = (this.comtotalSi / parseFloat(this.altCoverageData.totalValue.toString().split(',').join(''))*100);
+        this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
+        this.altCoverageData.totalValue = (this.comtotalSi / parseFloat(this.altCoverageData.pctShare.toString().split(',').join(''))*100);
+        this.altCoverageData.totalValue = this.decimal.transform(this.altCoverageData.totalValue, '1.2-2');
+        this.altCoverageData.pctPml = this.decimal.transform(this.altCoverageData.pctPml,'1.2-2');
+        /*this.focusCalc();
+        this.focusBlur();*/
     });
   }
 
@@ -774,10 +780,15 @@ export class PolCoverageComponent implements OnInit {
               this.coverageData.sectionIPrem = this.sectionIPrem;
               this.coverageData.sectionIIPrem = this.sectionIIPrem;
               this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
-           
+             
+              this.coverageData.pctShare = (this.totalSi / parseFloat(this.coverageData.totalValue.toString().split(',').join(''))*100);
+              this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
+              this.coverageData.totalValue = (this.totalSi / parseFloat(this.coverageData.pctShare.toString().split(',').join(''))*100);
+              this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
+              this.coverageData.pctPml = this.decimal.transform(this.coverageData.pctPml,'1.2-2');
              this.getEditableCov();
-             this.focusCalc();
-             this.focusBlur();
+             /*this.focusCalc();
+             this.focusBlur();*/
       });
   }
 
@@ -1030,7 +1041,12 @@ export class PolCoverageComponent implements OnInit {
     this.passDataTotalPerSection.tableData[2].sumInsured = this.sectionIIISi;
     this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
 
-    this.coverageData.pctShare = (this.totalSi/this.coverageData.totalValue*100);
+    console.log(this.coverageData.totalSi)
+    console.log(this.coverageData.totalValue)
+    this.coverageData.pctShare = (this.totalSi / parseFloat(this.coverageData.totalValue.toString().split(',').join(''))*100);
+    this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
+    this.coverageData.totalValue = (this.totalSi / parseFloat(this.coverageData.pctShare.toString().split(',').join(''))*100);
+    this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
     /*this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
     this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;*/
     this.coverageData.totalSi = this.totalSi;
@@ -1043,7 +1059,12 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
 
     this.getEditableCov();
-    this.pctShare(data);
+
+    if(this.coverageData.totalSi > parseFloat(this.coverageData.totalValue.toString().split(',').join(''))){
+      this.dialogIcon = 'info';
+      this.dialogMessage = 'Total Sum Insured exceeds contract value.';
+      this.successDiag.open();
+    }
   }
 
   pctShare(data){
@@ -1059,20 +1080,26 @@ export class PolCoverageComponent implements OnInit {
   checkPctShare(){
     if(!this.alteration){
         if(parseFloat(this.coverageData.pctShare.toString().split(',').join('')) > parseFloat('100.0000000000')){
-          this.coverageData.pctShare = parseFloat('100');
-          this.pctShare(this.coverageData.pctShare);
-          this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
+                  /*this.coverageData.pctShare = parseFloat('100');
+                  this.pctShare(this.coverageData.pctShare);
+                  this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');*/
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'Share (%) will exceed to 100%.';
+            this.successDiag.open();
         }else{
           this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
         }
     }else {
-      if(parseFloat(this.altCoverageData.pctShare.toString().split(',').join('')) > parseFloat('100.0000000000')){
-        this.altCoverageData.pctShare = parseFloat('100');
-        this.pctShare(this.altCoverageData.pctShare);
-        this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
-      }else{
-        this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
-      }
+        if(parseFloat(this.altCoverageData.pctShare.toString().split(',').join('')) > parseFloat('100.0000000000')){
+                  /*this.coverageData.pctShare = parseFloat('100');
+                  this.pctShare(this.coverageData.pctShare);
+                  this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');*/
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'Share (%) will exceed to 100%.';
+            this.successDiag.open();
+        }else{
+          this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
+        }
     }
     
   }
@@ -1089,16 +1116,26 @@ export class PolCoverageComponent implements OnInit {
 
   checktotalValue(){
     if(!this.alteration){
-      if(parseFloat(this.coverageData.totalValue.toString().split(',').join('')) < parseFloat(this.coverageData.totalSi)){
-        this.coverageData.totalValue = this.coverageData.totalSi;
-        this.totalValue(this.coverageData.totalValue);
-        this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
+      /*if(parseFloat(this.coverageData.totalValue.toString().split(',').join('')) > parseFloat(this.coverageData.totalSi)){
+        // this.coverageData.totalValue = this.coverageData.totalSi;
+        // this.totalValue(this.coverageData.totalValue);
+        // this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
+      }*/
+      if(parseFloat(this.coverageData.totalValue.toString().split(',').join('')) < this.coverageData.totalSi){
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Total Sum Insured of the policy exceeded the total contract value of the project.';
+        this.successDiag.open();
       }
     }else{
-      if(parseFloat(this.altCoverageData.totalValue.toString().split(',').join('')) < parseFloat(this.altCoverageData.comtotalSi)){
+      /*if(parseFloat(this.altCoverageData.totalValue.toString().split(',').join('')) < parseFloat(this.altCoverageData.comtotalSi)){
         this.altCoverageData.totalValue = this.altCoverageData.comtotalSi;
         this.totalValue(this.altCoverageData.totalValue);
         this.altCoverageData.totalValue = this.decimal.transform(this.altCoverageData.totalValue, '1.2-2');
+      }*/
+      if(parseFloat(this.altCoverageData.totalValue.toString().split(',').join('')) > this.altCoverageData.comtotalSi){
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Total Sum Insured of the policy exceeded the total contract value of the project.';
+        this.successDiag.open();
       }
     }
   }
@@ -1468,8 +1505,8 @@ export class PolCoverageComponent implements OnInit {
         }
     }
     
-    console.log('comtotalSi - ' + this.altCoverageData.comtotalSi)
-    console.log('totalVal - ' + this.altCoverageData.totalValue)
+    /*console.log('comtotalSi - ' + this.altCoverageData.comtotalSi)
+    console.log('totalVal - ' + this.altCoverageData.totalValue)*/
     this.altCoverageData.pctShare        = (this.altCoverageData.comtotalSi/this.altCoverageData.totalValue*100); 
 
     this.passData2.tableData[0].section  = 'SECTION I'; 
