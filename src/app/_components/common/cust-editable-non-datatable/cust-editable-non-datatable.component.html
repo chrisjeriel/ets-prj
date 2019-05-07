@@ -275,13 +275,13 @@ span.ui-column-resizer {
                                 </select>
                             </td>
                             <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
-                                <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData) && (passData.uneditable===undefined || !passData.uneditable[passData.uneditable.length-1])">
+                                <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData) && (passData.uneditable===undefined || !passData.uneditable[passData.uneditable.length-1]) && data.attach">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="upload(data,$event)">
                                 </button>
                                <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
-                                    <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
+                                    <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                                 </button> -->
-                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)" (click)="download(data.fileName)">
+                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileName)">
                                 </button>
                             </td>
                         </tr>

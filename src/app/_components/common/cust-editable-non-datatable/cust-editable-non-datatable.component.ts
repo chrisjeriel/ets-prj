@@ -133,6 +133,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         
         for(var i = 0 ;i<this.passData.tableData.length;i++){
+            this.passData.tableData[i].attach = false;
             this.passData.tableData[i].edited = this.passData.tableData[i].edited ? true : false;
             this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
             if(!this.passData.tableData[i].deleted){
@@ -215,6 +216,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd(event) {
+        if(this.passData.tHeader.indexOf('Actions')!=-1 || this.passData.tHeader.indexOf('Action')!=-1){
+            this.passData.nData.attach = true;
+        }
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
         this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();    
