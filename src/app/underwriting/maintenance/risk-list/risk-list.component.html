@@ -3,7 +3,7 @@
     <ngb-tabset>
         <ngb-tab title="Risk List">
             <ng-template ngbTabContent>
-                <div class="container-fluid">
+                <div class="container-fluid" style="padding: 0px">
                     <div class="row">
                         <div class="col-sm-12">
                             <app-cust-non-datatable [passData]="maintenanceRiskListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)" (export)="export()" (newRowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>

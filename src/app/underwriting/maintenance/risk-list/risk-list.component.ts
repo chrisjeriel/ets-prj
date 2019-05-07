@@ -126,7 +126,7 @@ export class RiskListComponent implements OnInit {
     
     onClickEdit(event){
         this.selected = event;
-        this.router.navigate(['/maintenance-risk',this.table.indvSelect], {skipLocationChange: true});
+        this.router.navigate(['/maintenance-risk',this.selected], {skipLocationChange: true});
     }
 
     onRowClick(data){
@@ -135,7 +135,7 @@ export class RiskListComponent implements OnInit {
 
     onRowDblClick(data){
        this.selected = data;
-       this.router.navigate(['/maintenance-risk',this.table.indvSelect], {skipLocationChange: true});
+       this.router.navigate(['/maintenance-risk',this.selected], {skipLocationChange: true});
     }
 
     //Method for DB query
