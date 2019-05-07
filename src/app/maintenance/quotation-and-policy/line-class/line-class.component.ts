@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList, ViewChild  } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { MaintenanceService, NotesService } from '@app/_services';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -8,11 +8,12 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-pol-mx-line-class',
-  templateUrl: './pol-mx-line-class.component.html',
-  styleUrls: ['./pol-mx-line-class.component.css']
+  selector: 'app-line-class',
+  templateUrl: './line-class.component.html',
+  styleUrls: ['./line-class.component.css']
 })
-export class PolMxLineClassComponent implements OnInit {
+export class LineClassComponent implements OnInit {
+
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
 
@@ -57,7 +58,7 @@ export class PolMxLineClassComponent implements OnInit {
   };
 
   constructor(private titleService: Title, private mtnService: MaintenanceService,
-              private ns: NotesService,private modalService: NgbModal) { }
+              private ns: NotesService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.titleService.setTitle('Mtn | Line Class');
@@ -95,15 +96,68 @@ export class PolMxLineClassComponent implements OnInit {
   }
 
   onClickSaveLineClass(cancelFlag?) {
-    this.cancelFlag = cancelFlag != undefined;
+    this.cancelFlag = cancelFlag !== undefined;
+    let savedData: any = {};
+    savedData.saveLineClass = [];
+    savedData.deleteLineClass = [];
 
     for (let rec of this.passData.tableData) {
+      if (rec.edited && !rec.deleted) {
+        console.log(rec);
+        savedData.saveLineClass.push(rec);
+        savedData.saveLineClass[savedData.saveLineClass.length-1].lineCd = this.line;
+        savedData.saveLineClass[savedData.saveLineClass.length-1].createUser = JSON.parse(window.localStorage.currentUser).userName;
+        savedData.saveLineClass[savedData.saveLineClass.length-1].createDate = this.ns.toDateTimeString(savedData.saveLineClass[savedData.saveLineClass.length-1].createDate);
+        savedData.saveLineClass[savedData.saveLineClass.length-1].updateUser = JSON.parse(window.localStorage.currentUser).userName;
+        savedData.saveLineClass[savedData.saveLineClass.length-1].updateDate = this.ns.toDateTimeString(savedData.saveLineClass[savedData.saveLineClass.length-1].updateDate);
+      } else if (rec.deleted) {
+        savedData.deleteLineClass.push(rec);
+        savedData.deleteLineClass[savedData.deleteLineClass.length-1].lineCd = this.line;
+        savedData.deleteLineClass[savedData.deleteLineClass.length-1].createUser = JSON.parse(window.localStorage.currentUser).userName;
+        savedData.deleteLineClass[savedData.deleteLineClass.length-1].createDate = this.ns.toDateTimeString(savedData.deleteLineClass[savedData.deleteLineClass.length-1].createDate);
+        savedData.deleteLineClass[savedData.deleteLineClass.length-1].updateUser = JSON.parse(window.localStorage.currentUser).userName;
+        savedData.deleteLineClass[savedData.deleteLineClass.length-1].updateDate = this.ns.toDateTimeString(savedData.deleteLineClass[savedData.deleteLineClass.length-1].updateDate);
+      }
+    }
 
+    if (this.validate(savedData.saveLineClass)) {
+      this.mtnService.saveMtnLineClass(JSON.stringify(savedData)).subscribe((data: any) => {
+        if (data['returnCode'] === 0) {
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = "error";
+          $('#successModalBtn').trigger('click');
+        } else {
+          this.dialogIcon = "success";
+          $('#successModalBtn').trigger('click');
+          this.table.markAsPristine();
+
+          this.retrieveLineClass();
+        }
+      });
+    } else {
+      this.dialogMessage = "Please check field values";
+      this.dialogIcon = "error";
+      $('#lineClassSuccess > #successModalBtn').trigger('click');
+
+      setTimeout(() => {$('.globalLoading').css('display', 'none');}, 0);
     }
   }
 
-  validate() {
+  validate(obj) {
+    console.log(obj);
+    var req = ['lineClassCd', 'lineCdDesc'];
+    var entries = Object.entries(obj);
 
+    for (let rec of obj) {
+      var entries = Object.entries(rec);
+
+      for (var[key, val] of entries) {
+        if ((val == '' || val == null) && req.includes(key)) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   showLineLOV(){

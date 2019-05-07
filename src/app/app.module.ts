@@ -358,6 +358,7 @@ import { SpecialLovComponent } from './_components/special-lov/special-lov.compo
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
+import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 
 
 
@@ -724,6 +725,7 @@ import { DatepickerComponent } from './_components/datepicker/datepicker.compone
         SpecialLovComponent,
         WfNotesFormComponent,
         DatepickerComponent,
+        LineClassComponent,
     ],
 
     providers: [
