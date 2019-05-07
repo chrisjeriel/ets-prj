@@ -47,7 +47,7 @@ export class WfActionsComponent implements OnInit {
   	updatedBy: null,
   	lastUpdate: null
   }
-   
+
   userInfoToMany: string;
   selected: any = null;
   selects: any[] = [];
@@ -116,30 +116,20 @@ openModal(){
 }
 
 setCheckRecords(){
-	
+
 	if(this.isEmptyObject(this.userInfoToMany)){
 	}else{
 	    var array = this.userInfoToMany.split(",");
-	}
+  }
 
-<<<<<<< HEAD
-    for( var j = 0; j < array.length; j ++){
-       	for(var i = 0; i < this.usersListing.tableData.length; i++){
-		    if(array[j] === this.usersListing.tableData[i].userId){
-	       	   this.usersListing.tableData[i].checked = true;
-	       	}
-        }  
-    }
-=======
   for( var j = 0; j < array.length; j ++){
    	   for(var i = 0; i < this.usersListing.tableData.length; i++){
       if(array[j] === this.usersListing.tableData[i].userId){
      	   this.usersListing.tableData[i].checked = true;
      	  }
-       }  
+       }
   }
->>>>>>> 1ac5eed56ea6888621b5f9465d025c13e2d676f5
-    
+
 
 }
 
@@ -166,7 +156,7 @@ confirm(){
     var records = this.selects;
 	var temp: string = "";
 		for(let rec of records){
-			temp = rec.userId + "," + temp; 
+			temp = rec.userId + "," + temp;
 		}
 	this.userInfoToMany = temp;
 	this.open(this.contentMdl);
@@ -185,12 +175,12 @@ radioBtnChange(obj){
 			case '2': {
 				this.disableAssignTo = false;
 		        this.disableAssignToMany = true;
-                break; 
+                break;
 			}
 			case '3': {
 				this.disableAssignTo = true;
 		        this.disableAssignToMany = false;
-		        break; 
+		        break;
 			}
 			case '4': {
 				this.clear('enable');
@@ -205,39 +195,39 @@ radioBtnChange(obj){
 
 handleRadioBtnChange(event){
    	this.disablebtnBool = false;
-   	switch(event.target.value) { 
-   		case '1': { 
+   	switch(event.target.value) {
+   		case '1': {
         this.reminderValue = '1';
         this.clear('enable');
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
-        break; 
-        } 
-        case '2': { 
+        break;
+        }
+        case '2': {
         this.reminderValue = '2';
         this.disableAssignTo = false;
         this.disableAssignToMany = true;
-        break; 
-        } 
-        case '3': { 
+        break;
+        }
+        case '3': {
         this.reminderValue = '3';
         this.disableAssignTo = true;
         this.disableAssignToMany = false;
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
-        break; 
-        } 
-        case '4': { 
+        break;
+        }
+        case '4': {
         this.reminderValue = '4';
         this.clear('enable');
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
         break;
-        } 
-         default: { 
-        //statements; 
-        break; 
-        } 
+        }
+         default: {
+        //statements;
+        break;
+        }
     }
 }
 
@@ -263,7 +253,7 @@ showUsersLOV(obj){
 	  $('#usersLOV #modalBtn').trigger('click');
 	  $('#usersLOV #modalBtn').addClass('ng-dirty');
 	}
-}	
+}
 
 setPreparedBy(event){
 	this.userInfo.userId = event.userId;
@@ -286,7 +276,7 @@ checkCode(ev) {
     $(ev.target).addClass('ng-dirty');
     var userId = this.userInfo.userId;
     this.userInfo = [];
-  	this.usersLov.checkCode(userId, ev);		
+  	this.usersLov.checkCode(userId, ev);
 }
 
 saveReminderValidation(){
@@ -308,45 +298,45 @@ saveReminderValidation(){
 
 
 saveReminder(obj){
-	switch(obj) { 
-	   		case '1': { 
+	switch(obj) {
+	   		case '1': {
 	   		   this.prepareParam(this.createInfo.createdBy,1);
-	        break; 
-	        } 
-	        case '2': { 
+	        break;
+	        }
+	        case '2': {
 	          if (this.isEmptyObject(this.userInfo.userName)){
     			   this.openErrorDiag();
     			  } else {
     			 	this.prepareParam(this.userInfo.userId,1);
     			  }
-	        break; 
-	        } 
-	        case '3': { 
+	        break;
+	        }
+	        case '3': {
 	       	  if (this.isEmptyObject(this.userInfoToMany)){
     			   this.openErrorDiag();
     			  } else {
             var array = this.userInfoToMany.split(',');
-              for(let i=0;i<array.length-1 ;i++){ 
+              for(let i=0;i<array.length-1 ;i++){
                   this.prepareParam(array[i],array.length-1);
               }
     			  }
-	        break; 
-	        } 
-	         case '4': { 
-	        
 	        break;
-	        } 
-	         default: { 
-	        //statements; 
-	        break; 
-	        } 
+	        }
+	         case '4': {
+
+	        break;
+	        }
+	         default: {
+	        //statements;
+	        break;
+	        }
 	    }
 }
 
 checkValidTime(event){
 	if(this.isEmptyObject(event.target.value)){
     } else {
-    	var reminderTime = this.toTimeString(Date.parse(this.reminderDate));	
+    	var reminderTime = this.toTimeString(Date.parse(this.reminderDate));
 		if(this.isEmptyObject(this.alarmDate)){
 		} else {
 		  this.setAlarmTime(reminderTime,this.alarmDate);
@@ -361,7 +351,7 @@ checkValidDate(event){
 		this.alarmDate = null;
 	}else {
 		this.disableAlarmTime = false;
-		var reminderTime = this.toTimeString(Date.parse(this.reminderDate));	    
+		var reminderTime = this.toTimeString(Date.parse(this.reminderDate));
 
 		if(this.isEmptyObject(this.alarmDate)){
 		} else {
@@ -423,7 +413,7 @@ onOkSuccessDiag(obj){
 }
 
 prepareParam(assignedTo : string, length : number){
-    
+
        var saveReminderInfoParam = {
        "alarmTime"  : this.alarmDate === null || this.alarmDate === undefined ? '' : this.alarmDate,
 		   "assignedTo" : assignedTo,
@@ -442,7 +432,7 @@ prepareParam(assignedTo : string, length : number){
 /*       this.loading = true;*/
 
 	   this.saveReminderParams(saveReminderInfoParam,length);
-	  
+
 }
 
 saveReminderParams(obj, length: number){
@@ -452,11 +442,11 @@ saveReminderParams(obj, length: number){
              console.log(data);
             if(data['returnCode'] === 0) {
                 this.resultReminder.push(0)
-            } else if (data['returnCode'] === -1) {  
-                this.resultReminder.push(-1)         
+            } else if (data['returnCode'] === -1) {
+                this.resultReminder.push(-1)
             }
 
-     })        
+     })
 }
 
 saveRemindersFinal(obj){
@@ -490,7 +480,7 @@ saveSuccessReminder(){
         this.onOkVar = "closeReminderMdl";
         this.successDiag.open();
         this.alarmDate = null;
-        this.title = null; 
+        this.title = null;
         this.reminderDate = null;
         this.reminder = null;
         this.userInfo = {};

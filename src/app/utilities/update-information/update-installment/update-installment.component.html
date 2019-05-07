@@ -1,21 +1,19 @@
 <div class="cust-tabs-container">
   <h4>Policy / Utilities / Update Information</h4>
   <ngb-tabset>
-    <ngb-tab class="ngb-tab" title="Update Installment">
+    <ngb-tab title="Update Installment">
       <ng-template ngbTabContent>
-
-
         <fieldset class="scheduler-border fldst">
             <div class="form-row custom-row-inline-inset">
               <div class="input-group">
                 <div class="col-sm-2"></div>
                 <label class="form-control-sm col-sm-1">Policy No</label>
-                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "polNo[0]" (change)="search('lineCd',$event)" maxlength="7">
-                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "polNo[1]" (change)="search('year',$event)" numbers-only maxlength="4">
-                <input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "polNo[2]" (change)="search('seqNo',$event)" numbers-only maxlength="5">
-                <input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company Code" [(ngModel)] = "polNo[3]" (change)="search('cedingId',$event)" maxlength="3">
-                <input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "polNo[4]" (change)="search('coSeriesNo',$event)" numbers-only maxlength="4">
-                <input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "polNo[5]" (change)="search('altNo',$event)" numbers-only maxlength="3">
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input req" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "polNo[0]" (change)="search('lineCd',$event)" maxlength="7" appRequired>
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input req" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "polNo[1]" (change)="search('year',$event)" numbers-only maxlength="4" appRequired>
+                <input type="text" class="form-control form-control-sm col-sm   cap-input text-right req" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "polNo[2]" (change)="search('seqNo',$event)" mask="99999" (blur)="polNo[2]=pad($event,5)" numbers-only maxlength="5" appRequired>
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right req" style="margin-left: 3px;" ngbTooltip="Co Code" [(ngModel)] = "polNo[3]" (change)="search('cedingId',$event)" mask="999" (blur)="polNo[3]=pad($event,3)" maxlength="3" appRequired>
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right req" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "polNo[4]" (change)="search('coSeriesNo',$event)" mask="9999" (blur)="polNo[4]=pad($event,4)" numbers-only maxlength="4" appRequired>
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right req" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "polNo[5]" (change)="search('altNo',$event)" (blur)="polNo[5]=pad($event,3)" numbers-only maxlength="3" appRequired>
                 <span>&nbsp;</span>
                 <div><a (click)="showLOV()"><i class="fa fa-search"></i></a></div>
                 <div class="form-row">
@@ -44,8 +42,8 @@
                   </div>
                 </div>
                 <div class="col-sm-6">
-                  <div class="input-group">
-                    <label class="form-control-sm col-sm-3" style="margin-left: -86px !important;">Risk</label>
+                  <div class="input-group" style="padding-right: 38px !important;">
+                    <label class="form-control-sm col-sm-1">Risk</label>
                     <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="riskName" readonly>
                   </div>
                 </div>
@@ -59,19 +57,11 @@
                   </div>
                 </div>
                 <div class="col-sm-6">
-                  <div class="row">
-                    <div class="col-sm-4">
-                      <div class="input-group">
-                        <label class="form-control-sm col-sm-4" style="margin-left: -10px !important;">Currency</label>
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 10px;" [(ngModel)]="currency" readonly>
-                      </div>
-                    </div>
-                    <div class="col-sm-8" style="padding-right: 53px !important;">
-                      <div class="input-group">
-                        <label class="form-control-sm col-sm-4" style="margin-left: -36px !important;">Total Premium</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="totalPrem | number:'1.2-2'" readonly>
-                      </div>
-                    </div>
+                  <div class="input-group" style="padding-right: 38px !important;">
+                    <label class="form-control-sm col-sm-1" style="margin-right: 10px; margin-left: -10px"> Currency</label>
+                    <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="currency" readonly>
+                    <label class="form-control-sm col-sm-2">Total Premium</label>
+                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="totalPrem | number:'1.2-2'" readonly>
                   </div>
                 </div>
               </div>
@@ -83,7 +73,7 @@
           <fieldset class="scheduler-border">
             <legend class="scheduler-border">Installment Info</legend>
             <div class="custom-row-inline-inset">
-              <app-cust-editable-non-datatable #instllmentTable [passData]="passDataInstallmentInfo" (newClick)="updateOtherCharges($event)" (tableDataChange)="calcComm(); compute();" (onDelete)="delInst()"></app-cust-editable-non-datatable>
+              <app-cust-editable-non-datatable #instllmentTable [passData]="passDataInstallmentInfo" (newClick)="updateOtherCharges($event)" (tableDataChange)="calcComm($event); compute();" (onDelete)="delInst()"></app-cust-editable-non-datatable>
             </div>
           </fieldset>
         </div>
