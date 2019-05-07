@@ -124,6 +124,7 @@ import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spo
 import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { PolMxLineClassComponent } from './underwriting/policy-maintenance/pol-mx-line-class/pol-mx-line-class.component';
 
 const appRoutes: Routes = [
 
@@ -171,6 +172,7 @@ const appRoutes: Routes = [
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'maintenance-line', component: PolMxLineComponent },
+    { path: 'maintenance-line-class', component: PolMxLineClassComponent },
     { path: 'batch-processing', component: PolBatchProcessingComponent },
     { path: 'maintenance-deductible', component:  DeductibleComponent},
     { path: 'maintenance-risk-list', component: RiskListComponent },

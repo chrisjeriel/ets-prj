@@ -94,7 +94,7 @@ export class InwardPolBalanceComponent implements OnInit {
   ) { }
 
  ngOnInit() {
-   
+
     this.titleService.setTitle("Pol | Inward Pol Balance");
     this.fetchData();
     if(this.policyInfo.fromInq && this.policyInfo.status == "Distributed"){
@@ -134,14 +134,14 @@ export class InwardPolBalanceComponent implements OnInit {
           });
 
           this.passData.nData.dueDate = this.ns.toDateTimeString(data.policyList[0].inceptDate);
-          this.passData.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate); 
+          this.passData.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate);
         }
-        
+
       }
       this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       this.instllmentTable.refreshTable();
 
-      /*this.underwritingService.getUWCoverageInfos(null, this.policyId).subscribe((data:any)=>{
+      this.underwritingservice.getUWCoverageInfos(null, this.policyInfo.policyId).subscribe((data:any)=>{
       console.log(data);
       if(data.policy !== null){
         let alopFlag = false;
@@ -153,10 +153,10 @@ export class InwardPolBalanceComponent implements OnInit {
                  }
           }
         }
-            
+
                this.showAlop.emit(alopFlag);
       }
-    });*/
+    });
     })
   }
 

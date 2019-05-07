@@ -351,6 +351,7 @@ import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information
 import { SequenceDirective } from './_directives/sequence.directive';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { PolMxLineClassComponent } from './underwriting/policy-maintenance/pol-mx-line-class/pol-mx-line-class.component';
 
 
 
@@ -711,6 +712,7 @@ import { InsuredComponent } from './maintenance/quotation-and-policy/insured-lis
         SequenceDirective,
         InsuredListComponent,
         InsuredComponent,
+        PolMxLineClassComponent,
     ],
 
     providers: [

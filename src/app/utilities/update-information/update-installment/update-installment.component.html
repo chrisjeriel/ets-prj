@@ -3,40 +3,34 @@
   <ngb-tabset>
     <ngb-tab class="ngb-tab" title="Update Installment">
       <ng-template ngbTabContent>
-        <div>
-          <fieldset class="scheduler-border">
-            <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-            <div class="custom-row-inline-inset">
-              <div class="row">
+
+
+        <fieldset class="scheduler-border fldst">
+            <div class="form-row custom-row-inline-inset">
+              <div class="input-group">
                 <div class="col-sm-2"></div>
-                <div class="col-sm-8">
-                  <div class="input-group " style="margin-bottom: -4px !important;">
-                    <label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Policy No</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[0]" ngbTooltip="Line" (change)="search('lineCd', $event)" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[1]" style="margin-left: 3px;" (change)="search('year',$event)"
-                      ngbTooltip="Year" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-3 cap-input" [ngModel]="polNo[2]" style="margin-left: 3px;" (change)="search('seqNo',$event)" mask="99999" (blur)="polNo[2]=pad($event,5)"
-                      ngbTooltip="Sequence No" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[3]" style="margin-left: 3px;" mask="999" (blur)="polNo[3]=pad($event,3)" (change)="search('cedingId',$event)"
-                      ngbTooltip="Co Code" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-2 cap-input" [ngModel]="polNo[4]" style="margin-left: 3px;" mask="9999" (blur)="polNo[4]=pad($event,4)" (change)="search('coSeriesNo',$event)"
-                      ngbTooltip="Co Series No" appRequired>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [ngModel]="polNo[5]" style="margin-left: 3px;" (change)="search('altNo',$event)"
-                      ngbTooltip="Alt No" appRequired>
-                    <span>&nbsp;</span>
-                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
-                    <span>&nbsp;</span>
-                    <div class="text-center">
-                    <div class="cust-btn-container">
-                      <button type="button" class="cust-btn" (click)="clearFields()"><a>Clear</a></button>
-                    </div>
+                <label class="form-control-sm col-sm-1">Policy No</label>
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "polNo[0]" (change)="search('lineCd',$event)" maxlength="7">
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "polNo[1]" (change)="search('year',$event)" numbers-only maxlength="4">
+                <input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "polNo[2]" (change)="search('seqNo',$event)" numbers-only maxlength="5">
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company Code" [(ngModel)] = "polNo[3]" (change)="search('cedingId',$event)" maxlength="3">
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "polNo[4]" (change)="search('coSeriesNo',$event)" numbers-only maxlength="4">
+                <input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "polNo[5]" (change)="search('altNo',$event)" numbers-only maxlength="3">
+                <span>&nbsp;</span>
+                <div><a (click)="showLOV()"><i class="fa fa-search"></i></a></div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <div class="col-md-12 text-center">
+                      <div class="cust-btn-container">
+                        <button type="button" class="cust-btn" (click)="clearFields()"><a>Clear</a></button>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div class="col-sm-2"></div>
               </div>
             </div>
-          </fieldset>
-        </div>
+        </fieldset>
 
         <div>
           <fieldset class="scheduler-border">
@@ -50,7 +44,7 @@
                   </div>
                 </div>
                 <div class="col-sm-6">
-                  <div class="input-group" style="padding-right: 38px !important;">
+                  <div class="input-group">
                     <label class="form-control-sm col-sm-3" style="margin-left: -86px !important;">Risk</label>
                     <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="riskName" readonly>
                   </div>
@@ -68,8 +62,8 @@
                   <div class="row">
                     <div class="col-sm-4">
                       <div class="input-group">
-                        <label class="form-control-sm col-sm-4" style="margin-left: -14px !important;">Currency</label>
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;" [(ngModel)]="currency" readonly>
+                        <label class="form-control-sm col-sm-4" style="margin-left: -10px !important;">Currency</label>
+                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 10px;" [(ngModel)]="currency" readonly>
                       </div>
                     </div>
                     <div class="col-sm-8" style="padding-right: 53px !important;">
@@ -148,7 +142,7 @@
     <div header>Warning Message</div>
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
-            <div class="custom-row-inline-inset" style="text-align: center">                
+            <div class="custom-row-inline-inset" style="text-align: center">
                 <p *ngIf="warningMsg == 0">A policy must have one or more installments.</p>
                 <p *ngIf="warningMsg == 1">Policy No has a pending alteration in Alteration List Screen. <br>
                 All alterations must be posted before updating the installment.</p>
