@@ -126,7 +126,6 @@ export class IntermediaryListComponent implements OnInit {
   	}
 
   	onRowDblClick(){
-  		//this.insuredRecord.insuredId = parseInt(event.target.closest("tr").children[0].innerText);
   		this.router.navigate(['/intermediary-mtn', { intmId : this.intmRecord.intmId }], { skipLocationChange: true });
   	}
 
