@@ -492,7 +492,7 @@
 
 <!-- <app-confirm-save  id = "alterationSaving" (onYes)="alterationSave()"></app-confirm-save> -->
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
-<app-sucess-dialog id="deductibles-success" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog #successAlt id="deductibles-success" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 
 <app-modal #info hidden [btnTitle]="'Confirmation'" id="confirmationModal">
     <div header>Confirmation Message</div>

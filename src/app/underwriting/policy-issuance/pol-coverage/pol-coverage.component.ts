@@ -28,6 +28,7 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('catPerils') catPerilstable: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild('successAlt') successAlt: SucessDialogComponent;
   @ViewChild('confirmSave') confirmSave: ConfirmSaveComponent;
   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
   @ViewChild('info') mdl : ModalComponent;
@@ -353,6 +354,8 @@ export class PolCoverageComponent implements OnInit {
   sectionCoverLOVRow: number;
   promptMessage: string = "";
   promptType: string = "";
+  positiveFlag: number = 0;
+  negativeFlag: number = 0;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe) { }
@@ -1037,7 +1040,7 @@ export class PolCoverageComponent implements OnInit {
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Invalid amount. Premium amount must be positive';
         this.successDiag.open();
-        this.passDataSectionCover.tableData[i].cumSi = 0;
+        //this.passDataSectionCover.tableData[i].cumSi = 0;
       }
     }
 
@@ -1355,6 +1358,9 @@ export class PolCoverageComponent implements OnInit {
     this.alttotalPrem = 0;
     this.comtotalSi = 0;
     this.comtotalPrem = 0;
+    this.positiveFlag = 0;
+    this.negativeFlag = 0;
+    this.errorFlag = false;
 
     if(data.hasOwnProperty('lovInput')) {
       this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
@@ -1523,9 +1529,20 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
         }
+
+        if(this.passData.tableData[j].sumInsured >= 0){
+          this.positiveFlag++ ;
+        }else {
+          this.negativeFlag++;
+        }
     }
-    
-    
+    if(this.positiveFlag > 0 && this.negativeFlag > 0){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Cannot accept positive and negative at the same time.';
+      this.successAlt.open();
+      this.errorFlag = true;
+    }
+
     this.passData2.tableData[0].section  = 'SECTION I'; 
     this.passData2.tableData[0].prevSi   = isNaN(this.prevsectionISi) ? 0:this.prevsectionISi;
     this.passData2.tableData[0].prevAmt  = isNaN(this.prevsectionIPrem)? 0:this.prevsectionIPrem;
@@ -1690,7 +1707,14 @@ export class PolCoverageComponent implements OnInit {
   }
 
    onClickSaveAlt(){
-     this.confirmSave.confirmModal();
+     if(this.errorFlag){
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Cannot accept positive and negative at the same time.';
+        this.successAlt.open();
+        this.errorFlag = true;
+     }else{
+      this.confirmSave.confirmModal();
+     }
     //$('#confirm-save #confirmSave ').trigger('click');
   }
 
