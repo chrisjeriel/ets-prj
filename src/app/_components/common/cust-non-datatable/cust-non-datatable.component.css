@@ -22,6 +22,11 @@ td{
     padding: 4px !important;
     margin: 0px !important;
 }
+
+.checkbox-padding{
+    padding: 0px !important;
+}
+
 div.filler{
     padding: 6px;
 }
@@ -36,6 +41,7 @@ div.filler{
 .table-scroll{
     overflow-x: auto;
    /* overflow-y: auto; */
+   overflow-y: hidden;
     max-width: 100%;
 }
 .table-scroll-unli{
