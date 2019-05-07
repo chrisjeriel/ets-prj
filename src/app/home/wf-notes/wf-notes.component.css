@@ -1,0 +1,36 @@
+.selectdiv:after {
+    content: '\25bc';
+    font: normal normal normal 13px/1 FontAwesome;
+/*    color: #0ebeff;*/
+    right: 11px;
+    height: auto;
+    padding: 6px 0px 0px 4px;
+    border: 0px;
+    position: absolute;
+    pointer-events: none;
+}
+
+/* IE11 hide native button */
+select::-ms-expand {
+display: none;
+}
+
+.selectdiv select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  float: right;
+  margin: 3px 0px;
+  padding: 0px 24px;
+  font-size: 12px;
+  border: 0px;
+  outline: 0px;
+  -ms-word-break: normal;
+  word-break: normal;
+}

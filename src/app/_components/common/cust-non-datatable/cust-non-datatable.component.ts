@@ -225,7 +225,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.selected = [];
 
         //select the first row
-        if(this.passData.tableData.length !== 0){
+        if(this.passData.tableData.length !== 0 && this.currentIndex !== 0){
             this.onRowClick('event',this.passData.tableData[0], 0);
         }
         $('#tableRow').focus();

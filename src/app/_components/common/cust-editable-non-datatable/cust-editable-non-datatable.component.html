@@ -40,8 +40,8 @@ span.ui-column-resizer {
         <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button>
         <div class="search-filter" *ngIf="passData.searchFlag">
             <label [class.searchWithFilter]="passData.filters !== undefined">Search: &nbsp;
-                <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString"
-                (ngModelChange)="search($event)">
+                <input type="search" class="form-control-sm cust-search-form " [(ngModel)]="searchString"
+                (ngModelChange)="search($event)" novalidate>
             </label>
             <div ngbDropdown *ngIf="passData.filters !== undefined">
                 <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
@@ -211,7 +211,7 @@ span.ui-column-resizer {
                                             </ng-container>
                                         </ng-container>
                                     </select>
-                                    <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'" (ngModelChange)="data[key]=$event;data.edited=true"> 
+                                    <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'" (ngModelChange)="data[key]=$event;data.edited=true" [ngModelOptions]="{updateOn:'blur'}"> 
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key]" (ngModelChange)="data[key]=$event">
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
                                     <ng-container *ngSwitchCase="'text-editor'">

@@ -61,7 +61,7 @@ export class PolicyIssuanceComponent implements OnInit {
               this.title = "Policy / Inquiry / Policy Inquiry";
             }
             this.policyInfo.fromSummary = this.fromSummary;
-            this.exitLink = params['exitLink'];
+            this.exitLink = params['exitLink'] == undefined? '/policy-listing' : params['exitLink'];
         });   
 
   }

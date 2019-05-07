@@ -34,18 +34,18 @@
                 		<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2" for="inputDate">Reminder Date</label>
-								<input type="datetime-local" id="inputDate" class="form-control form-control-sm cust-sm col-sm-5" appRequired>
+								<input type="datetime-local" id="inputDate" class="form-control form-control-sm cust-sm col-sm-5" appRequired [(ngModel)]="reminderDate"  (change)=checkValidDate($event);>
 								<!-- <input type="time" id="inputDate" class="form-control form-control-sm cust-sm col-sm-2" style="margin: 0 0 0 5px;" appRequired> -->
 								<label class="form-control-sm col-sm-2" for="inputAlarm" style="margin: 0 0 0 -5px;">Alarm Time</label>
-								<input type="time" id="inputAlarm" class="form-control form-control-sm cust-sm col-sm-2">
+								<input type="time" id="inputAlarm" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="alarmDate" (change)=checkValidTime($event); [disabled]="disableAlarmTime">
 							</div>
 							<div class="input-group" style="margin: -10px 0 0 0;">
 								<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
-								<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10">
+								<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="title">
 							</div>
 							<div class="input-group" style="margin: -10px 0 -20px 0 ! important;">
 								<label class="form-control-sm col-sm-2" for="inputReminder">Reminder</label>
-								<textarea id="inputReminder" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired> </textarea>
+								<textarea id="inputReminder" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired [(ngModel)]="reminder"> </textarea>
 							</div>
 						</div>
                 </fieldset>
@@ -64,9 +64,9 @@
 								<label class="form-control-sm">Assign to</label>
 							</div>
 							<div class="input-group" style="margin: -10px 0 0 0;">
-								<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" (change)="checkCode($event)">
+								<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" (change)="checkCode($event)" appRequired>
 								<div id=search class="text-search-ico"><a [ngClass]="{'disabled-a': disableAssignTo}" ><i id=searchicon class="fa fa-search" (click)="showUsersLOV('1');"></i></a></div>
-								<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" disabled [(ngModel)]="userInfo.userName" >
+								<input id="inputAssignToUsername" type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" [disabled]= disableAssignTo readonly [(ngModel)]="userInfo.userName">
 							</div>
 							<div class="input-group" style="margin: 10px 0 0 0;">
 								<input id="radio3" class="form-control-sm" type="radio" name="reminderOption" value="3" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="reminderValue">
@@ -74,7 +74,7 @@
 							</div>
 							<div class="input-group" style="margin: -10px 0 0 0;">
 								 <button type="button" class="cust-btn col-sm-2" style="margin: 0 0 0 65px;" (click)="showUsersLOV('0');" [disabled]= disableAssignToMany><a>Users</a></button>
-								<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled placeholder="Assigned to 6 users" style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToMany">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToMany" appRequired>
 							</div>
 							<div class="input-group" style="margin: 10px 0 0 0;">
 								<input id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="reminderValue">
@@ -82,7 +82,7 @@
 							</div>
 							<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
 								 <button type="button" class="cust-btn" (click)="modal.close('Close click');cancelReminder();"><a>Cancel</a></button>
-								 <button type="button" class="cust-btn" (click)="saveReminder();" [disabled]= disablebtnBool><a>Save</a></button>
+								 <button type="button" class="cust-btn" (click)="saveReminderValidation();" [disabled]= disablebtnBool><a>Save</a></button>
 							</div>
 				 	</div>
                 </fieldset>
@@ -125,9 +125,7 @@
 
 
 <app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)" (cancelMdl)="open(content);"></app-mtn-users>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="showUsersLOV('0');"></app-sucess-dialog>
-
-
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar);"></app-sucess-dialog>
 
 
 

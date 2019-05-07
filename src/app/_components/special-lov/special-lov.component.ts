@@ -4,14 +4,16 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MaintenanceService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
-@Component({
-  selector: 'app-mtn-insured',
-  templateUrl: './mtn-insured.component.html',
-  styleUrls: ['./mtn-insured.component.css']
-})
-export class MtnInsuredComponent implements OnInit {
 
-  @Output() selectedData: EventEmitter<any> = new EventEmitter();
+@Component({
+  selector: 'app-special-lov',
+  templateUrl: './special-lov.component.html',
+  styleUrls: ['./special-lov.component.css']
+})
+export class SpecialLovComponent implements OnInit {
+    
+    
+    @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('paw') page: any;
     @ViewChild(ModalComponent) modal : ModalComponent;
@@ -22,8 +24,8 @@ export class MtnInsuredComponent implements OnInit {
     passData: any = {
         tableData: [],   
         tHeader: ['Insured Id', 'Insured Name','Address'],
-        dataTypes: ['sequence-6', 'text', 'text'],
-    keys:['insuredId', 'insuredName','address'],
+        dataTypes: ['sequence-3', 'text', 'text'],
+		keys:['insuredId', 'insuredName','address'],
         resizable: [],     
         colSize: ['74px','374px','374px'],      
         tabIndexes: [],   
@@ -261,10 +263,10 @@ export class MtnInsuredComponent implements OnInit {
         this.request.position = this.p;
         if(this.passData.tableData[(this.p - 1) * this.passData.pageLength] == this.fillData){
             this.loadingTableFlag = true;
-          this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
-            this.placeData(a['list']);
-            this.loadingTableFlag = false;
-          })
+        	this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
+        		this.placeData(a['list']);
+        		this.loadingTableFlag = false;
+        	})
         }
     }
 

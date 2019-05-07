@@ -164,7 +164,8 @@ export class QuotationProcessingComponent implements OnInit {
         genericBtn1: 'Copy Quote Details',
         genericBtn2: 'Internal Competition',
         exportFlag: true,
-        pagination: true
+        pagination: true,
+        pageStatus: true,
     }
 
     riskData: any = {
@@ -250,7 +251,7 @@ export class QuotationProcessingComponent implements OnInit {
                     //neco ends here
                 }
                 
-                if(rec.status.toUpperCase() === 'IN PROGRESS' || rec.status.toUpperCase() === 'REQUESTED') {
+                if(rec.status.toUpperCase() === 'IN PROGRESS' || rec.status.toUpperCase() === 'REQUESTED' || rec.status.toUpperCase() === 'PENDING APPROVAL') {
                     rec.riskName = rec.project.riskName;
                     rec.objectDesc = rec.project.objectDesc;
                     rec.site = rec.project.site;

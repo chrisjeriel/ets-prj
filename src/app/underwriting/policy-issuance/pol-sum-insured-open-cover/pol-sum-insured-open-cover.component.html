@@ -87,15 +87,15 @@
 						<div class="input-group ig-row" >
 							<div class="col-sm-2"></div>
 							<label class="form-control-sm col-sm-2">Share(%)</label>
-                            <input [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctShare" name="pctShare" appOtherRates appRequired>
+                            <input id="share" [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctShare" (ngModelChange)="cmptValue($event);" (blur)="checkPctShareRange();" name="pctShare" appOtherRates appRequired>
                             <label class="form-control-sm col-sm-1">PML(%)</label>
-                            <input [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctPml" name="pctPml" appOtherRates>
+                            <input [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctPml" name="pctPml" (blur)="checkPMLRange();" appOtherRates>
                             <div class="col-sm-2"></div> 
 						</div>
 						<div class="input-group ig-row" style="margin-top: -7px">
 							<div class="col-sm-2"></div>
 	                        <label class="form-control-sm col-sm-2">100% Value</label>
-	                        <input [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.totalValue" name="totalValue" appCurrency appRequired (ngModelChange)="cmptShrPct($event)">
+	                        <input id="value" [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.totalValue" name="totalValue" appCurrency appRequired (ngModelChange)="cmptShrPct($event);" (blur)="checkTotalValueRange();">
 	                        <div class="col-sm-2"></div>
                     	</div>
 					</div>
@@ -122,3 +122,36 @@
 <app-sucess-dialog [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')" [url]="inqFlag? 'pol-oc-inquiry' : '/open-cover-list'" ></app-cancel-button>
+
+<app-modal hidden [btnTitle]="'Confirmation'" id="confirmationModal">
+    <div header>Confirmation Message</div>
+    <div body style="text-align: center">
+       <p class="no-margin">{{promptMessage}}</p>
+       <p class="no-margin" *ngIf="promptType.toUpperCase() === 'PCTSHARE'"><strong>Share (%): {{coverageInfo.pctShare}}</strong></p>
+       <div *ngIf="promptType.toUpperCase() === 'TOTALVAL'">
+       		<div class="row">
+       			<div class="col-sm-6" style="text-align: right; padding-right: 0px">
+       				<p class="no-margin"><strong>Max SI of the Policy:</strong></p>
+       			</div>
+       			<div class="col-sm-6" style="text-align: left">
+       				<p class="no-margin"><strong>&nbsp; {{coverageInfo.totalSi | number: '1.2-2'}}</strong></p>
+       			</div>
+       		</div>
+       		<div class="row">
+       			<div class="col-sm-6" style="text-align: right; padding-right: 0px">
+       				<p class="no-margin"><strong>100% Value: </strong></p>
+       			</div>
+       			<div class="col-sm-6" style="text-align: left">
+       				<p class="no-margin"><strong>&nbsp; {{coverageInfo.totalValue | number: '1.2-2'}}</strong></p>
+       			</div>
+       		</div>
+       		<!-- <p class="no-margin"><strong>Max SI of the Policy: &nbsp; {{coverageInfo.totalSi}}</strong></p>
+       		<p class="no-margin"><strong>100% Value: &nbsp; {{coverageInfo.totalValue}}</strong></p> -->
+       </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>

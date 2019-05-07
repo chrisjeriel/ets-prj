@@ -10,6 +10,8 @@ import { DataTablesModule } from 'angular-datatables';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { QuillModule } from 'ngx-quill';
+import { DecimalPipe } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -352,6 +354,10 @@ import { SequenceDirective } from './_directives/sequence.directive';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { PolMxLineClassComponent } from './underwriting/policy-maintenance/pol-mx-line-class/pol-mx-line-class.component';
+import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
+import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
+import { CalendarModule } from 'primeng/calendar';
+import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 
 
 
@@ -370,7 +376,9 @@ import { PolMxLineClassComponent } from './underwriting/policy-maintenance/pol-m
         NgxPaginationModule,
         AngularEditorModule,
         QuillModule,
-        NgxMaskModule.forRoot()
+        NgxMaskModule.forRoot(),
+        CalendarModule,
+        BrowserAnimationsModule
     ],
     declarations: [
         AppComponent,
@@ -713,6 +721,9 @@ import { PolMxLineClassComponent } from './underwriting/policy-maintenance/pol-m
         InsuredListComponent,
         InsuredComponent,
         PolMxLineClassComponent,
+        SpecialLovComponent,
+        WfNotesFormComponent,
+        DatepickerComponent,
     ],
 
     providers: [
@@ -720,7 +731,8 @@ import { PolMxLineClassComponent } from './underwriting/policy-maintenance/pol-m
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         UnsavedChangesGuard,
         // provider used to create fake backend
-        fakeBackendProvider
+        fakeBackendProvider,
+        DecimalPipe
     ],
     entryComponents: [
 	    ConfirmLeaveComponent,

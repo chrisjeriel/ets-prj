@@ -98,7 +98,7 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [ngModel]="polAlopData.maxIndemPd" (ngModelChange)= "polAlopData.maxIndemPd = $event" (blur)="polAlopData.maxIndemPdSi = ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi)" name="maxIndemPd" appRequired>
+				<input class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [ngModel]="polAlopData.maxIndemPd" (ngModelChange)= "polAlopData.maxIndemPd = $event" (blur)="polAlopData.maxIndemPdSi = ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi)" name="maxIndemPd" appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 			<div class="input-group">
@@ -107,12 +107,12 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
-				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="text" id="fromIndem" [(ngModel)]="polAlopData.timeExc" name="timeExc"
+				<input class="form-control form-control-sm  col-sm-1" type="text" id="fromIndem" [(ngModel)]="polAlopData.timeExc" name="timeExc"
 				 style="margin-right: 133px !important;" appRequired>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="polAlopData.repInterval" name="repInterval" appRequired>
+				<input class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="polAlopData.repInterval" name="repInterval" appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 		</div>

@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuotationService, UploadService } from '@app/_services';
 import { DummyInfo } from '../../../_models';
 import { ModalComponent } from '../../../_components/common/modal/modal.component';
+import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.component';
 import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
 import { RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
@@ -16,6 +17,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class DummyComponent implements OnInit {
     //@ViewChild('content') content;
     @ViewChild(ModalComponent) modalComp: ModalComponent;
+    @ViewChild(SpecialLovComponent) specLov: SpecialLovComponent;
 
     tableData: any[] = [];
     tableData2: any[] = [];
@@ -155,10 +157,11 @@ export class DummyComponent implements OnInit {
     ttt: any = 'ttt';
     uuu: any = '';
 
-    testCont: any = 'TEST';
-    teest: any = {
-        testMask: null
-    }
+    value: any = new Date("2019-12-01T13:45");
+    icon: boolean = true;
+    testVal: string = "2019-12-01T10:55:00";
+    testTime: string = "14:32";
+    testDate: string = "2015-02-10";
 
     ngOnInit() {
         this.t.ttt = 5;
@@ -317,8 +320,9 @@ export class DummyComponent implements OnInit {
     }
 
     test() {        
-        /*console.log('aw');
-        return 'NICE' + this.ttt;*/
+        // console.log(this.testVal);
+        // console.log(this.testTime);
+        console.log(this.testDate);
     }
 
     clickTesting(){
@@ -327,13 +331,6 @@ export class DummyComponent implements OnInit {
 
     setPrincipal(data){
         console.log(data);
-    }
-
-    testVal() {
-        
-        // console.log('change' + this.teest.testMask);
-        // console.log('change' + this.t.ttt);
-        console.log('change' + this.ttt);
     }
 
     testblur() {
@@ -369,5 +366,19 @@ export class DummyComponent implements OnInit {
               console.log("Upload done");
             }
           )
+      }
+
+
+
+      paulsData:any = {
+          tHeader: ['Insured Id','Insured Name','Address'],
+          dataTypes: ['sequence-3', 'text', 'text'],
+          pageLength: 10,
+          searchFlag: true,
+          pageStatus: true,
+          pagination: true,
+          tableData: [],
+          pageID: 'Insured',
+          keys:['insuredId', 'insuredName','address']
       }
 }

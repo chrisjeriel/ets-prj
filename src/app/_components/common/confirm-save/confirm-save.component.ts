@@ -13,6 +13,8 @@ export class ConfirmSaveComponent implements OnInit {
   @ViewChild('success') sucessDialog : SucessDialogComponent;
   // @ViewChild('saveModal') saveModal: ModalComponent;
   @Output() onYes: EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Output() onNo: EventEmitter<any[]> = new EventEmitter<any[]>();
+
   dialogMessage:string;
   dialogIcon: string;
   constructor(private modalService: NgbModal) { }
@@ -39,6 +41,7 @@ export class ConfirmSaveComponent implements OnInit {
 
   onClickNo(){
     //$('.ng-dirty').removeClass('ng-dirty'); will cause nothing to save next time save is clicked
+    this.onNo.emit();
     this.modalService.dismissAll();
   }
 

@@ -322,6 +322,7 @@ export class PolAlopComponent implements OnInit {
         this.polAlopData.indemFromDate = this.polAlopData.indemFromDate == null? null:this.ns.toDateTimeString(this.polAlopData.indemFromDate);
         this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
         this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
+<<<<<<< HEAD
       }else { 
           if(this.alterFlag && this.prevPolicyId != '') {
             this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
@@ -341,6 +342,28 @@ export class PolAlopComponent implements OnInit {
             });
           }
           
+=======
+        if(data.policy.policyId != this.policyInfo.policyId && this.policyInfo.fromInq!='true'){
+          this.form.control.markAsDirty()
+        }
+      }else 
+      { 
+          // this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+          //   if (data.policy != null) {
+          //     this.underwritingService.getPolAlop(this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
+          //       if (data.policy != null) {
+          //         this.policyId = data.policy.policyId;
+          //         this.polAlopData = data.policy.alop;
+          //         this.polAlopData.issueDate = this.polAlopData.issueDate == null? null:this.ns.toDateTimeString(this.polAlopData.issueDate);
+          //         this.polAlopData.expiryDate = this.polAlopData.expiryDate == null? null:this.ns.toDateTimeString(this.polAlopData.expiryDate);
+          //         this.polAlopData.indemFromDate = this.polAlopData.indemFromDate == null? null:this.ns.toDateTimeString(this.polAlopData.indemFromDate);
+          //         this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
+          //         this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
+          //       }
+          //     });
+          //   }
+          // });
+>>>>>>> 1ac5eed56ea6888621b5f9465d025c13e2d676f5
 
           
           /*this.mtnService.getMtnInsured(this.policyInfo.principalId).subscribe((data: any) => {
@@ -360,21 +383,38 @@ export class PolAlopComponent implements OnInit {
   }
 
   getSumInsured(){
-    this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
-      if (data.policy != null) {
-        var sectionCovers = data.policy.project.coverage.sectionCovers;
-        for( var i = 0; i <sectionCovers.length;i++){
-          if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
-            this.polAlopData.annSi = sectionCovers[i].sumInsured;
-          }
-        }
-        this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
-      } else {
+   if(!this.alterFlag){
+     this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+       if (data.policy != null) {
+         var sectionCovers = data.policy.project.coverage.sectionCovers;
+         for( var i = 0; i <sectionCovers.length;i++){
+           if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
+             this.polAlopData.annSi = sectionCovers[i].sumInsured;
+           }
+         }
+         this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
+       } else {
 
-      }
-      
-    });
-  }
+       }
+       
+     });
+   }else{
+     this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+       if (data.policy != null) {
+         var sectionCovers = data.policy.project.coverage.sectionCovers;
+         for( var i = 0; i <sectionCovers.length;i++){
+           if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
+             this.polAlopData.annSi = sectionCovers[i].cumSi;
+           }
+         }
+         this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
+       } else {
+
+       }
+       
+     });
+   }
+ }
 
   getPolAlopItem() {
     this.underwritingService.getPolAlopItem(this.policyNo, this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
@@ -382,11 +422,12 @@ export class PolAlopComponent implements OnInit {
 
       if(data.policy != null){
         var dataInfos = data.policy.alop.alopItem;
-
+        
         for(var i=0;i<dataInfos.length;i++){
           this.passDataCar.tableData.push(dataInfos[i]);
         }
       } else {
+<<<<<<< HEAD
         if (this.alterFlag && this.prevPolicyId != '') {
           this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
            if (data != null) {
@@ -402,44 +443,27 @@ export class PolAlopComponent implements OnInit {
            }
          });
         }
+=======
+         // this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
+         //   if (data != null) {
+         //     this.underwritingService.getPolAlopItem(this.policyNo, this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
+         //         if (data.policy != null) {
+         //             var dataInfos = data.policy.alop.alopItem;
+
+         //            for(var i=0;i<dataInfos.length;i++){
+         //              this.passDataCar.tableData.push(dataInfos[i]);
+         //            }
+
+         //            this.table.refreshTable();
+         //         }
+         //     });
+         //   }
+         // });
+>>>>>>> 1ac5eed56ea6888621b5f9465d025c13e2d676f5
       }
 
       this.table.refreshTable();
       
-      /*this.passDataCar.tableData = [];
-      this.passDataEar.tableData = [];
-
-      if (data.policy != null && data.policy.alop.length > 0) {
-        var dataInfos = data.policy.alop[0].alopItem;
-
-        if(this.policyNo === "CAR") {
-          for(var i=0; i< dataInfos.length; i++){
-            this.passDataCar.tableData.push( {"itemNo": dataInfos[i].itemNo, 
-                                              "description": dataInfos[i].description, 
-                                              "lossMin": dataInfos[i].lossMin,
-                                              "quantity": dataInfos[i].quantity,
-                                              "importance": dataInfos[i].importance,
-                                              "createDate": dataInfos[i].createDate,
-                                              "createUser": dataInfos[i].createUser,
-                                              "updateDate": dataInfos[i].updateDate,
-                                              "updateUser": dataInfos[i].updateUser} );
-          }
-        } else {
-          for(var i=0; i< dataInfos.length; i++){
-            this.passDataEar.tableData.push( {"itemNo": dataInfos[i].itemNo, 
-                                              "quantity": dataInfos[i].quantity, 
-                                              "description": dataInfos[i].description, 
-                                              "importance": dataInfos[i].importance, 
-                                              "lossMin": dataInfos[i].lossMin,
-                                              "createDate": dataInfos[i].createDate,
-                                              "createUser": dataInfos[i].createUser,
-                                              "updateDate": dataInfos[i].updateDate,
-                                              "updateUser": dataInfos[i].updateUser } );
-          }
-        }
-        
-        this.table.refreshTable();
-      }*/
     });
   }
 

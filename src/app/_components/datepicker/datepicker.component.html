@@ -1,0 +1,5 @@
+<p-calendar *ngIf="type == 'datetime'" [ngModel]="datepickerVal" (ngModelChange)="datepickerVal=$event; valueChanged()" showTime="true" hourFormat="12" [showIcon]="showIcon" [style]="spanStyle" [inputStyleClass]="'form-control form-control-sm'" [icon]="'fa fa-calendar'" [inputStyle]="inputStyle" [showSeconds]="showSeconds" [disabled]="disabled" [dataType]="'string'" [showButtonBar]="true" [minDate]="minimumDate" (onClearClick)="clearInput()"></p-calendar>
+
+<p-calendar *ngIf="type == 'date'" [ngModel]="datepickerVal" (ngModelChange)="datepickerVal=$event; valueChanged()" [showIcon]="showIcon" [style]="spanStyle" [inputStyle]="inputStyle" [inputStyleClass]="'form-control form-control-sm'" [icon]="'fa fa-calendar'" [disabled]="disabled" [showButtonBar]="true" [minDate]="minimumDate"></p-calendar>
+
+<p-calendar *ngIf="type == 'time'" [ngModel]="datepickerVal" (ngModelChange)="datepickerVal=$event; valueChanged()" showTime="true" hourFormat="12" [showIcon]="false" [style]="{ width: '100%', position: 'absolute', display: 'contents' }" [inputStyle]="inputStyle" [inputStyleClass]="'form-control form-control-sm'" [timeOnly]="true" [disabled]="disabled"></p-calendar>
