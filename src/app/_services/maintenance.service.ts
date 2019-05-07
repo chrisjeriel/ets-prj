@@ -333,5 +333,14 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMntIntermediary", {params});
 	}
 
+	saveMtnIntermediary(params){
+		let header : any = {
+		            headers: new HttpHeaders({
+		                 'Content-Type': 'application/json'
+		            })
+		         };
+		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnIntermediary',params,header);
+	}
+
 }
 

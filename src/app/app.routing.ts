@@ -126,7 +126,7 @@ import { InsuredListComponent } from './maintenance/quotation-and-policy/insured
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
-
+import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 const appRoutes: Routes = [
 
 
@@ -172,9 +172,9 @@ const appRoutes: Routes = [
     { path: 'open-cover', component: OpenCoverComponent },
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
-    { path: 'maintenance-line', component: PolMxLineComponent },
+    { path: 'maintenance-line', component: PolMxLineComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'batch-processing', component: PolBatchProcessingComponent },
-    { path: 'maintenance-deductible', component:  DeductibleComponent},
+    { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard]},
     { path: 'maintenance-risk-list', component: RiskListComponent },
     { path: 'maintenance-risk', component: RiskFormComponent },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
@@ -255,12 +255,13 @@ const appRoutes: Routes = [
     { path: 'pol-oc-inquiry', component: PolOcInquiryComponent},
     { path: 'open-cover-list', component: PolOpenCovListComponent},
     { path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent},
-    { path: 'spoil-pol-alt', component: SpoilPolAltComponent},
+    { path: 'spoil-pol-alt', component: SpoilPolAltComponent,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
-    { path: 'maintenance-insured', component: InsuredListComponent},
-    { path: 'insured-mtn', component: InsuredComponent },
-    { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent },
+    { path: 'maintenance-insured', component: InsuredListComponent },
+    { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
+    { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

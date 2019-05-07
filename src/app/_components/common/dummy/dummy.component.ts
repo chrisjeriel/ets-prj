@@ -157,10 +157,11 @@ export class DummyComponent implements OnInit {
     ttt: any = 'ttt';
     uuu: any = '';
 
-    testCont: any = 'TEST';
-    teest: any = {
-        testMask: null
-    }
+    value: any = new Date("2019-12-01T13:45");
+    icon: boolean = true;
+    testVal: string = "2019-12-01T10:55:00";
+    testTime: string = "14:32";
+    testDate: string = "2015-02-10";
 
     ngOnInit() {
         this.t.ttt = 5;
@@ -319,8 +320,9 @@ export class DummyComponent implements OnInit {
     }
 
     test() {        
-        /*console.log('aw');
-        return 'NICE' + this.ttt;*/
+        // console.log(this.testVal);
+        // console.log(this.testTime);
+        console.log(this.testDate);
     }
 
     clickTesting(){
@@ -329,13 +331,6 @@ export class DummyComponent implements OnInit {
 
     setPrincipal(data){
         console.log(data);
-    }
-
-    testVal() {
-        
-        // console.log('change' + this.teest.testMask);
-        // console.log('change' + this.t.ttt);
-        console.log('change' + this.ttt);
     }
 
     testblur() {

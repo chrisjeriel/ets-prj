@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaintenanceService, NotesService } from '@app/_services';
 import { Router,ActivatedRoute } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { Title } from '@angular/platform-browser';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-insured',
@@ -12,6 +14,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class InsuredComponent implements OnInit {
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	@ViewChild('tabset') tabset: any;
 
   	private sub		: any;
   	cancelFlag		: boolean;
@@ -74,6 +77,8 @@ export class InsuredComponent implements OnInit {
 	  			var rec = data['insured'];
 
 	  			this.insuredRecord = rec[0];
+	  			this.insuredRecord.insuredId	= (this.insuredRecord.insuredId === '' || this.insuredRecord.insuredId === null)?'':this.insuredRecord.insuredId.toString().padStart(7,'0');
+	  			this.insuredRecord.oldInsId		= (this.insuredRecord.oldInsId === '' || this.insuredRecord.oldInsId === null)?'':this.insuredRecord.oldInsId.toString().padStart(7,'0');
 	  			this.insuredRecord.activeTag  	= this.cbFunc(this.insuredRecord.activeTag);
 				this.insuredRecord.createDate 	= this.ns.toDateTimeString(this.insuredRecord.createDate).substring(0,16);
 				this.insuredRecord.updateDate 	= this.ns.toDateTimeString(this.insuredRecord.updateDate).substring(0,16);
@@ -85,15 +90,16 @@ export class InsuredComponent implements OnInit {
 
   	onSaveMtnInsured(cancelFlag?){
   		this.cancelFlag = cancelFlag !== undefined;
-  		this.insuredRecord.insuredName 	= (this.insuredRecord.insuredName === null || this.insuredRecord.insuredId === undefined)? '' : this.insuredRecord.insuredName.trim();
+  		this.insuredRecord.insuredName 	= (this.insuredRecord.insuredName === null || this.insuredRecord.insuredName === undefined)? '' : this.insuredRecord.insuredName.trim();
   		this.insuredRecord.insuredAbbr 	= (this.insuredRecord.insuredAbbr === null || this.insuredRecord.insuredAbbr === undefined)?'':this.insuredRecord.insuredAbbr;
   		this.insuredRecord.zipCd		= (this.insuredRecord.zipCd === null || this.insuredRecord.zipCd === undefined)?'':this.insuredRecord.zipCd;
   		this.insuredRecord.insuredType	= (this.insuredRecord.insuredType === null || this.insuredRecord.insuredType === undefined)?'':this.insuredRecord.insuredType;
   		this.insuredRecord.firstName 	= (this.insuredRecord.firstName === null || this.insuredRecord.firstName === undefined)?'':this.insuredRecord.firstName;
   		this.insuredRecord.lastName		= (this.insuredRecord.lastName === null || this.insuredRecord.lastName === undefined)?'':this.insuredRecord.lastName;
+		this.insuredRecord.addrLine1	= (this.insuredRecord.addrLine1 === null || this.insuredRecord.addrLine1 === undefined)?'':this.insuredRecord.addrLine1;
 
   		if(this.insuredRecord.insuredName === '' || this.insuredRecord.insuredAbbr === '' || this.insuredRecord.zipCd === '' || this.insuredRecord.insuredType === '' ||
-  		   this.insuredRecord.corpTag === null || this.insuredRecord.vatTag === null || 
+  		   this.insuredRecord.corpTag === null || this.insuredRecord.vatTag === null ||  this.insuredRecord.addrLine1 === '' ||
   		   (this.insuredRecord.corpTag === 'I' && (this.insuredRecord.firstName === '' || this.insuredRecord.lastName === '') )){
 	  			setTimeout(()=>{
                     $('.globalLoading').css('display','none');
@@ -199,6 +205,30 @@ export class InsuredComponent implements OnInit {
 
 	addDirty(){
 		$('.cus-dirty').addClass('ng-dirty');
+	}
+
+	fmtOnBlur(){
+		this.insuredRecord.oldInsId = (this.insuredRecord.oldInsId === '' || this.insuredRecord.oldInsId === null)?'':this.insuredRecord.oldInsId.padStart(7,'0') ;
+	}
+
+	onTabChange($event: NgbTabChangeEvent) {
+		if($('.ng-dirty').length != 0 ){
+			$event.preventDefault();
+			const subject = new Subject<boolean>();
+			const modal = this.modalService.open(ConfirmLeaveComponent,{
+			        centered: true, 
+			        backdrop: 'static', 
+			        windowClass : 'modal-size'
+			});
+			modal.componentInstance.subject = subject;
+
+			subject.subscribe(a=>{
+			    if(a){
+			        $('.ng-dirty').removeClass('ng-dirty');
+			        this.tabset.select($event.nextId)
+			    }
+			})
+	    }		
 	}
 
 }

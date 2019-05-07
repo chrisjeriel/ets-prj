@@ -11,6 +11,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { QuillModule } from 'ngx-quill';
 import { DecimalPipe } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -355,6 +356,10 @@ import { InsuredComponent } from './maintenance/quotation-and-policy/insured-lis
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
+import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
+import { CalendarModule } from 'primeng/calendar';
+import { DatepickerComponent } from './_components/datepicker/datepicker.component';
+import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 
 
 
@@ -373,7 +378,9 @@ import { IntermediaryListComponent } from './maintenance/quotation-and-policy/in
         NgxPaginationModule,
         AngularEditorModule,
         QuillModule,
-        NgxMaskModule.forRoot()
+        NgxMaskModule.forRoot(),
+        CalendarModule,
+        BrowserAnimationsModule
     ],
     declarations: [
         AppComponent,
@@ -718,6 +725,9 @@ import { IntermediaryListComponent } from './maintenance/quotation-and-policy/in
         TypeOfCessionComponent,
         SpecialLovComponent,
         IntermediaryListComponent,
+        WfNotesFormComponent,
+        DatepickerComponent,
+        IntermediaryComponent,
     ],
 
     providers: [
