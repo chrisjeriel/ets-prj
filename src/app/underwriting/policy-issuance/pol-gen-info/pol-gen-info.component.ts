@@ -291,7 +291,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.tableData = this.underwritingService.getItemInfoData();
 
     this.sub = this.route.params.subscribe(params => {
-      console.log(params);
       this.line = params['line'];
       this.policyId = this.polInfo.policyId === '' ? params['policyId'] : this.polInfo.policyId;
       this.policyNo = this.polInfo.policyNo === '' ? params['policyNo'] : this.polInfo.policyNo;
