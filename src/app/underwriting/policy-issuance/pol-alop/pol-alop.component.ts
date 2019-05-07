@@ -356,39 +356,38 @@ export class PolAlopComponent implements OnInit {
   }
 
   getSumInsured(){
-    if(!this.alterFlag){
-      this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
-        if (data.policy != null) {
-          var sectionCovers = data.policy.project.coverage.sectionCovers;
-          for( var i = 0; i <sectionCovers.length;i++){
-            if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
-              this.polAlopData.annSi = sectionCovers[i].sumInsured;
-            }
-          }
-          this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
-        } else {
+   if(!this.alterFlag){
+     this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+       if (data.policy != null) {
+         var sectionCovers = data.policy.project.coverage.sectionCovers;
+         for( var i = 0; i <sectionCovers.length;i++){
+           if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
+             this.polAlopData.annSi = sectionCovers[i].sumInsured;
+           }
+         }
+         this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
+       } else {
 
-        }
-        
-      });
-    }else{
-      this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
-        console.log(data)
-        if (data.policy != null) {
-          var sectionCovers = data.policy.project.coverage.sectionCovers;
-          for( var i = 0; i <sectionCovers.length;i++){
-            if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
-              this.polAlopData.annSi = sectionCovers[i].cumSi;
-            }
-          }
-          this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
-        } else {
+       }
+       
+     });
+   }else{
+     this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+       if (data.policy != null) {
+         var sectionCovers = data.policy.project.coverage.sectionCovers;
+         for( var i = 0; i <sectionCovers.length;i++){
+           if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
+             this.polAlopData.annSi = sectionCovers[i].cumSi;
+           }
+         }
+         this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
+       } else {
 
-        }
-        
-      });
-    }
-  }
+       }
+       
+     });
+   }
+ }
 
   getPolAlopItem() {
     this.underwritingService.getPolAlopItem(this.policyNo, this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
