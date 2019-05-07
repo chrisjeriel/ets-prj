@@ -354,6 +354,7 @@ import { SequenceDirective } from './_directives/sequence.directive';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
+import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 
@@ -719,6 +720,7 @@ import { DatepickerComponent } from './_components/datepicker/datepicker.compone
         InsuredListComponent,
         InsuredComponent,
         SpecialLovComponent,
+        WfNotesFormComponent,
         DatepickerComponent,
     ],
 

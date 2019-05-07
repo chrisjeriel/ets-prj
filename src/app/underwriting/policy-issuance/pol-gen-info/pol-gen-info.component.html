@@ -99,8 +99,8 @@
 									</div>
 									<div *ngIf="policyInfo.cessionDesc?.toUpperCase() == 'RETROCESSION'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.reinsurerId">
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.reinsurerId" readonly>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.reinsurerName" style="margin-left: 5px;" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
@@ -145,7 +145,7 @@
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Inception Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (outVal)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]"></datepicker>
+									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (outVal)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]; updateExpiryDate();"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
 									<datepicker [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (outVal)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
@@ -155,8 +155,14 @@
 							</div>
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
-								<input type="date" class="form-control form-control-sm req" min="{{ policyInfo.inceptDate?.split('T')[0] }}" [ngModel]="policyInfo.expiryDate?.split('T')[0]" (ngModelChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate?.split('T')[1]" appRequired>
-								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.expiryDate?.split('T')[1]" (ngModelChange)="policyInfo.expiryDate=policyInfo.expiryDate?.split('T')[0]+'T'+$event" appRequired>
+								<div class="col-sm dp-cont">
+									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.expiryDate?.split('T')[0]" (outVal)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" [minDate]="policyInfo.inceptDate?.split('T')[0]"></datepicker>
+								</div>
+								<div class="col-sm-3 dp-cont">
+									<datepicker [type]="'time'" [required]="true" [value]="policyInfo.expiryDate?.split('T')[1]" (outVal)="policyInfo.expiryDate=policyInfo.expiryDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+								</div>	
+								<!-- <input type="date" class="form-control form-control-sm req" min="{{ policyInfo.inceptDate?.split('T')[0] }}" [ngModel]="policyInfo.expiryDate?.split('T')[0]" (ngModelChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate?.split('T')[1]" appRequired> -->
+								<!-- <input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.expiryDate?.split('T')[1]" (ngModelChange)="policyInfo.expiryDate=policyInfo.expiryDate?.split('T')[0]+'T'+$event" appRequired> -->
 							</div>
 							<!-- <div class="input-group col-sm-6" style="margin-top: 10px; margin-bottom: -20px !important;">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
@@ -1132,12 +1138,18 @@
 								<label class="form-control-sm">&nbsp;Last Update</label>
 							</div>
 						</div>
-						<div class="form-row ig-cust">
+						<div class="form-row ig-cust">			
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
-								<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly>
+								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly> -->
+								<div class="col-sm dp-cont">
+									<datepicker [value]="policyInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+								</div>								
 							</div>						
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
-								<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly>
+								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly> -->
+								<div class="col-sm dp-cont">
+									<datepicker [value]="policyInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+								</div>	
 							</div>
 						</div>
 					</div>
@@ -2426,10 +2438,10 @@
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <!-- end edit by paul -->
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
-<!-- <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
-<app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> -->
+<app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
+<app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured>
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
 <app-mtn-risk #riskLOV id="riskLOV" (selectedData)="setRisk($event)"></app-mtn-risk>
 <app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event);" [line]="line" [type]="'O'"></app-mtn-quotation-wordings>
-<app-special-lov (selectedData)="setPrincipal($event)"></app-special-lov>
-<app-special-lov id="contractorLOV" (selectedData)="setContractor($event)"></app-special-lov>
+<!-- <app-special-lov (selectedData)="setPrincipal($event)"></app-special-lov>
+<app-special-lov id="contractorLOV" (selectedData)="setContractor($event)"></app-special-lov> -->
