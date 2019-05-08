@@ -1,0 +1,44 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy</h4>
+	<ngb-tabset #tabset  (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Currency">
+			<ng-template ngbTabContent>
+					<fieldset class="scheduler-border" style="margin-top: 10px !important">
+						<div class="custom-row-inline-inset" style="margin-top: 10px">
+							<app-cust-editable-non-datatable #currencyList [passData]="passData" (newClick)="onrowClick($event)"></app-cust-editable-non-datatable>
+						</div>
+
+						<div class="form-row" style="margin-top: 20px !important;">
+						    <div class="form-group col-sm">
+						        <div class="text-center">
+						            <div class="cust-btn-container">
+						                <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+						                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+						            </div>
+						        </div>
+						    </div>
+						</div>
+					</fieldset>
+
+					<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+					    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+					        <label class="form-control-sm col-sm-1">Created By</label>
+					        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.createUser" readonly>
+					        <label class="form-control-sm col-sm-1">Created Date</label>
+					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.createDate" readonly>
+					        <label class="form-control-sm col-sm-1">Last Update By</label>
+					        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.updateUser" readonly>
+					        <label class="form-control-sm col-sm-1">Last Update</label>
+					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.updateDate" readonly>
+					    </div>
+					</fieldset>
+
+					<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+					<app-confirm-save (onYes)="saveCurrency()"></app-confirm-save>
+					<app-cancel-button (onYes)="saveCurrency('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+

@@ -124,6 +124,8 @@ import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spo
 import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
+import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 
 const appRoutes: Routes = [
 
@@ -257,6 +259,8 @@ const appRoutes: Routes = [
     { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
     { path: 'maintenance-insured', component: InsuredListComponent},
     { path: 'insured-mtn', component: InsuredComponent },
+    { path: 'maintenance-currency', component: MtnCurrencyListComponent },
+    { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

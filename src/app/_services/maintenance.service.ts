@@ -300,5 +300,28 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnInsuredLov', {params});
     }
 
+    getMtnCurrencyList(currencyCd: string){
+		const params = new HttpParams()
+		     .set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd))
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCurrencyList",{params});
+	}
+
+	saveMtnCurrency(currencyData: any){
+		let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCurrency', JSON.stringify(currencyData), header);
+	}
+
+	getMtnCurrencyRt(currencyCd: string){
+		const params = new HttpParams()
+		     .set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd))
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCurrencyRt",{params});
+	}
+
 }
 

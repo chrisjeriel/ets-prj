@@ -357,6 +357,8 @@ import { SpecialLovComponent } from './_components/special-lov/special-lov.compo
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
+import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
+import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 
 
 
@@ -722,6 +724,8 @@ import { DatepickerComponent } from './_components/datepicker/datepicker.compone
         SpecialLovComponent,
         WfNotesFormComponent,
         DatepickerComponent,
+        MtnCurrencyListComponent,
+        MtnCurrencyRateComponent,
     ],
 
     providers: [
