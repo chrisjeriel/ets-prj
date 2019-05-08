@@ -288,7 +288,7 @@ export class EndorsementComponent implements OnInit {
   	this.ms.saveMtnEndt(params).subscribe(a=>{
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
-            this.successDialog.open();
+            this.successDialog.open();g
             this.getMtnEndorsements();
         }else{
             this.dialogIcon = "error";
