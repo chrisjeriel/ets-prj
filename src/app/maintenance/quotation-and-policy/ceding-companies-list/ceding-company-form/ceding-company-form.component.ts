@@ -80,6 +80,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params =>{
+  		console.log(params);
   		if(params.info === undefined){
   			this.loading = true;
   			this.retrieveMtnCedingCompanyMethod(params.cedingId);

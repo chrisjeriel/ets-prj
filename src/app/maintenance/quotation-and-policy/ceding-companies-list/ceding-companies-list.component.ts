@@ -100,11 +100,11 @@ export class CedingCompaniesListComponent implements OnInit {
     }
     
     onClickEdit(event){
-        this.selected = event;
         this.router.navigate(['/ceding-co-form',this.selected], {skipLocationChange: true});
     }
 
     onRowClick(data){
+      console.log(data);
         this.selected = data;
     }
 
