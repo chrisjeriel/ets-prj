@@ -19,6 +19,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 	@ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+	@ViewChild('myForm') form : any;
 
 	private sub: any;
 	private currentUser: string = JSON.parse(window.localStorage.currentUser).username;
