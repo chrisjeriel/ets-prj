@@ -322,5 +322,29 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdviceWordings',params,header);
     }
 
+    getCedingCompanyList(searchParams: any[]){
+        var params;
+        if(searchParams.length < 1){
+        	params = new HttpParams()
+            .set('cedingId','')
+            .set('cedingName','')
+            .set('cedingAbbr','')
+            .set('address','')
+            .set('membershipDate','')
+            .set('terminationDate','')
+            .set('inactiveDate','')
+            .set('activeTag','')
+            .set('govtTag','')
+            .set('membershipTag','');
+        }else{
+        	params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompanyListing', {params});
+    }
+
 }
 

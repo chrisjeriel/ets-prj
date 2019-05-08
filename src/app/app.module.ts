@@ -358,6 +358,8 @@ import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-for
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
+import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
+import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 
 
 
@@ -724,6 +726,8 @@ import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advi
         WfNotesFormComponent,
         DatepickerComponent,
         AdviceWordingsComponent,
+        CedingCompaniesListComponent,
+        CedingCompanyFormComponent,
     ],
 
     providers: [

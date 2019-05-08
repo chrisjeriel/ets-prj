@@ -47,7 +47,7 @@ import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
 import { UpdateGeneralInfoComponent } from './utilities/update-information/update-general-info/update-general-info.component';
 import { UpdateInstallmentComponent } from './utilities/update-information/update-installment/update-installment.component';
-import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';
+/*import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';*/
 import { AccountingComponent } from './accounting/accounting.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
@@ -125,6 +125,8 @@ import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-informa
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
+import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
+import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 
 const appRoutes: Routes = [
 
@@ -180,7 +182,7 @@ const appRoutes: Routes = [
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
     { path: 'pol-util-gen-info', component: UpdateGeneralInfoComponent },
     { path: 'pol-util-installment', component: UpdateInstallmentComponent },
-    { path: 'maintenance-ceding-co', component: PolMxCedingCoComponent },
+    /*{ path: 'maintenance-ceding-co', component: PolMxCedingCoComponent },*/
     { path: 'accounting', component: AccountingComponent },
     { path: 'accounting-in-trust', component: AccountingInTrustComponent },
     { path: 'acct-ar-listings', component: AcctArListingsComponent },
@@ -259,6 +261,8 @@ const appRoutes: Routes = [
     { path: 'maintenance-insured', component: InsuredListComponent},
     { path: 'insured-mtn', component: InsuredComponent },
     { path: 'adv-word-mtn', component: AdviceWordingsComponent },
+    { path: 'ceding-co-list', component: CedingCompaniesListComponent },
+    { path: 'ceding-co-form', component: CedingCompanyFormComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
