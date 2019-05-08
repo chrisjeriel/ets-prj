@@ -192,9 +192,11 @@ export class TypeOfCessionComponent implements OnInit {
 			this.usedInQuote = false;
 			for(let i of rec){
 				for(var j=0;j<this.arrTableDesc.length;j++){
-					if(this.arrTableDesc[j].toUpperCase() === i.cessionDesc.toUpperCase()){
-						this.usedInQuote = true;
-						break;
+					if(this.arrTableDesc[j] !== null){
+						if(this.arrTableDesc[j].toUpperCase() === i.cessionDesc.toUpperCase()){
+							this.usedInQuote = true;
+							break;
+						}	
 					}
 				}
 				

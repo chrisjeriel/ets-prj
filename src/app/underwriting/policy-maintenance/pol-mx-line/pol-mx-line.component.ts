@@ -60,6 +60,8 @@ export class PolMxLineComponent implements OnInit {
 	warnMsg					: string 	= '';
 	isChecked				: boolean = false;
     usedInQuote				: boolean = false;
+    arrLineCdDel  			: any     	= [];
+
 
 	saveMtnLine:any = {
 		activeTag		: false,
@@ -134,6 +136,7 @@ export class PolMxLineComponent implements OnInit {
 							this.warnMsg = 'Unable to save the record. Line Code must be unique.';
 							this.showWarnLov();
 		                },500);
+
 					}else{
 						this.mtnLineReq = { 
 							"deleteLine": [],
@@ -157,7 +160,6 @@ export class PolMxLineComponent implements OnInit {
 								}
 							]
 						}
-						console.log(JSON.stringify(this.mtnLineReq));
 
 						this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
 						.subscribe(data => {
@@ -169,7 +171,6 @@ export class PolMxLineComponent implements OnInit {
 					}
 
 				}else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-					console.log('delete');
 					this.mtnLineReq = { 
 						"deleteLine": [
 							{
@@ -264,11 +265,11 @@ export class PolMxLineComponent implements OnInit {
 		}
 
 		var counter = 0;
-		this.arrLineCd = [];
+		this.arrLineCdDel = [];
 		for(var i = 0 ; i<this.passData.tableData.length; i++){
 			if(this.passData.tableData[i].checked === true){
 				counter++;
-				this.arrLineCd.push(this.passData.tableData[i].lineCd);
+				this.arrLineCdDel.push(this.passData.tableData[i].lineCd);
 			}
 		}
 
@@ -278,6 +279,7 @@ export class PolMxLineComponent implements OnInit {
 		}else{	
 			this.isChecked = true;
 		}
+
 	}
 
 	showWarnLov(){
@@ -305,6 +307,7 @@ export class PolMxLineComponent implements OnInit {
 	}
 
 	confirmDelete(){
+
 		this.loading = true;
 		this.quotationService.getQuoProcessingData([])
 		.subscribe(data => {
@@ -313,11 +316,14 @@ export class PolMxLineComponent implements OnInit {
 			this.loading = false;
 			this.usedInQuote = false;
 			for(let i of rec){
-				for(var j=0;j<this.arrLineCd.length;j++){
-					if(this.arrLineCd[j].toUpperCase() === i.lineCd.toUpperCase()){
-						this.usedInQuote = true;
-						break;
+				for(var j=0;j<this.arrLineCdDel.length;j++){
+					if(this.arrLineCdDel[j] !== null){
+						if(this.arrLineCdDel[j].toUpperCase() === i.lineCd.toUpperCase()){
+							this.usedInQuote = true;
+							break;
+						}	
 					}
+					
 				}
 				
 			}
