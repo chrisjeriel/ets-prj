@@ -87,7 +87,6 @@ export class CedingCompaniesListComponent implements OnInit {
 
   retrieveMtnCedCoListMethod(){
   	this.maintenanceService.getCedingCompanyList(this.searchParams).subscribe((data: any)=>{
-  		console.log(data);
   		/*for(var i of data.cedingCompany){
   			this.maintenanceCedingCoListData.tableData.push(i);
   		}*/
@@ -106,7 +105,6 @@ export class CedingCompaniesListComponent implements OnInit {
     }
 
     onRowClick(data){
-    	console.log(data);
         this.selected = data;
     }
 

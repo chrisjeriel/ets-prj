@@ -346,5 +346,12 @@ export class MaintenanceService{
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompanyListing', {params});
     }
 
+    getCedingCompany(cedingId){
+    	const params = new HttpParams()
+    		  .set('cedingId', cedingId);
+
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompany', {params});
+    }
+
 }
 
