@@ -244,7 +244,6 @@ export class WfNotesComponent implements OnInit {
   }
 
   onClickYes(updateMode){
-    this.modalService.dismissAll();
     this.saveNoteParams(this.updateNoteInfoParam);
   }
 
@@ -253,12 +252,11 @@ export class WfNotesComponent implements OnInit {
   }
 
   saveNote(event){        
-    this.confirmsaveDiag.saveModal.openNoClose();
+    this.prepareParam();
   }
 
 
   prepareParam(cancelFlag?){
-    this.modalService.dismissAll();
       this.cancelFlag = cancelFlag !== undefined;
 
        var saveNoteInfoParam = {
@@ -286,13 +284,11 @@ export class WfNotesComponent implements OnInit {
             if(data['returnCode'] === 0) {
                  this.dialogIcon = 'error-message';
                  this.dialogMessage = "Error saving reminder";
-                 this.modalService.dismissAll();
                  this.onOkVar = 'openNoteMdl';
                  this.successDiag.open();
             } else if (data['returnCode'] === -1) {  
                  this.dialogIcon = 'success-message';
                  this.dialogMessage = "Successfully Saved";;
-                 this.modalService.dismissAll();
                  this.onOkVar = 'closeNoteMdl';
                  this.successDiag.open();     
             }

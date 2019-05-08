@@ -19,16 +19,21 @@
 
 <div style="border: 1px solid #c5c3c3; margin-bottom: .75em; padding: 13px 1em;">
 	<button class="btn-action"><a><img src="app/resources/images/wfm-icons/calendar.png"></a></button>
-	<button class="btn-action" (click)="open(content)"><a><img src="app/resources/images/wfm-icons/reminder.png"></a></button>
-	<button class="btn-action"><a><img src="app/resources/images/wfm-icons/notes.png"></a></button>
+	<button class="btn-action" (click)="open(content, true)"><a><img src="app/resources/images/wfm-icons/reminder.png"></a></button>
+	<button class="btn-action" (click)="open(content, false)"><a><img src="app/resources/images/wfm-icons/notes.png"></a></button>
 </div>
 
 <ng-template #content let-modal>
+
     <div class="modal-body">
-        <div layout="row" layout-wrap layout-align="center center">
+
+        <div *ngIf=mode layout="row" layout-wrap layout-align="center center">
             <p style="font-size: 15px; text-align: center; margin-bottom: 15px"><b>REMINDER</b></p>
         </div>
-        <div layout="row" layout-wrap layout-align="center center">
+        <div *ngIf=!mode layout="row" layout-wrap layout-align="center center">
+            <p style="font-size: 15px; text-align: center; margin-bottom: 15px"><b>NOTE</b></p>
+        </div>
+        <div *ngIf=mode layout="row" layout-wrap layout-align="center center">
             <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
                 <fieldset class="scheduler-border col-sm" style="width: 550px">
                 		<div class="form-row custom-row-inline-inset">
@@ -51,6 +56,23 @@
                 </fieldset>
             </div>
         </div>
+        <div *ngIf=!mode layout="row" layout-wrap layout-align="center center">
+            <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
+                <fieldset class="scheduler-border col-sm" style="width: 550px">
+                		<div class="form-row custom-row-inline-inset">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
+								<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="titleNote">
+							</div>
+							<div class="input-group" style="margin: -10px 0 -20px 0 ! important;">
+								<label class="form-control-sm col-sm-2" for="inputReminder">Notes</label>
+								<textarea id="inputNotes" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired [(ngModel)]="notes"> </textarea>
+							</div>
+						</div>
+                </fieldset>
+            </div>
+        </div>
+
         <div layout="row" layout-wrap layout-align="center center">
             <div class="form-row" style="justify-content: center; margin: 15px 0 0 0px">
         	    <fieldset class="scheduler-border col-sm" style="width: 550px">
@@ -82,7 +104,7 @@
 							</div>
 							<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
 								 <button type="button" class="cust-btn" (click)="modal.close('Close click');cancelReminder();"><a>Cancel</a></button>
-								 <button type="button" class="cust-btn" (click)="saveReminderValidation();" [disabled]= disablebtnBool><a>Save</a></button>
+								 <button type="button" class="cust-btn" (click)="saveReminderValidation(this.mode);" [disabled]= disablebtnBool><a>Save</a></button>
 							</div>
 				 	</div>
                 </fieldset>
@@ -124,8 +146,8 @@
 </app-modal>
 
 
-<app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)" (cancelMdl)="open(content);"></app-mtn-users>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar);"></app-sucess-dialog>
+<app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)" (cancelMdl)="open(content,this.mode);"></app-mtn-users>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar,this.mode);"></app-sucess-dialog>
 
 
 
