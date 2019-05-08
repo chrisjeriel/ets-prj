@@ -124,6 +124,7 @@ import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spo
 import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
 
 const appRoutes: Routes = [
 
@@ -257,6 +258,7 @@ const appRoutes: Routes = [
     { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
     { path: 'maintenance-insured', component: InsuredListComponent},
     { path: 'insured-mtn', component: InsuredComponent },
+    { path: 'adv-word-mtn', component: AdviceWordingsComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

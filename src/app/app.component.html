@@ -479,6 +479,17 @@
                                             <br />
                                             <button [routerLink]="['/maintenance-insured']" class="button btn btn-link">Insured</button>
                                             <br />
+                                            <ngb-accordion #acc="ngbAccordion">
+                                                <ngb-panel>
+                                                    <ng-template ngbPanelTitle>
+                                                        Wording
+                                                    </ng-template>
+                                                    <ng-template ngbPanelContent>
+                                                        <button [routerLink]="['/adv-word-mtn']" class="button btn btn-link">Advice Wording</button>
+                                                        <br />
+                                                    </ng-template>
+                                                </ngb-panel>
+                                            </ngb-accordion>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
