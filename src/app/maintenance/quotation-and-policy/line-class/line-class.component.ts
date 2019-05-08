@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChildren, QueryList, ViewChild  } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { MaintenanceService, NotesService } from '@app/_services';
+import { MaintenanceService, NotesService, QuotationService } from '@app/_services';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { environment } from '@environments/environment';
@@ -14,8 +14,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class LineClassComponent implements OnInit {
 
-  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild('lineClassTable') table: CustEditableNonDatatableComponent;
   @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
+  @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
 
   passData: any = {
     tableData:[],
@@ -24,8 +25,12 @@ export class LineClassComponent implements OnInit {
     nData:{
       lineClassCd       : null,
       lineCdDesc        : null,
-      activeTag         : null,
-      remarks           : null
+      activeTag         : '',
+      remarks           : ' ',
+      createUser        : null,
+      createDate        : this.ns.toDateTimeString(0),
+      updateUser        : null,
+      updateDate        : this.ns.toDateTimeString(0)
     },
     addFlag				      : true,
     deleteFlag		 	    : true,
@@ -49,6 +54,8 @@ export class LineClassComponent implements OnInit {
 
   line                  : string;
   description           : string;
+  warningMsg            : any;
+  searchParams          : any[] = [];
 
   lineClassData: any = {
     updateDate:  null,
@@ -57,7 +64,7 @@ export class LineClassComponent implements OnInit {
     createUser:  null,
   };
 
-  constructor(private titleService: Title, private mtnService: MaintenanceService,
+  constructor(private titleService: Title, private mtnService: MaintenanceService, private quotationService: QuotationService,
               private ns: NotesService, private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -85,14 +92,29 @@ export class LineClassComponent implements OnInit {
           this.passData.tableData = data['lineClass'].filter(a => {
             a.createDate = this.ns.toDateTimeString(a.createDate);
             a.updateDate = this.ns.toDateTimeString(a.updateDate);
+            a.remarks = a.remarks.trim();
             return true;
           });
 
-          this.passData.tableData.sort((a,b) => a.createDate.localeCompare(b.createDate));
+          this.passData.tableData.sort((a,b) => (a.createDate > b.createDate)? -1 : 1);
+
           this.table.refreshTable();
         }
       });
     }
+  }
+
+  checkLineClassCd() {
+    var lineCds = this.passData.tableData.map(a => a.lineClassCd);
+
+    var duplicates = lineCds.reduce(function(acc, el, i, arr) {
+      if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) {
+        acc.push(el);
+      }
+      return acc;
+    }, []);
+
+    return duplicates.length > 0? false : true;
   }
 
   onClickSaveLineClass(cancelFlag?) {
@@ -103,48 +125,73 @@ export class LineClassComponent implements OnInit {
 
     for (let rec of this.passData.tableData) {
       if (rec.edited && !rec.deleted) {
-        console.log(rec);
+        rec.lineCd = this.line;
+        rec.activeTag = rec.activeTag ===  '' ? 'N' : rec.activeTag;
+        rec.remarks = rec.remarks ===''? ' ' : rec.remarks;
+        rec.createUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.createDate = this.ns.toDateTimeString(rec.createDate);
+        rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
         savedData.saveLineClass.push(rec);
-        savedData.saveLineClass[savedData.saveLineClass.length-1].lineCd = this.line;
-        savedData.saveLineClass[savedData.saveLineClass.length-1].createUser = JSON.parse(window.localStorage.currentUser).userName;
-        savedData.saveLineClass[savedData.saveLineClass.length-1].createDate = this.ns.toDateTimeString(savedData.saveLineClass[savedData.saveLineClass.length-1].createDate);
-        savedData.saveLineClass[savedData.saveLineClass.length-1].updateUser = JSON.parse(window.localStorage.currentUser).userName;
-        savedData.saveLineClass[savedData.saveLineClass.length-1].updateDate = this.ns.toDateTimeString(savedData.saveLineClass[savedData.saveLineClass.length-1].updateDate);
       } else if (rec.deleted) {
+        rec.lineCd = this.line;
+        rec.createUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.createDate = this.ns.toDateTimeString(rec.createDate);
+        rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
         savedData.deleteLineClass.push(rec);
-        savedData.deleteLineClass[savedData.deleteLineClass.length-1].lineCd = this.line;
-        savedData.deleteLineClass[savedData.deleteLineClass.length-1].createUser = JSON.parse(window.localStorage.currentUser).userName;
-        savedData.deleteLineClass[savedData.deleteLineClass.length-1].createDate = this.ns.toDateTimeString(savedData.deleteLineClass[savedData.deleteLineClass.length-1].createDate);
-        savedData.deleteLineClass[savedData.deleteLineClass.length-1].updateUser = JSON.parse(window.localStorage.currentUser).userName;
-        savedData.deleteLineClass[savedData.deleteLineClass.length-1].updateDate = this.ns.toDateTimeString(savedData.deleteLineClass[savedData.deleteLineClass.length-1].updateDate);
       }
     }
 
     if (this.validate(savedData.saveLineClass)) {
-      this.mtnService.saveMtnLineClass(JSON.stringify(savedData)).subscribe((data: any) => {
-        if (data['returnCode'] === 0) {
-          this.dialogMessage = data['errorList'][0].errorMessage;
-          this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
-        } else {
-          this.dialogIcon = "success";
-          $('#successModalBtn').trigger('click');
-          this.table.markAsPristine();
+      if (this.checkLineClassCd()) {
+        this.mtnService.saveMtnLineClass(JSON.stringify(savedData)).subscribe((data: any) => {
+          if (data['returnCode'] === 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            $('#successModalBtn').trigger('click');
+          } else {
+            this.dialogIcon = "success";
+            $('#successModalBtn').trigger('click');
+            this.table.markAsPristine();
 
-          this.retrieveLineClass();
-        }
-      });
+            this.retrieveLineClass();
+          }
+        });
+      } else {
+        this.warningMsg = 0;
+        this.showWarningMdl();
+
+        setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+      }
     } else {
-      this.dialogMessage = "Please check field values";
-      this.dialogIcon = "error";
+      this.dialogMessage = 'Please check field values';
+      this.dialogIcon = 'error';
       $('#lineClassSuccess > #successModalBtn').trigger('click');
 
       setTimeout(() => {$('.globalLoading').css('display', 'none');}, 0);
     }
   }
 
+  delLineClass() {
+    this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
+      console.log(data['quotationList']);
+      // var lineCds = data['quotationList'].map(a => a.lineClassCd);
+      // console.log(lineCds);
+    });
+
+    for (let rec of this.passData.tableData) {
+      if (rec.lineClassCd === this.table.indvSelect.lineClassCd) {
+        rec.deleted = true;
+        rec.edited = true;
+      }
+    }
+
+    this.table.markAsDirty();
+    this.table.refreshTable();
+  }
+
   validate(obj) {
-    console.log(obj);
     var req = ['lineClassCd', 'lineCdDesc'];
     var entries = Object.entries(obj);
 
@@ -158,6 +205,14 @@ export class LineClassComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  showWarningMdl() {
+    $("#altWarningModal > #modalBtn").trigger('click');
+  }
+
+  onClickCancel() {
+    this.cancel.clickCancel();
   }
 
   showLineLOV(){

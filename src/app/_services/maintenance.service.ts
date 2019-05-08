@@ -181,7 +181,6 @@ export class MaintenanceService{
   }
 
   saveMtnLineClass(params) {
-    console.log(params);
     let header: any = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
