@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit, DoCheck } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit, DoCheck, Renderer2, ViewChild } from '@angular/core';
 import { NotesService } from '@app/_services'
 
 @Component({
@@ -7,12 +7,17 @@ import { NotesService } from '@app/_services'
   styleUrls: ['./datepicker.component.css']
 })
 export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, DoCheck {
-  constructor(private ns: NotesService) { }
+
+  constructor(private ns: NotesService, private r2: Renderer2) { }
+
   datepickerVal: any = null;
   minimumDate: any = null;
   ev: any = null;
+  inputStyeClass: string = 'form-control form-control-sm';
+  icon: string = 'fa fa-calendar';
 
   @Output() outVal = new EventEmitter<any>();
+  @Output() onFocus = new EventEmitter<any>();
 
   @Input() type: string = 'datetime';
   @Input() showIcon: boolean = true;
@@ -23,8 +28,11 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() value: string = null;
   @Input() minDate: string = '1970-01-01';
   @Input() maxDate: string = '';
-  @Input() disabledDays: any[] = null;
   @Input() disabledDates: any[] = null;
+  @Input() disabledDays: any[] = null;
+  @Input() tabindex: any = null;
+  @Input() name: any = null;
+  @Input() table: boolean = false;
 
   spanStyle: any = {
   	width: '100%',
@@ -34,10 +42,10 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 
   inputStyle: any = {
   	position: 'relative',
-  	backgroundColor: '#ffffff',
+  	backgroundColor: 'transparent',
   }
 
-  ngOnInit() {
+  ngOnInit() {  	
   	/*this.minimumDate = new Date(this.minDate);
 
   	if(this.type == 'time') {
@@ -62,51 +70,68 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   		this.spanStyle['display'] = 'block';
   		this.inputStyle['position'] = 'absolute';
   	}
+
+  	if(this.table) {
+  		this.spanStyle['minWidth'] = '9em';
+  		this.inputStyeClass += ' tbl-dp';
+  	}
+
+  	if(this.table && !this.showIcon) {
+  		this.spanStyle['display'] = 'block';
+  		this.spanStyle['position'] = 'relative';
+  		this.spanStyle['marginTop'] = '-6px';  	
+  	}
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.value && changes.value.currentValue) {
-    	if(this.type == 'time') {    		
-    		var d = new Date();
-    		var hrs = Number(changes.value.currentValue.split(':')[0]);
-    		var mins = Number(changes.value.currentValue.split(':')[1]);
-    		d.setHours(hrs, mins);
+    	if(this.type == 'time') {
+    		if(this.value != '') {  		
+	    		var d = new Date();
+	    		var hrs = Number(changes.value.currentValue.split(':')[0]);
+	    		var mins = Number(changes.value.currentValue.split(':')[1]);
+	    		d.setHours(hrs, mins, 0);
 
-    		this.datepickerVal = d;
+	    		this.datepickerVal = d;
+    		} else {
+  				this.datepickerVal = null;
+  			} 
     	} else {
-    		console.log('here value');
-    		console.log(changes.value);
     		this.datepickerVal = changes.value.currentValue == '' ? null : new Date(changes.value.currentValue);
     	}  	  	    	
     }
 
     if(changes.minDate && changes.minDate.currentValue) {
-    	console.log('here');
-    	console.log(changes.minDate);
     	this.minimumDate = changes.minDate.currentValue == '' ? null : new Date(changes.minDate.currentValue);
     }
   }
 
   ngDoCheck() {
-  // 	if(this.value != null && this.type == 'time' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1] != this.value) {    		
-  // 		var d = new Date();
-  // 		var hrs = Number(this.value.split(':')[0]);
-		// var mins = Number(this.value.split(':')[1]);
-		// d.setHours(hrs, mins);
+  	if(this.datepickerVal != null && this.type == 'time' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1] != this.value) {
+  		if(this.value != '') {
+  			var d = new Date();
+  			var hrs = Number(this.value.split(':')[0]);
+  			var mins = Number(this.value.split(':')[1]);
+  			d.setHours(hrs, mins, 0);
 
-  // 		this.datepickerVal = d;
-  // 	} else if(this.value != null && this.type == 'date' && this.ns.toDateTimeString(this.datepickerVal).split('T')[0] != this.value) {
-  // 		this.datepickerVal = this.value == '' ? null : new Date(this.value);
-  // 	} CAPTAIN BUGGY
-  	
+  			this.datepickerVal = d;	
+  		} else {
+  			this.datepickerVal = null;
+  		}  		
+  	} else if(this.datepickerVal != null && this.type == 'date' && this.ns.toDateTimeString(this.datepickerVal).split('T')[0] != this.value) {
+  		this.datepickerVal = this.value == '' ? null : new Date(this.value);
+  	}	
   	
   	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {
   		this.minimumDate = this.minDate == '' ? null : new Date(this.minDate);
   	}
   }
 
-  ngAfterViewInit() {
-  	$('.ui-inputtext').attr("mask","999");
+  ngAfterViewInit() {  	
+  	// $('.ui-inputtext').attr("mask","999");
+  	// $('.ui-datepicker-title').addClass('input-group');
+  	// $('.ui-datepicker-header .ui-datepicker-title').attr('style', 'padding: 0 15px !important');
+
   }
 
   valueChanged() {
@@ -145,5 +170,15 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   onSelect() {
   	$(this.ev.target).focus();
   	$(this.ev.target).blur();
+  }
+
+  focused() {
+  	setTimeout(() => { 
+  		$('.ui-datepicker-title').addClass('input-group').attr('style', 'padding: 0 15px 5px !important');
+  		$('.ui-datepicker-month').addClass('form-control form-control-sm cust-sm col-sm-6');
+  		$('.ui-datepicker-year').addClass('form-control form-control-sm cust-sm col-sm-6');
+  	}, 0);
+
+  	this.onFocus.emit();
   }
 }

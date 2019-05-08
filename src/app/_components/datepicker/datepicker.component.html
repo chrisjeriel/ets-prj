@@ -1,4 +1,5 @@
-<p-calendar *ngIf="type == 'datetime'"
+<ng-container *ngIf="type == 'datetime'" #dttpl>
+<p-calendar 
 	[ngModel]="datepickerVal"
 	(ngModelChange)="datepickerVal=$event; valueChanged()"
 	[showTime]="true"
@@ -6,39 +7,57 @@
 	[showIcon]="showIcon"
 	[style]="spanStyle"
 	[inputStyle]="inputStyle"
-	[inputStyleClass]="'form-control form-control-sm'"
-	[icon]="'fa fa-calendar'"	
+	[inputStyleClass]="inputStyeClass"
+	[icon]="icon"	
 	[showSeconds]="showSeconds"
 	[disabled]="disabled"
 	[showButtonBar]="true"
 	[minDate]="minimumDate"
 	[clearButtonStyleClass]="'cust-btn'"
 	[todayButtonStyleClass]="'cust-btn'"
+	[selectOtherMonths]="true"
+	[disabledDates]="disabledDates"
+	[disabledDays]="disabledDays"
 	[monthNavigator]="true"
 	[yearNavigator]="true"
-	[yearRange]="'1970:2200'"></p-calendar>
+	[yearRange]="'1970:2200'"
+	[tabindex]="tabindex"
+	[name]="name"
+	appendTo="body"
+	(onBlur)="onBlur($event)"
+	(onSelect)="onSelect()"
+	(onFocus)="focused()"></p-calendar></ng-container>
 
-<p-calendar *ngIf="type == 'date'" 
+<ng-container *ngIf="type == 'date'" #dtpl>
+<p-calendar 
 	[ngModel]="datepickerVal"
 	(ngModelChange)="datepickerVal=$event; valueChanged()"
 	[showIcon]="showIcon"
 	[style]="spanStyle"
 	[inputStyle]="inputStyle"
-	[inputStyleClass]="'form-control form-control-sm'"
-	[icon]="'fa fa-calendar'"
+	[inputStyleClass]="inputStyeClass"
+	[icon]="icon"
 	[disabled]="disabled"
 	[showButtonBar]="true"
 	[minDate]="minimumDate"	
 	[clearButtonStyleClass]="'cust-btn'"
 	[todayButtonStyleClass]="'cust-btn'"
-	[monthNavigator]="true"
+	[selectOtherMonths]="true"	
 	[yearNavigator]="true"
+	[disabledDates]="disabledDates"
+	[disabledDays]="disabledDays"
+	[monthNavigator]="true"
 	[yearRange]="'1970:2200'"
+	[tabindex]="tabindex"
+	[name]="name"
+	appendTo="body"
 	(onBlur)="onBlur($event)"
-	(onSelect)="onSelect()"></p-calendar>
+	(onSelect)="onSelect()"
+	(onFocus)="focused()"></p-calendar></ng-container>
 <!-- (onClearClick)="clearInput($event)" (onBlur)="testCh($event)"  [clearButtonStyleClass]="'cust-btn'" [monthNavigator]="true" [yearNavigator]="true" -->
 
-<p-calendar *ngIf="type == 'time'"
+<ng-container *ngIf="type == 'time'" #ttpl>
+<p-calendar
 	[ngModel]="datepickerVal"
 	(ngModelChange)="datepickerVal=$event; valueChanged()"
 	[showTime]="true"
@@ -48,4 +67,9 @@
 	[inputStyle]="inputStyle"
 	[inputStyleClass]="'form-control form-control-sm'"
 	[timeOnly]="true"
-	[disabled]="disabled"></p-calendar>
+	[disabled]="disabled"
+	[tabindex]="tabindex"
+	[name]="name"
+	appendTo="body"
+	(onBlur)="onBlur($event)"
+	(onFocus)="focused()"></p-calendar></ng-container>

@@ -199,3 +199,7 @@ input.form-control-sm, select.form-control.form-control-sm.cust-sm, select.edita
     font-size: 0.7rem !important;
     font-style: Arial;
 }
+
+body .ui-datepicker table td > a.ui-state-active, body .ui-datepicker table td > span.ui-state-active {
+    background-color: #e6adc0 ! important;
+}
