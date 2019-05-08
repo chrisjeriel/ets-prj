@@ -257,7 +257,7 @@ span.ui-column-resizer {
                                         <span class="unclickable">{{ data[key] | number: '1.0-0'}}</span>
                                     </div> -->
                                     <div *ngSwitchCase="'currency'" style="text-align: right" >
-                                        <div [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</div>
+                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
                                         <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.0-0'}}</span>
