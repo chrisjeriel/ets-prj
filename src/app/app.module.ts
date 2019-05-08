@@ -11,6 +11,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { QuillModule } from 'ngx-quill';
 import { DecimalPipe } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -354,6 +355,8 @@ import { InsuredListComponent } from './maintenance/quotation-and-policy/insured
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
+import { CalendarModule } from 'primeng/calendar';
+import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 
 
 
@@ -372,7 +375,9 @@ import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-for
         NgxPaginationModule,
         AngularEditorModule,
         QuillModule,
-        NgxMaskModule.forRoot()
+        NgxMaskModule.forRoot(),
+        CalendarModule,
+        BrowserAnimationsModule
     ],
     declarations: [
         AppComponent,
@@ -716,6 +721,7 @@ import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-for
         InsuredComponent,
         SpecialLovComponent,
         WfNotesFormComponent,
+        DatepickerComponent,
     ],
 
     providers: [

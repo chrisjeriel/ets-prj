@@ -455,7 +455,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
 
-    onDataChange(ev,data,key){
+    /*onDataChange(ev,data,key){
         // if($(ev.target).next().children().prop("tagName") === 'A') {
         if(!data.others){
             if($(ev.target).hasClass('lovInput')) {
@@ -473,7 +473,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 this.passData.tableData['ev'] = ev;
                 this.passData.tableData['index'] = retData.index;
                 this.passData.tableData['lovInput'] = true;
-            /*} else {
+            } else {
                 delete this.passData.tableData.ev;
                 delete this.passData.tableData.index;
                 delete this.passData.tableData.lovInput;
@@ -486,7 +486,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 delete this.passData.tableData.ev;
                 delete this.passData.tableData.index;
                 delete this.passData.tableData.lovInput;
-            });*/
+            });
         }else{ //Earl
             delete this.passData.tableData.ev;
             delete this.passData.tableData.index;
@@ -506,7 +506,59 @@ export class CustEditableNonDatatableComponent implements OnInit {
         });
     }
     }
-}
+}  */  
+    
+    onDataChange(ev,data,key){
+        // if($(ev.target).next().children().prop("tagName") === 'A') {
+        if(!data.others){
+            if($(ev.target).hasClass('lovInput')) {
+                let retData:any = {};
+                retData.key = key;
+                retData.tableData = this.passData.tableData;
+                for (var i = this.passData.tableData.length - 1; i >= 0; i--) {
+                    if(data == this.passData.tableData[i]){
+                        retData.index = i;
+                        break;
+                    }
+                }
+
+                this.ns.lovLoader(ev, 1);
+                this.passData.tableData['ev'] = ev;
+                this.passData.tableData['index'] = retData.index;
+                this.passData.tableData['lovInput'] = true;
+            } else {
+                delete this.passData.tableData.ev;
+                delete this.passData.tableData.index;
+                delete this.passData.tableData.lovInput;
+            }
+            this.markAsDirty();
+
+            data.edited = true;
+            setTimeout(() => { 
+                this.tableDataChange.emit(this.passData.tableData),0
+                delete this.passData.tableData.ev;
+                delete this.passData.tableData.index;
+                delete this.passData.tableData.lovInput;
+            });
+        }else{ //Earl
+            delete this.passData.tableData.ev;
+            delete this.passData.tableData.index;
+            delete this.passData.tableData.lovInput;
+
+        this.instllmentKey = key;
+        this.instllmentNo = data.instNo;
+
+        this.markAsDirty();
+
+        data.edited = true;
+        setTimeout(() => { 
+            this.tableDataChange.emit(this.passData.tableData),0
+            delete this.passData.tableData.ev;
+            delete this.passData.tableData.index;
+            delete this.passData.tableData.lovInput;
+        });
+    }
+    }
 
     onClickLOV(data,key){
         let retData:any = {};
