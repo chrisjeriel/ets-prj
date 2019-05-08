@@ -595,10 +595,16 @@ saveQuoteOptionAll(cancelFlag?){
       }
       if(data.changeTag == 'Y'){
         data.uneditable.pop();
-      }else if(data.changeTag == 'N' && data.amount !== 0) {
+      }else if(data.changeTag == 'N' && data.amount !== 0 && data.section != 'II') {
         if(data.rate != this.selectedOption.optionRt)
           data.edited = true;
         data.rate = this.selectedOption.optionRt;
+        if(data.uneditable.length ==0)
+          data.uneditable.push('rate');
+      }else if(data.changeTag == 'N' && data.amount !== 0 && data.section == 'II'){
+        if(data.rate != this.selectedOption.optionRt)
+          data.edited = true;
+        data.rate = 0;
         if(data.uneditable.length ==0)
           data.uneditable.push('rate');
       }else if(data.amount == 0){

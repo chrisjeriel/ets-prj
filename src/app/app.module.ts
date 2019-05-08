@@ -357,6 +357,7 @@ import { SpecialLovComponent } from './_components/special-lov/special-lov.compo
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
+import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 
 
 
@@ -722,6 +723,7 @@ import { DatepickerComponent } from './_components/datepicker/datepicker.compone
         SpecialLovComponent,
         WfNotesFormComponent,
         DatepickerComponent,
+        EndorsementComponent,
     ],
 
     providers: [
