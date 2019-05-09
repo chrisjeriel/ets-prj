@@ -227,8 +227,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.form.control.markAsDirty();
     }
 
-    onClickDelete() {
-        if(this.passData.checkFlag){
+    onClickDelete(force?) {
+        if(this.passData.checkFlag || force!=undefined){
             for(let i = 0; i<this.selected.length;i++){
                if(!this.selected[i].add){
                    this.selected[i].checked = false;
@@ -283,7 +283,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         if(event !== null && event.target.tagName!=="INPUT"){
             if(data != this.fillData && data != this.indvSelect){
                 this.indvSelect = data;
-                $(event.target.closest('tr')).find("input:not([tabindex='-1']):not([type='checkbox'])").first().click()
+                $(event.target.closest('tr')).find("input:not([tabindex='-1']):not([type='checkbox']):not(.tbl-dp)").first().click()
             }else if(data != this.fillData && data == this.indvSelect){
                 this.indvSelect = null;
             }
