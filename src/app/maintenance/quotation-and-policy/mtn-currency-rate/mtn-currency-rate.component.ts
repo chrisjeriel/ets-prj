@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaintenanceService, NotesService} from '@app/_services'
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-mtn-currency-rate',
@@ -11,7 +12,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 export class MtnCurrencyRateComponent implements OnInit {
 
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
-  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild('currency') table: CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   passData: any = {
     tHeader: [ "Hist No","Currency Rate","Eff Date From","Eff Date To", "Active","Remarks"],
@@ -32,15 +34,15 @@ export class MtnCurrencyRateComponent implements OnInit {
     },
     pageID: 'currencyRt',
     //checkFlag: true,
-    disableDelete: true,
+    disableGeneric : true,
     addFlag: true,
-    deleteFlag: true,
+    genericBtn:'Delete',
     searchFlag: true,
     pageLength: 10,
     paginateFlag: true,
     infoFlag: true,
-    //uneditable:[false,false,false,false,false],
-    //widths:[130,250,360,50,'auto'],
+    uneditable:[true,false,false,false,false,false],
+    widths:[100,'auto','auto','auto',70,400],
     keys:['histNo','currencyRt','effDateFrom','effDateTo','activeTag','remarks'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
@@ -52,13 +54,18 @@ export class MtnCurrencyRateComponent implements OnInit {
     updateDate:null,
   }
 
-  currencyCd: any = '';
-  description:any = '';
-  editedData:any = [];
   saveData : any ={
     saveCurrencyRt: []
   }
 
+  currencyCd: any = '';
+  description:any = '';
+  editedData:any = [];
+  deletedData:any = [];
+  cancelFlag:boolean;
+  dialogMessage : string = '';
+  dialogIcon: any;
+  
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -75,6 +82,7 @@ export class MtnCurrencyRateComponent implements OnInit {
         var currData = data.currencyCd;
         for(var i = 0;i < currData.length;i++){
           this.passData.tableData.push(currData[i]);
+          this.passData.tableData[i].uneditable = ['histNo']
         }
          this.table.refreshTable();
       })
@@ -82,8 +90,8 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   clickRow(data){
-    console.log(data)
     if(data !== null){
+      this.passData.disableGeneric = false
       this.currencyData = data;
       this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
       this.currencyData.updateDate = this.ns.toDateTimeString(data.updateDate);
@@ -92,7 +100,7 @@ export class MtnCurrencyRateComponent implements OnInit {
       this.currencyData.createDate = null;
       this.currencyData.updateDate = null;
       this.currencyData.updateUser = null;*/
-      this.passData.disableDelete = true;
+      this.passData.disableGeneric = true
     }
   }
 
@@ -128,20 +136,50 @@ export class MtnCurrencyRateComponent implements OnInit {
         this.editedData[this.editedData.length - 1].effDateTo = this.ns.toDateTimeString(this.passData.tableData[i].effDateTo);
         this.editedData[this.editedData.length - 1].updateUser = JSON.parse(window.localStorage.currentUser).username;
         this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);
+      }else if(this.passData.tableData[i].deleted){
+        this.deletedData.push(this.passData.tableData[i]);
+        this.deletedData[this.deletedData.length - 1].currencyCd = this.currencyCd;
       }
     }
 
     this.saveData.saveCurrencyRt = this.editedData;
+    this.saveData.delCurrencyRt = this.deletedData;
   }
 
   onClickSave(){
-    this.prepareData();
-    this.maintenanceService.saveMtnCurrencyRt(this.saveData).subscribe((data:any) => {
-      if(data['returnCode'] == 0) {
-          console.log('failed')
+    $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+  saveCurrRt(cancelFlag?){
+      this.cancelFlag = cancelFlag !== undefined;
+      this.prepareData();
+      this.maintenanceService.saveMtnCurrencyRt(this.saveData).subscribe((data:any) => {
+        if(data['returnCode'] == 0) {
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = "error";
+          $('#successModalBtn').trigger('click');
         } else{
-          console.log('success')
+          this.dialogIcon = "success";
+          $('#successModalBtn').trigger('click');
+          this.getCurrencyRate();
         }
-    })
+      })
+  }
+
+  deleteCurr(){
+      this.table.indvSelect.deleted = true;
+      this.table.selected  = [this.table.indvSelect]
+      this.table.confirmDelete();
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
+    /*var x,y;
+    x = this.passData.tableData[0].effDateFrom;
+    y = this.ns.toDateTimeString(this.passData.tableData[0].effDateTo);
+    console.log(x)
+    console.log(y)
+    console.log(this.ns.toDateTimeString(0))
+    console.log(this.ns.toDateTimeString(0) >= x && this.ns.toDateTimeString(0) <= y )*/
   }
 }

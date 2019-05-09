@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaintenanceService, NotesService } from '@app/_services'
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-mtn-currency-list',
@@ -12,6 +13,7 @@ export class MtnCurrencyListComponent implements OnInit {
 
   @ViewChild("currencyList") currencyList: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
   passData: any = {
     tHeader: [ "Currency Code","Currency Word","Description","Active", "Remarks"],
@@ -30,9 +32,9 @@ export class MtnCurrencyListComponent implements OnInit {
     },
     pageID: 'currency',
     //checkFlag: true,
-    disableDelete: true,
+    disableGeneric : true,
     addFlag: true,
-    deleteFlag: true,
+    genericBtn:'Delete',
     searchFlag: true,
     pageLength: 10,
     paginateFlag: true,
@@ -68,37 +70,41 @@ export class MtnCurrencyListComponent implements OnInit {
   getMtnCurrency(){
     this.passData.tableData = [];
     this.maintenanceService.getMtnCurrencyList(null).subscribe((data:any) => {
+      console.log(data)
       for(var i =0; i < data.currency.length;i++){
       	this.passData.tableData.push(data.currency[i]);
+        this.passData.tableData[i].uneditable = ['currencyCd']
       }
        this.currencyList.refreshTable();
-        this.getUneditable();
     });
   }
 
   onrowClick(data){
   	console.log(data)
   	if(data != null){
-  		this.passData.disableDelete = false;
+  		this.passData.disableGeneric = false;
   		this.currencyData = data;
   		this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
   		this.currencyData.updateDate = this.ns.toDateTimeString(data.updateDate);
   	}else{
-  		this.passData.disableDelete = true;
+  		this.passData.disableGeneric = true;
   	}
   }
 
   prepareData(){
   	this.edited = [];
+    this.deleted = [];
   	for(var i =0; i< this.passData.tableData.length;i++){
-  		if(this.passData.tableData[i].edited && !this.passData.tableData.deleted){
+  		if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
   			this.edited.push(this.passData.tableData[i])
         this.edited[this.edited.length - 1].updateUser = JSON.parse(window.localStorage.currentUser).username;
         this.edited[this.edited.length - 1].updateDate = this.ns.toDateTimeString(0);
-  		}
+  		}else if(this.passData.tableData[i].deleted){
+        this.deleted.push(this.passData.tableData[i]);
+      }
   	}
   	this.saveData.saveCurrency = this.edited;
-  	console.log(this.edited)
+    this.saveData.delCurrency = this.deleted;
   }
 
   saveCurrency(cancelFlag?){
@@ -111,17 +117,24 @@ export class MtnCurrencyListComponent implements OnInit {
           this.dialogIcon = "error";
           $('#successModalBtn').trigger('click');
         } else{
-          console.log('success');
-          this.dialogMessage = "";
           this.dialogIcon = "success";
-          $('app-sucess-dialog #modalBtn').trigger('click');
+          $('#successModalBtn').trigger('click');
           this.getMtnCurrency();
         }
       });
   }
 
   onClickSave(){
+    let currCds:string[] = this.passData.tableData.filter(a=>!a.deleted).map(a=>String(a.currencyCd).padStart(3,'0'));
+
+    if(currCds.some((a,i)=>currCds.indexOf(a) != i)){
+      this.dialogMessage = 'Unable to save the record. Currency Code must be unique per Line';
+      this.dialogIcon = 'error-message';
+      this.successDialog.open();
+      return;
+    }else{
   	 $('#confirm-save #modalBtn2').trigger('click');
+    }
 
   }
 
@@ -129,7 +142,7 @@ export class MtnCurrencyListComponent implements OnInit {
   	this.cancelBtn.clickCancel();
   }
 
-  getUneditable(){
+  /*getUneditable(){
     for(let data of this.passData.tableData){
       data.uneditable = [];
       if(data.coverCd == ''){
@@ -137,6 +150,18 @@ export class MtnCurrencyListComponent implements OnInit {
       }else {
           data.uneditable.push('coverCd');
       }
+    }
+  }*/
+
+  deleteCurr(){
+    if(this.currencyList.indvSelect.okDelete == 'N'){
+      this.dialogIcon = 'info';
+      this.dialogMessage =  'You are not allowed to delete a Currency Code that is already used in Quotation Processing.';
+      this.successDialog.open();
+    }else{
+      this.currencyList.indvSelect.deleted = true;
+      this.currencyList.selected  = [this.currencyList.indvSelect]
+      this.currencyList.confirmDelete();
     }
   }
 }

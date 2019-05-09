@@ -18,7 +18,7 @@
 
                 <fieldset class="scheduler-border" style="margin-top: 10px !important">
                     <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-                        <app-cust-editable-non-datatable [passData]="passData" (newClick)="clickRow($event)"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable #currency [passData]="passData" (newClick)="clickRow($event)" (onDelete)="currency.onClickDelete('force');" (genericBtn)="deleteCurr()"></app-cust-editable-non-datatable>
                             <div class="form-row" style="margin-top: 40px !important;">
                                 <div class="form-group col-sm">
                                     <div class="text-center">
@@ -43,14 +43,15 @@
 					        <label class="form-control-sm col-sm-1">Last Update</label>
 					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.updateDate" readonly>
 					    </div>
-				</fieldset>                
+				</fieldset>
+
+                
+                <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
+                <app-confirm-save (onYes)="saveCurrRt()"></app-confirm-save>
+                <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+                <app-cancel-button (onYes)="saveCurrRt('cancel')" [url]="'/'" ></app-cancel-button>                
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
 </div>
 
-<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
-<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
-<app-confirm-save (onYes)="onSaveDeductibles()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveDeductibles('cancel')" [url]="'/'" ></app-cancel-button>

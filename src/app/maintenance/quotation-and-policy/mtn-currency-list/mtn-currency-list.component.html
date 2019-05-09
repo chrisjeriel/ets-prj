@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 					<fieldset class="scheduler-border" style="margin-top: 10px !important">
 						<div class="custom-row-inline-inset" style="margin-top: 10px">
-							<app-cust-editable-non-datatable #currencyList [passData]="passData" (newClick)="onrowClick($event)"></app-cust-editable-non-datatable>
+							<app-cust-editable-non-datatable #currencyList [passData]="passData" (newClick)="onrowClick($event)" (onDelete)="currencyList.onClickDelete('force');" (genericBtn)="deleteCurr()"></app-cust-editable-non-datatable>
 						</div>
 
 						<div class="form-row" style="margin-top: 20px !important;">
