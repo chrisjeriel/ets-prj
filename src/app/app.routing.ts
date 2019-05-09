@@ -126,6 +126,7 @@ import { InsuredListComponent } from './maintenance/quotation-and-policy/insured
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
+import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 
 const appRoutes: Routes = [
 
@@ -261,6 +262,7 @@ const appRoutes: Routes = [
     { path: 'insured-mtn', component: InsuredComponent },
     { path: 'maintenance-currency', component: MtnCurrencyListComponent },
     { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
+    { path: 'maintenance-endt', component: EndorsementComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

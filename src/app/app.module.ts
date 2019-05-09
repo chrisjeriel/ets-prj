@@ -359,6 +359,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
+import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
+
 
 
 
@@ -726,6 +728,7 @@ import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn
         DatepickerComponent,
         MtnCurrencyListComponent,
         MtnCurrencyRateComponent,
+        EndorsementComponent,
     ],
 
     providers: [
