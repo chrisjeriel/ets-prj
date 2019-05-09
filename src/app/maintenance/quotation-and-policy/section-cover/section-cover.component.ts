@@ -7,14 +7,14 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
-  selector: 'app-endorsement',
-  templateUrl: './endorsement.component.html',
-  styleUrls: ['./endorsement.component.css']
+  selector: 'app-section-cover',
+  templateUrl: './section-cover.component.html',
+  styleUrls: ['./section-cover.component.css']
 })
-export class EndorsementComponent implements OnInit {
+export class SectionCoverComponent implements OnInit {
 
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
-  @ViewChild("endtTable") endtTable: CustEditableNonDatatableComponent;
+  @ViewChild("secTable") secTable: CustEditableNonDatatableComponent;
   @ViewChild("dedTable") dedTable: CustEditableNonDatatableComponent;
   @ViewChild(ConfirmSaveComponent) conSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
@@ -36,12 +36,13 @@ export class EndorsementComponent implements OnInit {
   	updateDate : '',
   }
 
-  passEndtTable:any={
+  passSecTable:any={
   	tableData:[],
-  	widths:[1,'auto','auto','auto',1,1,'auto'],
-  	tHeader:['Endt Code','Endt Name','Description','Wordings','Active','Default','Remarks'],
-  	dataTypes:['sequence-3','text','text-editor','text-editor','checkbox','checkbox','text'],
-  	keys:['endtCd','endtTitle','description','text','activeTag','defaultTag','remarks'],
+  	widths:[1,1,1,1,'auto',1,1,1,1,'auto'],
+  	tHeader:['Section','Bullet No','Cover Code','Abbreviation','Description','Add SI','Active','Default','Sort Seq','Remarks'],
+  	dataTypes:['text','number','sequence-3','text','text','checkbox','checkbox','checkbox','number','text'],
+  	keys:['section','bulletNo','coverCd','coverCdAbbr','coverName','addSi','activeTag','defaultTag','sortSeq','remarks'],
+  	uneditable:[false,false,true,false,false,false,false,false,false,false],
   	addFlag: true,
   	genericBtn:'Delete',
   	paginateFlag:true,
@@ -50,36 +51,21 @@ export class EndorsementComponent implements OnInit {
   	pageLength: 10,
   	pageId: 'endt',
   	nData:{
-  	  "lineCd": "",
-      "lineDesc": "",
-      "endtCd": "",
-      "endtTitle": "",
-      "description": "",
-      "text":'',
-      "defaultTag": "N",
-      "activeTag": "N",
-      "endtText01": "",
-      "endtText02": null,
-      "endtText03": null,
-      "endtText04": null,
-      "endtText05": null,
-      "endtText06": null,
-      "endtText07": null,
-      "endtText08": null,
-      "endtText09": null,
-      "endtText10": null,
-      "endtText11": null,
-      "endtText12": null,
-      "endtText13": null,
-      "endtText14": null,
-      "endtText15": null,
-      "endtText16": null,
-      "endtText17": null,
-      "remarks": null,
-      "createUser": this.ns.getCurrentUser(),
-      "createDate": 0,
-      "updateUser": this.ns.getCurrentUser(),
-      "updateDate": 0,
+  	  lineCd:'',
+  	  coverCd:'',
+  	  coverCdAbbr:'',
+  	  coverName:'',
+  	  section:'',
+  	  sortSeq:'10',
+  	  bulletNo:'',
+  	  addSi:'N',
+      defaultTag: "N",
+      activeTag: "Y",
+      remarks: null,
+      createUser: this.ns.getCurrentUser(),
+      createDate: 0,
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: 0,
       deductibles: []
   	},
   	disableGeneric : true,
@@ -94,8 +80,8 @@ export class EndorsementComponent implements OnInit {
         {
           "activeTag": "Y",
           "deductibleCd": "",
-          "coverCd": 0,
-          "endtCd": "",
+          "coverCd": "",
+          "endtCd": "0",
           "defaultTag": "N",
           "deductibleTitle": "",
           "deductibleType": "F",
@@ -139,7 +125,7 @@ export class EndorsementComponent implements OnInit {
   constructor(private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-  	setTimeout(a=>{this.endtTable.refreshTable();this.dedTable.refreshTable();},0);
+  	setTimeout(a=>{this.secTable.refreshTable();this.dedTable.refreshTable();},0);
 
   	this.ms.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
             .subscribe(data =>{
@@ -160,55 +146,36 @@ export class EndorsementComponent implements OnInit {
 
   setLine(data){
       this.line.lineCd = data.lineCd;
-      this.passEndtTable.nData.lineCd = data.lineCd;
+      this.passSecTable.nData.lineCd = data.lineCd;
       this.passDedTable.nData.lineCd = data.lineCd;
       this.line.description = data.description;
       this.ns.lovLoader(data.ev, 0);
-      this.getMtnEndorsements();
+      this.getMtnSectionCovers();
   }
 
-  getMtnEndorsements(){
-  	this.endtTable.loadingFlag = true;
-  	this.ms.getEndtCode(this.line.lineCd,'').subscribe(a=>{
-  		this.passEndtTable.disableAdd = false;
-  		this.passEndtTable.disableGeneric = false;
-  		this.passEndtTable.tableData = a['endtCode'];
-  		this.passEndtTable.tableData.forEach(a=>{{
-        a.endtCd = String(a.endtCd).padStart(3,'0')
-  			a['text'] = (a.endtText01 === null ? '' :a.endtText01) + 
-			                 (a.endtText02 === null ? '' :a.endtText02) + 
-			                 (a.endtText03 === null ? '' :a.endtText03) + 
-			                 (a.endtText04 === null ? '' :a.endtText04) + 
-			                 (a.endtText05 === null ? '' :a.endtText05) + 
-			                 (a.endtText06 === null ? '' :a.endtText06) + 
-			                 (a.endtText07 === null ? '' :a.endtText07) + 
-			                 (a.endtText08 === null ? '' :a.endtText08) + 
-			                 (a.endtText09 === null ? '' :a.endtText09) + 
-			                 (a.endtText10 === null ? '' :a.endtText10) + 
-			                 (a.endtText11 === null ? '' :a.endtText11) + 
-			                 (a.endtText12 === null ? '' :a.endtText12) + 
-			                 (a.endtText13 === null ? '' :a.endtText13) + 
-			                 (a.endtText14 === null ? '' :a.endtText14) + 
-			                 (a.endtText15 === null ? '' :a.endtText15) + 
-			                 (a.endtText16 === null ? '' :a.endtText16) + 
-			                 (a.endtText17 === null ? '' :a.endtText17) ;
+  getMtnSectionCovers(){
+  	this.secTable.loadingFlag = true;
+  	this.ms.getMtnSectionCovers(this.line.lineCd,'').subscribe(a=>{
+  		this.passSecTable.disableAdd = false;
+  		this.passSecTable.disableGeneric = false;
+  		this.passSecTable.tableData = a['sectionCovers'];
+  		this.passSecTable.tableData.forEach(a=>{{
 			a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
-			a.uneditable = ['endtCd']
   		}})
-  		this.endtClick(null);
-  		this.endtTable.refreshTable();
+  		this.secClick(null);
+  		this.secTable.refreshTable();
   	})
   }
 
-  deleteEndt(){
-  	if(this.endtTable.indvSelect.okDelete == 'N'){
+  deleteSec(){
+  	if(this.secTable.indvSelect.okDelete == 'N'){
   		this.dialogIcon = 'info';
-  		this.dialogMessage =  'You are not allowed to delete an Endorsement that is already used in quotation processing.';
+  		this.dialogMessage =  'You are not allowed to delete a Section Cover that is already used in quotation processing.';
   		this.successDialog.open();
   	}else{
-  		this.endtTable.indvSelect.deleted = true;
-  		this.endtTable.selected  = [this.endtTable.indvSelect]
-  		this.endtTable.confirmDelete();
+  		this.secTable.indvSelect.deleted = true;
+  		this.secTable.selected  = [this.secTable.indvSelect]
+  		this.secTable.confirmDelete();
   	}
   }
 
@@ -224,12 +191,12 @@ export class EndorsementComponent implements OnInit {
   	}
   }
 
-  endtClick(data){
+  secClick(data){
   	if(data != null){
   		this.passDedTable.tableData = data.deductibles;
   		this.passDedTable.disableAdd = false;
   		this.passDedTable.disableGeneric = false;
-  		this.passDedTable.nData.endtCd = data.endtCd;
+  		this.passDedTable.nData.coverCd = data.coverCd;
   		this.disableFields();
   		this.info = data;
   	}else{
@@ -269,62 +236,55 @@ export class EndorsementComponent implements OnInit {
   	})
   }
 
-  endtTextKeys:string[] = ['endtText01','endtText02','endtText03','endtText04','endtText05','endtText06','endtText07','endtText08','endtText09','endtText10','endtText11','endtText12','endtText13','endtText14','endtText15','endtText16','endtText17'];
+  
   save(can?){
   	this.cancelFlag = can !== undefined;
   	let params : any = {
-  		saveEndorsement : [],
-  		delEndorsement :[],
-  		saveDeductibles:[],
-  		deleteDeductibles:[]
+  		saveDeductibles : [],
+  		deleteDeductibles :[],
+  		saveSectionCover:[],
+  		delSectionCover:[],
+  		addSectionCover:[]
   	}
   	
-  	for(let endt of this.passEndtTable.tableData){
-  		if(endt.edited && !endt.deleted){
-  			let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
-            if(endtTextSplit!== null)
-                for (var i = 0; i < endtTextSplit.length; ++i) {
-                    endt[this.endtTextKeys[i]] = endtTextSplit[i];
-            }
-            endt.updateDate = this.ns.toDateTimeString(0);
-            endt.createDate = this.ns.toDateTimeString(endt.createDate);
-            endt.updateUser = this.ns.getCurrentUser();
-            params.saveEndorsement.push(endt);
-  		}
-
-  		// if(!endt.deleted){
-  		// 	let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
-    //         if(endtTextSplit!== null)
-    //             for (var i = 0; i < endtTextSplit.length; ++i) {
-    //                 endt[this.endtTextKeys[i]] = endtTextSplit[i];
-    //         }
-    //         endt.updateDate = this.ns.toDateTimeString(0);
-    //         endt.createDate = this.ns.toDateTimeString(endt.createDate);
-    //         endt.updateUser = this.ns.getCurrentUser();
-    //         params.saveEndorsement.push(endt);
-  		// }
-
-  		for(let ded of endt.deductibles){
-  			if(ded.edited && !ded.deleted){
-  				ded.updateDate = this.ns.toDateTimeString(0);
+  	for(let sec of this.passSecTable.tableData){
+  		if(sec.edited && !sec.deleted && !sec.add){
+            sec.updateDate = this.ns.toDateTimeString(0);
+            sec.createDate = this.ns.toDateTimeString(sec.createDate);
+            sec.updateUser = this.ns.getCurrentUser();
+            params.saveSectionCover.push(sec);
+  		}else if(sec.edited && sec.add && !sec.deleted){
+  			sec.updateDate = this.ns.toDateTimeString(0);
+            sec.createDate = this.ns.toDateTimeString(sec.createDate);
+            sec.deductibles.forEach(ded=>{
+            	ded.updateDate = this.ns.toDateTimeString(0);
 	            ded.createDate = this.ns.toDateTimeString(ded.createDate);
-	            ded.updateUser = this.ns.getCurrentUser();
-	            ded.endtCd = endt.endtCd;
-	            params.saveDeductibles.push(ded);
-  			}else if(ded.deleted){
-  				params.deleteDeductibles.push(ded);
-  			}
+            })
+            params.addSectionCover.push(sec);
   		}
+  		if(!sec.add){
+	  		for(let ded of sec.deductibles){
+	  			if(ded.edited && !ded.deleted){
+	  				ded.updateDate = this.ns.toDateTimeString(0);
+		            ded.createDate = this.ns.toDateTimeString(ded.createDate);
+		            ded.updateUser = this.ns.getCurrentUser();
+		            ded.coverCd = sec.coverCd;
+		            params.saveDeductibles.push(ded);
+	  			}else if(ded.deleted){
+	  				params.deleteDeductibles.push(ded);
+	  			}
+	  		}
+	  	}
 
   	}
-  	params.delEndorsement = this.passEndtTable.tableData.filter(a=>a.deleted);
+  	params.delSectionCover = this.passSecTable.tableData.filter(a=>a.deleted);
 
 
-  	this.ms.saveMtnEndt(params).subscribe(a=>{
+  	this.ms.saveMtnSectionCovers(params).subscribe(a=>{
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
-            this.getMtnEndorsements();
+            this.getMtnSectionCovers();
         }else{
             this.dialogIcon = "error";
             this.successDialog.open();
@@ -334,33 +294,27 @@ export class EndorsementComponent implements OnInit {
   }
 
   onClickSave(){
-  	
-  	let endtCds:string[] = this.passEndtTable.tableData.filter(a=>!a.deleted).map(a=>String(a.endtCd).padStart(3,'0'));
 
-  	if(endtCds.some((a,i)=>{
-      if(endtCds.indexOf(a) != i)
-        console.log(a)
-      return endtCds.indexOf(a) != i;
-    })){
-  		this.dialogMessage = 'Unable to save the record. Endt Code must be unique per Line';
+  	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.bulletNo == b.bulletNo && a.section==b.section).length != 1)){
+  		this.dialogMessage = 'Unable to save the record. Bullet No must be unique per Section';
   		this.dialogIcon = 'error-message';
   		this.successDialog.open();
   		return;
   	}
   	let dedCds : string[];
-  	for(let endt of this.passEndtTable.tableData){
-  		dedCds = endt.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
-		if(endt.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
+  	for(let sec of this.passSecTable.tableData){
+  		dedCds = sec.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
+		if(sec.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
   			this.dialogIcon = "error";
     		this.successDialog.open();
     		return;
 		}
 
   		if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
-  			this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Endorsement';
+  			this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Section Cover';
 	  		this.dialogIcon = 'error-message';
 	  		this.successDialog.open();
-	  		this.endtTable.markAsPristine();
+	  		this.secTable.markAsPristine();
 	  		this.dedTable.markAsPristine();
 	  		return;
   		}
