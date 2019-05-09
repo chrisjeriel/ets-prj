@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit, DoCheck, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, Renderer2, ViewChild } from '@angular/core';
 import { NotesService } from '@app/_services'
 
 @Component({
@@ -6,7 +6,7 @@ import { NotesService } from '@app/_services'
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.css']
 })
-export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, DoCheck {
+export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
 
   constructor(private ns: NotesService, private r2: Renderer2) { }
 
@@ -46,19 +46,6 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   ngOnInit() {
-  	/*this.minimumDate = new Date(this.minDate);
-
-  	if(this.type == 'time') {
-  		var d = new Date();
-  		var hrs = Number(this.value.split(':')[0]);
-  		var mins = Number(this.value.split(':')[1]);
-  		d.setHours(hrs, mins);
-
-  		this.datepickerVal = d;
-  	} else {
-  		this.datepickerVal = new Date(this.value);
-  	}*/
-
   	this.inputStyle['textAlign'] = this.textAlign;
 
   	if(this.required) {
@@ -127,10 +114,6 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   	}
   }
 
-  ngAfterViewInit() {  	
-  	/*FOR MASKING - IN PROGRESS*/
-  }
-
   valueChanged() {
   	var dateString = this.ns.toDateTimeString(this.type == 'datetime' && this.datepickerVal != null ? this.datepickerVal : this.datepickerVal == null ? '' : this.datepickerVal.setSeconds(0));
 
@@ -174,11 +157,11 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   focused() {
-  	setTimeout(() => { 
+  	/*setTimeout(() => { 
   		$('.ui-datepicker-title').addClass('input-group').attr('style', 'padding: 0 15px 5px !important');
-  		$('.ui-datepicker-month').addClass('form-control form-control-sm cust-sm col-sm-6');
-  		$('.ui-datepicker-year').addClass('form-control form-control-sm cust-sm col-sm-6');
-  	}, 0);
+  		$('.ui-datepicker-month').addClass('form-control form-control-sm cust-sm col-sm-7');
+  		$('.ui-datepicker-year').addClass('form-control form-control-sm cust-sm col-sm-5');
+  	}, 0);*/ //REMOVED BECAUSE OF STYLE BUG
 
   	this.onFocus.emit();
   }
