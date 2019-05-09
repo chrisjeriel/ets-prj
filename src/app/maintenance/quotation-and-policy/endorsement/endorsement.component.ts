@@ -57,7 +57,7 @@ export class EndorsementComponent implements OnInit {
       "description": "",
       "text":'',
       "defaultTag": "N",
-      "activeTag": "N",
+      "activeTag": "Y",
       "endtText01": "",
       "endtText02": null,
       "endtText03": null,

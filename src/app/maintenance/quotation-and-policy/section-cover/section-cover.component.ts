@@ -56,7 +56,7 @@ export class SectionCoverComponent implements OnInit {
   	  coverCdAbbr:'',
   	  coverName:'',
   	  section:'',
-  	  sortSeq:'10',
+  	  sortSeq:'',
   	  bulletNo:'',
   	  addSi:'N',
       defaultTag: "N",
