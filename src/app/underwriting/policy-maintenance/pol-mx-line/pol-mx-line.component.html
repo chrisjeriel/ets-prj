@@ -1,13 +1,13 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Maintenance</h4>
+	<h4>Maintenance</h4>
 	<ngb-tabset #tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="Line">
 			<ng-template ngbTabContent>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
 					<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-						<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)">
-							<button controls-l class="cust-btn" class="cust cust-btn" *ngIf="isChecked" (click)="confirmDelete()">Delete</button>
-							<button controls-l class="cust-btn" class="cust cust-btn dsbld" *ngIf="!isChecked" tabindex="-1">Delete</button>
+						<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)" (onDelete)="sample()">
+							<!-- <button controls-l class="cust-btn" class="cust cust-btn" *ngIf="isChecked" (click)="confirmDelete()">Delete</button>
+							<button controls-l class="cust-btn" class="cust cust-btn dsbld" *ngIf="!isChecked" tabindex="-1">Delete</button> -->
 						</app-cust-editable-non-datatable>
 					</div>
 <!-- 					<div class="row" style="padding-top: 10px !important;">
@@ -28,7 +28,7 @@
 						</div>
 					</div>
 				</fieldset>
-
+				<button type="button" (click)="sample()">CLick</button>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
 					<div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
 						<label class="form-control-sm col-sm-1">Created By</label>

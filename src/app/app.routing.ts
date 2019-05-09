@@ -127,6 +127,8 @@ import { InsuredComponent } from './maintenance/quotation-and-policy/insured-lis
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
+import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
+
 const appRoutes: Routes = [
 
 
@@ -262,6 +264,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'adv-word-mtn', component: AdviceWordingsComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

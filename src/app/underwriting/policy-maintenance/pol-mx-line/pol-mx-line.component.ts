@@ -35,9 +35,9 @@ export class PolMxLineComponent implements OnInit {
 			sortSeq         : null,
 			remarks         : null,
 		},
-		checkFlag			: true,
+		//checkFlag			: true,
 		addFlag				: true,
-		//deleteFlag			: true,
+		deleteFlag			: true,
 		searchFlag          : true,
 		paginateFlag		: true,
 		infoFlag			: true,
@@ -56,12 +56,13 @@ export class PolMxLineComponent implements OnInit {
 	successMessage			: string 	= environment.successMessage;
 	arrLineCd     			: any     	= [];
 	counter					: number;
-	mtnLineReq 				: any;
+	mtnLineReq 				: any		= {};
 	warnMsg					: string 	= '';
-	isChecked				: boolean = false;
-    usedInQuote				: boolean = false;
+	isChecked				: boolean 	= false;
+    usedInQuote				: boolean 	= false;
+    usedInQuoteAdd			: boolean 	= false;
     arrLineCdDel  			: any     	= [];
-
+    arrRowsToSave			: any		= [];
 
 	saveMtnLine:any = {
 		activeTag		: false,
@@ -87,26 +88,15 @@ export class PolMxLineComponent implements OnInit {
 	ngOnInit() {
 		this.titleService.setTitle('Mtn | Line');
 		this.getMtnLine();
-
-		// if(this.inquiryFlag){
-		// 	this.passData.tHeader.pop();
-		// 	this.passData.opts = [];
-		// 	this.passData.uneditable = [];
-		// 	this.passData.magnifyingGlass = [];
-		// 	this.passData.addFlag = false;
-		// 	this.passData.deleteFlag = false;
-		// 	for(var count = 0; count < this.passData.tHeader.length; count++){
-		// 		this.passData.uneditable.push(true);
-		// 	}
-		// }
 	}
 
 	onClickSaveLine(cancelFlag?){
 		this.counter = 0;
 		this.dialogIcon = '';
 		this.dialogMessage = '';
-		//this.loading = true;
+		this.usedInQuoteAdd = false;
 		this.cancelFlag = cancelFlag !== undefined;
+		this.arrRowsToSave = [];
 
 		for(var i = 0; this.passData.tableData.length > i; i++){
 			var rec = this.passData.tableData[i];
@@ -118,6 +108,7 @@ export class PolMxLineComponent implements OnInit {
                     $('app-sucess-dialog #modalBtn').trigger('click');
                 },500);
 			}else{
+
 				if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
 					// for(var k = 0; k < this.arrLineCd.length; k++){
 					// 	if(rec.lineCd === this.arrLineCd[k]){
@@ -128,49 +119,53 @@ export class PolMxLineComponent implements OnInit {
 					// 	}
 					// }
 
-					var result = this.arrLineCd.some(a => a.toString().toUpperCase() === rec.lineCd.toString().toUpperCase());
-					if(result === true){						
-						setTimeout(()=>{
-		                    $('.globalLoading').css('display','none');
-		                    // this.table.refreshTable();
-							this.warnMsg = 'Unable to save the record. Line Code must be unique.';
-							this.showWarnLov();
-		                },500);
+					this.mtnLineReq = { 
+						"deleteLine": [],
+						"saveLine": [
+							{
+								"activeTag"		: (rec.activeTag === '' || rec.activeTag === null || rec.activeTag === undefined)?this.cbFunc(rec.activeTag):rec.activeTag,
+								"alopTag"		: (rec.alopTag === '' || rec.alopTag === null || rec.alopTag === undefined)?this.cbFunc(rec.alopTag):rec.alopTag,
+								"catTag"		: (rec.catTag === '' || rec.catTag === null || rec.catTag === undefined)?this.cbFunc(rec.catTag):rec.catTag,
+								"createDate"	: (rec.createDate === '' || rec.createDate === null || rec.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(rec.createDate),
+								"createUser"	: (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?this.ns.getCurrentUser():rec.createUser,
+								"cutOffTime"	: this.cutOffTimeFunc(rec.cutOffTime),
+								"description"	: rec.description,
+								"lineCd"		: rec.lineCd,
+								"openCoverTag"	: (rec.openCoverTag === '' || rec.openCoverTag === null || rec.openCoverTag === undefined)?this.cbFunc(rec.openCoverTag):rec.openCoverTag,
+								"referenceNo"	: rec.referenceNo,
+								"remarks"		: rec.remarks,
+								"renewalTag"	: (rec.renewalTag === '' || rec.renewalTag === null || rec.renewalTag === undefined)?this.cbFunc(rec.renewalTag):rec.renewalTag,
+								"sortSeq"		: rec.sortSeq,
+								"updateDate"	: this.ns.toDateTimeString(0),
+								"updateUser"	: this.ns.getCurrentUser()
+							}
+							
+						]
+					};
 
-					}else{
-						this.mtnLineReq = { 
-							"deleteLine": [],
-							"saveLine": [
-								{
-									"activeTag"		: (rec.activeTag === '' || rec.activeTag === null || rec.activeTag === undefined)?this.cbFunc(rec.activeTag):rec.activeTag,
-									"alopTag"		: (rec.alopTag === '' || rec.alopTag === null || rec.alopTag === undefined)?this.cbFunc(rec.alopTag):rec.alopTag,
-									"catTag"		: (rec.catTag === '' || rec.catTag === null || rec.catTag === undefined)?this.cbFunc(rec.catTag):rec.catTag,
-									"createDate"	: (rec.createDate === '' || rec.createDate === null || rec.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(rec.createDate),
-									"createUser"	: (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?this.ns.getCurrentUser():rec.createUser,
-									"cutOffTime"	: this.cutOffTimeFunc(rec.cutOffTime),
-									"description"	: rec.description,
-									"lineCd"		: rec.lineCd,
-									"openCoverTag"	: (rec.openCoverTag === '' || rec.openCoverTag === null || rec.openCoverTag === undefined)?this.cbFunc(rec.openCoverTag):rec.openCoverTag,
-									"referenceNo"	: rec.referenceNo,
-									"remarks"		: rec.remarks,
-									"renewalTag"	: (rec.renewalTag === '' || rec.renewalTag === null || rec.renewalTag === undefined)?this.cbFunc(rec.renewalTag):rec.renewalTag,
-									"sortSeq"		: rec.sortSeq,
-									"updateDate"	: this.ns.toDateTimeString(0),
-									"updateUser"	: this.ns.getCurrentUser()
-								}
-							]
+					for(var k=0;k<this.arrLineCd.length;k++){
+						if(this.arrLineCd[k].toString().toUpperCase() === rec.lineCd.toString().toUpperCase()){
+							this.usedInQuoteAdd = true;
+							continue;
+						}else{
+							(this.arrRowsToSave.includes(this.mtnLineReq) === true)?'':this.arrRowsToSave.push(this.mtnLineReq);
+							//this.arrRowsToSave.push(this.mtnLineReq); 
 						}
-
-						this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
-						.subscribe(data => {
-							this.getMtnLine();
-							$('app-sucess-dialog #modalBtn').trigger('click');
-							this.loading = false;
-						});	
-
 					}
 
+						this.arrRowsToSave.forEach(function(e){
+							console.log(e.saveLine[0]);
+							console.log(rec);
+							if(rec === e){
+								console.log('EXISTING RECORD');
+							}else{
+								console.log('NEW RECORD');
+							}
+						});
+
+
 				}else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+
 					this.mtnLineReq = { 
 						"deleteLine": [
 							{
@@ -192,7 +187,7 @@ export class PolMxLineComponent implements OnInit {
 							}
 						],
 						"saveLine": []
-					}
+					};
 
 					this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
 					.subscribe(data => {
@@ -202,7 +197,7 @@ export class PolMxLineComponent implements OnInit {
 					});
 				}else{
 					this.counter++;
-				}
+				}				
 			}
 
 		}
@@ -213,6 +208,25 @@ export class PolMxLineComponent implements OnInit {
 				this.dialogMessage = 'Nothing to save.';
 				$('app-sucess-dialog #modalBtn').trigger('click');
 			},500);
+		}
+
+		console.log(this.arrRowsToSave);
+		if(this.usedInQuoteAdd === true){
+			setTimeout(()=>{
+		        $('.globalLoading').css('display','none');
+				this.warnMsg = 'Unable to save the record. Line Code must be unique.';
+				this.showWarnLov();
+		    },500);
+
+		}else{
+			for(var i=0;i<this.arrRowsToSave.length;i++){
+				this.mtnService.saveMtnLine(JSON.stringify(this.arrRowsToSave[i]))
+					.subscribe(data => {
+						this.getMtnLine();
+						$('app-sucess-dialog #modalBtn').trigger('click');
+						this.loading = false;
+				});
+			}
 		}
 	}
 
@@ -225,6 +239,7 @@ export class PolMxLineComponent implements OnInit {
 		this.arrLineCd = [];
 		this.mtnService.getLineLOV('')
 		.subscribe(data => {
+			console.log(data);
 			this.passData.tableData = [];
 			this.arrLineCd = [];
 			var rec = data['line'];
@@ -258,27 +273,32 @@ export class PolMxLineComponent implements OnInit {
 
 	onRowClick(event){
 		if(event !== null){
+			this.saveMtnLine.lineCd		= event.lineCd;
 			this.saveMtnLine.updateDate = this.ns.toDateTimeString(event.updateDate);
 	        this.saveMtnLine.updateUser = event.updateUser;
 	        this.saveMtnLine.createDate = this.ns.toDateTimeString(event.createDate);
 	        this.saveMtnLine.createUser = event.createUser;
-		}
 
-		var counter = 0;
-		this.arrLineCdDel = [];
-		for(var i = 0 ; i<this.passData.tableData.length; i++){
-			if(this.passData.tableData[i].checked === true){
-				counter++;
-				this.arrLineCdDel.push(this.passData.tableData[i].lineCd);
-			}
-		}
-
-		if(counter<1){
+	       	this.isChecked = true;
+		}else{
 			this.isChecked = false;
-
-		}else{	
-			this.isChecked = true;
 		}
+
+		// var counter = 0;
+		// this.arrLineCdDel = [];
+		// for(var i = 0 ; i<this.passData.tableData.length; i++){
+		// 	if(this.passData.tableData[i].checked === true){
+		// 		counter++;
+		// 		this.arrLineCdDel.push(this.passData.tableData[i].lineCd);
+		// 	}
+		// }
+
+		// if(counter<1){
+		// 	this.isChecked = false;
+
+		// }else{	
+		// 	this.isChecked = true;
+		// }
 
 	}
 
@@ -307,7 +327,6 @@ export class PolMxLineComponent implements OnInit {
 	}
 
 	confirmDelete(){
-
 		this.loading = true;
 		this.quotationService.getQuoProcessingData([])
 		.subscribe(data => {
@@ -316,14 +335,17 @@ export class PolMxLineComponent implements OnInit {
 			this.loading = false;
 			this.usedInQuote = false;
 			for(let i of rec){
-				for(var j=0;j<this.arrLineCdDel.length;j++){
-					if(this.arrLineCdDel[j] !== null){
-						if(this.arrLineCdDel[j].toUpperCase() === i.lineCd.toUpperCase()){
-							this.usedInQuote = true;
-							break;
-						}	
-					}
+				// for(var j=0;j<this.arrLineCdDel.length;j++){
+				// 	if(this.arrLineCdDel[j] !== null){
+				// 		if(this.arrLineCdDel[j].toUpperCase() === i.lineCd.toUpperCase()){
+				// 			this.usedInQuote = true;
+				// 			break;
+				// 		}	
+				// 	}
 					
+				// }
+				if(this.saveMtnLine.lineCd.toString().toUpperCase() === i.lineCd.toString().toUpperCase()){
+					this.usedInQuote = true;
 				}
 				
 			}
@@ -338,6 +360,13 @@ export class PolMxLineComponent implements OnInit {
 
 		});
 	
+	}
+
+	sample(){
+		this.passData.tableData = this.passData.tableData.filter(a => a.lineCd.toString().toUpperCase() !== this.saveMtnLine.lineCd.toString().toUpperCase());
+		this.table.refreshTable();
+		console.log('clicked delete btn');
+
 	}
 
 }

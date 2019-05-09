@@ -483,6 +483,17 @@
                                             <br />
                                             <button [routerLink]="['/maintenance-intermediary']" class="button btn btn-link">Intermediary</button>
                                             <br />
+                                            <ngb-accordion #acc="ngbAccordion">
+                                                <ngb-panel>
+                                                    <ng-template ngbPanelTitle>
+                                                        Wording
+                                                    </ng-template>
+                                                    <ng-template ngbPanelContent>
+                                                        <button [routerLink]="['/adv-word-mtn']" class="button btn btn-link">Advice Wording</button>
+                                                        <br />
+                                                    </ng-template>
+                                                </ngb-panel>
+                                            </ngb-accordion>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>

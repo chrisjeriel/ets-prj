@@ -139,19 +139,27 @@ export class MaintenanceService{
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMntIntermediary', {params});
     }
 
-	getMtnRiskListing(riskId,riskAbbr,riskName,regionDesc,provinceDesc,cityDesc,districtDesc,blockDesc,latitude,longitude,activeTag) {
-		const params = new HttpParams()
-                .set('riskId',riskId)
-                .set('riskAbbr',riskAbbr)
-                .set('riskName',riskName)
-                .set('regionDesc',regionDesc)
-                .set('provinceDesc',provinceDesc)
-                .set('cityDesc',cityDesc)
-                .set('districtDesc',districtDesc)
-                .set('blockDesc',blockDesc)
-                .set('latitude',latitude)
-                .set('longitude',longitude)
-                .set('activeTag',activeTag);
+	getMtnRiskListing(searchParams: any[]) {
+		var params;
+		if(searchParams.length < 1){
+			params = new HttpParams()
+	                .set('riskId','')
+	                .set('riskAbbr','')
+	                .set('riskName','')
+	                .set('regionDesc','')
+	                .set('provinceDesc','')
+	                .set('cityDesc','')
+	                .set('districtDesc','')
+	                .set('blockDesc','')
+	                .set('latitude','')
+	                .set('longitude','')
+	                .set('activeTag','');
+        }else{
+        	params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
 
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRiskListing', {params});
 	}
@@ -341,6 +349,19 @@ export class MaintenanceService{
 		         };
 		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnIntermediary',params,header);
 	}
+    saveMtnAdviceWordings(save: any[], del: any[]){
+    	let params: any = {
+    		saveAdvWordList: save,
+    		deleteAdvWordList: del,
+    	}
+
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdviceWordings',params,header);
+    }
 
 }
 
