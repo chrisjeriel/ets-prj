@@ -194,6 +194,7 @@ export class EndorsementComponent implements OnInit {
 			a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
 			a.uneditable = ['endtCd']
   		}})
+  		this.endtClick(null);
   		this.endtTable.refreshTable();
   	})
   }
@@ -248,15 +249,21 @@ export class EndorsementComponent implements OnInit {
   	// 'deductibleAmt','deductibleRate','minAmt','maxAmt'
   	this.passDedTable.tableData.forEach(a=>{
   		if(a.deductibleType == 'F'){
-  			a.uneditable = ['deductibleRate','minAmt','maxAmt'];	
-  			a.uneditable.forEach(b=>{
-  				a[b] = '';
+  			a.uneditable = ['deductibleRate','minAmt','maxAmt','deductibleCd'];
+  			a.uneditable.forEach((b,i)=>{
+  				if(i != a.uneditable.length-1)
+  					a[b] = '';
   			})
   		}else{
-  			a.uneditable = ['deductibleAmt'];
-  			a.uneditable.forEach(b=>{
-  				a[b] = '';
-  			})
+  			a.uneditable = ['deductibleAmt','deductibleCd'];
+	  		a.uneditable.forEach((b,i)=>{
+	  			if(i != a.uneditable.length-1)
+	  				a[b] = '';
+	  		})
+  		}
+
+  		if(a.add){
+  			a.uneditable.pop();
   		}
   	})
   }
@@ -298,16 +305,6 @@ export class EndorsementComponent implements OnInit {
 
   		for(let ded of endt.deductibles){
   			if(ded.edited && !ded.deleted){
-  				if(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0)){
-		  			this.dialogIcon = "error";
-            		this.successDialog.open();
-            		return;
-		  		}else if(ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0)){
-		  			this.dialogIcon = "error";
-            		this.successDialog.open();
-            		return;
-		  		}
-
   				ded.updateDate = this.ns.toDateTimeString(0);
 	            ded.createDate = this.ns.toDateTimeString(ded.createDate);
 	            ded.updateUser = this.ns.getCurrentUser();
@@ -348,6 +345,12 @@ export class EndorsementComponent implements OnInit {
   	let dedCds : string[];
   	for(let endt of this.passEndtTable.tableData){
   		dedCds = endt.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
+		if(endt.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
+  			this.dialogIcon = "error";
+    		this.successDialog.open();
+    		return;
+		}
+
   		if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
   			this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Endorsement';
 	  		this.dialogIcon = 'error-message';
@@ -366,6 +369,6 @@ export class EndorsementComponent implements OnInit {
 
   showLineLOV(){
     $('#lineLOV #modalBtn').trigger('click');
-}
+	}
 
 }
