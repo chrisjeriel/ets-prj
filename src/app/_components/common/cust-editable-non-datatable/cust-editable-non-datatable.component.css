@@ -411,6 +411,6 @@ span:empty:before {
   content: "\200b";
 }
 
-.no-click {
+.unclickable {
     pointer-events: none;
 }
