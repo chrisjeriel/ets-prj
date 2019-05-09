@@ -23,10 +23,12 @@
 	[yearRange]="'1970:2200'"
 	[tabindex]="tabindex"
 	[name]="name"
+	[showOnFocus]="!table"
 	appendTo="body"
 	(onBlur)="onBlur($event)"
 	(onSelect)="onSelect()"
-	(onFocus)="focused()"></p-calendar></ng-container>
+	(onFocus)="focused()"
+	(onClearClick)="onClearClick()"></p-calendar></ng-container>
 
 <ng-container *ngIf="type == 'date'" #dtpl>
 <p-calendar 
@@ -50,10 +52,12 @@
 	[yearRange]="'1970:2200'"
 	[tabindex]="tabindex"
 	[name]="name"
+	[showOnFocus]="!table"
 	appendTo="body"
 	(onBlur)="onBlur($event)"
 	(onSelect)="onSelect()"
-	(onFocus)="focused()"></p-calendar></ng-container>
+	(onFocus)="focused()"
+	(onClearClick)="onClearClick()"></p-calendar></ng-container>
 <!-- (onClearClick)="clearInput($event)" (onBlur)="testCh($event)"  [clearButtonStyleClass]="'cust-btn'" [monthNavigator]="true" [yearNavigator]="true" -->
 
 <ng-container *ngIf="type == 'time'" #ttpl>
@@ -65,7 +69,7 @@
 	[showIcon]="false"
 	[style]="{ width: '100%', position: 'absolute', display: 'contents' }"
 	[inputStyle]="inputStyle"
-	[inputStyleClass]="'form-control form-control-sm'"
+	[inputStyleClass]="inputStyeClass"
 	[timeOnly]="true"
 	[disabled]="disabled"
 	[tabindex]="tabindex"
