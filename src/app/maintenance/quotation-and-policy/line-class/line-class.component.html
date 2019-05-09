@@ -58,7 +58,7 @@
 
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-confirm-save (onYes)="onClickSaveLineClass()"></app-confirm-save>
-<app-sucess-dialog id="lineClassSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog id="lineClassSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag? cancel.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSaveLineClass('cancel')" [url]="'/'" ></app-cancel-button>
 
 <app-modal class="d-none" id="altWarningModal">
@@ -66,8 +66,8 @@
   <div body style="min-width: 420px !important;">
       <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
           <div class="custom-row-inline-inset" style="text-align: center">
-              <p *ngIf="warningMsg == 0">Unable to save the record. Line Class Code must be unique per line.</p>
-              <p *ngIf="warningMsg == 1">You are not allowed to delete a Line Class that is already used in quotation processing.</p>
+              <p *ngIf="warningMsg == 0">Unable to save the record. Line Class Code must be unique<br> per line.</p>
+              <p *ngIf="warningMsg == 1">You are not allowed to delete a Line Class that is already <br> used in quotation processing.</p>
           </div>
       </fieldset>
   </div>

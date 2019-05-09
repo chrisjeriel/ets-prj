@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, ViewChildren, QueryList, ViewChild  } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { MaintenanceService, NotesService, QuotationService } from '@app/_services';
+import { MaintenanceService, NotesService } from '@app/_services';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { environment } from '@environments/environment';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -17,15 +18,16 @@ export class LineClassComponent implements OnInit {
   @ViewChild('lineClassTable') table: CustEditableNonDatatableComponent;
   @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
   @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
+  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
   passData: any = {
-    tableData:[],
+    tableData:[['', '', '', '']],
     tHeader				:["Line Class Code", "Description", "Active","Remarks"],
     dataTypes			:["text", "text", "checkbox", "text"],
     nData:{
       lineClassCd       : null,
       lineCdDesc        : null,
-      activeTag         : '',
+      activeTag         : 'Y',
       remarks           : ' ',
       createUser        : null,
       createDate        : this.ns.toDateTimeString(0),
@@ -40,9 +42,10 @@ export class LineClassComponent implements OnInit {
     resizable			      : [true, true, true, false],
     pageID				      : 'line-mtn-line',
     keys				        : ['lineClassCd', 'lineCdDesc', 'activeTag','remarks'],
+    disableAdd          : true
   };
 
-  cancelFlag				    : boolean;
+  cancelFlag				    : boolean = false;
   loading					      : boolean;
 	dialogIcon				    : string;
 	dialogMessage			    : string;
@@ -64,8 +67,8 @@ export class LineClassComponent implements OnInit {
     createUser:  null,
   };
 
-  constructor(private titleService: Title, private mtnService: MaintenanceService, private quotationService: QuotationService,
-              private ns: NotesService, private modalService: NgbModal) { }
+  constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
     this.titleService.setTitle('Mtn | Line Class');
@@ -83,6 +86,10 @@ export class LineClassComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    setTimeout(_=> this.table.btnDisabled = true );
+  }
+
   retrieveLineClass() {
     if(this.line === '' || this.line == null) {
       this.clearTbl();
@@ -97,7 +104,8 @@ export class LineClassComponent implements OnInit {
           });
 
           this.passData.tableData.sort((a,b) => (a.createDate > b.createDate)? -1 : 1);
-
+          this.table.btnDisabled = true;
+          this.passData.disableAdd = false;
           this.table.refreshTable();
         }
       });
@@ -107,7 +115,7 @@ export class LineClassComponent implements OnInit {
   checkLineClassCd() {
     var lineCds = this.passData.tableData.map(a => a.lineClassCd);
 
-    var duplicates = lineCds.reduce(function(acc, el, i, arr) {
+    var duplicates = lineCds.reduce((acc, el, i, arr) => {
       if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) {
         acc.push(el);
       }
@@ -119,7 +127,7 @@ export class LineClassComponent implements OnInit {
 
   onClickSaveLineClass(cancelFlag?) {
     this.cancelFlag = cancelFlag !== undefined;
-    let savedData: any;
+    let savedData: any = {};
     savedData.saveLineClass = [];
     savedData.deleteLineClass = [];
 
@@ -149,12 +157,11 @@ export class LineClassComponent implements OnInit {
           if (data['returnCode'] === 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
             this.dialogIcon = "error";
-            $('#successModalBtn').trigger('click');
+            $('#lineClassSuccess > #successModalBtn').trigger('click');
           } else {
             this.dialogIcon = "success";
-            $('#successModalBtn').trigger('click');
+            $('#lineClassSuccess > #successModalBtn').trigger('click');
             this.table.markAsPristine();
-
             this.retrieveLineClass();
           }
         });
@@ -162,7 +169,7 @@ export class LineClassComponent implements OnInit {
         this.warningMsg = 0;
         this.showWarningMdl();
 
-        setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+        setTimeout(() => {$('.globalLoading').css('display','none');},0);
       }
     } else {
       this.dialogMessage = 'Please check field values';
@@ -174,21 +181,21 @@ export class LineClassComponent implements OnInit {
   }
 
   delLineClass() {
-    this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
-      console.log(data['quotationList']);
-      // var lineCds = data['quotationList'].map(a => a.lineClassCd);
-      // console.log(lineCds);
-    });
-
-    for (let rec of this.passData.tableData) {
-      if (rec.lineClassCd === this.table.indvSelect.lineClassCd) {
-        rec.deleted = true;
-        rec.edited = true;
+    console.log(this.table.indvSelect.okDelete);
+    if ('Y' === this.table.indvSelect.okDelete) {
+      for (let rec of this.passData.tableData) {
+        if (rec.lineClassCd === this.table.indvSelect.lineClassCd) {
+          rec.deleted = true;
+          rec.edited = true;
+        }
       }
-    }
 
-    this.table.markAsDirty();
-    this.table.refreshTable();
+      this.table.markAsDirty();
+      this.table.refreshTable();
+    } else {
+      this.warningMsg = 1;
+      this.showWarningMdl();
+    }
   }
 
   validate(obj) {
@@ -246,8 +253,6 @@ export class LineClassComponent implements OnInit {
   }
 
   clearTbl() {
-    this.passData.addFlag = false;
-    this.passData.deleteFlag = false;
     this.passData.tableData = [];
     this.table.refreshTable();
   }

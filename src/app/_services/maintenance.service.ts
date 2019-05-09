@@ -94,6 +94,7 @@ export class MaintenanceService{
 
 
 	getMtnObject(lineCd,objectId){
+    console.log(lineCd);
 		const params = new HttpParams()
 		 	.set('lineCd',lineCd)
 			.set('objectId',objectId)

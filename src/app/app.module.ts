@@ -359,6 +359,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
+import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
 
 
 
@@ -726,6 +727,7 @@ import { EndorsementComponent } from './maintenance/quotation-and-policy/endorse
         DatepickerComponent,
         LineClassComponent,
         EndorsementComponent,
+        ObjectComponent,
     ],
 
     providers: [

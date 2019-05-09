@@ -1,0 +1,76 @@
+<div class="cust-tabs-container">
+  <h4>Maintenance / Quotation & Policy</h4>
+  <ngb-tabset>
+    <ngb-tab class="ngb-tab" title="Object">
+      <ng-template ngbTabContent>
+        <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+          <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+              <div class="col-sm-3"></div>
+              <label class="form-control-sm text-right" style="margin-bottom: 0px">Line</label>
+              <input class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event)"
+                [(ngModel)]="line">
+              <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i
+                    class="fa fa-search"></i></a></div>&nbsp;
+              <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;"
+                [(ngModel)]="description" readonly>
+              <div class="col-sm-3"></div>
+            </div>
+          </div>
+        </fieldset>
+
+       <fieldset class="scheduler-border" style="margin-top: 10px !important">
+          <div class="row" style="padding-bottom: 8px;">
+            <div class="col-sm-6" style="padding-right: 2px">
+              <fieldset class="scheduler-border" style="margin: 12px 0px 8px 0px !important;">
+                <div style="padding-top: 9px;">
+                  <app-cust-editable-non-datatable #endtTable [passData]="passData" (newClick)="rowClick($event)"
+                    (clickLOV)="clickEndtLov($event)"></app-cust-editable-non-datatable>
+                </div>
+              </fieldset>
+            </div>
+            <div class="col-sm-6" style="padding-left: 2px">
+              <fieldset class="scheduler-border">
+                <legend class="scheduler-border">CAT Peril per Object</legend>
+                <div class="row" style="padding-bottom: 8px;"></div>
+                <div style="padding-top: 5px;">
+                  <app-cust-editable-non-datatable #dedTable [passData]="catPerilData"
+                    (clickLOV)="clickDedLov($event)"
+                    (tableDataChange)="ocFlag ? endtTable.indvSelect.deductiblesOc = $event : endtTable.indvSelect.deductibles = $event">
+                  </app-cust-editable-non-datatable>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-sm">
+              <div class="col-md-13 text-center">
+                <div class="cust-btn-container">
+                  <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+                  <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+            <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                <label class="form-control-sm col-sm-1">Created By</label>
+                <input type="text" class="form-control form-control-sm col-sm" readonly>
+                <label class="form-control-sm col-sm-1">Created Date</label>
+                <input type="datetime-local" class="form-control form-control-sm col-sm" readonly>
+                <label class="form-control-sm col-sm-1">Last Update By</label>
+                <input type="text" class="form-control form-control-sm col-sm" readonly>
+                <label class="form-control-sm col-sm-1">Last Update</label>
+                <input type="datetime-local" class="form-control form-control-sm col-sm" readonly>
+            </div>
+        </fieldset>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>
+
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>

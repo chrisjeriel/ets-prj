@@ -126,6 +126,7 @@ import { InsuredListComponent } from './maintenance/quotation-and-policy/insured
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
+import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
 
 const appRoutes: Routes = [
 
@@ -261,6 +262,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-insured', component: InsuredListComponent},
     { path: 'insured-mtn', component: InsuredComponent },
     { path: 'maintenance-endt', component: EndorsementComponent },
+    { path: 'maintenance-object', component: ObjectComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
