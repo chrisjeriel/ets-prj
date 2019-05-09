@@ -358,7 +358,7 @@
         <div class="pagination" *ngIf="passData.pagination">
             <!--<div class="pagination" *ngIf="passData.hasPagination">-->
             <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>-->
-            <pagination-controls #paw [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="" (click)="testClick()">
+            <pagination-controls #paw [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="">
             </pagination-controls>
             <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
         </div>

@@ -358,6 +358,7 @@ import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-for
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
+import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 
 
 
@@ -724,6 +725,7 @@ import { LineClassComponent } from './maintenance/quotation-and-policy/line-clas
         WfNotesFormComponent,
         DatepickerComponent,
         LineClassComponent,
+        EndorsementComponent,
     ],
 
     providers: [

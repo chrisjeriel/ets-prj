@@ -83,7 +83,7 @@ export class LineClassComponent implements OnInit {
     }
   }
 
-  retrieveLineClass(){
+  retrieveLineClass() {
     if(this.line === '' || this.line == null) {
       this.clearTbl();
     } else {
@@ -119,7 +119,7 @@ export class LineClassComponent implements OnInit {
 
   onClickSaveLineClass(cancelFlag?) {
     this.cancelFlag = cancelFlag !== undefined;
-    let savedData: any = {};
+    let savedData: any;
     savedData.saveLineClass = [];
     savedData.deleteLineClass = [];
 
