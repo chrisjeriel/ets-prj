@@ -360,6 +360,7 @@ import { DatepickerComponent } from './_components/datepicker/datepicker.compone
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
 import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
 import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
+import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 
 
 
@@ -728,6 +729,7 @@ import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/c
         AdviceWordingsComponent,
         CedingCompaniesListComponent,
         CedingCompanyFormComponent,
+        EndorsementComponent,
     ],
 
     providers: [

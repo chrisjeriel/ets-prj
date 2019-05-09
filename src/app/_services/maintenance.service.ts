@@ -313,7 +313,6 @@ export class MaintenanceService{
     		saveAdvWordList: save,
     		deleteAdvWordList: del,
     	}
-
     	let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
@@ -351,6 +350,15 @@ export class MaintenanceService{
     		  .set('cedingId', cedingId);
 
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompany', {params});
+    }
+
+	saveMtnEndt(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEndorsement',JSON.stringify(params),header);
     }
 
 }

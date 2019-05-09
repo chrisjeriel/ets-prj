@@ -1,0 +1,55 @@
+<div class="cust-tabs-container">
+    <h4>Maintenance / Quotation & Policy</h4>
+    <ngb-tabset>
+        <ngb-tab title="Endorsement">
+            <ng-template ngbTabContent>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="form-row custom-row-inline-inset">
+                        <div class="input-group">
+                            <div class="col-sm-3"></div>
+                            <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
+                            <input class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event)" [(ngModel)]="line.lineCd">
+                            <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+                            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="line.description" readonly>
+                            <div class="col-sm-3"></div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+	                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+	                	<app-cust-editable-non-datatable #endtTable [passData]="passEndtTable" (genericBtn)="deleteEndt()" (onDelete)="endtTable.onClickDelete('force');" (newClick)="endtClick($event)"></app-cust-editable-non-datatable>
+	                </fieldset>
+
+	                <fieldset class="scheduler-border" style="padding-top: 10px !important;">
+	                	<legend class="scheduler-border">Deductible per Endorsement</legend>
+	                	<app-cust-editable-non-datatable #dedTable [passData]="passDedTable" (genericBtn)="deleteDed()" (onDelete)="dedTable.onClickDelete('force');" (tableDataChange)="endtTable.indvSelect.deductibles = $event"></app-cust-editable-non-datatable>
+	                </fieldset>
+	                <div class="w-100 text-center my-2">
+                    	<button class="cust-btn">Cancel</button>
+                    	<button class="cust-btn" (click)="save()">Save</button>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                    </div>
+
+                </fieldset>           
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+
+<app-confirm-save (onYes)="onSaveDeductibles()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onSaveDeductibles('cancel')" [url]="'/'" ></app-cancel-button>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
