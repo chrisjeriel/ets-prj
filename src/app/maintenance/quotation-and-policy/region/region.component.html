@@ -1,0 +1,44 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Region">
+			<ng-template ngbTabContent>
+			  <fieldset class="scheduler-border" style="margin-top: 10px !important">
+				<div class="row">
+					<div class="col-sm">
+						<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
+							<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+						</div>
+					</div>
+				</div>
+				<div class="row" style="padding-bottom: 10px !important;">
+					<div class="col-sm d-flex justify-content-center">
+						<button class="cust-btn"  [class.d-none]="inquiryFlag" (click)="cancel()">Cancel</button>
+						<button class="cust-btn"  [class.d-none]="inquiryFlag" (click)="onClickSave()">Save</button>
+					</div>
+				</div>
+			  </fieldset>
+
+			  <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="regionRecord.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="regionRecord.createDate" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="regionRecord.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="regionRecord.updateDate" readonly>
+                    </div>
+              </fieldset>
+
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+
+<app-confirm-save (onYes)="onClickSaveRegion()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveLine('cancel')" [url]="'/'" ></app-cancel-button>
+
