@@ -73,12 +73,12 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   ngOnChanges(changes: SimpleChanges) {
     if(changes.value && changes.value.currentValue) {
     	if(this.type == 'time') {
-    		if(this.value != '') {  		
+    		if(this.value != '' && this.value != null && this.value != 'undefined') {  		
 	    		var d = new Date();
 	    		var hrs = Number(changes.value.currentValue.split(':')[0]);
 	    		var mins = Number(changes.value.currentValue.split(':')[1]);
 	    		d.setHours(hrs, mins, 0);
-
+	    		console.log('here');
 	    		this.datepickerVal = d;
     		} else {
   				this.datepickerVal = null;
@@ -93,9 +93,9 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  ngDoCheck() {
+  ngDoCheck() {  	
   	if(this.datepickerVal != null && this.type == 'time' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1] != this.value) {
-  		if(this.value != '') {
+  		if(this.value != '' && this.value != null && this.value != 'undefined') {
   			var d = new Date();
   			var hrs = Number(this.value.split(':')[0]);
   			var mins = Number(this.value.split(':')[1]);
@@ -107,7 +107,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   		}  		
   	} else if(this.datepickerVal != null && this.type == 'date' && this.ns.toDateTimeString(this.datepickerVal).split('T')[0] != this.value) {
   		this.datepickerVal = this.value == '' ? null : new Date(this.value);
-  	}	
+  	}
   	
   	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {
   		this.minimumDate = this.minDate == '' ? null : new Date(this.minDate);
