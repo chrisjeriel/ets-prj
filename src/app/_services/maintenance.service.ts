@@ -323,5 +323,14 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCurrencyRt",{params});
 	}
 
+	saveMtnCurrencyRt(currencyData:any){
+		let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCurrencyRt', JSON.stringify(currencyData), header);
+	}
+
 }
 

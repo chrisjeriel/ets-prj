@@ -54,6 +54,11 @@ export class MtnCurrencyRateComponent implements OnInit {
 
   currencyCd: any = '';
   description:any = '';
+  editedData:any = [];
+  saveData : any ={
+    saveCurrencyRt: []
+  }
+
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -111,5 +116,32 @@ export class MtnCurrencyRateComponent implements OnInit {
 
   emptyTbl(){
     this.passData.tableData = [];
+  }
+
+  prepareData(){
+    this.editedData = [];
+    for(var i = 0; i< this.passData.tableData.length; i++){
+      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+        this.editedData.push(this.passData.tableData[i]);
+        this.editedData[this.editedData.length - 1].currencyCd = this.currencyCd;
+        this.editedData[this.editedData.length - 1].effDateFrom = this.ns.toDateTimeString(this.passData.tableData[i].effDateFrom);
+        this.editedData[this.editedData.length - 1].effDateTo = this.ns.toDateTimeString(this.passData.tableData[i].effDateTo);
+        this.editedData[this.editedData.length - 1].updateUser = JSON.parse(window.localStorage.currentUser).username;
+        this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);
+      }
+    }
+
+    this.saveData.saveCurrencyRt = this.editedData;
+  }
+
+  onClickSave(){
+    this.prepareData();
+    this.maintenanceService.saveMtnCurrencyRt(this.saveData).subscribe((data:any) => {
+      if(data['returnCode'] == 0) {
+          console.log('failed')
+        } else{
+          console.log('success')
+        }
+    })
   }
 }
