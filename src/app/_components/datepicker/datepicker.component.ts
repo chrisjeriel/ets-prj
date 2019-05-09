@@ -76,7 +76,7 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   		this.inputStyeClass += ' tbl-dp';
   	}
 
-  	if((this.table && !this.showIcon) || this.type == 'time') {
+  	if(this.table && !this.showIcon) {
   		this.spanStyle['display'] = 'block';
   		this.spanStyle['position'] = 'relative';
   		this.spanStyle['marginTop'] = '-6px';  	
