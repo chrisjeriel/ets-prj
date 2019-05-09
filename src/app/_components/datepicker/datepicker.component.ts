@@ -45,7 +45,7 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   	backgroundColor: 'transparent',
   }
 
-  ngOnInit() {  	
+  ngOnInit() {
   	/*this.minimumDate = new Date(this.minDate);
 
   	if(this.type == 'time') {
@@ -76,7 +76,7 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   		this.inputStyeClass += ' tbl-dp';
   	}
 
-  	if(this.table && !this.showIcon) {
+  	if((this.table && !this.showIcon) || this.type == 'time') {
   		this.spanStyle['display'] = 'block';
   		this.spanStyle['position'] = 'relative';
   		this.spanStyle['marginTop'] = '-6px';  	
@@ -95,7 +95,7 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
 	    		this.datepickerVal = d;
     		} else {
   				this.datepickerVal = null;
-  			} 
+  			}
     	} else {
     		this.datepickerVal = changes.value.currentValue == '' ? null : new Date(changes.value.currentValue);
     	}  	  	    	
@@ -128,10 +128,7 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   ngAfterViewInit() {  	
-  	// $('.ui-inputtext').attr("mask","999");
-  	// $('.ui-datepicker-title').addClass('input-group');
-  	// $('.ui-datepicker-header .ui-datepicker-title').attr('style', 'padding: 0 15px !important');
-
+  	/*FOR MASKING - IN PROGRESS*/
   }
 
   valueChanged() {
@@ -154,8 +151,12 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   	this.outVal.emit(dateString);
   }
 
-  clearInput(ev) {
-  	console.log(ev);
+  onClearClick() {
+  	if(this.datepickerVal == null && this.required) {
+  		$(this.ev.target).css('boxShadow', 'rgb(255, 51, 51) 0px 0px 5px');
+  	} else if(this.datepickerVal != null && this.required) {
+  		$(this.ev.target).css('boxShadow', 'none');
+  	}
   }
 
   onBlur(ev) {
