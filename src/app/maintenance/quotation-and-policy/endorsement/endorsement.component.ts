@@ -239,7 +239,8 @@ export class EndorsementComponent implements OnInit {
   	let params : any = {
   		saveEndorsement : [],
   		delEndorsement :[],
-  		saveDed
+  		saveDeductibles:[],
+  		deleteDeductibles:[]
   	}
   	let endtCds:string[] = this.passEndtTable.tableData.filter(a=>!a.deleted).map(a=>String(a.endtCd).padStart(3,'0'));
 
@@ -282,13 +283,27 @@ export class EndorsementComponent implements OnInit {
             endt.updateUser = this.ns.getCurrentUser();
             params.saveEndorsement.push(endt);
   		}
+
+  		for(let ded of endt.deductibles){
+  			if(ded.edited && !ded.deleted){
+  				ded.updateDate = this.ns.toDateTimeString(0);
+	            ded.createDate = this.ns.toDateTimeString(ded.createDate);
+	            ded.updateUser = this.ns.getCurrentUser();
+	            ded.endtCd = endt.endtCd;
+	            params.saveDeductibles.push(ded);
+  			}else if(ded.deleted){
+  				params.deleteDeductibles.push(ded);
+  			}
+  		}
+
   	}
   	params.delEndorsement = this.passEndtTable.tableData.filter(a=>a.deleted);
+
 
   	this.ms.saveMtnEndt(params).subscribe(a=>{
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
-            this.successDialog.open();g
+            this.successDialog.open();
             this.getMtnEndorsements();
         }else{
             this.dialogIcon = "error";
