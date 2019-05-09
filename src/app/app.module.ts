@@ -361,6 +361,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
+import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 
 
 
@@ -730,6 +731,7 @@ import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advi
         DatepickerComponent,
         IntermediaryComponent,
         AdviceWordingsComponent,
+        EndorsementComponent,
     ],
 
     providers: [

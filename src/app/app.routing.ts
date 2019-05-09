@@ -128,6 +128,7 @@ import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
+import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 
 const appRoutes: Routes = [
 
@@ -265,6 +266,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'adv-word-mtn', component: AdviceWordingsComponent },
+    { path: 'maintenance-endt', component: EndorsementComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

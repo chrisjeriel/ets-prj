@@ -349,7 +349,8 @@ export class MaintenanceService{
 		         };
 		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnIntermediary',params,header);
 	}
-    saveMtnAdviceWordings(save: any[], del: any[]){
+	
+   saveMtnAdviceWordings(save: any[], del: any[]){
     	let params: any = {
     		saveAdvWordList: save,
     		deleteAdvWordList: del,
@@ -361,6 +362,16 @@ export class MaintenanceService{
             })
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdviceWordings',params,header);
+    }
+
+
+    saveMtnEndt(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEndorsement',JSON.stringify(params),header);
     }
 
 }

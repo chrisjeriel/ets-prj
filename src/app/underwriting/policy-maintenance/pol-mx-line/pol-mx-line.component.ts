@@ -34,6 +34,7 @@ export class PolMxLineComponent implements OnInit {
 			referenceNo     : null,
 			sortSeq         : null,
 			remarks         : null,
+			isNew			: true
 		},
 		//checkFlag			: true,
 		addFlag				: true,
@@ -63,6 +64,8 @@ export class PolMxLineComponent implements OnInit {
     usedInQuoteAdd			: boolean 	= false;
     arrLineCdDel  			: any     	= [];
     arrRowsToSave			: any		= [];
+    indexNewData			: number;
+    isAddClicked			: boolean	= false;
 
 	saveMtnLine:any = {
 		activeTag		: false,
@@ -90,6 +93,75 @@ export class PolMxLineComponent implements OnInit {
 		this.getMtnLine();
 	}
 
+	onSaveMtnLine(){
+
+		let params : any ={
+			saveLine : [],
+			deleteLine : []
+		};
+
+		for(let record of this.passData.tableData){
+			if(record.lineCd === '' || record.lineCd === null || record.description === '' || record.description === null || record.cutOffTime === '' || record.cutOffTime === null){
+				setTimeout(()=>{
+                    $('.globalLoading').css('display','none');
+                    this.dialogIcon = 'error';
+                    $('app-sucess-dialog #modalBtn').trigger('click');
+                },500);
+			}else{
+				if(record.edited && !record.deleted){
+					record.activeTag 		= record.activeTag;
+					record.alopTag			= record.alopTag;
+					record.catTag			= record.catTag;
+					record.openCoverTag		= record.openCoverTag;
+					record.renewalTag		= record.renewalTag;
+					record.createUser		= (record.createUser === '' || record.createUser === null || record.createUser === undefined)?this.ns.getCurrentUser():record.createUser;
+					record.createDate		= (record.createDate === '' || record.createDate === null || record.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
+					record.updateUser		= this.ns.getCurrentUser();
+					record.updateDate		= this.ns.toDateTimeString(0);
+					record.cutOffTime		= this.ns.toDateTimeString(0).split('T')[0]+'T'+record.cutOffTime;
+
+					params.saveLine.push(record);
+				}else if(record.edited && record.deleted){
+ 
+				}
+			}
+
+		}
+
+		this.quotationService.getQuoProcessingData([])
+		.subscribe(data => {
+			console.log(data);
+			var rec = data['quotationList'];
+			var a ; 
+
+			for(var i=0;i<params.saveLine.length;i++){
+				var tblRec = params.saveLine[i];
+				
+				a = rec.some(j => j.lineCd.toString().toUpperCase() === tblRec.lineCd.toString().toUpperCase());
+
+					if(a===true && tblRec.isNew !== undefined){
+						if(tblRec.isNew === true){
+							this.usedInQuoteAdd = true;
+							console.log('nangyar');
+
+							this.mtnService.saveMtnLine(JSON.stringify(params))
+							.subscribe(data => {
+								console.log(data);
+								this.getMtnLine();
+								// $('app-sucess-dialog #modalBtn').trigger('click');
+								// this.loading = false;
+							});
+
+						}
+					}
+					
+			}
+
+
+		});
+
+	}
+
 	onClickSaveLine(cancelFlag?){
 		this.counter = 0;
 		this.dialogIcon = '';
@@ -108,17 +180,7 @@ export class PolMxLineComponent implements OnInit {
                     $('app-sucess-dialog #modalBtn').trigger('click');
                 },500);
 			}else{
-
 				if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-					// for(var k = 0; k < this.arrLineCd.length; k++){
-					// 	if(rec.lineCd === this.arrLineCd[k]){
-					// 		rec = this.passData.tableData[k];
-					// 		break;
-					// 	}else{
-					// 		rec = this.passData.tableData[i];
-					// 	}
-					// }
-
 					this.mtnLineReq = { 
 						"deleteLine": [],
 						"saveLine": [
@@ -143,25 +205,19 @@ export class PolMxLineComponent implements OnInit {
 						]
 					};
 
+					console.log(this.isAddClicked + ' : ' + this.indexNewData + ' : ' + i );
+
 					for(var k=0;k<this.arrLineCd.length;k++){
 						if(this.arrLineCd[k].toString().toUpperCase() === rec.lineCd.toString().toUpperCase()){
-							this.usedInQuoteAdd = true;
-							continue;
+							if(this.isAddClicked === true){
+								this.usedInQuoteAdd = true;
+								continue;
+							}
 						}else{
 							(this.arrRowsToSave.includes(this.mtnLineReq) === true)?'':this.arrRowsToSave.push(this.mtnLineReq);
-							//this.arrRowsToSave.push(this.mtnLineReq); 
 						}
 					}
 
-						this.arrRowsToSave.forEach(function(e){
-							console.log(e.saveLine[0]);
-							console.log(rec);
-							if(rec === e){
-								console.log('EXISTING RECORD');
-							}else{
-								console.log('NEW RECORD');
-							}
-						});
 
 
 				}else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
@@ -210,7 +266,7 @@ export class PolMxLineComponent implements OnInit {
 			},500);
 		}
 
-		console.log(this.arrRowsToSave);
+		
 		if(this.usedInQuoteAdd === true){
 			setTimeout(()=>{
 		        $('.globalLoading').css('display','none');
@@ -225,14 +281,18 @@ export class PolMxLineComponent implements OnInit {
 						this.getMtnLine();
 						$('app-sucess-dialog #modalBtn').trigger('click');
 						this.loading = false;
+						this.isAddClicked = false;
+						this.indexNewData = 0;
 				});
 			}
 		}
 	}
 
-	cbFunc(chxbox:boolean){
-		return (chxbox === null  || chxbox === false )? 'N' : 'Y';
-	}
+	
+
+	cbFunc(data){
+  		return data === 'Y' ? true : false;
+  	}
 
 	getMtnLine(){
 		this.passData.tableData = [];
@@ -260,15 +320,15 @@ export class PolMxLineComponent implements OnInit {
 	}
 
 	cutOffTimeFunc(cutOffTime){
-		if(cutOffTime === null){
-			return this.ns.toDateTimeString(0).split('T')[0] + 'T' + '12:00:00';
-		}else {
+		// if(cutOffTime === null){
+		// 	return this.ns.toDateTimeString(0).split('T')[0] + 'T' + '12:00:00';
+		// }else {
 			if((String(cutOffTime)).includes(':')){
-				return this.ns.toDateTimeString(0).split('T')[0] + 'T' + cutOffTime;
+				return this.ns.toDateTimeString(0).split('T')[0] + 'T' + cutOffTime + ':00';
 			}else{
 				return this.ns.toDateTimeString(cutOffTime);
 			}
-		}
+		//}
 	}
 
 	onRowClick(event){
@@ -363,10 +423,14 @@ export class PolMxLineComponent implements OnInit {
 	}
 
 	sample(){
-		this.passData.tableData = this.passData.tableData.filter(a => a.lineCd.toString().toUpperCase() !== this.saveMtnLine.lineCd.toString().toUpperCase());
-		this.table.refreshTable();
+		// this.passData.tableData = this.passData.tableData.filter(a => a.lineCd.toString().toUpperCase() !== this.saveMtnLine.lineCd.toString().toUpperCase());
+		// this.table.refreshTable();
 		console.log('clicked delete btn');
+		console.log(this.passData.tableData);
+	}
 
+	onClickAdd(){
+		this.indexNewData = this.passData.tableData.length;
 	}
 
 }

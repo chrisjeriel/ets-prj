@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
 					<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-						<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)" (onDelete)="sample()">
+						<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)" (onDelete)="sample()" (add)="onClickAdd($event)">
 							<!-- <button controls-l class="cust-btn" class="cust cust-btn" *ngIf="isChecked" (click)="confirmDelete()">Delete</button>
 							<button controls-l class="cust-btn" class="cust cust-btn dsbld" *ngIf="!isChecked" tabindex="-1">Delete</button> -->
 						</app-cust-editable-non-datatable>
@@ -22,7 +22,8 @@
 							<div class="text-center">
 								<div class="cust-btn-container">
 									<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-									<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+									<!-- <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> -->
+									<button type="button" class="cust-btn" (click)="onSaveMtnLine()"><a>Save</a></button>
 								</div>
 							</div>
 						</div>
