@@ -95,7 +95,7 @@ export class SectionCoverComponent implements OnInit {
           "remarks": '',
           "createUser": this.ns.getCurrentUser(),
           "createDate": 0,
-          "updateUser": "this.ns.getCurrentUser()",
+          "updateUser": this.ns.getCurrentUser(),
           "updateDate": 0
         }
         ,
