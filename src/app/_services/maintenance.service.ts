@@ -99,10 +99,11 @@ export class MaintenanceService{
 			.set('objectId',objectId)
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnObject",{params});
 	}
-	getMtnQuotationWordings(lineCd,type){
+	getMtnQuotationWordings(lineCd,wordType){
 		const params = new HttpParams()
 			.set('lineCd',lineCd)
-			.set('type',type)
+			.set('wordType',wordType);
+			
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnQuotationWordings",{params});
 	}
 

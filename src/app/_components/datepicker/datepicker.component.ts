@@ -106,7 +106,9 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   		}  		
   	} else if(this.datepickerVal != null && this.type == 'date' && this.ns.toDateTimeString(this.datepickerVal).split('T')[0] != this.value) {
   		this.datepickerVal = this.value == '' ? null : new Date(this.value);
-  	}
+  	} else if(this.datepickerVal != null && this.type == 'datetime' && this.ns.toDateTimeString(this.datepickerVal) != this.value){
+      this.datepickerVal = this.value == '' ? null : new Date(this.value);
+    }
   	
   	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {
   		this.minimumDate = this.minDate == '' ? null : new Date(this.minDate);

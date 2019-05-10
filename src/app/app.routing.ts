@@ -129,6 +129,7 @@ import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy
 import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
+import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
 
 const appRoutes: Routes = [
 
@@ -267,6 +268,7 @@ const appRoutes: Routes = [
     { path: 'ceding-co-form', component: CedingCompanyFormComponent},
     { path: 'maintenance-endt', component: EndorsementComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
+    { path: 'maintenance-quote-wording', component: QuoteWordingComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
