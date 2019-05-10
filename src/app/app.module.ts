@@ -360,7 +360,8 @@ import { DatepickerComponent } from './_components/datepicker/datepicker.compone
 import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
-
+import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
+import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
 
 
 
@@ -729,6 +730,8 @@ import { EndorsementComponent } from './maintenance/quotation-and-policy/endorse
         MtnCurrencyListComponent,
         MtnCurrencyRateComponent,
         EndorsementComponent,
+        MtnCATPerilComponent,
+        MtnCrestaComponent,
     ],
 
     providers: [

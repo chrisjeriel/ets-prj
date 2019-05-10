@@ -163,7 +163,7 @@ export class MtnCurrencyRateComponent implements OnInit {
           $('#successModalBtn').trigger('click');
           this.getCurrencyRate();
         }
-      })
+      });
   }
 
   deleteCurr(){

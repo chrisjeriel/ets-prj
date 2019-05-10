@@ -341,5 +341,26 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEndorsement',JSON.stringify(params),header);
     }
 
+    getMtnCatPeril(lineCd: string, objectId?: string, perilId?: string){
+    	const params = new HttpParams()
+		     .set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		     .set('objectId', (objectId === null || objectId === undefined ? '' : objectId))
+		     .set('perilId', (perilId === null || perilId === undefined ? '' : perilId))
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCATPeril",{params});
+    }
+
+    saveMtnCatPeril(catPeril: any){
+		let header : any = {
+	        headers: new HttpHeaders({
+	             'Content-Type': 'application/json'
+	        })
+	     };
+	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCatPeril',JSON.stringify(catPeril),header);
+	}
+
+	getMtnCresta(){
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMntLine");
+	}
+
 }
 
