@@ -359,7 +359,16 @@ export class MaintenanceService{
 	}
 
 	getMtnCresta(){
-		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMntLine");
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCrestaZone");
+	}
+
+	saveMtnCrestaZone(saveData:any){
+		let header : any = {
+	        headers: new HttpHeaders({
+	             'Content-Type': 'application/json'
+	        })
+	     };
+	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCrestaZone',JSON.stringify(saveData),header);
 	}
 
 }

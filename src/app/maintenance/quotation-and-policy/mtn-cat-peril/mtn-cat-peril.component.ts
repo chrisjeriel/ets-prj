@@ -26,7 +26,7 @@ export class MtnCATPerilComponent implements OnInit {
       name: null,
       abbreviation: null,
       pctShare: null,
-      activeTag: 'N',
+      activeTag: 'Y',
       remarks: null,
       createDate: '',
       createUser: JSON.parse(window.localStorage.currentUser).username,
@@ -147,19 +147,20 @@ export class MtnCATPerilComponent implements OnInit {
     this.saveData.saveCatPeril  = this.edited;
   }
 
-  saveCat(cancel?){
-    this.cancelFlag = cancel !== undefined;
+  saveCat(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    this.maintenanceService.saveMtnCatPeril(this.saveData).subscribe((data:any) => {
+    this.maintenanceService.saveMtnCatPeril(this.saveData).subscribe((data) => {
+      console.log(data)
       if(data['returnCode'] == 0) {
-        this.dialogMessage = data['errorList'][0].errorMessage;
-        this.dialogIcon = "error";
-        $('#successModalBtn').trigger('click');
-      } else{
-        this.dialogIcon = "success";
-        $('#successModalBtn').trigger('click');
-        this.getCatPeril();
-      }
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = "error";
+          $('#successModalBtn').trigger('click');
+        } else{
+          this.dialogIcon = "success";
+          $('#successModalBtn').trigger('click');
+          this.getCatPeril();
+        }
     })
   }
 

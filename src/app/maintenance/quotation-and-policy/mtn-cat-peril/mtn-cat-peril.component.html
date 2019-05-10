@@ -3,8 +3,6 @@
     <ngb-tabset>
         <ngb-tab title="CAT Peril">
             <ng-template ngbTabContent>
-
-                <!-- APRIL 1, 2019  ARNEILLE-->
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="form-row custom-row-inline-inset">
                         <div class="input-group">
@@ -48,15 +46,13 @@
                         <label class="form-control-sm col-sm-1">Last Update</label>
                         <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="perilData.updateDate" readonly>
                     </div>
-                </fieldset>
-                <!-- END  ARNEILLE-->                
+                </fieldset>  
+                <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+
+                <app-confirm-save (onYes)="saveCat()"></app-confirm-save>
+                <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+                <app-cancel-button (onYes)="saveCat('cancel')" [url]="'/'" ></app-cancel-button>          
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
 </div>
-
-<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
-
-<app-confirm-save (onYes)="saveCat()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="saveCat('cancel')" [url]="'/'" ></app-cancel-button>
