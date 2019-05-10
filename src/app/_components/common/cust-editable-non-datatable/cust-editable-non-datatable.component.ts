@@ -8,6 +8,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { DummyInfo } from '../../../_models';
 import { FormsModule }   from '@angular/forms';
 import { NotesService, UploadService } from '@app/_services';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
     selector: 'app-cust-editable-non-datatable',
@@ -20,6 +21,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild('myForm') form:any;
     @ViewChild('api') pagination: any;
     @ViewChild('table') table: ElementRef;
+    @ViewChild(SucessDialogComponent) successDiag : SucessDialogComponent;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -47,6 +49,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() genericBtn : EventEmitter<any> = new EventEmitter();
     @Output() uploadedFiles : EventEmitter<any> = new EventEmitter();
+
+    acceptedImageFormats: string[] = [
+        'image/jpeg', 'image/png', 'image/jpg', 'image/gif'
+    ];
+
+    dialogIcon: string = '';
+    dialogMessage: string = '';
 
     @Input() passData: any = {
         tableData:[],
@@ -632,12 +641,22 @@ export class CustEditableNonDatatableComponent implements OnInit {
     //upload
     filesToUpload: any[] = [];
     upload(data,event){
-        data.fileName=event.target.files[0].name;
-        data.edited=true;
-        this.form.control.markAsDirty();
-        this.filesToUpload.push(event.target.files);
-        console.log(this.filesToUpload);
-        this.uploadedFiles.emit(this.filesToUpload);
+        //add some conditions depending on your need to restrict file formats. Please note that add your own array of accepted formats.
+        if(this.passData.restrict !== undefined && this.passData.restrict === 'image' && 
+           !this.acceptedImageFormats.includes(event.target.files[0].type)){
+
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'File ' + event.target.files[0].name + ' is not a valid image';
+            this.successDiag.open();
+            
+        }else{
+            data.fileName=event.target.files[0].name;
+            data.edited=true;
+            this.form.control.markAsDirty();
+            this.filesToUpload.push(event.target.files);
+            this.uploadedFiles.emit(this.filesToUpload);
+        }
+        
     }
 
     //download
