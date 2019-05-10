@@ -95,7 +95,7 @@ export class MtnRiskComponent implements OnInit {
   openModal(){
       this.riskListing.tableData = [];
 
-      this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
+      this.maintenanceService.getMtnRiskListing([]).subscribe(data =>{
         var records = data['risk'];
 
               for(let rec of records){
