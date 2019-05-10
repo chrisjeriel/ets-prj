@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild } from '@angular/core';
 import { NotesService } from '@app/_services'
 
 @Component({
@@ -8,13 +8,24 @@ import { NotesService } from '@app/_services'
 })
 export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
 
-  constructor(private ns: NotesService, private r2: Renderer2) { }
+  constructor(private ns: NotesService) { }
 
-  datepickerVal: any = null;
-  minimumDate: any = null;
-  ev: any = null;
-  inputStyeClass: string = 'form-control form-control-sm';
-  icon: string = 'fa fa-calendar';
+  private datepickerVal: any = null;
+  private minimumDate: any = null;
+  private ev: any = null;
+  private inputStyeClass: string = 'form-control form-control-sm';
+  private icon: string = 'fa fa-calendar';
+  
+  private spanStyle: any = {
+	width: '100%',
+	position: 'absolute',
+	display: 'contents'
+  }
+
+  private inputStyle: any = {
+  	position: 'relative',
+  	backgroundColor: 'transparent',
+  }
 
   @Output() outVal = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
@@ -33,17 +44,6 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   @Input() tabindex: any = null;
   @Input() name: any = null;
   @Input() table: boolean = false;
-
-  spanStyle: any = {
-  	width: '100%',
-  	position: 'absolute',
-  	display: 'contents'
-  }
-
-  inputStyle: any = {
-  	position: 'relative',
-  	backgroundColor: 'transparent',
-  }
 
   ngOnInit() {
   	this.inputStyle['textAlign'] = this.textAlign;
@@ -78,7 +78,6 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
 	    		var hrs = Number(changes.value.currentValue.split(':')[0]);
 	    		var mins = Number(changes.value.currentValue.split(':')[1]);
 	    		d.setHours(hrs, mins, 0);
-	    		console.log('here');
 	    		this.datepickerVal = d;
     		} else {
   				this.datepickerVal = null;
