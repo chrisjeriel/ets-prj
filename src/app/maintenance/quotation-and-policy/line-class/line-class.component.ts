@@ -181,7 +181,6 @@ export class LineClassComponent implements OnInit {
   }
 
   delLineClass() {
-    console.log(this.table.indvSelect.okDelete);
     if ('Y' === this.table.indvSelect.okDelete) {
       for (let rec of this.passData.tableData) {
         if (rec.lineClassCd === this.table.indvSelect.lineClassCd) {

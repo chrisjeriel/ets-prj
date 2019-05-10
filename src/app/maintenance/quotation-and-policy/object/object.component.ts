@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { MaintenanceService, NotesService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-object',
@@ -11,6 +12,8 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 })
 export class ObjectComponent implements OnInit {
   @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
+  @ViewChild('objectTable') objTable: CustEditableNonDatatableComponent;
+  @ViewChild('catPerilTable') catPerilTable: CustEditableNonDatatableComponent;
 
   passData: any = {
     tableData: [],
@@ -19,29 +22,27 @@ export class ObjectComponent implements OnInit {
     magnifyingGlass: ['endtCd'],
     dataTypes: ['text', 'text', 'checkbox', 'text'],
     nData: {
-        changeTag: 'N',
-        endtCd: '',
-        endtTitle: '',
+        lineCd: '',
+        lineDesc: '',
+        objectId: '',
+        description: '',
+        activeTag: '',
         remarks: '',
         createDate: this.ns.toDateTimeString(0),
         updateDate: this.ns.toDateTimeString(0),
         createUser: JSON.parse(window.localStorage.currentUser).username,
-        updateUser: JSON.parse(window.localStorage.currentUser).username,
-        deductibles: [],
-        deductiblesOc: [],
-        endtText:{}
+        updateUser: JSON.parse(window.localStorage.currentUser).username
     },
     addFlag: true,
     deleteFlag: true,
-    checkFlag: true,
     paginateFlag: true,
     infoFlag: true,
     searchFlag: true,
     pageLength: 10,
     pageID: 'endt',
     widths: [1, 'auto', 'auto', 'auto'],
-    keys: ['changeTag','endtCd', 'endtTitle','text', 'remarks'],
-    uneditable: [false, false, true, false,false]
+    keys: ['objectId','description', 'activeTag', 'remarks'],
+    uneditable: [true, false, false, false]
   };
 
 catPerilData: any = {
@@ -49,13 +50,16 @@ catPerilData: any = {
     tHeader: ['CAT Peril No', 'Name', 'Abbreviation', 'Percent Share on Premium (%)'],
     dataTypes: ['text', 'text', 'text', 'percent'],
     nData: {
-        coverCd: 0,
-        deductibleCd: '',
-        deductibleTitle: '',
-        deductibleTxt: '',
-        deductibleRt: 0,
-        deductibleAmt: 0,
-        showMG: 1,
+        lineCd: '',
+        lineDesc: '',
+        objectId: '',
+        catPerilId: '',
+        catPerilAbbr: '',
+        catPerilName: '',
+        pctSharePrem: '',
+        defaultTag: '',
+        activeTag: '',
+        remarks: '',
         createDate: this.ns.toDateTimeString(0),
         updateDate: this.ns.toDateTimeString(0),
         createUser: JSON.parse(window.localStorage.currentUser).username,
@@ -71,12 +75,19 @@ catPerilData: any = {
     pageLength: 10,
     pageID: 'deductible',
     widths: [1, 'auto', 'auto', 'auto', 'auto'],
-    keys: ['deductibleCd','deductibleTitle', 'deductibleTxt', 'deductibleRt', 'deductibleAmt'],
+    keys: ['catPerilId','catPerilName', 'catPerilAbbr', 'pctSharePrem'],
     uneditable: [false,true,true,true,true]
   }
 
   line              : string;
   description       : string;
+
+  userData: any = {
+    updateDate: null,
+    updateUser: null,
+    createDate: null,
+    createUser: null
+  }
 
   constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,
               private modalService: NgbModal) { }
@@ -86,8 +97,19 @@ catPerilData: any = {
   }
 
   retrieveObject() {
-    this.mtnService.getMtnObject(this.line, null).subscribe(data => {
-      console.log(data);
+    this.mtnService.getMtnObject(this.line, '').subscribe(data => {
+      if (data['object'] != null) {
+        this.passData.tableData = data['object'].filter(a => {
+          a.createDate = this.ns.toDateTimeString(a.createDate);
+          a.updateDate = this.ns.toDateTimeString(a.updateDate);
+          return true;
+        });
+
+        this.passData.tableData.sort((a, b) => (a.createDate > b.createDate)? -1 : 1);
+        this.objTable.btnDisabled = true;
+        this.passData.disableAdd = false;
+        this.objTable.refreshTable();
+      }
     });
   }
 
@@ -105,6 +127,22 @@ catPerilData: any = {
   checkCode(ev) {
     this.ns.lovLoader(ev, 1);
     this.lineLov.checkCode(this.line.toUpperCase(), ev);
+  }
+
+  rowClick(ev) {
+    if (ev.catPerilList != null) {
+      this.catPerilData.tableData = ev.catPerilList.filter(a => {
+        a.createDate = this.ns.toDateTimeString(a.createDate);
+        a.updateDate = this.ns.toDateTimeString(a.updateDate);
+        return true;
+      });
+
+      this.catPerilTable.refreshTable();
+    }
+      this.userData.createUser = ev.createUser;
+      this.userData.createDate = ev.createDate;
+      this.userData.updateUser = ev.updateUser;
+      this.userData.updateDate = ev.updateDate;
   }
 
 }

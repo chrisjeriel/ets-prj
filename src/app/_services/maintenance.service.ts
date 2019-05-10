@@ -90,15 +90,23 @@ export class MaintenanceService{
 			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
 			.set('blockCd',blockCd ===undefined || blockCd===null ? '' : blockCd)
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceBlock',{params});
-	}
-
+  }
 
 	getMtnObject(lineCd,objectId){
 		const params = new HttpParams()
 		 	.set('lineCd',lineCd)
 			.set('objectId',objectId)
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnObject",{params});
-	}
+  }
+
+  getMtnCATPeril(lineCd, objectId, catPerilId) {
+    const params = new HttpParams()
+      .set('lineCd', lineCd)
+      .set('objectId', objectId)
+      .set('catPerilId', catPerilId)
+    return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCATPeril", {params});
+  }
+
 	getMtnQuotationWordings(lineCd,type){
 		const params = new HttpParams()
 			.set('lineCd',lineCd)
@@ -317,6 +325,15 @@ export class MaintenanceService{
             })
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEndorsement',JSON.stringify(params),header);
+    }
+
+    saveMtnSectionCovers(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSectionCover',JSON.stringify(params),header);
     }
 
 }

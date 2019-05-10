@@ -291,7 +291,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.tableData = this.underwritingService.getItemInfoData();
 
     this.sub = this.route.params.subscribe(params => {
-      console.log(params);
       this.line = params['line'];
       this.policyId = this.polInfo.policyId === '' ? params['policyId'] : this.polInfo.policyId;
       this.policyNo = this.polInfo.policyNo === '' ? params['policyNo'] : this.polInfo.policyNo;
@@ -701,7 +700,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     var d = new Date(this.policyInfo.inceptDate);
     d.setFullYear(d.getFullYear() + 1);
 
-    this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
+    console.log(this.policyInfo.inceptDate);
+    this.policyInfo.expiryDate = this.policyInfo.inceptDate.split('T').includes('') ? 'T' : this.ns.toDateTimeString(d);
+    console.log(this.policyInfo.expiryDate);
   }
 
   updateDate(str) {

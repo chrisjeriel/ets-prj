@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
     <h4>Maintenance / Quotation & Policy</h4>
     <ngb-tabset>
-        <ngb-tab title="Endorsement">
+        <ngb-tab title="Section Cover">
             <ng-template ngbTabContent>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="form-row custom-row-inline-inset">
@@ -17,12 +17,12 @@
                 </fieldset>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
 	                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
-	                	<app-cust-editable-non-datatable #endtTable [passData]="passEndtTable" (genericBtn)="deleteEndt()" (onDelete)="endtTable.onClickDelete('force');" (newClick)="endtClick($event)"></app-cust-editable-non-datatable>
+	                	<app-cust-editable-non-datatable #secTable [passData]="passSecTable" (genericBtn)="deleteSec()" (onDelete)="secTable.onClickDelete('force');" (newClick)="secClick($event)"></app-cust-editable-non-datatable>
 	                </fieldset>
 
 	                <fieldset class="scheduler-border" style="padding-top: 10px !important;">
-	                	<legend class="scheduler-border">Deductible per Endorsement</legend>
-	                	<app-cust-editable-non-datatable #dedTable [passData]="passDedTable" (genericBtn)="deleteDed()" (onDelete)="dedTable.onClickDelete('force');" (tableDataChange)="endtTable.indvSelect.deductibles = $event;disableFields()"></app-cust-editable-non-datatable>
+	                	<legend class="scheduler-border">Deductible per Section Cover</legend>
+	                	<app-cust-editable-non-datatable #dedTable [passData]="passDedTable" (genericBtn)="deleteDed()" (onDelete)="dedTable.onClickDelete('force');" (tableDataChange)="secTable.indvSelect.deductibles = $event;disableFields()"></app-cust-editable-non-datatable>
 	                </fieldset>
 	                <div class="w-100 text-center my-2">
                     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>

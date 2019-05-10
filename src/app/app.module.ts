@@ -360,6 +360,7 @@ import { DatepickerComponent } from './_components/datepicker/datepicker.compone
 import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
+import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
 
 
 
@@ -728,6 +729,7 @@ import { ObjectComponent } from './maintenance/quotation-and-policy/object/objec
         LineClassComponent,
         EndorsementComponent,
         ObjectComponent,
+        SectionCoverComponent,
     ],
 
     providers: [

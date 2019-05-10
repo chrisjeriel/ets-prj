@@ -127,6 +127,7 @@ import { InsuredComponent } from './maintenance/quotation-and-policy/insured-lis
 import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
+import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
 
 const appRoutes: Routes = [
 
@@ -263,6 +264,7 @@ const appRoutes: Routes = [
     { path: 'insured-mtn', component: InsuredComponent },
     { path: 'maintenance-endt', component: EndorsementComponent },
     { path: 'maintenance-object', component: ObjectComponent },
+    { path: 'maintenance-sec-cov', component: SectionCoverComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
