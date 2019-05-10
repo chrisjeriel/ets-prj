@@ -126,6 +126,8 @@ import { InsuredListComponent } from './maintenance/quotation-and-policy/insured
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
+import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
+import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
 
 const appRoutes: Routes = [
 
@@ -261,6 +263,8 @@ const appRoutes: Routes = [
     { path: 'insured-mtn', component: InsuredComponent },
     { path: 'maintenance-endt', component: EndorsementComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
+    { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
+    { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

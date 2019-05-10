@@ -359,6 +359,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
+import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
+import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
 
 
 
@@ -726,6 +728,8 @@ import { SectionCoverComponent } from './maintenance/quotation-and-policy/sectio
         DatepickerComponent,
         EndorsementComponent,
         SectionCoverComponent,
+        QuoteStatusReasonComponent,
+        SpoilageReasonComponent,
     ],
 
     providers: [

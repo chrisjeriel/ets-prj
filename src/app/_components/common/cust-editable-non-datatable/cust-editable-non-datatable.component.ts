@@ -509,10 +509,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
 }  */  
     
     onDataChange(ev,data,key){
-        console.log(data);
         // if($(ev.target).next().children().prop("tagName") === 'A') {
         if(!data.others){
-            console.log('here');
             if($(ev.target).hasClass('lovInput')) {
                 let retData:any = {};
                 retData.key = key;
@@ -543,7 +541,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 delete this.passData.tableData.lovInput;
             });
         }else{ //Earl
-            console.log('here 2');
             delete this.passData.tableData.ev;
             delete this.passData.tableData.index;
             delete this.passData.tableData.lovInput;
