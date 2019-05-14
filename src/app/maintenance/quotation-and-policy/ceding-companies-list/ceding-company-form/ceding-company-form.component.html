@@ -90,7 +90,7 @@
 							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
 								<legend class="scheduler-border">Membership</legend>
 								<div class="contain">
-									<app-cust-editable-non-datatable [passData]="repData" (tableDataChange)="repData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (add)="onClickAdd($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="repData" (tableDataChange)="repData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')" (add)="onClickAdd($event)" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
 								</div>
 							</fieldset>
 						</div>
@@ -110,13 +110,13 @@
 										<label class="form-control-sm col-sm-2">Created By</label>
 										<input type="text" class="form-control form-control-sm col-sm" [ngModel]="companyData.createUser" name="createUser" readonly>
 										<label class="form-control-sm col-sm-2">Date Created</label>
-										<input type="datetime-local" class="form-control form-control-sm col-sm"  [ngModel]="ns.toDateTimeString(companyData.createDate)" readonly name="createDate">
+										<input type="datetime-local" class="form-control form-control-sm col-sm"  [ngModel]="companyData.createDate === '' ? '' : ns.toDateTimeString(companyData.createDate)" readonly name="createDate">
 									</div>
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">Last Update By</label>
 										<input type="text" class="form-control form-control-sm col-sm" value="QUECOH" [ngModel]="companyData.updateUser" name="updateUser" readonly>
 										<label class="form-control-sm col-sm-2">Last Update</label>
-										<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="ns.toDateTimeString(companyData.updateDate)" name="updateDate" readonly>
+										<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="companyData.updateDate === '' ? '' : ns.toDateTimeString(companyData.updateDate)" name="updateDate" readonly>
 									</div>
 								</div>
 							</fieldset>
