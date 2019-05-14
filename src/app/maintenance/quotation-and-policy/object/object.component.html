@@ -74,3 +74,6 @@
 </div>
 
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-confirm-save (onYes)="onClickSaveObject()"></app-confirm-save>
+<app-sucess-dialog id="lineClassSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag? cancel.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveLineClass('cancel')" [url]="'/'" ></app-cancel-button>

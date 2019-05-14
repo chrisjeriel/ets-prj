@@ -42,7 +42,7 @@ export class ObjectComponent implements OnInit {
     pageID: 'endt',
     widths: [1, 'auto', 'auto', 'auto'],
     keys: ['objectId','description', 'activeTag', 'remarks'],
-    uneditable: [true, false, false, false]
+    uneditable: [false, false, false, false]
   };
 
 catPerilData: any = {
@@ -81,6 +81,7 @@ catPerilData: any = {
 
   line              : string;
   description       : string;
+  cancelFlag        : boolean = false;
 
   userData: any = {
     updateDate: null,
@@ -105,7 +106,7 @@ catPerilData: any = {
           return true;
         });
 
-        this.passData.tableData.sort((a, b) => (a.createDate > b.createDate)? -1 : 1);
+        this.passData.tableData.sort((a, b) => (a.createDate > b.createDate) ? -1 : 1);
         this.objTable.btnDisabled = true;
         this.passData.disableAdd = false;
         this.objTable.refreshTable();
@@ -130,19 +131,52 @@ catPerilData: any = {
   }
 
   rowClick(ev) {
-    if (ev.catPerilList != null) {
-      this.catPerilData.tableData = ev.catPerilList.filter(a => {
-        a.createDate = this.ns.toDateTimeString(a.createDate);
-        a.updateDate = this.ns.toDateTimeString(a.updateDate);
-        return true;
-      });
+    if (ev != null) {
+      if (ev.catPerilList != null) {
+        this.catPerilData.tableData = ev.catPerilList.filter(a => {
+          a.createDate = this.ns.toDateTimeString(a.createDate);
+          a.updateDate = this.ns.toDateTimeString(a.updateDate);
+          return true;
+        });
+        this.catPerilTable.refreshTable();
+      }
 
-      this.catPerilTable.refreshTable();
-    }
       this.userData.createUser = ev.createUser;
       this.userData.createDate = ev.createDate;
       this.userData.updateUser = ev.updateUser;
       this.userData.updateDate = ev.updateDate;
+    }
+  }
+
+  onClickSave() {
+    $("#confirm-save #modalBtn2").trigger('click');
+  }
+
+  onClickSaveObject(cancelFlag?) {
+    this.cancelFlag = cancelFlag !== undefined;
+    let savedData: any = {};
+    savedData.saveObject = [];
+    savedData.deleteObject = [];
+
+    for (let rec of this.passData.tableData) {
+      if (rec.edited && !rec.deleted) {
+        rec.lineCd = this.line;
+        rec.activeTag = rec.activeTag === '' ? 'N' : rec.activeTag;
+        rec.remarks = rec.remarks === '' ? ' ' : rec.remarks;
+        rec.createUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.createDate = this.ns.toDateTimeString(rec.createDate);
+        rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.upateDate = this.ns.toDateTimeString(rec.updateDate);
+        savedData.saveObject.push(rec);
+      } else if (rec.deleted) {
+        rec.lineCd = this.line;
+        rec.createUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.createDate = this.ns.toDateTimeString(rec.createDate);
+        rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.updateDate = this.ns.toDateTimeString(rec.udpateDate);
+        savedData.deleteObject.push(rec);
+      }
+    }
   }
 
 }
