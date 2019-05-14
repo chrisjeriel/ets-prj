@@ -358,6 +358,11 @@ import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-for
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 import { RegionComponent } from './maintenance/quotation-and-policy/region/region.component';
+import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
+import { ProvinceComponent } from './maintenance/quotation-and-policy/region/province/province.component';
+import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-region.component';
+import { RequiredTableDirective } from './_directives/required-table.directive';
+
 
 
 
@@ -724,6 +729,10 @@ import { RegionComponent } from './maintenance/quotation-and-policy/region/regio
         WfNotesFormComponent,
         DatepickerComponent,
         RegionComponent,
+        EndorsementComponent,
+        ProvinceComponent,
+        MtnRegionComponent,
+        RequiredTableDirective,
     ],
 
     providers: [

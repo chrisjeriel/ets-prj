@@ -125,6 +125,7 @@ import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-informa
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
 import { RegionComponent } from './maintenance/quotation-and-policy/region/region.component';
+import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 
 const appRoutes: Routes = [
 
@@ -259,6 +260,8 @@ const appRoutes: Routes = [
     { path: 'maintenance-insured', component: InsuredListComponent},
     { path: 'insured-mtn', component: InsuredComponent },
     { path: 'maintenance-region', component: RegionComponent },
+    { path: 'maintenance-endt', component: EndorsementComponent },
+
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

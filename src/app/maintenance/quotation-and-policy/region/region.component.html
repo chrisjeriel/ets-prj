@@ -7,7 +7,7 @@
 				<div class="row">
 					<div class="col-sm">
 						<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-							<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+							<app-cust-editable-non-datatable #regionTable [passData]="passData" (genericBtn)="deleteRegion()" (tableDataChange)="passData.tableData=$event" (add)="addRegion()" (newClick)="onRowClick($event)" appRequired></app-cust-editable-non-datatable>
 						</div>
 					</div>
 				</div>
@@ -32,6 +32,11 @@
                     </div>
               </fieldset>
 
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Province">
+			<ng-template ngbTabContent>
+				<app-province></app-province>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
