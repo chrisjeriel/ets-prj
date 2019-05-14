@@ -130,6 +130,13 @@ import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/c
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
 import { HundredValPolPrintComponent } from './underwriting/generate-documents/hundred-val-pol-print/hundred-val-pol-print.component';
+import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
+import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
+import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
+import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
+import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
+import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
+import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
 
 const appRoutes: Routes = [
 
@@ -269,6 +276,13 @@ const appRoutes: Routes = [
     { path: 'maintenance-endt', component: EndorsementComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
     { path: 'total-val-pol-print', component: HundredValPolPrintComponent },
+    { path: 'maintenance-quote-wording', component: QuoteWordingComponent },
+    { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
+    { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
+    { path: 'maintenance-currency', component: MtnCurrencyListComponent },
+    { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
+    { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
+    { path: 'maintenance-cresta-zone', component: MtnCrestaComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

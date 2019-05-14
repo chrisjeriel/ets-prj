@@ -1,0 +1,58 @@
+<div class="cust-tabs-container">
+    <h4>Maintenance / Quotation & Policy</h4>
+    <ngb-tabset>
+        <ngb-tab title="CAT Peril">
+            <ng-template ngbTabContent>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="form-row custom-row-inline-inset">
+                        <div class="input-group">
+                            <div class="col-sm-3"></div>
+                            <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
+                            <input class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event)" [ngModel]="line" (ngModelChange)="line = $event.toUpperCase()">
+                            <div class="text-search-ico" style="margin-left: -20px;z-index: 100" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+                            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 5px;" [(ngModel)]="description" readonly>
+                            <div class="col-sm-3"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="scheduler-border" style="margin-top: 10px !important">
+                    <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
+                        <app-cust-editable-non-datatable #catPeril [passData]="passData" (newClick)="clickRow($event)" (tableDataChange)="passData.tableData=$event" (onDelete)="catPeril.onClickDelete('force');" (genericBtn)="deleteCurr()">
+                        </app-cust-editable-non-datatable>
+
+                            <div class="form-row" style="margin-top: 40px !important;">
+                                <div class="form-group col-sm">
+                                    <div class="text-center">
+                                        <div class="cust-btn-container">
+                                            <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                                            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                </fieldset>
+
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="perilData.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="perilData.createDate" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="perilData.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="perilData.updateDate" readonly>
+                    </div>
+                </fieldset>  
+                <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+
+                <app-confirm-save (onYes)="saveCat()"></app-confirm-save>
+                <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+                <app-cancel-button (onYes)="saveCat('cancel')" [url]="'/'" ></app-cancel-button>          
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>

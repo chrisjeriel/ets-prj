@@ -251,7 +251,8 @@ export class GeneralInfoComponent implements OnInit {
 					this.project.createDate = this.ns.toDateTimeString(this.project.createDate);
 					this.project.updateDate = this.ns.toDateTimeString(this.project.updateDate);
 					this.project.objectId = this.pad(this.project.objectId);
-					this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 && this.project.totalValue != null ? String(this.project.totalValue) + '.00' : this.project.totalValue;
+					this.checkDecimal('totalValue');
+					this.checkDecimal('pctShare');
 				}
 
 
@@ -931,8 +932,12 @@ export class GeneralInfoComponent implements OnInit {
   }
 
   checkDecimal(str) {
-  	if(str === 'totalValue') {  		
-  		this.project.totalValue = String(this.project.totalValue).indexOf('.') === -1 && String(this.project.totalValue) != '' ? String(this.project.totalValue) + '.00' : String(this.project.totalValue);
+  	if(str === 'totalValue') {
+  		if(String(this.project.totalValue) != '') {
+  			var tvArr = String(this.project.totalValue).split('.');
+  			tvArr[1] = tvArr[1] === undefined ? '00' : tvArr[1].padEnd(2, '0');
+  			this.project.totalValue = tvArr.join('.');
+  		}
   	} else if(str === 'pctShare') {
   		if(String(this.project.pctShare) != '') {
   			var pctArr = String(this.project.pctShare).split('.');
