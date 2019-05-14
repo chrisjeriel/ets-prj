@@ -100,11 +100,13 @@ export class PolMxLineComponent implements OnInit {
 		this.getMtnLine();
 	}
 
-	onSaveMtnLine(){
-
+	onSaveMtnLine(cancelFlag?){
+		this.cancelFlag = cancelFlag !== undefined;
 		this.dialogIcon = '';
 		this.dialogMessage = '';
-		console.log(this.passData.tableData);
+		var isNotUnique : boolean ;
+		var saveLine = this.params.saveLine;
+		
 		for(let record of this.passData.tableData){
 			if(record.lineCd === '' || record.lineCd === null || record.description === '' || record.description === null || record.cutOffTime === '' || record.cutOffTime === null){
 				setTimeout(()=>{
@@ -118,20 +120,15 @@ export class PolMxLineComponent implements OnInit {
 					record.createDate		= (record.createDate === '' || record.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
 					record.updateUser		= this.ns.getCurrentUser();
 					record.updateDate		= this.ns.toDateTimeString(0);
-					record.cutOffTime		= this.ns.toDateTimeString(0).split('T')[0]+'T'+record.cutOffTime;
+					record.cutOffTime		= this.cutOffTimeFunc(record.cutOffTime);
+					console.log(record.cutOffTime + ' >>> record.cutOffTime');
+					console.log(record.createDate + ' >>> record.createDate');
 					this.params.saveLine.push(record);
-					console.log(record);
 				}else if(record.edited && record.deleted){
-					console.log('delete inside save');
 					this.params.deleteLine.push(record);
 				}
 			}
 		}
-
-		console.log(this.params);
-
-		var isNotUnique : boolean ;
-		var saveLine = this.params.saveLine;
 
 		this.passData.tableData.forEach(function(tblData){
 			if(tblData.isNew != true){
@@ -145,11 +142,15 @@ export class PolMxLineComponent implements OnInit {
 			}
 		});
 
+		console.log(isNotUnique);
+
 		if(isNotUnique == true){
-			this.table.refreshTable();
-			this.warnMsg = 'Unable to save the record. Line Code must be unique.';
-			this.showWarnLov();
-			this.params.saveLine 	= [];
+			setTimeout(()=>{
+                $('.globalLoading').css('display','none');
+                this.warnMsg = 'Unable to save the record. Line Code must be unique.';
+				this.showWarnLov();
+				this.params.saveLine 	= [];
+            },500);
 		}else{
 			this.mtnService.saveMtnLine(JSON.stringify(this.params))
 			.subscribe(data => {
@@ -159,39 +160,6 @@ export class PolMxLineComponent implements OnInit {
 				this.params.saveLine 	= [];
 			});
 		}
-		
-		
-
-		// this.quotationService.getQuoProcessingData([])
-		// .subscribe(data => {
-		// 	console.log(data);
-		// 	var rec = data['quotationList'];
-		// 	var a ; 
-		// 	for(var i=0;i<this.params.saveLine.length;i++){
-		// 		var tblRec = this.params.saveLine[i];	
-		// 		a = rec.some(j => j.lineCd.toString().toUpperCase() === tblRec.lineCd.toString().toUpperCase());
-
-		// 		if(a===true && tblRec.isNew !== undefined){
-		// 			if(tblRec.isNew === true){
-		// 				this.usedInQuoteAdd = true;
-		// 			}
-		// 		}
-		// 	}
-		// 	if(this.usedInQuoteAdd === true){
-		// 		this.table.refreshTable();
-		// 		this.warnMsg = 'Unable to save the record. Line Code must be unique.';
-		// 		this.showWarnLov();
-		// 	}else{
-		// 		this.mtnService.saveMtnLine(JSON.stringify(this.params))
-		// 		.subscribe(data => {
-		// 			console.log(data);
-		// 			this.getMtnLine();
-		// 			$('app-sucess-dialog #modalBtn').trigger('click');
-		// 			//this.loading = false;
-		// 		});
-
-		// 	}
-		// });
 
 	}
 
@@ -357,10 +325,10 @@ export class PolMxLineComponent implements OnInit {
 		// if(cutOffTime === null){
 		// 	return this.ns.toDateTimeString(0).split('T')[0] + 'T' + '12:00:00';
 		// }else {
-			if((String(cutOffTime)).includes(':')){
-				return this.ns.toDateTimeString(0).split('T')[0] + 'T' + cutOffTime + ':00';
+			if((String(cutOffTime)).includes('T')){
+				return this.ns.toDateTimeString(0).split('T')[0]+'T'+cutOffTime+':00';
 			}else{
-				return this.ns.toDateTimeString(cutOffTime);
+				return cutOffTime;
 			}
 		//}
 	}

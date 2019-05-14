@@ -22,8 +22,7 @@
 							<div class="text-center">
 								<div class="cust-btn-container">
 									<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-									<!-- <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> -->
-									<button type="button" class="cust-btn" (click)="onSaveMtnLine()"><a>Save</a></button>
+									<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 								</div>
 							</div>
 						</div>
@@ -48,9 +47,9 @@
 
 
 
-<app-confirm-save (onYes)="onClickSaveLine()"></app-confirm-save>
+<app-confirm-save (onYes)="onSaveMtnLine()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSaveLine('cancel')" [url]="'/'" ></app-cancel-button>
+<app-cancel-button (onYes)="onSaveMtnLine('cancel')" [url]="'/'" ></app-cancel-button>
 
 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
