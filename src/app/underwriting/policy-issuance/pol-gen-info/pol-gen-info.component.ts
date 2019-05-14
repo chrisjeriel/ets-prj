@@ -291,7 +291,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.tableData = this.underwritingService.getItemInfoData();
 
     this.sub = this.route.params.subscribe(params => {
-      console.log(params);
       this.line = params['line'];
       this.policyId = this.polInfo.policyId === '' ? params['policyId'] : this.polInfo.policyId;
       this.policyNo = this.polInfo.policyNo === '' ? params['policyNo'] : this.polInfo.policyNo;
@@ -701,7 +700,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     var d = new Date(this.policyInfo.inceptDate);
     d.setFullYear(d.getFullYear() + 1);
 
-    this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
+    console.log(this.policyInfo.inceptDate);
+    this.policyInfo.expiryDate = this.policyInfo.inceptDate.split('T').includes('') ? 'T' : this.ns.toDateTimeString(d);
+    console.log(this.policyInfo.expiryDate);
   }
 
   updateDate(str) {
@@ -794,6 +795,22 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "latitude"        : this.policyInfo.project.latitude,
       "longitude"       : this.policyInfo.project.longitude
     }
+
+    var mfArr = savePolGenInfoParam.maintenanceFrom.split('T');
+    var mfTo = savePolGenInfoParam.maintenanceTo.split('T');
+
+    if(mfArr[0] == 'undefined' || mfArr[0] == '') {
+      savePolGenInfoParam.maintenanceFrom = '';
+    } else if(mfArr[1] == 'undefined' || mfArr[1] == '') {
+      savePolGenInfoParam.maintenanceFrom = mfArr[0];
+    }
+
+    if(mfTo[0] == 'undefined' || mfTo[0] == '') {
+      savePolGenInfoParam.maintenanceTo = '';
+    } else if(mfTo[1] == 'undefined' || mfTo[1] == '') {
+      savePolGenInfoParam.maintenanceTo = mfTo[0];
+    }
+
     let wordingSplit = this.policyInfo.polWordings.text.match(/(.|[\r\n]){1,2000}/g);
     if(savePolGenInfoParam.polWordings.createUser == undefined){
       savePolGenInfoParam.polWordings.createUser = this.ns.getCurrentUser();

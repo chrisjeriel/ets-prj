@@ -470,12 +470,21 @@
                                         <ng-template ngbPanelContent>
                                             <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
                                             <br />
+                                            <button [routerLink]="['/ceding-co-list']" class="button btn btn-link">Ceding</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding Companies</button>
+                                            <br />
                                             <button [routerLink]="['/maintenance-type-of-cession']" class="button btn btn-link">Type of Cession</button>
                                             <br />
-                                            <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding
-                                                Companies</button>
+                                            <button [routerLink]="['/maintenance-currency']" class="button btn btn-link">Currency</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-currency-rate']" class="button btn btn-link">Currency Rate</button>
                                             <br />
                                             <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-cat-peril']" class="button btn btn-link">CAT Peril</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-cresta-zone']" class="button btn btn-link">Cresta Zone</button>
                                             <br />
                                             <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
                                             <br />
@@ -491,11 +500,28 @@
                                                     <ng-template ngbPanelContent>
                                                         <button [routerLink]="['/adv-word-mtn']" class="button btn btn-link">Advice Wording</button>
                                                         <br />
+                                                        <button [routerLink]="['/maintenance-quote-wording']" class="button btn btn-link">Quote Wording</button>
+                                                        <br />
                                                     </ng-template>
                                                 </ngb-panel>
                                             </ngb-accordion>
                                             <button [routerLink]="['/maintenance-endt']" class="button btn btn-link">Endorsement</button>
                                             <br />
+                                            <button [routerLink]="['/maintenance-sec-cov']" class="button btn btn-link">Section Covers</button>
+                                            <br />
+                                            <ngb-accordion #acc="ngbAccordion">
+                                                <ngb-panel>
+                                                    <ng-template ngbPanelTitle>
+                                                        Reason
+                                                    </ng-template>
+                                                    <ng-template ngbPanelContent>
+                                                        <button [routerLink]="['/maintenance-qu-reason']" class="button btn btn-link">Quote Status Reason</button>
+                                                        <br />
+                                                        <button [routerLink]="['/maintenance-spoil-reason']" class="button btn btn-link">Spoilage Reason</button>
+                                                        <br />
+                                                    </ng-template>
+                                                </ngb-panel>
+                                            </ngb-accordion>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>

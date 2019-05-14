@@ -77,7 +77,7 @@ export class MtnQuotationWordingsComponent implements OnInit {
      this.passData.tableData = [];
      this.mtnService.getMtnQuotationWordings(this.line,'').subscribe((data: any) =>{
           for (var a = 0; a < data['quoteWordings'].length ; a++) {
-            if(data['quoteWordings'][a].type === this.type){
+            if(data['quoteWordings'][a].wordType === this.type){
               this.passData.tableData.push(data['quoteWordings'][a]);
             }               
           }

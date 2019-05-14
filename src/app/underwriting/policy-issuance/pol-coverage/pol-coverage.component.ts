@@ -28,6 +28,7 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('catPerils') catPerilstable: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild('successAlt') successAlt: SucessDialogComponent;
   @ViewChild('confirmSave') confirmSave: ConfirmSaveComponent;
   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
   @ViewChild('info') mdl : ModalComponent;
@@ -167,7 +168,7 @@ export class PolCoverageComponent implements OnInit {
   passDataDeductibles: any = {
         tHeader: ["Deductible Code","Deductible Title", "Deductible Text", "Rate(%)", "Amount"],
         dataTypes: ["text","text","text", "percent", "currency"],
-        pageLength:10,
+        pageLength:5,
         addFlag: true,
         deleteFlag: true,
         searchFlag: true,
@@ -353,6 +354,8 @@ export class PolCoverageComponent implements OnInit {
   sectionCoverLOVRow: number;
   promptMessage: string = "";
   promptType: string = "";
+  positiveFlag: number = 0;
+  negativeFlag: number = 0;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe) { }
@@ -360,16 +363,9 @@ export class PolCoverageComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
-    //added by Neco 05/03/2019
-      if(!this.alteration){
-        this.passDataDeductibles.pageLength = 5;
-      }
-    //end neco
-
     this.policyId = this.policyInfo.policyId;
 
     this.sub = this.route.params.subscribe(params => {
-            console.log(params)
             this.line = params['line'];
             if(this.alteration)
               this.policyIdAlt = params['policyId'];
@@ -422,7 +418,6 @@ export class PolCoverageComponent implements OnInit {
 
     //paul
     if(this.policyInfo.fromInq =='true'){
-      console.log(this.policyInfo.fromInq)
       this.passDataSectionCover.uneditable = [];
       for(let i:number=0;i<this.passDataSectionCover.keys.length;i++){
         this.passDataSectionCover.uneditable.push('true');
@@ -450,7 +445,6 @@ export class PolCoverageComponent implements OnInit {
 
   getPolCoverageAlt(){
     this.underwritingservice.getUWCoverageAlt(this.parameters[0],this.parameters[1],this.parameters[2],this.parameters[3],this.parameters[4],this.parameters[5]).subscribe((data: any) => {
-      console.log(data)
       this.passData.tableData = [];  
       this.prevtotalSi = 0;
       this.prevtotalPrem = 0;
@@ -476,8 +470,6 @@ export class PolCoverageComponent implements OnInit {
           this.passData.tableData.push(dataTable[i]);
         }
         if(data.policy.policyId != this.policyInfo.policyId){
-          console.log(data)
-          console.log(data.policy.policyId + ' - '+this.policyInfo.policyId)
            this.passData.tableData.forEach(a=>{   
            a.edited = true;
            this.sectionTable.markAsDirty();
@@ -487,9 +479,6 @@ export class PolCoverageComponent implements OnInit {
             
         })
         }
-       
-       console.log(this.passData.tableData)
-          
         for(var j=0;j<this.passData.tableData.length;j++){ 
 
           this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
@@ -650,7 +639,7 @@ export class PolCoverageComponent implements OnInit {
         this.altCoverageData.comtotalSi      = this.comtotalSi;
         this.altCoverageData.comtotalPrem    = this.comtotalPrem;
         //this.altCoverageData.pctShare        = this.altCoverageData.totalValue == 0 || isNaN(this.altCoverageData.totalValue)? 0:(this.altCoverageData.comtotalSi/this.altCoverageData.totalValue)*100; 
-
+        this.sectionTable.onRowClick(null,this.passData.tableData[0]);
         this.passData2.tableData[0].section  = 'SECTION I'; 
         this.passData2.tableData[0].prevSi   = this.prevsectionISi;
         this.passData2.tableData[0].prevAmt  = this.prevsectionIPrem;
@@ -859,7 +848,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   getDeductibles(){
-
     this.passDataDeductibles.nData.coverCd = this.table.indvSelect.coverCd;
     let params : any = {
       policyId:this.policyId,
@@ -867,17 +855,33 @@ export class PolCoverageComponent implements OnInit {
       coverCd:this.table.indvSelect.coverCd,
       endtCd: 0
     }
-    this.underwritingservice.getUWCoverageDeductibles(params).subscribe(data=>{
-      if(data['policy']!==null){
-        this.passDataDeductibles.tableData = data['policy']['deductibles'].filter(a=>{
-          a.createDate = this.ns.toDateTimeString(a.createDate);
-          a.updateDate = this.ns.toDateTimeString(a.updateDate);
-          a.updateUser = JSON.parse(window.localStorage.currentUser).username;
-          return true;
-        });
+    console.log(params)
+    this.underwritingservice.getUWCoverageDeductibles(params).subscribe((data:any)=>{
+      console.log(data)
+      if(!this.alteration){
+          if(data['policy']!==null){
+            this.passDataDeductibles.tableData = data['policy']['deductibles'].filter(a=>{
+              a.createDate = this.ns.toDateTimeString(a.createDate);
+              a.updateDate = this.ns.toDateTimeString(a.updateDate);
+              a.updateUser = JSON.parse(window.localStorage.currentUser).username;
+              return true;
+            });
+          }
+          else
+            this.passDataDeductibles.tableData = [];
+      }else {
+          if(data.policy!==null){
+            this.passDataDeductibles.tableData = data.policy.deductibles.filter(a=>{
+              a.createDate = this.ns.toDateTimeString(a.createDate);
+              a.updateDate = this.ns.toDateTimeString(a.updateDate);
+              a.updateUser = JSON.parse(window.localStorage.currentUser).username;
+              return true;
+            });
+          }
+          else
+            this.passDataDeductibles.tableData = [];
       }
-      else
-        this.passDataDeductibles.tableData = [];
+      
       this.deductiblesTable.refreshTable();
     });
     //this.deductiblesTable.markAsDirty();
@@ -1037,7 +1041,7 @@ export class PolCoverageComponent implements OnInit {
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Invalid amount. Premium amount must be positive';
         this.successDiag.open();
-        this.passDataSectionCover.tableData[i].cumSi = 0;
+        //this.passDataSectionCover.tableData[i].cumSi = 0;
       }
     }
 
@@ -1148,8 +1152,6 @@ export class PolCoverageComponent implements OnInit {
         this.totalValue(this.altCoverageData.totalValue);
         this.altCoverageData.totalValue = this.decimal.transform(this.altCoverageData.totalValue, '1.2-2');
       }*/
-      console.log(parseFloat(this.altCoverageData.totalValue.toString().split(',').join('')))
-      console.log(this.altCoverageData.comtotalSi)
       if(parseFloat(this.altCoverageData.totalValue.toString().split(',').join('')) < this.altCoverageData.comtotalSi){
         this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";
         this.promptType = "totalval";
@@ -1159,6 +1161,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   onrowClick(data){
+    console.log(data)
     if(data == null){
       this.passDataDeductibles.disableAdd = true;
       this.passDataDeductibles.tableData = [];
@@ -1174,6 +1177,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   deductibleData(data){
+    console.log('deductiblesData')
     if(data !== null && data.deductiblesSec !== undefined){
       this.passDataDeductibles.nData.coverCd = this.currentCoverCd
       this.passDataDeductibles.tableData = data.deductiblesSec;
@@ -1355,6 +1359,9 @@ export class PolCoverageComponent implements OnInit {
     this.alttotalPrem = 0;
     this.comtotalSi = 0;
     this.comtotalPrem = 0;
+    this.positiveFlag = 0;
+    this.negativeFlag = 0;
+    this.errorFlag = false;
 
     if(data.hasOwnProperty('lovInput')) {
       this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
@@ -1523,9 +1530,20 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
         }
+
+        if(this.passData.tableData[j].sumInsured >= 0){
+          this.positiveFlag++ ;
+        }else {
+          this.negativeFlag++;
+        }
     }
-    
-    
+    if(this.positiveFlag > 0 && this.negativeFlag > 0){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Cannot accept positive and negative at the same time.';
+      this.successAlt.open();
+      this.errorFlag = true;
+    }
+
     this.passData2.tableData[0].section  = 'SECTION I'; 
     this.passData2.tableData[0].prevSi   = isNaN(this.prevsectionISi) ? 0:this.prevsectionISi;
     this.passData2.tableData[0].prevAmt  = isNaN(this.prevsectionIPrem)? 0:this.prevsectionIPrem;
@@ -1628,8 +1646,8 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.pctPml = parseFloat(this.altCoverageData.pctPml.toString().split(',').join(''));
     this.altCoverageData.saveSectionCovers = this.editedData;
     this.altCoverageData.deleteSectionCovers = this.deletedData;
-    this.altCoverageData.deleteDeductibleList = this.editedDedt;
-    this.altCoverageData.saveDeductibleList = this.deletedDedt;
+    this.altCoverageData.deleteDeductibleList = this.deletedDedt;
+    this.altCoverageData.saveDeductibleList = this.editedDedt;
   }
 
   alterationSave(){
@@ -1690,7 +1708,14 @@ export class PolCoverageComponent implements OnInit {
   }
 
    onClickSaveAlt(){
-     this.confirmSave.confirmModal();
+     if(this.errorFlag){
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Cannot accept positive and negative at the same time.';
+        this.successAlt.open();
+        this.errorFlag = true;
+     }else{
+      this.confirmSave.confirmModal();
+     }
     //$('#confirm-save #confirmSave ').trigger('click');
   }
 
@@ -1777,11 +1802,18 @@ export class PolCoverageComponent implements OnInit {
     }
 
     onrowClickAlt(data){
-      if(data != null){
-        this.disabledFlag = false
-        this.passDataDeductibles.disableAdd = false;
+      console.log(data)
+      if(data == null){
+        this.passDataDeductibles.disableAdd = true;
+        this.passDataDeductibles.tableData = [];
+        this.deductiblesTable.refreshTable();
       }else {
-        this.disabledFlag = true;
+        this.passDataDeductibles.disableAdd = false;
+        this.currentCoverCd = data.coverCd;
+        /*this.passDataDeductibles.nData.coverCd = this.table.indvSelect.coverCd;
+        this.passDataDeductibles.tableData = data.deductiblesSec;
+        this.deductiblesTable.refreshTable();*/
+        this.deductibleData(data);
       }
     }
 }

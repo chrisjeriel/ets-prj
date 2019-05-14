@@ -616,16 +616,22 @@ textarea {
     float: right;
     height: calc(1.3rem + 1px) !important;
     background-color: transparent !important;
-    border-color: #ced4da !important;
+    border: none !important;
     color: black !important;
 }
 
 .ui-inputtext {
-    border-color: #ced4da !important;
+    border: 1px solid #ced4da !important;
 }
 
 .ui-inputtext:enabled:focus {
-    border-color: #ced4da !important;
+    border-color: #80bdff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
+.ui-inputtext:disabled:focus {
+    border-color: #80bdff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
 }
 
 .ui-inputtext:enabled:hover {
@@ -653,6 +659,7 @@ body .ui-datepicker table td {
 
 body .ui-datepicker {
     padding: 0.6em 0.6em 0 0.6em !important;
+    min-width: auto !important;
 }
 
 body .ui-datepicker .ui-timepicker {
@@ -664,6 +671,7 @@ body .ui-datepicker .ui-timepicker {
 body .ui-datepicker.ui-datepicker-timeonly .ui-timepicker {
     border-top: 0 none !important;
     margin-top: 2px !important;
+    font-size: 10px !important;
 }
 
 body .ui-widget {
@@ -679,11 +687,21 @@ body .ui-button.ui-button-text-only .ui-button-text {
 }
 
 body .ui-datepicker-buttonbar .ui-g .ui-g-6 {
-    padding: 0px 7px !important;
+    padding: 0px 10px !important;
 }
 
-body .ui-datepicker-buttonbar .ui-g .ui-g-6  button{
+body .ui-datepicker-buttonbar .ui-g .ui-g-6  button {
     width: 100% !important;
+    padding: 0px !important;
+    font-size: 10px !important;
+}
+
+body .ui-datepicker.ui-datepicker-timeonly {
+    min-width: 1em !important;
+}
+
+body .ui-datepicker .ui-datepicker-month, body .ui-datepicker .ui-datepicker-year {
+    font-size: 12px !important;
 }
 
 .dp-cont {
@@ -691,6 +709,6 @@ body .ui-datepicker-buttonbar .ui-g .ui-g-6  button{
     margin-left: 2px !important;
 }
 
-body .ui-datepicker.ui-datepicker-timeonly {
-    min-width: 170% !important;
+.tbl-dp {
+    border: none !important;
 }

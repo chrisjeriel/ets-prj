@@ -309,6 +309,7 @@ export class PolMxLineComponent implements OnInit {
 				this.arrLineCd.push(i.lineCd);
 			}
 			this.table.refreshTable();
+			console.log(this.passData);
 		});
 		0
 	}

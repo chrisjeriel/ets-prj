@@ -99,10 +99,11 @@ export class MaintenanceService{
 			.set('objectId',objectId)
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnObject",{params});
 	}
-	getMtnQuotationWordings(lineCd,type){
+	getMtnQuotationWordings(lineCd,wordType){
 		const params = new HttpParams()
 			.set('lineCd',lineCd)
-			.set('type',type)
+			.set('wordType',wordType);
+			
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnQuotationWordings",{params});
 	}
 
@@ -270,10 +271,10 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnDeductibles',params,header);
     }
 
-    getMtnSpoilageReason(spoilCd){
+    getMtnSpoilageReason(spoilCd,activeTag){
     	const params = new HttpParams()
-			.set('spoilCd', spoilCd);
-
+			.set('spoilCd', spoilCd)
+			.set('activeTag', spoilCd);
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSpoilageReason', {params});
     }
 
@@ -318,6 +319,20 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnInsuredLov', {params});
     }
 
+    saveMtnAdviceWordings(save: any[], del: any[]){
+    	let params: any = {
+    		saveAdvWordList: save,
+    		deleteAdvWordList: del,
+    	};
+
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdviceWordings',params,header);
+    }
+
     getMtnIntmList(searchParams : any[]){
 		var params;
 
@@ -349,30 +364,151 @@ export class MaintenanceService{
 		         };
 		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnIntermediary',params,header);
 	}
-	
-   saveMtnAdviceWordings(save: any[], del: any[]){
-    	let params: any = {
-    		saveAdvWordList: save,
-    		deleteAdvWordList: del,
-    	}
 
-    	let header : any = {
+    getMtnCurrencyList(currencyCd: string){
+		const params = new HttpParams()
+		     .set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd))
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCurrencyList",{params});
+	}
+
+	saveMtnCurrency(currencyData: any){
+		let header : any = {
             headers: new HttpHeaders({
-                 'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             })
-         };
-        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdviceWordings',params,header);
-    }
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCurrency', JSON.stringify(currencyData), header);
+	}
 
+	getMtnCurrencyRt(currencyCd: string){
+		const params = new HttpParams()
+		     .set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd))
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCurrencyRt",{params});
+	}
+
+	saveMtnCurrencyRt(currencyData:any){
+		let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCurrencyRt', JSON.stringify(currencyData), header);
+	}
 
     saveMtnEndt(params){
-    	let header : any = {
+		let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEndorsement',JSON.stringify(params),header);
     }
+
+    getCedingCompanyList(searchParams: any[]){
+        var params;
+        if(searchParams.length < 1){
+        	params = new HttpParams()
+            .set('cedingId','')
+            .set('cedingName','')
+            .set('cedingAbbr','')
+            .set('address','')
+            .set('membershipDate','')
+            .set('terminationDate','')
+            .set('inactiveDate','')
+            .set('activeTag','')
+            .set('govtTag','')
+            .set('membershipTag','');
+        }else{
+        	params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompanyListing', {params});
+    }
+
+    getCedingCompany(cedingId){
+    	const params = new HttpParams()
+    		  .set('cedingId', cedingId);
+
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompany', {params});
+    }
+
+    saveMtnSectionCovers(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSectionCover',JSON.stringify(params),header);
+    }
+
+    getMtnQuoteReason(pass){
+    	const params = new HttpParams()
+			.set('reasonCd', pass.reasonCd == undefined ? '' : pass.reasonCd)
+			.set('activeTag', pass.activeTag == undefined ? '' : pass.activeTag);
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnQuoteReason', {params});
+    }
+
+    saveMtnQuoteReason(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnQuoteReason',JSON.stringify(params),header);
+    }
+
+    saveMtnCedingCompany(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCedingCompany',params,header);
+    }
+
+    saveMtnSpoilageReason(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSpoilageReason',JSON.stringify(params),header);
+    }
+
+    getMtnCatPeril(lineCd: string, objectId?: string, perilId?: string){
+    	const params = new HttpParams()
+		     .set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		     .set('objectId', (objectId === null || objectId === undefined ? '' : objectId))
+		     .set('perilId', (perilId === null || perilId === undefined ? '' : perilId))
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCATPeril",{params});
+    }
+
+    saveMtnCatPeril(catPeril: any){
+		let header : any = {
+	        headers: new HttpHeaders({
+	             'Content-Type': 'application/json'
+	        })
+	     };
+	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCatPeril',JSON.stringify(catPeril),header);
+	}
+
+	getMtnCresta(){
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCrestaZone");
+	}
+
+	saveMtnCrestaZone(saveData:any){
+		let header : any = {
+	        headers: new HttpHeaders({
+	             'Content-Type': 'application/json'
+	        })
+	     };
+	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCrestaZone',JSON.stringify(saveData),header);
+	}
 
 }
 

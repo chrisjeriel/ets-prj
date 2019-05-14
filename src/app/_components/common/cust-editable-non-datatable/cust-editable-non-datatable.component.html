@@ -189,6 +189,7 @@ span.ui-column-resizer {
                             </td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [attr.tabindex]="passData.tabIndex === undefined" class="align-middle">
                                 <div *ngIf="!(data===fillData) && ( passData.uneditable === undefined || !passData.uneditable[i] ) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)" class="align-middle" style="position: relative;">
+
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm"
@@ -202,6 +203,16 @@ span.ui-column-resizer {
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                         <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data,key)" ngModel>
                                     </div>
+                                    <div *ngSwitchCase="'file'" style="text-align: center;">
+                                        <button class="fa fa-paperclip btn-file" title="Attach Image">
+                                            <input type="file" accept="image/*" (change)="upload(data,$event)">
+                                        </button>
+                                       <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
+                                            <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
+                                        </button> -->
+                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileName)">
+                                        </button>
+                                    </div>
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
                                     <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [name]="key+ti">
@@ -211,8 +222,29 @@ span.ui-column-resizer {
                                             </ng-container>
                                         </ng-container>
                                     </select>
-                                    <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'" (ngModelChange)="data[key]=$event;data.edited=true" [ngModelOptions]="{updateOn:'blur'}"> 
-                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key]" (ngModelChange)="data[key]=$event">
+
+                                    <!-- TEST NEW DATEPICKER -->
+                                    
+                                    <!-- OLD -->
+                                    <!-- Pag may nangyaring masama, pakiuncomment po ito at pakicomment yung NEW hahaha -->
+                                    <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'" (ngModelChange)="data[key]=$event; data.edited=true" [ngModelOptions]="{updateOn:'blur'}"> -->
+
+                                    <!-- NEW -->
+                                    <div *ngSwitchCase="'date'" class="dp-cont">
+                                        <datepicker [type]="'date'" [value]="data[key] | date:'yyyy-MM-dd'" (outVal)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" (focused)="focus(data)" [table]="true"></datepicker>
+                                    </div>
+
+                                    <!-- OLD -->
+                                    <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key]" (ngModelChange)="data[key]=$event"> -->
+
+                                    <!-- NEW -->
+                                    <div *ngSwitchCase="'time'" class="dp-cont">
+                                        <datepicker [type]="'time'" [showIcon]="false" [value]="data[key]" (outVal)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" (focused)="focus(data)" [table]="true"></datepicker>
+                                    </div>
+
+                                    <!-- END TEST NEW DATEPICKER -->
+
+                                    
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
                                     <ng-container *ngSwitchCase="'text-editor'">
                                         <div style="max-height: 21px; max-width: 91%">
@@ -224,7 +256,7 @@ span.ui-column-resizer {
                                         </div>
                                     </ng-container>
 
-                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'lovInput'" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.no-click]="data.showMG != 1 && !data.others">   
+                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="'lovInput'" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.unclickable]="data.showMG != 1 && !data.others">   
 
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">
                                     <div><a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1 && data.showMG == 1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a></div>
@@ -350,3 +382,5 @@ passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{d
         <button class="cust-btn" (click)="deleteModal.closeModal()">No</button>
     </div>
 </app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>

@@ -252,7 +252,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     setReason(data){
-        this.selectedData.reasonCd = data.code;
+        this.selectedData.reasonCd = data.reasonCd;
         this.selectedData.description = data.description;
     }
 

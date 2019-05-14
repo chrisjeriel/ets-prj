@@ -179,7 +179,7 @@ export class SpoilPolAltComponent implements OnInit {
 		if(this.spoil){ this.spoil.loadingFlag = true; } 
 		
 		this.passDataSpoilageReason.tableData = [];	
-		this.mtnService.getMtnSpoilageReason('')
+		this.mtnService.getMtnSpoilageReason('','Y')
 		.subscribe(data => {
 			this.passDataSpoilageReason.tableData = []
 			console.log(data)

@@ -34,7 +34,7 @@
     "datatables.net-dt": "^1.10.19",
     "file-saver": "^2.0.1",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "ng-bootstrap": "^1.6.3",
     "ng-sidebar": "^8.0.0",
     "ngx-mask": "^7.9.0",
@@ -50,9 +50,9 @@
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.10.0",
+    "@angular-devkit/build-angular": "^0.13.8",
     "@angular/cli": "~7.0.3",
-    "@angular/compiler-cli": "~7.0.0",
+    "@angular/compiler-cli": "^7.2.14",
     "@angular/language-service": "~7.0.0",
     "@types/datatables.net": "^1.10.13",
     "@types/jasmine": "~2.8.8",

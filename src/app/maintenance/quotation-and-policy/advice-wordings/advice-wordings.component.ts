@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {  NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import {  NgbTabChangeEvent, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -22,7 +22,10 @@ export class AdviceWordingsComponent implements OnInit {
   dialogIcon: string = "";
   dialogMessage: string = "";
 
+  counter: number = 1;
+
   selectedRow: any;
+  indvSelect: any;
 
   cancelFlag: boolean = false;
 
@@ -38,6 +41,7 @@ export class AdviceWordingsComponent implements OnInit {
   	uneditable: [true,false,false,false,false],
   	nData: {
   		adviceWordId: '',
+      addCounter: '1',
   		description: '',
   		wordings: '',
   		activeTag: 'Y',
@@ -50,12 +54,11 @@ export class AdviceWordingsComponent implements OnInit {
   	paginateFlag: true,
   	infoFlag: true,
   	addFlag: true,
-  	deleteFlag: true,
   	searchFlag: true,
-  	checkFlag: true,
+    genericBtn: 'Delete'
   }
 
-  constructor(private route: ActivatedRoute,private router: Router, private ms: MaintenanceService, private ns: NotesService) { }
+  constructor(private route: ActivatedRoute,private router: Router, private ms: MaintenanceService, private ns: NotesService, private modalService: NgbModal) { }
 
   ngOnInit() {
   	this.retrieveMtnAdviceWordingsMethod();
@@ -63,7 +66,6 @@ export class AdviceWordingsComponent implements OnInit {
 
   retrieveMtnAdviceWordingsMethod(){
   	this.ms.getAdviceWordings().subscribe((data: any)=>{
-  		console.log(data);
   		this.adviceWordingsData.tableData = data.adviceWordings;
   		this.table.refreshTable();
   		this.table.onRowClick(null, this.adviceWordingsData.tableData[0]);
@@ -81,6 +83,11 @@ export class AdviceWordingsComponent implements OnInit {
   	this.selectedRow = data;
   }
 
+  onClickAdd(event){
+    this.counter += 1;
+    this.adviceWordingsData.nData.addCounter = this.counter.toString();
+  }
+
   onClickSave(){
   	if(this.checkFields()){
   		$('#confirm-save #modalBtn2').trigger('click');
@@ -91,6 +98,24 @@ export class AdviceWordingsComponent implements OnInit {
 
   }
 
+  onClickDelete(data){
+    this.indvSelect = data;
+    $('#delete > #modalBtn').trigger('click');
+  }
+
+  delete(){
+    this.table.markAsDirty();
+    this.deletedData.push(this.indvSelect);
+    this.adviceWordingsData.tableData = this.adviceWordingsData.tableData.filter(a =>{
+                                            if(this.indvSelect.addCounter === undefined){
+                                              return a.adviceWordId !== this.indvSelect.adviceWordId;
+                                            }else{
+                                              return a.addCounter !== this.indvSelect.addCounter;
+                                            }
+                                        });
+    this.table.refreshTable();
+  }
+
   onClickCancel(){
   	this.cancelBtn.clickCancel();
   }
@@ -98,7 +123,7 @@ export class AdviceWordingsComponent implements OnInit {
   save(cancelFlag?){
   	this.cancelFlag = cancelFlag !== undefined;
   	this.savedData = [];
-  	this.deletedData = [];
+  	//this.deletedData = [];
 
   	for (var i = 0 ; this.adviceWordingsData.tableData.length > i; i++) {
   	  if(this.adviceWordingsData.tableData[i].edited && !this.adviceWordingsData.tableData[i].deleted){
@@ -109,11 +134,11 @@ export class AdviceWordingsComponent implements OnInit {
   	      this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
   	      this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
   	  }
-  	  else if(this.adviceWordingsData.tableData[i].edited && this.adviceWordingsData.tableData[i].deleted){
+  	  /*else if(this.adviceWordingsData.tableData[i].edited && this.adviceWordingsData.tableData[i].deleted){
   	     this.deletedData.push(this.adviceWordingsData.tableData[i]);
   	     this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
   	     this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
-  	  }
+  	  }*/
 
   	}
 
@@ -124,6 +149,8 @@ export class AdviceWordingsComponent implements OnInit {
   		}else{
   			this.dialogIcon = '';
   			this.successDiag.open();
+        this.deletedData = [];
+        this.table.markAsPristine();
   			this.retrieveMtnAdviceWordingsMethod();
   		}
   	});

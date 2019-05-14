@@ -3,6 +3,8 @@ import { NotesService, MaintenanceService } from '@app/_services';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-endorsement',
@@ -14,6 +16,9 @@ export class EndorsementComponent implements OnInit {
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild("endtTable") endtTable: CustEditableNonDatatableComponent;
   @ViewChild("dedTable") dedTable: CustEditableNonDatatableComponent;
+  @ViewChild(ConfirmSaveComponent) conSave: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
+
 
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   dialogIcon:string = '';
@@ -50,8 +55,9 @@ export class EndorsementComponent implements OnInit {
       "endtCd": "",
       "endtTitle": "",
       "description": "",
+      "text":'',
       "defaultTag": "N",
-      "activeTag": "N",
+      "activeTag": "Y",
       "endtText01": "",
       "endtText02": null,
       "endtText03": null,
@@ -92,7 +98,7 @@ export class EndorsementComponent implements OnInit {
           "endtCd": "",
           "defaultTag": "N",
           "deductibleTitle": "",
-          "deductibleType": "",
+          "deductibleType": "F",
           "typeDesc": "",
           "deductibleRate": '',
           "deductibleAmt": '',
@@ -127,6 +133,8 @@ export class EndorsementComponent implements OnInit {
 
 
     };
+
+  cancelFlag:boolean;
 
   constructor(private ns: NotesService, private ms: MaintenanceService) { }
 
@@ -166,6 +174,7 @@ export class EndorsementComponent implements OnInit {
   		this.passEndtTable.disableGeneric = false;
   		this.passEndtTable.tableData = a['endtCode'];
   		this.passEndtTable.tableData.forEach(a=>{{
+        a.endtCd = String(a.endtCd).padStart(3,'0')
   			a['text'] = (a.endtText01 === null ? '' :a.endtText01) + 
 			                 (a.endtText02 === null ? '' :a.endtText02) + 
 			                 (a.endtText03 === null ? '' :a.endtText03) + 
@@ -184,7 +193,9 @@ export class EndorsementComponent implements OnInit {
 			                 (a.endtText16 === null ? '' :a.endtText16) + 
 			                 (a.endtText17 === null ? '' :a.endtText17) ;
 			a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
+			a.uneditable = ['endtCd']
   		}})
+  		this.endtClick(null);
   		this.endtTable.refreshTable();
   	})
   }
@@ -219,6 +230,7 @@ export class EndorsementComponent implements OnInit {
   		this.passDedTable.disableAdd = false;
   		this.passDedTable.disableGeneric = false;
   		this.passDedTable.nData.endtCd = data.endtCd;
+  		this.disableFields();
   		this.info = data;
   	}else{
   		this.passDedTable.disableAdd = true;
@@ -234,32 +246,40 @@ export class EndorsementComponent implements OnInit {
   	this.dedTable.refreshTable();
   }
 
+  disableFields(){
+  	// 'deductibleAmt','deductibleRate','minAmt','maxAmt'
+  	this.passDedTable.tableData.forEach(a=>{
+  		if(a.deductibleType == 'F'){
+  			a.uneditable = ['deductibleRate','minAmt','maxAmt','deductibleCd'];
+  			a.uneditable.forEach((b,i)=>{
+  				if(i != a.uneditable.length-1)
+  					a[b] = '';
+  			})
+  		}else{
+  			a.uneditable = ['deductibleAmt','deductibleCd'];
+	  		a.uneditable.forEach((b,i)=>{
+	  			if(i != a.uneditable.length-1)
+	  				a[b] = '';
+	  		})
+  		}
+
+  		if(a.add){
+  			a.uneditable.pop();
+  		}
+  	})
+  }
+
   endtTextKeys:string[] = ['endtText01','endtText02','endtText03','endtText04','endtText05','endtText06','endtText07','endtText08','endtText09','endtText10','endtText11','endtText12','endtText13','endtText14','endtText15','endtText16','endtText17'];
-  save(){
+  save(can?){
+  	this.cancelFlag = can !== undefined;
   	let params : any = {
   		saveEndorsement : [],
   		delEndorsement :[],
   		saveDeductibles:[],
   		deleteDeductibles:[]
   	}
-  	let endtCds:string[] = this.passEndtTable.tableData.filter(a=>!a.deleted).map(a=>String(a.endtCd).padStart(3,'0'));
-
-  	if(endtCds.some((a,i)=>endtCds.indexOf(a) != i)){
-  		this.dialogMessage = 'Unable to save the record. Endt Code must be unique per Line';
-  		this.dialogIcon = 'error-message';
-  		this.successDialog.open();
-  		return;
-  	}  
-  	let dedCds : string[];
+  	
   	for(let endt of this.passEndtTable.tableData){
-  		dedCds = endt.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
-  		if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
-  			console.log(endt.deductibles)
-  			this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Endorsement';
-	  		this.dialogIcon = 'error-message';
-	  		this.successDialog.open();
-	  		return;
-  		}
   		if(endt.edited && !endt.deleted){
   			let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
             if(endtTextSplit!== null)
@@ -272,17 +292,17 @@ export class EndorsementComponent implements OnInit {
             params.saveEndorsement.push(endt);
   		}
 
-  		if(!endt.deleted){
-  			let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
-            if(endtTextSplit!== null)
-                for (var i = 0; i < endtTextSplit.length; ++i) {
-                    endt[this.endtTextKeys[i]] = endtTextSplit[i];
-            }
-            endt.updateDate = this.ns.toDateTimeString(0);
-            endt.createDate = this.ns.toDateTimeString(endt.createDate);
-            endt.updateUser = this.ns.getCurrentUser();
-            params.saveEndorsement.push(endt);
-  		}
+  		// if(!endt.deleted){
+  		// 	let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
+    //         if(endtTextSplit!== null)
+    //             for (var i = 0; i < endtTextSplit.length; ++i) {
+    //                 endt[this.endtTextKeys[i]] = endtTextSplit[i];
+    //         }
+    //         endt.updateDate = this.ns.toDateTimeString(0);
+    //         endt.createDate = this.ns.toDateTimeString(endt.createDate);
+    //         endt.updateUser = this.ns.getCurrentUser();
+    //         params.saveEndorsement.push(endt);
+  		// }
 
   		for(let ded of endt.deductibles){
   			if(ded.edited && !ded.deleted){
@@ -312,5 +332,48 @@ export class EndorsementComponent implements OnInit {
   	})
 
   }
+
+  onClickSave(){
+  	
+  	let endtCds:string[] = this.passEndtTable.tableData.filter(a=>!a.deleted).map(a=>String(a.endtCd).padStart(3,'0'));
+
+  	if(endtCds.some((a,i)=>{
+      if(endtCds.indexOf(a) != i)
+        console.log(a)
+      return endtCds.indexOf(a) != i;
+    })){
+  		this.dialogMessage = 'Unable to save the record. Endt Code must be unique per Line';
+  		this.dialogIcon = 'error-message';
+  		this.successDialog.open();
+  		return;
+  	}
+  	let dedCds : string[];
+  	for(let endt of this.passEndtTable.tableData){
+  		dedCds = endt.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
+		if(endt.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
+  			this.dialogIcon = "error";
+    		this.successDialog.open();
+    		return;
+		}
+
+  		if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
+  			this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Endorsement';
+	  		this.dialogIcon = 'error-message';
+	  		this.successDialog.open();
+	  		this.endtTable.markAsPristine();
+	  		this.dedTable.markAsPristine();
+	  		return;
+  		}
+  	}
+  	this.conSave.confirmModal();
+  }
+
+  onClickCancel(){
+  	this.cnclBtn.clickCancel();
+  }
+
+  showLineLOV(){
+    $('#lineLOV #modalBtn').trigger('click');
+	}
 
 }
