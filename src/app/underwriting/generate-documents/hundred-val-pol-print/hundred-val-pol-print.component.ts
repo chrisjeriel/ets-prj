@@ -61,6 +61,7 @@ export class HundredValPolPrintComponent implements OnInit {
     }
 
 	openPolListModal(){
+		this.policyListingData.tableData = [];
 		this.retrievePolListing();
 		$('#lovMdl > #modalBtn').trigger('click');
 
