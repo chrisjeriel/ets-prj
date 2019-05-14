@@ -58,7 +58,11 @@ export class PolicyIssuanceAltComponent implements OnInit {
               this.title = "Policy / Inquiry / Policy Inquiry";
             }
             this.exitLink = params['exitLink'];
-            this.policyInfo.prevPolicyId = params['prevPolicyId'];
+            /* If not new alt */
+            console.log(this.us.fromCreateAlt);
+            if(!this.us.fromCreateAlt) {
+              this.policyInfo.prevPolicyId = params['prevPolicyId'] ;
+            }
 
             // if(this.us.fromCreateAlt) {
 
@@ -137,6 +141,11 @@ export class PolicyIssuanceAltComponent implements OnInit {
       this.policyInfo.showPolAlop = event.showPolAlop;
       this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
       this.policyInfo.cedingName = event.cedingName;
+
+      console.log(this.us.fromCreateAlt);
+      if(this.us.fromCreateAlt) {
+        this.policyInfo.prevPolicyId = event.refPolicyId;
+      }
     }
 
    returnOnModal(){

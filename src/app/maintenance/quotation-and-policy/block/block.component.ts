@@ -201,7 +201,7 @@ export class BlockComponent implements OnInit {
             this.oldValue = this.locData.districtCd;
             if (this.locData.districtCd == null || this.locData.districtCd == '') {
                 this.locData.districtCd = '';
-                this.locData.districtDesc = '';
+                this.locData.districtDesc = '';   
             } else {
                 this.ns.lovLoader(ev, 1);
                 this.lovMdl.checkCode('district',this.locData.regionCd, this.locData.provinceCd, this.locData.cityCd, this.locData.districtCd, '', ev);
