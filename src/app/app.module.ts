@@ -353,7 +353,9 @@ import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information
 import { SequenceDirective } from './_directives/sequence.directive';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
+import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
@@ -369,6 +371,7 @@ import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
+import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 
 
 
@@ -731,7 +734,9 @@ import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-crest
         SequenceDirective,
         InsuredListComponent,
         InsuredComponent,
+        TypeOfCessionComponent,
         SpecialLovComponent,
+        IntermediaryListComponent,
         WfNotesFormComponent,
         DatepickerComponent,
         AdviceWordingsComponent,
@@ -746,6 +751,7 @@ import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-crest
         MtnCurrencyRateComponent,
         MtnCATPerilComponent,
         MtnCrestaComponent,
+        IntermediaryComponent,
     ],
 
   	providers: [
