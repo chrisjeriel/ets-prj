@@ -11,40 +11,6 @@ export class NumbersOnlyDirective {
     this.inputElement = el.nativeElement;
   }
 
-  @HostListener('blur', ['$event'])
-  onblur(event) {
-    event.target.value = this.cvrtNeg(event.target.value);
-  }
-
-  @HostListener('focus', ['$event'])
-  onfocus(event) {
-    var content = "";
-    content = (event.target.value).toString();
-    event.target.value = this.addNegSign(content);
-  }
-
-  addNegSign(str) {
-    if (str.substring(0, 1) === "(") {
-      str = "-" + str.substring(1, str.length - 1);
-      return str;
-    } else {
-      return str;
-    }
-  }
-
-  cvrtNeg(str) {
-    if (str.substring(0, 1) === "-") {
-      str = "(" + str.replace("-", "") + ")";
-      if (str.substring(1, 2) === ",") {
-        str = str.replace(",", "");
-      }
-      return str;
-    } else {
-      return str;
-    }
-  }
-
-
   @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent) {
     if (

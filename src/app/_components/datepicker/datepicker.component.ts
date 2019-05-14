@@ -59,7 +59,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	}
 
   	if(this.table) {
-  		this.spanStyle['minWidth'] = '9em';
+  		this.spanStyle['minWidth'] = this.type == 'time' ? '1px' :  '9em';
   		this.inputStyeClass += ' tbl-dp';
   	}
 
