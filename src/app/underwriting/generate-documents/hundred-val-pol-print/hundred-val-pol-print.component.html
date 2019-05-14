@@ -1,0 +1,55 @@
+<div class="cust-tabs-container">
+	<h4>Generate Documents</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="100% Value Policy Printing">
+			<ng-template ngbTabContent>
+				<div class="container-fluid">
+					<div class="row" style="margin-top: 17px;">
+						<div class="col-sm-3"></div>
+						<div class="col-sm-6">
+							<fieldset class="scheduler-border">
+								<div class="custom-row-inline-inset">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2 no-margin">Policy No</label>
+										<div class="input-group col-sm-9 no-padding">
+											<input type="text" class="form-control form-control-sm col-sm-2" maxlength="8" ngbToolTip="Line">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="4" ngbToolTip="Year">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="6" ngbToolTip="Sequence No">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="3" ngbToolTip="Ceding No">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="4" ngbToolTip="Co Series No">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="3" ngbToolTip="Alteration No">
+										</div>
+										<span>&nbsp;</span>
+										<div class="text-search-ico col-sm no-padding"><a><i class="fa fa-search"></i></a></div>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2 no-margin">Ceding Company</label>
+										<input type="text" class="form-control form-control-sm col-sm-10" readonly>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2 no-margin">Insured</label>
+										<input type="text" class="form-control form-control-sm col-sm-10" readonly>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2 no-margin">Risk</label>
+										<input type="text" class="form-control form-control-sm col-sm-10" readonly>
+									</div>
+								</div>
+								<hr/>
+								<div class="custom-row-inline-inset">
+									<label class="form-control-sm col-sm-4 no-margin"><strong>Treaty Share (%)</strong></label>
+									<input type="text" class="form-control form-control-sm col-sm-4" appOtherRates>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-3"></div>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Exit" id="Exit">
+			<ng-template ngbTabContent>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

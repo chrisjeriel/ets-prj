@@ -362,6 +362,7 @@ import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy
 import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
+import { HundredValPolPrintComponent } from './underwriting/generate-documents/hundred-val-pol-print/hundred-val-pol-print.component';
 
 
 
@@ -732,6 +733,7 @@ import { SectionCoverComponent } from './maintenance/quotation-and-policy/sectio
         CedingCompanyFormComponent,
         EndorsementComponent,
         SectionCoverComponent,
+        HundredValPolPrintComponent,
     ],
 
     providers: [
