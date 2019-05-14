@@ -8,48 +8,76 @@
 						<div class="col-sm-3"></div>
 						<div class="col-sm-6">
 							<fieldset class="scheduler-border">
-								<div class="custom-row-inline-inset">
+								<div class="custom-row-inline-inset" style="margin-bottom: -17px !important;margin-top: 12px !important;">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 no-margin">Policy No</label>
 										<div class="input-group col-sm-9 no-padding">
-											<input type="text" class="form-control form-control-sm col-sm-2" maxlength="8" ngbToolTip="Line">
-											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="4" ngbToolTip="Year">
-											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="6" ngbToolTip="Sequence No">
-											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="3" ngbToolTip="Ceding No">
-											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="4" ngbToolTip="Co Series No">
-											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="3" ngbToolTip="Alteration No">
+											<input type="text" class="form-control form-control-sm col-sm-2" maxlength="8" ngbTooltip="Line" appRequired [ngModel]="tempPolNo[0]" (ngModelChange)="tempPolNo[0] = $event.toUpperCase()" (blur)="checkPolicySearch();">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="4" ngbTooltip="Year" appRequired [(ngModel)]="tempPolNo[1]" (blur)="checkPolicySearch();">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="5" ngbTooltip="Sequence No" appRequired [(ngModel)]="tempPolNo[2]" (blur)="tempPolNo[2]=pad(tempPolNo[2], 'seqNo');checkPolicySearch();">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="3" ngbTooltip="Ceding No" appRequired [(ngModel)]="tempPolNo[3]" (blur)="tempPolNo[3]=pad(tempPolNo[3], 'cedingId');checkPolicySearch();">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="4" ngbTooltip="Co Series No" appRequired [(ngModel)]="tempPolNo[4]" (blur)="tempPolNo[4]=pad(tempPolNo[4], 'coSeriesNo');checkPolicySearch();">
+											<input type="text" class="form-control form-control-sm col-sm-2 align-right gaps" maxlength="2" ngbTooltip="Alteration No" appRequired [(ngModel)]="tempPolNo[5]" (blur)="tempPolNo[5]=pad(tempPolNo[5], 'altNo');checkPolicySearch();">
 										</div>
 										<span>&nbsp;</span>
-										<div class="text-search-ico col-sm no-padding"><a><i class="fa fa-search"></i></a></div>
+										<div class="text-search-ico col-sm no-padding" (click)="openPolListModal();"><a><i class="fa fa-search"></i></a></div>
 									</div>
 									<div class="input-group">
-										<label class="form-control-sm col-sm-2 no-margin">Ceding Company</label>
-										<input type="text" class="form-control form-control-sm col-sm-10" readonly>
+										<label class="form-control-sm col-sm-2 no-margin" style="font-size: 9px !important;">Ceding Company</label>
+										<input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="policyInfo.cedingName" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 no-margin">Insured</label>
-										<input type="text" class="form-control form-control-sm col-sm-10" readonly>
+										<input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="policyInfo.insuredDesc" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 no-margin">Risk</label>
-										<input type="text" class="form-control form-control-sm col-sm-10" readonly>
+										<input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="policyInfo.riskName" readonly>
 									</div>
 								</div>
 								<hr/>
 								<div class="custom-row-inline-inset">
-									<label class="form-control-sm col-sm-4 no-margin"><strong>Treaty Share (%)</strong></label>
-									<input type="text" class="form-control form-control-sm col-sm-4" appOtherRates>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-5 no-margin"><strong>Treaty Share (%)</strong></label>
+										<input type="text" class="form-control form-control-sm col-sm-3" appOtherRates appRequired>
+									</div>
 								</div>
 							</fieldset>
+							<div class="form-row">
+							    <div class="form-group col-sm">
+							        <div class="col-md-13 text-center" style="margin-top:10px">
+							            <div class="cust-btn-container">
+							                <button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+							                <button type="button" class="cust-btn" (click)="generate();"><a>Generate</a></button>
+							            </div>
+							        </div>
+							    </div>
+							</div>
 						</div>
 						<div class="col-sm-3"></div>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Exit" id="Exit">
+<!-- 		<ngb-tab title="Exit" id="Exit">
 			<ng-template ngbTabContent>
 			</ng-template>
-		</ngb-tab>
+		</ngb-tab> -->
 	</ngb-tabset>
 </div>
+
+<app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl">
+    <div header>List Of Values</div>
+    <div body>
+       <app-cust-non-datatable [passData]="policyListingData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" [disabled]="btnDisabled" [class.cust-btn-disabled]="btnDisabled" (click)="modalService.dismissAll();selectPol();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/'" ></app-cancel-button>
