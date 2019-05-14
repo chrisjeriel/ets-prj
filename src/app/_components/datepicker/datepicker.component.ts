@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit, DoCheck, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild } from '@angular/core';
 import { NotesService } from '@app/_services'
 
 @Component({
@@ -6,15 +6,26 @@ import { NotesService } from '@app/_services'
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.css']
 })
-export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, DoCheck {
+export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
 
-  constructor(private ns: NotesService, private r2: Renderer2) { }
+  constructor(private ns: NotesService) { }
 
-  datepickerVal: any = null;
-  minimumDate: any = null;
-  ev: any = null;
-  inputStyeClass: string = 'form-control form-control-sm';
-  icon: string = 'fa fa-calendar';
+  private datepickerVal: any = null;
+  private minimumDate: any = null;
+  private ev: any = null;
+  private inputStyeClass: string = 'form-control form-control-sm';
+  private icon: string = 'fa fa-calendar';
+  
+  private spanStyle: any = {
+	width: '100%',
+	position: 'absolute',
+	display: 'contents'
+  }
+
+  private inputStyle: any = {
+  	position: 'relative',
+  	backgroundColor: 'transparent',
+  }
 
   @Output() outVal = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
@@ -34,31 +45,7 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   @Input() name: any = null;
   @Input() table: boolean = false;
 
-  spanStyle: any = {
-  	width: '100%',
-  	position: 'absolute',
-  	display: 'contents'
-  }
-
-  inputStyle: any = {
-  	position: 'relative',
-  	backgroundColor: 'transparent',
-  }
-
   ngOnInit() {
-  	/*this.minimumDate = new Date(this.minDate);
-
-  	if(this.type == 'time') {
-  		var d = new Date();
-  		var hrs = Number(this.value.split(':')[0]);
-  		var mins = Number(this.value.split(':')[1]);
-  		d.setHours(hrs, mins);
-
-  		this.datepickerVal = d;
-  	} else {
-  		this.datepickerVal = new Date(this.value);
-  	}*/
-
   	this.inputStyle['textAlign'] = this.textAlign;
 
   	if(this.required) {
@@ -86,12 +73,11 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   ngOnChanges(changes: SimpleChanges) {
     if(changes.value && changes.value.currentValue) {
     	if(this.type == 'time') {
-    		if(this.value != '') {  		
+    		if(this.value != '' && this.value != null && this.value != 'undefined') {  		
 	    		var d = new Date();
 	    		var hrs = Number(changes.value.currentValue.split(':')[0]);
 	    		var mins = Number(changes.value.currentValue.split(':')[1]);
 	    		d.setHours(hrs, mins, 0);
-
 	    		this.datepickerVal = d;
     		} else {
   				this.datepickerVal = null;
@@ -106,9 +92,9 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
     }
   }
 
-  ngDoCheck() {
+  ngDoCheck() {  	
   	if(this.datepickerVal != null && this.type == 'time' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1] != this.value) {
-  		if(this.value != '') {
+  		if(this.value != '' && this.value != null && this.value != 'undefined') {
   			var d = new Date();
   			var hrs = Number(this.value.split(':')[0]);
   			var mins = Number(this.value.split(':')[1]);
@@ -120,15 +106,13 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   		}  		
   	} else if(this.datepickerVal != null && this.type == 'date' && this.ns.toDateTimeString(this.datepickerVal).split('T')[0] != this.value) {
   		this.datepickerVal = this.value == '' ? null : new Date(this.value);
-  	}	
+  	} else if(this.datepickerVal != null && this.type == 'datetime' && this.ns.toDateTimeString(this.datepickerVal) != this.value){
+      this.datepickerVal = this.value == '' ? null : new Date(this.value);
+    }
   	
   	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {
   		this.minimumDate = this.minDate == '' ? null : new Date(this.minDate);
   	}
-  }
-
-  ngAfterViewInit() {  	
-  	/*FOR MASKING - IN PROGRESS*/
   }
 
   valueChanged() {
@@ -174,11 +158,11 @@ export class DatepickerComponent implements OnInit, OnChanges, AfterViewInit, Do
   }
 
   focused() {
-  	setTimeout(() => { 
+  	/*setTimeout(() => { 
   		$('.ui-datepicker-title').addClass('input-group').attr('style', 'padding: 0 15px 5px !important');
-  		$('.ui-datepicker-month').addClass('form-control form-control-sm cust-sm col-sm-6');
-  		$('.ui-datepicker-year').addClass('form-control form-control-sm cust-sm col-sm-6');
-  	}, 0);
+  		$('.ui-datepicker-month').addClass('form-control form-control-sm cust-sm col-sm-7');
+  		$('.ui-datepicker-year').addClass('form-control form-control-sm cust-sm col-sm-5');
+  	}, 0);*/ //REMOVED BECAUSE OF STYLE BUG
 
   	this.onFocus.emit();
   }

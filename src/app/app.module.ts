@@ -357,8 +357,12 @@ import { SpecialLovComponent } from './_components/special-lov/special-lov.compo
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
+import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
+import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
+import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
+import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
 import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
 import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
 import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
@@ -728,8 +732,12 @@ import { BlockComponent } from './maintenance/quotation-and-policy/block/block.c
         SpecialLovComponent,
         WfNotesFormComponent,
         DatepickerComponent,
+        AdviceWordingsComponent,
+        CedingCompaniesListComponent,
+        CedingCompanyFormComponent,
         EndorsementComponent,
         SectionCoverComponent,
+        QuoteWordingComponent,
         QuoteStatusReasonComponent,
         SpoilageReasonComponent,
         DistrictComponent,
