@@ -113,18 +113,12 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnReportsParam",{params});
 	}
 
-
-
-
-
-
 	getMtnRisk(riskId) {
 		const params = new HttpParams()
                 .set('riskId',riskId);
 
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRisk', {params});    
     }
-
 
 	getLineLOV(lineCd) {
 		const params = new HttpParams()

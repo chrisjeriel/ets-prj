@@ -107,7 +107,5 @@ export class QuoteWordingComponent implements OnInit {
 		this.table.indvSelect.edited = true;
 		this.table.indvSelect.deleted = true;		
 		this.table.confirmDelete();
-
-		// this.quoteWordingData.disableGeneric = true;		
 	}
 }
