@@ -24,24 +24,25 @@ export class LineClassComponent implements OnInit {
     tableData:[['', '', '', '']],
     tHeader				:["Line Class Code", "Description", "Active","Remarks"],
     dataTypes			:["text", "text", "checkbox", "text"],
+    genericBtn    :'Delete',
     nData:{
       lineClassCd       : null,
       lineCdDesc        : null,
       activeTag         : 'Y',
-      remarks           : ' ',
+      remarks           : '',
       createUser        : null,
       createDate        : this.ns.toDateTimeString(0),
       updateUser        : null,
       updateDate        : this.ns.toDateTimeString(0)
     },
     addFlag				      : true,
-    deleteFlag		 	    : true,
     paginateFlag		    : true,
     infoFlag			      : true,
     pageLength			    : 10,
     resizable			      : [true, true, true, false],
     pageID				      : 'line-mtn-line',
     keys				        : ['lineClassCd', 'lineCdDesc', 'activeTag','remarks'],
+    disableGeneric      : true,
     disableAdd          : true
   };
 
@@ -86,10 +87,6 @@ export class LineClassComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
-    setTimeout(_=> this.table.btnDisabled = true );
-  }
-
   retrieveLineClass() {
     if(this.line === '' || this.line == null) {
       this.clearTbl();
@@ -99,12 +96,10 @@ export class LineClassComponent implements OnInit {
           this.passData.tableData = data['lineClass'].filter(a => {
             a.createDate = this.ns.toDateTimeString(a.createDate);
             a.updateDate = this.ns.toDateTimeString(a.updateDate);
-            a.remarks = a.remarks.trim();
             return true;
           });
 
           this.passData.tableData.sort((a,b) => (a.createDate > b.createDate)? -1 : 1);
-          this.table.btnDisabled = true;
           this.passData.disableAdd = false;
           this.table.refreshTable();
         }
@@ -135,7 +130,6 @@ export class LineClassComponent implements OnInit {
       if (rec.edited && !rec.deleted) {
         rec.lineCd = this.line;
         rec.activeTag = rec.activeTag ===  '' ? 'N' : rec.activeTag;
-        rec.remarks = rec.remarks ===''? ' ' : rec.remarks;
         rec.createUser = JSON.parse(window.localStorage.currentUser).username;
         rec.createDate = this.ns.toDateTimeString(rec.createDate);
         rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
@@ -199,7 +193,6 @@ export class LineClassComponent implements OnInit {
 
   validate(obj) {
     var req = ['lineClassCd', 'lineCdDesc'];
-    var entries = Object.entries(obj);
 
     for (let rec of obj) {
       var entries = Object.entries(rec);
@@ -236,6 +229,8 @@ export class LineClassComponent implements OnInit {
       this.lineClassData.createDate = ev.createDate;
       this.lineClassData.updateUser = ev.updateUser;
       this.lineClassData.updateDate = ev.updateDate;
+
+      this.passData.disableGeneric = false;
     }
   }
 
@@ -254,6 +249,17 @@ export class LineClassComponent implements OnInit {
   clearTbl() {
     this.passData.tableData = [];
     this.table.refreshTable();
+  }
+
+  deleteLineClass() {
+    if ('Y' === this.table.indvSelect.okDelete) {
+      this.table.indvSelect.deleted = true;
+      this.table.selected = [this.table.indvSelect];
+      this.table.confirmDelete();
+    } else {
+      this.warningMsg = 1;
+      this.showWarningMdl();
+    }
   }
 
 }

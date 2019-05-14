@@ -26,7 +26,7 @@ export class ObjectComponent implements OnInit {
         lineDesc: '',
         objectId: '',
         description: '',
-        activeTag: '',
+        activeTag: 'Y',
         remarks: '',
         createDate: this.ns.toDateTimeString(0),
         updateDate: this.ns.toDateTimeString(0),
@@ -49,11 +49,13 @@ catPerilData: any = {
     tableData: [],
     tHeader: ['CAT Peril No', 'Name', 'Abbreviation', 'Percent Share on Premium (%)'],
     dataTypes: ['text', 'text', 'text', 'percent'],
+    magnifyingGlass: ['catPerilId'],
     nData: {
         lineCd: '',
         lineDesc: '',
         objectId: '',
         catPerilId: '',
+        showMG: 1,
         catPerilAbbr: '',
         catPerilName: '',
         pctSharePrem: '',
@@ -80,8 +82,11 @@ catPerilData: any = {
   }
 
   line              : string;
+  objectId          : string;
   description       : string;
   cancelFlag        : boolean = false;
+  dialogMessage     : string;
+  dialogIcon        : string;
 
   userData: any = {
     updateDate: null,
@@ -114,11 +119,17 @@ catPerilData: any = {
     });
   }
 
-  showLineLOV() {
-    $('#lineLOV #modalBtn').trigger('click');
+  showObjLineLOV() {
+    console.log("showlineLOV() was called...");
+    $('#objLineLOV #modalBtn').trigger('click');
+  }
+
+  showCATPerilLOV() {
+    $('#catPerilLOV #modalBtn').trigger('click');
   }
 
   setLine(data) {
+    console.log("setLine() was called...");
     this.line = data.lineCd;
     this.description = data.description;
     this.ns.lovLoader(data.ev, 0);
@@ -138,8 +149,12 @@ catPerilData: any = {
           a.updateDate = this.ns.toDateTimeString(a.updateDate);
           return true;
         });
+        this.catPerilTable.btnDisabled = true;
+        this.catPerilData.disableAdd = false;
         this.catPerilTable.refreshTable();
       }
+
+      this.objectId = ev.objectId;
 
       this.userData.createUser = ev.createUser;
       this.userData.createDate = ev.createDate;
@@ -157,12 +172,14 @@ catPerilData: any = {
     let savedData: any = {};
     savedData.saveObject = [];
     savedData.deleteObject = [];
+    savedData.saveCATPeril = [];
+    savedData.deleteCATPeril = [];
 
     for (let rec of this.passData.tableData) {
       if (rec.edited && !rec.deleted) {
         rec.lineCd = this.line;
         rec.activeTag = rec.activeTag === '' ? 'N' : rec.activeTag;
-        rec.remarks = rec.remarks === '' ? ' ' : rec.remarks;
+        // rec.remarks = rec.remarks === '' ? ' ' : rec.remarks;
         rec.createUser = JSON.parse(window.localStorage.currentUser).username;
         rec.createDate = this.ns.toDateTimeString(rec.createDate);
         rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
@@ -177,6 +194,95 @@ catPerilData: any = {
         savedData.deleteObject.push(rec);
       }
     }
+
+    for (let rec of this.catPerilData.tableData) {
+      if (rec.edited && !rec.deleted) {
+        rec.lineCd = this.line;
+        rec.objectId = this.objectId;
+        rec.createUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.createDate = this.ns.toDateTimeString(rec.createDate);
+        rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
+        savedData.saveCATPeril.push(rec);
+      } else if (rec.deleted) {
+        rec.lineCd = this.line;
+        rec.objectId = this.objectId;
+        rec.createUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.createDate = this.ns.toDateTimeString(rec.createDate);
+        rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
+        savedData.deleteCATPeril.push(rec);
+      }
+    }
+
+    if (this.validate(savedData)) {
+      this.mtnService.saveMtnObject(JSON.stringify(savedData)).subscribe((data: any) => {
+        if(data['returnCode'] === 0) {
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = 'error';
+          $('#objectSuccess > #successModalBtn').trigger('click');
+        } else {
+          this.dialogIcon = 'success';
+          $('#objectSuccess > #successModalBtn').trigger('click');
+          this.objTable.markAsPristine();
+          this.retrieveObject();
+        }
+      });
+    } else {
+      this.dialogMessage = 'Please check field values';
+      this.dialogIcon = 'error';
+      $('#objectSuccess > #successModalBtn').trigger('click');
+
+      setTimeout(() => { $('.globalLoading').css('display', 'none'); }, 0);
+    }
+  }
+
+  validate(obj) {
+    for (let rec of obj.saveObject) {
+      var entries = Object.entries(rec);
+
+      for (var[key, val] of entries) {
+        if ((val === '' || val == null) && 'objectId' === key) {
+          return false;
+        }
+      }
+    }
+
+    for (let rec of obj.saveCATPeril) {
+      var entries = Object.entries(rec);
+
+      for (var[key, val] of entries) {
+        if ((val === '' || val == null) && 'catPerilId' === key) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  delObject() {
+    for (let rec of this.passData.tableData) {
+      if (rec.objectId === this.objTable.indvSelect.objectId) {
+        rec.deleted = true;
+        rec.edited = true;
+      }
+    }
+
+    this.objTable.markAsDirty();
+    this.objTable.refreshTable();
+  }
+
+  delCATPeril() {
+    for (let rec of this.catPerilData.tableData) {
+      if (rec.catPerilId === this.catPerilTable.indvSelect.catPerilId) {
+        rec.deleted = true;
+        rec.edited = true;
+      }
+    }
+
+    this.catPerilTable.markAsDirty();
+    this.catPerilData.refreshTable();
   }
 
 }

@@ -19,9 +19,8 @@
 
         <fieldset class="scheduler-border" style="margin-top: 10px !important">
           <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-            <app-cust-editable-non-datatable #lineClassTable [passData]="passData" (newClick)="clickRow($event)" (tableDataChange)="passData.tableData=$event" (onDelete)="delLineClass()">
-              <!-- <button controls-l class="cust-btn" *ngIf="!passData.addFlag" class="cust cust-btn dsbld">Add</button> -->
-              <!-- <button controls-l class="cust-btn" *ngIf="!passData.deleteFlag" class="cust cust-btn dsbld">Delete</button> -->
+            <app-cust-editable-non-datatable #lineClassTable [passData]="passData" (genericBtn)="deleteLineClass()" (newClick)="clickRow($event)"
+              (tableDataChange)="passData.tableData=$event" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true">
             </app-cust-editable-non-datatable>
 
             <div class="form-row" style="margin-top: 40px !important;">

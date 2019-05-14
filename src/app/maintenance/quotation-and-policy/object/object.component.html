@@ -10,7 +10,7 @@
               <label class="form-control-sm text-right" style="margin-bottom: 0px">Line</label>
               <input class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event)"
                 [(ngModel)]="line">
-              <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i
+              <div class="text-search-ico" style="padding-left: 1px" (click)="showObjLineLOV()"><a><i
                     class="fa fa-search"></i></a></div>&nbsp;
               <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;"
                 [(ngModel)]="description" readonly>
@@ -24,8 +24,7 @@
             <div class="col-sm-6" style="padding-right: 2px">
               <fieldset class="scheduler-border" style="margin: 12px 0px 8px 0px !important;">
                 <div style="padding-top: 9px;">
-                  <app-cust-editable-non-datatable #objectTable [passData]="passData" (newClick)="rowClick($event)"
-                    (clickLOV)="clickEndtLov($event)"></app-cust-editable-non-datatable>
+                  <app-cust-editable-non-datatable #objectTable [passData]="passData" (newClick)="rowClick($event)" (onDelete)="delObject()"></app-cust-editable-non-datatable>
                 </div>
               </fieldset>
             </div>
@@ -34,9 +33,7 @@
                 <legend class="scheduler-border">CAT Peril per Object</legend>
                 <div class="row" style="padding-bottom: 8px;"></div>
                 <div style="padding-top: 5px;">
-                  <app-cust-editable-non-datatable #catPerilTable [passData]="catPerilData"
-                    (clickLOV)="clickDedLov($event)"
-                    (tableDataChange)="ocFlag ? endtTable.indvSelect.deductiblesOc = $event : endtTable.indvSelect.deductibles = $event">
+                  <app-cust-editable-non-datatable #catPerilTable [passData]="catPerilData" (onDelete)="delCATPeril()" (clickLOV)="showCATPerilLOV()">
                   </app-cust-editable-non-datatable>
                 </div>
               </fieldset>
@@ -73,7 +70,7 @@
   </ngb-tabset>
 </div>
 
-<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-line id="objLineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-confirm-save (onYes)="onClickSaveObject()"></app-confirm-save>
-<app-sucess-dialog id="lineClassSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag? cancel.onNo() : null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSaveLineClass('cancel')" [url]="'/'" ></app-cancel-button>
+<app-sucess-dialog id="objectSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag? cancel.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveObject('cancel')" [url]="'/'" ></app-cancel-button>

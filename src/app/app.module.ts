@@ -374,6 +374,7 @@ import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
+import { MtnCatPerilComponent } from './maintenance/mtn-cat-peril/mtn-cat-peril.component';
 
 
 
@@ -756,6 +757,7 @@ import { IntermediaryComponent } from './maintenance/quotation-and-policy/interm
         MtnCATPerilComponent,
         MtnCrestaComponent,
         IntermediaryComponent,
+        MtnCatPerilComponent,
     ],
 
   	providers: [
