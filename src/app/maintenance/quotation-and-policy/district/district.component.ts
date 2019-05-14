@@ -58,12 +58,14 @@ export class DistrictComponent implements OnInit {
   getDistrict(){
   	this.table.loadingFlag = true;
   	this.ms.getMtnDistrict(this.locData.regionCd,this.locData.provinceCd,this.locData.cityCd).subscribe(a=>{
-  		this.passTable.tableData = a['region'][0]['provinceList'][0]['cityList'][0]['districtList'];
-  		this.passTable.tableData.forEach(a=>{
-  			a.uneditable=['districtCd'];
-  			a.createDate = this.ns.toDateTimeString(a.createDate);
-  			a.updateDate = this.ns.toDateTimeString(a.updateDate);
-  		})
+      if(a['region'].length != 0){
+    		this.passTable.tableData = a['region'][0]['provinceList'][0]['cityList'][0]['districtList'];
+    		this.passTable.tableData.forEach(a=>{
+    			a.uneditable=['districtCd'];
+    			a.createDate = this.ns.toDateTimeString(a.createDate);
+    			a.updateDate = this.ns.toDateTimeString(a.updateDate);
+    		})
+      }
   		this.table.refreshTable();
   	})
   }

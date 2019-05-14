@@ -292,7 +292,7 @@ const appRoutes: Routes = [
 
 
     //delete below when merged with maintenance region
-    { path: 'maintenance-district', component: BlockComponent },
+    { path: 'maintenance-district', component: DistrictComponent },
     //end
 
     { path: 'maintenance-currency', component: MtnCurrencyListComponent },
