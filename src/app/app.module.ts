@@ -363,6 +363,8 @@ import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/c
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
 import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
+import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
+import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
 
 
 
@@ -734,6 +736,8 @@ import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-
         EndorsementComponent,
         SectionCoverComponent,
         QuoteWordingComponent,
+        QuoteStatusReasonComponent,
+        SpoilageReasonComponent,
     ],
 
     providers: [
