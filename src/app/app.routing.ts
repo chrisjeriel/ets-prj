@@ -124,10 +124,12 @@ import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spo
 import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
 import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
 import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
+import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
 import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
 import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
@@ -186,6 +188,7 @@ const appRoutes: Routes = [
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'maintenance-line', component: PolMxLineComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-line-class', component: LineClassComponent },
     { path: 'batch-processing', component: PolBatchProcessingComponent },
     { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard]},
     { path: 'maintenance-risk-list', component: RiskListComponent },
@@ -276,6 +279,7 @@ const appRoutes: Routes = [
     { path: 'ceding-co-list', component: CedingCompaniesListComponent },
     { path: 'ceding-co-form', component: CedingCompanyFormComponent},
     { path: 'maintenance-endt', component: EndorsementComponent },
+    { path: 'maintenance-object', component: ObjectComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
     { path: 'maintenance-quote-wording', component: QuoteWordingComponent },
     { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },

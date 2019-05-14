@@ -1,0 +1,80 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Line Class">
+			<ng-template ngbTabContent>
+
+        <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+          <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+              <div class="col-sm-3"></div>
+                <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
+                <input class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event)" [(ngModel)]="line">
+                <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+                <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="description" readonly>
+                <div class="col-sm-3"></div>
+              </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="scheduler-border" style="margin-top: 10px !important">
+          <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
+            <app-cust-editable-non-datatable #lineClassTable [passData]="passData" (newClick)="clickRow($event)" (tableDataChange)="passData.tableData=$event" (onDelete)="delLineClass()">
+              <!-- <button controls-l class="cust-btn" *ngIf="!passData.addFlag" class="cust cust-btn dsbld">Add</button> -->
+              <!-- <button controls-l class="cust-btn" *ngIf="!passData.deleteFlag" class="cust cust-btn dsbld">Delete</button> -->
+            </app-cust-editable-non-datatable>
+
+            <div class="form-row" style="margin-top: 40px !important;">
+              <div class="form-group col-sm">
+                <div class="text-center">
+                  <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+            <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                <label class="form-control-sm col-sm-1">Created By</label>
+                <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.createUser" readonly>
+                <label class="form-control-sm col-sm-1">Created Date</label>
+                <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.createDate" readonly>
+                <label class="form-control-sm col-sm-1">Last Update By</label>
+                <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.updateUser" readonly>
+                <label class="form-control-sm col-sm-1">Last Update</label>
+                <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.updateDate" readonly>
+            </div>
+        </fieldset>
+
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-confirm-save (onYes)="onClickSaveLineClass()"></app-confirm-save>
+<app-sucess-dialog id="lineClassSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag? cancel.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveLineClass('cancel')" [url]="'/'" ></app-cancel-button>
+
+<app-modal class="d-none" id="altWarningModal">
+  <div header>Warning Message</div>
+  <div body style="min-width: 420px !important;">
+      <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
+          <div class="custom-row-inline-inset" style="text-align: center">
+              <p *ngIf="warningMsg == 0">Unable to save the record. Line Class Code must be unique<br> per line.</p>
+              <p *ngIf="warningMsg == 1">You are not allowed to delete a Line Class that is already <br> used in quotation processing.</p>
+          </div>
+      </fieldset>
+  </div>
+  <div footer class="w-100 text-center">
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
