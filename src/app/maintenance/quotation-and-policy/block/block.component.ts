@@ -27,7 +27,7 @@ export class BlockComponent implements OnInit {
   passTable:any={
   	tableData:[],
   	widths:[1,'auto',1,'auto'],
-  	tHeader:['District Code','Description','Active','Remarks'],
+  	tHeader:['Block Code','Description','Active','Remarks'],
   	dataTypes:['text','text','checkbox','text'],
   	keys:['blockCd','blockDesc','activeTag','remarks'],
   	addFlag: true,
@@ -55,15 +55,17 @@ export class BlockComponent implements OnInit {
   	setTimeout(a=>this.table.refreshTable(),0)
   }
 
-  getDistrict(){
+  getBlock(){
   	this.table.loadingFlag = true;
-  	this.ms.getMtnBlock(this.locData.regionCd,this.locData.provinceCd,this.locData.cityCd,this.locData.blockCd).subscribe(a=>{
-  		this.passTable.tableData = a['region'][0]['provinceList'][0]['cityList'][0]['districtList'][0]['blockList'];
-  		this.passTable.tableData.forEach(a=>{
-  			a.uneditable=['blockCd'];
-  			a.createDate = this.ns.toDateTimeString(a.createDate);
-  			a.updateDate = this.ns.toDateTimeString(a.updateDate);
-  		})
+  	this.ms.getMtnBlock(this.locData.regionCd,this.locData.provinceCd,this.locData.cityCd,this.locData.districtCd).subscribe(a=>{
+  		if(a['region'].length != 0){
+  			this.passTable.tableData = a['region'][0]['provinceList'][0]['cityList'][0]['districtList'][0]['blockList'];
+  			  		this.passTable.tableData.forEach(a=>{
+  			  			a.uneditable=['blockCd'];
+  			  			a.createDate = this.ns.toDateTimeString(a.createDate);
+  			  			a.updateDate = this.ns.toDateTimeString(a.updateDate);
+  			})
+	  	}
   		this.table.refreshTable();
   	})
   }
@@ -71,7 +73,7 @@ export class BlockComponent implements OnInit {
   delete(){
   	if(this.table.indvSelect.okDelete == 'N'){
   		this.dialogIcon = 'info';
-  		this.dialogMessage =  'You are not allowed to delete a Reason Code that is already used in Spoil Policy/Alteration Screen.';
+  		this.dialogMessage =  'You are not allowed to delete a Block that is already used in quotation processing.';
   		this.successDialog.open();
   	}else{
   		this.table.indvSelect.deleted = true;
@@ -86,17 +88,18 @@ export class BlockComponent implements OnInit {
   		regionCd : this.locData.regionCd,
   		provinceCd : this.locData.provinceCd,
   		cityCd : this.locData.cityCd,
-  		saveDistrict:[],
-  		delDistrict:[]
+  		districtCd: this.locData.districtCd,
+  		saveBlock:[],
+  		delBlock:[]
   	}
-  	params.saveDistrict = this.passTable.tableData.filter(a=>a.edited && !a.deleted);
-  	params.saveDistrict.forEach(a=>a.updateUser = this.ns.getCurrentUser());
-  	params.delDistrict = this.passTable.tableData.filter(a=>a.deleted);
-  	this.ms.saveMtnDistrict(params).subscribe(a=>{
+  	params.saveBlock = this.passTable.tableData.filter(a=>a.edited && !a.deleted);
+  	params.saveBlock.forEach(a=>a.updateUser = this.ns.getCurrentUser());
+  	params.delBlock = this.passTable.tableData.filter(a=>a.deleted);
+  	this.ms.saveMtnBlock(params).subscribe(a=>{
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
-            this.getDistrict();
+            this.getBlock();
         }else{
             this.dialogIcon = "error";
             this.successDialog.open();
@@ -105,9 +108,9 @@ export class BlockComponent implements OnInit {
   }
 
   onClickSave(){
-  	let reasonCds:string[] = this.passTable.tableData.map(a=>a.districtCd);
-  	if(reasonCds.some((a,i)=>reasonCds.indexOf(a)!=i)){
-  		this.dialogMessage = 'Unable to save the record. Reason Code must be unique.';
+  	let blockCds:string[] = this.passTable.tableData.map(a=>a.blockCd);
+  	if(blockCds.some((a,i)=>blockCds.indexOf(a)!=i)){
+  		this.dialogMessage = 'Unable to save the record. Block Code must be unique per Region, Province, City and District.';
   		this.dialogIcon = 'error-message';
   		this.successDialog.open();
   		return;
@@ -136,7 +139,7 @@ export class BlockComponent implements OnInit {
   setDistrict(data){
       this.locData.districtCd = data.districtCd;
       this.locData.districtDesc = data.districtDesc;
-      this.getDistrict();
+      this.getBlock();
   }
 
   openGenericLOV(selector){
@@ -164,6 +167,8 @@ export class BlockComponent implements OnInit {
                 this.locData.provinceDesc = '';
                 this.locData.cityCd = '';
                 this.locData.cityDesc = '';
+                this.locData.districtCd = ''
+                this.locData.districtDesc = '';
             } else {
                 this.ns.lovLoader(ev, 1);
                 this.lovMdl.checkCode('region', this.locData.regionCd, '', '', '', '', ev);
@@ -175,6 +180,8 @@ export class BlockComponent implements OnInit {
                 this.locData.provinceDesc = '';
                 this.locData.cityCd = '';
                 this.locData.cityDesc = '';
+                this.locData.districtCd = ''
+                this.locData.districtDesc = '';
             } else {
                 this.ns.lovLoader(ev, 1);
                 this.lovMdl.checkCode('province', this.locData.regionCd, this.locData.provinceCd, '', '', '', ev);
@@ -184,6 +191,8 @@ export class BlockComponent implements OnInit {
             if (this.locData.cityCd == null || this.locData.cityCd == '') {
                 this.locData.cityCd = '';
                 this.locData.cityDesc = '';
+                this.locData.districtCd = ''
+                this.locData.districtDesc = '';
             } else {
                 this.ns.lovLoader(ev, 1);
                 this.lovMdl.checkCode('city', this.locData.regionCd, this.locData.provinceCd, this.locData.cityCd, '', '', ev);
@@ -193,8 +202,6 @@ export class BlockComponent implements OnInit {
             if (this.locData.districtCd == null || this.locData.districtCd == '') {
                 this.locData.districtCd = '';
                 this.locData.districtDesc = '';
-                this.locData.blockCd = '';
-                this.locData.blockDesc = '';
             } else {
                 this.ns.lovLoader(ev, 1);
                 this.lovMdl.checkCode('district',this.locData.regionCd, this.locData.provinceCd, this.locData.cityCd, this.locData.districtCd, '', ev);

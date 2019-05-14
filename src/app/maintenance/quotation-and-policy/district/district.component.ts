@@ -71,7 +71,7 @@ export class DistrictComponent implements OnInit {
   delete(){
   	if(this.table.indvSelect.okDelete == 'N'){
   		this.dialogIcon = 'info';
-  		this.dialogMessage =  'You are not allowed to delete a Reason Code that is already used in Spoil Policy/Alteration Screen.';
+  		this.dialogMessage =  'You are not allowed to delete a District with existing blocks.';
   		this.successDialog.open();
   	}else{
   		this.table.indvSelect.deleted = true;
@@ -107,7 +107,7 @@ export class DistrictComponent implements OnInit {
   onClickSave(){
   	let reasonCds:string[] = this.passTable.tableData.map(a=>a.districtCd);
   	if(reasonCds.some((a,i)=>reasonCds.indexOf(a)!=i)){
-  		this.dialogMessage = 'Unable to save the record. Reason Code must be unique.';
+  		this.dialogMessage = 'Unable to save the record. District Code must be unique per Region, Province and City.';
   		this.dialogIcon = 'error-message';
   		this.successDialog.open();
   		return;
