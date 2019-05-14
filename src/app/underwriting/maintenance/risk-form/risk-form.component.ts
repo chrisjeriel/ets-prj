@@ -6,6 +6,9 @@ import { MaintenanceService, NotesService, AuthenticationService } from '@app/_s
 import { MtnDistrictComponent } from '@app/maintenance/mtn-district/mtn-district.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { User } from '@app/_models';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 @Component({
     selector: 'app-risk-form',
@@ -17,6 +20,10 @@ export class RiskFormComponent implements OnInit, OnDestroy {
 
     @ViewChild(LovComponent) lovMdl: LovComponent;
     @ViewChild(MtnDistrictComponent) districtLov: MtnDistrictComponent;
+    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+    @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+    @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+    @ViewChild('myForm') form: any;
 
     private sub: any;
     info: string;
@@ -38,7 +45,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             blockDesc : null,
             cityCd : null,
             cityDesc : null,
-            createDate : new Date().toISOString().split('T')[0],
+            createDate : this.ns.toDateTimeString(0),
             createUser : null,
             districtCd : null,
             districtDesc : null,
@@ -52,13 +59,18 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             riskAbbr : null,
             riskId : null,
             riskName : null,
-            updateDate : new Date().toISOString().split('T')[0],
+            updateDate : this.ns.toDateTimeString(0),
             updateUser : null,
             zoneCd : null,
             zoneDesc : null,
         }
     errorMdlMessage:any;
     currentUser: User;
+
+    dialogIcon: string = "";
+    dialogMessage: string = "";
+    cancelFlag: boolean = false;
+
 
     constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal, private ns: NotesService ) { }
 
@@ -76,15 +88,16 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             console.log(params)
             if(params.info == undefined){
                 this.riskData = JSON.parse(JSON.stringify(params));
-                console.log(this.riskData.updateDate);
-                this.riskData.updateDate = 
+                this.riskData.createDate = this.ns.toDateTimeString(parseInt(this.riskData.createDate)).split('T')[0];
+                this.riskData.updateDate = this.ns.toDateTimeString(parseInt(this.riskData.updateDate)).split('T')[0];
+                /*this.riskData.updateDate = 
                     this.riskData.updateDate.split(/[,]/g)[0]+'-'+
                     ("0"+this.riskData.updateDate.split(/[,]/g)[1]).slice(-2)+'-'+
                     ("0"+this.riskData.updateDate.split(/[,]/g)[2]).slice(-2);
                 this.riskData.createDate = 
                     this.riskData.createDate.split(/[,]/g)[0]+'-'+
                     ("0"+this.riskData.createDate.split(/[,]/g)[1]).slice(-2)+'-'+
-                    ("0"+this.riskData.createDate.split(/[,]/g)[2]).slice(-2);
+                    ("0"+this.riskData.createDate.split(/[,]/g)[2]).slice(-2);*/
                 for(let key in this.riskData){
                     this.riskData[key] = this.riskData[key]=="null" ? '' : this.riskData[key];
                 }
@@ -316,20 +329,47 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     }
 
     onClickCancel(){
-        this.router.navigate(['/maintenance-risk-list'], {skipLocationChange: true});
+        //this.router.navigate(['/maintenance-risk-list'], {skipLocationChange: true});
+        this.cancelBtn.clickCancel();
     }
 
-    save(){
+    save(cancelFlag?){
+        this.cancelFlag = cancelFlag !== undefined;
         console.log(JSON.stringify(this.riskData));
         this.mtnService.saveMtnRisk(this.riskData).subscribe((data:any)=>{
             if(data['returnCode'] == 0) {
-              this.errorMdlMessage = data['errorList'][0].errorMessage;
-              $('#errorMdl > #modalBtn').trigger('click');
+              /*this.errorMdlMessage = data['errorList'][0].errorMessage;
+              $('#errorMdl > #modalBtn').trigger('click');*/
+              this.dialogIcon = "error";
+              this.successDiag.open();
             } else{
-              $('#successModalBtn').trigger('click');
-              this.riskData.riskId = data.riskId;
+              this.dialogIcon = "";
+              this.successDiag.open();
+              //this.riskData.riskId = data.riskId;
+              this.mtnService.getMtnRisk(data.riskId).subscribe((data: any)=>{
+                  this.riskData = data.risk;
+                  this.riskData.createDate = this.ns.toDateTimeString(this.riskData.createDate).split('T')[0];
+                  this.riskData.updateDate = this.ns.toDateTimeString(this.riskData.updateDate).split('T')[0];
+              });
              }
         });
+    }
+
+    onClickSave(){
+        if(this.riskData.riskName === null || this.riskData.riskName.length === 0 ||
+           this.riskData.riskAbbr === null || this.riskData.riskAbbr.length === 0 ||
+           this.riskData.regionCd === null || this.riskData.regionCd.length === 0 ||
+           this.riskData.regionDesc === null || this.riskData.regionDesc.length === 0 ||
+           this.riskData.provinceCd === null || this.riskData.provinceCd.length === 0 ||
+           this.riskData.provinceDesc === null || this.riskData.provinceDesc.length === 0 ||
+           this.riskData.cityCd === null || this.riskData.cityCd.length === 0 ||
+           this.riskData.cityDesc === null || this.riskData.cityDesc.length === 0){
+
+            this.dialogIcon = "error";
+            this.successDiag.open();
+        }else{
+            $('#confirm-save #modalBtn2').trigger('click');
+        }
     }
 
 

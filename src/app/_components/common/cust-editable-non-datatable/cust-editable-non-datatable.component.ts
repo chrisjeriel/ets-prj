@@ -132,6 +132,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
 
         for(var i = 0 ;i<this.passData.tableData.length;i++){
+            this.passData.tableData[i].attach = false;
             this.passData.tableData[i].edited = this.passData.tableData[i].edited ? true : false;
             this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
             if(!this.passData.tableData[i].deleted){
@@ -214,6 +215,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd(event) {
+        if(this.passData.tHeader.indexOf('Actions')!=-1 || this.passData.tHeader.indexOf('Action')!=-1){
+            this.passData.nData.attach = true;
+        }
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
         this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();
@@ -282,7 +286,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         if(event !== null && event.target.tagName!=="INPUT"){
             if(data != this.fillData && data != this.indvSelect){
                 this.indvSelect = data;
-                $(event.target.closest('tr')).find("input:not([tabindex='-1']):not([type='checkbox']):not(.tbl-dp)").first().click()
+                $(event.target.closest('tr')).find("input:not([tabindex='-1']):not([type='checkbox']):not(.tbl-dp)").first().focus(); //changed from .click() to .focus() to avoid triggering click twice
             }else if(data != this.fillData && data == this.indvSelect){
                 this.indvSelect = null;
             }
@@ -508,12 +512,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
 }  */
 
     onDataChange(ev,data,key){
-        console.log(data);
         // if($(ev.target).next().children().prop("tagName") === 'A') {
           this.instllmentKey = key;
 
         if(!data.others){
-            console.log('here');
             if($(ev.target).hasClass('lovInput')) {
                 let retData:any = {};
                 retData.key = key;
@@ -544,7 +546,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 delete this.passData.tableData.lovInput;
             });
         }else{ //Earl
-            console.log('here 2');
             delete this.passData.tableData.ev;
             delete this.passData.tableData.index;
             delete this.passData.tableData.lovInput;

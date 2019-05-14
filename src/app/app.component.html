@@ -472,8 +472,7 @@
                                             <br />
                                             <button [routerLink]="['/maintenance-line-class']" class="button btn btn-link">Line Class </button>
                                             <br />
-                                            <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding
-                                                Companies</button>
+                                            <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding Companies</button>
                                             <br />
                                             <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
                                             <br />
@@ -485,10 +484,36 @@
                                             <br />
                                             <button [routerLink]="['/maintenance-object']" class="button btn btn-link">Object</button>
                                             <br />
+                                            <ngb-accordion #acc="ngbAccordion">
+                                                <ngb-panel>
+                                                    <ng-template ngbPanelTitle>
+                                                        Wording
+                                                    </ng-template>
+                                                    <ng-template ngbPanelContent>
+                                                        <button [routerLink]="['/adv-word-mtn']" class="button btn btn-link">Advice Wording</button>
+                                                        <br />
+                                                        <button [routerLink]="['/maintenance-quote-wording']" class="button btn btn-link">Quote Wording</button>
+                                                        <br />
+                                                    </ng-template>
+                                                </ngb-panel>
+                                            </ngb-accordion>
                                             <button [routerLink]="['/maintenance-endt']" class="button btn btn-link">Endorsement</button>
                                             <br />
                                             <button [routerLink]="['/maintenance-sec-cov']" class="button btn btn-link">Section Covers</button>
                                             <br />
+                                            <ngb-accordion #acc="ngbAccordion">
+                                                <ngb-panel>
+                                                    <ng-template ngbPanelTitle>
+                                                        Reason
+                                                    </ng-template>
+                                                    <ng-template ngbPanelContent>
+                                                        <button [routerLink]="['/maintenance-qu-reason']" class="button btn btn-link">Quote Status Reason</button>
+                                                        <br />
+                                                        <button [routerLink]="['/maintenance-spoil-reason']" class="button btn btn-link">Spoilage Reason</button>
+                                                        <br />
+                                                    </ng-template>
+                                                </ngb-panel>
+                                            </ngb-accordion>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
