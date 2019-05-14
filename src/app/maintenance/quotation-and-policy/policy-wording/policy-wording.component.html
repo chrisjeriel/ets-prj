@@ -20,7 +20,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="quoteWordingData" (tableDataChange)="quoteWordingData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); quoteWordingData.disableGeneric=true;"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="policyWordingData" (tableDataChange)="policyWordingData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); policyWordingData.disableGeneric=true;"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
@@ -63,17 +63,19 @@
 	</ngb-tabset>
 </div>
 
-<app-mtn-line id="qwLineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-line id="pwLineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/'" ></app-cancel-button>
 
-<app-modal class="d-none" id="mtnQWWarningModal">
+<app-modal class="d-none" id="mtnPWWarningModal">
     <div header>Warning Message</div>
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
-            <div class="custom-row-inline-inset" style="text-align: center">                
-                <p>Unable to save the record. Only one default Quote Wording per<br />
+            <div class="custom-row-inline-inset" style="text-align: center">
+            	<p *ngIf="msgNo == 1">Unable to save the record. Policy Wording Code<br />
+                must be unique per line.</p>              
+                <p *ngIf="msgNo == 2">Unable to save the record. Only one default Quote Wording per<br />
                 Line, Paragraph Type and Open Cover is allowed.</p>
             </div>
         </fieldset>

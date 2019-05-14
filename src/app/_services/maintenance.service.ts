@@ -390,5 +390,24 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSpoilageReason',JSON.stringify(params),header);
     }
 
+    saveMtnQuoteWordings(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnQuoteWordings', params, header);
+    }
+
+    saveMtnPolicyWordings(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPolicyWordings', params, header);
+    }
 }
 

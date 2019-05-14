@@ -132,6 +132,7 @@ import { SectionCoverComponent } from './maintenance/quotation-and-policy/sectio
 import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
 import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
 import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
+import { PolicyWordingComponent } from './maintenance/quotation-and-policy/policy-wording/policy-wording.component';
 
 const appRoutes: Routes = [
 
@@ -273,6 +274,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-quote-wording', component: QuoteWordingComponent },
     { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
     { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
+    { path: 'maintenance-policy-wording', component: PolicyWordingComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
