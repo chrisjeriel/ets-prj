@@ -715,3 +715,6 @@ ul.timeline > li:before {
         color: #007bff ! important;
 }
 
+body .ui-datepicker table td > a.ui-state-active, body .ui-datepicker table td > span.ui-state-active {
+    background-color: #77a6d2 !important;
+}

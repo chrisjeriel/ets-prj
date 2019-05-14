@@ -296,7 +296,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         if(event !== null && event.target.tagName!=="INPUT"){
             if(data != this.fillData && data != this.indvSelect){
                 this.indvSelect = data;
-                $(event.target.closest('tr')).find("input:not([tabindex='-1']):not([type='checkbox'])").first().click()
+                $(event.target.closest('tr')).find("input:not([tabindex='-1']):not([type='checkbox']):not(.tbl-dp)").first().click()
             }else if(data != this.fillData && data == this.indvSelect){
                 this.indvSelect = null;
             }
@@ -522,8 +522,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
 }  */  
     
     onDataChange(ev,data,key){
+        console.log(data);
         // if($(ev.target).next().children().prop("tagName") === 'A') {
         if(!data.others){
+            console.log('here');
             if($(ev.target).hasClass('lovInput')) {
                 let retData:any = {};
                 retData.key = key;
@@ -554,6 +556,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 delete this.passData.tableData.lovInput;
             });
         }else{ //Earl
+            console.log('here 2');
             delete this.passData.tableData.ev;
             delete this.passData.tableData.index;
             delete this.passData.tableData.lovInput;

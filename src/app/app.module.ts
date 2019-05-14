@@ -361,6 +361,7 @@ import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advi
 import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
 import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
+import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
 
 
 
@@ -730,6 +731,7 @@ import { EndorsementComponent } from './maintenance/quotation-and-policy/endorse
         CedingCompaniesListComponent,
         CedingCompanyFormComponent,
         EndorsementComponent,
+        SectionCoverComponent,
     ],
 
     providers: [
