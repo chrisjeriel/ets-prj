@@ -87,9 +87,11 @@ export class WfReminderFormComponent implements OnInit {
   }
 
   onClickSave(){
+    this.disablebtnBool = false;
     var reminderTime = this.toTimeString(Date.parse(this.reminderDate));  
     if (this.isEmptyObject(this.reminderDate) || this.isEmptyObject(this.reminder)){
         this.openErrorDiag()
+        this.disablebtnBool = false;
       } else {
         if (this.isEmptyObject(this.alarmDate)){
          this.onYes.emit();
