@@ -54,7 +54,7 @@
 
 <app-confirm-save (onYes)="saveTypeOfCession()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="saveTypeOfCession('cancel')" [url]="'/'" ></app-cancel-button>
+<app-cancel-button (onYes)="saveTypeOfCession('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 
 
 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
