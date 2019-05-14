@@ -129,6 +129,11 @@ import { SectionCoverComponent } from './maintenance/quotation-and-policy/sectio
 import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
 import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
 
+//delete below when merged with maintenance region
+import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
+import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
+//end
+
 const appRoutes: Routes = [
 
 
@@ -265,6 +270,12 @@ const appRoutes: Routes = [
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
     { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
     { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
+
+
+    //delete below when merged with maintenance region
+    { path: 'maintenance-district', component: BlockComponent },
+    //end
+
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

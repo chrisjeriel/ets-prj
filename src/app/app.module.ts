@@ -361,6 +361,8 @@ import { EndorsementComponent } from './maintenance/quotation-and-policy/endorse
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
 import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
 import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
+import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
+import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
 
 
 
@@ -730,6 +732,8 @@ import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reas
         SectionCoverComponent,
         QuoteStatusReasonComponent,
         SpoilageReasonComponent,
+        DistrictComponent,
+        BlockComponent,
     ],
 
     providers: [
