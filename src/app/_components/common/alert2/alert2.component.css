@@ -8,9 +8,9 @@
 
 .alert2{
 	padding: 2px 5px;
-    bottom: 2px;
+    bottom: 0px;
     position: fixed;
-    right: 2px;
+    right: 0px;
     z-index: 1;
     border-radius: 1px;
     text-align: right;
