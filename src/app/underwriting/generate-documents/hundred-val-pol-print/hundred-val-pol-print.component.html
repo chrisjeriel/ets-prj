@@ -39,7 +39,7 @@
 								<div class="custom-row-inline-inset">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-5 no-margin"><strong>Treaty Share (%)</strong></label>
-										<input type="text" class="form-control form-control-sm col-sm-3" appOtherRates appRequired>
+										<input type="text" class="form-control form-control-sm col-sm-3" [(ngModel)]="policyInfo.treatyPercent" appOtherRates appRequired>
 									</div>
 								</div>
 							</fieldset>
@@ -48,7 +48,7 @@
 							        <div class="col-md-13 text-center" style="margin-top:10px">
 							            <div class="cust-btn-container">
 							                <button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
-							                <button type="button" class="cust-btn" (click)="generate();"><a>Generate</a></button>
+							                <button type="button" class="cust-btn" (click)="onClickGenerate();"><a>Generate</a></button>
 							            </div>
 							        </div>
 							    </div>
@@ -79,5 +79,6 @@
     </div>
 </app-modal>
 
+<app-confirm-save (onYes)="generate()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/'" ></app-cancel-button>
+<app-cancel-button (onYes)="generate('cancel')" [url]="'/'" ></app-cancel-button>

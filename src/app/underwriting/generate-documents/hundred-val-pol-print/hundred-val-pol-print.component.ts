@@ -25,6 +25,7 @@ export class HundredValPolPrintComponent implements OnInit {
   btnDisabled: boolean = false;
   isType: boolean = false;
   noDataFound: boolean = false;
+  cancelFlag: boolean = false;
 
   policyListingData: any = {
   	tableData: [],
@@ -115,9 +116,25 @@ export class HundredValPolPrintComponent implements OnInit {
 		this.policyInfo.riskName = this.selected.riskName;
 	}
 
-	generate(){
+	onClickGenerate(){
+		if(this.policyInfo.policyId.toString().length === 0 || this.policyInfo.policyNo.length === 0 ||
+		   this.policyInfo.cedingName.length === 0 || this.policyInfo.insuredDesc.length === 0 ||
+		   this.policyInfo.riskName.length === 0 || this.policyInfo.treatyPercent.toString().length === 0){
+			this.dialogIcon = "info";
+			this.dialogMessage = "Please fill all required fields";
+			this.successDiag.open();
+		}else{
+			$('#confirm-save #modalBtn2').trigger('click');
+		}
+	}
+
+	generate(cancelFlag?){
+		this.cancelFlag = cancelFlag !== undefined;
 		this.us.getUWCoverageInfos(this.policyInfo.policyNo, this.policyInfo.policyId).subscribe((data:any)=>{
 			console.log(data);
+			this.dialogIcon = "";
+			this.dialogMessage = "Coverage details were successfully generated";
+			this.successDiag.open();
 		});
 	}
 

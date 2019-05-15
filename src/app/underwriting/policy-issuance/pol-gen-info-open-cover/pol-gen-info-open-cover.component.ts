@@ -233,21 +233,23 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.projectOcData.prUpdateDate       =  this.ns.toDateTimeString(data.policyOc.project.prUpdateDate);
 
           this.inceptionDateParams.date         =  this.ns.toDateTimeString(this.genInfoOcData.inceptDate).split('T')[0];
-          this.inceptionDateParams.time         =  this.ns.toDateTimeString(this.genInfoOcData.inceptDate).split('T')[1];
+          this.inceptionDateParams.time         =  this.ns.toDateTimeString(this.genInfoOcData.inceptDate).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.expiryDateParams.date            =  this.ns.toDateTimeString(this.genInfoOcData.expiryDate).split('T')[0];
-          this.expiryDateParams.time            =  this.ns.toDateTimeString(this.genInfoOcData.expiryDate).split('T')[1];
+          this.expiryDateParams.time            =  this.ns.toDateTimeString(this.genInfoOcData.expiryDate).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.lapseFromParams.date             =  this.ns.toDateTimeString(this.genInfoOcData.lapseFrom).split('T')[0];
-          this.lapseFromParams.time             =  this.ns.toDateTimeString(this.genInfoOcData.lapseFrom).split('T')[1];
+          this.lapseFromParams.time             =  this.ns.toDateTimeString(this.genInfoOcData.lapseFrom).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.lapseToParams.date               =  this.ns.toDateTimeString(this.genInfoOcData.lapseTo).split('T')[0];
-          this.lapseToParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.lapseTo).split('T')[1];
+          this.lapseToParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.lapseTo).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.issueDateParams.date             =  this.ns.toDateTimeString(this.genInfoOcData.issueDate).split('T')[0];
-          this.issueDateParams.time             =  this.ns.toDateTimeString(this.genInfoOcData.issueDate).split('T')[1];
+          this.issueDateParams.time             =  this.ns.toDateTimeString(this.genInfoOcData.issueDate).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.distributionDateParams.date      =  this.ns.toDateTimeString(this.genInfoOcData.distDate).split('T')[0];
-          this.distributionDateParams.time      =  this.ns.toDateTimeString(this.genInfoOcData.distDate).split('T')[1];
+          this.distributionDateParams.time      =  this.ns.toDateTimeString(this.genInfoOcData.distDate).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.effDateParams.date               =  this.ns.toDateTimeString(this.genInfoOcData.effDate).split('T')[0];
-          this.effDateParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.effDate).split('T')[1];
+          this.effDateParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.effDate).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.accDateParams.date               =  this.ns.toDateTimeString(this.genInfoOcData.acctDate).split('T')[0];
-          this.accDateParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.acctDate).split('T')[1];
+          this.accDateParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.acctDate).split('T')[1].slice(0,-2) + '00'; //temp fix
+
+          console.log(this.issueDateParams.time);
 
           this.loading = false;
           setTimeout(a=>{
