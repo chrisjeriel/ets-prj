@@ -129,6 +129,7 @@ import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
+import { PolValueCoverageComponent } from './underwriting/generate-documents/pol-value-coverage/pol-value-coverage.component';
 
 const appRoutes: Routes = [
 
@@ -267,6 +268,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-endt', component: EndorsementComponent },
     { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
     { path: 'maintenance-cresta-zone', component: MtnCrestaComponent },
+    { path: 'pol-value-coverage', component: PolValueCoverageComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

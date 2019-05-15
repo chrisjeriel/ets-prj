@@ -362,6 +362,7 @@ import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
+import { PolValueCoverageComponent } from './underwriting/generate-documents/pol-value-coverage/pol-value-coverage.component';
 
 
 
@@ -732,6 +733,7 @@ import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-crest
         EndorsementComponent,
         MtnCATPerilComponent,
         MtnCrestaComponent,
+        PolValueCoverageComponent,
     ],
 
     providers: [

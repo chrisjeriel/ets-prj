@@ -1,0 +1,44 @@
+legend.scheduler-border {
+    font-size: 10.5px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:10px 10px;
+    margin-bottom: -11px;
+    color: #2d5986;
+}
+
+.fs {
+    height: 100% !important;
+}
+
+.text-search-ico {
+    margin-left: -18px;
+    z-index: 100;
+    font-size: 14px;
+}
+
+
+fieldset {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.forced-col-sm{
+    padding-right: 48px !important;
+    margin-left: 35px !important;
+}
+.no-margin{
+    margin: 0px !important;
+}
+
+.treaty {
+    width: 100%;
+    max-width: 190px !important;
+    margin-left: 86px !important;
+    margin-top: 8px !important;
+}
