@@ -31,7 +31,7 @@
                          <div class="test row" style="margin-top: 0px !important; margin-bottom: 14px;">
                            <div class="col-sm-12" style="margin-top: 2px !important;padding-left: 5px; padding-right: 5px"> 
                              <fieldset class="scheduler-border" style="padding-bottom: 10px !important; padding-left: 7px !important; padding-right: 7px!important;">
-                               <app-cust-editable-non-datatable  #sectionTable [passData]="passData" (newClick)="rowClick($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
+                               <app-cust-editable-non-datatable  #sectionTable [passData]="passData" (newClick)="rowClick($event)" (tableDataChange)="update($event)" (clickLOV)="sectionCoversLOV($event)"></app-cust-editable-non-datatable>
                              </fieldset>
                            </div>
                          </div>
@@ -39,7 +39,7 @@
                            <div class="col-sm-12" style="margin-top: -15px;padding-left: 5px;padding-right: 5px">
                              <fieldset class="scheduler-border" style="padding-bottom: 0px !important;padding-left: 7px !important;padding-right: 7px !important;">
                                <legend class="scheduler-border">Deductibles</legend>
-                                 <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles"></app-cust-editable-non-datatable>
+                                 <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (clickLOV)="clickDeductiblesLOV($event,'section')"></app-cust-editable-non-datatable>
                              </fieldset>
                            </div>
                          </div>
@@ -79,7 +79,7 @@
                                 <legend class="scheduler-border">Treaty Share</legend>
                                 	<div class="cust-sm">
                                 		 <input type="text" class="form-control form-control-sm req col-sm-7" style="text-align: right !important;margin-left: 85px !important" [(ngModel)]="fullCoverageDetails.treatyShare" appRequired appOtherRates name="coverageData.pctShare">
-                                		 <button class="cust-btn treaty">Regenerate</button>
+                                		 <button class="cust-btn treaty" (click)="regenerate()">Regenerate</button>
                                 	</div>
                              </fieldset>
                            </div>
@@ -162,6 +162,8 @@
                  <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
                  <app-confirm-save (onYes)="saveCoverage()"></app-confirm-save>
                  <app-cancel-button (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+                 <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
+                 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
             </ng-template>
         </ngb-tab>
     </ngb-tabset>

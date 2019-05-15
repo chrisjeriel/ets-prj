@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotesService, UnderwritingService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { MtnSectionCoversComponent } from '@app/maintenance/mtn-section-covers/mtn-section-covers.component';
 
 @Component({
   selector: 'app-pol-value-coverage',
@@ -12,6 +14,8 @@ export class PolValueCoverageComponent implements OnInit {
   
   @ViewChild("sectionTable") sectionTable: CustEditableNonDatatableComponent;
   @ViewChild("deductiblesTable") deductiblesTable: CustEditableNonDatatableComponent;
+  @ViewChild(LovComponent) lov :LovComponent;
+  @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
 
   passData: any = {
     tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate(%)','Premium','Sum Insured','Rate','Premium','D/S','Add SI'],
@@ -117,6 +121,11 @@ export class PolValueCoverageComponent implements OnInit {
     totalSi: number = 0;
     totalPrem: number = 0;
     line: any = 'CAR';
+    hideSectionCoverArray: any[] = [];
+    sectionCoverLOVRow: number;
+    lovCheckBox:boolean = false;
+    passLOVData: any = {};
+    lovRowData:any;
 
   constructor( private ns: NotesService, private underwritingService: UnderwritingService) { }
 
@@ -265,7 +274,17 @@ export class PolValueCoverageComponent implements OnInit {
   	this.totalSi = 0;
   	this.totalPrem = 0;
 
+  	if(data.hasOwnProperty('lovInput')) {
+      this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
+
+      data.ev['index'] = data.index;
+      data.ev['filter'] = this.hideSectionCoverArray;
+
+      this.secCoversLov.checkCode(data.ev.target.value, data.ev);
+    }   
+
   	for(var i = 0; i< this.passData.tableData.length;i++){
+  		this.passData.tableData[i].premAmt = this.passData.tableData[i].discountTag == 'Y' ? this.passData.tableData[i].premAmt: this.passData.tableData[i].sumInsured / (this.passData.tableData[i].premRt/100);
   		if(this.line == 'CAR' || this.line == 'EAR'){
   			if(this.passData.tableData[i].section == 'I' && this.passData.tableData[i].addSi == 'Y'){
   				this.sectionISi   	+= this.passData.tableData[i].sumInsured;
@@ -347,5 +366,100 @@ export class PolValueCoverageComponent implements OnInit {
   	this.fullCoverageDetails.sectionIPrem = this.sectionIPrem;
   	this.fullCoverageDetails.sectionIIPrem = this.sectionIIPrem;
   	this.fullCoverageDetails.sectionIIIPrem = this.sectionIIIPrem;
+  }
+
+  regenerate(){
+  console.log(this.fullCoverageDetails.treatyShare) ;
+  	for(var i = 0; i < this.passData.tableData.length;i++){
+  		this.passData.tableData[i].sumInsured = this.passData.tableData[i].orgSumInsured / (this.fullCoverageDetails.treatyShare * 100)
+  		this.passData.tableData[i].premAmt    = this.passData.tableData[i].sumInsured * (this.passData.tableData[i].premRt/100);
+  	}
+  }
+
+   sectionCoversLOV(data){
+     	  this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
+          $('#sectionCoversLOV #modalBtn').trigger('click');
+          this.sectionCoverLOVRow = data.index;
+        
+  } 
+
+   selectedSectionCoversLOV(data){
+         if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
+           console.log('true')
+           this.sectionCoverLOVRow = data[0].ev.index;
+           this.ns.lovLoader(data[0].ev, 0);
+         }
+
+         $('#cust-table-container').addClass('ng-dirty');
+         // this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
+         // this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
+         // this.passData.tableData[this.sectionCoverLOVRow].section = data[0].section;
+         // this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
+         // this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
+         // this.passData.tableData[this.sectionCoverLOVRow].edited = true;
+
+         if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
+           //HIDE THE POWERFUL MAGNIFYING GLASS
+           this.passData.tableData[this.sectionCoverLOVRow].showMG = 1;
+         }
+         this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
+
+         //this.validateSectionCover();
+         for(var i = 0; i<data.length;i++){
+           this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+           this.passData.tableData[this.passData.tableData.length - 1].coverCd = data[i].coverCd;
+           this.passData.tableData[this.passData.tableData.length - 1].coverName = data[i].coverName;
+           this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
+           this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
+           this.passData.tableData[this.passData.tableData.length - 1].edited = true;
+           this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+
+           if(data[i].coverName !== undefined && data[i].coverName.substring(0,6).toUpperCase()){
+                this.passData.tableData[this.passData.tableData.length - 1].others = true;
+           }
+         }
+         this.sectionTable.refreshTable();
+    }
+
+    clickDeductiblesLOV(data){
+    if(data.key=="deductibleCd"){
+      this.lovCheckBox = true;
+      this.passLOVData.selector = 'deductibles';
+      this.passLOVData.lineCd = this.line;
+      this.passLOVData.params = {
+        coverCd : data.data.coverCd == null ? 0: data.data.coverCd,
+        endtCd: '0',
+        activeTag:'Y'
+      }
+      this.passLOVData.hide = this.passDataDeductibles.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
+      this.lovRowData = data.data;
+    }
+    this.lov.openLOV();
+  }
+
+  setSelected(data){
+    if(data.selector == 'deductibles'){
+      // this.lovRowData.deductibleTitle = data.data.deductibleTitle;
+      // this.lovRowData.deductibleRt = data.data.deductibleRate;
+      // this.lovRowData.deductibleAmt = data.data.deductibleAmt;
+      // this.lovRowData.deductibleTxt = data.data.deductibleText;
+      // this.lovRowData.edited = true;
+      // this.lovRowData.deductibleCd = data.data.deductibleCd;
+      this.passDataDeductibles.tableData = this.passDataDeductibles.tableData.filter(a=>a.showMG!=1);
+      for(var i = 0; i<data.data.length;i++){
+        this.passDataDeductibles.tableData.push(JSON.parse(JSON.stringify(this.passDataDeductibles.nData)));
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleTitle = data.data[i].deductibleTitle;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleRt = data.data[i].deductibleRate;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleAmt = data.data[i].deductibleAmt;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleTxt = data.data[i].deductibleText;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].edited = true;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length - 1].showMG = 0;
+      }
+      this.sectionTable.indvSelect.deductiblesSec = this.passDataDeductibles.tableData;
+      this.deductiblesTable.tableDataChange.emit(this.deductiblesTable.passData.tableData);
+      this.deductiblesTable.refreshTable();
+    }
+    this.deductiblesTable.markAsDirty();
   }
 }
