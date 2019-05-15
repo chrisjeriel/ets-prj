@@ -20,6 +20,7 @@ export class ObjectComponent implements OnInit {
     tHeader: ['Object No', 'Description', 'Active','Remarks'],
     tooltip:[null,null,null,null],
     magnifyingGlass: ['endtCd'],
+    genericBtn :'Delete',
     dataTypes: ['text', 'text', 'checkbox', 'text'],
     nData: {
         lineCd: '',
@@ -34,7 +35,6 @@ export class ObjectComponent implements OnInit {
         updateUser: JSON.parse(window.localStorage.currentUser).username
     },
     addFlag: true,
-    deleteFlag: true,
     paginateFlag: true,
     infoFlag: true,
     searchFlag: true,
@@ -42,7 +42,8 @@ export class ObjectComponent implements OnInit {
     pageID: 'endt',
     widths: [1, 'auto', 'auto', 'auto'],
     keys: ['objectId','description', 'activeTag', 'remarks'],
-    uneditable: [false, false, false, false]
+    disableGeneric : true,
+    disableAdd : true
   };
 
 catPerilData: any = {
@@ -78,7 +79,7 @@ catPerilData: any = {
     pageID: 'deductible',
     widths: [1, 'auto', 'auto', 'auto', 'auto'],
     keys: ['catPerilId','catPerilName', 'catPerilAbbr', 'pctSharePrem'],
-    uneditable: [false,true,true,true,true]
+    uneditable: [false,false,false,false]
   }
 
   line              : string;
@@ -87,12 +88,20 @@ catPerilData: any = {
   cancelFlag        : boolean = false;
   dialogMessage     : string;
   dialogIcon        : string;
+  hideCATPeril      : any = [];
+  warningMsg        : string;
 
   userData: any = {
     updateDate: null,
     updateUser: null,
     createDate: null,
     createUser: null
+  }
+
+  catPeril: any = {
+    catPerilId: null,
+    catPerilName: null,
+    catPerilAbbr: null
   }
 
   constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,
@@ -112,7 +121,6 @@ catPerilData: any = {
         });
 
         this.passData.tableData.sort((a, b) => (a.createDate > b.createDate) ? -1 : 1);
-        this.objTable.btnDisabled = true;
         this.passData.disableAdd = false;
         this.objTable.refreshTable();
       }
@@ -120,20 +128,29 @@ catPerilData: any = {
   }
 
   showObjLineLOV() {
-    console.log("showlineLOV() was called...");
-    $('#objLineLOV #modalBtn').trigger('click');
+    $('#objLineLOV #modalBtn2').trigger('click');
   }
 
   showCATPerilLOV() {
-    $('#catPerilLOV #modalBtn').trigger('click');
+    this.hideCATPeril = this.catPerilData.tableData.filter(a => !a.deleted).map(a => a.catPerilId);
+
+    $('#catPerilLOV #modalBtn2').trigger('click');
   }
 
   setLine(data) {
-    console.log("setLine() was called...");
     this.line = data.lineCd;
     this.description = data.description;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveObject();
+  }
+
+  setCATPeril(data) {
+      console.log(data);
+    this.catPerilData.tableData[this.catPerilData.tableData.length - 1] = data;
+    this.catPerilData.tableData[this.catPerilData.tableData.length - 1].edited = true;
+    this.catPerilData.tableData[this.catPerilData.tableData.length - 1].add = true;
+
+    this.catPerilTable.refreshTable();
   }
 
   checkCode(ev) {
@@ -149,8 +166,8 @@ catPerilData: any = {
           a.updateDate = this.ns.toDateTimeString(a.updateDate);
           return true;
         });
-        this.catPerilTable.btnDisabled = true;
         this.catPerilData.disableAdd = false;
+        this.passData.disableGeneric = false;
         this.catPerilTable.refreshTable();
       }
 
@@ -172,8 +189,8 @@ catPerilData: any = {
     let savedData: any = {};
     savedData.saveObject = [];
     savedData.deleteObject = [];
-    savedData.saveCATPeril = [];
-    savedData.deleteCATPeril = [];
+    savedData.saveCatPeril = [];
+    savedData.delCatPeril = [];
 
     for (let rec of this.passData.tableData) {
       if (rec.edited && !rec.deleted) {
@@ -203,7 +220,7 @@ catPerilData: any = {
         rec.createDate = this.ns.toDateTimeString(rec.createDate);
         rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
         rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
-        savedData.saveCATPeril.push(rec);
+        savedData.saveCatPeril.push(rec);
       } else if (rec.deleted) {
         rec.lineCd = this.line;
         rec.objectId = this.objectId;
@@ -211,23 +228,45 @@ catPerilData: any = {
         rec.createDate = this.ns.toDateTimeString(rec.createDate);
         rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
         rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
-        savedData.deleteCATPeril.push(rec);
+        savedData.delCatPeril.push(rec);
       }
     }
 
     if (this.validate(savedData)) {
-      this.mtnService.saveMtnObject(JSON.stringify(savedData)).subscribe((data: any) => {
-        if(data['returnCode'] === 0) {
-          this.dialogMessage = data['errorList'][0].errorMessage;
-          this.dialogIcon = 'error';
-          $('#objectSuccess > #successModalBtn').trigger('click');
-        } else {
-          this.dialogIcon = 'success';
-          $('#objectSuccess > #successModalBtn').trigger('click');
-          this.objTable.markAsPristine();
-          this.retrieveObject();
-        }
-      });
+      if (savedData.saveObject.length > 0 || savedData.deleteObject.length) {
+        this.mtnService.saveMtnObject(JSON.stringify(savedData)).subscribe((data: any) => {
+          if(data['returnCode'] === 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = 'error';
+            $('#objectSuccess > #successModalBtn').trigger('click');
+          } else {
+            this.dialogIcon = 'success';
+            $('#objectSuccess > #successModalBtn').trigger('click');
+            this.objTable.markAsPristine();
+            this.retrieveObject();
+          }
+        });
+      }
+
+      if (savedData.saveCatPeril.length > 0 || savedData.delCatPeril.length > 0) {
+        this.mtnService.saveMtnCatPeril(savedData).subscribe((data: any) => {
+          if(data['returnCode'] === 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = 'error';
+            $('#objectSuccess > #successModalBtn').trigger('click');
+          } else {
+            this.dialogIcon = 'success';
+            $('#objectSuccess > #successModalBtn').trigger('click');
+
+            this.catPerilTable.markAsPristine();
+            this.retrieveObject();
+            this.catPerilData.tableData = [];
+            this.catPerilTable.refreshTable();
+          }
+        });
+      }
+
+      setTimeout(() => { $('.globalLoading').css('display', 'none'); }, 0);
     } else {
       this.dialogMessage = 'Please check field values';
       this.dialogIcon = 'error';
@@ -248,7 +287,7 @@ catPerilData: any = {
       }
     }
 
-    for (let rec of obj.saveCATPeril) {
+    for (let rec of obj.saveCatPeril) {
       var entries = Object.entries(rec);
 
       for (var[key, val] of entries) {
@@ -261,28 +300,45 @@ catPerilData: any = {
     return true;
   }
 
+  // delObject() {
+  //   for (let rec of this.passData.tableData) {
+  //     if (rec.objectId === this.objTable.indvSelect.objectId) {
+  //       rec.deleted = true;
+  //       rec.edited = true;
+  //     }
+  //   }
+
+  //   this.objTable.markAsDirty();
+  //   this.objTable.refreshTable();
+  // }
+
+  // delCATPeril() {
+  //   for (let rec of this.catPerilData.tableData) {
+  //     if (rec.catPerilId === this.catPerilTable.indvSelect.catPerilId) {
+  //       rec.deleted = true;
+  //       rec.edited = true;
+  //     }
+  //   }
+
+  //   this.catPerilTable.markAsDirty();
+  //   this.catPerilData.refreshTable();
+  // }
+
   delObject() {
-    for (let rec of this.passData.tableData) {
-      if (rec.objectId === this.objTable.indvSelect.objectId) {
-        rec.deleted = true;
-        rec.edited = true;
-      }
-    }
+    this.objTable.indvSelect.deleted = true;
+    this.objTable.selected = [this.objTable.indvSelect];
 
-    this.objTable.markAsDirty();
-    this.objTable.refreshTable();
-  }
-
-  delCATPeril() {
     for (let rec of this.catPerilData.tableData) {
-      if (rec.catPerilId === this.catPerilTable.indvSelect.catPerilId) {
         rec.deleted = true;
         rec.edited = true;
-      }
     }
+
+    console.log(this.catPerilData.tableData);
 
     this.catPerilTable.markAsDirty();
-    this.catPerilData.refreshTable();
+    this.catPerilTable.refreshTable();
+
+    this.objTable.confirmDelete();
   }
 
 }

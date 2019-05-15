@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MtnCatPerilComponent } from './mtn-cat-peril.component';
+import { MtnCatPerilModalComponent } from './mtn-cat-peril-modal.component';
 
-describe('MtnCatPerilComponent', () => {
-  let component: MtnCatPerilComponent;
-  let fixture: ComponentFixture<MtnCatPerilComponent>;
+describe('MtnCatPerilModalComponent', () => {
+  let component: MtnCatPerilModalComponent;
+  let fixture: ComponentFixture<MtnCatPerilModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MtnCatPerilComponent ]
+      declarations: [ MtnCatPerilModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MtnCatPerilComponent);
+    fixture = TestBed.createComponent(MtnCatPerilModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
