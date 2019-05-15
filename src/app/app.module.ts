@@ -353,14 +353,18 @@ import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information
 import { SequenceDirective } from './_directives/sequence.directive';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
+import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
+import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
 import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
 import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
+import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
 import { HundredValPolPrintComponent } from './underwriting/generate-documents/hundred-val-pol-print/hundred-val-pol-print.component';
 import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
@@ -370,6 +374,7 @@ import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
+import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 
 
 
@@ -732,13 +737,17 @@ import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-crest
         SequenceDirective,
         InsuredListComponent,
         InsuredComponent,
+        TypeOfCessionComponent,
         SpecialLovComponent,
+        IntermediaryListComponent,
         WfNotesFormComponent,
         DatepickerComponent,
+        LineClassComponent,
         AdviceWordingsComponent,
         CedingCompaniesListComponent,
         CedingCompanyFormComponent,
         EndorsementComponent,
+        ObjectComponent,
         SectionCoverComponent,
         HundredValPolPrintComponent,
         QuoteWordingComponent,
@@ -748,6 +757,7 @@ import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-crest
         MtnCurrencyRateComponent,
         MtnCATPerilComponent,
         MtnCrestaComponent,
+        IntermediaryComponent,
     ],
 
   	providers: [

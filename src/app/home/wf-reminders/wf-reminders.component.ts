@@ -258,16 +258,12 @@ export class WfRemindersComponent implements OnInit {
   }
 
   onClickYes(updateMode){
-    this.modalService.dismissAll();
     this.saveReminderParams(this.updateReminderInfoParam);
   }
 
   onClickNo(){
      this.modalService.dismissAll();
   }
-
-
-
 
   formatDate(date) {
     var d = new Date(date);
@@ -276,11 +272,11 @@ export class WfRemindersComponent implements OnInit {
   }
 
   saveReminder(event){        
-    this.confirmsaveDiag.saveModal.openNoClose();
+    this.prepareParamReminder();
   }
 
   prepareParamReminder(cancelFlag?){
-      this.modalService.dismissAll();
+     
       this.cancelFlag = cancelFlag !== undefined;
 
        var saveReminderInfoParam = {
@@ -309,13 +305,11 @@ export class WfRemindersComponent implements OnInit {
             if(data['returnCode'] === 0) {
                  this.dialogIcon = 'error-message';
                  this.dialogMessage = "Error saving reminder";
-                 this.modalService.dismissAll();
                  this.onOkVar = 'openReminderMdl';
                  this.successDiag.open();
             } else if (data['returnCode'] === -1) {  
                  this.dialogIcon = 'success-message';
                  this.dialogMessage = "Successfully Saved";;
-                 this.modalService.dismissAll();
                  this.onOkVar = 'closeReminderMdl';
                  this.successDiag.open();     
             }
@@ -333,6 +327,7 @@ export class WfRemindersComponent implements OnInit {
 
 
   onOkSuccessDiagReminder(obj){
+    this.wfReminder.disablebtnBool = false;
     if (obj === 'openReminderMdl'){
       this.modalService.dismissAll();
       $('#reminderModal #modalBtn').trigger('click');

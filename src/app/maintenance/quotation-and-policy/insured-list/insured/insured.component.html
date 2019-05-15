@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Quotation & Policy / Insured List</h4>
-	<ngb-tabset>
+	<ngb-tabset  #tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="Insured">
 			<ng-template ngbTabContent>
 				<div class="form-row">
@@ -66,7 +66,7 @@
 			                			<div class="col-sm-6">
 			                				<div class="form-row">
 			                					<label class="form-control-sm col-sm-5">Old Insured No</label>
-                        						<input type="text" class="form-control form-control-sm col-sm cus-dirty" (change)="addDirty()" maxlength="10" [(ngModel)]="insuredRecord.oldInsId">
+                        						<input type="text" class="form-control form-control-sm col-sm text-right cus-dirty" (blur)="fmtOnBlur()" (change)="addDirty()" maxlength="10" [(ngModel)]="insuredRecord.oldInsId" numbers-only>
 			                				</div>
 			                			</div>
 			                		</div>
@@ -176,3 +176,7 @@
 <app-confirm-save (onYes)="onSaveMtnInsured()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="onSaveMtnInsured('cancel')" [url]="'/maintenance-insured'" ></app-cancel-button>
+
+<ng-template #confirmLeave>
+    <app-confirm-leave></app-confirm-leave>
+</ng-template>

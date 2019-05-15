@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { UnderwritingService, NotesService } from '@app/_services';
 import { PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges } from '@app/_models';
 import { Title } from '@angular/platform-browser';
@@ -23,6 +23,7 @@ export class InwardPolBalanceComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
   @Input()fromInq: boolean = false;
   @Input() policyInfo: any;
+  @Output() showAlop = new EventEmitter<any>();
 
   passData: any = {
     tableData: [],
@@ -93,7 +94,7 @@ export class InwardPolBalanceComponent implements OnInit {
   ) { }
 
  ngOnInit() {
-   
+
     this.titleService.setTitle("Pol | Inward Pol Balance");
     this.fetchData();
     if(this.policyInfo.fromInq && this.policyInfo.status == "Distributed"){
@@ -133,12 +134,29 @@ export class InwardPolBalanceComponent implements OnInit {
           });
 
           this.passData.nData.dueDate = this.ns.toDateTimeString(data.policyList[0].inceptDate);
-          this.passData.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate); 
+          this.passData.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate);
         }
-        
+
       }
       this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       this.instllmentTable.refreshTable();
+
+      this.underwritingservice.getUWCoverageInfos(null, this.policyInfo.policyId).subscribe((data:any)=>{
+      console.log(data);
+      if(data.policy !== null){
+        let alopFlag = false;
+        if(data.policy.project !== null){
+          for(let sectionCover of data.policy.project.coverage.sectionCovers){
+                if(sectionCover.section == 'III'){
+                    alopFlag = true;
+                   break;
+                 }
+          }
+        }
+
+               this.showAlop.emit(alopFlag);
+      }
+    });
     })
   }
 

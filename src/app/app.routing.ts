@@ -124,10 +124,12 @@ import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spo
 import { PolSummarizedInqComponent } from './underwriting/inquiry/policy-information/pol-summarized-inq/pol-summarized-inq.component';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
 import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
 import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
+import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
 import { HundredValPolPrintComponent } from './underwriting/generate-documents/hundred-val-pol-print/hundred-val-pol-print.component';
 import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
@@ -137,6 +139,9 @@ import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
+import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
+import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
+import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 
 const appRoutes: Routes = [
 
@@ -183,9 +188,10 @@ const appRoutes: Routes = [
     { path: 'open-cover', component: OpenCoverComponent },
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
-    { path: 'maintenance-line', component: PolMxLineComponent },
+    { path: 'maintenance-line', component: PolMxLineComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-line-class', component: LineClassComponent },
     { path: 'batch-processing', component: PolBatchProcessingComponent },
-    { path: 'maintenance-deductible', component:  DeductibleComponent},
+    { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard]},
     { path: 'maintenance-risk-list', component: RiskListComponent },
     { path: 'maintenance-risk', component: RiskFormComponent },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
@@ -266,7 +272,7 @@ const appRoutes: Routes = [
     { path: 'pol-oc-inquiry', component: PolOcInquiryComponent},
     { path: 'open-cover-list', component: PolOpenCovListComponent},
     { path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent},
-    { path: 'spoil-pol-alt', component: SpoilPolAltComponent},
+    { path: 'spoil-pol-alt', component: SpoilPolAltComponent,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
     { path: 'maintenance-insured', component: InsuredListComponent},
     { path: 'insured-mtn', component: InsuredComponent },
@@ -274,6 +280,7 @@ const appRoutes: Routes = [
     { path: 'ceding-co-list', component: CedingCompaniesListComponent },
     { path: 'ceding-co-form', component: CedingCompanyFormComponent},
     { path: 'maintenance-endt', component: EndorsementComponent },
+    { path: 'maintenance-object', component: ObjectComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
     { path: 'total-val-pol-print', component: HundredValPolPrintComponent },
     { path: 'maintenance-quote-wording', component: QuoteWordingComponent },
@@ -283,6 +290,11 @@ const appRoutes: Routes = [
     { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
     { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
     { path: 'maintenance-cresta-zone', component: MtnCrestaComponent },
+    { path: 'maintenance-insured', component: InsuredListComponent },
+    { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-intermediary', component: IntermediaryListComponent },
+    { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
