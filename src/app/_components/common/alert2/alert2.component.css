@@ -1,0 +1,19 @@
+.alert2-danger{
+    background-color: #f8d7da;
+}
+
+.alert2-success{
+	background-color: #73c1a7;
+}
+
+.alert2{
+	padding: 2px 5px;
+    bottom: 2px;
+    position: fixed;
+    right: 2px;
+    z-index: 1;
+    border-radius: 1px;
+    text-align: right;
+    font-size: 11px;
+    width: 100%;
+}
