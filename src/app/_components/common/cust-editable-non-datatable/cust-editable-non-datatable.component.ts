@@ -129,6 +129,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     selectAllFlag:boolean = false;
     @Input() tabIndex: string[] = []; //0 - Tabbable | -1 - Untabbable
     @Output() onDelete: EventEmitter<any> = new EventEmitter();
+    overlayLoader: boolean = false;
 
     refreshTable(initLoad?){
         if(initLoad === undefined){
@@ -154,6 +155,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.addFiller();
         //this.appComponent.ngOnInit();
 
+        this.overlayLoader = false;
 
         //for mask
         setTimeout(() => { 

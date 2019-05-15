@@ -32,6 +32,12 @@ span.ui-column-resizer {
 
 
 <div id="cust-table-container" [style.display]="!loadingFlag && !failed ? 'block':'none'" style="position: relative;">
+    <ng-container *ngIf="overlayLoader">
+        <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="globalLoading" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999;">
+        <div class="globalLoading" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
+        </div>
+    </ng-container>
+
     <div class="new-btn-container" style="position: absolute; margin-top:-28px;" [style.width]="(passData.searchFlag || ctrlR.innerHTML.trim()) ? '100%' : 'auto'" >
 
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()" [disabled]="passData.disableAdd !==undefined && passData.disableAdd" [class.cust-btn-disabled]="passData.disableAdd !==undefined && passData.disableAdd"><a>Add</a></button>
@@ -215,7 +221,7 @@ span.ui-column-resizer {
                                     </div>
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [name]="key+ti" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
-                                    <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [name]="key+ti">
+                                    <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [name]="key+ti" style="padding-top: 0px !important; padding-bottom: 0px !important;">
                                         <ng-container *ngFor="let data of passData.opts">
                                             <ng-container *ngIf="key == data.selector">
                                                 <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>

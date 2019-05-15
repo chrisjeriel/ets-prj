@@ -6,6 +6,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-policy-wording',
@@ -24,7 +26,7 @@ export class PolicyWordingComponent implements OnInit {
 	  	tHeader: ['Policy Word Code', 'Wording Title', 'Wordings', 'Paragraph Type', 'Active', 'Default', 'Open Cover', 'Remarks'],
 	  	dataTypes: ['pk-cap', 'text', 'text-editor', 'select', 'checkbox', 'checkbox','checkbox', 'text'],
 	  	keys: ['wordingCd', 'wordingTitle', 'wordings', 'wordType', 'activeTag', 'defaultTag', 'ocTag', 'remarks'],
-	  	widths: [1,'180','auto','100',1,1,1,'200'],
+	  	widths: [1,'180','auto','155',1,1,1,'175'],
 	  	uneditable: [false,false,false,false,false,false,false,false],
 	  	nData: {
 	  		newRec: 1,
@@ -43,8 +45,8 @@ export class PolicyWordingComponent implements OnInit {
   		},
   		opts: [{
         	selector: 'wordType',
-        	prev: ['Policy', 'Alteration'],
-        	vals: ['P', 'A'],
+        	prev: [],
+        	vals: [],
     	}],
   		paginateFlag: true,
   		infoFlag: true,
@@ -98,14 +100,19 @@ export class PolicyWordingComponent implements OnInit {
   	}
 
   	getMtnPolicyWordings() {
-  		this.table.loadingFlag = true;
-  		this.ms.getMtnPolWordings({ lineCd: this.lineCd }).subscribe(data => {
-  			var td = data['mtnPolWordings'].sort((a, b) => b.createDate - a.createDate)
-  										   .map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
-  													   a.updateDate = this.ns.toDateTimeString(a.updateDate);
-  													   return a; });
+  		this.table.overlayLoader = true;
+  		var sub$ = forkJoin(this.ms.getMtnPolWordings({ lineCd: this.lineCd }),
+  							this.ms.getRefCode('MTN_POL_WORDINGS.WORD_TYPE')).pipe(map(([word, ref]) => { return { word, ref }; }));
 
-  			for(let i of td) {
+  		sub$.subscribe(data => {
+  			this.policyWordingData.opts[0].vals = [];
+  			this.policyWordingData.opts[0].prev = [];
+
+  			var td = data['word']['mtnPolWordings'].sort((a, b) => b.createDate - a.createDate)
+		  										   .map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
+		  													   a.updateDate = this.ns.toDateTimeString(a.updateDate);
+		  													   return a; });
+		  	for(let i of td) {
   				i.wordings = '';
 
   				Object.keys(i).forEach(function(key) {
@@ -115,21 +122,24 @@ export class PolicyWordingComponent implements OnInit {
 	            });
   			}
 
-	  		this.policyWordingData.tableData = td;
+  			this.policyWordingData.tableData = td;
 	  		this.policyWordingData.disableAdd = false;
 	  		this.policyWordingData.disableGeneric = false;
 
-	  		this.table.refreshTable();
+	  		this.policyWordingData.opts[0].vals = data['ref']['refCodeList'].map(a => a.code);
+		  	this.policyWordingData.opts[0].prev = data['ref']['refCodeList'].map(a => a.description);
+
+		  	this.table.refreshTable();
 	  		this.table.onRowClick(null, this.policyWordingData.tableData[0]);
   		});
   	}
 
-  	checkCode(ev){
+  	checkCode(ev) {
 	    this.ns.lovLoader(ev, 1);
 	    this.lineLov.checkCode(this.lineCd, ev);
 	}
 
-  	setLine(data){
+  	setLine(data) {
     	this.lineCd = data.lineCd;
     	this.lineDesc = data.description;
     	this.ns.lovLoader(data.ev, 0);
@@ -142,9 +152,11 @@ export class PolicyWordingComponent implements OnInit {
   			this.policyWordingData.disableGeneric = true;
 			this.table.refreshTable();
     	}
+
+    	setTimeout(() => { $(data.ev.target).removeClass('ng-dirty'); }, 0);
 	}
 
-	showLineLOV(){		
+	showLineLOV() {		
 	    $('#pwLineLOV #modalBtn').trigger('click');
 	}
 
