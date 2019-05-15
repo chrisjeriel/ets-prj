@@ -167,82 +167,82 @@ export class DeductibleComponent implements OnInit {
                     $('app-sucess-dialog #modalBtn').trigger('click');
                 },500);
 
-        }else{
-            if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-                for(var k = 0; k < this.arrDeductibleCd.length; k++){
-                    if(rec.deductibleCd === this.arrDeductibleCd[k]){
-                        rec = this.passData.tableData[k];
-                        break;
-                    }else{
-                        rec = this.passData.tableData[i];
-                    }
-                }
-                this.mtnDeductiblesReq = {
-                    "deleteDeductibles": [],
-                    "saveDeductibles": [
-                    {
-                        "activeTag":           (rec.activeTag === '' || rec.activeTag === null || rec.activeTag === undefined)?this.cbFunc(rec.activeTag):rec.activeTag,
-                        "coverCd":             (rec.coverCd === '' || rec.coverCd === null || rec.coverCd === undefined)?0:rec.coverCd,
-                        "createDate":          (rec.createDate === '' || rec.createDate === null || rec.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(rec.createDate),
-                        "createUser":          (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?JSON.parse(window.localStorage.currentUser).username:rec.createUser,
-                        "deductibleAmt":       rec.deductibleAmt,
-                        "deductibleCd":        rec.deductibleCd,
-                        "deductibleRate":      rec.deductibleRate,
-                        "deductibleText":      rec.deductibleText,
-                        "deductibleTitle":     rec.deductibleTitle,
-                        "deductibleType":      rec.typeDesc,
-                        "defaultTag":          (rec.defaultTag === '' || rec.defaultTag === null || rec.defaultTag === undefined)?'Y':rec.defaultTag,
-                        "endtCd":              (rec.endtCd === '' || rec.endtCd === null || rec.endtCd === undefined)?0:rec.endtCd,
-                        "lineCd":              this.line,
-                        "maxAmt":              rec.maxAmt,
-                        "minAmt":              rec.minAmt,
-                        "remarks":             rec.remarks,
-                        "updateDate":          this.ns.toDateTimeString(0),
-                        "updateUser":          JSON.parse(window.localStorage.currentUser).username
-                    }
-                    ]
-                }
-                this.mtnService.saveMtnDeductibles(JSON.stringify(this.mtnDeductiblesReq))
-                .subscribe(data => {
-                    console.log(data);
-                    $('app-sucess-dialog #modalBtn').trigger('click');
-                    this.getMtnDeductibles();
-                });           
-            }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-                this.mtnDeductiblesReq = {
-                    "deleteDeductibles": [
-                    {
-                        "activeTag":           '',
-                        "coverCd":             '',
-                        "createDate":          '',
-                        "createUser":          '',
-                        "deductibleAmt":       '',
-                        "deductibleCd":        rec.deductibleCd,
-                        "deductibleRate":      '',
-                        "deductibleText":      '',
-                        "deductibleTitle":     '',
-                        "deductibleType":      '',
-                        "defaultTag":          '',
-                        "endtCd":              '',
-                        "lineCd":              this.line,
-                        "maxAmt":              '',
-                        "minAmt":              '',
-                        "remarks":             '',
-                        "updateDate":          '',
-                        "updateUser":          ''
-                    }
-                    ],
-                    "saveDeductibles": []
-                }
-                this.mtnService.saveMtnDeductibles(JSON.stringify(this.mtnDeductiblesReq))
-                .subscribe(data => {
-                    console.log(data);
-                    $('app-sucess-dialog #modalBtn').trigger('click');
-                    this.getMtnDeductibles();
-                }); 
             }else{
-                this.counter++;
-            }
+                if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+                    for(var k = 0; k < this.arrDeductibleCd.length; k++){
+                        if(rec.deductibleCd === this.arrDeductibleCd[k]){
+                            rec = this.passData.tableData[k];
+                            break;
+                        }else{
+                            rec = this.passData.tableData[i];
+                        }
+                    }
+                    this.mtnDeductiblesReq = {
+                        "deleteDeductibles": [],
+                        "saveDeductibles": [
+                        {
+                            "activeTag":           (rec.activeTag === '' || rec.activeTag === null || rec.activeTag === undefined)?this.cbFunc(rec.activeTag):rec.activeTag,
+                            "coverCd":             (rec.coverCd === '' || rec.coverCd === null || rec.coverCd === undefined)?0:rec.coverCd,
+                            "createDate":          (rec.createDate === '' || rec.createDate === null || rec.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(rec.createDate),
+                            "createUser":          (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?JSON.parse(window.localStorage.currentUser).username:rec.createUser,
+                            "deductibleAmt":       rec.deductibleAmt,
+                            "deductibleCd":        rec.deductibleCd,
+                            "deductibleRate":      rec.deductibleRate,
+                            "deductibleText":      rec.deductibleText,
+                            "deductibleTitle":     rec.deductibleTitle,
+                            "deductibleType":      rec.typeDesc,
+                            "defaultTag":          (rec.defaultTag === '' || rec.defaultTag === null || rec.defaultTag === undefined)?'Y':rec.defaultTag,
+                            "endtCd":              (rec.endtCd === '' || rec.endtCd === null || rec.endtCd === undefined)?0:rec.endtCd,
+                            "lineCd":              this.line,
+                            "maxAmt":              rec.maxAmt,
+                            "minAmt":              rec.minAmt,
+                            "remarks":             rec.remarks,
+                            "updateDate":          this.ns.toDateTimeString(0),
+                            "updateUser":          JSON.parse(window.localStorage.currentUser).username
+                        }
+                        ]
+                    }
+                    this.mtnService.saveMtnDeductibles(JSON.stringify(this.mtnDeductiblesReq))
+                    .subscribe(data => {
+                        console.log(data);
+                        $('app-sucess-dialog #modalBtn').trigger('click');
+                        this.getMtnDeductibles();
+                    });           
+                }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+                    this.mtnDeductiblesReq = {
+                        "deleteDeductibles": [
+                        {
+                            "activeTag":           '',
+                            "coverCd":             '',
+                            "createDate":          '',
+                            "createUser":          '',
+                            "deductibleAmt":       '',
+                            "deductibleCd":        rec.deductibleCd,
+                            "deductibleRate":      '',
+                            "deductibleText":      '',
+                            "deductibleTitle":     '',
+                            "deductibleType":      '',
+                            "defaultTag":          '',
+                            "endtCd":              '',
+                            "lineCd":              this.line,
+                            "maxAmt":              '',
+                            "minAmt":              '',
+                            "remarks":             '',
+                            "updateDate":          '',
+                            "updateUser":          ''
+                        }
+                        ],
+                        "saveDeductibles": []
+                    }
+                    this.mtnService.saveMtnDeductibles(JSON.stringify(this.mtnDeductiblesReq))
+                    .subscribe(data => {
+                        console.log(data);
+                        $('app-sucess-dialog #modalBtn').trigger('click');
+                        this.getMtnDeductibles();
+                    }); 
+                }else{
+                    this.counter++;
+                }
         }
 
     }

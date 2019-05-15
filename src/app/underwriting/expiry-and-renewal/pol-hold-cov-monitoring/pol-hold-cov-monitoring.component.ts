@@ -3,7 +3,7 @@ import { UnderwritingService, NotesService } from '../../../_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { environment } from '@environments/environment';
 import * as alasql from 'alasql';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -165,5 +165,14 @@ export class PolHoldCovMonitoringComponent implements OnInit {
         	},100);
 		}
 	}
+
+	onTabChange($event: NgbTabChangeEvent) {
+
+	  	if($event.nextId === 'Exit'){
+	  		$event.preventDefault();
+			this.router.navigate(['']);
+	  	}
+
+    }
 
 }

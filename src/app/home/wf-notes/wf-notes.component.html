@@ -63,7 +63,7 @@
 
 </style>
 
-<div id="noteDiv" style="border: 1px solid #c5c3c3; padding: 1em">
+<div id="noteDiv" style="border: 1px solid #c5c3c3; padding: 1em; max-height: 400px; overflow: auto; overflow-y:scroll ">
 	<div>
 		<div class="row">
 			<div class="col-md-12">
@@ -185,5 +185,4 @@
 </app-modal>
 
 <app-wf-notes-form id="noteModal" (onYes)="saveNote($event)"></app-wf-notes-form>
-<app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar);"></app-sucess-dialog>

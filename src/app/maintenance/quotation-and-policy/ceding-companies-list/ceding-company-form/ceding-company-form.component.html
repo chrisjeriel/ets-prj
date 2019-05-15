@@ -1,0 +1,141 @@
+<div class="cust-tabs-container">
+		<h4> Maintenance / Ceding Company List</h4>
+		<ngb-tabset>
+			<ngb-tab class="ngb-tab" title="Ceding Company">
+				<ng-template ngbTabContent>
+					<form #myForm="ngForm">
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-sm-2"></div>
+						<div class="col-sm">
+							<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                            <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+								<div style="margin-right: 25px;">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Company No</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="companyData.cedingId" readonly name="cedingId">
+										<div class="cust-div col-sm-5" style="margin-left: 15px;"><input type="checkbox" [ngModel]="companyData.activeTag === 'Y'" (ngModelChange)="$event ? companyData.activeTag = 'Y' : companyData.activeTag = 'N';" name="activeTag">&nbsp;<span class="cust-span">Active Tag</span>
+											<input style="margin-left: 64px;" type="checkbox" [ngModel]="companyData.govtTag === 'Y'" (ngModelChange)="$event ? companyData.govtTag = 'Y' : companyData.govtTag = 'N'" name="govtTag">&nbsp;<span class="cust-span">Government</span>
+										</div>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Name</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.cedingName" name="cedingName" appRequired>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Abbreviation</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.cedingAbbr" name="cedingAbbr" appRequired>
+										<label class="form-control-sm col-sm-2">Old Company No</label>
+										<input type="text" class="form-control form-control-sm col-sm" [ngModel]="companyData.oldCedingId" name="oldCedingId" readonly>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Address</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.addrLine1" name="addrLine1" appRequired>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2"></label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.addrLine2" name="addrLine2">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2"></label>
+										<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="companyData.addrLine3" name="addrLine3">
+										<label class="form-control-sm col-sm-1" style="margin-left: 12px !important;">Zip Code</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="companyData.zipCd" name="zipCd">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Company Contact No.</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.contactNo" name="contactNo">
+										<label class="form-control-sm col-sm-2" style="margin-left: 12px !important;">Company Email</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.emailAdd" name="emailAdd">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">T.I.N No.</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.tinNo" name="tinNo">
+										<label class="form-control-sm col-sm-2" style="margin-left: 12px !important;">Business Type</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.bussTypeId" name="businessId">
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border">Other Info</legend>
+								<div style="margin-right: 50px;">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Start Date</label>
+										<input type="date" class="form-control form-control-sm col-sm-4" [ngModel]="companyData.membershipDate === '' ? '' : ns.toDateTimeString(companyData.membershipDate).split('T')[0]" (ngModelChange)="companyData.membershipDate = $event" name="membershipDate">
+										<div class="col-sm-2"></div>
+										<div class="cust-div col-sm"><input type="checkbox" [ngModel]="companyData.membershipTag === 'Y'" (ngModelChange)="$event ? companyData.membershipTag = 'Y' : companyData.membershipTag = 'N'" name="membershipTag">&nbsp;<span class="cust-span">Member</span>
+										</div>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Termination Date</label>
+										<input type="date" class="form-control form-control-sm col-sm" [ngModel]="companyData.terminationDate === '' ? '' : ns.toDateTimeString(companyData.terminationDate).split('T')[0]" (ngModelChange)="companyData.terminationDate = $event" name="terminationDate">
+										<label class="form-control-sm col-sm-2">Inactive Date</label>
+										<input type="date" class="form-control form-control-sm col-sm" [ngModel]="companyData.inactiveDate === '' ? '' : ns.toDateTimeString(companyData.inactiveDate).split('T')[0]" (ngModelChange)="companyData.inactiveDate = $event" name="inactiveDate">
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border">Membership</legend>
+								<div class="contain">
+									<app-cust-editable-non-datatable [passData]="repData" (tableDataChange)="repData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')" (add)="onClickAdd($event)" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border">Other Info</legend>
+								<div style="margin-right: 50px;">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Remarks</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.remarks" name="remarks">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Created By</label>
+										<input type="text" class="form-control form-control-sm col-sm" [ngModel]="companyData.createUser" name="createUser" readonly>
+										<label class="form-control-sm col-sm-2">Date Created</label>
+										<input type="datetime-local" class="form-control form-control-sm col-sm"  [ngModel]="companyData.createDate === '' ? '' : ns.toDateTimeString(companyData.createDate)" readonly name="createDate">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Last Update By</label>
+										<input type="text" class="form-control form-control-sm col-sm" value="QUECOH" [ngModel]="companyData.updateUser" name="updateUser" readonly>
+										<label class="form-control-sm col-sm-2">Last Update</label>
+										<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="companyData.updateDate === '' ? '' : ns.toDateTimeString(companyData.updateDate)" name="updateDate" readonly>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+				</form>
+					<div class="row" style="margin-top: 10px !important; margin-bottom: 10px !important;">
+						<div class="col-sm text-center">
+							<button class="cust-btn" (click)="onClickCancel();">Cancel</button>
+							<button class="cust-btn" (click)="onClickSave();">Save</button>
+						</div>
+					</div>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+	</div>
+
+
+	<app-confirm-save (onYes)="save()"></app-confirm-save>
+	<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+	<app-cancel-button (onYes)="save('cancel')" [url]="'/ceding-co-list'" ></app-cancel-button>

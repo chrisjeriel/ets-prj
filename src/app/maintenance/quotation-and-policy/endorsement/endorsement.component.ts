@@ -57,7 +57,7 @@ export class EndorsementComponent implements OnInit {
       "description": "",
       "text":'',
       "defaultTag": "N",
-      "activeTag": "N",
+      "activeTag": "Y",
       "endtText01": "",
       "endtText02": null,
       "endtText03": null,
@@ -139,7 +139,7 @@ export class EndorsementComponent implements OnInit {
   constructor(private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-  	setTimeout(a=>{this.endtTable.refreshTable();this.dedTable.refreshTable();},0);
+  	//setTimeout(a=>{this.endtTable.refreshTable();this.dedTable.refreshTable();},0);
 
   	this.ms.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
             .subscribe(data =>{
@@ -174,26 +174,28 @@ export class EndorsementComponent implements OnInit {
   		this.passEndtTable.disableGeneric = false;
   		this.passEndtTable.tableData = a['endtCode'];
   		this.passEndtTable.tableData.forEach(a=>{{
-  			a['text'] = (a.endtText01 === null ? '' :a.endtText01) + 
-			                 (a.endtText02 === null ? '' :a.endtText02) + 
-			                 (a.endtText03 === null ? '' :a.endtText03) + 
-			                 (a.endtText04 === null ? '' :a.endtText04) + 
-			                 (a.endtText05 === null ? '' :a.endtText05) + 
-			                 (a.endtText06 === null ? '' :a.endtText06) + 
-			                 (a.endtText07 === null ? '' :a.endtText07) + 
-			                 (a.endtText08 === null ? '' :a.endtText08) + 
-			                 (a.endtText09 === null ? '' :a.endtText09) + 
-			                 (a.endtText10 === null ? '' :a.endtText10) + 
-			                 (a.endtText11 === null ? '' :a.endtText11) + 
-			                 (a.endtText12 === null ? '' :a.endtText12) + 
-			                 (a.endtText13 === null ? '' :a.endtText13) + 
-			                 (a.endtText14 === null ? '' :a.endtText14) + 
-			                 (a.endtText15 === null ? '' :a.endtText15) + 
-			                 (a.endtText16 === null ? '' :a.endtText16) + 
+        a.endtCd = String(a.endtCd).padStart(3,'0')
+  			a['text'] = (a.endtText01 === null ? '' :a.endtText01) +
+			                 (a.endtText02 === null ? '' :a.endtText02) +
+			                 (a.endtText03 === null ? '' :a.endtText03) +
+			                 (a.endtText04 === null ? '' :a.endtText04) +
+			                 (a.endtText05 === null ? '' :a.endtText05) +
+			                 (a.endtText06 === null ? '' :a.endtText06) +
+			                 (a.endtText07 === null ? '' :a.endtText07) +
+			                 (a.endtText08 === null ? '' :a.endtText08) +
+			                 (a.endtText09 === null ? '' :a.endtText09) +
+			                 (a.endtText10 === null ? '' :a.endtText10) +
+			                 (a.endtText11 === null ? '' :a.endtText11) +
+			                 (a.endtText12 === null ? '' :a.endtText12) +
+			                 (a.endtText13 === null ? '' :a.endtText13) +
+			                 (a.endtText14 === null ? '' :a.endtText14) +
+			                 (a.endtText15 === null ? '' :a.endtText15) +
+			                 (a.endtText16 === null ? '' :a.endtText16) +
 			                 (a.endtText17 === null ? '' :a.endtText17) ;
 			a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
 			a.uneditable = ['endtCd']
   		}})
+  		this.endtClick(null);
   		this.endtTable.refreshTable();
   	})
   }
@@ -248,15 +250,21 @@ export class EndorsementComponent implements OnInit {
   	// 'deductibleAmt','deductibleRate','minAmt','maxAmt'
   	this.passDedTable.tableData.forEach(a=>{
   		if(a.deductibleType == 'F'){
-  			a.uneditable = ['deductibleRate','minAmt','maxAmt'];	
-  			a.uneditable.forEach(b=>{
-  				a[b] = '';
+  			a.uneditable = ['deductibleRate','minAmt','maxAmt','deductibleCd'];
+  			a.uneditable.forEach((b,i)=>{
+  				if(i != a.uneditable.length-1)
+  					a[b] = '';
   			})
   		}else{
-  			a.uneditable = ['deductibleAmt'];
-  			a.uneditable.forEach(b=>{
-  				a[b] = '';
-  			})
+  			a.uneditable = ['deductibleAmt','deductibleCd'];
+	  		a.uneditable.forEach((b,i)=>{
+	  			if(i != a.uneditable.length-1)
+	  				a[b] = '';
+	  		})
+  		}
+
+  		if(a.add){
+  			a.uneditable.pop();
   		}
   	})
   }
@@ -270,7 +278,7 @@ export class EndorsementComponent implements OnInit {
   		saveDeductibles:[],
   		deleteDeductibles:[]
   	}
-  	
+
   	for(let endt of this.passEndtTable.tableData){
   		if(endt.edited && !endt.deleted){
   			let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
@@ -284,30 +292,20 @@ export class EndorsementComponent implements OnInit {
             params.saveEndorsement.push(endt);
   		}
 
-  		if(!endt.deleted){
-  			let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
-            if(endtTextSplit!== null)
-                for (var i = 0; i < endtTextSplit.length; ++i) {
-                    endt[this.endtTextKeys[i]] = endtTextSplit[i];
-            }
-            endt.updateDate = this.ns.toDateTimeString(0);
-            endt.createDate = this.ns.toDateTimeString(endt.createDate);
-            endt.updateUser = this.ns.getCurrentUser();
-            params.saveEndorsement.push(endt);
-  		}
+  		// if(!endt.deleted){
+  		// 	let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
+    //         if(endtTextSplit!== null)
+    //             for (var i = 0; i < endtTextSplit.length; ++i) {
+    //                 endt[this.endtTextKeys[i]] = endtTextSplit[i];
+    //         }
+    //         endt.updateDate = this.ns.toDateTimeString(0);
+    //         endt.createDate = this.ns.toDateTimeString(endt.createDate);
+    //         endt.updateUser = this.ns.getCurrentUser();
+    //         params.saveEndorsement.push(endt);
+  		// }
 
   		for(let ded of endt.deductibles){
   			if(ded.edited && !ded.deleted){
-  				if(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0)){
-		  			this.dialogIcon = "error";
-            		this.successDialog.open();
-            		return;
-		  		}else if(ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0)){
-		  			this.dialogIcon = "error";
-            		this.successDialog.open();
-            		return;
-		  		}
-
   				ded.updateDate = this.ns.toDateTimeString(0);
 	            ded.createDate = this.ns.toDateTimeString(ded.createDate);
 	            ded.updateUser = this.ns.getCurrentUser();
@@ -336,10 +334,14 @@ export class EndorsementComponent implements OnInit {
   }
 
   onClickSave(){
-  	
+
   	let endtCds:string[] = this.passEndtTable.tableData.filter(a=>!a.deleted).map(a=>String(a.endtCd).padStart(3,'0'));
 
-  	if(endtCds.some((a,i)=>endtCds.indexOf(a) != i)){
+  	if(endtCds.some((a,i)=>{
+      if(endtCds.indexOf(a) != i)
+        console.log(a)
+      return endtCds.indexOf(a) != i;
+    })){
   		this.dialogMessage = 'Unable to save the record. Endt Code must be unique per Line';
   		this.dialogIcon = 'error-message';
   		this.successDialog.open();
@@ -348,6 +350,12 @@ export class EndorsementComponent implements OnInit {
   	let dedCds : string[];
   	for(let endt of this.passEndtTable.tableData){
   		dedCds = endt.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
+		if(endt.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
+  			this.dialogIcon = "error";
+    		this.successDialog.open();
+    		return;
+		}
+
   		if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
   			this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Endorsement';
 	  		this.dialogIcon = 'error-message';
@@ -366,6 +374,6 @@ export class EndorsementComponent implements OnInit {
 
   showLineLOV(){
     $('#lineLOV #modalBtn').trigger('click');
-}
+	}
 
 }

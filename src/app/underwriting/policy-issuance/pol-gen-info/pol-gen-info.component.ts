@@ -291,7 +291,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.tableData = this.underwritingService.getItemInfoData();
 
     this.sub = this.route.params.subscribe(params => {
-      console.log(params);
       this.line = params['line'];
       this.policyId = this.polInfo.policyId === '' ? params['policyId'] : this.polInfo.policyId;
       this.policyNo = this.polInfo.policyNo === '' ? params['policyNo'] : this.polInfo.policyNo;
@@ -321,7 +320,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     if(this.newAlt) {
       setTimeout(() => { $('.req').addClass('ng-dirty') }, 0);
     } else {
-      setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') }, 1000);  
+      setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') }, 1000);
     }
   }
 
@@ -426,7 +425,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           // }
         }
 
-        setTimeout(() => {  
+        setTimeout(() => {
           $('input[appCurrencyRate]').focus();
           $('input[appCurrencyRate]').blur();
           if(this.fromInq){
@@ -435,7 +434,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             $('textarea').attr('readonly','readonly');
             $('select').attr('readonly','readonly');
           }
-        },0) 
+        },0)
       }
 
       if(this.newAlt) {
@@ -507,7 +506,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       $(ev.target).addClass('ng-dirty');
 
       if(field === 'cedingCo') {
-        this.policyInfo.cedingId = this.pad(this.policyInfo.cedingId);              
+        this.policyInfo.cedingId = this.pad(this.policyInfo.cedingId);
 
         this.cedingCoLov.checkCode(this.policyInfo.cedingId, ev);
       } else if(field === 'cedingCoNotMember') {
@@ -535,7 +534,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     if(str === '' || str == null){
       return '';
     }
-    
+
     return String(str).padStart(num != undefined ? num : 3, '0');
   }
 
@@ -544,7 +543,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         setTimeout(()=>{
           $('.req').focus();
           $('.req').blur();
-        },0)  
+        },0)
       }
   }
 
@@ -589,7 +588,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.updateInsuredDesc();
     this.focusBlur();
-    
+
   }
 
   updateInsuredDesc() {
@@ -616,11 +615,11 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                          }
                   }
                 }
-                    
+
                        this.policyInfo.showPolAlop = alopFlag;
               }
-      
-      
+
+
             /*  this.emitPolicyInfoId.emit({
                 policyId: event,
                 policyNo: this.policyInfo.policyNo,
@@ -629,11 +628,11 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                 riskId: this.policyInfo.project.riskId,
                 showPolAlop: this.policyInfo.showPolAlop,
                 principalId: this.policyInfo.principalId
-              });  */  
-      
+              });  */
+
               this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
                    this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
-      
+
                    this.emitPolicyInfoId.emit({
                     refPolicyId: this.refPolicyId,
                     policyId: event,
@@ -646,8 +645,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                     principalId: this.policyInfo.principalId,
                     cedingName: this.policyInfo.cedingName //add by paul
                   });
-              });   
-      
+              });
+
             });}
     else{
       this.underwritingService.getUWCoverageInfos(null, this.policyInfo.policyId).subscribe((data: any) => {
@@ -661,7 +660,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                    }
             }
           }
-              
+
                  this.policyInfo.showPolAlop = alopFlag;
         }
 
@@ -674,7 +673,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           riskId: this.policyInfo.project.riskId,
           showPolAlop: this.policyInfo.showPolAlop,
           principalId: this.policyInfo.principalId
-        });  */  
+        });  */
 
         this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
              this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
@@ -691,7 +690,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
               principalId: this.policyInfo.principalId,
               cedingName: this.policyInfo.cedingName //add by paul
             });
-        });   
+        });
 
       });
     }
@@ -701,7 +700,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     var d = new Date(this.policyInfo.inceptDate);
     d.setFullYear(d.getFullYear() + 1);
 
-    this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
+    console.log(this.policyInfo.inceptDate);
+    this.policyInfo.expiryDate = this.policyInfo.inceptDate.split('T').includes('') ? 'T' : this.ns.toDateTimeString(d);
+    console.log(this.policyInfo.expiryDate);
   }
 
   updateDate(str) {
@@ -794,6 +795,22 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "latitude"        : this.policyInfo.project.latitude,
       "longitude"       : this.policyInfo.project.longitude
     }
+
+    var mfArr = savePolGenInfoParam.maintenanceFrom.split('T');
+    var mfTo = savePolGenInfoParam.maintenanceTo.split('T');
+
+    if(mfArr[0] == 'undefined' || mfArr[0] == '') {
+      savePolGenInfoParam.maintenanceFrom = '';
+    } else if(mfArr[1] == 'undefined' || mfArr[1] == '') {
+      savePolGenInfoParam.maintenanceFrom = mfArr[0];
+    }
+
+    if(mfTo[0] == 'undefined' || mfTo[0] == '') {
+      savePolGenInfoParam.maintenanceTo = '';
+    } else if(mfTo[1] == 'undefined' || mfTo[1] == '') {
+      savePolGenInfoParam.maintenanceTo = mfTo[0];
+    }
+
     let wordingSplit = this.policyInfo.polWordings.text.match(/(.|[\r\n]){1,2000}/g);
     if(savePolGenInfoParam.polWordings.createUser == undefined){
       savePolGenInfoParam.polWordings.createUser = this.ns.getCurrentUser();
@@ -812,7 +829,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     let wordingSplitAlt = this.policyInfo.polWordings.altText.match(/(.|[\r\n]){1,2000}/g);
     var x = this.wordingsKeys.length/2;
     if(wordingSplitAlt != null)
-      for(let i=0;i<wordingSplitAlt.length;i++){        
+      for(let i=0;i<wordingSplitAlt.length;i++){
         savePolGenInfoParam.polWordings[this.wordingsKeys[x]] = wordingSplitAlt[i];
         x++;
       }
@@ -829,17 +846,17 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          // this.policyInfo.policyNo = data['policyNo'];
          // this.policyInfo.altNo = data['policyNo'].split('-')[5];
          this.policyId = data['policyId'];
-         this.policyNo = data['policyNo'];         
+         this.policyNo = data['policyNo'];
 
          if(this.newAlt) {
            this.newAlt = false;
            // this.checkPolIdF(this.policyId);
            this.underwritingService.fromCreateAlt = false;
-         }        
+         }
 
          this.dialogMessage = "";
          this.dialogIcon = "";
-         $('#polGenInfo > #successModalBtn').trigger('click');        
+         $('#polGenInfo > #successModalBtn').trigger('click');
          /*this.form.control.markAsPristine();*/
          this.getPolGenInfo('noLoading');
        }
@@ -854,7 +871,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');  
+    $('#confirm-save #modalBtn2').trigger('click');
   }
 
   cancel(){
@@ -984,7 +1001,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         lineCd : this.policyInfo.lineCd,
       }
     }else{
-      
+
     }
     $('#lov').addClass('ng-dirty');
     this.lov.openLOV();
@@ -1148,7 +1165,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             }
         } /*else if(field === 'risk') {
             this.riskLov.checkCode(this.riskCd, ev);
-        }      */        
+        }      */
     }
 
      setLocation(data){

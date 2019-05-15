@@ -44,7 +44,7 @@ export class MaintenanceService{
                 params = params.append(i.key, i.search);
             }
 		}
-		
+
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInsured", {params});
 	}
 
@@ -90,19 +90,20 @@ export class MaintenanceService{
 			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
 			.set('blockCd',blockCd ===undefined || blockCd===null ? '' : blockCd)
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceBlock',{params});
-	}
-
+  }
 
 	getMtnObject(lineCd,objectId){
 		const params = new HttpParams()
 		 	.set('lineCd',lineCd)
 			.set('objectId',objectId)
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnObject",{params});
-	}
-	getMtnQuotationWordings(lineCd,type){
+  }
+
+	getMtnQuotationWordings(lineCd,wordType){
 		const params = new HttpParams()
 			.set('lineCd',lineCd)
-			.set('type',type)
+			.set('wordType',wordType);
+
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnQuotationWordings",{params});
 	}
 
@@ -121,7 +122,7 @@ export class MaintenanceService{
 		const params = new HttpParams()
                 .set('riskId',riskId);
 
-       	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRisk', {params});    
+       	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRisk', {params});
     }
 
 
@@ -139,46 +140,62 @@ export class MaintenanceService{
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMntIntermediary', {params});
     }
 
-	getMtnRiskListing(riskId,riskAbbr,riskName,regionDesc,provinceDesc,cityDesc,districtDesc,blockDesc,latitude,longitude,activeTag) {
-		const params = new HttpParams()
-                .set('riskId',riskId)
-                .set('riskAbbr',riskAbbr)
-                .set('riskName',riskName)
-                .set('regionDesc',regionDesc)
-                .set('provinceDesc',provinceDesc)
-                .set('cityDesc',cityDesc)
-                .set('districtDesc',districtDesc)
-                .set('blockDesc',blockDesc)
-                .set('latitude',latitude)
-                .set('longitude',longitude)
-                .set('activeTag',activeTag);
+	getMtnRiskListing(searchParams: any[]) {
+		var params;
+		if(searchParams.length < 1){
+			params = new HttpParams()
+	                .set('riskId','')
+	                .set('riskAbbr','')
+	                .set('riskName','')
+	                .set('regionDesc','')
+	                .set('provinceDesc','')
+	                .set('cityDesc','')
+	                .set('districtDesc','')
+	                .set('blockDesc','')
+	                .set('latitude','')
+	                .set('longitude','')
+	                .set('activeTag','');
+        }else{
+        	params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
 
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRiskListing', {params});
 	}
 
-	
+
 	getMtnSectionCovers(lineCd,coverCd) {
 		const params = new HttpParams()
                 .set('lineCd',lineCd)
                 .set('coverCd',coverCd);
 
-        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSectionCovers', {params});     
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSectionCovers', {params});
 	}
 
 	getMtnTypeOfCession(cessionId) {
 		const params = new HttpParams()
                 .set('cessionId',cessionId);
 
-        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTypeOfCession', {params});     
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTypeOfCession', {params});
 	}
 
 
 	getLineClassLOV(line : string) {
-		
 		const params = new HttpParams()
              .set('lineCd',line)
 
    	   return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMntLineClass',{params});
+  	}
+
+	saveMtnLineClass(params) {
+	    let header: any = {
+	      headers: new HttpHeaders({
+	        'Content-Type': 'application/json'
+	      })
+	    };
+	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnLineClass',params,header);
 	}
 
 	getMtnRegion(regionCd?){
@@ -220,7 +237,7 @@ export class MaintenanceService{
                 .set('lineCd',lineCd)
                 .set('cover',cover);
 
-        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSectionCoversLov', {params});     
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSectionCoversLov', {params});
 	}
 
 	getRefCode(identifier: string){
@@ -233,16 +250,18 @@ export class MaintenanceService{
 	getMtnOtherCharges(){
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnCharges');
 	}
-	
+
 	saveMtnLine(params){
 		let header : any = {
              headers: new HttpHeaders({
                  'Content-Type': 'application/json'
              })
          };
+
+         console.log(params);
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnLine',params,header);
 	}
-	
+
 	getMtnDeductibles(lineCd,coverCd,endtCd,deductiblesCd) {
 		const params = new HttpParams()
 			.set('lineCd', lineCd)
@@ -262,10 +281,10 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnDeductibles',params,header);
     }
 
-    getMtnSpoilageReason(spoilCd){
+    getMtnSpoilageReason(spoilCd,activeTag){
     	const params = new HttpParams()
-			.set('spoilCd', spoilCd);
-
+			.set('spoilCd', spoilCd)
+			.set('activeTag', spoilCd);
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSpoilageReason', {params});
     }
 
@@ -289,6 +308,16 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnInsured',params,header);
     }
 
+
+    saveMtnTypeOfCession(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTypeOfCession',params,header);
+    }
+
     getMtnInsuredLov(pass){
     	const params = new HttpParams()
 			.set('lovParam', pass.lovParam == undefined ? '' : pass.lovParam)
@@ -299,6 +328,52 @@ export class MaintenanceService{
 
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnInsuredLov', {params});
     }
+
+    saveMtnAdviceWordings(save: any[], del: any[]){
+    	let params: any = {
+    		saveAdvWordList: save,
+    		deleteAdvWordList: del,
+    	};
+
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdviceWordings',params,header);
+    }
+
+    getMtnIntmList(searchParams : any[]){
+		var params;
+
+		if(searchParams.length < 1){
+			params = new HttpParams()
+				.set('intmId','')
+				.set('intmName','')
+				.set('activeTag','')
+				.set('corpTag','')
+				.set('vatTag','')
+				.set('address','')
+				.set('contactNo','')
+				.set('oldIntmId','')
+		}else{
+			params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+		}
+		
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMntIntermediary", {params});
+	}
+
+	saveMtnIntermediary(params){
+		let header : any = {
+		            headers: new HttpHeaders({
+		                 'Content-Type': 'application/json'
+		            })
+		         };
+		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnIntermediary',params,header);
+	}
 
     getMtnCurrencyList(currencyCd: string){
 		const params = new HttpParams()
@@ -333,12 +408,86 @@ export class MaintenanceService{
 	}
 
     saveMtnEndt(params){
-    	let header : any = {
+		let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEndorsement',JSON.stringify(params),header);
+    }
+
+    getCedingCompanyList(searchParams: any[]){
+        var params;
+        if(searchParams.length < 1){
+        	params = new HttpParams()
+            .set('cedingId','')
+            .set('cedingName','')
+            .set('cedingAbbr','')
+            .set('address','')
+            .set('membershipDate','')
+            .set('terminationDate','')
+            .set('inactiveDate','')
+            .set('activeTag','')
+            .set('govtTag','')
+            .set('membershipTag','');
+        }else{
+        	params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+
+	    return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompanyListing', {params});
+    }
+
+    getCedingCompany(cedingId){
+    	const params = new HttpParams()
+    		  .set('cedingId', cedingId);
+
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompany', {params});
+    }
+
+    saveMtnSectionCovers(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSectionCover',JSON.stringify(params),header);
+    }
+
+    getMtnQuoteReason(pass){
+    	const params = new HttpParams()
+			.set('reasonCd', pass.reasonCd == undefined ? '' : pass.reasonCd)
+			.set('activeTag', pass.activeTag == undefined ? '' : pass.activeTag);
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnQuoteReason', {params});
+    }
+
+    saveMtnQuoteReason(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnQuoteReason',JSON.stringify(params),header);
+    }
+
+    saveMtnCedingCompany(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCedingCompany',params,header);
+    }
+
+    saveMtnSpoilageReason(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSpoilageReason',JSON.stringify(params),header);
     }
 
     getMtnCatPeril(lineCd: string, objectId?: string, perilId?: string){
