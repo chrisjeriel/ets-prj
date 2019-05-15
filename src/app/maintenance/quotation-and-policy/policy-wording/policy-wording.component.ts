@@ -22,11 +22,12 @@ export class PolicyWordingComponent implements OnInit {
 	policyWordingData: any = {
 	  	tableData: [],
 	  	tHeader: ['Policy Word Code', 'Wording Title', 'Wordings', 'Paragraph Type', 'Active', 'Default', 'Open Cover', 'Remarks'],
-	  	dataTypes: ['text', 'text', 'text-editor', 'select', 'checkbox', 'checkbox','checkbox', 'text'],
+	  	dataTypes: ['pk-cap', 'text', 'text-editor', 'select', 'checkbox', 'checkbox','checkbox', 'text'],
 	  	keys: ['wordingCd', 'wordingTitle', 'wordings', 'wordType', 'activeTag', 'defaultTag', 'ocTag', 'remarks'],
 	  	widths: [1,'180','auto','100',1,1,1,'200'],
 	  	uneditable: [false,false,false,false,false,false,false,false],
 	  	nData: {
+	  		newRec: 1,
 	  		wordingCd: '',
 	      	wordingTitle: '',
 	      	wordings: '',
@@ -51,7 +52,10 @@ export class PolicyWordingComponent implements OnInit {
   		searchFlag: true,
     	genericBtn: 'Delete',
     	disableGeneric: true,
-	  	disableAdd: true
+	  	disableAdd: true,
+	  	mask: {
+	  		wordingCd: 'AAAAAAA'
+	  	}
   	}
 
   	params: any = {
@@ -184,7 +188,7 @@ export class PolicyWordingComponent implements OnInit {
 
 		if(pTd > 1 || aTd > 1 || pTdOc > 1 || aTdOc > 1) {
 			this.msgNo = 2;
-			$('#mtnQWWarningModal > #modalBtn').trigger('click');
+			$('#mtnPWWarningModal > #modalBtn').trigger('click');
 			return;
 		}
 

@@ -153,6 +153,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.unliTableLength();
         this.addFiller();
         //this.appComponent.ngOnInit();
+
+
+        //for mask
+        setTimeout(() => { 
+            if(this.passData.mask) {
+                this.markAsPristine();
+            }
+        }, 0);
     }
 
     ngOnInit() {
