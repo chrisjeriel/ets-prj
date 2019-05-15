@@ -6,6 +6,8 @@ import { isNull, nullSafeIsEquivalent } from '@angular/compiler/src/output/outpu
 import { NULL_INJECTOR } from '@angular/core/src/render3/component';
 import { isNullOrUndefined } from 'util';
 import { NullTemplateVisitor } from '@angular/compiler';
+import { map,catchError } from 'rxjs/operators';
+import { AlertService } from '.';
 
 
 @Injectable({ providedIn: 'root' })
@@ -46,7 +48,7 @@ export class QuotationService {
     savingType: string = 'normal';
     currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private alertService: AlertService) {
 
     }
 
@@ -377,7 +379,15 @@ export class QuotationService {
             }
         }
         
-        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListing', {params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListing', {params}).pipe(
+                map(response=>{
+                    console.log(response)
+                    for(let msg of response['messageList']){
+                        this.alertService.error(msg.message);
+                    }
+                    return response;
+                })
+                );
        
     }
 
