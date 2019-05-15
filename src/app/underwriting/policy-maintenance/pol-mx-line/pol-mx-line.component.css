@@ -16,3 +16,8 @@
 .cust-btn {
 	z-index: 3 !important;
 }
+
+.dsbld {
+    background: gray !important;
+    cursor: unset;
+}

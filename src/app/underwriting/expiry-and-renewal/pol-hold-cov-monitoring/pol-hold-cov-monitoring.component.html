@@ -1,11 +1,17 @@
 <div class="cust-tabs-container">
 	<h4>Expiry & Renewal</h4>
-    <ngb-tabset>
+    <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Hold Cover Monitoring">
             <ng-template ngbTabContent>
             	<!-- <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)=" onRowDblClick($event)" (searchToDb)="searchQuery($event)" (export)="export()" ></app-cust-non-datatable> -->
                 <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="onRowDblClick($event)" (searchToDb)="searchQuery($event)" (export)="export()" ></app-cust-non-datatable> <!-- replaced rowDblClick to newRowDblClick emitter (Neco 4/24/2019) -->
             </ng-template>
+        </ngb-tab>
+        <ngb-tab id="Exit">
+            <ng-template ngbTabTitle>
+                <div>Exit</div>
+            </ng-template>
+            <ng-template ngbTabContent></ng-template>
         </ngb-tab>
     </ngb-tabset>
 </div>

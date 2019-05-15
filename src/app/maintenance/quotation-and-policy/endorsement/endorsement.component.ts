@@ -139,7 +139,7 @@ export class EndorsementComponent implements OnInit {
   constructor(private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-  	setTimeout(a=>{this.endtTable.refreshTable();this.dedTable.refreshTable();},0);
+  	//setTimeout(a=>{this.endtTable.refreshTable();this.dedTable.refreshTable();},0);
 
   	this.ms.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
             .subscribe(data =>{
@@ -175,22 +175,22 @@ export class EndorsementComponent implements OnInit {
   		this.passEndtTable.tableData = a['endtCode'];
   		this.passEndtTable.tableData.forEach(a=>{{
         a.endtCd = String(a.endtCd).padStart(3,'0')
-  			a['text'] = (a.endtText01 === null ? '' :a.endtText01) + 
-			                 (a.endtText02 === null ? '' :a.endtText02) + 
-			                 (a.endtText03 === null ? '' :a.endtText03) + 
-			                 (a.endtText04 === null ? '' :a.endtText04) + 
-			                 (a.endtText05 === null ? '' :a.endtText05) + 
-			                 (a.endtText06 === null ? '' :a.endtText06) + 
-			                 (a.endtText07 === null ? '' :a.endtText07) + 
-			                 (a.endtText08 === null ? '' :a.endtText08) + 
-			                 (a.endtText09 === null ? '' :a.endtText09) + 
-			                 (a.endtText10 === null ? '' :a.endtText10) + 
-			                 (a.endtText11 === null ? '' :a.endtText11) + 
-			                 (a.endtText12 === null ? '' :a.endtText12) + 
-			                 (a.endtText13 === null ? '' :a.endtText13) + 
-			                 (a.endtText14 === null ? '' :a.endtText14) + 
-			                 (a.endtText15 === null ? '' :a.endtText15) + 
-			                 (a.endtText16 === null ? '' :a.endtText16) + 
+  			a['text'] = (a.endtText01 === null ? '' :a.endtText01) +
+			                 (a.endtText02 === null ? '' :a.endtText02) +
+			                 (a.endtText03 === null ? '' :a.endtText03) +
+			                 (a.endtText04 === null ? '' :a.endtText04) +
+			                 (a.endtText05 === null ? '' :a.endtText05) +
+			                 (a.endtText06 === null ? '' :a.endtText06) +
+			                 (a.endtText07 === null ? '' :a.endtText07) +
+			                 (a.endtText08 === null ? '' :a.endtText08) +
+			                 (a.endtText09 === null ? '' :a.endtText09) +
+			                 (a.endtText10 === null ? '' :a.endtText10) +
+			                 (a.endtText11 === null ? '' :a.endtText11) +
+			                 (a.endtText12 === null ? '' :a.endtText12) +
+			                 (a.endtText13 === null ? '' :a.endtText13) +
+			                 (a.endtText14 === null ? '' :a.endtText14) +
+			                 (a.endtText15 === null ? '' :a.endtText15) +
+			                 (a.endtText16 === null ? '' :a.endtText16) +
 			                 (a.endtText17 === null ? '' :a.endtText17) ;
 			a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
 			a.uneditable = ['endtCd']
@@ -278,7 +278,7 @@ export class EndorsementComponent implements OnInit {
   		saveDeductibles:[],
   		deleteDeductibles:[]
   	}
-  	
+
   	for(let endt of this.passEndtTable.tableData){
   		if(endt.edited && !endt.deleted){
   			let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
@@ -334,7 +334,7 @@ export class EndorsementComponent implements OnInit {
   }
 
   onClickSave(){
-  	
+
   	let endtCds:string[] = this.passEndtTable.tableData.filter(a=>!a.deleted).map(a=>String(a.endtCd).padStart(3,'0'));
 
   	if(endtCds.some((a,i)=>{
