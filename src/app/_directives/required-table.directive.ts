@@ -27,7 +27,7 @@ export class RequiredTableDirective {
     }
 
     @HostListener("mouseenter") mouseEnter(){
-      showTooltip(this.er,'required');
+      this.showTooltip(this.er,'required');
     }
  
     @HostListener("mouseleave") mouseLeave(){
@@ -35,6 +35,20 @@ export class RequiredTableDirective {
     }
 
     highlight(el: any){
-	 	el.nativeElement.style.boxShadow = '0px 2px 2px #ff3333';
+	 	el.nativeElement.style.boxShadow = 'inset 0 0 0 1px #ff3333';
 	}
+
+	showTooltip(target:any,message:string) {
+	  	if(target.nativeElement.style.boxShadow == "rgb(255, 51, 51) 0px 0px 0px 1px inset"){
+		  	let x = parseInt(target.nativeElement.getBoundingClientRect()['right']);
+		  	let y = parseInt(target.nativeElement.getBoundingClientRect()['y']);
+		  	let theight = $('#cust-tooltip').outerHeight();
+		  	let twidth = $('#cust-tooltip').outerWidth()/4;
+		  	message = target.nativeElement.value == '' ? "Required field." : message;
+		  	$('#cust-tooltip').html(message);
+
+		  	$('#cust-tooltip').css({left: x-twidth+'px', top:y-theight+'px'});
+		  	$('#cust-tooltip').css({display:'block'});
+	  	}
+  }
 }

@@ -21,7 +21,7 @@ export class RegionComponent implements OnInit {
   passData: any = {
 		tableData:[],
 		tHeader				:["Region Code", "Description","Active","Remarks"],
-		dataTypes			:["number", "reqText", "checkbox", "text"],
+		dataTypes			:["reqNumber", "reqText", "checkbox", "text"],
 		nData:{
 			regionCd        : null,
 			description     : null,
@@ -56,6 +56,8 @@ export class RegionComponent implements OnInit {
 	    updateUser		: null,
 	    updateDate		: null,
 	}
+
+	regionCdArray : any = [];
 
 	dialogMessage: string = "";
     dialogIcon: string = "";
@@ -115,24 +117,35 @@ export class RegionComponent implements OnInit {
   }
 
   onClickSave(){
-
-      if(this.checkFields()){	
-       $('#confirm-save #modalBtn2').trigger('click');
+      if(this.checkFields()){
+            console.log(this.hasDuplicates(this.regionCdArray));
+		    if(this.hasDuplicates(this.regionCdArray)){
+		      	this.dialogMessage="Unable to save the record. Region Code must be unique.";
+		        this.dialogIcon = "error";
+		        this.successDialog.open();
+		    } else {
+		      $('#confirm-save #modalBtn2').trigger('click');
+		    }
       }else{
         this.dialogMessage="Please check field values.";
-        this.dialogIcon = "info";
+        this.dialogIcon = "error";
         this.successDialog.open();
       }
   }
 
   checkFields(){
-
+  	this.regionCdArray = [];
       for(let check of this.passData.tableData){
-        if(check.regionCd === null || check.description === undefined || check.description.length === 0){
+      	this.regionCdArray.push(check.regionCd);
+        if(check.regionCd === null || Number.isNaN(check.regionCd)  || check.description === undefined || check.description.length === 0){
           return false;
         }
       }
       return true;
+  }
+
+  hasDuplicates(array) {
+    return (new Set(array)).size !== array.length;
   }
 
   onClickSaveRegion(){
