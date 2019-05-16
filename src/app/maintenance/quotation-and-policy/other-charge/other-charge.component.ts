@@ -54,6 +54,11 @@ export class OtherChargeComponent implements OnInit {
 	  	disableAdd: false
   	}
 
+  	params: any = {
+  		saveOChrg: [],
+  		deleteOChrg: []
+  	}
+
   	selected: any = null;
   	dialogIcon:string = '';
  	dialogMessage: string = '';
@@ -96,9 +101,13 @@ export class OtherChargeComponent implements OnInit {
 	}
 
 	onClickDelete() {
-		this.table.indvSelect.edited = true;
-		this.table.indvSelect.deleted = true;		
-		this.table.confirmDelete();
+		if(this.table.indvSelect.okDelete == 'N') {
+			$('#mtnOtherChargeWarningModal > #modalBtn').trigger('click');
+		} else {
+			this.table.indvSelect.edited = true;
+			this.table.indvSelect.deleted = true;		
+			this.table.confirmDelete();
+		}
 	}
 
 	onClickSave() {
@@ -129,6 +138,37 @@ export class OtherChargeComponent implements OnInit {
 		}
 
 		this.confirmSave.confirmModal();
+	}
+
+	save(cancel?) {
+		this.cancel = cancel !== undefined;
+		this.params.saveOChrg = [];
+		this.params.deleteOChrg = [];
+
+		var td = this.otherChargeData.tableData;
+
+		for(let d of td) {
+			if(d.edited && !d.deleted) {
+				d.createDate = this.ns.toDateTimeString(d.createDate);
+				d.updateUser = this.ns.getCurrentUser();
+				d.updateDate = this.ns.toDateTimeString(0);
+
+				this.params.saveOChrg.push(d);
+			} else if(d.deleted) {
+				this.params.deleteOChrg.push(d);
+			}
+		}
+
+		this.ms.saveMtnOtherCharge(this.params).subscribe(data => {
+			if(data['returnCode'] == -1) {
+				this.dialogIcon = "success";
+				this.successDialog.open();
+				this.getMtnOtherCharges();
+			} else {
+				this.dialogIcon = "error";
+				this.successDialog.open();
+			}
+		});
 	}
 
 	checkChargeType() {

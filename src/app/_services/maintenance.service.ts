@@ -559,5 +559,14 @@ export class MaintenanceService{
 	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCrestaZone',JSON.stringify(saveData),header);
 	}
 
+	saveMtnOtherCharge(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnOtherCharge', params, header);
+	}
+
 }
 
