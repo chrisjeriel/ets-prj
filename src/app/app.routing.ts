@@ -139,6 +139,7 @@ import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
+import { PolValueCoverageComponent } from './underwriting/generate-documents/pol-value-coverage/pol-value-coverage.component';
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
@@ -303,6 +304,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
     { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
     { path: 'maintenance-cresta-zone', component: MtnCrestaComponent },
+    { path: 'pol-value-coverage', component: PolValueCoverageComponent },
     { path: 'maintenance-insured', component: InsuredListComponent },
     { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
