@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NotesService } from '@app/_services/notes.service';
+import { NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 import { UnderwritingService, MaintenanceService } from '../../../_services';
 
@@ -15,7 +16,7 @@ import * as alasql from 'alasql';
 })
 export class RiskListComponent implements OnInit {
     @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
-
+    @ViewChild(NgbTabset) tabset: NgbTabset;
     maintenanceRiskListData: any = {
         tableData: [],
         tHeader: ['Risk No.', 'Risk Name', 'Abbreviation', 'Active', 'Region', 'Province', 'City/Town', 'District', 'Block', 'Lat', 'Long'],
@@ -186,6 +187,13 @@ export class RiskListComponent implements OnInit {
     alasql('SELECT riskId AS RiskNo, riskName AS RiskName, riskAbbr AS RiskAbbrev, activeTag AS ActiveTag, regionDesc AS Region, '+
            'provinceDesc AS Province, cityDesc AS City, districtDesc AS District, blockDesc AS Block, latitude AS Latitude, longitude AS Longitude '+
            'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,importData]);
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        $event.preventDefault();
+        this.router.navigateByUrl('/maintenance-qu-pol');
+      }
   }
 
 }

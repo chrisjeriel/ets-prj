@@ -182,6 +182,7 @@ export class PolMxLineComponent implements OnInit {
 			this.passData.tableData = [];
 			this.arrLineCd = [];
 			var rec = data['line'];
+			console.log(rec);
 			this.passData.tableData = rec;
 			for(let i of rec){
 				this.arrLineCd.push(i.lineCd);

@@ -952,8 +952,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   cancel(){
-    //this.cancelBtn.clickCancel();
-    console.log(this.passDataSectionCover.tableData);
+    this.cancelBtn.clickCancel();
   }
 
   update(data){

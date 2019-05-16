@@ -24,7 +24,7 @@ export class OtherChargeComponent implements OnInit {
 	  	tHeader: ['Charge Code', 'Charge Name', 'Charge Type', 'Rate (%)', 'Local Amount', 'Active', 'Remarks'],
 	  	dataTypes: ['sequence-3', 'text', 'select', 'percent', 'currency','checkbox', 'text'],
 	  	keys: ['chargeCd', 'chargeDesc', 'chargeType', 'premRt', 'defaultAmt', 'activeTag', 'remarks'],
-	  	widths: [1,'180','90',1,1,1,'220'],
+	  	widths: [1,'120','75',1,1,1,'220'],
 	  	uneditable: [true,false,false,false,false,false,false],
 	  	nData: {
 	  		chargeCd: '',

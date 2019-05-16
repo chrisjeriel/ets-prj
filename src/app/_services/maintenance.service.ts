@@ -472,7 +472,16 @@ export class MaintenanceService{
                  'Content-Type': 'application/json'
             })
          };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCedingCompany',params,header);
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCedingCompany',params,header);
+    }
+
+     saveMtnRegion(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnRegion',params,header);
     }
 
     saveMtnSpoilageReason(params){
@@ -484,14 +493,31 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSpoilageReason',JSON.stringify(params),header);
     }
 
+    saveMtnDistrict(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnDistrict',JSON.stringify(params),header);
+    }
+
     saveMtnQuoteWordings(params){
     	let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
-         
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnQuoteWordings', params, header);
+    }
+
+    saveMtnBlock(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBlock',JSON.stringify(params),header);
     }
 
     saveMtnPolicyWordings(params){
@@ -500,7 +526,6 @@ export class MaintenanceService{
                  'Content-Type': 'application/json'
             })
          };
-         
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPolicyWordings', params, header);
     }
 

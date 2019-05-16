@@ -17,9 +17,9 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   private icon: string = 'fa fa-calendar';
   
   private spanStyle: any = {
-	width: '100%',
-	position: 'absolute',
-	display: 'contents'
+  	width: '100%',
+  	position: 'absolute',
+  	display: 'contents'
   }
 
   private inputStyle: any = {
@@ -27,7 +27,8 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	backgroundColor: 'transparent',
   }
 
-  @Output() outVal = new EventEmitter<any>();
+  @Input() value: string = null;
+  @Output() valueChange = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
 
   @Input() type: string = 'datetime';
@@ -35,8 +36,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   @Input() showSeconds: boolean = false;
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
-  @Input() textAlign: string = 'left';
-  @Input() value: string = null;
+  @Input() textAlign: string = 'left';  
   @Input() minDate: string = '1970-01-01';
   @Input() maxDate: string = '';
   @Input() disabledDates: any[] = null;
@@ -115,7 +115,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	}
   }
 
-  valueChanged() {
+  valueUpdated() {
   	var dateString = this.ns.toDateTimeString(this.type == 'datetime' && this.datepickerVal != null ? this.datepickerVal : this.datepickerVal == null ? '' : this.datepickerVal.setSeconds(0));
 
   	switch (this.type) {
@@ -132,7 +132,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   			break;
   	}
 
-  	this.outVal.emit(dateString);
+  	this.valueChange.emit(dateString);
   }
 
   onClearClick() {
