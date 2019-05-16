@@ -31,6 +31,7 @@ export class HundredValPolPrintComponent implements OnInit {
   flawlessTransaction: boolean = false;
   generateFlag: boolean = true;
   loading: boolean = false;
+  change: boolean = false;
 
   policyListingData: any = {
   	tableData: [],
@@ -197,18 +198,21 @@ export class HundredValPolPrintComponent implements OnInit {
 
 	checkPolicySearch(){
 		console.log(this.tempPolNo);
-		let emptyCheck: boolean = false;
-		for(var i of this.tempPolNo){
-			if(i.length === 0){
-				this.clearFields();
-				emptyCheck = true;
-				break;
+		if(this.change){
+			let emptyCheck: boolean = false;
+			for(var i of this.tempPolNo){
+				if(i.length === 0){
+					this.clearFields();
+					emptyCheck = true;
+					break;
+				}
 			}
-		}
-		if(!emptyCheck){
-			this.policyListingData.tableData = [];
-			this.isType = true;
-			this.retrievePolListing();
+			if(!emptyCheck){
+				this.policyListingData.tableData = [];
+				this.isType = true;
+				this.change = false;
+				this.retrievePolListing();
+			}
 		}
 	}
 
@@ -238,7 +242,7 @@ export class HundredValPolPrintComponent implements OnInit {
 	    }else if(field === 'cedingId'){
 	      return String(str).padStart(3, '0');
 	    }else if(field === 'altNo'){
-	      return String(str).padStart(2, '0');
+	      return String(str).padStart(3, '0');
 	    }
 	  }
 	}
