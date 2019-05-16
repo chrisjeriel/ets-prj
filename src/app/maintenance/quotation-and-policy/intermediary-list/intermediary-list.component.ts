@@ -143,7 +143,7 @@ export class IntermediaryListComponent implements OnInit {
 
 	  	if($event.nextId === 'Exit'){
 	  		$event.preventDefault();
-			this.router.navigate(['']);
+			this.router.navigateByUrl('/maintenance-qu-pol');
 	  	}
 
 	 }

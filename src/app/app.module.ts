@@ -370,11 +370,14 @@ import { HundredValPolPrintComponent } from './underwriting/generate-documents/h
 import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
 import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
 import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
+import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
+import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
 import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
+import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
 
 
 
@@ -753,11 +756,14 @@ import { IntermediaryComponent } from './maintenance/quotation-and-policy/interm
         QuoteWordingComponent,
         QuoteStatusReasonComponent,
         SpoilageReasonComponent,
+        DistrictComponent,
+        BlockComponent,
         MtnCurrencyListComponent,
         MtnCurrencyRateComponent,
         MtnCATPerilComponent,
         MtnCrestaComponent,
         IntermediaryComponent,
+        QuotationAndPolicyComponent,
     ],
 
   	providers: [

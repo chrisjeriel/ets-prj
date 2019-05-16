@@ -490,6 +490,23 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSpoilageReason',JSON.stringify(params),header);
     }
 
+    saveMtnDistrict(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnDistrict',JSON.stringify(params),header);
+    }
+
+    saveMtnBlock(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBlock',JSON.stringify(params),header);
+    }
     getMtnCatPeril(lineCd: string, objectId?: string, perilId?: string){
     	const params = new HttpParams()
 		     .set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))

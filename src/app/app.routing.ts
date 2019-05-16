@@ -142,6 +142,12 @@ import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-crest
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
+import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
+
+//delete below when merged with maintenance region
+import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
+import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
+//end
 
 const appRoutes: Routes = [
 
@@ -286,6 +292,13 @@ const appRoutes: Routes = [
     { path: 'maintenance-quote-wording', component: QuoteWordingComponent },
     { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
     { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
+    { path: 'maintenance-qu-pol', component: QuotationAndPolicyComponent},
+
+
+    //delete below when merged with maintenance region
+    { path: 'maintenance-district', component: DistrictComponent },
+    //end
+
     { path: 'maintenance-currency', component: MtnCurrencyListComponent },
     { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
     { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
