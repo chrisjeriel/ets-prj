@@ -1,0 +1,15 @@
+.no-margin{
+	margin: 0px !important;
+}
+
+.no-padding{
+	padding: 0px !important;
+}
+
+.align-right{
+	text-align: right;
+}
+
+.gaps{
+	margin-left: 2px !important;
+}

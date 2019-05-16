@@ -17,9 +17,9 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   private icon: string = 'fa fa-calendar';
   
   private spanStyle: any = {
-	width: '100%',
-	position: 'absolute',
-	display: 'contents'
+  	width: '100%',
+  	position: 'absolute',
+  	display: 'contents'
   }
 
   private inputStyle: any = {
@@ -27,7 +27,8 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	backgroundColor: 'transparent',
   }
 
-  @Output() outVal = new EventEmitter<any>();
+  @Input() value: string = null;
+  @Output() valueChange = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
 
   @Input() type: string = 'datetime';
@@ -35,8 +36,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   @Input() showSeconds: boolean = false;
   @Input() disabled: boolean = false;
   @Input() required: boolean = false;
-  @Input() textAlign: string = 'left';
-  @Input() value: string = null;
+  @Input() textAlign: string = 'left';  
   @Input() minDate: string = '1970-01-01';
   @Input() maxDate: string = '';
   @Input() disabledDates: any[] = null;
@@ -59,7 +59,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	}
 
   	if(this.table) {
-  		this.spanStyle['minWidth'] = '9em';
+  		this.spanStyle['minWidth'] = this.type == 'time' ? '1px' : '9em';
   		this.inputStyeClass += ' tbl-dp';
   	}
 
@@ -83,7 +83,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   				this.datepickerVal = null;
   			}
     	} else {
-    		this.datepickerVal = changes.value.currentValue == '' ? null : new Date(changes.value.currentValue);
+    		this.datepickerVal = changes.value.currentValue == '' || changes.value.currentValue == null ? null : new Date(changes.value.currentValue);
     	}  	  	    	
     }
 
@@ -105,9 +105,9 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   			this.datepickerVal = null;
   		}  		
   	} else if(this.datepickerVal != null && this.type == 'date' && this.ns.toDateTimeString(this.datepickerVal).split('T')[0] != this.value) {
-  		this.datepickerVal = this.value == '' ? null : new Date(this.value);
+  		this.datepickerVal = this.value == '' || this.value == null ? null : new Date(this.value);
   	} else if(this.datepickerVal != null && this.type == 'datetime' && this.ns.toDateTimeString(this.datepickerVal) != this.value){
-      this.datepickerVal = this.value == '' ? null : new Date(this.value);
+      this.datepickerVal = this.value == '' || this.value == null ? null : new Date(this.value);
     }
   	
   	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {
@@ -115,7 +115,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	}
   }
 
-  valueChanged() {
+  valueUpdated() {
   	var dateString = this.ns.toDateTimeString(this.type == 'datetime' && this.datepickerVal != null ? this.datepickerVal : this.datepickerVal == null ? '' : this.datepickerVal.setSeconds(0));
 
   	switch (this.type) {
@@ -132,7 +132,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   			break;
   	}
 
-  	this.outVal.emit(dateString);
+  	this.valueChange.emit(dateString);
   }
 
   onClearClick() {

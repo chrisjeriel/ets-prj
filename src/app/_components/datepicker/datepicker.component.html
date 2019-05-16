@@ -1,7 +1,7 @@
 <ng-container *ngIf="type == 'datetime'" #dttpl>
 <p-calendar 
 	[ngModel]="datepickerVal"
-	(ngModelChange)="datepickerVal=$event; valueChanged()"
+	(ngModelChange)="datepickerVal=$event; valueUpdated()"
 	[showTime]="true"
 	[hourFormat]="12"
 	[showIcon]="showIcon"
@@ -32,7 +32,7 @@
 <ng-container *ngIf="type == 'date'" #dtpl>
 <p-calendar 
 	[ngModel]="datepickerVal"
-	(ngModelChange)="datepickerVal=$event; valueChanged()"
+	(ngModelChange)="datepickerVal=$event; valueUpdated()"
 	[showIcon]="showIcon"
 	[style]="spanStyle"
 	[inputStyle]="inputStyle"
@@ -43,11 +43,11 @@
 	[minDate]="minimumDate"	
 	[clearButtonStyleClass]="'cust-btn'"
 	[todayButtonStyleClass]="'cust-btn'"
-	[selectOtherMonths]="true"	
+	[selectOtherMonths]="true"
+	[monthNavigator]="true"
 	[yearNavigator]="true"
 	[disabledDates]="disabledDates"
 	[disabledDays]="disabledDays"
-	[monthNavigator]="true"
 	[yearRange]="'1970:2200'"
 	[tabindex]="tabindex"
 	[name]="name"	
@@ -61,7 +61,7 @@
 <ng-container *ngIf="type == 'time'" #ttpl>
 <p-calendar
 	[ngModel]="datepickerVal"
-	(ngModelChange)="datepickerVal=$event; valueChanged()"
+	(ngModelChange)="datepickerVal=$event; valueUpdated()"
 	[showTime]="true"
 	[hourFormat]="12"
 	[showIcon]="false"
