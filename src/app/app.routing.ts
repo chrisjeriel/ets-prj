@@ -135,6 +135,7 @@ import { HundredValPolPrintComponent } from './underwriting/generate-documents/h
 import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
 import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
 import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
+import { PolicyWordingComponent } from './maintenance/quotation-and-policy/policy-wording/policy-wording.component';
 import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
@@ -143,12 +144,15 @@ import { PolValueCoverageComponent } from './underwriting/generate-documents/pol
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
+
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
 
 //delete below when merged with maintenance region
 import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
 import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
 //end
+
+import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
 
 const appRoutes: Routes = [
 
@@ -290,16 +294,14 @@ const appRoutes: Routes = [
     { path: 'maintenance-object', component: ObjectComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
     { path: 'total-val-pol-print', component: HundredValPolPrintComponent },
-    { path: 'maintenance-quote-wording', component: QuoteWordingComponent },
-    { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
-    { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
     { path: 'maintenance-qu-pol', component: QuotationAndPolicyComponent},
-
-
     //delete below when merged with maintenance region
     { path: 'maintenance-district', component: DistrictComponent },
     //end
-
+    { path: 'maintenance-quote-wording', component: QuoteWordingComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
+    { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
+    { path: 'maintenance-policy-wording', component: PolicyWordingComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-currency', component: MtnCurrencyListComponent },
     { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
     { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
@@ -310,6 +312,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-other-charge', component: OtherChargeComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
