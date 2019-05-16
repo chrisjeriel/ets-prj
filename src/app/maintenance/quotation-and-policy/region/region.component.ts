@@ -75,11 +75,16 @@ export class RegionComponent implements OnInit {
     cancelFlag: boolean;
 
 
-  constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal) { }
+  constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal
+    ,private route: ActivatedRoute) { }
 
   ngOnInit() {
-  	    this.titleService.setTitle('Mtn | Region');
-		this.getMtnRegion();
+	  this.titleService.setTitle('Mtn | Region');
+    this.route.params.subscribe(a=>{
+      this.tabset.activeId = a.id;
+      if(a.id == 'region')
+        this.getMtnRegion();
+    })
   }
 
 
@@ -247,6 +252,12 @@ export class RegionComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  onTabChange(event){
+    if(event.nextId == 'region'){
+      this.getMtnRegion();
+    }
   }
 
 }

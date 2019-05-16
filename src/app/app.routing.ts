@@ -296,7 +296,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'maintenance-location', component: RegionComponent },
+    { path: 'maintenance-location/:id', component: RegionComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
