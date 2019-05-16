@@ -366,6 +366,7 @@ import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/c
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
+import { HundredValPolPrintComponent } from './underwriting/generate-documents/hundred-val-pol-print/hundred-val-pol-print.component';
 import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
 import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
 import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
@@ -752,6 +753,7 @@ import { Alert2Component } from './_components/common/alert2/alert2.component';
         EndorsementComponent,
         ObjectComponent,
         SectionCoverComponent,
+        HundredValPolPrintComponent,
         QuoteWordingComponent,
         QuoteStatusReasonComponent,
         SpoilageReasonComponent,

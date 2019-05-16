@@ -955,6 +955,15 @@ export class UnderwritingService {
          return this.http.post(environment.prodApiUrl + '/underwriting-service/postPolicy',JSON.stringify(params),header);
     }
 
+    generateHundredValPolPrinting(params){
+        let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/underwriting-service/generateHundredValuePolPrinting',JSON.stringify(params),header);
+    }
+
 }            
 
             
