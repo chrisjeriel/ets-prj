@@ -29,9 +29,9 @@ export class RegionComponent implements OnInit {
 			catTag          : null,
 			remarks         : null,
 			"createUser"    : this.ns.getCurrentUser(),
-            "createDate"    : 0,
+            "createDate"    : this.ns.toDateTimeString(0),
             "updateUser"	: this.ns.getCurrentUser(),
-      		"updateDate"	: 0,
+      		"updateDate"	: null
 		},
 		checkFlag			: false,
 		searchFlag			: true,
@@ -59,8 +59,18 @@ export class RegionComponent implements OnInit {
 
 	regionCdArray : any = [];
 
-	dialogMessage: string = "";
-    dialogIcon: string = "";
+	dialogMessage : string = "";
+    dialogIcon    : string = "";
+    selectedData  : any;
+    mtnRegionReq  : any = { 
+    						"deleteRegion": [],
+                    		"saveRegion"  : []}
+    editedData:any[] = [];
+    deletedData:any[] =[];
+    deleteBool : boolean;
+    regionCd : any;
+    cancelFlag: boolean;
+
 
   constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal) { }
 
@@ -97,9 +107,14 @@ export class RegionComponent implements OnInit {
   	return cb === 'Y'?true:false;
   }
 
+  cbFunc2(cb){
+  	return cb === true?'Y':'N';
+  }
+
   onRowClick(event){
-  	console.log(event);
   	if(event !== null){
+  		this.selectedData = event;
+  		this.regionCd = event.regionCd;
   	    this.passData.disableGeneric    = false;
   		this.regionRecord.regionCd	    = event.regionCd;
 	  	this.regionRecord.createUser	= event.createUser;
@@ -116,13 +131,14 @@ export class RegionComponent implements OnInit {
   	}
   }
 
-  onClickSave(){
+  onClickSave(cancelFlag?){
+  	this.cancelFlag = cancelFlag !== undefined;
+  	
       if(this.checkFields()){
-            console.log(this.hasDuplicates(this.regionCdArray));
 		    if(this.hasDuplicates(this.regionCdArray)){
-		      	this.dialogMessage="Unable to save the record. Region Code must be unique.";
-		        this.dialogIcon = "error";
-		        this.successDialog.open();
+		      this.dialogMessage="Unable to save the record. Region Code must be unique.";
+			  this.dialogIcon = "warning-message";
+			  this.successDialog.open();
 		    } else {
 		      $('#confirm-save #modalBtn2').trigger('click');
 		    }
@@ -148,12 +164,86 @@ export class RegionComponent implements OnInit {
     return (new Set(array)).size !== array.length;
   }
 
-  onClickSaveRegion(){
+  onClickSaveRegion(cancelFlag?){
 
+  	this.mtnRegionReq.saveRegion = [];
+  	this.mtnRegionReq.deleteRegion = [];
+  	this.editedData = [];
+  	this.deletedData = [];
+  	for(var i=0;i<this.passData.tableData.length;i++){
+  		 if(this.passData.tableData[i].edited){
+  		 	  this.editedData.push(this.passData.tableData[i]);
+  		 	  this.editedData[this.editedData.length - 1].activeTag  = this.cbFunc2(this.passData.tableData[i].activeTag);
+              this.editedData[this.editedData.length - 1].updateUser = this.ns.getCurrentUser();
+              this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);             
+         } else if (this.passData.tableData[i].deleted) {
+         	  this.deletedData.push(this.passData.tableData[i].regionCd);
+         }      
+  	}
+  	        this.mtnRegionReq.saveRegion = this.editedData;
+            this.mtnRegionReq.deleteRegion = this.deletedData;     
+            this.saveRegion();
+
+  }
+
+  saveRegion(){
+  	this.mtnService.saveMtnRegion(JSON.stringify(this.mtnRegionReq))
+                .subscribe(data => {
+                	console.log(data);
+                    if(data['returnCode'] == -1){
+			            this.dialogIcon = "success";
+			            this.successDialog.open();
+			            this.getMtnRegion();
+			        }else{
+			            this.dialogIcon = "error";
+			            this.successDialog.open();
+			            this.getMtnRegion();
+			        }
+    });
+  }
+
+  onClickDelRegion(obj : boolean){
+  	    this.mtnRegionReq.saveRegion = [];
+  	    this.mtnRegionReq.deleteRegion = [];
+  		this.deletedData = [];
+  		this.editedData = [];
+  		if(obj){
+  			this.mtnService.getMtnProvince(this.regionCd,null).subscribe(data => {
+  				console.log(data['region'].length);
+  				if(data['region'].length > 0){
+  				   this.getMtnRegion();
+  				   this.dialogMessage="You are not allowed to delete a Region that is used by Province, City, District or Block.";
+			       this.dialogIcon = "warning-message";
+			       this.successDialog.open();
+  				} else {
+  				  this.deletedData.push({
+								    "regionCd": this.regionCd
+								     });
+		  		  this.mtnRegionReq.saveRegion = this.editedData;
+		          this.mtnRegionReq.deleteRegion = this.deletedData;     
+		  		  this.saveRegion();
+  				}
+  			});
+  		} 
+  }
+
+  deleteRegion(){
+  	    if (this.selectedData.add){
+  	    	this.deleteBool = false;
+  	    }else {
+  	    	this.deleteBool = true;	
+  	    }
+  	    this.regionTable.indvSelect.deleted = true;
+	  	this.regionTable.selected  = [this.regionTable.indvSelect]
+	  	this.regionTable.confirmDelete();
   }
 
   addRegion(event){
     	
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 
 }

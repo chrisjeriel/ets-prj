@@ -7,14 +7,14 @@
 				<div class="row">
 					<div class="col-sm">
 						<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-							<app-cust-editable-non-datatable #regionTable [passData]="passData" (genericBtn)="deleteRegion()" (tableDataChange)="passData.tableData=$event" (add)="addRegion()" (newClick)="onRowClick($event)" appRequired></app-cust-editable-non-datatable>
+							<app-cust-editable-non-datatable #regionTable [passData]="passData" (genericBtn)="deleteRegion()" (onDelete)="regionTable.onClickDelete('force');onClickDelRegion(this.deleteBool);" (tableDataChange)="this.selectedData = $event" (add)="addRegion()" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 						</div>
 					</div>
 				</div>
 				<div class="row" style="padding-bottom: 10px !important;">
 					<div class="col-sm d-flex justify-content-center">
-						<button class="cust-btn"  [class.d-none]="inquiryFlag" (click)="cancel()">Cancel</button>
-						<button class="cust-btn"  [class.d-none]="inquiryFlag" (click)="onClickSave()">Save</button>
+						<button class="cust-btn" style="z-index: 1000 !important" [class.d-none]="inquiryFlag" (click)="cancel()">Cancel</button>
+						<button class="cust-btn" style="z-index: 1000 !important" [class.d-none]="inquiryFlag" (click)="onClickSave()">Save</button>
 					</div>
 				</div>
 			  </fieldset>
@@ -42,8 +42,7 @@
 	</ngb-tabset>
 </div>
 
-
 <app-confirm-save (onYes)="onClickSaveRegion()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSaveLine('cancel')" [url]="'/'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/'" ></app-cancel-button>
 
