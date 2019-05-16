@@ -240,7 +240,7 @@
                                 <fa name="calculator"></fa>&nbsp;Accounting Service
                             </ng-template>
                             <ng-template ngbPanelContent>
-                               
+
                             </ng-template>
                         </ngb-panel> -->
                         <ngb-panel>
@@ -335,9 +335,9 @@
                                         </ng-template>
                                         <ng-template ngbPanelContent>
                                             <button [routerLink]="['mon-end-data-chk-in-trust']" class="button btn btn-link">Data Checking</button>
-                                            <br />                          
+                                            <br />
                                             <button [routerLink]="['mon-end-batch-in-trust']" class="button btn btn-link">Batch Processing</button>
-                                            <br /> 
+                                            <br />
                                             <button [routerLink]="['mon-end-trial-bal-in-trust']" class="button btn btn-link">Trial Balance Processing</button>
                                             <br />
                                             <button [routerLink]="['funds-held']" class="button btn btn-link">Funds Held</button>
@@ -362,7 +362,7 @@
                                 <br />
                                 <button [routerLink]="['/journal-voucher-service']" class="button btn btn-link"> Journal Voucher
                                 </button>
-                                <br /> 
+                                <br />
                                 <!-- <button [routerLink]="['fixed-assets']" class="button btn btn-link">Fixed Assets</button>
                                 <br /> -->
                                 <button [routerLink]="['accounting-service-expense-budget']" class="button btn btn-link">Expense Budget</button>
@@ -403,7 +403,7 @@
                                             <button [routerLink]="['accounting-service-inquiry']" class="button btn btn-link">Edited Tax Details</button>
                                             <br />
                                             <button [routerLink]="['acct-srvc-inquiry-cncld-trans']" class="button btn btn-link">Cancelled Transactions</button>
-                                            <br />   
+                                            <br />
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -470,6 +470,8 @@
                                         <ng-template ngbPanelContent>
                                             <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
                                             <br />
+                                            <button [routerLink]="['/maintenance-line-class']" class="button btn btn-link">Line Class</button>
+                                            <br />
                                             <button [routerLink]="['/ceding-co-list']" class="button btn btn-link">Ceding</button>
                                             <br />
                                             <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding Companies</button>
@@ -492,6 +494,10 @@
                                             <br />
                                             <button [routerLink]="['/maintenance-intermediary']" class="button btn btn-link">Intermediary</button>
                                             <br />
+                                            <button [routerLink]="['/maintenance-object']" class="button btn btn-link">Object</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-other-charge']" class="button btn btn-link">Other Charge</button>
+                                            <br />
                                             <ngb-accordion #acc="ngbAccordion">
                                                 <ngb-panel>
                                                     <ng-template ngbPanelTitle>
@@ -501,6 +507,8 @@
                                                         <button [routerLink]="['/adv-word-mtn']" class="button btn btn-link">Advice Wording</button>
                                                         <br />
                                                         <button [routerLink]="['/maintenance-quote-wording']" class="button btn btn-link">Quote Wording</button>
+                                                        <br />
+                                                        <button [routerLink]="['/maintenance-policy-wording']" class="button btn btn-link">Policy Wording</button>
                                                         <br />
                                                     </ng-template>
                                                 </ngb-panel>
@@ -623,7 +631,7 @@
             <div class="form-row" style="justify-content: center;">
                 <button class='btn col-sm-2' style="height : 40px; background: #557a95" (click)="changeTheme()">
                 </button>
-                <button class='btn col-sm-2' style="height : 40px; margin-left: 5px; 
+                <button class='btn col-sm-2' style="height : 40px; margin-left: 5px;
                 background: #4CAF50"
                     (click)="changeTheme('green')">
                 </button>

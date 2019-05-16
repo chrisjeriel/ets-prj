@@ -59,7 +59,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	}
 
   	if(this.table) {
-  		this.spanStyle['minWidth'] = this.type == 'time' ? '1px' :  '9em';
+  		this.spanStyle['minWidth'] = this.type == 'time' ? '1px' : '9em';
   		this.inputStyeClass += ' tbl-dp';
   	}
 
@@ -83,7 +83,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   				this.datepickerVal = null;
   			}
     	} else {
-    		this.datepickerVal = changes.value.currentValue == '' ? null : new Date(changes.value.currentValue);
+    		this.datepickerVal = changes.value.currentValue == '' || changes.value.currentValue == null ? null : new Date(changes.value.currentValue);
     	}  	  	    	
     }
 
@@ -105,9 +105,9 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   			this.datepickerVal = null;
   		}  		
   	} else if(this.datepickerVal != null && this.type == 'date' && this.ns.toDateTimeString(this.datepickerVal).split('T')[0] != this.value) {
-  		this.datepickerVal = this.value == '' ? null : new Date(this.value);
+  		this.datepickerVal = this.value == '' || this.value == null ? null : new Date(this.value);
   	} else if(this.datepickerVal != null && this.type == 'datetime' && this.ns.toDateTimeString(this.datepickerVal) != this.value){
-      this.datepickerVal = this.value == '' ? null : new Date(this.value);
+      this.datepickerVal = this.value == '' || this.value == null ? null : new Date(this.value);
     }
   	
   	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {

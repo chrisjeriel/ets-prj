@@ -7,6 +7,8 @@ import { environment } from '@environments/environment';
 import { NgbModal,NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-pol-mx-line',
@@ -21,8 +23,9 @@ export class PolMxLineComponent implements OnInit {
 	passData: any = {
 		tableData:[],
 		tHeader				:["Line Code", "Description", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
-		dataTypes			:["text", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text"],
+		dataTypes			:["pk-cap", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text"],
 		nData:{
+			newRec			: 1,
 			lineCd          : '',
 			description     : '',
 			cutOffTime      : '',
@@ -47,6 +50,9 @@ export class PolMxLineComponent implements OnInit {
 		uneditable			: [false,false,false,false,false,false,false,false,false,false,false],
 		widths				: ['auto','350',1,1,1,1,1,1,'auto','auto','auto'],
 		pageID				: 'line-mtn-line',
+		mask: {
+	  		lineCd: 'AAAAAAA'
+	  	},
 		keys				: ['lineCd','description','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks'],
 	};
 
@@ -204,12 +210,11 @@ export class PolMxLineComponent implements OnInit {
 
 	onRowClick(event){
 		if(event !== null){
-			this.saveMtnLine.lineCd		= event.lineCd;
-			this.saveMtnLine.updateDate = this.ns.toDateTimeString(event.updateDate);
-	        this.saveMtnLine.updateUser = event.updateUser;
-	        this.saveMtnLine.createDate = this.ns.toDateTimeString(event.createDate);
-	        this.saveMtnLine.createUser = event.createUser;
-
+			this.saveMtnLine.lineCd		 = event.lineCd;
+			this.saveMtnLine.updateDate  = this.ns.toDateTimeString(event.updateDate);
+	        this.saveMtnLine.updateUser  = event.updateUser;
+	        this.saveMtnLine.createDate  = this.ns.toDateTimeString(event.createDate);
+	        this.saveMtnLine.createUser  = event.createUser;
 	       	this.passData.disableGeneric = false;
 		}else{
 			this.passData.disableGeneric = true;
@@ -251,10 +256,4 @@ export class PolMxLineComponent implements OnInit {
 	  	}
 	}
 
-	onClickAdd(){
-		console.log('add');
-		// this.passData.uneditable[0] = false;
-		// this.passData.tableData = this.passData.tableData;
-		// this.table.refreshTable();
-	}
 }
