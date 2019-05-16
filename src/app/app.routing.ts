@@ -128,6 +128,7 @@ import { LineClassComponent } from './maintenance/quotation-and-policy/line-clas
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
 import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
 import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
+import { RegionComponent } from './maintenance/quotation-and-policy/region/region.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
@@ -142,11 +143,6 @@ import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
-
-//delete below when merged with maintenance region
-import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
-import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
-//end
 
 const appRoutes: Routes = [
 
@@ -291,12 +287,6 @@ const appRoutes: Routes = [
     { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
     { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
     { path: 'maintenance-qu-pol', component: QuotationAndPolicyComponent},
-
-
-    //delete below when merged with maintenance region
-    { path: 'maintenance-district', component: DistrictComponent },
-    //end
-
     { path: 'maintenance-currency', component: MtnCurrencyListComponent },
     { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
     { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
@@ -306,6 +296,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-location', component: RegionComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

@@ -378,6 +378,10 @@ import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-crest
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
 import { Alert2Component } from './_components/common/alert2/alert2.component';
+import { RegionComponent } from './maintenance/quotation-and-policy/region/region.component';
+import { ProvinceComponent } from './maintenance/quotation-and-policy/region/province/province.component';
+import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-region.component';
+import { RequiredTableDirective } from './_directives/required-table.directive';
 
 
 
@@ -764,6 +768,10 @@ import { Alert2Component } from './_components/common/alert2/alert2.component';
         IntermediaryComponent,
         QuotationAndPolicyComponent,
         Alert2Component,
+        RegionComponent,
+        ProvinceComponent,
+        MtnRegionComponent,
+        RequiredTableDirective,
     ],
 
   	providers: [
