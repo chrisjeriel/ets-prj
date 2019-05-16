@@ -176,6 +176,7 @@ export class PolMxLineComponent implements OnInit {
 						this.getMtnLine();
 						$('app-sucess-dialog #modalBtn').trigger('click');
 						this.params.saveLine 	= [];
+						this.passData.disableGeneric = true;
 					});
 				}	
 			}
