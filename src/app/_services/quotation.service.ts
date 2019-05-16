@@ -6,6 +6,8 @@ import { isNull, nullSafeIsEquivalent } from '@angular/compiler/src/output/outpu
 import { NULL_INJECTOR } from '@angular/core/src/render3/component';
 import { isNullOrUndefined } from 'util';
 import { NullTemplateVisitor } from '@angular/compiler';
+import { map,catchError } from 'rxjs/operators';
+import { Alert2Service } from '@app/_services/alert2.service';
 
 
 @Injectable({ providedIn: 'root' })
@@ -46,8 +48,22 @@ export class QuotationService {
     savingType: string = 'normal';
     currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private alertService: Alert2Service) {
 
+    }
+
+    showMsgs(response):any{
+        for(let msg of response['messageList']){
+            this.alertService.success(msg.message);
+        }
+        for(let msg of response['errorList']){
+            this.alertService.error(msg.errorMessage);
+        }
+        return response;
+    }
+
+    conError(){
+        this.alertService.error('Cannot connect to server.');
     }
 
 
@@ -377,7 +393,13 @@ export class QuotationService {
             }
         }
         
-        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListing', {params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListing', {params})
+            .pipe(
+                map(a=>this.showMsgs(a)),catchError(e=>{
+                    this.conError();
+                    throw e;
+                })
+            );
        
     }
 

@@ -1,26 +1,14 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Quotation & Policy</h4>
 	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Quote Wording">
+		<ngb-tab class="ngb-tab" title="Other Charge">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
-						    <div class="form-row custom-row-inline-inset">
-						        <div class="input-group">
-						            <div class="col-sm-3"></div>
-						            <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
-						            <input class="form-control form-control-sm col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="lineCd" (ngModelChange)="lineCd=$event.toUpperCase()" mask="SSS">
-						            <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
-						            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="lineDesc" readonly>
-						            <div class="col-sm-3"></div>
-						        </div>
-						    </div>
-						</fieldset>
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="quoteWordingData" (tableDataChange)="quoteWordingData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); quoteWordingData.disableGeneric=true;"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="otherChargeData" (tableDataChange)="otherChargeData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); otherChargeData.disableGeneric=true;"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
@@ -63,16 +51,9 @@
 	</ngb-tabset>
 </div>
 
-
 <!-- <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button> -->
-
-<app-mtn-line id="qwLineLOV" (selectedData)="setLine($event)"></app-mtn-line>
-<app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/'" ></app-cancel-button>
-
 
 <app-modal class="d-none" id="mtnQWWarningModal">
     <div header>Warning Message</div>
@@ -87,4 +68,4 @@
     <div footer class="w-100 text-center">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
     </div>
-</app-modal>
+</app-modal> -->

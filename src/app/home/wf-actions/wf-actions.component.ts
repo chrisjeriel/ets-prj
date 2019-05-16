@@ -86,6 +86,7 @@ export class WfActionsComponent implements OnInit {
 
   resultReminder: any [] = [];
   resultNote: any [] = [];
+  userList: any[] = [];
 
   constructor(config: NgbModalConfig,
      private modalService: NgbModal,
@@ -117,22 +118,47 @@ open(content, mode : boolean) {
 openModal(){
 	  this.usersListing.tableData = [];
 	  this.table.refreshTable('first');
-      setTimeout(()=>{    //<<<---    using ()=> syntax
-           this.userService.retMtnUsers('').pipe(
+    this.userService.retMtnUsers('').pipe(
            finalize(() => this.setCheckRecords() )
            ).subscribe((data: any) =>{
                  for(var i = 0; i < data.usersList.length; i++){
-                 	this.usersListing.tableData.push(data.usersList[i]);
+                   this.usersListing.tableData.push(data.usersList[i]);
                  }
                  this.table.refreshTable();
                });
-       }, 100);
 }
+
+retrieveUsers(obj : boolean){
+    this.userList = [];
+    this.userService.retMtnUsers('').pipe(
+           finalize(() => this.setToAll(obj) )
+           ).subscribe((data: any) =>{
+                 for(var i = 0; i < data.usersList.length; i++){
+                   this.userList.push(data.usersList[i]);
+                 }
+    });
+}
+
+setToAll(obj : boolean){
+   if(obj){
+     for(var i = 0; i < this.userList.length; i++){
+          this.prepareParam(this.userList[i].userId,this.userList.length);
+     }
+   }else {
+     for(var i = 0; i < this.userList.length; i++){
+          this.prepareParamNote(this.userList[i].userId,this.userList.length);
+     }
+   }
+    
+}
+
+
 
 setCheckRecords(){
 
 	if(this.isEmptyObject(this.userInfoToMany)){
-	}else{
+	
+  }else{
 	    var array = this.userInfoToMany.split(",");
   }
 
@@ -342,7 +368,7 @@ saveReminder(obj){
 	   		   this.prepareParam(this.createInfo.createdBy,1);
 	        break;
 	        }
-	        case '2': {
+	      case '2': {
 	          if (this.isEmptyObject(this.userInfo.userName)){
     			   this.openErrorDiag();
     			  } else {
@@ -359,6 +385,10 @@ saveReminder(obj){
                   this.prepareParam(array[i],array.length-1);
               }
     			  }
+	        break; 
+	        } 
+	         case '4': { 
+	          this.retrieveUsers(this.mode);
 	        break;
 	        }
 	         case '4': {
@@ -398,7 +428,7 @@ saveNotes(obj){
           break; 
           } 
            case '4': { 
-          
+             this.retrieveUsers(this.mode);
           break;
           } 
            default: { 
@@ -517,7 +547,6 @@ saveReminderParams(obj, length: number){
      this.workFlowService.saveWfmReminders(obj) .pipe(
            finalize(() => this.saveRemindersFinal(length) )
            ).subscribe(data => {
-             console.log(data);
             if(data['returnCode'] === 0) {
                 this.resultReminder.push(0)
             } else if (data['returnCode'] === -1) {
@@ -569,7 +598,6 @@ saveNoteParams(obj, length: number){
      this.workFlowService.saveWfmNotes(obj).pipe(
            finalize(() => this.saveNoteFinal(length) )
            ).subscribe(data => {
-             console.log(data);
             if(data['returnCode'] === 0) {
                 this.resultNote.push(0)
             } else if (data['returnCode'] === -1) {  

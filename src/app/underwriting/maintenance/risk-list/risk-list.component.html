@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Quotation & Policy</h4>
-    <ngb-tabset>
+    <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Risk List">
             <ng-template ngbTabContent>
                 <div class="container-fluid" style="padding: 0px">
@@ -29,6 +29,8 @@
                     </div>
                 </div>
             </ng-template>
+        </ngb-tab>
+        <ngb-tab id="Exit" title="Exit">
         </ngb-tab>
     </ngb-tabset>
 </div>

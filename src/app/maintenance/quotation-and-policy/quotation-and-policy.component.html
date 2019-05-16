@@ -15,9 +15,9 @@
 						<br />
 						<button [routerLink]="['/maintenance-line-class']" class="button btn btn-link">Line Class</button>
 						<br />
-						<button [routerLink]="['/maintenance-line-class']" class="button btn btn-link marked">Province</button>
+						<button [routerLink]="['/maintenance-location','province']" class="button btn btn-link marked">Province</button>
 						<br />
-						<button [routerLink]="['/maintenance-line-class']" class="button btn btn-link marked">Region</button>
+						<button [routerLink]="['/maintenance-location','region']" class="button btn btn-link">Region</button>
 						<br />
 						<button [routerLink]="['/maintenance-sec-cov']" class="button btn btn-link">Section Cover</button>
 						<br />
@@ -66,11 +66,11 @@
 						<br />
                    </div>
                    <div class="col-sm">
-                   		<button [routerLink]="['/maintenance-sec-cov']" class="button btn btn-link marked ">Block</button>
+                   		<button [routerLink]="['/maintenance-location','block']" class="button btn btn-link">Block</button>
 						<br />
 						<button [routerLink]="['/maintenance-cresta-zone']" class="button btn btn-link">Cresta Zone</button>
 						<br />
-						<button [routerLink]="['/maintenance-sec-cov']" class="button btn btn-link marked ">District</button>
+						<button [routerLink]="['/maintenance-location','district']" class="button btn btn-link">District</button>
 						<br />
 						<button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
 						<br />
