@@ -29,6 +29,8 @@ export class HundredValPolPrintComponent implements OnInit {
   noDataFound: boolean = false;
   cancelFlag: boolean = false;
   flawlessTransaction: boolean = false;
+  generateFlag: boolean = true;
+  loading: boolean = false;
 
   policyListingData: any = {
   	tableData: [],
@@ -112,12 +114,22 @@ export class HundredValPolPrintComponent implements OnInit {
 	}
 
 	selectPol(){
+		this.loading = true;
 		this.policyInfo.policyId = this.selected.policyId;
 		this.policyInfo.policyNo = this.selected.policyNo;
 		this.tempPolNo = this.selected.policyNo.split('-');
 		this.policyInfo.cedingName = this.selected.cedingName;
 		this.policyInfo.insuredDesc = this.selected.insuredDesc;
 		this.policyInfo.riskName = this.selected.riskName;
+		this.us.getFullCoverage(this.policyInfo.policyNo, this.policyInfo.policyId).subscribe((data: any)=>{
+			if(data.policy === null){
+				this.generateFlag = true;
+			}else{
+				this.generateFlag = false;
+				this.policyInfo.treatyPercent = data.policy.project.fullCoverage.treatyShare;
+			}
+			this.loading = false;
+		});
 	}
 
 	onClickGenerate(){
@@ -127,7 +139,10 @@ export class HundredValPolPrintComponent implements OnInit {
 			this.dialogIcon = "info";
 			this.dialogMessage = "Please fill all required fields";
 			this.successDiag.open();
-		}else{
+		}else if(!this.generateFlag){
+			this.flawlessTransaction = true;
+			this.navigate();
+		}else if(this.generateFlag){
 			$('#confirm-save #modalBtn2').trigger('click');
 		}
 	}
