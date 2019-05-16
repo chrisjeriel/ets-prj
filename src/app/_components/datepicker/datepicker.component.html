@@ -1,7 +1,7 @@
 <ng-container *ngIf="type == 'datetime'" #dttpl>
 <p-calendar 
 	[ngModel]="datepickerVal"
-	(ngModelChange)="datepickerVal=$event; valueChanged()"
+	(ngModelChange)="datepickerVal=$event; valueUpdated()"
 	[showTime]="true"
 	[hourFormat]="12"
 	[showIcon]="showIcon"
@@ -32,7 +32,7 @@
 <ng-container *ngIf="type == 'date'" #dtpl>
 <p-calendar 
 	[ngModel]="datepickerVal"
-	(ngModelChange)="datepickerVal=$event; valueChanged()"
+	(ngModelChange)="datepickerVal=$event; valueUpdated()"
 	[showIcon]="showIcon"
 	[style]="spanStyle"
 	[inputStyle]="inputStyle"
@@ -61,7 +61,7 @@
 <ng-container *ngIf="type == 'time'" #ttpl>
 <p-calendar
 	[ngModel]="datepickerVal"
-	(ngModelChange)="datepickerVal=$event; valueChanged()"
+	(ngModelChange)="datepickerVal=$event; valueUpdated()"
 	[showTime]="true"
 	[hourFormat]="12"
 	[showIcon]="false"
