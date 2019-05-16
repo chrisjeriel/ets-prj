@@ -3,11 +3,9 @@
     <ngb-tabset>
         <ngb-tab title="Spoilage Reason">
             <ng-template ngbTabContent>
-                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
-	                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
 	                	<app-cust-editable-non-datatable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="info=$event"></app-cust-editable-non-datatable>
-	                </fieldset>
-	                <div class="w-100 text-center my-2">
+	                <div class="w-100 text-center my-2" style="margin-top: 30px !important">
                     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
                     	<button class="cust-btn" (click)="onClickSave()">Save</button>
                     </div>
@@ -32,4 +30,4 @@
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/'" ></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>

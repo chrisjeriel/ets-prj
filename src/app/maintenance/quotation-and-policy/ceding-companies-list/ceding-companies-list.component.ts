@@ -81,7 +81,7 @@ export class CedingCompaniesListComponent implements OnInit {
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl('/maintenance-qu-pol');
       }
     }
 

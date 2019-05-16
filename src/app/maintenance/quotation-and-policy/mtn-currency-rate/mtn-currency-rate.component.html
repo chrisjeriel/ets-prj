@@ -49,7 +49,7 @@
                 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
                 <app-confirm-save (onYes)="saveCurrRt()"></app-confirm-save>
                 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-                <app-cancel-button (onYes)="saveCurrRt('cancel')" [url]="'/'" ></app-cancel-button>                
+                <app-cancel-button (onYes)="saveCurrRt('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>                
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
