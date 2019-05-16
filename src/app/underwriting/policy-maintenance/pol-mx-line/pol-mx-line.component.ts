@@ -60,19 +60,8 @@ export class PolMxLineComponent implements OnInit {
 	loading					: boolean;
 	dialogIcon				: string;
 	dialogMessage			: string;
-	@Input() inquiryFlag	: boolean 	= false;
-	successMessage			: string 	= environment.successMessage;
 	arrLineCd     			: any     	= [];
-	counter					: number;
-	mtnLineReq 				: any		= {};
 	warnMsg					: string 	= '';
-	isChecked				: boolean 	= false;
-    usedInQuote				: boolean 	= false;
-    usedInQuoteAdd			: boolean 	= false;
-    arrLineCdDel  			: any     	= [];
-    arrRowsToSave			: any		= [];
-    isAddClicked			: boolean	= false;
-
 
     params : any =	{
 		saveLine 		: [],

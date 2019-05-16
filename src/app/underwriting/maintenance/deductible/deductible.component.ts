@@ -24,7 +24,7 @@ export class DeductibleComponent implements OnInit {
 
     passData: any = {
         tableData            : [],
-        tHeader              : ['Deductible', 'Title', 'Deductible Type','Deductible Amount','Rate','Minimum Amount','Maximum Amount','Deductible Text','Active','Remarks'],
+        tHeader              : ['Deductible', 'Title', 'Deductible Type','Deductible Amount','Rate','Minimum Amount','Maximum Amount','Deductible Text','Section Cover','Endorsement','Active','Default','Remarks'],
         dataTypes            : ['text','text','select','currency','percent','currency','currency','text','checkbox','text'],
         nData:
         {
@@ -64,7 +64,7 @@ export class DeductibleComponent implements OnInit {
         updateUser : null,
         createDate : null,
         createUser : null,
-    }
+    };
     line                :string;
     description         :string;
     mtnDeductiblesReq   :any;
@@ -150,6 +150,9 @@ export class DeductibleComponent implements OnInit {
 
     }
 
+    onSaveMtnDeductibles(){
+
+    }
 
     onSaveDeductibles(cancelFlag?){
         this.counter = 0;
