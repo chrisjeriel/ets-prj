@@ -28,7 +28,7 @@
                                     <div class="text-center">
                                         <div class="cust-btn-container">
                                             <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                                            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                                            <button type="button" class="cust-btn" (click)="onSaveMtnDeductibles()"><a>Save</a></button>
                                         </div>
                                     </div>
                                 </div>
@@ -41,12 +41,16 @@
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
                         <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="deductiblesData.createUser" readonly>
-                        <label class="form-control-sm col-sm-1">Created Date</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="deductiblesData.createDate" readonly>
+                        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+                        <div class="col-sm dp-cont">
+                            <datepicker [value]="deductiblesData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                        </div>
                         <label class="form-control-sm col-sm-1">Last Update By</label>
                         <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="deductiblesData.updateUser" readonly>
-                        <label class="form-control-sm col-sm-1">Last Update</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="deductiblesData.updateDate" readonly>
+                        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+                        <div class="col-sm dp-cont">
+                            <datepicker [value]="deductiblesData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                        </div>
                     </div>
                 </fieldset>
             </ng-template>

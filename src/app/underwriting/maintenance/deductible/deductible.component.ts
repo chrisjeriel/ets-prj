@@ -7,6 +7,8 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-deductible',
@@ -25,23 +27,27 @@ export class DeductibleComponent implements OnInit {
     passData: any = {
         tableData            : [],
         tHeader              : ['Deductible', 'Title', 'Deductible Type','Deductible Amount','Rate','Minimum Amount','Maximum Amount','Deductible Text','Section Cover','Endorsement','Active','Default','Remarks'],
-        dataTypes            : ['text','text','select','currency','percent','currency','currency','text','checkbox','text'],
+        dataTypes            : ['pk-cap','text','select','currency','percent','currency','currency','text','text','text','checkbox','checkbox','text'],
         nData:
         {
+            newRec            : 1,
             deductibleCd      : null,
             deductibleTitle   : null,
-            typeDesc          : null,
+            deductibleType    : 'F',
             deductibleAmt     : null,
             deductibleRate    : null,
             minAmt            : null,
             maxAmt            : null,
             deductibleText    : null,
-            activeTag         : null,
+            sectionCover      : null,
+            endorsement       : null,
+            activeTag         : 'Y',
+            defaultTag        : null,
             remarks           : null
         }
         ,
         opts: [{
-            selector        : 'typeDesc',
+            selector        : 'deductibleType',
             prev            : [],
             vals            : [],
         }],
@@ -51,11 +57,14 @@ export class DeductibleComponent implements OnInit {
         pageLength          : 10,
         checkFlag           : true,
         addFlag             : true,
-        deleteFlag          : true,
-        keys                : ['deductibleCd','deductibleTitle','typeDesc','deductibleAmt','deductibleRate','minAmt','maxAmt','deductibleText','activeTag','remarks'],
-        uneditable          : [false,false,false,false,false,false,false,false,false,false],
+        //deleteFlag          : true,
+        keys                : ['deductibleCd','deductibleTitle','deductibleType','deductibleAmt','deductibleRate','minAmt','maxAmt','deductibleText','sectionCover','endorsement','activeTag','defaultTag','remarks'],
+        uneditable          : [false,false,false,false,false,false,false,false,false,false,false,false,false],
         pageID              : 'mtn-deductibles',
-        widths              : ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto']
+        mask: {
+            deductibleCd: 'AAAAAAA'
+        },
+        widths              : ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto']
 
     };
     data: any;
@@ -85,6 +94,8 @@ export class DeductibleComponent implements OnInit {
     }
 
     getMtnDeductibles(){
+        this.table.overlayLoader = true;
+
         if(this.line === '' || this.line === null){
            this.clearTbl();
         }else{
@@ -97,54 +108,84 @@ export class DeductibleComponent implements OnInit {
 
             this.passData.opts[0].vals = [];
             this.passData.opts[0].prev = [];
-            this.mtnService.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
-            .subscribe(data =>{
+
+            // 
+
+            var subs = forkJoin(this.mtnService.getMtnDeductibles(this.line.toUpperCase(),'','',''),
+                                this.mtnService.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')).pipe(map(([ded, ref]) => { return { ded, ref }; }));
+
+            subs.subscribe(data => {
+                console.log(data);
                 this.passData.opts[0].vals = [];
                 this.passData.opts[0].prev = [];
-                var rec = data['refCodeList'];
-                for(let i of rec){
-                    this.passData.opts[0].vals.push(i.code);
-                    this.passData.opts[0].prev.push(i.description);
-                }
-            });
 
-            this.passData.tableData  = [];
-            this.arrDeductibleCd     = [];
-            console.log(this.line + " >>>> LINE INSIDE MTN DEDUCTIBLES");
-            this.mtnService.getMtnDeductibles(this.line.toUpperCase(),'','','')
-            .subscribe(data =>{
-                this.passData.tableData = [];
-                this.arrDeductibleCd = [];
-                var rec = data['deductibles'];
-                for(let i of rec){
-                    this.passData.tableData.push({
-                        deductibleCd      : i.deductibleCd,
-                        deductibleTitle   : i.deductibleTitle,
-                        typeDesc          : i.deductibleType,                        
-                        deductibleAmt     : i.deductibleAmt,
-                        deductibleRate    : i.deductibleRate,
-                        minAmt            : i.minAmt,
-                        maxAmt            : i.maxAmt,
-                        deductibleText    : i.deductibleText,
-                        activeTag         : i.activeTag,
-                        remarks           : i.remarks,
+                var refRec = data['ref']['refCodeList'];
+                this.passData.opts[0].vals = refRec.map(i => i.code);
+                this.passData.opts[0].prev = refRec.map(i => i.description);
 
-                        createUser        : i.createUser,
-                        createDate        : this.ns.toDateTimeString(i.createDate),
-                        updateDate        : this.ns.toDateTimeString(i.updateDate),
-                        updateUser        : i.updateUser,
+                this.passData.tableData  = [];
+                this.arrDeductibleCd     = [];
 
-                        defaultTag        : i.defaultTag,
-                        endtCd            : i.endtCd,
-                        coverCd           : i.coverCd
-                    });
-
-                    this.arrDeductibleCd.push(i.deductibleCd);
-
-                }
-
+                var dedRec = data['ded']['deductibles'].map(a => { a.createDate = this.ns.toDateTimeString(a.createDate); a.updateDate = this.ns.toDateTimeString(a.updateDate); return a;});
+                this.passData.tableData  = dedRec;
                 this.table.refreshTable();
+                this.table.onRowClick(null, this.passData.tableData[0]);
+
+
             });
+
+            // 
+
+            // this.mtnService.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
+            // .subscribe(data =>{
+            //     this.passData.opts[0].vals = [];
+            //     this.passData.opts[0].prev = [];
+            //     var rec = data['refCodeList'];
+            //     for(let i of rec){
+            //         this.passData.opts[0].vals.push(i.code);
+            //         this.passData.opts[0].prev.push(i.description);
+            //     }
+            // });
+
+            // this.passData.tableData  = [];
+            // this.arrDeductibleCd     = [];
+            
+            // this.mtnService.getMtnDeductibles(this.line.toUpperCase(),'','','')
+            // .subscribe(data =>{
+            //     this.passData.tableData = [];
+            //     this.arrDeductibleCd = [];
+            //     var rec = data['deductibles'];
+            //     for(let i of rec){
+            //         this.passData.tableData.push({
+            //             deductibleCd      : i.deductibleCd,
+            //             deductibleTitle   : i.deductibleTitle,
+            //             typeDesc          : i.deductibleType,                        
+            //             deductibleAmt     : i.deductibleAmt,
+            //             deductibleRate    : i.deductibleRate,
+            //             minAmt            : i.minAmt,
+            //             maxAmt            : i.maxAmt,
+            //             deductibleText    : i.deductibleText,
+            //             sectionCover      : i.sectionCover,
+            //             endorsement       : i.endorsement,
+            //             activeTag         : i.activeTag,
+            //             defaultTag        : i.defaultTag,
+            //             remarks           : i.remarks,
+
+            //             createUser        : i.createUser,
+            //             createDate        : this.ns.toDateTimeString(i.createDate),
+            //             updateDate        : this.ns.toDateTimeString(i.updateDate),
+            //             updateUser        : i.updateUser,
+
+            //             endtCd            : i.endtCd,
+            //             coverCd           : i.coverCd
+            //         });
+
+            //         this.arrDeductibleCd.push(i.deductibleCd);
+
+            //     }
+
+            //     this.table.refreshTable();
+            // });
         }
         
 
@@ -152,6 +193,10 @@ export class DeductibleComponent implements OnInit {
 
     onSaveMtnDeductibles(){
 
+        for(let record of this.passData.tableData){
+            console.log(record);
+            
+        }
     }
 
     onSaveDeductibles(cancelFlag?){
@@ -162,8 +207,9 @@ export class DeductibleComponent implements OnInit {
 
         for(var i=0;i<this.passData.tableData.length;i++){
             var rec = this.passData.tableData[i];
+            console.log(rec);
             if(rec.deductibleCd === '' || rec.deductibleCd === null || rec.deductibleTitle === '' || rec.deductibleTitle === null ||
-                rec.typeDesc === '' || rec.typeDesc === null){
+                rec.deductibleType === '' || rec.deductibleType === null){
                 setTimeout(()=>{
                     $('.globalLoading').css('display','none');
                     this.dialogIcon = 'error';
@@ -193,7 +239,7 @@ export class DeductibleComponent implements OnInit {
                             "deductibleRate":      rec.deductibleRate,
                             "deductibleText":      rec.deductibleText,
                             "deductibleTitle":     rec.deductibleTitle,
-                            "deductibleType":      rec.typeDesc,
+                            "deductibleType":      rec.deductibleType,
                             "defaultTag":          (rec.defaultTag === '' || rec.defaultTag === null || rec.defaultTag === undefined)?'Y':rec.defaultTag,
                             "endtCd":              (rec.endtCd === '' || rec.endtCd === null || rec.endtCd === undefined)?0:rec.endtCd,
                             "lineCd":              this.line,
@@ -205,6 +251,8 @@ export class DeductibleComponent implements OnInit {
                         }
                         ]
                     }
+
+                    console.log(this.mtnDeductiblesReq);
                     this.mtnService.saveMtnDeductibles(JSON.stringify(this.mtnDeductiblesReq))
                     .subscribe(data => {
                         console.log(data);
@@ -273,6 +321,7 @@ setLine(data){
     this.description = data.description;
     this.ns.lovLoader(data.ev, 0);
     this.getMtnDeductibles();
+    setTimeout(() => { $(data.ev.target).removeClass('ng-dirty'); }, 0);
 }
 
 checkCode(ev){

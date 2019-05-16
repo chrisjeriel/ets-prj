@@ -7,8 +7,6 @@ import { environment } from '@environments/environment';
 import { NgbModal,NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
-import { forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-pol-mx-line',
@@ -188,6 +186,7 @@ export class PolMxLineComponent implements OnInit {
 				this.arrLineCd.push(i.lineCd);
 			}
 			this.table.refreshTable();
+			this.table.onRowClick(null, this.passData.tableData[0]);
 		});
 	}
 
