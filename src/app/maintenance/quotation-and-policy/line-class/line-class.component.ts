@@ -21,14 +21,14 @@ export class LineClassComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
   passData: any = {
-    tableData:[['', '', '', '']],
-    tHeader				:["Line Class Code", "Description", "Active","Remarks"],
-    dataTypes			:["text", "text", "checkbox", "text"],
-    genericBtn    :'Delete',
-    nData:{
+    tableData:[],
+    tHeader				      : ["Line Class Code", "Description", "Active","Remarks"],
+    dataTypes			      : ["text", "text", "checkbox", "text"],
+    genericBtn          : 'Delete',
+    nData: {
       lineClassCd       : null,
       lineCdDesc        : null,
-      activeTag         : 'Y',
+      activeTag         : null,
       remarks           : '',
       createUser        : null,
       createDate        : this.ns.toDateTimeString(0),
@@ -41,7 +41,9 @@ export class LineClassComponent implements OnInit {
     pageLength			    : 10,
     resizable			      : [true, true, true, false],
     pageID				      : 'line-mtn-line',
-    keys				        : ['lineClassCd', 'lineCdDesc', 'activeTag','remarks'],
+    keys				        : ['lineClassCd', 'lineCdDesc', 'activeTag', 'remarks'],
+    uneditable          : [false, false, false, false],
+    widths              : [1, 'auto', 'auto', 'auto'],
     disableGeneric      : true,
     disableAdd          : true
   };
@@ -50,9 +52,9 @@ export class LineClassComponent implements OnInit {
   loading					      : boolean;
 	dialogIcon				    : string;
 	dialogMessage			    : string;
-	@Input() inquiryFlag	: boolean 	= false;
-	successMessage			  : string 	= environment.successMessage;
-	arrLineCd     			  : any     	= [];
+	@Input() inquiryFlag	: boolean = false;
+	successMessage			  : string	= environment.successMessage;
+	arrLineCd     			  : any = [];
 	counter					      : number;
   mtnLineReq 				    : any;
 
@@ -96,6 +98,7 @@ export class LineClassComponent implements OnInit {
           this.passData.tableData = data['lineClass'].filter(a => {
             a.createDate = this.ns.toDateTimeString(a.createDate);
             a.updateDate = this.ns.toDateTimeString(a.updateDate);
+            a.uneditable = ['lineClassCd'];
             return true;
           });
 
@@ -174,23 +177,6 @@ export class LineClassComponent implements OnInit {
     }
   }
 
-  delLineClass() {
-    if ('Y' === this.table.indvSelect.okDelete) {
-      for (let rec of this.passData.tableData) {
-        if (rec.lineClassCd === this.table.indvSelect.lineClassCd) {
-          rec.deleted = true;
-          rec.edited = true;
-        }
-      }
-
-      this.table.markAsDirty();
-      this.table.refreshTable();
-    } else {
-      this.warningMsg = 1;
-      this.showWarningMdl();
-    }
-  }
-
   validate(obj) {
     var req = ['lineClassCd', 'lineCdDesc'];
 
@@ -231,7 +217,17 @@ export class LineClassComponent implements OnInit {
       this.lineClassData.updateDate = ev.updateDate;
 
       this.passData.disableGeneric = false;
+      this.enableFields();
     }
+  }
+
+  enableFields() {
+    this.passData.tableData.forEach(a => {
+      if (a.add) {
+        a.activeTag = 'Y';
+        a.uneditable = [];
+      }
+    });
   }
 
   setLine(data) {

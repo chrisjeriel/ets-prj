@@ -8,7 +8,7 @@
             <div class="input-group">
               <div class="col-sm-3"></div>
               <label class="form-control-sm text-right" style="margin-bottom: 0px">Line</label>
-              <input class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event)"
+              <input class="form-control form-control-sm  col-sm-1 not-form" type="text" (change)="checkCode($event)"
                 [(ngModel)]="line">
               <div class="text-search-ico" style="padding-left: 1px" (click)="showObjLineLOV()"><a><i
                     class="fa fa-search"></i></a></div>&nbsp;
@@ -24,8 +24,8 @@
             <div class="col-sm-6" style="padding-right: 2px">
               <fieldset class="scheduler-border" style="margin: 12px 0px 8px 0px !important;">
                 <div style="padding-top: 9px;">
-                  <app-cust-editable-non-datatable #objectTable [passData]="passData" (newClick)="rowClick($event)"
-                    (genericBtn)="delObject()" (onDelete)="objTable.onClickDelete('force'); passData.disableGeneric=true"></app-cust-editable-non-datatable>
+                  <app-cust-editable-non-datatable #objectTable [passData]="passData" (genericBtn)="delObject()"
+                  (onDelete)="objTable.onClickDelete('force'); passData.disableGeneric=true" (newClick)="objRowClick($event)" ></app-cust-editable-non-datatable>
                 </div>
               </fieldset>
             </div>
@@ -71,7 +71,7 @@
   </ngb-tabset>
 </div>
 
-<app-modal class="d-none" id="altWarningModal">
+<app-modal class="d-none" id="objWarningModal">
   <div header>Warning Message</div>
   <div body style="min-width: 420px !important;">
       <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
