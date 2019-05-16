@@ -22,9 +22,10 @@ export class OtherChargeComponent implements OnInit {
   	otherChargeData: any = {
 	  	tableData: [],
 	  	tHeader: ['Charge Code', 'Charge Name', 'Charge Type', 'Rate (%)', 'Local Amount', 'Active', 'Remarks'],
-	  	dataTypes: ['sequence-3', 'text', 'select', 'percent', 'currency','checkbox', 'text'],
+	  	dataTypes: ['sequence-3', 'text', 'select', 'percent', 'currency', 'checkbox', 'text'],
 	  	keys: ['chargeCd', 'chargeDesc', 'chargeType', 'premRt', 'defaultAmt', 'activeTag', 'remarks'],
 	  	widths: [1,'120','75',1,1,1,'220'],
+	  	// widths: ['auto','auto','auto','auto','auto',1,'auto'],
 	  	uneditable: [true,false,false,false,false,false,false],
 	  	nData: {
 	  		chargeCd: '',
@@ -75,8 +76,8 @@ export class OtherChargeComponent implements OnInit {
   			this.otherChargeData.opts[0].prev = [];
 
   			var td = data['chrg']['mtnChargesList'].map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
-  													   a.updateDate = this.ns.toDateTimeString(a.updateDate);
-  													   return a; });
+		  													   a.updateDate = this.ns.toDateTimeString(a.updateDate);
+		  													   return a; });
   			this.otherChargeData.tableData = td;
   			this.otherChargeData.disableGeneric = false;
 
@@ -85,19 +86,8 @@ export class OtherChargeComponent implements OnInit {
 
 		  	this.table.refreshTable();
   			this.table.onRowClick(null, this.otherChargeData.tableData[0]);
+  			this.checkChargeType();
   		});
-
-  		/*this.ms.getMtnOtherCharges().subscribe(data => {
-  			var td = data['mtnChargesList'].map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
-  													   a.updateDate = this.ns.toDateTimeString(a.updateDate);
-  													   return a; });
-
-  			this.otherChargeData.tableData = td;
-  			this.otherChargeData.disableGeneric = false;
-
-  			this.table.refreshTable();
-  			this.table.onRowClick(null, this.otherChargeData.tableData[0]);
-  		});*/
   	}
 
   	onRowClick(data) {
@@ -109,5 +99,61 @@ export class OtherChargeComponent implements OnInit {
 		this.table.indvSelect.edited = true;
 		this.table.indvSelect.deleted = true;		
 		this.table.confirmDelete();
+	}
+
+	onClickSave() {
+		var td = this.otherChargeData.tableData;
+		var x = this.otherChargeData.opts[0].vals;
+
+		for(let d of td) {
+			if(d.edited && !d.deleted && (d.chargeDesc == '' || d.chargeType == '')) {
+				this.dialogIcon = "error";
+				this.successDialog.open();
+
+				return;
+			}
+
+			if(d.edited && !d.deleted && d.chargeType == x[0] && (d.defaultAmt == null || d.defaultAmt == '' || isNaN(d.defaultAmt))) {
+				this.dialogIcon = "error";
+				this.successDialog.open();
+
+				return;
+			}
+
+			if(d.edited && !d.deleted && d.chargeType == x[1] && (d.premRt == null || d.premRt == '' || isNaN(d.premRt))) {
+				this.dialogIcon = "error";
+				this.successDialog.open();
+
+				return;
+			}
+		}
+
+		this.confirmSave.confirmModal();
+	}
+
+	checkChargeType() {
+		var tsThis = this;
+		var x = this.otherChargeData.opts[0].vals;
+
+		setTimeout(() => { 
+			$('#other-charge-table').find('tbody').children().each(function(i) {
+				var val = $(this).find('select').val();
+				if(val && val == x[0]) { // F
+					var rt = $(this).find('input.number')[0];
+					var amt = $(this).find('input.number')[1];
+					$(rt).prop('disabled', true);
+					$(amt).prop('disabled', false);
+
+					tsThis.otherChargeData.tableData[i].premRt = null;
+				} else if(val && val == x[1]) { // P
+					var rt = $(this).find('input.number')[0];
+					var amt = $(this).find('input.number')[1];
+					$(rt).prop('disabled', false);
+					$(amt).prop('disabled', true);
+
+					tsThis.otherChargeData.tableData[i].defaultAmt = null;
+				}
+			});
+		}, 0);
 	}
 }

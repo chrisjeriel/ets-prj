@@ -7,8 +7,8 @@
 					<div class="col-sm-12">
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
-								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="otherChargeData" (tableDataChange)="otherChargeData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); otherChargeData.disableGeneric=true;"></app-cust-editable-non-datatable>
+								<div id="other-charge-table" class="col-sm-12">
+									<app-cust-editable-non-datatable [passData]="otherChargeData" (tableDataChange)="otherChargeData.tableData=$event; checkChargeType();" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); otherChargeData.disableGeneric=true;"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
@@ -51,7 +51,7 @@
 	</ngb-tabset>
 </div>
 
-<!-- <app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/'" ></app-cancel-button>
 
@@ -68,4 +68,4 @@
     <div footer class="w-100 text-center">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
     </div>
-</app-modal> -->
+</app-modal>
