@@ -379,6 +379,7 @@ import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-crest
 import { PolValueCoverageComponent } from './underwriting/generate-documents/pol-value-coverage/pol-value-coverage.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
+import { Alert2Component } from './_components/common/alert2/alert2.component';
 
 @NgModule({
     imports: [
@@ -764,6 +765,7 @@ import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/
         PolValueCoverageComponent,
         IntermediaryComponent,
         QuotationAndPolicyComponent,
+        Alert2Component,
     ],
 
   	providers: [
