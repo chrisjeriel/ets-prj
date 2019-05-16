@@ -962,6 +962,16 @@ export class UnderwritingService {
         //return   this.http.get("http://localhost:8888/api/undewriting-service/retrievePolCoverage",{params});
         return  this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolFullCoverage",{params});
     }
+
+    savePolFullCoverage(coverageData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolFullCoverage', JSON.stringify(coverageData), header);
+    }
+   
 }            
 
             

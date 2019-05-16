@@ -59,15 +59,15 @@
                                     <label class="form-control-sm col-sm-4">Currency</label>
                                     <input type="text" name="coverageData.currencyCd" [(ngModel)]="fullCoverageDetails.currencyCd" class="form-control form-control-sm" readonly tabindex="-1">
                                     <label class="form-control-sm col-sm-3">Exch. Rt.</label>
-                                    <input type="text" class="form-control form-control-sm req" [(ngModel)]="fullCoverageDetails.currencyRt" readonly appOtherRates tabindex="-1" name="coverageData.currencyRt">
+                                    <input type="text" class="form-control form-control-sm req" [ngModel]="fullCoverageDetails.currencyRt | number:'1.6-6'" (ngModelChange)="fullCoverageDetails.currencyRt=$event" readonly appOtherRates tabindex="-1" name="coverageData.currencyRt">
                                   </div>
                                   <div class="input-group" style="margin-bottom: -13px !important">
                                    <label class="form-control-sm col-sm-4">Total Sum Insured</label>
-                                   <input type="text" class="form-control form-control-sm req" appCurrency [(ngModel)]="fullCoverageDetails.totalSi" readonly tabindex="-1" name="coverageData.totalSi">
+                                   <input type="text" class="form-control form-control-sm req" appCurrency [ngModel]="fullCoverageDetails.totalSi | number:'1.2-2'" (ngModelChange)="fullCoverageDetails.totalSi=$event" readonly tabindex="-1" name="coverageData.totalSi">
                                  </div>
                                  <div class="input-group" style="margin-bottom: 2px !important">
                                    <label class="form-control-sm col-sm-4">Total Premium</label>
-                                   <input type="text" class="form-control form-control-sm req" [(ngModel)]="fullCoverageDetails.totalPrem" readonly appCurrency tabindex="-1" name="coverageData.totalPrem">
+                                   <input type="text" class="form-control form-control-sm req" [ngModel]="fullCoverageDetails.totalPrem | number:'1.2-2'" (ngModelChange)="fullCoverageDetails.totalPrem=$event" readonly appCurrency tabindex="-1" name="coverageData.totalPrem">
                                  </div>
                                </div>
                              </fieldset>
@@ -104,18 +104,18 @@
                                  </div>
                                  <div class="input-group" style="margin-bottom: -13px !important">
                                   <label class="form-control-sm col-sm-3">Share(%)</label>
-                                  <input type="text" class="form-control form-control-sm req" style="text-align: right !important" [(ngModel)]="fullCoverageDetails.pctShare" appRequired appOtherRates name="coverageData.pctShare">
+                                  <input type="text" class="form-control form-control-sm req" style="text-align: right !important" [(ngModel)]="fullCoverageDetails.pctShare" (ngModelChange)="pctShare($event)" appRequired appOtherRates name="coverageData.pctShare">
                                   
                                   <span class="col-sm-1"></span>
                                 </div>
                                 <div class="input-group" style="margin-bottom: -6px !important">
                                   <label class="form-control-sm col-sm-3" style="margin-bottom: 1px;">100% Value</label>
-                                  <input type="text" class="form-control form-control-sm calc" [(ngModel)]="fullCoverageDetails.pctPml" appRequired appCurrency name="coverageData.totalValue">
+                                  <input type="text" class="form-control form-control-sm req" [(ngModel)]="fullCoverageDetails.totalValue" appRequired appCurrency name="coverageData.totalValue" (ngModelChange)="totalValue($event)">
                                   <span class="col-sm-1"></span>
                                 </div>
                                 <div class="input-group" style="margin-bottom: -6px !important">
                                   <label class="form-control-sm col-sm-3">PML(%)</label>
-                                  <input type="text" class="form-control form-control-sm req" [(ngModel)]="fullCoverageDetails.totalValue" appOtherRates name="coverageData.pctPml">
+                                  <input type="text" class="form-control form-control-sm req" [(ngModel)]="fullCoverageDetails.pctPml" appOtherRates name="coverageData.pctPml">
                                   <span class="col-sm-1"></span>
                                 </div>
                               </div>
@@ -152,18 +152,67 @@
                      <div class="form-group col-sm">
                        <div class="col-md-13 text-center" style="margin-top: 10px;">
                          <div class="cust-btn-container">
-                           <button type="button" class="cust-btn" (click)="CATPerils()"><a>Print</a></button>
+                           <button type="button" class="cust-btn" (click)="openPrint()"><a>Print</a></button>
                            <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                           <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                           <button type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
                          </div>
                        </div>
                      </div>
                    </div>
-                 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+                 <app-sucess-dialog id="fullCoveragevalue" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
                  <app-confirm-save (onYes)="saveCoverage()"></app-confirm-save>
-                 <app-cancel-button (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+                 <app-cancel-button (onYes)="saveCoverage('cancel')" [url]="''" ></app-cancel-button>
                  <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
                  <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+
+              <app-modal hidden id="printModal">
+                  <div header>Print</div>
+                  <div body style="text-align: center">
+                    <fieldset class="scheduler-border">
+                      <div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+                        <div class="input-group" style="margin-bottom:3px !important;">
+                          <label class="col-sm-3">Report</label>
+                          <select class="form-control form-control-sm cust-sm col-sm-8">
+                            <option value="">Report 1</option>
+                            <option value="">Report 2</option>
+                            <option value="">Report 3</option>
+                          </select>
+                          <div class="col-sm-1"></div>
+                        </div>
+                        <div class="input-group" style="margin-bottom:3px !important;">
+                          <label class="col-sm-3">Destination</label>
+                          <select class="form-control form-control-sm cust-sm col-sm-8">
+                            <option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+                            <option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+                            <option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+                          </select>
+                          <div class="col-sm-1"></div>
+                        </div>
+                        <div class="input-group" style="margin-bottom:3px !important;">
+                          <div class="col-sm-2"></div>&nbsp;&nbsp;&nbsp;&nbsp;
+                          <div class="col-sm-8">
+                            <!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
+                            &nbsp;&nbsp;&nbsp;&nbsp; -->
+                            <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+                            <div class="col-sm-1"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <div footer class="text-center w-100">
+                      <div class="form-row">
+                        <div class="form-group col-sm">
+                          <div class="col-md-13 text-center" style="margin-top: -6px;">
+                            <div class="cust-btn-container">
+                              <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+                              <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+              </app-modal>
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
