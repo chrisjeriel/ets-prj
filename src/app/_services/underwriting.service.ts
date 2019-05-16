@@ -963,11 +963,6 @@ export class UnderwritingService {
          };
          return this.http.post(environment.prodApiUrl + '/underwriting-service/generateHundredValuePolPrinting',JSON.stringify(params),header);
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> ff73b8ab200f09223db9ab5b503c7f044781429e
     getFullCoverage(policyNo:any , policyId: string){
          const params = new HttpParams()
              .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
@@ -984,10 +979,6 @@ export class UnderwritingService {
         };
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolFullCoverage', JSON.stringify(coverageData), header);
     }
-<<<<<<< HEAD
-=======
-   
->>>>>>> ff73b8ab200f09223db9ab5b503c7f044781429e
 }            
 
             
