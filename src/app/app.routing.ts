@@ -128,6 +128,7 @@ import { LineClassComponent } from './maintenance/quotation-and-policy/line-clas
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
 import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
 import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
+import { RegionComponent } from './maintenance/quotation-and-policy/region/region.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
 import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
 import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
@@ -144,14 +145,11 @@ import { PolValueCoverageComponent } from './underwriting/generate-documents/pol
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
-
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
-
 //delete below when merged with maintenance region
 import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
 import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
 //end
-
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
 
 const appRoutes: Routes = [
@@ -313,6 +311,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-other-charge', component: OtherChargeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-location/:id', component: RegionComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

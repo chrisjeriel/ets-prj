@@ -382,6 +382,10 @@ import { IntermediaryComponent } from './maintenance/quotation-and-policy/interm
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
 import { Alert2Component } from './_components/common/alert2/alert2.component';
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
+import { RegionComponent } from './maintenance/quotation-and-policy/region/region.component';
+import { ProvinceComponent } from './maintenance/quotation-and-policy/region/province/province.component';
+import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-region.component';
+import { RequiredTableDirective } from './_directives/required-table.directive';
 
 @NgModule({
     imports: [
@@ -770,6 +774,10 @@ import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-c
         QuotationAndPolicyComponent,
         Alert2Component,
         OtherChargeComponent,
+        RegionComponent,
+        ProvinceComponent,
+        MtnRegionComponent,
+        RequiredTableDirective,
     ],
 
   	providers: [
