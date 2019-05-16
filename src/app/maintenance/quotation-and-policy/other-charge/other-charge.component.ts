@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -13,7 +13,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './other-charge.component.html',
   styleUrls: ['./other-charge.component.css']
 })
-export class OtherChargeComponent implements OnInit {
+export class OtherChargeComponent implements OnInit, OnDestroy {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   	@ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
@@ -63,11 +63,16 @@ export class OtherChargeComponent implements OnInit {
   	dialogIcon:string = '';
  	dialogMessage: string = '';
  	cancel: boolean = false;
+ 	subscription: Subscription = new Subscription();
 
   	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
   	ngOnInit() {
   		setTimeout(() => { this.table.refreshTable(); this.getMtnOtherCharges(); }, 0);
+  	}
+
+  	ngOnDestroy() {
+  		this.subscription.unsubscribe();
   	}
 
   	getMtnOtherCharges() {
@@ -76,7 +81,7 @@ export class OtherChargeComponent implements OnInit {
   		var sub$ = forkJoin(this.ms.getMtnOtherCharges(),
   							this.ms.getRefCode('MTN_OTHER_CHARGES.CHARGE_TYPE')).pipe(map(([chrg, ref]) => { return { chrg, ref }; }));
 
-  		sub$.subscribe(data => {
+  		this.subscription = sub$.subscribe(data => {
   			this.otherChargeData.opts[0].vals = [];
   			this.otherChargeData.opts[0].prev = [];
 
@@ -93,6 +98,7 @@ export class OtherChargeComponent implements OnInit {
   			this.table.onRowClick(null, this.otherChargeData.tableData[0]);
   			this.checkChargeType();
   		});
+
   	}
 
   	onRowClick(data) {
