@@ -17,6 +17,8 @@ export class HundredValPolPrintComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 
+  private currentUser: string = JSON.parse(window.localStorage.currentUser).username;
+
   dialogIcon: string = '';
   dialogMessage: string = '';
 
@@ -26,6 +28,7 @@ export class HundredValPolPrintComponent implements OnInit {
   isType: boolean = false;
   noDataFound: boolean = false;
   cancelFlag: boolean = false;
+  flawlessTransaction: boolean = false;
 
   policyListingData: any = {
   	tableData: [],
@@ -48,7 +51,7 @@ export class HundredValPolPrintComponent implements OnInit {
 
   tempPolNo: string[] = ['','','','','',''];
 
-  constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, private us: UnderwritingService) { }
+  constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, private us: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
   	this.retrievePolListing();
@@ -62,12 +65,13 @@ export class HundredValPolPrintComponent implements OnInit {
     }
 
 	openPolListModal(){
-		this.policyListingData.tableData = [];
-		this.retrievePolListing();
+		/*this.policyListingData.tableData = [];
+		this.retrievePolListing();*/
 		$('#lovMdl > #modalBtn').trigger('click');
 
 	}
 	retrievePolListing(){
+		this.policyListingData.tableData = [];
 		this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any)=>{
 			console.log(data);
 			if(data.policyList.length !== 0){
@@ -132,10 +136,42 @@ export class HundredValPolPrintComponent implements OnInit {
 		this.cancelFlag = cancelFlag !== undefined;
 		this.us.getUWCoverageInfos(this.policyInfo.policyNo, this.policyInfo.policyId).subscribe((data:any)=>{
 			console.log(data);
-			this.dialogIcon = "";
-			this.dialogMessage = "Coverage details were successfully generated";
-			this.successDiag.open();
+			let params: any = {
+				policyId: this.policyInfo.policyId,
+				projId: data.policy.project.projId,
+				riskId: data.policy.project.riskId,
+				lineCd: this.policyInfo.policyNo.split('-')[0],
+				treatyShare: this.policyInfo.treatyPercent,
+				createUser: this.currentUser,
+				createDate: this.ns.toDateTimeString(0),
+				updateUser: this.currentUser,
+				updateDate: this.ns.toDateTimeString(0)
+			}
+			this.us.generateHundredValPolPrinting(params).subscribe((data: any)=>{
+				if(data.returnCode === 0){
+					this.dialogIcon = "error-message";
+					this.dialogMessage = "Error generating Policy Print";
+					this.successDiag.open();
+				}else{
+					this.dialogIcon = "success-message";
+					this.dialogMessage = "Coverage details were successfully generated";
+					this.successDiag.open();
+					this.flawlessTransaction = true;
+				}
+			});
 		});
+	}
+
+	navigate(){
+		if(this.flawlessTransaction){
+			this.router.navigate(['/pol-value-coverage', { 
+                                                        policyId: this.policyInfo.policyId,
+                                                        policyNo: this.policyInfo.policyNo,
+                                                        insuredDesc: this.policyInfo.insuredDesc,
+                                                        riskName: this.policyInfo.riskName
+                                                   }
+                     ], { skipLocationChange: true });
+		}
 	}
 
 	checkPolicySearch(){
