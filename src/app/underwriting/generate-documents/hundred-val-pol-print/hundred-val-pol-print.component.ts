@@ -56,7 +56,7 @@ export class HundredValPolPrintComponent implements OnInit {
   constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, private us: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
-  	this.retrievePolListing();
+  	//this.retrievePolListing();
   }
 
   onTabChange($event: NgbTabChangeEvent) {            
@@ -67,15 +67,17 @@ export class HundredValPolPrintComponent implements OnInit {
     }
 
 	openPolListModal(){
-		/*this.policyListingData.tableData = [];
-		this.retrievePolListing();*/
+		this.policyListingData.tableData = [];
+		this.retrievePolListing();
 		$('#lovMdl > #modalBtn').trigger('click');
 
 	}
 	retrievePolListing(){
 		this.policyListingData.tableData = [];
+		this.table.loadingFlag = true;
 		this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any)=>{
 			console.log(data);
+			this.table.loadingFlag = false;
 			if(data.policyList.length !== 0){
 				this.noDataFound = false;
 				for(var rec of data.policyList){
@@ -194,6 +196,7 @@ export class HundredValPolPrintComponent implements OnInit {
 	}
 
 	checkPolicySearch(){
+		console.log(this.tempPolNo);
 		let emptyCheck: boolean = false;
 		for(var i of this.tempPolNo){
 			if(i.length === 0){
