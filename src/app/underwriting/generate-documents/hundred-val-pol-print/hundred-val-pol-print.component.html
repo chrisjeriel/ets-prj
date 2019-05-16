@@ -41,7 +41,7 @@
 								<div class="custom-row-inline-inset">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-5 no-margin"><strong>Treaty Share (%)</strong></label>
-										<input type="text" class="form-control form-control-sm col-sm-3" [(ngModel)]="policyInfo.treatyPercent" appOtherRates appRequired>
+										<input id="treatyShare" type="text" class="form-control form-control-sm col-sm-3" [(ngModel)]="policyInfo.treatyPercent" appOtherRates appRequired [readonly]="!generateFlag">
 									</div>
 								</div>
 							</fieldset>

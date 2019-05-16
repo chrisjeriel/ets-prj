@@ -127,6 +127,10 @@ export class HundredValPolPrintComponent implements OnInit {
 			}else{
 				this.generateFlag = false;
 				this.policyInfo.treatyPercent = data.policy.project.fullCoverage.treatyShare;
+				setTimeout(()=>{
+					$('#treatyShare').focus();
+					$('#treatyShare').blur();
+				}, 0);
 			}
 			this.loading = false;
 		});
