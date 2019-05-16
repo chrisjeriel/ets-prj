@@ -376,11 +376,10 @@ import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
+import { PolValueCoverageComponent } from './underwriting/generate-documents/pol-value-coverage/pol-value-coverage.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
 import { Alert2Component } from './_components/common/alert2/alert2.component';
-
-
 
 @NgModule({
     imports: [
@@ -763,6 +762,7 @@ import { Alert2Component } from './_components/common/alert2/alert2.component';
         MtnCurrencyRateComponent,
         MtnCATPerilComponent,
         MtnCrestaComponent,
+        PolValueCoverageComponent,
         IntermediaryComponent,
         QuotationAndPolicyComponent,
         Alert2Component,
