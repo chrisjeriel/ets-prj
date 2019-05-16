@@ -38,7 +38,7 @@ export class PolMxLineComponent implements OnInit {
 		},
 		addFlag				: true,
 		genericBtn			:'Delete',
-		disableGeneric : true,
+		disableGeneric 		: true,
 		searchFlag          : true,
 		paginateFlag		: true,
 		infoFlag			: true,
@@ -249,5 +249,12 @@ export class PolMxLineComponent implements OnInit {
 	  		this.table.selected  = [this.table.indvSelect]
 	  		this.table.confirmDelete();
 	  	}
+	}
+
+	onClickAdd(){
+		console.log('add');
+		// this.passData.uneditable[0] = false;
+		// this.passData.tableData = this.passData.tableData;
+		// this.table.refreshTable();
 	}
 }

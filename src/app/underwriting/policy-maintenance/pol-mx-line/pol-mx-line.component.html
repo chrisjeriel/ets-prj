@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
 					<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-						<app-cust-editable-non-datatable [passData]="passData"  (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)" #lineTbl (genericBtn)="onDeleteLine()" (onDelete)="lineTbl.onClickDelete('force'); passData.disableGeneric=true">
+						<app-cust-editable-non-datatable [passData]="passData"  (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)" #lineTbl (genericBtn)="onDeleteLine()" (onDelete)="lineTbl.onClickDelete('force'); passData.disableGeneric=true" (add)="onClickAdd()">
 						</app-cust-editable-non-datatable>
 					</div>
 					<div class="form-row" style="margin-top: 40px !important;">
