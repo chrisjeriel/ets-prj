@@ -108,7 +108,7 @@ export class CoverageComponent implements OnInit {
   cancelFlag:boolean;
   errorFlag:boolean = false;
   refresh:boolean = true;
-
+  totalValue: number = 0;
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService) {}
 
@@ -145,7 +145,7 @@ export class CoverageComponent implements OnInit {
 
   getCoverageInfo(){
     this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
-      this.table.refreshTable();
+      console.log(data)
         if(data.quotation.project == null){
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
               for(var i=0; i< data.sectionCovers.length;i++){
@@ -162,6 +162,7 @@ export class CoverageComponent implements OnInit {
 
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
+          this.totalValue = data.quotation.project.coverage.totalValue == null ? 0:data.quotation.project.coverage.totalValue;
           this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
           for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
               if(data.quotation.project.coverage.sectionCovers[i].section == 'I' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
@@ -213,6 +214,7 @@ export class CoverageComponent implements OnInit {
 
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
+          this.totalValue   = data.quotation.project.coverage.totalValue == null? 0:data.quotation.project.coverage.totalValue;
           this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
         }
 
@@ -353,7 +355,6 @@ export class CoverageComponent implements OnInit {
   }
   
   sectionCoversLOV(data){
-    console.log(data)
         this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
         $('#sectionCoversLOV #modalBtn').trigger('click');
         //data.tableData = this.passData.tableData;
@@ -361,7 +362,6 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
-    console.log(data)
     if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
       this.sectionCoverLOVRow = data[0].ev.index;
       this.ns.lovLoader(data[0].ev, 0);
@@ -457,13 +457,16 @@ export class CoverageComponent implements OnInit {
            this.errorFlag = true;
          }
        }
-
        if(this.errorFlag){
          this.dialogIcon = 'error-message';
          this.dialogMessage = 'Please check Sum Insured.';
          this.successDiag.open();
          this.errorFlag = false;
-       }else {
+       } else if((this.totalValue !== 0) && (this.coverageData.totalSi > this.totalValue)){
+         this.dialogIcon = 'error-message';
+         this.dialogMessage = 'Total Sum Insured will be greater than 100% Value.';
+         this.successDiag.open();
+       } else {
           $('#confirm-save #modalBtn2').trigger('click');
       }
   }
