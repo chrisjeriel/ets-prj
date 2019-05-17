@@ -963,6 +963,7 @@ export class UnderwritingService {
          };
          return this.http.post(environment.prodApiUrl + '/underwriting-service/generateHundredValuePolPrinting',JSON.stringify(params),header);
     }
+
     getFullCoverage(policyNo:any , policyId: string){
          const params = new HttpParams()
              .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
