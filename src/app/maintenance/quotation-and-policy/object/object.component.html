@@ -8,9 +8,9 @@
             <div class="input-group">
               <div class="col-sm-3"></div>
               <label class="form-control-sm text-right" style="margin-bottom: 0px">Line</label>
-              <input class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event)"
+              <input class="form-control form-control-sm  col-sm-1 not-form" type="text" (change)="checkCode($event)"
                 [(ngModel)]="line">
-              <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i
+              <div class="text-search-ico" style="padding-left: 1px" (click)="showObjLineLOV()"><a><i
                     class="fa fa-search"></i></a></div>&nbsp;
               <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;"
                 [(ngModel)]="description" readonly>
@@ -24,8 +24,8 @@
             <div class="col-sm-6" style="padding-right: 2px">
               <fieldset class="scheduler-border" style="margin: 12px 0px 8px 0px !important;">
                 <div style="padding-top: 9px;">
-                  <app-cust-editable-non-datatable #objectTable [passData]="passData" (newClick)="rowClick($event)"
-                    (clickLOV)="clickEndtLov($event)"></app-cust-editable-non-datatable>
+                  <app-cust-editable-non-datatable #objectTable [passData]="passData" (genericBtn)="delObject()"
+                  (onDelete)="objTable.onClickDelete('force'); passData.disableGeneric=true" (newClick)="objRowClick($event)" ></app-cust-editable-non-datatable>
                 </div>
               </fieldset>
             </div>
@@ -34,9 +34,7 @@
                 <legend class="scheduler-border">CAT Peril per Object</legend>
                 <div class="row" style="padding-bottom: 8px;"></div>
                 <div style="padding-top: 5px;">
-                  <app-cust-editable-non-datatable #catPerilTable [passData]="catPerilData"
-                    (clickLOV)="clickDedLov($event)"
-                    (tableDataChange)="ocFlag ? endtTable.indvSelect.deductiblesOc = $event : endtTable.indvSelect.deductibles = $event">
+                  <app-cust-editable-non-datatable #catPerilTable [passData]="catPerilData" (clickLOV)="showCATPerilLOV()">
                   </app-cust-editable-non-datatable>
                 </div>
               </fieldset>
@@ -73,7 +71,23 @@
   </ngb-tabset>
 </div>
 
-<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-modal class="d-none" id="objWarningModal">
+  <div header>Warning Message</div>
+  <div body style="min-width: 420px !important;">
+      <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
+          <div class="custom-row-inline-inset" style="text-align: center">
+              <p *ngIf="warningMsg == 0">Unable to save the record. Object No must be unique per Line.</p>
+              <p *ngIf="warningMsg == 1">You are not allowed to delete an Object that is already <br> used in quotation processing.</p>
+          </div>
+      </fieldset>
+  </div>
+  <div footer class="w-100 text-center">
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-mtn-line id="objLineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-cat-peril-modal id="catPerilLOV" [lineCd]="line" (selectedData)="setCATPeril($event)" [hide]="hideCATPeril"></app-mtn-cat-peril-modal>
 <app-confirm-save (onYes)="onClickSaveObject()"></app-confirm-save>
-<app-sucess-dialog id="lineClassSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag? cancel.onNo() : null"></app-sucess-dialog>
+<app-sucess-dialog id="objectSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag? cancel.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSaveLineClass('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>

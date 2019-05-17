@@ -99,6 +99,15 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnObject",{params});
   }
 
+  saveMtnObject(params) {
+    let header: any = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnObject',params,header);
+  }
+
 	getMtnQuotationWordings(lineCd,wordType){
 		const params = new HttpParams()
 			.set('lineCd',lineCd)
@@ -356,7 +365,7 @@ export class MaintenanceService{
                 params = params.append(i.key, i.search);
             }
 		}
-		
+
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMntIntermediary", {params});
 	}
 
