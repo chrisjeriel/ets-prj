@@ -568,5 +568,11 @@ export class MaintenanceService{
 	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCrestaZone',JSON.stringify(saveData),header);
 	}
 
+	getMtnUserGrp(userGrp?){
+		const params = new HttpParams()
+		     .set('userGrp', (userGrp === null || userGrp === undefined ? '' : userGrp))
+		return this.http.get(environment.prodApiUrl + "/user-service/retrieveMtnUserGroup",{params});
+	}
+
 }
 

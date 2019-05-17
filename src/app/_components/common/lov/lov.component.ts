@@ -198,6 +198,7 @@ export class LovComponent implements OnInit {
     }
 
 
+
     /*if(districtCd === ''){
       this.selectedData.emit({
         data: null,
@@ -483,6 +484,14 @@ export class LovComponent implements OnInit {
             a.text += a.wordText17 == null? '' : a.wordText17;
         }
         this.passTable.tableData = data.mtnPolWordings;
+        this.table.refreshTable();
+      })
+    }else if (this.passData.selector == 'userGrp'){
+      this.passTable.tHeader = [ 'User Group','Description','Remarks'];
+      this.passTable.dataTypes = [ 'number','text','text'];
+      this.passTable.keys = ['userGrp','userGrpDesc','remarks'];
+      this.mtnService.getMtnUserGrp().subscribe(a=>{
+        this.passTable.tableData = a["userGroups"];
         this.table.refreshTable();
       })
     }
