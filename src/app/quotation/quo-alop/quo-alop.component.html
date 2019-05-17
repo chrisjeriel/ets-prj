@@ -42,7 +42,7 @@
 							<label class="form-control-sm col-sm-2 text-right" for="xx">Address</label>
 							<input class="form-control form-control-sm  col-sm" type="text" name="address" [(ngModel)]="alopData.address" readonly>
 						</div>
-						
+
 					</div>
 				</fieldset>
 			</div>
@@ -58,7 +58,7 @@
 						</div>
 					</div>
 				</fieldset>
-			</div>	
+			</div>
 		</div>
 		<fieldset class="scheduler-border" *ngIf="!OpenCover">
 		    <legend class="scheduler-border">Options</legend>
@@ -93,7 +93,7 @@
 
 		<fieldset class="scheduler-border bottom">
 			<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
-				<div class="input-group">
+				<div class="input-group" [hidden]="true">
 					<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
 					<input #from [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="alopDetails?.issueDate?.split('T')[0]" (ngModelChange)="alopDetails.issueDate=$event;test($event)"  (change)="checkDates()" name="from">
 					<label class="form-control-sm col-sm-1" style="margin-left: -5.19%; z-index: -1;" for="periodTo" >to</label>
@@ -106,13 +106,13 @@
 					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [ngModel]="alopDetails?.maxIndemPd" (ngModelChange)="alopDetails.maxIndemPd = $event;" (blur)="alopDetails.maxIndemPdSi = ((alopDetails.maxIndemPd/12)*alopDetails.annSi) ;focusBlur()" numbers-only appRequired name="maxIndemPeriod">
 					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 				</div>
-				<div class="input-group">
+				<div class="input-group" [hidden]="true">
 					<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
 					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event; test($event)"  name="fromIndem">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
-					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="fromIndem" [ngModel]="alopDetails?.timeExc" (ngModelChange)="alopDetails.timeExc = $event"appRequired numbers-only name="timeExcess">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="fromIndem" [ngModel]="alopDetails?.timeExc" (ngModelChange)="alopDetails.timeExc = $event"appRequired name="timeExcess">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
@@ -134,15 +134,15 @@
 			</div>
 		</div>
 
-	</div>			
+	</div>
 </form>
 <ng-container *ngIf="showAlopItem">
 	<app-modal class="d-none" id="alopItemModal">
-		<div header>Item Information</div>	
+		<div header>Item Information</div>
 		<div body>
 			 <div>
 	                <app-cust-editable-non-datatable [passData]="itemInfoData" (tableDataChange)="updateItemInfoData($event)"></app-cust-editable-non-datatable>
-	         </div>  
+	         </div>
 		</div>
 		<div footer class="text-center">
 				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll();showAlopItem=false"><a>Cancel</a></button>
