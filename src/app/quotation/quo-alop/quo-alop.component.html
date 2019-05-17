@@ -102,7 +102,7 @@
 
 				</div>
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
+					<label class="form-control-sm col-sm-6" for="maxIndemPeriod">Maximum Indemnity Period</label>
 					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [ngModel]="alopDetails?.maxIndemPd" (ngModelChange)="alopDetails.maxIndemPd = $event;" (blur)="alopDetails.maxIndemPdSi = ((alopDetails.maxIndemPd/12)*alopDetails.annSi) ;focusBlur()" numbers-only appRequired name="maxIndemPeriod">
 					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 				</div>
@@ -111,11 +111,11 @@
 					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event; test($event)"  name="fromIndem">
 				</div>
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
+					<label class="form-control-sm col-sm-6" for="timeExcess">Time Excess</label>
 					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="fromIndem" [ngModel]="alopDetails?.timeExc" (ngModelChange)="alopDetails.timeExc = $event"appRequired name="timeExcess">
 				</div>
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
+					<label class="form-control-sm col-sm-6" for="interval">Progress reports to be presented at intervals of</label>
 					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [ngModel]="alopDetails?.repInterval" (ngModelChange)="alopDetails.repInterval = $event" numbers-only appRequired name="interval">
 					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 				</div>
