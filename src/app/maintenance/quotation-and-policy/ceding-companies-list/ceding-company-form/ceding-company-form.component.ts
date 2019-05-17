@@ -55,7 +55,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 		emailAdd: '',
 		tinNo: '',
 		bussTypeId: '',
-		activeTag: '',
+		activeTag: 'Y',
 		govtTag: '',
 		oldCedingId: '',
 		membershipTag: '',
