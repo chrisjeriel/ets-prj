@@ -87,9 +87,10 @@ export class MtnAdviceWordingsComponent implements OnInit {
       //   this.passDataAdvice.tableData.push(data.adviceWordings[i]);
       // }
       for(var i of data.adviceWordings){
-        this.passDataAdvice.tableData.push(new Row(i.adviceWordId, i.description, i.wordings, i.remarks));
+        this.passDataAdvice.tableData.push(new Row(i.adviceWordId, i.description, i.wordings, i.remarks, i.activeTag));
       }
       //this.passDataAdvice.tableData = data.adviceWordings;
+      this.passDataAdvice.tableData = this.passDataAdvice.tableData.filter(a=>{return a.activeTag !== 'N'});
       this.table.refreshTable();
     });
    this.modalOpen = true;
@@ -102,16 +103,19 @@ class Row{
   description: string;
   wordings: string;
   remarks: string;
+  activeTag: string;
 
   constructor(
     adviceWordId: string,
     description: string,
     wordings: string,
-    remarks: string
+    remarks: string,
+    activeTag: string
   ){
     this.adviceWordId = adviceWordId;
     this.description =   description;
     this.wordings =   wordings;
     this.remarks =   remarks;
+    this.activeTag = activeTag;
   }
 }

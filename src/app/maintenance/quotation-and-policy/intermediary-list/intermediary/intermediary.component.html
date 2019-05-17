@@ -1,0 +1,165 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy / Intermediary List</h4>
+	<ngb-tabset #tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Intermediary">
+			<ng-template ngbTabContent>
+				<div class="form-row">
+					<div class="input-group">
+						<div class="col-sm"></div>
+						<div class="col-sm-8">
+							<fieldset class="scheduler-border">
+			                    <legend class="scheduler-border">Corporate Tag</legend>
+			                    <div class="form-row custom-row-inline-inset">
+			                    	<div class="input-group">
+			                    		<div class="col-sm"></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag" class="ng-dirty" value="I" [(ngModel)]="intmRecord.corpTag" (change)="checkCorpTag()"><label class="form-control-sm">Individual</label></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag" class="ng-dirty" value="C" [(ngModel)]="intmRecord.corpTag" (change)="checkCorpTag()"><label class="form-control-sm">Corporate</label></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag" class="ng-dirty" value="J" [(ngModel)]="intmRecord.corpTag" (change)="checkCorpTag()"><label class="form-control-sm">Joint</label></div>	
+			                    		<div class="col-sm"></div>
+			                    	</div>
+			                    </div>
+			                </fieldset>
+			                <fieldset class="scheduler-border">
+			                    <legend class="scheduler-border">VAT Type</legend>
+			                    <div class="form-row custom-row-inline-inset">
+			                    	<div class="input-group">
+			                    		<div class="col-sm"></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType" value="3" [(ngModel)]="intmRecord.vatTag"><label class="form-control-sm">VAT Rate</label></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType" value="1" [(ngModel)]="intmRecord.vatTag"><label class="form-control-sm">VAT Exempt</label></div>
+			                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType" value="2" [(ngModel)]="intmRecord.vatTag"><label class="form-control-sm">Zero VAT</label></div>
+			                    		<div class="col-sm"></div>
+			                    	</div>
+			                    </div>
+			                </fieldset>
+			                <fieldset class="scheduler-border">
+			                	<legend class="scheduler-border">Basic Info</legend>
+			                	<div class="form-row custom-row-inline-inset">
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Intermediary No</label>
+                        						<input type="text" class="form-control form-control-sm col-sm text-right" [(ngModel)]="intmRecord.intmId" readonly>
+                        						<input type="checkbox" style="margin-top: 5px !important;margin-left: 5px !important;" [(ngModel)]="intmRecord.activeTag" class=" cus-dirty" (change)="addDirty()"><label class="form-control-sm col-sm-1">Active</label>
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Old Intermediary No</label>
+                        						<input type="text" class="form-control form-control-sm col-sm text-right cus-dirty" (blur)="fmtOnBlur()" (change)="addDirty()" maxlength="10" [(ngModel)]="intmRecord.oldIntmId" numbers-only>
+			                				</div>
+			                			</div>
+			                		</div>
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important">Name</label>
+                        				<input type="text" class="form-control form-control-sm col-sm name warn cus-dirty" (change)="addDirty()" style="margin-right: 10px !important" appRequired maxlength="500" [(ngModel)]="intmRecord.intmName">
+			                		</div>
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">First Name</label>
+                        						<input type="text" class="form-control form-control-sm col-sm ind-name cus-dirty" appRequired readonly (change)="addDirty()" maxlength="248" [(ngModel)]="intmRecord.firstName" (keyup)="concatName()">
+                        						<label class="form-control-sm">M.I.</label>
+                        						<input type="text" class="form-control form-control-sm col-sm-1 cap-input ind-name cus-dirty midInit" appRequired readonly (change)="addDirty()" maxlength="3" [(ngModel)]="intmRecord.middleInitial" (keyup)="concatName()">
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Last Name</label>
+                        						<input type="text" class="form-control form-control-sm col-sm ind-name cus-dirty"  appRequired readonly (change)="addDirty()" maxlength="248" [(ngModel)]="intmRecord.lastName" (keyup)="concatName()">
+			                				</div>
+			                			</div>
+			                		</div>
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important">Address</label>
+                        				<input type="text" class="form-control form-control-sm col-sm warn cus-dirty" (change)="addDirty()" style="margin-right: 10px !important"  appRequired maxlength="100" [(ngModel)]="intmRecord.addrLine1">
+			                		</div>
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important"></label>
+                        				<input type="text" class="form-control form-control-sm col-sm cus-dirty" (change)="addDirty()" style="margin-right: 10px !important" maxlength="100" [(ngModel)]="intmRecord.addrLine2">
+			                		</div>
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important"></label>
+                        				<input type="text" class="form-control form-control-sm col-sm cus-dirty" (change)="addDirty()" style="margin-right: 10px !important" maxlength="100" [(ngModel)]="intmRecord.addrLine3">
+                        				<label class="form-control-sm">Zip Code</label>
+                        				<input type="text" class="form-control form-control-sm col-sm-1 warn cus-dirty" (change)="addDirty()" style="margin-right: 10px !important" appRequired maxlength="12" [(ngModel)]="intmRecord.zipCd" numbers-only>
+			                		</div>
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Contact No</label>
+                        						<input type="text" class="form-control form-control-sm col-sm cus-dirty" (change)="addDirty()" maxlength="50" [(ngModel)]="intmRecord.contactNo">
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Email Address</label>
+                        						<input type="text" class="form-control form-control-sm col-sm cus-dirty" (change)="addDirty()" maxlength="50" [(ngModel)]="intmRecord.emailAdd">
+			                				</div>
+			                			</div>
+			                		</div>
+			                	</div>
+			                </fieldset>
+			                <fieldset class="scheduler-border">
+			                	<legend class="scheduler-border">Other Info</legend>
+			                	<div class="form-row custom-row-inline-inset">
+			                		<div class="input-group">
+			                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important">Remarks</label>
+                        				<input type="text" class="form-control form-control-sm col-sm cus-dirty" (change)="addDirty()" style="margin-right: 10px !important" maxlength="4000" [(ngModel)]="intmRecord.remarks">
+			                		</div>
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Created By</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" maxlength="10" [(ngModel)]="intmRecord.createUser" readonly>
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Date Created</label>
+                        						<input type="{{ type }}" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.createDate" readonly>
+			                				</div>
+			                			</div>
+			                		</div>
+			                		<div class="input-group">
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Last Update By</label>
+                        						<input type="text" class="form-control form-control-sm col-sm" maxlength="10" [(ngModel)]="intmRecord.updateUser" readonly>
+			                				</div>
+			                			</div>
+			                			<div class="col-sm-6">
+			                				<div class="form-row">
+			                					<label class="form-control-sm col-sm-5">Last Update</label>
+                        						<input type="{{ type }}" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.updateDate" readonly>
+			                				</div>
+			                			</div>
+			                		</div>
+			                	</div>
+			                </fieldset>
+			                <div class="form-row" style="margin-top: 10px !important;">
+                                <div class="form-group col-sm">
+                                    <div class="text-center">
+                                        <div class="cust-btn-container">
+                                            <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                                            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+						</div>
+						<div class="col-sm"></div>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-confirm-save (onYes)="onSaveMtnIntm()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onSaveMtnIntm('cancel')" [url]="'/maintenance-intermediary'" ></app-cancel-button>
+
+<ng-template #confirmLeave>
+    <app-confirm-leave></app-confirm-leave>
+</ng-template>

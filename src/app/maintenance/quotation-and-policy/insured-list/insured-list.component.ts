@@ -32,7 +32,7 @@ export class InsuredListComponent implements OnInit {
         			   { key: 'insuredName',title	: 'Name',dataType: 'text'},
         			   { key: 'insuredAbbr',title	: 'Abbreviation',dataType: 'text'},
         			   { key: 'activeTag',title	: 'Active',dataType: 'text'},
-        			   { key: 'insuredType',title	: 'Type',dataType: 'text'},
+        			   { key: 'insuredType',title	: 'Type',	dataType: 'text'},
         			   { key: 'corpTag',title	: 'Corp Tag',dataType: 'text'},
         			   { key: 'vatTag',title	: 'VAT Type',dataType: 'text'},
         			   { key: 'address',title	: 'Address',dataType: 'text'},
@@ -57,7 +57,7 @@ export class InsuredListComponent implements OnInit {
   }
 
   getInsuredList(){
-  	console.log(this.searchParams);
+  	
   	this.mtnService.getMtnInsuredList(this.searchParams)
   	.subscribe(data => {
   		console.log(data);
@@ -144,9 +144,9 @@ export class InsuredListComponent implements OnInit {
 
   	if($event.nextId === 'Exit'){
   		$event.preventDefault();
-		this.router.navigate(['']);
+		  this.router.navigateByUrl('/maintenance-qu-pol');
   	}
-  	
+
   }
 
 }

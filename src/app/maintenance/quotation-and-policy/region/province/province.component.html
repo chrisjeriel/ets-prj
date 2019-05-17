@@ -14,14 +14,14 @@
                 <div class="row">
                     <div class="col-sm">
                         <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-                            <app-cust-editable-non-datatable #regionTable [passData]="passData" (genericBtn)="deleteProvince()" (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+                            <app-cust-editable-non-datatable #provinceTable [passData]="passData" (genericBtn)="deleteProvince()" (tableDataChange)="tempTableData=$event;change($event);" (newClick)="onRowClick($event)"  (onDelete)="provinceTable.onClickDelete('force');onClickDelProvince(this.deleteBool);"></app-cust-editable-non-datatable>
                         </div>
                     </div>
                 </div>
                 <div class="row" style="padding-bottom: 10px !important;">
                     <div class="col-sm d-flex justify-content-center">
                         <button class="cust-btn" style="z-index: 1000 !important"  [class.d-none]="inquiryFlag" (click)="cancel()">Cancel</button>
-                        <button class="cust-btn" style="z-index: 1000 !important"  [class.d-none]="inquiryFlag" (click)="onClickSave()"  [disabled]="btnDisabledSave">Save</button>
+                        <button class="cust-btn" style="z-index: 1000 !important"  [class.d-none]="inquiryFlag" (click)="onClickSave()">Save</button>
                     </div>
                 </div>
 </fieldset>
@@ -38,7 +38,7 @@
                     </div>
 </fieldset>
 <app-mtn-region id="regionLOV" (selectedData)="setProvince($event)"></app-mtn-region>
-<app-confirm-save #confirmProvince (onYes)="onClickSaveProvince()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSaveProvince('cancel')" [url]="'/'" ></app-cancel-button>
 
+<app-confirm-save #confirmSave (onYes)="onClickSaveProvince()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>

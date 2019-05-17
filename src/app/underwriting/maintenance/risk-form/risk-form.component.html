@@ -1,8 +1,9 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Maintenance</h4>
+	<h4>Maintenance / Quotation & Policy</h4>
     <ngb-tabset>
         <ngb-tab title="Risk">
             <ng-template ngbTabContent>
+                <form #myForm="ngForm">
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
@@ -10,22 +11,22 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Risk No.</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-2 text-right" disabled="disabled" [ngModel]="riskData.riskId | number: '5.0' | sequence">
+                                    <input type="text" class="form-control form-control-sm col-sm-2 text-right" disabled="disabled" [ngModel]="riskData.riskId | number: '5.0' | sequence" name="riskData.riskId">
                                     <input type="checkbox" class="checkbox text-right" [ngModel]="riskData.activeTag=='Y'" 
-                                    (change)="riskData.activeTag = $event.target.checked?'Y':'N'">
+                                    (change)="riskData.activeTag = $event.target.checked?'Y':'N'" name="riskData.activeTag">
                                     <label class="form-control-sm labels" style="text-align: left !important">Active Tag</label>
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
-                                    <label class="form-control-sm col-sm-2 text-right labels">Description</label>
-                                    <input appRequired type="text" class="form-control form-control-sm col-sm-9" riskdesc [(ngModel)]="riskData.riskName">
+                                    <label class="form-control-sm col-sm-2 text-right labels">Risk Name</label>
+                                    <input appRequired type="text" class="form-control form-control-sm col-sm-9" riskdesc [(ngModel)]="riskData.riskName" name="riskData.riskName">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 14px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Abbreviation</label>
-                                    <input appRequired type="text" class="form-control form-control-sm col-sm-9" [(ngModel)]="riskData.riskAbbr">
+                                    <input appRequired type="text" class="form-control form-control-sm col-sm-9" [(ngModel)]="riskData.riskAbbr" name="riskData.riskAbbr">
                                 </div>
                             </div>
                         </fieldset>
@@ -41,50 +42,50 @@
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Region</label>
                                     <!-- <input  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.regionCd"> -->
-                                    <input appRequired type="text" [ngModel]="riskData.regionCd" (ngModelChange)="riskData.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'region')">
+                                    <input appRequired type="text" [ngModel]="riskData.regionCd" (ngModelChange)="riskData.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'region')" name="riskData.regionCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.regionDesc" style="margin-left: 6px !important">
+                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.regionDesc" style="margin-left: 6px !important" name="riskData.regionDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">Province</label>
                                     <!-- <input  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.provinceCd"> -->
-                                    <input appRequired type="text" [ngModel]="riskData.provinceCd" (ngModelChange)="riskData.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'province')">
+                                    <input appRequired type="text" [ngModel]="riskData.provinceCd" (ngModelChange)="riskData.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'province')" name="riskData.provinceCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.provinceDesc" style="margin-left: 6px !important">
+                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.provinceDesc" style="margin-left: 6px !important" name="riskData.provinceDesc">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">City/Town</label>
                                     <!-- <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.cityCd"> -->
-                                    <input appRequired type="text" [ngModel]="riskData.cityCd" (ngModelChange)="riskData.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'city')">
+                                    <input appRequired type="text" [ngModel]="riskData.cityCd" (ngModelChange)="riskData.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'city')" name="riskData.cityCd">
                                     <!-- <div class="text-search-ico"><a><i class="fa fa-search" (click)="showCityModal()" ></i></a></div> -->
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')" ></i></a></div>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [(ngModel)]="riskData.cityDesc">
+                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [(ngModel)]="riskData.cityDesc" name="riskData.cityDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">District</label>
                                     <!-- <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'" [(ngModel)]="riskData.districtCd"> -->
-                                    <input type="text" [ngModel]="riskData.districtCd" (ngModelChange)="riskData.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'district')">
+                                    <input type="text" [ngModel]="riskData.districtCd" (ngModelChange)="riskData.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'district')" name="riskData.districtCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important"  [(ngModel)]="riskData.districtDesc">
+                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important"  [(ngModel)]="riskData.districtDesc" name="riskData.districtDesc">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Block</label>
                                     <!-- <input  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.blockCd">  -->
-                                    <input type="text" [ngModel]="riskData.blockCd" (ngModelChange)="riskData.blockCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'block')">
+                                    <input type="text" [ngModel]="riskData.blockCd" (ngModelChange)="riskData.blockCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'block')" name="riskData.blockCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('block')"></i></a></div>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [(ngModel)]="riskData.blockDesc">
+                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [(ngModel)]="riskData.blockDesc" name="riskData.blockDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">Lat</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskData.latitude">
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskData.latitude" name="riskData.latitude">
                                     <label class="form-control-sm col-sm-1 text-right labels">Long</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskData.longitude">
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskData.longitude" name="riskData.longitude">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels" style="padding: 0; padding-right: 0.96px;">CRESTA Zone</label>
-                                    <input type="text" readonly class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.zoneCd">
+                                    <input type="text" readonly class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.zoneCd" name="riskData.zoneCd">
                                     <div class="text-search-ico" style="visibility: hidden;"><a><i class="fa fa-search" (click)="showCrestaZoneModal()"></i></a></div>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="riskData.zoneDesc"style="margin-left: 6px !important">
+                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="riskData.zoneDesc"style="margin-left: 6px !important" name="riskData.zoneDesc">
                                 </div>
                             </div>
                         </fieldset>
@@ -99,35 +100,36 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Remarks</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-9" [(ngModel)]="riskData.remarks">
+                                    <input type="text" class="form-control form-control-sm col-sm-9" [(ngModel)]="riskData.remarks" name="riskData.remarks">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Created By</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="riskData.createUser">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="riskData.createUser" name="riskData.createUser">
                                     <label class="form-control-sm col-sm-2 text-right labels">Date Created</label>
-                                    <input type="date" class="form-control form-control-sm col-sm-3" readonly [(ngModel)]="riskData.createDate">
+                                    <input type="date" class="form-control form-control-sm col-sm-3" readonly [(ngModel)]="riskData.createDate" name="riskData.createDate">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Last Updated By</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="riskData.updateUser">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="riskData.updateUser" name="riskData.updateUser">
                                     <label class="form-control-sm col-sm-2 text-right labels">Last Update</label>
-                                    <input type="date" class="form-control form-control-sm col-sm-3" readonly [(ngModel)]="riskData.updateDate">
+                                    <input type="date" class="form-control form-control-sm col-sm-3" readonly [(ngModel)]="riskData.updateDate" name="riskData.updateDate">
                                 </div>
                             </div>
                         </fieldset>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
+            </form>
                 <div class="form-row bottom-button-container">
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center">
                             <div class="cust-btn-container" style="margin-top: 10px;">
                                 <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Return</a></button>
-                                <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                             </div>
                         </div>
                     </div>
@@ -138,13 +140,11 @@
 </div>
 
 <app-mtn-district id="districtModal" (selectedData)="setDistricts($event)"></app-mtn-district>
-<!-- <app-mtn-city></app-mtn-city> -->
-<!-- <app-mtn-block id="blockModal" (selectedData)="setBlock($event)"></app-mtn-block> -->
 <app-mtn-city id="cityModal" (selectedData)="setCity($event)"></app-mtn-city>
 <app-mtn-cresta-zone id="crestaZoneModal" (selectedData)="setCrestaZone($event)"></app-mtn-cresta-zone>
 <app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>
 <app-sucess-dialog  [icon]="dialogIcon"></app-sucess-dialog>
-<app-modal class="d-none" id="errorMdl">
+<!-- <app-modal class="d-none" id="errorMdl">
     <div header>Error</div>
     <div body class="container-flex text-center">
         <span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
@@ -153,4 +153,8 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
-</app-modal>
+</app-modal> -->
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-risk-list'" ></app-cancel-button>

@@ -34,7 +34,7 @@ export class MtnRegionComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
-
+  
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal,  private ns: NotesService) { }
 
   ngOnInit() {

@@ -4,8 +4,10 @@ import { MaintenanceService, NotesService } from '@app/_services';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { environment } from '@environments/environment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ActivatedRoute } from '@angular/router';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 
 @Component({
@@ -14,8 +16,11 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
   styleUrls: ['./region.component.css']
 })
 export class RegionComponent implements OnInit {
+  @ViewChild(NgbTabset)tabset:NgbTabset;
+
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+  @ViewChild(ConfirmSaveComponent) confirmDialog: ConfirmSaveComponent;
   @ViewChild("regionTable") regionTable: CustEditableNonDatatableComponent;
 
   passData: any = {
@@ -28,24 +33,24 @@ export class RegionComponent implements OnInit {
 			activeTag       : null,
 			catTag          : null,
 			remarks         : null,
-			"createUser"    : this.ns.getCurrentUser(),
+			      "createUser"    : this.ns.getCurrentUser(),
             "createDate"    : this.ns.toDateTimeString(0),
-            "updateUser"	: this.ns.getCurrentUser(),
-      		"updateDate"	: null
+            "updateUser"	  : this.ns.getCurrentUser(),
+      		  "updateDate"	  : null
 		},
-		checkFlag			: false,
-		searchFlag			: true,
-		addFlag				: true,
+		checkFlag			      : false,
+		searchFlag		      : true,
+		addFlag				      : true,
 		genericBtn          :'Delete',
-		disableGeneric 		: true,
-		paginateFlag		: true,
-		infoFlag			: true,
-		pageLength			: 10,
-		widths				:[1,'auto',1,'auto'],
-		resizable			:[true, true, false ,true],
-		pageunID		    : 'mtn-region',
-		keys				:['regionCd','description','activeTag','remarks'],
-		uneditable			:[false,false,false,false]
+		disableGeneric 		  : true,
+		paginateFlag		    : true,
+		infoFlag			      : true,
+		pageLength			    : 10,
+		widths				      :[1,'auto',1,'auto'],
+		resizable			      :[true, true, false ,true],
+		pageunID		        : 'mtn-region',
+		keys				        :['regionCd','description','activeTag','remarks'],
+		uneditable			    :[false,false,false,false]
 
 	};
 
@@ -63,7 +68,7 @@ export class RegionComponent implements OnInit {
     dialogIcon    : string = "";
     selectedData  : any;
     mtnRegionReq  : any = { 
-    						"deleteRegion": [],
+    						        "deleteRegion": [],
                     		"saveRegion"  : []}
     editedData:any[] = [];
     deletedData:any[] =[];
@@ -72,11 +77,16 @@ export class RegionComponent implements OnInit {
     cancelFlag: boolean;
 
 
-  constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal) { }
+  constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal
+    ,private route: ActivatedRoute) { }
 
   ngOnInit() {
-  	    this.titleService.setTitle('Mtn | Region');
-		this.getMtnRegion();
+	  this.titleService.setTitle('Mtn | Region');
+    this.route.params.subscribe(a=>{
+      this.tabset.activeId = a.id;
+      if(a.id == 'region')
+        this.getMtnRegion();
+    })
   }
 
 
@@ -170,19 +180,28 @@ export class RegionComponent implements OnInit {
   	this.mtnRegionReq.deleteRegion = [];
   	this.editedData = [];
   	this.deletedData = [];
+    
   	for(var i=0;i<this.passData.tableData.length;i++){
   		 if(this.passData.tableData[i].edited){
   		 	  this.editedData.push(this.passData.tableData[i]);
   		 	  this.editedData[this.editedData.length - 1].activeTag  = this.cbFunc2(this.passData.tableData[i].activeTag);
               this.editedData[this.editedData.length - 1].updateUser = this.ns.getCurrentUser();
               this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);             
-         } else if (this.passData.tableData[i].deleted) {
-         	  this.deletedData.push(this.passData.tableData[i].regionCd);
-         }      
+         }     
   	}
   	        this.mtnRegionReq.saveRegion = this.editedData;
             this.mtnRegionReq.deleteRegion = this.deletedData;     
-            this.saveRegion();
+
+             if(this.mtnRegionReq.saveRegion.length > 0){
+              this.confirmDialog.showBool = true;
+              this.passData.disableGeneric = true;
+              this.saveRegion();
+            } else {
+              this.confirmDialog.showBool = false;
+              this.dialogIcon = 'info';
+              this.dialogMessage = 'Nothing to save';
+              this.successDialog.open();
+            }
 
   }
 
@@ -203,11 +222,13 @@ export class RegionComponent implements OnInit {
   }
 
   onClickDelRegion(obj : boolean){
-  	    this.mtnRegionReq.saveRegion = [];
-  	    this.mtnRegionReq.deleteRegion = [];
+  	  this.mtnRegionReq.saveRegion = [];
+  	  this.mtnRegionReq.deleteRegion = [];
   		this.deletedData = [];
   		this.editedData = [];
-  		if(obj){
+      this.passData.disableGeneric = true;
+  		
+      if(obj){
   			this.mtnService.getMtnProvince(this.regionCd,null).subscribe(data => {
   				console.log(data['region'].length);
   				if(data['region'].length > 0){
@@ -233,7 +254,7 @@ export class RegionComponent implements OnInit {
   	    }else {
   	    	this.deleteBool = true;	
   	    }
-  	    this.regionTable.indvSelect.deleted = true;
+  	  this.regionTable.indvSelect.deleted = true;
 	  	this.regionTable.selected  = [this.regionTable.indvSelect]
 	  	this.regionTable.confirmDelete();
   }
@@ -244,6 +265,12 @@ export class RegionComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  onTabChange(event){
+    if(event.nextId == 'region'){
+      this.getMtnRegion();
+    }
   }
 
 }

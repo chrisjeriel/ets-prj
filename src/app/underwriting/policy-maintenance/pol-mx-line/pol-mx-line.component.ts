@@ -1,11 +1,14 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { MaintenanceService, NotesService } from '@app/_services';
+import { MaintenanceService, NotesService, QuotationService } from '@app/_services';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { environment } from '@environments/environment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { NgbModal,NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-pol-mx-line',
@@ -15,32 +18,41 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class PolMxLineComponent implements OnInit {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	@ViewChild('tabset') tabset: any;
 
 	passData: any = {
 		tableData:[],
 		tHeader				:["Line Code", "Description", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
-		dataTypes			:["text", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "text", "text", "text"],
+		dataTypes			:["pk-cap", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text"],
 		nData:{
-			lineCd          : null,
-			description     : null,
-			cutOffTime      : null,
-			activeTag       : null,
-			catTag          : null,
-			renewalTag      : null,
-			openCoverTag    : null,
-			alopTag         : null,
-			referenceNo     : null,
-			sortSeq         : null,
-			remarks         : null,
+			newRec			: 1,
+			lineCd          : '',
+			description     : '',
+			cutOffTime      : '',
+			activeTag       : 'Y',
+			catTag          : 'N',
+			renewalTag      : 'N',
+			openCoverTag    : 'N',	
+			alopTag         : 'N',
+			referenceNo     : '',
+			sortSeq         : '',
+			remarks         : '',
+			isNew			: true
 		},
-		checkFlag			: true,
 		addFlag				: true,
-		deleteFlag			: true,
+		genericBtn			:'Delete',
+		disableGeneric 		: true,
+		searchFlag          : true,
 		paginateFlag		: true,
 		infoFlag			: true,
 		pageLength			: 10,
-		resizable			: [true, true, true, false, true, true, false,true],
+		resizable			: [true, true, true, false, true, true, false,true, true,true,true],
+		uneditable			: [false,false,false,false,false,false,false,false,false,false,false],
+		widths				: ['auto','350',1,1,1,1,1,1,'auto','auto','auto'],
 		pageID				: 'line-mtn-line',
+		mask: {
+	  		lineCd: 'AAAAAAA'
+	  	},
 		keys				: ['lineCd','description','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks'],
 	};
 
@@ -52,7 +64,20 @@ export class PolMxLineComponent implements OnInit {
 	successMessage			: string 	= environment.successMessage;
 	arrLineCd     			: any     	= [];
 	counter					: number;
-	mtnLineReq 				: any;
+	mtnLineReq 				: any		= {};
+	warnMsg					: string 	= '';
+	isChecked				: boolean 	= false;
+    usedInQuote				: boolean 	= false;
+    usedInQuoteAdd			: boolean 	= false;
+    arrLineCdDel  			: any     	= [];
+    arrRowsToSave			: any		= [];
+    isAddClicked			: boolean	= false;
+
+
+    params : any =	{
+		saveLine 		: [],
+		deleteLine 		: []
+	};
 
 	saveMtnLine:any = {
 		activeTag		: false,
@@ -73,128 +98,90 @@ export class PolMxLineComponent implements OnInit {
 		updateUser		: "",
 	};
 
-	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal) { }
+	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal, private quotationService: QuotationService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Mtn | Line');
 		this.getMtnLine();
-
-		if(this.inquiryFlag){
-			this.passData.tHeader.pop();
-			this.passData.opts = [];
-			this.passData.uneditable = [];
-			this.passData.magnifyingGlass = [];
-			this.passData.addFlag = false;
-			this.passData.deleteFlag = false;
-			for(var count = 0; count < this.passData.tHeader.length; count++){
-				this.passData.uneditable.push(true);
-			}
-		}
 	}
 
-	onClickSaveLine(cancelFlag?){
-		this.counter = 0;
+	onSaveMtnLine(cancelFlag?){
+		this.cancelFlag = cancelFlag !== undefined;
 		this.dialogIcon = '';
 		this.dialogMessage = '';
-		//this.loading = true;
-		this.cancelFlag = cancelFlag !== undefined;
-		for(var i = 0; this.passData.tableData.length > i; i++){
-			var rec = this.passData.tableData[i];
-			if(rec.lineCd === '' || rec.lineCd === null || rec.description === '' || rec.description === null){
+		var isNotUnique : boolean ;
+		var saveLine = this.params.saveLine;
+		var isEmpty = 0;
+		
+		for(let record of this.passData.tableData){
+			if(record.lineCd === '' || record.lineCd === null || record.description === '' || record.description === null || record.cutOffTime === '' || record.cutOffTime === null){
+				if(!record.deleted){
+					isEmpty = 1;
+				}
+			}else{
+				if(record.edited && !record.deleted){
+					record.createUser		= (record.createUser === '' || record.createUser === undefined)?this.ns.getCurrentUser():record.createUser;
+					record.createDate		= (record.createDate === '' || record.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
+					record.updateUser		= this.ns.getCurrentUser();
+					record.updateDate		= this.ns.toDateTimeString(0);
+					record.saveCutOffTime	= this.ns.toDateTimeString(0).split('T')[0]+'T'+record.cutOffTime;
+					this.params.saveLine.push(record);
+				}else if(record.edited && record.deleted){
+					this.params.deleteLine.push(record);
+				}
+			}
+		}
+
+		this.passData.tableData.forEach(function(tblData){
+			if(tblData.isNew != true){
+				saveLine.forEach(function(slData){
+					if(tblData.lineCd.toString().toUpperCase() == slData.lineCd.toString().toUpperCase()){
+						if(slData.isNew === true){
+							isNotUnique = true;	
+						}
+					}
+				});
+			}
+		});
+
+		if(isNotUnique == true){
+			setTimeout(()=>{
+                $('.globalLoading').css('display','none');
+                this.warnMsg = 'Unable to save the record. Line Code must be unique.';
+				this.showWarnLov();
+				this.params.saveLine 	= [];
+            },500);
+		}else{
+			if(isEmpty == 1){
 				setTimeout(()=>{
                     $('.globalLoading').css('display','none');
                     this.dialogIcon = 'error';
                     $('app-sucess-dialog #modalBtn').trigger('click');
+                    this.params.saveLine 	= [];
                 },500);
 			}else{
-				if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-					for(var k = 0; k < this.arrLineCd.length; k++){
-						if(rec.lineCd === this.arrLineCd[k]){
-							rec = this.passData.tableData[k];
-							break;
-						}else{
-							rec = this.passData.tableData[i];
-						}
-					}
-					this.mtnLineReq = { 
-						"deleteLine": [],
-						"saveLine": [
-						{
-							"activeTag"		: (rec.activeTag === '' || rec.activeTag === null || rec.activeTag === undefined)?this.cbFunc(rec.activeTag):rec.activeTag,
-							"alopTag"		: (rec.alopTag === '' || rec.alopTag === null || rec.alopTag === undefined)?this.cbFunc(rec.alopTag):rec.alopTag,
-							"catTag"		: (rec.catTag === '' || rec.catTag === null || rec.catTag === undefined)?this.cbFunc(rec.catTag):rec.catTag,
-							"createDate"	: (rec.createDate === '' || rec.createDate === null || rec.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(rec.createDate),
-							"createUser"	: (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?JSON.parse(window.localStorage.currentUser).username:rec.createUser,
-							"cutOffTime"	: this.cutOffTimeFunc(rec.cutOffTime),
-							"description"	: rec.description,
-							"lineCd"		: rec.lineCd,
-							"openCoverTag"	: (rec.openCoverTag === '' || rec.openCoverTag === null || rec.openCoverTag === undefined)?this.cbFunc(rec.openCoverTag):rec.openCoverTag,
-							"referenceNo"	: rec.referenceNo,
-							"remarks"		: rec.remarks,
-							"renewalTag"	: (rec.renewalTag === '' || rec.renewalTag === null || rec.renewalTag === undefined)?this.cbFunc(rec.renewalTag):rec.renewalTag,
-							"sortSeq"		: rec.sortSeq,
-							"updateDate"	: this.ns.toDateTimeString(0),
-							"updateUser"	: JSON.parse(window.localStorage.currentUser).username
-						}
-						]
-					}
-
-					this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
-					.subscribe(data => {
-						this.getMtnLine();
+				if(this.params.saveLine.length == 0 && this.params.deleteLine.length == 0){
+					setTimeout(()=>{
+						$('.globalLoading').css('display','none');
+						this.dialogIcon = 'info';
+						this.dialogMessage = 'Nothing to save.';
 						$('app-sucess-dialog #modalBtn').trigger('click');
-						this.loading = false;
-					});	
-
-				}else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-					console.log('delete');
-					this.mtnLineReq = { 
-						"deleteLine": [
-						{
-							"activeTag"		: this.cbFunc(rec.activeTag),
-							"alopTag"		: this.cbFunc(rec.alopTag),
-							"catTag"		: this.cbFunc(rec.catTag),
-							"createDate"	: this.ns.toDateTimeString(0),
-							"createUser"	: JSON.parse(window.localStorage.currentUser).username,
-							"cutOffTime"	: this.ns.toDateTimeString(0).split('T')[0] + 'T' + rec.cutOffTime,
-							"description"	: rec.description,
-							"lineCd"		: rec.lineCd,
-							"openCoverTag"	: this.cbFunc(rec.openCoverTag),
-							"referenceNo"	: rec.referenceNo,
-							"remarks"		: rec.remarks,
-							"renewalTag"	: this.cbFunc(rec.renewalTag),
-							"sortSeq"		: rec.sortSeq,
-							"updateDate"	: this.ns.toDateTimeString(0),
-							"updateUser"	: JSON.parse(window.localStorage.currentUser).username
-						}
-						],
-						"saveLine": []
-					}
-
-					this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
-					.subscribe(data => {
-						this.getMtnLine();
-						$('app-sucess-dialog #modalBtn').trigger('click');
-						this.loading = false;
-					});
+						this.params.saveLine 	= [];
+						this.passData.tableData = this.passData.tableData.filter(a => a.lineCd != '');
+					},500);
 				}else{
-					this.counter++;
-				}
+					this.mtnService.saveMtnLine(JSON.stringify(this.params))
+					.subscribe(data => {
+						console.log(data);
+						this.getMtnLine();
+						$('app-sucess-dialog #modalBtn').trigger('click');
+						this.params.saveLine 	= [];
+						this.passData.disableGeneric = true;
+					});
+				}	
 			}
-
 		}
-		if(this.passData.tableData.length === this.counter){
-			setTimeout(()=>{
-				$('.globalLoading').css('display','none');
-				this.dialogIcon = 'info';
-				this.dialogMessage = 'Nothing to save.';
-				$('app-sucess-dialog #modalBtn').trigger('click');
-			},500);
-		}
-	}
 
-	cbFunc(chxbox:boolean){
-		return (chxbox === null  || chxbox === false )? 'N' : 'Y';
 	}
 
 	getMtnLine(){
@@ -202,6 +189,7 @@ export class PolMxLineComponent implements OnInit {
 		this.arrLineCd = [];
 		this.mtnService.getLineLOV('')
 		.subscribe(data => {
+			console.log(data);
 			this.passData.tableData = [];
 			this.arrLineCd = [];
 			var rec = data['line'];
@@ -222,16 +210,52 @@ export class PolMxLineComponent implements OnInit {
 		$('#confirm-save #modalBtn2').trigger('click');
 	}
 
-	cutOffTimeFunc(cutOffTime){
-		if(cutOffTime === null){
-			return this.ns.toDateTimeString(0).split('T')[0] + 'T' + '00:00:00';
-		}else {
-			if((String(cutOffTime)).includes(':')){
-				return this.ns.toDateTimeString(0).split('T')[0] + 'T' + cutOffTime;
-			}else{
-				return this.ns.toDateTimeString(cutOffTime);
-			}
+	onRowClick(event){
+		if(event !== null){
+			this.saveMtnLine.lineCd		 = event.lineCd;
+			this.saveMtnLine.updateDate  = this.ns.toDateTimeString(event.updateDate);
+	        this.saveMtnLine.updateUser  = event.updateUser;
+	        this.saveMtnLine.createDate  = this.ns.toDateTimeString(event.createDate);
+	        this.saveMtnLine.createUser  = event.createUser;
+	       	this.passData.disableGeneric = false;
+		}else{
+			this.passData.disableGeneric = true;
 		}
+	}
+
+	showWarnLov(){
+		$('#warnMdl > #modalBtn').trigger('click');
+	}
+
+	onTabChange($event: NgbTabChangeEvent) {
+		if($('.ng-dirty').length != 0 ){
+			$event.preventDefault();
+			const subject = new Subject<boolean>();
+			const modal = this.modalService.open(ConfirmLeaveComponent,{
+			        centered: true, 
+			        backdrop: 'static', 
+			        windowClass : 'modal-size'
+			});
+			modal.componentInstance.subject = subject;
+
+			subject.subscribe(a=>{
+			    if(a){
+			        $('.ng-dirty').removeClass('ng-dirty');
+			        this.tabset.select($event.nextId)
+			    }
+			})
+	    }		
+	}
+
+	onDeleteLine(){
+		if(this.table.indvSelect.okDelete == 'N'){
+	  		this.warnMsg = 'You are not allowed to delete a Line that is already used in quotation processing.';
+			this.showWarnLov();
+	  	}else{
+	  		this.table.indvSelect.deleted = true;
+	  		this.table.selected  = [this.table.indvSelect]
+	  		this.table.confirmDelete();
+	  	}
 	}
 
 }

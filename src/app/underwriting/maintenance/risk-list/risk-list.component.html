@@ -1,14 +1,36 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Maintenance</h4>
-    <ngb-tabset>
+	<h4>Maintenance / Quotation & Policy</h4>
+    <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Risk List">
             <ng-template ngbTabContent>
-                <!-- <app-cust-non-datatable [passData]="maintenanceRiskListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="selected=$event"></app-cust-non-datatable> -->
-                <!-- <app-cust-non-datatable [passData]="maintenanceRiskListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="selected=$event" (newRowDblClick)="onClickEdit($event)"></app-cust-non-datatable> -->
-
-                <app-cust-non-datatable [passData]="maintenanceRiskListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="selected=$event"></app-cust-non-datatable>
-
+                <div class="container-fluid" style="padding: 0px">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <app-cust-non-datatable [passData]="maintenanceRiskListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)" (export)="export()" (newRowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <fieldset class="scheduler-border">
+                                <div class="custom-row-inline-inset">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-1">Created By</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" readonly="">
+                                        <label class="form-control-sm col-sm-1">Date Created</label>
+                                        <input type="datetime-local" class="form-control form-control-sm col-sm-2" [ngModel]="ns.toDateTimeString(selected?.createDate)" readonly="">
+                                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" readonly="">
+                                        <label class="form-control-sm col-sm-1">Last Update</label>
+                                        <input type="datetime-local" class="form-control form-control-sm col-sm-2" [ngModel]="ns.toDateTimeString(selected?.updateDate)" readonly="">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
             </ng-template>
+        </ngb-tab>
+        <ngb-tab id="Exit" title="Exit">
         </ngb-tab>
     </ngb-tabset>
 </div>

@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Quotation & Policy</h4>
-	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Region">
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Region" id="region" >
 			<ng-template ngbTabContent>
 			  <fieldset class="scheduler-border" style="margin-top: 10px !important">
 				<div class="row">
@@ -32,17 +32,28 @@
                     </div>
               </fieldset>
 
+              <app-confirm-save (onYes)="onClickSaveRegion()"></app-confirm-save>
+			  <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+			  <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Province">
+		<ngb-tab class="ngb-tab" title="Province"  id="province">
 			<ng-template ngbTabContent>
 				<app-province></app-province>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="District"  id="district">
+			<ng-template ngbTabContent>
+				<app-district></app-district>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Block"  id="block">
+			<ng-template ngbTabContent>
+				<app-block></app-block>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
 </div>
 
-<app-confirm-save (onYes)="onClickSaveRegion()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/'" ></app-cancel-button>
+
 

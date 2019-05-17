@@ -8,7 +8,7 @@
                         <div class="input-group">
                             <div class="col-sm-3"></div>
                             <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
-                            <input class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event)" [(ngModel)]="line.lineCd">
+                            <input class="form-control form-control-sm  col-sm-1 not-form" type="text" (change)="checkCode($event)" [(ngModel)]="line.lineCd">
                             <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="line.description" readonly>
                             <div class="col-sm-3"></div>
@@ -22,11 +22,11 @@
 
 	                <fieldset class="scheduler-border" style="padding-top: 10px !important;">
 	                	<legend class="scheduler-border">Deductible per Endorsement</legend>
-	                	<app-cust-editable-non-datatable #dedTable [passData]="passDedTable" (genericBtn)="deleteDed()" (onDelete)="dedTable.onClickDelete('force');" (tableDataChange)="endtTable.indvSelect.deductibles = $event"></app-cust-editable-non-datatable>
+	                	<app-cust-editable-non-datatable #dedTable [passData]="passDedTable" (genericBtn)="deleteDed()" (onDelete)="dedTable.onClickDelete('force');" (tableDataChange)="endtTable.indvSelect.deductibles = $event;disableFields()"></app-cust-editable-non-datatable>
 	                </fieldset>
 	                <div class="w-100 text-center my-2">
-                    	<button class="cust-btn">Cancel</button>
-                    	<button class="cust-btn" (click)="save()">Save</button>
+                    	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
+                    	<button class="cust-btn" (click)="onClickSave()">Save</button>
                     </div>
                 </fieldset>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
@@ -49,7 +49,7 @@
 
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 
-<app-confirm-save (onYes)="onSaveDeductibles()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveDeductibles('cancel')" [url]="'/'" ></app-cancel-button>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>

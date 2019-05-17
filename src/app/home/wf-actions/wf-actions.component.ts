@@ -53,7 +53,7 @@ export class WfActionsComponent implements OnInit {
   	updatedBy: null,
   	lastUpdate: null
   }
-   
+
   userInfoToMany: string;
   selected: any = null;
   selects: any[] = [];
@@ -155,21 +155,21 @@ setToAll(obj : boolean){
 
 
 setCheckRecords(){
-	
+
 	if(this.isEmptyObject(this.userInfoToMany)){
 	
   }else{
 	    var array = this.userInfoToMany.split(",");
-	}
+  }
 
   for( var j = 0; j < array.length; j ++){
    	   for(var i = 0; i < this.usersListing.tableData.length; i++){
       if(array[j] === this.usersListing.tableData[i].userId){
      	   this.usersListing.tableData[i].checked = true;
      	  }
-       }  
+       }
   }
-    
+
 
 }
 
@@ -201,7 +201,7 @@ confirm(){
     var records = this.selects;
 	var temp: string = "";
 		for(let rec of records){
-			temp = rec.userId + "," + temp; 
+			temp = rec.userId + "," + temp;
 		}
 	this.userInfoToMany = temp;
     	if (this.mode){
@@ -223,13 +223,13 @@ radioBtnChange(obj){
 			}
 			case '2': {
 				this.disableAssignTo = false;
-		    this.disableAssignToMany = true;
-        break; 
+		        this.disableAssignToMany = true;
+                break;
 			}
 			case '3': {
 				this.disableAssignTo = true;
-		    this.disableAssignToMany = false;
-		    break; 
+		        this.disableAssignToMany = false;
+		        break;
 			}
 			case '4': {
 				this.clear('enable');
@@ -244,39 +244,39 @@ radioBtnChange(obj){
 
 handleRadioBtnChange(event){
    	this.disablebtnBool = false;
-   	switch(event.target.value) { 
-   		case '1': { 
+   	switch(event.target.value) {
+   		case '1': {
         this.reminderValue = '1';
         this.clear('enable');
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
-        break; 
-        } 
-        case '2': { 
+        break;
+        }
+        case '2': {
         this.reminderValue = '2';
         this.disableAssignTo = false;
         this.disableAssignToMany = true;
-        break; 
-        } 
-        case '3': { 
+        break;
+        }
+        case '3': {
         this.reminderValue = '3';
         this.disableAssignTo = true;
         this.disableAssignToMany = false;
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
-        break; 
-        } 
-        case '4': { 
+        break;
+        }
+        case '4': {
         this.reminderValue = '4';
         this.clear('enable');
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
         break;
-        } 
-         default: { 
-        //statements; 
-        break; 
-        } 
+        }
+         default: {
+        //statements;
+        break;
+        }
     }
 }
 
@@ -302,7 +302,7 @@ showUsersLOV(obj){
 	  $('#usersLOV #modalBtn').trigger('click');
 	  $('#usersLOV #modalBtn').addClass('ng-dirty');
 	}
-}	
+}
 
 setPreparedBy(event){
 	this.userInfo.userId = event.userId;
@@ -329,7 +329,7 @@ checkCode(ev) {
     $(ev.target).addClass('ng-dirty');
     var userId = this.userInfo.userId;
     this.userInfo = [];
-  	this.usersLov.checkCode(userId, ev);		
+  	this.usersLov.checkCode(userId, ev);
 }
 
 saveReminderValidation(obj: boolean){
@@ -363,25 +363,25 @@ saveReminderValidation(obj: boolean){
 
 
 saveReminder(obj){
-	switch(obj) { 
-	   		case '1': { 
-	   		    this.prepareParam(this.createInfo.createdBy,1);
-	        break; 
-	        } 
-	        case '2': { 
+	switch(obj) {
+	   		case '1': {
+	   		   this.prepareParam(this.createInfo.createdBy,1);
+	        break;
+	        }
+	      case '2': {
 	          if (this.isEmptyObject(this.userInfo.userName)){
     			   this.openErrorDiag();
     			  } else {
     			 	this.prepareParam(this.userInfo.userId,1);
     			  }
-	        break; 
-	        } 
-	        case '3': { 
+	        break;
+	        }
+	        case '3': {
 	       	  if (this.isEmptyObject(this.userInfoToMany)){
     			   this.openErrorDiag();
     			  } else {
             var array = this.userInfoToMany.split(',');
-              for(let i=0;i<array.length-1 ;i++){ 
+              for(let i=0;i<array.length-1 ;i++){
                   this.prepareParam(array[i],array.length-1);
               }
     			  }
@@ -390,11 +390,15 @@ saveReminder(obj){
 	         case '4': { 
 	          this.retrieveUsers(this.mode);
 	        break;
-	        } 
-	         default: { 
-	        //statements; 
-	        break; 
-	        } 
+	        }
+	         case '4': {
+
+	        break;
+	        }
+	         default: {
+	        //statements;
+	        break;
+	        }
 	    }
 }
 
@@ -437,7 +441,7 @@ saveNotes(obj){
 checkValidTime(event){
 	if(this.isEmptyObject(event.target.value)){
     } else {
-    	var reminderTime = this.toTimeString(Date.parse(this.reminderDate));	
+    	var reminderTime = this.toTimeString(Date.parse(this.reminderDate));
 		if(this.isEmptyObject(this.alarmDate)){
 		} else {
 		  this.setAlarmTime(reminderTime,this.alarmDate);
@@ -452,7 +456,7 @@ checkValidDate(event){
 		this.alarmDate = null;
 	}else {
 		this.disableAlarmTime = false;
-		var reminderTime = this.toTimeString(Date.parse(this.reminderDate));	    
+		var reminderTime = this.toTimeString(Date.parse(this.reminderDate));
 
 		if(this.isEmptyObject(this.alarmDate)){
 		} else {
@@ -519,7 +523,7 @@ onOkSuccessDiag(obj, mode: boolean){
 }
 
 prepareParam(assignedTo : string, length : number){
-    
+
        var saveReminderInfoParam = {
        "alarmTime"  : this.alarmDate === null || this.alarmDate === undefined ? '' : this.alarmDate,
 		   "assignedTo" : assignedTo,
@@ -537,7 +541,6 @@ prepareParam(assignedTo : string, length : number){
       console.log(saveReminderInfoParam);
       this.disablebtnBool = true;
 	    this.saveReminderParams(saveReminderInfoParam,length);
-	  
 }
 
 saveReminderParams(obj, length: number){
@@ -546,11 +549,11 @@ saveReminderParams(obj, length: number){
            ).subscribe(data => {
             if(data['returnCode'] === 0) {
                 this.resultReminder.push(0)
-            } else if (data['returnCode'] === -1) {  
-                this.resultReminder.push(-1)         
+            } else if (data['returnCode'] === -1) {
+                this.resultReminder.push(-1)
             }
 
-     })        
+     })
 }
 
 saveRemindersFinal(obj){

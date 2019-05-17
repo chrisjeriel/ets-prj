@@ -353,18 +353,39 @@ import { PolInqClaimsComponent } from './underwriting/inquiry/policy-information
 import { SequenceDirective } from './_directives/sequence.directive';
 import { InsuredListComponent } from './maintenance/quotation-and-policy/insured-list/insured-list.component';
 import { InsuredComponent } from './maintenance/quotation-and-policy/insured-list/insured/insured.component';
+import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
+import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
-import { RegionComponent } from './maintenance/quotation-and-policy/region/region.component';
+import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
+import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
+import { CedingCompaniesListComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-companies-list.component';
+import { CedingCompanyFormComponent } from './maintenance/quotation-and-policy/ceding-companies-list/ceding-company-form/ceding-company-form.component';
 import { EndorsementComponent } from './maintenance/quotation-and-policy/endorsement/endorsement.component';
+import { ObjectComponent } from './maintenance/quotation-and-policy/object/object.component';
+import { SectionCoverComponent } from './maintenance/quotation-and-policy/section-cover/section-cover.component';
+import { HundredValPolPrintComponent } from './underwriting/generate-documents/hundred-val-pol-print/hundred-val-pol-print.component';
+import { QuoteWordingComponent } from './maintenance/quotation-and-policy/quote-wording/quote-wording.component';
+import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/reason/quote-status-reason/quote-status-reason.component';
+import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
+import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
+import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
+import { PolicyWordingComponent } from './maintenance/quotation-and-policy/policy-wording/policy-wording.component';
+import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
+import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
+import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
+import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
+import { PolValueCoverageComponent } from './underwriting/generate-documents/pol-value-coverage/pol-value-coverage.component';
+import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
+import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
+import { Alert2Component } from './_components/common/alert2/alert2.component';
+import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
+import { RegionComponent } from './maintenance/quotation-and-policy/region/region.component';
 import { ProvinceComponent } from './maintenance/quotation-and-policy/region/province/province.component';
 import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-region.component';
 import { RequiredTableDirective } from './_directives/required-table.directive';
-
-
-
 
 @NgModule({
     imports: [
@@ -725,17 +746,41 @@ import { RequiredTableDirective } from './_directives/required-table.directive';
         SequenceDirective,
         InsuredListComponent,
         InsuredComponent,
+        TypeOfCessionComponent,
         SpecialLovComponent,
+        IntermediaryListComponent,
         WfNotesFormComponent,
         DatepickerComponent,
-        RegionComponent,
+        LineClassComponent,
+        AdviceWordingsComponent,
+        CedingCompaniesListComponent,
+        CedingCompanyFormComponent,
         EndorsementComponent,
+        ObjectComponent,
+        SectionCoverComponent,
+        HundredValPolPrintComponent,
+        QuoteWordingComponent,
+        QuoteStatusReasonComponent,
+        SpoilageReasonComponent,
+        DistrictComponent,
+        BlockComponent,
+        PolicyWordingComponent,
+        MtnCurrencyListComponent,
+        MtnCurrencyRateComponent,
+        MtnCATPerilComponent,
+        MtnCrestaComponent,
+        PolValueCoverageComponent,
+        IntermediaryComponent,
+        QuotationAndPolicyComponent,
+        Alert2Component,
+        OtherChargeComponent,
+        RegionComponent,
         ProvinceComponent,
         MtnRegionComponent,
         RequiredTableDirective,
     ],
 
-    providers: [
+  	providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         UnsavedChangesGuard,
