@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DecimalPipe } from '@angular/common';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pol-value-coverage',
@@ -108,6 +109,8 @@ export class PolValueCoverageComponent implements OnInit {
     };
 
     fullCoverageDetails : any = {
+    	projId: null,
+    	riskId: null,
     	currencyCd: null,
     	currencyRt: null,
     	totalSi: null,
@@ -148,7 +151,7 @@ export class PolValueCoverageComponent implements OnInit {
     sectionIIIPrem: number = 0;
     totalSi: number = 0;
     totalPrem: number = 0;
-    line: any = 'CAR';
+    line: any = '';
     hideSectionCoverArray: any[] = [];
     sectionCoverLOVRow: number;
     lovCheckBox:boolean = false;
@@ -159,10 +162,14 @@ export class PolValueCoverageComponent implements OnInit {
     editedDedt: any = [];
     deletedDedt:any = [];
     dialogIcon:string = '';
-	dialogMessage:string;
+	  dialogMessage:string;
     cancelFlag:boolean;
+    policyId: any;
+    risk: any;
+    insured: any;
+    policyNo: any;
 
-  constructor( private ns: NotesService, private underwritingService: UnderwritingService, private modalService: NgbModal, private decimal : DecimalPipe) { }
+  constructor( private ns: NotesService, private underwritingService: UnderwritingService, private modalService: NgbModal, private decimal : DecimalPipe, private route: ActivatedRoute) { }
 
 
   ngOnInit() {
@@ -170,6 +177,14 @@ export class PolValueCoverageComponent implements OnInit {
   		  { header: "Original Value", span: 3 }, { header: "100% Value", span: 5 });
   		this.passDataPerSection.tableData = [['SECTION I','',''],['SECTION II','',''],['SECTION III','','']]
 
+  		this.route.params.subscribe((params) => {
+        console.log(params)
+  			this.policyId = params.policyId;
+  			this.line = params.policyNo.split('-')[0],
+  			this.insured = params.insuredDesc;
+  			this.risk 	 = params.riskName;
+  			this.policyNo = params.policyNo;
+  		})
   		this.getFullCoverage();
   }
 
@@ -183,11 +198,18 @@ export class PolValueCoverageComponent implements OnInit {
   	this.totalSi = 0;
   	this.totalPrem = 0;
   	this.passData.tableData = [];
-  	this.underwritingService.getFullCoverage(null,'250').subscribe((data:any) => {
+  	this.underwritingService.getFullCoverage(null,this.policyId).subscribe((data:any) => {
   		console.log(data)
   		if(data.policy.project !== null){
   			var datas = data.policy.project.fullCoverage.fullSecCover;
-  			this.fullCoverageDetails = data.policy.project.fullCoverage;
+  			this.fullCoverageDetails 			     = data.policy.project.fullCoverage;
+        console.log(this.fullCoverageDetails)
+  			this.fullCoverageDetails.projId 	 = data.policy.project.projId;
+  			this.fullCoverageDetails.riskId 	 = data.policy.project.riskId;
+  			this.fullCoverageDetails.treatyShare = this.decimal.transform(this.fullCoverageDetails.treatyShare, '1.10-10');
+  			this.fullCoverageDetails.pctShare    = this.decimal.transform(this.fullCoverageDetails.pctShare , '1.10-10');
+  			this.fullCoverageDetails.totalValue  = this.decimal.transform(this.fullCoverageDetails.totalValue, '1.2-2');
+  			this.fullCoverageDetails.pctPml		 = this.decimal.transform(this.fullCoverageDetails.pctPml, '1.10-10');
   			for(var i = 0 ; i < datas.length;i++){
   				this.passData.tableData.push(datas[i]);
   				if(this.line == 'CAR' || this.line == 'EAR'){
@@ -272,9 +294,8 @@ export class PolValueCoverageComponent implements OnInit {
   			this.fullCoverageDetails.sectionIIPrem = this.sectionIIPrem;
   			this.fullCoverageDetails.sectionIIIPrem = this.sectionIIIPrem;
 
-  		}
 
-  		this.focusBlur();
+  		}
   		this.getEditableCov();
   	})
   }
@@ -405,7 +426,6 @@ export class PolValueCoverageComponent implements OnInit {
   	this.fullCoverageDetails.sectionIIPrem = this.sectionIIPrem;
   	this.fullCoverageDetails.sectionIIIPrem = this.sectionIIIPrem;
 
-  	this.focusBlur();
   	this.getEditableCov();
   }
 
@@ -413,7 +433,8 @@ export class PolValueCoverageComponent implements OnInit {
   console.log(this.fullCoverageDetails.treatyShare) ;
   	for(var i = 0; i < this.passData.tableData.length;i++){
   		this.passData.tableData[i].edited	  = true;
-  		this.passData.tableData[i].sumInsured = this.passData.tableData[i].orgSumInsured / (this.fullCoverageDetails.treatyShare * 100)
+  		this.passData.tableData[i].sumInsured = this.passData.tableData[i].orgSumInsured == null ? 0:this.passData.tableData[i].orgSumInsured / (this.fullCoverageDetails.treatyShare * 100)
+  		this.passData.tableData[i].premRt     = this.passData.tableData[i].orgSumInsured == null ? 0:this.passData.tableData[i].premRt
   		this.passData.tableData[i].premAmt    = this.passData.tableData[i].sumInsured * (this.passData.tableData[i].premRt/100);
   	}
   	this.update(this.passData.tableData);
@@ -507,9 +528,7 @@ export class PolValueCoverageComponent implements OnInit {
   	this.deletedDedt  = [];
 
 
-  	this.fullCoverageDetails.policyId 			= '250';
-    this.fullCoverageDetails.projId 			= '1';
-    this.fullCoverageDetails.riskId				= '22';
+  	this.fullCoverageDetails.policyId 			= this.policyId;
     this.fullCoverageDetails.createDate 		= this.ns.toDateTimeString(this.fullCoverageDetails.createDate);
     this.fullCoverageDetails.updateDate 		= this.ns.toDateTimeString(this.fullCoverageDetails.updateDate);
     this.fullCoverageDetails.pctShare 			= parseFloat(this.fullCoverageDetails.pctShare.toString().split(',').join(''));
@@ -525,9 +544,9 @@ export class PolValueCoverageComponent implements OnInit {
   			  this.editedData[this.editedData.length - 1].premAmt =  this.passData.tableData[i].premAmt;
   			}
 
-  			this.editedData[this.editedData.length - 1].lineCd		 = 'CAR'
-  			this.editedData[this.editedData.length - 1].cumSi		 = this.editedData[this.editedData.length - 1].sumInsured;
-  			this.editedData[this.editedData.length - 1].cumPrem		 = this.editedData[this.editedData.length - 1].premAmt;
+  			this.editedData[this.editedData.length - 1].lineCd		  = this.line;
+  			this.editedData[this.editedData.length - 1].cumSi		  = this.editedData[this.editedData.length - 1].sumInsured;
+  			this.editedData[this.editedData.length - 1].cumPrem		  = this.editedData[this.editedData.length - 1].premAmt;
   			this.editedData[this.editedData.length - 1].createDateSec = this.ns.toDateTimeString(this.passData.tableData[i].createDateSec);
   			this.editedData[this.editedData.length - 1].updateDateSec = this.ns.toDateTimeString(this.passData.tableData[i].updateDateSec);
   		}
@@ -579,10 +598,6 @@ export class PolValueCoverageComponent implements OnInit {
   	$('#printModal #modalBtn').trigger('click');
   }
   
-  focusBlur(){
-    //setTimeout(() => {$('.req').focus();$('.req').blur()},0)
-  }
-
   pctShare(data){
         this.fullCoverageDetails.totalValue = (parseFloat(this.fullCoverageDetails.totalSi) / parseFloat(data.toString().split(',').join('')) * 100).toFixed(2);
         this.fullCoverageDetails.totalValue = this.decimal.transform(this.fullCoverageDetails.totalValue, '1.2-2');  
@@ -605,6 +620,10 @@ export class PolValueCoverageComponent implements OnInit {
   }
 
   cancel(){
-    this.cancelBtn.clickCancel();
+	this.cancelBtn.clickCancel();
+  }
+
+  onclickSave(){
+  	$('#confirm-save #modalBtn2').trigger('click');
   }
 }

@@ -10,16 +10,16 @@
                        <label class="col-sm-1"></label>
                        <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
                        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2"
-                       placeholder="" readonly>
+                       placeholder="" readonly [(ngModel)]="policyNo" >
                        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
                        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
-                       readonly>
+                       readonly [(ngModel)]="insured" >
                      </div>
                      <div class="input-group" style="margin-bottom: -13px !important;">
                        <label class="col-sm-1"></label>
                        <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
                        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
-                       readonly>
+                       readonly [(ngModel)]="risk" >
                      </div>
                    </div>
                  </fieldset>
@@ -78,7 +78,7 @@
                               <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
                                 <legend class="scheduler-border">Treaty Share</legend>
                                 	<div class="cust-sm">
-                                		 <input type="text" class="form-control form-control-sm req col-sm-7" style="text-align: right !important;margin-left: 85px !important" [(ngModel)]="fullCoverageDetails.treatyShare" appRequired appOtherRates name="coverageData.pctShare">
+                                		 <input type="text" class="form-control form-control-sm req col-sm-7" style="text-align: right !important;margin-left: 85px !important" [(ngModel)]="fullCoverageDetails.treatyShare" appRequired appOtherRates name="coverageData.treatyShare">
                                 		 <button class="cust-btn treaty" (click)="regenerate()">Regenerate</button>
                                 	</div>
                              </fieldset>
@@ -154,13 +154,13 @@
                          <div class="cust-btn-container">
                            <button type="button" class="cust-btn" (click)="openPrint()"><a>Print</a></button>
                            <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                           <button type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
+                           <button type="button" class="cust-btn" (click)="onclickSave()"><a>Save</a></button>
                          </div>
                        </div>
                      </div>
                    </div>
                  <app-sucess-dialog id="fullCoveragevalue" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-                 <app-confirm-save (onYes)="saveCoverage()"></app-confirm-save>
+                 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
                  <app-cancel-button (onYes)="saveCoverage('cancel')" [url]="''" ></app-cancel-button>
                  <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
                  <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
