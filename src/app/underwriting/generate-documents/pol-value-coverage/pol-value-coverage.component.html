@@ -57,17 +57,17 @@
                                   </div>
                                   <div class="input-group" style="margin-bottom: -13px !important">
                                     <label class="form-control-sm col-sm-4">Currency</label>
-                                    <input type="text" name="coverageData.currencyCd" [(ngModel)]="fullCoverageDetails.currencyCd" class="form-control form-control-sm" readonly tabindex="-1">
+                                    <input type="text" name="fullCoverageDetails.currencyCd" [(ngModel)]="fullCoverageDetails.currencyCd" class="form-control form-control-sm" readonly tabindex="-1">
                                     <label class="form-control-sm col-sm-3">Exch. Rt.</label>
-                                    <input type="text" class="form-control form-control-sm req" [ngModel]="fullCoverageDetails.currencyRt | number:'1.6-6'" (ngModelChange)="fullCoverageDetails.currencyRt=$event" readonly appOtherRates tabindex="-1" name="coverageData.currencyRt">
+                                    <input type="text" class="form-control form-control-sm req" [ngModel]="fullCoverageDetails.currencyRt | number:'1.6-6'" (ngModelChange)="fullCoverageDetails.currencyRt=$event" readonly appOtherRates tabindex="-1" name="fullCoverageDetails.currencyRt">
                                   </div>
                                   <div class="input-group" style="margin-bottom: -13px !important">
                                    <label class="form-control-sm col-sm-4">Total Sum Insured</label>
-                                   <input type="text" class="form-control form-control-sm req" appCurrency [ngModel]="fullCoverageDetails.totalSi | number:'1.2-2'" (ngModelChange)="fullCoverageDetails.totalSi=$event" readonly tabindex="-1" name="coverageData.totalSi">
+                                   <input type="text" class="form-control form-control-sm req" appCurrency [ngModel]="fullCoverageDetails.totalSi | number:'1.2-2'" (ngModelChange)="fullCoverageDetails.totalSi=$event" readonly tabindex="-1" name="fullCoverageDetails.totalSi">
                                  </div>
                                  <div class="input-group" style="margin-bottom: 2px !important">
                                    <label class="form-control-sm col-sm-4">Total Premium</label>
-                                   <input type="text" class="form-control form-control-sm req" [ngModel]="fullCoverageDetails.totalPrem | number:'1.2-2'" (ngModelChange)="fullCoverageDetails.totalPrem=$event" readonly appCurrency tabindex="-1" name="coverageData.totalPrem">
+                                   <input type="text" class="form-control form-control-sm req" [ngModel]="fullCoverageDetails.totalPrem | number:'1.2-2'" (ngModelChange)="fullCoverageDetails.totalPrem=$event" readonly appCurrency tabindex="-1" name="fullCoverageDetails.totalPrem">
                                  </div>
                                </div>
                              </fieldset>
@@ -78,7 +78,7 @@
                               <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
                                 <legend class="scheduler-border">Treaty Share</legend>
                                 	<div class="cust-sm">
-                                		 <input type="text" class="form-control form-control-sm req col-sm-7" style="text-align: right !important;margin-left: 85px !important" [(ngModel)]="fullCoverageDetails.treatyShare" appRequired appOtherRates name="coverageData.treatyShare">
+                                		 <input type="text" class="form-control form-control-sm req col-sm-7" style="text-align: right !important;margin-left: 85px !important" [(ngModel)]="fullCoverageDetails.treatyShare" appRequired appOtherRates name="fullCoverageDetails.treatyShare">
                                 		 <button class="cust-btn treaty" (click)="regenerate()">Regenerate</button>
                                 	</div>
                              </fieldset>
@@ -104,18 +104,18 @@
                                  </div>
                                  <div class="input-group" style="margin-bottom: -13px !important">
                                   <label class="form-control-sm col-sm-3">Share(%)</label>
-                                  <input type="text" class="form-control form-control-sm req" style="text-align: right !important" [(ngModel)]="fullCoverageDetails.pctShare" (ngModelChange)="pctShare($event)" appRequired appOtherRates name="coverageData.pctShare">
+                                  <input type="text" class="form-control form-control-sm req" style="text-align: right !important" [(ngModel)]="fullCoverageDetails.pctShare" (ngModelChange)="pctShare($event)" appRequired appOtherRates name="fullCoverageDetails.pctShare">
                                   
                                   <span class="col-sm-1"></span>
                                 </div>
                                 <div class="input-group" style="margin-bottom: -6px !important">
                                   <label class="form-control-sm col-sm-3" style="margin-bottom: 1px;">100% Value</label>
-                                  <input type="text" class="form-control form-control-sm req" [(ngModel)]="fullCoverageDetails.totalValue" appRequired appCurrency name="coverageData.totalValue" (ngModelChange)="totalValue($event)">
+                                  <input type="text" class="form-control form-control-sm req" [(ngModel)]="fullCoverageDetails.totalValue" appRequired appCurrency name="fullCoverageDetails.totalValue" (ngModelChange)="totalValue($event)">
                                   <span class="col-sm-1"></span>
                                 </div>
                                 <div class="input-group" style="margin-bottom: -6px !important">
                                   <label class="form-control-sm col-sm-3">PML(%)</label>
-                                  <input type="text" class="form-control form-control-sm req" [(ngModel)]="fullCoverageDetails.pctPml" appOtherRates name="coverageData.pctPml">
+                                  <input type="text" class="form-control form-control-sm req" [(ngModel)]="fullCoverageDetails.pctPml" appOtherRates name="fullCoverageDetails.pctPml">
                                   <span class="col-sm-1"></span>
                                 </div>
                               </div>
@@ -133,7 +133,7 @@
                                      &nbsp;
                                    </div>
                                    <div class="input-group" style="margin-top: -5px;">
-                                    <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 161.5px; margin-bottom: 10px; margin-left: 13px" name="coverageData.remarks" [(ngModel)]="fullCoverageDetails.remarks"></textarea> 
+                                    <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 161.5px; margin-bottom: 10px; margin-left: 13px" name="fullCoverageDetails.remarks" [(ngModel)]="fullCoverageDetails.remarks"></textarea> 
                                   </div>
                                   <div class="input-group">
                                    <span class="col-sm-3"></span>
