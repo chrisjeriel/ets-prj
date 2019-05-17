@@ -375,6 +375,7 @@ import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn-cat-peril-modal.component';
+import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
 
 
 
@@ -758,6 +759,7 @@ import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn
         MtnCrestaComponent,
         IntermediaryComponent,
         MtnCatPerilModalComponent,
+        ApproverComponent,
     ],
 
   	providers: [
