@@ -122,7 +122,10 @@ export class QuoteWordingComponent implements OnInit, OnDestroy {
 			this.table.refreshTable();
     	}
 
-    	setTimeout(() => { $(data.ev.target).removeClass('ng-dirty'); }, 0);
+    	setTimeout(() => { if(data.ev) {
+    			$(data.ev.target).removeClass('ng-dirty');
+    		}
+    	}, 0);
 	}
 
 	showLineLOV() {		

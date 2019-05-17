@@ -158,7 +158,10 @@ export class PolicyWordingComponent implements OnInit, OnDestroy {
 			this.table.refreshTable();
     	}
 
-    	setTimeout(() => { $(data.ev.target).removeClass('ng-dirty'); }, 0);
+    	setTimeout(() => { if(data.ev) {
+    			$(data.ev.target).removeClass('ng-dirty');
+    		}
+    	}, 0);
 	}
 
 	showLineLOV() {		
@@ -189,6 +192,7 @@ export class PolicyWordingComponent implements OnInit, OnDestroy {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 
+				this.tblHighlightReq('#policy-wording-table',this.policyWordingData.dataTypes,[0,1,2,3,8]);
 				return;
 			}
 		}
@@ -249,5 +253,38 @@ export class PolicyWordingComponent implements OnInit, OnDestroy {
 				this.successDialog.open();
 			}
 		});
+	}
+
+	tblHighlightReq(el, dataTypes, reqInd) {
+		setTimeout(() => {
+			$(el).find('tbody').children().each(function() {
+				$(this).children().each(function(i) {
+					if(reqInd.includes(i)) {
+						var val;
+						if(dataTypes[i] == 'pk' || dataTypes[i] == 'pk-cap' || dataTypes[i] == 'text' || dataTypes[i] == 'date' || dataTypes[i] == 'time') {
+							val = $(this).find('input').val();
+							highlight($(this), val);
+						} else if(dataTypes[i] == 'select') {
+							val = $(this).find('select').val();
+							highlight($(this), val);
+						} else if(dataTypes[i] == 'text-editor') {
+							if($(this).find('div.ql-editor.ql-blank').length != 0) {
+								val = ''
+							} else if($(this).find('div.ql-editor').length != 0) {
+								val = $(this).find('div.ql-editor p').text().trim();
+							}
+
+							highlight($(this), val);
+						} else if(dataTypes[i] == 'number' || dataTypes[i] == 'currency') {
+							val = isNaN(Number($(this).find('input').val())) ? null : $(this).find('input').val();
+						}
+					}
+				});
+			});
+
+			function highlight(td, val) {
+				td.css('background', typeof val == 'undefined' ? 'transparent' : val == '' || val == null ? '#fffacd85' : 'transparent');
+			}
+		}, 0);
 	}
 }
