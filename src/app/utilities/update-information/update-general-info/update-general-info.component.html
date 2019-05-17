@@ -25,7 +25,7 @@
 									<input id=altNo disabled type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
 									 ngbTooltip="Alt No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='3' maxlength="3" [(ngModel)]="splitPolNo[5]" (ngModelChange)="searchPolNoFields($event, 'altNo')" (change)="checkPolNoParams($event);">
 									<span>&nbsp;</span>
-									<div id=search class="text-search-ico"><a><i id=searchicon class="fa fa-search" (click)="showLOV();"></i></a></div>
+									<div id="search"><a><i id=searchicon class="fa fa-search" (click)="showLOV();"></i></a></div>
 									<button type="button" class="cust" style="margin-left: 10px ! important" (click)="clear()"><a>Clear</a></button>
 								</div>
 							</div>
@@ -87,8 +87,17 @@
 							<div class="input-group">
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Intermediary</label>
-								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled  [ngModel]="policyInfo.intmId">
+
+
+								<!-- <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" [disabled]="disabledBool"   [(ngModel)]="policyInfo.intmId">
 								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled [ngModel]="policyInfo.intmName">
+								<label class="col-sm-1"></label> -->
+
+
+								<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId, 6)" (change)="checkCode($event,'intermediary')" mask="999999" [disabled]="disabledBool">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()" *ngIf="!disabledBool"></i></a></div>
+								<span>&nbsp;</span>
+								<input type="text" class="form-control form-control-sm col-sm ig-mrgn" tabindex="-1" [(ngModel)]="policyInfo.intmName" style="margin-left: -2px !important;" readonly>
 								<label class="col-sm-1"></label>
 							</div>
 						</div>
@@ -112,7 +121,7 @@
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2" for="insured">Insured</label>
-								<textarea id=insured class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [(ngModel)]="policyInfo.insuredDesc" style="font-size: 11px;" appRequired rows="3" (change)="addNgDirty('insured');"></textarea>
+								<textarea id=insured class="form-control form-control-sm cust-sm col-sm" [ngModel]="policyInfo.insuredDesc" style="font-size: 11px;"  rows="3" (change)="addNgDirty('insured');" disabled="disabled"></textarea>
 							</div>
 							<div class="input-group" style="margin-top: -3px">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Risk</label>
@@ -129,7 +138,7 @@
 
 							<div class="input-group cont2">
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Nature of Work / Items</label>
-								<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3" disabled [ngModel]="policyInfo.projDesc" style="font-size: 12px;"> </textarea>
+								<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3" [disabled]="disabledBool" [(ngModel)]="policyInfo.projDesc" style="font-size: 12px;"> </textarea>
 								<label class="form-control-sm col-sm-1" for="inputQuonum">Province</label>
 								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-5" disabled [ngModel]="policyInfo.project.provinceDesc">
 								<div class="input-group latLong" style="margin-top: -3px;">
@@ -184,3 +193,5 @@
 <app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
 <app-sucess-dialog id="updatePolGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="prepareParam('cancel')" [url]="''" ></app-cancel-button>
+
+<app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
