@@ -1,3 +1,30 @@
-<p>
-  approver works!
-</p>
+<div class="cust-tabs-container">
+  <h4>Maintenance / Quotation & Policy</h4>
+  <ngb-tabset>
+    <ngb-tab class="ngb-tab" title="Approver">
+      <ng-template ngbTabContent>
+
+        <fieldset class="scheduler-border" style="margin-top: 10px !important">
+          <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
+            <app-cust-editable-non-datatable #lineClassTable [passData]="passData" (genericBtn)="deleteLineClass()" (newClick)="clickRow($event)"
+              (tableDataChange)="passData.tableData=$event" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true">
+            </app-cust-editable-non-datatable>
+
+            <div class="form-row" style="margin-top: 40px !important;">
+              <div class="form-group col-sm">
+                <div class="text-center">
+                  <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            </div>
+        </fieldset>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

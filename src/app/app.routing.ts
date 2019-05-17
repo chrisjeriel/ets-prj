@@ -141,6 +141,7 @@ import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-crest
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
+import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
 
 const appRoutes: Routes = [
 
@@ -293,6 +294,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-approver', component: ApproverComponent }
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
