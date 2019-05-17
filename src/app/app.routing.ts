@@ -145,16 +145,12 @@ import { PolValueCoverageComponent } from './underwriting/generate-documents/pol
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
-<<<<<<< HEAD
-import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
-=======
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
 //delete below when merged with maintenance region
 import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
 import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
 //end
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
->>>>>>> 9b201372ecea923abe96acb16d7fb4809498281f
 
 const appRoutes: Routes = [
 
@@ -314,7 +310,6 @@ const appRoutes: Routes = [
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'maintenance-approver', component: ApproverComponent }
     { path: 'maintenance-other-charge', component: OtherChargeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-location/:id', component: RegionComponent },
     // otherwise redirect to home
