@@ -22,7 +22,7 @@ export class PolMxLineComponent implements OnInit {
 		tableData:[],
 		tHeader				:["Line Code", "Description", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
 		dataTypes			:["pk-cap", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text"],
-		nData:{
+		nData:{ 
 			newRec			: 1,
 			lineCd          : '',
 			description     : '',
@@ -55,7 +55,7 @@ export class PolMxLineComponent implements OnInit {
 	};
 
 	cancelFlag				: boolean;
-	loading					: boolean;
+	//loading					: boolean;
 	dialogIcon				: string;
 	dialogMessage			: string;
 	arrLineCd     			: any     	= [];
