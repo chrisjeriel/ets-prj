@@ -9,6 +9,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { MtnSectionCoversComponent } from '@app/maintenance/mtn-section-covers/mtn-section-covers.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-coverage',
@@ -24,6 +25,7 @@ export class CoverageComponent implements OnInit {
   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
+  @ViewChild('infoCov') modal : ModalComponent;
   @Output() enblQuoteOpTab = new EventEmitter<any>();
   editedData: any[] = [];
   deletedData: any[] = [];
@@ -109,6 +111,8 @@ export class CoverageComponent implements OnInit {
   errorFlag:boolean = false;
   refresh:boolean = true;
   totalValue: number = 0;
+  promptMessage: string = "";
+  promptType: string = "";
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService) {}
 
@@ -362,6 +366,7 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
+    console.log(data)
     if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
       this.sectionCoverLOVRow = data[0].ev.index;
       this.ns.lovLoader(data[0].ev, 0);
@@ -382,6 +387,7 @@ export class CoverageComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
       this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
       this.passData.tableData[this.passData.tableData.length - 1].sumInsured = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].addSi = data[i].addSi;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
 
       //HIDE THE POWERFUL MAGNIFYING GLASS
@@ -432,6 +438,11 @@ export class CoverageComponent implements OnInit {
        this.coverageData.totalSi = this.coverageData.sectionISi
      }
      
+     if((this.totalValue !== 0) && (this.coverageData.totalSi > this.totalValue)){
+         this.promptMessage = "Total Sum Insured of the Quotation exceeded the Total Contract Value of the Project.";
+         this.promptType = "totalval";
+         this.modal.open();
+     } 
      //this.focusBlur();
      this.validateSectionCover();
      //this.cancel();  
@@ -462,11 +473,7 @@ export class CoverageComponent implements OnInit {
          this.dialogMessage = 'Please check Sum Insured.';
          this.successDiag.open();
          this.errorFlag = false;
-       } else if((this.totalValue !== 0) && (this.coverageData.totalSi > this.totalValue)){
-         this.dialogIcon = 'error-message';
-         this.dialogMessage = 'Total Sum Insured will be greater than 100% Value.';
-         this.successDiag.open();
-       } else {
+       }else {
           $('#confirm-save #modalBtn2').trigger('click');
       }
   }

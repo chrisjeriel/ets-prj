@@ -80,8 +80,6 @@ export class PolValueCoverageComponent implements OnInit {
         tHeader: ["Deductible Code","Deductible Title", "Deductible Text", "Rate(%)", "Amount"],
         dataTypes: ["text","text","text", "percent", "currency"],
         pageLength:5,
-        addFlag: true,
-        deleteFlag: true,
         searchFlag: true,
         checkFlag: true,
         infoFlag: true,
@@ -203,7 +201,7 @@ export class PolValueCoverageComponent implements OnInit {
   		if(data.policy.project !== null){
   			var datas = data.policy.project.fullCoverage.fullSecCover;
   			this.fullCoverageDetails 			     = data.policy.project.fullCoverage;
-        console.log(this.fullCoverageDetails)
+        console.log(this.fullCoverageDetails.treatyShare)
   			this.fullCoverageDetails.projId 	 = data.policy.project.projId;
   			this.fullCoverageDetails.riskId 	 = data.policy.project.riskId;
   			this.fullCoverageDetails.treatyShare = this.decimal.transform(this.fullCoverageDetails.treatyShare, '1.10-10');
