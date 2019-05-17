@@ -161,8 +161,12 @@
                                     </ngb-panel>
                                     <ngb-panel title="Generate Documents">
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy
-                                                Printing</button>
+                                            <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy Printing</button>
+                                            <br/>
+                                            <button [routerLink]="['/total-val-pol-print']" class="button btn btn-link">100% Value Policy Printing</button>
+                                            <br/>
+                                            <button [routerLink]="['/pol-value-coverage']" class="button btn btn-link">100% Value Coverage</button>
+                                            <br/>
                                         </ng-template>
                                     </ngb-panel>
                                     <!-- <ngb-panel title="Maintenance">
@@ -462,6 +466,7 @@
                             </ng-template>
                             <ng-template ngbPanelContent>
                                 <!--  -->
+<!-- <<<<<<< HEAD
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
@@ -531,6 +536,8 @@
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
+======= -->
+                                <button [routerLink]="['/maintenance-qu-pol']" class="button btn btn-link">Quotation & Policy</button>
                                 <!--  -->
                                 <ngb-accordion #acc="ngbAccordion">
 
@@ -606,6 +613,7 @@
                     <div class="mainContentPad">
                         <alert></alert>
                         <router-outlet></router-outlet>
+                        <alert2></alert2>
                     </div>
                 </div>
 

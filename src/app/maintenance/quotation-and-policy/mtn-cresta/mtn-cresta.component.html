@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 					<fieldset class="scheduler-border" style="margin-top: 10px !important">
 						<div class="custom-row-inline-inset" style="margin-top: 10px">
-							<app-cust-editable-non-datatable #crestaZone [passData]="passData" (newClick)="onrowClick($event)" (onDelete)="crestaZone.onClickDelete('force');" (tableDataChange)="passData.tableData =$event;update($event)" (genericBtn)="delete()"></app-cust-editable-non-datatable>
+							<app-cust-editable-non-datatable #crestaZone [passData]="passData" (newClick)="onrowClick($event)" (onDelete)="crestaZone.onClickDelete('force');" (genericBtn)="delete()"></app-cust-editable-non-datatable>
 						</div>
 
 						<div class="form-row" style="margin-top: 20px !important;">
@@ -35,7 +35,7 @@
 
 					<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 					<app-confirm-save (onYes)="saveData()"></app-confirm-save>
-					<app-cancel-button (onYes)="saveData('cancel')" [url]="'/'" ></app-cancel-button>
+					<app-cancel-button (onYes)="saveData('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>

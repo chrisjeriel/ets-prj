@@ -6,6 +6,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { finalize } from 'rxjs/operators';
 import { unHighlight, highlight, hideTooltip, showTooltip} from '@app/_directives/highlight';
+import { WfRemindersComponent } from '@app/home/wf-reminders/wf-reminders.component';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class WfActionsComponent implements OnInit {
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(WfRemindersComponent) wfReminders: WfRemindersComponent;
 
   content: any ;
   disablebtnBool: boolean;
@@ -32,6 +34,10 @@ export class WfActionsComponent implements OnInit {
   reminder: string = "";
   onOkVar: any;
   disableAlarmTime: boolean = true;
+  loading: boolean = false;
+  mode: boolean;
+  notes: string = "";
+  titleNote: string = "";
 
   userInfo:any = {
 	userId: null,
@@ -79,6 +85,8 @@ export class WfActionsComponent implements OnInit {
   };
 
   resultReminder: any [] = [];
+  resultNote: any [] = [];
+  userList: any[] = [];
 
   constructor(config: NgbModalConfig,
      private modalService: NgbModal,
@@ -90,35 +98,67 @@ ngOnInit() {
 
 }
 
-open(content) {
+open(content, mode : boolean) {
     this.radioBtnChange(this.reminderValue);
     this.createInfo.createdBy = JSON.parse(window.localStorage.currentUser).username;
     this.createInfo.dateCreated = this.ns.toDateTimeString(0);
     this.updateInfo.updatedBy = JSON.parse(window.localStorage.currentUser).username;
     this.updateInfo.lastUpdate = this.ns.toDateTimeString(0);
     this.content = content;
+
+    if (mode){
+      this.mode = true;
+    } else{
+      this.mode = false;
+    }
+
     this.modalService.open(this.content, { centered: true , windowClass : 'modal-size'} );
 }
 
 openModal(){
 	  this.usersListing.tableData = [];
 	  this.table.refreshTable('first');
-      setTimeout(()=>{    //<<<---    using ()=> syntax
-           this.userService.retMtnUsers('').pipe(
+    this.userService.retMtnUsers('').pipe(
            finalize(() => this.setCheckRecords() )
            ).subscribe((data: any) =>{
                  for(var i = 0; i < data.usersList.length; i++){
-                 	this.usersListing.tableData.push(data.usersList[i]);
+                   this.usersListing.tableData.push(data.usersList[i]);
                  }
                  this.table.refreshTable();
                });
-       }, 100);
 }
+
+retrieveUsers(obj : boolean){
+    this.userList = [];
+    this.userService.retMtnUsers('').pipe(
+           finalize(() => this.setToAll(obj) )
+           ).subscribe((data: any) =>{
+                 for(var i = 0; i < data.usersList.length; i++){
+                   this.userList.push(data.usersList[i]);
+                 }
+    });
+}
+
+setToAll(obj : boolean){
+   if(obj){
+     for(var i = 0; i < this.userList.length; i++){
+          this.prepareParam(this.userList[i].userId,this.userList.length);
+     }
+   }else {
+     for(var i = 0; i < this.userList.length; i++){
+          this.prepareParamNote(this.userList[i].userId,this.userList.length);
+     }
+   }
+    
+}
+
+
 
 setCheckRecords(){
 
 	if(this.isEmptyObject(this.userInfoToMany)){
-	}else{
+	
+  }else{
 	    var array = this.userInfoToMany.split(",");
   }
 
@@ -136,7 +176,12 @@ setCheckRecords(){
 cancel(){
     this.usersListing.tableData = [];
     this.table.refreshTable();
-    this.open(this.contentMdl);
+    if (this.mode){
+      this.open(this.contentMdl, true);
+    } else {
+      this.open(this.contentMdl, false);
+    }
+    
 }
 
 confirm(){
@@ -159,8 +204,12 @@ confirm(){
 			temp = rec.userId + "," + temp;
 		}
 	this.userInfoToMany = temp;
-	this.open(this.contentMdl);
-    }
+    	if (this.mode){
+          this.open(this.contentMdl, true);
+        } else {
+          this.open(this.contentMdl, false);
+      }
+  }
  }
 
 radioBtnChange(obj){
@@ -258,8 +307,12 @@ showUsersLOV(obj){
 setPreparedBy(event){
 	this.userInfo.userId = event.userId;
 	this.userInfo.userName = event.userName;
-    this.modalService.dismissAll();
-	this.open(this.contentMdl);
+  this.modalService.dismissAll();
+	if (this.mode){
+          this.open(this.contentMdl, true);
+        } else {
+          this.open(this.contentMdl, false);
+  }
 }
 
 isEmptyObject(obj) {
@@ -279,21 +332,33 @@ checkCode(ev) {
   	this.usersLov.checkCode(userId, ev);
 }
 
-saveReminderValidation(){
-	if (this.isEmptyObject(this.reminderDate) || this.isEmptyObject(this.reminder)){
-		this.openErrorDiag();
-	} else {
-        var reminderTime = this.toTimeString(Date.parse(this.reminderDate));
-        if (this.isEmptyObject(this.alarmDate)){
-          this.resultReminder = [];
-        	this.saveReminder(this.reminderValue);
-        }else {
-        	 if(this.setAlarmTime(reminderTime,this.alarmDate)){
-		        this.resultReminder = [];
+saveReminderValidation(obj: boolean){
+
+  if(obj){
+    if (this.isEmptyObject(this.reminderDate) || this.isEmptyObject(this.reminder)){
+      this.openErrorDiag();
+    } else {
+          var reminderTime = this.toTimeString(Date.parse(this.reminderDate));
+          if (this.isEmptyObject(this.alarmDate)){
+            this.resultReminder = [];
             this.saveReminder(this.reminderValue);
-		     }
-        }
+          }else {
+             if(this.setAlarmTime(reminderTime,this.alarmDate)){
+              this.resultReminder = [];
+              this.saveReminder(this.reminderValue);
+           }
+          }
+      }
+  }else {
+    if (this.isEmptyObject(this.notes)){
+       this.openErrorDiag();
+    } else {
+       this.resultNote = [];
+       this.saveNotes(this.reminderValue);
     }
+  }
+
+	
 }
 
 
@@ -303,7 +368,7 @@ saveReminder(obj){
 	   		   this.prepareParam(this.createInfo.createdBy,1);
 	        break;
 	        }
-	        case '2': {
+	      case '2': {
 	          if (this.isEmptyObject(this.userInfo.userName)){
     			   this.openErrorDiag();
     			  } else {
@@ -320,6 +385,10 @@ saveReminder(obj){
                   this.prepareParam(array[i],array.length-1);
               }
     			  }
+	        break; 
+	        } 
+	         case '4': { 
+	          this.retrieveUsers(this.mode);
 	        break;
 	        }
 	         case '4': {
@@ -331,6 +400,42 @@ saveReminder(obj){
 	        break;
 	        }
 	    }
+}
+
+saveNotes(obj){
+  switch(obj) { 
+         case '1': { 
+            this.prepareParamNote(this.createInfo.createdBy,1);
+          break; 
+          } 
+          case '2': { 
+            if (this.isEmptyObject(this.userInfo.userName)){
+             this.openErrorDiag();
+            } else {
+             this.prepareParamNote(this.userInfo.userId,1);
+            }
+          break; 
+          } 
+          case '3': { 
+             if (this.isEmptyObject(this.userInfoToMany)){
+             this.openErrorDiag();
+            } else {
+            var array = this.userInfoToMany.split(',');
+              for(let i=0;i<array.length-1 ;i++){ 
+                  this.prepareParamNote(array[i],array.length-1);
+              }
+            }
+          break; 
+          } 
+           case '4': { 
+             this.retrieveUsers(this.mode);
+          break;
+          } 
+           default: { 
+          //statements; 
+          break; 
+          } 
+      }
 }
 
 checkValidTime(event){
@@ -401,14 +506,19 @@ openErrorDiag(){
         this.successDiag.open();
 }
 
-onOkSuccessDiag(obj){
+onOkSuccessDiag(obj, mode: boolean){
 	if(obj === 'showUsersLOV'){
 		this.showUsersLOV('0');
 	}else if (obj === 'openReminderMdl'){
 		this.modalService.dismissAll();
-		this.open(this.content);
+		    if (mode){
+          this.open(this.contentMdl, true);
+        } else {
+          this.open(this.contentMdl, false);
+        }
 	}else if(obj === 'closeReminderMdl'){
-	    this.modalService.dismissAll();
+	  this.modalService.dismissAll();
+
 	}
 }
 
@@ -422,24 +532,21 @@ prepareParam(assignedTo : string, length : number){
 		   "remiderDate": this.reminderDate,
 		   "reminder"   : this.reminder,
 		   "reminderId" : "",
-		   "status"     : "",
+		   "status"     : "A",
 		   "title"      : this.title,
 		   "updateUser" : this.updateInfo.updatedBy,
 		   "updateDate" : this.updateInfo.lastUpdate
        }
 
-       console.log(saveReminderInfoParam);
-/*       this.loading = true;*/
-
-	   this.saveReminderParams(saveReminderInfoParam,length);
-
+      console.log(saveReminderInfoParam);
+      this.disablebtnBool = true;
+	    this.saveReminderParams(saveReminderInfoParam,length);
 }
 
 saveReminderParams(obj, length: number){
      this.workFlowService.saveWfmReminders(obj) .pipe(
            finalize(() => this.saveRemindersFinal(length) )
            ).subscribe(data => {
-             console.log(data);
             if(data['returnCode'] === 0) {
                 this.resultReminder.push(0)
             } else if (data['returnCode'] === -1) {
@@ -450,9 +557,60 @@ saveReminderParams(obj, length: number){
 }
 
 saveRemindersFinal(obj){
+   this.disablebtnBool = false;
    if (this.resultReminder.length === obj){
-     console.log(this.resultReminder);
+     $('.globalLoading').css('display','none');
+     $('.imgLoad').css('display','none');
      if(this.ifAnyNonZero(this.resultReminder)){
+       this.saveSuccessReminder();
+     } else {
+       this.dialogIcon = 'error-message';
+       this.dialogMessage = "Error saving reminder";
+       this.successDiag.open();
+     }
+
+   }
+
+}
+
+
+prepareParamNote(assignedTo : string, length : number){
+    
+       var saveNoteInfoParam = {
+       "assignedTo" : assignedTo,
+       "createDate" : this.createInfo.dateCreated,
+       "createUser" : this.createInfo.createdBy,
+       "note"       : this.notes,
+       "noteId"     : "",
+       "status"     : "A",
+       "title"      : this.titleNote,
+       "updateUser" : this.updateInfo.updatedBy,
+       "updateDate" : this.updateInfo.lastUpdate
+       }
+
+      console.log(saveNoteInfoParam);
+      this.disablebtnBool = true;
+      this.saveNoteParams(saveNoteInfoParam,length);
+    
+}
+
+saveNoteParams(obj, length: number){
+     this.workFlowService.saveWfmNotes(obj).pipe(
+           finalize(() => this.saveNoteFinal(length) )
+           ).subscribe(data => {
+            if(data['returnCode'] === 0) {
+                this.resultNote.push(0)
+            } else if (data['returnCode'] === -1) {  
+                this.resultNote.push(-1)         
+            }
+
+     })        
+}
+
+saveNoteFinal(obj){
+   this.disablebtnBool = false;
+   if (this.resultNote.length === obj){
+     if(this.ifAnyNonZero(this.resultNote)){
        this.saveSuccessReminder();
      } else {
        this.dialogIcon = 'error-message';
@@ -480,9 +638,11 @@ saveSuccessReminder(){
         this.onOkVar = "closeReminderMdl";
         this.successDiag.open();
         this.alarmDate = null;
-        this.title = null;
+        this.title = null; 
+        this.titleNote = null;
         this.reminderDate = null;
         this.reminder = null;
+        this.notes = null;
         this.userInfo = {};
         this.userInfoToMany = null;
         this.reminderValue = null;

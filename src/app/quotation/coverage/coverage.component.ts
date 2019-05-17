@@ -263,8 +263,8 @@ export class CoverageComponent implements OnInit {
     if(this.initialData.length > 0){
       for (var i = 0 ; this.passData.tableData.length > i; i++) {
           if( !this.passData.tableData[i].deleted ){
-              this.editedData.push(this.passData.tableData[i]);
-              this.editedData[this.editedData.length-1].createDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].createDate) ;
+               this.editedData.push(this.passData.tableData[i]);
+               this.editedData[this.editedData.length-1].createDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].createDate) ;
                this.editedData[this.editedData.length-1].updateDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].updateDate);
                this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
                this.editedData[this.editedData.length -1].coverName = this.passData.tableData[i].coverName
@@ -327,11 +327,11 @@ export class CoverageComponent implements OnInit {
         if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
             this.dialogIcon = "error";
-            $('#successModalBtn').trigger('click');
+            this.successDiag.open();
           } else{
             this.dialogMessage = "";
             this.dialogIcon = "success";
-            $('#successModalBtn').trigger('click');
+            this.successDiag.open();
             this.getCoverage();
             this.table.markAsPristine();
             this.initialData = [];
