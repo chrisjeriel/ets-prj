@@ -404,6 +404,33 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText15 == null? '' : this.policyInfo.polWordings.altwText15;
           this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText16 == null? '' : this.policyInfo.polWordings.altwText16;
           this.policyInfo.polWordings.altText += this.policyInfo.polWordings.altwText17 == null? '' : this.policyInfo.polWordings.altwText17;
+
+
+          // EDIT BY PAUL 05/19/2019
+          if(this.policyInfo.endtText[0].endtCd != null){
+            this.policyInfo.polWordings.altText += "\n\n===================ENDORSEMENTS==================="
+            for(let endt of this.policyInfo.endtText){
+              this.policyInfo.polWordings.altText += "\n\nEndorsement Code "+endt.endtCd+": "+endt.endtTitle+"\n\n\t"
+              this.policyInfo.polWordings.altText += (endt.endtText.endtText01 === null ? '' :endt.endtText.endtText01) + 
+                                     (endt.endtText.endtText02 === null ? '' :endt.endtText.endtText02) + 
+                                     (endt.endtText.endtText03 === null ? '' :endt.endtText.endtText03) + 
+                                     (endt.endtText.endtText04 === null ? '' :endt.endtText.endtText04) + 
+                                     (endt.endtText.endtText05 === null ? '' :endt.endtText.endtText05) + 
+                                     (endt.endtText.endtText06 === null ? '' :endt.endtText.endtText06) + 
+                                     (endt.endtText.endtText07 === null ? '' :endt.endtText.endtText07) + 
+                                     (endt.endtText.endtText08 === null ? '' :endt.endtText.endtText08) + 
+                                     (endt.endtText.endtText09 === null ? '' :endt.endtText.endtText09) + 
+                                     (endt.endtText.endtText10 === null ? '' :endt.endtText.endtText10) + 
+                                     (endt.endtText.endtText11 === null ? '' :endt.endtText.endtText11) + 
+                                     (endt.endtText.endtText12 === null ? '' :endt.endtText.endtText12) + 
+                                     (endt.endtText.endtText13 === null ? '' :endt.endtText.endtText13) + 
+                                     (endt.endtText.endtText14 === null ? '' :endt.endtText.endtText14) + 
+                                     (endt.endtText.endtText15 === null ? '' :endt.endtText.endtText15) + 
+                                     (endt.endtText.endtText16 === null ? '' :endt.endtText.endtText16) + 
+                                     (endt.endtText.endtText17 === null ? '' :endt.endtText.endtText17) ;
+            }
+
+          }
         }else{
           this.policyInfo.polWordings = {
             text: '',
@@ -468,7 +495,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   }
 
-  showLineClassLOV(){
+  showLineClassLOV(){  
     $('#lineClassLOV #modalBtn').trigger('click');
     $('#lineClassLOV #modalBtn').addClass('ng-dirty')
   }
@@ -826,7 +853,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         savePolGenInfoParam.polWordings[this.wordingsKeys[i]] = wordingSplit[i];
       }
 
-    let wordingSplitAlt = this.policyInfo.polWordings.altText.match(/(.|[\r\n]){1,2000}/g);
+    let wordingSplitAlt = this.policyInfo.polWordings.altText.split('===================ENDORSEMENTS===================')[0].trim().match(/(.|[\r\n]){1,2000}/g);
     var x = this.wordingsKeys.length/2;
     if(wordingSplitAlt != null)
       for(let i=0;i<wordingSplitAlt.length;i++){
