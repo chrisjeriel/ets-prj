@@ -388,6 +388,7 @@ import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-regi
 import { RequiredTableDirective } from './_directives/required-table.directive';
 import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn-cat-peril-modal.component';
 import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
+import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
 
 @NgModule({
     imports: [
@@ -782,6 +783,7 @@ import { ApproverComponent } from './maintenance/quotation-and-policy/approver/a
         RequiredTableDirective,
         MtnCatPerilModalComponent,
         ApproverComponent,
+        MtnNonRenewalReasonComponent,
     ],
 
   	providers: [
