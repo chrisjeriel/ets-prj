@@ -3,7 +3,7 @@ import { MaintenanceService, NotesService} from '@app/_services'
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 @Component({
   selector: 'app-mtn-currency-rate',
   templateUrl: './mtn-currency-rate.component.html',
@@ -14,6 +14,7 @@ export class MtnCurrencyRateComponent implements OnInit {
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild('currency') table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
   passData: any = {
     tHeader: [ "Hist No","Currency Rate","Eff Date From","Eff Date To", "Active","Remarks"],
@@ -65,7 +66,7 @@ export class MtnCurrencyRateComponent implements OnInit {
   cancelFlag:boolean;
   dialogMessage : string = '';
   dialogIcon: any;
-  
+  errorFlag: boolean = false;
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -147,7 +148,28 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    this.errorFlag = false;
+    var active = this.passData.tableData.filter(a => a.activeTag == 'Y')
+    for(var i = 0 ;i < active.length;i++){
+      console.log(active[i])
+      for(var j = 0 ; j < active.length.length;j++){
+        if( i !== j){
+          if( (new Date(this.passData.tableData[i].effDateFrom).getTime() >= new Date(this.passData.tableData[j].effDateFrom).getTime()) &&  (new Date(this.passData.tableData[i].effDateFrom).getTime() <= new Date(this.passData.tableData[j].effDateTo).getTime())){
+            console.log( i +' - ' + this.passData.tableData[i].effDateFrom)
+            console.log( j +' - ' + this.passData.tableData[j].effDateFrom)
+            this.errorFlag = true;
+          }
+        }
+      }
+    }
+    
+    if(this.errorFlag){
+      this.dialogMessage = 'Please check field values';
+      this.dialogIcon = "error";
+      this.successDiag.open(); 
+    }else {
+       $('#confirm-save #modalBtn2').trigger('click');
+    }
   }
 
   saveCurrRt(cancelFlag?){
@@ -157,10 +179,10 @@ export class MtnCurrencyRateComponent implements OnInit {
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
+          this.successDiag.open();
         } else{
           this.dialogIcon = "success";
-          $('#successModalBtn').trigger('click');
+          this.successDiag.open();
           this.getCurrencyRate();
         }
       });
@@ -173,13 +195,16 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   cancel(){
-    this.cancelBtn.clickCancel();
-    /*var x,y;
-    x = this.passData.tableData[0].effDateFrom;
-    y = this.ns.toDateTimeString(this.passData.tableData[0].effDateTo);
-    console.log(x)
-    console.log(y)
-    console.log(this.ns.toDateTimeString(0))
-    console.log(this.ns.toDateTimeString(0) >= x && this.ns.toDateTimeString(0) <= y )*/
+    var fromDate,toDate,currentDate;
+    fromDate    = new Date(this.passData.tableData[0].effDateFrom).getTime();
+    toDate      = new Date(this.passData.tableData[0].effDateTo).getTime();
+    currentDate =  new Date(this.passData.tableData[this.passData.tableData.length - 1].effDateFrom).getTime();
+    console.log(fromDate)
+    console.log(toDate)
+    console.log(currentDate)
+    console.log('---------------')
+    console.log(currentDate >= fromDate)
+    console.log(currentDate <= toDate)
+    console.log(currentDate >= fromDate && currentDate<= toDate)
   }
 }

@@ -70,6 +70,16 @@
             </fieldset>
           </div>
         </div>
+        <div class="row" *ngIf="holdCoverPrem">
+          <div class="col-sm-12 forced-col-sm">
+             <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+               <legend class="scheduler-border">Hold Cover Premium</legend>
+                <div class="cust-sm">
+                   <input type="text" class="form-control form-control-sm req col-sm-7" style="text-align: right !important;margin-left: 75px !important;margin-bottom: 5px !important" [(ngModel)]="coverageData.holdCoverPremAmt" appCurrency name="fullCoverageDetails.treatyShare">
+                </div>
+            </fieldset>
+          </div>
+        </div>
         <div class="row">
           <div class="col-sm-12 forced-col-sm">
              <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
