@@ -10,17 +10,17 @@
 						        <div class="input-group">
 						            <div class="col-sm-3"></div>
 						            <label class="form-control-sm text-right"  style="margin-bottom: 0px">User Group</label>
-						            <input class="form-control form-control-sm col-sm-1 not-form" type="text" [ngModel]="userGrp" mask="SSS">
+						            <input class="form-control form-control-sm col-sm-1 not-form" type="text" [ngModel]="group?.userGrp" (change)="checkCode($event)" numbers-only>
 						            <div class="text-search-ico" style="padding-left: 1px" (click)="lov.openLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
-						            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="userGrpDesc" readonly>
+						            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [ngModel]="group?.userGrpDesc" readonly>
 						            <div class="col-sm-3"></div>
 						        </div>
 						    </div>
 						</fieldset>
-						<!-- <fieldset class="scheduler-border" style="margin-top: 11px !important;">
+						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="policyWordingData" (tableDataChange)="policyWordingData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); policyWordingData.disableGeneric=true;"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (newClick)="onTableClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true;"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
@@ -33,7 +33,7 @@
 									</div>
 								</div>
 							</div>
-						</fieldset> -->
+						</fieldset>
 					</div>
 				</div>
 				<div class="row" style="margin-top: 12px">
@@ -42,16 +42,16 @@
 							<div class="custom-row-inline-inset">
 								<div class="input-group" style="margin-bottom: -14px !important;">
 									<label class="form-control-sm col-sm-1 no-margin">Created By</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" readonly>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="info?.createUser" readonly>
 									<label class="form-control-sm col-sm-1 no-margin">Date Created</label>
 									<div class="col-sm-2 dp-cont">
-										<datepicker [value]="selected?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+										<datepicker [value]="info?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
 									</div>
 									<label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" readonly>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="info?.updateUser" readonly>
 									<label class="form-control-sm col-sm-1 no-margin">Last Update</label>									
 									<div class="col-sm-2 dp-cont">
-										<datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+										<datepicker [value]="info?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
 									</div>
 								</div>
 							</div>
