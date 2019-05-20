@@ -149,27 +149,38 @@ export class MtnCurrencyRateComponent implements OnInit {
 
   onClickSave(){
     this.errorFlag = false;
+    let currEffDateTo:Date;
+    let currEffDateFrom:Date;
+    let nextEffDateTo:Date;
+    let nextEffDateFrom:Date;
     var active = this.passData.tableData.filter(a => a.activeTag == 'Y')
     for(var i = 0 ;i < active.length;i++){
-      console.log(active[i])
-      for(var j = 0 ; j < active.length.length;j++){
-        if( i !== j){
-          if( (new Date(this.passData.tableData[i].effDateFrom).getTime() >= new Date(this.passData.tableData[j].effDateFrom).getTime()) &&  (new Date(this.passData.tableData[i].effDateFrom).getTime() <= new Date(this.passData.tableData[j].effDateTo).getTime())){
-            console.log( i +' - ' + this.passData.tableData[i].effDateFrom)
-            console.log( j +' - ' + this.passData.tableData[j].effDateFrom)
-            this.errorFlag = true;
-          }
+      for(var j = 0 ; j < active.length;j++){
+        if( i == j){
+          continue;
         }
+        // effDateFrom: null,
+        // effDateTo: null,
+        currEffDateTo = new Date(active[i].effDateTo);
+        currEffDateFrom = new Date(active[i].effDateFrom);
+        nextEffDateTo = new Date(active[j].effDateTo);
+        nextEffDateFrom = new Date(active[j].effDateFrom);
+        if(currEffDateFrom >= nextEffDateFrom &&  currEffDateFrom <= nextEffDateTo){
+          this.dialogMessage = 'Unable to save the record. The Value of Eff. Date From ('+(currEffDateFrom.getMonth()+1)+'/'+currEffDateFrom.getDate()+'/'+currEffDateFrom.getFullYear() +') is within the effectivity of Hist. No. '+active[j].histNo;
+          this.dialogIcon = "error-message";
+          this.successDiag.open(); 
+          return;
+        }else if(currEffDateTo >= nextEffDateFrom &&  currEffDateTo <= nextEffDateTo){
+          this.dialogMessage = 'Unable to save the record. The Value of Eff. Date To ('+(currEffDateTo.getMonth()+1)+'/'+currEffDateTo.getDate()+'/'+currEffDateTo.getFullYear() +') is within the effectivity of Hist. No. '+active[j].histNo;
+          this.dialogIcon = "error-message";
+          this.successDiag.open(); 
+          return;
+        }
+
       }
     }
     
-    if(this.errorFlag){
-      this.dialogMessage = 'Please check field values';
-      this.dialogIcon = "error";
-      this.successDiag.open(); 
-    }else {
-       $('#confirm-save #modalBtn2').trigger('click');
-    }
+     $('#confirm-save #modalBtn2').trigger('click');
   }
 
   saveCurrRt(cancelFlag?){
