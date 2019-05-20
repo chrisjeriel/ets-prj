@@ -306,15 +306,15 @@ export class DeductibleComponent implements OnInit {
                    $(arrNums[1]).prop('disabled',true);
                    $(arrNums[2]).prop('disabled',true);
                    $(arrNums[3]).prop('disabled',true);
-                   // tsThis.passData.tableData[a].deductibleRate = null;                   
-                   // tsThis.passData.tableData[a].minAmt = null;
-                   // tsThis.passData.tableData[a].maxAmt = null;
+                   arrNums.removeClass('ng-dirty');
+
                 }else if(d && d != 'F'){
                    $(arrNums[0]).prop('disabled',true);
                    $(arrNums[1]).prop('disabled',false);
                    $(arrNums[2]).prop('disabled',false);
                    $(arrNums[3]).prop('disabled',false);
-                  // tsThis.passData.tableData[a].deductibleAmt = null;
+                   arrNums.removeClass('ng-dirty');
+
                 }
 
              });
