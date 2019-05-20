@@ -46,7 +46,9 @@ export class UserAmtLimitComponent implements OnInit {
 		createDate:this.ns.toDateTimeString(0),
 		updateUser:this.ns.getCurrentUser(),
 		updateDate:this.ns.toDateTimeString(0),
-  	}
+  	},
+  	disableGeneric:true,
+  	disableAdd: true
   }
 
   info:any;
@@ -68,6 +70,8 @@ export class UserAmtLimitComponent implements OnInit {
 	 		userGrpDesc:'',
 	 	};
 	 	this.passData.tableData = [];
+	 	this.passData.disableAdd =  true;
+  		this.passData.disableGeneric = true;
 	 	this.table.refreshTable();
 	 }
 	 this.ns.lovLoader(data.ev, 0);
@@ -81,6 +85,8 @@ export class UserAmtLimitComponent implements OnInit {
   			a.createDate = this.ns.toDateTimeString(a.createDate);
   			a.updateDate = this.ns.toDateTimeString(a.updateDate);
   		})
+  		this.passData.disableAdd =  false;
+  		this.passData.disableGeneric = true;
   		this.table.refreshTable();
   	})
   }
