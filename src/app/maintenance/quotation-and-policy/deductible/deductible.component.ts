@@ -21,13 +21,10 @@ export class DeductibleComponent implements OnInit {
     @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
-
-    fixedAmount: boolean = true;
-
     passData: any = {
         tableData            : [],
         tHeader              : ['Deductible', 'Title', 'Deductible Type','Deductible Amount','Rate','Minimum Amount','Maximum Amount','Deductible Text','Section Cover','Endorsement','Active','Default','Remarks'],
-        dataTypes            : ['+-cap','text','select','currency','percent','currency','currency','text','text','text','checkbox','checkbox','text'],
+        dataTypes            : ['pk-cap','text','select','currency','percent','currency','currency','text','text','text','checkbox','checkbox','text'],
         nData:
         {
             newRec            : 1,
@@ -99,7 +96,7 @@ export class DeductibleComponent implements OnInit {
     constructor(config: NgbDropdownConfig,private titleService: Title, private mtnService: MaintenanceService, private ns : NotesService, private modalService: NgbModal ) { }
 
     ngOnInit() {
-        this.titleService.setTitle('Mtn | Deductibles'); 
+        this.titleService.setTitle('Mtn | Deductibles');
     }
 
     getMtnDeductibles(){
@@ -136,34 +133,36 @@ export class DeductibleComponent implements OnInit {
                 this.table.refreshTable();
                 this.table.onRowClick(null, this.passData.tableData[0]);
                 this.passData.disableAdd = false;
-                this.dedType();
+                 this.dedType();
             });
         }
     }
 
     onSaveMtnDeductibles(cancelFlag?){
+        console.log('save');
         this.cancelFlag = cancelFlag !== undefined;
         this.dialogIcon = '';
         this.dialogMessage = '';
         var isNotUnique : boolean ;
         var saveDed = this.params.saveDeductibles;
         var isEmpty = 0;
-
+        console.log(this.passData.tableData);
         for(let record of this.passData.tableData){
             console.log(record);
             record.lineCd  = this.line;
-            if(record.deductibleCd === '' || record.deductibleCd === null || record.deductibleTitle === '' || record.deductibleTitle === null || record.deductibleType === '' || record.deductibleType === null){
+            if(record.deductibleCd == null ||  record.deductibleTitle == null || record.deductibleType == null ||
+              (record.deductibleType == 'F' && record.deductibleAmt == null || isNaN(record.deductibleAmt)==true || (record.deductibleType != 'F' && record.deductibleRate == null || isNaN(record.deductibleRate)== true ))){
                 if(!record.deleted){
                     isEmpty = 1;
                 }
             }else{
                 if(record.edited && !record.deleted){
-                    record.createUser        = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
-                    record.createDate        = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
-                    record.updateUser        = this.ns.getCurrentUser();
-                    record.updateDate        = this.ns.toDateTimeString(0);
-                    record.coverCd           = (record.coverCd == null)?0:record.coverCd;
-                    record.endtCd            = (record.endtCd == null)?0:record.endtCd;
+                    record.createUser = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
+                    record.createDate = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
+                    record.updateUser = this.ns.getCurrentUser();
+                    record.updateDate = this.ns.toDateTimeString(0);
+                    record.coverCd    = (record.coverCd == null)?0:record.coverCd;
+                    record.endtCd     = (record.endtCd == null)?0:record.endtCd;
                     this.params.saveDeductibles.push(record);
                 }else if(record.edited && record.deleted){
                     this.params.deleteDeductibles.push(record);
@@ -253,7 +252,7 @@ export class DeductibleComponent implements OnInit {
         this.description = data.description;
         this.ns.lovLoader(data.ev, 0);
         this.getMtnDeductibles();
-        setTimeout(() => { $(data.ev.target).removeClass('ng-dirty'); }, 0);
+        setTimeout(() => {try{$(data.ev.target).removeClass('ng-dirty');}catch(e){}}, 0);
     }
 
     checkCode(ev){
@@ -267,22 +266,24 @@ export class DeductibleComponent implements OnInit {
             this.deductiblesData.createDate = event.createDate;
             this.deductiblesData.updateDate = event.updateDate;
             this.deductiblesData.updateUser = event.updateUser;
-            // console.log(event.deductibleType);
-            // if(event.deductibleType == 'F'){
-            //     this.passData.dataTypes[3] = 'pk';
-            // }else{
-            //     this.passData.dataTypes[3] = 'currency';
-            // }
             this.passData.disableGeneric    = false;
+            if(event.deductibleType == 'F'){
+                event.deductibleRate = null;
+                event.minAmt         = null;
+                event.maxAmt         = null;
+            }else{
+                event.deductibleAmt  = null;
+            }
+            this.table.refreshTable();
         }else{
             this.passData.disableGeneric    = true;
         }
     }
 
     clearTbl(){
-        this.passData.addFlag = false;
-        this.passData.deleteFlag = false;
-        this.passData.tableData = [];
+        this.passData.disableGeneric = true;
+        this.passData.disableAdd     = true;
+        this.passData.tableData      = [];
         this.table.refreshTable();
     }
 
@@ -294,18 +295,9 @@ export class DeductibleComponent implements OnInit {
         $('#confirm-save #modalBtn2').trigger('click');
     }
 
-    FixedAmount(){
-        this.fixedAmount = true;
-    }
-
-    NotFixedAmount(){
-        this.fixedAmount = false;
-    }
-
     dedType(){
         var tsThis = this;
-      // console.log($('#deductibleTbl').find('tbody').children()); 
-        setTimeout(() => {
+        setTimeout(() => {      
             $('#deductibleTbl').find('tbody').children().each(function(a){
                 var d = $(this).find('select').val();
                 var arrNums =$(this).find('input.number');
@@ -314,17 +306,18 @@ export class DeductibleComponent implements OnInit {
                    $(arrNums[1]).prop('disabled',true);
                    $(arrNums[2]).prop('disabled',true);
                    $(arrNums[3]).prop('disabled',true);
-                   tsThis.passData.tableData[a].deductibleRate = null;
-                   tsThis.passData.tableData[a].minAmt = null;
-                   tsThis.passData.tableData[a].maxAmt = null;
+                   // tsThis.passData.tableData[a].deductibleRate = null;                   
+                   // tsThis.passData.tableData[a].minAmt = null;
+                   // tsThis.passData.tableData[a].maxAmt = null;
                 }else if(d && d != 'F'){
                    $(arrNums[0]).prop('disabled',true);
                    $(arrNums[1]).prop('disabled',false);
                    $(arrNums[2]).prop('disabled',false);
                    $(arrNums[3]).prop('disabled',false);
-                   tsThis.passData.tableData[a].deductibleAmt = null;
+                  // tsThis.passData.tableData[a].deductibleAmt = null;
                 }
-            });
+
+             });
         },0);
     }
 

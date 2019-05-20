@@ -19,8 +19,6 @@
                 <fieldset class="scheduler-border" style="margin-top: 10px !important">
                     <div class="custom-row-inline-inset" style="margin-top: 25px !important;" id="deductibleTbl">
                         <app-cust-editable-non-datatable [passData]="passData" (newClick)="clickRow($event)" (tableDataChange)="passData.tableData=$event; dedType();" #dedTbl (genericBtn)="onDeleteDeductibles()" (onDelete)="dedTbl.onClickDelete('force'); passData.disableGeneric=true">
-                            <!-- <button controls-l class="cust-btn" *ngIf="!passData.addFlag" class="cust cust-btn dsbld">Add</button> -->
-                            <!-- <button controls-l class="cust-btn" *ngIf="!passData.deleteFlag" class="cust cust-btn dsbld">Delete</button> -->
                         </app-cust-editable-non-datatable>
 
                             <div class="form-row" style="margin-top: 40px !important;">
@@ -28,7 +26,7 @@
                                     <div class="text-center">
                                         <div class="cust-btn-container">
                                             <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                                            <button type="button" class="cust-btn" (click)="onSaveMtnDeductibles()"><a>Save</a></button>
+                                            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                                         </div>
                                     </div>
                                 </div>
@@ -60,9 +58,9 @@
 
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 
-<app-confirm-save (onYes)="onSaveDeductibles()"></app-confirm-save>
+<app-confirm-save (onYes)="onSaveMtnDeductibles()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveDeductibles('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="onSaveMtnDeductibles('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 
 <app-modal class="d-none" id="warnMdl">
     <div header>Warning Message</div>
