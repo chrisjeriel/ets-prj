@@ -412,12 +412,12 @@ export class PolAlopComponent implements OnInit {
 
 
   cancelButton() {
-    this.alopFlag = 'alop';
+    //this.alopFlag = 'alop';
     this.cancelBtn.clickCancel();
   }
 
   cancelModal() {
-    this.alopFlag = 'alopitem';
+    //this.alopFlag = 'alopitem';
     this.cancelModalBtn.clickCancel();
   }
 
