@@ -94,10 +94,14 @@ export class MtnNonRenewalReasonComponent implements OnInit {
   }
 
   onClickSave(){
-  	if(this.checkFields()){
+  	if(this.checkFields() && this.checkForDuplicates()){
   		$('#confirm-save #modalBtn2').trigger('click');
-  	}else{
+  	}else if(!this.checkFields()){
   		this.dialogIcon = 'error';
+  		this.successDiag.open();
+  	}else if(!this.checkForDuplicates()){
+  		this.dialogIcon = 'info';
+  		this.dialogMessage = 'Unable to save the record. Reason code must be unique.';
   		this.successDiag.open();
   	}
 
@@ -162,10 +166,23 @@ export class MtnNonRenewalReasonComponent implements OnInit {
   }
 
   checkFields(){
+  	//check if required values are filled
   	for(var i of this.nonRenewalReasonData.tableData){
   		if(i.reasonCd.length === 0 || i.reasonCd === undefined || i.reasonCd === null ||
   		   i.description.length === 0 || i.description === undefined || i.description === null){
   			return false;
+  		}
+  	}
+  	return true;
+  }
+
+  checkForDuplicates(){
+  	//check if there are similar reasonCd
+  	for(var j = 0; j < this.nonRenewalReasonData.tableData.length; j++){
+  		for(var k = j; k < this.nonRenewalReasonData.tableData.length; k++){
+  			if(j !== k && this.nonRenewalReasonData.tableData[j].reasonCd === this.nonRenewalReasonData.tableData[k].reasonCd){
+  				return false;
+  			}
   		}
   	}
   	return true;
