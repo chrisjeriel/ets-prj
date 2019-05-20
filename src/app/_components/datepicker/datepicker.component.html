@@ -4,7 +4,7 @@
 	(ngModelChange)="datepickerVal=$event; valueUpdated()"
 	[showTime]="true"
 	[hourFormat]="12"
-	[showIcon]="showIcon"
+	[showIcon]="showIcon && !disabled"
 	[style]="spanStyle"
 	[inputStyle]="inputStyle"
 	[inputStyleClass]="inputStyeClass"
@@ -34,7 +34,7 @@
 <p-calendar 
 	[ngModel]="datepickerVal"
 	(ngModelChange)="datepickerVal=$event; valueUpdated()"
-	[showIcon]="showIcon"
+	[showIcon]="showIcon && !disabled"
 	[style]="spanStyle"
 	[inputStyle]="inputStyle"
 	[inputStyleClass]="inputStyeClass"

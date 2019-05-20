@@ -286,7 +286,7 @@ export class PolCreatePARComponent implements OnInit {
       this.selected = null;
     } else {
       this.selected = event;
-    }    
+    }
   }
 
   onRowClickOption(event) {
@@ -526,7 +526,7 @@ export class PolCreatePARComponent implements OnInit {
         this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
       }
 
-      this.getQuoteListing([{ key: 'quotationNo', search: this.searchArr.join('-') }]);      
+      this.getQuoteListing([{ key: 'quotationNo', search: this.searchArr.join('-') }]);
     } else if(this.hc) {
       this.searchArr[0] = 'HC%';
 

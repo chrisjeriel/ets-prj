@@ -386,6 +386,7 @@ import { RegionComponent } from './maintenance/quotation-and-policy/region/regio
 import { ProvinceComponent } from './maintenance/quotation-and-policy/region/province/province.component';
 import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-region.component';
 import { RequiredTableDirective } from './_directives/required-table.directive';
+import { QuoteModificationComponent } from './quotation/quote-modification/quote-modification.component';
 
 @NgModule({
     imports: [
@@ -778,6 +779,7 @@ import { RequiredTableDirective } from './_directives/required-table.directive';
         ProvinceComponent,
         MtnRegionComponent,
         RequiredTableDirective,
+        QuoteModificationComponent,
     ],
 
   	providers: [

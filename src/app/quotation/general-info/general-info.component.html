@@ -88,12 +88,19 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group ig-cust" style="margin-top: 10px;">
 										<label tabindex="-1" class="form-control-sm col-sm-4">Quote Date</label>
-										<!-- <input  type="date" [ngModel]="genInfoData.issueDate.split('T')[0]" (ngModelChange)="genInfoData.issueDate = toDateTime($event)" class="form-control form-control-sm"> -->
-										<input  [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="date" [ngModel]="genInfoData.issueDate.split('T')[0]" (ngModelChange)="genInfoData.issueDate = $event; updateExpiryDate($event);" class="form-control form-control-sm req" appRequired>
+										<!-- <input  [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="date" [ngModel]="genInfoData.issueDate.split('T')[0]" (ngModelChange)="genInfoData.issueDate = $event; updateExpiryDate($event);" class="form-control form-control-sm req" appRequired> -->
+
+										<div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="genInfoData.issueDate.split('T')[0]" (valueChange)="genInfoData.issueDate=$event; updateExpiryDate($event);" [disabled]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"></datepicker>
+										</div>
 									</div>
 									<div class="input-group ig-cust">
 										<label tabindex="-1" class="form-control-sm col-sm-4">Valid Until</label>
-										<input  [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="date" [ngModel]="genInfoData.expiryDate.split('T')[0]" (ngModelChange)="genInfoData.expiryDate = $event" class="form-control form-control-sm req" min="{{ genInfoData.issueDate }}" appRequired>
+										<!-- <input  [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="date" [ngModel]="genInfoData.expiryDate.split('T')[0]" (ngModelChange)="genInfoData.expiryDate = $event" class="form-control form-control-sm req" min="{{ genInfoData.issueDate }}" appRequired> -->
+
+										<div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="genInfoData.expiryDate.split('T')[0]" (valueChange)="genInfoData.expiryDate=$event" [minDate]="genInfoData.issueDate.split('T')[0]"></datepicker>
+										</div>
 									</div>
 									<div class="input-group ig-cust">
 										<label tabindex="-1" class="form-control-sm col-sm-4">Requested By</label>
@@ -101,7 +108,11 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label tabindex="-1" class="form-control-sm col-sm-4">Request Date</label>
-										<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="date" [ngModel]="genInfoData.reqDate.split('T')[0]" (ngModelChange)="genInfoData.reqDate = $event" class="form-control form-control-sm">
+										<!-- <input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="date" [ngModel]="genInfoData.reqDate.split('T')[0]" (ngModelChange)="genInfoData.reqDate = $event" class="form-control form-control-sm"> -->
+
+										<div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="genInfoData.reqDate.split('T')[0]" (valueChange)="genInfoData.reqDate=$event" [disabled]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"></datepicker>
+										</div>
 									</div>
 									<div class="input-group ig-cust">
 										<label tabindex="-1" class="form-control-sm col-sm-4">Request Mode</label>
@@ -317,9 +328,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification'" maxlength="10">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification'" maxlength="10">
 								</div>
 							</div>
 						</div>
@@ -410,9 +421,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification'" maxlength="10">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification'" maxlength="10">
 								</div>
 							</div>
 						</div>
@@ -500,9 +511,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification'" maxlength="10">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification'" maxlength="10">
 								</div>
 							</div>
 						</div>
@@ -836,39 +847,86 @@
 					</div>
 					<div class="input-group ig-cust">
 						<label tabindex="-1" class="form-control-sm col-sm-4">Print Date</label>
-						<input tabindex="-1" type="date" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printDate.split('T')[0]" readonly>
+						<!-- <input tabindex="-1" type="date" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printDate.split('T')[0]" readonly> -->
+						<div class="col-sm-7 dp-cont">
+							<datepicker [tabindex]="-1" [type]="'date'" [showIcon]="false" [value]="genInfoData.printDate.split('T')[0]" (valueChange)="genInfoData.printDate=$event" [disabled]="true"></datepicker>
+						</div>
 					</div>
 				</div>
 			</fieldset>
 			<fieldset class="scheduler-border" style="padding-top: 0px !important; padding-bottom: 0px !important;">
-				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-				<div class="custom-row-inline-inset">
-					<div class="form-row">
-						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: 3px;">
-							<label tabindex="-1" class="form-control-sm top-label">Created By</label>
-							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createUser" readonly>
-						</div>
-						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: -5px;">
-							<label tabindex="-1" class="form-control-sm top-label">Last Update By</label>
-							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateUser" readonly>
+				<ng-container *ngIf="savingType == 'modification' || genInfoData?.quoteRevNo != 0">
+					<legend class="scheduler-border">Alteration Wordings</legend>
+					<div class="input-group" style="margin-top: 26px !important;">
+						<div class="form-control-sm col-sm edtr-cont" style="height: 60px;">
+							<text-editor [editorContent]="genInfoData.altWordings" (fetchContent)="genInfoData.altWordings = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" [required]="!inquiryFlag && genInfoData.statusDesc.toUpperCase() != 'APPROVED'">
+								<ng-container icon-1>
+									<a (click)="showAltWordingLov()"><i class="fa fa-search"></i></a>
+								</ng-container>
+							</text-editor>
 						</div>
 					</div>
-					<div class="form-row">
-						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: 3px;">
-							<label tabindex="-1" class="form-control-sm top-label">Date Created</label>
-							<input tabindex="-1" type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createDate" readonly>
+				</ng-container>
+
+				<ng-container *ngIf="savingType != 'modification' && genInfoData?.quoteRevNo == 0">
+					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+					<div class="custom-row-inline-inset">
+						<div class="form-row">
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: 3px;">
+								<label tabindex="-1" class="form-control-sm top-label">Created By</label>
+								<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createUser" readonly>
+							</div>
+							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: -5px;">
+								<label tabindex="-1" class="form-control-sm top-label">Last Update By</label>
+								<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateUser" readonly>
+							</div>
 						</div>
-						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: -5px;">
-							<label tabindex="-1" class="form-control-sm top-label">Last Update</label>
-							<input tabindex="-1" type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateDate" readonly>
-							<!-- <input  type="datetime-local" class="form-control form-control-sm cust-sm" [ngModel]="genInfoData.updateDate.split('.')[0]" (ngModelChange)="genInfoData.updateDate = $event)" readonly> OLD--> 
+						<div class="form-row">
+							<div class="form-group col-sm-6" style="margin-bottom: 8px;">
+								<label tabindex="-1" class="form-control-sm top-label" style="margin-left: 2px !important;">Date Created</label>
+								<!-- <input tabindex="-1" type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createDate" readonly> -->
+								<div class="col-sm dp-cont" style="margin-left: 3px !important;">
+									<datepicker [value]="genInfoData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true" [tabindex]="-1"></datepicker>	
+								</div>
+							</div>
+							<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: -5px;">
+								<label tabindex="-1" class="form-control-sm top-label" style="margin-left: 2px !important;">Last Update</label>
+								<!-- <input tabindex="-1" type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateDate" readonly> -->
+								<div class="col-sm dp-cont" style="margin-left: 3px !important;">
+									<datepicker [value]="genInfoData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true" [tabindex]="-1"></datepicker>	
+								</div>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+			</fieldset>
+		</div>
+	</div>
+</div>
+<ng-container *ngIf="savingType == 'modification' || genInfoData?.quoteRevNo != 0">
+	<div class="row" style="margin-top: 16px">
+		<div class="col-sm-12">
+			<fieldset class="scheduler-border" style="padding-top: 4px !important;">
+				<div class="custom-row-inline-inset">
+					<div class="input-group" style="margin-bottom: -14px !important;">
+						<label class="form-control-sm col-sm-1 no-margin">Created By</label>
+						<input tabindex="-1" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.createUser" readonly>
+						<label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+						<div class="col-sm-2 dp-cont">
+							<datepicker [value]="genInfoData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+						</div>
+						<label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
+						<input tabindex="-1" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.updateUser" readonly>
+						<label class="form-control-sm col-sm-1 no-margin">Last Update</label>									
+						<div class="col-sm-2 dp-cont">
+							<datepicker [value]="genInfoData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
 						</div>
 					</div>
 				</div>
 			</fieldset>
 		</div>
 	</div>
-</div>
+</ng-container>
 
 <div class="form-row">
 	<div class="form-group col-sm">
@@ -921,7 +979,8 @@
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
 <app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event);" [line]="line" [type]="'O'"></app-mtn-quotation-wordings>
-<app-mtn-quotation-wordings id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line" [type]="'C'"></app-mtn-quotation-wordings> 
+<app-mtn-quotation-wordings id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line" [type]="'C'"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings id="wordingAltIdLov" (selectedData)="setAltWording($event)" [line]="line" [type]="'A'"></app-mtn-quotation-wordings>
 
 
 <!-- <app-modal class="d-none" id="successMdl">
