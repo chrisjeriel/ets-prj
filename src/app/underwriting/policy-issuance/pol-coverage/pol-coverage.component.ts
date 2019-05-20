@@ -1526,19 +1526,17 @@ export class PolCoverageComponent implements OnInit {
           }
         }
 
-        /*if(this.passData.tableData[j].sumInsured >= 0){
-          this.positiveFlag++ ;
-        }else {
-          this.negativeFlag++;
-        }*/
+        if(this.passData.tableData[j].cumSi < 0){
+          this.errorFlag = true;
+        }
     }
     this.sectionTable.refreshTable();
-    /*if(this.positiveFlag > 0 && this.negativeFlag > 0){
+    if(this.errorFlag){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Cannot accept positive and negative at the same time.';
+      this.dialogMessage = 'Invalid amount. Cumulative Sum Insured must be greater than or equal to zero.';
       this.successAlt.open();
       this.errorFlag = true;
-    }*/
+    }
 
     this.passData2.tableData[0].section  = 'SECTION I'; 
     this.passData2.tableData[0].prevSi   = isNaN(this.prevsectionISi) ? 0:this.prevsectionISi;
@@ -1581,10 +1579,10 @@ export class PolCoverageComponent implements OnInit {
   }
 
   prepareAlterationSave(){
-    this.editedData = [];
-    this.deletedData = [];
-    this.editedDedt = [];
-    this.deletedDedt = []
+    this.editedData  =  [];
+    this.deletedData =  [];
+    this.editedDedt  =  [];
+    this.deletedDedt =  [];
     this.altCoverageData.policyId       = this.policyInfo.policyId;
     this.altCoverageData.projId         = this.projId;
     this.altCoverageData.riskId         = this.riskId;
@@ -1705,7 +1703,7 @@ export class PolCoverageComponent implements OnInit {
    onClickSaveAlt(){
      if(this.errorFlag){
         this.dialogIcon = 'error-message';
-        this.dialogMessage = 'Cannot accept positive and negative at the same time.';
+        this.dialogMessage = 'Invalid amount. Cumulative Sum Insured must be greater than or equal to zero.';
         this.successAlt.open();
         this.errorFlag = true;
      }else{
