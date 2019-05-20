@@ -207,6 +207,10 @@ export class PolMxLineComponent implements OnInit {
 	        this.saveMtnLine.createUser  = event.createUser;
 	       	this.passData.disableGeneric = false;
 		}else{
+			this.saveMtnLine.updateDate  = '';
+	        this.saveMtnLine.updateUser  = '';
+	        this.saveMtnLine.createDate  = '';
+	        this.saveMtnLine.createUser  = '';
 			this.passData.disableGeneric = true;
 		}
 	}

@@ -6,9 +6,11 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { environment } from '@environments/environment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal,NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-deductible',
@@ -20,6 +22,7 @@ export class DeductibleComponent implements OnInit {
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+    @ViewChild('tabset') tabset: any;
 
     passData: any = {
         tableData            : [],
@@ -276,6 +279,10 @@ export class DeductibleComponent implements OnInit {
             }
             this.table.refreshTable();
         }else{
+            this.deductiblesData.createUser = '';
+            this.deductiblesData.createDate = '';
+            this.deductiblesData.updateDate = '';
+            this.deductiblesData.updateUser = '';
             this.passData.disableGeneric    = true;
         }
     }
@@ -319,6 +326,27 @@ export class DeductibleComponent implements OnInit {
 
              });
         },0);
+    }
+
+    onTabChange($event: NgbTabChangeEvent) {
+        if($('.ng-dirty').length != 0 ){
+            console.log('entered here');
+            $event.preventDefault();
+            const subject = new Subject<boolean>();
+            const modal = this.modalService.open(ConfirmLeaveComponent,{
+                    centered: true, 
+                    backdrop: 'static', 
+                    windowClass : 'modal-size'
+            });
+            modal.componentInstance.subject = subject;
+
+            subject.subscribe(a=>{
+                if(a){
+                    $('.ng-dirty').removeClass('ng-dirty');
+                    this.tabset.select($event.nextId)
+                }
+            })
+        }        
     }
 
 

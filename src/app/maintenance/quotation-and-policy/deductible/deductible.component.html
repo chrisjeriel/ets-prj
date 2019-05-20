@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
     <h4>Maintenance / Quotation & Policy</h4>
-    <ngb-tabset>
+    <ngb-tabset #tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Deductibles">
             <ng-template ngbTabContent>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
