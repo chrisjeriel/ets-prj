@@ -5,17 +5,17 @@
                             <div class="col-sm">
                                 <div class="input-group">
                                     <label class="form-control-sm"  style="margin-bottom: 0px">Region</label>
-                                    <input class="form-control form-control-sm  col-sm-2" type="text" (change)="checkCode($event)" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' maxlength="2" numbers-only  [(ngModel)]="regionCD">
-                                    <div id=search class="text-search-ico" style="padding-left: 1px" (click)="showRegionLOV()"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
-                                    <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="descRegion" readonly>
+                                    <input class="form-control form-control-sm  col-sm-2" type="text" (change)="checkCode($event, 'region')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' maxlength="2" numbers-only  [ngModel]="locData?.regionCd" (ngModelChange)="locData.regionCd = $event.toUpperCase()">
+                                    <div id=search class="text-search-ico" style="padding-left: 1px" (click)="openGenericLOV('region')"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
+                                    <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [ngModel]="locData?.regionDesc" readonly>
                                 </div>
                             </div>
                             <div class="col-sm">
                                 <div class="input-group">
                                     <label class="form-control-sm"  style="margin-bottom: 0px">Province</label>
-                                    <input class="form-control form-control-sm  col-sm-2" type="text" (change)="checkCode($event)" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' numbers-only  [(ngModel)]="provinceCD">
-                                    <div id=search class="text-search-ico" style="padding-left: 1px" (click)="showProvinceLOV()"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
-                                    <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="descProvince" readonly>
+                                    <input class="form-control form-control-sm  col-sm-2" type="text" (change)="checkCode($event, 'province')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' numbers-only   [ngModel]="locData?.provinceCd" (ngModelChange)="locData.provinceCd = $event.toUpperCase()">
+                                    <div id=search class="text-search-ico" style="padding-left: 1px" (click)="openGenericLOV('province')"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
+                                    <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;"  [ngModel]="locData?.provinceDesc" readonly>
                                 </div>
                             </div>
                             <div class="col-sm-1"></div>
@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-sm">
                         <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-                            <app-cust-editable-non-datatable #cityTable [passData]="passData" (genericBtn)="deleteProvince()" (newClick)="onRowClick($event)"  (onDelete)="cityTable.onClickDelete('force');onClickDelCity(this.deleteBool);"></app-cust-editable-non-datatable>
+                            <app-cust-editable-non-datatable #cityTable [passData]="passData" (genericBtn)="deleteProvince()" (newClick)="onRowClick($event)" (clickLOV)="clickCrestaZone($event)"  (onDelete)="cityTable.onClickDelete('force');onClickDelCity(this.deleteBool);"></app-cust-editable-non-datatable>
                         </div>
                     </div>
                 </div>
@@ -49,8 +49,9 @@
                         <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="cityRecord.updateDate" readonly>
                     </div>
 </fieldset>
-<app-mtn-region id="regionLOV" (selectedData)="setProvince($event)"></app-mtn-region>
 
 <app-confirm-save #confirmSave (onYes)="onClickSaveProvince()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>
+<app-mtn-cresta-zone id="crestaZoneLOV" (selectedData)="selectedCrestZoneLOV($event)"></app-mtn-cresta-zone>
