@@ -195,10 +195,31 @@ export class LovComponent implements OnInit {
             }
         });
       }
+    } else if (selector == 'userGrp'){
+      if (this.passData.userGrp == '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnUserGrp(this.passData.userGrp).subscribe((data: any) => {
+            if(data.userGroups.length > 0) {
+              data['userGroups'][0].ev = ev;
+              this.selectedData.emit({
+                  data : data['userGroups'][0],
+                  ev: ev
+                }
+                );
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
     }
-
-
-
     /*if(districtCd === ''){
       this.selectedData.emit({
         data: null,

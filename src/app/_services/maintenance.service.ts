@@ -574,5 +574,23 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/user-service/retrieveMtnUserGroup",{params});
 	}
 
+	getMtnUserAmtLimit(userGrp?,lineCd?){
+		const params = new HttpParams()
+		     .set('userGrp', (userGrp === null || userGrp === undefined ? '' : userGrp))
+		     .set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retMtnUserAmtLimit", {params});   
+	}
+
+	saveMtnUserAmtLimit(params){
+		let header : any = {
+	        headers: new HttpHeaders({
+	             'Content-Type': 'application/json'
+	        })
+	     };
+	     return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnUserAmtLimit',JSON.stringify(params),header);
+	}
+
+	
+
 }
 
