@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
-	<h4>Quote / Quotation & Policy</h4>
-	<ngb-tabset> <!-- (tabChange)="onTabChange($event)" -->
+	<h4>Maintenance / Quotation & Policy</h4>
+	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Quote Wording">
 			<ng-template ngbTabContent>
 				<div class="row">
@@ -12,7 +12,7 @@
 						            <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
 						            <input class="form-control form-control-sm col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="lineCd" (ngModelChange)="lineCd=$event.toUpperCase()" mask="SSS">
 						            <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
-						            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="lineDesc" readonly><!--  -->
+						            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="lineDesc" readonly>
 						            <div class="col-sm-3"></div>
 						        </div>
 						    </div>
@@ -20,15 +20,15 @@
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="quoteWordingData" (tableDataChange)="quoteWordingData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); quoteWordingData.disableGeneric=true;"></app-cust-editable-non-datatable> <!--  (add)="onClickAdd($event)" -->
+									<app-cust-editable-non-datatable [passData]="quoteWordingData" (tableDataChange)="quoteWordingData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); quoteWordingData.disableGeneric=true;"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group col-sm">
 									<div class="col-md-13 text-center">
 										<div class="cust-btn-container">
-										<button type="button" class="cust-btn"><a>Cancel</a></button>  <!-- (click)="onClickCancel()" -->
-							            <button type="button" class="cust-btn"><a>Save</a></button> <!-- (click)="onClickSave()" -->
+										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 										</div>
 									</div>
 								</div>
@@ -38,20 +38,20 @@
 				</div>
 				<div class="row" style="margin-top: 12px">
 					<div class="col-sm-12">
-						<fieldset class="scheduler-border">
+						<fieldset class="scheduler-border" style="padding-top: 4px !important;">
 							<div class="custom-row-inline-inset">
-								<div class="input-group">
+								<div class="input-group" style="margin-bottom: -14px !important;">
 									<label class="form-control-sm col-sm-1 no-margin">Created By</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" readonly>
 									<label class="form-control-sm col-sm-1 no-margin">Date Created</label>
 									<div class="col-sm-2 dp-cont">
-										<datepicker [value]="selected?.createDate !== null ? ns.toDateTimeString(selected?.createDate) : ''" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+										<datepicker [value]="selected?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
 									</div>
 									<label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" readonly>
 									<label class="form-control-sm col-sm-1 no-margin">Last Update</label>									
 									<div class="col-sm-2 dp-cont">
-										<datepicker [value]="selected?.updateDate !== null ? ns.toDateTimeString(selected?.updateDate) : ''" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+										<datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
 									</div>
 								</div>
 							</div>
@@ -63,16 +63,28 @@
 	</ngb-tabset>
 </div>
 
+
 <!-- <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button> -->
 
-<!-- <app-modal class="d-none" id="delete">
-    <div header>Delete</div>
-    <div body>Are you sure you want to delete this item?</div>
-    <div footer class="cust-btn-container">
-        <button class="cust-btn" (click)="modalService.dismissAll();delete();">Yes</button>
-        <button class="cust-btn" (click)="modalService.dismissAll();">No</button>
-    </div>
-</app-modal> -->
 <app-mtn-line id="qwLineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+
+
+<app-modal class="d-none" id="mtnQWWarningModal">
+    <div header>Warning Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>Unable to save the record. Only one default Quote Wording per<br />
+                Line, Paragraph Type and Open Cover is allowed.</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+    </div>
+</app-modal>

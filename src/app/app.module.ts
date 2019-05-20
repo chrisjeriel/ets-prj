@@ -372,6 +372,7 @@ import { QuoteStatusReasonComponent } from './maintenance/quotation-and-policy/r
 import { SpoilageReasonComponent } from './maintenance/quotation-and-policy/reason/spoilage-reason/spoilage-reason.component';
 import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
 import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
+import { PolicyWordingComponent } from './maintenance/quotation-and-policy/policy-wording/policy-wording.component';
 import { MtnCurrencyListComponent } from './maintenance/quotation-and-policy/mtn-currency-list/mtn-currency-list.component';
 import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn-currency-rate/mtn-currency-rate.component';
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
@@ -380,6 +381,13 @@ import { PolValueCoverageComponent } from './underwriting/generate-documents/pol
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
 import { Alert2Component } from './_components/common/alert2/alert2.component';
+import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
+import { RegionComponent } from './maintenance/quotation-and-policy/region/region.component';
+import { ProvinceComponent } from './maintenance/quotation-and-policy/region/province/province.component';
+import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-region.component';
+import { RequiredTableDirective } from './_directives/required-table.directive';
+import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn-cat-peril-modal.component';
+import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 
 @NgModule({
     imports: [
@@ -758,6 +766,7 @@ import { Alert2Component } from './_components/common/alert2/alert2.component';
         SpoilageReasonComponent,
         DistrictComponent,
         BlockComponent,
+        PolicyWordingComponent,
         MtnCurrencyListComponent,
         MtnCurrencyRateComponent,
         MtnCATPerilComponent,
@@ -766,6 +775,13 @@ import { Alert2Component } from './_components/common/alert2/alert2.component';
         IntermediaryComponent,
         QuotationAndPolicyComponent,
         Alert2Component,
+        OtherChargeComponent,
+        RegionComponent,
+        ProvinceComponent,
+        MtnRegionComponent,
+        RequiredTableDirective,
+        MtnCatPerilModalComponent,
+        UserAmtLimitComponent,
     ],
 
   	providers: [

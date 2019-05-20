@@ -11,13 +11,15 @@ export class Alert2Component implements OnInit {
 
   private subscription: Subscription;
     message: any;
+    timeout:any;
 
     constructor(private alertService: Alert2Service) { }
 
     ngOnInit() {
         this.subscription = this.alertService.getMessage().subscribe(message => {
+        	clearTimeout(this.timeout);
             this.message = message;
-        	setTimeout(a=>{this.message = undefined},10000)
+        	this.timeout = setTimeout(a=>{this.message = undefined},10000)
         });
     }
 

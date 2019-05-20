@@ -132,9 +132,6 @@ export class InwardPolBalanceComponent implements OnInit {
             a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
             return true;
           });
-
-          this.passData.nData.dueDate = this.ns.toDateTimeString(data.policyList[0].inceptDate);
-          this.passData.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate);
         }
 
       }
