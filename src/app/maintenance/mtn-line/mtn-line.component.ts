@@ -107,18 +107,23 @@ lineListing: any = {
       this.selectedData.emit({
         lineCd: '',
         description: '',
-        ev: ev
+        ev: ev,
+        singleSearchLov: true
       });
     } else {
       this.maintenanceService.getLineLOV(code).subscribe(data => {
+        console.log(data)
         if(data['line'].length > 0) {
           data['line'][0]['ev'] = ev;
+          data['line'][0]['singleSearchLov'] = true;
           this.selectedData.emit(data['line'][0]);
         } else {
+          data['line'] = data['line'].filter((a)=>{return ev.filter.indexOf(a.lineCd)==-1});
           this.selectedData.emit({
             lineCd: '',
             description: '',
-            ev: ev
+            ev: ev,
+            singleSearchLov: true
           });
             
           $('#lineMdl > #modalBtn').trigger('click');

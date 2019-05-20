@@ -20,7 +20,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (newClick)="onTableClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true;"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="update($event)" (newClick)="onTableClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true;" (clickLOV)="showLineLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
@@ -67,3 +67,4 @@
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 
 <app-lov [passData]="passLov" (selectedData)="setUserGrp($event)"></app-lov>
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
