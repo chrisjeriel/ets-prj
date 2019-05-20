@@ -85,6 +85,7 @@ export class MtnNonRenewalReasonComponent implements OnInit {
     }
 
   onRowClick(data){
+  	console.log(data);
   	this.selectedRow = data;
   }
 
@@ -109,7 +110,13 @@ export class MtnNonRenewalReasonComponent implements OnInit {
 
   onClickDelete(data){
     this.table.selected = [this.table.indvSelect];
-    this.table.confirmDelete();
+    if(this.table.selected[0].okDelete === 'N'){
+    	this.dialogIcon = 'info';
+    	this.dialogMessage = 'You are not allowed to delete a Reason Code that is already used in renewal processing.';
+    	this.successDiag.open();
+    }else{
+    	this.table.confirmDelete();
+    }
   }
 
   delete(){
