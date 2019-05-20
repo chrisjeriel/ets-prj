@@ -6,6 +6,7 @@ import { UnderwritingService, NotesService } from '../../../_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { finalize } from 'rxjs/operators';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
 
  
 @Component({
@@ -16,6 +17,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class UpdateGeneralInfoComponent implements OnInit {
   @ViewChild('polLov') quListTable : CustNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
   typeOfCession:string='';
   searchParams: any[] = [];
   searchParams2: any[] = [];
@@ -327,13 +329,13 @@ export class UpdateGeneralInfoComponent implements OnInit {
           this.policyInfo.cedingId = records.cedingId;
           this.policyInfo.cedingName = records.cedingName;
           this.policyInfo.coRefNo = records.coRefNo;
-          this.policyInfo.intmId = this.pad(records.intmId,3);
+          this.policyInfo.intmId = this.pad(records.intmId,6);
           this.policyInfo.intmName =records.intmName;
           this.policyInfo.reinsurerName = records.reinsurerName;
           this.policyInfo.riBinderNo = records.riBinderNo;
-          this.policyInfo.principalId = this.pad(records.principalId,3);
+          this.policyInfo.principalId = this.pad(records.principalId,6);
           this.policyInfo.principalName = records.principalName;
-          this.policyInfo.contractorId = this.pad(records.contractorId,3);
+          this.policyInfo.contractorId = this.pad(records.contractorId,6);
           this.policyInfo.contractorName = records.contractorName;
           this.policyInfo.insuredDesc = records.insuredDesc;
           this.policyInfo.riskName = records.project.riskName;
@@ -502,9 +504,11 @@ export class UpdateGeneralInfoComponent implements OnInit {
          "riskId"          : this.policyInfo.project.riskId,
          "coRefNo"         : this.policyInfo.coRefNo,
          "riBinderNo"      : this.policyInfo.riBinderNo,
-         "insuredDesc"     : this.policyInfo.insuredDesc,
+         // "insuredDesc"     : this.policyInfo.insuredDesc,
+         "intmId"          : this.policyInfo.intmId,
+         "projDesc"        : this.policyInfo.projDesc,
          "latitude"        : this.policyInfo.project.latitude,
-         "longitude"      : this.policyInfo.project.longitude,
+         "longitude"       : this.policyInfo.project.longitude,
          "updateDate"      : this.ns.toDateTimeString(0),
          "updateUser"      : JSON.parse(window.localStorage.currentUser).username
        }
@@ -550,8 +554,24 @@ export class UpdateGeneralInfoComponent implements OnInit {
     $('#inputLong').removeClass('ng-dirty');
   }
 
+//  Add by paul 05/17/2019
 
+  showIntLOV(){
+    $('#intLOV #modalBtn').trigger('click');
+    $('#intLOV #modalBtn').addClass('ng-dirty')
+  }
 
+  setInt(event){
+        this.policyInfo.intmId = this.pad(event.intmId, 6);
+        this.policyInfo.intmName = event.intmName;
+        this.ns.lovLoader(event.ev, 0);
+  }
 
-
+  checkCode(ev, field) {
+    this.ns.lovLoader(ev, 1);
+      $(ev.target).addClass('ng-dirty');
+    if(field === 'intermediary') {
+        this.intermediaryLov.checkCode(this.policyInfo.intmId, ev);
+      } 
+  }
 }

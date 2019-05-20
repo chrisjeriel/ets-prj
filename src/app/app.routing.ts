@@ -146,11 +146,8 @@ import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
-//delete below when merged with maintenance region
-import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
-import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
-//end
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
+import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 
 const appRoutes: Routes = [
 
@@ -293,9 +290,6 @@ const appRoutes: Routes = [
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
     { path: 'total-val-pol-print', component: HundredValPolPrintComponent },
     { path: 'maintenance-qu-pol', component: QuotationAndPolicyComponent},
-    //delete below when merged with maintenance region
-    { path: 'maintenance-district', component: DistrictComponent },
-    //end
     { path: 'maintenance-quote-wording', component: QuoteWordingComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
     { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
@@ -312,6 +306,7 @@ const appRoutes: Routes = [
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-other-charge', component: OtherChargeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-location/:id', component: RegionComponent },
+    { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

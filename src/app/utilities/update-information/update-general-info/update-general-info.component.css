@@ -54,3 +54,10 @@
     margin-left: 3px !important;
     height: 22px;
 }
+
+.text-search-ico {
+    margin-left: -15px;
+    margin-right: 2px;
+    z-index: 200;
+    font-size: 14px;
+}

@@ -387,6 +387,7 @@ import { ProvinceComponent } from './maintenance/quotation-and-policy/region/pro
 import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-region.component';
 import { RequiredTableDirective } from './_directives/required-table.directive';
 import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn-cat-peril-modal.component';
+import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 
 @NgModule({
     imports: [
@@ -779,7 +780,8 @@ import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn
         ProvinceComponent,
         MtnRegionComponent,
         RequiredTableDirective,
-        MtnCatPerilModalComponent
+        MtnCatPerilModalComponent,
+        UserAmtLimitComponent,
     ],
 
   	providers: [

@@ -1047,7 +1047,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   validate(obj) {
    var req = ['cedingId', 'coSeriesNo', 'cessionId', 'lineClassCd', 'quoteId', 'status', 'principalId', 'insuredDesc',
                'currencyCd', 'currencyRt', 'projDesc', 'site', ];
-   var reqDates = ['inceptDate', 'expiryDate', 'issueDate', 'effDate', 'distDate', 'acctDate', 'lapseFrom', 'lapseTo'];
+   var reqDates = ['inceptDate', 'expiryDate', 'issueDate', 'effDate', 'distDate', 'acctDate'];
 
    switch(obj.lineCd) {
      case 'CAR':

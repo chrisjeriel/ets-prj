@@ -435,6 +435,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
            setTimeout(()=>{data[key]=parseFloat(temp.split(',').join('')) + parseFloat('1')},0);
            setTimeout(()=>{data[key]=parseFloat(temp.split(',').join(''))},0);
        }
+       console.log(this.passData.tableData)
    }
 
    addClicked(event) {
