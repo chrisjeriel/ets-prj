@@ -390,6 +390,7 @@ import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 import { QuoteModificationComponent } from './quotation/quote-modification/quote-modification.component';
 import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
+import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
 
 @NgModule({
     imports: [
@@ -786,6 +787,7 @@ import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy
         UserAmtLimitComponent,
         QuoteModificationComponent,
         MtnNonRenewalReasonComponent,
+        CityComponent,
     ],
 
   	providers: [

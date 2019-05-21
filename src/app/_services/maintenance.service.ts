@@ -493,6 +493,15 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnRegion',params,header);
     }
 
+    saveMtnProvince(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnProvince',params,header);
+    }
+
     saveMtnSpoilageReason(params){
     	let header : any = {
             headers: new HttpHeaders({
