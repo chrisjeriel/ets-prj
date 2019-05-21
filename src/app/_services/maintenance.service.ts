@@ -590,7 +590,14 @@ export class MaintenanceService{
 	     return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnUserAmtLimit',JSON.stringify(params),header);
 	}
 
-	
+	saveMtnOtherCharge(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnOtherCharge', params, header);
+	}
 
 }
 
