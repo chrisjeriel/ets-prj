@@ -57,6 +57,7 @@ export class UserAmtLimitComponent implements OnInit {
 
   info:any;
   LineLOVRow: number;
+  hideLine:string[] = [];
   constructor(private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -139,6 +140,7 @@ export class UserAmtLimitComponent implements OnInit {
             this.dialogIcon = "success";
             this.successDialog.open();
             this.getUserAmtLimit();
+            this.table.markAsPristine();
         }else{
             this.dialogIcon = "error";
             this.successDialog.open();
@@ -169,22 +171,22 @@ export class UserAmtLimitComponent implements OnInit {
     }
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);*/
     this.passData.tableData[this.LineLOVRow].lineCd = data.lineCd;
-    this.passData.tableData[this.LineLOVRow].showMG = 0;
-    this.passData.tableData[this.LineLOVRow].uneditable = ['lineCd'];
+    if(data.lineCd != ''){
+      this.passData.tableData[this.LineLOVRow].uneditable = ['lineCd'];
+      this.passData.tableData[this.LineLOVRow].showMG = 0;
+    }
     this.table.refreshTable();
   }
 
   showLineLOV(data){
-      console.log(data)
       $('#lineLOV #modalBtn').trigger('click');
+      this.hideLine = this.passData.tableData.map(a=> a.lineCd);
       this.LineLOVRow = data.index;
-      console.log(this.LineLOVRow)
   }
 
   update(data){
-    console.log(data)
     if(data.hasOwnProperty('lovInput')) {
-
+      this.hideLine = this.passData.tableData.map(a=> a.lineCd);
       data.ev['index'] = data.index;
       this.mtnLineLov.checkCode(data.ev.target.value, data.ev);
     }
