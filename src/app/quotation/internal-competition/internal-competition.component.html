@@ -27,27 +27,15 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px;">
-			<button type="button" class="cust-btn" *ngIf="custEditableNonDatatableComponent.selected.length!=0" (click)="onClickPrint()"><a>Print</a></button>
-			<button type="button" class="cust-btn cust-btn-disabled" *ngIf="custEditableNonDatatableComponent.selected.length==0"><a>Print</a></button>
+			<button type="button" class="cust-btn" [disabled]="custEditableNonDatatableComponent.selected.length==0" [class.cust-btn-disabled]="custEditableNonDatatableComponent.selected.length==0" (click)="onClickPrint()"><a>Print</a></button>
 			<button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
             <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-            <!-- <app-modal [btnTitle]="'Save'" (click)="onClickSave()">
-            	<div header>
-            		Prompt
-            	</div>
-            	<div body>
-            		<p>Successfully saved!</p>
-            	</div>
-            	<div footer>
-            		<button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Ok</a></button>
-            	</div>
-            </app-modal> -->
 		</div>
 	</div>
 </div>
 
 <!-- PRINT MODAL -->
-<app-modal id="showPrintMenu" class="d-none">
+<app-modal id="showPrintMenu2" class="d-none">
     <div header>Print</div>
     <div body>
         <div class="container-fluid">
@@ -61,7 +49,7 @@
                             <option value="PRINTER">Printer</option>
                         </select>
                     </div>
-                    <div class="input-group" style="margin-bottom : -14px ! important">
+                    <!-- <div class="input-group" style="margin-bottom : -14px ! important">
                         <label class="form-control-sm" for="printerName" >Printer Name</label>
                         <select *ngIf="destination === 'PRINTER'" class="form-control form-control-sm cust-sm" id="printerName"  style="margin-left: 2px" appRequired [(ngModel)]="printerName">
                             <option value="Default" selected="selected">Default Printer</option>
@@ -74,7 +62,7 @@
                         <label class="form-control-sm" for="xx">No. of Copies</label>
                         <input *ngIf="destination === 'PRINTER'" type="text" id="noOfCopies" class="form-control form-control-sm text-right" appRequired style="margin-left: 2px !important;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="printNoCopies">
                         <input *ngIf="destination !== 'PRINTER'" type="text" id="noOfCopies" class="form-control form-control-sm text-right" style="margin-left: 2px !important;" readonly >
-                    </div>
+                    </div> -->
                 </div>
             </fieldset>
         </div>

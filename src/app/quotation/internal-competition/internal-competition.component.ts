@@ -167,7 +167,7 @@ export class InternalCompetitionComponent implements OnInit {
      /* if (this.custEditableNonDatatableComponent.selected.length !== 0) {
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + this.selectedPrintData.quoteId + '&adviceNo=' + this.selectedPrintData.adviceNo, '_blank');
       }*/
-      $('#showPrintMenu > #modalBtn').trigger('click');
+      $('#showPrintMenu2 > #modalBtn').trigger('click');
     }
 
     printMethod(){
