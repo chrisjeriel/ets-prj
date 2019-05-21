@@ -67,4 +67,4 @@
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 
 <app-lov [passData]="passLov" (selectedData)="setUserGrp($event)"></app-lov>
-<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)" [hide]="hideLine"></app-mtn-line>
