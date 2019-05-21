@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
@@ -6,7 +6,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './policy-wording.component.html',
   styleUrls: ['./policy-wording.component.css']
 })
-export class PolicyWordingComponent implements OnInit {
+export class PolicyWordingComponent implements OnInit, OnDestroy {
 	@ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
@@ -92,6 +92,7 @@ export class PolicyWordingComponent implements OnInit {
 	dialogMessage: string = '';
 	cancel: boolean = false;
 	msgNo: number = 1;
+	subscription: Subscription = new Subscription();
 
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
@@ -99,12 +100,16 @@ export class PolicyWordingComponent implements OnInit {
   		setTimeout(() => { this.table.refreshTable(); }, 0);
   	}
 
+  	ngOnDestroy() {
+  		this.subscription.unsubscribe();
+  	}
+
   	getMtnPolicyWordings() {
   		this.table.overlayLoader = true;
   		var sub$ = forkJoin(this.ms.getMtnPolWordings({ lineCd: this.lineCd }),
   							this.ms.getRefCode('MTN_POL_WORDINGS.WORD_TYPE')).pipe(map(([word, ref]) => { return { word, ref }; }));
 
-  		sub$.subscribe(data => {
+  		this.subscription = sub$.subscribe(data => {
   			this.policyWordingData.opts[0].vals = [];
   			this.policyWordingData.opts[0].prev = [];
 
@@ -153,7 +158,10 @@ export class PolicyWordingComponent implements OnInit {
 			this.table.refreshTable();
     	}
 
-    	setTimeout(() => { $(data.ev.target).removeClass('ng-dirty'); }, 0);
+    	setTimeout(() => { if(data.ev) {
+    			$(data.ev.target).removeClass('ng-dirty');
+    		}
+    	}, 0);
 	}
 
 	showLineLOV() {		
@@ -184,6 +192,7 @@ export class PolicyWordingComponent implements OnInit {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 
+				this.tblHighlightReq('#policy-wording-table',this.policyWordingData.dataTypes,[0,1,2,3,8]);
 				return;
 			}
 		}
@@ -244,5 +253,38 @@ export class PolicyWordingComponent implements OnInit {
 				this.successDialog.open();
 			}
 		});
+	}
+
+	tblHighlightReq(el, dataTypes, reqInd) {
+		setTimeout(() => {
+			$(el).find('tbody').children().each(function() {
+				$(this).children().each(function(i) {
+					if(reqInd.includes(i)) {
+						var val;
+						if(dataTypes[i] == 'pk' || dataTypes[i] == 'pk-cap' || dataTypes[i] == 'text' || dataTypes[i] == 'date' || dataTypes[i] == 'time') {
+							val = $(this).find('input').val();
+							highlight($(this), val);
+						} else if(dataTypes[i] == 'select') {
+							val = $(this).find('select').val();
+							highlight($(this), val);
+						} else if(dataTypes[i] == 'text-editor') {
+							if($(this).find('div.ql-editor.ql-blank').length != 0) {
+								val = ''
+							} else if($(this).find('div.ql-editor').length != 0) {
+								val = $(this).find('div.ql-editor p').text().trim();
+							}
+
+							highlight($(this), val);
+						} else if(dataTypes[i] == 'number' || dataTypes[i] == 'currency') {
+							val = isNaN(Number($(this).find('input').val())) ? null : $(this).find('input').val();
+						}
+					}
+				});
+			});
+
+			function highlight(td, val) {
+				td.css('background', typeof val == 'undefined' ? 'transparent' : val == '' || val == null ? '#fffacd85' : 'transparent');
+			}
+		}, 0);
 	}
 }

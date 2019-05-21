@@ -159,6 +159,11 @@ span.ui-column-resizer {
                     <!-- <input  (keydown)="traverse($event,key,ti)" (focus)="focusFirst()" type="text" name="" style="opacity: 0;position: absolute;"> -->
                     <form #myForm="ngForm">
                     <table #table id="non-datatable" [class]="'non-datatable' + passData.pageID">
+                        <colgroup *ngIf="passData.tHeaderWithColspan != null">
+                            <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
+                                <col [span]="header.span" [class.black-border]="header.header.length !== 0 && i%2 === 0" style="text-align: center;">
+                            </ng-container>
+                        </colgroup>
                         <thead>
                             <tr *ngIf="passData.tHeaderWithColspan != null">
                                 <ng-container *ngFor="let header of passData.tHeaderWithColspan">

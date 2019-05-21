@@ -31,6 +31,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	private quotationGenInfo: QuotationGenInfo;
 	rowData: any[] = this.quotationService.rowData;
+	quoteId: string;
 	quotationNo: string;
 	tableData: any[] = [];
 	tHeader: any[] = [];
@@ -97,6 +98,7 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	genInfoData: any = {
+		altWordings: '',
 		approvedBy: '',
 		cedingId: '',
 		cedingName: '',
@@ -172,6 +174,7 @@ export class GeneralInfoComponent implements OnInit {
 	loading:boolean = true;
 	excludeCedingCo: any[] = [];
 	tempQuoteIdInternalComp = "";
+	tempQuoteIdModification = "";
 
 	@Output() enblEndtTab = new EventEmitter<any>(); //Paul
 	@Output() enblOptTab = new EventEmitter<any>(); //Paul
@@ -187,7 +190,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.tableData = this.quotationService.getItemInfoData();
 
 		this.savingType = this.quotationService.savingType;
-
+		console.log(this.savingType);
 		this.sub = this.route.params.subscribe(params => {
 
 			if(params['addParams'] != undefined){
@@ -204,6 +207,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.from = params['from'];
 				if (this.from == "quo-processing") {
 					this.quotationNo = (this.quoteInfo.quotationNo === '') ? params['quotationNo'] : this.quoteInfo.quotationNo;
+					this.quoteId = (this.quoteInfo.quoteId === '') ? params['quoteId'] : this.quoteInfo.quoteId;
 
 					if(params['exclude'] != undefined) {
 						this.excludeCedingCo = params['exclude'].split(',');
@@ -215,7 +219,7 @@ export class GeneralInfoComponent implements OnInit {
 				}
 			});
 
-			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
+			this.quotationService.getQuoteGenInfo(this.quoteId, this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];
@@ -235,9 +239,29 @@ export class GeneralInfoComponent implements OnInit {
 						this.genInfoData.cedingId = '';
 						this.genInfoData.cedingName = '';
 					} else if (this.savingType === 'modification') {
+						this.tempQuoteIdModification = this.genInfoData.quoteId;
 						this.genInfoData.quoteId = '';
 						this.genInfoData.quotationNo = '';
 						this.genInfoData.quoteRevNo = '';
+						this.genInfoData.statusDesc = '';
+						this.genInfoData.approvedBy = '';
+						this.genInfoData.printDate = '';
+						this.genInfoData.printedBy = '';
+						this.genInfoData.altWordings = '';
+						this.genInfoData.createUser = '';
+						this.genInfoData.updateUser = '';
+						this.genInfoData.createDate = '';
+						this.genInfoData.updateDate = '';
+
+						this.maintenanceService.getMtnQuotationWordings(this.line,'A').subscribe(data => {
+							if(data['quoteWordings'] != null) {
+								for(let word of data['quoteWordings']) {
+									if(word.defaultTag === 'Y') {
+										this.genInfoData.altWordings = word.wording;
+									}
+								}
+							}
+						});
 					}
 
 					setTimeout(() => {
@@ -254,7 +278,6 @@ export class GeneralInfoComponent implements OnInit {
 					this.checkDecimal('totalValue');
 					this.checkDecimal('pctShare');
 				}
-
 
 				this.checkQuoteIdF(this.genInfoData.quoteId);
 			});
@@ -279,7 +302,11 @@ export class GeneralInfoComponent implements OnInit {
 			    });
 			}
 
-		setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') },1000);
+		/*setTimeout(() => { 
+			$('.ng-dirty').removeClass('ng-dirty');
+
+			
+		},1000);*/
 
 		} else {
 			this.loading = false;
@@ -364,8 +391,12 @@ export class GeneralInfoComponent implements OnInit {
 
 		}
 		setTimeout(() => {
-		$("#firstFocus").focus();
-		$('.ng-dirty').removeClass('ng-dirty');
+			$("#firstFocus").focus();
+			$('.ng-dirty').removeClass('ng-dirty');
+
+			if(this.savingType == 'modification') {
+				$('#wordingAltIdLov #modalBtn').addClass('ng-dirty');
+			}
 		},1000);
 
 		this.getLineClass();
@@ -539,6 +570,9 @@ export class GeneralInfoComponent implements OnInit {
 					if(this.quotationService.toGenInfo[0] === 'add') {
 						this.genInfoData.createUser = this.ns.getCurrentUser();
 						this.genInfoData.createDate = this.ns.toDateTimeString(0);
+					} else if(this.quotationService.toGenInfo[0] === 'edit' && this.savingType === 'modification') {
+						this.genInfoData.createUser = this.ns.getCurrentUser();
+						this.genInfoData.createDate = this.ns.toDateTimeString(0);
 					}
 					this.genInfoData.updateUser = this.ns.getCurrentUser();
 					this.genInfoData.updateDate	= this.ns.toDateTimeString(0);
@@ -588,6 +622,7 @@ export class GeneralInfoComponent implements OnInit {
 	prepareParam() {
 		var saveQuoteGeneralInfoParam = {
 			"savingType"    : this.savingType,
+			"altWordings"	: this.genInfoData.quoteRevNo != 0 ? this.genInfoData.altWordings.trim() : '',
 			"approvedBy"	: this.genInfoData.approvedBy,
 			"cedingId"		: this.genInfoData.cedingId,
 			"cessionId"		: this.genInfoData.cessionId,
@@ -671,6 +706,15 @@ export class GeneralInfoComponent implements OnInit {
 			saveQuoteGeneralInfoParam['tempQuoteIdInternalComp'] = this.tempQuoteIdInternalComp;
 		}
 
+		if(this.savingType === 'modification') {
+			saveQuoteGeneralInfoParam['altWordings'] = this.genInfoData.altWordings.trim();
+			saveQuoteGeneralInfoParam['tempQuoteIdModification'] = this.tempQuoteIdModification;
+			saveQuoteGeneralInfoParam['createUser'] = this.ns.getCurrentUser();
+			saveQuoteGeneralInfoParam['createDate'] = this.ns.toDateTimeString(0);
+			saveQuoteGeneralInfoParam['prjCreateUser'] = this.ns.getCurrentUser();
+			saveQuoteGeneralInfoParam['prjCreateDate'] = this.ns.toDateTimeString(0);
+		}
+
 		return saveQuoteGeneralInfoParam;
 	}
 
@@ -708,6 +752,15 @@ export class GeneralInfoComponent implements OnInit {
 
   	setClosingWording(data) {  		
   		this.genInfoData.closingParag = data.wording;
+  		this.focusBlur();
+  	}
+
+  	showAltWordingLov(){
+  		$('#wordingAltIdLov #modalBtn').trigger('click');
+  		$('#wordingAltIdLov #modalBtn').addClass('ng-dirty');
+  	}
+  	setAltWording(data) {
+  		this.genInfoData.altWordings = data.wording;
   		this.focusBlur();
   	}
 
@@ -770,7 +823,11 @@ export class GeneralInfoComponent implements OnInit {
 
   		if(obj.lineCd === 'MLP' || obj.lineCd === 'DOS') {
   			req.push('mbiRefNo');
-  		}  		
+  		}
+
+  		if(this.savingType === 'modification') {
+  			req.push('altWordings');
+  		}
 
   		var entries = Object.entries(obj);
 
@@ -933,13 +990,13 @@ export class GeneralInfoComponent implements OnInit {
 
   checkDecimal(str) {
   	if(str === 'totalValue') {
-  		if(String(this.project.totalValue) != '') {
+  		if(String(this.project.totalValue) != '' && this.project.totalValue != null) {
   			var tvArr = String(this.project.totalValue).split('.');
   			tvArr[1] = tvArr[1] === undefined ? '00' : tvArr[1].padEnd(2, '0');
   			this.project.totalValue = tvArr.join('.');
   		}
   	} else if(str === 'pctShare') {
-  		if(String(this.project.pctShare) != '') {
+  		if(String(this.project.pctShare) != '' && this.project.pctShare != null) {
   			var pctArr = String(this.project.pctShare).split('.');
   			pctArr[1] = pctArr[1] === undefined ? '0000000000' : pctArr[1].padEnd(10, '0');
   			this.project.pctShare = pctArr.join('.');
