@@ -167,7 +167,18 @@ export class InternalCompetitionComponent implements OnInit {
      /* if (this.custEditableNonDatatableComponent.selected.length !== 0) {
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + this.selectedPrintData.quoteId + '&adviceNo=' + this.selectedPrintData.adviceNo, '_blank');
       }*/
-      $('#showPrintMenu2 > #modalBtn').trigger('click');
+      let validate: boolean = true;
+      for(var i of this.custEditableNonDatatableComponent.selected){
+        if(i.wordings === null || (i.wordings !== null && i.wordings.trim().length === 0)){
+          this.messageIcon = "error";
+          $('#incomp #successModalBtn').trigger('click');
+          validate = false;
+          break;
+        }
+      }
+      if(validate){
+        $('#showPrintMenu2 > #modalBtn').trigger('click');
+      }
     }
 
     printMethod(){
