@@ -121,7 +121,13 @@ export class InsuredListComponent implements OnInit {
 	  	this.insuredRecord.createDate	= this.ns.toDateTimeString(event.createDate).substring(0,16);
 	  	this.insuredRecord.updateUser	= event.updateUser;
 	  	this.insuredRecord.updateDate	= this.ns.toDateTimeString(event.updateDate).substring(0,16);
-  	}
+  	}else{
+      this.insuredRecord.insuredId  = '';
+      this.insuredRecord.createUser  = '';
+      this.insuredRecord.createDate  = '';
+      this.insuredRecord.updateUser  = '';
+      this.insuredRecord.updateDate  = '';
+    }
   }
 
   onRowDblClick(){

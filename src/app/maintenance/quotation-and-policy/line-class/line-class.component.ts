@@ -21,27 +21,30 @@ export class LineClassComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
   passData: any = {
-    tableData:[['', '', '', '']],
-    tHeader				:["Line Class Code", "Description", "Active","Remarks"],
-    dataTypes			:["text", "text", "checkbox", "text"],
-    nData:{
+    tableData:[],
+    tHeader				      : ["Line Class Code", "Description", "Active","Remarks"],
+    dataTypes			      : ["text", "text", "checkbox", "text"],
+    genericBtn          : 'Delete',
+    nData: {
       lineClassCd       : null,
       lineCdDesc        : null,
-      activeTag         : 'Y',
-      remarks           : ' ',
+      activeTag         : null,
+      remarks           : '',
       createUser        : null,
       createDate        : this.ns.toDateTimeString(0),
       updateUser        : null,
       updateDate        : this.ns.toDateTimeString(0)
     },
     addFlag				      : true,
-    deleteFlag		 	    : true,
     paginateFlag		    : true,
     infoFlag			      : true,
     pageLength			    : 10,
     resizable			      : [true, true, true, false],
     pageID				      : 'line-mtn-line',
-    keys				        : ['lineClassCd', 'lineCdDesc', 'activeTag','remarks'],
+    keys				        : ['lineClassCd', 'lineCdDesc', 'activeTag', 'remarks'],
+    uneditable          : [false, false, false, false],
+    widths              : [1, 'auto', 'auto', 'auto'],
+    disableGeneric      : true,
     disableAdd          : true
   };
 
@@ -49,9 +52,9 @@ export class LineClassComponent implements OnInit {
   loading					      : boolean;
 	dialogIcon				    : string;
 	dialogMessage			    : string;
-	@Input() inquiryFlag	: boolean 	= false;
-	successMessage			  : string 	= environment.successMessage;
-	arrLineCd     			  : any     	= [];
+	@Input() inquiryFlag	: boolean = false;
+	successMessage			  : string	= environment.successMessage;
+	arrLineCd     			  : any = [];
 	counter					      : number;
   mtnLineReq 				    : any;
 
@@ -86,10 +89,6 @@ export class LineClassComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
-    setTimeout(_=> this.table.btnDisabled = true );
-  }
-
   retrieveLineClass() {
     if(this.line === '' || this.line == null) {
       this.clearTbl();
@@ -99,12 +98,11 @@ export class LineClassComponent implements OnInit {
           this.passData.tableData = data['lineClass'].filter(a => {
             a.createDate = this.ns.toDateTimeString(a.createDate);
             a.updateDate = this.ns.toDateTimeString(a.updateDate);
-            a.remarks = a.remarks.trim();
+            a.uneditable = ['lineClassCd'];
             return true;
           });
 
           this.passData.tableData.sort((a,b) => (a.createDate > b.createDate)? -1 : 1);
-          this.table.btnDisabled = true;
           this.passData.disableAdd = false;
           this.table.refreshTable();
         }
@@ -135,7 +133,6 @@ export class LineClassComponent implements OnInit {
       if (rec.edited && !rec.deleted) {
         rec.lineCd = this.line;
         rec.activeTag = rec.activeTag ===  '' ? 'N' : rec.activeTag;
-        rec.remarks = rec.remarks ===''? ' ' : rec.remarks;
         rec.createUser = JSON.parse(window.localStorage.currentUser).username;
         rec.createDate = this.ns.toDateTimeString(rec.createDate);
         rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
@@ -180,26 +177,8 @@ export class LineClassComponent implements OnInit {
     }
   }
 
-  delLineClass() {
-    if ('Y' === this.table.indvSelect.okDelete) {
-      for (let rec of this.passData.tableData) {
-        if (rec.lineClassCd === this.table.indvSelect.lineClassCd) {
-          rec.deleted = true;
-          rec.edited = true;
-        }
-      }
-
-      this.table.markAsDirty();
-      this.table.refreshTable();
-    } else {
-      this.warningMsg = 1;
-      this.showWarningMdl();
-    }
-  }
-
   validate(obj) {
     var req = ['lineClassCd', 'lineCdDesc'];
-    var entries = Object.entries(obj);
 
     for (let rec of obj) {
       var entries = Object.entries(rec);
@@ -236,7 +215,19 @@ export class LineClassComponent implements OnInit {
       this.lineClassData.createDate = ev.createDate;
       this.lineClassData.updateUser = ev.updateUser;
       this.lineClassData.updateDate = ev.updateDate;
+
+      this.passData.disableGeneric = false;
+      this.enableFields();
     }
+  }
+
+  enableFields() {
+    this.passData.tableData.forEach(a => {
+      if (a.add) {
+        a.activeTag = 'Y';
+        a.uneditable = [];
+      }
+    });
   }
 
   setLine(data) {
@@ -254,6 +245,17 @@ export class LineClassComponent implements OnInit {
   clearTbl() {
     this.passData.tableData = [];
     this.table.refreshTable();
+  }
+
+  deleteLineClass() {
+    if ('Y' === this.table.indvSelect.okDelete) {
+      this.table.indvSelect.deleted = true;
+      this.table.selected = [this.table.indvSelect];
+      this.table.confirmDelete();
+    } else {
+      this.warningMsg = 1;
+      this.showWarningMdl();
+    }
   }
 
 }

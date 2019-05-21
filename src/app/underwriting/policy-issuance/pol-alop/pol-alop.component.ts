@@ -23,32 +23,10 @@ export class PolAlopComponent implements OnInit {
   @ViewChild("to") to:any;
 
   aLOPInfo: ALOPInfo = new ALOPInfo();
-  tableData: any[] = [["1", "Description 1", "Information 1"],
-  ["2", "Description 2", "Information 2"],
-  ["3", "Description 3", "Information 3"],
-  ["4", "Description 4", "Information 4"],
-  ["5", "Description 5", "Information 5"],
-  ];
-
-  tableData2: any[] = [
-    ["1", "5", "Description 1", "Information", "Information"],
-    ["2", "5", "Description 2", "Information", "Information"],
-    ["3", "5", "Description 3", "Information", "Information"],
-    ["4", "5", "Description 4", "Information", "Information"],
-    ["5", "5", "Description 5", "Information", "Information"],
-  ]
-
-  tHeader: string[] = [];
-  tHeader2: string[] = [];
+  
+ 
   policyRecordInfo: any = {};
-  dataTypes: string[] = [];
-  dataTypes2: string[] = [];
-  addFlag;
-  deleteFlag;
-  paginateFlag;
-  infoFlag;
-  pageLength = 10;
-  alopFlag:string = '';
+  
 
   passDataCar: any = {
     tableData: [],
@@ -150,10 +128,6 @@ export class PolAlopComponent implements OnInit {
       //this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];;
       this.prevPolicyId = this.policyInfo.prevPolicyId
     });
-
-    console.log(this.prevPolicyId);
-
-    console.log(this.policyInfo);
 
     if(this.line == 'EAR'){
       this.passDataCar.tHeader = ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Minimization"];
@@ -314,6 +288,7 @@ export class PolAlopComponent implements OnInit {
 
   getPolAlop() {
     this.underwritingService.getPolAlop(this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
+      console.log(data)
       if (data.policy != null) {
         this.policyId = data.policy.policyId;
         this.polAlopData = data.policy.alop;
@@ -437,12 +412,12 @@ export class PolAlopComponent implements OnInit {
 
 
   cancelButton() {
-    this.alopFlag = 'alop';
+    //this.alopFlag = 'alop';
     this.cancelBtn.clickCancel();
   }
 
   cancelModal() {
-    this.alopFlag = 'alopitem';
+    //this.alopFlag = 'alopitem';
     this.cancelModalBtn.clickCancel();
   }
 

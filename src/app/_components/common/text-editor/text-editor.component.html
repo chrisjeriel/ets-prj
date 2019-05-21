@@ -21,10 +21,26 @@
 	<div class="modal-header">
 		<span class="modal-title" id="modal-basic-title">Text Editor</span>
 	</div>
-	<div class="modal-body">
+	<div class="modal-body text-editor-container">
 		<quill-editor class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event" [style]="{height: '300px', width: '900px', font: '11px arial', padding: '5px 10px'}" [modules]="{toolbar: true}" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'text'"></quill-editor>
 	</div>
 	<div class="modal-footer d-flex justify-content-center w-100">
-		<button class="cust-btn" type="button" (click)="closeTextEditorModal($event)"><a>Done</a></button>
+		<div class="cust-btn-container">
+			<button class="cust-btn" type="button" (click)="onClickCancel(confirm)"><a>Cancel</a></button>
+			<button class="cust-btn" type="button" (click)="closeTextEditorModal($event)"><a>Ok</a></button>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #confirm>
+	<div class="modal-header">
+		<span class="modal-title" id="modal-basic-title">Confirmation</span>
+	</div>
+	<div class="modal-body" style="text-align: center;">Changes will not be saved. Proceed?</div>
+	<div class="modal-footer d-flex justify-content-center w-100">
+		<div class="cust-btn-container">
+			<button class="cust-btn" type="button" (click)="onClickYes()"><a>Yes</a></button>
+			<button class="cust-btn" type="button" (click)="onClickNo()"><a>No</a></button>
+		</div>
 	</div>
 </ng-template>

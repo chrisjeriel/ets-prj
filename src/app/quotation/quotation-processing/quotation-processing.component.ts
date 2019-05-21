@@ -312,7 +312,7 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.savingType = 'normal';
 
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal', exitLink:'/quotation-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession, quoteId:this.selectedQuotation.quoteId, quotationNo: this.quotationNo, from: 'quo-processing', savingType: 'normal', exitLink:'/quotation-processing' }], { skipLocationChange: true });
         },100);
     }
 
@@ -474,7 +474,8 @@ onRowDblClick() {
 
     setTimeout(() => {
         this.router.navigate(['/quotation', { line: sel.quotationNo.split("-")[0],
-                                              typeOfCession: sel.cessionDesc, 
+                                              typeOfCession: sel.cessionDesc,
+                                              quoteId: sel.quoteId,
                                               quotationNo : sel.quotationNo,
                                               from: 'quo-processing',
                                               exitLink:'/quotation-processing' }], { skipLocationChange: true });

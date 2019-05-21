@@ -41,7 +41,7 @@ export class LovComponent implements OnInit {
   showButton: boolean = false;
   theme =  window.localStorage.getItem("selectedTheme");
 
-  constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService, 
+  constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService,
     private quotationService: QuotationService, private router: Router) { }
 
   ngOnInit() {
@@ -195,9 +195,31 @@ export class LovComponent implements OnInit {
             }
         });
       }
+    } else if (selector == 'userGrp'){
+      if (this.passData.userGrp == '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnUserGrp(this.passData.userGrp).subscribe((data: any) => {
+            if(data.userGroups.length > 0) {
+              data['userGroups'][0].ev = ev;
+              this.selectedData.emit({
+                  data : data['userGroups'][0],
+                  ev: ev
+                }
+                );
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
     }
-
-
     /*if(districtCd === ''){
       this.selectedData.emit({
         data: null,
@@ -215,11 +237,11 @@ export class LovComponent implements OnInit {
             description: '',
             ev: ev
           });
-            
+
           $('#districtMdl > #modalBtn').trigger('click');
         }
-        
-      });  
+
+      });
     }*/
   }
 
@@ -237,7 +259,7 @@ export class LovComponent implements OnInit {
 	          this.table.refreshTable();
 	        });
 	  }else if(this.passData.selector == 'city'){
-      this.passTable.tHeader =  ['Region Code', 'Region Description', 'Province Code', 'Province Description', 
+      this.passTable.tHeader =  ['Region Code', 'Region Description', 'Province Code', 'Province Description',
                 'City Code', 'City Description', 'Remarks', 'Zone Code', 'Zone Description' ];
       this.passTable.dataTypes =  ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'];
       this.passTable.keys = [
@@ -317,6 +339,7 @@ export class LovComponent implements OnInit {
         this.passData.params.deductibleCd,this.passData.params.coverCd,this.passData.params.endtCd,this.passData.params.activeTag,
         this.passData.params.defaultTag
         ).subscribe((data: any) => {
+          console.log(this.passData.hide);
           this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
           if(this.passData.endtCd !== undefined){
             this.passTable.tableData = this.passTable.tableData.filter(data=> data.endtCd==this.passData.endtCd || data.endtCd == 0  )
@@ -371,8 +394,8 @@ export class LovComponent implements OnInit {
           //   for (var a = 0; a < data.region.length; a++) {
           //     this.passDataBlock.tableData.push(
             //   new MtnBlock(data.region[a].regionCd,
-            //          data.region[a].regionDesc, 
-            //          data.region[a].province.provinceCd, 
+            //          data.region[a].regionDesc,
+            //          data.region[a].province.provinceCd,
             //          data.region[a].province.provinceDesc,
             //          data.region[a].province.city.cityCd,
             //          data.region[a].province.city.cityDesc,
@@ -407,7 +430,7 @@ export class LovComponent implements OnInit {
                 }
               }
           }
-                
+
             this.table.refreshTable();
           });
     }else if(this.passData.selector == 'otherRates'){
@@ -482,6 +505,14 @@ export class LovComponent implements OnInit {
             a.text += a.wordText17 == null? '' : a.wordText17;
         }
         this.passTable.tableData = data.mtnPolWordings;
+        this.table.refreshTable();
+      })
+    }else if (this.passData.selector == 'userGrp'){
+      this.passTable.tHeader = [ 'User Group','Description','Remarks'];
+      this.passTable.dataTypes = [ 'number','text','text'];
+      this.passTable.keys = ['userGrp','userGrpDesc','remarks'];
+      this.mtnService.getMtnUserGrp().subscribe(a=>{
+        this.passTable.tableData = a["userGroups"];
         this.table.refreshTable();
       })
     }

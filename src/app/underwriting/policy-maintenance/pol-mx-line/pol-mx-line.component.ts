@@ -7,8 +7,6 @@ import { environment } from '@environments/environment';
 import { NgbModal,NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
-import { forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-pol-mx-line',
@@ -24,7 +22,7 @@ export class PolMxLineComponent implements OnInit {
 		tableData:[],
 		tHeader				:["Line Code", "Description", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
 		dataTypes			:["pk-cap", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text"],
-		nData:{
+		nData:{ 
 			newRec			: 1,
 			lineCd          : '',
 			description     : '',
@@ -57,22 +55,11 @@ export class PolMxLineComponent implements OnInit {
 	};
 
 	cancelFlag				: boolean;
-	loading					: boolean;
+	//loading					: boolean;
 	dialogIcon				: string;
 	dialogMessage			: string;
-	@Input() inquiryFlag	: boolean 	= false;
-	successMessage			: string 	= environment.successMessage;
 	arrLineCd     			: any     	= [];
-	counter					: number;
-	mtnLineReq 				: any		= {};
 	warnMsg					: string 	= '';
-	isChecked				: boolean 	= false;
-    usedInQuote				: boolean 	= false;
-    usedInQuoteAdd			: boolean 	= false;
-    arrLineCdDel  			: any     	= [];
-    arrRowsToSave			: any		= [];
-    isAddClicked			: boolean	= false;
-
 
     params : any =	{
 		saveLine 		: [],
@@ -199,6 +186,7 @@ export class PolMxLineComponent implements OnInit {
 				this.arrLineCd.push(i.lineCd);
 			}
 			this.table.refreshTable();
+			this.table.onRowClick(null, this.passData.tableData[0]);
 		});
 	}
 
@@ -219,6 +207,10 @@ export class PolMxLineComponent implements OnInit {
 	        this.saveMtnLine.createUser  = event.createUser;
 	       	this.passData.disableGeneric = false;
 		}else{
+			this.saveMtnLine.updateDate  = '';
+	        this.saveMtnLine.updateUser  = '';
+	        this.saveMtnLine.createDate  = '';
+	        this.saveMtnLine.createUser  = '';
 			this.passData.disableGeneric = true;
 		}
 	}

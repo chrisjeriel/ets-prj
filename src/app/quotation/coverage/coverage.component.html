@@ -150,3 +150,35 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
 <app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+
+<app-modal #infoCov hidden [btnTitle]="'Confirmation'" id="confirmationModal">
+    <div header>Confirmation Message</div>
+    <div body style="text-align: center">
+       <p class="no-margin">{{promptMessage}}</p>
+       <div *ngIf="promptType.toUpperCase() === 'TOTALVAL'">
+          <div class="row">
+            <div class="col-sm-6" style="text-align: right; padding-right: 0px">
+              <p class="no-margin"><strong>Total SI of the Quotation:</strong></p>
+            </div>
+            <div class="col-sm-6" style="text-align: left">
+              <p class="no-margin"><strong>&nbsp; {{coverageData.totalSi | number: '1.2-2'}}</strong></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6" style="text-align: right; padding-right: 0px">
+              <p class="no-margin"><strong>100% Value: </strong></p>
+            </div>
+            <div class="col-sm-6" style="text-align: left">
+              <p class="no-margin"><strong>&nbsp; {{totalValue | number: '1.2-2'}}</strong></p>
+            </div>
+          </div>
+          <!-- <p class="no-margin"><strong>Max SI of the Policy: &nbsp; {{coverageInfo.totalSi}}</strong></p>
+          <p class="no-margin"><strong>100% Value: &nbsp; {{coverageInfo.totalValue}}</strong></p> -->
+       </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>

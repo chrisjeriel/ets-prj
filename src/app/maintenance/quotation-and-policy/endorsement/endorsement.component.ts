@@ -206,7 +206,6 @@ export class EndorsementComponent implements OnInit {
   		this.dialogMessage =  'You are not allowed to delete an Endorsement that is already used in quotation processing.';
   		this.successDialog.open();
   	}else{
-  		this.endtTable.indvSelect.deleted = true;
   		this.endtTable.selected  = [this.endtTable.indvSelect]
   		this.endtTable.confirmDelete();
   	}
@@ -218,7 +217,6 @@ export class EndorsementComponent implements OnInit {
   		this.dialogMessage =  'You are not allowed to delete a Deductible that is already used in quotation processing.';
   		this.successDialog.open();
   	}else{
-  		this.dedTable.indvSelect.deleted = true;
   		this.dedTable.selected  = [this.dedTable.indvSelect]
   		this.dedTable.confirmDelete();
   	}

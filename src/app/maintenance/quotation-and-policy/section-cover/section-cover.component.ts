@@ -173,7 +173,6 @@ export class SectionCoverComponent implements OnInit {
   		this.dialogMessage =  'You are not allowed to delete a Section Cover that is already used in quotation processing.';
   		this.successDialog.open();
   	}else{
-  		this.secTable.indvSelect.deleted = true;
   		this.secTable.selected  = [this.secTable.indvSelect]
   		this.secTable.confirmDelete();
   	}
@@ -185,7 +184,6 @@ export class SectionCoverComponent implements OnInit {
   		this.dialogMessage =  'You are not allowed to delete a Deductible that is already used in quotation processing.';
   		this.successDialog.open();
   	}else{
-  		this.dedTable.indvSelect.deleted = true;
   		this.dedTable.selected  = [this.dedTable.indvSelect]
   		this.dedTable.confirmDelete();
   	}
@@ -294,7 +292,6 @@ export class SectionCoverComponent implements OnInit {
   }
 
   onClickSave(){
-
   	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.bulletNo == b.bulletNo && a.section==b.section).length != 1)){
   		this.dialogMessage = 'Unable to save the record. Bullet No must be unique per Section';
   		this.dialogIcon = 'error-message';

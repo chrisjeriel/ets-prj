@@ -1,0 +1,70 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="User Amount Limit">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+						    <div class="form-row custom-row-inline-inset">
+						        <div class="input-group">
+						            <div class="col-sm-3"></div>
+						            <label class="form-control-sm text-right"  style="margin-bottom: 0px">User Group</label>
+						            <input class="form-control form-control-sm col-sm-1 not-form" type="text" [ngModel]="group?.userGrp" (change)="checkCode($event)" numbers-only>
+						            <div class="text-search-ico" style="padding-left: 1px" (click)="lov.openLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+						            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [ngModel]="group?.userGrpDesc" readonly>
+						            <div class="col-sm-3"></div>
+						        </div>
+						    </div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
+							<div class="row" style="margin-top: 12px;">
+								<div class="col-sm-12">
+									<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="update($event)" (newClick)="onTableClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true;" (clickLOV)="showLineLOV($event)"></app-cust-editable-non-datatable>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-sm">
+									<div class="col-md-13 text-center">
+										<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row" style="margin-top: 12px">
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border" style="padding-top: 4px !important;">
+							<div class="custom-row-inline-inset">
+								<div class="input-group" style="margin-bottom: -14px !important;">
+									<label class="form-control-sm col-sm-1 no-margin">Created By</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="info?.createUser" readonly>
+									<label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+									<div class="col-sm-2 dp-cont">
+										<datepicker [value]="info?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+									</div>
+									<label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="info?.updateUser" readonly>
+									<label class="form-control-sm col-sm-1 no-margin">Last Update</label>									
+									<div class="col-sm-2 dp-cont">
+										<datepicker [value]="info?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+
+<app-lov [passData]="passLov" (selectedData)="setUserGrp($event)"></app-lov>
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'text-editor',
@@ -24,6 +24,9 @@ export class TextEditorComponent implements OnInit, OnChanges {
     padding: '5px 10px',
     color: 'black'
   };
+
+  oldValue: any = '';
+  modalRef: NgbModalRef;
 
   constructor(private modalService: NgbModal) { }
 
@@ -52,6 +55,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   }
 
   showTextEditorModal(content) {
+    this.oldValue = this.editorContent;
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
 
@@ -69,5 +73,24 @@ export class TextEditorComponent implements OnInit, OnChanges {
     }
 
     return this.style;
+  }
+
+  onClickCancel(confirm) {
+    setTimeout(() => {
+      if($('div.text-editor-container').find('quill-editor').hasClass('ng-dirty')) {
+        this.modalRef = this.modalService.open(confirm, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+      } else {
+        this.modalService.dismissAll();
+      }
+    }, 0);
+  }
+
+  onClickYes() {
+    this.editorContent = this.oldValue;
+    this.closeTextEditorModal('');
+  }
+
+  onClickNo() {
+    this.modalRef.close();
   }
 }

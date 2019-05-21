@@ -1,0 +1,66 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Non-renewal Reason">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
+							<div class="row" style="margin-top: 12px;">
+								<div class="col-sm-12">
+									<app-cust-editable-non-datatable [passData]="nonRenewalReasonData" (tableDataChange)="nonRenewalReasonData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (add)="onClickAdd($event)" (onDelete)="table.onClickDelete('a')"></app-cust-editable-non-datatable>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-sm">
+									<div class="col-md-13 text-center">
+										<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row" style="margin-top: 12px">
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border">
+							<div class="custom-row-inline-inset">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-1 no-margin">Created By</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selectedRow?.createUser" readonly>
+									<label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+									<input type="datetime-local" class="form-control form-control-sm col-sm-2" [ngModel]="selectedRow?.createDate !== null ? ns.toDateTimeString(selectedRow?.createDate) : ''" readonly>
+									<label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selectedRow?.updateUser" readonly>
+									<label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+									<input type="datetime-local" class="form-control form-control-sm col-sm-2" [ngModel]="selectedRow?.updateDate !== null ? ns.toDateTimeString(selectedRow?.updateDate) : ''" readonly>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<!-- <ngb-tab title="Exit" id="Exit">
+			<ng-template ngbTabContent>
+				
+			</ng-template>
+		</ngb-tab> -->
+	</ngb-tabset>
+</div>
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+
+<app-modal class="d-none" id="delete">
+    <div header>Delete</div>
+    <div body>Are you sure you want to delete this item?</div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="modalService.dismissAll();delete();">Yes</button>
+        <button class="cust-btn" (click)="modalService.dismissAll();">No</button>
+    </div>
+</app-modal>
