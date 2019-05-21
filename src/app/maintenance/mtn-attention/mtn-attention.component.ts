@@ -84,6 +84,7 @@ export class MtnAttentionComponent implements OnInit {
       }*/
       setTimeout(()=>{    //<<<---    using ()=> syntax
            this.underwritingService.getCedingCompanyLOV(this.cedingId).subscribe((data:any) => {
+             console.log(this.cedingId);
              console.log(data);
                        // for (var i = 0; i < data.cedingCompany.length; i++) {
                        //     //this.passDataAttention.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));
@@ -104,7 +105,7 @@ export class MtnAttentionComponent implements OnInit {
                                                                 });
 
                        }*/
-                        for (var i = 0; i < data.cedingCompany.length; i++) {
+                        for (var i = 0; i < data.cedingCompany[0].cedingRepresentative.length; i++) {
                           //this.passDataAttention.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));
                           this.passDataAttention.tableData.push(data.cedingCompany[0].cedingRepresentative[i]);
 

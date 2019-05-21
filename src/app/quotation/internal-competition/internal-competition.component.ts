@@ -56,6 +56,7 @@ export class InternalCompetitionComponent implements OnInit {
     cedingIds: any[] = [];
     cedingRepIds: any[] = [];
     savedData: any[] = [];
+    savedDataComp: any[] = [];
     printClickable: boolean = false;
 
     selectedPrintData: any;
@@ -148,6 +149,7 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     onRowClick(data){
+      console.log(data);
       this.selectedPrintData = data;
       if (data == null) {
         this.printClickable = false;
@@ -266,6 +268,18 @@ export class InternalCompetitionComponent implements OnInit {
                 wordings: this.intCompData.tableData[i].wordings === null ? '' : this.intCompData.tableData[i].wordings 
               }
             );
+            this.savedDataComp.push(
+              {
+                adviceNo: this.intCompData.tableData[i].adviceNo,
+                cedingId: this.intCompData.tableData[i].cedingId,
+                cedingRepId: this.intCompData.tableData[i].cedingRepId,
+                createDate: this.notes.toDateTimeString(0),
+                createUser: JSON.parse(window.localStorage.currentUser).username,
+                quoteId: this.intCompData.tableData[i].quoteId,
+                updateDate: this.notes.toDateTimeString(0),
+                updateUser: JSON.parse(window.localStorage.currentUser).username
+              }
+            );
           }
       }
       console.log(this.savedData);
@@ -276,19 +290,28 @@ export class InternalCompetitionComponent implements OnInit {
         $('#incomp #successModalBtn').trigger('click');*/
       }
       else{
-        this.quotationService.saveQuoteAdviceWordings(this.savedData).subscribe((data: any) => {
-            if(data.returnCode === 0){
-              console.log("ERROR!");
-              this.messageIcon = "error";
-               $('#incomp #successModalBtn').trigger('click');
-            }
-            else{
-              this.messageIcon = "";
-               $('#incomp #successModalBtn').trigger('click');
-               this.retrieveInternalCompetition();
-               $('.ng-dirty').removeClass('ng-dirty');
-            }
+        this.quotationService.saveQuoteCompetition(this.savedDataComp).subscribe((data: any)=>{
+          if(data.returnCode === 0){
+            console.log("ERROR!");
+            this.messageIcon = "error";
+             $('#incomp #successModalBtn').trigger('click');
+           }else{
+             this.quotationService.saveQuoteAdviceWordings(this.savedData).subscribe((data: any) => {
+                 if(data.returnCode === 0){
+                   console.log("ERROR!");
+                   this.messageIcon = "error";
+                    $('#incomp #successModalBtn').trigger('click');
+                 }
+                 else{
+                   this.messageIcon = "";
+                    $('#incomp #successModalBtn').trigger('click');
+                    this.retrieveInternalCompetition();
+                    $('.ng-dirty').removeClass('ng-dirty');
+                 }
+             });
+           }
         });
+       
       }
        
     }
