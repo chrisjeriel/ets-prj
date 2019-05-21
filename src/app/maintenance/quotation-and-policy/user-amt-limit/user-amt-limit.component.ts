@@ -5,7 +5,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-
+import { MtnLineComponent} from '@app/maintenance/mtn-line/mtn-line.component'
 @Component({
   selector: 'app-user-amt-limit',
   templateUrl: './user-amt-limit.component.html',
@@ -17,6 +17,7 @@ export class UserAmtLimitComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild(MtnLineComponent) mtnLineLov: MtnLineComponent;
   passLov: any = {
   	selector: 'userGrp',
   	userGrp: ''
@@ -29,15 +30,17 @@ export class UserAmtLimitComponent implements OnInit {
   passData:any={
   	tableData: [],
   	tHeader: ['Line','Amount Limit','All Amount SW','Remarks'],
-  	dataTypes:['text','currency','checkbox','text'],
+  	dataTypes:['lovInput','currency','checkbox','text'],
   	keys:['lineCd','amtLimit','allAmtSw','remarks'],
   	addFlag:true,
   	genericBtn:'Delete',
   	infoFlag:true,
   	paginateFlag:true,
-  	widths:[1,180,1,'auto'],
+  	widths:[95,180,1,'auto'],
+    magnifyingGlass: ['lineCd'],
   	nData:{
-  		userGrp:'',
+    showMG:1,
+  	userGrp:'',
 		lineCd:'',
 		allAmtSw:'N',
 		amtLimit:'',
@@ -47,11 +50,13 @@ export class UserAmtLimitComponent implements OnInit {
 		updateUser:this.ns.getCurrentUser(),
 		updateDate:this.ns.toDateTimeString(0),
   	},
+    uneditable:[false,false,false,false],
   	disableGeneric:true,
   	disableAdd: true
   }
 
   info:any;
+  LineLOVRow: number;
   constructor(private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -82,6 +87,7 @@ export class UserAmtLimitComponent implements OnInit {
   	this.ms.getMtnUserAmtLimit(this.group.userGrp).subscribe(a=>{
   		this.passData.tableData = a['userAmtLimit'];
   		this.passData.tableData.forEach(a=>{
+        a.uneditable = ['lineCd'];
   			a.createDate = this.ns.toDateTimeString(a.createDate);
   			a.updateDate = this.ns.toDateTimeString(a.updateDate);
   		})
@@ -147,5 +153,42 @@ export class UserAmtLimitComponent implements OnInit {
     this.ns.lovLoader(ev, 1);
     this.lov.checkCode('userGrp',undefined, undefined, undefined, undefined, undefined, ev);
   }
+
+  setLine(data){
+    console.log(data)
+    if(data.hasOwnProperty('singleSearchLov') && data.singleSearchLov) {
+      this.LineLOVRow = data.ev.index;
+      this.ns.lovLoader(data.ev, 0);
+    }
+
+    /*$('#cust-table-container').addClass('ng-dirty');
+
+    if(data.lineCd != '' && data.lineCd != null && data.lineCd != undefined) {
+      //HIDE THE POWERFUL MAGNIFYING GLASS
+      this.passData.tableData[this.LineLOVRow].showMG = 1;
+    }
+    this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);*/
+    this.passData.tableData[this.LineLOVRow].lineCd = data.lineCd;
+    this.passData.tableData[this.LineLOVRow].showMG = 0;
+    this.passData.tableData[this.LineLOVRow].uneditable = ['lineCd'];
+    this.table.refreshTable();
+  }
+
+  showLineLOV(data){
+      console.log(data)
+      $('#lineLOV #modalBtn').trigger('click');
+      this.LineLOVRow = data.index;
+      console.log(this.LineLOVRow)
+  }
+
+  update(data){
+    console.log(data)
+    if(data.hasOwnProperty('lovInput')) {
+
+      data.ev['index'] = data.index;
+      this.mtnLineLov.checkCode(data.ev.target.value, data.ev);
+    }
+  }
+
 
 }
