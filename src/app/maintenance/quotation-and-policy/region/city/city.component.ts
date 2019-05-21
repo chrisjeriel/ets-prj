@@ -258,9 +258,13 @@ export class CityComponent implements OnInit {
   checkFields(){
     this.cityCdArray = [];
       for(let check of this.passData.tableData){
-        this.cityCdArray.push(check.provinceCd);
-        if(check.cityCd === null || Number.isNaN(check.cityCd)  || check.description === null || check.description.length === 0 || check.crestaId === null){
-          return false;
+        this.cityCdArray.push(check.cityCd);
+        if (check.description === undefined || check.crestaId === undefined){
+        	 return false
+        } else {
+        	if(check.cityCd === null || Number.isNaN(check.cityCd)  || check.description === null || check.description.length === 0 || check.crestaId === null || check.crestaId.length === 0 ){
+          		return false;
+        	 }
         }
       }
       return true;
@@ -287,6 +291,40 @@ export class CityComponent implements OnInit {
     return (new Set(array)).size !== array.length;
   }
 
+  change(){
+  	$('#cust-table-container').addClass('ng-dirty');
+  }
+
+   onClickSaveCity(cancelFlag?){
+/*    this.mtnProvinceReq.saveProvince = [];
+    this.mtnProvinceReq.deleteProvince = [];
+    this.editedData = [];
+    this.deletedData = [];
+    
+    for(var i=0;i<this.passData.tableData.length;i++){
+       if(this.passData.tableData[i].edited){
+              this.editedData.push(this.passData.tableData[i]);
+              this.editedData[this.editedData.length - 1].regionCd   = this.regionCD;
+              this.editedData[this.editedData.length - 1].activeTag  = this.cbFunc2(this.passData.tableData[i].activeTag);
+              this.editedData[this.editedData.length - 1].updateUser = this.ns.getCurrentUser();
+              this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);             
+       }    
+    }    
+            this.mtnProvinceReq.saveProvince   = this.editedData;
+            this.mtnProvinceReq.deleteProvince = this.deletedData; 
+
+            if(this.mtnProvinceReq.saveProvince.length > 0){
+              this.confirmDialog.showBool = true;
+              this.passData.disableGeneric = true;
+              this.saveProvince(this.mtnProvinceReq);
+            } else {
+              this.confirmDialog.showBool = false;
+              this.dialogIcon = 'info';
+              this.dialogMessage = 'Nothing to save';
+              this.successDialog.open();
+            }*/
+            
+  }
 
 
 
