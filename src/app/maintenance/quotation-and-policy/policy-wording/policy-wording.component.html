@@ -19,7 +19,7 @@
 						</fieldset>
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
-								<div class="col-sm-12">
+								<div class="col-sm-12" id="policy-wording-table">
 									<app-cust-editable-non-datatable [passData]="policyWordingData" (tableDataChange)="policyWordingData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); policyWordingData.disableGeneric=true;"></app-cust-editable-non-datatable>
 								</div>
 							</div>

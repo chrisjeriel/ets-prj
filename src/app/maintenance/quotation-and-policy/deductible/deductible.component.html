@@ -1,10 +1,8 @@
 <div class="cust-tabs-container">
     <h4>Maintenance / Quotation & Policy</h4>
-    <ngb-tabset>
+    <ngb-tabset #tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Deductibles">
             <ng-template ngbTabContent>
-
-                <!-- APRIL 1, 2019  ARNEILLE-->
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="form-row custom-row-inline-inset">
                         <div class="input-group">
@@ -19,10 +17,8 @@
                 </fieldset>
 
                 <fieldset class="scheduler-border" style="margin-top: 10px !important">
-                    <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-                        <app-cust-editable-non-datatable [passData]="passData" (newClick)="clickRow($event)" (tableDataChange)="passData.tableData=$event">
-                            <button controls-l class="cust-btn" *ngIf="!passData.addFlag" class="cust cust-btn dsbld">Add</button>
-                            <button controls-l class="cust-btn" *ngIf="!passData.deleteFlag" class="cust cust-btn dsbld">Delete</button>
+                    <div class="custom-row-inline-inset" style="margin-top: 25px !important;" id="deductibleTbl">
+                        <app-cust-editable-non-datatable [passData]="passData" (newClick)="clickRow($event)" (tableDataChange)="passData.tableData=$event; dedType();" #dedTbl (genericBtn)="onDeleteDeductibles()" (onDelete)="dedTbl.onClickDelete('force'); passData.disableGeneric=true">
                         </app-cust-editable-non-datatable>
 
                             <div class="form-row" style="margin-top: 40px !important;">
@@ -43,15 +39,18 @@
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
                         <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="deductiblesData.createUser" readonly>
-                        <label class="form-control-sm col-sm-1">Created Date</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="deductiblesData.createDate" readonly>
+                        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+                        <div class="col-sm dp-cont">
+                            <datepicker [value]="deductiblesData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                        </div>
                         <label class="form-control-sm col-sm-1">Last Update By</label>
                         <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="deductiblesData.updateUser" readonly>
-                        <label class="form-control-sm col-sm-1">Last Update</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="deductiblesData.updateDate" readonly>
+                        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+                        <div class="col-sm dp-cont">
+                            <datepicker [value]="deductiblesData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                        </div>
                     </div>
                 </fieldset>
-                <!-- END  ARNEILLE-->                
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
@@ -59,6 +58,18 @@
 
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 
-<app-confirm-save (onYes)="onSaveDeductibles()"></app-confirm-save>
+<app-confirm-save (onYes)="onSaveMtnDeductibles()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveDeductibles('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="onSaveMtnDeductibles('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+
+<app-modal class="d-none" id="warnMdl">
+    <div header>Warning Message</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg }}</b></p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Ok</a></button>
+    </div>
+</app-modal>

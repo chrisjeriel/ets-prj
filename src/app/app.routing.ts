@@ -40,7 +40,7 @@ import { NegateDistributionComponent } from './underwriting/policy-distribution/
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
 import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
 import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component'
-import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
+import { DeductibleComponent } from './maintenance/quotation-and-policy/deductible/deductible.component';
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
@@ -146,6 +146,11 @@ import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
+import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
+//delete below when merged with maintenance region
+import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
+import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
+//end
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 
@@ -197,7 +202,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-line', component: PolMxLineComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-line-class', component: LineClassComponent },
     { path: 'batch-processing', component: PolBatchProcessingComponent },
-    { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard]},
+    { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-risk-list', component: RiskListComponent },
     { path: 'maintenance-risk', component: RiskFormComponent },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
@@ -278,10 +283,10 @@ const appRoutes: Routes = [
     { path: 'pol-oc-inquiry', component: PolOcInquiryComponent},
     { path: 'open-cover-list', component: PolOpenCovListComponent},
     { path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent},
-    { path: 'spoil-pol-alt', component: SpoilPolAltComponent,  canDeactivate: [UnsavedChangesGuard]},
+    { path: 'spoil-pol-alt', component: SpoilPolAltComponent,  canDeactivate: [UnsavedChangesGuard] },
     { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
-    { path: 'maintenance-insured', component: InsuredListComponent},
-    { path: 'insured-mtn', component: InsuredComponent },
+    // { path: 'maintenance-insured', component: InsuredListComponent},
+    // { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'adv-word-mtn', component: AdviceWordingsComponent },
     { path: 'ceding-co-list', component: CedingCompaniesListComponent },
     { path: 'ceding-co-form', component: CedingCompanyFormComponent},
@@ -307,6 +312,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-other-charge', component: OtherChargeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-location/:id', component: RegionComponent },
     { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
+    { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

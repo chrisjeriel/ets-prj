@@ -122,6 +122,11 @@ export class IntermediaryListComponent implements OnInit {
 		  	this.intmRecord.createDate	= this.ns.toDateTimeString(event.createDate).substring(0,16);
 		  	this.intmRecord.updateUser	= event.updateUser;
 		  	this.intmRecord.updateDate	= this.ns.toDateTimeString(event.updateDate).substring(0,16);
+	  	}else{
+		  	this.intmRecord.createUser	= '';
+		  	this.intmRecord.createDate	= '';
+		  	this.intmRecord.updateUser	= '';
+		  	this.intmRecord.updateDate	= '';
 	  	}
   	}
 

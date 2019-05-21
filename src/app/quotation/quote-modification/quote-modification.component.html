@@ -1,0 +1,66 @@
+<style type="text/css">
+	.cust-ig {
+		margin-bottom: -14px !important;
+	}
+
+	.input-ig-row {
+        margin-left: 2px !important;
+    }
+</style>
+
+<div class="row" style="margin-top: 25px !important;">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <fieldset class="scheduler-border" style="padding-top: 15px !important;padding-bottom: 7px !important;">
+        	<div class="col-sm-1"></div>
+        	<div class="col-sm" style="padding: 7px 4em 5px 3em;">
+	        	<div class="input-group cust-ig">
+	        	    <label class="form-control-sm col-sm-2">Quotation No</label>
+	        	    <input type="text" [ngModel]="quNo[0]" (ngModelChange)="quNo[0]=$event.toUpperCase()" class="form-control form-control-sm col-sm-2 req" ngbTooltip="Line" (change)="search('lineCd',$event)" mask="SSS" appRequired>
+	        	    <input type="text" [(ngModel)]="quNo[1]" (change)="search('year',$event)" class="form-control form-control-sm input-ig-row col-sm text-right req" ngbTooltip="Year" mask="9999" appRequired>
+	        	    <input type="text" [(ngModel)]="quNo[2]" (blur)="quNo[2]=pad($event,5)" (change)="search('seqNo',$event)" class="form-control form-control-sm input-ig-row text-right req" ngbTooltip="Sequence No" mask="99999" appRequired>
+	        	    <input type="text" [(ngModel)]="quNo[3]" (blur)="quNo[3]=pad($event,2)" (change)="search('revNo',$event)" class="form-control form-control-sm input-ig-row text-right req" ngbTooltip="Revision No" mask="99" appRequired>
+	        	    <input type="text" [(ngModel)]="quNo[4]" (blur)="quNo[4]=pad($event,3)" (change)="search('cedingId',$event)" class="form-control form-control-sm input-ig-row text-right req" ngbTooltip="Company No" mask="999" appRequired>
+	        	    <span>&nbsp;</span>
+	        	    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV()"></i></a></div>
+	        	</div>
+	        	<div class="input-group cust-ig">
+	        	    <label class="form-control-sm col-sm-2">Ceding Company</label>
+	        	    <input type="text" class="form-control form-control-sm" [ngModel]="cedingName" readonly>
+	        	</div>
+	        	<div class="input-group cust-ig">
+	        	    <label class="form-control-sm col-sm-2">Insured</label>
+	        	    <input type="text" class="form-control form-control-sm" [ngModel]="insuredDesc" readonly>
+	        	</div>
+	        	<div class="input-group">
+	        	    <label class="form-control-sm col-sm-2">Risk</label>
+	        	    <input type="text" class="form-control form-control-sm" [ngModel]="riskName" readonly>
+	        	</div>
+        	</div>
+        </fieldset>
+    </div>
+    <div class="col-sm-2"></div>
+</div>
+<div class="form-row">
+    <div class="form-group col-sm">
+        <div class="col-md-12 text-center">
+            <div class="cust-btn-container" style="margin-top:10px">
+                <button type="button" class="cust-btn" [routerLink]="['']"><a>Cancel</a></button>
+                <button type="button" class="cust-btn" (click)="toQuoteGenInfo()"><a>Next</a></button>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-modal hidden [btnTitle]="'List Of Values'" id="quModifLovMdl">
+    <div header>List Of Values</div>
+    <div body>
+       <app-cust-non-datatable #quModifLov [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+	        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+	        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails('mdlOk');"><a>Ok</a></button>        
+        </div>
+    </div>
+</app-modal>
