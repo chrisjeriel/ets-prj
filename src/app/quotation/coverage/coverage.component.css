@@ -16,3 +16,7 @@
 .input-group {
     margin-bottom: -14px !important;
 }
+
+.no-margin{
+    margin: 0px !important;
+}

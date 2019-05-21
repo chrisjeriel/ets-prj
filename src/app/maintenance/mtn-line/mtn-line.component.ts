@@ -32,6 +32,7 @@ lineListing: any = {
   @Input() openCoverTag: boolean = false;
 
   @Input() lovCheckBox: boolean = false;
+  @Input() hide:string[] = [];
   selects: any[] = [];
 
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
@@ -83,7 +84,7 @@ lineListing: any = {
      this.maintenanceService.getLineLOV('').subscribe((data: any) =>{
            for(var lineCount = 0; lineCount < data.line.length; lineCount++){
              if(this.openCoverTag){
-               if(data.line[lineCount].openCoverTag === 'Y'){
+               if(data.line[lineCount].openCoverTag === 'Y' && this.hide.indexOf(data.line[lineCount].lineCd)== -1){
                  this.lineListing.tableData.push(
                  new Row(data.line[lineCount].lineCd, 
                      data.line[lineCount].description,
@@ -91,11 +92,13 @@ lineListing: any = {
                      ); 
                }
              }else{
-               this.lineListing.tableData.push(
-                 new Row(data.line[lineCount].lineCd, 
-                     data.line[lineCount].description,
-                     data.line[lineCount].remarks)
-               ); 
+               if(this.hide.indexOf(data.line[lineCount].lineCd)== -1){
+                 this.lineListing.tableData.push(
+                   new Row(data.line[lineCount].lineCd, 
+                       data.line[lineCount].description,
+                       data.line[lineCount].remarks)
+                 ); 
+               }
              }   
            }
            this.table.refreshTable();
@@ -107,18 +110,23 @@ lineListing: any = {
       this.selectedData.emit({
         lineCd: '',
         description: '',
-        ev: ev
+        ev: ev,
+        singleSearchLov: true
       });
     } else {
       this.maintenanceService.getLineLOV(code).subscribe(data => {
+        data['line'] = data['line'].filter(a=> this.hide.indexOf(a.lineCd)== -1)
         if(data['line'].length > 0) {
           data['line'][0]['ev'] = ev;
+          data['line'][0]['singleSearchLov'] = true;
           this.selectedData.emit(data['line'][0]);
         } else {
+          data['line'] = data['line'].filter((a)=>{return ev.filter.indexOf(a.lineCd)==-1});
           this.selectedData.emit({
             lineCd: '',
             description: '',
-            ev: ev
+            ev: ev,
+            singleSearchLov: true
           });
             
           $('#lineMdl > #modalBtn').trigger('click');

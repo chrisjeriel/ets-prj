@@ -272,6 +272,10 @@ export class UpdateInstallmentComponent implements OnInit {
       this.otherTable.refreshTable();
 
       this.retrievePolListing();
+      this.passDataOtherCharges.disableAdd = true;
+      this.passDataInstallmentInfo.disableAdd = true;
+      this.instllmentTable.btnDisabled = true;
+      this.otherTable.btnDisabled = true;
     }
 
     this.warningMsg = null;
@@ -283,6 +287,8 @@ export class UpdateInstallmentComponent implements OnInit {
 
   retrievePolListing(param?) {
     this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
+      this.instllmentTable.btnDisabled = true;
+      this.otherTable.btnDisabled = true;
 
       var polList = data['policyList'];
       this.fetchedData = polList;
@@ -308,9 +314,6 @@ export class UpdateInstallmentComponent implements OnInit {
           this.selected = null;
         }
       }
-
-      this.instllmentTable.btnDisabled = true;
-      this.otherTable.btnDisabled = true;
     });
   }
 

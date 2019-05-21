@@ -107,7 +107,7 @@ import { CharactersLengthDirective } from './_directives/characters-length.direc
 import { RequiredDirective } from './_directives/required.directive';
 import { CurrencyDirective } from './_directives/currency.directive';
 import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component';
-import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
+import { DeductibleComponent } from './maintenance/quotation-and-policy/deductible/deductible.component';
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 import { MonthDirective } from './_directives/month.directive';
@@ -387,8 +387,10 @@ import { ProvinceComponent } from './maintenance/quotation-and-policy/region/pro
 import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-region.component';
 import { RequiredTableDirective } from './_directives/required-table.directive';
 import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn-cat-peril-modal.component';
-import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
+import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
+import { QuoteModificationComponent } from './quotation/quote-modification/quote-modification.component';
 import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
+import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
 
 @NgModule({
     imports: [
@@ -782,8 +784,10 @@ import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy
         MtnRegionComponent,
         RequiredTableDirective,
         MtnCatPerilModalComponent,
-        ApproverComponent,
+        UserAmtLimitComponent,
+        QuoteModificationComponent,
         MtnNonRenewalReasonComponent,
+        CityComponent,
     ],
 
   	providers: [
