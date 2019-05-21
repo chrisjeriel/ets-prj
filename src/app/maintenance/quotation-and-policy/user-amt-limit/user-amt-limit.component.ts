@@ -140,6 +140,7 @@ export class UserAmtLimitComponent implements OnInit {
             this.dialogIcon = "success";
             this.successDialog.open();
             this.getUserAmtLimit();
+            this.table.markAsPristine();
         }else{
             this.dialogIcon = "error";
             this.successDialog.open();
