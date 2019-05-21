@@ -571,6 +571,7 @@ export class GeneralInfoComponent implements OnInit {
 						this.genInfoData.createUser = this.ns.getCurrentUser();
 						this.genInfoData.createDate = this.ns.toDateTimeString(0);
 					} else if(this.quotationService.toGenInfo[0] === 'edit' && this.savingType === 'modification') {
+						this.genInfoData.statusDesc = 'In Progress';
 						this.genInfoData.createUser = this.ns.getCurrentUser();
 						this.genInfoData.createDate = this.ns.toDateTimeString(0);
 					}

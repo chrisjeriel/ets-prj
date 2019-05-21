@@ -234,6 +234,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   saveBtnClicked: boolean = false;
   prevInceptDate: string;
   prevEffDate: string;
+  prevExpiryDate: string;
   refPolicyId: string = '';
   newAlt: boolean = false;
   fromInq:any = false;
@@ -447,7 +448,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           // if (this.prevPolicyId !== '') {
             this.underwritingService.getPolGenInfo(null, polNo.join('-')).subscribe((data:any) => {
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
-              this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
+              this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.effDate));
+              this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
             });
           // }
         }
