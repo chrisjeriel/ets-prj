@@ -81,7 +81,7 @@ export class InternalCompetitionComponent implements OnInit {
 
         //neco
         if(this.inquiryFlag){
-          this.intCompData.opts = [];
+          //this.intCompData.opts = [];
           this.intCompData.uneditable = [];
           this.intCompData.magnifyingGlass = [];
           this.intCompData.addFlag = false;
