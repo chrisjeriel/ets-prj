@@ -61,25 +61,27 @@ export class IntermediaryListComponent implements OnInit {
 	  	.subscribe(data => {
 	  		console.log(data);
 	  		var rec = data['intermediary'];
+	  		this.passDataIntmList.tableData = rec;
+	  	//	for(let i of rec){
+	  		// 	this.passDataIntmList.tableData.push({	
+		   //          intmId			: i.intmId,
+					// intmName		: i.intmName,
+		   //          activeTag     	: this.cbFunc(i.activeTag),
+					// corpTag			: i.corpTagDesc,
+					// vatTag			: i.vatTagDesc,
+					// address			: i.address,
+					// contactNo		: i.contactNo,
+					// oldIntmId		: i.oldIntmId,
 
-	  		for(let i of rec){
-	  			this.passDataIntmList.tableData.push({	
-		            intmId			: i.intmId,
-					intmName		: i.intmName,
-		            activeTag     	: this.cbFunc(i.activeTag),
-					corpTag			: i.corpTagDesc,
-					vatTag			: i.vatTagDesc,
-					address			: i.address,
-					contactNo		: i.contactNo,
-					oldIntmId		: i.oldIntmId,
-
-		            createUser		: i.createUser,
-		            createDate		: i.createDate,
-		            updateUser		: i.updateUser,
-		            updateDate		: i.updateDate
-	  			});	
-	  		}
+		   //          createUser		: i.createUser,
+		   //          createDate		: this.ns.toDateTimeString(i.createDate),
+		   //          updateUser		: i.updateUser,
+		   //          updateDate		: this.ns.toDateTimeString(i.updateDate)
+	  		// 	});	
+	  	//	}
 	  		this.table.refreshTable();
+	  		this.table.onRowClick(null, this.passDataIntmList.tableData[0]);
+
 	  	});
 	}
 
