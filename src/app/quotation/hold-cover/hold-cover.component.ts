@@ -528,10 +528,7 @@ export class HoldCoverComponent implements OnInit {
 						.subscribe(data => {
 							this.btnApprovalEnabled = false;
 							if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){
-								this.clearAll();
 								this.cancelHcBtnEnabled = false;
-								this.disableFieldsHc(true);
-								this.newHc(true);
 							}else{
 								this.prepBeforeSave(data);	
 							}

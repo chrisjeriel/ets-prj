@@ -43,8 +43,8 @@ export class IntermediaryListComponent implements OnInit {
 		createUser		: null,
 	    createDate		: null,
 	    updateUser		: null,
-	    updateDate		: null,
-	}
+	    updateDate		: null
+	};
 
 	searchParams		: any[] = [];
 
@@ -62,25 +62,9 @@ export class IntermediaryListComponent implements OnInit {
 	  		console.log(data);
 	  		var rec = data['intermediary'];
 	  		this.passDataIntmList.tableData = rec;
-	  	//	for(let i of rec){
-	  		// 	this.passDataIntmList.tableData.push({	
-		   //          intmId			: i.intmId,
-					// intmName		: i.intmName,
-		   //          activeTag     	: this.cbFunc(i.activeTag),
-					// corpTag			: i.corpTagDesc,
-					// vatTag			: i.vatTagDesc,
-					// address			: i.address,
-					// contactNo		: i.contactNo,
-					// oldIntmId		: i.oldIntmId,
-
-		   //          createUser		: i.createUser,
-		   //          createDate		: this.ns.toDateTimeString(i.createDate),
-		   //          updateUser		: i.updateUser,
-		   //          updateDate		: this.ns.toDateTimeString(i.updateDate)
-	  		// 	});	
-	  	//	}
 	  		this.table.refreshTable();
 	  		this.table.onRowClick(null, this.passDataIntmList.tableData[0]);
+	  		console.log(this.table.onRowClick(null, this.passDataIntmList.tableData[0])); // do not delete, selecting first row upon loading will not work XD
 
 	  	});
 	}
@@ -113,17 +97,13 @@ export class IntermediaryListComponent implements OnInit {
 		alasql('SELECT intmId AS IntmNo, intmName AS Name, activeTag AS Active, corpTag AS CorpTag, vatTag AS VATType, address AS Address, contactNo AS ContactNo, oldIntmId AS OldIntmNo INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataIntmList.tableData]);
   	}
 
-  	cbFunc(cb){
-  		return cb === 'Y'?true:false;
-  	}
-
   	onRowClick(event){
-	  	if(event !== null){
+	  	if(Object.keys(event).length != 0){
 	  		this.intmRecord.intmId		= event.intmId;
 		  	this.intmRecord.createUser	= event.createUser;
-		  	this.intmRecord.createDate	= this.ns.toDateTimeString(event.createDate).substring(0,16);
+		  	this.intmRecord.createDate	= this.ns.toDateTimeString(event.createDate);
 		  	this.intmRecord.updateUser	= event.updateUser;
-		  	this.intmRecord.updateDate	= this.ns.toDateTimeString(event.updateDate).substring(0,16);
+		  	this.intmRecord.updateDate	= this.ns.toDateTimeString(event.updateDate);
 	  	}else{
 		  	this.intmRecord.createUser	= '';
 		  	this.intmRecord.createDate	= '';
