@@ -78,10 +78,6 @@ export class RiskFormComponent implements OnInit, OnDestroy {
 
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
 
-
-        this.riskData.createUser = this.currentUser.username;
-        this.riskData.updateUser = this.currentUser.username;
-
         this.titleService.setTitle("Pol | Risk");
 
         this.sub = this.route.params.subscribe(params => {
@@ -335,6 +331,8 @@ export class RiskFormComponent implements OnInit, OnDestroy {
 
     save(cancelFlag?){
         this.cancelFlag = cancelFlag !== undefined;
+        this.riskData.createUser = this.currentUser.username;
+        this.riskData.updateUser = this.currentUser.username;
         console.log(JSON.stringify(this.riskData));
         this.mtnService.saveMtnRisk(this.riskData).subscribe((data:any)=>{
             if(data['returnCode'] == 0) {

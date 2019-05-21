@@ -590,6 +590,27 @@ export class MaintenanceService{
 	     return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnUserAmtLimit',JSON.stringify(params),header);
 	}
 
+	getMtnNonRenewalReason(reasonCd: any, activeTag: any){
+		const params = new HttpParams()
+		     .set('reasonCd', (reasonCd === null || reasonCd === undefined ? '' : reasonCd))
+		     .set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnNonRenewalReason",{params});
+	}
+
+	saveMtnNonRenewalReason(save: any[], del: any[]){
+		let header : any = {
+	        headers: new HttpHeaders({
+	             'Content-Type': 'application/json'
+	        })
+	     };
+
+		let params : any = {
+	    	saveNonRenewalReasonList: save,
+	    	delNonRenewalReasonList: del
+	    }
+	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnNonRenewalReason',JSON.stringify(params),header);
+	}
+
 	saveMtnOtherCharge(params) {
 		let header : any = {
             headers: new HttpHeaders({
@@ -597,7 +618,7 @@ export class MaintenanceService{
             })
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnOtherCharge', params, header);
-	}
+    }
 
 }
 

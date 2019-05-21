@@ -31,6 +31,7 @@ export class HundredValPolPrintComponent implements OnInit {
   flawlessTransaction: boolean = false;
   generateFlag: boolean = true;
   loading: boolean = false;
+  change: boolean = false;
 
   policyListingData: any = {
   	tableData: [],
@@ -56,7 +57,7 @@ export class HundredValPolPrintComponent implements OnInit {
   constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, private us: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
-  	this.retrievePolListing();
+  	//this.retrievePolListing();
   }
 
   onTabChange($event: NgbTabChangeEvent) {            
@@ -67,15 +68,17 @@ export class HundredValPolPrintComponent implements OnInit {
     }
 
 	openPolListModal(){
-		/*this.policyListingData.tableData = [];
-		this.retrievePolListing();*/
+		this.policyListingData.tableData = [];
+		this.retrievePolListing();
 		$('#lovMdl > #modalBtn').trigger('click');
 
 	}
 	retrievePolListing(){
 		this.policyListingData.tableData = [];
+		this.table.loadingFlag = true;
 		this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any)=>{
 			console.log(data);
+			this.table.loadingFlag = false;
 			if(data.policyList.length !== 0){
 				this.noDataFound = false;
 				for(var rec of data.policyList){
@@ -127,6 +130,10 @@ export class HundredValPolPrintComponent implements OnInit {
 			}else{
 				this.generateFlag = false;
 				this.policyInfo.treatyPercent = data.policy.project.fullCoverage.treatyShare;
+				setTimeout(()=>{
+					$('#treatyShare').focus();
+					$('#treatyShare').blur();
+				}, 0);
 			}
 			this.loading = false;
 		});
@@ -190,18 +197,22 @@ export class HundredValPolPrintComponent implements OnInit {
 	}
 
 	checkPolicySearch(){
-		let emptyCheck: boolean = false;
-		for(var i of this.tempPolNo){
-			if(i.length === 0){
-				this.clearFields();
-				emptyCheck = true;
-				break;
+		console.log(this.tempPolNo);
+		if(this.change){
+			let emptyCheck: boolean = false;
+			for(var i of this.tempPolNo){
+				if(i.length === 0){
+					this.clearFields();
+					emptyCheck = true;
+					break;
+				}
 			}
-		}
-		if(!emptyCheck){
-			this.policyListingData.tableData = [];
-			this.isType = true;
-			this.retrievePolListing();
+			if(!emptyCheck){
+				this.policyListingData.tableData = [];
+				this.isType = true;
+				this.change = false;
+				this.retrievePolListing();
+			}
 		}
 	}
 
@@ -231,7 +242,7 @@ export class HundredValPolPrintComponent implements OnInit {
 	    }else if(field === 'cedingId'){
 	      return String(str).padStart(3, '0');
 	    }else if(field === 'altNo'){
-	      return String(str).padStart(2, '0');
+	      return String(str).padStart(3, '0');
 	    }
 	  }
 	}

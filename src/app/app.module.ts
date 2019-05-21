@@ -389,6 +389,7 @@ import { RequiredTableDirective } from './_directives/required-table.directive';
 import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn-cat-peril-modal.component';
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 import { QuoteModificationComponent } from './quotation/quote-modification/quote-modification.component';
+import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
 
 @NgModule({
     imports: [
@@ -784,6 +785,7 @@ import { QuoteModificationComponent } from './quotation/quote-modification/quote
         MtnCatPerilModalComponent,
         UserAmtLimitComponent,
         QuoteModificationComponent,
+        MtnNonRenewalReasonComponent,
     ],
 
   	providers: [

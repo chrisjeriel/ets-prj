@@ -55,7 +55,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 		emailAdd: '',
 		tinNo: '',
 		bussTypeId: '',
-		activeTag: '',
+		activeTag: 'Y',
 		govtTag: '',
 		oldCedingId: '',
 		membershipTag: '',
@@ -223,9 +223,9 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   	  }
   	}
   	//seting up ceding comp updates
-  	this.companyData.membershipTag = this.companyData.membershipTag === '' ? 'N' : 'Y';
-  	this.companyData.govtTag = this.companyData.govtTag === '' ? 'N' : 'Y';
-  	this.companyData.activeTag = this.companyData.activeTag === '' ? 'N' : 'Y';
+  	this.companyData.membershipTag = this.companyData.membershipTag === '' || this.companyData.membershipTag === 'N' ? 'N' : 'Y';
+  	this.companyData.govtTag = this.companyData.govtTag === '' || this.companyData.govtTag === 'N'? 'N' : 'Y';
+  	this.companyData.activeTag = this.companyData.activeTag === '' || this.companyData.activeTag === 'N' ? 'N' : 'Y';
   	this.companyData.createUser = this.currentUser;
   	this.companyData.createDate = this.ns.toDateTimeString(0);
   	this.companyData.updateUser = this.currentUser;
