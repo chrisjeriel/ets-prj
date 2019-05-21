@@ -12,6 +12,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
 
   private datepickerVal: any = null;
   private minimumDate: any = null;
+  private maximumDate: any = null;
   private ev: any = null;
   private inputStyeClass: string = 'form-control form-control-sm';
   private icon: string = 'fa fa-calendar';
@@ -38,7 +39,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   @Input() required: boolean = false;
   @Input() textAlign: string = 'left';  
   @Input() minDate: string = '1970-01-01';
-  @Input() maxDate: string = '';
+  @Input() maxDate: string = '2120-12-31';
   @Input() disabledDates: any[] = null;
   @Input() disabledDays: any[] = null;
   @Input() tabindex: any = null;
@@ -46,6 +47,8 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   @Input() table: boolean = false;
 
   ngOnInit() {
+    this.minimumDate = new Date(this.minDate);
+    this.maximumDate = new Date(this.maxDate);
   	this.inputStyle['textAlign'] = this.textAlign;
 
   	if(this.required) {
@@ -72,8 +75,12 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes.value && changes.value.currentValue) {
+      if(typeof changes.value.currentValue != 'string') {
+        return;
+      }
+
     	if(this.type == 'time') {
-    		if(this.value != '' && this.value != null && this.value != 'undefined') {  		
+    		if(this.value != '' && this.value != null && this.value != 'undefined') {
 	    		var d = new Date();
 	    		var hrs = Number(changes.value.currentValue.split(':')[0]);
 	    		var mins = Number(changes.value.currentValue.split(':')[1]);
@@ -84,7 +91,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   			}
     	} else {
     		this.datepickerVal = changes.value.currentValue == '' || changes.value.currentValue == null ? null : new Date(changes.value.currentValue);
-    	}  	  	    	
+    	}
     }
 
     if(changes.minDate && changes.minDate.currentValue) {
@@ -92,7 +99,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  ngDoCheck() {  	
+  ngDoCheck() {
   	if(this.datepickerVal != null && this.type == 'time' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1] != this.value) {
   		if(this.value != '' && this.value != null && this.value != 'undefined') {
   			var d = new Date();

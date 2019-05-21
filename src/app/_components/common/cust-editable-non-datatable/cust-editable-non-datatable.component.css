@@ -19,9 +19,12 @@ th, td{
 
 #non-datatable td, #non-datatable th {
     border: 1px solid #ddd;
-    padding: 8px;
 }
 
+.black-border{
+   /* border: 2px solid #b5b5b5 !important;*/
+    background-color: #efefef !important;
+}
 /*#non-datatable tr:nth-child(even){background-color: #f2f2f2;}*/
 
 #non-datatable tr:hover {background-color: #ffffb3;}

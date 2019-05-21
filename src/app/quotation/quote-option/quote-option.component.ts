@@ -588,6 +588,7 @@ saveQuoteOptionAll(cancelFlag?){
       this.optionsData.tableData.pop();
       this.optionsTable.refreshTable();
     }
+    let lc = this.quotationNum.substring(0,3);
     for(let data of this.otherRatesData.tableData){
 
       if(data.uneditable === undefined){
@@ -595,7 +596,11 @@ saveQuoteOptionAll(cancelFlag?){
       }
       if(data.changeTag == 'Y'){
         data.uneditable.pop();
-      }else if(data.changeTag == 'N' && data.amount !== 0 && data.section != 'II') {
+      }else if(data.changeTag == 'N' && data.amount !== 0 
+        && ((['CAR','EAR'].some(a=>lc==a) && data.section != 'II') 
+          || lc == 'EEI' 
+          || (['CAR','EAR','EEI'].every(a=>a!=lc) && data.section == 'I' ) 
+          )) {
         if(data.rate != this.selectedOption.optionRt)
           data.edited = true;
         data.rate = this.selectedOption.optionRt;

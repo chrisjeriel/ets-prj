@@ -29,6 +29,9 @@ export class HundredValPolPrintComponent implements OnInit {
   noDataFound: boolean = false;
   cancelFlag: boolean = false;
   flawlessTransaction: boolean = false;
+  generateFlag: boolean = true;
+  loading: boolean = false;
+  change: boolean = false;
 
   policyListingData: any = {
   	tableData: [],
@@ -54,7 +57,7 @@ export class HundredValPolPrintComponent implements OnInit {
   constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, private us: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
-  	this.retrievePolListing();
+  	//this.retrievePolListing();
   }
 
   onTabChange($event: NgbTabChangeEvent) {            
@@ -65,15 +68,17 @@ export class HundredValPolPrintComponent implements OnInit {
     }
 
 	openPolListModal(){
-		/*this.policyListingData.tableData = [];
-		this.retrievePolListing();*/
+		this.policyListingData.tableData = [];
+		this.retrievePolListing();
 		$('#lovMdl > #modalBtn').trigger('click');
 
 	}
 	retrievePolListing(){
 		this.policyListingData.tableData = [];
+		this.table.loadingFlag = true;
 		this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any)=>{
 			console.log(data);
+			this.table.loadingFlag = false;
 			if(data.policyList.length !== 0){
 				this.noDataFound = false;
 				for(var rec of data.policyList){
@@ -112,12 +117,26 @@ export class HundredValPolPrintComponent implements OnInit {
 	}
 
 	selectPol(){
+		this.loading = true;
 		this.policyInfo.policyId = this.selected.policyId;
 		this.policyInfo.policyNo = this.selected.policyNo;
 		this.tempPolNo = this.selected.policyNo.split('-');
 		this.policyInfo.cedingName = this.selected.cedingName;
 		this.policyInfo.insuredDesc = this.selected.insuredDesc;
 		this.policyInfo.riskName = this.selected.riskName;
+		this.us.getFullCoverage(this.policyInfo.policyNo, this.policyInfo.policyId).subscribe((data: any)=>{
+			if(data.policy === null){
+				this.generateFlag = true;
+			}else{
+				this.generateFlag = false;
+				this.policyInfo.treatyPercent = data.policy.project.fullCoverage.treatyShare;
+				setTimeout(()=>{
+					$('#treatyShare').focus();
+					$('#treatyShare').blur();
+				}, 0);
+			}
+			this.loading = false;
+		});
 	}
 
 	onClickGenerate(){
@@ -127,7 +146,10 @@ export class HundredValPolPrintComponent implements OnInit {
 			this.dialogIcon = "info";
 			this.dialogMessage = "Please fill all required fields";
 			this.successDiag.open();
-		}else{
+		}else if(!this.generateFlag){
+			this.flawlessTransaction = true;
+			this.navigate();
+		}else if(this.generateFlag){
 			$('#confirm-save #modalBtn2').trigger('click');
 		}
 	}
@@ -175,18 +197,22 @@ export class HundredValPolPrintComponent implements OnInit {
 	}
 
 	checkPolicySearch(){
-		let emptyCheck: boolean = false;
-		for(var i of this.tempPolNo){
-			if(i.length === 0){
-				this.clearFields();
-				emptyCheck = true;
-				break;
+		console.log(this.tempPolNo);
+		if(this.change){
+			let emptyCheck: boolean = false;
+			for(var i of this.tempPolNo){
+				if(i.length === 0){
+					this.clearFields();
+					emptyCheck = true;
+					break;
+				}
 			}
-		}
-		if(!emptyCheck){
-			this.policyListingData.tableData = [];
-			this.isType = true;
-			this.retrievePolListing();
+			if(!emptyCheck){
+				this.policyListingData.tableData = [];
+				this.isType = true;
+				this.change = false;
+				this.retrievePolListing();
+			}
 		}
 	}
 
@@ -216,7 +242,7 @@ export class HundredValPolPrintComponent implements OnInit {
 	    }else if(field === 'cedingId'){
 	      return String(str).padStart(3, '0');
 	    }else if(field === 'altNo'){
-	      return String(str).padStart(2, '0');
+	      return String(str).padStart(3, '0');
 	    }
 	  }
 	}

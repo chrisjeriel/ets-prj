@@ -435,6 +435,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
            setTimeout(()=>{data[key]=parseFloat(temp.split(',').join('')) + parseFloat('1')},0);
            setTimeout(()=>{data[key]=parseFloat(temp.split(',').join(''))},0);
        }
+       console.log(this.passData.tableData)
    }
 
    addClicked(event) {
@@ -650,13 +651,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
     filesToUpload: any[] = [];
     upload(data,event){
         //add some conditions depending on your need to restrict file formats. Please note that add your own array of accepted formats.
-        if(this.passData.restrict !== undefined && this.passData.restrict === 'image' && 
+        if(this.passData.restrict !== undefined && this.passData.restrict === 'image' &&
            !this.acceptedImageFormats.includes(event.target.files[0].type)){
 
             this.dialogIcon = 'info';
             this.dialogMessage = 'File ' + event.target.files[0].name + ' is not a valid image';
             this.successDiag.open();
-            
+
         }else{
             data.fileName=event.target.files[0].name;
             data.edited=true;
@@ -664,7 +665,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.filesToUpload.push(event.target.files);
             this.uploadedFiles.emit(this.filesToUpload);
         }
-        
+
     }
 
     //download

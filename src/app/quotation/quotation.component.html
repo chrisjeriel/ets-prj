@@ -80,13 +80,17 @@
 					<div class="row">
 						<div class="col-sm-6" style="padding-right : 10px ! important;">
 							<fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
-								<div class="custom-row-inline-inset" style="margin-top: 24px !important;">
-									<div class="input-group" style="margin-top : 13px ! important">
+								<div class="custom-row-inline-inset">
+									<div class="input-group">
 										<div class="col-sm-12" style="padding-left : 0px ! important; padding-right : 0px ! important;">
-											<div class="input-group" style="margin-bottom : -8px ! important">
+											<div class="input-group" >
 												<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
 												<input type="text" tabindex="-1" [(ngModel)]="this.quoteInfo.statusDesc" readonly id="xx" class="form-control form-control-sm col-sm">
-												<button class="cust col-sm" (click)="approveQuotation();">{{ approveText }}</button>
+												
+											</div>
+											<div class="w-100 text-center">
+												<button class="cust-btn" (click)="approveQuotation();">{{ approveText }}</button>
+												<button class="cust-btn" (click)="rejectQuotation();" [disabled]="approveText=='For Approval'">Rejected</button>
 											</div>
 										</div>
 									</div>

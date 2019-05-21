@@ -105,7 +105,7 @@ export class QuotationComponent implements OnInit {
                     this.approveText = 'For Approval';
                     for (var i = data["approverList"].length - 1; i >= 0; i--) {
                       if (data["approverList"][i].userId == this.currentUserId) {
-                        this.approveText = 'Approve';
+                        this.approveText = 'Approved';
                         this.approver = this.currentUserId;
                       }
                     }
@@ -121,7 +121,7 @@ export class QuotationComponent implements OnInit {
     this.approveText = 'For Approval'
     console.log(this.approver)
     if(this.approver == this.currentUserId){
-      this.approveText = 'Approve'
+      this.approveText = 'Approved'
     }
   }
 
@@ -304,7 +304,7 @@ export class QuotationComponent implements OnInit {
     }
 
     approveQuotation() {
-      if (this.approveText.toLowerCase() == "Approve".toLowerCase()) {
+      if (this.approveText.toLowerCase() == "Approved".toLowerCase()) {
         console.log("Call update quote status.");
         this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'A', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
@@ -339,6 +339,23 @@ export class QuotationComponent implements OnInit {
       /*setTimeout(() => {
         this.router.navigate(['/quotation', { line: this.quoteInfo.lineCd,  quotationNo : this.quoteInfo.quotationNo, quoteId: this.quoteInfo.quoteId, from: 'quo-processing', inquiryFlag: true}], { skipLocationChange: true });
       },100); */
+    }
+
+    rejectQuotation(){
+      this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'R', '').subscribe((data)=>{
+            if(data['returnCode'] == 0) {
+              /*this.dialogMessage = data['errorList'][0].errorMessage;
+              this.dialogIcon = "error";
+              $('#quote-option #successModalBtn').trigger('click');*/
+              this.dialogIcon = "error-message";
+              this.dialogMessage = "Status failed for Approval";
+              this.successDiag.open();
+            } else {
+              this.dialogMessage = "Status Updated";
+              this.dialogIcon = "success-message";
+              this.successDiag.open();
+            }
+        })
     }
 
 

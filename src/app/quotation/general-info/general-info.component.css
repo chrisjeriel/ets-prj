@@ -66,3 +66,7 @@ h4 {
 .white-bg {
 	background: white !important;
 }
+
+.dp-cont {
+	margin-left: 0 !important;
+}

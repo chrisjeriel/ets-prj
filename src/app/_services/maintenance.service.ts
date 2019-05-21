@@ -99,6 +99,15 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnObject",{params});
   }
 
+  saveMtnObject(params) {
+    let header: any = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnObject',params,header);
+  }
+
 	getMtnQuotationWordings(lineCd,wordType){
 		const params = new HttpParams()
 			.set('lineCd',lineCd)
@@ -356,7 +365,7 @@ export class MaintenanceService{
                 params = params.append(i.key, i.search);
             }
 		}
-		
+
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMntIntermediary", {params});
 	}
 
@@ -484,6 +493,15 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnRegion',params,header);
     }
 
+    saveMtnProvince(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnProvince',params,header);
+    }
+
     saveMtnSpoilageReason(params){
     	let header : any = {
             headers: new HttpHeaders({
@@ -558,6 +576,58 @@ export class MaintenanceService{
 	     };
 	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCrestaZone',JSON.stringify(saveData),header);
 	}
+
+	getMtnUserGrp(userGrp?){
+		const params = new HttpParams()
+		     .set('userGrp', (userGrp === null || userGrp === undefined ? '' : userGrp))
+		return this.http.get(environment.prodApiUrl + "/user-service/retrieveMtnUserGroup",{params});
+	}
+
+	getMtnUserAmtLimit(userGrp?,lineCd?){
+		const params = new HttpParams()
+		     .set('userGrp', (userGrp === null || userGrp === undefined ? '' : userGrp))
+		     .set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retMtnUserAmtLimit", {params});   
+	}
+
+	saveMtnUserAmtLimit(params){
+		let header : any = {
+	        headers: new HttpHeaders({
+	             'Content-Type': 'application/json'
+	        })
+	     };
+	     return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnUserAmtLimit',JSON.stringify(params),header);
+	}
+
+	getMtnNonRenewalReason(reasonCd: any, activeTag: any){
+		const params = new HttpParams()
+		     .set('reasonCd', (reasonCd === null || reasonCd === undefined ? '' : reasonCd))
+		     .set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnNonRenewalReason",{params});
+	}
+
+	saveMtnNonRenewalReason(save: any[], del: any[]){
+		let header : any = {
+	        headers: new HttpHeaders({
+	             'Content-Type': 'application/json'
+	        })
+	     };
+
+		let params : any = {
+	    	saveNonRenewalReasonList: save,
+	    	delNonRenewalReasonList: del
+	    }
+	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnNonRenewalReason',JSON.stringify(params),header);
+	}
+
+	saveMtnOtherCharge(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnOtherCharge', params, header);
+    }
 
 }
 

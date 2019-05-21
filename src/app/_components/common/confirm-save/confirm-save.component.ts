@@ -17,6 +17,7 @@ export class ConfirmSaveComponent implements OnInit {
 
   dialogMessage:string;
   dialogIcon: string;
+  showBool : boolean = true;
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -36,7 +37,12 @@ export class ConfirmSaveComponent implements OnInit {
   onClickYes(){
     this.onYes.emit();
     this.saveModal.closeModal()
-    $('.globalLoading').css('display','block');
+    if(this.showBool){
+      this.showLoading(true);
+    }else {
+      this.showLoading(false);
+    }
+    
   }
 
   onClickNo(){
@@ -45,6 +51,12 @@ export class ConfirmSaveComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
-
+  showLoading(obj : boolean){
+    if(obj){
+      $('.globalLoading').css('display','block');
+    }else {
+      $('.globalLoading').css('display','none');
+    }
+  }
   // 
 }

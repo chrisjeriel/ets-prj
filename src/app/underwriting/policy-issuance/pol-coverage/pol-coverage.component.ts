@@ -356,6 +356,7 @@ export class PolCoverageComponent implements OnInit {
   promptType: string = "";
   positiveFlag: number = 0;
   negativeFlag: number = 0;
+  holdCoverPrem: boolean = false;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe) { }
@@ -676,14 +677,18 @@ export class PolCoverageComponent implements OnInit {
 
   getPolCoverage(){
      // this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
+     this.coverageData.holdCoverPremAmt = "";
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
-        console.log(data)
           this.passDataSectionCover.tableData = [];
           this.projId = data.policy.project.projId;
           this.riskId = data.policy.project.riskId;
           this.coverageData = data.policy.project.coverage;
-          this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
-          this.coverageData.pctPml = this.coverageData.pctPml == null? 100:this.coverageData.pctPml;
+          this.coverageData.holdCoverPremAmt = this.coverageData.holdCoverPremAmt == null ? '':this.decimal.transform(this.coverageData.holdCoverPremAmt,'1.2-2');
+          this.coverageData.remarks          = this.coverageData.remarks == null ? '':this.coverageData.remarks;
+          this.coverageData.pctPml           = this.coverageData.pctPml == null? 100:this.coverageData.pctPml;
+          if(this.coverageData.holdCoverTag == 'Y'){
+            this.holdCoverPrem = true;
+          }
           //this.coverageData.pctShare = this.coverageData.totalValue == 0 ? 0:(this.coverageData.totalSi/this.coverageData.totalValue*100);
 
           this.sectionISi = 0;
@@ -855,9 +860,7 @@ export class PolCoverageComponent implements OnInit {
       coverCd:this.table.indvSelect.coverCd,
       endtCd: 0
     }
-    console.log(params)
     this.underwritingservice.getUWCoverageDeductibles(params).subscribe((data:any)=>{
-      console.log(data)
       if(!this.alteration){
           if(data['policy']!==null){
             this.passDataDeductibles.tableData = data['policy']['deductibles'].filter(a=>{
@@ -956,7 +959,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   update(data){
-    console.log(data)
     if(data.hasOwnProperty('lovInput')) {
       this.hideSectionCoverArray = this.passDataSectionCover.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
 
@@ -977,7 +979,6 @@ export class PolCoverageComponent implements OnInit {
     for(var i=0; i< this.passDataSectionCover.tableData.length;i++){
       this.passDataSectionCover.tableData[i].cumPrem = this.passDataSectionCover.tableData[i].discountTag == 'Y'?  this.passDataSectionCover.tableData[i].cumPrem:this.passDataSectionCover.tableData[i].cumSi * (this.passDataSectionCover.tableData[i].premRt /100 )
       if(this.line == 'CAR' || this.line == 'EAR'){
-        console.log(this.passDataSectionCover.tableData[i].cumPrem);
           if(this.passDataSectionCover.tableData[i].section == 'I' && this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.sectionISi += this.passDataSectionCover.tableData[i].cumSi;
                  this.sectionIPrem += this.passDataSectionCover.tableData[i].cumPrem;
@@ -1036,7 +1037,6 @@ export class PolCoverageComponent implements OnInit {
            }
       }
       if(this.passDataSectionCover.tableData[i].cumSi < 0 || this.passDataSectionCover.tableData[i].cumPrem < 0){
-        console.log('true')
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Invalid amount. Premium amount must be positive';
         this.successDiag.open();
@@ -1160,7 +1160,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   onrowClick(data){
-    console.log(data)
     if(data == null){
       this.passDataDeductibles.disableAdd = true;
       this.passDataDeductibles.tableData = [];
@@ -1176,7 +1175,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   deductibleData(data){
-    console.log('deductiblesData')
     if(data !== null && data.deductiblesSec !== undefined){
       this.passDataDeductibles.nData.coverCd = this.currentCoverCd
       this.passDataDeductibles.tableData = data.deductiblesSec;
@@ -1257,11 +1255,11 @@ export class PolCoverageComponent implements OnInit {
       if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
-        $('#successModalBtn').trigger('click');
+        this.successDiag.open();
       } else{
         this.dialogMessage = "";
         this.dialogIcon = "success";
-        $('app-sucess-dialog #modalBtn').trigger('click');
+        this.successDiag.open();
         this.sectionTable.markAsPristine();
         this.deductiblesTable.markAsPristine();
         this.form.control.markAsPristine();
@@ -1333,7 +1331,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   updateAlteration(data){
-    console.log('update')
     this.prevsectionISi = 0;
     this.prevsectionIPrem = 0;
     this.altsectionIPrem = 0;
@@ -1378,7 +1375,6 @@ export class PolCoverageComponent implements OnInit {
         this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
         this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].premRt) ? this.passData.tableData[j].prevPremRt:this.passData.tableData[j].prevPremRt
         this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].premAmt) ? this.passData.tableData[j].prevPremAmt : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt;
-        
       }
 
         this.passData.tableData[j].premAmt     = this.passData.tableData[j].discountTag == 'Y' ? this.passData.tableData[j].premAmt:this.passData.tableData[j].sumInsured * (this.passData.tableData[j].premRt / 100);
@@ -1530,15 +1526,14 @@ export class PolCoverageComponent implements OnInit {
           }
         }
 
-        if(this.passData.tableData[j].sumInsured >= 0){
-          this.positiveFlag++ ;
-        }else {
-          this.negativeFlag++;
+        if(this.passData.tableData[j].cumSi < 0){
+          this.errorFlag = true;
         }
     }
-    if(this.positiveFlag > 0 && this.negativeFlag > 0){
+    this.sectionTable.refreshTable();
+    if(this.errorFlag){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Cannot accept positive and negative at the same time.';
+      this.dialogMessage = 'Invalid amount. Cumulative Sum Insured must be greater than or equal to zero.';
       this.successAlt.open();
       this.errorFlag = true;
     }
@@ -1584,10 +1579,10 @@ export class PolCoverageComponent implements OnInit {
   }
 
   prepareAlterationSave(){
-    this.editedData = [];
-    this.deletedData = [];
-    this.editedDedt = [];
-    this.deletedDedt = []
+    this.editedData  =  [];
+    this.deletedData =  [];
+    this.editedDedt  =  [];
+    this.deletedDedt =  [];
     this.altCoverageData.policyId       = this.policyInfo.policyId;
     this.altCoverageData.projId         = this.projId;
     this.altCoverageData.riskId         = this.riskId;
@@ -1651,7 +1646,6 @@ export class PolCoverageComponent implements OnInit {
 
   alterationSave(){
     this.prepareAlterationSave();
-    console.log(this.altCoverageData)
     this.underwritingservice.savePolCoverage(this.altCoverageData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
@@ -1709,7 +1703,7 @@ export class PolCoverageComponent implements OnInit {
    onClickSaveAlt(){
      if(this.errorFlag){
         this.dialogIcon = 'error-message';
-        this.dialogMessage = 'Cannot accept positive and negative at the same time.';
+        this.dialogMessage = 'Invalid amount. Cumulative Sum Insured must be greater than or equal to zero.';
         this.successAlt.open();
         this.errorFlag = true;
      }else{
@@ -1733,7 +1727,6 @@ export class PolCoverageComponent implements OnInit {
 
    selectedSectionCoversLOV(data){
      if(!this.alteration){
-         console.log(data)
          if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
            this.sectionCoverLOVRow = data[0].ev.index;
            this.ns.lovLoader(data[0].ev, 0);
@@ -1760,9 +1753,7 @@ export class PolCoverageComponent implements OnInit {
          }
          this.sectionTable.refreshTable();
      }else {
-       console.log(data)
          if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
-           console.log('true')
            this.sectionCoverLOVRow = data[0].ev.index;
            this.ns.lovLoader(data[0].ev, 0);
          }
@@ -1801,7 +1792,6 @@ export class PolCoverageComponent implements OnInit {
     }
 
     onrowClickAlt(data){
-      console.log(data)
       if(data == null){
         this.passDataDeductibles.disableAdd = true;
         this.passDataDeductibles.tableData = [];

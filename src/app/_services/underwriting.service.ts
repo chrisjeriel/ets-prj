@@ -980,7 +980,6 @@ export class UnderwritingService {
         };
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolFullCoverage', JSON.stringify(coverageData), header);
     }
-   
 }            
 
             

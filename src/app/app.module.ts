@@ -386,6 +386,11 @@ import { RegionComponent } from './maintenance/quotation-and-policy/region/regio
 import { ProvinceComponent } from './maintenance/quotation-and-policy/region/province/province.component';
 import { MtnRegionComponent } from './maintenance/mtn-region/mtn-region/mtn-region.component';
 import { RequiredTableDirective } from './_directives/required-table.directive';
+import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn-cat-peril-modal.component';
+import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
+import { QuoteModificationComponent } from './quotation/quote-modification/quote-modification.component';
+import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
+import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
 
 @NgModule({
     imports: [
@@ -778,6 +783,11 @@ import { RequiredTableDirective } from './_directives/required-table.directive';
         ProvinceComponent,
         MtnRegionComponent,
         RequiredTableDirective,
+        MtnCatPerilModalComponent,
+        UserAmtLimitComponent,
+        QuoteModificationComponent,
+        MtnNonRenewalReasonComponent,
+        CityComponent,
     ],
 
   	providers: [
