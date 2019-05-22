@@ -56,6 +56,7 @@ export class InternalCompetitionComponent implements OnInit {
     cedingIds: any[] = [];
     cedingRepIds: any[] = [];
     savedData: any[] = [];
+    savedDataComp: any[] = [];
     printClickable: boolean = false;
 
     selectedPrintData: any;
@@ -80,7 +81,7 @@ export class InternalCompetitionComponent implements OnInit {
 
         //neco
         if(this.inquiryFlag){
-          this.intCompData.opts = [];
+          //this.intCompData.opts = [];
           this.intCompData.uneditable = [];
           this.intCompData.magnifyingGlass = [];
           this.intCompData.addFlag = false;
@@ -148,6 +149,7 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     onRowClick(data){
+      console.log(data);
       this.selectedPrintData = data;
       if (data == null) {
         this.printClickable = false;
@@ -165,7 +167,18 @@ export class InternalCompetitionComponent implements OnInit {
      /* if (this.custEditableNonDatatableComponent.selected.length !== 0) {
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + this.selectedPrintData.quoteId + '&adviceNo=' + this.selectedPrintData.adviceNo, '_blank');
       }*/
-      $('#showPrintMenu > #modalBtn').trigger('click');
+      let validate: boolean = true;
+      for(var i of this.custEditableNonDatatableComponent.selected){
+        if(i.wordings === null || (i.wordings !== null && i.wordings.trim().length === 0)){
+          this.messageIcon = "error";
+          $('#incomp #successModalBtn').trigger('click');
+          validate = false;
+          break;
+        }
+      }
+      if(validate){
+        $('#showPrintMenu2 > #modalBtn').trigger('click');
+      }
     }
 
     printMethod(){
@@ -266,6 +279,18 @@ export class InternalCompetitionComponent implements OnInit {
                 wordings: this.intCompData.tableData[i].wordings === null ? '' : this.intCompData.tableData[i].wordings 
               }
             );
+            this.savedDataComp.push(
+              {
+                adviceNo: this.intCompData.tableData[i].adviceNo,
+                cedingId: this.intCompData.tableData[i].cedingId,
+                cedingRepId: this.intCompData.tableData[i].cedingRepId,
+                createDate: this.notes.toDateTimeString(0),
+                createUser: JSON.parse(window.localStorage.currentUser).username,
+                quoteId: this.intCompData.tableData[i].quoteId,
+                updateDate: this.notes.toDateTimeString(0),
+                updateUser: JSON.parse(window.localStorage.currentUser).username
+              }
+            );
           }
       }
       console.log(this.savedData);
@@ -276,19 +301,28 @@ export class InternalCompetitionComponent implements OnInit {
         $('#incomp #successModalBtn').trigger('click');*/
       }
       else{
-        this.quotationService.saveQuoteAdviceWordings(this.savedData).subscribe((data: any) => {
-            if(data.returnCode === 0){
-              console.log("ERROR!");
-              this.messageIcon = "error";
-               $('#incomp #successModalBtn').trigger('click');
-            }
-            else{
-              this.messageIcon = "";
-               $('#incomp #successModalBtn').trigger('click');
-               this.retrieveInternalCompetition();
-               $('.ng-dirty').removeClass('ng-dirty');
-            }
+        this.quotationService.saveQuoteCompetition(this.savedDataComp).subscribe((data: any)=>{
+          if(data.returnCode === 0){
+            console.log("ERROR!");
+            this.messageIcon = "error";
+             $('#incomp #successModalBtn').trigger('click');
+           }else{
+             this.quotationService.saveQuoteAdviceWordings(this.savedData).subscribe((data: any) => {
+                 if(data.returnCode === 0){
+                   console.log("ERROR!");
+                   this.messageIcon = "error";
+                    $('#incomp #successModalBtn').trigger('click');
+                 }
+                 else{
+                   this.messageIcon = "";
+                    $('#incomp #successModalBtn').trigger('click');
+                    this.retrieveInternalCompetition();
+                    $('.ng-dirty').removeClass('ng-dirty');
+                 }
+             });
+           }
         });
+       
       }
        
     }

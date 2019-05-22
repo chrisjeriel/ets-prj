@@ -302,6 +302,15 @@ span.ui-column-resizer {
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
                                         <span class="unclickable">{{ data[key] | number: '1.0-0'}}</span>
                                     </div> -->
+                                    <div *ngSwitchCase="'select'">
+                                        <select disabled (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                            <ng-container *ngFor="let data of passData.opts">
+                                                <ng-container *ngIf="key == data.selector">
+                                                    <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                </ng-container>
+                                            </ng-container>
+                                        </select>
+                                    </div>
                                     <div *ngSwitchCase="'currency'" style="text-align: right" >
                                         <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
                                     </div>

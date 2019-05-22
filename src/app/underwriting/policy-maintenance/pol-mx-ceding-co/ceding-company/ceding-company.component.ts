@@ -3,6 +3,7 @@ import { UnderwritingService } from '@app/_services';
 import { CedingCompanyListing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-ceding-company',
@@ -10,6 +11,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./ceding-company.component.css']
 })
 export class CedingCompanyComponent implements OnInit {
+  @ViewChild('mdl') modal: ModalComponent;
   @Input() exclude: any[] = [];
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
@@ -108,7 +110,7 @@ export class CedingCompanyComponent implements OnInit {
          }
          this.table.refreshTable();          
      });
-     this.modalOpen = true;
+     //this.modalOpen = true;
   }
 
   checkCode(code, ev, id?) {
