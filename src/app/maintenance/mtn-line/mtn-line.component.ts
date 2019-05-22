@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angu
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-
+import { ModalComponent }  from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-mtn-line',
@@ -29,6 +29,7 @@ lineListing: any = {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @ViewChild('mdl') modal : ModalComponent;
   @Input() openCoverTag: boolean = false;
 
   @Input() lovCheckBox: boolean = false;
@@ -129,7 +130,8 @@ lineListing: any = {
             singleSearchLov: true
           });
             
-          $('#lineMdl > #modalBtn').trigger('click');
+          // $('#lineMdl > #modalBtn').trigger('click');
+          this.modal.openNoClose();
         }
         
       });  

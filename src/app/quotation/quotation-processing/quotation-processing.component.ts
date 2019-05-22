@@ -18,7 +18,7 @@ import * as alasql from 'alasql';
     providers: [NgbModal, NgbActiveModal]
 })
 export class QuotationProcessingComponent implements OnInit {
-    @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
+    @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
     @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
     @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
@@ -38,12 +38,12 @@ export class QuotationProcessingComponent implements OnInit {
 
     line: string = "";
     description: string = "";
-    splittedLine: string[] = [];
+    lineCdList: string[] = [];
     typeOfCessionId = "";
     typeOfCession = "";
     riskCd: string = "";
     riskName: string = "";
-    riskNameList: string[] = [];
+    riskIdList: any[] = [];
     //existingQuoteNoIndex: number = 0;
     existingQuotationNo: string[] = [];
 
@@ -217,7 +217,8 @@ export class QuotationProcessingComponent implements OnInit {
     tempQuoteId = "";
 
     exclude: any[] = [];
-    testArr: any[] = [];
+    validationList: any[] = [];
+    cessionDescList: any[] = [];
 
 
     first = false;
@@ -242,47 +243,24 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
             this.fetchedData = records;
-            for(let rec of records){
-                if(rec.status.toUpperCase() === 'IN PROGRESS' || rec.status.toUpperCase() === 'REQUESTED' || rec.status.toUpperCase() === 'RELEASED') {
-                    //neco was here
-                    this.testArr.push(rec);
-                    this.splittedLine.push(rec.quotationNo.split("-", 1));
-                    this.riskNameList.push((rec.project == null) ? '' : rec.project.riskName);
-                    //neco ends here
-                }
-                
-                if(rec.status.toUpperCase() === 'IN PROGRESS' || rec.status.toUpperCase() === 'REQUESTED' || rec.status.toUpperCase() === 'PENDING APPROVAL') {
-                    rec.riskName = rec.project.riskName;
-                    rec.objectDesc = rec.project.objectDesc;
-                    rec.site = rec.project.site;
-                    rec.issueDate = this.ns.toDateTimeString(rec.issueDate);
-                    rec.expiryDate = this.ns.toDateTimeString(rec.expiryDate);
-                    this.passData.tableData.push(rec
-                                                    // {
-                                                    //     quotationNo: rec.quotationNo,
-                                                    //     cessionDesc: rec.cessionDesc,
-                                                    //     lineClassCdDesc: rec.lineClassCdDesc,
-                                                    //     status: rec.status,
-                                                    //     cedingName: rec.cedingName,
-                                                    //     principalName: rec.principalName,
-                                                    //     contractorName: rec.contractorName,
-                                                    //     insuredDesc: rec.insuredDesc,
-                                                    //     riskName: (rec.project == null) ? '' : rec.project.riskName,
-                                                    //     objectDesc: (rec.project == null) ? '' : rec.project.objectDesc,
-                                                    //     site: (rec.project == null) ? '' : rec.project.site,
-                                                    //     policyNo: rec.policyNo,
-                                                    //     currencyCd: rec.currencyCd,
-                                                    //     issueDate: this.ns.toDateTimeString(rec.issueDate),
-                                                    //     expiryDate: this.ns.toDateTimeString(rec.issueDate),
-                                                    //     reqBy: rec.reqBy,
-                                                    //     createUser: rec.createUser
-                                                    // }
-                                                );    
-                }           
-            }
 
+            this.validationList = records.filter(a => ['REQUESTED','IN PROGRESS','RELEASED','CONCLUDED','CONCLUDED (THRU ANOTHER CEDANT)',
+                                                'ON HOLD COVER','CONCLUDED (EXPIRED HOLD COVER)'].includes(a.status.toUpperCase()));
+            this.lineCdList = this.validationList.map(i => i.quotationNo.split('-')[0]);
+            this.cessionDescList = this.validationList.map(i => i.cessionDesc);
+            this.riskIdList = this.validationList.map(i => i.project.riskId);
 
-               this.table.forEach(table => { table.refreshTable() });
+            this.passData.tableData = records.filter(a => ['IN PROGRESS','REQUESTED','PENDING APPROVAL','REJECTED'].includes(a.status.toUpperCase()))
+                                             .map(i => {
+                                                 i.riskId = i.project.riskId;
+                                                 i.riskName = i.project.riskName;
+                                                 i.objectDesc = i.project.objectDesc;
+                                                 i.site = i.project.site;
+                                                 i.issueDate = this.ns.toDateTimeString(i.issueDate);
+                                                 i.expiryDate = this.ns.toDateTimeString(i.expiryDate);
+                                                 return i;
+                                             });
+            this.table.refreshTable();
         });
     }
 
@@ -321,15 +299,18 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     showRiskLOV() {
-        $('#riskLOV #modalBtn').trigger('click');
+        // $('#riskLOV #modalBtn').trigger('click');
+        this.riskLOV.modal.openNoClose();
     }
 
     showCedingCompanyLOV() {
-        $('#cedingCompanyLOV #modalBtn').trigger('click');
+        // $('#cedingCompanyLOV #modalBtn').trigger('click');
+        this.cedingLov.modal.openNoClose();
     }
 
     showLineLOV(){
-        $('#lineLOV #modalBtn').trigger('click');
+        // $('#lineLOV #modalBtn').trigger('click');
+        this.lineLov.modal.openNoClose();
     }
 
     //Method for DB query
@@ -360,15 +341,22 @@ export class QuotationProcessingComponent implements OnInit {
         this.existingQuotationNo = [];
         this.exclude = [];
 
-        for(var i = 0; i < this.splittedLine.length; i++){
-            if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i] && this.riskNameList[i] != ""){
+        /*for(var i = 0; i < this.lineCdList.length; i++){
+            if(this.line == this.lineCdList[i] && this.riskName == this.riskIdList[i] && this.riskIdList[i] != ""){
                 //this.existingQuoteNoIndex = i;
                 // this.existingQuotationNo.push(this.passData.tableData[i].quotationNo);
-                this.existingQuotationNo.push(this.testArr[i].quotationNo);
+                this.existingQuotationNo.push(this.validationList[i].quotationNo);
                 //break;
 
                 // this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
-                this.exclude.push(this.testArr[i].quotationNo.split('-')[4]);
+                this.exclude.push(this.validationList[i].quotationNo.split('-')[4]);
+            }
+        }*/
+
+        for(let i of this.validationList) {
+            if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && this.riskCd == i.project.riskId) {
+                this.existingQuotationNo.push(i.quotationNo);
+                this.exclude.push(i.quotationNo.split('-')[4]);
             }
         }
 
@@ -513,12 +501,13 @@ setCedingIntCompCompany(data) {
         this.ns.lovLoader(data.ev, 0);
 
         if(data.hasOwnProperty('fromLOV')){
-             this.onClickIntCompCopy(1);
+             this.onClickIntCompCopy();
         }  
 }
 
 showCedingCompanyIntCompLOV() {
-        $('#cedingCompanyIntCompLOV #modalBtn').trigger('click');
+        // $('#cedingCompanyIntCompLOV #modalBtn').trigger('click');
+        this.cedingIntLov.modal.openNoClose();
     }
 
 //neco was here
@@ -564,7 +553,8 @@ showCedingCompanyIntCompLOV() {
     }
 
     showTypeOfCessionLOV(){
-        $('#typeOfCessionLOV #modalBtn').trigger('click');
+        // $('#typeOfCessionLOV #modalBtn').trigger('click');
+        this.typeOfCessionLov.modal.openNoClose();
     }
 
     setTypeOfCession(data) {        
@@ -621,9 +611,9 @@ showCedingCompanyIntCompLOV() {
         } else if(field === 'copyRisk') {
             this.copyRiskLOV.checkCode(this.copyRiskId, '#copyRiskLOV', ev);
         } else if(field === 'cedingCo') {
-            this.cedingLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev, '#cedingCompanyLOV');            
+            this.cedingLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev);            
         } else if(field === 'cedingCoIntComp') {
-            this.cedingIntLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev, '#cedingCompanyIntCompLOV');
+            this.cedingIntLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev);
         } 
     }
 
@@ -694,14 +684,19 @@ showCedingCompanyIntCompLOV() {
         }
     }
 
-    onClickIntCompCopy(event) {
+    onClickIntCompCopy() {
         this.exclude = [];     
-        // this.exclude.push(this.tempCedingId);
         
-        for(var i = 0; i < this.splittedLine.length; i++){
-            if(this.copyQuoteLineCd == this.splittedLine[i][0] && this.copyIntCompRiskName == this.riskNameList[i] && this.riskNameList[i] != ""){               
-
+        /*for(var i = 0; i < this.lineCdList.length; i++){
+            if(this.copyQuoteLineCd == this.lineCdList[i] && this.copyIntCompRiskName == this.riskIdList[i] && this.riskIdList[i] != ""){               
+                console.log(this.passData.tableData[i]);
                 this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
+            }
+        }*/
+
+        for(let i of this.validationList) {
+            if(this.copyQuoteLineCd == i.lineCd && this.copyIntCompRiskId == i.project.riskId) { // && this.typeOfCession == i.cessionDesc ?
+                this.exclude.push(i.quotationNo.split('-')[4]);
             }
         }
 
@@ -734,11 +729,10 @@ showCedingCompanyIntCompLOV() {
         }
 
         this.quotationService.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
-            console.log(data);
             this.loading = false;            
 
             if(data['returnCode'] == -1) {
-                this.retrieveQuoteListingMethod();
+                
                 this.copyToQuotationNo = data['quotationNo'];
 
                 //insert sa quote_competition
@@ -753,8 +747,6 @@ showCedingCompanyIntCompLOV() {
                     updateUser: JSON.parse(window.localStorage.currentUser).username,
                 }];
 
-                console.log(JSON.stringify(internalCompParams));
-
                 this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
                     console.log(result);
                 });
@@ -768,7 +760,9 @@ showCedingCompanyIntCompLOV() {
                 this.copyCedingName = "";
                 this.copyRiskId = "";
                 this.copyRiskName = "";
-                this.copyIntCompRiskId = "";             
+                this.copyIntCompRiskId = "";
+
+                this.retrieveQuoteListingMethod();
             } else if (data['returnCode'] == 0) {
                 this.dialogMessage = data['errorList'][0].errorMessage;
                 this.dialogIcon = "error";
@@ -779,8 +773,6 @@ showCedingCompanyIntCompLOV() {
     }
 
     copyModalToGenInfo(quotationNo) {
-        console.log(quotationNo);
-
         this.line = quotationNo.split("-")[0];
         this.quotationNo = quotationNo;
 
