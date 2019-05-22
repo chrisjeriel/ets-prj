@@ -63,23 +63,27 @@
 									<div class="input-group">
 										<div class="input-group" style="margin-bottom: -14px !important;">
 											<label class="form-control-sm col-sm-2">Hold Cover No</label>
-											<input type="text" class="form-control form-control-sm cust-sm" readonly>
+											<input type="text" class="form-control form-control-sm cust-sm" readonly [(ngModel)]="holdCover.holdCoverNo">
 											<label class="form-control-sm col-sm-2">Option No</label>
-											<input type="text" class="form-control form-control-sm col-sm-7 warn r-only" readonly  appRequired>
-											<!-- <div *ngIf="optLovEnabled" class="text-search-ico" (click)="onClickOptionLOV()"><a><i class="fa fa-search"></i></a></div> -->
+											<input type="text" class="form-control form-control-sm col-sm-7 warn r-only" readonly  appRequired [(ngModel)]="holdCover.optionId">
+											<div *ngIf="!fieldIconDsbl" class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										</div>
 										<div class="input-group" style="margin-bottom: -14px !important;">
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Period From</label>
-													<input type="date" class="form-control form-control-sm cust-sm warn col-sm r-only" readonly appRequired>
-													<input type="time" style="margin-left: 3px !important" readonly appRequired class="form-control form-control-sm cust-sm warn col-sm-3 r-only">
+													<div class="warn col-sm r-only dp-cont"  style="margin-left: 0px !important">
+							                            <datepicker [type]="'date'" [value]="holdCover.periodFrom[0]" [disabled]="fieldIconDsbl"></datepicker>
+							                        </div>
+							                        <div class="warn col-sm-3 r-only dp-cont">
+							                            <datepicker [type]="'time'" [value]="holdCover.periodFrom[1]" [disabled]="fieldIconDsbl"></datepicker>
+							                        </div>
 												</div>
 											</div>
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Requested By</label>
-													<input type="text" class="form-control form-control-sm col-sm r-only" readonly  maxlength="50">
+													<input type="text" class="form-control form-control-sm col-sm r-only" readonly  maxlength="50" [(ngModel)]="holdCover.reqBy">
 												</div>
 											</div>
 										</div>
@@ -87,14 +91,20 @@
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Period To</label>
-													<input type="date" class="form-control form-control-sm cust-sm warn col-sm r-only" readonly appRequired>
-													<input type="time" style="margin-left: 3px !important" readonly appRequired class="form-control form-control-sm cust-sm warn col-sm-3 r-only">
+													<div class="warn col-sm r-only dp-cont" style="margin-left: 0px !important">
+							                            <datepicker [type]="'date'" [value]="holdCover.periodTo[0]" [disabled]="fieldIconDsbl"></datepicker>
+							                        </div>
+							                        <div class="warn col-sm-3 r-only dp-cont">
+							                            <datepicker [type]="'time'" [value]="holdCover.periodTo[1]" [disabled]="fieldIconDsbl"></datepicker>
+							                        </div>
 												</div>
 											</div>
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Request Date</label>
-													<input type="date" class="form-control form-control-sm cust-sm col-sm r-only" readonly>
+													<div class="warn col-sm r-only dp-cont" style="margin-left: 0px !important">
+							                            <datepicker [type]="'date'" [value]="holdCover.reqDate" [disabled]="fieldIconDsbl"></datepicker>
+							                        </div>
 												</div>
 											</div>
 										</div>
@@ -102,13 +112,13 @@
 											<label class="form-control-sm col-sm-2" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
 											<input type="text" class="form-control form-control-sm r-only" maxlength="25" readonly>
 											<label class="form-control-sm col-sm-2">Prepared By</label>
-											<input type="text" class="form-control form-control-sm col-sm-7" maxlength="50" readonly tabindex="-1">
+											<input type="text" class="form-control form-control-sm col-sm-7" maxlength="50" readonly tabindex="-1" [(ngModel)]="holdCover.preparedBy">
 										</div>
 										<div class="input-group" style="margin-bottom: -9px !important;">
 											<label class="form-control-sm col-sm-2">Status</label>
-											<input type="text" class="form-control form-control-sm warn" maxlength="25" readonly tabindex="-1">
+											<input type="text" class="form-control form-control-sm warn" maxlength="25" readonly tabindex="-1" [(ngModel)]="holdCover.status">
 											<label class="form-control-sm col-sm-2">Approved By</label>
-											<input type="text" class="form-control form-control-sm col-sm-7" maxlength="50" readonly tabindex="-1">
+											<input type="text" class="form-control form-control-sm col-sm-7" maxlength="50" readonly tabindex="-1" [(ngModel)]="holdCover.approvedBy">
 										</div>
 									</div>
 								</div>
@@ -124,7 +134,7 @@
 							<div class="cust-btn-container" style="margin-top: 10px !important;">
 								<button type="button" class="cust-btn">Cancel Hold Cover</button>
 								<button type="button" class="cust-btn">Approval</button>
-								<button type="button" class="cust-btn">Save</button>
+								<button type="button" class="cust-btn" (click)="onSaveHoldCover()">Save</button>
 							</div>
 						</div>
 					</div>
@@ -141,11 +151,11 @@
 <app-modal class="d-none" id="quoteMdl">
     <div header>List Of Values</div>
     <div body class="container-flex">
-       <app-cust-non-datatable [passData]="passDataQuoteLOV"></app-cust-non-datatable>
+       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-		<button type="button" class="cust-btn"><a>Ok</a></button>
+		<button type="button" class="cust-btn" (click)="onClickOkQuoteLov();modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>
 
