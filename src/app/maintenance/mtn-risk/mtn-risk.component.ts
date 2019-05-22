@@ -145,7 +145,8 @@ export class MtnRiskComponent implements OnInit {
             ev: ev
           });
 
-          $(id + ' #modalBtn').trigger('click');
+          //$(id + ' #modalBtn').trigger('click');
+          this.modal.openNoClose();
         }
         
       });

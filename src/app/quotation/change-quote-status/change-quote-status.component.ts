@@ -10,6 +10,7 @@ import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 
 @Component({
@@ -25,11 +26,14 @@ export class ChangeQuoteStatusComponent implements OnInit {
     @ViewChild('riskMdl') riskModal: any;
     @ViewChild('cedCoMdl') cedCoModal: any;
     @ViewChild('cessionMdl') cessionModal: any;
+    @ViewChild(MtnRiskComponent) riskLovs: MtnRiskComponent;
+    @ViewChild(CedingCompanyComponent) cedingCoLovs: CedingCompanyComponent;
+    @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
     //END NECO 05/22/2019
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
-    @ViewChildren(MtnRiskComponent) riskLovs: QueryList<MtnTypeOfCessionComponent>;
-    @ViewChildren(CedingCompanyComponent) cedingCoLovs: QueryList<CedingCompanyComponent>;
+    //@ViewChildren(MtnRiskComponent) riskLovs: QueryList<MtnTypeOfCessionComponent>;
+    //@ViewChildren(CedingCompanyComponent) cedingCoLovs: QueryList<CedingCompanyComponent>;
 
     tHeader: any[] = [];
     tableData: any[] = [];
@@ -55,16 +59,16 @@ export class ChangeQuoteStatusComponent implements OnInit {
     first = false;
 
     selectedData : any ={
-        quotationNo: null,
-        status: null,
+        quotationNo: '',
+        status: '',
         statusCd: 0,
-        cedingName: null,
-        insuredDesc: null,
-        riskName: null,
-        processor: null,
-        reasonCd: null,
-        description: null,
-        remarks: null
+        cedingName: '',
+        insuredDesc: '',
+        riskName: '',
+        processor: '',
+        reasonCd: '',
+        description: '',
+        remarks: ''
     }
 
 
@@ -80,6 +84,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
       keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
     };
 
+    //NECO 05/22/2019
     quoteListingLOV: any = {
       tHeader: ['Quotation No.','Type of Cession','Ceding Company','Insured','Risk'],
       tableData:[],
@@ -89,19 +94,21 @@ export class ChangeQuoteStatusComponent implements OnInit {
       pageStatus: true,
       keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
     };
+    //END NECO 05/22/2019
 
     searchParams: any = {
-        riskName:null,
-        riskCd: null,
-        cedingName: null,
-        cedingId: null,
-        typeOfCession: null,
-        typeOfCessionId: null
+        riskName:'',
+        riskId: '',
+        cedingName: '',
+        cedingId: '',
+        cessionDesc: '',
+        cessionId: ''
     }
 
     //NECO 05/22/2019
     tempQuoteNo: string[] = ['','','','',''];
-
+    selectedQuote: any;
+    emptySelect: boolean = false;
     //END NECO 05/22/2019
     
     constructor(private qs: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService) {
@@ -136,28 +143,80 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     quoteListRowClick(data){
         console.log(data);
+        if(data === null || (data !== null && Object.keys(data).length === 0)){
+            this.emptySelect = true;
+        }else{
+            this.selectedQuote = data;
+            this.emptySelect = false;
+        }
+    } 
+
+    selectQuote(){
+        this.tempQuoteNo = this.selectedQuote.quotationNo.split('-');
+        this.searchParams.riskId = this.selectedQuote.project.riskId;
+        this.searchParams.riskName = this.selectedQuote.project.riskName;
+        this.searchParams.cedingId = this.selectedQuote.cedingId;
+        this.searchParams.cedingName = this.selectedQuote.cedingName;
+        this.searchParams.cessionId = this.selectedQuote.cessionId;
+        this.searchParams.cessionDesc = this.selectedQuote.cessionDesc;
     }
     //END NECO 05/22/2019
 
     getChangeQuote(){
-        this.qs.getQuoProcessingData(this.searchParams).subscribe((data:any) => {
-            this.passData.tableData = [];
-            this.records = data.quotationList;
-            console.log(this.records)
-            for(let rec of this.records){
-                this.passData.tableData.push(
-                    {
-                        quoteId: rec.quoteId,
-                        quotationNo: rec.quotationNo,
-                        cessionDesc: rec.cessionDesc,
-                        cedingName: rec.cedingName,
-                        insuredDesc: rec.insuredDesc,
-                        riskName: (rec.project == null) ? '' : rec.project.riskName
-                    }
-                );
+        //NECO 05/22/2019
+        let emptyFlag: boolean = true;
+        //check if quoteNo fields are empty
+        for(var i of this.tempQuoteNo){
+            if(String(i).trim().length !== 0){
+                emptyFlag = false;
+                break;
             }
-            this.table.refreshTable();
-        });
+        }
+        //check if cession, ceding, and risk are empty
+        if((String(this.searchParams.cedingId).trim().length !== 0  ||
+           String(this.searchParams.cessionId).trim().length !== 0 ||
+           String(this.searchParams.riskId).trim().length !== 0) && emptyFlag){
+            emptyFlag = false;
+        }
+        //END NECO 05/22/2019
+        if(emptyFlag){
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'No values were entered';
+            this.successDiag.open();
+        }else{
+            this.modalService.dismissAll();
+            this.passData.tableData = [];
+            this.table.loadingFlag = true;
+            this.qs.getQuoProcessingData([
+                                            {key: 'quotationNo', search: this.tempQuoteNo.join('%-%')},
+                                            {key: 'cessionDesc', search: this.searchParams.cessionDesc.toUpperCase()},
+                                            {key: 'cedingName', search: this.searchParams.cedingName.toUpperCase()},
+                                            {key: 'riskName', search: this.searchParams.riskName.toUpperCase()}
+                                         ]).subscribe((data:any) => {
+                this.passData.tableData = [];
+                this.records = data.quotationList;
+                console.log(this.records)
+                for(let rec of this.records){
+                    this.passData.tableData.push(
+                        {
+                            quoteId: rec.quoteId,
+                            quotationNo: rec.quotationNo,
+                            cessionDesc: rec.cessionDesc,
+                            cedingName: rec.cedingName,
+                            insuredDesc: rec.insuredDesc,
+                            riskName: (rec.project == null) ? '' : rec.project.riskName,
+                            status: rec.status,
+                            preparedBy: rec.preparedBy
+                        }
+                    );
+                }
+                this.passData.tableData = this.passData.tableData.filter(a => {return a.status.toUpperCase() === 'REQUESTED' || 
+                                                            a.status.toUpperCase() === 'IN PROGRESS' || 
+                                                            a.status.toUpperCase() === 'RELEASED' });
+                this.table.refreshTable();
+                this.table.loadingFlag = false;
+            });
+        }
     }
 
     savetest(){
@@ -165,33 +224,52 @@ export class ChangeQuoteStatusComponent implements OnInit {
             if(data['returnCode'] == 0) {
                 this.dialogMessage = data['errorList'][0].errorMessage;
                 this.dialogIcon = "error";
-                $('#successModalBtn').trigger('click');
+                //$('#successModalBtn').trigger('click');
+                this.successDiag.open();
             } else{
                 this.dialogMessage="";
                 this.dialogIcon = "";
-                $('#successModalBtn').trigger('click');
+                //$('#successModalBtn').trigger('click');
+                this.successDiag.open();
                 $('.ng-dirty').removeClass('ng-dirty');
-                this.emptyVariables();
-                this.getChangeQuote();
+                //this.emptyVariables();
+                //this.getChangeQuote();
             }
        });
+    }
+
+    postSave(){
+        this.emptyVariables();
+        this.getChangeQuote();
     }
 
     emptyVariables(){
         this.saveData.reasonCd = ""
         this.selectedData ={
-            quotationNo: null,
-            status: null,
+            quotationNo: '',
+            status: '',
             statusCd: 0,
-            cedingName: null,
-            insuredDesc: null,
-            riskName: null,
-            processor: null,
-            reasonCd: null,
-            description: null,
-            remarks: null
+            cedingName: '',
+            insuredDesc: '',
+            riskName: '',
+            processor: '',
+            reasonCd: '',
+            description: '',
+            remarks: ''
         }
         this.passData.tableData = [];
+    }
+
+    onClickProcess(){
+        console.log(this.selectedData);
+        if(this.selectedData.statusCd == 9 && ((String(this.selectedData.reasonCd).trim().length === 0 && this.selectedData.description.length === 0)
+                                                || (this.selectedData.reasonCd === undefined && this.selectedData.description === undefined))){
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'Please fill all required fields';
+            this.successDiag.open();
+        }else{
+            $('#confirm-save #modalBtn2').trigger('click');
+        }
     }
 
     process(cancelFlag?) {
@@ -269,17 +347,17 @@ export class ChangeQuoteStatusComponent implements OnInit {
         this.ns.lovLoader(ev, 1);
 
         if(field === 'typeOfCession'){
-            this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
+            this.typeOfCessionLov.checkCode(this.searchParams.cessionId, ev);
         } else if(field === 'risk') {
-            this.riskLovs['first'].checkCode(this.riskCd, ev);
+            this.riskLovs.checkCode(this.searchParams.riskId, '#riskLOV', ev);
         } else if(field === 'cedingCo') {
-            this.cedingCoLovs['first'].checkCode(this.cedingId, ev);
+            this.cedingCoLovs.checkCode(this.searchParams.cedingId === '' ? '' : String(this.searchParams.cedingId).padStart(3, '0'), ev, '#cedingCompanyLOV');
         } 
     }
 
      setRisks(data){
-        this.riskCd = data.riskId;
-        this.riskName = data.riskName;
+        this.searchParams.riskId = data.riskId;
+        this.searchParams.riskName = data.riskName;
         this.ns.lovLoader(data.ev, 0);
         
         if(data.hasOwnProperty('fromLOV')){
@@ -289,8 +367,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     setTypeOfCession(data) {     
         console.log(data)   
-        this.typeOfCessionId = data.cessionId;
-        this.typeOfCession = data.description;
+        this.searchParams.cessionId = data.cessionId;
+        this.searchParams.cessionDesc = data.description;
         this.ns.lovLoader(data.ev, 0);
         
         if(data.hasOwnProperty('fromLOV')){
@@ -299,8 +377,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     setCedingcompany(data){
-        this.cedingId = data.cedingId;
-        this.cedingName = data.cedingName;
+        this.searchParams.cedingId = data.cedingId;
+        this.searchParams.cedingName = data.cedingName;
         this.ns.lovLoader(data.ev, 0);
 
         if(data.hasOwnProperty('fromLOV')){
@@ -323,12 +401,24 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     emptyVar(){
-        this.riskCd = "";
+        /*this.riskCd = "";
         this.riskName = "";
         this.typeOfCessionId = "";
         this.typeOfCession = "";
         this.cedingId = "";
-        this.cedingName = "";
+        this.cedingName = "";*/
+
+        //NECO 05/22/2019
+        this.searchParams = {
+            riskName:'',
+            riskId: '',
+            cedingName: '',
+            cedingId: '',
+            cessionDesc: '',
+            cessionId: ''
+        }
+        this.tempQuoteNo = ['','','','',''];
+        //END NECO 05/22/2019
     }
 
 }

@@ -146,9 +146,11 @@ export class CedingCompanyComponent implements OnInit {
           });
 
           if(id != undefined) {
-            $(id + ' #modalBtn').trigger('click');  
+            //$(id + ' #modalBtn').trigger('click');  
+            this.modal.openNoClose();
           } else {
-            $('#cedingCompanyMdl > #modalBtn').trigger('click');  
+            //$('#cedingCompanyMdl > #modalBtn').trigger('click');  
+            this.modal.openNoClose();
           }   
         }      
       });
