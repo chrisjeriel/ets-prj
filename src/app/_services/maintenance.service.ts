@@ -620,5 +620,9 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnOtherCharge', params, header);
     }
 
+    getMtnApprover(){
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveApprover");
+    }
+
 }
 

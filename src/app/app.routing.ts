@@ -147,12 +147,9 @@ import { IntermediaryListComponent } from './maintenance/quotation-and-policy/in
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
 import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
-//delete below when merged with maintenance region
-import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
-import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
-//end
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
+import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
 
 const appRoutes: Routes = [
 
@@ -313,6 +310,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-location/:id', component: RegionComponent },
     { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
     { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent },
+    { path: 'mtn-approver', component: ApproverComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
