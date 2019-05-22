@@ -16,8 +16,8 @@
                         <div class="form-row" style="margin-top: 40px !important;">
                             <div class="form-group col-sm">
                                 <div class="text-center">
-                                	<div class="cust-btn-container">
-                                        <button type="button" class="cust-btn" (click)="users()"><a>Users</a></button>
+                                	<div class="cust-btn-container" style="margin-top: -40px !important;">
+                                        <button type="button" class="cust-btn" (click)="usersModal()" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Users</a></button>
                                     </div>
                                     <hr/>
                                     <div class="cust-btn-container">
@@ -33,20 +33,22 @@
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="approvalDetails.createUser" readonly>
                         <label class="form-control-sm col-sm-1">Created Date</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm" readonly>
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="approvalDetails.createDate" readonly>
                         <label class="form-control-sm col-sm-1">Last Update By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="approvalDetails.updateUser" readonly>
                         <label class="form-control-sm col-sm-1">Last Update</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm" readonly>
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="approvalDetails.updateDate" readonly>
                     </div>
                 </fieldset>  
                 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 
-                <app-confirm-save (onYes)="saveCat()"></app-confirm-save>
+                <app-confirm-save (onYes)="saveData()"></app-confirm-save>
                 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-                <app-cancel-button (onYes)="saveCat('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>          
+                <app-confirm-save id="userConfirm" (onYes)="saveUserModal()"></app-confirm-save>
+                <app-sucess-dialog #userSuccess [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+                <app-cancel-button (onYes)="saveData('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>          
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
@@ -55,11 +57,11 @@
 	<div header>Users</div>
 	<div body>
 		 <div>
-                <app-cust-editable-non-datatable [passData]="passDataUser"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable #user [passData]="passDataUser"></app-cust-editable-non-datatable>
          </div>
 	</div>
 	<div footer class="text-center">
 			<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-			<button type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
+			<button type="button" class="cust-btn" (click)="onClickSaveUser()"><a>Save</a></button>
 	</div>
 </app-modal>
