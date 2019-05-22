@@ -502,6 +502,15 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnProvince',params,header);
     }
 
+     saveMtnCity(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCity',params,header);
+    }
+
     saveMtnSpoilageReason(params){
     	let header : any = {
             headers: new HttpHeaders({
@@ -628,6 +637,8 @@ export class MaintenanceService{
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnOtherCharge', params, header);
     }
+
+
 
 }
 

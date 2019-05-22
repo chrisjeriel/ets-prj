@@ -27,20 +27,20 @@ export class CityComponent implements OnInit {
 
   @ViewChild(LovComponent) lovMdl: LovComponent;
   passLOV: any = {};
-  locData:any = {};r
+  locData:any = {};
   oldValue: any;
 
    passData: any = {
 		tableData:[],
 		tHeader				:["City Code", "Description","","CRESTA Zone", "Active", "Remarks"],
 		dataTypes			:["reqNumber", "reqText", "reqNumber","reqText","checkbox", "text"],
-		magnifyingGlass     :["crestaId"],
+		magnifyingGlass     :["zoneCd"],
 		nData:{
 			cityCd          : null,
 			description     : null,
 			activeTag       : null,
 			cresta          : null,
-			crestaId        : null,
+			zoneCd          : null,
 			remarks         : null,
 			showMG			: 1,
 			"createUser"    : this.ns.getCurrentUser(),
@@ -60,7 +60,7 @@ export class CityComponent implements OnInit {
 		widths				  :[1,'auto',1,'auto','1','auto'],
 		resizable			  :[true, true, true, true, false ,true],
 		pageunID		      :'mtn-city',
-		keys				  :['cityCd','description','crestaId','cresta','activeTag','remarks'],
+		keys				  :['cityCd','description','zoneCd','cresta','activeTag','remarks'],
 		uneditable			  :[false,false,true,true,false,false],
 
 
@@ -86,6 +86,14 @@ export class CityComponent implements OnInit {
     dialogIcon: string = "";
     desc: any;
 
+    mtnCityReq  : any = { 
+                "deleteCity": [],
+                "saveCity"  : []}
+    editedData:any[] = [];
+    deletedData:any[] =[];
+    selectedData  : any;
+    deleteBool : boolean;
+
 
   constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal) { }
 
@@ -106,14 +114,30 @@ export class CityComponent implements OnInit {
   }
 
    setRegion(data){
-        this.locData.regionCd = data.regionCd;
-        this.locData.regionDesc = data.regionDesc;
+   		if(this.isEmptyObject(data)){
+   			    this.locData.regionCd = '';
+                this.locData.regionDesc = '';
+                this.locData.provinceCd = '';
+                this.locData.provinceDesc = '';
+                this.clear();
+   		}else{
+   			this.locData.regionCd = data.regionCd;
+        	this.locData.regionDesc = data.regionDesc;
+   		}
+       
     }
   
   setProvince(data){
-        this.locData.provinceCd = data.provinceCd;
-        this.locData.provinceDesc = data.provinceDesc;
-        this.getCity();
+  		if(this.isEmptyObject(data)){
+                this.locData.provinceCd = '';
+                this.locData.provinceDesc = '';
+                this.clear();
+  		}else {
+  			this.locData.provinceCd = data.provinceCd;
+        	this.locData.provinceDesc = data.provinceDesc;
+        	this.getCity();
+  		}
+       
     }
 
    checkCode(ev, field){
@@ -205,11 +229,9 @@ export class CityComponent implements OnInit {
 
 	  	this.mtnService.getMtnCity(this.locData.regionCd,this.locData.provinceCd,null).subscribe(a=>{
 	      if(a['region'].length != 0){
-	      		console.log(a['region']);
 
 	      	for (let i=0; i < a['region'].length ; i++ ){
 	      		var records = a['region'][i].provinceList[0].cityList; 
-	      		console.log(records);
 
 	      		for(let rec of records){
               		this.passData.tableData.push({
@@ -221,9 +243,9 @@ export class CityComponent implements OnInit {
                                             createDate  : this.ns.toDateTimeString(rec.createDate),
                                             updateUser  : rec.updateUser,
                                             updateDate  : this.ns.toDateTimeString(rec.updateDate),
-                                            crestaId	: rec.zoneCd,
+                                            zoneCd	    : rec.zoneCd,
                                             cresta      : rec.zoneDesc,
-                                            uneditable  : ['cityCd','crestaId','cresta'],
+                                            uneditable  : ['cityCd','zoneCd','cresta'],
                                             showMG		: 1
                                            });
             	}
@@ -239,8 +261,28 @@ export class CityComponent implements OnInit {
   	return cb === 'Y'?true:false;
   }
 
-  onRowClick(event){
+  cbFunc2(cb){
+    return cb === true?'Y':'N';
+  }
 
+  onRowClick(event){
+  	if(event !== null){
+        this.selectedData = event;
+        this.cityRecord.cityCd = event.cityCd;
+  	    this.passData.disableGeneric    = false;
+  		this.cityRecord.provinceCd	= event.provinceCd;
+	  	this.cityRecord.createUser	= event.createUser;
+	  	this.cityRecord.createDate	= event.createDate;
+	  	this.cityRecord.updateUser	= event.updateUser;
+	  	this.cityRecord.updateDate	= event.updateDate;
+  	} else {
+  	    this.passData.disableGeneric  = true;
+  		this.cityRecord.provinceCd	= null;
+	  	this.cityRecord.createUser	= null;
+	  	this.cityRecord.createDate	= null;
+	  	this.cityRecord.updateUser	= null;
+	  	this.cityRecord.updateDate	= null;
+  	}
   }
 
   clickCrestaZone(data){
@@ -249,7 +291,7 @@ export class CityComponent implements OnInit {
   }
 
   selectedCrestZoneLOV(data){
-  	this.passData.tableData[this.crestaZoneLOVRow].crestaId = data.zoneCd;
+  	this.passData.tableData[this.crestaZoneLOVRow].zoneCd = data.zoneCd;
     this.passData.tableData[this.crestaZoneLOVRow].cresta = data.zoneDesc;
     this.passData.tableData[this.crestaZoneLOVRow].edited = true;
     $('#cust-table-container').addClass('ng-dirty');
@@ -259,10 +301,10 @@ export class CityComponent implements OnInit {
     this.cityCdArray = [];
       for(let check of this.passData.tableData){
         this.cityCdArray.push(check.cityCd);
-        if (check.description === undefined || check.crestaId === undefined){
+        if (check.description === undefined || check.zoneCd === undefined){
         	 return false
         } else {
-        	if(check.cityCd === null || Number.isNaN(check.cityCd)  || check.description === null || check.description.length === 0 || check.crestaId === null || check.crestaId.length === 0 ){
+        	if(check.cityCd === null || Number.isNaN(check.cityCd)  || check.description === null || check.description.length === 0 || check.zoneCd === null || check.zoneCd.length === 0 ){
           		return false;
         	 }
         }
@@ -296,36 +338,104 @@ export class CityComponent implements OnInit {
   }
 
    onClickSaveCity(cancelFlag?){
-/*    this.mtnProvinceReq.saveProvince = [];
-    this.mtnProvinceReq.deleteProvince = [];
+
+    this.mtnCityReq.saveCity = [];
+    this.mtnCityReq.deleteCity = [];
     this.editedData = [];
     this.deletedData = [];
     
     for(var i=0;i<this.passData.tableData.length;i++){
        if(this.passData.tableData[i].edited){
               this.editedData.push(this.passData.tableData[i]);
-              this.editedData[this.editedData.length - 1].regionCd   = this.regionCD;
+              this.editedData[this.editedData.length - 1].regionCd       = this.locData.regionCd;
+              this.editedData[this.editedData.length - 1].provinceCd     = this.locData.provinceCd;
               this.editedData[this.editedData.length - 1].activeTag  = this.cbFunc2(this.passData.tableData[i].activeTag);
               this.editedData[this.editedData.length - 1].updateUser = this.ns.getCurrentUser();
               this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);             
        }    
     }    
-            this.mtnProvinceReq.saveProvince   = this.editedData;
-            this.mtnProvinceReq.deleteProvince = this.deletedData; 
+            this.mtnCityReq.saveCity   = this.editedData;
+            this.mtnCityReq.deleteCity = this.deletedData; 
 
-            if(this.mtnProvinceReq.saveProvince.length > 0){
+            if(this.mtnCityReq.saveCity.length > 0){
               this.confirmDialog.showBool = true;
               this.passData.disableGeneric = true;
-              this.saveProvince(this.mtnProvinceReq);
+              this.saveCity(this.mtnCityReq);
             } else {
               this.confirmDialog.showBool = false;
               this.dialogIcon = 'info';
               this.dialogMessage = 'Nothing to save';
               this.successDialog.open();
-            }*/
-            
+            }
+
   }
 
+   saveCity(obj){
+    this.mtnService.saveMtnCity(JSON.stringify(obj))
+                .subscribe(data => {
+              if(data['returnCode'] == -1){
+                  this.dialogIcon = "success";
+                  this.successDialog.open();
+                  this.getCity();
+              }else{
+                  this.dialogIcon = "error";
+                  this.successDialog.open();
+                  this.getCity();
+              }
+    });
+  }
+
+   deleteCity(){
+      if (this.selectedData.add){
+          this.deleteBool = false;
+        }else {
+          this.deleteBool = true;  
+        }
+
+      this.provinceTable.indvSelect.deleted = true;
+      this.provinceTable.selected  = [this.provinceTable.indvSelect]
+      this.provinceTable.confirmDelete();
+
+  }
+
+ 
+  onClickDelCity(obj : boolean){
+    this.mtnCityReq.saveCity = [];
+    this.mtnCityReq.deleteCity = [];
+    this.editedData = [];
+    this.deletedData = [];
+    this.passData.disableGeneric = true;
+
+      if(obj){
+        this.mtnService.getMtnDistrict(this.locData.regionCd,this.locData.provinceCd,this.cityRecord.cityCd,null).subscribe(data => {
+          if(data['region'].length > 0){
+             this.dialogMessage="You are not allowed to delete a City that is used by District or Block.";
+             this.dialogIcon = "warning-message";
+             this.successDialog.open();
+             this.getCity();
+          } else {
+            this.deletedData.push({
+                    "cityCd": this.cityRecord.cityCd,
+                    "regionCd": this.locData.regionCd ,
+                    "provinceCd": this.locData.provinceCd
+                     });
+            this.mtnCityReq.saveCity = this.editedData;
+            this.mtnCityReq.deleteCity = this.deletedData;  
+            this.saveCity(this.mtnCityReq);
+          }
+        });
+      } 
+
+  }
+
+  isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+  }
 
 
 

@@ -163,7 +163,7 @@ export class AltParListingComponent implements OnInit {
                for(let rec of records){
                       if(rec.altNo === 0){
                       } else {
-                           if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress' && rec.altNo !== 0) {
+                           if ( rec.statusDesc === 'In Progress' && rec.altNo !== 0) {
                                  this.altParListData.tableData.push(
                                                     {
                                                         policyId: rec.policyId,

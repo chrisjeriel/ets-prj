@@ -7,7 +7,7 @@
 				<div class="row">
 					<div class="col-sm">
 						<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-							<app-cust-editable-non-datatable #regionTable [passData]="passData" (genericBtn)="deleteRegion()" (onDelete)="regionTable.onClickDelete('force');onClickDelRegion(this.deleteBool);" (tableDataChange)="this.selectedData = $event" (add)="addRegion()" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+							<app-cust-editable-non-datatable #regionTable [passData]="passData" (genericBtn)="deleteRegion()" (onDelete)="regionTable.onClickDelete('force');onClickDelRegion(this.deleteBool);" (tableDataChange)="this.selectedData = $event;change($event);" (add)="addRegion()" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 						</div>
 					</div>
 				</div>
