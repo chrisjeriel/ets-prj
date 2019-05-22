@@ -68,28 +68,16 @@ export class ApproverComponent implements OnInit {
   	})
   }
 
-  delete(){
-  	if(this.table.indvSelect.okDelete == 'N'){
-  		this.dialogIcon = 'info';
-  		this.dialogMessage =  'You are not allowed to delete a Reason Code that is already used in Spoil Policy/Alteration Screen.';
-  		this.successDialog.open();
-  	}else{
-  		this.table.indvSelect.deleted = true;
-  		this.table.selected  = [this.table.indvSelect]
-  		this.table.confirmDelete();
-  	}
-  }
-
   save(can?){
   	this.cancelFlag = can !== undefined;
   	let params: any = {
-  		saveSpoilReason:[],
-  		delSpoilReason:[]
+  		saveList:[],
+  		delList:[]
   	}
-  	params.saveSpoilReason = this.passTable.tableData.filter(a=>a.edited && !a.deleted);
-  	params.saveSpoilReason.forEach(a=>a.updateUser = this.ns.getCurrentUser());
-  	params.delSpoilReason = this.passTable.tableData.filter(a=>a.deleted);
-  	this.ms.saveMtnSpoilageReason(params).subscribe(a=>{
+  	params.saveList = this.passTable.tableData.filter(a=>a.edited && !a.deleted);
+  	params.saveList.forEach(a=>a.updateUser = this.ns.getCurrentUser());
+  	params.delList = this.passTable.tableData.filter(a=>a.deleted);
+  	this.ms.saveMtnApprover(params).subscribe(a=>{
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
@@ -102,13 +90,6 @@ export class ApproverComponent implements OnInit {
   }
 
   onClickSave(){
-  	let reasonCds:string[] = this.passTable.tableData.map(a=>a.spoilCd);
-  	if(reasonCds.some((a,i)=>reasonCds.indexOf(a)!=i)){
-  		this.dialogMessage = 'Unable to save the record. Reason Code must be unique.';
-  		this.dialogIcon = 'error-message';
-  		this.successDialog.open();
-  		return;
-  	}
   	this.conSave.confirmModal();
   }
 

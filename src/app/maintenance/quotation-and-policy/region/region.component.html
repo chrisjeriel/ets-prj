@@ -32,11 +32,19 @@
                     </div>
               </fieldset>
 
+              <app-confirm-save (onYes)="onClickSaveRegion()"></app-confirm-save>
+			  <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+			  <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Province"  id="province">
 			<ng-template ngbTabContent>
 				<app-province></app-province>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="City"  id="city">
+			<ng-template ngbTabContent>
+				<app-city></app-city>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="District"  id="district">
@@ -52,7 +60,5 @@
 	</ngb-tabset>
 </div>
 
-<app-confirm-save (onYes)="onClickSaveRegion()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+
 
