@@ -70,7 +70,7 @@
 										<label class="form-control-sm col-sm-2">Start Date</label>
 										<input type="date" class="form-control form-control-sm col-sm-4" [ngModel]="companyData.membershipDate === '' ? '' : ns.toDateTimeString(companyData.membershipDate).split('T')[0]" (ngModelChange)="companyData.membershipDate = $event" name="membershipDate">
 										<div class="col-sm-2"></div>
-										<div class="cust-div col-sm"><input type="checkbox" [ngModel]="companyData.membershipTag === 'Y'" (ngModelChange)="$event ? companyData.membershipTag = 'Y' : companyData.membershipTag = 'N'" name="membershipTag">&nbsp;<span class="cust-span">Member</span>
+										<div class="cust-div col-sm-1" style="margin-right: 13px !important"><input type="checkbox" [ngModel]="companyData.membershipTag === 'Y'" (ngModelChange)="$event ? companyData.membershipTag = 'Y' : companyData.membershipTag = 'N'" name="membershipTag">&nbsp;<span class="cust-span">Member</span>
 										</div>
 										<div class="cust-div col-sm"><input type="checkbox" [ngModel]="companyData.treatyTag === 'Y'" (ngModelChange)="$event ? companyData.treatyTag = 'Y' : companyData.treatyTag = 'N'" name="treatyTag">&nbsp;<span class="cust-span">Treaty</span>
 										</div>
