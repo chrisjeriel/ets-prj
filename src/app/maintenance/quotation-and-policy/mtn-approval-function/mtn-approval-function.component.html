@@ -44,7 +44,7 @@
                 </fieldset>  
                 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 
-                <app-confirm-save (onYes)="saveData()"></app-confirm-save>
+                <app-confirm-save id="approvalConfirm" (onYes)="saveData()"></app-confirm-save>
                 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
                 <app-confirm-save id="userConfirm" (onYes)="saveUserModal()"></app-confirm-save>
                 <app-sucess-dialog #userSuccess [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
@@ -57,7 +57,7 @@
 	<div header>Users</div>
 	<div body>
 		 <div>
-                <app-cust-editable-non-datatable #user [passData]="passDataUser"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable #user [passData]="passDataUser" (tableDataChange)="updateUser($event)" (clickLOV)="showUsersLOV($event)"></app-cust-editable-non-datatable>
          </div>
 	</div>
 	<div footer class="text-center">
@@ -65,3 +65,5 @@
 			<button type="button" class="cust-btn" (click)="onClickSaveUser()"><a>Save</a></button>
 	</div>
 </app-modal>
+<app-mtn-users  id="usersLOV" (selectedData)="setUser($event)" #mtnUser></app-mtn-users>
+<!-- <app-mtn-approver id="usersLOV" (selectedData)="setUser($event)" #mtnUser></app-mtn-approver> -->

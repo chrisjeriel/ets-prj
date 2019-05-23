@@ -392,6 +392,7 @@ import { QuoteModificationComponent } from './quotation/quote-modification/quote
 import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
 import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
+import { MtnApproverComponent } from './maintenance/mtn-approver/mtn-approver.component';
 
 @NgModule({
     imports: [
@@ -790,6 +791,7 @@ import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy
         MtnNonRenewalReasonComponent,
         CityComponent,
         MtnApprovalFunctionComponent,
+        MtnApproverComponent,
     ],
 
   	providers: [

@@ -657,5 +657,11 @@ export class MaintenanceService{
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnApprovalFunction', params, header);
 	}
+
+	getMtnApprover(userId?:string){
+		const params = new HttpParams()
+		     .set('approvalCd', (userId === null || userId === undefined ? null : userId))
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
+	}
 }
 

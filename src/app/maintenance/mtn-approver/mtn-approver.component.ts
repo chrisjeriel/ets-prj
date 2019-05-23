@@ -1,16 +1,16 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-import { UserService } from '@app/_services';
+import { UserService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { finalize } from 'rxjs/operators';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
-  selector: 'app-mtn-users',
-  templateUrl: './mtn-users.component.html',
-  styleUrls: ['./mtn-users.component.css']
+  selector: 'app-mtn-approver',
+  templateUrl: './mtn-approver.component.html',
+  styleUrls: ['./mtn-approver.component.css']
 })
-export class MtnUsersComponent implements OnInit {
+export class MtnApproverComponent implements OnInit {
 @ViewChild('userModal') modal: ModalComponent;
 @Output() cancelMdl: EventEmitter<any> = new EventEmitter();
 selected: any = null;
@@ -49,7 +49,7 @@ selected: any = null;
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
   
-  constructor(private userService: UserService, private modalService: NgbModal) { }
+  constructor(private userService: UserService, private modalService: NgbModal, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
   	/*this.maintenanceService.getMtnCurrency().subscribe((data: any) =>{
@@ -110,7 +110,7 @@ selected: any = null;
       /*for(var j = 0; j < this.passDataAttention.tableData.length; j++){
         this.passDataAttention.tableData.pop();
       }*/
-      setTimeout(()=>{    //<<<---    using ()=> syntax
+      /*setTimeout(()=>{    //<<<---    using ()=> syntax
            this.userService.retMtnUsers('').subscribe((data: any) =>{
                  for(var i = 0; i < data.usersList.length; i++){
                    if(this.hide.indexOf(data.usersList[i].userId)== -1){
@@ -120,8 +120,17 @@ selected: any = null;
                  this.table.refreshTable();
                });
                  this.modalOpen = true;
-       }, 100);
+       }, 100);*/
       
+      this.maintenanceService.getMtnApprover().subscribe((data:any) => {
+      	for(var i = 0; i < data.approverList.length; i++){
+                   if(this.hide.indexOf(data.approverList[i].userId)== -1){
+                     this.usersListing.tableData.push(data.approverList[i]);
+                   }
+                 }
+                 this.table.refreshTable();
+      });
+      	this.modalOpen = true;
   }
 
   checkCode(code, ev) {
@@ -133,25 +142,25 @@ selected: any = null;
         singleSearchLov: true
       });
     } else {
-      this.userService.retMtnUsers(code).subscribe(data => {
-        data['usersList'] = data['usersList'].filter(a=> this.hide.indexOf(a.userId) == -1)
-        if(data['usersList'].length > 0) {
-          data['usersList'][0]['ev'] = ev;
-          data['usersList'][0]['singleSearchLov'] = true;
-          this.selectedData.emit(data['usersList'][0]);
-        } else {
-          data['usersList'] = data['usersList'].filter((a)=>{return ev.filter.indexOf(a.userId)==-1});
-          this.selectedData.emit({
-            userId: '',
-            userName:'',
-            ev: ev,
-            singleSearchLov: true
-          });
-          //$('#usersMdl > #modalBtn').trigger('click');
-          this.modal.openNoClose();
-          this.table.refreshTable('');
-        }
-        
+      this.maintenanceService.getMtnApprover(code).subscribe((data:any) => {
+        console.log(data)
+      		//data['approverList'] = data['approverList'].filter(a=> this.hide.indexOf(a.userId) == -1)
+      		if(data['approverList'].length > 0) {
+      		  data['approverList'][0]['ev'] = ev;
+      		  data['approverList'][0]['singleSearchLov'] = true;
+      		  this.selectedData.emit(data['approverList'][0]);
+      		} else {
+      		  //data['approverList'] = data['approverList'].filter((a)=>{return ev.filter.indexOf(a.userId)==-1});
+      		  this.selectedData.emit({
+      		    userId: '',
+      		    userName:'',
+      		    ev: ev,
+      		    singleSearchLov: true
+      		  });
+      		  //$('#usersMdl > #modalBtn').trigger('click');
+      		  this.modal.openNoClose();
+      		  //this.table.refreshTable('');
+      		}
       });
    }
   }
