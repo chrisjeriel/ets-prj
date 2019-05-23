@@ -83,7 +83,7 @@
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
+        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != '' && copyRiskName != ''" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && (copyCedingName == '' || copyRiskName == '')" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
         <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Cancel</a></button>
@@ -119,7 +119,7 @@
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
+        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != ''" class="cust-btn" type="button" (click)="copyIntCompOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
         <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
@@ -160,17 +160,11 @@
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearAddFields();"><a>Cancel</a></button>
-        <!-- <button *ngIf="description != '' && typeOfCession != '' && riskName != ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
-        <button *ngIf="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Next</a></button> -->
         <button [class.cust-btn-disabled]="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();" [disabled]="description == '' || typeOfCession == '' || riskName == ''"><a>Next</a></button>
     </div>
 </app-modal>
 
 <!-- End Add Modal -->
-
-<!-- Risk LOV Modal -->
-
-<!-- End Risk LOV Modal -->
 
 <!-- Modification or Internal Competition Modal -->
 <app-modal class="hidden" id="modIntModal">

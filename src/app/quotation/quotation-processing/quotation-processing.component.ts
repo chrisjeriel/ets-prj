@@ -637,13 +637,13 @@ showCedingCompanyIntCompLOV() {
             "cedingId": this.copyCedingId,
             "copyingType": 'normal',
             "createDate": currentDate,
-            "createUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+            "createUser": this.ns.getCurrentUser(), //JSON.parse(window.localStorage.currentUser).username,
             "lineCd": this.copyQuoteLineCd,
             "quoteId": this.copyQuoteId,
             "quoteYear": new Date().getFullYear().toString(),
             "riskId": this.copyRiskId,
             "updateDate": currentDate,
-            "updateUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+            "updateUser": this.ns.getCurrentUser(), //JSON.parse(window.localStorage.currentUser).username,
         }
 
         this.quotationService.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
@@ -671,7 +671,8 @@ showCedingCompanyIntCompLOV() {
     }
 
     showCopyRiskLOV() {
-        $('#copyRiskLOV #modalBtn').trigger('click');
+        // $('#copyRiskLOV #modalBtn').trigger('click');
+        this.copyRiskLOV.modal.openNoClose();
     }
 
     setCopyRisks(data){
@@ -685,7 +686,7 @@ showCedingCompanyIntCompLOV() {
     }
 
     onClickIntCompCopy() {
-        this.exclude = [];     
+        // this.exclude = [];     
         
         /*for(var i = 0; i < this.lineCdList.length; i++){
             if(this.copyQuoteLineCd == this.lineCdList[i] && this.copyIntCompRiskName == this.riskIdList[i] && this.riskIdList[i] != ""){               
@@ -694,11 +695,11 @@ showCedingCompanyIntCompLOV() {
             }
         }*/
 
-        for(let i of this.validationList) {
+        /*for(let i of this.validationList) {
             if(this.copyQuoteLineCd == i.lineCd && this.copyIntCompRiskId == i.project.riskId) { // && this.typeOfCession == i.cessionDesc ?
                 this.exclude.push(i.quotationNo.split('-')[4]);
             }
-        }
+        }*/
 
         $('#copyIntCompModal > #modalBtn').trigger('click');
     }

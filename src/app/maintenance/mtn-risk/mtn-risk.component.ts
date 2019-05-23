@@ -132,7 +132,8 @@ export class MtnRiskComponent implements OnInit {
         ev: ev
       });
 
-      $(id + ' #modalBtn').trigger('click');
+      // $(id + ' #modalBtn').trigger('click');
+      this.modal.openNoClose();
     } else {
       this.maintenanceService.getMtnRisk(code).subscribe(data => {
         if(data['risk'] != null) {
@@ -145,7 +146,8 @@ export class MtnRiskComponent implements OnInit {
             ev: ev
           });
 
-          $(id + ' #modalBtn').trigger('click');
+          // $(id + ' #modalBtn').trigger('click');
+          this.modal.openNoClose();
         }
         
       });
