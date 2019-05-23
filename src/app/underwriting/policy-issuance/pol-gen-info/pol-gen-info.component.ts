@@ -670,7 +670,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                     showPolAlop: this.policyInfo.showPolAlop,
                     coInsuranceFlag: this.policyInfo.coInsuranceFlag,
                     principalId: this.policyInfo.principalId,
-                    cedingName: this.policyInfo.cedingName //add by paul
+                    cedingName: this.policyInfo.cedingName, //add by paul
+                    extensionTag: this.policyInfo.extensionTag //added by Earl
                   });
               });
 
@@ -715,7 +716,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
               showPolAlop: this.policyInfo.showPolAlop,
               coInsuranceFlag: this.policyInfo.coInsuranceFlag,
               principalId: this.policyInfo.principalId,
-              cedingName: this.policyInfo.cedingName //add by paul
+              cedingName: this.policyInfo.cedingName, //add by paul
+              extensionTag: this.policyInfo.extensionTag //added by Earl
             });
         });
 
