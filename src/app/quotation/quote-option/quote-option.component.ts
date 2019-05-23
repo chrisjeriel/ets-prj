@@ -667,7 +667,14 @@ saveQuoteOptionAll(cancelFlag?){
       this.coversDeductiblesData.disableAdd = false
     }
     else
-      this.coversDeductiblesData.disableAdd = true
+      this.coversDeductiblesData.disableAdd = true;
+
+    //NECO 05/23/2019  --Purpose: to disabled add button to covers deductible when there is no highlighted section cover
+    if(data !== null && data === ''){
+      console.log('yeet');
+      this.coversDeductiblesData.disableAdd = true;
+    }
+    //END NECO 05/23/2019
 
     if(data == null || data ==  '')
       this.coversDeductiblesData.tableData  = [];

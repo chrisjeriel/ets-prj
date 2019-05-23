@@ -126,7 +126,7 @@ export class QuoAlopComponent implements OnInit {
 
     quoteOptionsData: any = {
         tableData: [],
-        tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
+        tHeader: ['Option No', 'ALOP Rate (%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
         dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent', 'percent'],
         resizable: [false, false, true, false, false, false],
         pagination: true,
