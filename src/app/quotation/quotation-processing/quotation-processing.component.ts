@@ -245,10 +245,7 @@ export class QuotationProcessingComponent implements OnInit {
             this.fetchedData = records;
 
             this.validationList = records.filter(a => ['REQUESTED','IN PROGRESS','RELEASED','CONCLUDED','CONCLUDED (THRU ANOTHER CEDANT)',
-                                                'ON HOLD COVER','CONCLUDED (EXPIRED HOLD COVER)'].includes(a.status.toUpperCase()));
-            this.lineCdList = this.validationList.map(i => i.quotationNo.split('-')[0]);
-            this.cessionDescList = this.validationList.map(i => i.cessionDesc);
-            this.riskIdList = this.validationList.map(i => i.project.riskId);
+                                                       'ON HOLD COVER','CONCLUDED (EXPIRED HOLD COVER)'].includes(a.status.toUpperCase()));
 
             this.passData.tableData = records.filter(a => ['IN PROGRESS','REQUESTED','PENDING APPROVAL','REJECTED'].includes(a.status.toUpperCase()))
                                              .map(i => {
