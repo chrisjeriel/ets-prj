@@ -629,5 +629,14 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnOtherCharge', params, header);
     }
 
+    saveMtnTreaty(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreaty', params, header);
+    }
+
 }
 
