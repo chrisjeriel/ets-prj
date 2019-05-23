@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { NgbModal, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
@@ -11,6 +11,7 @@ import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { MtnReasonComponent } from '@app/maintenance/mtn-reason/mtn-reason.component';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
     templateUrl: './change-quote-status.component.html',
     styleUrls: ['./change-quote-status.component.css']
 })
-export class ChangeQuoteStatusComponent implements OnInit {
+export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     //NECO 05/22/2019
     @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
@@ -28,7 +29,10 @@ export class ChangeQuoteStatusComponent implements OnInit {
     @ViewChild('cessionMdl') cessionModal: any;
     @ViewChild(MtnRiskComponent) riskLovs: MtnRiskComponent;
     @ViewChild(CedingCompanyComponent) cedingCoLovs: CedingCompanyComponent;
-    @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+    @ViewChild('successDiagSave') successDiag: SucessDialogComponent;
+    @ViewChild('successDiagGeneric') genericDiag: SucessDialogComponent;
+    @ViewChild(MtnReasonComponent) mtnReason : MtnReasonComponent;
+    @ViewChild('myForm') form : any;
     //END NECO 05/22/2019
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
@@ -109,6 +113,10 @@ export class ChangeQuoteStatusComponent implements OnInit {
     tempQuoteNo: string[] = ['','','','',''];
     selectedQuote: any;
     emptySelect: boolean = false;
+    processBtnDisabled: boolean = true;
+    isIncomplete: boolean = true;
+    isType: boolean = false;
+    noDataFound: boolean = false;
     //END NECO 05/22/2019
     
     constructor(private qs: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService) {
@@ -121,12 +129,17 @@ export class ChangeQuoteStatusComponent implements OnInit {
         setTimeout(() => {$('#searchQuote > #modalBtn').trigger('click') }, 0);        
         this.first = true;
         
-        //this.getChangeQuote();
-        
+    }
+
+    ngAfterViewInit(){
+        setTimeout(()=>{
+            this.processBtnDisabled = false;
+        })
     }
 
     //NECO 05/22/2019
     showQuoteListLOV(){
+        this.isType = false;
         this.retrieveQuoteListing();
         this.modal.openNoClose();
     }
@@ -134,15 +147,30 @@ export class ChangeQuoteStatusComponent implements OnInit {
     retrieveQuoteListing(){
         this.quoteListingLOV.tableData = [];
         this.tableNonEditable.loadingFlag = true;
-        this.qs.getQuoProcessingData([{key: 'quotationNo', search: this.tempQuoteNo.join('%-%')}]).subscribe((data: any)=>{
-            this.quoteListingLOV.tableData = data.quotationList;
-            this.tableNonEditable.refreshTable();
-            this.tableNonEditable.loadingFlag = false;
+        this.qs.getQuoProcessingData([{key: 'quotationNo', search: this.noDataFound ? '' : this.tempQuoteNo.join('%-%')}]).subscribe((data: any)=>{
+            if(data.quotationList.length === 0){
+                this.noDataFound = true;
+                if(this.isType){
+                    setTimeout(()=>{
+                        this.showQuoteListLOV();
+                    },100);
+                }
+            }else{
+                this.noDataFound = false;
+                this.quoteListingLOV.tableData = data.quotationList;
+                this.tableNonEditable.refreshTable();
+                this.tableNonEditable.loadingFlag = false;
+                if(this.isType){
+                    this.selectedQuote = this.quoteListingLOV.tableData[0];
+                    this.isType = false;
+                    this.isIncomplete = false;
+                    this.selectQuote();
+                }
+            }
         });
     }
 
     quoteListRowClick(data){
-        console.log(data);
         if(data === null || (data !== null && Object.keys(data).length === 0)){
             this.emptySelect = true;
         }else{
@@ -182,7 +210,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
         if(emptyFlag){
             this.dialogIcon = 'info';
             this.dialogMessage = 'No values were entered';
-            this.successDiag.open();
+            this.genericDiag.open();
         }else{
             this.modalService.dismissAll();
             this.passData.tableData = [];
@@ -195,7 +223,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
                                          ]).subscribe((data:any) => {
                 this.passData.tableData = [];
                 this.records = data.quotationList;
-                console.log(this.records)
                 for(let rec of this.records){
                     this.passData.tableData.push(
                         {
@@ -210,11 +237,13 @@ export class ChangeQuoteStatusComponent implements OnInit {
                         }
                     );
                 }
+                //NECO 05/23/2019
                 this.passData.tableData = this.passData.tableData.filter(a => {return a.status.toUpperCase() === 'REQUESTED' || 
                                                             a.status.toUpperCase() === 'IN PROGRESS' || 
                                                             a.status.toUpperCase() === 'RELEASED' });
                 this.table.refreshTable();
                 this.table.loadingFlag = false;
+                //END NECO 05/23/2019
             });
         }
     }
@@ -231,7 +260,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
                 this.dialogIcon = "";
                 //$('#successModalBtn').trigger('click');
                 this.successDiag.open();
-                $('.ng-dirty').removeClass('ng-dirty');
+                this.form.control.markAsPristine();
+                //$('.ng-dirty').removeClass('ng-dirty');
                 //this.emptyVariables();
                 //this.getChangeQuote();
             }
@@ -261,12 +291,11 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     onClickProcess(){
-        console.log(this.selectedData);
         if(this.selectedData.statusCd == 9 && ((String(this.selectedData.reasonCd).trim().length === 0 && this.selectedData.description.length === 0)
                                                 || (this.selectedData.reasonCd === undefined && this.selectedData.description === undefined))){
             this.dialogIcon = 'info';
             this.dialogMessage = 'Please fill all required fields';
-            this.successDiag.open();
+            this.genericDiag.open();
         }else{
             $('#confirm-save #modalBtn2').trigger('click');
         }
@@ -282,7 +311,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
        }else{
            this.saveData.reasonCd = this.saveData.reasonCd == null ? "":this.selectedData.reasonCd;
        }
-       console.log(this.saveData.reasonCd)
        this.savetest();
     }
 
@@ -290,7 +318,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
         this.saveData.changeQuoteStatus = [];
         for(let data of this.passData.tableData){
             if(data.checked){
-                console.log(data);
                 this.saveData.changeQuoteStatus.push({
                     quoteId: data.quoteId
                 })
@@ -326,6 +353,11 @@ export class ChangeQuoteStatusComponent implements OnInit {
     setReason(data){
         this.selectedData.reasonCd = data.reasonCd;
         this.selectedData.description = data.description;
+        this.ns.lovLoader(data.ev, 0);
+        
+        if(data.hasOwnProperty('fromLOV')){
+            this.onClickAdd('#reason');   
+        }
     }
 
     showRiskLOV() {
@@ -352,7 +384,9 @@ export class ChangeQuoteStatusComponent implements OnInit {
             this.riskLovs.checkCode(this.searchParams.riskId, '#riskLOV', ev);
         } else if(field === 'cedingCo') {
             this.cedingCoLovs.checkCode(this.searchParams.cedingId === '' ? '' : String(this.searchParams.cedingId).padStart(3, '0'), ev, '#cedingCompanyLOV');
-        } 
+        } else if(field === 'reason'){
+            this.mtnReason.checkCode(this.selectedData.reasonCd, ev);
+        }
     }
 
      setRisks(data){
@@ -365,8 +399,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
         }
     }
 
-    setTypeOfCession(data) {     
-        console.log(data)   
+    setTypeOfCession(data) {    
         this.searchParams.cessionId = data.cessionId;
         this.searchParams.cessionDesc = data.description;
         this.ns.lovLoader(data.ev, 0);
@@ -417,8 +450,44 @@ export class ChangeQuoteStatusComponent implements OnInit {
             cessionDesc: '',
             cessionId: ''
         }
-        this.tempQuoteNo = ['','','','',''];
+        
         //END NECO 05/22/2019
     }
+
+    //NECO 05/23/2019
+    emptyQuoteNo(){
+        this.tempQuoteNo = ['','','','',''];
+    }
+
+    checkQuoteNoSearch(event, type){
+        this.isType = true;
+        if(event.target.value.length === 0){
+            this.isIncomplete = true;
+            this.emptyVar();
+        }else{
+            if(type === 'seqNo'){
+                this.tempQuoteNo[2] = String(this.tempQuoteNo[2]).padStart(5, '0');
+            }else if(type === 'revNo'){
+                this.tempQuoteNo[3] = String(this.tempQuoteNo[3]).padStart(2, '0');
+            }else if(type ==='cedingId'){
+                this.tempQuoteNo[4] = String(this.tempQuoteNo[4]).padStart(3, '0');
+            }
+            for(var i of this.tempQuoteNo){
+                if(i.length === 0){
+                    this.isIncomplete = true;
+                    break;
+                }else{
+                    this.isIncomplete = false;
+                }
+            }
+        }
+
+        if(!this.isIncomplete){
+            this.retrieveQuoteListing();
+        }
+    }
+
+    //END NECO 05/23/2019
+
 
 }
