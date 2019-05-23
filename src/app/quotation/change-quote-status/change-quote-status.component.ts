@@ -261,6 +261,7 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
                 //$('#successModalBtn').trigger('click');
                 this.successDiag.open();
                 this.form.control.markAsPristine();
+                this.table.selected = [];
                 //$('.ng-dirty').removeClass('ng-dirty');
                 //this.emptyVariables();
                 //this.getChangeQuote();
