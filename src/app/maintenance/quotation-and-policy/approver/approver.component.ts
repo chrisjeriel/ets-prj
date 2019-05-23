@@ -4,6 +4,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 
 @Component({
   selector: 'app-approver',
@@ -11,27 +13,25 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
   styleUrls: ['./approver.component.css']
 })
 export class ApproverComponent implements OnInit {
-@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild('table') table: CustEditableNonDatatableComponent;
+  @ViewChild('apprFn') apprFnTable: CustEditableNonDatatableComponent;
   @ViewChild(ConfirmSaveComponent) conSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+  @ViewChild(ModalComponent) modal: ModalComponent;
+  @ViewChild(MtnUsersComponent) usersLov:MtnUsersComponent;
   dialogIcon:string = '';
   dialogMessage: string = '';
-  info:any = {
-  	createUser : '',
-  	createDate : '',
-  	updateUser : '',
-  	updateDate : '',
-  }
+  info:any = null;
   passTable:any={
   	tableData:[],
   	widths:[150,'auto',1,1,'auto','auto'],
   	tHeader:['User ID','User Name','User Group','Description','Email','Remarks'],
   	uneditable:[false,true,true,true,true,false],
-  	dataTypes:['text','text','sequence-3','text','text','text'],
+  	dataTypes:['lovInput','text','sequence-3','text','text','text'],
   	keys:['userId','userName','userGrp','userGrpDesc','emailAddress','remarks'],
   	addFlag: true,
-  	deleteFlag:true,
+  	genericBtn:'Delete',
   	paginateFlag:true,
   	infoFlag:true,
   	searchFlag:true,
@@ -47,9 +47,37 @@ export class ApproverComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-  	}
+      showMG: 1
+  	},
+  	pageID: '1',
+  	magnifyingGlass:['userId'],
+  }
+
+  passTablFn:any={
+  	tableData:[],
+  	widths:[1,300],
+  	tHeader:['Approval Fn Code','Description'],
+  	uneditable:[false,true],
+  	dataTypes:['text','text',],
+  	keys:['approvalCd','description'],
+  	addFlag: true,
+  	deleteFlag: true,
+  	paginateFlag:true,
+  	infoFlag:true,
+  	searchFlag:true,
+  	pageLength: 5,
+  	nData:{
+  	  approvalCd: '',
+  	  description: '',
+      createUser: this.ns.getCurrentUser(),
+      createDate: this.ns.toDateTimeString(0),
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0),
+  	},
+  	pageID: '2'
   }
   cancelFlag:boolean;
+
 
   constructor(private ns:NotesService,private ms:MaintenanceService) { }
 
@@ -63,6 +91,7 @@ export class ApproverComponent implements OnInit {
   		this.passTable.tableData.forEach(a=>{
   			a.createDate = this.ns.toDateTimeString(a.createDate);
   			a.updateDate = this.ns.toDateTimeString(a.updateDate);
+  			a.uneditable = ['userId']
   		})
   		this.table.refreshTable();
   	})
@@ -82,6 +111,7 @@ export class ApproverComponent implements OnInit {
             this.dialogIcon = "success";
             this.successDialog.open();
             this.getApprover();
+            this.table.markAsPristine();
         }else{
             this.dialogIcon = "error";
             this.successDialog.open();
@@ -97,5 +127,67 @@ export class ApproverComponent implements OnInit {
   	this.cnclBtn.clickCancel();
   }
 
+  delete(){
+  	this.table.selected = [this.table.indvSelect];
+  	this.table.confirmDelete();
+  }
+
+  openUsersModal(data){
+  	this.hideUser = this.passTable.tableData.map(a=>a.userId);
+  	this.usersLov.modal.openNoClose();
+  }
+
+  setUser(users){
+  	if(users.userId == ''){
+  		this.ns.lovLoader(users.ev,0);
+  		this.passTable.tableData.forEach(a=>a.userId = a.showMG == 1 ? '':a.userId);
+  		return;
+  	}
+  	users = Array.isArray(users) ? users : [users];
+  	this.passTable.tableData = this.passTable.tableData.filter(a=>a.showMG != 1);
+  	for(let user of users){
+  		this.passTable.tableData.push({
+  		  userId: user.userId,
+	  	  userName: user.userName,
+	      userGrp: user.userGrp,
+	      userGrpDesc: user.userGrpDesc,
+	      emailAddress: user.emailAddress,
+	      remarks:'',
+	      createUser: this.ns.getCurrentUser(),
+	      createDate: this.ns.toDateTimeString(0),
+	      updateUser: this.ns.getCurrentUser(),
+	      updateDate: this.ns.toDateTimeString(0),
+	      edited: true,
+	      add: true,
+	      uneditable: ['userId']
+  		});
+  	}
+  	this.table.markAsDirty();
+  	this.table.refreshTable();
+  }
+  hideUser: string[] = [];
+  checkUserCode(data){
+  	if(data.hasOwnProperty('lovInput')) {
+      this.hideUser = this.passTable.tableData.map(a=> {
+      	if(a.showMG != 1)
+	      	return a.userId
+	  });
+      data.ev['index'] = data.index;
+      this.usersLov.checkCode(data.ev.target.value, data.ev);
+    }
+  }
+
+// approval function
+
+  openApprovalFn(){
+  	this.apprFnTable.loadingFlag = true;
+  	this.ms.getMtnApproverFn(this.table.indvSelect.userId).subscribe(a=>{
+  		this.passTablFn.tableData = a['approverFnList']
+  		this.apprFnTable.refreshTable();
+  	})
+  	this.modal.openNoClose();
+  }
+
+  
 
 }

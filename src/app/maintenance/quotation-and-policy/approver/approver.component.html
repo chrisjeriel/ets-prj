@@ -4,9 +4,10 @@
         <ngb-tab title="Approver">
             <ng-template ngbTabContent>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
-	                	<app-cust-editable-non-datatable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="info=$event"></app-cust-editable-non-datatable>
+	                	<app-cust-editable-non-datatable #table [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="info=$event"
+                        (clickLOV)="openUsersModal($event)" (tableDataChange)="checkUserCode($event)"></app-cust-editable-non-datatable>
                     <div class="w-100 text-center my-2" style="margin-top: 30px !important">
-                        <button class="cust-btn" >Approval Function</button>
+                        <button class="cust-btn" (click)="openApprovalFn()" [disabled]="info==null">Approval Function</button>
                     </div>
 	                <div class="w-100 text-center my-2">
                     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
@@ -31,6 +32,25 @@
     </ngb-tabset>
 </div>
 
-<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-confirm-save (onYes)="save()" ></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-mtn-users [lovCheckBox]="true" (selectedData)="setUser($event)" [hideUser]="hideUser"></app-mtn-users>
+
+<app-modal class="d-none">
+    <div header>Approval Function</div>
+    <div body>
+        <div class="d-flex w-100 justify-content-center">
+            <label class="col-sm-2 mb-0 pb-0" style="padding: 0.25rem 0.5rem" >User ID</label>
+            <input class="form-control form-control-sm col-sm-3" type="text" disabled="disabled" [ngModel]="table?.indvSelect?.userId">
+        </div>
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Approval Function</legend>
+            <app-cust-editable-non-datatable #apprFn class="d-block mt-3" [passData]="passTablFn" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="info=$event"></app-cust-editable-non-datatable>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" (click)="modal.closeModal()">Cancel</button>
+        <button class="cust-btn" (click)="onClickSaveModal()">Save</button>
+    </div>
+</app-modal>

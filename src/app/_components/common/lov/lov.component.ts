@@ -515,6 +515,14 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a["userGroups"];
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'approvalFn'){
+      this.passTable.tHeader = ['Approval Fn Code','Description', 'Remarks'];
+      this.passTable.dataTypes = [ 'text','text','text'];
+      this.passTable.keys = ['approvalCd','description','remarks'];
+      this.mtnService.getMtnUserGrp().subscribe(a=>{
+        this.passTable.tableData = a["userGroups"];
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;
