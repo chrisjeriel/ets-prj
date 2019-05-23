@@ -6,6 +6,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-approver',
@@ -15,11 +16,13 @@ import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.componen
 export class ApproverComponent implements OnInit {
   @ViewChild('table') table: CustEditableNonDatatableComponent;
   @ViewChild('apprFn') apprFnTable: CustEditableNonDatatableComponent;
-  @ViewChild(ConfirmSaveComponent) conSave: ConfirmSaveComponent;
+  @ViewChild('conSave') conSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(ModalComponent) modal: ModalComponent;
   @ViewChild(MtnUsersComponent) usersLov:MtnUsersComponent;
+  @ViewChild(LovComponent) lov:LovComponent;
+
   dialogIcon:string = '';
   dialogMessage: string = '';
   info:any = null;
@@ -58,7 +61,7 @@ export class ApproverComponent implements OnInit {
   	widths:[1,300],
   	tHeader:['Approval Fn Code','Description'],
   	uneditable:[false,true],
-  	dataTypes:['text','text',],
+  	dataTypes:['lovInput','text',],
   	keys:['approvalCd','description'],
   	addFlag: true,
   	deleteFlag: true,
@@ -73,8 +76,11 @@ export class ApproverComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
+      showMG: 1
   	},
-  	pageID: '2'
+  	pageID: '2',
+  	magnifyingGlass:['approvalCd'],
+  	checkFlag: true
   }
   cancelFlag:boolean;
 
@@ -178,16 +184,87 @@ export class ApproverComponent implements OnInit {
   }
 
 // approval function
+  passLOV:any = {
+  	selector:'approvalFn',
 
+  }
+  @ViewChild('conSaveFn') conSaveFn: ConfirmSaveComponent;
   openApprovalFn(){
   	this.apprFnTable.loadingFlag = true;
   	this.ms.getMtnApproverFn(this.table.indvSelect.userId).subscribe(a=>{
   		this.passTablFn.tableData = a['approverFnList']
+  		this.passTablFn.tableData.forEach(a=>a.uneditable=['approvalCd'])
   		this.apprFnTable.refreshTable();
   	})
   	this.modal.openNoClose();
   }
 
-  
+  openApprovalModal($event){
+  	this.passLOV.hide = this.passTablFn.tableData.map(a=>a.approvalCd)
+  	this.lov.openLOV();
+  }
+
+  setApprovalCd(data){
+  	console.log(data);
+  	if(data.data == null){
+  		this.ns.lovLoader(data.ev,0);
+  		this.passTablFn.tableData.forEach(a=>a.approvalCd = a.showMG == 1 ? '':a.approvalCd);
+  		return;
+  	}
+  	data.data = Array.isArray(data.data) ? data.data : [data.data];
+  	this.passTablFn.tableData = this.passTablFn.tableData.filter(a=>a.showMG != 1);
+  	for(let d of data.data){
+  		this.passTablFn.tableData.push({
+  		  approvalCd: d.approvalCd,
+  		  description: d.description,
+	      createUser: this.ns.getCurrentUser(),
+	      createDate: this.ns.toDateTimeString(0),
+	      updateUser: this.ns.getCurrentUser(),
+	      updateDate: this.ns.toDateTimeString(0),
+	      edited: true,
+	      add: true,
+	      uneditable: ['approvalCd']
+  		});
+  	}
+  	this.apprFnTable.markAsDirty();
+  	this.apprFnTable.refreshTable();
+  }
+
+  saveFn(){
+  	let params: any = {
+  		userId: this.table.indvSelect.userId,
+  		saveList:[],
+  		delList:[]
+  	}
+  	params.saveList = this.passTablFn.tableData.filter(a=>a.edited && !a.deleted);
+  	params.saveList.forEach(a=>a.updateUser = this.ns.getCurrentUser());
+  	params.delList = this.passTablFn.tableData.filter(a=>a.deleted);
+  	this.ms.saveMtnApproverFn(params).subscribe(a=>{
+  		if(a['returnCode'] == -1){
+            this.dialogIcon = "success";
+            this.successDialog.open();
+            this.apprFnTable.markAsPristine();
+        }else{
+            this.dialogIcon = "error";
+            this.successDialog.open();
+        }
+  	});
+  }
+
+  onClickSaveFn(){
+  	this.conSaveFn.confirmModal();
+  }
+
+  checkApprovalCode(data){
+  	if(data.hasOwnProperty('lovInput')) {
+      this.passLOV.hide = this.passTablFn.tableData.map(a=> {
+      	if(a.showMG != 1)
+	      	return a.approvalCd
+	  });
+	  this.passLOV.approvalCd = data.ev.target.value;
+      //data.ev['index'] = data.index;
+      this.lov.checkCode('approvalCd',null, null, null, null, null, data.ev);
+    }
+  }
 
 }

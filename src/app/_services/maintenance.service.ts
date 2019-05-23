@@ -648,5 +648,20 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveApproverFunction", {params});
     }
 
+    getMtnApprovalLOV(approvalCd?){
+    	const params = new HttpParams()
+		     .set('approvalCd', (approvalCd === null || approvalCd === undefined ? '' : approvalCd))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnApproval", {params});
+    }
+
+    saveMtnApproverFn(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveApproverFunction', params, header);
+    }
+
 }
 

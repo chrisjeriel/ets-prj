@@ -150,6 +150,7 @@ import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
+import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
 
 const appRoutes: Routes = [
 
@@ -311,6 +312,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
     { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent },
     { path: 'mtn-approver', component: ApproverComponent },
+    { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
