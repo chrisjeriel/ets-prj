@@ -7,7 +7,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '@environments/environment';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
 import * as alasql from 'alasql';
+import * as jsPDF from 'jspdf'
 import { finalize } from 'rxjs/operators';
+
 
 
 @Component({
@@ -166,18 +168,19 @@ export class ReadyForPrintingComponent implements OnInit {
     this.printModal.reports = true;
     this.btnDisabled = true;
     this.retrieveQuoteListingMethod();
-
-   /* this.merge(['C:\\ETS\\REPORTS\\Output\\QUOTER009A_292_2019-05-23T09.32.28.068.pdf','C:\\ETS\\REPORTS\\Output\\QUOTER009A_292_2019-05-23T09.32.01.261.pdf'],'C:\\ETS\\REPORTS\\Output\\File_Output.pdf',function(err){
-
-        if(err)
-        return console.log(err);
-
-        console.log('Successfully merged!');
-
-    });*/
+    this.download();
   }
 
-  
+   download() {
+        var doc = new jsPDF();
+        doc.text(20, 20, 'Hello world!');
+        doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
+        doc.addPage();
+        doc.text(20, 20, 'Do you like that?');
+
+        // Save the PDF
+        doc.save('Test.pdf');
+    }
 
   retrieveQuoteListingMethod(){
     this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
@@ -421,8 +424,6 @@ export class ReadyForPrintingComponent implements OnInit {
 
 
 }
-
-
 
   validate(obj){
           var req = ['printerName','noOfcopies'];
