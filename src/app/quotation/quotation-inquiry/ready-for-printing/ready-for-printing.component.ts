@@ -167,8 +167,17 @@ export class ReadyForPrintingComponent implements OnInit {
     this.btnDisabled = true;
     this.retrieveQuoteListingMethod();
 
+   /* this.merge(['C:\\ETS\\REPORTS\\Output\\QUOTER009A_292_2019-05-23T09.32.28.068.pdf','C:\\ETS\\REPORTS\\Output\\QUOTER009A_292_2019-05-23T09.32.01.261.pdf'],'C:\\ETS\\REPORTS\\Output\\File_Output.pdf',function(err){
 
+        if(err)
+        return console.log(err);
+
+        console.log('Successfully merged!');
+
+    });*/
   }
+
+  
 
   retrieveQuoteListingMethod(){
     this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
@@ -208,6 +217,7 @@ export class ReadyForPrintingComponent implements OnInit {
   //Method for DB query
   searchQuery(searchParams){
         this.searchParams = searchParams;
+        console.log(this.searchParams);
         this.passData.tableData = [];
         this.btnDisabled = true;
         this.retrieveQuoteListingMethod();
@@ -331,7 +341,7 @@ export class ReadyForPrintingComponent implements OnInit {
      error => {
             if (this.isEmptyObject(error)) {
                      } else {
-                         this.modalService.dismissAll()
+                         this.modalService.dismissAll();
                          this.dialogIcon = "error-message";
                          this.dialogMessage = "Error generating PDF file(s)";
                          this.selectedOnOk = true;
@@ -396,8 +406,6 @@ export class ReadyForPrintingComponent implements OnInit {
              var downloadURL = window.URL.createObjectURL(finalBlob);
              window.open(downloadURL);
 
-
-            
            /* const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
             iframe.src = downloadURL;

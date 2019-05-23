@@ -8,7 +8,7 @@ export const environment = {
   successMessage: "Successfully Saved!",
   /*prodApiUrl: 'http://192.168.99.163:8888/api'*/
 
-  prodApiUrl: 'http://192.10.10.210:8888/api'
+  prodApiUrl: 'http://localhost:8888/api'
 
 };
 
