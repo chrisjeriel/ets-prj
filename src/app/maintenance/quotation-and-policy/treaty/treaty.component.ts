@@ -25,7 +25,7 @@ export class TreatyComponent implements OnInit, OnDestroy {
 	  	dataTypes: ['sequence-2', 'text', 'text', 'select', 'checkbox', 'text'],
 	  	keys: ['treatyId', 'treatyName', 'treatyAbbr', 'treatyType', 'activeTag', 'remarks'],
 	  	widths: ['1','150','1','120','1','auto'],
-	  	uneditable: [true,false,false,false,false],
+	  	uneditable: [true,false,false,false,false,false],
 	  	nData: {
 	  		treatyId: '',
 	  		treatyName: '',

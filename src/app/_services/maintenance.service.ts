@@ -638,5 +638,12 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreaty', params, header);
     }
 
+    getMtnRetAmt(lineCd, lineClassCd){
+		const params = new HttpParams()
+		     		.set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnRetAmt", {params});
+	}
 }
 

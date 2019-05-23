@@ -571,11 +571,14 @@ input:-moz-read-only { /* For Firefox */
 input:read-only {
     background-color: #f5f5f5 !important;
     cursor: not-allowed;
-
-
 }
 
 textarea:read-only {
+    background-color: #f5f5f5 !important;
+    cursor: not-allowed;
+}
+
+select:disabled {
     background-color: #f5f5f5 !important;
     cursor: not-allowed;
 }
