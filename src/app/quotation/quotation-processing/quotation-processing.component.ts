@@ -203,6 +203,7 @@ export class QuotationProcessingComponent implements OnInit {
     copyQuoteId: any = "";
     copyQuoteLineCd: any = "";
     copyQuoteYear: any = "";
+    copyCessionDesc: any = "";
     copyCedingId: any = "";
     copyCedingName: any = "";
     copyRiskId: any = "";
@@ -351,7 +352,7 @@ export class QuotationProcessingComponent implements OnInit {
         }*/
 
         for(let i of this.validationList) {
-            if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && this.riskCd == i.project.riskId) {
+            if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && this.riskCd == i.project.riskId) { // add year
                 this.existingQuotationNo.push(i.quotationNo);
                 this.exclude.push(i.quotationNo.split('-')[4]);
             }
@@ -423,8 +424,7 @@ export class QuotationProcessingComponent implements OnInit {
 
 onRowClick(event) {    
     if(event != null){
-        for(let i of this.fetchedData) {
-
+        for(let i of this.validationList) {
            if(i.quotationNo == event.quotationNo) {               
                this.tempCedingId = i.quotationNo.split('-')[4];
 
@@ -432,6 +432,7 @@ onRowClick(event) {
                this.copyFromQuotationNo = i.quotationNo;
                this.copyQuoteLineCd = i.quotationNo.split('-')[0];
                this.copyQuoteYear = i.quotationNo.split('-')[1];
+               this.copyCessionDesc = i.cessionDesc;
 
                this.copyIntCompRiskId = i.project.riskId;
                this.copyIntCompRiskName = i.project.riskName;
@@ -682,21 +683,18 @@ showCedingCompanyIntCompLOV() {
         }
     }
 
-    onClickIntCompCopy() {
-        // this.exclude = [];     
-        
-        /*for(var i = 0; i < this.lineCdList.length; i++){
-            if(this.copyQuoteLineCd == this.lineCdList[i] && this.copyIntCompRiskName == this.riskIdList[i] && this.riskIdList[i] != ""){               
-                console.log(this.passData.tableData[i]);
-                this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
-            }
-        }*/
+    onClickIntCompCopy(fromScreen?) {
+        if(fromScreen !== undefined) {
+            this.exclude = [];
 
-        /*for(let i of this.validationList) {
-            if(this.copyQuoteLineCd == i.lineCd && this.copyIntCompRiskId == i.project.riskId) { // && this.typeOfCession == i.cessionDesc ?
-                this.exclude.push(i.quotationNo.split('-')[4]);
-            }
-        }*/
+            var sq = this.selectedQuotation;
+
+            for(let i of this.validationList) {
+                if(sq.lineCd == i.lineCd && sq.quotationNo.split('T')[1] == i.quotationNo.split('T')[1] && sq.project.riskId == i.project.riskId && sq.cessionDesc == i.cessionDesc) {
+                    this.exclude.push(i.quotationNo.split('-')[4]);
+                }
+            }    
+        }
 
         $('#copyIntCompModal > #modalBtn').trigger('click');
     }
