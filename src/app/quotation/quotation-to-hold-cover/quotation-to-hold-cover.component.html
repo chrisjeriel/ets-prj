@@ -72,7 +72,7 @@
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Period From</label>
-													<div class="col-sm r-only dp-cont"  style="margin-left: 0px !important">
+													<div class="warn col-sm r-only dp-cont"  style="margin-left: 0px !important">
 							                            <datepicker id="perFrom" [type]="'date'" [value]="periodFromArr[0]" [disabled]="fieldIconDsbl" (valueChange)="periodFromArr[0]=$event; setPeriodTo()" [required]="true"></datepicker>
 							                        </div>
 							                        <div class="warn col-sm-3 r-only dp-cont">
@@ -110,7 +110,7 @@
 										</div>
 										<div class="input-group" style="margin-bottom: -14px !important;">
 											<label class="form-control-sm col-sm-2" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
-											<input type="text" class="form-control form-control-sm r-only" maxlength="25" readonly>
+											<input type="text" class="form-control form-control-sm col-sm r-only" maxlength="25" readonly [(ngModel)]="holdCover.compRefHoldCovNo">
 											<label class="form-control-sm col-sm-2">Prepared By</label>
 											<input type="text" class="form-control form-control-sm col-sm-7" maxlength="50" readonly tabindex="-1" [(ngModel)]="holdCover.preparedBy">
 										</div>
@@ -132,7 +132,7 @@
 					<div class="form-group col-sm">
 						<div class="col-md-12 text-center">
 							<div class="cust-btn-container" style="margin-top: 10px !important;">
-								<button type="button" class="cust-btn">Cancel Hold Cover</button>
+								<button type="button" class="cust-btn" [disabled]="disableCancelHc">Cancel Hold Cover</button>
 								<button type="button" class="cust-btn">Approval</button>
 								<button type="button" class="cust-btn" (click)="onClickSave()">Save</button>
 							</div>

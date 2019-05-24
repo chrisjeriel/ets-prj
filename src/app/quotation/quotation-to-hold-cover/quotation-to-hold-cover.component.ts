@@ -102,6 +102,8 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 	dialogMessage	: string = '';
 	dialogIcon		: string = '';
 	cancelFlag		: boolean;
+	disableCancelHc	: boolean = true;
+	fromOnInit		: boolean = false;
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 				private ns : NotesService, private router: Router) { 
@@ -109,6 +111,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 
   	ngOnInit() {
   		this.titleService.setTitle('Quo | Quotation to Hold Cover');
+  		this.fromOnInit = true;
   		this.getQuoteList();
   	}
 
@@ -121,6 +124,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 			parameter = this.searchParams;
 		}
 
+		console.log(parameter);
   		const subRes =  forkJoin(this.quotationService.getQuoProcessingData(parameter),this.quotationService.getQuotationHoldCoverList([]))
   								.pipe(map(([quo, hc]) => { return { quo, hc };}));
 
@@ -128,7 +132,9 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   			console.log(data);
   			var quoList = data['quo']['quotationList'];
   			var hcList 	= data['hc']['quotationList'];
-  			this.passDataQuoteLOV.tableData = quoList.filter(i => i.status.toUpperCase() == 'RELEASED').map(i => {i.riskName = i.project.riskName; return i;});
+  			quoList = quoList.filter(i => i.status.toUpperCase() == 'RELEASED').map(i => {i.riskName = i.project.riskName; return i;});
+  			
+  			this.passDataQuoteLOV.tableData = quoList;
 			this.table.refreshTable();
 
 			if(quoList.length == 1){
@@ -160,10 +166,13 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 			  		this.holdCover.reqBy			 = selectedRow[0].holdCover.reqBy;
 			  		this.holdCover.reqDate			 = (selectedRow[0].holdCover.reqDate == null)?'':this.ns.toDateTimeString(selectedRow[0].holdCover.reqDate).split('T')[0];
 			  		this.holdCover.status			 = selectedRow[0].holdCover.status;
-			  		console.log('entered here');
+
+			  		(this.holdCover.status.toUpperCase() == 'RELEASED' || this.holdCover.status.toUpperCase() == 'IN FORCE' || this.holdCover.status.toUpperCase() == 'PENDING APPROVAL'
+			  		|| this.holdCover.status.toUpperCase() == 'APPROVED' || this.holdCover.status.toUpperCase() == 'REJECTED')? this.disableCancelHc = false : this.disableCancelHc = true;
+				
 				}else{
+					this.disableCancelHc = true;
 					this.clear();
-					console.log('entered else');
 				}
 
 			}else{
@@ -172,6 +181,9 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 				this.quoteInfo.riskName		= '';
 				this.newHc(true);
 				this.clear();
+				this.disableCancelHc = true;
+				(quoList.length == 0)?this.getQuoteList():'';
+				(quoList.lenght == 0)?this.showQuoteLov():'';
 			}
   		});
 
@@ -227,7 +239,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 	  				quoNo += '%'+ parseInt(data) + '%-';
 	  			}
 	  		});
-
+	  		console.log(quoNo);
 	  		this.getQuoteList([{ key: 'quotationNo', search: quoNo }]);
 	  		this.modalService.dismissAll();
   		}
@@ -276,6 +288,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 		} 
 
 		if(this.searchArr.includes('')) {
+			console.log('entered here includes');
 			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
 		}
 		
@@ -298,6 +311,10 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 		this.holdCover.reqBy			 = '';
 		this.holdCover.reqDate			 = '';
 		this.holdCover.status			 = '';
+		this.periodFromArr				 = [];
+		this.periodToArr				 = [];
+		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+		$('.warn').find('input').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 	}
 
 	setPeriodTo(){
