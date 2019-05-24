@@ -233,7 +233,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         if(this.passData.nData !== undefined)
             this.passData.nData.add = true;
         //temporary fix delete this later
-        setTimeout(()=>{this.refreshTable()},2000)
+        setTimeout(()=>{this.refreshTable(undefined, true)},2000)
 
     }
 
@@ -275,7 +275,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.form.control.markAsDirty();
             $('#cust-scroll').addClass('ng-dirty');
             this.selected = [];
-            this.refreshTable();
+            this.refreshTable(undefined, true);
             this.search(this.searchString);
             this.tableDataChange.emit(this.passData.tableData);
             this.uploadedFiles.emit(this.filesToUpload);
