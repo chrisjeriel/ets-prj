@@ -50,7 +50,7 @@ export class TreatyShareComponent implements OnInit {
 	  	tHeader: ['Treaty No', 'Treaty', 'Comm Rate (%)', 'Sort Seq'],
 	  	dataTypes: ['lovInput', 'text', 'percent', 'number'],
 	  	keys: ['treatyId','treatyName','commRate','sortSeq'],
-	  	uneditable: [false,true,false,false],
+	  	uneditable: [true,true,false,false],
 	  	widths: ['auto','auto','auto','auto'],
 	  	nData: {
 	  		showMG: 1,
@@ -80,7 +80,7 @@ export class TreatyShareComponent implements OnInit {
 	  	tHeader: ['Company No', 'Company Name', 'Abbreviation', 'Share (%)', 'Sort Sequence', 'Remarks'],
 	  	dataTypes: ['lovInput', 'text', 'text', 'percent', 'number', 'text'],
 	  	keys: ['trtyCedId','trtyCedName','trtyCedAbbr','pctShare','sortSeq','remarks'],
-	  	uneditable: [false,true,true,false,false,false],
+	  	uneditable: [true,true,true,false,false,false],
 	  	widths: ['auto','auto','auto','auto'],
 	  	nData: {
 	  		showMG: 1,
@@ -101,7 +101,7 @@ export class TreatyShareComponent implements OnInit {
   		searchFlag: true,
     	genericBtn: 'Delete',
     	disableGeneric: true,
-	  	disableAdd: false,
+	  	disableAdd: true,
 	  	magnifyingGlass: ['trtyCedId'],
 	  	pageID: 'treatyShareTab'
   	}
@@ -111,7 +111,7 @@ export class TreatyShareComponent implements OnInit {
 	  	tHeader: ['Company No', 'Company Name', '1st Retention', '2nd Retention', 'Active', 'Inactive Date', 'Remarks'],
 	  	dataTypes: ['lovInput', 'text', 'number', 'number', 'checkbox', 'date', 'text'],
 	  	keys: ['cedingId','cedingName','retLine1','retLine2','activeTag','inactiveDate','remarks'],
-	  	uneditable: [false,true,false,false,false,true,false], //membership tag = y
+	  	uneditable: [false,true,false,false,false,true,false], //membership tag = y , multipleselect
 	  	widths: ['auto','auto','auto','auto'],
 	  	nData: {
 	  		showMG: 1,
@@ -141,27 +141,58 @@ export class TreatyShareComponent implements OnInit {
   	treatyCommLOVRow: number;
   	treatyShareLOVRow: number;
   	cedingRetentionLOWRow: number;
+  	treatyYearSelected: any = null;
+  	treatyCommSelected: any = null;
+  	mtnTreatyComm: any[] = [];
 
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
 	ngOnInit() {
 		this.alignTreatyYear();
-		
+
 		setTimeout(() => {
 			this.treatyYearTable.refreshTable();
 			this.treatyCommTable.refreshTable();
 			this.treatyShareTable.refreshTable();
-			this.cedingRetentionTable.refreshTable();
+			// this.cedingRetentionTable.refreshTable();
 			
+			this.getMtnTreatyComm();
 		}, 0);
 	}
 
-	/*sectionCoversLOV(data){
-	    // this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
-	    $('#sectionCoversLOV #modalBtn').trigger('click');
-	    //data.tableData = this.passData.tableData;
-	    this.treatyLOVRow = data.index;
-	}*/
+	getMtnTreatyComm() {
+		this.treatyYearTable.overlayLoader = true;
+		this.ms.getMtnTreatyComm(null).subscribe(data => {
+			console.log(data);
+			this.mtnTreatyComm = data['treatyList'];
+			var td = data['treatyList'].map(a => a.treatyYear);
+			td = td.filter((a, i) => { return td.indexOf(a) == i })
+				   .sort((a, b) => b - a)
+				   .map(a => { return { treatyYear: a } });
+
+			this.treatyYearData.tableData = td;
+			this.treatyYearTable.refreshTable();
+			this.alignTreatyYear();
+			this.treatyYearTable.onRowClick(null, this.treatyYearData.tableData[0]);
+			this.treatyYearData.disableGeneric = false;
+		});
+	}
+
+	getMtnTreatyCommRate() {
+		if(this.treatyYearSelected != null) {
+			this.treatyCommData.tableData = this.mtnTreatyComm.filter(a => a.treatyYear == this.treatyYearSelected.treatyYear)
+															  .map(a => { a.treatyNo = String(a.treatyNo).padStart(2, '0'); return a; });
+			this.treatyCommTable.refreshTable();
+			this.treatyCommTable.onRowClick(null, this.treatyCommData.tableData[0]);
+			this.treatyCommData.disableGeneric = false;
+		}
+	}
+
+	onTreatyYearRowClick(ev) {
+		this.treatyYearSelected = ev;
+		this.treatyYearData.disableGeneric = this.treatyYearSelected == null ? true : false;
+		this.getMtnTreatyCommRate();
+	}
 
 	alignTreatyYear() {
 		setTimeout(() => {

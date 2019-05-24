@@ -645,5 +645,12 @@ export class MaintenanceService{
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnRetAmt", {params});
 	}
+
+	getMtnTreatyComm(year) {
+		const params = new HttpParams()
+		     		.set('quoteYear', (year === null || year === undefined ? '' : year));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyCommission", {params});
+	}
 }
 
