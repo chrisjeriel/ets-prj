@@ -56,7 +56,7 @@
                     <legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
                         <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover" (newClick)="selectedEndt=$event;updateDed($event)" class="d-block py-2">
                             <ng-container controls-l>
-                                <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null" (click)="clickModal($event)">Copy Endt</button>
+                                <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null" [disabled]="opId===null" (click)="clickModal($event)">Copy Endt</button>
                                 <!-- <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button> -->
                             </ng-container>
                         </app-cust-editable-non-datatable>
@@ -145,7 +145,7 @@
 </app-modal> -->
 
 <app-confirm-save id="endtSave" (onYes)="saveData()"></app-confirm-save>
-<app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null" [icon]="dialogIcon"></app-sucess-dialog>
+<app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveData('cancel')" [url]="cancelLink" ></app-cancel-button>
 
 
