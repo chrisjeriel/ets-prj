@@ -9,7 +9,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="treaty-year-table" class="col-sm-6">
-									<app-cust-editable-non-datatable [passData]="treatyYearData" (tableDataChange)="treatyYearData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (add)="alignTreatyYear()" (onDelete)="table.onClickDelete('force'); treatyYearData.disableGeneric=true;">
+									<app-cust-editable-non-datatable #treatyYearTable [passData]="treatyYearData" (tableDataChange)="treatyYearData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (add)="alignTreatyYear()" (onDelete)="table.onClickDelete('force'); treatyYearData.disableGeneric=true;">
 										<ng-container controls-l>
 											<button type="button" class="cust-btn"><a>Copy Setup</a></button>
 										</ng-container>
@@ -23,7 +23,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="treaty-comm-table" class="col-sm-6">
-									<app-cust-editable-non-datatable [passData]="treatyCommData" (tableDataChange)="treatyCommData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); treatyCommData.disableGeneric=true;" (clickLOV)="openTreatyLOV($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #treatyCommTable [passData]="treatyCommData" (tableDataChange)="treatyCommData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); treatyCommData.disableGeneric=true;" (clickLOV)="openTreatyLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 								<div class="col-sm-3"></div>
 							</div>
@@ -41,7 +41,17 @@
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div id="treaty-share-table" class="col-sm">
-									<app-cust-editable-non-datatable [passData]="treatyShareData" (tableDataChange)="treatyShareData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); treatyShareData.disableGeneric=true;"></app-cust-editable-non-datatable><!--  (clickLOV)="openTreatyLOV($event)" -->
+									<app-cust-editable-non-datatable #treatyShareTable [passData]="treatyShareData" (tableDataChange)="treatyShareData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); treatyShareData.disableGeneric=true;"></app-cust-editable-non-datatable><!--  (clickLOV)="openTreatyLOV($event)" -->
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-sm">
+									<div class="col-md-12 text-center">
+										<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+										</div>
+									</div>
 								</div>
 							</div>
 						</fieldset>
@@ -56,7 +66,17 @@
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div id="ceding-retention-table" class="col-sm">
-									<!-- <app-cust-editable-non-datatable [passData]="treatyData" (tableDataChange)="treatyData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); treatyData.disableGeneric=true;"></app-cust-editable-non-datatable> -->
+									<app-cust-editable-non-datatable #cedingRetentionTable [passData]="cedingRetentionData" (tableDataChange)="cedingRetentionData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); cedingRetentionData.disableGeneric=true;"></app-cust-editable-non-datatable><!--  (clickLOV)="openTreatyLOV($event)" -->
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-sm">
+									<div class="col-md-12 text-center">
+										<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+										</div>
+									</div>
 								</div>
 							</div>
 						</fieldset>

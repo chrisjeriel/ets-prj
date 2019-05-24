@@ -12,7 +12,10 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
   styleUrls: ['./treaty-share.component.css']
 })
 export class TreatyShareComponent implements OnInit {
-	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+	@ViewChild('treatyYearTable') treatyYearTable: CustEditableNonDatatableComponent;
+	@ViewChild('treatyCommTable') treatyCommTable: CustEditableNonDatatableComponent;
+	@ViewChild('treatyShareTable') treatyShareTable: CustEditableNonDatatableComponent;
+	@ViewChild('cedingRetentionTable') cedingRetentionTable: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   	@ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   	@ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
@@ -105,18 +108,19 @@ export class TreatyShareComponent implements OnInit {
 
   	cedingRetentionData: any = {
 	  	tableData: [],
-	  	tHeader: ['Company No', 'Company Name', '1st Retention', '2nd Retention', 'Sort Sequence', 'Remarks'],
-	  	dataTypes: ['lovInput', 'text', 'text', 'percent', 'number', 'text'],
-	  	keys: ['trtyCedId','trtyCedName','trtyCedAbbr','pctShare','sortSeq','remarks'],
-	  	uneditable: [false,true,true,false,false,false],
+	  	tHeader: ['Company No', 'Company Name', '1st Retention', '2nd Retention', 'Active', 'Inactive Date', 'Remarks'],
+	  	dataTypes: ['lovInput', 'text', 'number', 'number', 'checkbox', 'date', 'text'],
+	  	keys: ['cedingId','cedingName','retLine1','retLine2','activeTag','inactiveDate','remarks'],
+	  	uneditable: [false,true,false,false,false,true,false], //membership tag = y
 	  	widths: ['auto','auto','auto','auto'],
 	  	nData: {
 	  		showMG: 1,
-	  		trtyCedId: '',
-	  		trtyCedName: '',
-	  		trtyCedAbbr: '',
-	  		pctShare: '',
-	  		sortSeq: '',
+	  		cedingId: '',
+	  		cedingName: '',
+	  		retLine1: '',
+	  		retLine2: '',
+	  		activeTag: '',
+	  		inactiveDate: null,
 	  		remarks: '',
 	  		createUser: '',
 	  		createDate: '',
@@ -130,24 +134,34 @@ export class TreatyShareComponent implements OnInit {
     	genericBtn: 'Delete',
     	disableGeneric: true,
 	  	disableAdd: false,
-	  	magnifyingGlass: ['trtyCedId'],
+	  	magnifyingGlass: ['cedingId'],
 	  	pageID: 'cedingRetentionTab'
   	}
 
-  	treatyLOVRow: number;
+  	treatyCommLOVRow: number;
+  	treatyShareLOVRow: number;
+  	cedingRetentionLOWRow: number;
 
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
 	ngOnInit() {
 		this.alignTreatyYear();
+		
+		setTimeout(() => {
+			this.treatyYearTable.refreshTable();
+			this.treatyCommTable.refreshTable();
+			this.treatyShareTable.refreshTable();
+			this.cedingRetentionTable.refreshTable();
+			
+		}, 0);
 	}
 
-	sectionCoversLOV(data){
+	/*sectionCoversLOV(data){
 	    // this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
 	    $('#sectionCoversLOV #modalBtn').trigger('click');
 	    //data.tableData = this.passData.tableData;
 	    this.treatyLOVRow = data.index;
-	}
+	}*/
 
 	alignTreatyYear() {
 		setTimeout(() => {
