@@ -104,6 +104,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 	cancelFlag		: boolean;
 	disableCancelHc	: boolean = true;
 	fromOnInit		: boolean = false;
+	statusArr		: string[];
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 				private ns : NotesService, private router: Router) { 
@@ -116,6 +117,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   	}
 
   	getQuoteList(param?){
+  		this.table.loadingFlag = true;
   		var parameter;
 
 		if(param !== undefined){
@@ -132,11 +134,11 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   			console.log(data);
   			var quoList = data['quo']['quotationList'];
   			var hcList 	= data['hc']['quotationList'];
-  			quoList = quoList.filter(i => i.status.toUpperCase() == 'RELEASED').map(i => {i.riskName = i.project.riskName; return i;});
+  			quoList = quoList.filter(i => i.status.toUpperCase() == 'RELEASED' || i.status.toUpperCase() == 'ON HOLD COVER').map(i => {i.riskName = i.project.riskName; return i;});
   			
   			this.passDataQuoteLOV.tableData = quoList;
 			this.table.refreshTable();
-
+			console.log('inside subRes');
 			if(quoList.length == 1){
 				this.quoteInfo.quotationNo 	= this.splitQuoteNo(quoList[0].quotationNo);
 				this.holdCover.quoteId		= quoList[0].quoteId;
@@ -169,21 +171,28 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 
 			  		(this.holdCover.status.toUpperCase() == 'RELEASED' || this.holdCover.status.toUpperCase() == 'IN FORCE' || this.holdCover.status.toUpperCase() == 'PENDING APPROVAL'
 			  		|| this.holdCover.status.toUpperCase() == 'APPROVED' || this.holdCover.status.toUpperCase() == 'REJECTED')? this.disableCancelHc = false : this.disableCancelHc = true;
-				
+					
+					this.holdCover.status.toUpperCase() == 'RELEASED' ? this.showModifLov() : '';
+
+					if(this.holdCover.status.toUpperCase() == 'EXPIRED' || this.holdCover.status.toUpperCase() == 'CONVERTED'){
+						this.newHc(true);
+						this.disableCancelHc = true;
+					}
+					
 				}else{
-					this.disableCancelHc = true;
-					this.clear();
+					console.log('inside clear hc');
+					this.clearHc();
 				}
 
 			}else{
-				this.quoteInfo.cedingName	= '';
-				this.quoteInfo.insuredDesc	= '';
-				this.quoteInfo.riskName		= '';
 				this.newHc(true);
-				this.clear();
-				this.disableCancelHc = true;
-				(quoList.length == 0)?this.getQuoteList():'';
-				(quoList.lenght == 0)?this.showQuoteLov():'';
+				this.clearAll();
+				console.log('inside != 1');
+				if(quoList.length == 0){
+					this.showQuoteLov();
+					this.getQuoteList();
+					console.log('inside = 0');
+				}
 			}
   		});
 
@@ -205,7 +214,6 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 			},500);
 		}else{
 			this.holdCover.holdCoverYear	= (this.holdCover.holdCoverYear == '')?String(new Date().getFullYear()):this.holdCover.holdCoverYear;
-	  		this.holdCover.status			= (this.holdCover.status == '')?'In Force':this.holdCover.status;
 	  		this.holdCover.periodFrom		= this.periodFromArr.join('T');
 	  		this.holdCover.periodTo			= this.periodToArr.join('T');
 	  		this.holdCover.createDate		= (this.holdCover.createDate == '')?this.ns.toDateTimeString(0):this.holdCover.createDate;
@@ -213,6 +221,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 			this.holdCover.preparedBy		= (this.holdCover.createUser == '')?this.ns.getCurrentUser():this.holdCover.createUser;
 	  		this.holdCover.updateDate		= this.ns.toDateTimeString(0);
 			this.holdCover.updateUser		= this.ns.getCurrentUser();
+			this.holdCover.status			= (this.holdCover.status == '' || this.holdCover.status.toUpperCase() == 'APPROVED' || this.holdCover.status.toUpperCase() == 'REJECTED')?'In Force':this.holdCover.status;
 
 	  		this.quotationService.saveQuoteHoldCover(JSON.stringify(this.holdCover))
 	  		.subscribe(data => {
@@ -221,6 +230,8 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 	  			this.dialogIcon = '';
 				this.dialogMessage = '';
 				$('app-sucess-dialog #modalBtn').trigger('click');
+				var qNo = this.quoteInfo.quotationNo.map((a,i) => (isNaN(a) == false && i!=4)? parseInt(a):(i==4)?a.padStart(3,'0'):a);;
+				this.getQuoteList([{ key: 'quotationNo', search: qNo.join('%-%') }]);
 	  		});
 		}
   	}
@@ -239,7 +250,6 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 	  				quoNo += '%'+ parseInt(data) + '%-';
 	  			}
 	  		});
-	  		console.log(quoNo);
 	  		this.getQuoteList([{ key: 'quotationNo', search: quoNo }]);
 	  		this.modalService.dismissAll();
   		}
@@ -260,6 +270,13 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   		this.modalService.dismissAll();
   	}
 
+  	onCancelModifLov(){
+  		this.clearAll();
+  		this.newHc(true);
+  		this.modalService.dismissAll();
+  		this.getQuoteList();
+  	}
+
   	onRowClickOpt(event){
   		this.rowRecOpt = event;
   	}
@@ -270,33 +287,37 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   	}
 
 	search(key,ev) {
+		console.log(this.searchArr.join('-'));
 		this.quoteInfo.quotationNo[2] =  (this.quoteInfo.quotationNo[2] == undefined || this.quoteInfo.quotationNo[2] == '')?'':this.quoteInfo.quotationNo[2].padStart(5,'0');
 		this.quoteInfo.quotationNo[3] =  (this.quoteInfo.quotationNo[3] == undefined || this.quoteInfo.quotationNo[3] == '')?'':this.quoteInfo.quotationNo[3].padStart(2,'0');
 		this.quoteInfo.quotationNo[4] =  (this.quoteInfo.quotationNo[4] == undefined || this.quoteInfo.quotationNo[4] == '')?'':this.quoteInfo.quotationNo[4].padStart(3,'0');
-
+		console.log(this.searchArr.join('-'));
 		var a = ev.target.value;
-		if(key === 'lineCd') {
+		if(key == 'lineCd') {
 			this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
-		} else if(key === 'year') {
+		} else if(key == 'year') {
 			this.searchArr[1] = '%' + a + '%';
-		} else if(key === 'seqNo') {
+		} else if(key == 'seqNo') {
 			this.searchArr[2] = '%' + a + '%';
-		} else if(key === 'revNo') {
+		} else if(key == 'revNo') {
 			this.searchArr[3] = '%' + a + '%';
-		} else if(key === 'cedingId') {
+		} else if(key == 'cedingId') {
 			this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0');
-		} 
+		}else{
+			console.log(' else , nothing found');
+		}
 
 		if(this.searchArr.includes('')) {
 			console.log('entered here includes');
 			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+		}else{
+			console.log('other else');
 		}
-		
 		this.getQuoteList([{ key: 'quotationNo', search: this.searchArr.join('-') }]);
 
 	}
 
-	clear(){
+	clearHc(){
 		this.holdCoverNo 		 		 = '';
 		this.holdCover.approvedBy		 = '';
 		this.holdCover.compRefHoldCovNo  = '';
@@ -313,14 +334,23 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 		this.holdCover.status			 = '';
 		this.periodFromArr				 = [];
 		this.periodToArr				 = [];
+		this.disableCancelHc 			 = true;
 		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 		$('.warn').find('input').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+	}
+
+	clearAll(){
+		this.quoteInfo.cedingName		 = '';
+		this.quoteInfo.insuredDesc		 = '';
+		this.quoteInfo.riskName			 = '';
+		this.clearHc();
 	}
 
 	setPeriodTo(){
 		var d = new Date(this.periodFromArr[0]);
 		var s = d.setDate(d.getDate()+30);
 		this.periodToArr[0] = (isNaN(s) == true)?'':this.ns.toDateTimeString(s).split('T')[0];
+		$('.r-only').find('input').addClass('ng-dirty');
 	}
 
 	newHc(isNew:boolean){
@@ -355,6 +385,10 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 
 	showOptionsLov(){
 		$('#optionMdl > #modalBtn').trigger('click');
+	}
+
+	showModifLov(){
+		$('#modifMdl > #modalBtn').trigger('click');
 	}
 
 	splitQuoteNo(quotationNo){
