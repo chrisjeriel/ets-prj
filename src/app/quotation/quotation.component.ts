@@ -187,6 +187,7 @@ export class QuotationComponent implements OnInit {
   		if (this.quoteInfo.typeOfCession.toUpperCase() == 'DIRECT'){
   			this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
   		}
+      this.selectedReport = this.reportsList[0].val;
   	}
 
   	showPrintPreview(content) {
