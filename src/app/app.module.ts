@@ -393,6 +393,7 @@ import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy
 import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
 import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
 import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
+import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
 
 @NgModule({
     imports: [
@@ -792,6 +793,7 @@ import { RetentionLineComponent } from './maintenance/quotation-and-policy/reten
         CityComponent,
         TreatyComponent,
         RetentionLineComponent,
+        TreatyShareComponent,
     ],
 
   	providers: [

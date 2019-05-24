@@ -33,7 +33,7 @@ export class TreatyComponent implements OnInit, OnDestroy {
 	  		treatyType: '',
 	  		activeTag: 'Y',
 	  		remarks: '',
-	  		createUser: this.ns.getCurrentUser(),
+	  		createUser: '',
 	  		createDate: '',
 	  		updateUser: '',
 	  		updateDate: ''
@@ -83,7 +83,8 @@ export class TreatyComponent implements OnInit, OnDestroy {
 			this.treatyData.opts[0].vals = [];
   			this.treatyData.opts[0].prev = [];
 
-  			var td = data['trty']['treatyList'].map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
+  			var td = data['trty']['treatyList'].sort((a, b) => a.createDate - b.createDate)
+  											   .map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
 		  												   a.updateDate = this.ns.toDateTimeString(a.updateDate);
 		  												   return a; });
   			this.treatyData.tableData = td;
@@ -130,6 +131,7 @@ export class TreatyComponent implements OnInit, OnDestroy {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 
+				this.cancel = false;
 				return;
 			}
 		}
@@ -139,6 +141,11 @@ export class TreatyComponent implements OnInit, OnDestroy {
 
 	save(cancel?) {
 		this.cancel = cancel !== undefined;
+		if(this.cancel) {
+			this.onClickSave();
+			return;
+		}
+
 		this.params.saveTreaty = [];
 		this.params.deleteTreaty = [];
 
@@ -146,6 +153,7 @@ export class TreatyComponent implements OnInit, OnDestroy {
 
 		for(let d of td) {
 			if(d.edited && !d.deleted) {
+				d.createUser = this.ns.getCurrentUser();
 				d.createDate = this.ns.toDateTimeString(d.createDate);
 				d.updateUser = this.ns.getCurrentUser();
 				d.updateDate = this.ns.toDateTimeString(0);
