@@ -116,7 +116,8 @@ export class MtnTypeOfCessionComponent implements OnInit {
         ev: ev
       });
 
-      $('#typeOfCessionMdl > #modalBtn').trigger('click');
+      // $('#typeOfCessionMdl > #modalBtn').trigger('click');
+      this.modal.openNoClose();
     } else {
       this.maintenanceService.getMtnTypeOfCession(code).subscribe(data => {
         if(data['cession'].length > 0) {

@@ -130,7 +130,8 @@ export class CedingCompanyComponent implements OnInit {
       if(id != undefined) {
         $(id + ' #modalBtn').trigger('click');  
       } else {
-        $('#cedingCompanyMdl > #modalBtn').trigger('click');  
+        // $('#cedingCompanyMdl > #modalBtn').trigger('click');
+        this.modal.openNoClose();  
       }      
     } else {
       this.underwritingService.getCedingCompanyList(code,'','','','','','','','','Y').subscribe(data => {     

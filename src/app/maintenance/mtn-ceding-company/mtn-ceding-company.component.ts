@@ -119,7 +119,8 @@ export class MtnCedingCompanyComponent implements OnInit {
             ev: ev
           });
 
-          $('#cedingCompanyNotMemberMdl > #modalBtn').trigger('click');
+          // $('#cedingCompanyNotMemberMdl > #modalBtn').trigger('click');
+          this.modal.openNoClose();
         }      
       });
    }
