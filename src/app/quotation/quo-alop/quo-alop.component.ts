@@ -133,7 +133,8 @@ export class QuoAlopComponent implements OnInit {
         pageStatus: true,
         tableOnly: true,
         pageLength: 3,
-        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac']
+        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
+        pageID: 'quoteOptionData'
     } 
 
     passLOV: any = {
@@ -219,19 +220,23 @@ export class QuoAlopComponent implements OnInit {
                 i.alopDetails.indemFromDate = i.alopDetails.indemFromDate == null ? '' : i.alopDetails.indemFromDate;
                 this.optionsList.push(i);
               }
+
+              this.alopData.insuredId = this.pad(this.alopData.insuredId, 6);
             }else{
                 this.mtnService.getMtnInsured(this.quotationInfo.principalId).subscribe((data: any) => {
                   this.alopData.insuredId = data.insured[0].insuredId;
                   this.alopData.insuredName = data.insured[0].insuredAbbr;
                   this.alopData.insuredDesc = data.insured[0].insuredName;
                   this.alopData.address = data.insured[0].address;
+                  this.alopData.insuredId = this.pad(this.alopData.insuredId, 6);
                 })
 
                 this.alopData.createUser = JSON.parse(window.localStorage.currentUser).username
                 this.alopData.createDate = this.ns.toDateTimeString(new Date());
                 this.alopData.updateDate = this.ns.toDateTimeString(new Date());
-                this.alopData.updateUser = JSON.parse(window.localStorage.currentUser).username
+                this.alopData.updateUser = JSON.parse(window.localStorage.currentUser).username;
             }
+            
        });
     }
 
@@ -364,18 +369,27 @@ export class QuoAlopComponent implements OnInit {
             savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(0);
         }
       }
-      this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
-        if(data['returnCode'] == 0) {
-          this.dialogMessage = data['errorList'][0].errorMessage;
-          this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
-        } else{
-          this.dialogIcon = "succuess";
-          $('#successModalBtn').trigger('click');
-          this.table.markAsPristine();
-          this.alopItem();
-        }
-      });
+      
+      if(savedData.saveAlopItemList.length === 0 && savedData.deleteAlopItemList.length === 0){
+        setTimeout(()=>{
+          this.dialogIcon = "info";
+          this.dialogMessage = "Nothing to save.";
+          this.successDiag.open();
+        },0);
+      }else{
+        this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
+          if(data['returnCode'] == 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            $('#successModalBtn').trigger('click');
+          } else{
+            this.dialogIcon = "success";
+            $('#successModalBtn').trigger('click');
+            this.table.markAsPristine();
+            this.alopItem();
+          }
+        });
+      }
       
   }
 
@@ -445,8 +459,7 @@ export class QuoAlopComponent implements OnInit {
     }
   }*/
   cancel(){
-      console.log(this.alopDetails.issueDate)
-       //this.cancelBtn.clickCancel();
+      this.cancelBtn.clickCancel();
   }
 
   checkDates(){
@@ -536,7 +549,7 @@ export class QuoAlopComponent implements OnInit {
   }
 
   focusBlur() {
-    setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+   // setTimeout(() => {$('.req').focus();$('.req').blur()},0)
   }
 
   checkCode(ev, field) {
@@ -547,4 +560,14 @@ export class QuoAlopComponent implements OnInit {
         this.insuredLovs['first'].checkCode(this.alopData.insuredId, '#insuredLOV', ev);
     }
   }
+
+  //NECO 05/27/2019
+  pad(str, num?) {
+    if(str === '' || str == null){
+      return '';
+    }
+    
+    return String(str).padStart(num != null ? num : 3, '0');
+  }
+  //end
 }
