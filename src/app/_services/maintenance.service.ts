@@ -231,8 +231,11 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnReason');
 	}
 
-	getMtnTreaty(){
-		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTreaty');
+	getMtnTreaty(treatyId){
+		const params = new HttpParams()
+					.set('treatyId', treatyId === undefined || treatyId === null ? '' : treatyId);
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTreaty', {params});
 	}
 
 	getMtnSectionCoversLov(lineCd,cover) {
@@ -651,6 +654,23 @@ export class MaintenanceService{
 		     		.set('quoteYear', (year === null || year === undefined ? '' : year));
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyCommission", {params});
+	}
+
+	getMtnTreatyShare(year, id) {
+		const params = new HttpParams()
+		     		.set('treatyYear', (year === null || year === undefined ? '' : year))
+		     		.set('treatyId', (id === null || id === undefined ? '' : id));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyShare", {params});
+	}
+
+	getMtnCedingRetention(year, id, cedId) {
+		const params = new HttpParams()
+		     		.set('treatyYear', (year === null || year === undefined ? '' : year))
+		     		.set('treatyId', (id === null || id === undefined ? '' : id))
+		     		.set('trtyCedId', (cedId === null || cedId === undefined ? '' : cedId));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCedingRetention", {params});
 	}
 }
 

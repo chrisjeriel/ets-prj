@@ -117,7 +117,7 @@ lineListing: any = {
     } else {
       this.maintenanceService.getLineLOV(code).subscribe(data => {
         data['line'] = data['line'].filter(a=> this.hide.indexOf(a.lineCd)== -1)
-        if(data['line'].length > 0) {
+        if(data['line'].length == 1) {
           data['line'][0]['ev'] = ev;
           data['line'][0]['singleSearchLov'] = true;
           this.selectedData.emit(data['line'][0]);

@@ -9,7 +9,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="treaty-year-table" class="col-sm-6">
-									<app-cust-editable-non-datatable #treatyYearTable [passData]="treatyYearData" (tableDataChange)="treatyYearData.tableData=$event" (newClick)="onTreatyYearRowClick($event)" (genericBtn)="onClickDelete($event)" (add)="alignTreatyYear()" (onDelete)="table.onClickDelete('force'); treatyYearData.disableGeneric=true;">
+									<app-cust-editable-non-datatable #treatyYearTable [passData]="treatyYearData" (tableDataChange)="treatyYearData.tableData=$event" (newClick)="onTreatyYearRowClick($event)" (genericBtn)="onTreatyYearClickDelete($event)" (add)="alignTreatyYear()" (onDelete)="treatyYearTable.onClickDelete('force'); treatyYearData.disableGeneric=true;">
 										<ng-container controls-l>
 											<button type="button" class="cust-btn"><a>Copy Setup</a></button>
 										</ng-container>
@@ -23,7 +23,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="treaty-comm-table" class="col-sm-6">
-									<app-cust-editable-non-datatable #treatyCommTable [passData]="treatyCommData" (tableDataChange)="treatyCommData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); treatyCommData.disableGeneric=true;" (clickLOV)="openTreatyLOV($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #treatyCommTable [passData]="treatyCommData" (tableDataChange)="treatyCommData.tableData=$event; treatyCommTDataChange($event);" (newClick)="onTreatyCommRowClick($event)" (genericBtn)="onTreatyCommClickDelete($event)" (onDelete)="treatyCommTable.onClickDelete('force'); treatyCommData.disableGeneric=true;" (clickLOV)="openTreatyCommLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 								<div class="col-sm-3"></div>
 							</div>
@@ -33,15 +33,15 @@
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
-	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Treaty Share">
+	<ngb-tabset (tabChange)="onTabChange($event)" #tabset>
+		<ngb-tab class="ngb-tab" title="Treaty Share" id="treaty-share">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div id="treaty-share-table" class="col-sm">
-									<app-cust-editable-non-datatable #treatyShareTable [passData]="treatyShareData" (tableDataChange)="treatyShareData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); treatyShareData.disableGeneric=true;"></app-cust-editable-non-datatable><!--  (clickLOV)="openTreatyLOV($event)" -->
+									<app-cust-editable-non-datatable #treatyShareTable [passData]="treatyShareData" (tableDataChange)="treatyShareData.tableData=$event; treatyShareTDataChange($event);" (newClick)="onTreatyShareRowClick($event)" (genericBtn)="onTreatyShareClickDelete($event)" (onDelete)="treatyShareTable.onClickDelete('force'); treatyShareData.disableGeneric=true;" (clickLOV)="openCedingCoLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
@@ -59,14 +59,14 @@
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Retention per Pool Member">
+		<ngb-tab class="ngb-tab" title="Retention per Pool Member" id="retention" [disabled]="disableRetentionTab">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div id="ceding-retention-table" class="col-sm">
-									<app-cust-editable-non-datatable #cedingRetentionTable [passData]="cedingRetentionData" (tableDataChange)="cedingRetentionData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); cedingRetentionData.disableGeneric=true;"></app-cust-editable-non-datatable><!--  (clickLOV)="openTreatyLOV($event)" -->
+									<app-cust-editable-non-datatable #cedingRetentionTable [passData]="cedingRetentionData" (tableDataChange)="cedingRetentionData.tableData=$event; cedingRetentionTDataChange($event);" (newClick)="onCedingRetentionRowClick($event)" (genericBtn)="onCedingRetentionClickDelete($event)" (onDelete)="cedingRetentionTable.onClickDelete('force'); cedingRetentionData.disableGeneric=true;" (clickLOV)="openCedingCoRetentionLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
@@ -110,7 +110,7 @@
 	</div>
 </div>
 
-<!-- <app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 
@@ -127,4 +127,8 @@
     <div footer class="w-100 text-center">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
     </div>
-</app-modal> -->
+</app-modal>
+
+<app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
+<app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
+<app-ceding-company #cedingRetention (selectedData)="setSelectedCedCoCedRet($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>

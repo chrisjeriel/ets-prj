@@ -394,6 +394,7 @@ import { CityComponent } from './maintenance/quotation-and-policy/region/city/ci
 import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
 import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
+import { MtnTreatyComponent } from './maintenance/mtn-treaty/mtn-treaty.component';
 
 @NgModule({
     imports: [
@@ -794,6 +795,7 @@ import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-
         TreatyComponent,
         RetentionLineComponent,
         TreatyShareComponent,
+        MtnTreatyComponent,
     ],
 
   	providers: [
