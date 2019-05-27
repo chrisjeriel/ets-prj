@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild,OnDestroy } from '@angular/core';
 import { HoldCoverInfo } from '../../_models/HoldCover';
-import { QuotationService,NotesService } from '../../_services';
+import { QuotationService,NotesService,UserService } from '../../_services';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -88,6 +88,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 		cedingName		: '',
 		insuredDesc		: '',
 		riskName		: '',
+		totalSi			: ''
 	};
 
 	subs			: Subscription = new Subscription();
@@ -103,16 +104,15 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 	dialogIcon		: string = '';
 	cancelFlag		: boolean;
 	disableCancelHc	: boolean = true;
-	fromOnInit		: boolean = false;
-	statusArr		: string[];
+	isApproved	 	: boolean = false;
+	aprrovalBtnTxt	: string = '';
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
-				private ns : NotesService, private router: Router) { 
+				private ns : NotesService, private router: Router, private userService : UserService) { 
 	}
 
   	ngOnInit() {
   		this.titleService.setTitle('Quo | Quotation to Hold Cover');
-  		this.fromOnInit = true;
   		this.getQuoteList();
   	}
 
@@ -168,15 +168,14 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 			  		this.holdCover.reqBy			 = selectedRow[0].holdCover.reqBy;
 			  		this.holdCover.reqDate			 = (selectedRow[0].holdCover.reqDate == null)?'':this.ns.toDateTimeString(selectedRow[0].holdCover.reqDate).split('T')[0];
 			  		this.holdCover.status			 = selectedRow[0].holdCover.status;
-
-			  		(this.holdCover.status.toUpperCase() == 'RELEASED' || this.holdCover.status.toUpperCase() == 'IN FORCE' || this.holdCover.status.toUpperCase() == 'PENDING APPROVAL'
-			  		|| this.holdCover.status.toUpperCase() == 'APPROVED' || this.holdCover.status.toUpperCase() == 'REJECTED')? this.disableCancelHc = false : this.disableCancelHc = true;
-					
-					this.holdCover.status.toUpperCase() == 'RELEASED' ? this.showModifLov() : '';
+			  		this.quoteInfo.totalSi			 = selectedRow[0].holdCover.totalSi;
 
 					if(this.holdCover.status.toUpperCase() == 'EXPIRED' || this.holdCover.status.toUpperCase() == 'CONVERTED'){
 						this.newHc(true);
 						this.disableCancelHc = true;
+					}else{
+						 this.disableCancelHc = false;
+						 this.holdCover.status.toUpperCase() == 'RELEASED' ? this.showModifLov():'';
 					}
 					
 				}else{
@@ -262,6 +261,44 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   			var rec = data['quotation']['optionsList'];
   			this.passDataOptionsLOV.tableData = rec;
   			this.opt.refreshTable();
+  		});
+  	}
+
+  	onCancelHc(){
+  		var ids = {
+			quoteId     : this.holdCover.quoteId,
+			holdCoverId : this.holdCover.holdCoverId,
+			updateUser  : this.ns.getCurrentUser()
+		};
+  		this.quotationService.updateHoldCoverStatus(JSON.stringify(ids))
+  		.subscribe(data => {
+  			console.log(data);
+  			this.dialogIcon = 'success-message';
+  			this.dialogMessage = 'Cancelled Successfully!';
+  			$('app-sucess-dialog #modalBtn').trigger('click');
+  			this.clearHc();
+  		});
+  	}
+
+  	validateUser(){
+  		this.aprrovalBtnTxt = '';
+  		const subRes =  forkJoin(this.userService.retMtnUsers(this.ns.getCurrentUser()),this.userService.retMtnUserAmtLmt('',''))
+  								.pipe(map(([usr, usrAmtLmt]) => { return { usr, usrAmtLmt };}))
+  		subRes.subscribe(data => {
+  			console.log(data);
+  			var usrGrp 		= data['usr']['usersList'][0].userGrp;
+  			var curRow		= data['usrAmtLmt']['userAmtLmtList'].filter(a => a.userGrp == usrGrp && a.lineCd.toUpperCase() == this.holdCover.lineCd.toUpperCase());
+  			console.log(curRow);
+  			var amtLimit	= curRow[0].amtLimit;
+  			console.log(amtLimit);
+  			console.log(this.quoteInfo.totalSi);
+  			if(this.quoteInfo.totalSi <= amtLimit){
+  				this.aprrovalBtnTxt = 'Approve';
+  				this.isApproved = true;
+  			}else{
+  				this.aprrovalBtnTxt = 'For Approval';
+  				this.isApproved = false;
+  			}
   		});
   	}
 
@@ -390,6 +427,15 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 	showModifLov(){
 		$('#modifMdl > #modalBtn').trigger('click');
 	}
+
+	showCancelHcMdl(){
+  		$('#cancelHcMdl > #modalBtn').trigger('click');
+  	}
+
+  	showApprovalMdl(){
+  		this.validateUser();
+  		$('#approvalMdl > #modalBtn').trigger('click');
+  	}
 
 	splitQuoteNo(quotationNo){
 		return quotationNo.split('-');

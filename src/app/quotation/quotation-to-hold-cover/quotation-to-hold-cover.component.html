@@ -132,8 +132,8 @@
 					<div class="form-group col-sm">
 						<div class="col-md-12 text-center">
 							<div class="cust-btn-container" style="margin-top: 10px !important;">
-								<button type="button" class="cust-btn" [disabled]="disableCancelHc">Cancel Hold Cover</button>
-								<button type="button" class="cust-btn">Approval</button>
+								<button type="button" class="cust-btn" [disabled]="disableCancelHc" (click)="showCancelHcMdl()">Cancel Hold Cover</button>
+								<button type="button" class="cust-btn" (click)="showApprovalMdl()">Approval</button>
 								<button type="button" class="cust-btn" (click)="onClickSave()">Save</button>
 							</div>
 						</div>
@@ -170,6 +170,15 @@
     </div>
 </app-modal>
 
+<app-modal class="d-none" id="cancelHcMdl">
+    <div header>Confirmation</div>
+    <div body>Are you sure you want to cancel this Hold Cover?</div>
+    <div footer class="cust-btn-container">                    
+        <button type="button" class="cust-btn" (click)="onCancelHc();modalService.dismissAll();"><a>Yes</a></button>
+		<button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
+
 <app-modal class="d-none" id="modifMdl">
     <div header style="width: 550px !important;">Confirmation Message</div>
     <div body class="container-flex text-center">
@@ -180,9 +189,6 @@
         </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-       <!--  <button class="cust-btn" type="button" (click)="onClickCancelModifMdl()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="onClickView()"><a>View</a></button>
-        <button class="cust-btn" type="button" (click)="onClickModif()"><a>Modification</a></button> -->
         <button class="cust-btn" type="button" (click)="onCancelModifLov()"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="newHc(true);modalService.dismissAll();"><a>View</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Modification</a></button>
@@ -190,47 +196,50 @@
 </app-modal>
 
 <app-modal class="d-none" id="approvalMdl">
-	<div header>Approval</div>
-	<div body class="container-flex text-center" style="max-width: 300px !important;">
-		<div class="row">
-			<div class="col-sm-6">
-				<fieldset class="scheduler-border" style="padding-bottom: 42px !important;padding-left: 28px !important; padding-right: 36px !important;">
-					<div class="row" style="    margin-top: 39px;">
-						<label class="form-control-sm" style="margin-left: -1px !important;">Status</label>
-						<input type="text" class="form-control form-control-sm col-sm" style=" margin-right: 85px !important;">
-					</div>
-					<div class="row" style="margin-top: -14px !important;">
-						<select  class="form-control form-control-sm col-sm cust-sm" style="    margin-left: 6px;"></select>
-						<button class="cust" style="margin-right: 0px; margin-left: 3px !important;">For Approval</button>
-					</div>
-				</fieldset>
-			</div>
-			<div class="col-sm-6">
-				<fieldset class="scheduler-border" style="    margin-left: -20px !important;">
-					<div class="row" style="    margin-top: 16px !important;">
-						<label class="form-control-sm col-sm-4" style="margin-left: 15px;">Report</label>
-						<select  class="form-control form-control-sm col-sm cust-sm" style="margin-right: 25px !important;" disabled="disabled"></select>
-					</div>
-					<div class="row" style="margin-top: -14px !important;">
-						<label class="form-control-sm col-sm-4" style="margin-left: 15px;">No Of Copies</label>
-						<input type="text" class="form-control form-control-sm col-sm" style="margin-right: 25px !important;" disabled="disabled">
-					</div>
-					<div class="row" style="margin-top: -14px !important;">
-						<label class="form-control-sm col-sm-4" style="margin-left: 15px;">Destination</label>
-						<select  class="form-control form-control-sm col-sm cust-sm" style="margin-right: 25px !important;" disabled="disabled"></select>
-					</div>
-					<div class="row" style="margin-top: -14px !important;">
-						<label class="form-control-sm col-sm-4" style="margin-left: 15px;">Printer Name</label>
-						<select  class="form-control form-control-sm col-sm cust-sm" style="margin-right: 25px !important;" disabled="disabled"></select>
-					</div>
-				</fieldset>
-			</div>
-		</div>
-	</div>
-	<div footer class="d-flex justify-content-center w-100">                    
-		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
-	</div>
+    <div header>Approval</div>
+    <div body class="container-flex" style="min-width: 700px !important">
+    	<div class="row">
+ 	    	<div class="col-sm-6">
+ 	    		<fieldset class="scheduler-border" style="padding-bottom: 21px !important;padding-top: 15px !important;">
+ 	    			<div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important; margin-bottom: -14px !important;" >
+ 	    				<label class="form-control-sm">Status</label>
+						<input type="text" class="form-control form-control-sm" [(ngModel)]="holdCover.status" readonly>
+						<div class="col-sm-1"></div>
+ 	    			</div>
+ 	    			<div class="input-group" style="padding-right: 10px!important;padding-left: 10px !important;">
+						<div class="cust-btn-container col-sm" style="padding-right: 0px !important">
+							<button type="button" class="cust-btn col-sm" (click)="modalService.dismissAll();"><a>{{ aprrovalBtnTxt }}</a></button>
+						</div>		
+						<div class="cust-btn-container col-sm" style="padding-left: 0px !important">
+							<button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="modalService.dismissAll();"><a>Rejected</a></button>
+						</div>
+ 	    			</div>
+ 	    		</fieldset>
+ 	    	</div>
+ 	    	<div class="col-sm-6">
+ 	    		<fieldset class="scheduler-border" style="padding-bottom: 15px !important;padding-top: 15px !important;">
+ 	    			<div class="input-group" style="margin-bottom: -14px !important;">
+ 	    				<label class="form-control-sm col-sm-3">Report</label>
+						<select  class="form-control form-control-sm col-sm cust-sm">
+							<option>Quotation Letter</option>
+						</select>
+ 	    			</div>
+ 	    			<div class="input-group" style="margin-bottom: -14px !important;">
+ 	    				<label class="form-control-sm col-sm-3">Destination</label>
+						<select  class="form-control form-control-sm col-sm cust-sm">
+							<option>SCREEN</option>
+							<option>PDF</option>
+							<option>PRINTER</option>
+						</select>
+ 	    			</div>
+ 	    		</fieldset>
+ 	    	</div>
+    	</div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+		<button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Print</a></button>
+    </div>
 </app-modal>
 
 <app-confirm-save (onYes)="onSaveHoldCover()"></app-confirm-save>
