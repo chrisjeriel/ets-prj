@@ -21,8 +21,8 @@ export class MtnApprovalFunctionComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('userSuccess') userSuccess: SucessDialogComponent;
-  //@ViewChild('mtnUser') mtnUser: MtnApproverComponent;
-  @ViewChild('mtnUser') mtnUser: MtnUsersComponent;
+  @ViewChild('mtnUser') mtnUser: MtnApproverComponent;
+  //@ViewChild('mtnUser') mtnUser: MtnUsersComponent;
   
   passData: any = {
     tHeader: [ "Approval Fn Code","Description","Remarks"],
@@ -254,6 +254,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
     //$('#usersLOV #modalBtn').trigger('click');
     console.log(data)
     this.mtnUser.modal.openNoClose();
+    this.hideUserArray = this.passDataUser.tableData.map(a=> a.userId);
     this.userRow = data.index;
   }
 
@@ -271,7 +272,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
       this.passDataUser.tableData[this.userRow].uneditable = ['userId'];
     }
     
-    //this.ns.lovLoader(data.ev, 0);
+    this.ns.lovLoader(data.ev, 0);
     this.usertable.refreshTable();
     this.usertable.markAsDirty();
   }
@@ -280,7 +281,10 @@ export class MtnApprovalFunctionComponent implements OnInit {
     
      if(data.hasOwnProperty('lovInput')) {
       //this.hideUserArray = this.passDataUser.tableData.map(a=> a.userId);
+      this.hideUserArray = this.passDataUser.tableData.filter(a => {return a.userId !==  undefined && !a.deleted})/*.map(a=> {return a.userId.toString()})*/;
+      console.log(this.hideUserArray)
       data.ev['index'] = data.index;
+      data.ev['filter'] = this.hideUserArray;
       this.mtnUser.checkCode(data.ev.target.value, data.ev);
      }    
   }

@@ -65,5 +65,5 @@
 			<button type="button" class="cust-btn" (click)="onClickSaveUser()"><a>Save</a></button>
 	</div>
 </app-modal>
-<app-mtn-users  id="usersLOV" (selectedData)="setUser($event)" #mtnUser></app-mtn-users>
-<!-- <app-mtn-approver id="usersLOV" (selectedData)="setUser($event)" #mtnUser></app-mtn-approver> -->
+<!-- <app-mtn-users  id="usersLOV" (selectedData)="setUser($event)" #mtnUser></app-mtn-users> -->
+ <app-mtn-approver id="usersLOV" (selectedData)="setUser($event)" #mtnUser [hide]="hideUserArray"></app-mtn-approver> 

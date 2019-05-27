@@ -660,7 +660,7 @@ export class MaintenanceService{
 
 	getMtnApprover(userId?:string){
 		const params = new HttpParams()
-		     .set('approvalCd', (userId === null || userId === undefined ? null : userId))
+		     .set('userId', (userId === null || userId === undefined ? '' : userId))
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
 	}
 }
