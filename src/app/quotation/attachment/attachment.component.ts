@@ -130,23 +130,6 @@ export class AttachmentComponent implements OnInit {
   ngOnInit(): void {
 
     this.titleService.setTitle("Quo | Attachment");
-    /*this.tHeader.push("File Name");
-    this.tHeader.push("Description");
-    this.tHeader.push("Actions");*/
-    // this.options.push("");
-    // this.options.push("Q - Quotation");
-    // this.options.push("P - Policy");
-    // this.options.push("C - Claim");
-    // this.options.push("A - Accounting");
-    // this.dataTypes.push("text");
-    // this.dataTypes.push("text");
-    // this.dataTypes.push("select1");
-    // this.dataTypes.push("text");
-    /*this.tableData = this.quotationService.getAttachment();*/
-
-    // this.passData.tHeader.push("File Name");
-    // this.passData.tHeader.push("Description");
-    // this.passData.tHeader.push("Actions");
 
     //neco
         if(this.inquiryFlag){
@@ -163,14 +146,6 @@ export class AttachmentComponent implements OnInit {
         }
         //neco end
 
-    /*let arrayData = [];
-    this.quotationService.getAttachment().subscribe((data: any) => {
-      for (var i = 0; i <  data.quotation.length ; i++) {
-        arrayData.push(new AttachmentInfo(data.quotation[i].attachment.fileName, data.quotation[i].attachment.description));
-      }
-     });
-    this.passData.tableData = arrayData;
-*/
   this.quotationNo = this.quotationInfo.quotationNo;
   this.quoteNo = this.quotationNo.split(/[-]/g)[0]
   for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
@@ -192,7 +167,6 @@ export class AttachmentComponent implements OnInit {
         this.passData.tableData = this.attachmentData;
         this.table.refreshTable();
         console.log(JSON.stringify(this.attachmentData) + " >>>> this.attachmentData");
-        //console.log(this.attachmentData[0].fileName + " >> file name");
       });
   }
 
@@ -201,9 +175,6 @@ export class AttachmentComponent implements OnInit {
    this.dialogIcon = '';
    this.dialogMessage = '';
    this.cancelFlag = cancelFlag !== undefined;
-   /*if(this.cancelFlag === true){
-     this.router.navigateByUrl('quotation-processing');
-   }*/
    this.savedData = [];
    this.deletedData = [];
    for (var i = 0 ; this.passData.tableData.length > i; i++) {
