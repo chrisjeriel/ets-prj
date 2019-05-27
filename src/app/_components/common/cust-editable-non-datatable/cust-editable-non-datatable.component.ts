@@ -534,6 +534,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
     onDataChange(ev,data,key){
         // if($(ev.target).next().children().prop("tagName") === 'A') {
           this.instllmentKey = key;
+        if(key == 'activeTag' && data.hasOwnProperty('defaultTag') && data['activeTag']=='N'){
+            data['defaultTag'] = 'N';
+        }
+
 
         if(!data.others){
             if($(ev.target).hasClass('lovInput')) {
