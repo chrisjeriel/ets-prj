@@ -36,6 +36,7 @@
     "font-awesome": "^4.7.0",
     "hummus": "^1.0.104",
     "jquery": "^3.4.1",
+    "jspdf": "^1.5.3",
     "ng-bootstrap": "^1.6.3",
     "ng-sidebar": "^8.0.0",
     "ngx-mask": "^7.9.0",
