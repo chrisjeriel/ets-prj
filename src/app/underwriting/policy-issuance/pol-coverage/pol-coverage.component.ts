@@ -316,6 +316,8 @@ export class PolCoverageComponent implements OnInit {
       extotalPrem:0,
       comtotalSi: 0,
       comtotalPrem: 0,
+      exDays:0,
+      totalDays:0,
       pctShare:0,
       pctPml:0,
       totalValue: 0,  
@@ -532,7 +534,7 @@ export class PolCoverageComponent implements OnInit {
 
           this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
           this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].prevPremRt) ? this.passData.tableData[j].premRt:this.passData.tableData[j].premRt
-          this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].premAmt) ? this.passData.tableData[j].prevPremAmt : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt;
+          this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].premAmt) ? this.passData.tableData[j].prevPremAmt : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt +(isNaN(this.passData.tableData[j].exPremAmt) ? 0:this.passData.tableData[j].exPremAmt);
             
           if(this.line == 'EAR' || this.line == 'CAR'){  
             if(this.passData.tableData[j].section == 'I' ){
@@ -583,7 +585,6 @@ export class PolCoverageComponent implements OnInit {
 
                  this.prevtotalSi        += this.passData.tableData[j].prevSumInsured
                  this.comtotalSi         += this.passData.tableData[j].cumSi;
-                 this.extotalPrem       += this.passData.tableData[j].exPremAmt;
                  this.alttotalSi         += this.passData.tableData[j].sumInsured;
               }
               
@@ -731,7 +732,7 @@ export class PolCoverageComponent implements OnInit {
         this.altCoverageData.alttotalSi      = this.alttotalSi;
         this.altCoverageData.alttotalPrem    = this.alttotalPrem;
         this.altCoverageData.extotalSi       = 0;
-        this.altCoverageData.extotalPrem     = this.
+        this.altCoverageData.extotalPrem     = this.extotalPrem;
         this.altCoverageData.comtotalSi      = this.comtotalSi;
         this.altCoverageData.comtotalPrem    = this.comtotalPrem;
         //this.altCoverageData.pctShare        = this.altCoverageData.totalValue == 0 || isNaN(this.altCoverageData.totalValue)? 0:(this.altCoverageData.comtotalSi/this.altCoverageData.totalValue)*100; 
@@ -742,7 +743,7 @@ export class PolCoverageComponent implements OnInit {
         this.passData2.tableData[0].prevAmt  = this.prevsectionIPrem;
         this.passData2.tableData[0].altSi    = this.altsectionISi;
         this.passData2.tableData[0].altAmt   = this.altsectionIPrem;
-        this.passData2.tableData[0].exAmt    = 0;
+        this.passData2.tableData[0].exAmt    = this.exsectionIPrem;
         this.passData2.tableData[0].comSi    = this.comsectionISi;
         this.passData2.tableData[0].comAmt   = this.comsectionIPrem;
         this.passData2.tableData[1].section  = 'SECTION II';
@@ -750,7 +751,7 @@ export class PolCoverageComponent implements OnInit {
         this.passData2.tableData[1].prevAmt  = this.prevsectionIIPrem;
         this.passData2.tableData[1].altSi    = this.altsectionIISi;
         this.passData2.tableData[1].altAmt   = this.altsectionIIPrem;
-        this.passData2.tableData[1].exAmt    = 0;
+        this.passData2.tableData[1].exAmt    = this.exsectionIIPrem;
         this.passData2.tableData[1].comSi    = this.comsectionIISi;
         this.passData2.tableData[1].comAmt   = this.comsectionIIPrem;
         this.passData2.tableData[2].section  = 'SECTION III';
@@ -758,7 +759,7 @@ export class PolCoverageComponent implements OnInit {
         this.passData2.tableData[2].prevAmt  = this.prevsectionIIIPrem;
         this.passData2.tableData[2].altSi    = this.altsectionIIISi;
         this.passData2.tableData[2].altAmt   = this.altsectionIIIPrem;
-        this.passData2.tableData[2].exAmt    = 0;
+        this.passData2.tableData[2].exAmt    = this.exsectionIIIPrem;
         this.passData2.tableData[2].comSi    = this.comsectionIIISi;
         this.passData2.tableData[2].comAmt   = this.comsectionIIIPrem;
 
@@ -768,7 +769,7 @@ export class PolCoverageComponent implements OnInit {
         this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
         //this.altCoverageData.totalValue = (this.comtotalSi / parseFloat(this.altCoverageData.pctShare.toString().split(',').join(''))*100);
         this.altCoverageData.totalValue = this.decimal.transform(this.altCoverageData.totalValue, '1.2-2');
-        this.altCoverageData.pctPml = this.decimal.transform(this.altCoverageData.pctPml,'1.2-2');
+        this.altCoverageData.pctPml = this.decimal.transform(this.altCoverageData.pctPml,'1.10-10');
         /*this.focusCalc();
         this.focusBlur();*/
     });
@@ -1430,33 +1431,37 @@ export class PolCoverageComponent implements OnInit {
   }
 
   updateAlteration(data){
-    this.prevsectionISi = 0;
-    this.prevsectionIPrem = 0;
-    this.altsectionIPrem = 0;
-    this.altsectionISi = 0;
-    this.prevsectionIISi = 0;
-    this.prevsectionIIPrem = 0;
-    this.altsectionIISi = 0;
-    this.altsectionIIPrem = 0;
-    this.prevsectionIIISi = 0;
+    this.prevsectionISi     = 0;
+    this.prevsectionIPrem   = 0;
+    this.altsectionIPrem    = 0;
+    this.altsectionISi      = 0;
+    this.prevsectionIISi    = 0;
+    this.prevsectionIIPrem  = 0;
+    this.altsectionIISi     = 0;
+    this.altsectionIIPrem   = 0;
+    this.prevsectionIIISi   = 0;
     this.prevsectionIIIPrem = 0;
-    this.altsectionIIISi = 0;
-    this.altsectionIIIPrem = 0;
-    this.comsectionISi = 0;
-    this.comsectionIPrem = 0;
-    this.comsectionIISi = 0;
-    this.comsectionIIPrem = 0;
-    this.comsectionIIISi = 0;
-    this.comsectionIIIPrem = 0;
-    this.prevtotalSi = 0;
-    this.prevtotalPrem = 0;  
-    this.alttotalSi = 0;
-    this.alttotalPrem = 0;
-    this.comtotalSi = 0;
-    this.comtotalPrem = 0;
-    this.positiveFlag = 0;
-    this.negativeFlag = 0;
-    this.errorFlag = false;
+    this.altsectionIIISi    = 0;
+    this.altsectionIIIPrem  = 0;
+    this.exsectionIPrem     = 0;
+    this.exsectionIIPrem    = 0;
+    this.exsectionIIIPrem   = 0;
+    this.comsectionISi      = 0;
+    this.comsectionIPrem    = 0;
+    this.comsectionIISi     = 0;
+    this.comsectionIIPrem   = 0;
+    this.comsectionIIISi    = 0;
+    this.comsectionIIIPrem  = 0;
+    this.prevtotalSi        = 0;
+    this.prevtotalPrem      = 0; 
+    this.extotalPrem        = 0;
+    this.alttotalSi         = 0;
+    this.alttotalPrem       = 0;
+    this.comtotalSi         = 0;
+    this.comtotalPrem       = 0;
+    this.positiveFlag       = 0;
+    this.negativeFlag       = 0;
+    this.errorFlag          = false;
 
     if(data.hasOwnProperty('lovInput')) {
       this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
@@ -1473,154 +1478,199 @@ export class PolCoverageComponent implements OnInit {
       if(!this.passData.tableData[j].edited){
         this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
         this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].premRt) ? this.passData.tableData[j].prevPremRt:this.passData.tableData[j].prevPremRt
-        this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].premAmt) ? this.passData.tableData[j].prevPremAmt : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt;
+        this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].premAmt) ? this.passData.tableData[j].prevPremAmt : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt + (isNaN(this.passData.tableData[j].exPremAmt) ? 0:this.passData.tableData[j].exPremAmt);
       }
 
         this.passData.tableData[j].premAmt     = this.passData.tableData[j].discountTag == 'Y' ? this.passData.tableData[j].premAmt:this.passData.tableData[j].sumInsured * (this.passData.tableData[j].premRt / 100);
-        
         this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].prevSumInsured) ? this.passData.tableData[j].sumInsured+0:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
         this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].prevPremRt) || this.passData.tableData[j].prevPremRt == null ? this.passData.tableData[j].premRt :this.passData.tableData[j].premRt 
-        this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].prevPremAmt) ? this.passData.tableData[j].premAmt+0 : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt;
+        this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].prevPremAmt) ? this.passData.tableData[j].premAmt+0 : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt + (isNaN(this.passData.tableData[j].exPremAmt) ? 0:this.passData.tableData[j].exPremAmt);
         
         if(this.line == 'EAR' || this.line == 'CAR'){
-          if(this.passData.tableData[j].section == 'I' && this.passData.tableData[j].addSi == 'Y'){
-            this.prevsectionISi     += this.passData.tableData[j].prevSumInsured;
+          if(this.passData.tableData[j].section == 'I'){
+            if(this.passData.tableData[j].addSi == 'Y'){
+                this.prevsectionISi     += this.passData.tableData[j].prevSumInsured;
+                this.altsectionISi      += this.passData.tableData[j].sumInsured;
+                this.comsectionISi      += this.passData.tableData[j].cumSi;
+                
+                this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
+                this.comtotalSi   += this.passData.tableData[j].cumSi;
+                this.alttotalSi   += this.passData.tableData[j].sumInsured;
+            }
+            
             this.prevsectionIPrem   += this.passData.tableData[j].prevPremAmt;
-            this.altsectionISi      += this.passData.tableData[j].sumInsured;
             this.altsectionIPrem    += this.passData.tableData[j].premAmt;
-            this.comsectionISi      += this.passData.tableData[j].cumSi;
+            console.log(this.passData.tableData[j].exPremAmt)
+            this.exsectionIPrem     += this.passData.tableData[j].exPremAmt;
             this.comsectionIPrem    += this.passData.tableData[j].cumPrem;
-
-            this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
-            this.comtotalSi   += this.passData.tableData[j].cumSi;
-            this.alttotalSi   += this.passData.tableData[j].sumInsured;
 
             this.prevtotalPrem     += isNaN(this.passData.tableData[j].prevPremAmt)? 0: this.passData.tableData[j].prevPremAmt;
             this.alttotalPrem      += this.passData.tableData[j].premAmt;
+            this.extotalPrem       += this.passData.tableData[j].exPremAmt;
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'II' && this.passData.tableData[j].addSi == 'Y'){
-            this.prevsectionIISi     += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured;
+          if(this.passData.tableData[j].section == 'II'){
+            if(this.passData.tableData[j].addSi == 'Y'){
+                this.prevsectionIISi     += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured;
+                this.altsectionIISi      += this.passData.tableData[j].sumInsured;
+                this.comsectionIISi      += this.passData.tableData[j].cumSi;
+            }
+
             this.prevsectionIIPrem   += isNaN(this.passData.tableData[j].prevPremAmt) ? 0:this.passData.tableData[j].prevPremAmt;
-            this.altsectionIISi      += this.passData.tableData[j].sumInsured;
             this.altsectionIIPrem    += this.passData.tableData[j].premAmt;
-            this.comsectionIISi      += this.passData.tableData[j].cumSi;
+            this.exsectionIIPrem     += this.passData.tableData[j].exPremAmt;
             this.comsectionIIPrem    += this.passData.tableData[j].cumPrem;
 
             this.prevtotalPrem     += isNaN(this.passData.tableData[j].prevPremAmt)? 0: this.passData.tableData[j].prevPremAmt;
             this.alttotalPrem      += this.passData.tableData[j].premAmt;
+            this.extotalPrem       += this.passData.tableData[j].exPremAmt;
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'III' && this.passData.tableData[j].addSi == 'Y'){
-            this.prevsectionIIISi   += this.passData.tableData[j].prevSumInsured;
+          if(this.passData.tableData[j].section == 'III'){
+            if(this.passData.tableData[j].addSi == 'Y'){
+                this.prevsectionIIISi   += this.passData.tableData[j].prevSumInsured;
+                this.altsectionIIISi    += this.passData.tableData[j].sumInsured;
+                this.comsectionIIISi    += this.passData.tableData[j].cumSi;
+                
+                this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
+                this.comtotalSi   += this.passData.tableData[j].cumSi;
+                this.alttotalSi   += this.passData.tableData[j].sumInsured;
+            }
+            
             this.prevsectionIIIPrem += this.passData.tableData[j].prevPremAmt;
-            this.altsectionIIISi    += this.passData.tableData[j].sumInsured;
             this.altsectionIIIPrem  += this.passData.tableData[j].premAmt;
-            this.comsectionIIISi    += this.passData.tableData[j].cumSi;
+            this.exsectionIIIPrem     += this.passData.tableData[j].exPremAmt;
             this.comsectionIIIPrem  += this.passData.tableData[j].cumPrem;
-
-            this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
-            this.comtotalSi   += this.passData.tableData[j].cumSi;
-            this.alttotalSi   += this.passData.tableData[j].sumInsured;
 
             this.prevtotalPrem     += isNaN(this.passData.tableData[j].prevPremAmt)? 0: this.passData.tableData[j].prevPremAmt;
             this.alttotalPrem      += this.passData.tableData[j].premAmt;
+            this.extotalPrem       += this.passData.tableData[j].exPremAmt;
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
         }else if(this.line == 'EEI'){
-          if(this.passData.tableData[j].section == 'I' && this.passData.tableData[j].addSi == 'Y'){
-            this.prevsectionISi     += this.passData.tableData[j].prevSumInsured;
+          if(this.passData.tableData[j].section == 'I'){
+            if(this.passData.tableData[j].addSi == 'Y'){
+                this.prevsectionISi     += this.passData.tableData[j].prevSumInsured;
+                this.altsectionISi      += this.passData.tableData[j].sumInsured;
+                this.comsectionISi      += this.passData.tableData[j].cumSi;
+
+                this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
+                this.comtotalSi   += this.passData.tableData[j].cumSi;
+                this.alttotalSi   += this.passData.tableData[j].sumInsured;
+            }
+            
             this.prevsectionIPrem   += this.passData.tableData[j].prevPremAmt;
-            this.altsectionISi      += this.passData.tableData[j].sumInsured;
             this.altsectionIPrem    += this.passData.tableData[j].premAmt;
-            this.comsectionISi      += this.passData.tableData[j].cumSi;
+            this.exsectionIPrem     += this.passData.tableData[j].exPremAmt;
             this.comsectionIPrem    += this.passData.tableData[j].cumPrem;
 
-            this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
-            this.comtotalSi   += this.passData.tableData[j].cumSi;
-            this.alttotalSi   += this.passData.tableData[j].sumInsured;
-
             this.prevtotalPrem     += isNaN(this.passData.tableData[j].prevPremAmt)? 0: this.passData.tableData[j].prevPremAmt;
             this.alttotalPrem      += this.passData.tableData[j].premAmt;
+            this.extotalPrem       += this.passData.tableData[j].exPremAmt;
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'II' && this.passData.tableData[j].addSi == 'Y'){
-            this.prevsectionIISi     += this.passData.tableData[j].prevSumInsured;
+          if(this.passData.tableData[j].section == 'II'){
+            if(this.passData.tableData[j].addSi == 'Y'){
+                this.prevsectionIISi     += this.passData.tableData[j].prevSumInsured;
+                this.altsectionIISi      += this.passData.tableData[j].sumInsured;
+                this.comsectionIISi      += this.passData.tableData[j].cumSi;
+
+                this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
+                this.comtotalSi   += this.passData.tableData[j].cumSi;
+                this.alttotalSi   += this.passData.tableData[j].sumInsured;
+            }
+            
             this.prevsectionIIPrem   += this.passData.tableData[j].prevPremAmt;
-            this.altsectionIISi      += this.passData.tableData[j].sumInsured;
             this.altsectionIIPrem    += this.passData.tableData[j].premAmt;
-            this.comsectionIISi      += this.passData.tableData[j].cumSi;
+            this.exsectionIIPrem     += this.passData.tableData[j].exPremAmt;
             this.comsectionIIPrem    += this.passData.tableData[j].cumPrem;
 
-            this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
-            this.comtotalSi   += this.passData.tableData[j].cumSi;
-            this.alttotalSi   += this.passData.tableData[j].sumInsured;
-
             this.prevtotalPrem     += isNaN(this.passData.tableData[j].prevPremAmt)? 0: this.passData.tableData[j].prevPremAmt;
             this.alttotalPrem      += this.passData.tableData[j].premAmt;
+            this.extotalPrem       += this.passData.tableData[j].exPremAmt;
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'III' && this.passData.tableData[j].addSi == 'Y'){
-            this.prevsectionIIISi   += this.passData.tableData[j].prevSumInsured;
-            this.prevsectionIIIPrem += this.passData.tableData[j].prevPremAmt;
-            this.altsectionIIISi    += this.passData.tableData[j].sumInsured;
-            this.altsectionIIIPrem  += this.passData.tableData[j].premAmt;
-            this.comsectionIIISi    += this.passData.tableData[j].cumSi;
-            this.comsectionIIIPrem  += this.passData.tableData[j].cumPrem;
+          if(this.passData.tableData[j].section == 'III'){
+            if(this.passData.tableData[j].addSi == 'Y'){
+                this.prevsectionIIISi   += this.passData.tableData[j].prevSumInsured;
+                this.altsectionIIISi    += this.passData.tableData[j].sumInsured;
+                this.comsectionIIISi    += this.passData.tableData[j].cumSi;
 
-            this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
-            this.comtotalSi   += this.passData.tableData[j].cumSi;
-            this.alttotalSi   += this.passData.tableData[j].sumInsured;
+                this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
+                this.comtotalSi   += this.passData.tableData[j].cumSi;
+                this.alttotalSi   += this.passData.tableData[j].sumInsured;
+            }
+            
+            this.prevsectionIIIPrem += this.passData.tableData[j].prevPremAmt;
+            this.altsectionIIIPrem  += this.passData.tableData[j].premAmt;
+            this.exsectionIIIPrem     += this.passData.tableData[j].exPremAmt;
+            this.comsectionIIIPrem  += this.passData.tableData[j].cumPrem;
 
             this.prevtotalPrem     += isNaN(this.passData.tableData[j].prevPremAmt)? 0: this.passData.tableData[j].prevPremAmt;
             this.alttotalPrem      += this.passData.tableData[j].premAmt;
+            this.extotalPrem     += this.passData.tableData[j].exPremAmt;
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
         }else{
-          if(this.passData.tableData[j].section == 'I' && this.passData.tableData[j].addSi == 'Y'){
-            this.prevsectionISi     += this.passData.tableData[j].prevSumInsured;
-            this.prevsectionIPrem   += this.passData.tableData[j].prevPremAmt;
-            this.altsectionISi      += this.passData.tableData[j].sumInsured;
-            this.altsectionIPrem    += this.passData.tableData[j].premAmt;
-            this.comsectionISi      += this.passData.tableData[j].cumSi;
-            this.comsectionIPrem    += this.passData.tableData[j].cumPrem;
+          if(this.passData.tableData[j].section == 'I'){
+            if(this.passData.tableData[j].addSi == 'Y'){
+                this.prevsectionISi     += this.passData.tableData[j].prevSumInsured;
+                this.altsectionISi      += this.passData.tableData[j].sumInsured;
+                this.comsectionISi      += this.passData.tableData[j].cumSi;
 
-            this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
-            this.comtotalSi   += this.passData.tableData[j].cumSi;
-            this.alttotalSi   += this.passData.tableData[j].sumInsured;
+                this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
+                this.comtotalSi   += this.passData.tableData[j].cumSi;
+                this.alttotalSi   += this.passData.tableData[j].sumInsured;
+            }
+            
+            this.prevsectionIPrem   += this.passData.tableData[j].prevPremAmt;
+            this.altsectionIPrem    += this.passData.tableData[j].premAmt;
+            this.exsectionIPrem     += this.passData.tableData[j].exPremAmt;
+            this.comsectionIPrem    += this.passData.tableData[j].cumPrem;
 
             this.prevtotalPrem     += isNaN(this.passData.tableData[j].prevPremAmt)? 0: this.passData.tableData[j].prevPremAmt;
             this.alttotalPrem      += this.passData.tableData[j].premAmt;
+            this.extotalPrem     += this.passData.tableData[j].exPremAmt;
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'II' && this.passData.tableData[j].addSi == 'Y'){
-            this.prevsectionIISi     += this.passData.tableData[j].prevSumInsured;
+          if(this.passData.tableData[j].section == 'II'){
+            if(this.passData.tableData[j].addSi == 'Y'){
+                this.prevsectionIISi     += this.passData.tableData[j].prevSumInsured;
+                this.altsectionIISi      += this.passData.tableData[j].sumInsured;
+                this.comsectionIISi      += this.passData.tableData[j].cumSi;
+            }
+            
             this.prevsectionIIPrem   += this.passData.tableData[j].prevPremAmt;
-            this.altsectionIISi      += this.passData.tableData[j].sumInsured;
             this.altsectionIIPrem    += this.passData.tableData[j].premAmt;
-            this.comsectionIISi      += this.passData.tableData[j].cumSi;
+            this.exsectionIIPrem     += this.passData.tableData[j].exPremAmt;
             this.comsectionIIPrem    += this.passData.tableData[j].cumPrem;
 
             this.prevtotalPrem     += isNaN(this.passData.tableData[j].prevPremAmt)? 0: this.passData.tableData[j].prevPremAmt;
             this.alttotalPrem      += this.passData.tableData[j].premAmt;
+            this.extotalPrem     += this.passData.tableData[j].exPremAmt;
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'III' && this.passData.tableData[j].addSi == 'Y'){
-            this.prevsectionIIISi   += this.passData.tableData[j].prevSumInsured;
+          if(this.passData.tableData[j].section == 'III'){
+            if(this.passData.tableData[j].addSi == 'Y'){
+                this.prevsectionIIISi   += this.passData.tableData[j].prevSumInsured;
+                this.altsectionIIISi    += this.passData.tableData[j].sumInsured;
+                this.comsectionIIISi    += this.passData.tableData[j].cumSi;
+            }
+            
             this.prevsectionIIIPrem += this.passData.tableData[j].prevPremAmt;
-            this.altsectionIIISi    += this.passData.tableData[j].sumInsured;
             this.altsectionIIIPrem  += this.passData.tableData[j].premAmt;
-            this.comsectionIIISi    += this.passData.tableData[j].cumSi;
+            this.exsectionIIIPrem     += this.passData.tableData[j].exPremAmt;
             this.comsectionIIIPrem  += this.passData.tableData[j].cumPrem;
 
             this.prevtotalPrem     += isNaN(this.passData.tableData[j].prevPremAmt)? 0: this.passData.tableData[j].prevPremAmt;
             this.alttotalPrem      += this.passData.tableData[j].premAmt;
+            this.extotalPrem       += this.passData.tableData[j].exPremAmt;
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
         }
@@ -1636,12 +1686,13 @@ export class PolCoverageComponent implements OnInit {
       this.successAlt.open();
       this.errorFlag = true;
     }
-
+    console.log(this.exsectionIPrem)
     this.passData2.tableData[0].section  = 'SECTION I'; 
     this.passData2.tableData[0].prevSi   = isNaN(this.prevsectionISi) ? 0:this.prevsectionISi;
     this.passData2.tableData[0].prevAmt  = isNaN(this.prevsectionIPrem)? 0:this.prevsectionIPrem;
     this.passData2.tableData[0].altSi    = this.altsectionISi;
     this.passData2.tableData[0].altAmt   = this.altsectionIPrem;
+    this.passData2.tableData[0].exAmt    = this.exsectionIPrem;
     this.passData2.tableData[0].comSi    = this.comsectionISi;
     this.passData2.tableData[0].comAmt   = this.comsectionIPrem;
     this.passData2.tableData[1].section  = 'SECTION II';
@@ -1649,6 +1700,7 @@ export class PolCoverageComponent implements OnInit {
     this.passData2.tableData[1].prevAmt  = this.prevsectionIIPrem;
     this.passData2.tableData[1].altSi    = this.altsectionIISi;
     this.passData2.tableData[1].altAmt   = this.altsectionIIPrem;
+    this.passData2.tableData[1].exAmt    = this.exsectionIIPrem;
     this.passData2.tableData[1].comSi    = this.comsectionIISi;
     this.passData2.tableData[1].comAmt   = this.comsectionIIPrem;
     this.passData2.tableData[2].section  = 'SECTION III';
@@ -1656,6 +1708,7 @@ export class PolCoverageComponent implements OnInit {
     this.passData2.tableData[2].prevAmt  = this.prevsectionIIIPrem;
     this.passData2.tableData[2].altSi    = this.altsectionIIISi;
     this.passData2.tableData[2].altAmt   = this.altsectionIIIPrem;
+    this.passData2.tableData[2].exAmt    = this.exsectionIIIPrem;
     this.passData2.tableData[2].comSi    = this.comsectionIIISi;
     this.passData2.tableData[2].comAmt   = this.comsectionIIIPrem;
 
@@ -1664,6 +1717,8 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.alttotalSi       = this.alttotalSi;
     this.altCoverageData.alttotalSi       = this.alttotalSi;
     this.altCoverageData.alttotalPrem     = this.alttotalPrem;
+    this.altCoverageData.extotalSi        = 0;
+    this.altCoverageData.extotalPrem      = this.extotalPrem;
     this.altCoverageData.comtotalSi       = this.comtotalSi;
     this.altCoverageData.comtotalPrem     = this.comtotalPrem;
 
@@ -1678,10 +1733,10 @@ export class PolCoverageComponent implements OnInit {
   }
 
   prepareAlterationSave(){
-    this.editedData  =  [];
-    this.deletedData =  [];
-    this.editedDedt  =  [];
-    this.deletedDedt =  [];
+    this.editedData                     =  [];
+    this.deletedData                    =  [];
+    this.editedDedt                     =  [];
+    this.deletedDedt                    =  [];
     this.altCoverageData.policyId       = this.policyInfo.policyId;
     this.altCoverageData.projId         = this.projId;
     this.altCoverageData.riskId         = this.riskId;
@@ -1693,6 +1748,12 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.sectionIIPrem  = this.altsectionIIPrem;
     this.altCoverageData.sectionIIIPrem = this.altsectionIIIPrem;
     this.altCoverageData.totalPrem      = this.alttotalPrem;
+    this.altCoverageData.exSecIPrem     = this.exsectionIPrem;
+    this.altCoverageData.exSecIIPrem    = this.exsectionIIPrem;
+    this.altCoverageData.exSecIIIPrem   = this.exsectionIIIPrem;
+    this.altCoverageData.extotalPrem    = this.extotalPrem;
+    this.altCoverageData.exDays      = 15;
+    this.altCoverageData.totalDays      = 30;
 
     this.altCoverageData.cumSecISi      = this.comsectionISi;
     this.altCoverageData.cumSecIISi     = this.comsectionIISi;
@@ -1749,11 +1810,11 @@ export class PolCoverageComponent implements OnInit {
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
+          this.successDiag.open();
         } else{
           this.dialogMessage = "";
           this.dialogIcon = "success";
-          $('app-sucess-dialog  #modalBtn').trigger('click');
+          this.successDiag.open();
           this.emptyVar();
           this.getPolCoverageAlt();
           this.form.control.markAsPristine();
@@ -1791,10 +1852,14 @@ export class PolCoverageComponent implements OnInit {
   getEditableAlt(){
     for(let data of this.passData.tableData){
       data.uneditable = [];
-      if(data.discountTag == 'Y'){
+      if(data.discountTag == 'Y' || data.exDiscTag == 'Y'){
         data.uneditable.pop();
-      }else if(data.discountTag == 'N' ) {
+      }
+      if(data.discountTag == 'N' ) {
           data.uneditable.push('premAmt');
+      }
+      if(data.exDiscTag == 'N'){
+          data.uneditable.push('exPremAmt');
       }
     }
   }

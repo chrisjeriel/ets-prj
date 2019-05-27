@@ -304,12 +304,19 @@
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.extotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalSi = $event">
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.comtotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.comtotalSi = $event">
             </div>
-            <div class="input-group" style="margin-top: -8px;">
+            <div class="input-group" style="margin-top: -13px;">
               <label class="form-control-sm col-sm-2" style="padding-left: 0px;">Total Premium</label>
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency [ngModel] = "altCoverageData.prevtotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.prevtotalPrem = $event" style="max-width: 120px">
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.alttotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalPrem = $event">
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.extotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalPrem = $event">
               <input type="text" class="form-control form-control-sm col-sm-3 req"  readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.comtotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.comtotalPrem">
+            </div>
+            <div class="input-group" style="margin-top: -13px;">
+              <span class="col-sm-3" style="padding-right: 0px !important;"></span>
+              <label class="form-control-sm col-sm-2" style="padding-left: 0px;">Days of Extension</label>
+              <input type="text" class="form-control form-control-sm col-sm-1 req"  readonly style="margin-left: 5px !important;margin-right: -25px !important;"  [ngModel] = "altCoverageData.exDays">
+              <label class="form-control-sm col-sm-1" style="padding-left: 0px;">/</label>
+              <input type="text" class="form-control form-control-sm col-sm-1 req" readonly value="733" [ngModel] = "altCoverageData.totalDays">
             </div>
             </div>
           </div>
