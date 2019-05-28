@@ -154,6 +154,8 @@ import { BlockComponent } from './maintenance/quotation-and-policy/block/block.c
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
+import { SystemComponent } from './maintenance/system/system.component';
+import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
 
 const appRoutes: Routes = [
 
@@ -315,6 +317,8 @@ const appRoutes: Routes = [
     { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
     { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent },
     { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
+    { path: 'mtn-system', component: SystemComponent },
+    { path: 'mtn-program-parameter', component: ProgramParameterComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

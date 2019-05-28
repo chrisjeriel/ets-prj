@@ -393,6 +393,8 @@ import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy
 import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
 import { MtnApproverComponent } from './maintenance/mtn-approver/mtn-approver.component';
+import { SystemComponent } from './maintenance/system/system.component';
+import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
 
 @NgModule({
     imports: [
@@ -792,6 +794,8 @@ import { MtnApproverComponent } from './maintenance/mtn-approver/mtn-approver.co
         CityComponent,
         MtnApprovalFunctionComponent,
         MtnApproverComponent,
+        SystemComponent,
+        ProgramParameterComponent,
     ],
 
   	providers: [
