@@ -159,6 +159,7 @@ import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
 import { SystemComponent } from './maintenance/system/system.component';
 import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
+import { ReportComponent } from './maintenance/system/report/report.component';
 
 const appRoutes: Routes = [
 
@@ -325,6 +326,7 @@ const appRoutes: Routes = [
     { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
     { path: 'mtn-system', component: SystemComponent },
     { path: 'mtn-program-parameter', component: ProgramParameterComponent },
+    { path: 'mtn-report', component: ReportComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

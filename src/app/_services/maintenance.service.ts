@@ -687,5 +687,25 @@ export class MaintenanceService{
 		     .set('userId', (userId === null || userId === undefined ? '' : userId))
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
 	}
+
+	getMtnReports(reportId?: string){
+		const params = new HttpParams()
+			.set('reportId', (reportId === null || reportId === undefined ? '' : reportId));
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnReports',{params});
+	}
+
+	saveMtnReports(save: any[], del: any[]){
+		let params: any = {
+			saveReports: save,
+			delReports: del
+		};
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReports', JSON.stringify(params), header);
+	}
 }
 
