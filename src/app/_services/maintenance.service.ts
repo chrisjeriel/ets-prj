@@ -663,5 +663,20 @@ export class MaintenanceService{
 		     .set('userId', (userId === null || userId === undefined ? '' : userId))
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
 	}
+
+	getMtnParameters(paramType){
+		const params = new HttpParams()
+		     .set('paramType', (paramType === null || paramType === undefined ? '' : paramType))
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnParameters',{params});
+	}
+
+	saveMtnParameters(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnParameters', params, header);
+	}
 }
 
