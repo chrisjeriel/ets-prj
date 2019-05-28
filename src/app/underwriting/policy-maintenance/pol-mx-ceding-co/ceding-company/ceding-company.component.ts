@@ -52,7 +52,7 @@ export class CedingCompanyComponent implements OnInit {
 
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
-  @Input() treaty: boolean = false;
+  @Input() treaty: boolean;
     
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
 
@@ -104,8 +104,10 @@ export class CedingCompanyComponent implements OnInit {
            }            
          }
 
-         if(this.treaty) {
+         if(this.treaty !== undefined && this.treaty) {
            this.passDataCedingCompanyMember.tableData = this.passDataCedingCompanyMember.tableData.filter(a => a.treatyTag == 'Y');
+         } else if(this.treaty !== undefined && !this.treaty) {
+           this.passDataCedingCompanyMember.tableData = this.passDataCedingCompanyMember.tableData.filter(a => a.treatyTag == 'N');
          }
          this.table.refreshTable();          
      });

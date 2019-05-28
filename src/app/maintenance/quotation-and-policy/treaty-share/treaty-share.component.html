@@ -114,21 +114,27 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 
-<app-modal class="d-none" id="mtnTreatyWarningModal">
+<app-modal class="d-none" id="mtnTreatyShareWarningModal">
     <div header>Warning Message</div>
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
             <div class="custom-row-inline-inset" style="text-align: center">                
-                <p>You are not allowed to delete a Treaty that is already used<br />
-                in the distribution of policy.</p>
+                <p *ngIf="warningMsg == 1">You are not allowed to delete a Treaty Year with existing<br />
+                setup.</p>
+                <p *ngIf="warningMsg == 2">You are not allowed to delete a Treaty with existing Treaty<br />
+                share.</p>
+                <p *ngIf="warningMsg == 3">You are not allowed to delete a Treaty Share that is already<br />
+                used in distribution processing.</p>
+                <p *ngIf="warningMsg == 4">You are not allowed to delete a member that is already used in<br />
+                distribution processing.</p>
             </div>
         </fieldset>
     </div>
     <div footer class="w-100 text-center">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); warningMsg = 0"><a>Ok</a></button>
     </div>
 </app-modal>
 
 <app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
 <app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
-<app-ceding-company #cedingRetention (selectedData)="setSelectedCedCoCedRet($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
+<app-ceding-company #cedingRetention (selectedData)="setSelectedCedCoCedRet($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>
