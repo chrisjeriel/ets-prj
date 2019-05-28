@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject, forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-quotation-to-hold-cover',
@@ -88,7 +89,8 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 		cedingName		: '',
 		insuredDesc		: '',
 		riskName		: '',
-		totalSi			: ''
+		totalSi			: '',
+		status			: ''
 	};
 
 	subs			: Subscription = new Subscription();
@@ -105,7 +107,10 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 	cancelFlag		: boolean;
 	disableCancelHc	: boolean = true;
 	isApproved	 	: boolean = false;
-	aprrovalBtnTxt	: string = '';
+	aprrovalBtnTxt	: string = 'For Approval';
+	reportName 		: string = 'QUOTER012';
+	destination		: string = 'SCREEN';
+	report			: string = '';
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 				private ns : NotesService, private router: Router, private userService : UserService) { 
@@ -146,6 +151,8 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 				this.quoteInfo.insuredDesc	= quoList[0].insuredDesc;
 				this.quoteInfo.riskName		= quoList[0].riskName;
 				this.holdCover.lineCd		= quoList[0].lineCd;
+				this.quoteInfo.status		= quoList[0].status;
+				console.log(this.quoteInfo.status);
 				this.newHc(false);
 				this.getQuoteOptions();
 
@@ -268,7 +275,9 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   		var ids = {
 			quoteId     : this.holdCover.quoteId,
 			holdCoverId : this.holdCover.holdCoverId,
-			updateUser  : this.ns.getCurrentUser()
+			updateUser  : this.ns.getCurrentUser(),
+			hcStatus	: 6,
+			quoStatus	: 3
 		};
   		this.quotationService.updateHoldCoverStatus(JSON.stringify(ids))
   		.subscribe(data => {
@@ -281,26 +290,101 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   	}
 
   	validateUser(){
-  		this.aprrovalBtnTxt = '';
   		const subRes =  forkJoin(this.userService.retMtnUsers(this.ns.getCurrentUser()),this.userService.retMtnUserAmtLmt('',''))
-  								.pipe(map(([usr, usrAmtLmt]) => { return { usr, usrAmtLmt };}))
+  								.pipe(map(([usr, usrAmtLmt]) => { return { usr, usrAmtLmt };}));
   		subRes.subscribe(data => {
   			console.log(data);
   			var usrGrp 		= data['usr']['usersList'][0].userGrp;
   			var curRow		= data['usrAmtLmt']['userAmtLmtList'].filter(a => a.userGrp == usrGrp && a.lineCd.toUpperCase() == this.holdCover.lineCd.toUpperCase());
-  			console.log(curRow);
   			var amtLimit	= curRow[0].amtLimit;
-  			console.log(amtLimit);
-  			console.log(this.quoteInfo.totalSi);
   			if(this.quoteInfo.totalSi <= amtLimit){
   				this.aprrovalBtnTxt = 'Approve';
   				this.isApproved = true;
+  				this.updateHcStatus('Approve');
   			}else{
   				this.aprrovalBtnTxt = 'For Approval';
   				this.isApproved = false;
+  				this.updateHcStatus('For Approval');
   			}
   		});
   	}
+
+  	onClickPrint(){
+  		if(this.destination.toUpperCase() == 'SCREEN'){
+  			this.printPDFHC('SCREEN');
+  		}else if(this.destination.toUpperCase() == 'PDF'){
+  			this.printPDFHC('PDF');
+  		}else{
+  			this.printPDFHC('PRINTER');
+  		}
+  	}
+
+  	updateHcStatus(from){
+  		if(from.toUpperCase() == 'APPROVE'){
+  			
+  		}else if(from.toUpperCase() == 'FOR APPROVAL'){
+  			
+  		}else{
+  			if(this.holdCover.status.toUpperCase() == 'APPROVED'){
+	  			var ids = {
+				  holdCoverId	: this.holdCover.holdCoverId,
+				  quoteId		: this.holdCover.quoteId,
+				  updateUser	: this.ns.getCurrentUser(),
+				  hcStatus		: 2,
+				  quoStatus		: ''
+				};
+  			}
+  		}
+
+  		this.quotationService.updateHoldCoverStatus(JSON.stringify(ids))
+	  	.subscribe(data => {
+	  		console.log(data);
+	  	});
+  	}
+
+  	printPDFHC(param){
+  		var fileName = this.holdCoverNo;
+
+  		this.quotationService.downloadPDFHC(this.reportName,this.holdCover.quoteId,this.holdCover.holdCoverId)
+	  	.subscribe(data => {
+	  		console.log(data);
+	  		var newBlob = new Blob([data], { type: "application/pdf" });
+            var downloadURL = window.URL.createObjectURL(data);
+            if(param == 'PRINTER'){
+            	const iframe = document.createElement('iframe');
+	            iframe.style.display = 'none';
+	            iframe.src = downloadURL;
+	            document.body.appendChild(iframe);
+	            iframe.contentWindow.print();
+            }else if(param == 'PDF'){
+            	var link = document.createElement('a');
+	            link.href = downloadURL;
+	            link.download = fileName;
+	            link.click();
+            }else{
+            	window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.reportName + '&quoteId=' + this.holdCover.quoteId + '&holdCovId=' + this.holdCover.holdCoverId + '&userId=' + this.ns.getCurrentUser(), '_blank');
+            }
+  		},
+  		error => {
+            if (this.isEmptyObject(error)) {
+            } else {
+               this.dialogIcon = "error-message";
+               this.dialogMessage = "Error printing file";
+               $('#quotation #successModalBtn').trigger('click');
+               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+            }          
+        });
+  		this.updateHcStatus('print-btn');
+  	}
+
+    isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+    }
 
   	onClickOkOptionsLov(){
   		this.holdCover.optionId = this.rowRecOpt.optionId;

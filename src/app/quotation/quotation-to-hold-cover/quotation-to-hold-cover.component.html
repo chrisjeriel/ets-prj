@@ -133,7 +133,7 @@
 						<div class="col-md-12 text-center">
 							<div class="cust-btn-container" style="margin-top: 10px !important;">
 								<button type="button" class="cust-btn" [disabled]="disableCancelHc" (click)="showCancelHcMdl()">Cancel Hold Cover</button>
-								<button type="button" class="cust-btn" (click)="showApprovalMdl()">Approval</button>
+								<button type="button" class="cust-btn" [disabled]="(holdCoverNo=='')?true:false" (click)="showApprovalMdl()">Approval</button>
 								<button type="button" class="cust-btn" (click)="onClickSave()">Save</button>
 							</div>
 						</div>
@@ -211,7 +211,7 @@
 							<button type="button" class="cust-btn col-sm" (click)="modalService.dismissAll();"><a>{{ aprrovalBtnTxt }}</a></button>
 						</div>		
 						<div class="cust-btn-container col-sm" style="padding-left: 0px !important">
-							<button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="modalService.dismissAll();"><a>Rejected</a></button>
+							<button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="modalService.dismissAll();">Rejected</button>
 						</div>
  	    			</div>
  	    		</fieldset>
@@ -220,16 +220,16 @@
  	    		<fieldset class="scheduler-border" style="padding-bottom: 15px !important;padding-top: 15px !important;">
  	    			<div class="input-group" style="margin-bottom: -14px !important;">
  	    				<label class="form-control-sm col-sm-3">Report</label>
-						<select  class="form-control form-control-sm col-sm cust-sm">
-							<option>Quotation Letter</option>
+						<select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="report">
+							<option value="HOLD COVER LETTER">Hold Cover Letter</option>
 						</select>
  	    			</div>
  	    			<div class="input-group" style="margin-bottom: -14px !important;">
  	    				<label class="form-control-sm col-sm-3">Destination</label>
-						<select  class="form-control form-control-sm col-sm cust-sm">
-							<option>SCREEN</option>
-							<option>PDF</option>
-							<option>PRINTER</option>
+						<select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="destination">
+							<option value="SCREEN">SCREEN</option>
+							<option value="PDF">PDF</option>
+							<option value="PRINTER">PRINTER</option>
 						</select>
  	    			</div>
  	    		</fieldset>
@@ -238,7 +238,7 @@
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-		<button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Print</a></button>
+		<button type="button" class="cust-btn" (click)="onClickPrint();modalService.dismissAll();" [disabled]="(report == '')?true:false">Print</button>
     </div>
 </app-modal>
 
