@@ -636,12 +636,33 @@ export class MaintenanceService{
     }
 
     saveMtnTreaty(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreaty', params, header);
+     }
+
+    getMtnApproval(){
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnApproval");
+	}
+
+	getMtnApprovalFunction(approvalCd: string){
+		const params = new HttpParams()
+		     .set('approvalCd', (approvalCd === null || approvalCd === undefined ? null : approvalCd))
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnApprovalFunction",{params});
+		
+	}
+
+	saveMtnApproval(params){
 		let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
-        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreaty', params, header);
+
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnApproval', params, header);
     }
 
     getMtnRetAmt(lineCd, lineClassCd){
@@ -650,6 +671,21 @@ export class MaintenanceService{
 		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd));
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnRetAmt", {params});
+	}
+
+	saveMtnApprovalFunction(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnApprovalFunction', params, header);
+	}
+
+	getMtnApprover(userId?:string){
+		const params = new HttpParams()
+		     .set('userId', (userId === null || userId === undefined ? '' : userId))
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
 	}
 }
 

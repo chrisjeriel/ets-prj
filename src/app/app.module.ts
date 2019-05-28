@@ -394,6 +394,10 @@ import { CityComponent } from './maintenance/quotation-and-policy/region/city/ci
 import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
 import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
+import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
+import { MtnApproverComponent } from './maintenance/mtn-approver/mtn-approver.component';
+import { SystemComponent } from './maintenance/system/system.component';
+import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
 
 @NgModule({
     imports: [
@@ -794,6 +798,10 @@ import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-
         TreatyComponent,
         RetentionLineComponent,
         TreatyShareComponent,
+        MtnApprovalFunctionComponent,
+        MtnApproverComponent,
+        SystemComponent,
+        ProgramParameterComponent,
     ],
 
   	providers: [
