@@ -5,7 +5,7 @@
             <ng-template ngbTabContent>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important">
                     <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-                        <app-cust-editable-non-datatable #roundingerror [passData]="passData" (newClick)="clickRow($event)" (onDelete)="currency.onClickDelete('force');" (genericBtn)="deleteCurr()"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable #roundingerror [passData]="passData" (newClick)="clickRow($event)" (onDelete)="roundingerror.onClickDelete('force');" (genericBtn)="deleteCurr()" (tableDataChange)="update($event)" (clickLOV)="showRoundingLOV($event)"></app-cust-editable-non-datatable>
                             <div class="form-row" style="margin-top: 40px !important;">
                                 <div class="form-group col-sm">
                                     <div class="text-center">
@@ -21,19 +21,19 @@
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
 					    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
 					        <label class="form-control-sm col-sm-1">Created By</label>
-					        <input type="text" class="form-control form-control-sm col-sm"[(ngModel)]="roundingError.createUser" readonly>
+					        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="roundingError.createUser" readonly>
 					        <label class="form-control-sm col-sm-1">Created Date</label>
-					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="roundingError.createDate"readonly>
+					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="roundingError.createDate" readonly>
 					        <label class="form-control-sm col-sm-1">Last Update By</label>
-					        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="roundingError.updateUser"readonly>
+					        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="roundingError.updateUser" readonly>
 					        <label class="form-control-sm col-sm-1">Last Update</label>
-					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="roundingError.updateDate"readonly>
+					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="roundingError.updateDate" readonly>
 					    </div>
 				</fieldset>
                 <app-mtn-ceding-company id="roundingModal" (selectedData)="setRoundingError($event)"></app-mtn-ceding-company>
-                <app-confirm-save (onYes)="saveCurrRt()"></app-confirm-save>
+                <app-confirm-save (onYes)="saveRoundingError()"></app-confirm-save>
                 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-                <app-cancel-button (onYes)="saveCurrRt('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>                
+                <app-cancel-button (onYes)="saveRoundingError('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>                
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
