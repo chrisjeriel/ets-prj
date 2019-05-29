@@ -395,6 +395,7 @@ import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy
 import { MtnApproverComponent } from './maintenance/mtn-approver/mtn-approver.component';
 import { SystemComponent } from './maintenance/system/system.component';
 import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
+import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
 
 @NgModule({
     imports: [
@@ -796,6 +797,7 @@ import { ProgramParameterComponent } from './maintenance/system/program-paramete
         MtnApproverComponent,
         SystemComponent,
         ProgramParameterComponent,
+        RoundingErrorComponent,
     ],
 
   	providers: [

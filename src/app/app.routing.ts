@@ -156,6 +156,7 @@ import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-a
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
 import { SystemComponent } from './maintenance/system/system.component';
 import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
+import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
 
 const appRoutes: Routes = [
 
@@ -319,6 +320,7 @@ const appRoutes: Routes = [
     { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
     { path: 'mtn-system', component: SystemComponent },
     { path: 'mtn-program-parameter', component: ProgramParameterComponent },
+    { path: 'mtn-rounding-error', component: RoundingErrorComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

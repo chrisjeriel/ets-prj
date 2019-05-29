@@ -678,5 +678,12 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnParameters', params, header);
 	}
+
+	getMtnRoundingError(cedingId){
+		const params = new HttpParams()
+		     .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRoundingError',{params});
+	}
+
 }
 
