@@ -353,7 +353,6 @@ export class ReadyForPrintingComponent implements OnInit {
 
                 }else if (obj === 'PDF'){
                    this.resultPrint = [];
-
                    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
                      if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
                         var selectedReport = this.reportsList[0].val
@@ -384,7 +383,6 @@ changeQuoteStatus() {
 }
 
 downloadPDF(reportName : string, quoteId : string, quotationNo: string, length: any){
-    
     if (reportName === this.reportsList[0].val){
      var fileName = "QUOTATION_LETTER" +'-'+ quotationNo;
     }else {
@@ -417,57 +415,51 @@ downloadPDF(reportName : string, quoteId : string, quotationNo: string, length: 
 
 batchPDF(obj){
      if (this.resultPrint.length === obj){
-       console.log(this.resultPrint);
         if(this.resultPrint.some(item => item.status === '1')){
               this.modalService.dismissAll();
               this.dialogIcon = "error-message";
               this.dialogMessage = "Error generating PDF file(s)";
               this.selectedOnOk = true;
               $('#readyPrinting #successModalBtn').trigger('click');
+              this.saveData.changeQuoteStatus = []
+
+               for(let i=0;i<this.resultPrint.length ;i++){ 
+                   if (this.resultPrint[i].status === '0'){
+                     this.saveData.changeQuoteStatus.push({ quoteId : this.resultPrint[i].quoteId })
+                   }
+               }
+             this.changeQuoteStatus();
         } else {
-            this.changeQuoteStatus();
+             this.changeQuoteStatus();
         }
 
      }
 }
 
-printPDF(batchData: any){
-   console.log(batchData);
-   this.quotationService.batchPrint(JSON.stringify(batchData)).subscribe(data => {
-           console.log(data);
-
-           var newBlob = new Blob([data], { type: "application/pdf" });
+printPDF(batchData: any){      
+   this.quotationService.batchPrint(JSON.stringify(batchData)).
+          subscribe(data => {
+           var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
            var downloadURL = window.URL.createObjectURL(data);
            const iframe = document.createElement('iframe');
            iframe.style.display = 'none';
            iframe.src = downloadURL;
            document.body.appendChild(iframe);
            iframe.contentWindow.print();
+           this.changeQuoteStatus();
+    },
+     error => {
+           this.modalService.dismissAll();
+           this.dialogIcon = "error-message";
+           this.dialogMessage = "Error generating batch PDF file(s)";
+           this.selectedOnOk = true;
+           $('#readyPrinting #successModalBtn').trigger('click');
    });     
 
 }
 
-/*  validate(obj){
-          var req = ['printerName','noOfcopies'];
-          var entries = Object.entries(obj);
-            for(var [key, val] of entries) {
-                if((val === '' || val == null) && req.includes(key)){
-                    return false;
-                }
-            }
-        return true;
-  }
 
-  prepareParam() {
-        var printQuoteParam = {
-            "printerName"    : this.printName,
-            "noOfcopies"    : this.printCopies
-        }
-
-        return printQuoteParam;
-  }  
-*/
-  export(){
+export(){
         //do something
      var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
