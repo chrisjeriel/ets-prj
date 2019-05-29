@@ -206,16 +206,6 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   cancel(){
-    var fromDate,toDate,currentDate;
-    fromDate    = new Date(this.passData.tableData[0].effDateFrom).getTime();
-    toDate      = new Date(this.passData.tableData[0].effDateTo).getTime();
-    currentDate =  new Date(this.passData.tableData[this.passData.tableData.length - 1].effDateFrom).getTime();
-    console.log(fromDate)
-    console.log(toDate)
-    console.log(currentDate)
-    console.log('---------------')
-    console.log(currentDate >= fromDate)
-    console.log(currentDate <= toDate)
-    console.log(currentDate >= fromDate && currentDate<= toDate)
+    this.cancelBtn.clickCancel();
   }
 }

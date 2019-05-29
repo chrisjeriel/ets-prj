@@ -137,6 +137,8 @@ export class ProgramParameterComponent implements OnInit {
    		for(var i = 0; i < this.passData.tableData.length;i++){
    			if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
    				this.edited.push(this.passData.tableData[i]);
+          this.edited[this.edited.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
+          this.edited[this.edited.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
    			}
 
    			if(this.passData.tableData[i].deleted){
