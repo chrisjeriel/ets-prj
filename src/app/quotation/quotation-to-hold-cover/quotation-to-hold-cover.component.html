@@ -91,7 +91,7 @@
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Period To</label>
-													<div class="warn col-sm r-only dp-cont" style="margin-left: 0px !important">
+													<div id="periodTo" class="warn col-sm r-only dp-cont" style="margin-left: 0px !important">
 							                            <datepicker [type]="'date'" [(value)]="periodToArr[0]" [disabled]="fieldIconDsbl"  [minDate]="periodFromArr[0]" [required]="true"></datepicker>
 							                        </div>
 							                        <div class="warn col-sm-3 r-only dp-cont">
@@ -102,7 +102,7 @@
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Request Date</label>
-													<div class="warn col-sm r-only dp-cont" style="margin-left: 0px !important">
+													<div class="col-sm r-only dp-cont" style="margin-left: 0px !important">
 							                            <datepicker [type]="'date'" [(value)]="holdCover.reqDate" [disabled]="fieldIconDsbl"></datepicker>
 							                        </div>
 												</div>
@@ -143,6 +143,12 @@
 				
 			</ng-template>
 		</ngb-tab>
+		<ngb-tab id="Exit">
+                <ng-template ngbTabTitle>
+                    <div>Exit</div>
+                </ng-template>
+                <ng-template ngbTabContent></ng-template>
+        </ngb-tab>
 	</ngb-tabset>
 </div>
 
@@ -208,10 +214,10 @@
  	    			</div>
  	    			<div class="input-group" style="padding-right: 10px!important;padding-left: 10px !important;">
 						<div class="cust-btn-container col-sm" style="padding-right: 0px !important">
-							<button type="button" class="cust-btn col-sm" (click)="modalService.dismissAll();"><a>{{ aprrovalBtnTxt }}</a></button>
+							<button type="button" class="cust-btn col-sm" (click)="(aprrovalBtnTxt.toUpperCase() == 'APPROVE')?updateHcStatus('APPROVE'):updateHcStatus('FOR APPROVAL');"><a>{{ aprrovalBtnTxt }}</a></button>
 						</div>		
 						<div class="cust-btn-container col-sm" style="padding-left: 0px !important">
-							<button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="modalService.dismissAll();">Rejected</button>
+							<button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="updateHcStatus('REJECTED');">Rejected</button>
 						</div>
  	    			</div>
  	    		</fieldset>

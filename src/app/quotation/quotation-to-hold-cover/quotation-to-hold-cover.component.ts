@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,OnDestroy } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { HoldCoverInfo } from '../../_models/HoldCover';
 import { QuotationService,NotesService,UserService } from '../../_services';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +16,7 @@ import { environment } from '@environments/environment';
   templateUrl: './quotation-to-hold-cover.component.html',
   styleUrls: ['./quotation-to-hold-cover.component.css']
 })
-export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
+export class QuotationToHoldCoverComponent implements OnInit {
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 	@ViewChild('opt') opt: CustNonDatatableComponent;
@@ -51,15 +51,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 		keys		: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
 		pageStatus	: true,
 		pagination	: true,
-		pageID		: 10,
-		// filters:[
-		//   {key:'optionNo',title:'Option No',dataType:'text'},
-		//   {key:'rate',title:'Option No',dataType:'text'},
-		//   {key:'conditions',title:'Option No',dataType:'text'},
-		//   {key:'commRateQuota',title:'Option No',dataType:'text'},
-		//   {key:'commRateSurplus',title:'Option No',dataType:'text'},
-		//   {key:'commRateFac',title:'Option No',dataType:'text'},
-		// ]
+		pageID		: 10
 	};
 
 	holdCover : any = {
@@ -143,7 +135,6 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   			
   			this.passDataQuoteLOV.tableData = quoList;
 			this.table.refreshTable();
-			console.log('inside subRes');
 			if(quoList.length == 1){
 				this.quoteInfo.quotationNo 	= this.splitQuoteNo(quoList[0].quotationNo);
 				this.holdCover.quoteId		= quoList[0].quoteId;
@@ -152,12 +143,11 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 				this.quoteInfo.riskName		= quoList[0].riskName;
 				this.holdCover.lineCd		= quoList[0].lineCd;
 				this.quoteInfo.status		= quoList[0].status;
-				console.log(this.quoteInfo.status);
 				this.newHc(false);
 				this.getQuoteOptions();
 
 				var selectedRow = hcList.filter(i => i.quotationNo == quoList[0].quotationNo);
-				if(selectedRow.length != 0){
+				if(selectedRow.length != 0 && selectedRow[0].holdCover.status.toUpperCase() != 'REPLACED VIA HOLD COVER MODIFICATION'){
 					this.holdCoverNo 		 		 = selectedRow[0].holdCover.holdCoverNo;
 					this.holdCover.approvedBy		 = selectedRow[0].holdCover.approvedBy;
 			  		this.holdCover.compRefHoldCovNo  = selectedRow[0].holdCover.compRefHoldCovNo;
@@ -186,18 +176,15 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 					}
 					
 				}else{
-					console.log('inside clear hc');
 					this.clearHc();
 				}
 
 			}else{
 				this.newHc(true);
 				this.clearAll();
-				console.log('inside != 1');
 				if(quoList.length == 0){
 					this.showQuoteLov();
 					this.getQuoteList();
-					console.log('inside = 0');
 				}
 			}
   		});
@@ -224,7 +211,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 	  		this.holdCover.periodTo			= this.periodToArr.join('T');
 	  		this.holdCover.createDate		= (this.holdCover.createDate == '')?this.ns.toDateTimeString(0):this.holdCover.createDate;
 			this.holdCover.createUser		= (this.holdCover.createUser == '')?this.ns.getCurrentUser():this.holdCover.createUser;
-			this.holdCover.preparedBy		= (this.holdCover.createUser == '')?this.ns.getCurrentUser():this.holdCover.createUser;
+			this.holdCover.preparedBy		= (this.holdCover.preparedBy == '')?'':this.holdCover.createUser;
 	  		this.holdCover.updateDate		= this.ns.toDateTimeString(0);
 			this.holdCover.updateUser		= this.ns.getCurrentUser();
 			this.holdCover.status			= (this.holdCover.status == '' || this.holdCover.status.toUpperCase() == 'APPROVED' || this.holdCover.status.toUpperCase() == 'REJECTED')?'In Force':this.holdCover.status;
@@ -263,8 +250,11 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 
   	getQuoteOptions(){
   		console.log(this.holdCover.quoteId);
+  		this.opt.loadingFlag = true;
   		this.quotationService.getQuoteOptions(this.holdCover.quoteId,'')
   		.subscribe(data => {
+  			this.passDataOptionsLOV.tableData = [];
+  			console.log('Entered in Quote Options');
   			var rec = data['quotation']['optionsList'];
   			this.passDataOptionsLOV.tableData = rec;
   			this.opt.refreshTable();
@@ -286,6 +276,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   			this.dialogMessage = 'Cancelled Successfully!';
   			$('app-sucess-dialog #modalBtn').trigger('click');
   			this.clearHc();
+  			this.newHc(false);
   		});
   	}
 
@@ -296,15 +287,13 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   			console.log(data);
   			var usrGrp 		= data['usr']['usersList'][0].userGrp;
   			var curRow		= data['usrAmtLmt']['userAmtLmtList'].filter(a => a.userGrp == usrGrp && a.lineCd.toUpperCase() == this.holdCover.lineCd.toUpperCase());
-  			var amtLimit	= curRow[0].amtLimit;
-  			if(this.quoteInfo.totalSi <= amtLimit){
+  			var rec			= curRow[0];
+  			if(rec.allAmtSw == 'Y' || this.quoteInfo.totalSi <= rec.amtLimit){
   				this.aprrovalBtnTxt = 'Approve';
   				this.isApproved = true;
-  				this.updateHcStatus('Approve');
   			}else{
   				this.aprrovalBtnTxt = 'For Approval';
   				this.isApproved = false;
-  				this.updateHcStatus('For Approval');
   			}
   		});
   	}
@@ -317,25 +306,37 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
   		}else{
   			this.printPDFHC('PRINTER');
   		}
+  		this.holdCover.preparedBy = this.ns.getCurrentUser();
   	}
 
   	updateHcStatus(from){
+  		var ids = {
+			holdCoverId	: this.holdCover.holdCoverId,
+			quoteId		: this.holdCover.quoteId,
+			updateUser	: this.ns.getCurrentUser(),
+			hcStatus	: '',
+			quoStatus	: ''
+		};
+
   		if(from.toUpperCase() == 'APPROVE'){
-  			
+  			ids.hcStatus = 'A';
+  			this.holdCover.status = 'Approved';
+  			this.holdCover.approvedBy = this.ns.getCurrentUser(); 
   		}else if(from.toUpperCase() == 'FOR APPROVAL'){
-  			
+  			ids.hcStatus	= 'P';
+  			this.holdCover.status 	= 'Pending Approval'; 
+  		}else if(from.toUpperCase() == 'REJECTED'){
+  			ids.hcStatus = 'R';
+  			this.holdCover.status = 'Rejected';
   		}else{
+  			ids.hcStatus = this.holdCover.status;
   			if(this.holdCover.status.toUpperCase() == 'APPROVED'){
-	  			var ids = {
-				  holdCoverId	: this.holdCover.holdCoverId,
-				  quoteId		: this.holdCover.quoteId,
-				  updateUser	: this.ns.getCurrentUser(),
-				  hcStatus		: 2,
-				  quoStatus		: ''
-				};
+	  			ids.hcStatus = '2';
+	  			this.holdCover.status = 'Released';
+	  			console.log(ids.hcStatus);
   			}
   		}
-
+		console.log(ids);
   		this.quotationService.updateHoldCoverStatus(JSON.stringify(ids))
 	  	.subscribe(data => {
 	  		console.log(data);
@@ -344,7 +345,6 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 
   	printPDFHC(param){
   		var fileName = this.holdCoverNo;
-
   		this.quotationService.downloadPDFHC(this.reportName,this.holdCover.quoteId,this.holdCover.holdCoverId)
 	  	.subscribe(data => {
 	  		console.log(data);
@@ -388,7 +388,11 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 
   	onClickOkOptionsLov(){
   		this.holdCover.optionId = this.rowRecOpt.optionId;
-  		this.modalService.dismissAll();
+  		if(this.holdCover.optionId == '' || this.holdCover.optionId == undefined){
+  		}else{
+  			$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+  			this.modalService.dismissAll();
+  		}
   	}
 
   	onCancelModifLov(){
@@ -438,6 +442,31 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 
 	}
 
+	onTabChange($event: NgbTabChangeEvent) {
+		if ($event.nextId === 'Exit') {
+			$event.preventDefault();
+			this.router.navigate(['/hold-cover-monitoring']);
+		}else{
+			if($('.ng-dirty').length != 0 ){
+			    $event.preventDefault();
+			    const subject = new Subject<boolean>();
+			    const modal = this.modalService.open(ConfirmLeaveComponent,{
+				        centered: true, 
+			            backdrop: 'static', 
+			            windowClass : 'modal-size'
+			    });
+		        modal.componentInstance.subject = subject;
+
+		        subject.subscribe(a=>{
+		        	if(a){
+			            $('.ng-dirty').removeClass('ng-dirty');
+			            this.tabset.select($event.nextId)
+			        }
+			    })
+      		}
+		}
+	}
+
 	clearHc(){
 		this.holdCoverNo 		 		 = '';
 		this.holdCover.approvedBy		 = '';
@@ -472,6 +501,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 		var s = d.setDate(d.getDate()+30);
 		this.periodToArr[0] = (isNaN(s) == true)?'':this.ns.toDateTimeString(s).split('T')[0];
 		$('.r-only').find('input').addClass('ng-dirty');
+		$('#periodTo').find('input').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 	}
 
 	newHc(isNew:boolean){
@@ -506,6 +536,7 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 
 	showOptionsLov(){
 		$('#optionMdl > #modalBtn').trigger('click');
+		this.getQuoteOptions();
 	}
 
 	showModifLov(){
@@ -523,10 +554,6 @@ export class QuotationToHoldCoverComponent implements OnInit, OnDestroy {
 
 	splitQuoteNo(quotationNo){
 		return quotationNo.split('-');
-	}
-
-	ngOnDestroy(){
-		//this.subs.unsubscribe();  // uncomment after coding
 	}
 
 }
