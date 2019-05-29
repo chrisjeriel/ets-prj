@@ -4,7 +4,7 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
-
+import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component'
 @Component({
   selector: 'app-rounding-error',
   templateUrl: './rounding-error.component.html',
@@ -15,6 +15,7 @@ export class RoundingErrorComponent implements OnInit {
   @ViewChild('roundingerror') table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(MtnCedingCompanyComponent) mtnCedingLov: MtnCedingCompanyComponent;
   passData: any = {
     tHeader: [ "Company No","Company Name","Abbreviation","Effective From", "Effective To","Active","Remarks"],
     tableData:[],
@@ -53,6 +54,7 @@ export class RoundingErrorComponent implements OnInit {
   dialogMessage : string = '';
   dialogIcon: any;
   errorFlag:boolean = false;
+  hide:string[] = [];
 
   roundingError : any = {
   	createUser: null,
@@ -80,6 +82,32 @@ export class RoundingErrorComponent implements OnInit {
   		}
   		this.table.refreshTable();
   	});
+  }
+
+   onRowClick(data){
+   	console.log(data)
+   	  if(data !== null){
+   	   this.passData.disableGeneric = false
+   	   this.roundingError = data;
+   	   this.roundingError.createDate = this.ns.toDateTimeString(data.createDate);
+   	   this.roundingError.updateDate = this.ns.toDateTimeString(data.updateDate);
+   	 }else{
+   	   this.passData.disableGeneric = true
+   	 }
+   }
+
+   deleteCurr(){
+   		this.table.indvSelect.deleted = true;
+   		this.table.selected  = [this.table.indvSelect]
+   		this.table.confirmDelete();
+   }
+
+   update(data){
+    if(data.hasOwnProperty('lovInput')) {
+      this.hide = this.passData.tableData.map(a=> a.lineCd);
+      data.ev['index'] = data.index;
+      this.mtnCedingLov.checkCode(data.ev.target.value, data.ev);
+    }
   }
 
 }
