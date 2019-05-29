@@ -62,6 +62,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 		membershipDate: '',
 		terminationDate: '',
 		inactiveDate: '',
+    treatyTag: '',
 		remarks: '',
 		createUser: '',
 		createDate: '',
@@ -224,6 +225,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   	}
   	//seting up ceding comp updates
   	this.companyData.membershipTag = this.companyData.membershipTag === '' || this.companyData.membershipTag === 'N' ? 'N' : 'Y';
+    this.companyData.treatyTag = this.companyData.treatyTag === '' || this.companyData.treatyTag === 'N' ? 'N' : 'Y';
   	this.companyData.govtTag = this.companyData.govtTag === '' || this.companyData.govtTag === 'N'? 'N' : 'Y';
   	this.companyData.activeTag = this.companyData.activeTag === '' || this.companyData.activeTag === 'N' ? 'N' : 'Y';
   	this.companyData.createUser = this.currentUser;

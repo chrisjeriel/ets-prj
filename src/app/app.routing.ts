@@ -153,10 +153,14 @@ import { BlockComponent } from './maintenance/quotation-and-policy/block/block.c
 //end
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
+import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
+import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
+import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
 import { SystemComponent } from './maintenance/system/system.component';
 import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
 import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
+import { ReportComponent } from './maintenance/system/report/report.component';
 
 const appRoutes: Routes = [
 
@@ -317,10 +321,14 @@ const appRoutes: Routes = [
     { path: 'maintenance-location/:id', component: RegionComponent },
     { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
     { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent },
+    { path: 'maintenance-treaty', component: TreatyComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-retention-line', component: RetentionLineComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-treaty-share', component: TreatyShareComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
     { path: 'mtn-system', component: SystemComponent },
     { path: 'mtn-program-parameter', component: ProgramParameterComponent },
     { path: 'mtn-rounding-error', component: RoundingErrorComponent },
+    { path: 'mtn-report', component: ReportComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

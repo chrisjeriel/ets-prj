@@ -1,31 +1,21 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Quotation & Policy</h4>
 	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Quote Wording">
+		<ngb-tab class="ngb-tab" title="Treaty">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
-						    <div class="form-row custom-row-inline-inset">
-						        <div class="input-group">
-						            <div class="col-sm-3"></div>
-						            <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
-						            <input class="form-control form-control-sm col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="lineCd" (ngModelChange)="lineCd=$event.toUpperCase()" mask="SSS">
-						            <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
-						            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="lineDesc" readonly>
-						            <div class="col-sm-3"></div>
-						        </div>
-						    </div>
-						</fieldset>
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
-								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="quoteWordingData" (tableDataChange)="quoteWordingData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); quoteWordingData.disableGeneric=true;"></app-cust-editable-non-datatable>
+								<div class="col-sm-2"></div>
+								<div id="treaty-table" class="col-sm-8">
+									<app-cust-editable-non-datatable [passData]="treatyData" (tableDataChange)="treatyData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); treatyData.disableGeneric=true;"></app-cust-editable-non-datatable>
 								</div>
+								<div class="col-sm-2"></div>
 							</div>
 							<div class="form-row">
 								<div class="form-group col-sm">
-									<div class="col-md-13 text-center">
+									<div class="col-md-12 text-center">
 										<div class="cust-btn-container">
 										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
 							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
@@ -63,19 +53,17 @@
 	</ngb-tabset>
 </div>
 
-<app-mtn-line id="qwLineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 
-
-<app-modal class="d-none" id="mtnQWWarningModal">
+<app-modal class="d-none" id="mtnTreatyWarningModal">
     <div header>Warning Message</div>
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
             <div class="custom-row-inline-inset" style="text-align: center">                
-                <p>Unable to save the record. Only one default Quote Wording per<br />
-                Line, Paragraph Type and Open Cover is allowed.</p>
+                <p>You are not allowed to delete a Treaty that is already used<br />
+                in the distribution of policy.</p>
             </div>
         </fieldset>
     </div>

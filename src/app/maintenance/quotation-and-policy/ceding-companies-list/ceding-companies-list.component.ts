@@ -20,9 +20,8 @@ export class CedingCompaniesListComponent implements OnInit {
 
   maintenanceCedingCoListData: any = {
       tableData: [],
-      tHeader: ['Co No.', 'Name', 'Abbreviation', 'Address', 'Active', 'Govt.', 'Member', 'Membership Date', 'Termination Date', 'Inactive Date'],
-      dataTypes: ['sequence-3', 'text', 'text', 'text', 'checkbox', 'checkbox', 'checkbox', 'date', 'date', 'date'],
-      resizable: [false, false, true, false, true, true, true, true, true, true],
+      tHeader: ['Co No.', 'Name', 'Abbreviation', 'Address', 'Active', 'Treaty', 'Govt.', 'Member', 'Membership Date', 'Termination Date', 'Inactive Date'],
+      dataTypes: ['sequence-3', 'text', 'text', 'text', 'checkbox', 'checkbox', 'checkbox', 'checkbox', 'date', 'date', 'date'],
       tableOnly: false,
       addFlag: true,
       editFlag: true,
@@ -30,7 +29,7 @@ export class CedingCompaniesListComponent implements OnInit {
       pageStatus: true,
       pagination: true,
       pageLength: 15,
-      keys: ['cedingId','cedingName','cedingAbbr','address','activeTag','govtTag','membershipTag','membershipDate','terminationDate','inactiveDate'],
+      keys: ['cedingId','cedingName','cedingAbbr','address','activeTag','treatyTag','govtTag','membershipTag','membershipDate','terminationDate','inactiveDate'],
       filters: [
           {
               key: 'cedingId',

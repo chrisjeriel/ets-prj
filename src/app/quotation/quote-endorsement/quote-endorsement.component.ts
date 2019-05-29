@@ -211,6 +211,7 @@ export class QuoteEndorsementComponent implements OnInit {
     }
     showModal:boolean = false;
     dialogIcon: string;
+    dialogMessage: string;
     hideEndt: any[];
     selectedEndt:any = null;
 
@@ -421,7 +422,8 @@ export class QuoteEndorsementComponent implements OnInit {
       this.quotationService.copyEndorsement(JSON.stringify(params)).subscribe((data: any) =>{
           console.log(data);
           if(data.returnCode==-1){
-            this.dialogIcon = 'Success';
+            this.dialogIcon = 'success-message';
+            this.dialogMessage = 'Endorsements were successfully copied.';
             this.table.markAsPristine();
             $('#quote-endorsment #successMdl > #modalBtn').trigger('click');
           }else{
@@ -439,6 +441,7 @@ export class QuoteEndorsementComponent implements OnInit {
     if(event.optionId !== undefined){
      //neco
        this.copyEndtMethod(event.optionId);
+       this.updateDed(null);
      //end neco
      this.endorsementData.disableAdd = false;
      this.table.loadingFlag = true;

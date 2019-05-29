@@ -234,6 +234,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   saveBtnClicked: boolean = false;
   prevInceptDate: string;
   prevEffDate: string;
+  prevExpiryDate: string;
   refPolicyId: string = '';
   newAlt: boolean = false;
   fromInq:any = false;
@@ -447,7 +448,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           // if (this.prevPolicyId !== '') {
             this.underwritingService.getPolGenInfo(null, polNo.join('-')).subscribe((data:any) => {
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
-              this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
+              this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.effDate));
+              this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
             });
           // }
         }
@@ -729,9 +731,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     var d = new Date(this.policyInfo.inceptDate);
     d.setFullYear(d.getFullYear() + 1);
 
-    console.log(this.policyInfo.inceptDate);
     this.policyInfo.expiryDate = this.policyInfo.inceptDate.split('T').includes('') ? 'T' : this.ns.toDateTimeString(d);
-    console.log(this.policyInfo.expiryDate);
   }
 
   updateDate(str) {
@@ -778,12 +778,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "intmId"          : this.policyInfo.intmId,
       "ipl"             : this.policyInfo.project.ipl,
       "issueDate"       : this.policyInfo.issueDate,
-      "lapseFrom"       : this.policyInfo.lapseFrom,
-      "lapseTo"         : this.policyInfo.lapseTo,
+      "lapseFrom"       : this.policyInfo.lapseFrom == 'T' ? '' : this.policyInfo.lapseFrom,
+      "lapseTo"         : this.policyInfo.lapseTo == 'T' ? '' : this.policyInfo.lapseTo,
       "lineCd"          : this.policyInfo.lineCd,
       "lineClassCd"     : this.policyInfo.lineClassCd,
-      "maintenanceFrom" : this.policyInfo.maintenanceFrom,
-      "maintenanceTo"   : this.policyInfo.maintenanceTo,
+      "maintenanceFrom" : this.policyInfo.maintenanceFrom == 'T' ? '' : this.policyInfo.maintenanceFrom,
+      "maintenanceTo"   : this.policyInfo.maintenanceTo == 'T' ? '' : this.policyInfo.maintenanceTo,
       "mbiRefNo"        : this.policyInfo.mbiRefNo,
       "minDepTag"       : this.policyInfo.minDepTag,
       "noClaimPd"       : this.policyInfo.project.noClaimPd,
@@ -863,23 +863,22 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         x++;
       }
 
-    //ADD VALIDATION
    if(this.validate(savePolGenInfoParam)){
+     if(this.alteration && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate) {
+       savePolGenInfoParam['extensionTag'] = 'Y';
+     }
+
      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
        if(data.returnCode === 0){
          this.dialogMessage="The system has encountered an unspecified error.";
          this.dialogIcon = "error";
          $('#polGenInfo > #successModalBtn').trigger('click');
        }else{
-         // this.policyInfo.policyId = data['policyId'];
-         // this.policyInfo.policyNo = data['policyNo'];
-         // this.policyInfo.altNo = data['policyNo'].split('-')[5];
          this.policyId = data['policyId'];
          this.policyNo = data['policyNo'];
 
          if(this.newAlt) {
            this.newAlt = false;
-           // this.checkPolIdF(this.policyId);
            this.underwritingService.fromCreateAlt = false;
          }
 
@@ -1048,7 +1047,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   //validates params before going to web service
   validate(obj) {
    var req = ['cedingId', 'coSeriesNo', 'cessionId', 'lineClassCd', 'quoteId', 'status', 'principalId', 'insuredDesc',
-               'currencyCd', 'currencyRt', 'projDesc', 'site', ];
+               'currencyCd', 'currencyRt', 'projDesc', 'site'];
    var reqDates = ['inceptDate', 'expiryDate', 'issueDate', 'effDate', 'distDate', 'acctDate'];
 
    switch(obj.lineCd) {
