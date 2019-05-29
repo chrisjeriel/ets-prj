@@ -12,6 +12,13 @@
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Batch Option</legend>
                             <div class="form-group" style="margin-bottom: 13px;margin-left: 35px !important;">
+                                <!-- EARL, 05/29/2019 -->
+                                <div class="input-group">
+                                    <input class="form-control-sm" type="radio" name="batchOption" value="2"
+                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd" name="selectedData.statusCd2">
+                                    <label class="form-control-sm col-sm-10" style="text-align: left !important;">In Progress</label>
+                                </div>
+                                <!-- END EARL -->
                                 <div class="input-group">
                                     <input class="form-control-sm" type="radio" name="batchOption" value="9"
                                         style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd" name="selectedData.statusCd9">
