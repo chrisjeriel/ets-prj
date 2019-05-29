@@ -161,6 +161,8 @@ export class TreatyShareComponent implements OnInit {
   	hiddenTreaty: any[] = [];
   	hiddenCedingCo: any[] = [];
   	warningMsg: number = 0;
+  	disableCopySetup = true;
+  	copyToYear: any = '';
 
   	disableRetentionTab: boolean = true;
 
@@ -277,7 +279,8 @@ export class TreatyShareComponent implements OnInit {
 
 	onTreatyYearRowClick(ev) {
 		this.treatyYearSelected = ev;
-		this.treatyYearData.disableGeneric = this.treatyYearSelected == undefined || this.treatyYearSelected == '';;
+		this.treatyYearData.disableGeneric = this.treatyYearSelected == undefined || this.treatyYearSelected == '';
+		this.disableCopySetup = this.treatyYearSelected == undefined || this.treatyYearSelected == '';
 		this.getMtnTreatyCommRate();
 	}
 
@@ -293,8 +296,6 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	onTreatyCommRowClick(ev) {
-		console.log(this.treatyYearData);
-		console.log(this.treatyCommData);
 		this.selected = ev;
 		this.treatyCommSelected = ev;
 		this.treatyCommData.disableGeneric = this.treatyCommSelected == undefined || this.treatyCommSelected == '';
@@ -536,7 +537,7 @@ export class TreatyShareComponent implements OnInit {
 			}
 		}
 
-		td3.forEach(a => totalShare += a.pctShare);
+		td3.forEach(a => totalShare += !a.deleted ? a.pctShare : 0);
 
 		for(let d of td3) {
 			if(d.edited && !d.deleted &&
@@ -646,6 +647,46 @@ export class TreatyShareComponent implements OnInit {
 			} else {
 				this.dialogIcon = "error";
 				this.successDialog.open();
+			}
+		});
+	}
+
+	onCopySetupClick() {
+		$('#mtnTreatyShareCopyModal > #modalBtn').trigger('click');
+	}
+
+	onClickModalCopy(force?) {
+		if(this.treatyYearSelected.treatyYear == Number(this.copyToYear) || Number(this.copyToYear) == 0) {
+			this.dialogIcon = 'error';
+			this.dialogMessage = 'Invalid Year!'; // message not showing
+			this.successDialog.open();
+			return;
+		}
+
+		$('.globalLoading').css('display','block');
+		var params = {
+			checker: force == undefined ? 0 : 1,
+		    copyFromYear: this.treatyYearSelected.treatyYear,
+		  	copyToYear: Number(this.copyToYear),
+		  	createDate: this.ns.toDateTimeString(0),
+		  	createUser: this.ns.getCurrentUser(),
+		  	updateDate: this.ns.toDateTimeString(0),
+		  	updateUser: this.ns.getCurrentUser()
+		}
+
+		this.ms.copyTreatyShareSetup(JSON.stringify(params)).subscribe(data => {
+			$('.globalLoading').css('display','none');
+			if(data['returnCode'] == -1) {
+				$('#mtnTreatyShareSuccessModal > #modalBtn').trigger('click');
+				this.getMtnTreatyComm();
+				this.copyToYear = '';
+			} else if(data['returnCode'] == 2) {
+				this.modalService.dismissAll();
+				this.warningMsg = 5;
+				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+				this.copyToYear = '';
+			} else if(data['returnCode'] == 3) {
+				$('#mtnTreatyShareConfirmationModal > #modalBtn').trigger('click');
 			}
 		});
 	}

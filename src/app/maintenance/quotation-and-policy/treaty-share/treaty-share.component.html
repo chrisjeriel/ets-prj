@@ -11,7 +11,7 @@
 								<div id="treaty-year-table" class="col-sm-6">
 									<app-cust-editable-non-datatable #treatyYearTable [passData]="treatyYearData" (tableDataChange)="treatyYearData.tableData=$event" (newClick)="onTreatyYearRowClick($event)" (genericBtn)="onTreatyYearClickDelete($event)" (add)="alignTreatyYear()" (onDelete)="treatyYearTable.onClickDelete('force'); treatyYearData.disableGeneric=true;">
 										<ng-container controls-l>
-											<button type="button" class="cust-btn"><a>Copy Setup</a></button>
+											<button type="button" [disabled]="disableCopySetup" class="cust-btn" (click)="onCopySetupClick()"><a>Copy Setup</a></button>
 										</ng-container>
 									</app-cust-editable-non-datatable>
 								</div>
@@ -113,6 +113,9 @@
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
+<app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
+<app-ceding-company #cedingRetention (selectedData)="setSelectedCedCoCedRet($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>
 
 <app-modal class="d-none" id="mtnTreatyShareWarningModal">
     <div header>Warning Message</div>
@@ -127,6 +130,8 @@
                 used in distribution processing.</p>
                 <p *ngIf="warningMsg == 4">You are not allowed to delete a member that is already used in<br />
                 distribution processing.</p>
+                <p *ngIf="warningMsg == 5">You are not allowed to copy the Treaty setup on a<br />
+                year that is already used in distribution processing.</p>
             </div>
         </fieldset>
     </div>
@@ -135,6 +140,54 @@
     </div>
 </app-modal>
 
-<app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
-<app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
-<app-ceding-company #cedingRetention (selectedData)="setSelectedCedCoCedRet($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>
+<app-modal class="d-none" id="mtnTreatyShareSuccessModal">
+    <div header>Success Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>Treaty setup was successfully copied.</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="mtnTreatyShareCopyModal">
+    <div header>Copy Setup</div>
+    <div body style="min-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <div class="input-group" style="margin-bottom: -14px !important;">
+                	<label class="form-control-sm col-sm-7">Copy From Treaty Year</label>
+					<input type="text" class="form-control form-control-sm col-sm-3 text-right" [ngModel]="treatyYearSelected?.treatyYear" tabindex="-1" readonly>
+                </div>
+                <div class="input-group" style="margin-bottom: -14px !important;">
+                	<label class="form-control-sm col-sm-7">Copy To Treaty Year</label>
+					<input type="text" class="form-control form-control-sm col-sm-3 text-right" mask="9999" [(ngModel)]="copyToYear">
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); copyToYear=''"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onClickModalCopy()"><a>Copy</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="mtnTreatyShareConfirmationModal">
+    <div header>Copy Setup</div>
+    <div body style="min-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>The entered year has an existing Treaty setup. This setup will be updated<br />
+                based on the year {{ treatyYearSelected?.treatyYear }}. Do you want to proceed?</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="onClickModalCopy('force')"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); copyToYear=''"><a>No</a></button>
+    </div>
+</app-modal>

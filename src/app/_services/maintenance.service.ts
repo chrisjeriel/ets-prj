@@ -681,5 +681,34 @@ export class MaintenanceService{
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreatyShare', params, header);
     }
+
+    copyTreatyShareSetup(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyTreatyShareSetup', params, header);
+    }
+
+    saveMtnRetAmt(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnRetAmt', params, header);
+    }
+
+    copyRetAmtSetup(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyRetAmtSetup', params, header);
+    }
 }
 
