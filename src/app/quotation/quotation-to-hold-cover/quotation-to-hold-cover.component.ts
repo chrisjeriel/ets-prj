@@ -98,6 +98,8 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	dialogIcon		: string = '';
 	cancelFlag		: boolean;
 	disableCancelHc	: boolean = true;
+	disableApproval	: boolean = true;
+	disableSave		: boolean = false;
 	isApproved	 	: boolean = false;
 	aprrovalBtnTxt	: string = 'For Approval';
 	reportName 		: string = 'QUOTER012';
@@ -166,10 +168,14 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			  		this.holdCover.reqDate			 = (selectedRow[0].holdCover.reqDate == null)?'':this.ns.toDateTimeString(selectedRow[0].holdCover.reqDate).split('T')[0];
 			  		this.holdCover.status			 = selectedRow[0].holdCover.status;
 			  		this.quoteInfo.totalSi			 = selectedRow[0].holdCover.totalSi;
+			  		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+			  		this.disableApproval = (this.holdCoverNo == '')?true:false;
 
 					if(this.holdCover.status.toUpperCase() == 'EXPIRED' || this.holdCover.status.toUpperCase() == 'CONVERTED'){
 						this.newHc(true);
 						this.disableCancelHc = true;
+						this.disableApproval = true;
+						this.disableSave	 = true;
 					}else{
 						 this.disableCancelHc = false;
 						 this.holdCover.status.toUpperCase() == 'RELEASED' ? this.showModifLov():'';
@@ -278,6 +284,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			this.clearHc();
   			this.newHc(false);
   		});
+  	}
+
+  	onClickView(){
+  		this.newHc(true);
+  		this.disableSave = true;
+  		this.disableApproval = true;
+  		this.modalService.dismissAll();
   	}
 
   	validateUser(){
@@ -398,6 +411,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	onCancelModifLov(){
   		this.clearAll();
   		this.newHc(true);
+  		this.disableApproval = true;
   		this.modalService.dismissAll();
   		this.getQuoteList();
   	}

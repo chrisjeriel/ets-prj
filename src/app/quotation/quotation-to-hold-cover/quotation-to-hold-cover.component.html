@@ -133,8 +133,8 @@
 						<div class="col-md-12 text-center">
 							<div class="cust-btn-container" style="margin-top: 10px !important;">
 								<button type="button" class="cust-btn" [disabled]="disableCancelHc" (click)="showCancelHcMdl()">Cancel Hold Cover</button>
-								<button type="button" class="cust-btn" [disabled]="(holdCoverNo=='')?true:false" (click)="showApprovalMdl()">Approval</button>
-								<button type="button" class="cust-btn" (click)="onClickSave()">Save</button>
+								<button type="button" class="cust-btn" [disabled]="disableApproval" (click)="showApprovalMdl()">Approval</button>
+								<button type="button" class="cust-btn" [disabled]="disableSave" (click)="onClickSave()">Save</button>
 							</div>
 						</div>
 					</div>
@@ -196,8 +196,8 @@
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onCancelModifLov()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="newHc(true);modalService.dismissAll();"><a>View</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Modification</a></button>
+        <button class="cust-btn" type="button" (click)="onClickView()"><a>View</a></button>
+        <button class="cust-btn" type="button" (click)="disableSave=false;modalService.dismissAll();"><a>Modification</a></button>
     </div>
 </app-modal>
 
