@@ -399,6 +399,7 @@ import { MtnApproverComponent } from './maintenance/mtn-approver/mtn-approver.co
 import { SystemComponent } from './maintenance/system/system.component';
 import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
 import { ReportComponent } from './maintenance/system/report/report.component';
+import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
 
 @NgModule({
     imports: [
@@ -804,6 +805,7 @@ import { ReportComponent } from './maintenance/system/report/report.component';
         SystemComponent,
         ProgramParameterComponent,
         ReportComponent,
+        ReportParamComponent,
     ],
 
   	providers: [

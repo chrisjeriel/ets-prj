@@ -175,18 +175,26 @@ export class ReportComponent implements OnInit {
 
   	}
 
-  	this.ms.saveMtnReports(this.savedData, this.deletedData).subscribe((data:any)=>{
-  		if(data.returnCode === 0){
-  			this.dialogIcon = 'error';
+  	if(this.savedData.length === 0 && this.deletedData.length === 0){
+  		setTimeout(()=>{
+  			this.dialogIcon = "info";
+  			this.dialogMessage = "Nothing to save.";
   			this.successDiag.open();
-  		}else{
-  			this.dialogIcon = '';
-  			this.successDiag.open();
-	        this.deletedData = [];
-	        this.table.markAsPristine();
-	  		this.retrieveMtnReportsMethod();
-  		}
-  	});
+  		},0);
+  	}else{
+  		this.ms.saveMtnReports(this.savedData, this.deletedData).subscribe((data:any)=>{
+	  		if(data.returnCode === 0){
+	  			this.dialogIcon = 'error';
+	  			this.successDiag.open();
+	  		}else{
+	  			this.dialogIcon = '';
+	  			this.successDiag.open();
+		        this.deletedData = [];
+		        this.table.markAsPristine();
+		  		this.retrieveMtnReportsMethod();
+	  		}
+	  	});
+  	}
   }
 
   checkFields(){

@@ -558,6 +558,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 this.ns.lovLoader(ev, 1);
                 this.passData.tableData['ev'] = ev;
                 this.passData.tableData['index'] = retData.index;
+                this.passData.tableData['key'] = retData.key; //neco 05/29/2019
                 this.passData.tableData['lovInput'] = true;
             } else {
                 delete this.passData.tableData.ev;
