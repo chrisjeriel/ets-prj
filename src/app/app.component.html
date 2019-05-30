@@ -52,7 +52,7 @@
                                     <br>
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE012') > -1">
-                                    <button id="QUOTE012" [routerLink]="['/quotation-holdcover']" class="button btn btn-link">Quotation
+                                    <button id="QUOTE012" [routerLink]="['/quotation-to-hold-cover']" class="button btn btn-link">Quotation
                                         to Hold Cover</button>
                                     <br />
                                 </ng-container>
@@ -209,9 +209,9 @@
                                 <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
                                     Processing</button>
                                 <br />
-                                <!-- <button [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
+                                <button [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
                                     Claim Status</button>
-                                    <br /> -->
+                                    <br />
                                 <button [routerLink]="['']" class="button btn btn-link">Claim
                                     Recovery</button>
                                 <br />
@@ -482,6 +482,7 @@
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
+                                <button [routerLink]="['/mtn-system']" class="button btn btn-link">System</button>
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel>

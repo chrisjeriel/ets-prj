@@ -136,3 +136,7 @@ div h4{
 .list{
 	margin-bottom: -16px;
 }
+
+.modal-size > .modal-dialog {
+    max-width: 90% !important;
+}

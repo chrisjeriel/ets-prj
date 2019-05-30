@@ -147,16 +147,20 @@ import { IntermediaryListComponent } from './maintenance/quotation-and-policy/in
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
 import { QuotationAndPolicyComponent } from './maintenance/quotation-and-policy/quotation-and-policy.component';
 import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
-//delete below when merged with maintenance region
-import { DistrictComponent } from './maintenance/quotation-and-policy/district/district.component';
-import { BlockComponent } from './maintenance/quotation-and-policy/block/block.component';
-//end
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
+import { QuotationToHoldCoverComponent } from './quotation/quotation-to-hold-cover/quotation-to-hold-cover.component';
 import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
 import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
 import { TreatyLimitComponent } from './maintenance/quotation-and-policy/treaty-limit/treaty-limit.component';
+import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
+import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
+import { SystemComponent } from './maintenance/system/system.component';
+import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
+import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
+import { ReportComponent } from './maintenance/system/report/report.component';
+import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
 
 const appRoutes: Routes = [
 
@@ -317,10 +321,18 @@ const appRoutes: Routes = [
     { path: 'maintenance-location/:id', component: RegionComponent },
     { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
     { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent },
+    { path: 'quotation-to-hold-cover', component: QuotationToHoldCoverComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-treaty', component: TreatyComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-retention-line', component: RetentionLineComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-treaty-share', component: TreatyShareComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-treaty-limit', component: TreatyLimitComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-approver', component: ApproverComponent },
+    { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
+    { path: 'mtn-system', component: SystemComponent },
+    { path: 'mtn-program-parameter', component: ProgramParameterComponent },
+    { path: 'mtn-rounding-error', component: RoundingErrorComponent },
+    { path: 'mtn-report', component: ReportComponent },
+    { path: 'mtn-report-param', component: ReportParamComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

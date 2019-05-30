@@ -665,9 +665,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">IPL</label>
-									<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.ipl" appRequired ngbTooltip="Month/s">
+									<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.ipl" appRequired numbers-only ngbTooltip="Month/s">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Time Excess</label>
-									<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.timeExc" appRequired ngbTooltip="Day/s">
+									<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.timeExc" appRequired numbers-only ngbTooltip="Day/s">
 								</div>
 							</div>
 						</div>
@@ -745,7 +745,7 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">No Claim Period</label>
-									<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.noClaimPd" appRequired ngbTooltip="Hour/s">
+									<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.noClaimPd" numbers-only appRequired ngbTooltip="Hour/s">
 								</div>
 							</div>
 						</div>

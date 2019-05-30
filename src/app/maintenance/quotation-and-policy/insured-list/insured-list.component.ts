@@ -62,25 +62,29 @@ export class InsuredListComponent implements OnInit {
   	.subscribe(data => {
   		console.log(data);
   		var rec = data['insured'];
+      this.passDataInsuredList.tableData = rec;
+  		// for(let i of rec){
+  		// 	this.passDataInsuredList.tableData.push({	
+	  	// 		insuredId      	: i.insuredId,
+	   //          insuredName   	: i.insuredName,
+	   //          insuredAbbr		: i.insuredAbbr,
+	   //          activeTag     	: this.cbFunc(i.activeTag),
+	   //          insuredType    	: i.insuredTypeDesc,
+	   //          corpTag         : i.corpTagDesc,
+	   //          vatTag         	: i.vatTagDesc,
+	   //          address    		: i.address,
 
-  		for(let i of rec){
-  			this.passDataInsuredList.tableData.push({	
-	  			insuredId      	: i.insuredId,
-	            insuredName   	: i.insuredName,
-	            insuredAbbr		: i.insuredAbbr,
-	            activeTag     	: this.cbFunc(i.activeTag),
-	            insuredType    	: i.insuredTypeDesc,
-	            corpTag         : i.corpTagDesc,
-	            vatTag         	: i.vatTagDesc,
-	            address    		: i.address,
+	   //          createUser		: i.createUser,
+	   //          createDate		: i.createDate,
+	   //          updateUser		: i.updateUser,
+	   //          updateDate		: i.updateDate
+  		// 	});	
+  		// }
 
-	            createUser		: i.createUser,
-	            createDate		: i.createDate,
-	            updateUser		: i.updateUser,
-	            updateDate		: i.updateDate
-  			});	
-  		}
   		this.table.refreshTable();
+      this.table.onRowClick(null, this.passDataInsuredList.tableData[0]);
+      console.log(this.table.onRowClick(null, this.passDataInsuredList.tableData[0])); // do not delete, selecting first row upon loading will not work XD
+      
   	});
   }
 
@@ -115,14 +119,13 @@ export class InsuredListComponent implements OnInit {
   }
 
   onRowClick(event){
-  	if(event !== null){
+  	if(Object.keys(event).length != 0){
   		this.insuredRecord.insuredId	= event.insuredId;
 	  	this.insuredRecord.createUser	= event.createUser;
-	  	this.insuredRecord.createDate	= this.ns.toDateTimeString(event.createDate).substring(0,16);
+	  	this.insuredRecord.createDate	= this.ns.toDateTimeString(event.createDate);
 	  	this.insuredRecord.updateUser	= event.updateUser;
-	  	this.insuredRecord.updateDate	= this.ns.toDateTimeString(event.updateDate).substring(0,16);
+	  	this.insuredRecord.updateDate	= this.ns.toDateTimeString(event.updateDate);
   	}else{
-      this.insuredRecord.insuredId  = '';
       this.insuredRecord.createUser  = '';
       this.insuredRecord.createDate  = '';
       this.insuredRecord.updateUser  = '';

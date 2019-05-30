@@ -9,20 +9,7 @@
 					</div>
 				</fieldset>
 
-				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
-                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
-                        <label class="form-control-sm col-sm-1">Created By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.createUser" readonly>
-                        <label class="form-control-sm col-sm-1">Created Date</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.createDate" readonly>
-                        <label class="form-control-sm col-sm-1">Last Update By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.updateUser" readonly>
-                        <label class="form-control-sm col-sm-1">Last Update</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.updateDate" readonly>
-                    </div>
-                </fieldset>
-
-                <!-- <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
                         <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.createUser" readonly>
@@ -37,7 +24,7 @@
                             <datepicker [value]="intmRecord.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
                         </div>
                     </div>
-                </fieldset> -->
+                </fieldset>
 
 			</ng-template>
 		</ngb-tab>

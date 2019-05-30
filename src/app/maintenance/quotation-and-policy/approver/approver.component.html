@@ -1,0 +1,60 @@
+<div class="cust-tabs-container">
+    <h4>Maintenance / Quotation & Policy</h4>
+    <ngb-tabset>
+        <ngb-tab title="Approver">
+            <ng-template ngbTabContent>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+	                	<app-cust-editable-non-datatable #table [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="info=$event"
+                        (clickLOV)="openUsersModal($event)" (tableDataChange)="checkUserCode($event)"></app-cust-editable-non-datatable>
+                    <div class="w-100 text-center my-2" style="margin-top: 30px !important">
+                        <button class="cust-btn" (click)="openApprovalFn()" [disabled]="info==null || info.add">Approval Function</button>
+                    </div>
+                    <hr class="m-0">
+	                <div class="w-100 text-center my-2">
+                    	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
+                    	<button class="cust-btn" (click)="onClickSave()">Save</button>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                    </div>
+
+                </fieldset>           
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+
+<app-confirm-save #conSave (onYes)="save()" ></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-mtn-users [lovCheckBox]="true" (selectedData)="setUser($event)" [hideUser]="hideUser"></app-mtn-users>
+
+<app-modal class="d-none">
+    <div header>Approval Function</div>
+    <div body>
+        <div class="d-flex w-100 justify-content-center">
+            <label class="col-sm-2 mb-0 pb-0" style="padding: 0.25rem 0.5rem" >User ID</label>
+            <input class="form-control form-control-sm col-sm-3" type="text" disabled="disabled" [ngModel]="table?.indvSelect?.userId">
+        </div>
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Approval Function</legend>
+            <app-cust-editable-non-datatable #apprFn class="d-block mt-3" [passData]="passTablFn" (clickLOV)="openApprovalModal($event)" (tableDataChange)="checkApprovalCode($event)"></app-cust-editable-non-datatable>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" (click)="modal.closeModal()">Cancel</button>
+        <button class="cust-btn" (click)="onClickSaveFn()">Save</button>
+    </div>
+</app-modal>
+
+<app-lov (selectedData)="setApprovalCd($event)" [passData]="passLOV" [lovCheckBox]="true"></app-lov>
+<app-confirm-save #conSaveFn (onYes)="saveFn()" ></app-confirm-save>

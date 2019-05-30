@@ -206,7 +206,7 @@ export class ProvinceComponent implements OnInit {
   }
 
   change(event){
-
+    $('#cust-table-container').addClass('ng-dirty');
   }
 
   checkFields(){

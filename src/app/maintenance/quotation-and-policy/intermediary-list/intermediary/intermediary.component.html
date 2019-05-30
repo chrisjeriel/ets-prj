@@ -116,7 +116,9 @@
 			                			<div class="col-sm-6">
 			                				<div class="form-row">
 			                					<label class="form-control-sm col-sm-5">Date Created</label>
-                        						<input type="{{ type }}" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.createDate" readonly>
+                        						<div class="col-sm dp-cont">
+						                            <datepicker [value]="intmRecord.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+						                        </div>
 			                				</div>
 			                			</div>
 			                		</div>
@@ -130,12 +132,30 @@
 			                			<div class="col-sm-6">
 			                				<div class="form-row">
 			                					<label class="form-control-sm col-sm-5">Last Update</label>
-                        						<input type="{{ type }}" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.updateDate" readonly>
+                        						<div class="col-sm dp-cont">
+						                            <datepicker [value]="intmRecord.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+						                        </div>
 			                				</div>
 			                			</div>
 			                		</div>
 			                	</div>
 			                </fieldset>
+			                <!-- <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+			                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+			                        <label class="form-control-sm col-sm-1">Created By</label>
+			                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.createUser" readonly>
+			                        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+			                        <div class="col-sm dp-cont">
+			                            <datepicker [value]="intmRecord.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+			                        </div>
+			                        <label class="form-control-sm col-sm-1">Last Update By</label>
+			                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="intmRecord.updateUser" readonly>
+			                        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+			                        <div class="col-sm dp-cont">
+			                            <datepicker [value]="intmRecord.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+			                        </div>
+			                    </div>
+			                </fieldset> -->
 			                <div class="form-row" style="margin-top: 10px !important;">
                                 <div class="form-group col-sm">
                                     <div class="text-center">
