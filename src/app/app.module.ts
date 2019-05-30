@@ -391,6 +391,7 @@ import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-a
 import { QuoteModificationComponent } from './quotation/quote-modification/quote-modification.component';
 import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
 import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
+import { QuotationToHoldCoverComponent } from './quotation/quotation-to-hold-cover/quotation-to-hold-cover.component';
 
 @NgModule({
     imports: [
@@ -788,6 +789,7 @@ import { CityComponent } from './maintenance/quotation-and-policy/region/city/ci
         QuoteModificationComponent,
         MtnNonRenewalReasonComponent,
         CityComponent,
+        QuotationToHoldCoverComponent,
     ],
 
   	providers: [

@@ -77,8 +77,8 @@ export class IntermediaryComponent implements OnInit {
 	  			this.intmRecord.intmId		= (this.intmRecord.intmId === '' || this.intmRecord.intmId === null)?'':this.intmRecord.intmId.toString().padStart(7,'0');
 	  			this.intmRecord.oldIntmId	= (this.intmRecord.oldIntmId === '' || this.intmRecord.oldIntmId === null)?'':this.intmRecord.oldIntmId.toString().padStart(7,'0');
 	  			this.intmRecord.activeTag  	= this.cbFunc(this.intmRecord.activeTag);
-				this.intmRecord.createDate 	= this.ns.toDateTimeString(this.intmRecord.createDate).substring(0,16);
-				this.intmRecord.updateDate 	= this.ns.toDateTimeString(this.intmRecord.updateDate).substring(0,16);
+				this.intmRecord.createDate 	= this.ns.toDateTimeString(this.intmRecord.createDate);
+				this.intmRecord.updateDate 	= this.ns.toDateTimeString(this.intmRecord.updateDate);
 				this.checkCorpTag();
 	  		});
   		}
