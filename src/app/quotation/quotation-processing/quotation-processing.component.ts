@@ -136,16 +136,24 @@ export class QuotationProcessingComponent implements OnInit {
             title: 'Currency',
             dataType: 'text'
         },
-        {
-            key: 'issueDate',
-            title: 'Quote Date',
-            dataType: 'date'
-        },
-        {
-            key: 'expiryDate',
-            title: 'Valid Until',
-            dataType: 'date'
-        },
+        // {
+        //     key: 'issueDate',
+        //     title: 'Quote Date',
+        //     dataType: 'date'
+        // },
+        { keys: {
+            from: 'issueDateFrom',
+            to: 'issueDateTo'
+        },                        title: 'Quote Date',         dataType: 'datespan'},
+        // {
+        //     key: 'expiryDate',
+        //     title: 'Valid Until',
+        //     dataType: 'date'
+        // },
+        { keys: {
+            from: 'expiryDateFrom',
+            to: 'expiryDateTo'
+        },                        title: 'Valid Until',         dataType: 'datespan'},
         {
             key: 'reqBy',
             title: 'Requested By',
@@ -313,6 +321,7 @@ export class QuotationProcessingComponent implements OnInit {
 
     //Method for DB query
     searchQuery(searchParams){
+        console.log(searchParams);
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.retrieveQuoteListingMethod();
