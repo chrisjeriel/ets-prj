@@ -389,18 +389,6 @@ export class PolCreateOpenCoverComponent implements OnInit {
       if(!this.isIncomplete){
           this.getQuoteListing();
       }
-
-      /*if(key === 'lineCd'){
-        this.tempQuoteNo[0] = data.toUpperCase();
-      }else if(key === 'year'){
-        this.tempQuoteNo[1] = data;
-      }else if(key === 'seqNo'){
-        this.tempQuoteNo[2] = data;
-      }else if(key === 'revNo'){
-        this.tempQuoteNo[3] = data;
-      }else if(key === 'cedingId'){
-        this.tempQuoteNo[4] = data;
-      }*/
     }
 
     clearFields(){
@@ -414,25 +402,4 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.expiryDate.date = '';
         this.expiryDate.time = '';
     }
-
-    /*checkQuoteNoParams(){
-       if(this.isIncomplete){
-         if(this.tempQuoteNo[0].length !== 0 &&
-            this.tempQuoteNo[1].length !== 0 &&
-            this.tempQuoteNo[2].length !== 0 &&
-            this.tempQuoteNo[3].length !== 0 &&
-            this.tempQuoteNo[4].length !== 0){
-             this.isIncomplete = false;
-             this.loading = true;
-             this.getQuoteListing();
-         }else{
-           this.isIncomplete = true;
-           this.clearFields();
-           this.selectedOpt.optionId = '';
-           this.selectedOpt.condition = '';
-           this.passDataOptionLOV.tableData = [];
-           this.optListTable.refreshTable();
-         }
-       }
-    }*/
 }
