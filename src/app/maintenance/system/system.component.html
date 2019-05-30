@@ -1,0 +1,23 @@
+<div class="cust-tabs-container">
+    <h4>Maintenance</h4>
+    <ngb-tabset>
+        <ngb-tab class="ngb-tab" title="System">
+            <ng-template ngbTabContent style="padding-top: 10px !important;">
+                <div class="row px-5">
+                   <div class="col-sm">
+						<button [routerLink]="['/mtn-report']" class="button btn btn-link">Report</button>
+						<br />
+                   </div>
+                   <div class="col-sm">
+                   		<button [routerLink]="['/mtn-report-param']" class="button btn btn-link">Report Parameter</button>
+						<br />
+                   </div>
+                   <div class="col-sm">
+                   		<button [routerLink]="['/mtn-program-parameter']" class="button btn btn-link">Program Parameter</button>
+                   		<br />
+                   </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>

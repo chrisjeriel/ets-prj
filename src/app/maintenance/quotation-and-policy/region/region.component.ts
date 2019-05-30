@@ -273,4 +273,9 @@ export class RegionComponent implements OnInit {
     }
   }
 
+  change(event){
+    $('#cust-table-container').addClass('ng-dirty');
+  }
+
+
 }

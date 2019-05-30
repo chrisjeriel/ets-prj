@@ -133,7 +133,9 @@
 			                			<div class="col-sm-6">
 			                				<div class="form-row">
 			                					<label class="form-control-sm col-sm-5">Date Created</label>
-                        						<input type="{{ type }}" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.createDate" readonly>
+                        						<div class="col-sm dp-cont">
+						                            <datepicker [value]="insuredRecord.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+						                        </div>
 			                				</div>
 			                			</div>
 			                		</div>
@@ -147,7 +149,9 @@
 			                			<div class="col-sm-6">
 			                				<div class="form-row">
 			                					<label class="form-control-sm col-sm-5">Last Update</label>
-                        						<input type="{{ type }}" class="form-control form-control-sm col-sm" [(ngModel)]="insuredRecord.updateDate" readonly>
+                        						<div class="col-sm dp-cont">
+						                            <datepicker [value]="insuredRecord.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+						                        </div>
 			                				</div>
 			                			</div>
 			                		</div>

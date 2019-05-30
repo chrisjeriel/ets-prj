@@ -392,7 +392,18 @@ import { QuoteModificationComponent } from './quotation/quote-modification/quote
 import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
 import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
 import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
+import { QuotationToHoldCoverComponent } from './quotation/quotation-to-hold-cover/quotation-to-hold-cover.component';
+import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
+import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
+import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
+import { MtnTreatyComponent } from './maintenance/mtn-treaty/mtn-treaty.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
+import { MtnApproverComponent } from './maintenance/mtn-approver/mtn-approver.component';
+import { SystemComponent } from './maintenance/system/system.component';
+import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
+import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
+import { ReportComponent } from './maintenance/system/report/report.component';
+import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
 
 @NgModule({
     imports: [
@@ -791,7 +802,18 @@ import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy
         MtnNonRenewalReasonComponent,
         ApproverComponent,
         CityComponent,
+        QuotationToHoldCoverComponent,
+        TreatyComponent,
+        RetentionLineComponent,
+        TreatyShareComponent,
+        MtnTreatyComponent,
         MtnApprovalFunctionComponent,
+        MtnApproverComponent,
+        SystemComponent,
+        ProgramParameterComponent,
+        RoundingErrorComponent,
+        ReportComponent,
+        ReportParamComponent,
     ],
 
   	providers: [

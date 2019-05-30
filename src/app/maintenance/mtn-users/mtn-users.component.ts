@@ -11,10 +11,10 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./mtn-users.component.css']
 })
 export class MtnUsersComponent implements OnInit {
-
+//@ViewChild('userModal') modal: ModalComponent;
 @Output() cancelMdl: EventEmitter<any> = new EventEmitter();
 selected: any = null;
-
+@Input() hide:string[] = [];
   usersListing: any = {
     tableData: [],
     tHeader: ['User ID', 'User Name'],
@@ -129,18 +129,24 @@ selected: any = null;
     if(code.trim() === ''){
       this.selectedData.emit({
         userId: '',
+        userName:'',
         ev: ev,
+        singleSearchLov: true
       });
     } else {
       this.userService.retMtnUsers(code).subscribe(data => {
         data['usersList'] = data['usersList'].filter(a=>this.hideUser.indexOf(a.userId)==-1)
         if(data['usersList'].length > 0) {
           data['usersList'][0]['ev'] = ev;
+          data['usersList'][0]['singleSearchLov'] = true;
           this.selectedData.emit(data['usersList'][0]);
         } else {
+          data['usersList'] = data['usersList'].filter((a)=>{return ev.filter.indexOf(a.userId)==-1});
           this.selectedData.emit({
             userId: '',
-            ev: ev
+            userName:'',
+            ev: ev,
+            singleSearchLov: true
           });
           $('#usersMdl > #modalBtn').trigger('click');
           //this.table.refreshTable('');

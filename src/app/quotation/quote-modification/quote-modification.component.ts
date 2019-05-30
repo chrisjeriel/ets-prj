@@ -69,6 +69,7 @@ export class QuoteModificationComponent implements OnInit {
 		        	this.getQuoteListing();
 		        	this.showLOV();
 		      	} else if(this.searchArr.includes('%%')) {
+		      		this.selected = null;
 			        this.cedingName = '';
 			        this.insuredDesc = '';
 			        this.riskName = '';

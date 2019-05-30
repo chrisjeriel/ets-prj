@@ -972,6 +972,15 @@ export class QuotationService {
         return this.http.post(environment.prodApiUrl + '/quote-service/saveQuotationCopy', saveQuotationCopyParam, header);
     }
 
+    batchPrint(params) {  
+          const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          });
+
+          return this.http.post(environment.prodApiUrl + '/util-service/mergePDF', params, {headers: headers, responseType: 'blob' as 'json' });
+    }
+
     downloadPDF(reportName : string, quoteId : string){
          const params = new HttpParams()
              .set('reportName', reportName)

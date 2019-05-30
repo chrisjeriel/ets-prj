@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-sm">
                         <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-                            <app-cust-editable-non-datatable #cityTable [passData]="passData" (genericBtn)="deleteProvince()" (newClick)="onRowClick($event)" (clickLOV)="clickCrestaZone($event)"  (onDelete)="cityTable.onClickDelete('force');onClickDelCity(this.deleteBool);"></app-cust-editable-non-datatable>
+                            <app-cust-editable-non-datatable #cityTable [passData]="passData" (genericBtn)="deleteCity()" (newClick)="onRowClick($event)" (clickLOV)="clickCrestaZone($event)"  (onDelete)="cityTable.onClickDelete('force');onClickDelCity(this.deleteBool);" (tableDataChange)="change($event);"></app-cust-editable-non-datatable>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                     </div>
 </fieldset>
 
-<app-confirm-save #confirmSave (onYes)="onClickSaveProvince()"></app-confirm-save>
+<app-confirm-save #confirmSave (onYes)="onClickSaveCity()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 <app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>

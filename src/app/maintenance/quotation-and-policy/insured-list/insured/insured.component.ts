@@ -80,8 +80,8 @@ export class InsuredComponent implements OnInit {
 	  			this.insuredRecord.insuredId	= (this.insuredRecord.insuredId === '' || this.insuredRecord.insuredId === null)?'':this.insuredRecord.insuredId.toString().padStart(7,'0');
 	  			this.insuredRecord.oldInsId		= (this.insuredRecord.oldInsId === '' || this.insuredRecord.oldInsId === null)?'':this.insuredRecord.oldInsId.toString().padStart(7,'0');
 	  			this.insuredRecord.activeTag  	= this.cbFunc(this.insuredRecord.activeTag);
-				this.insuredRecord.createDate 	= this.ns.toDateTimeString(this.insuredRecord.createDate).substring(0,16);
-				this.insuredRecord.updateDate 	= this.ns.toDateTimeString(this.insuredRecord.updateDate).substring(0,16);
+				this.insuredRecord.createDate 	= this.ns.toDateTimeString(this.insuredRecord.createDate);
+				this.insuredRecord.updateDate 	= this.ns.toDateTimeString(this.insuredRecord.updateDate);
 				this.checkCorpTag();
 	  		});
   		}

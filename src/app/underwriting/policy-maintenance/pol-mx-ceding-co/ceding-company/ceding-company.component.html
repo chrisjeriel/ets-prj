@@ -1,6 +1,6 @@
-<app-modal id="cedingCompany" class="d-none" (modalOpened)="openModal()" id="cedingCompanyMdl">
+<app-modal id="cedingCompany" class="d-none" (modalOpened)="openModal()" id="cedingCompanyMdl" #mdl>
     <div header>List of Values</div>
-    <div body *ngIf="modalOpen">
+    <div body>
         <app-cust-non-datatable [passData]="passDataCedingCompanyMember" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
     </div>
     <div footer>
@@ -9,8 +9,8 @@
 
 
 
-            <button class="cust-btn" type="button" (click)="modalService.dismissAll();modalOpen=false;"><a>Cancel</a></button>
-            <button *ngIf="selected != null" class="cust-btn" type="button" (click)="modalService.dismissAll(); modalOpen=false;okBtnClick($event);"><a>Ok</a></button>
+            <button class="cust-btn" type="button" (click)="modal.closeModal()"><a>Cancel</a></button>
+            <button *ngIf="selected != null" class="cust-btn" type="button" (click)="modal.closeModal();okBtnClick($event);"><a>Ok</a></button>
             <button *ngIf="selected == null" class="cust-btn cust-btn-disabled" type="button"><a>Ok</a></button>
 
         </div>
