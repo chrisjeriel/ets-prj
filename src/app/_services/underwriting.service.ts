@@ -131,7 +131,13 @@ export class UnderwritingService {
         return this.uwotherRatesInfoData;
     }
 
-    extractExpiringPolicies() {
+    extractExpiringPolicies(params?) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        //return this.http.post(environment.prodApiUrl + '/underwriting-service/extractExpiringPolicy',JSON.stringify(params),header);
         return 100;
     }
 
@@ -259,6 +265,8 @@ export class UnderwritingService {
         ];
         return this.expiryListing;
     }
+
+
 
     renewExpiredPolicies() {
         this.renewedPolicies = [
@@ -979,6 +987,14 @@ export class UnderwritingService {
             })
         };
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolFullCoverage', JSON.stringify(coverageData), header);
+    }
+
+    getExpPolList(searchParams){
+        const params = new HttpParams()
+            .set('renTag', searchParams.renTag == undefined ? '' : searchParams.renTag)
+            .set('policyId', searchParams.policyId == undefined ? '' : searchParams.policyId)
+            .set('extractUser', searchParams.extractUser == undefined ? '' : searchParams.extractUser);
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveExpPolList', {params});
     }
 }            
 

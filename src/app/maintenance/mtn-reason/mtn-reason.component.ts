@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-mtn-reason',
@@ -9,6 +10,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
   styleUrls: ['./mtn-reason.component.css']
 })
 export class MtnReasonComponent implements OnInit {
+   @ViewChild('mdl') modal : ModalComponent;
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
@@ -29,7 +31,6 @@ export class MtnReasonComponent implements OnInit {
 
       }
       selected: any;
-      modalOpen : boolean = false;
 
 
   @Input() lovCheckBox: boolean = false;
@@ -77,7 +78,35 @@ export class MtnReasonComponent implements OnInit {
         this.passDataReason.tableData = data.reasonList;
         this.table.refreshTable();
       });
-     this.modalOpen = true;
+   }
+
+   checkCode(code, ev) {
+     console.log(code);
+     if(code.trim() === ''){
+       this.selectedData.emit({
+         reasonCd: '',
+         description: '',
+         ev: ev
+       });
+     } else {
+       this.mtnService.getMtnQuoteReason({reasonCd: code, activeTag: 'Y'}).subscribe(data => {
+         console.log(data['reasonList']);
+         if(data['reasonList'].length > 0) {
+           data['reasonList'][0]['ev'] = ev;
+           this.selectedData.emit(data['reasonList'][0]);
+         } else {
+           this.selectedData.emit({
+             reasonCd: '',
+             description: '',
+             ev: ev
+           });
+
+           //$('#typeOfCessionMdl > #modalBtn').trigger('click');
+           this.modal.openNoClose();
+         }
+         
+       });
+   }
    }
 
 }

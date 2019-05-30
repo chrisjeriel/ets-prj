@@ -42,4 +42,12 @@ export class UserService {
 
         return this.http.get(environment.prodApiUrl + '/user-service/retMtnUsers', {params});
     }
+
+    retMtnUserAmtLmt(userGrp,lineCd){
+         const params = new HttpParams()
+                .set('userGrp', userGrp)
+                .set('lineCd', lineCd)
+
+        return this.http.get(environment.prodApiUrl + '/user-service/retrieveMtnUserAmountLimit', {params});
+    }
 }

@@ -104,8 +104,8 @@
 								<div class="custom-row-inline-inset">
 									<div class="input-group" style="margin-bottom : -14px ! important; margin-top : 13px ! important">
 										<label class="form-control-sm" for="xx">Report</label>
-										<select [(ngModel)]=selectedReport class="form-control form-control-sm cust-sm" style="margin-left: 33px" appRequired (change)="tabController($event);">
-											<option *ngFor="let report of reportsList" [value]="report.val">{{report.desc}}</option>
+										<select disabled="disabled" [(ngModel)]="selectedReport" class="form-control form-control-sm cust-sm" style="margin-left: 33px" appRequired (change)="tabController($event);">
+											<option *ngFor="let report of reportsList;let i = index" [value]="report.val" [selected]="i==0">{{report.desc}}</option>
 										</select>
 									</div>
 									<div class="input-group" style="margin-bottom : -14px ! important" >

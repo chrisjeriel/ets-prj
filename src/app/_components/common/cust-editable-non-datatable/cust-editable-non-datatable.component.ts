@@ -131,18 +131,26 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() onDelete: EventEmitter<any> = new EventEmitter();
     overlayLoader: boolean = false;
 
-    refreshTable(initLoad?){
+    refreshTable(initLoad?, selectAll?){
         if(initLoad === undefined){
             this.loadingFlag = false;
         }else{
             this.loadingFlag = true;
         }
+
+        //NECO 05/24/2019 (for attachment purposes)
+        let attachFlags: boolean[] = [];
+        for(var at of this.displayData){
+            attachFlags.push(at.attach);
+        }
+        //END NECO 05/24/2019
+
         while(this.displayData.length>0){
             this.displayData.pop();
         }
 
         for(var i = 0 ;i<this.passData.tableData.length;i++){
-            this.passData.tableData[i].attach = false;
+            this.passData.tableData[i].attach = selectAll !== undefined ? attachFlags[i] : false;
             this.passData.tableData[i].edited = this.passData.tableData[i].edited ? true : false;
             this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
             if(!this.passData.tableData[i].deleted){
@@ -225,7 +233,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         if(this.passData.nData !== undefined)
             this.passData.nData.add = true;
         //temporary fix delete this later
-        setTimeout(()=>{this.refreshTable()},2000)
+        setTimeout(()=>{this.refreshTable(undefined, true)},2000)
 
     }
 
@@ -267,7 +275,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.form.control.markAsDirty();
             $('#cust-scroll').addClass('ng-dirty');
             this.selected = [];
-            this.refreshTable();
+            this.refreshTable(undefined, true);
             this.search(this.searchString);
             this.tableDataChange.emit(this.passData.tableData);
             this.uploadedFiles.emit(this.filesToUpload);
@@ -634,7 +642,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         if(!value){
             this.selected = this.selected.filter(a=>false);
         }
-        this.refreshTable();
+        this.refreshTable(undefined, true);
     }
 
     confirmDelete(){
@@ -685,6 +693,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         var link = document.createElement('a');
         link.href = url;
         link.download = file;
+        link.target = "_blank";
         link.click();
     }
 
