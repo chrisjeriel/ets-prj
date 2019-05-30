@@ -26,7 +26,7 @@
 					<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-							<input [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm  col-sm-2" type="text" name="insuredId" appRequired [(ngModel)]="alopData.insuredId" (change)="checkCode($event,'principal')">
+							<input [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm  col-sm-2" type="text" name="insuredId" appRequired [(ngModel)]="alopData.insuredId" (change)="checkCode($event,'principal')" (blur)="alopData.insuredId = pad(alopData.insuredId, 6)">
 							<!-- <div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp; -->
 							<div [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
 							<input class="form-control form-control-sm  col-sm" type="text" name="insuredName" [(ngModel)]="alopData.insuredName" [style.margin-left.px]="inquiryFlag ? '-2' : '-7'" readonly>
@@ -80,12 +80,12 @@
 				<div class="input-group">
 					<label class="col-sm-4"></label>
 					<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-					<input [readonly]="true" class="form-control form-control-sm  col-sm-2 text-right req" type="text" id="annSumInsured" [ngModel]="alopDetails?.annSi" (ngModelChange)="alopDetails.annSi =$event" appRequired appCurrency name="annualSI" style="min-width: 231px !important;">
+					<input [readonly]="true" class="form-control form-control-sm  col-sm-2 text-right req" type="text" id="annSumInsured" [ngModel]="alopDetails?.annSi | number: '1.2-2'" (ngModelChange)="alopDetails.annSi =$event" appRequired appCurrency name="annualSI" style="min-width: 231px !important;">
 				</div>
 				<div class="input-group" style="padding-bottom: 0.9%;">
 					<label class="col-sm-2"></label>
 					<label class="form-control-sm col-sm-4 text-right" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-					<input [readonly]="true" class="form-control form-control-sm  col-sm-2 text-right req" type="text" id="sumInsForMaxIndem" [ngModel]="alopDetails?.maxIndemPdSi" (ngModelChange)="alopDetails.maxIndemPdSi = $event"  appRequired appCurrency name="siMaxIndem" style="min-width: 231px !important;">
+					<input [readonly]="true" class="form-control form-control-sm  col-sm-2 text-right req" type="text" id="sumInsForMaxIndem" [ngModel]="alopDetails?.maxIndemPdSi | number: '1.2-2'" (ngModelChange)="alopDetails.maxIndemPdSi = $event"  appRequired appCurrency name="siMaxIndem" style="min-width: 231px !important;">
 				</div>
 			</div>
 		</fieldset>

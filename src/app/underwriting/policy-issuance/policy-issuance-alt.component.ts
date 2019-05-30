@@ -28,7 +28,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
         coInsuranceFlag: false,
         fromInq:'',
         prevPolicyId: '',
-        cedingName:''
+        cedingName:'',
+        extensionTag:''
     }
 
     alterFlag: boolean = false;
@@ -141,6 +142,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
       this.policyInfo.showPolAlop = event.showPolAlop;
       this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
       this.policyInfo.cedingName = event.cedingName;
+      this.policyInfo.extensionTag = event.extensionTag;
 
       console.log(this.us.fromCreateAlt);
       if(this.us.fromCreateAlt) {

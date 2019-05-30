@@ -3,7 +3,7 @@ import { MaintenanceService, NotesService } from '@app/_services'
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 @Component({
   selector: 'app-mtn-cat-peril',
   templateUrl: './mtn-cat-peril.component.html',
@@ -15,7 +15,7 @@ export class MtnCATPerilComponent implements OnInit {
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild('catPeril') table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   passData: any = {
     tHeader: [ "CAT Peril No","Name","Abbreviation","Percent Share on Premium (%)", "Active","Remarks"],
     tableData:[],
@@ -155,10 +155,10 @@ export class MtnCATPerilComponent implements OnInit {
       if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
+          this.successDiag.open();
         } else{
           this.dialogIcon = "success";
-          $('#successModalBtn').trigger('click');
+          this.successDiag.open();
           this.getCatPeril();
         }
     })

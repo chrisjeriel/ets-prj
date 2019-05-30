@@ -11,6 +11,7 @@ import { environment } from '@environments/environment';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 
 @Component({
@@ -23,6 +24,7 @@ import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpRespo
 export class AttachmentComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('main') successDiag: SucessDialogComponent;
 
   /* dtOptions: DataTables.Settings = {};*/
   tableData: any[] = [];
@@ -128,23 +130,6 @@ export class AttachmentComponent implements OnInit {
   ngOnInit(): void {
 
     this.titleService.setTitle("Quo | Attachment");
-    /*this.tHeader.push("File Name");
-    this.tHeader.push("Description");
-    this.tHeader.push("Actions");*/
-    // this.options.push("");
-    // this.options.push("Q - Quotation");
-    // this.options.push("P - Policy");
-    // this.options.push("C - Claim");
-    // this.options.push("A - Accounting");
-    // this.dataTypes.push("text");
-    // this.dataTypes.push("text");
-    // this.dataTypes.push("select1");
-    // this.dataTypes.push("text");
-    /*this.tableData = this.quotationService.getAttachment();*/
-
-    // this.passData.tHeader.push("File Name");
-    // this.passData.tHeader.push("Description");
-    // this.passData.tHeader.push("Actions");
 
     //neco
         if(this.inquiryFlag){
@@ -161,14 +146,6 @@ export class AttachmentComponent implements OnInit {
         }
         //neco end
 
-    /*let arrayData = [];
-    this.quotationService.getAttachment().subscribe((data: any) => {
-      for (var i = 0; i <  data.quotation.length ; i++) {
-        arrayData.push(new AttachmentInfo(data.quotation[i].attachment.fileName, data.quotation[i].attachment.description));
-      }
-     });
-    this.passData.tableData = arrayData;
-*/
   this.quotationNo = this.quotationInfo.quotationNo;
   this.quoteNo = this.quotationNo.split(/[-]/g)[0]
   for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
@@ -190,7 +167,6 @@ export class AttachmentComponent implements OnInit {
         this.passData.tableData = this.attachmentData;
         this.table.refreshTable();
         console.log(JSON.stringify(this.attachmentData) + " >>>> this.attachmentData");
-        //console.log(this.attachmentData[0].fileName + " >> file name");
       });
   }
 
@@ -199,81 +175,43 @@ export class AttachmentComponent implements OnInit {
    this.dialogIcon = '';
    this.dialogMessage = '';
    this.cancelFlag = cancelFlag !== undefined;
-   if(this.cancelFlag === true){
-     this.router.navigateByUrl('quotation-processing');
-   }
+   this.savedData = [];
+   this.deletedData = [];
    for (var i = 0 ; this.passData.tableData.length > i; i++) {
-     var rec = this.passData.tableData[i];
-     if(rec.fileName === '' || rec.fileName === null || rec.fileName === undefined){
-       this.dialogIcon = 'error';
-       this.dialogMessage = '';
-       $('app-sucess-dialog #modalBtn').trigger('click');
-       setTimeout(()=>{$('.globalLoading').css('display','none');0});
-       console.log('error hereeeeeeeee');
-       this.loading = false;
-     }else{
-        if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-           this.attachmentReq = {
-              "deleteAttachmentsList": [],
-              "quoteId": this.quoteId,
-              "saveAttachmentsList": [
-                {
-                  "createDate":    (this.passData.tableData[i].createDate === null || this.passData.tableData[i].createDate === undefined || this.passData.tableData[i].createDate === '')?this.ns.toDateTimeString(0):this.ns.toDateTimeString(this.passData.tableData[i].createDate),
-                  "createUser":    (this.passData.tableData[i].createUser === null || this.passData.tableData[i].createUser === undefined || this.passData.tableData[i].createUser === '')?JSON.parse(window.localStorage.currentUser).username:this.passData.tableData[i].createUser,
-                  "description":   this.passData.tableData[i].description,
-                  "fileName":      this.passData.tableData[i].fileName,
-                  "fileNo":        this.passData.tableData[i].fileNo,
-                  "updateDate":    this.ns.toDateTimeString(0),
-                  "updateUser":    JSON.parse(window.localStorage.currentUser).username
-                }
-              ]
-           }
-           this.quotationService.saveQuoteAttachment(JSON.stringify(this.attachmentReq))
-             .subscribe(data => {
-               this.getAttachment();
-               $('app-sucess-dialog #modalBtn').trigger('click');
-               this.loading = false;
-             });
-         }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-           this.attachmentReq = {
-              "deleteAttachmentsList": [
-                {
-                  "createDate":    this.passData.tableData[i].createDate,
-                  "createUser":    this.passData.tableData[i].createUser ,
-                  "description":   this.passData.tableData[i].description,
-                  "fileName":      this.passData.tableData[i].fileName,  
-                  "fileNo":        this.passData.tableData[i].fileNo,  
-                  "updateDate":    this.passData.tableData[i].updateDate,
-                  "updateUser":    this.passData.tableData[i].updateUser,
-                }
-              ],
-              "quoteId": this.quoteId,
-              "saveAttachmentsList": []
-           }
-           this.quotationService.saveQuoteAttachment(JSON.stringify(this.attachmentReq))
-             .subscribe(data => {
-               this.getAttachment();
-               $('app-sucess-dialog #modalBtn').trigger('click');
-               this.loading = false;
-             });
-         }else{
-           console.log("entered here");
-           this.counter++;
-         }
+     if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+         this.savedData.push(this.passData.tableData[i]);
+         this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
+         this.savedData[this.savedData.length-1].createUser = JSON.parse(window.localStorage.currentUser).username;
+         this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
+         this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
      }
-     
-   }
-/*<<<<<<< HEAD
+     else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+        this.deletedData.push(this.passData.tableData[i]);
+        this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
+        this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
+     }
 
-   if(this.passData.tableData.length === this.counter){
-      setTimeout(()=>{
-         $('.globalLoading').css('display','none');
-           this.dialogIcon = 'info';
-           this.dialogMessage = 'Nothing to save.';
-           $('app-sucess-dialog #modalBtn').trigger('click');
-      },500);
    }
-=======*/
+
+   let params: any = {
+     deleteAttachmentsList: this.deletedData,
+     saveAttachmentsList: this.savedData,
+     quoteId: this.quoteId
+   }
+
+   this.quotationService.saveQuoteAttachment(JSON.stringify(params))
+     .subscribe((data: any) => {
+       if(data.returnCode === 0){
+         this.dialogIcon = 'error';
+         this.successDiag.open();
+       }else{
+         this.dialogIcon = 'success';
+         this.successDiag.open();
+         this.getAttachment();
+       }
+       this.loading = false;
+     });
+
    //upload
    for(let files of this.filesList){
      if (files.length == 0) {
@@ -316,9 +254,9 @@ export class AttachmentComponent implements OnInit {
     if(this.checkFields()){
        $('#confirm-save #modalBtn2').trigger('click');
       }else{
-        this.dialogMessage="Please fill up required fields.";
-        this.dialogIcon = "info";
-        $('#attchmntMdl #successModalBtn').trigger('click');
+        this.dialogMessage="";
+        this.dialogIcon = "error";
+        this.successDiag.open();
       }
   }
 
@@ -329,7 +267,8 @@ export class AttachmentComponent implements OnInit {
 
     checkFields(){
       for(let check of this.passData.tableData){
-        if(check.description === null || check.description === undefined || check.description.length === 0){
+        if(check.description === null || check.description === undefined || check.description.length === 0 ||
+           check.fileName === null || check.fileName === null || check.fileName.length === 0){
           return false;
         }
       }

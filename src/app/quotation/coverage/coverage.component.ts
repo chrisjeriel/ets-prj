@@ -79,7 +79,7 @@ export class CoverageComponent implements OnInit {
     pageLength: 'unli',
     widths:[60,90,225,110,1],
     magnifyingGlass: ['coverName'],
-    uneditable: [true,true,false,false,false],
+    uneditable: [true,false,false,false,false],
     keys:['section','bulletNo','coverName','sumInsured','addSi'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
@@ -391,7 +391,9 @@ export class CoverageComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
 
       //HIDE THE POWERFUL MAGNIFYING GLASS
-      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      if(data[i].coverCd!== ""){
+        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      }
       if(data[i].coverName !== undefined && 'OTHERS' === data[i].coverName.substring(0,6).toUpperCase()) {
          this.passData.tableData[this.passData.tableData.length - 1].others = true;
       }

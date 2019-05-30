@@ -176,9 +176,10 @@ div.input-group {
 
 .fa-search {
     position: absolute;
-    right: 9px;
+    /*right: 9px;*/
+    right: 0;
     top: 1px;
-    width: 4%;
+    /*width: 4%;*/
     line-height : calc(1.3rem + 1px);
 }
 

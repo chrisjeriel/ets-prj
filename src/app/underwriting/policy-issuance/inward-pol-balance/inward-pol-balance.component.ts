@@ -124,7 +124,7 @@ export class InwardPolBalanceComponent implements OnInit {
       console.log(data);
       if(data.policyList.length != 0){
         this.currency = data.policyList[0].project.coverage.currencyCd;
-        this.totalPrem = data.policyList[0].project.coverage.totalPrem;
+        this.totalPrem = data.policyList[0].inwPolBalance[0].premAmt;
         if(data.policyList[0].inwPolBalance.length !=0){
           this.passData.tableData = data.policyList[0].inwPolBalance.filter(a=>{
             a.dueDate     = this.ns.toDateTimeString(a.dueDate);

@@ -3,6 +3,7 @@ import { UnderwritingService } from '@app/_services';
 import { CedingCompanyListing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-mtn-ceding-company',
@@ -10,6 +11,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./mtn-ceding-company.component.css']
 })
 export class MtnCedingCompanyComponent implements OnInit {
+  @ViewChild('mdl') modal: ModalComponent;
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
@@ -87,11 +89,12 @@ export class MtnCedingCompanyComponent implements OnInit {
     this.underwritingService.getCedingCompanyList('','','','','','','','','','N').subscribe((data: any) => {
          for(var i=0;i< data.cedingcompany.length;i++){
             // this.passDataCedingCompanyNotMember.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
-           this.passDataCedingCompanyNotMember.tableData.push({
+           /*this.passDataCedingCompanyNotMember.tableData.push({
                cedingId: data.cedingcompany[i].cedingId,
                cedingName: data.cedingcompany[i].cedingName,
                address: data.cedingcompany[i].address
-           });
+           });*/
+           this.passDataCedingCompanyNotMember.tableData.push(data.cedingcompany[i]);
          }
          this.table.refreshTable(); 
      });
@@ -102,22 +105,28 @@ export class MtnCedingCompanyComponent implements OnInit {
       this.selectedData.emit({
         cedingId: '',
         cedingName: '',
-        ev: ev
+        cedingAbbr:'',
+        ev: ev,
+        singleSearchLov: true
       });
     } else {
       this.underwritingService.getCedingCompanyList(code,'','','','','','','','','N').subscribe(data => {
         if(data['cedingcompany'].length > 0) {
           data['cedingcompany'][0]['ev'] = ev;
+          data['cedingcompany'][0]['singleSearchLov'] = true;
           // this.selectedData.emit(new CedingCompanyListing(data['cedingcompany'][0].cedingId,data['cedingcompany'][0].cedingName,data['cedingcompany'][0].cedingAbbr,data['cedingcompany'][0].address,(data['cedingcompany'][0].membershipDate == null ? null : new Date(data['cedingcompany'][0].membershipDate[0],data['cedingcompany'][0].membershipDate[1]-1,data['cedingcompany'][0].membershipDate[2])),(data['cedingcompany'][0].terminationDate == null ? null : new Date(data['cedingcompany'][0].terminationDate[0],data['cedingcompany'][0].terminationDate[1]-1,data['cedingcompany'][0].terminationDate[2])),(data['cedingcompany'][0].inactiveDate == null ? null : new Date(data['cedingcompany'][0].inactiveDate[0],data['cedingcompany'][0].inactiveDate[1]-1,data['cedingcompany'][0].inactiveDate[2]))));
           this.selectedData.emit(data['cedingcompany'][0]);
         } else {
           this.selectedData.emit({
             cedingId: '',
             cedingName: '',
-            ev: ev
+            cedingAbbr:'',
+            ev: ev,
+            singleSearchLov: true
           });
 
-          $('#cedingCompanyNotMemberMdl > #modalBtn').trigger('click');
+          // $('#cedingCompanyNotMemberMdl > #modalBtn').trigger('click');
+          this.modal.openNoClose();
         }      
       });
    }

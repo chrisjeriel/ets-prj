@@ -269,24 +269,55 @@
               <input type="text" class="form-control form-control-sm col-sm-2 req" readonly [ngModel]="altCoverageData.currencyRt | number:'1.6-6'" (ngModelChange)="altCoverageData.currencyRt = $event">
               <span class="col-sm-2"></span>
             </div>
-            <div class="input-group">
+            <div class="input-group" *ngIf="policyInfo.extensionTag !== 'Y'">
               <span class="col-sm-3" style="padding-right: 0px !important;"></span>
               <label class="form-control-sm col-sm-2" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;margin-left: 15px !important">Previous</label>
               <label class="form-control-sm col-sm-2" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;margin-left: 30px">This Alteration</label>
               <label class="form-control-sm col-sm-2" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important; padding-left: 10px !important;margin-left: 30px">Cumulative</label>
               <span class="col-sm-3"></span>
             </div>
-            <div class="input-group">
+            <div class="input-group" *ngIf="policyInfo.extensionTag !== 'Y'">
               <label class="form-control-sm col-sm-3">Total Sum Insured</label>
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency [ngModel] = "altCoverageData.prevtotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.prevtotalSi = $event" style="max-width: 120px">
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.alttotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalSi = $event">
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.comtotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.comtotalSi = $event">
             </div>
-            <div class="input-group" style="margin-top: -8px;">
+            <div class="input-group" style="margin-top: -8px;" *ngIf="policyInfo.extensionTag !== 'Y'">
               <label class="form-control-sm col-sm-3">Total Premium</label>
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency [ngModel] = "altCoverageData.prevtotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.prevtotalPrem = $event" style="max-width: 120px">
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.alttotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalPrem = $event">
               <input type="text" class="form-control form-control-sm col-sm-3 req"  readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.comtotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.comtotalPrem">
+            </div>
+            <div *ngIf="policyInfo.extensionTag == 'Y'">
+            <div class="input-group">
+              <span class="col-sm-2" style="padding-right: 0px !important;padding-left: 0px !important;"></span>
+              <label class="form-control-sm col-sm-2" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;">Previous</label>
+              <label class="form-control-sm col-sm-2" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;margin-left: 30px">This Alteration</label>
+              <label class="form-control-sm col-sm" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;margin-left: 30px">Extension Prem</label>
+              <label class="form-control-sm col-sm-2" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important; padding-left: 10px !important;margin-left: 20px;margin-right: 10px;">Cumulative</label>
+              <span class="col-sm-3"></span>
+            </div>
+            <div class="input-group">
+              <label class="form-control-sm col-sm-2" style="padding-left: 0px;">Total Sum Insured</label>
+              <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency [ngModel] = "altCoverageData.prevtotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.prevtotalSi = $event" style="max-width: 120px">
+              <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.alttotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalSi = $event">
+              <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.extotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalSi = $event">
+              <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.comtotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.comtotalSi = $event">
+            </div>
+            <div class="input-group" style="margin-top: -13px;">
+              <label class="form-control-sm col-sm-2" style="padding-left: 0px;">Total Premium</label>
+              <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency [ngModel] = "altCoverageData.prevtotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.prevtotalPrem = $event" style="max-width: 120px">
+              <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.alttotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalPrem = $event">
+              <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.extotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalPrem = $event">
+              <input type="text" class="form-control form-control-sm col-sm-3 req"  readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.comtotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.comtotalPrem">
+            </div>
+            <div class="input-group" style="margin-top: -13px;">
+              <span class="col-sm-3" style="padding-right: 0px !important;"></span>
+              <label class="form-control-sm col-sm-2" style="padding-left: 0px;">Days of Extension</label>
+              <input type="text" class="form-control form-control-sm col-sm-1 req"  readonly style="margin-left: 5px !important;margin-right: -25px !important;"  [ngModel] = "altCoverageData.exDays">
+              <label class="form-control-sm col-sm-1" style="padding-left: 0px;">/</label>
+              <input type="text" class="form-control form-control-sm col-sm-1 req" readonly value="733" [ngModel] = "altCoverageData.totalDays">
+            </div>
             </div>
           </div>
         </div>

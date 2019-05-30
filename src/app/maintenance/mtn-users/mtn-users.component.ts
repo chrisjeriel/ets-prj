@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angu
 import { UserService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -10,10 +11,10 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./mtn-users.component.css']
 })
 export class MtnUsersComponent implements OnInit {
-
+//@ViewChild('userModal') modal: ModalComponent;
 @Output() cancelMdl: EventEmitter<any> = new EventEmitter();
 selected: any = null;
-
+@Input() hide:string[] = [];
   usersListing: any = {
     tableData: [],
     tHeader: ['User ID', 'User Name'],
@@ -40,12 +41,14 @@ selected: any = null;
   };
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
+  @ViewChild(ModalComponent) modal: ModalComponent;
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   modalOpen: boolean = false;
 
   searchParams: any[] = [];
 
   @Input() lovCheckBox: boolean = false;
+  @Input() hideUser: string[]= [];
   selects: any[] = [];
   
   constructor(private userService: UserService, private modalService: NgbModal) { }
@@ -111,9 +114,10 @@ selected: any = null;
       }*/
       setTimeout(()=>{    //<<<---    using ()=> syntax
            this.userService.retMtnUsers('').subscribe((data: any) =>{
-                 for(var i = 0; i < data.usersList.length; i++){
-                 	this.usersListing.tableData.push(data.usersList[i]);
-                 }
+                 // for(var i = 0; i < data.usersList.length; i++){
+                 // 	this.usersListing.tableData.push(data.usersList[i]);
+                 // }
+                 this.usersListing.tableData = data.usersList.filter(a=>this.hideUser.indexOf(a.userId)== -1)
                  this.table.refreshTable();
                });
                  this.modalOpen = true;
@@ -125,20 +129,27 @@ selected: any = null;
     if(code.trim() === ''){
       this.selectedData.emit({
         userId: '',
+        userName:'',
         ev: ev,
+        singleSearchLov: true
       });
     } else {
       this.userService.retMtnUsers(code).subscribe(data => {
+        data['usersList'] = data['usersList'].filter(a=>this.hideUser.indexOf(a.userId)==-1)
         if(data['usersList'].length > 0) {
           data['usersList'][0]['ev'] = ev;
+          data['usersList'][0]['singleSearchLov'] = true;
           this.selectedData.emit(data['usersList'][0]);
         } else {
+          data['usersList'] = data['usersList'].filter((a)=>{return ev.filter.indexOf(a.userId)==-1});
           this.selectedData.emit({
             userId: '',
-            ev: ev
+            userName:'',
+            ev: ev,
+            singleSearchLov: true
           });
           $('#usersMdl > #modalBtn').trigger('click');
-          this.table.refreshTable('');
+          //this.table.refreshTable('');
         }
         
       });

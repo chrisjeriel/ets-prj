@@ -187,6 +187,7 @@ export class QuotationComponent implements OnInit {
   		if (this.quoteInfo.typeOfCession.toUpperCase() == 'DIRECT'){
   			this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
   		}
+      this.selectedReport = this.reportsList[0].val;
   	}
 
   	showPrintPreview(content) {
@@ -222,6 +223,14 @@ export class QuotationComponent implements OnInit {
           } else {
             this.printDialog(event[0].printType,event[0].reportName)
           }
+
+          //NECO 05/23/2019 --Update Status to Released when printing a quotation with an 'Approved' status.
+          if(this.quoteInfo.status == 'A'){
+            this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '3').subscribe((data: any)=>{
+              console.log(data);
+            });
+          }
+          //END NECO 05/23/2019
     }
 
     printDialog(obj,selectedReport: string){
