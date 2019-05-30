@@ -115,10 +115,10 @@ export class MtnCurrencyListComponent implements OnInit {
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
+          this.successDialog.open();
         } else{
           this.dialogIcon = "success";
-          $('#successModalBtn').trigger('click');
+          this.successDialog.open();
           this.getMtnCurrency();
         }
       });

@@ -398,6 +398,11 @@ import { RetentionLineComponent } from './maintenance/quotation-and-policy/reten
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
 import { MtnTreatyComponent } from './maintenance/mtn-treaty/mtn-treaty.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
+import { MtnApproverComponent } from './maintenance/mtn-approver/mtn-approver.component';
+import { SystemComponent } from './maintenance/system/system.component';
+import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
+import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
+import { ReportComponent } from './maintenance/system/report/report.component';
 
 @NgModule({
     imports: [
@@ -802,6 +807,11 @@ import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy
         TreatyShareComponent,
         MtnTreatyComponent,
         MtnApprovalFunctionComponent,
+        MtnApproverComponent,
+        SystemComponent,
+        ProgramParameterComponent,
+        RoundingErrorComponent,
+        ReportComponent,
     ],
 
   	providers: [

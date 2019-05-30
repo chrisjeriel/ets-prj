@@ -155,6 +155,10 @@ import { RetentionLineComponent } from './maintenance/quotation-and-policy/reten
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
 import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
+import { SystemComponent } from './maintenance/system/system.component';
+import { ProgramParameterComponent } from './maintenance/system/program-parameter/program-parameter.component';
+import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
+import { ReportComponent } from './maintenance/system/report/report.component';
 
 const appRoutes: Routes = [
 
@@ -321,6 +325,10 @@ const appRoutes: Routes = [
     { path: 'maintenance-treaty-share', component: TreatyShareComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-approver', component: ApproverComponent },
     { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
+    { path: 'mtn-system', component: SystemComponent },
+    { path: 'mtn-program-parameter', component: ProgramParameterComponent },
+    { path: 'mtn-rounding-error', component: RoundingErrorComponent },
+    { path: 'mtn-report', component: ReportComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
