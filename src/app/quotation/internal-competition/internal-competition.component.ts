@@ -158,7 +158,7 @@ export class InternalCompetitionComponent implements OnInit {
       }
     }
 
-    destination: string = '';
+    destination: string = 'SCREEN';
     printerName: string = '';
     printNoCopies: number = 0;
     onClickPrint() {
@@ -182,6 +182,7 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     printMethod(){
+      console.log(this.destination);
       if(this.destination === 'SCREEN'){
         for(var i = 0; i < this.custEditableNonDatatableComponent.selected.length; i++){
           console.log(this.custEditableNonDatatableComponent.selected[i].adviceNo);
@@ -210,28 +211,22 @@ export class InternalCompetitionComponent implements OnInit {
             });
         }
       }else if(this.destination === 'PRINTER'){
-         if(this.printerName === '' || this.printNoCopies === 0){
-
-         }else{
+           let params: any = {
+                   reportRequest: [] 
+           }; 
            for(var i = 0; i < this.custEditableNonDatatableComponent.selected.length; i++){
-               this.quotationService.downloadPDFIntComp(this.custEditableNonDatatableComponent.selected[i].adviceNo,this.quotationInfo.quoteId).subscribe( data => {
-                    var newBlob = new Blob([data], { type: "application/pdf" });
-                    var downloadURL = window.URL.createObjectURL(data);
-                    console.log(downloadURL);
-                    window.open(downloadURL, '_blank').print();
-                   
-             },
-              error => {
-                  /*if (this.isEmptyObject(error)) {
-                  } else {
-                     this.dialogIcon = "error-message";
-                     this.dialogMessage = "Error printing file";
-                     $('#listQuotation #successModalBtn').trigger('click');
-                     setTimeout(()=>{$('.globalLoading').css('display','none');},0);
-                  }   */       
-             });
+               params.reportRequest.push({quoteId: this.quotationInfo.quoteId, adviceNo: this.custEditableNonDatatableComponent.selected[i].adviceNo, userId: JSON.parse(window.localStorage.currentUser).username, reportName: 'QUOTER007'});
            }
-         }
+           console.log(JSON.stringify(params));
+           this.quotationService.batchPrint(JSON.stringify(params)).subscribe((data: any)=>{
+             var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
+             var downloadURL = window.URL.createObjectURL(data);
+             const iframe = document.createElement('iframe');
+             iframe.style.display = 'none';
+             iframe.src = downloadURL;
+             document.body.appendChild(iframe);
+             iframe.contentWindow.print();
+           });
       }
 
       this.custEditableNonDatatableComponent.refreshTable();
