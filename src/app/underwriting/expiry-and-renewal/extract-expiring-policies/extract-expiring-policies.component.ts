@@ -20,7 +20,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.titleService.setTitle("Pol | Extract Expiring Policy");
   }
 
-  save() {
+  extract() {
     this.extractedPolicies = this.underWritingService.extractExpiringPolicies();
   }
 
