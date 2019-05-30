@@ -231,8 +231,11 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnReason');
 	}
 
-	getMtnTreaty(){
-		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTreaty');
+	getMtnTreaty(treatyId){
+		const params = new HttpParams()
+					.set('treatyId', treatyId === undefined || treatyId === null ? '' : treatyId);
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTreaty', {params});
 	}
 
 	getMtnSectionCoversLov(lineCd,cover) {
@@ -502,6 +505,15 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnProvince',params,header);
     }
 
+     saveMtnCity(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnCity',params,header);
+    }
+
     saveMtnSpoilageReason(params){
     	let header : any = {
             headers: new HttpHeaders({
@@ -673,6 +685,39 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnRetAmt", {params});
 	}
 
+	getMtnTreatyComm(year) {
+		const params = new HttpParams()
+		     		.set('quoteYear', (year === null || year === undefined ? '' : year));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyCommission", {params});
+	}
+
+	getMtnTreatyShare(year, id) {
+		const params = new HttpParams()
+		     		.set('treatyYear', (year === null || year === undefined ? '' : year))
+		     		.set('treatyId', (id === null || id === undefined ? '' : id));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyShare", {params});
+	}
+
+	getMtnCedingRetention(year, id, cedId) {
+		const params = new HttpParams()
+		     		.set('treatyYear', (year === null || year === undefined ? '' : year))
+		     		.set('treatyId', (id === null || id === undefined ? '' : id))
+		     		.set('trtyCedId', (cedId === null || cedId === undefined ? '' : cedId));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCedingRetention", {params});
+	}
+
+	saveMtnTreatyShare(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreatyShare', params, header);
+    }
+
 	saveMtnApprovalFunction(params){
 		let header : any = {
             headers: new HttpHeaders({
@@ -687,6 +732,85 @@ export class MaintenanceService{
 		     .set('userId', (userId === null || userId === undefined ? '' : userId))
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
 	}
+
+	getMtnParameters(paramType){
+		const params = new HttpParams()
+		     .set('paramType', (paramType === null || paramType === undefined ? '' : paramType))
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnParameters',{params});
+	}
+
+	saveMtnParameters(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnParameters', params, header);
+	}
+
+    saveMtnApprover(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveApprover', params, header);
+     }  
+
+	getMtnRoundingError(cedingId){
+		const params = new HttpParams()
+		     .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRoundingError',{params});
+	}
+
+	saveMtnRoundingError(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnRoundingError', params, header);
+	}
+
+    copyTreatyShareSetup(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyTreatyShareSetup', params, header);
+    }
+
+    saveMtnRetAmt(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnRetAmt', params, header);
+    }
+
+    getMtnApproverFn(userId){
+    	const params = new HttpParams()
+		     .set('userId', (userId === null || userId === undefined ? '' : userId))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveApproverFunction", {params});
+    }
+
+    getMtnApprovalLOV(approvalCd?){
+    	const params = new HttpParams()
+		     .set('approvalCd', (approvalCd === null || approvalCd === undefined ? '' : approvalCd))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnApproval", {params});
+    }
+
+    saveMtnApproverFn(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveApproverFunction', params, header);
+    }
 
 	getMtnReports(reportId?: string){
 		const params = new HttpParams()
@@ -704,9 +828,18 @@ export class MaintenanceService{
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
-        };
-        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReports', JSON.stringify(params), header);
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReports', JSON.stringify(params), header);
 	}
+
+    copyRetAmtSetup(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyRetAmtSetup', params, header);
+    }
 
 	getMtnReportsParam(reportId?: string){
 		const params = new HttpParams()

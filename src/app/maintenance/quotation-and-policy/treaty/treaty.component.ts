@@ -76,7 +76,7 @@ export class TreatyComponent implements OnInit, OnDestroy {
 	getMtnTreaty() {
 		this.table.overlayLoader = true;
 
-		var sub$ = forkJoin(this.ms.getMtnTreaty(),
+		var sub$ = forkJoin(this.ms.getMtnTreaty(''),
 							this.ms.getRefCode('MTN_TREATY.TREATY_TYPE')).pipe(map(([trty, ref]) => { return { trty, ref }; }));
 
 		this.subscription = sub$.subscribe(data => {

@@ -391,7 +391,9 @@ export class CoverageComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
 
       //HIDE THE POWERFUL MAGNIFYING GLASS
-      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      if(data[i].coverCd!== ""){
+        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      }
       if(data[i].coverName !== undefined && 'OTHERS' === data[i].coverName.substring(0,6).toUpperCase()) {
          this.passData.tableData[this.passData.tableData.length - 1].others = true;
       }
