@@ -118,11 +118,12 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	getQuoteList(param?){
   		this.table.loadingFlag = true;
   		var parameter;
-
 		if(param !== undefined){
-			parameter = param;		
+			parameter = param;
+			console.log('not undefined');		
 		}else{
 			parameter = this.searchParams;
+			console.log('undefined');
 		}
 
 		console.log(parameter);
@@ -191,6 +192,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				if(quoList.length == 0){
 					this.showQuoteLov();
 					this.getQuoteList();
+					console.log('abc');
 				}
 			}
   		});
@@ -552,6 +554,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			$(".r-only").prop('readonly', false);
 			this.fieldIconDsbl = false;
 		}
+	}
+
+	searchQuery(searchParams){
+		console.log(searchParams);
+		this.searchParams = searchParams;
+		this.passDataQuoteLOV.tableData = [];
+		this.getQuoteList();
 	}
 
 	onClickSave(){

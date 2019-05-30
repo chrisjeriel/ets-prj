@@ -157,7 +157,7 @@
 <app-modal class="d-none" id="quoteMdl">
     <div header>List Of Values</div>
     <div body class="container-flex">
-       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
