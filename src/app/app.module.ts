@@ -390,12 +390,14 @@ import { MtnCatPerilModalComponent } from './maintenance/mtn-cat-peril-modal/mtn
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 import { QuoteModificationComponent } from './quotation/quote-modification/quote-modification.component';
 import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
+import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
 import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
 import { QuotationToHoldCoverComponent } from './quotation/quotation-to-hold-cover/quotation-to-hold-cover.component';
 import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
 import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
 import { MtnTreatyComponent } from './maintenance/mtn-treaty/mtn-treaty.component';
+import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
 
 @NgModule({
     imports: [
@@ -792,12 +794,14 @@ import { MtnTreatyComponent } from './maintenance/mtn-treaty/mtn-treaty.componen
         UserAmtLimitComponent,
         QuoteModificationComponent,
         MtnNonRenewalReasonComponent,
+        ApproverComponent,
         CityComponent,
         QuotationToHoldCoverComponent,
         TreatyComponent,
         RetentionLineComponent,
         TreatyShareComponent,
         MtnTreatyComponent,
+        MtnApprovalFunctionComponent,
     ],
 
   	providers: [

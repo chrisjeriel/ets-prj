@@ -682,6 +682,19 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreatyShare', params, header);
     }
 
+    getMtnApprover(){
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveApprover");
+    }
+
+    saveMtnApprover(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveApprover', params, header);
+     }  
+
     copyTreatyShareSetup(params) {
         let header: any = {
             headers: new HttpHeaders({
@@ -693,12 +706,33 @@ export class MaintenanceService{
     }
 
     saveMtnRetAmt(params) {
-		let header : any = {
+    	let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnRetAmt', params, header);
+    }
+
+    getMtnApproverFn(userId){
+    	const params = new HttpParams()
+		     .set('userId', (userId === null || userId === undefined ? '' : userId))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveApproverFunction", {params});
+    }
+
+    getMtnApprovalLOV(approvalCd?){
+    	const params = new HttpParams()
+		     .set('approvalCd', (approvalCd === null || approvalCd === undefined ? '' : approvalCd))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnApproval", {params});
+    }
+
+    saveMtnApproverFn(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveApproverFunction', params, header);
     }
 
     copyRetAmtSetup(params) {
@@ -707,7 +741,6 @@ export class MaintenanceService{
                 'Content-Type': 'application/json'
             })
         }
-
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyRetAmtSetup', params, header);
     }
 

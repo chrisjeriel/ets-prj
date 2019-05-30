@@ -219,6 +219,31 @@ export class LovComponent implements OnInit {
             }
         });
       }
+    }else if (selector == 'approvalCd'){
+      if (this.passData.userGrp == '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnApprovalLOV(this.passData.approvalCd).subscribe((data: any) => {
+            data.approvalFunction = data.approvalFunction.filter(a=>this.passData.hide.indexOf(a.approvalCd)==-1);
+            if(data.approvalFunction.length > 0) {
+              data['approvalFunction'][0].ev = ev;
+              this.selectedData.emit({
+                  data : data['approvalFunction'][0],
+                  ev: ev
+                }
+                );
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+              this.modal.openNoClose();
+            }
+        });
+      }
     }
     /*if(districtCd === ''){
       this.selectedData.emit({
@@ -513,6 +538,14 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['userGrp','userGrpDesc','remarks'];
       this.mtnService.getMtnUserGrp().subscribe(a=>{
         this.passTable.tableData = a["userGroups"];
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'approvalFn'){
+      this.passTable.tHeader = ['Approval Fn Code','Description', 'Remarks'];
+      this.passTable.dataTypes = [ 'text','text','text'];
+      this.passTable.keys = ['approvalCd','description','remarks'];
+      this.mtnService.getMtnApprovalLOV().subscribe(a=>{
+        this.passTable.tableData = a["approvalFunction"].filter(a=>this.passData.hide.indexOf(a.approvalCd)==-1);
         this.table.refreshTable();
       })
     }
