@@ -548,7 +548,7 @@ export class TreatyShareComponent implements OnInit {
 
 				this.cancel = false;
 				return;
-			} else if(totalShare != 100) {
+			} else if(totalShare != 100 && td3.filter(a => a.trtyCedId != undefined && !a.deleted).length > 0) {
 				this.dialogIcon = 'error';
 				this.successDialog.open();
 

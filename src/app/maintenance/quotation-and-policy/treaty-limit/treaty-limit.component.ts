@@ -49,7 +49,8 @@ export class TreatyLimitComponent implements OnInit {
   		searchFlag: true,
     	genericBtn: 'Delete',
     	disableGeneric: true,
-	  	disableAdd: true
+	  	disableAdd: true,
+	  	pageID: 'treatyLimitTab'
   	}
 
   	treatyLayerData: any = {
@@ -77,6 +78,7 @@ export class TreatyLimitComponent implements OnInit {
 	  	disableAdd: true,
 	  	pageLength: 5,
 	  	magnifyingGlass: ['treatyId'],
+	  	pageID: 'treatyLayerTab'
   	}
 
   	params: any = {
@@ -135,37 +137,36 @@ export class TreatyLimitComponent implements OnInit {
 		});
 	}
 
-	getMtnTreatyLayer() {
-		if(this.treatyLimitSelected != null && this.treatyLimitSelected.treatyLimitId != '' && this.treatyLimitSelected.showMG != 1) {
-			this.treatyLayerTable.overlayLoader = true;
-			this.ms.getMtnTreatyLayer(this.treatyLimitSelected.treatyLimitId).subscribe(data => {
-				this.treatyLayerData.tableData = data['treatyLayerList'].sort((a, b) => b.createDate - a.createDate)
-																		.map(i => {
-																				i.createDate = this.ns.toDateTimeString(i.createDate);
-																				i.updateDate = this.ns.toDateTimeString(i.updateDate);
-																				i.treatyId = String(i.treatyId).padStart(2, '0');
-																				return i;
-																			});
-				this.treatyLayerData.disableAdd = false;
-				this.treatyLayerData.disableGeneric = false;
-				this.treatyLayerTable.refreshTable();
-	  			this.treatyLayerTable.onRowClick(null, this.treatyLayerData.tableData[0]);
-			});
+	onTreatyLimitRowClick(data) {
+		this.selected = data;
+		this.treatyLimitSelected = data;
+		this.treatyLimitData.disableGeneric = this.treatyLimitSelected == null || this.treatyLimitSelected == '' || this.treatyLimitSelected.treatyLimitId != '';
+		this.disableCopySetup = this.treatyLimitSelected == null || this.treatyLimitSelected == '' || this.treatyLimitSelected.treatyLimitId == '';
+
+		if(data != '' && data != null && data.treatyLimitId != '') {
+			this.treatyLayerData.tableData = data.treatyLayerList.sort((a, b) => b.createDate - a.createDate)
+																 .map(i => {
+																		i.createDate = this.ns.toDateTimeString(i.createDate);
+																		i.updateDate = this.ns.toDateTimeString(i.updateDate);
+																		i.treatyId = i.treatyId == '' ? '' : String(i.treatyId).padStart(2, '0');
+																		return i;
+																	});
+			this.treatyLayerData.disableAdd = false;
+			this.treatyLayerData.disableGeneric = false;
+			this.treatyLayerTable.refreshTable();
+	  		this.treatyLayerTable.onRowClick(null, this.treatyLayerData.tableData[0]);
+		} else if(data != '' && data != null && data.treatyLimitId == '') {
+			this.treatyLimitSelected['treatyLayerList'] = this.treatyLimitSelected['treatyLayerList'] == undefined ? [] : this.treatyLimitSelected['treatyLayerList'];
+			this.treatyLayerData.tableData = this.treatyLimitSelected.treatyLayerList;
+			this.treatyLayerData.disableAdd = false;
+			this.treatyLayerData.disableGeneric = true;
+			this.treatyLayerTable.refreshTable();
 		} else {
 			this.treatyLayerData.tableData = [];
 			this.treatyLayerTable.refreshTable();
 			this.treatyLayerData.disableAdd = true;
 			this.treatyLayerData.disableGeneric = true;
 		}
-		
-	}
-
-	onTreatyLimitRowClick(data) {
-		this.selected = data;
-		this.treatyLimitSelected = data;
-		this.treatyLimitData.disableGeneric = this.treatyLimitSelected == null || this.treatyLimitSelected == '' || this.treatyLimitSelected.treatyLimitId != '';
-		this.disableCopySetup = this.treatyLimitSelected == null || this.treatyLimitSelected == '' || this.treatyLimitSelected.treatyLimitId == '';
-		this.getMtnTreatyLayer();
 	}
 
 	onTreatyLimitClickDelete() {
@@ -302,5 +303,74 @@ export class TreatyLimitComponent implements OnInit {
     	}
 
     	this.treatyLayerTable.refreshTable();
+	}
+
+	onClickSave() {
+		var td = this.treatyLimitData.tableData;
+
+		for(let d of td) {
+			if(d.edited && !d.deleted && (d.amount == null || isNaN(d.amount) || d.effDateFrom == '' || d.effDateTo == '')) {
+				this.dialogIcon = "error";
+				this.successDialog.open();
+
+				return;
+			}
+
+			if(d.edited && !d.deleted) {
+				for(let e of td) {
+					var dEDF = new Date(d.effDateFrom);
+					var dEDT = new Date(d.effDateTo);
+
+					if(e != d && e.activeTag == 'Y' && e.treatyLimitId != '') { //mga bago lang nachecheck, pag inedit yung existing tapos may bago na natamaan, di gumagana (no retentionId)
+						var eEDF = new Date(e.effDateFrom);
+						var eEDT = new Date(e.effDateTo);
+
+						if((dEDF >= eEDF && dEDF <= eEDT) || (dEDT >= eEDF && dEDT <= eEDT)) {
+							this.errorMsg = 1;
+							$('#mtnTreatyLimitWarningModal > #modalBtn').trigger('click');
+
+							return;
+						}
+					}
+				}
+			}
+		}
+
+		this.confirmSave.confirmModal();
+	}
+
+	save(cancel?) {
+		this.cancel = cancel !== undefined;
+		if(this.cancel) {
+			this.onClickSave();
+			return;
+		}
+
+		this.params.saveTreatyLimit = [];
+		this.params.deleteTreatyLimit = [];
+		// add treaty layer
+
+		var td = this.treatyLimitData.tableData;
+
+		for(let d of td) {
+			if(d.edited && !d.deleted) {
+				d.lineCd = this.lineCd;
+				d.lineClassCd = this.lineClassCd;
+				d.createUser = this.ns.getCurrentUser();
+				d.createDate = this.ns.toDateTimeString(d.createDate);
+				d.updateUser = this.ns.getCurrentUser();
+				d.updateDate = this.ns.toDateTimeString(0);
+
+				this.params.saveTreatyLimit.push(d);
+			} else if(d.deleted) {
+				this.params.deleteTreatyLimit.push(d);
+			}
+		}
+
+
+	}
+
+	onCopySetupClick() {
+		$('#mtnTreatyLimitCopyModal > #modalBtn').trigger('click');
 	}
 }

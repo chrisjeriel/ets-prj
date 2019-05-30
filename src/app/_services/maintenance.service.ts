@@ -849,13 +849,6 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyLimit", {params});
 	}
 
-	getMtnTreatyLayer(treatyLimitId){
-		const params = new HttpParams()
-		     		.set('treatyLimitId', (treatyLimitId === null || treatyLimitId === undefined ? '' : treatyLimitId));
-
-		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyLayer", {params});
-	}
-
 	getMtnReportsParam(reportId?: string){
 		const params = new HttpParams()
 			.set('reportId', (reportId === null || reportId === undefined ? '' : reportId));
