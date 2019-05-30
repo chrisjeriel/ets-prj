@@ -101,7 +101,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     isType: boolean = false;
     isIncomplete: boolean = true;
-    noDataFound: boolean = true;
+    noDataFound: boolean = false;
     loading: boolean = false;
     btnDisabled: boolean = false;
     
@@ -357,22 +357,40 @@ export class PolCreateOpenCoverComponent implements OnInit {
                              ], { skipLocationChange: true });
     }
 
-    searchQuoteNoFields(data: string, key: string){
+    searchQuoteNoFields(event: any, key: string){
       this.isType = true;
-
-      if(data.length === 0 ){
-        this.isIncomplete = true;
-        this.noDataFound = true;
-        this.clearFields();
-        this.selectedOpt.optionId = '';
-        this.selectedOpt.optionRt = '';
-        this.optionData.optionId = '';
-        this.optionData.condition = '';
-        this.passDataOptionLOV.tableData = [];
-        this.optListTable.refreshTable();
+      if(event.target.value.length === 0){
+          this.isIncomplete = true;
+          this.clearFields();
+          this.selectedOpt.optionId = '';
+          this.selectedOpt.optionRt = '';
+          this.optionData.optionId = '';
+          this.optionData.condition = '';
+          this.passDataOptionLOV.tableData = [];
+          this.optListTable.refreshTable();
+      }else{
+          if(key === 'seqNo'){
+              this.tempQuoteNo[2] = String(this.tempQuoteNo[2]).padStart(5, '0');
+          }else if(key === 'revNo'){
+              this.tempQuoteNo[3] = String(this.tempQuoteNo[3]).padStart(2, '0');
+          }else if(key ==='cedingId'){
+              this.tempQuoteNo[4] = String(this.tempQuoteNo[4]).padStart(3, '0');
+          }
+          for(var i of this.tempQuoteNo){
+              if(i.length === 0){
+                  this.isIncomplete = true;
+                  break;
+              }else{
+                  this.isIncomplete = false;
+              }
+          }
       }
 
-      if(key === 'lineCd'){
+      if(!this.isIncomplete){
+          this.getQuoteListing();
+      }
+
+      /*if(key === 'lineCd'){
         this.tempQuoteNo[0] = data.toUpperCase();
       }else if(key === 'year'){
         this.tempQuoteNo[1] = data;
@@ -382,7 +400,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.tempQuoteNo[3] = data;
       }else if(key === 'cedingId'){
         this.tempQuoteNo[4] = data;
-      }
+      }*/
     }
 
     clearFields(){
@@ -397,7 +415,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.expiryDate.time = '';
     }
 
-    checkQuoteNoParams(){
+    /*checkQuoteNoParams(){
        if(this.isIncomplete){
          if(this.tempQuoteNo[0].length !== 0 &&
             this.tempQuoteNo[1].length !== 0 &&
@@ -416,5 +434,5 @@ export class PolCreateOpenCoverComponent implements OnInit {
            this.optListTable.refreshTable();
          }
        }
-    }
+    }*/
 }
