@@ -15,6 +15,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
   line: string;
   loading: boolean = false;
   cancelFlag: boolean = false;
+  cancelFailed: boolean = false;
 
   dialogMessage: string = '';
   dialogIcon: string = '';
@@ -190,8 +191,8 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.genInfoOcData.intmName           =  data.policyOc.intmName;
           this.genInfoOcData.inceptDate         =  data.policyOc.inceptDate;
           this.genInfoOcData.expiryDate         =  data.policyOc.expiryDate;
-          this.genInfoOcData.lapseFrom          =  data.policyOc.lapseFrom === null ? data.policyOc.inceptDate : data.policyOc.lapseFrom;
-          this.genInfoOcData.lapseTo            =  data.policyOc.lapseTo === null ? data.policyOc.expiryDate : data.policyOc.lapseTo;
+          this.genInfoOcData.lapseFrom          =  data.policyOc.lapseFrom; //=== null ? data.policyOc.inceptDate : data.policyOc.lapseFrom;
+          this.genInfoOcData.lapseTo            =  data.policyOc.lapseTo; //=== null ? data.policyOc.expiryDate : data.policyOc.lapseTo;
           this.genInfoOcData.issueDate          =  data.policyOc.issueDate;
           this.genInfoOcData.effDate            =  data.policyOc.effDate;
           this.genInfoOcData.distDate           =  data.policyOc.distDate;
@@ -236,10 +237,10 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.inceptionDateParams.time         =  this.ns.toDateTimeString(this.genInfoOcData.inceptDate).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.expiryDateParams.date            =  this.ns.toDateTimeString(this.genInfoOcData.expiryDate).split('T')[0];
           this.expiryDateParams.time            =  this.ns.toDateTimeString(this.genInfoOcData.expiryDate).split('T')[1].slice(0,-2) + '00'; //temp fix
-          this.lapseFromParams.date             =  this.ns.toDateTimeString(this.genInfoOcData.lapseFrom).split('T')[0];
-          this.lapseFromParams.time             =  this.ns.toDateTimeString(this.genInfoOcData.lapseFrom).split('T')[1].slice(0,-2) + '00'; //temp fix
-          this.lapseToParams.date               =  this.ns.toDateTimeString(this.genInfoOcData.lapseTo).split('T')[0];
-          this.lapseToParams.time               =  this.ns.toDateTimeString(this.genInfoOcData.lapseTo).split('T')[1].slice(0,-2) + '00'; //temp fix
+          this.lapseFromParams.date             =  this.genInfoOcData.lapseFrom === null ? '' : this.ns.toDateTimeString(this.genInfoOcData.lapseFrom).split('T')[0];
+          this.lapseFromParams.time             =  this.genInfoOcData.lapseFrom === null ? '' : this.ns.toDateTimeString(this.genInfoOcData.lapseFrom).split('T')[1].slice(0,-2) + '00'; //temp fix
+          this.lapseToParams.date               =  this.genInfoOcData.lapseTo === null ? '' : this.ns.toDateTimeString(this.genInfoOcData.lapseTo).split('T')[0];
+          this.lapseToParams.time               =  this.genInfoOcData.lapseTo === null ? '' : this.ns.toDateTimeString(this.genInfoOcData.lapseTo).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.issueDateParams.date             =  this.ns.toDateTimeString(this.genInfoOcData.issueDate).split('T')[0];
           this.issueDateParams.time             =  this.ns.toDateTimeString(this.genInfoOcData.issueDate).split('T')[1].slice(0,-2) + '00'; //temp fix
           this.distributionDateParams.date      =  this.ns.toDateTimeString(this.genInfoOcData.distDate).split('T')[0];
@@ -271,8 +272,15 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
   prepareParams(){
     this.genInfoOcData.inceptDate = this.inceptionDateParams.date + 'T' + this.inceptionDateParams.time;
     this.genInfoOcData.expiryDate = this.expiryDateParams.date + 'T' + this.expiryDateParams.time;
-    this.genInfoOcData.lapseFrom = this.lapseFromParams.date + 'T' + this.lapseFromParams.time;
-    this.genInfoOcData.lapseTo = this.lapseToParams.date + 'T' + this.lapseToParams.time;
+
+    this.genInfoOcData.lapseFrom = this.lapseFromParams.date + 
+                                   (String(this.lapseFromParams.date).length === 0 || String(this.lapseFromParams.time).length === 0 ? '' : 'T') + 
+                                   this.lapseFromParams.time;
+
+    this.genInfoOcData.lapseTo = this.lapseToParams.date + 
+                                 (String(this.lapseToParams.date).length === 0 || String(this.lapseToParams.time).length === 0 ? '' : 'T') + 
+                                 this.lapseToParams.time;
+
     this.genInfoOcData.issueDate = this.issueDateParams.date + 'T' + this.issueDateParams.time;
     this.genInfoOcData.distDate = this.distributionDateParams.date + 'T' + this.distributionDateParams.time;
     this.genInfoOcData.effDate = this.effDateParams.date + 'T' + this.effDateParams.time;
@@ -284,19 +292,18 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
 
   }
 
-  onClickSave(){
+  onClickSave(fromCancel?){
     this.prepareParams();
     if(this.projectOcData.projDesc.length === 0 || this.genInfoOcData.insuredDesc.length === 0 ||
        this.projectOcData.site.length === 0 ||
        this.genInfoOcData.inceptDate.length < 16 || this.genInfoOcData.expiryDate.length < 16 ||
-       this.genInfoOcData.lapseFrom.length < 16 || this.genInfoOcData.lapseTo.length < 16 ||
        this.genInfoOcData.issueDate.length < 16 || this.genInfoOcData.distDate.length < 16 ||
        this.genInfoOcData.effDate.length < 16 || this.genInfoOcData.acctDate.length < 16 ||
        ('CAR' === this.line.toUpperCase() && this.projectOcData.duration.length === 0) ||
        ('EAR' === this.line.toUpperCase() && (this.projectOcData.duration.length === 0 || this.projectOcData.testing.length === 0))){
 
-      this.dialogMessage = 'Please fill all required fields';
-      this.dialogIcon = 'info';
+      //this.dialogMessage = 'Please fill all required fields';
+      this.dialogIcon = 'error';
       $('#successDialog #modalBtn').trigger('click');
     }else{
       this.saveParams = {
@@ -355,8 +362,11 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
         "longitude":this.projectOcData.longitude,
 
       };
-
-      $('#confirm-save #modalBtn2').trigger('click');
+      if(fromCancel === undefined){
+        $('#confirm-save #modalBtn2').trigger('click');
+      }else{
+        this.saveQuoteGenInfoOc('save');
+      }
     }
   }
 
@@ -373,6 +383,11 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.dialogIcon = 'error';
           this.dialogMessage = 'An unspecified error has occured';
           $('#successDialog #modalBtn').trigger('click'); 
+          if(this.cancelFlag){
+            this.cancelFailed = true;
+          }else{
+            this.cancelFailed = false;
+          }
           //this.form.control.markAsPristine();
         }else{
           this.dialogIcon = '';
