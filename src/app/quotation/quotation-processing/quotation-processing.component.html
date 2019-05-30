@@ -12,7 +12,7 @@
                         as params for your http get method.
                     -->
                     <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="selectedQuotation = $event; onRowDblClick()"
-                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickIntCompCopy();" (export)="export()"></app-cust-non-datatable>
+                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickIntCompCopy('fromScreen');" (export)="export()"></app-cust-non-datatable>
                 </div>
             </ng-template>
         </ngb-tab>
@@ -83,7 +83,7 @@
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
+        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != '' && copyRiskName != ''" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && (copyCedingName == '' || copyRiskName == '')" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
         <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Cancel</a></button>
@@ -119,7 +119,7 @@
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
+        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != ''" class="cust-btn" type="button" (click)="copyIntCompOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
         <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
@@ -136,14 +136,14 @@
                 <div class="input-group">
                     <label class="form-control-sm col-sm-3">Line</label>
                     <input type="text" [ngModel]="line" (ngModelChange)="line = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')" appRequired>
-                    <div class="text-search-ico" (click)="modalService.dismissAll();showLineLOV()"><a><i class="fa fa-search"></i></a></div>
+                    <div class="text-search-ico" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
                     <input type="text" class="form-control form-control-sm" [(ngModel)]="description" readonly tabindex="-1">
                 </div>
                 <div class="input-group" style="margin-top: -12px">
                     <label class="form-control-sm col-sm-3">Type of Cession</label>
                     <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')" maxlength="4" numbers-only appRequired>
-                    <div class="text-search-ico" (click)="modalService.dismissAll(); showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
+                    <div class="text-search-ico" (click)="showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
                     <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly tabindex="-1">
                 </div>
@@ -160,17 +160,11 @@
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearAddFields();"><a>Cancel</a></button>
-        <!-- <button *ngIf="description != '' && typeOfCession != '' && riskName != ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
-        <button *ngIf="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Next</a></button> -->
         <button [class.cust-btn-disabled]="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();" [disabled]="description == '' || typeOfCession == '' || riskName == ''"><a>Next</a></button>
     </div>
 </app-modal>
 
 <!-- End Add Modal -->
-
-<!-- Risk LOV Modal -->
-
-<!-- End Risk LOV Modal -->
 
 <!-- Modification or Internal Competition Modal -->
 <app-modal class="hidden" id="modIntModal">
@@ -189,9 +183,9 @@
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); toGeneralInfo('modification');"><a>Modification</a></button>
-        <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); toGeneralInfo('internalComp');"><a>Internal Competition</a></button>
         <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); clearAddFields();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); toGeneralInfo('modification');"><a>Modification</a></button>
+        <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); onClickIntCompCopy();"><a>Internal Competition</a></button>
     </div>
 </app-modal>
 <!-- End Modification or Internal Competition Modal -->

@@ -3,6 +3,7 @@ import { UnderwritingService } from '@app/_services';
 import { CedingCompanyListing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-ceding-company',
@@ -10,6 +11,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./ceding-company.component.css']
 })
 export class CedingCompanyComponent implements OnInit {
+  @ViewChild('mdl') modal: ModalComponent;
   @Input() exclude: any[] = [];
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
@@ -50,7 +52,7 @@ export class CedingCompanyComponent implements OnInit {
 
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
-
+  @Input() treaty: boolean;
     
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
 
@@ -96,19 +98,20 @@ export class CedingCompanyComponent implements OnInit {
      
 
      this.underwritingService.getCedingCompanyList('','','','','','','','','','Y').subscribe((data: any) => {
-         for(var i=0;i< data.cedingcompany.length;i++){
-            // this.passDataCedingCompanyMember.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
+         for(var i=0; i < data.cedingcompany.length;i++){
            if(!this.exclude.includes(String(data.cedingcompany[i].cedingId).padStart(3, '0'))) {
-             this.passDataCedingCompanyMember.tableData.push({
-                 cedingId: data.cedingcompany[i].cedingId,
-                 cedingName: data.cedingcompany[i].cedingName,
-                 address: data.cedingcompany[i].address
-             });  
+             this.passDataCedingCompanyMember.tableData.push(data.cedingcompany[i]);
            }            
+         }
+
+         if(this.treaty !== undefined && this.treaty) {
+           this.passDataCedingCompanyMember.tableData = this.passDataCedingCompanyMember.tableData.filter(a => a.treatyTag == 'Y');
+         } else if(this.treaty !== undefined && !this.treaty) {
+           this.passDataCedingCompanyMember.tableData = this.passDataCedingCompanyMember.tableData.filter(a => a.treatyTag == 'N');
          }
          this.table.refreshTable();          
      });
-     this.modalOpen = true;
+     //this.modalOpen = true;
   }
 
   checkCode(code, ev, id?) {
@@ -116,37 +119,49 @@ export class CedingCompanyComponent implements OnInit {
       this.selectedData.emit({
         cedingId: '',
         cedingName: '',
-        ev: ev
+        cedingAbbr: '',
+        ev: ev,
+        singleSearchLov: true
       });
     } else if(isNaN(code/1)) {
       this.selectedData.emit({
         cedingId: '',
         cedingName: '',
-        ev: ev
+        cedingAbbr: '',
+        ev: ev,
+        singleSearchLov: true
       });
 
       if(id != undefined) {
         $(id + ' #modalBtn').trigger('click');  
       } else {
-        $('#cedingCompanyMdl > #modalBtn').trigger('click');  
+        // $('#cedingCompanyMdl > #modalBtn').trigger('click');
+        this.modal.openNoClose();  
       }      
     } else {
-      this.underwritingService.getCedingCompanyList(code,'','','','','','','','','Y').subscribe(data => {     
+      this.underwritingService.getCedingCompanyList(String(code).padStart(3,'0'),'','','','','','','','','Y').subscribe(data => {
+        if(this.treaty) {
+           data['cedingcompany'] = data['cedingcompany'].filter(a => a.treatyTag == 'Y');
+        }
+           
         if(data['cedingcompany'].length > 0 && !this.exclude.includes(String(data['cedingcompany'][0].cedingId).padStart(3, '0'))) {
           data['cedingcompany'][0]['ev'] = ev;
-          // this.selectedData.emit(new CedingCompanyListing(data['cedingcompany'][0].cedingId,data['cedingcompany'][0].cedingName,data['cedingcompany'][0].cedingAbbr,data['cedingcompany'][0].address,(data['cedingcompany'][0].membershipDate == null ? null : new Date(data['cedingcompany'][0].membershipDate[0],data['cedingcompany'][0].membershipDate[1]-1,data['cedingcompany'][0].membershipDate[2])),(data['cedingcompany'][0].terminationDate == null ? null : new Date(data['cedingcompany'][0].terminationDate[0],data['cedingcompany'][0].terminationDate[1]-1,data['cedingcompany'][0].terminationDate[2])),(data['cedingcompany'][0].inactiveDate == null ? null : new Date(data['cedingcompany'][0].inactiveDate[0],data['cedingcompany'][0].inactiveDate[1]-1,data['cedingcompany'][0].inactiveDate[2]))));
+          data['cedingcompany'][0]['singleSearchLov'] = true;
           this.selectedData.emit(data['cedingcompany'][0]);
         } else {
           this.selectedData.emit({
             cedingId: '',
             cedingName: '',
-            ev: ev
+            cedingAbbr: '',
+            ev: ev,
+            singleSearchLov: true
           });
 
           if(id != undefined) {
             $(id + ' #modalBtn').trigger('click');  
           } else {
-            $('#cedingCompanyMdl > #modalBtn').trigger('click');  
+            // $('#cedingCompanyMdl > #modalBtn').trigger('click');
+            this.modal.openNoClose();  
           }   
         }      
       });

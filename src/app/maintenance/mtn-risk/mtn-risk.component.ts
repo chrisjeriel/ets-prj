@@ -3,6 +3,7 @@ import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalComponent }  from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-mtn-risk',
@@ -10,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./mtn-risk.component.css']
 })
 export class MtnRiskComponent implements OnInit {
+  @ViewChild('mdl') modal : ModalComponent;
 	selected: any = null;
 
   riskListing: any = {
@@ -130,7 +132,8 @@ export class MtnRiskComponent implements OnInit {
         ev: ev
       });
 
-      $(id + ' #modalBtn').trigger('click');
+      // $(id + ' #modalBtn').trigger('click');
+      this.modal.openNoClose();
     } else {
       this.maintenanceService.getMtnRisk(code).subscribe(data => {
         if(data['risk'] != null) {
@@ -143,7 +146,8 @@ export class MtnRiskComponent implements OnInit {
             ev: ev
           });
 
-          $(id + ' #modalBtn').trigger('click');
+          // $(id + ' #modalBtn').trigger('click');
+          this.modal.openNoClose();
         }
         
       });

@@ -685,6 +685,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         var link = document.createElement('a');
         link.href = url;
         link.download = file;
+        link.target = "_blank";
         link.click();
     }
 

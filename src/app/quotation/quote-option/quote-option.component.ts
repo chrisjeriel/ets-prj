@@ -650,7 +650,7 @@ saveQuoteOptionAll(cancelFlag?){
   }
 
   getRates(){
-    this.mtnService.getMtnTreaty().subscribe((data)=>{
+    this.mtnService.getMtnTreaty('').subscribe((data)=>{
       this.optionsData.nData.commRtQuota = data['treatyList'].filter(a=>a.treatyType=='Q')[0].comRate;
       this.optionsData.nData.commRtFac = data['treatyList'].filter(a=>a.treatyType=='F')[0].comRate;
       this.optionsData.nData.commRtSurplus = 0;

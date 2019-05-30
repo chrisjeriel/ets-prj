@@ -97,15 +97,15 @@
                                         <input type="text" class="form-control form-control-sm" style="margin-left: 2px !important;">
                                         <input type="text" class="form-control form-control-sm" style="margin-left: 2px !important;">
                                         <input type="text" class="form-control form-control-sm" style="margin-left: 2px !important;">
-                                        <a style="margin-left: 5px;"><i class="fa fa-search"></i></a>
+                                        <a style="margin-left: 5px;" (click)="showQuoteListLOV();"><i class="fa fa-search"></i></a>
                                     </div>
                                 </div>
                                 <div class="form-row custom-row-inline-inset">
                                     <div class="input-group alignment" style="margin-bottom: -13px !important;">
                                         <label class="form-control-sm col-sm-3 text-right">Type of Cession</label>
                                         <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" [(ngModel)]="searchParams.typeOfCessionId" (change)="checkCode($event, 'typeOfCession')">
-                                        <div class="text-search-ico" (click)="modalService.dismissAll(); showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
-                                        <input type="text" [(ngModel)]="searchParams.typeOfCession" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
+                                        <div class="text-search-ico" (click)="showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
+                                        <input type="text" [(ngModel)]="searchParams.typeOfCession" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;" readonly>
                                     </div>
                                 </div>
                                 <div class="form-row custom-row-inline-inset">
@@ -113,7 +113,7 @@
                                         <label class="form-control-sm col-sm-3 text-right">Ceding Company</label>
                                         <input type="text" id="cedingId" class="form-control form-control-sm col-sm-2"  [(ngModel)]="searchParams.cedingId" (change)="checkCode($event, 'cedingCo')" >
                                         <div class="text-search-ico" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
-                                        <input type="text" [(ngModel)]="searchParams.cedingName" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
+                                        <input type="text" [(ngModel)]="searchParams.cedingName" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;" readonly>
                                     </div>
                                 </div>
                                 <div class="form-row custom-row-inline-inset">
@@ -121,7 +121,7 @@
                                         <label class="form-control-sm col-sm-3 text-right">Risk</label>
                                         <input type="text" id="riskCd" class="form-control form-control-sm col-sm-2" [(ngModel)]="searchParams.riskCd" (change)="checkCode($event, 'risk')">
                                         <div class="text-search-ico" (click)="showRiskLOV()"><a><i class="fa fa-search"></i></a></div>
-                                        <input type="text" [(ngModel)]="searchParams.riskName" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
+                                        <input type="text" [(ngModel)]="searchParams.riskName" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;" readonly>
                                     </div>
                                 </div>
                                 <br>
@@ -137,12 +137,27 @@
         </ngb-tab>
     </ngb-tabset>
 </div>
+
+
+<!-- ALL MODALS HERE -->
+<app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl" #quoteListMdl>
+    <div header>List Of Values</div>
+    <div body>
+       <app-cust-non-datatable [passData]="quoteListingLOV" (rowClick)="quoteListRowClick($event)"></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modal.closeModal();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="selectPol()"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
 <app-mtn-reason id="reasonLOV" (selectedData)="setReason($event)"></app-mtn-reason>
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="process()"></app-confirm-save>
 <app-cancel-button (onYes)="process('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
 
-<app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)"></app-mtn-risk>
-<app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
+<app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)" #riskMdl></app-mtn-risk>
+<app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)" #cedCoMdl></app-ceding-company>
+<app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)" #cessionMdl></app-mtn-type-of-cession>

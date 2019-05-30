@@ -392,6 +392,10 @@ import { QuoteModificationComponent } from './quotation/quote-modification/quote
 import { MtnNonRenewalReasonComponent } from './maintenance/quotation-and-policy/mtn-non-renewal-reason/mtn-non-renewal-reason.component';
 import { CityComponent } from './maintenance/quotation-and-policy/region/city/city.component';
 import { QuotationToHoldCoverComponent } from './quotation/quotation-to-hold-cover/quotation-to-hold-cover.component';
+import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
+import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
+import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
+import { MtnTreatyComponent } from './maintenance/mtn-treaty/mtn-treaty.component';
 
 @NgModule({
     imports: [
@@ -790,6 +794,10 @@ import { QuotationToHoldCoverComponent } from './quotation/quotation-to-hold-cov
         MtnNonRenewalReasonComponent,
         CityComponent,
         QuotationToHoldCoverComponent,
+        TreatyComponent,
+        RetentionLineComponent,
+        TreatyShareComponent,
+        MtnTreatyComponent,
     ],
 
   	providers: [

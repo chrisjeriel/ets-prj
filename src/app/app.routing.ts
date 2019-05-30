@@ -154,6 +154,9 @@ import { BlockComponent } from './maintenance/quotation-and-policy/block/block.c
 import { OtherChargeComponent } from './maintenance/quotation-and-policy/other-charge/other-charge.component';
 import { UserAmtLimitComponent } from './maintenance/quotation-and-policy/user-amt-limit/user-amt-limit.component';
 import { QuotationToHoldCoverComponent } from './quotation/quotation-to-hold-cover/quotation-to-hold-cover.component';
+import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
+import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
+import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
 
 const appRoutes: Routes = [
 
@@ -315,6 +318,9 @@ const appRoutes: Routes = [
     { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
     { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent },
     { path: 'quotation-to-hold-cover', component: QuotationToHoldCoverComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-treaty', component: TreatyComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-retention-line', component: RetentionLineComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-treaty-share', component: TreatyShareComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

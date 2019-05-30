@@ -231,8 +231,11 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnReason');
 	}
 
-	getMtnTreaty(){
-		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTreaty');
+	getMtnTreaty(treatyId){
+		const params = new HttpParams()
+					.set('treatyId', treatyId === undefined || treatyId === null ? '' : treatyId);
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTreaty', {params});
 	}
 
 	getMtnSectionCoversLov(lineCd,cover) {
@@ -629,6 +632,84 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnOtherCharge', params, header);
     }
 
-    
+    saveMtnTreaty(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreaty', params, header);
+    }
+
+    getMtnRetAmt(lineCd, lineClassCd){
+		const params = new HttpParams()
+		     		.set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnRetAmt", {params});
+	}
+
+	getMtnTreatyComm(year) {
+		const params = new HttpParams()
+		     		.set('quoteYear', (year === null || year === undefined ? '' : year));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyCommission", {params});
+	}
+
+	getMtnTreatyShare(year, id) {
+		const params = new HttpParams()
+		     		.set('treatyYear', (year === null || year === undefined ? '' : year))
+		     		.set('treatyId', (id === null || id === undefined ? '' : id));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyShare", {params});
+	}
+
+	getMtnCedingRetention(year, id, cedId) {
+		const params = new HttpParams()
+		     		.set('treatyYear', (year === null || year === undefined ? '' : year))
+		     		.set('treatyId', (id === null || id === undefined ? '' : id))
+		     		.set('trtyCedId', (cedId === null || cedId === undefined ? '' : cedId));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCedingRetention", {params});
+	}
+
+	saveMtnTreatyShare(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreatyShare', params, header);
+    }
+
+    copyTreatyShareSetup(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyTreatyShareSetup', params, header);
+    }
+
+    saveMtnRetAmt(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnRetAmt', params, header);
+    }
+
+    copyRetAmtSetup(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyRetAmtSetup', params, header);
+    }
+
 }
 

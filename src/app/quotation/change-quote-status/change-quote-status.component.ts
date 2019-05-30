@@ -3,11 +3,13 @@ import { NgbModal, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { environment } from '@environments/environment';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 
 @Component({
@@ -17,6 +19,13 @@ import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol
 })
 export class ChangeQuoteStatusComponent implements OnInit {
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    //NECO 05/22/2019
+    @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
+    @ViewChild('quoteListMdl') modal: ModalComponent;
+    @ViewChild('riskMdl') riskModal: any;
+    @ViewChild('cedCoMdl') cedCoModal: any;
+    @ViewChild('cessionMdl') cessionModal: any;
+    //END NECO 05/22/2019
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
     @ViewChildren(MtnRiskComponent) riskLovs: QueryList<MtnTypeOfCessionComponent>;
@@ -71,6 +80,16 @@ export class ChangeQuoteStatusComponent implements OnInit {
       keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
     };
 
+    quoteListingLOV: any = {
+      tHeader: ['Quotation No.','Type of Cession','Ceding Company','Insured','Risk'],
+      tableData:[],
+      dataTypes: ['text','text','text','text','text'],
+      pageLength: 10,
+      pagination: true,
+      pageStatus: true,
+      keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
+    };
+
     searchParams: any = {
         riskName:null,
         riskCd: null,
@@ -79,8 +98,13 @@ export class ChangeQuoteStatusComponent implements OnInit {
         typeOfCession: null,
         typeOfCessionId: null
     }
+
+    //NECO 05/22/2019
+    tempQuoteNo: string[] = ['','','','',''];
+
+    //END NECO 05/22/2019
     
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService) {
+    constructor(private qs: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -94,8 +118,29 @@ export class ChangeQuoteStatusComponent implements OnInit {
         
     }
 
+    //NECO 05/22/2019
+    showQuoteListLOV(){
+        this.retrieveQuoteListing();
+        this.modal.openNoClose();
+    }
+
+    retrieveQuoteListing(){
+        this.quoteListingLOV.tableData = [];
+        this.tableNonEditable.loadingFlag = true;
+        this.qs.getQuoProcessingData([{key: 'quotationNo', search: this.tempQuoteNo.join('%-%')}]).subscribe((data: any)=>{
+            this.quoteListingLOV.tableData = data.quotationList;
+            this.tableNonEditable.refreshTable();
+            this.tableNonEditable.loadingFlag = false;
+        });
+    }
+
+    quoteListRowClick(data){
+        console.log(data);
+    }
+    //END NECO 05/22/2019
+
     getChangeQuote(){
-        this.quotationService.getQuoProcessingData(this.searchParams).subscribe((data:any) => {
+        this.qs.getQuoProcessingData(this.searchParams).subscribe((data:any) => {
             this.passData.tableData = [];
             this.records = data.quotationList;
             console.log(this.records)
@@ -116,7 +161,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     savetest(){
-        this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
+        this.qs.saveChangeQuoteStatus(this.saveData).subscribe(data => {
             if(data['returnCode'] == 0) {
                 this.dialogMessage = data['errorList'][0].errorMessage;
                 this.dialogIcon = "error";
@@ -164,40 +209,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     prepareData(){
-        /*for(let rec of this.records){
-            if(rec.quotationNo === data.quotationNo) {
-                if(data.checked){
-                    this.selectedData = data;
-                    this.saveData.changeQuoteStatus.push({
-                        quoteId: rec.quoteId
-                    })
-                }else {
-                    for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){
-                        if(this.saveData.changeQuoteStatus[j].quoteId == rec.quoteId){
-                            this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
-                        }
-                    }
-                }
-            }
-        }*/
-        this.saveData.changeQuoteStatus =[]
-        //     for(var j=0; j < this.passData.tableData.length;j++){
-        //             if(this.passData.tableData[j].checked){
-        //                 this.selectedData = this.passData.tableData[j];
-        //                 for(var k=0;k<this.saveData.changeQuoteStatus.length;k++){
-        //                     if(this.saveData.changeQuoteStatus[k].quoteId == this.records.quoteId){
-        //                         this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
-        //                         console.log('push')
-        //                     }else{
-        //                         this.saveData.changeQuoteStatus.push({
-        //                             quoteId: this.passData.tableData[j].quoteId
-        //                         })
-        //                         console.log('pop')
-        //                     }
-        //                 }
-                        
-        //             }
-        // }
+        this.saveData.changeQuoteStatus = [];
         for(let data of this.passData.tableData){
             if(data.checked){
                 console.log(data);
@@ -227,24 +239,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
             remarks: null
             }
         }
-        console.log(data)
-        //console.log(this.passData.tableData)
-        /*for(let rec of this.records){
-            if(rec.quotationNo === data.quotationNo) {
-                if(data.checked){
-                    this.selectedData = data;
-                    this.saveData.changeQuoteStatus.push({
-                        quoteId: rec.quoteId
-                    })
-                }else {
-                    for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){
-                        if(this.saveData.changeQuoteStatus[j].quoteId == rec.quoteId){
-                            this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
-                        }
-                    }
-                }
-            }
-        }*/
     }
 
     openReasonLOV(){
@@ -257,15 +251,18 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     showRiskLOV() {
-        $('#riskLOV #modalBtn').trigger('click');
+        //$('#riskLOV #modalBtn').trigger('click');
+        this.riskModal.modal.openNoClose();
     }
 
     showCedingCompanyLOV() {
-        $('#cedingCompanyLOV #modalBtn').trigger('click');
+        //$('#cedingCompanyLOV #modalBtn').trigger('click');
+        this.cedCoModal.modal.openNoClose();
     }
 
     showTypeOfCessionLOV(){
-        $('#typeOfCessionLOV #modalBtn').trigger('click');
+        //$('#typeOfCessionLOV #modalBtn').trigger('click');
+        this.cessionModal.modal.openNoClose();
     }
 
     checkCode(ev, field){
