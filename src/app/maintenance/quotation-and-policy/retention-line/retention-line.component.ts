@@ -71,7 +71,6 @@ export class RetentionLineComponent implements OnInit {
 	copyLineClassCd: string = '';
 	copyLineClassList: any[] = [];
 	disableCopyLCList: boolean = true;
-	hiddenLine: any[] = [];
 
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
@@ -100,8 +99,14 @@ export class RetentionLineComponent implements OnInit {
 
 	onRowClick(data) {
 		this.selected = data;	
-		this.retAmtData.disableGeneric = this.selected == null || this.selected == '';
-		this.disableCopySetup = this.selected == null || this.selected == '';
+		this.retAmtData.disableGeneric = this.selected == null || this.selected == '' || this.selected.retentionId != '';
+		this.disableCopySetup = this.selected == null || this.selected == '' || this.selected.retentionId == '';
+	}
+
+	onClickDelete() {
+		this.table.indvSelect.edited = true;
+		this.table.indvSelect.deleted = true;
+		this.table.confirmDelete();
 	}
 
 	checkCode(ev) {
@@ -259,9 +264,6 @@ export class RetentionLineComponent implements OnInit {
 	}
 
 	onCopySetupClick() {
-		this.hiddenLine = [];
-		this.hiddenLine.push(this.lineCd);
-
 		$('#mtnRetLineCopyModal > #modalBtn').trigger('click');
 	}
 
@@ -274,6 +276,12 @@ export class RetentionLineComponent implements OnInit {
 	}
 
 	onClickModalCopy() {
+		if(this.copyLineDesc == '' || this.copyLineClassCd == '') {
+			this.dialogIcon = "error";
+			this.successDialog.open();
+			return;
+		}
+
 		$('.globalLoading').css('display','block');
 		var params = {
 			 copyFromRetentionId: this.selected.retentionId,

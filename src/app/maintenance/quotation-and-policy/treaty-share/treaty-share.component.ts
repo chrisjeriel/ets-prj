@@ -182,7 +182,7 @@ export class TreatyShareComponent implements OnInit {
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
 	ngOnInit() {
-		this.alignTreatyYear();
+		// this.alignTreatyYear();
 
 		setTimeout(() => {
 			this.treatyYearTable.refreshTable();
@@ -271,7 +271,7 @@ export class TreatyShareComponent implements OnInit {
 			});
 		} else {
 			this.disableRetentionTab = true;
-			this.cedingRetentionData.tableData = [];
+			// this.cedingRetentionData.tableData = [];
 			this.cedingRetentionData.disableAdd = true;
 			this.cedingRetentionData.disableGeneric = true;
 		}
@@ -494,6 +494,7 @@ export class TreatyShareComponent implements OnInit {
 			setTimeout(() => {
 				this.treatyShareTable.refreshTable();
 				this.treatyShareTable.onRowClick(null, this.treatyShareData.tableData[this.treatyShareData.tableData.indexOf(this.treatyShareSelected)]);
+				console.log(this.cedingRetentionData);
 			}, 0);
 		} else if(ev.nextId == 'retention') {
 			setTimeout(() => {
@@ -628,6 +629,9 @@ export class TreatyShareComponent implements OnInit {
 
 		for(let d of td4) {
 			if(d.edited && !d.deleted) {
+				d.treatyYear = this.treatyYearSelected.treatyYear;
+				d.treatyId = this.treatyCommSelected.treatyId;
+				d.trtyCedId = this.treatyShareSelected.trtyCedId;
 				d.createUser = this.ns.getCurrentUser();
 				d.createDate = this.ns.toDateTimeString(d.createDate);
 				d.updateUser = this.ns.getCurrentUser();
