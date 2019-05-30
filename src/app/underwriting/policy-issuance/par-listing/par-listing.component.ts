@@ -168,7 +168,7 @@ export class ParListingComponent implements OnInit {
           this.fetchedData = records;
                for(let rec of records){
                    if(rec.altNo === 0){
-                      if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress' || rec.statusDesc === 'Approved' || rec.statusDesc === 'Pending Approval' || rec.statusDesc === 'Rejected') {
+                      if ( rec.statusDesc === 'In Progress' || rec.statusDesc === 'Approved' || rec.statusDesc === 'Pending Approval' || rec.statusDesc === 'Rejected') {
                          this.passDataListing.tableData.push(
                                                     {
                                                         policyId: rec.policyId,
