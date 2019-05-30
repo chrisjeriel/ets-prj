@@ -390,6 +390,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           }
           //this.form.control.markAsPristine();
         }else{
+          this.cancelFailed = false;
           this.dialogIcon = '';
           this.dialogMessage = '';
           $('#successDialog #modalBtn').trigger('click'); 
