@@ -121,29 +121,7 @@ export class RetentionLineComponent implements OnInit {
 	    this.lineLovCopy.checkCode(this.copyLineCd, ev);
 	}
 
-	setLineCopy(data) {
-  		this.disableCopyLCList = false;
-    	this.copyLineCd = data.lineCd;
-    	this.copyLineDesc = data.description;
-    	this.ns.lovLoader(data.ev, 0);
-
-    	this.copyLineClassCd = '';
-    	this.copyLineClassList = [];
-
-    	if(this.copyLineDesc != '' && this.copyLineDesc != null) {
-    		this.ms.getLineClassLOV(this.copyLineCd).subscribe(data => {
-    			this.copyLineClassList = data['lineClass'];
-    		});
-    	}
-
-    	setTimeout(() => {
-    		if(data.ev) {
-    			$(data.ev.target).removeClass('ng-dirty');
-    		}
-    	}, 0);
-	}
-
-  	setLine(data) {
+	setLine(data) {
   		this.disableLCList = false;
     	this.lineCd = data.lineCd;
     	this.lineDesc = data.description;
@@ -163,6 +141,28 @@ export class RetentionLineComponent implements OnInit {
   		this.retAmtData.disableGeneric = true;
   		this.disableCopySetup = true;
 		this.table.refreshTable();
+
+    	setTimeout(() => {
+    		if(data.ev) {
+    			$(data.ev.target).removeClass('ng-dirty');
+    		}
+    	}, 0);
+	}
+
+	setLineCopy(data) {
+  		this.disableCopyLCList = false;
+    	this.copyLineCd = data.lineCd;
+    	this.copyLineDesc = data.description;
+    	this.ns.lovLoader(data.ev, 0);
+
+    	this.copyLineClassCd = '';
+    	this.copyLineClassList = [];
+
+    	if(this.copyLineDesc != '' && this.copyLineDesc != null) {
+    		this.ms.getLineClassLOV(this.copyLineCd).subscribe(data => {
+    			this.copyLineClassList = data['lineClass'];
+    		});
+    	}
 
     	setTimeout(() => {
     		if(data.ev) {

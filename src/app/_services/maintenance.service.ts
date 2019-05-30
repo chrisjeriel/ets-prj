@@ -710,5 +710,20 @@ export class MaintenanceService{
 
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyRetAmtSetup', params, header);
     }
+
+    getMtnTreatyLimit(lineCd, lineClassCd){
+		const params = new HttpParams()
+		     		.set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyLimit", {params});
+	}
+
+	getMtnTreatyLayer(treatyLimitId){
+		const params = new HttpParams()
+		     		.set('treatyLimitId', (treatyLimitId === null || treatyLimitId === undefined ? '' : treatyLimitId));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyLayer", {params});
+	}
 }
 

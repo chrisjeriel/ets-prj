@@ -395,6 +395,7 @@ import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treat
 import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
 import { MtnTreatyComponent } from './maintenance/mtn-treaty/mtn-treaty.component';
+import { TreatyLimitComponent } from './maintenance/quotation-and-policy/treaty-limit/treaty-limit.component';
 
 @NgModule({
     imports: [
@@ -796,6 +797,7 @@ import { MtnTreatyComponent } from './maintenance/mtn-treaty/mtn-treaty.componen
         RetentionLineComponent,
         TreatyShareComponent,
         MtnTreatyComponent,
+        TreatyLimitComponent,
     ],
 
   	providers: [
