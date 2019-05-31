@@ -404,6 +404,8 @@ import { ProgramParameterComponent } from './maintenance/system/program-paramete
 import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
 import { ReportComponent } from './maintenance/system/report/report.component';
 import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
+import { ClaimEventTypeComponent } from './maintenance/mtn-claims/claim-event-type/claim-event-type.component';
+import { MtnClaimsComponent } from './maintenance/mtn-claims/mtn-claims.component';
 
 @NgModule({
     imports: [
@@ -814,6 +816,8 @@ import { ReportParamComponent } from './maintenance/system/report-param/report-p
         RoundingErrorComponent,
         ReportComponent,
         ReportParamComponent,
+        ClaimEventTypeComponent,
+        MtnClaimsComponent,
     ],
 
   	providers: [

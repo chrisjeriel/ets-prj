@@ -861,5 +861,22 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReportParam', JSON.stringify(params), header);
 	}
 
-}
+	getMtnClmEventType(eventTypeCd?:string){
+		const params = new HttpParams()
+			.set('eventTypeCd', (eventTypeCd == null || eventTypeCd == undefined ? '' : eventTypeCd));
 
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnClmEventType',{params});	
+	}
+
+	saveMtnClmEventType(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+         console.log(params);
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmEventType',params,header);
+	}
+
+}
