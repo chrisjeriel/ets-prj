@@ -83,9 +83,7 @@ export class TreatyLimitComponent implements OnInit {
 
   	params: any = {
   		saveTreatyLimit: [],
-  		deleteTreatyLimit: [],
-  		saveTreatyLayer: [],
-  		deleteTreatyLayer: []
+  		deleteTreatyLimit: []
   	}
 
   	selected: any = null;
@@ -178,7 +176,7 @@ export class TreatyLimitComponent implements OnInit {
 	onTreatyLayerRowClick(data) {
 		this.selected = data;
 		this.treatyLayerSelected = data;
-		this.treatyLayerData.disableGeneric = this.treatyLayerSelected == null || this.treatyLayerSelected == '' || this.treatyLayerSelected.treatyId != '';
+		this.treatyLayerData.disableGeneric = this.treatyLayerSelected == null || this.treatyLayerSelected == '' || this.treatyLayerSelected.showMG == undefined;
 	}
 
 	onTreatyLayerClickDelete() {
@@ -309,27 +307,43 @@ export class TreatyLimitComponent implements OnInit {
 		var td = this.treatyLimitData.tableData;
 
 		for(let d of td) {
-			if(d.edited && !d.deleted && (d.amount == null || isNaN(d.amount) || d.effDateFrom == '' || d.effDateTo == '')) {
+			if(d.edited && !d.deleted && (d.amount == null || isNaN(d.amount) || d.effDateFrom == '' || d.effDateTo == ''
+				|| d.treatyLayerList.filter(a => !a.deleted).length == 0)) {
 				this.dialogIcon = "error";
 				this.successDialog.open();
-
 				return;
 			}
 
-			if(d.edited && !d.deleted) {
+			if(d.edited && !d.deleted || d.treatyLayerList.findIndex(b => b.edited) != -1) {
+				if(d.treatyLayerList.findIndex(b => b.treatyId == '') != -1) {
+					this.dialogIcon = "error";
+					this.successDialog.open();
+					return;
+				}
+			}
+
+			if(d.edited && !d.deleted || (d.treatyLayerList.findIndex(b => b.edited) != -1) && d.treatyLayerList.length != 0) {
 				for(let e of td) {
-					var dEDF = new Date(d.effDateFrom);
-					var dEDT = new Date(d.effDateTo);
+					var dList = d.treatyLayerList.filter(a => a.treatyId != undefined && !a.deleted).map(a => Number(a.treatyId)).sort((a, b) => a - b);
 
-					if(e != d && e.activeTag == 'Y' && e.treatyLimitId != '') { //mga bago lang nachecheck, pag inedit yung existing tapos may bago na natamaan, di gumagana (no retentionId)
-						var eEDF = new Date(e.effDateFrom);
-						var eEDT = new Date(e.effDateTo);
+					if(e != d && e.activeTag == 'Y' && e.treatyLimitId != '') {
+						var eList = e.treatyLayerList.filter(a => a.treatyId != undefined && !a.deleted).map(a => Number(a.treatyId)).sort((a, b) => a - b);
+						
+						if(dList.length == eList.length) {
+							var ctr = 0;
+							for(let v of dList) {
+								if(eList.indexOf(v) == -1) {
+									break;
+								} else {
+									ctr++;
+								}
+							}
 
-						if((dEDF >= eEDF && dEDF <= eEDT) || (dEDT >= eEDF && dEDT <= eEDT)) {
-							this.errorMsg = 1;
-							$('#mtnTreatyLimitWarningModal > #modalBtn').trigger('click');
-
-							return;
+							if(ctr == dList.length) {
+								this.errorMsg = 1;
+								$('#mtnTreatyLimitWarningModal > #modalBtn').trigger('click');
+								return;
+							}
 						}
 					}
 				}
@@ -348,29 +362,86 @@ export class TreatyLimitComponent implements OnInit {
 
 		this.params.saveTreatyLimit = [];
 		this.params.deleteTreatyLimit = [];
-		// add treaty layer
 
 		var td = this.treatyLimitData.tableData;
+		this.params.saveTreatyLimit = td.filter(a => a.edited && !a.deleted || a.treatyLayerList.findIndex(b => b.edited) != -1)
+										.map(a => {
+											a.lineCd = this.lineCd;
+											a.lineClassCd = this.lineClassCd;
+											a.createUser = this.ns.getCurrentUser();
+											a.createDate = this.ns.toDateTimeString(a.createDate);
+											a.updateUser = this.ns.getCurrentUser();
+											a.updateDate = this.ns.toDateTimeString(0);
+											return a;
+										});
+		this.params.saveTreatyLimit.forEach(a => {
+			a.treatyLayerList = a.treatyLayerList.filter(b => b.edited && !b.deleted)
+												  .map(b => {
+												  	b.treatyLimitId = a.treatyLimitId;
+												  	b.createUser = this.ns.getCurrentUser();
+												  	b.createDate = this.ns.toDateTimeString(b.createDate);
+												  	b.updateUser = this.ns.getCurrentUser();
+												  	b.updateDate = this.ns.toDateTimeString(0);
+												  	return b;
+												  })
+		});
 
-		for(let d of td) {
-			if(d.edited && !d.deleted) {
-				d.lineCd = this.lineCd;
-				d.lineClassCd = this.lineClassCd;
-				d.createUser = this.ns.getCurrentUser();
-				d.createDate = this.ns.toDateTimeString(d.createDate);
-				d.updateUser = this.ns.getCurrentUser();
-				d.updateDate = this.ns.toDateTimeString(0);
+		this.params.deleteTreatyLimit = td.filter(a => a.deleted); // no delete for records in db
 
-				this.params.saveTreatyLimit.push(d);
-			} else if(d.deleted) {
-				this.params.deleteTreatyLimit.push(d);
+		this.ms.saveMtnTreatyLimit(this.params).subscribe(data => {
+			if(data['returnCode'] == -1) {
+				this.dialogIcon = "success";
+				this.successDialog.open();
+				this.getMtnTreatyLimit();
+			} else {
+				this.dialogIcon = "error";
+				this.successDialog.open();
 			}
-		}
-
-
+		});
 	}
 
 	onCopySetupClick() {
 		$('#mtnTreatyLimitCopyModal > #modalBtn').trigger('click');
+	}
+
+	onCopyCancel() {
+		this.copyLineCd = '';
+		this.copyLineDesc = '';
+		this.copyLineClassCd = '';
+		this.copyLineClassList = [];
+		this.disableCopyLCList = true;
+	}
+
+	onClickModalCopy() {
+		if(this.copyLineDesc == '' || this.copyLineClassCd == '') {
+			this.dialogIcon = "error";
+			this.successDialog.open();
+			return;
+		}
+
+		$('.globalLoading').css('display','block');
+		var params = {
+			 copyFromTreatyLimitId: this.treatyLimitSelected.treatyLimitId,
+			 copyToLineCd: this.copyLineCd,
+			 copyToLineClassCd: this.copyLineClassCd,
+			 createDate: this.ns.toDateTimeString(0),
+			 createUser: this.ns.getCurrentUser(),
+			 updateDate: this.ns.toDateTimeString(0),
+			 updateUser: this.ns.getCurrentUser()
+		}
+
+		this.ms.copyTreatyLimit(JSON.stringify(params)).subscribe(data => {
+			$('.globalLoading').css('display','none');
+			if(data['returnCode'] == -1) {
+				$('#mtnTreatyLimitSuccessModal > #modalBtn').trigger('click');
+				this.getMtnTreatyLimit();
+				this.onCopyCancel();
+			} else if(data['returnCode'] == 2) {
+				this.modalService.dismissAll();
+				this.errorMsg = 2;
+				this.onCopyCancel();
+				$('#mtnTreatyLimitWarningModal > #modalBtn').trigger('click');
+			}
+		});
 	}
 }

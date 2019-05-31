@@ -869,5 +869,22 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReportParam', JSON.stringify(params), header);
 	}
 
+	saveMtnTreatyLimit(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreatyLimit', params, header);
+    }
+
+    copyTreatyLimit(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyTreatyLimit', params, header);
+    }
 }
 

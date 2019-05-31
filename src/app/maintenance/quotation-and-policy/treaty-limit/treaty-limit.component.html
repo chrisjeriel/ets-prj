@@ -50,6 +50,16 @@
 								</div>
 								<div class="col-sm-4"></div>
 							</div>
+							<div class="form-row">
+								<div class="form-group col-sm">
+									<div class="col-md-13 text-center">
+										<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</fieldset>
 					</div>
 				</div>
@@ -69,16 +79,6 @@
 									<label class="form-control-sm col-sm-1 no-margin">Last Update</label>									
 									<div class="col-sm-2 dp-cont">
 										<datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
-									</div>
-								</div>
-							</div>
-							<div class="form-row">
-								<div class="form-group col-sm">
-									<div class="col-md-13 text-center">
-										<div class="cust-btn-container">
-										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
-							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-										</div>
 									</div>
 								</div>
 							</div>
@@ -102,16 +102,16 @@
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
             <div class="custom-row-inline-inset" style="text-align: center">
-            	<p *ngIf="errorMsg == 1">Unable to save the record. Eff Date From or Eff Date To<br />
-                must be outside the effectivity of an active retention.</p>
-                <p *ngIf="errorMsg == 2">Unable to copy details. <strong>Eff Date From</strong> or <strong>Eff Date To</strong> of the<br />
+            	<p *ngIf="errorMsg == 1">Unable to save the record. Treaty Setup<br />
+                must be outside the effectivity of an active treaty limit.</p>
+                <p *ngIf="errorMsg == 2">Unable to copy details. <strong>Treaty Setup</strong> of the<br />
                 highlighted record must be outside the effectivity of an active<br />
-            	retention line.</p>
+            	treaty limit.</p>
             </div>
         </fieldset>
     </div>
     <div footer class="w-100 text-center">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); errorMsg=0;"><a>Ok</a></button>
     </div>
 </app-modal>
 
@@ -167,7 +167,7 @@
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
             <div class="custom-row-inline-inset" style="text-align: center">                
-                <p>Retention Line Amount was successfully copied.</p>
+                <p>Treaty Limit was successfully copied.</p>
             </div>
         </fieldset>
     </div>
