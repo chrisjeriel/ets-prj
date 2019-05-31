@@ -27,6 +27,7 @@ export class ProgramParameterComponent implements OnInit {
       numericValue: null,
       dateValue: null,
       remarks: null,
+      okDelete: 'Y',
       createDate: '',
       createUser: JSON.parse(window.localStorage.currentUser).username,
       description: null,
@@ -100,12 +101,15 @@ export class ProgramParameterComponent implements OnInit {
    onRowClick(data){
    	console.log(data)
    	  if(data !== null){
-   	   this.passData.disableGeneric = false
    	   this.parameters = data;
    	   this.parameters.createDate = this.ns.toDateTimeString(data.createDate);
    	   this.parameters.updateDate = this.ns.toDateTimeString(data.updateDate);
-   	 }else{
-   	   this.passData.disableGeneric = true
+   	 }
+
+     if(data.okDelete == 'Y'){
+       this.passData.disableGeneric = false;
+     }else{
+   	   this.passData.disableGeneric = true;
    	 }
    }
 
@@ -153,17 +157,26 @@ export class ProgramParameterComponent implements OnInit {
    saveParameters(cancelFlag?){
    	this.cancelFlag = cancelFlag !== undefined;
    	this.prepareData();
-   	this.maintenanceService.saveMtnParameters(this.saveData).subscribe((data:any) => {
-   		if(data['returnCode'] == 0) {
-   		    this.dialogMessage = data['errorList'][0].errorMessage;
-   		    this.dialogIcon = "error";
-   		    this.successDiag.open();
-   		  } else{
-   		    this.dialogIcon = "success";
-   		    this.successDiag.open();
-   		    this.getParameters();
-   		  }
-   	});
+
+    if(this.edited.length === 0 && this.deleted.length === 0){
+      setTimeout(()=> {
+        this.dialogMessage = "Nothing to Save.";
+        this.dialogIcon = "info";
+        this.successDiag.open();
+      },0);
+    }else{
+     	this.maintenanceService.saveMtnParameters(this.saveData).subscribe((data:any) => {
+     		if(data['returnCode'] == 0) {
+     		    this.dialogMessage = data['errorList'][0].errorMessage;
+     		    this.dialogIcon = "error";
+     		    this.successDiag.open();
+     		  } else{
+     		    this.dialogIcon = "success";
+     		    this.successDiag.open();
+     		    this.getParameters();
+     		  }
+     	});
+    }
    }
 
    cancel(){

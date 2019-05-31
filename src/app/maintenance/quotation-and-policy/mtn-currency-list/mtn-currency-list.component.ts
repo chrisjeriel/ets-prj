@@ -110,18 +110,29 @@ export class MtnCurrencyListComponent implements OnInit {
   saveCurrency(cancelFlag?){
       this.cancelFlag = cancelFlag !== undefined;
       this.prepareData();
-      console.log(JSON.stringify(this.saveData))
-      this.maintenanceService.saveMtnCurrency(this.saveData).subscribe((data:any) => {
-        if(data['returnCode'] == 0) {
-          this.dialogMessage = data['errorList'][0].errorMessage;
-          this.dialogIcon = "error";
-          this.successDialog.open();
-        } else{
-          this.dialogIcon = "success";
-          this.successDialog.open();
-          this.getMtnCurrency();
-        }
-      });
+     if(this.currencyList.indvSelect.okDelete == 'N'){
+      this.dialogIcon = 'info';
+      this.dialogMessage =  'You are not allowed to delete a Currency Code that is already used in Quotation Processing.';
+      this.successDialog.open();
+     }else if(this.edited.length === 0 && this.deleted.length === 0){
+        setTimeout(()=> {
+        this.dialogMessage = "Nothing to Save.";
+        this.dialogIcon = "info";
+        this.successDialog.open();
+        },0);
+     }else{
+       this.maintenanceService.saveMtnCurrency(this.saveData).subscribe((data:any) => {
+         if(data['returnCode'] == 0) {
+           this.dialogMessage = data['errorList'][0].errorMessage;
+           this.dialogIcon = "error";
+           this.successDialog.open();
+         } else{
+           this.dialogIcon = "success";
+           this.successDialog.open();
+           this.getMtnCurrency();
+         }
+       });
+     } 
   }
 
   onClickSave(){

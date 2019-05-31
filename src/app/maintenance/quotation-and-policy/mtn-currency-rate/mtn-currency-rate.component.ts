@@ -186,17 +186,25 @@ export class MtnCurrencyRateComponent implements OnInit {
   saveCurrRt(cancelFlag?){
       this.cancelFlag = cancelFlag !== undefined;
       this.prepareData();
-      this.maintenanceService.saveMtnCurrencyRt(this.saveData).subscribe((data:any) => {
-        if(data['returnCode'] == 0) {
-          this.dialogMessage = data['errorList'][0].errorMessage;
-          this.dialogIcon = "error";
-          this.successDiag.open();
-        } else{
-          this.dialogIcon = "success";
-          this.successDiag.open();
-          this.getCurrencyRate();
-        }
-      });
+      if(this.editedData.length === 0 && this.deletedData.length === 0){
+        setTimeout(()=> {
+        this.dialogMessage = "Nothing to Save.";
+        this.dialogIcon = "info";
+        this.successDiag.open();
+        },0);
+      }else {
+        this.maintenanceService.saveMtnCurrencyRt(this.saveData).subscribe((data:any) => {
+          if(data['returnCode'] == 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            this.successDiag.open();
+          } else{
+            this.dialogIcon = "success";
+            this.successDiag.open();
+            this.getCurrencyRate();
+          }
+        });
+      }
   }
 
   deleteCurr(){
