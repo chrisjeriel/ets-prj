@@ -996,6 +996,14 @@ export class UnderwritingService {
             .set('extractUser', searchParams.extractUser == undefined ? '' : searchParams.extractUser);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveExpPolList', {params});
     }
+
+    getRiskDistribution(policyId, lineCd, lineClassCd){
+        const params = new HttpParams()
+            .set('policyId', policyId)
+            .set('lineCd', lineCd)
+            .set('lineClassCd', lineClassCd)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveRiskDist', {params});
+    }
 }            
 
             

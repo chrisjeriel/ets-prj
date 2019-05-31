@@ -105,6 +105,22 @@ export class PolicyInformationComponent implements OnInit {
 
    // line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
   }
+
+  goToPDistribution(){
+    this.router.navigate(['policy-dist', {policyId:this.selectedPol.policyId,
+                                              fromInq:true,
+                                              policyNo: this.selectedPol.policyNo,
+                                              line: this.policyInfo.lineCd,
+                                              lineClassCd: this.policyInfo.lineClassCd,
+                                              statusDesc:this.policyInfo.statusDesc,
+                                              riskName: this.policyInfo.project.riskName,
+                                              insured: this.selectedPol.insured,
+                                              cedingName: this.policyInfo.cedingName,
+                                              editPol: true,
+                                              status: this.selectedPol.status,
+                                              exitLink: '/policy-information'
+                                              }], { skipLocationChange: true });
+  }
   
   rowLick(data){
     this.selectedPol = data;

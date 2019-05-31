@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
 import { UnderwritingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CustEditableNonDatatable } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -10,6 +12,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./distribution-by-risk.component.css']
 })
 export class DistributionByRiskComponent implements OnInit {
+  @ViewChild('treaty') treatyTable: CustEditableNonDatatable;
+  @ViewChild('limit') limitTable: CustEditableNonDatatable;
 
   private polDistributionByRisk: DistributionByRiskInfo;
   // tableData: any[] = [];
@@ -77,6 +81,47 @@ export class DistributionByRiskComponent implements OnInit {
     widths: []
   };
 
+  treatyDistData: any = {
+    tableData: [],
+    tHeader: ['Treaty', 'Treaty Company', 'Share (%)', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
+    magnifyingGlass: [],
+    options: [],
+    dataTypes: ['text', 'text', 'percent', 'currency', 'currency', 'percent'],
+    keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commShare'],
+    opts: [],
+    nData: {},
+    checkFlag: true,
+    selectFlag: false,
+    addFlag: true,
+    editFlag: false,
+    deleteFlag: true,
+    paginateFlag: true,
+    infoFlag: true,
+    searchFlag: false,
+    checkboxFlag: true,
+    pageLength: 10,
+    widths: [],
+    pageID: 'treatyDistTable'
+  };
+
+  limitsData: any = {
+    tableData: [],
+    tHeader: ['Treaty Name', 'Amount'],
+    magnifyingGlass: [],
+    options: [],
+    dataTypes: ['text', 'currency'],
+    keys: ['treatyName', 'amount'],
+    opts: [],
+    nData: {},
+    checkFlag: true,
+    selectFlag: false,
+    searchFlag: false,
+    checkboxFlag: true,
+    pageLength: 10,
+    widths: [],
+    pageID: 'treatyLimitsTable'
+  };
+
   passDataPool: any = {
     tableData: [],
     tHeader: [],
@@ -123,11 +168,20 @@ export class DistributionByRiskComponent implements OnInit {
         mdlBtnAlign: "center",
     };*/
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal) { }
+    //NECO 05/31/2019
+    params: any;
+    //END
+
+  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
 
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Risk Distribution");
+
+    this.route.params.subscribe((data: any)=>{
+      this.params = data;
+      this.retrieveRiskDistribution();
+    });
 
     /*this.tHeader.push("Treaty");
     this.tHeader.push("Ceding Company");
@@ -199,6 +253,21 @@ export class DistributionByRiskComponent implements OnInit {
 
     /*END CO-INSURANCE*/
   }
+
+  //NECO 05/31/2019
+    retrieveRiskDistribution(){
+      this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
+        console.log(data);
+        this.treatyDistData.tableData = data.distWrisk.distRiskWtreaty;
+        for(var i of data.wriskLimit){
+
+        }
+        this.limitsData.tableData = data.wriskLimit;
+        this.treatyTable.refreshTable();
+        this.limitTable.refreshTable();
+      });
+    }
+  //END
 
   onClickViewPoolDist () {
     this.passData.tHeader = ["Treaty", "Treaty Company", "1st Ret Line", "1st Ret SI Amt", "1st Ret Prem Amt", "2nd Ret Line", "2nd Ret SI Amt", "2nd Ret Prem Amt"];
