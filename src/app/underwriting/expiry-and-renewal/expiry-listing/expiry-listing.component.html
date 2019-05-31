@@ -214,18 +214,18 @@
 		 	                </div>
 		 	                <div class="input-group" style="margin-bottom: -13px !important">
 		 	                 <label class="form-control-sm col-sm-3">Share(%)</label>
-		 	                 <input type="text" class="form-control form-control-sm req" [(ngModel)]="editModal.pctShare">
+		 	                 <input type="text" class="form-control form-control-sm req" appOtherRates [(ngModel)]="editModal.pctShare">
 		 	                 
 		 	                 <span class="col-sm-1"></span>
 		 	               </div>
 		 	               <div class="input-group" style="margin-bottom: -6px !important">
 		 	                 <label class="form-control-sm col-sm-3" style="margin-bottom: 1px;">100% Value</label>
-		 	                 <input type="text" class="form-control form-control-sm calc" [(ngModel)]="editModal.totalValue">
+		 	                 <input type="text" class="form-control form-control-sm calc" appCurrency [(ngModel)]="editModal.totalValue">
 		 	                 <span class="col-sm-1"></span>
 		 	               </div>
 		 	               <div class="input-group" style="margin-bottom: -6px !important">
 		 	                 <label class="form-control-sm col-sm-3">PML(%)</label>
-		 	                 <input type="text" class="form-control form-control-sm req" [(ngModel)]="editModal.pctPml">
+		 	                 <input type="text" class="form-control form-control-sm req" appOtherRates [(ngModel)]="editModal.pctPml">
 		 	                 <span class="col-sm-1"></span>
 		 	               </div>
 		 	             </div>
