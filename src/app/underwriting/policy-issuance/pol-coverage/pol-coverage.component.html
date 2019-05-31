@@ -56,7 +56,7 @@
                    <label class="form-control-sm col-sm-4">Currency</label>
                    <input type="text" name="coverageData.currencyCd" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyCd" readonly tabindex="-1">
                    <label class="form-control-sm col-sm-3">Exch. Rt.</label>
-                   <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt" readonly appOtherRates tabindex="-1" name="coverageData.currencyRt">
+                   <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt = $event" readonly appOtherRates tabindex="-1" name="coverageData.currencyRt">
                  </div>
                  <div class="input-group" style="margin-bottom: -13px !important">
                   <label class="form-control-sm col-sm-4">Total Sum Insured</label>

@@ -765,13 +765,9 @@ export class PolCoverageComponent implements OnInit {
 
         this.getEditableAlt();
 
-        //this.altCoverageData.pctShare = (this.comtotalSi / parseFloat(this.altCoverageData.totalValue.toString().split(',').join(''))*100);
         this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
-        //this.altCoverageData.totalValue = (this.comtotalSi / parseFloat(this.altCoverageData.pctShare.toString().split(',').join(''))*100);
         this.altCoverageData.totalValue = this.decimal.transform(this.altCoverageData.totalValue, '1.2-2');
         this.altCoverageData.pctPml = this.decimal.transform(this.altCoverageData.pctPml,'1.10-10');
-        /*this.focusCalc();
-        this.focusBlur();*/
     });
   }
 
