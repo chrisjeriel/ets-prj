@@ -277,7 +277,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         }
 
         setTimeout(() => {
-            this.router.navigate(['/quotation-holdcover', { line: this.line, quoteId: this.quoteId,  holdCovId : this.holdCoverId, quotationNo: this.quotationNo, holdCoverNo: this.holdCoverNo , status: this.status, from: 'hold-cover-monitoring', inquiry: true}], { skipLocationChange: true });
+            this.router.navigate(['/quotation-to-hold-cover', { line: this.line, quoteId: this.quoteId,  holdCovId : this.holdCoverId, quotationNo: this.quotationNo, holdCoverNo: this.holdCoverNo , status: this.status, from: 'hold-cover-monitoring', inquiry: true}], { skipLocationChange: true });
         },100); 
     }
 
