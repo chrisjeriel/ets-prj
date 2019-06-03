@@ -153,6 +153,7 @@ import { QuotationToHoldCoverComponent } from './quotation/quotation-to-hold-cov
 import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
 import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
+import { TreatyLimitComponent } from './maintenance/quotation-and-policy/treaty-limit/treaty-limit.component';
 import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
 import { SystemComponent } from './maintenance/system/system.component';
@@ -324,6 +325,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-treaty', component: TreatyComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-retention-line', component: RetentionLineComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-treaty-share', component: TreatyShareComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-treaty-limit', component: TreatyLimitComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-approver', component: ApproverComponent },
     { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
     { path: 'mtn-system', component: SystemComponent },

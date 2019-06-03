@@ -240,6 +240,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   fromInq:any = false;
   showPolicyNo: string;
   lineClasses: any[] = [];
+  withCovDtls: boolean = false;
+  prevInceptExt: string = "";
+  prevEffExt: string = "";
 
   wordingsKeys:string[] = [
     'polwText01',
@@ -444,6 +447,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
         if(this.alteration && !this.newAlt) {
           var polNo = this.policyInfo.policyNo.split('-');
+
+          this.underwritingService.getUWCoverageAlt(polNo[0],polNo[1],Number(polNo[2]),polNo[3],Number(polNo[4]),polNo[5]).subscribe(data => {
+            this.withCovDtls = data['policy'] != null;
+            this.prevInceptExt = this.policyInfo.inceptDate;
+            this.prevEffExt = this.policyInfo.effDate;
+          });
+
           polNo[polNo.length-1] = String(Number(polNo[polNo.length-1]) - 1).padStart(3, '0');
           // if (this.prevPolicyId !== '') {
             this.underwritingService.getPolGenInfo(null, polNo.join('-')).subscribe((data:any) => {
@@ -866,6 +876,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
    if(this.validate(savePolGenInfoParam)){
      if(this.alteration && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate) {
        savePolGenInfoParam['extensionTag'] = 'Y';
+     } else {
+       savePolGenInfoParam['extensionTag'] = 'N';
      }
 
      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
@@ -899,7 +911,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    if((this.withCovDtls && this.policyInfo.extensionTag == 'N' && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate)
+      || (this.withCovDtls && this.policyInfo.extensionTag == 'Y' && (this.prevInceptExt != this.policyInfo.inceptDate || this.prevEffExt != this.policyInfo.effDate))) { //if extension or ginalaw yung incept date, eff date
+      $('#polGenInfoConfirmationModal #modalBtn').trigger('click');  
+    } else {
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
   }
 
   cancel(){
