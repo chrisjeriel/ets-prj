@@ -311,6 +311,7 @@ export class TreatyLimitComponent implements OnInit {
 				|| d.treatyLayerList.filter(a => !a.deleted).length == 0)) {
 				this.dialogIcon = "error";
 				this.successDialog.open();
+				this.cancel = false;
 				return;
 			}
 
@@ -318,6 +319,7 @@ export class TreatyLimitComponent implements OnInit {
 				if(d.treatyLayerList.findIndex(b => b.treatyId == '') != -1) {
 					this.dialogIcon = "error";
 					this.successDialog.open();
+					this.cancel = false;
 					return;
 				}
 			}
@@ -342,6 +344,7 @@ export class TreatyLimitComponent implements OnInit {
 							if(ctr == dList.length) {
 								this.errorMsg = 1;
 								$('#mtnTreatyLimitWarningModal > #modalBtn').trigger('click');
+								this.cancel = false;
 								return;
 							}
 						}

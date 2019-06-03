@@ -197,7 +197,7 @@ export class RetentionLineComponent implements OnInit {
 			if(d.edited && !d.deleted && (d.retLineAmt == null || isNaN(d.retLineAmt) || d.effDateFrom == '' || d.effDateTo == '')) {
 				this.dialogIcon = "error";
 				this.successDialog.open();
-
+				this.cancel = false;
 				return;
 			}
 
@@ -213,7 +213,7 @@ export class RetentionLineComponent implements OnInit {
 						if((dEDF >= eEDF && dEDF <= eEDT) || (dEDT >= eEDF && dEDT <= eEDT)) {
 							this.errorMsg = 1;
 							$('#mtnRetLineWarningModal > #modalBtn').trigger('click');
-
+							this.cancel = false;
 							return;
 						}
 					}
