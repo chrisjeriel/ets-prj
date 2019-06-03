@@ -160,6 +160,8 @@ import { ProgramParameterComponent } from './maintenance/system/program-paramete
 import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
 import { ReportComponent } from './maintenance/system/report/report.component';
 import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
+import { LossCodeComponent } from './maintenance/claims/loss-code/loss-code.component';
+
 
 const appRoutes: Routes = [
 
@@ -331,6 +333,7 @@ const appRoutes: Routes = [
     { path: 'mtn-rounding-error', component: RoundingErrorComponent },
     { path: 'mtn-report', component: ReportComponent },
     { path: 'mtn-report-param', component: ReportParamComponent },
+    { path: 'maintenance-loss-code', component: LossCodeComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

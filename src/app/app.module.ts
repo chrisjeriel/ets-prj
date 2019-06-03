@@ -404,6 +404,7 @@ import { ProgramParameterComponent } from './maintenance/system/program-paramete
 import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
 import { ReportComponent } from './maintenance/system/report/report.component';
 import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
+import { LossCodeComponent } from './maintenance/claims/loss-code/loss-code.component';
 
 @NgModule({
     imports: [
@@ -814,6 +815,7 @@ import { ReportParamComponent } from './maintenance/system/report-param/report-p
         RoundingErrorComponent,
         ReportComponent,
         ReportParamComponent,
+        LossCodeComponent,
     ],
 
   	providers: [

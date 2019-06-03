@@ -195,6 +195,7 @@ export class HoldCoverComponent implements OnInit {
 		this.passDataQuoteLOV.filters[0].enabled = false;
 		this.showAll = true;
 		this.cancelHcBtnEnabled = false;
+		
 
 		this.sub = this.route.params.subscribe(params => {
 			this.from = params['from'];
