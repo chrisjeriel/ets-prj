@@ -14,26 +14,26 @@
                             <div class="form-group" style="margin-bottom: 13px;margin-left: 35px !important;">
                                 <!-- EARL, 05/29/2019 -->
                                 <div class="input-group">
-                                    <input class="form-control-sm" type="radio" name="batchOption" value="2"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd" name="selectedData.statusCd2">
+                                    <input class="form-control-sm" type="radio" name="batchOption" [value]="2"
+                                        style="    margin-top: 2px !important;" [ngModel]="statusCd" (ngModelChange)="clearMainTable($event);" name="statusCd2">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">In Progress</label>
                                 </div>
                                 <!-- END EARL -->
                                 <div class="input-group">
-                                    <input class="form-control-sm" type="radio" name="batchOption" value="9"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd" name="selectedData.statusCd9">
+                                    <input class="form-control-sm" type="radio" name="batchOption" [value]="9"
+                                        style="    margin-top: 2px !important;" [ngModel]="statusCd" (ngModelChange)="clearMainTable($event);" name="statusCd9">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Did
                                         Not Materialize</label>
                                 </div>
                                 <div class="input-group">
-                                    <input class="form-control-sm" type="radio" name="batchOption" value="10"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd" name="selectedData.statusCd10">
+                                    <input class="form-control-sm" type="radio" name="batchOption" [value]="10"
+                                        style="    margin-top: 2px !important;" [ngModel]="statusCd" (ngModelChange)="clearMainTable($event);" name="statusCd10">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Risk
                                         Not Commensurate</label>
                                 </div>
                                 <div class="input-group">
-                                    <input class="form-control-sm" type="radio" name="batchOption" value="99"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd" name="selectedData.statusCd99">
+                                    <input class="form-control-sm" type="radio" name="batchOption" [value]="99"
+                                        style="    margin-top: 2px !important;" [ngModel]="statusCd" (ngModelChange)="clearMainTable($event);" name="statusCd99">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Spoiled</label>
                                 </div>
                             </div>
@@ -76,9 +76,9 @@
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 11px !important;">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -10px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Reason</label>
-                                    <input type="text" id="reason" class="form-control form-control-sm col-sm-1" style="margin-right: 1px !important;" [ngModel]="selectedData.reasonCd" name="selectedData.reasonCd" (ngModelChange)="selectedData.reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason');" [readonly]="selectedData.statusCd != 9"  appRequired *ngIf="selectedData.statusCd == 9">
-                                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 1px !important;" [readonly]="selectedData.statusCd != 9" *ngIf="selectedData.statusCd != 9" name="placeholder" tabindex="-1">  
-                                    <div class="text-search-ico" *ngIf="selectedData.statusCd == 9"><a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
+                                    <input type="text" id="reason" class="form-control form-control-sm col-sm-1" style="margin-right: 1px !important;" [ngModel]="selectedData.reasonCd" name="selectedData.reasonCd" (ngModelChange)="selectedData.reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason');" [readonly]="statusCd != 9"  appRequired *ngIf="statusCd == 9">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 1px !important;" [readonly]="statusCd != 9" *ngIf="statusCd != 9" name="placeholder" tabindex="-1">  
+                                    <div class="text-search-ico" *ngIf="statusCd == 9"><a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
                                     <div class="col-sm-3" style="padding-left: 2px; padding-right: 0px;">
                                         <input type="text" class="form-control form-control-sm" [ngModel]="selectedData.description" name="selectedData.description" tabindex="-1" readonly>
                                     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
 import { UnderwritingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -11,9 +11,12 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
   templateUrl: './distribution-by-risk.component.html',
   styleUrls: ['./distribution-by-risk.component.css']
 })
-export class DistributionByRiskComponent implements OnInit {
+export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('treaty') treatyTable: CustEditableNonDatatableComponent;
   @ViewChild('limit') limitTable: CustEditableNonDatatableComponent;
+  @ViewChild('poolDistTable') poolDistTable: CustEditableNonDatatableComponent;
+  @ViewChild('coInsTable') coInsTable: CustEditableNonDatatableComponent;
+
 
   private polDistributionByRisk: DistributionByRiskInfo;
   // tableData: any[] = [];
@@ -81,6 +84,7 @@ export class DistributionByRiskComponent implements OnInit {
     widths: []
   };
 
+  //NECO 06/03/2019
   treatyDistData: any = {
     tableData: [],
     tHeader: ['Treaty', 'Treaty Company', 'Share (%)', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
@@ -121,6 +125,33 @@ export class DistributionByRiskComponent implements OnInit {
     widths: [],
     pageID: 'treatyLimitsTable'
   };
+
+  poolDistributionData: any = {
+    tableData: [],
+    tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt'],
+    dataTypes: ['text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency'],
+    keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt'],
+    widths: [1,250,1,140,140,1,140,140],
+    uneditable: [true,true,true,true,true,true,true,true],
+    paginateFlag: true,
+    infoFlag: true,
+    pageLength: 10,
+    pageID: 'poolDistTable'
+  }
+
+  coInsuranceData: any = {
+    tableData: [],
+    tHeader: ['Risk Dist No', 'Dist No', 'Policy No', 'Ceding Company', 'Share (%)', 'SI Amount', 'Premium Amount'],
+    dataTypes: ['sequence-5', 'sequence-5', 'text', 'text', 'percent', 'currency', 'currency'],
+    keys: ['riskDistId', 'distId', 'policyNo', 'cedingName', 'pctShare', 'siAmt', 'premAmt'],
+    widths: [1,1,160,250,100,140,140],
+    uneditable: [true,true,true,true,true,true,true],
+    infoFlag: true,
+    paginateFlag: true,
+    pageID: 'distCoInsTable'
+  }
+
+  //END
 
   passDataPool: any = {
     tableData: [],
@@ -171,6 +202,7 @@ export class DistributionByRiskComponent implements OnInit {
     //NECO 05/31/2019
     params: any;
     riskDistributionData: any;
+    sub: any;
     //END
 
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
@@ -179,10 +211,10 @@ export class DistributionByRiskComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Pol | Risk Distribution");
 
-    this.route.params.subscribe((data: any)=>{
-      this.params = data;
-      this.retrieveRiskDistribution();
-    });
+    this.sub = this.route.params.subscribe((data: any)=>{
+                  this.params = data;
+                  this.retrieveRiskDistribution();
+                });
 
     /*this.tHeader.push("Treaty");
     this.tHeader.push("Ceding Company");
@@ -288,6 +320,32 @@ export class DistributionByRiskComponent implements OnInit {
       });
     }
 
+    openPoolDistribution(){
+      this.poolDistTable.loadingFlag = true;
+      this.polService.getPoolDistribution(this.riskDistributionData.riskDistId).subscribe((data: any)=>{
+        this.poolDistributionData.tableData = data.poolDistList;
+        this.poolDistTable.refreshTable();
+        this.poolDistTable.loadingFlag = false;
+        setTimeout(()=>{
+          $('input[type=text]').focus();
+          $('input[type=text]').blur();
+        },0);
+      });
+    }
+
+    openCoInsurance(){
+      this.coInsTable.loadingFlag = true;
+      this.polService.getDistCoIns(this.riskDistributionData.riskDistId).subscribe((data: any)=>{
+        this.coInsuranceData.tableData = data.distCoInsList;
+        this.coInsTable.refreshTable();
+        this.coInsTable.loadingFlag = false;
+        setTimeout(()=>{
+          $('input[type=text]').focus();
+          $('input[type=text]').blur();
+        },0);
+      });
+    }
+
     pad(str: string, key: string){
       if(key === 'riskDistId'){
         return String(str).padStart(5, '0');
@@ -296,6 +354,10 @@ export class DistributionByRiskComponent implements OnInit {
 
     round(val: number){
       return Math.round(val * 10000000000) / 10000000000;
+    }
+
+    ngOnDestroy(){
+      this.sub.unsubscribe();
     }
   //END
 
