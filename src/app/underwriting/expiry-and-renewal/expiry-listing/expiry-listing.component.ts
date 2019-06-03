@@ -130,7 +130,7 @@ export class ExpiryListingComponent implements OnInit {
   passDataRenewalPolicies: any = {
         tHeader: ["P", "RA", "RC", "NR", "Policy No", "Type of Cession", "Ceding Company", "Co Ref No","Ren TSI Amount","Ren Pre Amount","TSI Amount","Prem Amount","Co Ref No","S","B","C","R","RP"],
         dataTypes: [
-                    "checkbox", "checkbox", "checkbox", "checkbox", "text", "text","text","text","text","text","text","text","text","checkbox","checkbox","checkbox","checkbox", "checkbox"
+                    "checkbox", "checkbox", "checkbox", "checkbox", "text", "text","text","text","currency","currency","currency","currency","text","checkbox","checkbox","checkbox","checkbox", "checkbox"
                    ],
         nData: {
                  processTag : false,
@@ -178,6 +178,17 @@ export class ExpiryListingComponent implements OnInit {
   selectedPolicy :any;
   showEdit :boolean = false;
 
+  renTsiAmount = 0;
+  renPremAmount = 0;
+  tsiAmount = 0;
+  premAmount = 0;
+  sectionISi = 0;
+  sectionIPrem = 0;
+  sectionIISi = 0;
+  sectionIIPrem = 0;
+  sectionIIISi = 0;
+  sectionIIIPrem = 0;
+
   constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title, private ns: NotesService) { }
 
   ngOnInit() {
@@ -195,10 +206,10 @@ export class ExpiryListingComponent implements OnInit {
   clearDates() {
     $('#fromDate').val("");
     $('#toDate').val("");
-    this.expiryParameters.fromMonth = null;
+    /*this.expiryParameters.fromMonth = null;
     this.expiryParameters.fromYear = null;
     this.expiryParameters.toMonth = null;
-    this.expiryParameters.toYear = null;
+    this.expiryParameters.toYear = null;*/
   }
 
   retrieveExpPolList(){
@@ -206,8 +217,35 @@ export class ExpiryListingComponent implements OnInit {
           var records = data['expPolicyList'];
           console.log(data);
           this.fetchedData = records;
-          this.passDataRenewalPolicies.tableData.pop();
+          this.passDataRenewalPolicies.tableData = [];
                for(let rec of records){
+
+
+                   for(let cov of rec.coverageList) {
+                     this.renTsiAmount = cov.totalSi;
+                     this.renPremAmount = cov.totalPrem;
+                     this.tsiAmount = cov.origTsi;
+                     this.premAmount = cov.origTprem;
+                     this.sectionISi = cov.sectionISi;
+                     this.sectionIPrem = cov.sectionIPrem;
+                     this.sectionIISi = cov.sectionIiSi;
+                     this.sectionIIPrem = cov.sectionIiPrem;
+                     this.sectionIIISi = cov.sectionIiiSi;
+                     this.sectionIIIPrem = cov.sectionIiiPrem;
+                   }
+
+                    this.passDataTotalPerSection.tableData[0].section = 'SECTION I';
+                    this.passDataTotalPerSection.tableData[0].sumInsured = this.sectionISi;
+                    this.passDataTotalPerSection.tableData[0].premium = this.sectionIPrem;
+                    this.passDataTotalPerSection.tableData[1].section = 'SECTION II';
+                    this.passDataTotalPerSection.tableData[1].sumInsured = this.sectionIISi;
+                    this.passDataTotalPerSection.tableData[1].premium = this.sectionIIPrem;
+                    this.passDataTotalPerSection.tableData[2].section = 'SECTION III';
+                    this.passDataTotalPerSection.tableData[2].sumInsured = this.sectionIIISi;
+                    this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
+
+                   console.log(JSON.stringify(rec.coverageList));
+
                    this.passDataRenewalPolicies.tableData.push(
                        {
                          processTag : false,
@@ -218,10 +256,10 @@ export class ExpiryListingComponent implements OnInit {
                          cessionDesc : rec.cessionDesc,
                          cedingName : rec.cedingName,
                          coRefNo : '',
-                         renTsiAmount : 0,
-                         renPremAmount : 0,
-                         tsiAmount : 0,
-                         premAmount : 0,
+                         renTsiAmount : this.renTsiAmount,
+                         renPremAmount : this.renPremAmount,
+                         tsiAmount : this.tsiAmount,
+                         premAmount : this.premAmount,
                          coRefNo2 : '',
                          summarizedTag : false,
                          withBalTag : false,
@@ -351,5 +389,9 @@ export class ExpiryListingComponent implements OnInit {
         
     };
     this.deductiblesTable.refreshTable();
+  }
+
+  prepareDataTotalPerSection(data:any) {
+
   }
 }
