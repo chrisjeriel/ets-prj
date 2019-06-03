@@ -243,6 +243,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   withCovDtls: boolean = false;
   prevInceptExt: string = "";
   prevEffExt: string = "";
+  forceExt: number;
 
   wordingsKeys:string[] = [
     'polwText01',
@@ -454,9 +455,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             this.prevEffExt = this.policyInfo.effDate;
           });
 
-          polNo[polNo.length-1] = String(Number(polNo[polNo.length-1]) - 1).padStart(3, '0');
+          polNo[polNo.length-1] = Number(polNo[polNo.length-1]) == 0 ? '000' : String(Number(polNo[polNo.length-1]) - 1).padStart(3, '0');
           // if (this.prevPolicyId !== '') {
             this.underwritingService.getPolGenInfo(null, polNo.join('-')).subscribe((data:any) => {
+              this.refPolicyId = data.policy.policyId;
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
               this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.effDate));
               this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
@@ -484,6 +486,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.polWordings.altText = "";
         this.prevInceptDate = this.policyInfo.inceptDate;
         this.prevEffDate = this.policyInfo.effDate;
+        this.prevExpiryDate = this.policyInfo.expiryDate;
+        this.policyInfo.issueDate = this.ns.toDateTimeString(new Date().setSeconds(0));
+        this.policyInfo.effDate = this.ns.toDateTimeString(new Date().setSeconds(0));
 
         this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag: 'Y', ocTag: this.policyInfo.openCoverTag, lineCd: this.policyInfo.lineCd })
                        .subscribe(data =>{
@@ -499,9 +504,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
                          this.policyInfo.polWordings.altText = altText;
                        });
-
-        this.policyInfo.issueDate = this.ns.toDateTimeString(0);
-        this.policyInfo.effDate = this.ns.toDateTimeString(0);
       }
     });
 
@@ -756,8 +758,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.cancelFlag = cancelFlag !== undefined;
     this.saveBtnClicked = true;
 
+
+
     var savePolGenInfoParam = {
-      "savingType"      : this.alteration ? 'alteration' : 'normal',
+      "savingType"      : this.alteration && this.forceExt == 1 ? 'alteration_ext' : this.alteration ? 'alteration' : 'normal',
       "refPolicyId"     : this.refPolicyId,
       "acctDate"        : this.policyInfo.acctDate,
       "altNo"           : this.policyInfo.altNo,
@@ -878,6 +882,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
        savePolGenInfoParam['extensionTag'] = 'Y';
      } else {
        savePolGenInfoParam['extensionTag'] = 'N';
+       savePolGenInfoParam['refPolicyId'] = "";
      }
 
      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
@@ -898,6 +903,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');
          /*this.form.control.markAsPristine();*/
+         this.forceExt = 0;
          this.getPolGenInfo('noLoading');
        }
      });

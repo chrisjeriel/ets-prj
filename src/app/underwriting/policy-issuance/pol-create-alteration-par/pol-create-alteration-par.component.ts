@@ -81,7 +81,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
     this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
       var polList = data['policyList'];
 
-      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'DISTRIBUTED' && p.altNo == 0)
+      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'APPROVED' && p.altNo == 0)
                        .map(p => { p.riskName = p.project.riskName; return p; });
       this.passDataLOV.tableData = polList;
       this.lovTable.refreshTable();
