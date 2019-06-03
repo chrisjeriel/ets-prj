@@ -1004,6 +1004,18 @@ export class UnderwritingService {
             .set('lineClassCd', lineClassCd)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveRiskDist', {params});
     }
+
+    getPoolDistribution(riskDistId){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePoolDist', {params});
+    }
+
+    getDistCoIns(riskDistId){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveDistCoIns', {params});
+    }
 }            
 
             

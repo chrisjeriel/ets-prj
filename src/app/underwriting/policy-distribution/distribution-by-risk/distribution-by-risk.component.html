@@ -343,16 +343,16 @@
 <div class="form-row">
   <div class="form-group col-sm">
     <div class="col-sm" style="text-align: center; padding: 10px;">
-      <app-modal [btnTitle]="'View Pool Dist'">
+      <app-modal [btnTitle]="'View Pool Dist'" (modalOpened)="openPoolDistribution()">
         <div header>Pool Distribution</div>
         <div body>
           <fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
             <div class="row" style="padding-top: 5px;">
               <div class="col-sm">
-                <app-cust-editable-non-datatable [passData]="passDataPool"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable [passData]="poolDistributionData" #poolDistTable></app-cust-editable-non-datatable>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="!poolDistTable.loadingFlag">
               <div class="col-sm-2">
               </div>
               <div class="col-sm-8" style="margin-top: -22px; margin-left: -20px;">
@@ -364,15 +364,15 @@
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-2">SI Amount</label>
-                  <input type="text" placeholder="8,000,000.00" class="form-control form-control-sm txt-content-rght col-sm">
-                  <input type="text" placeholder="619,800,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-                  <input type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+                  <input type="text" placeholder="8,000,000.00" class="form-control form-control-sm txt-content-rght col-sm" readonly [ngModel]="riskDistributionData?.retOneTsiAmt" appCurrency>
+                  <input type="text" placeholder="619,800,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" readonly [ngModel]="riskDistributionData?.retTwoTsiAmt" appCurrency>
+                  <input type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" readonly [ngModel]="riskDistributionData?.totalTsiAmt" appCurrency>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-2">Premium Amount</label>
-                  <input type="text" placeholder="2,5000.00" class="form-control form-control-sm txt-content-rght col-sm">
-                  <input type="text" placeholder="193,687.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-                  <input type="text" placeholder="1,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+                  <input type="text" placeholder="2,5000.00" class="form-control form-control-sm txt-content-rght col-sm"readonly [ngModel]="riskDistributionData?.retOnePremAmt" appCurrency>
+                  <input type="text" placeholder="193,687.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left"readonly [ngModel]="riskDistributionData?.retTwoPremAmt" appCurrency>
+                  <input type="text" placeholder="1,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left"readonly [ngModel]="riskDistributionData?.totalPremAmt" appCurrency>
                 </div>
               </div>
               <div class="col-sm-2">
@@ -381,29 +381,28 @@
           </fieldset>
         </div>
         <div footer class="d-flex justify-content-center" style="width: 100% !important;">
-          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
         </div>
       </app-modal>
 
-      <app-modal [btnTitle]="'View Co-Insurance'">
+      <app-modal [btnTitle]="'View Co-Insurance'" (modalOpened)="openCoInsurance()">
         <div header>Co-Insurance Distribution</div>
         <div body>
           <fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
             <div class="row" style="padding-top: 5px;">
               <div class="col-sm">
-                <app-cust-editable-non-datatable [passData]="passDataCoInsurance"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable [passData]="coInsuranceData" #coInsTable></app-cust-editable-non-datatable>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="!coInsTable.loadingFlag">
               <div class="col-sm-2">
               </div>
               <div class="col-sm-8" style="margin-top: -15px; margin-left: -20px;">
                 <div class="input-group">
                   <label class="form-control-sm col-sm-2">Total SI Amount</label>
-                  <input type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm">
+                  <input type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm" readonly [ngModel]="riskDistributionData?.tsiAmt" appCurrency>
                   <label class="form-control-sm col-sm-3">Total Premium Amount</label>
-                  <input type="text" placeholder="1,000,000.00" class="form-control form-control-sm txt-content-rght col-sm">
+                  <input type="text" placeholder="1,000,000.00" class="form-control form-control-sm txt-content-rght col-sm" readonly [ngModel]="riskDistributionData?.premAmt" appCurrency>
                 </div>
               </div>
               <div class="col-sm-2">
