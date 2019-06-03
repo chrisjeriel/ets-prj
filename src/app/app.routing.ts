@@ -162,6 +162,7 @@ import { ReportComponent } from './maintenance/system/report/report.component';
 import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
 import { MtnClaimsComponent } from './maintenance/mtn-claims/mtn-claims.component';
 import { ClaimEventTypeComponent } from './maintenance/mtn-claims/claim-event-type/claim-event-type.component';
+import { ClaimEventComponent } from './maintenance/mtn-claims/claim-event/claim-event.component';
 
 const appRoutes: Routes = [
 
@@ -334,7 +335,8 @@ const appRoutes: Routes = [
     { path: 'mtn-report', component: ReportComponent },
     { path: 'mtn-report-param', component: ReportParamComponent },
     { path: 'maintenance-clm', component: MtnClaimsComponent },
-    { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent },
+    { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

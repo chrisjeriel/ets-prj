@@ -70,7 +70,7 @@ export class ClaimEventTypeComponent implements OnInit {
 	    remarks			: "",
 	    updateDate		: "",
 	    updateUser		: ""
-	}
+	};
 
   	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal, private quotationService: QuotationService) { }
 
@@ -134,7 +134,7 @@ export class ClaimEventTypeComponent implements OnInit {
 		if(isNotUnique == true){
 			setTimeout(()=>{
                 $('.globalLoading').css('display','none');
-                this.warnMsg = 'Unable to save the record. Event Type Code must be unique.';
+                this.warnMsg = 'Unable to save the record. Claim Event Type must be unique.';
 				this.showWarnLov();
 				this.params.saveEventType 	= [];
             },500);
@@ -172,14 +172,17 @@ export class ClaimEventTypeComponent implements OnInit {
 	}
 
 	onRowClick(event){
-			// this.saveMtnClmEventType.eventTypeCd = event.eventTypeCd == null ? '' : event.eventTypeCd;
-			this.saveMtnClmEventType = event;
-	       	this.passData.disableGeneric = false;
+		this.saveMtnClmEventType = event;
+	    if(event != null){
+	       	this.passData.disableGeneric = false;	
+	    }else{
+	       	this.passData.disableGeneric = true;	
+	    }
 	}
 
 	onDeleteEventType(){
 		if(this.table.indvSelect.okDelete == 'N'){
-	  		this.warnMsg = 'You are not allowed to delete a Event Type that is already used in quotation processing.';
+	  		this.warnMsg = 'You are not allowed to delete a Event Type that is already used in claim processing.';
 			this.showWarnLov();
 	  	}else{
 	  		this.table.indvSelect.deleted = true;

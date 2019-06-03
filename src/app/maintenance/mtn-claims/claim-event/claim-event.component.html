@@ -1,0 +1,61 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Claims</h4>
+	<ngb-tabset >
+		<ngb-tab title="Claim Event">
+			<ng-template ngbTabContent>
+				<fieldset class="scheduler-border" style="margin-top: 10px !important">
+					<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
+						<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="showLineLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="passData.tableData=$event;checkCode($event);" #clmEvent (genericBtn)="onDeleteMtnClmEvent()" (onDelete)="clmEvent.onClickDelete('force'); passData.disableGeneric=true" (add)="onClickAdd()">
+						</app-cust-editable-non-datatable>
+
+						<div class="form-row" style="margin-top: 40px !important;">
+							<div class="form-group col-sm">
+								<div class="text-center">
+									<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+										<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</fieldset>
+				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="mtnClmEventData?.createUser" readonly>
+                        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+                        <div class="col-sm dp-cont">
+                            <datepicker [value]="mtnClmEventData?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                        </div>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="mtnClmEventData?.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+                        <div class="col-sm dp-cont">
+                            <datepicker [value]="mtnClmEventData?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                        </div>
+                    </div>
+                </fieldset>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-modal class="d-none" id="warnMdl">
+    <div header>Warning Message</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg }}</b></p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-confirm-save (onYes)="onSaveMtnClmEvent()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onSaveMtnClmEvent('cancel')" [url]="'/maintenance-clm'" ></app-cancel-button>
+
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
