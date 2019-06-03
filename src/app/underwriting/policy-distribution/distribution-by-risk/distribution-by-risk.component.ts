@@ -4,7 +4,7 @@ import { UnderwritingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustEditableNonDatatable } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -12,8 +12,8 @@ import { CustEditableNonDatatable } from '@app/_components/common/cust-editable-
   styleUrls: ['./distribution-by-risk.component.css']
 })
 export class DistributionByRiskComponent implements OnInit {
-  @ViewChild('treaty') treatyTable: CustEditableNonDatatable;
-  @ViewChild('limit') limitTable: CustEditableNonDatatable;
+  @ViewChild('treaty') treatyTable: CustEditableNonDatatableComponent;
+  @ViewChild('limit') limitTable: CustEditableNonDatatableComponent;
 
   private polDistributionByRisk: DistributionByRiskInfo;
   // tableData: any[] = [];
@@ -111,13 +111,13 @@ export class DistributionByRiskComponent implements OnInit {
     options: [],
     dataTypes: ['text', 'currency'],
     keys: ['treatyName', 'amount'],
+    uneditable: [true,true],
     opts: [],
     nData: {},
-    checkFlag: true,
     selectFlag: false,
     searchFlag: false,
     checkboxFlag: true,
-    pageLength: 10,
+    pageLength: 3,
     widths: [],
     pageID: 'treatyLimitsTable'
   };
@@ -170,6 +170,7 @@ export class DistributionByRiskComponent implements OnInit {
 
     //NECO 05/31/2019
     params: any;
+    riskDistributionData: any;
     //END
 
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
@@ -258,14 +259,43 @@ export class DistributionByRiskComponent implements OnInit {
     retrieveRiskDistribution(){
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
         console.log(data);
+        this.riskDistributionData = data.distWrisk;
+        console.log(this.riskDistributionData.tsiAmt)
+        var appendTreatyName: string = '';
+        var appendTreatyLimitId: number = 0;
+        //var treatyLimitAmt: any;
         this.treatyDistData.tableData = data.distWrisk.distRiskWtreaty;
         for(var i of data.wriskLimit){
-
+          if(appendTreatyLimitId === 0){
+            appendTreatyName = i.treatyName;
+            appendTreatyLimitId = i.treatyLimitId;
+          }
+          else if(appendTreatyLimitId === i.treatyLimitId){
+            appendTreatyName = appendTreatyName.length == 0 ? i.treatyName : appendTreatyName + ' & ' + i.treatyName;
+          }else{
+            i.treatyName = appendTreatyName;
+            this.limitsData.tableData.push(i);
+            appendTreatyName = '';
+            appendTreatyLimitId = i.treatyLimitId;
+          }
         }
-        this.limitsData.tableData = data.wriskLimit;
         this.treatyTable.refreshTable();
         this.limitTable.refreshTable();
+        setTimeout(()=>{
+          $('input[type=text]').focus();
+          $('input[type=text]').blur();
+        },0);
       });
+    }
+
+    pad(str: string, key: string){
+      if(key === 'riskDistId'){
+        return String(str).padStart(5, '0');
+      }
+    }
+
+    round(val: number){
+      return Math.round(val * 10000000000) / 10000000000;
     }
   //END
 
