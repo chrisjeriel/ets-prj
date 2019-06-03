@@ -659,6 +659,7 @@ saveQuoteOptionAll(cancelFlag?){
         this.optionsData.nData.commRtSurplus+=parseFloat(treaty.commRate)
       }
       this.optionsData.nData.commRtSurplus =this.optionsData.nData.commRtSurplus/ data['treatyList'].filter(a=>a.treatyType=='S').length
+      console.log(this.optionsData.nData);
     })
   }
 

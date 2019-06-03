@@ -161,7 +161,7 @@ export class PolOpenCovListComponent implements OnInit {
    searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passData.tableData = [];
-        this.passData.btnDisabled = true;
+        //this.passData.btnDisabled = true;
         this.retrievePolListing();
 
    }

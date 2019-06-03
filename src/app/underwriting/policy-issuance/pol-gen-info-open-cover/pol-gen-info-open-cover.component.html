@@ -88,7 +88,7 @@
 			<div class="col-sm-6" style="padding-left: 0px;">
 				<fieldset class="scheduler-border cust-fs-padlr-offset">
 					<!-- style="height: 100%;" -->
-					<legend class="scheduler-border">Period of Issurance</legend>
+					<legend class="scheduler-border">Period of Insurance</legend>
 					<div class="col-sm-1">
 					</div>
 					<div style="margin-top: 3.5px !important; margin-bottom: 11px !important; padding-left: 10px;">
@@ -121,22 +121,22 @@
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Lapse From</label>
 								<!-- <input type="date" class="form-control form-control-sm" appRequired [(ngModel)]="lapseFromParams.date" name="lapseFromParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}"> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="lapseFromParams.date" (valueChange)="lapseFromParams.date=$event;" name="lapseFromParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="lapseFromParams.date" (valueChange)="lapseFromParams.date=$event;" name="lapseFromParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" appRequired [(ngModel)]="lapseFromParams.time" name="lapseFromParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}"> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="lapseFromParams.time" (valueChange)="lapseFromParams.time=$event;" name="lapseFromParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="false" [showIcon]="true" [value]="lapseFromParams.time" (valueChange)="lapseFromParams.time=$event;" name="lapseFromParams.time"></datepicker>
 								</div>
 							</div>
 							<div class="input-group col-sm-6 ig-row">
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Lapse To</label>
 								<!-- <input type="date" class="form-control form-control-sm" appRequired [(ngModel)]="lapseToParams.date" name="lapseToParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}"> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="lapseToParams.date" (valueChange)="lapseToParams.date=$event;" name="lapseToParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="lapseToParams.date" (valueChange)="lapseToParams.date=$event;" name="lapseToParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" appRequired [(ngModel)]="lapseToParams.time" name="lapseToParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}"> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="lapseToParams.time" (valueChange)="lapseToParams.time=$event;" name="lapseToParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="false" [showIcon]="true" [value]="lapseToParams.time" (valueChange)="lapseToParams.time=$event;" name="lapseToParams.time"></datepicker>
 								</div>
 							</div>
 						</div>
@@ -754,6 +754,6 @@
 
 
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
-<app-sucess-dialog id="successDialog" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="saveQuoteGenInfoOc('cancel')" [url]="'/open-cover-list'" ></app-cancel-button>
+<app-sucess-dialog id="successDialog" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && !cancelFailed ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/open-cover-list'" ></app-cancel-button>
 <app-confirm-save (onYes)="saveQuoteGenInfoOc();"></app-confirm-save>
