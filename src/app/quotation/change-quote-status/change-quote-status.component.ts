@@ -65,7 +65,7 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
     selectedData : any ={
         quotationNo: '',
         status: '',
-        statusCd: 0,
+        statusCd: 2,
         cedingName: '',
         insuredDesc: '',
         riskName: '',
@@ -117,6 +117,7 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
     isIncomplete: boolean = true;
     isType: boolean = false;
     noDataFound: boolean = false;
+    statusCd: number = 2;
     //END NECO 05/22/2019
     
     constructor(private qs: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService) {
@@ -238,15 +239,33 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
                     );
                 }
                 //NECO 05/23/2019
-                this.passData.tableData = this.passData.tableData.filter(a => {return a.status.toUpperCase() === 'REQUESTED' || 
-                                                            a.status.toUpperCase() === 'IN PROGRESS' || 
-                                                            a.status.toUpperCase() === 'RELEASED' });
+                if(this.statusCd == 2){
+                    this.passData.tableData = this.passData.tableData.filter(a => {return a.status.toUpperCase() === 'DID NOT MATERIALIZE' || 
+                                                            a.status.toUpperCase() === 'RISK NOT COMMENSURATE' || 
+                                                            a.status.toUpperCase() === 'SPOILED' });
+                }else{
+                    this.passData.tableData = this.passData.tableData.filter(a => {return a.status.toUpperCase() === 'REQUESTED' || 
+                                                                a.status.toUpperCase() === 'IN PROGRESS' || 
+                                                                a.status.toUpperCase() === 'RELEASED' });
+                }
                 this.table.refreshTable();
                 this.table.loadingFlag = false;
                 //END NECO 05/23/2019
             });
         }
     }
+
+    //NECO 06/03/2019
+    clearMainTable(statusCd){
+        if(((statusCd === 9 || statusCd === 10 || statusCd === 99) && this.statusCd === 2) ||
+            (statusCd === 2 && (this.statusCd === 9 || this.statusCd === 10 || this.statusCd === 99))){
+            this.passData.tableData = [];
+            this.table.selected = [];
+            this.table.refreshTable();
+        }
+        this.statusCd = statusCd;
+    }
+    //END
 
     savetest(){
         this.qs.saveChangeQuoteStatus(this.saveData).subscribe(data => {
@@ -292,7 +311,7 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
     }
 
     onClickProcess(){
-        if(this.selectedData.statusCd == 9 && ((String(this.selectedData.reasonCd).trim().length === 0 && this.selectedData.description.length === 0)
+        if(this.statusCd == 9 && ((String(this.selectedData.reasonCd).trim().length === 0 && this.selectedData.description.length === 0)
                                                 || (this.selectedData.reasonCd === undefined && this.selectedData.description === undefined))){
             this.dialogIcon = 'info';
             this.dialogMessage = 'Please fill all required fields';
@@ -304,10 +323,10 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
 
     process(cancelFlag?) {
        this.prepareData();
-       this.saveData.statusCd = this.selectedData.statusCd;
+       this.saveData.statusCd = this.statusCd;
        this.cancelFlag = cancelFlag !== undefined;
            
-       if(this.selectedData.statusCd == 9){
+       if(this.statusCd == 9){
            this.saveData.reasonCd = this.selectedData.reasonCd;
        }else{
            this.saveData.reasonCd = this.saveData.reasonCd == null ? "":this.selectedData.reasonCd;
@@ -332,6 +351,9 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
 
     onRowClick(data) {
         if(data != null){
+            if(data.checked){
+                this.table.markAsDirty();
+            }
             this.selectedData = data;
         }else{
             this.selectedData ={
