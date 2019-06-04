@@ -14,7 +14,7 @@
 								<div style="margin-right: 25px;">
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">Adjuster No</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="adjData.adjId" readonly name="cedingId">
+										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="adjData.adjId" readonly name="adjId">
 										<div class="cust-div col-sm" style="margin-left: 15px;"><input type="checkbox" [ngModel]="adjData.activeTag === 'Y'" (ngModelChange)="$event ? adjData.activeTag = 'Y' : adjData.activeTag = 'N';" name="activeTag">&nbsp;<span class="cust-span">Active</span>
 										</div>
 										<label class="form-control-sm col-sm">Adjuster Reference No</label>
