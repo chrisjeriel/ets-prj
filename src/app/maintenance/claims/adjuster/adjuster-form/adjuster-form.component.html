@@ -1,0 +1,106 @@
+<div class="cust-tabs-container">
+		<h4> Maintenance / Claims / Adjuster List</h4>
+		<ngb-tabset>
+			<ngb-tab class="ngb-tab" title="Adjuster">
+				<ng-template ngbTabContent>
+					<form #myForm="ngForm">
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-sm-2"></div>
+						<div class="col-sm">
+							<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                            <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+								<div style="margin-right: 25px;">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Adjuster No</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="adjData.adjId" readonly name="cedingId">
+										<div class="cust-div col-sm" style="margin-left: 15px;"><input type="checkbox" [ngModel]="adjData.activeTag === 'Y'" (ngModelChange)="$event ? adjData.activeTag = 'Y' : adjData.activeTag = 'N';" name="activeTag">&nbsp;<span class="cust-span">Active</span>
+										</div>
+										<label class="form-control-sm col-sm">Adjuster Reference No</label>
+										<input type="text" class="form-control form-control-sm col-sm" [ngModel]="adjData.adjRefNo" readonly name="cedingId">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Name</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="adjData.adjName" name="cedingName" appRequired>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Address</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="adjData.addrLine1" name="addrLine1" appRequired>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2"></label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="adjData.addrLine2" name="addrLine2">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2"></label>
+										<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="adjData.addrLine3" name="addrLine3">
+										<label class="form-control-sm col-sm-1" style="margin-left: 12px !important;">Zip Code</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="adjData.zipCd" name="zipCd">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Company Contact No.</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="adjData.contactNo" name="contactNo">
+										<label class="form-control-sm col-sm-2" style="margin-left: 12px !important;">Company Email</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="adjData.emailAdd" name="emailAdd">
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border">Adjuster Contacts</legend>
+								<div class="contain">
+									<app-cust-editable-non-datatable [passData]="repData" (tableDataChange)="repData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')" (add)="onClickAdd($event)" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border">Other Info</legend>
+								<div style="margin-right: 50px;">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Remarks</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="adjData.remarks" name="remarks">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Created By</label>
+										<input type="text" class="form-control form-control-sm col-sm" [ngModel]="adjData.createUser" name="createUser" readonly>
+										<label class="form-control-sm col-sm-2">Date Created</label>
+										<input type="datetime-local" class="form-control form-control-sm col-sm"  [ngModel]="adjData.createDate === '' ? '' : ns.toDateTimeString(adjData.createDate)" readonly name="createDate">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Last Update By</label>
+										<input type="text" class="form-control form-control-sm col-sm" value="QUECOH" [ngModel]="adjData.updateUser" name="updateUser" readonly>
+										<label class="form-control-sm col-sm-2">Last Update</label>
+										<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="adjData.updateDate === '' ? '' : ns.toDateTimeString(adjData.updateDate)" name="updateDate" readonly>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+				</form>
+					<div class="row" style="margin-top: 10px !important; margin-bottom: 10px !important;">
+						<div class="col-sm text-center">
+							<button class="cust-btn" (click)="onClickCancel();">Cancel</button>
+							<button class="cust-btn" (click)="onClickSave();">Save</button>
+						</div>
+					</div>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+	</div>
+
+
+	<app-confirm-save (onYes)="save()"></app-confirm-save>
+	<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+	<app-cancel-button (onYes)="save('cancel')" [url]="'/mtn-adjuster-list'" ></app-cancel-button>
