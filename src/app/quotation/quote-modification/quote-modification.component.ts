@@ -138,7 +138,6 @@ export class QuoteModificationComponent implements OnInit {
 
 	setDetails(fromMdl?) {
 		if(this.selected != null) {
-			console.log('here');
 	  		this.quNo = this.selected.quotationNo.split('-');
 	  		this.cedingName = this.selected.cedingName;
 	  		this.insuredDesc = this.selected.insuredDesc;
