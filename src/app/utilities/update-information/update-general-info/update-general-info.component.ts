@@ -257,8 +257,8 @@ export class UpdateGeneralInfoComponent implements OnInit {
   }
 
   showLOV() {
-      this.getPolListing();
       $('#polLovMdl > #modalBtn').trigger('click');
+      this.getPolListing();
   }
 
    cancel(){
@@ -437,6 +437,8 @@ export class UpdateGeneralInfoComponent implements OnInit {
                                }
                                );
          var records : any;
+
+         console.log(this.searchParams2);
          this.us.getParListing(this.searchParams2)
          .pipe(
            finalize(() => this.setDetailsPolicy(records) )
@@ -454,6 +456,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
          $('#search').css('pointer-events', 'initial');
          this.tempPolNo[5] = this.pad(0,3);
          this.splitPolNo[5] = this.pad(0,3);
+         this.disabledBool = true;
       }
     }
 
