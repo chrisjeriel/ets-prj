@@ -178,20 +178,29 @@ export class MtnApprovalFunctionComponent implements OnInit {
       }
     }
 
-    this.maintenanceService.saveMtnApprovalFunction(this.userDetails).subscribe((data:any) => {
-      if(data['returnCode'] == 0){
-        this.dialogMessage = data['errorList'][0].errorMessage;
-        this.dialogIcon = "error";
+    if(this.userDetails.saveMtnApprovalFn.length === 0 && this.userDetails.deleteMtnApprovalFn.length === 0){
+       setTimeout(()=> {
+        this.dialogMessage = "Nothing to Save.";
+        this.dialogIcon = "info";
         this.userSuccess.open();
-      }else{
-        this.dialogMessage = "";
-        this.dialogIcon = "success";
-        this.userSuccess.open();
-        this.getUserModal();
-        this.getApprovalFunction();
-        this.usertable.markAsPristine();
-      }
-    })
+        this.disabledFlag = true;                                                                                                                                                       
+        },0);
+    }else {
+       this.maintenanceService.saveMtnApprovalFunction(this.userDetails).subscribe((data:any) => {
+         if(data['returnCode'] == 0){
+           this.dialogMessage = data['errorList'][0].errorMessage;
+           this.dialogIcon = "error";
+           this.userSuccess.open();
+         }else{
+           this.dialogMessage = "";
+           this.dialogIcon = "success";
+           this.userSuccess.open();
+           this.getUserModal();
+           this.getApprovalFunction();
+           this.usertable.markAsPristine();
+         }
+       });
+    }
   }
 
   deleteCurr(){
@@ -222,20 +231,28 @@ export class MtnApprovalFunctionComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    this.maintenanceService.saveMtnApproval(this.saveDetails).subscribe((data:any) => {
-      if(data['returnCode'] == 0){
-        this.dialogMessage = data['errorList'][0].errorMessage;
-        this.dialogIcon = "error";
-        this.successDiag.open();
-        console.log('failed')
-      }else{
-        this.dialogMessage = "";
-        this.dialogIcon = "success";
-        this.successDiag.open();
-        console.log('success')
-        this.getApprovalFunction();
-      }
-    })
+    if(this.edited.length === 0 && this.deleted.length === 0){
+      setTimeout(()=> {
+      this.dialogMessage = "Nothing to Save.";
+      this.dialogIcon = "info";
+      this.successDiag.open();
+      },0);
+    }else{
+      this.maintenanceService.saveMtnApproval(this.saveDetails).subscribe((data:any) => {
+        if(data['returnCode'] == 0){
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = "error";
+          this.successDiag.open();
+          console.log('failed')
+        }else{
+          this.dialogMessage = "";
+          this.dialogIcon = "success";
+          this.successDiag.open();
+          console.log('success')
+          this.getApprovalFunction();
+        }
+      });
+    }
   }
 
   cancel(){
