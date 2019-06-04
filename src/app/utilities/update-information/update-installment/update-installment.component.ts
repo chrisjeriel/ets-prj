@@ -148,7 +148,9 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   setDetails(fromMdl?) {
+    console.log(fromMdl);
     if (this.selected != null) {
+      this.modalService.dismissAll();
       this.underwritingService.getAlterationsPerPolicy(this.selected.policyId, 'alteration').subscribe(data => {
         var polList = data['policyList'];
 

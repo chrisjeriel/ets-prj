@@ -24,16 +24,16 @@
 				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="cessionData.createUser" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="cessionData?.createUser" readonly>
                         <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
                         <div class="col-sm dp-cont">
-                            <datepicker [value]="cessionData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                            <datepicker [value]="cessionData?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
                         </div>
                         <label class="form-control-sm col-sm-1">Last Update By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="cessionData.updateUser" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="cessionData?.updateUser" readonly>
                         <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
                         <div class="col-sm dp-cont">
-                            <datepicker [value]="cessionData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                            <datepicker [value]="cessionData?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
                         </div>
                     </div>
                 </fieldset>
