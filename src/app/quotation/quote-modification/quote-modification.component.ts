@@ -60,14 +60,34 @@ export class QuoteModificationComponent implements OnInit {
 		    this.lovTable.refreshTable();
 
 		    if(param !== undefined) {
+		    	/*if(this.quList.length > 1) {
+		    		var temp = this.searchArr;
+
+		    		temp = temp.map(a => { return a == '%%' ? '%%' : a.slice(1, a.length-1); });
+		    		temp[2] = temp[2] == '%%' ? '%%' : String(temp[2]).padStart(5, '0');
+		    		temp[3] = temp[3] == '%%' ? '%%' : String(temp[3]).padStart(2, '0');
+		    		temp[4] = temp[4] == '%%' ? '%%' : String(temp[4]).padStart(3, '0');
+
+		    		this.quList = this.quList.filter(a => { var b = a.quotationNo.split('-');
+		    												return b[0] == temp[0]
+		    												  	|| b[1] == temp[1]
+		    												  	|| b[2] == temp[2]
+		    												  	|| b[3] == temp[3]
+		    												  	|| b[4] == temp[4];
+		    											  });
+		    		this.passDataLOV.tableData = this.quList;
+		    		this.lovTable.refreshTable();
+		    	}*/
+
 		    	if(this.quList.length == 1 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {  
 		        	this.selected = this.quList[0];
 		        	this.setDetails();
-		        	// this.noSelected = false;
 		      	} else if(this.quList.length == 0 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {
 		        	this.clearFields();
 		        	this.getQuoteListing();
 		        	this.showLOV();
+		      	} else if(this.quList.length == 0 && this.searchArr.includes('%%')) {
+		      		this.getQuoteListing();
 		      	} else if(this.searchArr.includes('%%')) {
 		      		this.selected = null;
 			        this.cedingName = '';
@@ -80,6 +100,12 @@ export class QuoteModificationComponent implements OnInit {
 
 	search(key,ev) {
     	var a = ev.target.value;
+
+    	if(ev != 'forceSearch' && a == '') {
+    		this.cedingName = "";
+	    	this.insuredDesc = "";
+	    	this.riskName = "";
+    	}
 
     	if(key === 'lineCd') {
     	  this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
@@ -112,6 +138,7 @@ export class QuoteModificationComponent implements OnInit {
 
 	setDetails(fromMdl?) {
 		if(this.selected != null) {
+			console.log('here');
 	  		this.quNo = this.selected.quotationNo.split('-');
 	  		this.cedingName = this.selected.cedingName;
 	  		this.insuredDesc = this.selected.insuredDesc;

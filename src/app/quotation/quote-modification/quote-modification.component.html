@@ -46,7 +46,7 @@
         <div class="col-md-12 text-center">
             <div class="cust-btn-container" style="margin-top:10px">
                 <button type="button" class="cust-btn" [routerLink]="['']"><a>Cancel</a></button>
-                <button type="button" class="cust-btn" (click)="toQuoteGenInfo()" [disabled]="selected == null || quNo.length == 0"><a>Next</a></button>                
+                <button type="button" class="cust-btn" (click)="toQuoteGenInfo()" [disabled]="selected == null || quNo.length == 0 || riskName == ''"><a>Next</a></button>                
             </div>
         </div>
     </div>

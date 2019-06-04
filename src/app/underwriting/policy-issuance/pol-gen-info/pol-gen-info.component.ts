@@ -489,6 +489,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.prevExpiryDate = this.policyInfo.expiryDate;
         this.policyInfo.issueDate = this.ns.toDateTimeString(0);
         this.policyInfo.effDate = this.ns.toDateTimeString(0);
+        this.policyInfo.createUser = "";
+        this.policyInfo.createDate = "";
+        this.policyInfo.updateUser = "";
+        this.policyInfo.updateDate = "";
 
         this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag: 'Y', ocTag: this.policyInfo.openCoverTag, lineCd: this.policyInfo.lineCd })
                        .subscribe(data =>{
@@ -885,7 +889,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
        }
      } else {
        savePolGenInfoParam['extensionTag'] = 'N';
-       savePolGenInfoParam['refPolicyId'] = "";
+       if(!this.newAlt) {
+         savePolGenInfoParam['refPolicyId'] = "";
+       }
+       
      }
 
      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
