@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
 import { UnderwritingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -17,6 +17,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('poolDistTable') poolDistTable: CustEditableNonDatatableComponent;
   @ViewChild('coInsTable') coInsTable: CustEditableNonDatatableComponent;
 
+  @Output() riskDistId = new EventEmitter<any>();
 
   private polDistributionByRisk: DistributionByRiskInfo;
   // tableData: any[] = [];
@@ -292,6 +293,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
         console.log(data);
         this.riskDistributionData = data.distWrisk;
+        this.riskDistId.emit(this.riskDistributionData.riskDistId);
         console.log(this.riskDistributionData.tsiAmt)
         var appendTreatyName: string = '';
         var appendTreatyLimitId: number = 0;

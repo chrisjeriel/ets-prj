@@ -1016,6 +1016,13 @@ export class UnderwritingService {
             .set('riskDistId', riskDistId)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveDistCoIns', {params});
     }
+
+    getPolDistribution(policyId, distId?){
+        const params = new HttpParams()
+            .set('policyId', policyId)
+            .set('distId', distId === undefined || distId === null || distId === '' ? '' : distId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDist', {params});
+    }
 }            
 
             
