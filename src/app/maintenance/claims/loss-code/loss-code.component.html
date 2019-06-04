@@ -5,9 +5,9 @@
 			<ng-template ngbTabContent>
 			  <fieldset class="scheduler-border" style="margin-top: 10px !important">
 				<div class="row">
-					<div class="col-sm">
+					<div class="col-sm" id="mtn-loss-code">
 						<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-							<app-cust-editable-non-datatable #lossCodeTable [passData]="passData" (genericBtn)="deleteLossCode()" (onDelete)="lossCodeTable.onClickDelete('force');onClickDelLOssCode(this.deleteBool);" (tableDataChange)="this.selectedData = $event;change($event);" (add)="addLossCode()" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+							<app-cust-editable-non-datatable #lossCodeTable [passData]="passData" (genericBtn)="deleteLossCode()" (onDelete)="lossCodeTable.onClickDelete('force');onClickDelLOssCode(this.deleteBool);" (tableDataChange)="this.selectedData = $event;change($event);" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 						</div>
 					</div>
 				</div>
@@ -34,7 +34,7 @@
 
               <app-confirm-save (onYes)="onClickSaveLossCode()"></app-confirm-save>
 			  <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-			  <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+			  <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>

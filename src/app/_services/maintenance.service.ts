@@ -861,5 +861,20 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReportParam', JSON.stringify(params), header);
 	}
 
+	getMtnLossCode(lossCd?){
+		const params = new HttpParams()
+			.set('lossCd',lossCd===undefined || lossCd===null ? '' : lossCd)
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnLossCd",{params});
+	}
+
+	saveMtnLossCode(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnLossCd',params,header);
+    }
+
 }
 
