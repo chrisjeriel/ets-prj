@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { DistributionByRiskInfo } from '@app/_models';
 import { UnderwritingService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-pol-distribution',
   templateUrl: './pol-distribution.component.html',
   styleUrls: ['./pol-distribution.component.css']
 })
-export class PolDistributionComponent implements OnInit {
+export class PolDistributionComponent implements OnInit, OnDestroy {
+
+  //NECO 06/04/2019
+  @ViewChild('mainTable') mainTable: CustEditableNonDatatableComponent;
+  //END
 
   nData: DistributionByRiskInfo = new DistributionByRiskInfo(null, null, null, null, null, null);
 
@@ -99,10 +105,37 @@ export class PolDistributionComponent implements OnInit {
     widths: []
   };
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal) { }
+  //NECO 06/04/2019
+    treatyDistData: any = {
+      tHeader: ['Section', 'Treaty', 'Treaty Company', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
+      tableData: [],
+      dataTypes: ['text', 'text', 'text', 'currency', 'currency', 'percent'],
+      keys: ['section', 'treatyAbbr', 'trtyCedName', 'siAmt', 'premAmt', 'commShare'],
+      uneditable: [true,true,true,true,true,true],
+      widths: [1,1,'auto',150,150,150],
+      searchFlag: true,
+      paginateFlag: true,
+      infoFlag: true,
+      pageID: 'trtyDistTable'
+    }
+
+    sub: any;
+    params: any;
+    polDistributionData: any;
+    @Input() riskDistId: number;
+  //END
+
+  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Distribution");
+
+    //NECO 06/04/2019
+    this.sub = this.route.params.subscribe((data: any)=>{
+                  this.params = data;
+                  this.retrievePolicyDistribution();
+                });
+    //END
 
     this.passData.tHeader.push("Section"); 
     this.passData.tHeader.push("Treaty");
@@ -228,5 +261,32 @@ export class PolDistributionComponent implements OnInit {
 
     /*END POOL CHARGES*/
   }
+
+  //NECO 06/04/2019
+  retrievePolicyDistribution(){
+    this.polService.getPolDistribution(this.params.policyId).subscribe((data: any)=>{
+      console.log(data);
+      this.polDistributionData = data.polDistribution;
+      this.treatyDistData.tableData = data.polDistribution.trtyListPerSec;
+      this.mainTable.refreshTable();
+      setTimeout(()=>{
+         $('input[type=text]').focus();
+         $('input[type=text]').blur();
+      },0);
+    })
+  }
+
+  pad(str: string, key: string){
+      return String(str).padStart(5, '0');
+  }
+
+  round(val: number){
+    return Math.round(val * 10000000000) / 10000000000;
+  }
+
+  ngOnDestroy(){
+    this.sub.unsubscribe();
+  }
+  //END
 
 }

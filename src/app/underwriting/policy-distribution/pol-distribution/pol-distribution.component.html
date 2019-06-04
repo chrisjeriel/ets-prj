@@ -49,36 +49,36 @@
 			<div class="custom-row-inline-inset" style="margin-bottom: -12px !important;">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Dist No</label>
-					<input type="text" placeholder="00001" class="form-control form-control-sm col-sm-2">
+					<input readonly type="text" placeholder="00001" class="form-control form-control-sm col-sm-2" [ngModel]="pad(polDistributionData?.distNo, 'distNo')">
 					<label class="form-control-sm col-sm-1">Policy No</label>
-					<input type="text" placeholder="EAR-2018-00001-099-0001-000" class="form-control form-control-sm col-sm-2">
+					<input readonly type="text" placeholder="EAR-2018-00001-099-0001-000" class="form-control form-control-sm col-sm-2" [ngModel]="params.policyId">
 					<label class="form-control-sm col-sm-1">Ceding Co</label>
-					<input type="text" placeholder="FLT Prime" class="form-control form-control-sm col-sm">
+					<input readonly type="text" placeholder="FLT Prime" class="form-control form-control-sm col-sm" [ngModel]="params.cedingName">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Risk Dist No</label>
-					<input type="text" placeholder="00002" class="form-control form-control-sm col-sm-2">
+					<input readonly type="text" placeholder="00002" class="form-control form-control-sm col-sm-2" [ngModel]="pad(riskDistId, 'riskDistNo')">
 					<label class="form-control-sm col-sm-1">Dist Status</label>
-					<input type="text" placeholder="Distributed but not posted." class="form-control form-control-sm col-sm-2">
+					<input readonly type="text" placeholder="Distributed but not posted." class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.status">
 					<label class="form-control-sm col-sm-1">Insured</label>
-					<input type="text" placeholder="2nd Inn, Inc. (Sogo Cubao 2) and/or A.G. Sanchez Const. & Dev't Corp." class="form-control form-control-sm col-sm">
+					<input readonly type="text" placeholder="2nd Inn, Inc. (Sogo Cubao 2) and/or A.G. Sanchez Const. & Dev't Corp." class="form-control form-control-sm col-sm" [ngModel]="params.insured">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Sum Insured</label>
-					<input type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm-2">
+					<input readonly type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.sumInsured" appCurrency>
 					<label class="form-control-sm col-sm-1">Premium</label>
-					<input type="text" placeholder="1,250,000.00" class="form-control txt-content-rght form-control-sm col-sm-2">
+					<input readonly type="text" placeholder="1,250,000.00" class="form-control txt-content-rght form-control-sm col-sm-2" [ngModel]="polDistributionData?.premium" appCurrency>
 					<label class="form-control-sm col-sm-1">Risk</label>
-					<input type="text" placeholder="APMC Bldg." class="form-control form-control-sm col-sm">
+					<input readonly type="text" placeholder="APMC Bldg." class="form-control form-control-sm col-sm" [ngModel]="params.riskName">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Retention Line</label>
-					<input type="text" placeholder="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-2">
+					<input readonly type="text" placeholder="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.retLine" appCurrency>
 					<label class="form-control-sm col-sm-1"></label>
 					<div class="col-sm-2" style="margin-top: -2px; margin-left: -15px;">
 						<div class="col-sm-2"></div>
 						<div class="col-sm-10" style="padding-left: 0px;">
-							<input type="checkbox">&nbsp;<label style="vertical-align: middle;">Auto Calculation</label>
+							<input readonly type="checkbox" [ngModel]="polDistributionData?.autoCalc === 'Y' ? true : false" (ngModelChange)="$event ? polDistributionData.autoCalc === 'Y' : polDistributionData.autoCalc === 'N'">&nbsp;<label style="vertical-align: middle;">Auto Calculation</label>
 						</div>
 					</div>
 				</div>
@@ -94,7 +94,7 @@
 			<div class="col-sm-1">
 			</div>
 			<div class="col-sm">
-				<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+				<app-cust-editable-non-datatable [passData]="treatyDistData" #mainTable></app-cust-editable-non-datatable>
 			</div>
 			<div class="col-sm-1">
 			</div>
@@ -111,33 +111,33 @@
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Section I</label>
-					<input type="text" placeholder="8,000,000.00" class="form-control form-control-sm txt-content-rght col-sm">
-					<input type="text" placeholder="819,600,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-					<input type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+					<input readonly type="text" placeholder="8,000,000.00" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="polDistributionData?.ret1SecI" appCurrency>
+					<input readonly type="text" placeholder="819,600,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="polDistributionData?.ret2SecI" appCurrency>
+					<input readonly type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="polDistributionData?.secITotal" appCurrency>
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Section II</label>
-					<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm">
-					<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-					<input type="text" placeholder="2,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+					<input readonly type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm"  [ngModel]="polDistributionData?.ret1SecII" appCurrency>
+					<input readonly type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left"  [ngModel]="polDistributionData?.ret2SecII" appCurrency>
+					<input readonly type="text" placeholder="2,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left"  [ngModel]="polDistributionData?.secIITotal" appCurrency>
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Section III</label>
-					<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm">
-					<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-					<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+					<input readonly type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm"  [ngModel]="polDistributionData?.ret1SecIII" appCurrency>
+					<input readonly type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left"  [ngModel]="polDistributionData?.ret2SecIII" appCurrency>
+					<input readonly type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left"  [ngModel]="polDistributionData?.secIIITotal" appCurrency>
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Premium Amount</label>
-					<input type="text" placeholder="2,5000.00" class="form-control form-control-sm txt-content-rght col-sm">
-					<input type="text" placeholder="256,125.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-					<input type="text" placeholder="1,250,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+					<input readonly type="text" placeholder="2,5000.00" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="polDistributionData?.ret1Prem" appCurrency>
+					<input readonly type="text" placeholder="256,125.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="polDistributionData?.ret2Prem" appCurrency>
+					<input readonly type="text" placeholder="1,250,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="polDistributionData?.premTotal" appCurrency>
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Comm Amount</label>
-					<input type="text" placeholder="750.00" class="form-control form-control-sm txt-content-rght col-sm">
-					<input type="text" placeholder="76,837.50" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-					<input type="text" placeholder="345,529.69" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+					<input readonly type="text" placeholder="750.00" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="polDistributionData?.ret1CommAmt" appCurrency>
+					<input readonly type="text" placeholder="76,837.50" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="polDistributionData?.ret2CommAmt" appCurrency>
+					<input readonly type="text" placeholder="345,529.69" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="polDistributionData?.commAmtTotal" appCurrency>
 				</div>
 			</div>
 			<div class="col-sm-2">
