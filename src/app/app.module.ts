@@ -407,6 +407,7 @@ import { ReportParamComponent } from './maintenance/system/report-param/report-p
 import { ClaimEventTypeComponent } from './maintenance/mtn-claims/claim-event-type/claim-event-type.component';
 import { MtnClaimsComponent } from './maintenance/mtn-claims/mtn-claims.component';
 import { ClaimEventComponent } from './maintenance/mtn-claims/claim-event/claim-event.component';
+import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lov/mtn-clm-event-type-lov.component';
 
 @NgModule({
     imports: [
@@ -820,6 +821,7 @@ import { ClaimEventComponent } from './maintenance/mtn-claims/claim-event/claim-
         ClaimEventTypeComponent,
         MtnClaimsComponent,
         ClaimEventComponent,
+        MtnClmEventTypeLovComponent,
     ],
 
   	providers: [

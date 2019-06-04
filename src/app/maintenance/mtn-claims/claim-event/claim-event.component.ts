@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { MtnClmEventTypeLovComponent } from '@app/maintenance/mtn-clm-event-type-lov/mtn-clm-event-type-lov.component';
 
 @Component({
   selector: 'app-claim-event',
@@ -14,18 +15,19 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
   styleUrls: ['./claim-event.component.css']
 })
 export class ClaimEventComponent implements OnInit {
-	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-    @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
-	@ViewChild(LovComponent) lov:LovComponent;
-	@ViewChild(ModalComponent) modal: ModalComponent;
+	@ViewChild(CustEditableNonDatatableComponent) table		: CustEditableNonDatatableComponent;
+    @ViewChild(CancelButtonComponent) cancelBtn 			: CancelButtonComponent;
+    @ViewChild(MtnLineComponent) lineLov 					: MtnLineComponent;
+    @ViewChild(MtnClmEventTypeLovComponent) clmEventTypeLov : MtnLineComponent;
+	@ViewChild(LovComponent) lov							: LovComponent;
+	@ViewChild(ModalComponent) modal						: ModalComponent;
 
 
     passData: any = {
         tableData            : [],
         tHeader              : ['Event Code', 'Description', 'Line','Eventy Type','Loss Date From','Loss Date To','Active','Remarks'],
-        dataTypes            : ['number','text','lovInput','text','date','date','checkbox','text'],
-        magnifyingGlass	 	 : ['lineCd'],
+        dataTypes            : ['number','text','lovInput','lovInput','date','date','checkbox','text'],
+        magnifyingGlass	 	 : ['lineCd','eventTypeCd'],
         nData:
         {
             eventCd		  : '',
@@ -97,14 +99,15 @@ export class ClaimEventComponent implements OnInit {
 		var isEmpty = 0;
 
 		for(let record of this.passData.tableData){
+			console.log(record);
 			if(record.eventDesc == '' || record.eventTypeCd == ''){
 				if(!record.deleted){
 					isEmpty = 1;
 				}
 			}else{
 				if(record.edited && !record.deleted){
-					record.lossDateFrom		= (record.lossDateFrom == '')? '' : this.ns.toDateTimeString(record.lossDateFrom);
-					record.lossDateTo		= (record.lossDateTo == '')? '' : this.ns.toDateTimeString(record.lossDateTo);
+					record.lossDateFrom		= (record.lossDateFrom == '' || record.lossDateFrom == null)? '' : this.ns.toDateTimeString(record.lossDateFrom);
+					record.lossDateTo		= (record.lossDateTo == '' || record.lossDateTo == null)? '' : this.ns.toDateTimeString(record.lossDateTo);
 					record.createUser		= (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
 					record.createDate		= (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
 					record.updateUser		= this.ns.getCurrentUser();
@@ -170,6 +173,7 @@ export class ClaimEventComponent implements OnInit {
 
 	onRowClick(event){
 		if(event != null){
+			console.log(event);
 	       	this.passData.disableGeneric = false;
 	       	this.rowData = event;
 	       	this.mtnClmEventData.createUser = event.createUser;
@@ -198,18 +202,40 @@ export class ClaimEventComponent implements OnInit {
 
 	setLine(data){
 		this.table.onRowClick(null, this.passData.tableData[this.rowData.index]);
-        this.rowData.lineCd = data.lineCd;
+		this.rowData.lineCd = data.lineCd;	        
         this.ns.lovLoader(data.ev, 0);
-        setTimeout(() => {try{$(data.ev.target).removeClass('ng-dirty');}catch(e){}}, 0);
+        this.rowData.index == undefined?'':this.passData.tableData[this.rowData.index].edited = true;
+        $('.lovInput').addClass('ng-dirty');
+    }
+
+    setEventType(data){
+    	this.table.onRowClick(null, this.passData.tableData[this.rowData.index]);
+    	this.rowData.eventTypeCd = data.eventTypeCd;
+    	this.ns.lovLoader(data.ev, 0);
+        this.rowData.index == undefined?'':this.passData.tableData[this.rowData.index].edited = true;
+        $('.lovInput').addClass('ng-dirty');
     }
 
     checkCode(event){
-        this.ns.lovLoader(event.ev, 1);
-        this.lineLov.checkCode(this.rowData.lineCd.toUpperCase(), event.ev);
+    	if(event.key != undefined){
+    		this.ns.lovLoader(event.ev, 1);
+	        if(event.key.toUpperCase() == 'LINECD'){
+	        	this.lineLov.checkCode(this.rowData.lineCd.toUpperCase(), event.ev);
+	        }else if(event.key.toUpperCase() == 'EVENTTYPECD'){
+	        	this.clmEventTypeLov.checkCode(this.rowData.eventTypeCd.toUpperCase(), event.ev);
+	        }
+    	}else{
+    		
+    	}
+
     }
 
-    showLineLOV(){
-        $('#lineLOV #modalBtn').trigger('click');
+    showLOV(event){
+        if(event.key.toUpperCase() == 'LINECD'){
+        	$('#lineLOV #modalBtn').trigger('click');
+        }else if(event.key.toUpperCase() == 'EVENTTYPECD'){
+        	$('#eventTypeLov #modalBtn').trigger('click');
+        }
     }
 
 	cancel(){
@@ -225,6 +251,6 @@ export class ClaimEventComponent implements OnInit {
 	}
 
 	onClickAdd(){
-		this.passData.tableData.map((d,i) => { d.indext = i; return d;});
+		this.passData.tableData.map((d,i) => { d.index = i; return d;});
 	}
 }

@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
 					<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-						<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="showLineLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="passData.tableData=$event;checkCode($event);" #clmEvent (genericBtn)="onDeleteMtnClmEvent()" (onDelete)="clmEvent.onClickDelete('force'); passData.disableGeneric=true" (add)="onClickAdd()">
+						<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="showLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="passData.tableData=$event;checkCode($event);" #clmEvent (genericBtn)="onDeleteMtnClmEvent()" (onDelete)="clmEvent.onClickDelete('force'); passData.disableGeneric=true" (add)="onClickAdd()">
 						</app-cust-editable-non-datatable>
 
 						<div class="form-row" style="margin-top: 40px !important;">
@@ -59,3 +59,4 @@
 <app-cancel-button (onYes)="onSaveMtnClmEvent('cancel')" [url]="'/maintenance-clm'" ></app-cancel-button>
 
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-clm-event-type-lov id="eventTypeLov" (selectedData)="setEventType($event)"></app-mtn-clm-event-type-lov>
