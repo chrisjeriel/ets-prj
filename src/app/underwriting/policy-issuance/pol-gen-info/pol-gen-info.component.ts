@@ -487,8 +487,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.prevInceptDate = this.policyInfo.inceptDate;
         this.prevEffDate = this.policyInfo.effDate;
         this.prevExpiryDate = this.policyInfo.expiryDate;
-        this.policyInfo.issueDate = this.ns.toDateTimeString(new Date().setSeconds(0));
-        this.policyInfo.effDate = this.ns.toDateTimeString(new Date().setSeconds(0));
+        this.policyInfo.issueDate = this.ns.toDateTimeString(0);
+        this.policyInfo.effDate = this.ns.toDateTimeString(0);
 
         this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag: 'Y', ocTag: this.policyInfo.openCoverTag, lineCd: this.policyInfo.lineCd })
                        .subscribe(data =>{
@@ -880,6 +880,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
    if(this.validate(savePolGenInfoParam)){
      if(this.alteration && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate) {
        savePolGenInfoParam['extensionTag'] = 'Y';
+       if(this.newAlt) {
+         savePolGenInfoParam['savingType'] = 'alteration_ext';
+       }
      } else {
        savePolGenInfoParam['extensionTag'] = 'N';
        savePolGenInfoParam['refPolicyId'] = "";
