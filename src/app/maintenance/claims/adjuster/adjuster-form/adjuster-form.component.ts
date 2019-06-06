@@ -137,14 +137,14 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   		if(i.firstName === '' || i.lastName === ''){
   			return false;
   		}
-  		//check if theres only 1 default tag in ceding rep table
+  		//check if theres only 1 default tag in adj rep table
   		else if(i.defaultTag === 'Y'){
   			this.defaultTagCounter += 1;
   		}
   	}
 
   	//check if mandatory fields are filled on form
-  	if(this.adjData.cedingName.length === 0 || this.adjData.cedingAbbr.length === 0 || this.adjData.addrLine1.length === 0 ){
+  	if(this.adjData.adjName.length === 0 || this.adjData.addrLine1.length === 0 ){
   		return false;
   	}
 
@@ -191,7 +191,7 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   	  if(this.repData.tableData[i].edited && !this.repData.tableData[i].deleted){
   	  	  this.repData.tableData[i].eSignature = this.repData.tableData[i].fileName;
   	      this.savedData.push(this.repData.tableData[i]);
-  	      this.savedData[this.savedData.length-1].cedingId = this.savedData[this.savedData.length-1].cedingId === '' ? this.adjData.cedingId : this.savedData[this.savedData.length-1].cedingId;
+  	      this.savedData[this.savedData.length-1].adjId = this.savedData[this.savedData.length-1].adjId === '' ? this.adjData.adjId : this.savedData[this.savedData.length-1].adjId;
   	      this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
   	      this.savedData[this.savedData.length-1].createUser = this.currentUser;
   	      this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
@@ -199,15 +199,12 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   	  }
   	  else if(this.repData.tableData[i].edited && this.repData.tableData[i].deleted){
   	      this.deletedData.push(this.repData.tableData[i]);
-  	      this.deletedData[this.deletedData.length-1].cedingId = this.deletedData[this.deletedData.length-1].cedingId === '' ? this.adjData.cedingId : this.deletedData[this.deletedData.length-1].cedingId;
+  	      this.deletedData[this.deletedData.length-1].adjId = this.deletedData[this.deletedData.length-1].adjId === '' ? this.adjData.adjId : this.deletedData[this.deletedData.length-1].adjId;
   	      this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
   	      this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
   	  }
   	}
-  	//seting up ceding comp updates
-  	this.adjData.membershipTag = this.adjData.membershipTag === '' || this.adjData.membershipTag === 'N' ? 'N' : 'Y';
-    this.adjData.treatyTag = this.adjData.treatyTag === '' || this.adjData.treatyTag === 'N' ? 'N' : 'Y';
-  	this.adjData.govtTag = this.adjData.govtTag === '' || this.adjData.govtTag === 'N'? 'N' : 'Y';
+  	//seting up adj updates
   	this.adjData.activeTag = this.adjData.activeTag === '' || this.adjData.activeTag === 'N' ? 'N' : 'Y';
   	this.adjData.createUser = this.currentUser;
   	this.adjData.createDate = this.ns.toDateTimeString(0);
@@ -216,19 +213,19 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
 
   	//setting up params for web service request
   	let params: any = this.adjData;
-  	params.delCedingRepList = this.deletedData;
-  	params.saveCedingRepList = this.savedData;
+  	params.delAdjRepList = this.deletedData;
+  	params.saveAdjRepList = this.savedData;
 
   	console.log(params);
   	//saving updates
-  	this.mtnService.saveMtnCedingCompany(JSON.stringify(params)).subscribe((data: any)=>{
+  	this.mtnService.saveMtnAdjuster(JSON.stringify(params)).subscribe((data: any)=>{
   		console.log(data);
   		if(data.returnCode === 0){
   			this.dialogIcon = 'error';
   			this.successDiag.open();
   		}else{
-  			this.adjData.cedingId = data.outCedingId;
-  			this.retrieveMtnAdjuster(data.outCedingId);
+  			this.adjData.adjId = data.outAdjId;
+  			this.retrieveMtnAdjuster(data.outAdjId);
   			this.form.control.markAsPristine();
   			this.table.markAsPristine();
   			this.dialogIcon = '';
@@ -285,7 +282,7 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   	this.table.selected = [this.table.indvSelect];
   	if(this.table.selected[0].defaultTag === 'Y'){
   		this.dialogIcon = 'info';
-  		this.dialogMessage = 'Unable to delete company representative tagged as default.';
+  		this.dialogMessage = 'Unable to delete adjuster representative tagged as default.';
   		this.successDiag.open();
   	}else{
   		this.table.confirmDelete();

@@ -18,7 +18,7 @@
 										<div class="cust-div col-sm" style="margin-left: 15px;"><input type="checkbox" [ngModel]="adjData.activeTag === 'Y'" (ngModelChange)="$event ? adjData.activeTag = 'Y' : adjData.activeTag = 'N';" name="activeTag">&nbsp;<span class="cust-span">Active</span>
 										</div>
 										<label class="form-control-sm col-sm">Adjuster Reference No</label>
-										<input type="text" class="form-control form-control-sm col-sm" [ngModel]="adjData.adjRefNo" name="cedingId">
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="adjData.adjRefNo" name="cedingId">
 									</div>
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">Name</label>
@@ -55,7 +55,7 @@
 							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
 								<legend class="scheduler-border">Adjuster Contacts</legend>
 								<div class="contain">
-									<app-cust-editable-non-datatable [passData]="repData" (tableDataChange)="repData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')" (add)="onClickAdd($event)" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="repData" (tableDataChange)="repData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')" (add)="onClickAdd($event)"></app-cust-editable-non-datatable>
 								</div>
 							</fieldset>
 						</div>
