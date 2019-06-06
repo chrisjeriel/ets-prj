@@ -878,6 +878,48 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreatyLimit', params, header);
     }
 
+	getMtnAdjusterList(searchParams: any[]){
+        var params;
+        if(searchParams.length < 1){
+        	params = new HttpParams()
+            .set('adjName','')
+            .set('adjRefNo','')
+            .set('fullAddress','')
+            .set('zipCd','')
+            .set('contactNo','')
+            .set('emailAdd','')
+            .set('createUser','')
+            .set('createDateFrom','')
+            .set('createDateTo','')
+            .set('updateUser','')
+            .set('updateDateFrom','')
+            .set('updateDateTo','')
+        }else{
+        	params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+
+	    return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAdjusterList', {params});
+    }
+
+    getMtnAdjRepresentative(adjId){
+    	const params = new HttpParams()
+    		.set('adjId', (adjId === null || adjId === undefined ? '' : adjId));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAdjRepresentative',{params});
+    }
+
+    saveMtnAdjuster(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdjuster',params,header);
+    }
+
     copyTreatyLimit(params) {
         let header: any = {
             headers: new HttpHeaders({
@@ -886,5 +928,6 @@ export class MaintenanceService{
         }
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyTreatyLimit', params, header);
     }
+    
 }
 

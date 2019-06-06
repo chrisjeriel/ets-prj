@@ -1006,6 +1006,33 @@ export class UnderwritingService {
         }
         return this.http.post(environment.prodApiUrl + '/underwriting-service/processRenewablePolicy',JSON.stringify(params),header);
     }
+
+    getRiskDistribution(policyId, lineCd, lineClassCd){
+        const params = new HttpParams()
+            .set('policyId', policyId)
+            .set('lineCd', lineCd)
+            .set('lineClassCd', lineClassCd)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveRiskDist', {params});
+    }
+
+    getPoolDistribution(riskDistId){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePoolDist', {params});
+    }
+
+    getDistCoIns(riskDistId){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveDistCoIns', {params});
+    }
+
+    getPolDistribution(policyId, distId?){
+        const params = new HttpParams()
+            .set('policyId', policyId)
+            .set('distId', distId === undefined || distId === null || distId === '' ? '' : distId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDist', {params});
+    }
 }            
 
             

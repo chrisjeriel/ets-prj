@@ -1,15 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
 import { UnderwritingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-distribution-by-risk',
   templateUrl: './distribution-by-risk.component.html',
   styleUrls: ['./distribution-by-risk.component.css']
 })
-export class DistributionByRiskComponent implements OnInit {
+export class DistributionByRiskComponent implements OnInit, OnDestroy {
+  @ViewChild('treaty') treatyTable: CustEditableNonDatatableComponent;
+  @ViewChild('limit') limitTable: CustEditableNonDatatableComponent;
+  @ViewChild('poolDistTable') poolDistTable: CustEditableNonDatatableComponent;
+  @ViewChild('coInsTable') coInsTable: CustEditableNonDatatableComponent;
+
+  @Output() riskDistId = new EventEmitter<any>();
 
   private polDistributionByRisk: DistributionByRiskInfo;
   // tableData: any[] = [];
@@ -77,6 +85,75 @@ export class DistributionByRiskComponent implements OnInit {
     widths: []
   };
 
+  //NECO 06/03/2019
+  treatyDistData: any = {
+    tableData: [],
+    tHeader: ['Treaty', 'Treaty Company', 'Share (%)', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
+    magnifyingGlass: [],
+    options: [],
+    dataTypes: ['text', 'text', 'percent', 'currency', 'currency', 'percent'],
+    keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commShare'],
+    opts: [],
+    nData: {},
+    checkFlag: true,
+    selectFlag: false,
+    addFlag: true,
+    editFlag: false,
+    deleteFlag: true,
+    paginateFlag: true,
+    infoFlag: true,
+    searchFlag: false,
+    checkboxFlag: true,
+    pageLength: 10,
+    widths: [],
+    pageID: 'treatyDistTable'
+  };
+
+  limitsData: any = {
+    tableData: [],
+    tHeader: ['Treaty Name', 'Amount'],
+    magnifyingGlass: [],
+    options: [],
+    dataTypes: ['text', 'currency'],
+    keys: ['treatyName', 'amount'],
+    uneditable: [true,true],
+    opts: [],
+    nData: {},
+    selectFlag: false,
+    searchFlag: false,
+    checkboxFlag: true,
+    pageLength: 3,
+    widths: [],
+    pageID: 'treatyLimitsTable'
+  };
+
+  poolDistributionData: any = {
+    tableData: [],
+    tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt'],
+    dataTypes: ['text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency'],
+    keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt'],
+    widths: [1,250,1,140,140,1,140,140],
+    uneditable: [true,true,true,true,true,true,true,true],
+    paginateFlag: true,
+    infoFlag: true,
+    pageLength: 10,
+    pageID: 'poolDistTable'
+  }
+
+  coInsuranceData: any = {
+    tableData: [],
+    tHeader: ['Risk Dist No', 'Dist No', 'Policy No', 'Ceding Company', 'Share (%)', 'SI Amount', 'Premium Amount'],
+    dataTypes: ['sequence-5', 'sequence-5', 'text', 'text', 'percent', 'currency', 'currency'],
+    keys: ['riskDistId', 'distId', 'policyNo', 'cedingName', 'pctShare', 'siAmt', 'premAmt'],
+    widths: [1,1,160,250,100,140,140],
+    uneditable: [true,true,true,true,true,true,true],
+    infoFlag: true,
+    paginateFlag: true,
+    pageID: 'distCoInsTable'
+  }
+
+  //END
+
   passDataPool: any = {
     tableData: [],
     tHeader: [],
@@ -123,11 +200,22 @@ export class DistributionByRiskComponent implements OnInit {
         mdlBtnAlign: "center",
     };*/
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal) { }
+    //NECO 05/31/2019
+    params: any;
+    riskDistributionData: any;
+    sub: any;
+    //END
+
+  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
 
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Risk Distribution");
+
+    this.sub = this.route.params.subscribe((data: any)=>{
+                  this.params = data;
+                  this.retrieveRiskDistribution();
+                });
 
     /*this.tHeader.push("Treaty");
     this.tHeader.push("Ceding Company");
@@ -199,6 +287,81 @@ export class DistributionByRiskComponent implements OnInit {
 
     /*END CO-INSURANCE*/
   }
+
+  //NECO 05/31/2019
+    retrieveRiskDistribution(){
+      this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
+        console.log(data);
+        this.riskDistributionData = data.distWrisk;
+        this.riskDistId.emit(this.riskDistributionData.riskDistId);
+        console.log(this.riskDistributionData.tsiAmt)
+        var appendTreatyName: string = '';
+        var appendTreatyLimitId: number = 0;
+        //var treatyLimitAmt: any;
+        this.treatyDistData.tableData = data.distWrisk.distRiskWtreaty;
+        for(var i of data.wriskLimit){
+          if(appendTreatyLimitId === 0){
+            appendTreatyName = i.treatyName;
+            appendTreatyLimitId = i.treatyLimitId;
+          }
+          else if(appendTreatyLimitId === i.treatyLimitId){
+            appendTreatyName = appendTreatyName.length == 0 ? i.treatyName : appendTreatyName + ' & ' + i.treatyName;
+          }else{
+            i.treatyName = appendTreatyName;
+            this.limitsData.tableData.push(i);
+            appendTreatyName = '';
+            appendTreatyLimitId = i.treatyLimitId;
+          }
+        }
+        this.treatyTable.refreshTable();
+        this.limitTable.refreshTable();
+        setTimeout(()=>{
+          $('input[type=text]').focus();
+          $('input[type=text]').blur();
+        },0);
+      });
+    }
+
+    openPoolDistribution(){
+      this.poolDistTable.loadingFlag = true;
+      this.polService.getPoolDistribution(this.riskDistributionData.riskDistId).subscribe((data: any)=>{
+        this.poolDistributionData.tableData = data.poolDistList;
+        this.poolDistTable.refreshTable();
+        this.poolDistTable.loadingFlag = false;
+        setTimeout(()=>{
+          $('input[type=text]').focus();
+          $('input[type=text]').blur();
+        },0);
+      });
+    }
+
+    openCoInsurance(){
+      this.coInsTable.loadingFlag = true;
+      this.polService.getDistCoIns(this.riskDistributionData.riskDistId).subscribe((data: any)=>{
+        this.coInsuranceData.tableData = data.distCoInsList;
+        this.coInsTable.refreshTable();
+        this.coInsTable.loadingFlag = false;
+        setTimeout(()=>{
+          $('input[type=text]').focus();
+          $('input[type=text]').blur();
+        },0);
+      });
+    }
+
+    pad(str: string, key: string){
+      if(key === 'riskDistId'){
+        return String(str).padStart(5, '0');
+      }
+    }
+
+    round(val: number){
+      return Math.round(val * 10000000000) / 10000000000;
+    }
+
+    ngOnDestroy(){
+      this.sub.unsubscribe();
+    }
+  //END
 
   onClickViewPoolDist () {
     this.passData.tHeader = ["Treaty", "Treaty Company", "1st Ret Line", "1st Ret SI Amt", "1st Ret Prem Amt", "2nd Ret Line", "2nd Ret SI Amt", "2nd Ret Prem Amt"];

@@ -1,0 +1,29 @@
+<div class="cust-tabs-container">
+    <h4>Maintenance</h4>
+    <ngb-tabset>
+        <ngb-tab class="ngb-tab" title="Claims">
+            <ng-template ngbTabContent style="padding-top: 10px !important;">
+                <div class="row px-5">
+                   <div class="col-sm">
+						<button [routerLink]="['/mtn-adjuster-list']" class="button btn btn-link">Adjuster</button>
+						<br />
+						<button class="button btn btn-link">Loss Code</button>
+						<br />
+                   </div>
+                   <div class="col-sm">
+                   		<button class="button btn btn-link">Claim Status</button>
+						<br />
+                   </div>
+                   <div class="col-sm">
+                   		<button class="button btn btn-link">Claim Event Type</button>
+                   		<br />
+                   </div>
+                   <div class="col-sm">
+	                   	<button class="button btn btn-link ">Claim Event</button>
+	                   	<br />
+                   </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>

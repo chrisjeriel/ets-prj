@@ -406,6 +406,9 @@ import { RoundingErrorComponent } from './maintenance/quotation-and-policy/round
 import { ReportComponent } from './maintenance/system/report/report.component';
 import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
 import { MtnNonrenewReasonComponent } from './maintenance/mtn-nonrenew-reason/mtn-nonrenew-reason.component';
+import { MtnClaimsComponent } from './maintenance/claims/mtn-claims.component';
+import { AdjusterComponent } from './maintenance/claims/adjuster/adjuster.component';
+import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-form/adjuster-form.component';
 
 @NgModule({
     imports: [
@@ -818,6 +821,9 @@ import { MtnNonrenewReasonComponent } from './maintenance/mtn-nonrenew-reason/mt
         ReportComponent,
         ReportParamComponent,
         MtnNonrenewReasonComponent,
+        MtnClaimsComponent,
+        AdjusterComponent,
+        AdjusterFormComponent,
     ],
 
   	providers: [
