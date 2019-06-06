@@ -209,7 +209,7 @@
  	    		<fieldset class="scheduler-border" style="padding-bottom: 21px !important;padding-top: 15px !important;">
  	    			<div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important; margin-bottom: -14px !important;" >
  	    				<label class="form-control-sm">Status</label>
-						<input type="text" class="form-control form-control-sm" [(ngModel)]="holdCover.status" readonly>
+						<input type="text" class="form-control form-control-sm" tabindex="-1" [(ngModel)]="holdCover.status" readonly>
 						<div class="col-sm-1"></div>
  	    			</div>
  	    			<div class="input-group" style="padding-right: 10px!important;padding-left: 10px !important;">
@@ -226,9 +226,10 @@
  	    		<fieldset class="scheduler-border" style="padding-bottom: 15px !important;padding-top: 15px !important;">
  	    			<div class="input-group" style="margin-bottom: -14px !important;">
  	    				<label class="form-control-sm col-sm-3">Report</label>
-						<select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="report">
+ 	    				<input type="text" class="form-control form-control-sm" [(ngModel)]="report" readonly>
+						<!-- <select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="report">
 							<option value="HOLD COVER LETTER">Hold Cover Letter</option>
-						</select>
+						</select> -->
  	    			</div>
  	    			<div class="input-group" style="margin-bottom: -14px !important;">
  	    				<label class="form-control-sm col-sm-3">Destination</label>
@@ -244,10 +245,13 @@
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-		<button type="button" class="cust-btn" (click)="onClickPrint();modalService.dismissAll();" [disabled]="(report == '')?true:false">Print</button>
+		<button type="button" class="cust-btn" (click)="onClickPrint();modalService.dismissAll();">Print</button>
     </div>
 </app-modal>
 
 <app-confirm-save (onYes)="onSaveHoldCover()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="onSaveHoldCover('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>

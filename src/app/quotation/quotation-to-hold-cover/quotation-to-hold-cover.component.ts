@@ -101,9 +101,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	disableApproval	: boolean = true;
 	disableSave		: boolean = false;
 	isApproved	 	: boolean = false;
+	loading			: boolean = false;
 	aprrovalBtnTxt	: string = 'For Approval';
 	reportName 		: string = 'QUOTER012';
-	destination		: string = 'SCREEN';
+	destination		: string = '';
 	report			: string = '';
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
@@ -171,6 +172,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			  		this.quoteInfo.totalSi			 = selectedRow[0].holdCover.totalSi;
 			  		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 			  		this.disableApproval = (this.holdCoverNo == '')?true:false;
+			  		this.disableSave = false;
 
 					if(this.holdCover.status.toUpperCase() == 'EXPIRED' || this.holdCover.status.toUpperCase() == 'CONVERTED'){
 						this.newHc(true);
@@ -308,32 +310,42 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	}
 
   	validateUser(){
-  		const subRes =  forkJoin(this.userService.retMtnUsers(this.ns.getCurrentUser()),this.userService.retMtnUserAmtLmt('',''))
+  			//$('.globalLoading').css('display','block');
+  			this.loading = true;
+  			const subRes =  forkJoin(this.userService.retMtnUsers(this.ns.getCurrentUser()),this.userService.retMtnUserAmtLmt('',''))
   								.pipe(map(([usr, usrAmtLmt]) => { return { usr, usrAmtLmt };}));
-  		subRes.subscribe(data => {
-  			console.log(data);
-  			var usrGrp 		= data['usr']['usersList'][0].userGrp;
-  			var curRow		= data['usrAmtLmt']['userAmtLmtList'].filter(a => a.userGrp == usrGrp && a.lineCd.toUpperCase() == this.holdCover.lineCd.toUpperCase());
-  			var rec			= curRow[0];
-  			if(rec.allAmtSw == 'Y' || this.quoteInfo.totalSi <= rec.amtLimit){
-  				this.aprrovalBtnTxt = 'Approve';
-  				this.isApproved = true;
-  			}else{
-  				this.aprrovalBtnTxt = 'For Approval';
-  				this.isApproved = false;
-  			}
-  		});
+	  		subRes.subscribe(data => {
+	  			console.log(data);
+	  			var usrGrp 		  = data['usr']['usersList'][0].userGrp;
+	  			var curRow		  = data['usrAmtLmt']['userAmtLmtList'].filter(a => a.userGrp == usrGrp && a.lineCd.toUpperCase() == this.holdCover.lineCd.toUpperCase());
+	  			var rec			  = curRow[0];
+	  			this.loading      = false;
+				this.destination  = 'SCREEN';
+				this.report		  = 'Hold Cover Letter';
+
+	  			if(rec.allAmtSw == 'Y' || this.quoteInfo.totalSi <= rec.amtLimit){
+	  				this.aprrovalBtnTxt = 'Approve';
+	  				this.isApproved = true;
+	  			}else{
+	  				this.aprrovalBtnTxt = 'For Approval';
+	  				this.isApproved = false;
+	  			}
+	  		});
   	}
 
   	onClickPrint(){
-  		if(this.destination.toUpperCase() == 'SCREEN'){
-  			this.printPDFHC('SCREEN');
-  		}else if(this.destination.toUpperCase() == 'PDF'){
-  			this.printPDFHC('PDF');
-  		}else{
-  			this.printPDFHC('PRINTER');
-  		}
-  		this.holdCover.preparedBy = this.ns.getCurrentUser();
+  		this.loading = true;
+  		setTimeout(()=>{
+  			if(this.destination.toUpperCase() == 'SCREEN'){
+	  			this.printPDFHC('SCREEN');
+	  		}else if(this.destination.toUpperCase() == 'PDF'){
+	  			this.printPDFHC('PDF');
+	  		}else{
+	  			this.printPDFHC('PRINTER');
+	  		}
+	  		this.holdCover.preparedBy = this.ns.getCurrentUser();
+  		},500);
+  		
   	}
 
   	updateHcStatus(from){
@@ -375,6 +387,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.quotationService.downloadPDFHC(this.reportName,this.holdCover.quoteId,this.holdCover.holdCoverId)
 	  	.subscribe(data => {
 	  		console.log(data);
+	  		this.loading = false;
 	  		var newBlob = new Blob([data], { type: "application/pdf" });
             var downloadURL = window.URL.createObjectURL(data);
             if(param == 'PRINTER'){
