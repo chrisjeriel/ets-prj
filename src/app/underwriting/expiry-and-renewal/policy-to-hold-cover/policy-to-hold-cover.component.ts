@@ -178,6 +178,16 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	}
 
+	autoPeriodTo(event){
+		if(event.length !== 0){
+			let date = new Date(event);
+			date.setDate(date.getDate() + 30);
+			this.periodToDate.date = this.noteService.toDateTimeString(date).split('T')[0];
+			this.periodToDate.time = this.noteService.toDateTimeString(date).split('T')[1];
+			this.periodFromDate.time = this.noteService.toDateTimeString(date).split('T')[1];
+		}
+	}
+
 	test(content){
 		/*console.log(event);
 		$('#printModalBtn').trigger('click');*/
@@ -414,8 +424,17 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		}
 
 		this.us.updatePolHoldCoverStatus(params).subscribe((data: any)=>{
+			if(data.returnCode === 0){
+				this.dialogIcon = 'error-message';
+				this.dialogMessage = 'Error cancelling hold cover';
+				this.successDiag.open();
+			}else{
+				this.dialogIcon = 'success-message';
+				this.dialogMessage = 'Hold Cover No. ' + this.holdCoverNo + ' is cancelled';
+				this.successDiag.open();
+				this.clearHcFields();
+			}
 		});
-		this.clearHcFields();
 	}
 
 	clearHcFields(){
@@ -468,7 +487,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	onTabChange($event: NgbTabChangeEvent) {
   		if ($event.nextId === 'Exit') {
-    		this.router.navigateByUrl('');
+    		this.router.navigateByUrl('/pol-hold-cov-monitoring');
   		} 
   	}
 
@@ -482,10 +501,18 @@ export class PolicyToHoldCoverComponent implements OnInit {
   			this.statusDesc = 'Approved';
   			this.polHoldCoverParams.approvedBy = this.userName;
   		}*/
+
+  		if(this.approveType === 'Approve'){
+  			this.approveType = 'approve';
+  		}else if(this.approveType === 'Rejected'){
+  			this.approveType = 'reject';
+  		}else{
+  			this.approveType = 'pending';
+  		}
   		let params = {
 			policyId: this.policyInfo.policyId.toString(),
 			holdCovId: this.polHoldCoverParams.holdCovId,
-			updateType: this.approveType === 'Approve' ? 'approve' : 'pending',
+			updateType: this.approveType,
 			updateUser: this.userName,
 			updateDate: this.noteService.toDateTimeString(0)
 		}
@@ -494,7 +521,14 @@ export class PolicyToHoldCoverComponent implements OnInit {
   			this.isApproval = true;
   			this.onClickSave();
   			this.dialogIcon = 'success-message';
-  			this.dialogMessage = this.approveType === 'Approve' ? 'Hold Cover No ' + this.holdCoverNo + ' has been approved.' : 'Pending Approval';
+  			if(this.approveType === 'approve'){
+  				this.dialogMessage = 'Hold Cover No ' + this.holdCoverNo + ' has been approved.';
+  			}else if(this.approveType === 'reject'){
+  				this.dialogMessage = 'Hold Cover No ' + this.holdCoverNo + ' has been rejected.';
+  			}else{
+  				this.dialogMessage = 'Pending Approval';
+  			}
+  			//this.dialogMessage = this.approveType === 'Approve' ? 'Hold Cover No ' + this.holdCoverNo + ' has been approved.' : 'Pending Approval';
   			//$('app-sucess-dialog #modalBtn').trigger('click');
   			this.successDiag.open();
   			//this.isApproval = false;
@@ -601,6 +635,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
   			this.isForViewing = false;
   			this.isModify = true;
   			this.polHoldCoverParams.approvedBy = '';
+  			this.holdCoverNo = '';
+  			this.statusDesc = '';
   		}
   	}
 
