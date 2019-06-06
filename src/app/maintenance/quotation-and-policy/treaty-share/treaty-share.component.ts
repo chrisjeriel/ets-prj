@@ -51,7 +51,8 @@ export class TreatyShareComponent implements OnInit {
 	  	pageID: 'treatyYearTab',
 	  	mask: {
 	  		treatyYear: '9999'
-	  	}
+	  	},
+	  	centered: true
   	}
 
   	treatyCommData: any = {
@@ -182,8 +183,6 @@ export class TreatyShareComponent implements OnInit {
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
 	ngOnInit() {
-		// this.alignTreatyYear();
-
 		setTimeout(() => {
 			this.treatyYearTable.refreshTable();
 			this.treatyCommTable.refreshTable();
@@ -222,7 +221,6 @@ export class TreatyShareComponent implements OnInit {
 															  			  return a; });
 			this.treatyCommTable.refreshTable();
 			this.treatyCommTable.onRowClick(null, this.treatyCommData.tableData[0]);
-			// this.treatyCommData.nData['treatyYear'] = $('#treaty-year-table').find('tbody').find('.selected').find('input').val();
 			this.treatyCommData.disableAdd = false;
 			this.treatyCommData.disableGeneric = false;
 		} else {
@@ -285,13 +283,19 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	onTreatyYearClickDelete(ev) {
-		if(this.treatyYearTable.indvSelect.okDelete == 'N') {
-			this.warningMsg = 1;
-			$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+		if(ev != undefined) {
+			if(this.treatyYearTable.indvSelect.okDelete == 'N') {
+				this.warningMsg = 1;
+				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+			} else {
+				
+				this.treatyYearTable.confirmDelete();
+			}
 		} else {
 			this.treatyYearTable.indvSelect.edited = true;
 			this.treatyYearTable.indvSelect.deleted = true;
-			this.treatyYearTable.confirmDelete();
+			this.treatyYearData.disableGeneric = true;
+			this.treatyYearTable.refreshTable();
 		}
 	}
 
@@ -300,17 +304,23 @@ export class TreatyShareComponent implements OnInit {
 		this.treatyCommSelected = ev;
 		this.treatyCommData.disableGeneric = this.treatyCommSelected == undefined || this.treatyCommSelected == '';
 		this.tabset.select('treaty-share');
-		this.getMtnTreatyShare();
+
+		setTimeout(() => { this.getMtnTreatyShare(); }, 0);
 	}
 
-	onTreatyCommClickDelete(ev) {
-		if(this.treatyCommTable.indvSelect.okDelete == 'N') {
-			this.warningMsg = 2;
-			$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+	onTreatyCommClickDelete(ev?) {
+		if(ev != undefined) {
+			if(this.treatyCommTable.indvSelect.okDelete == 'N') {
+				this.warningMsg = 2;
+				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+			} else {
+				this.treatyCommTable.confirmDelete();
+			}
 		} else {
 			this.treatyCommTable.indvSelect.edited = true;
 			this.treatyCommTable.indvSelect.deleted = true;
-			this.treatyCommTable.confirmDelete();
+			this.treatyCommData.disableGeneric = true;
+			this.treatyCommTable.refreshTable();
 		}
 	}
 
@@ -322,13 +332,18 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	onTreatyShareClickDelete(ev) {
-		if(this.treatyShareTable.indvSelect.okDelete == 'N') {
-			this.warningMsg = 3;
-			$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+		if(ev != undefined) {
+			if(this.treatyShareTable.indvSelect.okDelete == 'N') {
+				this.warningMsg = 3;
+				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+			} else {
+				this.treatyShareTable.confirmDelete();
+			}
 		} else {
 			this.treatyShareTable.indvSelect.edited = true;
 			this.treatyShareTable.indvSelect.deleted = true;
-			this.treatyShareTable.confirmDelete();
+			this.treatyShareData.disableGeneric = true;
+			this.treatyShareTable.refreshTable();
 		}
 	}
 
@@ -339,22 +354,25 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	onCedingRetentionClickDelete(ev) {
-		if(this.cedingRetentionTable.indvSelect.okDelete == 'N') {
-			this.warningMsg = 4;
-			$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+		if(ev != undefined) {
+			if(this.cedingRetentionTable.indvSelect.okDelete == 'N') {
+				this.warningMsg = 4;
+				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+			} else {
+				this.cedingRetentionTable.confirmDelete();
+			}
 		} else {
 			this.cedingRetentionTable.indvSelect.edited = true;
 			this.cedingRetentionTable.indvSelect.deleted = true;
-			this.cedingRetentionTable.confirmDelete();
+			this.cedingRetentionData.disableGeneric = true;
+			this.cedingRetentionTable.refreshTable();
 		}
 	}
 
 	alignTreatyYear() {
 		setTimeout(() => {
-			$('#treaty-year-table').find('th').css('text-align', 'center');
-			$('#treaty-year-table').find('td').css('text-align', 'center');
-			$('#treaty-year-table').find('td').find('input').css('text-align', 'center').css('width', '20%');
-		}, 0);
+			$('#treaty-year-table').find('td').find('input').css('width', '20%');
+		}, 10);
 	}
 
 	openTreatyCommLOV(ev) {
@@ -494,7 +512,6 @@ export class TreatyShareComponent implements OnInit {
 			setTimeout(() => {
 				this.treatyShareTable.refreshTable();
 				this.treatyShareTable.onRowClick(null, this.treatyShareData.tableData[this.treatyShareData.tableData.indexOf(this.treatyShareSelected)]);
-				console.log(this.cedingRetentionData);
 			}, 0);
 		} else if(ev.nextId == 'retention') {
 			setTimeout(() => {

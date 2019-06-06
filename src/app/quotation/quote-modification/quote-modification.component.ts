@@ -60,25 +60,6 @@ export class QuoteModificationComponent implements OnInit {
 		    this.lovTable.refreshTable();
 
 		    if(param !== undefined) {
-		    	/*if(this.quList.length > 1) {
-		    		var temp = this.searchArr;
-
-		    		temp = temp.map(a => { return a == '%%' ? '%%' : a.slice(1, a.length-1); });
-		    		temp[2] = temp[2] == '%%' ? '%%' : String(temp[2]).padStart(5, '0');
-		    		temp[3] = temp[3] == '%%' ? '%%' : String(temp[3]).padStart(2, '0');
-		    		temp[4] = temp[4] == '%%' ? '%%' : String(temp[4]).padStart(3, '0');
-
-		    		this.quList = this.quList.filter(a => { var b = a.quotationNo.split('-');
-		    												return b[0] == temp[0]
-		    												  	|| b[1] == temp[1]
-		    												  	|| b[2] == temp[2]
-		    												  	|| b[3] == temp[3]
-		    												  	|| b[4] == temp[4];
-		    											  });
-		    		this.passDataLOV.tableData = this.quList;
-		    		this.lovTable.refreshTable();
-		    	}*/
-
 		    	if(this.quList.length == 1 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {  
 		        	this.selected = this.quList[0];
 		        	this.setDetails();
@@ -112,11 +93,11 @@ export class QuoteModificationComponent implements OnInit {
     	} else if(key === 'year') {
     	  this.searchArr[1] = '%' + a + '%';
     	} else if(key === 'seqNo') {
-    	  this.searchArr[2] = '%' + a + '%';
+    	  this.searchArr[2] = a == '' ? '%%' : '%' + String(a).padStart(5, '0') + '%';
     	} else if(key === 'revNo') {
-    	  this.searchArr[3] = '%' + a + '%';
+    	  this.searchArr[3] = a == '' ? '%%' : '%' + String(a).padStart(2, '0') + '%';
     	} else if(key === 'cedingId') {
-    	  this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0');
+    	  this.searchArr[4] = a == '' ? '%%' : '%' + String(a).padStart(3, '0');
     	}
 
     	if(this.searchArr.includes('')) {
@@ -168,7 +149,7 @@ export class QuoteModificationComponent implements OnInit {
 	}
 
 	clearFields() {
-    	this.searchArr = [];
+    	this.searchArr = Array(5).fill('');
     	this.quNo = [];
     	this.cedingName = "";
     	this.insuredDesc = "";
