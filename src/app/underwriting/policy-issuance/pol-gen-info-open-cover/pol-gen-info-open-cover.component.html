@@ -88,7 +88,7 @@
 			<div class="col-sm-6" style="padding-left: 0px;">
 				<fieldset class="scheduler-border cust-fs-padlr-offset">
 					<!-- style="height: 100%;" -->
-					<legend class="scheduler-border">Period of Issurance</legend>
+					<legend class="scheduler-border">Period of Insurance</legend>
 					<div class="col-sm-1">
 					</div>
 					<div style="margin-top: 3.5px !important; margin-bottom: 11px !important; padding-left: 10px;">
@@ -97,22 +97,22 @@
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Inception Date</label>
 								<!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="inceptionDateParams.date" appRequired name="inceptionDateParams.date"> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="inceptionDateParams.date" (valueChange)="inceptionDateParams.date=$event;" name="inceptionDateParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="inceptionDateParams.date" (valueChange)="inceptionDateParams.date=$event;" name="inceptionDateParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="inceptionDateParams.time" appRequired name="inceptionDateParams.time"> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="inceptionDateParams.time" (valueChange)="inceptionDateParams.time=$event;" name="inceptionDateParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="inceptionDateParams.time" (valueChange)="inceptionDateParams.time=$event;" name="inceptionDateParams.time"></datepicker>
 								</div>
 							</div>
 							<div class="input-group col-sm-6 ig-row" style="margin-top: 13px ! important;">
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Expiry Date</label>
 								<!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="expiryDateParams.date" appRequired name="expiryDateParams.date"> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="expiryDateParams.date" (valueChange)="expiryDateParams.date=$event;" name="expiryDateParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="expiryDateParams.date" (valueChange)="expiryDateParams.date=$event;" name="expiryDateParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="expiryDateParams.time" appRequired name="expiryDateParams.time"> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="expiryDateParams.time" (valueChange)="expiryDateParams.time=$event;" name="expiryDateParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="expiryDateParams.time" (valueChange)="expiryDateParams.time=$event;" name="expiryDateParams.time"></datepicker>
 								</div>
 							</div>
 						</div>
@@ -121,22 +121,22 @@
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Lapse From</label>
 								<!-- <input type="date" class="form-control form-control-sm" appRequired [(ngModel)]="lapseFromParams.date" name="lapseFromParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}"> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="lapseFromParams.date" (valueChange)="lapseFromParams.date=$event;" name="lapseFromParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="false" [showIcon]="policyInfo.fromInq!='true'" [value]="lapseFromParams.date" (valueChange)="lapseFromParams.date=$event;" name="lapseFromParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" appRequired [(ngModel)]="lapseFromParams.time" name="lapseFromParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}"> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="lapseFromParams.time" (valueChange)="lapseFromParams.time=$event;" name="lapseFromParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="false" [showIcon]="policyInfo.fromInq!='true'" [value]="lapseFromParams.time" (valueChange)="lapseFromParams.time=$event;" name="lapseFromParams.time"></datepicker>
 								</div>
 							</div>
 							<div class="input-group col-sm-6 ig-row">
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Lapse To</label>
 								<!-- <input type="date" class="form-control form-control-sm" appRequired [(ngModel)]="lapseToParams.date" name="lapseToParams.date" min="{{inceptionDateParams.date}}" max="{{expiryDateParams.date}}"> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="lapseToParams.date" (valueChange)="lapseToParams.date=$event;" name="lapseToParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="false" [showIcon]="policyInfo.fromInq!='true'" [value]="lapseToParams.date" (valueChange)="lapseToParams.date=$event;" name="lapseToParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" appRequired [(ngModel)]="lapseToParams.time" name="lapseToParams.time" min="{{inceptionDateParams.time}}" max="{{expiryDateParams.time}}"> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="lapseToParams.time" (valueChange)="lapseToParams.time=$event;" name="lapseToParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="false" [showIcon]="policyInfo.fromInq!='true'" [value]="lapseToParams.time" (valueChange)="lapseToParams.time=$event;" name="lapseToParams.time"></datepicker>
 								</div>
 							</div>
 						</div>
@@ -154,22 +154,22 @@
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Issue Date</label>
 								<!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="issueDateParams.date" name="issueDateParams.date" appRequired> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="issueDateParams.date" (valueChange)="issueDateParams.date=$event;" name="issueDateParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="issueDateParams.date" (valueChange)="issueDateParams.date=$event;" name="issueDateParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="issueDateParams.time" name="issueDateParams.time" appRequired> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="issueDateParams.time" (valueChange)="issueDateParams.time=$event;" name="issueDateParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="issueDateParams.time" (valueChange)="issueDateParams.time=$event;" name="issueDateParams.time"></datepicker>
 								</div>
 							</div>
 							<div class="input-group col-sm-6 ig-row" style="margin-top: 13px ! important;">
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Distribution Date</label>
 								<!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="distributionDateParams.date" name="distributionDateParams.date" appRequired> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="distributionDateParams.date" (valueChange)="distributionDateParams.date=$event;" name="distributionDateParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="distributionDateParams.date" (valueChange)="distributionDateParams.date=$event;" name="distributionDateParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="distributionDateParams.time" name="distributionDateParams.time" appRequired> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="distributionDateParams.time" (valueChange)="distributionDateParams.time=$event;" name="distributionDateParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="distributionDateParams.time" (valueChange)="distributionDateParams.time=$event;" name="distributionDateParams.time"></datepicker>
 								</div>
 							</div>
 						</div>
@@ -178,22 +178,22 @@
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Effective Date</label>
 								<!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="effDateParams.date" name="effDateParams.date" appRequired> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="effDateParams.date" (valueChange)="effDateParams.date=$event;" name="effDateParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="effDateParams.date" (valueChange)="effDateParams.date=$event;" name="effDateParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="effDateParams.time" name="effDateParams.time" appRequired> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="effDateParams.time" (valueChange)="effDateParams.time=$event;" name="effDateParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="effDateParams.time" (valueChange)="effDateParams.time=$event;" name="effDateParams.time"></datepicker>
 								</div>
 							</div>
 							<div class="input-group col-sm-6 ig-row">
 								<label class="form-control-sm col-sm-3">Accounting Date</label>
 								<!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="accDateParams.date" name="accDateParams.date" appRequired> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="accDateParams.date" (valueChange)="accDateParams.date=$event;" name="accDateParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="accDateParams.date" (valueChange)="accDateParams.date=$event;" name="accDateParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 inputaccDateParams.timez-ig-row" [(ngModel)]="accDateParams.time" name="accDateParams.time" appRequired> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="accDateParams.time" (valueChange)="accDateParams.time=$event;" name="accDateParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="true" [showIcon]="policyInfo.fromInq!='true'" [value]="accDateParams.time" (valueChange)="accDateParams.time=$event;" name="accDateParams.time"></datepicker>
 								</div>
 							</div>
 						</div>
@@ -754,6 +754,6 @@
 
 
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
-<app-sucess-dialog id="successDialog" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="saveQuoteGenInfoOc('cancel')" [url]="'/open-cover-list'" ></app-cancel-button>
+<app-sucess-dialog id="successDialog" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && !cancelFailed ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/open-cover-list'" ></app-cancel-button>
 <app-confirm-save (onYes)="saveQuoteGenInfoOc();"></app-confirm-save>

@@ -190,7 +190,6 @@ export class GeneralInfoComponent implements OnInit {
 		this.tableData = this.quotationService.getItemInfoData();
 
 		this.savingType = this.quotationService.savingType;
-		console.log(this.savingType);
 		this.sub = this.route.params.subscribe(params => {
 
 			if(params['addParams'] != undefined){
@@ -261,6 +260,8 @@ export class GeneralInfoComponent implements OnInit {
 									}
 								}
 							}
+
+							console.log(this.genInfoData.altWordings);
 						});
 					}
 
@@ -932,7 +933,7 @@ export class GeneralInfoComponent implements OnInit {
 	checkQuoteOption(){
 		this.quotationService.getQuoteOptions(this.genInfoData.quoteId).subscribe((data)=>{
 			console.log(data)
-			if(data['quotation'].optionsList.length!=0){
+			if(data['quotation'] != null && data['quotation'].optionsList.length!=0){
 				this.enblEndtTab.emit(true);
 				let alopFlag = false;
 		           if(data['quotation'] !== null)

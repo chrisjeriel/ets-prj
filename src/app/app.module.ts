@@ -397,6 +397,7 @@ import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treat
 import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
 import { MtnTreatyComponent } from './maintenance/mtn-treaty/mtn-treaty.component';
+import { TreatyLimitComponent } from './maintenance/quotation-and-policy/treaty-limit/treaty-limit.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
 import { MtnApproverComponent } from './maintenance/mtn-approver/mtn-approver.component';
 import { SystemComponent } from './maintenance/system/system.component';
@@ -404,6 +405,10 @@ import { ProgramParameterComponent } from './maintenance/system/program-paramete
 import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
 import { ReportComponent } from './maintenance/system/report/report.component';
 import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
+import { MtnNonrenewReasonComponent } from './maintenance/mtn-nonrenew-reason/mtn-nonrenew-reason.component';
+import { MtnClaimsComponent } from './maintenance/claims/mtn-claims.component';
+import { AdjusterComponent } from './maintenance/claims/adjuster/adjuster.component';
+import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-form/adjuster-form.component';
 
 @NgModule({
     imports: [
@@ -807,6 +812,7 @@ import { ReportParamComponent } from './maintenance/system/report-param/report-p
         RetentionLineComponent,
         TreatyShareComponent,
         MtnTreatyComponent,
+        TreatyLimitComponent,
         MtnApprovalFunctionComponent,
         MtnApproverComponent,
         SystemComponent,
@@ -814,6 +820,10 @@ import { ReportParamComponent } from './maintenance/system/report-param/report-p
         RoundingErrorComponent,
         ReportComponent,
         ReportParamComponent,
+        MtnNonrenewReasonComponent,
+        MtnClaimsComponent,
+        AdjusterComponent,
+        AdjusterFormComponent,
     ],
 
   	providers: [

@@ -137,8 +137,9 @@ export class UnderwritingService {
                 'Content-Type': 'application/json'
             })
         }
-        //return this.http.post(environment.prodApiUrl + '/underwriting-service/extractExpiringPolicy',JSON.stringify(params),header);
-        return 100;
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/extractExpiringPolicy',JSON.stringify(params),header);
+        //console.log("extractExpiringPolicies :" + JSON.stringify(response));
+        //return 100;
     }
 
     getParListing(searchParams: any []) {
@@ -995,6 +996,42 @@ export class UnderwritingService {
             .set('policyId', searchParams.policyId == undefined ? '' : searchParams.policyId)
             .set('extractUser', searchParams.extractUser == undefined ? '' : searchParams.extractUser);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveExpPolList', {params});
+    }
+
+    processRenewablePolicy(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/processRenewablePolicy',JSON.stringify(params),header);
+    }
+
+    getRiskDistribution(policyId, lineCd, lineClassCd){
+        const params = new HttpParams()
+            .set('policyId', policyId)
+            .set('lineCd', lineCd)
+            .set('lineClassCd', lineClassCd)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveRiskDist', {params});
+    }
+
+    getPoolDistribution(riskDistId){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePoolDist', {params});
+    }
+
+    getDistCoIns(riskDistId){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveDistCoIns', {params});
+    }
+
+    getPolDistribution(policyId, distId?){
+        const params = new HttpParams()
+            .set('policyId', policyId)
+            .set('distId', distId === undefined || distId === null || distId === '' ? '' : distId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDist', {params});
     }
 }            
 

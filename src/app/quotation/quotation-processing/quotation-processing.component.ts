@@ -136,16 +136,24 @@ export class QuotationProcessingComponent implements OnInit {
             title: 'Currency',
             dataType: 'text'
         },
-        {
-            key: 'issueDate',
-            title: 'Quote Date',
-            dataType: 'date'
-        },
-        {
-            key: 'expiryDate',
-            title: 'Valid Until',
-            dataType: 'date'
-        },
+        // {
+        //     key: 'issueDate',
+        //     title: 'Quote Date',
+        //     dataType: 'date'
+        // },
+        { keys: {
+            from: 'issueDateFrom',
+            to: 'issueDateTo'
+        },                        title: 'Quote Date',         dataType: 'datespan'},
+        // {
+        //     key: 'expiryDate',
+        //     title: 'Valid Until',
+        //     dataType: 'date'
+        // },
+        { keys: {
+            from: 'expiryDateFrom',
+            to: 'expiryDateTo'
+        },                        title: 'Valid Until',         dataType: 'datespan'},
         {
             key: 'reqBy',
             title: 'Requested By',
@@ -210,6 +218,7 @@ export class QuotationProcessingComponent implements OnInit {
     copyRiskName: any = "";
     copyIntCompRiskId: any = "";
     copyIntCompRiskName: any = "";
+    routeNewQuoteId: number;
 
     dialogMessage = "";
     dialogIcon = "";
@@ -313,6 +322,7 @@ export class QuotationProcessingComponent implements OnInit {
 
     //Method for DB query
     searchQuery(searchParams){
+        console.log(searchParams);
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.retrieveQuoteListingMethod();
@@ -354,6 +364,7 @@ export class QuotationProcessingComponent implements OnInit {
         for(let i of this.validationList) {
             if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && this.riskCd == i.project.riskId) { // add year
                 this.existingQuotationNo.push(i.quotationNo);
+                this.riskIdList.push(i); //used as object container
                 this.exclude.push(i.quotationNo.split('-')[4]);
             }
         }
@@ -498,9 +509,9 @@ setCedingIntCompCompany(data) {
         this.copyCedingName = data.cedingName;
         this.ns.lovLoader(data.ev, 0);
 
-        if(data.hasOwnProperty('fromLOV')){
+        /*if(data.hasOwnProperty('fromLOV')){
              this.onClickIntCompCopy();
-        }  
+        }  */
 }
 
 showCedingCompanyIntCompLOV() {
@@ -592,7 +603,7 @@ showCedingCompanyIntCompLOV() {
             this.quotationService.savingType = savingType;
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo[0], from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId, exitLink:'/quotation-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quoteId: this.riskIdList[0].quoteId, quotationNo: this.existingQuotationNo[0], from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId, exitLink:'/quotation-processing' }], { skipLocationChange: true });
             },100);
         }
     }
@@ -650,6 +661,7 @@ showCedingCompanyIntCompLOV() {
             if(data['returnCode'] == -1) {
                 this.retrieveQuoteListingMethod();
                 this.copyToQuotationNo = data['quotationNo'];
+                this.routeNewQuoteId = data['quoteId'];
 
                 this.copyStatus = 1;
                 this.copyQuoteId = "";
@@ -694,6 +706,14 @@ showCedingCompanyIntCompLOV() {
                     this.exclude.push(i.quotationNo.split('-')[4]);
                 }
             }    
+        } else {
+            this.copyQuoteId = this.riskIdList[0].quoteId;
+            this.copyFromQuotationNo = this.riskIdList[0].quotationNo;
+            this.copyQuoteLineCd = this.riskIdList[0].quotationNo.split('-')[0];
+            this.copyQuoteYear = this.riskIdList[0].quotationNo.split('-')[1];
+            this.copyCessionDesc = this.riskIdList[0].cessionDesc;
+            this.copyIntCompRiskId = this.riskIdList[0].project.riskId;
+            this.copyIntCompRiskName = this.riskIdList[0].project.riskName;
         }
 
         $('#copyIntCompModal > #modalBtn').trigger('click');
@@ -730,6 +750,7 @@ showCedingCompanyIntCompLOV() {
             if(data['returnCode'] == -1) {
                 
                 this.copyToQuotationNo = data['quotationNo'];
+                this.routeNewQuoteId = data['quoteId'];
 
                 //insert sa quote_competition
                 var internalCompParams: any[] = [{
@@ -758,7 +779,7 @@ showCedingCompanyIntCompLOV() {
                 this.copyRiskName = "";
                 this.copyIntCompRiskId = "";
 
-                this.retrieveQuoteListingMethod();
+                // this.retrieveQuoteListingMethod();
             } else if (data['returnCode'] == 0) {
                 this.dialogMessage = data['errorList'][0].errorMessage;
                 this.dialogIcon = "error";
@@ -778,7 +799,21 @@ showCedingCompanyIntCompLOV() {
         this.quotationService.savingType = 'normal';
 
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, quotationNo : this.quotationNo, from: 'quo-processing', exitLink: '/quotation-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, quoteId: this.routeNewQuoteId, quotationNo: this.quotationNo, from: 'quo-processing', exitLink: '/quotation-processing' }], { skipLocationChange: true });
+        },100); 
+    }
+
+    intCompToGenInfo() {
+        this.line = this.copyToQuotationNo.split("-")[0];
+        this.quotationNo = this.copyToQuotationNo;
+
+        this.quotationService.toGenInfo = [];
+        this.quotationService.toGenInfo.push("edit", this.line);
+        
+        this.quotationService.savingType = 'normal';
+
+        setTimeout(() => {
+            this.router.navigate(['/quotation', { line: this.line, quoteId: this.routeNewQuoteId, quotationNo: this.quotationNo, from: 'quo-processing', exitLink: '/quotation-processing' }], { skipLocationChange: true });
         },100); 
     }
 

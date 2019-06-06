@@ -32,6 +32,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   };
   dialogIcon: string = "";
   cancelFlag : boolean = false;
+  cancelFailed: boolean = false;
   loading: boolean = false;
   firstBlur: boolean = false;
   @Input() policyInfo:any;
@@ -43,11 +44,11 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   constructor(private uw: UnderwritingService, private ns: NotesService, private dp: DecimalPipe, private modalService: NgbModal) { }
 
   ngOnInit() {
-	this.policyId = this.policyInfo.policyIdOc;
-	this.coverageInfo.policyId = this.policyId;
-	this.coverageInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
-	this.coverageInfo.updateDate = this.ns.toDateTimeString(0);
-	this.fetchData();
+  	this.policyId = this.policyInfo.policyIdOc;
+  	this.coverageInfo.policyId = this.policyId;
+  	this.coverageInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
+  	this.coverageInfo.updateDate = this.ns.toDateTimeString(0);
+  	this.fetchData();
 
   }
 
@@ -76,21 +77,28 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 	});
   }
 
-  save(){
+  save(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
   	this.coverageInfo.pctShare = parseFloat(this.coverageInfo.pctShare.toString().split(',').join(''));
   	this.coverageInfo.totalValue = parseFloat(this.coverageInfo.totalValue.toString().split(',').join(''));
   	this.coverageInfo.pctPml = this.coverageInfo.pctPml === '' || this.coverageInfo.pctPml === null ? '0': parseFloat(this.coverageInfo.pctPml.toString().split(',').join(''));
-	this.uw.saveSumInsOC(this.coverageInfo).subscribe((data:any)=>{
-	if(data.returnCode == -1){
-		this.dialogIcon = 'success';
-		this.successDiag.open();
-		this.myForm.control.markAsPristine();
-		this.fetchData('save');
-	  }else{
-		this.dialogIcon = 'error';
-		this.successDiag.open();
-	  }
-	})
+  	this.uw.saveSumInsOC(this.coverageInfo).subscribe((data:any)=>{
+    	if(data.returnCode == -1){
+        this.cancelFailed = false;
+    		this.dialogIcon = 'success';
+    		this.successDiag.open();
+    		this.myForm.control.markAsPristine();
+    		this.fetchData('save');
+    	}else{
+    		this.dialogIcon = 'error';
+    		this.successDiag.open();
+        if(this.cancelFlag){
+          this.cancelFailed = true;
+        }else{
+          this.cancelFailed = false;
+        }
+    	}
+  	})
   }
 
   onClickSave(){
