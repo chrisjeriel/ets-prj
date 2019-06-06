@@ -71,7 +71,6 @@ export class RetentionLineComponent implements OnInit {
 	copyLineClassCd: string = '';
 	copyLineClassList: any[] = [];
 	disableCopyLCList: boolean = true;
-	hiddenLine: any[] = [];
 
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
@@ -100,8 +99,14 @@ export class RetentionLineComponent implements OnInit {
 
 	onRowClick(data) {
 		this.selected = data;	
-		this.retAmtData.disableGeneric = this.selected == null || this.selected == '';
-		this.disableCopySetup = this.selected == null || this.selected == '';
+		this.retAmtData.disableGeneric = this.selected == null || this.selected == '' || this.selected.retentionId != '';
+		this.disableCopySetup = this.selected == null || this.selected == '' || this.selected.retentionId == '';
+	}
+
+	onClickDelete() {
+		this.table.indvSelect.edited = true;
+		this.table.indvSelect.deleted = true;
+		this.table.confirmDelete();
 	}
 
 	checkCode(ev) {
@@ -116,29 +121,7 @@ export class RetentionLineComponent implements OnInit {
 	    this.lineLovCopy.checkCode(this.copyLineCd, ev);
 	}
 
-	setLineCopy(data) {
-  		this.disableCopyLCList = false;
-    	this.copyLineCd = data.lineCd;
-    	this.copyLineDesc = data.description;
-    	this.ns.lovLoader(data.ev, 0);
-
-    	this.copyLineClassCd = '';
-    	this.copyLineClassList = [];
-
-    	if(this.copyLineDesc != '' && this.copyLineDesc != null) {
-    		this.ms.getLineClassLOV(this.copyLineCd).subscribe(data => {
-    			this.copyLineClassList = data['lineClass'];
-    		});
-    	}
-
-    	setTimeout(() => {
-    		if(data.ev) {
-    			$(data.ev.target).removeClass('ng-dirty');
-    		}
-    	}, 0);
-	}
-
-  	setLine(data) {
+	setLine(data) {
   		this.disableLCList = false;
     	this.lineCd = data.lineCd;
     	this.lineDesc = data.description;
@@ -158,6 +141,28 @@ export class RetentionLineComponent implements OnInit {
   		this.retAmtData.disableGeneric = true;
   		this.disableCopySetup = true;
 		this.table.refreshTable();
+
+    	setTimeout(() => {
+    		if(data.ev) {
+    			$(data.ev.target).removeClass('ng-dirty');
+    		}
+    	}, 0);
+	}
+
+	setLineCopy(data) {
+  		this.disableCopyLCList = false;
+    	this.copyLineCd = data.lineCd;
+    	this.copyLineDesc = data.description;
+    	this.ns.lovLoader(data.ev, 0);
+
+    	this.copyLineClassCd = '';
+    	this.copyLineClassList = [];
+
+    	if(this.copyLineDesc != '' && this.copyLineDesc != null) {
+    		this.ms.getLineClassLOV(this.copyLineCd).subscribe(data => {
+    			this.copyLineClassList = data['lineClass'];
+    		});
+    	}
 
     	setTimeout(() => {
     		if(data.ev) {
@@ -192,7 +197,7 @@ export class RetentionLineComponent implements OnInit {
 			if(d.edited && !d.deleted && (d.retLineAmt == null || isNaN(d.retLineAmt) || d.effDateFrom == '' || d.effDateTo == '')) {
 				this.dialogIcon = "error";
 				this.successDialog.open();
-
+				this.cancel = false;
 				return;
 			}
 
@@ -208,7 +213,7 @@ export class RetentionLineComponent implements OnInit {
 						if((dEDF >= eEDF && dEDF <= eEDT) || (dEDT >= eEDF && dEDT <= eEDT)) {
 							this.errorMsg = 1;
 							$('#mtnRetLineWarningModal > #modalBtn').trigger('click');
-
+							this.cancel = false;
 							return;
 						}
 					}
@@ -259,9 +264,6 @@ export class RetentionLineComponent implements OnInit {
 	}
 
 	onCopySetupClick() {
-		this.hiddenLine = [];
-		this.hiddenLine.push(this.lineCd);
-
 		$('#mtnRetLineCopyModal > #modalBtn').trigger('click');
 	}
 
@@ -274,6 +276,12 @@ export class RetentionLineComponent implements OnInit {
 	}
 
 	onClickModalCopy() {
+		if(this.copyLineDesc == '' || this.copyLineClassCd == '') {
+			this.dialogIcon = "error";
+			this.successDialog.open();
+			return;
+		}
+
 		$('.globalLoading').css('display','block');
 		var params = {
 			 copyFromRetentionId: this.selected.retentionId,

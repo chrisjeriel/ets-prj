@@ -118,11 +118,12 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	getQuoteList(param?){
   		this.table.loadingFlag = true;
   		var parameter;
-
 		if(param !== undefined){
-			parameter = param;		
+			parameter = param;
+			console.log('not undefined');		
 		}else{
 			parameter = this.searchParams;
+			console.log('undefined');
 		}
 
 		console.log(parameter);
@@ -191,6 +192,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				if(quoList.length == 0){
 					this.showQuoteLov();
 					this.getQuoteList();
+					console.log('abc');
 				}
 			}
   		});
@@ -201,15 +203,24 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.dialogIcon = '';
 		this.dialogMessage = '';
 		this.cancelFlag = cancelFlag !== undefined;
+		this.periodFromArr[0]	= (this.periodFromArr[0] == '' || this.periodFromArr[0] == null || this.periodFromArr[0] == undefined)? '' : this.periodFromArr[0];
+		this.periodFromArr[1]	= (this.periodFromArr[1] == '' || this.periodFromArr[1] == null || this.periodFromArr[1] == undefined)? '' : this.periodFromArr[1];
+		this.periodToArr[0]	 	= (this.periodToArr[0] == '' || this.periodToArr[0] == null || this.periodToArr[0] == undefined)? '' : this.periodToArr[0];
+		this.periodToArr[1]	 	= (this.periodToArr[1] == '' || this.periodToArr[1] == null || this.periodToArr[1] == undefined)? '' : this.periodToArr[1];
 
-		if(this.quoteInfo.quotationNo.some(i => i == '') == true || this.periodFromArr.some(pf => pf == '') == true ||
-		   this.periodToArr.some(pt => pt == '') == true || this.holdCover.optionId == ''){
+		if(this.quoteInfo.quotationNo.some(i => i == '') == true || this.holdCover.optionId == '' ||
+			this.periodFromArr.some(pf => pf == '') == true ||  this.periodFromArr.length == 0 ||
+			this.periodToArr.some(pt => pt == '') == true ||  this.periodToArr.length == 0){
 			setTimeout(()=>{
 				this.dialogIcon = 'error';
 				$('.globalLoading').css('display','none');
 				$('app-sucess-dialog #modalBtn').trigger('click');
 				$('.warn').focus();
 				$('.warn').blur();
+				this.periodFromArr[0] == '' ? $('.pf0').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
+				this.periodFromArr[1] == '' ? $('.pf1').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
+				this.periodToArr[0] == '' ? $('.pt0').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
+				this.periodToArr[1] == '' ? $('.pt1').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
 			},500);
 		}else{
 			this.holdCover.holdCoverYear	= (this.holdCover.holdCoverYear == '')?String(new Date().getFullYear()):this.holdCover.holdCoverYear;
@@ -275,6 +286,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			hcStatus	: 6,
 			quoStatus	: 3
 		};
+		$('.globalLoading').css('display','block');
   		this.quotationService.updateHoldCoverStatus(JSON.stringify(ids))
   		.subscribe(data => {
   			console.log(data);
@@ -283,7 +295,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			$('app-sucess-dialog #modalBtn').trigger('click');
   			this.clearHc();
   			this.newHc(false);
+  			this.disableApproval = true;
   		});
+  		this.modalService.dismissAll();
   	}
 
   	onClickView(){
@@ -404,6 +418,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		if(this.holdCover.optionId == '' || this.holdCover.optionId == undefined){
   		}else{
   			$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+  			$('.warn').addClass('ng-dirty');
   			this.modalService.dismissAll();
   		}
   	}
@@ -499,6 +514,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		this.periodFromArr				 = [];
 		this.periodToArr				 = [];
 		this.disableCancelHc 			 = true;
+		this.disableApproval			 = true;
 		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 		$('.warn').find('input').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 	}
@@ -514,8 +530,12 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		var d = new Date(this.periodFromArr[0]);
 		var s = d.setDate(d.getDate()+30);
 		this.periodToArr[0] = (isNaN(s) == true)?'':this.ns.toDateTimeString(s).split('T')[0];
-		$('.r-only').find('input').addClass('ng-dirty');
+		this.addDirty();
 		$('#periodTo').find('input').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+	}
+
+	addDirty(){
+		$('.r-only').find('input').addClass('ng-dirty');
 	}
 
 	newHc(isNew:boolean){
@@ -534,6 +554,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			$(".r-only").prop('readonly', false);
 			this.fieldIconDsbl = false;
 		}
+	}
+
+	searchQuery(searchParams){
+		console.log(searchParams);
+		this.searchParams = searchParams;
+		this.passDataQuoteLOV.tableData = [];
+		this.getQuoteList();
 	}
 
 	onClickSave(){

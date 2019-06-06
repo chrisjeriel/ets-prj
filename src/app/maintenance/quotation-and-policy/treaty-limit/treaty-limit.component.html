@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Quotation & Policy</h4>
 	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Retention Line Amount">
+		<ngb-tab class="ngb-tab" title="Treaty Limit">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
@@ -32,13 +32,23 @@
 						</fieldset>
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
-								<div class="col-sm-12" id="retention-line-table">
-									<app-cust-editable-non-datatable [passData]="retAmtData" (tableDataChange)="retAmtData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); retAmtData.disableGeneric=true;">
+								<div class="col-sm-12" id="treaty-limit-table">
+									<app-cust-editable-non-datatable #treatyLimitTable [passData]="treatyLimitData" (tableDataChange)="treatyLimitData.tableData=$event" (newClick)="onTreatyLimitRowClick($event)" (genericBtn)="onTreatyLimitClickDelete($event)" (onDelete)="treatyLimitTable.onClickDelete('force'); treatyLimitData.disableGeneric=true;">
 										<ng-container controls-l>
 											<button type="button" [disabled]="disableCopySetup" class="cust-btn" (click)="onCopySetupClick()"><a>Copy Setup</a></button>
 										</ng-container>
 									</app-cust-editable-non-datatable>
 								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Treaty Layer</legend>
+							<div class="row" style="margin-top: 12px;">
+								<div class="col-sm-4"></div>
+								<div id="treaty-layer-table" class="col-sm-4">
+									<app-cust-editable-non-datatable #treatyLayerTable [passData]="treatyLayerData" (tableDataChange)="treatyLimitSelected.treatyLayerList=$event; treatyLayerDataChange($event);" (newClick)="onTreatyLayerRowClick($event)" (genericBtn)="onTreatyLayerClickDelete($event)" (onDelete)="treatyLayerTable.onClickDelete('force'); treatyLayerData.disableGeneric=true;" (clickLOV)="openTreatyLOV($event)"></app-cust-editable-non-datatable>
+								</div>
+								<div class="col-sm-4"></div>
 							</div>
 							<div class="form-row">
 								<div class="form-group col-sm">
@@ -85,26 +95,27 @@
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
 
-<app-modal class="d-none" id="mtnRetLineWarningModal">
+<app-modal class="d-none" id="mtnTreatyLimitWarningModal">
     <div header>Warning Message</div>
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
             <div class="custom-row-inline-inset" style="text-align: center">
-            	<p *ngIf="errorMsg == 1">Unable to save the record. Eff Date From or Eff Date To<br />
-                must be outside the effectivity of an active retention.</p>
-                <p *ngIf="errorMsg == 2">Unable to copy details. <strong>Eff Date From</strong> or <strong>Eff Date To</strong> of the<br />
+            	<p *ngIf="errorMsg == 1">Unable to save the record. Treaty Setup<br />
+                must be outside the effectivity of an active treaty limit.</p>
+                <p *ngIf="errorMsg == 2">Unable to copy details. <strong>Treaty Setup</strong> of the<br />
                 highlighted record must be outside the effectivity of an active<br />
-            	retention line.</p>
+            	treaty limit.</p>
             </div>
         </fieldset>
     </div>
     <div footer class="w-100 text-center">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); errorMsg=0;"><a>Ok</a></button>
     </div>
 </app-modal>
 
-<app-modal class="d-none" id="mtnRetLineCopyModal">
+<app-modal class="d-none" id="mtnTreatyLimitCopyModal">
     <div header>Copy Setup</div>
     <div body style="width: 450px !important;">
         <fieldset class="scheduler-border" style="padding: 5px 20px 5px 8px !important;">
@@ -120,8 +131,8 @@
             </div>
             <div class="input-group" style="margin-bottom: -14px !important;">
               	<label class="form-control-sm col-sm-3">Ret. Line Amt ID</label>
-				<input type="text" class="form-control form-control-sm col-sm-2 text-right" [ngModel]="selected?.retentionId" tabindex="-1" readonly>
-				<input type="text" class="form-control form-control-sm col-sm text-right" [ngModel]="selected?.retLineAmt | number: '1.2-2'" tabindex="-1" readonly style="margin-left: 2px;">
+				<input type="text" class="form-control form-control-sm col-sm-2 text-right" [ngModel]="treatyLimitSelected?.treatyLimitId" tabindex="-1" readonly>
+				<input type="text" class="form-control form-control-sm col-sm text-right" [ngModel]="treatyLimitSelected?.amount | number: '1.2-2'" tabindex="-1" readonly style="margin-left: 2px;">
             </div>
         </fieldset>
         <fieldset class="scheduler-border" style="padding: 5px 20px 5px 8px !important;">
@@ -151,12 +162,12 @@
     </div>
 </app-modal>
 
-<app-modal class="d-none" id="mtnRetLineSuccessModal">
+<app-modal class="d-none" id="mtnTreatyLimitSuccessModal">
     <div header>Success Message</div>
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
             <div class="custom-row-inline-inset" style="text-align: center">                
-                <p>Retention Line Amount was successfully copied.</p>
+                <p>Treaty Limit was successfully copied.</p>
             </div>
         </fieldset>
     </div>

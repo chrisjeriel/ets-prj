@@ -21,7 +21,7 @@ export class ConfirmSaveComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
-
+    setTimeout(() => { $('div.globalLoading').css({'height': $('#wrapperDiv').height() + 'px'}); }, 0); // to cover scrollable content
   }
 
   confirmModal(){

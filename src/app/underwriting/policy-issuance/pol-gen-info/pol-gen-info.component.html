@@ -2621,3 +2621,19 @@
 <app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event);" [line]="line" [type]="'O'"></app-mtn-quotation-wordings>
 <!-- <app-special-lov (selectedData)="setPrincipal($event)"></app-special-lov>
 <app-special-lov id="contractorLOV" (selectedData)="setContractor($event)"></app-special-lov> -->
+
+<app-modal class="d-none" id="polGenInfoConfirmationModal">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <!-- <fieldset class="scheduler-border" style="padding-top: 5px !important;"> -->
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>Saving the changes will recreate the details of Coverage and<br />
+                Inward Policy Balance. Do you want to proceed?</p>
+            </div>
+        <!-- </fieldset> -->
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="forceExt = 1; prepareParam(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
