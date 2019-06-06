@@ -3,13 +3,14 @@ import { MaintenanceService } from '@app/_services';
 import { MtnSectionCovers } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 @Component({
   selector: 'app-mtn-section-covers',
   templateUrl: './mtn-section-covers.component.html',
   styleUrls: ['./mtn-section-covers.component.css']
 })
 export class MtnSectionCoversComponent implements OnInit {
+  @ViewChild('sectionCoverModal') modal: ModalComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Input() lineCd: string = "";
@@ -119,14 +120,14 @@ export class MtnSectionCoversComponent implements OnInit {
           this.sectionCover.tableData = data['sectionCovers'];
           this.table.refreshTable();
 
-          $('#sectionCovers > #modalBtn').trigger('click');
+          this.modal.openNoClose();
         } else {
           var arr = [];
           arr.push(obj);
 
           this.selectedData.emit(arr);
             
-          $('#sectionCovers > #modalBtn').trigger('click');
+          this.modal.openNoClose();
         }
         
       });  

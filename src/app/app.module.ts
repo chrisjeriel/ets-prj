@@ -404,6 +404,7 @@ import { ProgramParameterComponent } from './maintenance/system/program-paramete
 import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
 import { ReportComponent } from './maintenance/system/report/report.component';
 import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
+import { MtnNonrenewReasonComponent } from './maintenance/mtn-nonrenew-reason/mtn-nonrenew-reason.component';
 
 @NgModule({
     imports: [
@@ -814,6 +815,7 @@ import { ReportParamComponent } from './maintenance/system/report-param/report-p
         RoundingErrorComponent,
         ReportComponent,
         ReportParamComponent,
+        MtnNonrenewReasonComponent,
     ],
 
   	providers: [

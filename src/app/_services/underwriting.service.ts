@@ -997,6 +997,15 @@ export class UnderwritingService {
             .set('extractUser', searchParams.extractUser == undefined ? '' : searchParams.extractUser);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveExpPolList', {params});
     }
+
+    processRenewablePolicy(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/processRenewablePolicy',JSON.stringify(params),header);
+    }
 }            
 
             
