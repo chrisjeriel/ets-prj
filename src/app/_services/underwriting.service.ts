@@ -137,8 +137,9 @@ export class UnderwritingService {
                 'Content-Type': 'application/json'
             })
         }
-        //return this.http.post(environment.prodApiUrl + '/underwriting-service/extractExpiringPolicy',JSON.stringify(params),header);
-        return 100;
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/extractExpiringPolicy',JSON.stringify(params),header);
+        //console.log("extractExpiringPolicies :" + JSON.stringify(response));
+        //return 100;
     }
 
     getParListing(searchParams: any []) {
