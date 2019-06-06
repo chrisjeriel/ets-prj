@@ -22,7 +22,7 @@
 									 ngbTooltip="Co Code" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='3' maxlength="3" [(ngModel)]="splitPolNo[3]" (ngModelChange)="searchPolNoFields($event, 'coCode')" (change)="checkPolNoParams($event);">
 									<input id=coSeriesNo  [disabled]="disabledSearch" type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;"
 									 ngbTooltip="Co Series No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='4' maxlength="4" [(ngModel)]="splitPolNo[4]" (ngModelChange)="searchPolNoFields($event, 'coSeriesNo')" (change)="checkPolNoParams($event);">
-									<input id=altNo disabled type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									<input id=altNo type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
 									 ngbTooltip="Alt No" appRequired placement="bottom" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appSequence='3' maxlength="3" [(ngModel)]="splitPolNo[5]" (ngModelChange)="searchPolNoFields($event, 'altNo')" (change)="checkPolNoParams($event);">
 									<span>&nbsp;</span>
 									<div id="search"><a><i id=searchicon class="fa fa-search" (click)="showLOV();"></i></a></div>
