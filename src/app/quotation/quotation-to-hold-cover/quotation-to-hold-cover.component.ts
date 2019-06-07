@@ -10,6 +10,7 @@ import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/con
 import { Subject, forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-quotation-to-hold-cover',
@@ -21,6 +22,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 	@ViewChild('opt') opt: CustNonDatatableComponent;
 	@ViewChild('tabset') tabset: any;
+	@ViewChild('approvalMdl') approvalMdl : ModalComponent;
 
 	passDataQuoteLOV : any = {
 		tableData	: [],
@@ -99,13 +101,14 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	cancelFlag		: boolean;
 	disableCancelHc	: boolean = true;
 	disableApproval	: boolean = true;
-	disableSave		: boolean = false;
+	disableSave		: boolean = true;
 	isApproved	 	: boolean = false;
 	loading			: boolean = false;
 	aprrovalBtnTxt	: string = 'For Approval';
 	reportName 		: string = 'QUOTER012';
 	destination		: string = '';
 	report			: string = '';
+	isModifClicked	: boolean = false;
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 				private ns : NotesService, private router: Router, private userService : UserService) { 
@@ -147,6 +150,8 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				this.quoteInfo.riskName		= quoList[0].riskName;
 				this.holdCover.lineCd		= quoList[0].lineCd;
 				this.quoteInfo.status		= quoList[0].status;
+				this.disableSave 			= false;
+				this.isModifClicked 		= false;
 				this.newHc(false);
 				this.getQuoteOptions();
 
@@ -172,7 +177,6 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			  		this.quoteInfo.totalSi			 = selectedRow[0].holdCover.totalSi;
 			  		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 			  		this.disableApproval = (this.holdCoverNo == '')?true:false;
-			  		this.disableSave = false;
 
 					if(this.holdCover.status.toUpperCase() == 'EXPIRED' || this.holdCover.status.toUpperCase() == 'CONVERTED'){
 						this.newHc(true);
@@ -233,14 +237,19 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			this.holdCover.preparedBy		= (this.holdCover.preparedBy == '')?'':this.holdCover.createUser;
 	  		this.holdCover.updateDate		= this.ns.toDateTimeString(0);
 			this.holdCover.updateUser		= this.ns.getCurrentUser();
-			this.holdCover.status			= (this.holdCover.status == '' || this.holdCover.status.toUpperCase() == 'APPROVED' || this.holdCover.status.toUpperCase() == 'REJECTED')?'In Force':this.holdCover.status;
+
+			if(this.isModifClicked == true){
+				this.holdCover.status = 'Released';
+			}else{
+				this.holdCover.status		= (this.holdCover.status == '' || this.holdCover.status.toUpperCase() == 'APPROVED' || this.holdCover.status.toUpperCase() == 'REJECTED')?'In Force':this.holdCover.status;
+			}
 
 	  		this.quotationService.saveQuoteHoldCover(JSON.stringify(this.holdCover))
 	  		.subscribe(data => {
 	  			console.log(data);
-	  			this.holdCoverNo = data['holdCoverNo'];
-	  			this.dialogIcon = '';
-				this.dialogMessage = '';
+	  			this.holdCoverNo 	= data['holdCoverNo'];
+	  			this.dialogIcon 	= '';
+				this.dialogMessage 	= '';
 				$('app-sucess-dialog #modalBtn').trigger('click');
 				var qNo = this.quoteInfo.quotationNo.map((a,i) => (isNaN(a) == false && i!=4)? parseInt(a):(i==4)?a.padStart(3,'0'):a);;
 				this.getQuoteList([{ key: 'quotationNo', search: qNo.join('%-%') }]);
@@ -264,6 +273,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	  		});
 	  		this.getQuoteList([{ key: 'quotationNo', search: quoNo }]);
 	  		this.modalService.dismissAll();
+	  		this.addDirty();
   		}
   	}
 
@@ -293,7 +303,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		.subscribe(data => {
   			console.log(data);
   			this.dialogIcon = 'success-message';
-  			this.dialogMessage = 'Cancelled Successfully!';
+  			this.dialogMessage = 'Cancelled Successfully';
   			$('app-sucess-dialog #modalBtn').trigger('click');
   			this.clearHc();
   			this.newHc(false);
@@ -310,27 +320,25 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	}
 
   	validateUser(){
-  			//$('.globalLoading').css('display','block');
-  			this.loading = true;
-  			const subRes =  forkJoin(this.userService.retMtnUsers(this.ns.getCurrentUser()),this.userService.retMtnUserAmtLmt('',''))
+  		this.loading = true;
+  		const subRes =  forkJoin(this.userService.retMtnUsers(this.ns.getCurrentUser()),this.userService.retMtnUserAmtLmt('',''))
   								.pipe(map(([usr, usrAmtLmt]) => { return { usr, usrAmtLmt };}));
-	  		subRes.subscribe(data => {
-	  			console.log(data);
-	  			var usrGrp 		  = data['usr']['usersList'][0].userGrp;
-	  			var curRow		  = data['usrAmtLmt']['userAmtLmtList'].filter(a => a.userGrp == usrGrp && a.lineCd.toUpperCase() == this.holdCover.lineCd.toUpperCase());
-	  			var rec			  = curRow[0];
-	  			this.loading      = false;
-				this.destination  = 'SCREEN';
-				this.report		  = 'Hold Cover Letter';
-
-	  			if(rec.allAmtSw == 'Y' || this.quoteInfo.totalSi <= rec.amtLimit){
-	  				this.aprrovalBtnTxt = 'Approve';
-	  				this.isApproved = true;
-	  			}else{
-	  				this.aprrovalBtnTxt = 'For Approval';
-	  				this.isApproved = false;
-	  			}
-	  		});
+	  	subRes.subscribe(data => {
+	  		console.log(data);
+	  		var usrGrp 		  = data['usr']['usersList'][0].userGrp;
+	  		var curRow		  = data['usrAmtLmt']['userAmtLmtList'].filter(a => a.userGrp == usrGrp && a.lineCd.toUpperCase() == this.holdCover.lineCd.toUpperCase());
+	  		var rec			  = curRow[0];
+	  		this.loading      = false;
+			this.destination  = 'SCREEN';
+			this.report		  = 'Hold Cover Letter';
+  			if(rec.allAmtSw == 'Y' || this.quoteInfo.totalSi <= rec.amtLimit){
+  				this.aprrovalBtnTxt = 'Approved';
+  				this.isApproved = true;
+  			}else{
+  				this.aprrovalBtnTxt = 'For Approval';
+  				this.isApproved = false;
+  			}
+  		});
   	}
 
   	onClickPrint(){
@@ -357,13 +365,19 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			quoStatus	: ''
 		};
 
-  		if(from.toUpperCase() == 'APPROVE'){
+		this.loading 		= true;
+		this.dialogIcon 	= 'success-message';
+  		this.dialogMessage 	= 'Status Updated';
+
+  		if(from.toUpperCase() == 'APPROVED'){
   			ids.hcStatus = 'A';
   			this.holdCover.status = 'Approved';
   			this.holdCover.approvedBy = this.ns.getCurrentUser(); 
   		}else if(from.toUpperCase() == 'FOR APPROVAL'){
   			ids.hcStatus	= 'P';
   			this.holdCover.status 	= 'Pending Approval'; 
+  			this.dialogIcon = 'success-message';
+  			this.dialogMessage = 'Pending for Approval';
   		}else if(from.toUpperCase() == 'REJECTED'){
   			ids.hcStatus = 'R';
   			this.holdCover.status = 'Rejected';
@@ -379,6 +393,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.quotationService.updateHoldCoverStatus(JSON.stringify(ids))
 	  	.subscribe(data => {
 	  		console.log(data);
+  			$('app-sucess-dialog #modalBtn').trigger('click');
+  			this.loading = false;
+  			(this.holdCover.status.toUpperCase() == 'RELEASED')?this.showModifLov():'';
 	  	});
   	}
 
@@ -431,14 +448,24 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		if(this.holdCover.optionId == '' || this.holdCover.optionId == undefined){
   		}else{
   			$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
-  			$('.warn').addClass('ng-dirty');
-  			this.modalService.dismissAll();
+			this.addDirty();  			
+			this.modalService.dismissAll();
   		}
+  	}
+
+  	onClickModif(){
+  		this.holdCoverNo 	  = '';
+  		this.holdCover.status = '';
+  		this.isModifClicked   = true;
+  		this.disableSave	  = false;
+  		this.disableApproval  = true;
+  		this.modalService.dismissAll();
   	}
 
   	onCancelModifLov(){
   		this.clearAll();
   		this.newHc(true);
+  		this.disableSave = true;
   		this.disableApproval = true;
   		this.modalService.dismissAll();
   		this.getQuoteList();
@@ -548,6 +575,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	}
 
 	addDirty(){
+		$('.r-only').find('input').addClass('ng-touched');
 		$('.r-only').find('input').addClass('ng-dirty');
 	}
 
@@ -608,6 +636,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
 	splitQuoteNo(quotationNo){
 		return quotationNo.split('-');
+	}
+
+	showSampleMdl(){
+		$('app-modal #modalBtn').trigger('click');
 	}
 
 }

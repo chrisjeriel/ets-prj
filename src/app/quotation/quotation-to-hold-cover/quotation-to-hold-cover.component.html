@@ -18,10 +18,10 @@
 										<div class="input-group" style="margin-bottom: -14px !important;">
 											<label class="form-control-sm col-sm-2">Quotation No</label>
 											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="3" appRequired ngbTooltip="Line" (change)="search('lineCd',$event)" [(ngModel)]="quoteInfo.quotationNo[0]">
-											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="4" appRequired ngbTooltip="Year" style="margin-left: 3px;"  (change)="search('year',$event)" [(ngModel)]="quoteInfo.quotationNo[1]">
-											<input type="text" class="form-control form-control-sm cap-input col-sm-2 warn text-right" maxlength="5" appRequired ngbTooltip="Sequence No" style="margin-left: 3px;"  (change)="search('seqNo',$event)" [(ngModel)]="quoteInfo.quotationNo[2]">
-											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="2" appRequired ngbTooltip="Revision No" style="margin-left: 3px;"  (change)="search('revNo',$event)" [(ngModel)]="quoteInfo.quotationNo[3]">
-											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="3" appRequired ngbTooltip="Company No" style="margin-left: 3px;"  (change)="search('cedingId',$event)" [(ngModel)]="quoteInfo.quotationNo[4]">
+											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="4" appRequired ngbTooltip="Year" style="margin-left: 3px;"  (change)="search('year',$event)" [(ngModel)]="quoteInfo.quotationNo[1]" numbers-only>
+											<input type="text" class="form-control form-control-sm cap-input col-sm-2 warn text-right" maxlength="5" appRequired ngbTooltip="Sequence No" style="margin-left: 3px;"  (change)="search('seqNo',$event)" [(ngModel)]="quoteInfo.quotationNo[2]" numbers-only>
+											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="2" appRequired ngbTooltip="Revision No" style="margin-left: 3px;"  (change)="search('revNo',$event)" [(ngModel)]="quoteInfo.quotationNo[3]" numbers-only>
+											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="3" appRequired ngbTooltip="Company No" style="margin-left: 3px;"  (change)="search('cedingId',$event)" [(ngModel)]="quoteInfo.quotationNo[4]" numbers-only>
 											<span>&nbsp;</span>
 											<div (click)="showQuoteLov()"><a><i class="fa fa-search"></i></a></div>
 											<!-- <div class="form-group" style="margin-bottom: 0px !important;margin-top: -3px !important;">
@@ -134,7 +134,7 @@
 							<div class="cust-btn-container" style="margin-top: 10px !important;">
 								<button type="button" class="cust-btn" [disabled]="disableCancelHc" (click)="showCancelHcMdl()">Cancel Hold Cover</button>
 								<button type="button" class="cust-btn" [disabled]="disableApproval" (click)="showApprovalMdl()">Approval</button>
-								<button type="button" class="cust-btn" [disabled]="disableSave" (click)="onClickSave()">Save</button>
+								<button type="button" class="cust-btn" [disabled]="disableSave" (click)="addDirty();onClickSave();">Save</button>
 							</div>
 						</div>
 					</div>
@@ -197,11 +197,11 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onCancelModifLov()"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="onClickView()"><a>View</a></button>
-        <button class="cust-btn" type="button" (click)="disableSave=false;modalService.dismissAll();"><a>Modification</a></button>
+        <button class="cust-btn" type="button" (click)="onClickModif()"><a>Modification</a></button>
     </div>
 </app-modal>
 
-<app-modal class="d-none" id="approvalMdl">
+<app-modal class="d-none" id="approvalMdl" #approvalMdl>
     <div header>Approval</div>
     <div body class="container-flex" style="min-width: 700px !important">
     	<div class="row">
@@ -214,10 +214,10 @@
  	    			</div>
  	    			<div class="input-group" style="padding-right: 10px!important;padding-left: 10px !important;">
 						<div class="cust-btn-container col-sm" style="padding-right: 0px !important">
-							<button type="button" class="cust-btn col-sm" (click)="(aprrovalBtnTxt.toUpperCase() == 'APPROVE')?updateHcStatus('APPROVE'):updateHcStatus('FOR APPROVAL');"><a>{{ aprrovalBtnTxt }}</a></button>
+							<button type="button" class="cust-btn col-sm" (click)="(aprrovalBtnTxt.toUpperCase() == 'APPROVED')?updateHcStatus('APPROVED'):updateHcStatus('FOR APPROVAL');" [disabled]="holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED' || holdCover.status.toUpperCase() == 'REJECTED'">{{ aprrovalBtnTxt }}</button>
 						</div>		
 						<div class="cust-btn-container col-sm" style="padding-left: 0px !important">
-							<button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="updateHcStatus('REJECTED');">Rejected</button>
+							<button type="button" class="cust-btn col-sm" [disabled]="!isApproved || holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED' || holdCover.status.toUpperCase() == 'REJECTED'" (click)="updateHcStatus('REJECTED');">Rejected</button>
 						</div>
  	    			</div>
  	    		</fieldset>
