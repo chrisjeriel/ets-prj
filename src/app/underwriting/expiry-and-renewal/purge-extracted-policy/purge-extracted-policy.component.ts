@@ -12,6 +12,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   	tableData:[new ExtractedPolicy("pol no",102023,2142124,new Date(),true,false)],
   	tHeader: ['Policy No', 'TSI Amount', 'Premium Amount', 'Expiry Date', 'P', 'X'],
   	dataTypes:['text','currency','currency','date', 'checkbox', 'checkbox'],
+    tooltip:[null,null,null,null,'Processed','Expired'],
   	paginateFlag:true,
   	infoFlag:true
 
@@ -25,7 +26,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   parameter() {
-        $('#modalBtn').trigger('click');
+        $('#parameter #modalBtn').trigger('click');
     }
 
    clearDates() {

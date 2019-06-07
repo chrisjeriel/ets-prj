@@ -164,6 +164,7 @@ import { ReportParamComponent } from './maintenance/system/report-param/report-p
 import { AdjusterComponent } from './maintenance/claims/adjuster/adjuster.component';
 import { MtnClaimsComponent } from './maintenance/claims/mtn-claims.component';
 import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-form/adjuster-form.component';
+import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-status.component';
 
 const appRoutes: Routes = [
 
@@ -339,6 +340,7 @@ const appRoutes: Routes = [
     { path: 'mtn-adjuster-list', component: AdjusterComponent },
     { path: 'mtn-claims', component: MtnClaimsComponent },
     { path: 'adjuster-form', component: AdjusterFormComponent },
+    { path: 'claim-status', component: ClaimStatusComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

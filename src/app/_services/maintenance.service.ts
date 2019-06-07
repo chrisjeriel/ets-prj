@@ -928,6 +928,13 @@ export class MaintenanceService{
         }
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyTreatyLimit', params, header);
     }
+
+    getClaimStatus(statusCode){
+    	const params = new HttpParams()
+    		.set('statusCode', (statusCode === null || statusCode === undefined ? '' : statusCode));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnClaimStatus',{params});
+    }
     
 }
 

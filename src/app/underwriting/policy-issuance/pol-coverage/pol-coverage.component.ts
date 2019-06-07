@@ -320,7 +320,10 @@ export class PolCoverageComponent implements OnInit {
       totalDays:0,
       pctShare:0,
       pctPml:0,
-      totalValue: 0,  
+      totalValue: 0,
+      commRtQuota:null,
+      commRtSurplus:null,
+      commRtFac:null,  
       remarks: '' 
   }
 
@@ -479,6 +482,7 @@ export class PolCoverageComponent implements OnInit {
 
   getPolCoverageAlt(){
     this.underwritingservice.getUWCoverageAlt(this.parameters[0],this.parameters[1],this.parameters[2],this.parameters[3],this.parameters[4],this.parameters[5]).subscribe((data: any) => {
+      console.log(data)
       this.passData.tableData  = [];  
       this.prevtotalSi         = 0;
       this.prevtotalPrem       = 0;

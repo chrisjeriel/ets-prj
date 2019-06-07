@@ -409,6 +409,7 @@ import { MtnNonrenewReasonComponent } from './maintenance/mtn-nonrenew-reason/mt
 import { MtnClaimsComponent } from './maintenance/claims/mtn-claims.component';
 import { AdjusterComponent } from './maintenance/claims/adjuster/adjuster.component';
 import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-form/adjuster-form.component';
+import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-status.component';
 
 @NgModule({
     imports: [
@@ -824,6 +825,7 @@ import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-fo
         MtnClaimsComponent,
         AdjusterComponent,
         AdjusterFormComponent,
+        ClaimStatusComponent,
     ],
 
   	providers: [
