@@ -1024,6 +1024,15 @@ export class UnderwritingService {
             .set('distId', distId === undefined || distId === null || distId === '' ? '' : distId)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDist', {params});
     }
+
+    postDistribution(postData){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/postDistribution', JSON.stringify(postData), header);
+    }
 }            
 
             
