@@ -68,7 +68,6 @@ export class ProvinceComponent implements OnInit {
     desc: any;
 
   cancelFlag: boolean;
-  provinceCdArray : any = [];
   btnDisabledSave: boolean = true;
   tempTableData:[];
   mtnProvinceReq  : any = { 
@@ -112,7 +111,6 @@ export class ProvinceComponent implements OnInit {
 
   showRegionLOV(){
   	$('#regionLOV #modalBtn').trigger('click');
-    $('#regionLOV #modalBtn').addClass('ng-dirty')
   }
 
   setProvince(event){
@@ -171,6 +169,8 @@ export class ProvinceComponent implements OnInit {
   }
 
   checkCode(ev){
+    $('#regionCode').removeClass('ng-dirty');
+    $('#cust-table-container').removeClass('ng-dirty');
     if (this.isEmptyObject(this.regionCD)){
        this.clear();
     } else {
@@ -191,13 +191,15 @@ export class ProvinceComponent implements OnInit {
   onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
       if(this.checkFields()){
-        if(this.hasDuplicates(this.provinceCdArray)){
-          this.dialogMessage="Unable to save the record. Province Code must be unique.";
-          this.dialogIcon = "warning-message";
-          this.successDialog.open();
-        } else {
-          this.confirmDialog.confirmModal();
-        }
+        let provinceCds:string[] = this.provinceTable.passData.tableData.map(a=>a.provinceCd);
+          if(provinceCds.some((a,i)=>provinceCds.indexOf(a)!=i)){
+            this.dialogMessage = 'Unable to save the record. Province Code must be unique.';
+            this.dialogIcon = 'error-message';
+            this.successDialog.open();
+            return;
+          } else {
+                this.confirmDialog.confirmModal();
+          }
       }else{
         this.dialogMessage="Please check field values.";
         this.dialogIcon = "error";
@@ -210,18 +212,12 @@ export class ProvinceComponent implements OnInit {
   }
 
   checkFields(){
-    this.provinceCdArray = [];
       for(let check of this.passData.tableData){
-        this.provinceCdArray.push(check.provinceCd);
         if(check.provinceCd === null || Number.isNaN(check.provinceCd)  || check.description === null || check.description.length === 0){
           return false;
         }
       }
       return true;
-  }
-
-  hasDuplicates(array) {
-    return (new Set(array)).size !== array.length;
   }
 
   onClickSaveProvince(cancelFlag?){
@@ -274,17 +270,27 @@ export class ProvinceComponent implements OnInit {
   }
 
   deleteProvince(){
-      if (this.selectedData.add){
+       if (this.selectedData.add){
           this.deleteBool = false;
-        }else {
+          this.provinceTable.indvSelect.deleted = true;
+          this.provinceTable.selected  = [this.provinceTable.indvSelect];
+          this.provinceTable.confirmDelete();
+       }else {
           this.deleteBool = true;  
-        }
-
-      this.provinceTable.indvSelect.deleted = true;
-      this.provinceTable.selected  = [this.provinceTable.indvSelect]
-      this.provinceTable.confirmDelete();
-
+          this.mtnService.getMtnCity(this.regionCD,this.provinceCD,null).subscribe(data => {
+            if(data['region'].length > 0){
+               this.dialogMessage="You are not allowed to delete a Province that is used by City, District or Block.";
+               this.dialogIcon = "warning-message";
+               this.successDialog.open();
+            } else {
+               this.provinceTable.indvSelect.deleted = true;
+               this.provinceTable.selected  = [this.provinceTable.indvSelect];
+               this.provinceTable.confirmDelete();
+            }
+          });
+       }
   }
+
 
   onClickDelProvince(obj : boolean){
     this.mtnProvinceReq.saveProvince = [];
@@ -293,23 +299,13 @@ export class ProvinceComponent implements OnInit {
     this.deletedData = [];
     this.passData.disableGeneric = true;
       if(obj){
-        this.mtnService.getMtnCity(this.regionCD,this.provinceCD,null).subscribe(data => {
-          if(data['region'].length > 0){
-             this.dialogMessage="You are not allowed to delete a Province that is used by City, District or Block.";
-             this.dialogIcon = "warning-message";
-             this.successDialog.open();
-             this.getMtnProvince();
-          } else {
             this.deletedData.push({
                     "provinceCd": this.provinceCD
                      });
             this.mtnProvinceReq.saveProvince = this.editedData;
             this.mtnProvinceReq.deleteProvince = this.deletedData;     
             this.saveProvince(this.mtnProvinceReq);
-          }
-        });
       } 
-
   }
 
   cancel(){
