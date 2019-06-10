@@ -109,6 +109,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	destination		: string = '';
 	report			: string = '';
 	isModifClicked	: boolean = false;
+	passEvent		: any;
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 				private ns : NotesService, private router: Router, private userService : UserService) { 
@@ -282,6 +283,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.opt.loadingFlag = true;
   		this.quotationService.getQuoteOptions(this.holdCover.quoteId,'')
   		.subscribe(data => {
+  			this.ns.lovLoader(this.passEvent,0);
   			this.passDataOptionsLOV.tableData = [];
   			console.log('Entered in Quote Options');
   			var rec = data['quotation']['optionsList'];
@@ -475,8 +477,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.rowRecOpt = event;
   	}
 
-  	searchQuoteId(){
-  		(this.passDataOptionsLOV.tableData.some(i => i.optionId == this.holdCover.optionId) == true)?'':this.holdCover.optionId='';
+  	searchQuoteId(event){
+  		this.passEvent = event;
+  		this.ns.lovLoader(this.passEvent,1);
+  		(this.passDataOptionsLOV.tableData.some(i => i.optionId == this.holdCover.optionId) == true)?setTimeout(()=>{this.ns.lovLoader(this.passEvent,0)},500):this.holdCover.optionId='';
   		this.holdCover.optionId == ''?this.showOptionsLov():'';
   	}
 
@@ -575,8 +579,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	}
 
 	addDirty(){
-		$('.r-only').find('input').addClass('ng-touched');
-		$('.r-only').find('input').addClass('ng-dirty');
+		$('.r-only').find('input').addClass('ng-dirty ng-touched');
 	}
 
 	newHc(isNew:boolean){

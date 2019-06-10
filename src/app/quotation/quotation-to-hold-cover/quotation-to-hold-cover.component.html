@@ -65,7 +65,7 @@
 											<label class="form-control-sm col-sm-2">Hold Cover No</label>
 											<input type="text" class="form-control form-control-sm cust-sm" readonly [(ngModel)]="holdCoverNo">
 											<label class="form-control-sm col-sm-2">Option No</label>
-											<input type="text" class="form-control form-control-sm col-sm-7 warn r-only" readonly appRequired numbers-only [(ngModel)]="holdCover.optionId" (change)="searchQuoteId();addDirty();">
+											<input type="text" class="form-control form-control-sm col-sm-7 warn r-only" readonly appRequired numbers-only [(ngModel)]="holdCover.optionId" (change)="searchQuoteId($event);addDirty();">
 											<div *ngIf="!fieldIconDsbl" class="text-search-ico" (click)="showOptionsLov()"><a><i class="fa fa-search"></i></a></div>
 										</div>
 										<div class="input-group" style="margin-bottom: -14px !important;">
