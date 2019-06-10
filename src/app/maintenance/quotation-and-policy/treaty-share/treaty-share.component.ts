@@ -492,6 +492,7 @@ export class TreatyShareComponent implements OnInit {
 
 	treatyShareTDataChange(data) {
 		this.treatyYearTable.indvSelect.edited = true;
+		this.treatyYearTable.markAsDirty();
 		if(data.hasOwnProperty('lovInput')) {
 	    	this.hiddenCedingCo = this.treatyShareData.tableData.filter(a => a.trtyCedId !== undefined && !a.deleted && a.showMG != 1).map(a => a.trtyCedId);
 
@@ -539,6 +540,7 @@ export class TreatyShareComponent implements OnInit {
 
 	cedingRetentionTDataChange(data) {
 		this.treatyYearTable.indvSelect.edited = true;
+		this.treatyYearTable.markAsDirty();
 		if(data.hasOwnProperty('lovInput')) {
 	    	this.hiddenCedingCo = this.cedingRetentionData.tableData.filter(a => a.cedingId !== undefined && !a.deleted && a.showMG != 1).map(a => a.cedingId);
 
@@ -604,7 +606,7 @@ export class TreatyShareComponent implements OnInit {
 
 							this.cancel = false;
 							return;
-						} else if(totalShare != 100) {
+						} else if(totalShare != 100 && e.treatyShareList.filter(a => a.trtyCedId != undefined && !a.deleted).length > 0) {
 							this.dialogIcon = 'error';
 							this.successDialog.open();
 
@@ -628,63 +630,6 @@ export class TreatyShareComponent implements OnInit {
 				}
 			}
 		}
-
-		/*for(let d of td1) {
-			if(d.edited && !d.deleted && (d.treatyYear == '' || d.treatyYear == null)) {
-				this.dialogIcon = 'error';
-				this.successDialog.open();
-
-				this.cancel = false;
-				return;
-			} else if(d.edited && !d.deleted && (d.treatyYear != '' && d.treatyYear != null) && td2.filter(a => a.edited && !a.deleted).length == 0) {
-				this.dialogIcon = 'error';
-				this.successDialog.open();
-
-				this.cancel = false;
-				return;
-			}
-		}
-
-		for(let d of td2) {
-			if(d.edited && !d.deleted &&
-				(d.treatyId == '' || d.commRate == '' || d.commRate == null || isNaN(d.commRate) || d.sortSeq == '' || d.sortSeq == null || isNaN(d.sortSeq))) {
-				this.dialogIcon = 'error';
-				this.successDialog.open();
-
-				this.cancel = false;
-				return;
-			}
-		}
-
-		td3.forEach(a => totalShare += !a.deleted ? a.pctShare : 0);
-
-		for(let d of td3) {
-			if(d.edited && !d.deleted &&
-				(d.trtyCedId == '' || d.pctShare == '' || d.pctShare == null || isNaN(d.pctShare) || d.sortSeq == '' || d.sortSeq == null || isNaN(d.sortSeq))) {
-				this.dialogIcon = 'error';
-				this.successDialog.open();
-
-				this.cancel = false;
-				return;
-			} else if(totalShare != 100 && td3.filter(a => a.trtyCedId != undefined && !a.deleted).length > 0) {
-				this.dialogIcon = 'error';
-				this.successDialog.open();
-
-				this.cancel = false;
-				return;
-			}
-		}
-
-		for(let d of td4) {
-			if(d.edited && !d.deleted &&
-				(d.cedingId == '' || d.retLine1 == '' || d.retLine1 == null || isNaN(d.retLine1) || d.retLine2 == '' || d.retLine2 == null || isNaN(d.retLine2))) {
-				this.dialogIcon = 'error';
-				this.successDialog.open();
-
-				this.cancel = false;
-				return;
-			}
-		}*/
 
 		this.confirmSave.confirmModal();
 	}
@@ -764,74 +709,23 @@ export class TreatyShareComponent implements OnInit {
 					}
 					
 				});
+			} else if(a.deleted) {
+				a.treatyCommList.forEach(tc => {
+					this.params.deleteTreatyComm.push(tc);
+				});
 			}
 		});
 
-		console.log(this.params);
-
-		/*for(let d of td) {
-			if(d.deleted) {
-				td2.filter(a => a.treatyYear == d.treatyYear).forEach(b => {
-					this.params.deleteTreatyComm.push(b);
-				});
+		this.ms.saveMtnTreatyShare(this.params).subscribe(data => {
+			if(data['returnCode'] == -1) {
+				this.dialogIcon = "success";
+				this.successDialog.open();
+				this.getMtnTreatyComm();
+			} else {
+				this.dialogIcon = "error";
+				this.successDialog.open();
 			}
-		}
-
-		for(let d of td2) {
-			if(d.edited && !d.deleted) {
-				d.treatyYear = this.treatyYearSelected.treatyYear;
-				d.createUser = this.ns.getCurrentUser();
-				d.createDate = this.ns.toDateTimeString(d.createDate);
-				d.updateUser = this.ns.getCurrentUser();
-				d.updateDate = this.ns.toDateTimeString(0);
-
-				this.params.saveTreatyComm.push(d);
-			} else if(d.deleted) {
-				this.params.deleteTreatyComm.push(d);
-			}
-		}
-
-		for(let d of td3) {
-			if(d.edited && !d.deleted) {
-				d.treatyYear = this.treatyYearSelected.treatyYear;
-				d.treatyId = this.treatyCommSelected.treatyId;
-				d.createUser = this.ns.getCurrentUser();
-				d.createDate = this.ns.toDateTimeString(d.createDate);
-				d.updateUser = this.ns.getCurrentUser();
-				d.updateDate = this.ns.toDateTimeString(0);
-
-				this.params.saveTreatyShare.push(d);
-			} else if(d.deleted) {
-				this.params.deleteTreatyShare.push(d);
-			}
-		}
-
-		for(let d of td4) {
-			if(d.edited && !d.deleted) {
-				d.treatyYear = this.treatyYearSelected.treatyYear;
-				d.treatyId = this.treatyCommSelected.treatyId;
-				d.trtyCedId = this.treatyShareSelected.trtyCedId;
-				d.createUser = this.ns.getCurrentUser();
-				d.createDate = this.ns.toDateTimeString(d.createDate);
-				d.updateUser = this.ns.getCurrentUser();
-				d.updateDate = this.ns.toDateTimeString(0);
-
-				this.params.saveCedRetention.push(d);
-			} else if(d.deleted) {
-				this.params.deleteCedRetention.push(d);
-			}
-		}*/
-
-		// this.ms.saveMtnTreatyShare(this.params).subscribe(data => {
-		// 	if(data['returnCode'] == -1) {
-		// 		this.dialogIcon = "success";
-		// 		this.successDialog.open();
-		// 		this.getMtnTreatyComm();
-		// 	} else {
-		// 		this.dialogIcon = "error";
-		// 		this.successDialog.open();
-		// 	}
-		// });
+		});
 	}
 
 	onCopySetupClick() {
@@ -841,7 +735,7 @@ export class TreatyShareComponent implements OnInit {
 	onClickModalCopy(force?) {
 		if(this.treatyYearSelected.treatyYear == Number(this.copyToYear) || Number(this.copyToYear) == 0) {
 			this.dialogIcon = 'error';
-			this.dialogMessage = 'Invalid Year!'; // message not showing
+			this.dialogMessage = 'Invalid Year!';
 			this.successDialog.open();
 			return;
 		}
