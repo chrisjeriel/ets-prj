@@ -2633,7 +2633,7 @@
         <!-- </fieldset> -->
     </div>
     <div footer class="w-100 text-right">
-        <button class="cust-btn" type="button" (click)="onClickModalCopy('force')"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="forceExt = 1; prepareParam(); modalService.dismissAll();"><a>Yes</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>

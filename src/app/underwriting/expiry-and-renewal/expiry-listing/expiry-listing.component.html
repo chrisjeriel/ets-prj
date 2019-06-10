@@ -15,26 +15,26 @@
 									<div class="row">
 										<div class="col-sm">
 											<div class="row" style="margin-top: 0px;margin-right: -4px;">
-												<button class="cust col-sm">Details</button>
+												<button class="cust col-sm" (click)="gotoInfo();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Details</button>
 												<button class="cust col-sm" (click)="showEditModal(content)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Edit</button>
-												<button class="cust col-sm">Purge</button>
-												<button class="cust col-sm">Save</button>
+												<button class="cust col-sm" (click)="onClickPurge();">Purge</button>
+												<button class="cust col-sm" (click)="onClickRenSave();">Save</button>
 											</div>
 											<div class="row" style="margin-right: -4px;">
 												<button class="cust col-sm">Print</button>
 												<button class="cust col-sm">Search</button>
-												<button class="cust col-sm">Update</button>
-												<button class="cust col-sm">Process</button>
+												<button class="cust col-sm" (click)="onClickUpdate();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Update</button>
+												<button class="cust col-sm" (click)="onClickProcess();">Process</button>
 											</div>
 											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Changes</label>
-												<textarea class="form-control form-control-sm col-sm-8" [disabled]="changesFlag"></textarea>
+												<textarea class="form-control form-control-sm col-sm-8" [disabled]="!changesFlag" (change)="changesValueChanged($event);" [ngModel]="changes" (ngModelChange)="changes = $event"></textarea>
 											</div>
 											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
-												<input type="text" class="form-control form-control-sm col-sm-3" [disabled]="reasonFlag">
-												<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-												<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;" [disabled]="reasonFlag">
+												<input type="text" [ngModel]="nrReasonCd" (ngModelChange)="nrReasonCd = $event.toUpperCase()" (change)="checkCode($event, 'nrReason');" class="form-control form-control-sm col-sm-3" [disabled]="!reasonFlag">
+												<div class="text-search-ico"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
+												<input type="text" [ngModel]="nrReasonDescription" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;" [disabled]="!reasonFlag">
 											</div>
 											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Remarks</label>
@@ -51,19 +51,19 @@
 														</div>
 														<div class="col-sm-3">
 															<div class="input-group" style="    margin-left: 29px !important;">
-															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<input type="radio" (click)="tagProcess('tAll');" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
 															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Tag All</label>
 															</div>
 														</div>
 														<div class="col-sm-3">
 															<div class="input-group" style="    margin-left: -41px !important;">
-															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<input type="radio" (click)="tagProcess('uAll');" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
 															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Untag All</label>
 															</div>
 														</div>
 														<div class="col-sm-3">
 															<div class="input-group" style="margin-left: -102px !important;">
-															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<input type="radio" (click)="tagProcess('tagSel');" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
 															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Selected Policies</label>
 															</div>
 														</div>
@@ -109,7 +109,7 @@
 											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
 												<input type="text" class="form-control form-control-sm col-sm-3">
-												<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+												<div class="text-search-ico"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
 												<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;">
 											</div>
 											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
@@ -257,11 +257,44 @@
 			<div class="row" style="margin-right: 400px">
 				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>CAT Perils</a></button>
 				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+				<button class="cust-btn" type="button" (click)="savePolicyChanges();"><a>Save</a></button>
 			</div>
 		</div>
 	</app-modal>
-
 	<div>Selected Value : {{ selectedPolicyString }}</div>
 </div>
 <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="lineCd" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true" #mtnSectionCover></app-mtn-section-covers>
+<app-mtn-nonrenew-reason id="nonRenewReasonLOV" (selectedData)="selectedNRLOV($event)" #mtnNonRenewReason></app-mtn-nonrenew-reason>
+<app-confirm-save id="extractedPolicies" (onYes)="saveChangesToExtPolicy()"></app-confirm-save>
+
+<app-modal class="d-none" id="processRenewablePolicyModal">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset" style="text-align: center" *ngIf="validForRenewalProcessing">                
+            <p>Are you sure you want to process selected Renewable Policies?</p>
+        </div>
+        <div class="custom-row-inline-inset" style="text-align: center" *ngIf="!validForRenewalProcessing">                
+            <p>No selected policy to process.</p>
+        </div>
+    </div>
+    <div footer class="w-100 text-right" *ngIf="validForRenewalProcessing">
+        <button class="cust-btn" type="button" (click)="processRenewalPolicies(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+    <div footer class="w-100 text-right" *ngIf="!validForRenewalProcessing">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>OK</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="purgeRenewablePolicyModal">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset" style="text-align: center">                
+            <p>Proceed to Purge Extracted Policy screen?</p>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="gotoPurgeExtractedPolicy(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>

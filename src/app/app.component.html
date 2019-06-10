@@ -466,6 +466,8 @@
                             <ng-template ngbPanelContent>
                                 <!--  -->
                                 <button [routerLink]="['/maintenance-qu-pol']" class="button btn btn-link">Quotation & Policy</button>
+                                <br/>
+                                <button [routerLink]="['/mtn-claims']" class="button btn btn-link">Claims</button>
                                 <!--  -->
                                 <ngb-accordion #acc="ngbAccordion">
 
@@ -538,7 +540,7 @@
                         </a>
                     </div>
                 </nav>
-                <div style="text-align: center">
+                <div style="text-align: center" id="wrapperDiv">
                     <div class="mainContentPad">
                         <alert></alert>
                         <router-outlet></router-outlet>

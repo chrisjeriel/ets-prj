@@ -86,7 +86,7 @@
         <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != '' && copyRiskName != ''" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && (copyCedingName == '' || copyRiskName == '')" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
-        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Cancel</a></button>
+        <!-- <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Cancel</a></button> -->
         <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0; copyModalToGenInfo(copyToQuotationNo)"><a>Ok</a></button>
     </div>
 </app-modal>
@@ -122,7 +122,7 @@
         <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != ''" class="cust-btn" type="button" (click)="copyIntCompOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
-        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
+        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0; intCompToGenInfo();"><a>Ok</a></button>
     </div>
 </app-modal>
 <!-- END COPY INTERNAL COMP -->

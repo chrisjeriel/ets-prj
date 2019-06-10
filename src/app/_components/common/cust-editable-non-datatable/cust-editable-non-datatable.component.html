@@ -243,7 +243,7 @@ span.ui-column-resizer {
 
                                     <!-- NEW -->
                                     <div *ngSwitchCase="'date'" class="dp-cont">
-                                        <datepicker [type]="'date'" [value]="data[key] | date:'yyyy-MM-dd'" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (focused)="focus(data)" [table]="true"></datepicker>
+                                        <datepicker [type]="'date'" [value]="data[key] | date:'yyyy-MM-dd'" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
                                     </div>
 
                                     <!-- OLD -->
@@ -251,7 +251,7 @@ span.ui-column-resizer {
 
                                     <!-- NEW -->
                                     <div *ngSwitchCase="'time'" class="dp-cont">
-                                        <datepicker [type]="'time'" [showIcon]="false" [value]="data[key]" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (focused)="focus(data)" [table]="true"></datepicker>
+                                        <datepicker [type]="'time'" [showIcon]="false" [value]="data[key]" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
                                     </div>
 
                                     <!-- END TEST NEW DATEPICKER -->

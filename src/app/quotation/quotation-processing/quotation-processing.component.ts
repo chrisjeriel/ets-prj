@@ -218,6 +218,7 @@ export class QuotationProcessingComponent implements OnInit {
     copyRiskName: any = "";
     copyIntCompRiskId: any = "";
     copyIntCompRiskName: any = "";
+    routeNewQuoteId: number;
 
     dialogMessage = "";
     dialogIcon = "";
@@ -602,7 +603,7 @@ showCedingCompanyIntCompLOV() {
             this.quotationService.savingType = savingType;
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo[0], from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId, exitLink:'/quotation-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quoteId: this.riskIdList[0].quoteId, quotationNo: this.existingQuotationNo[0], from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId, exitLink:'/quotation-processing' }], { skipLocationChange: true });
             },100);
         }
     }
@@ -660,6 +661,7 @@ showCedingCompanyIntCompLOV() {
             if(data['returnCode'] == -1) {
                 this.retrieveQuoteListingMethod();
                 this.copyToQuotationNo = data['quotationNo'];
+                this.routeNewQuoteId = data['quoteId'];
 
                 this.copyStatus = 1;
                 this.copyQuoteId = "";
@@ -748,6 +750,7 @@ showCedingCompanyIntCompLOV() {
             if(data['returnCode'] == -1) {
                 
                 this.copyToQuotationNo = data['quotationNo'];
+                this.routeNewQuoteId = data['quoteId'];
 
                 //insert sa quote_competition
                 var internalCompParams: any[] = [{
@@ -776,7 +779,7 @@ showCedingCompanyIntCompLOV() {
                 this.copyRiskName = "";
                 this.copyIntCompRiskId = "";
 
-                this.retrieveQuoteListingMethod();
+                // this.retrieveQuoteListingMethod();
             } else if (data['returnCode'] == 0) {
                 this.dialogMessage = data['errorList'][0].errorMessage;
                 this.dialogIcon = "error";
@@ -796,7 +799,21 @@ showCedingCompanyIntCompLOV() {
         this.quotationService.savingType = 'normal';
 
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, quotationNo : this.quotationNo, from: 'quo-processing', exitLink: '/quotation-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, quoteId: this.routeNewQuoteId, quotationNo: this.quotationNo, from: 'quo-processing', exitLink: '/quotation-processing' }], { skipLocationChange: true });
+        },100); 
+    }
+
+    intCompToGenInfo() {
+        this.line = this.copyToQuotationNo.split("-")[0];
+        this.quotationNo = this.copyToQuotationNo;
+
+        this.quotationService.toGenInfo = [];
+        this.quotationService.toGenInfo.push("edit", this.line);
+        
+        this.quotationService.savingType = 'normal';
+
+        setTimeout(() => {
+            this.router.navigate(['/quotation', { line: this.line, quoteId: this.routeNewQuoteId, quotationNo: this.quotationNo, from: 'quo-processing', exitLink: '/quotation-processing' }], { skipLocationChange: true });
         },100); 
     }
 

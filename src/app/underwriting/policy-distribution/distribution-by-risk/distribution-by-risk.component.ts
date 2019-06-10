@@ -337,7 +337,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
     openCoInsurance(){
       this.coInsTable.loadingFlag = true;
-      this.polService.getDistCoIns(this.riskDistributionData.riskDistId).subscribe((data: any)=>{
+      this.polService.getDistCoIns(this.riskDistributionData.riskDistId,this.params.policyId).subscribe((data: any)=>{
         this.coInsuranceData.tableData = data.distCoInsList;
         this.coInsTable.refreshTable();
         this.coInsTable.loadingFlag = false;

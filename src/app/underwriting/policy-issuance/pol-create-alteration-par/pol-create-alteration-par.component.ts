@@ -180,8 +180,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
       var coInsAlt = data['coInsAlt'];
       var coInsStatus = data['coInsStatus'];
       
-      var inProgAlt = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS');
-      var doneAlt = polList.filter(p => p.statusDesc.toUpperCase() != 'IN PROGRESS');
+      var inProgAlt = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS');// || p.statusDesc.toUpperCase() === 'IN FORCE');
+      var doneAlt = polList.filter(p => p.statusDesc.toUpperCase() != 'IN PROGRESS');// || p.statusDesc.toUpperCase() != 'IN FORCE');
 
       if(inProgAlt.length == 0 && coInsAlt != 1 && coInsStatus != 1) {
         var line = this.polNo[0];
