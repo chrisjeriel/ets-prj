@@ -156,7 +156,8 @@ export class ReadyForPrintingComponent implements OnInit {
     pagination: true,
     pageStatus: true,
     keys: ['quotationNo','approvedBy','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createdBy'],
-    exportFlag: true
+    exportFlag: true,
+    pageID: 'readyForPrintingTbl'
   }
 
   searchParams: any[] = [];

@@ -7,10 +7,6 @@
         <ngb-tab class="ngb-tab" title="Quotation Processing">
             <ng-template ngbTabContent style="padding-top: 10px !important;">
                 <div>
-                    <!-- 
-                        USE (searchToDb) event emitter to get the search values of your filter. Then use the values
-                        as params for your http get method.
-                    -->
                     <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="selectedQuotation = $event; onRowDblClick()"
                         (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickIntCompCopy('fromScreen');" (export)="export()"></app-cust-non-datatable>
                 </div>
@@ -34,23 +30,6 @@
 
 <!-- Copy Modal -->
 <app-modal class="hidden" id="copyModal" [mdlConfig]="mdlConfig">
-    <!-- <div header>Quotation No.</div>
-    <div body>
-        <fieldset class="scheduler-border">
-            <div class="custom-row-inline-inset" style="text-align: center">
-                <p>This Quotation No.</p>
-                <p style="color:#557a95"><strong>CAR-2018-00001-00-99</strong></p>
-                <p>has been copied to Quotation No.</p>
-                <p style="color:red"><strong>CAR-2018-00002-00-00</strong></p>
-            </div>
-        </fieldset>
-    </div>
-    <div footer>
-        <div class="d-flex justify-content-center">
-            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
-        </div>
-    </div> -->
     <div header>Copy Quote Details</div>
     <div *ngIf="copyStatus == 0" body>
         <fieldset class="scheduler-border" style="padding-bottom: 4px !important;">
@@ -86,7 +65,6 @@
         <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != '' && copyRiskName != ''" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && (copyCedingName == '' || copyRiskName == '')" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
-        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0; copyModalToGenInfo(copyToQuotationNo)"><a>Ok</a></button>
     </div>
 </app-modal>
@@ -122,7 +100,7 @@
         <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != ''" class="cust-btn" type="button" (click)="copyIntCompOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
-        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
+        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0; intCompToGenInfo();"><a>Ok</a></button>
     </div>
 </app-modal>
 <!-- END COPY INTERNAL COMP -->
@@ -163,7 +141,6 @@
         <button [class.cust-btn-disabled]="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();" [disabled]="description == '' || typeOfCession == '' || riskName == ''"><a>Next</a></button>
     </div>
 </app-modal>
-
 <!-- End Add Modal -->
 
 <!-- Modification or Internal Competition Modal -->

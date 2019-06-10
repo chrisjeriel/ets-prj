@@ -9,6 +9,8 @@ export class PolicyDistributionComponent implements OnInit {
 
   constructor() { }
 
+  riskDistId: number;
+
   ngOnInit() {
   }
 

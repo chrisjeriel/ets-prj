@@ -240,6 +240,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   fromInq:any = false;
   showPolicyNo: string;
   lineClasses: any[] = [];
+  withCovDtls: boolean = false;
+  prevInceptExt: string = "";
+  prevEffExt: string = "";
+  forceExt: number;
 
   wordingsKeys:string[] = [
     'polwText01',
@@ -444,9 +448,17 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
         if(this.alteration && !this.newAlt) {
           var polNo = this.policyInfo.policyNo.split('-');
-          polNo[polNo.length-1] = String(Number(polNo[polNo.length-1]) - 1).padStart(3, '0');
+
+          this.underwritingService.getUWCoverageAlt(polNo[0],polNo[1],Number(polNo[2]),polNo[3],Number(polNo[4]),polNo[5]).subscribe(data => {
+            this.withCovDtls = data['policy'] != null;
+            this.prevInceptExt = this.policyInfo.inceptDate;
+            this.prevEffExt = this.policyInfo.effDate;
+          });
+
+          polNo[polNo.length-1] = Number(polNo[polNo.length-1]) == 0 ? '000' : String(Number(polNo[polNo.length-1]) - 1).padStart(3, '0');
           // if (this.prevPolicyId !== '') {
             this.underwritingService.getPolGenInfo(null, polNo.join('-')).subscribe((data:any) => {
+              this.refPolicyId = data.policy.policyId;
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
               this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.effDate));
               this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
@@ -474,6 +486,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.polWordings.altText = "";
         this.prevInceptDate = this.policyInfo.inceptDate;
         this.prevEffDate = this.policyInfo.effDate;
+        this.prevExpiryDate = this.policyInfo.expiryDate;
+        this.policyInfo.issueDate = this.ns.toDateTimeString(0);
+        this.policyInfo.effDate = this.ns.toDateTimeString(0);
+        this.policyInfo.createUser = "";
+        this.policyInfo.createDate = "";
+        this.policyInfo.updateUser = "";
+        this.policyInfo.updateDate = "";
 
         this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag: 'Y', ocTag: this.policyInfo.openCoverTag, lineCd: this.policyInfo.lineCd })
                        .subscribe(data =>{
@@ -492,6 +511,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
         this.policyInfo.issueDate = this.ns.toDateTimeString(new Date().setSeconds(0));
         this.policyInfo.effDate = this.ns.toDateTimeString(new Date().setSeconds(0));
+
       }
     });
 
@@ -746,8 +766,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.cancelFlag = cancelFlag !== undefined;
     this.saveBtnClicked = true;
 
+
+
     var savePolGenInfoParam = {
-      "savingType"      : this.alteration ? 'alteration' : 'normal',
+      "savingType"      : this.alteration && this.forceExt == 1 ? 'alteration_ext' : this.alteration ? 'alteration' : 'normal',
       "refPolicyId"     : this.refPolicyId,
       "acctDate"        : this.policyInfo.acctDate,
       "altNo"           : this.policyInfo.altNo,
@@ -866,6 +888,15 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
    if(this.validate(savePolGenInfoParam)){
      if(this.alteration && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate) {
        savePolGenInfoParam['extensionTag'] = 'Y';
+       if(this.newAlt) {
+         savePolGenInfoParam['savingType'] = 'alteration_ext';
+       }
+     } else {
+       savePolGenInfoParam['extensionTag'] = 'N';
+       if(!this.newAlt) {
+         savePolGenInfoParam['refPolicyId'] = "";
+       }
+       
      }
 
      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
@@ -886,6 +917,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');
          /*this.form.control.markAsPristine();*/
+         this.forceExt = 0;
          this.getPolGenInfo('noLoading');
        }
      });
@@ -899,7 +931,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    if((this.withCovDtls && this.policyInfo.extensionTag == 'N' && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate)
+      || (this.withCovDtls && this.policyInfo.extensionTag == 'Y' && (this.prevInceptExt != this.policyInfo.inceptDate || this.prevEffExt != this.policyInfo.effDate))) { //if extension or ginalaw yung incept date, eff date
+      $('#polGenInfoConfirmationModal #modalBtn').trigger('click');  
+    } else {
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
   }
 
   cancel(){

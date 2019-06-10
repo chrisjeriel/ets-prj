@@ -90,9 +90,9 @@
 		<div class="form-row custom-row-inline-inset">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-				<input  #from class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="polAlopData.issueDate?.split('T')[0]" [readonly]="!alterFlag" (ngModelChange)="polAlopData.issueDate = $event" (change)="checkDates()" name="issueDate">
+				<input  #from class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="polAlopData.issueDate?.split('T')[0]" (ngModelChange)="polAlopData.issueDate = $event" (change)="checkDates()" name="issueDate">
 				<label class="form-control-sm col-sm-1" for="periodTo">to</label>
-				<input  #to class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="polAlopData.expiryDate?.split('T')[0]" [readonly]="!alterFlag" (ngModelChange)="polAlopData.expiryDate = $event" name="expiryDate" (change)="checkDates()">
+				<input  #to class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="polAlopData.expiryDate?.split('T')[0]" (ngModelChange)="polAlopData.expiryDate = $event" name="expiryDate" (change)="checkDates()">
 				<label class="form-control-sm col-sm-2 text-left">(Scheduled Date of Completion)</label>
 
 			</div>

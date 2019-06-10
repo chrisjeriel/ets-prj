@@ -150,18 +150,27 @@ export class MtnCATPerilComponent implements OnInit {
   saveCat(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    this.maintenanceService.saveMtnCatPeril(this.saveData).subscribe((data) => {
-      console.log(data)
-      if(data['returnCode'] == 0) {
-          this.dialogMessage = data['errorList'][0].errorMessage;
-          this.dialogIcon = "error";
-          this.successDiag.open();
-        } else{
-          this.dialogIcon = "success";
-          this.successDiag.open();
-          this.getCatPeril();
-        }
-    })
+
+    if(this.edited.length === 0 && this.deleted.length === 0){
+        setTimeout(()=> {
+        this.dialogMessage = "Nothing to Save.";
+        this.dialogIcon = "info";
+        this.successDiag.open();
+        },0);
+    }else{
+       this.maintenanceService.saveMtnCatPeril(this.saveData).subscribe((data) => {
+         console.log(data)
+         if(data['returnCode'] == 0) {
+             this.dialogMessage = data['errorList'][0].errorMessage;
+             this.dialogIcon = "error";
+             this.successDiag.open();
+           } else{
+             this.dialogIcon = "success";
+             this.successDiag.open();
+             this.getCatPeril();
+           }
+       });
+     }
   }
 
   cancel(){
