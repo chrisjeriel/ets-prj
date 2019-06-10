@@ -1033,6 +1033,21 @@ export class UnderwritingService {
             .set('distId', distId === undefined || distId === null || distId === '' ? '' : distId)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDist', {params});
     }
+
+    getPolForPurging(policyId){
+         const params = new HttpParams()
+            .set('policyId', policyId === undefined || policyId === null || policyId === '' ? '' : policyId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolForPurging', {params});
+    }
+
+    savePolForPurging(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/purgeExpiringPol',JSON.stringify(params),header);
+    }
 }            
 
             

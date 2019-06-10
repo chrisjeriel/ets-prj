@@ -935,6 +935,16 @@ export class MaintenanceService{
 
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnClaimStatus',{params});
     }
+
+    saveMtnClaimStatus(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClaimStatus',params,header);
+    }
+    
     
 }
 
