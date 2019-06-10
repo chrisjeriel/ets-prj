@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>{{title}} <strong>{{policyInfo.policyNo}}</strong></h4>
-	<ngb-tabset (tabChange)="onTabChange($event)">
+	<ngb-tabset #tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
 				<app-pol-gen-info-open-cover [policyInfo]="policyInfo"></app-pol-gen-info-open-cover>

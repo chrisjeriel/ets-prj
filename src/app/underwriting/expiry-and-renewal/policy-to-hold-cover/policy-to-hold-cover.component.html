@@ -108,14 +108,20 @@
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period From</label>
-                                                    <input type="date" class="form-control form-control-sm cust-sm warn col-sm" [ngModel]="periodFromDate.date" (ngModelChange)="periodFromDate.date = $event" name="pfdate" appRequired [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
-                                                    <input type="time" name="pftime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodFromDate.time" (ngModelChange)="periodFromDate.time = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                                    <!-- <input type="date" class="form-control form-control-sm cust-sm warn col-sm" [ngModel]="periodFromDate.date" (ngModelChange)="periodFromDate.date = $event" name="pfdate" appRequired [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                                    <input type="time" name="pftime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodFromDate.time" (ngModelChange)="periodFromDate.time = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
+                                                    <div class="col-sm dp-cont">
+                                                        <datepicker [type]="'date'" [required]="true" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodFromDate.date" (valueChange)="periodFromDate.date=$event;autoPeriodTo($event);" name="periodFromDate.date"></datepicker>
+                                                    </div>
+                                                    <div class="col-sm-3 dp-cont">
+                                                        <datepicker [type]="'time'" [required]="true" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodFromDate.time" (valueChange)="periodFromDate.time=$event;" name="periodFromDate.time"></datepicker>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Requested By</label>
-                                                     <input type="text" name="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="50">
+                                                     <input type="text" name="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="50">
                                                 </div>
                                             </div>
                                         </div>
@@ -123,20 +129,29 @@
                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period To</label>
-                                                    <input type="date" name="ptdate" class="form-control form-control-sm cust-sm warn col-sm" appRequired [ngModel]="periodToDate.date" (ngModelChange)="periodToDate.date = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
-                                                    <input type="time" name="pttime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodToDate.time" (ngModelChange)="periodToDate.time = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                                    <!-- <input type="date" name="ptdate" class="form-control form-control-sm cust-sm warn col-sm" appRequired [ngModel]="periodToDate.date" (ngModelChange)="periodToDate.date = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
+                                                    <div class="col-sm dp-cont">
+                                                        <datepicker [type]="'date'" [required]="true" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodToDate.date" (valueChange)="periodToDate.date=$event;" name="periodToDate.date"></datepicker>
+                                                    </div>
+                                                    <!-- <input type="time" name="pttime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodToDate.time" (ngModelChange)="periodToDate.time = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
+                                                    <div class="col-sm-3 dp-cont">
+                                                        <datepicker [type]="'time'" [required]="true" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodToDate.time" (valueChange)="periodToDate.time=$event;" name="periodToDate.time"></datepicker>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Request Date</label>
-                                                    <input type="date" name="reqDate" class="form-control form-control-sm cust-sm col-sm warn" [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                                    <!-- <input type="date" name="reqDate" class="form-control form-control-sm cust-sm col-sm warn" [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
+                                                    <div class="col-sm dp-cont">
+                                                        <datepicker [type]="'date'" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="polHoldCoverParams.reqDate?.split('T')[0]" (valueChange)="polHoldCoverParams.reqDate=$event;" name="periodToDate.date"></datepicker>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="input-group ig-row" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
-                                            <input name="crhcno" type="text" class="form-control form-control-sm warn" [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="25">
+                                            <input name="crhcno" type="text" class="form-control form-control-sm warn" [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="25">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Prepared By</label>
                                             <input type="text" name="preparedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.preparedBy" readonly tabindex="-1">
                                         </div>
@@ -158,7 +173,7 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
-                                <button type="button" class="cust-btn" [disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status)" [class.cust-btn-disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status)" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
+                                <button type="button" class="cust-btn" [disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status) || isModify" [class.cust-btn-disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status) || isModify" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
                                 <button type="button" class="cust-btn" [disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" [class.cust-btn-disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" (click)="test(content)"><a>Approval</a></button>
                                 <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify" [class.cust-btn-disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify"><a>Save</a></button>
                             </div>
@@ -203,7 +218,7 @@
     </app-modal>
 
     <app-confirm-save (onYes)="onClickSave()"></app-confirm-save>
-    <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+    <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false; approveType === 'reject' ? modalService.dismissAll() : null"></app-sucess-dialog>
     <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
 
 <!-- <app-print-modal (selectedData)= "showPrintDialog($event)"></app-print-modal> -->
@@ -217,7 +232,7 @@
             </div>
         </div>
         <div class="modal-body" style="width: 580px">
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-sm-6" style="padding-right : 10px ! important;">
                     <fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
                         <div class="custom-row-inline-inset">
@@ -249,7 +264,46 @@
                         </div>
                     </fieldset>
                 </div>
-            </div>
+            </div> -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <fieldset class="scheduler-border" style="padding-bottom: 25px !important;padding-top: 24px !important;">
+                                <div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important;" >
+                                    <label class="form-control-sm col-sm-3">Status</label>
+                                    <span>&nbsp;</span>
+                                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="statusDesc" readonly>
+                                </div>
+                                <div class="input-group">
+                                    <div class="cust-btn-container col-sm" style="padding: 0px !important">
+                                        <button type="button" class="cust-btn col-sm" (click)="approve($event)" [class.cust-btn-disabled]="this.statusDesc.toUpperCase() === 'APPROVED'" [disabled]="this.statusDesc.toUpperCase() === 'APPROVED'"><a>{{authorization !== userName ? 'For Approval' : 'Approve'}}</a></button>
+                                    </div>      
+                                    <div class="cust-btn-container col-sm" style="padding: 0px !important">
+                                        <button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="approve($event);" [class.cust-btn-disabled]="this.statusDesc.toUpperCase() === 'APPROVED' || authorization !== userName" [disabled]="this.statusDesc.toUpperCase() === 'APPROVED' || authorization !== userName">Rejected</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-sm-6">
+                            <fieldset class="scheduler-border" style="padding-bottom: 30px !important;padding-top: 31px !important;">
+                                <div class="input-group" style="margin-bottom: -14px !important;">
+                                    <label class="form-control-sm col-sm-3" style="margin-bottom: 8px !important;">Report</label>
+                                    <span>&nbsp;</span>
+                                    <select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="report">
+                                        <option value="HOLD COVER LETTER">Hold Cover Letter</option>
+                                    </select>
+                                </div>
+                                <div class="input-group" style="margin-bottom: -14px !important;">
+                                    <label class="form-control-sm col-sm-3">Destination</label>
+                                    <span>&nbsp;</span>
+                                    <select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="destination">
+                                        <option value="SCREEN">SCREEN</option>
+                                        <option value="PDF">PDF</option>
+                                        <option value="PRINTER">PRINTER</option>
+                                    </select>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
 
         </div>
         <div class="modal-footer" style="justify-content: center;">

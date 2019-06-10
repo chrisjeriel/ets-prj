@@ -81,7 +81,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
     this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
       var polList = data['policyList'];
 
-      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'DISTRIBUTED' && p.altNo == 0)
+      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE' && p.altNo == 0)
                        .map(p => { p.riskName = p.project.riskName; return p; });
       this.passDataLOV.tableData = polList;
       this.lovTable.refreshTable();
@@ -180,8 +180,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
       var coInsAlt = data['coInsAlt'];
       var coInsStatus = data['coInsStatus'];
       
-      var inProgAlt = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS' || p.statusDesc.toUpperCase() === 'IN FORCE');
-      var doneAlt = polList.filter(p => p.statusDesc.toUpperCase() != 'IN PROGRESS' || p.statusDesc.toUpperCase() != 'IN FORCE');
+      var inProgAlt = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS');// || p.statusDesc.toUpperCase() === 'IN FORCE');
+      var doneAlt = polList.filter(p => p.statusDesc.toUpperCase() != 'IN PROGRESS');// || p.statusDesc.toUpperCase() != 'IN FORCE');
 
       if(inProgAlt.length == 0 && coInsAlt != 1 && coInsStatus != 1) {
         var line = this.polNo[0];

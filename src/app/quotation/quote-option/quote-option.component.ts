@@ -652,13 +652,14 @@ saveQuoteOptionAll(cancelFlag?){
   getRates(){
     this.mtnService.getMtnTreatyCommission(parseInt(this.quoteNoData.split('-')[1])).subscribe((data)=>{
       console.log(data);
-      this.optionsData.nData.commRtQuota = data['treatyList'].filter(a=>a.treatyType=='Q')[0].comRate;
-      this.optionsData.nData.commRtFac = data['treatyList'].filter(a=>a.treatyType=='F')[0].comRate;
+      this.optionsData.nData.commRtQuota = data['treatyList'].filter(a=>a.treatyType=='Q')[0].commRate;
+      this.optionsData.nData.commRtFac = data['treatyList'].filter(a=>a.treatyType=='F')[0].commRate;
       this.optionsData.nData.commRtSurplus = 0;
       for(let treaty of data['treatyList'].filter(a=>a.treatyType=='S')){
-        this.optionsData.nData.commRtSurplus+=parseFloat(treaty.comRate)
+        this.optionsData.nData.commRtSurplus+=parseFloat(treaty.commRate)
       }
       this.optionsData.nData.commRtSurplus =this.optionsData.nData.commRtSurplus/ data['treatyList'].filter(a=>a.treatyType=='S').length
+      console.log(this.optionsData.nData);
     })
   }
 

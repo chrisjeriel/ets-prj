@@ -107,8 +107,8 @@ export class PolMxLineComponent implements OnInit {
 				}
 			}else{
 				if(record.edited && !record.deleted){
-					record.createUser		= (record.createUser === '' || record.createUser === undefined)?this.ns.getCurrentUser():record.createUser;
-					record.createDate		= (record.createDate === '' || record.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
+					record.createUser		= (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
+					record.createDate		= (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
 					record.updateUser		= this.ns.getCurrentUser();
 					record.updateDate		= this.ns.toDateTimeString(0);
 					record.saveCutOffTime	= this.ns.toDateTimeString(0).split('T')[0]+'T'+record.cutOffTime;
@@ -179,7 +179,7 @@ export class PolMxLineComponent implements OnInit {
 			console.log(data);
 			this.passData.tableData = [];
 			this.arrLineCd = [];
-			var rec = data['line'];
+			var rec = data['line'].map(i => { i.createDate = this.ns.toDateTimeString(i.createDate); i.updateDate = this.ns.toDateTimeString(i.updateDate); return i} );
 			console.log(rec);
 			this.passData.tableData = rec;
 			for(let i of rec){
@@ -201,9 +201,9 @@ export class PolMxLineComponent implements OnInit {
 	onRowClick(event){
 		if(event !== null){
 			this.saveMtnLine.lineCd		 = event.lineCd;
-			this.saveMtnLine.updateDate  = this.ns.toDateTimeString(event.updateDate);
+			this.saveMtnLine.updateDate  = event.updateDate;
 	        this.saveMtnLine.updateUser  = event.updateUser;
-	        this.saveMtnLine.createDate  = this.ns.toDateTimeString(event.createDate);
+	        this.saveMtnLine.createDate  = event.createDate;
 	        this.saveMtnLine.createUser  = event.createUser;
 	       	this.passData.disableGeneric = false;
 		}else{

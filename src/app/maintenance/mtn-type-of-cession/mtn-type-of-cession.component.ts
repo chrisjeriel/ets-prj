@@ -22,7 +22,7 @@ export class MtnTypeOfCessionComponent implements OnInit {
     pageStatus: true,
     pagination: true,
     fixedCol: false,
-    pageID: 14,
+    pageID: 'typeOfCession'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
     keys:[
     	'cessionId',
     	'description'

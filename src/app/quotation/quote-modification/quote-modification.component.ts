@@ -63,11 +63,12 @@ export class QuoteModificationComponent implements OnInit {
 		    	if(this.quList.length == 1 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {  
 		        	this.selected = this.quList[0];
 		        	this.setDetails();
-		        	// this.noSelected = false;
 		      	} else if(this.quList.length == 0 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {
 		        	this.clearFields();
 		        	this.getQuoteListing();
 		        	this.showLOV();
+		      	} else if(this.quList.length == 0 && this.searchArr.includes('%%')) {
+		      		this.getQuoteListing();
 		      	} else if(this.searchArr.includes('%%')) {
 		      		this.selected = null;
 			        this.cedingName = '';
@@ -81,16 +82,22 @@ export class QuoteModificationComponent implements OnInit {
 	search(key,ev) {
     	var a = ev.target.value;
 
+    	if(ev != 'forceSearch' && a == '') {
+    		this.cedingName = "";
+	    	this.insuredDesc = "";
+	    	this.riskName = "";
+    	}
+
     	if(key === 'lineCd') {
     	  this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
     	} else if(key === 'year') {
     	  this.searchArr[1] = '%' + a + '%';
     	} else if(key === 'seqNo') {
-    	  this.searchArr[2] = '%' + a + '%';
+    	  this.searchArr[2] = a == '' ? '%%' : '%' + String(a).padStart(5, '0') + '%';
     	} else if(key === 'revNo') {
-    	  this.searchArr[3] = '%' + a + '%';
+    	  this.searchArr[3] = a == '' ? '%%' : '%' + String(a).padStart(2, '0') + '%';
     	} else if(key === 'cedingId') {
-    	  this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0');
+    	  this.searchArr[4] = a == '' ? '%%' : '%' + String(a).padStart(3, '0');
     	}
 
     	if(this.searchArr.includes('')) {
@@ -142,7 +149,7 @@ export class QuoteModificationComponent implements OnInit {
 	}
 
 	clearFields() {
-    	this.searchArr = [];
+    	this.searchArr = Array(5).fill('');
     	this.quNo = [];
     	this.cedingName = "";
     	this.insuredDesc = "";

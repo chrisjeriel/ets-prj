@@ -119,9 +119,9 @@
 	</div>
 </ng-container>
 
-<app-sucess-dialog [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success' && !cancelFailed  ? this.cancel.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-cancel-button (onYes)="save('cancel')" [url]="inqFlag? 'pol-oc-inquiry' : '/open-cover-list'" ></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/open-cover-list'" ></app-cancel-button>
 
 <app-modal hidden [btnTitle]="'Confirmation'" id="confirmationModal">
     <div header>Confirmation Message</div>
