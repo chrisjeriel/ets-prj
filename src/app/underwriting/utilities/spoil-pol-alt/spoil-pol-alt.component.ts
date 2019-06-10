@@ -327,40 +327,40 @@ export class SpoilPolAltComponent implements OnInit {
 				var rec = data['policyList'];
 				rec.sort((a,b) => a.altNo - b.altNo);
 
-				for(var i=0;i<rec.length;i++){
-					if(parseInt(this.spoilPolRecord.altNo) === 0){
-						if(rec[i].statusDesc.toUpperCase() === 'DISTRIBUTED'){
-							dist = true;
-						}else if(rec[i].statusDesc.toUpperCase() === 'IN PROGRESS'){
-							inProg = true;
-						}
-					}else {
-						if(parseInt(this.spoilPolRecord.altNo) === rec[i].altNo){
-							if(rec[i+1] !== undefined && rec[i+1].statusDesc.toUpperCase() === 'IN PROGRESS'){
-								inProg = true;
-							}else{
-								this.validPolicyAlt();
-							}	
-						}
-					}
+				// for(var i=0;i<rec.length;i++){
+				// 	if(parseInt(this.spoilPolRecord.altNo) === 0){
+				// 		if(rec[i].statusDesc.toUpperCase() === 'DISTRIBUTED'){
+				// 			dist = true;
+				// 		}else if(rec[i].statusDesc.toUpperCase() === 'IN PROGRESS'){
+				// 			inProg = true;
+				// 		}
+				// 	}else {
+				// 		if(parseInt(this.spoilPolRecord.altNo) === rec[i].altNo){
+				// 			if(rec[i+1] !== undefined && rec[i+1].statusDesc.toUpperCase() === 'IN PROGRESS'){
+				// 				inProg = true;
+				// 			}else{
+				// 				this.validPolicyAlt();
+				// 			}	
+				// 		}
+				// 	}
 					
-				}
+				// }
 
-				if(rec.length === 0){
-					this.validPolicyAlt();
-				}else{
-					if(inProg === true){
-						this.warnMsg1 = msgA;
-						this.showWarnLov();
-					}
-					if(dist === true && inProg === false){
-						this.warnMsg1 = msgB;
-						this.showWarnLov();
-					}
-					if(dist === false && inProg === false){
-						this.validPolicyAlt();
-					}
-				}
+				// if(rec.length === 0){
+				// 	this.validPolicyAlt();
+				// }else{
+				// 	if(inProg === true){
+				// 		this.warnMsg1 = msgA;
+				// 		this.showWarnLov();
+				// 	}
+				// 	if(dist === true && inProg === false){
+				// 		this.warnMsg1 = msgB;
+				// 		this.showWarnLov();
+				// 	}
+				// 	if(dist === false && inProg === false){
+				// 		this.validPolicyAlt();
+				// 	}
+				// }
 
 			});
 		}
