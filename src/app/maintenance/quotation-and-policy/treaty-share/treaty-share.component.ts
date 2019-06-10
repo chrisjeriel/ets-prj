@@ -220,7 +220,12 @@ export class TreatyShareComponent implements OnInit {
 															  		 b.updateDate = this.ns.toDateTimeString(b.updateDate);
 														 		     return b; });
 					b.treatyShareList.forEach(c => {
-						c.cedRetentionList = c.cedRetentionList.filter(b => b.treatyYear != null && b.treatyId != null && b.trtyCedId != null && b.cedingId != null);
+						c.cedRetentionList = c.cedRetentionList.sort((x, y) => x.cedingId - y.cedingId)
+															   .filter(b => b.treatyYear != null && b.treatyId != null && b.trtyCedId != null && b.cedingId != null)
+															   .map(b => { b.treatyId = String(b.treatyId).padStart(2, '0');
+																 		   b.createDate = this.ns.toDateTimeString(b.createDate);
+																	  	   b.updateDate = this.ns.toDateTimeString(b.updateDate);
+																 		   return b; });
 					});
 				});
 			});
@@ -436,6 +441,7 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	treatyCommTDataChange(data) {
+		this.treatyYearTable.indvSelect.edited = true;
 		if(data.hasOwnProperty('lovInput')) {
 	    	this.hiddenTreaty = this.treatyCommData.tableData.filter(a => a.treatyId !== undefined && !a.deleted && a.showMG != 1).map(a => Number(a.treatyId));
 
@@ -485,6 +491,7 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	treatyShareTDataChange(data) {
+		this.treatyYearTable.indvSelect.edited = true;
 		if(data.hasOwnProperty('lovInput')) {
 	    	this.hiddenCedingCo = this.treatyShareData.tableData.filter(a => a.trtyCedId !== undefined && !a.deleted && a.showMG != 1).map(a => a.trtyCedId);
 
@@ -531,6 +538,7 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	cedingRetentionTDataChange(data) {
+		this.treatyYearTable.indvSelect.edited = true;
 		if(data.hasOwnProperty('lovInput')) {
 	    	this.hiddenCedingCo = this.cedingRetentionData.tableData.filter(a => a.cedingId !== undefined && !a.deleted && a.showMG != 1).map(a => a.cedingId);
 
@@ -698,9 +706,6 @@ export class TreatyShareComponent implements OnInit {
 		var td3 = this.treatyShareData.tableData;
 		var td4 = this.cedingRetentionData.tableData;
 
-		// this.params.saveTreatyComm = td.filter(a => a.edited && !a.deleted || a.treatyCommList.findIndex(b => b.edited) != 1)
-		// 							   .map(a => a.treatyCommList);
-
 		td.forEach(a => {
 			if(a.edited && !a.deleted) {
 				a.treatyCommList.forEach(tc => {
@@ -729,6 +734,7 @@ export class TreatyShareComponent implements OnInit {
 						ts['updateDate'] = this.ns.toDateTimeString(0);
 
 						if(ts.edited && !ts.deleted) {
+							tc.treatyShareList = tc.treatyShareList.filter(a => a.edited && !a.deleted);
 							tc2 = true;
 						} else if(ts.deleted) {
 							this.params.deleteTreatyShare.push(ts);
@@ -744,6 +750,7 @@ export class TreatyShareComponent implements OnInit {
 							cr['updateDate'] = this.ns.toDateTimeString(0);
 
 							if(cr.edited && !cr.deleted) {
+								ts.cedRetentionList = ts.cedRetentionList.filter(a => a.edited && !a.deleted);
 								tc3 = true;
 							} else if(cr.deleted) {
 								this.params.deleteCedRetention.push(cr);
