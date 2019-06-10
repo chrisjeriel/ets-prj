@@ -21,7 +21,7 @@ lineListing: any = {
     pageStatus: true,
     pagination: true,
     fixedCol: false,
-    pageID: 11,
+    pageID: 'line'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
     keys:[
     	'lineCd',
     	'description']

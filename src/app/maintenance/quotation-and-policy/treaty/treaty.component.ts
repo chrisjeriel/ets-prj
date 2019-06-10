@@ -118,7 +118,6 @@ export class TreatyComponent implements OnInit, OnDestroy {
 			$('#mtnTreatyWarningModal > #modalBtn').trigger('click');
 		} else {
 			this.table.indvSelect.edited = true;
-			this.table.indvSelect.deleted = true;
 			this.table.confirmDelete();
 		}
 	}
