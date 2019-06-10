@@ -132,4 +132,8 @@ export class ClaimStatusComponent implements OnInit {
       this.table.confirmDelete();
   }
 
+  cancel(){
+    this.cancelBtn.clickCancel();
+  }
+
 }
