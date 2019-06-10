@@ -184,24 +184,28 @@ export class QuoteOptionComponent implements OnInit {
            this.optionsData.magnifyingGlass = [];
            this.optionsData.addFlag = false;
            this.optionsData.deleteFlag = false;
+           this.optionsData.checkFlag = false;
 
            this.optionsDeductiblesData.opts = [];
            this.optionsDeductiblesData.uneditable = [];
            this.optionsDeductiblesData.magnifyingGlass = [];
            this.optionsDeductiblesData.addFlag = false;
            this.optionsDeductiblesData.deleteFlag = false;
+           this.optionsDeductiblesData.checkFlag = false;
 
            this.coversDeductiblesData.opts = [];
            this.coversDeductiblesData.uneditable = [];
            this.coversDeductiblesData.magnifyingGlass = [];
            this.coversDeductiblesData.addFlag = false;
            this.coversDeductiblesData.deleteFlag = false;
+           this.coversDeductiblesData.checkFlag = false;
 
            this.otherRatesData.opts = [];
            this.otherRatesData.uneditable = [];
            this.otherRatesData.magnifyingGlass = [];
            this.otherRatesData.addFlag = false;
            this.otherRatesData.deleteFlag = false;
+           this.otherRatesData.checkFlag = false;
 
            for(var count = 0; count < this.optionsData.tHeader.length; count++){
              this.optionsData.uneditable.push(true);

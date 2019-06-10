@@ -239,6 +239,7 @@ export class QuoteEndorsementComponent implements OnInit {
           this.endorsementData.magnifyingGlass = [];
           this.endorsementData.addFlag = false;
           this.endorsementData.deleteFlag = false;
+          this.endorsementData.checkFlag = false;
           for(var count = 0; count < this.endorsementData.tHeader.length; count++){
             this.endorsementData.uneditable.push(true);
           }
