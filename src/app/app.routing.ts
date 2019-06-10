@@ -165,6 +165,8 @@ import { AdjusterComponent } from './maintenance/claims/adjuster/adjuster.compon
 import { MtnClaimsComponent } from './maintenance/claims/mtn-claims.component';
 import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-form/adjuster-form.component';
 import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-status.component';
+import { ClaimEventTypeComponent } from './maintenance/mtn-claims/claim-event-type/claim-event-type.component';
+import { ClaimEventComponent } from './maintenance/mtn-claims/claim-event/claim-event.component';
 
 const appRoutes: Routes = [
 
@@ -338,9 +340,11 @@ const appRoutes: Routes = [
     { path: 'mtn-report', component: ReportComponent },
     { path: 'mtn-report-param', component: ReportParamComponent },
     { path: 'mtn-adjuster-list', component: AdjusterComponent },
-    { path: 'mtn-claims', component: MtnClaimsComponent },
     { path: 'adjuster-form', component: AdjusterFormComponent },
     { path: 'claim-status', component: ClaimStatusComponent },
+    { path: 'maintenance-clm', component: MtnClaimsComponent },
+    { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

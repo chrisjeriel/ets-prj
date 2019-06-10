@@ -23,6 +23,7 @@ export class UpdateInstallmentComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancel: CancelButtonComponent;
   @ViewChild(LovComponent) lov: LovComponent;
+
   selectedPolicy: any = null;
   searchArr: any[] = Array(6).fill('');
   polNo: any[] = [];
@@ -148,7 +149,9 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   setDetails(fromMdl?) {
+    console.log(fromMdl);
     if (this.selected != null) {
+      this.modalService.dismissAll();
       this.underwritingService.getAlterationsPerPolicy(this.selected.policyId, 'alteration').subscribe(data => {
         var polList = data['policyList'];
 
@@ -158,6 +161,7 @@ export class UpdateInstallmentComponent implements OnInit {
         if (a.length > 0) {
           this.warningMsg = 1;
           this.showWarningMdl();
+          return; 
         }
 
         b.sort((a, b) => a.altNo - b.altNo);
@@ -286,6 +290,7 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   retrievePolListing(param?) {
+    console.log('retrieve pol listing');
     this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
       this.instllmentTable.btnDisabled = true;
       this.otherTable.btnDisabled = true;
@@ -348,18 +353,28 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   setSelected(data) {
-    this.passDataOtherCharges.tableData = this.passDataOtherCharges.tableData.filter(a => a.showMG != 1)
-    for (let rec of data.data) {
-      this.passDataOtherCharges.tableData.push(JSON.parse(JSON.stringify(this.passDataOtherCharges.nData)));
-      this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].showMG = 0;
-      this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].chargeCd = rec.chargeCd;
-      this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].chargeDesc = rec.chargeDesc;
-      this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].amount = rec.defaultAmt
-      this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].edited = true;
+    this.passDataOtherCharges.tableData = this.passDataOtherCharges.tableData.filter(a => a.showMG != 1 && a.deleted != true);
+    if(data.data != undefined){
+      for (let rec of data.data) {
+          if(rec.inserted == true){
+            this.lov.openLOV();
+          }else{
+            this.passDataOtherCharges.tableData.push(JSON.parse(JSON.stringify(this.passDataOtherCharges.nData)));
+            this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].showMG = 0;
+            this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].chargeCd = rec.chargeCd;
+            this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].chargeDesc = rec.chargeDesc;
+            this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].amount = rec.defaultAmt;
+            this.passDataOtherCharges.tableData[this.passDataOtherCharges.tableData.length - 1].edited = true;
+            rec.inserted = true;  
+          }
+      }
+      this.instllmentTable.indvSelect.otherCharges = this.passDataOtherCharges.tableData;
+      this.compute();
+      this.otherTable.refreshTable();
+    }else{
+      this.lov.openLOV();
     }
-    this.instllmentTable.indvSelect.otherCharges = this.passDataOtherCharges.tableData
-    this.compute();
-    this.otherTable.refreshTable();
+    
   }
 
   compute() {
@@ -498,10 +513,10 @@ export class UpdateInstallmentComponent implements OnInit {
         if (this.otherTable.indvSelect.chargeCd == rec.chargeCd) {
           rec.deleted = true;
           rec.edited = true;
-        }
+          rec.inserted = false;
+        }  
       }
     }
-
     this.instllmentTable.indvSelect.otherCharges = this.passDataOtherCharges.tableData;
     this.otherTable.markAsDirty();
     this.otherTable.refreshTable();
