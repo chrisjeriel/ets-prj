@@ -171,9 +171,9 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	show(){
+		this.rowRec = {};
 		$('#polLov > #modalBtn').trigger('click');
 	}
-
 
 	getSpoilList(){
 		if(this.spoil){ this.spoil.loadingFlag = true; } 
@@ -231,16 +231,19 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	onClickOkLov(){
-		this.spoilPolRecord.reason  	= '';
-		this.spoilPolRecord.reasonDesc 	= '';
-		this.spoilPolRecord.user  		= '';
-		this.spoilPolRecord.spoiledDate = '';
-		this.postBtnEnabled 			= false;
-		this.spoilPolRecord.policyNo = this.rowRec.policyNo;
-		this.splitPolNo(this.spoilPolRecord.policyNo);
-		this.getPolGenInfo();
-		this.modalService.dismissAll();
-		$('.dirty').addClass('ng-dirty');
+		console.log(this.rowRec);
+		if(Object.keys(this.rowRec).length != 0){
+			this.spoilPolRecord.reason  	= '';
+			this.spoilPolRecord.reasonDesc 	= '';
+			this.spoilPolRecord.user  		= '';
+			this.spoilPolRecord.spoiledDate = '';
+			this.postBtnEnabled 			= false;
+			this.spoilPolRecord.policyNo = this.rowRec.policyNo;
+			this.splitPolNo(this.spoilPolRecord.policyNo);
+			this.getPolGenInfo();
+			this.modalService.dismissAll();
+			$('.dirty').addClass('ng-dirty');
+		}
 	}
 
 	searchQuery(searchParams){
@@ -302,57 +305,65 @@ export class SpoilPolAltComponent implements OnInit {
 
 	onClickPostSpoilage(cancelFlag?){
 		this.cancelFlag = cancelFlag !== undefined;
-		this.valResult = 0; 
-		var stats = '';
-		this.warnMsg1 = '';
+		this.valResult 	= 0; 
+		this.warnMsg1 	= '';
+		this.dialogIcon = '';
+		var stats		= '';
+		var inProg 		= false;
+		var dist 		= false;
+		var msgA 		= 'Policy/Alteration cannot be spoiled, creation of alteration connected to this record is on going.';
+		var msgB 		= 'Policy with existing valid alteration cannot be spoiled.';
 
-		var inProg = false;
-		var dist = false;
-		var msgA = 'Policy/Alteration cannot be spoiled, creation of alteration connected to this record is on going.';
-		var msgB = 'Policy with existing valid alteration cannot be spoiled.';
+		if(this.spoilPolRecord.reason == ''){
+			this.dialogIcon = 'error';
+			$('app-sucess-dialog #modalBtn').trigger('click');
+			$('.dirty').focus();
+			$('.dirty').blur();
+			this.cancelFlag = false;
+		}else{
+			this.underwritingService.getAlterationsPerPolicy(this.polId,'')
+			.subscribe(data => {
+				console.log(data);
+				var rec = data['policyList'];
+				rec.sort((a,b) => a.altNo - b.altNo);
 
-		this.underwritingService.getAlterationsPerPolicy(this.polId,'')
-		.subscribe(data => {
-			console.log(data);
-			var rec = data['policyList'];
-			rec.sort((a,b) => a.altNo - b.altNo);
-
-			for(var i=0;i<rec.length;i++){
-				if(parseInt(this.spoilPolRecord.altNo) === 0){
-					if(rec[i].statusDesc.toUpperCase() === 'DISTRIBUTED'){
-						dist = true;
-					}else if(rec[i].statusDesc.toUpperCase() === 'IN PROGRESS'){
-						inProg = true;
-					}
-				}else {
-					if(parseInt(this.spoilPolRecord.altNo) === rec[i].altNo){
-						if(rec[i+1] !== undefined && rec[i+1].statusDesc.toUpperCase() === 'IN PROGRESS'){
+				for(var i=0;i<rec.length;i++){
+					if(parseInt(this.spoilPolRecord.altNo) === 0){
+						if(rec[i].statusDesc.toUpperCase() === 'DISTRIBUTED'){
+							dist = true;
+						}else if(rec[i].statusDesc.toUpperCase() === 'IN PROGRESS'){
 							inProg = true;
-						}else{
-							this.validPolicyAlt();
-						}	
+						}
+					}else {
+						if(parseInt(this.spoilPolRecord.altNo) === rec[i].altNo){
+							if(rec[i+1] !== undefined && rec[i+1].statusDesc.toUpperCase() === 'IN PROGRESS'){
+								inProg = true;
+							}else{
+								this.validPolicyAlt();
+							}	
+						}
+					}
+					
+				}
+
+				if(rec.length === 0){
+					this.validPolicyAlt();
+				}else{
+					if(inProg === true){
+						this.warnMsg1 = msgA;
+						this.showWarnLov();
+					}
+					if(dist === true && inProg === false){
+						this.warnMsg1 = msgB;
+						this.showWarnLov();
+					}
+					if(dist === false && inProg === false){
+						this.validPolicyAlt();
 					}
 				}
-				
-			}
 
-			if(rec.length === 0){
-				this.validPolicyAlt();
-			}else{
-				if(inProg === true){
-					this.warnMsg1 = msgA;
-					this.showWarnLov();
-				}
-				if(dist === true && inProg === false){
-					this.warnMsg1 = msgB;
-					this.showWarnLov();
-				}
-				if(dist === false && inProg === false){
-					this.validPolicyAlt();
-				}
-			}
-
-		});
+			});
+		}
 
 	}
 

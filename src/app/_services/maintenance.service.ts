@@ -935,6 +935,51 @@ export class MaintenanceService{
 
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnClaimStatus',{params});
     }
-    
-}
 
+    saveMtnClaimStatus(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClaimStatus',params,header);
+    }
+    
+    
+	getMtnClmEventType(eventTypeCd?:string){
+		const params = new HttpParams()
+			.set('eventTypeCd', (eventTypeCd == null || eventTypeCd == undefined ? '' : eventTypeCd));
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnClmEventType',{params});	
+	}
+
+	saveMtnClmEventType(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+         console.log(params);
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmEventType',params,header);
+	}
+
+	getMtnClmEvent(eventCd?:string){
+		const params = new HttpParams()
+			.set('eventCd', (eventCd == null || eventCd == undefined ? '' : eventCd));
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnClmEvent',{params});	
+	}
+
+	saveMtnClmEvent(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+         console.log(params);
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmEvent',params,header);
+	}
+
+}

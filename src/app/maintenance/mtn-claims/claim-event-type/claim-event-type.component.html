@@ -1,11 +1,11 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance</h4>
 	<ngb-tabset #tabset (tabChange)="onTabChange($event)">
-		<ngb-tab class="ngb-tab" title="Line">
+		<ngb-tab class="ngb-tab" title="Claim Event Type">
 			<ng-template ngbTabContent>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
 					<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-						<app-cust-editable-non-datatable [passData]="passData"  (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)" #lineTbl (genericBtn)="onDeleteLine()" (onDelete)="lineTbl.onClickDelete('force'); passData.disableGeneric=true">
+						<app-cust-editable-non-datatable [passData]="passData"  (tableDataChange)="passData.tableData=$event" (newClick)="onRowClick($event)" #eventTypeTbl (genericBtn)="onDeleteEventType()" (onDelete)="eventTypeTbl.onClickDelete('force'); passData.disableGeneric=true">
 						</app-cust-editable-non-datatable>
 					</div>
 					<div class="form-row" style="margin-top: 40px !important;">
@@ -22,16 +22,16 @@
 				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="saveMtnLine?.createUser" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="saveMtnClmEventType?.createUser" readonly>
                         <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
                         <div class="col-sm dp-cont">
-                            <datepicker [value]="saveMtnLine?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                            <datepicker [value]="saveMtnClmEventType?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
                         </div>
                         <label class="form-control-sm col-sm-1">Last Update By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="saveMtnLine?.updateUser" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="saveMtnClmEventType?.updateUser" readonly>
                         <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
                         <div class="col-sm dp-cont">
-                            <datepicker [value]="saveMtnLine?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                            <datepicker [value]="saveMtnClmEventType?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
                         </div>
                     </div>
                 </fieldset>
@@ -40,11 +40,9 @@
 	</ngb-tabset>
 </div>
 
-
-
-<app-confirm-save (onYes)="onSaveMtnLine()"></app-confirm-save>
+<app-confirm-save (onYes)="onSaveMtnClmEventType()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveMtnLine('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="onSaveMtnClmEventType('cancel')" [url]="'/maintenance-clm'" ></app-cancel-button>
 
 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
