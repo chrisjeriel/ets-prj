@@ -1021,9 +1021,10 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePoolDist', {params});
     }
 
-    getDistCoIns(riskDistId){
+    getDistCoIns(riskDistId,policyId){
         const params = new HttpParams()
             .set('riskDistId', riskDistId)
+            .set('policyId', policyId)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveDistCoIns', {params});
     }
 
@@ -1032,6 +1033,15 @@ export class UnderwritingService {
             .set('policyId', policyId)
             .set('distId', distId === undefined || distId === null || distId === '' ? '' : distId)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDist', {params});
+    }
+
+    postDistribution(postData){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/postDistribution', JSON.stringify(postData), header);
     }
 
     getPolForPurging(policyId){
