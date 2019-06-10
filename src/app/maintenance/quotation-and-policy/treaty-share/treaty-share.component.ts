@@ -35,6 +35,7 @@ export class TreatyShareComponent implements OnInit {
 	  	nData: {
 	  		newRec: 1,
 	  		treatyYear: '',
+	  		treatyCommList: [],
 	  		createUser: '',
 	  		createDate: '',
 	  		updateUser: '',
@@ -51,7 +52,8 @@ export class TreatyShareComponent implements OnInit {
 	  	pageID: 'treatyYearTab',
 	  	mask: {
 	  		treatyYear: '9999'
-	  	}
+	  	},
+	  	centered: true
   	}
 
   	treatyCommData: any = {
@@ -60,13 +62,14 @@ export class TreatyShareComponent implements OnInit {
 	  	dataTypes: ['lovInput-r', 'text', 'percent', 'number'],
 	  	keys: ['treatyId','treatyName','commRate','sortSeq'],
 	  	uneditable: [false,true,false,false],
-	  	widths: ['1','auto','auto','1'],
+	  	widths: ['64','auto','auto','1'],
 	  	nData: {
 	  		showMG: 1,
 	  		treatyId: '',
 	  		treatyName: '',
 	  		commRate: '',
 	  		sortSeq: '',
+	  		treatyShareList: [],
 	  		createUser: '',
 	  		createDate: '',
 	  		updateUser: '',
@@ -99,6 +102,7 @@ export class TreatyShareComponent implements OnInit {
 	  		pctShare: '',
 	  		sortSeq: '',
 	  		remarks: '',
+	  		cedRetentionList: [],
 	  		createUser: '',
 	  		createDate: '',
 	  		updateUser: '',
@@ -173,17 +177,15 @@ export class TreatyShareComponent implements OnInit {
  	params: any = {
  		saveTreatyComm: [],
  		deleteTreatyComm: [],
- 		saveTreatyShare: [],
  		deleteTreatyShare: [],
- 		saveCedRetention: [],
  		deleteCedRetention: []
  	}
+
+ 	first: boolean = true;
 
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
 	ngOnInit() {
-		// this.alignTreatyYear();
-
 		setTimeout(() => {
 			this.treatyYearTable.refreshTable();
 			this.treatyCommTable.refreshTable();
@@ -198,11 +200,30 @@ export class TreatyShareComponent implements OnInit {
 		this.ms.getMtnTreatyComm(null).subscribe(data => {
 			this.mtnTreatyComm = data['treatyList'];
 			var td = data['treatyList'].map(a => a.treatyYear);
-			td = td.filter((a, i) => { return td.indexOf(a) == i })
-				   .sort((a, b) => b - a)
+			td = td.sort((a, b) => b - a)
+				   .filter((a, i) => { return td.indexOf(a) == i })
 				   .map(a => { return { treatyYear: a } });
 
-			td.forEach(a => a['okDelete'] = this.mtnTreatyComm.find(b => b.treatyYear == a.treatyYear).okDelete );
+			td.forEach(a => {
+				a['okDelete'] = this.mtnTreatyComm.find(b => b.treatyYear == a.treatyYear).okDelete;
+				a['treatyCommList'] = this.mtnTreatyComm.sort((x, y) => y.createDate - x.createDate)
+														.filter(b => b.treatyYear == a.treatyYear)
+														.map(b => { b.treatyId = String(b.treatyId).padStart(2, '0');
+															  		b.createDate = this.ns.toDateTimeString(b.createDate);
+															  		b.updateDate = this.ns.toDateTimeString(b.updateDate);
+															  		return b; });
+				a.treatyCommList.forEach(b => {
+					b.treatyShareList = b.treatyShareList.sort((x, y) => x.trtyCedId - y.trtyCedId)
+														 .filter(b => b.treatyYear != null && b.treatyId != null && b.trtyCedId != null)
+														 .map(b => { b.treatyId = String(b.treatyId).padStart(2, '0');
+														 			 b.createDate = this.ns.toDateTimeString(b.createDate);
+															  		 b.updateDate = this.ns.toDateTimeString(b.updateDate);
+														 		     return b; });
+					b.treatyShareList.forEach(c => {
+						c.cedRetentionList = c.cedRetentionList.filter(b => b.treatyYear != null && b.treatyId != null && b.trtyCedId != null && b.cedingId != null);
+					});
+				});
+			});
 
 			this.treatyYearData.tableData = td;
 			this.treatyYearTable.refreshTable();
@@ -214,15 +235,10 @@ export class TreatyShareComponent implements OnInit {
 
 	getMtnTreatyCommRate() {
 		if(this.treatyYearSelected != null) {
-			this.treatyCommData.tableData = this.mtnTreatyComm.sort((a, b) => a.treatyId - b.treatyId)
-															  .filter(a => a.treatyYear == this.treatyYearSelected.treatyYear)
-															  .map(a => { a.treatyId = String(a.treatyId).padStart(2, '0');
-															  			  a.createDate = this.ns.toDateTimeString(a.createDate);
-															  			  a.updateDate = this.ns.toDateTimeString(a.updateDate);
-															  			  return a; });
+			this.treatyCommData.tableData = this.treatyYearSelected.treatyCommList;
+
 			this.treatyCommTable.refreshTable();
 			this.treatyCommTable.onRowClick(null, this.treatyCommData.tableData[0]);
-			// this.treatyCommData.nData['treatyYear'] = $('#treaty-year-table').find('tbody').find('.selected').find('input').val();
 			this.treatyCommData.disableAdd = false;
 			this.treatyCommData.disableGeneric = false;
 		} else {
@@ -240,7 +256,7 @@ export class TreatyShareComponent implements OnInit {
 
 	getMtnTreatyShare() {
 		if(this.treatyYearSelected.treatyYear != '' && this.treatyCommSelected != null && this.treatyCommSelected.showMG != 1) {
-			this.treatyShareTable.overlayLoader = true;
+			/*this.treatyShareTable.overlayLoader = true;
 			this.ms.getMtnTreatyShare(this.treatyYearSelected.treatyYear, this.treatyCommSelected.treatyId).subscribe(data => {
 				var td = data['treatyShareList'].map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
 															a.updateDate = this.ns.toDateTimeString(a.updateDate);
@@ -249,7 +265,12 @@ export class TreatyShareComponent implements OnInit {
 				this.treatyShareTable.refreshTable();
 				this.treatyShareTable.onRowClick(null, this.treatyShareData.tableData[0]);
 				this.treatyShareData.disableAdd = this.treatyCommSelected.treatyType == 'F';
-			});
+			});*/
+
+			this.treatyShareData.tableData = this.treatyCommSelected.treatyShareList;
+			this.treatyShareTable.refreshTable();
+			this.treatyShareTable.onRowClick(null, this.treatyShareData.tableData[0]);
+			this.treatyShareData.disableAdd = this.treatyCommSelected.treatyType == 'F';
 		} else {
 			this.treatyShareData.tableData = [];
 			this.treatyShareTable.refreshTable();
@@ -261,14 +282,18 @@ export class TreatyShareComponent implements OnInit {
 	getMtnCedingRetention() {
 		if(this.treatyShareSelected != null && this.treatyShareSelected.cedingName == 'Quota Share Pool') {
 			this.disableRetentionTab = false;
-			this.ms.getMtnCedingRetention(this.treatyYearSelected.treatyYear, this.treatyCommSelected.treatyId, this.treatyShareSelected.trtyCedId).subscribe(data => {
+			/*this.ms.getMtnCedingRetention(this.treatyYearSelected.treatyYear, this.treatyCommSelected.treatyId, this.treatyShareSelected.trtyCedId).subscribe(data => {
 				var td = data['cedingRetentionList'].map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
 																a.updateDate = this.ns.toDateTimeString(a.updateDate);
 																return a; });
 				this.cedingRetentionData.tableData = td;
 				this.cedingRetentionData.disableAdd = false;
 				this.cedingRetentionData.disableGeneric = false;
-			});
+			});*/
+
+			this.cedingRetentionData.tableData = this.treatyShareSelected.cedRetentionList;
+			this.cedingRetentionData.disableAdd = false;
+			this.cedingRetentionData.disableGeneric = false;
 		} else {
 			this.disableRetentionTab = true;
 			// this.cedingRetentionData.tableData = [];
@@ -281,17 +306,23 @@ export class TreatyShareComponent implements OnInit {
 		this.treatyYearSelected = ev;
 		this.treatyYearData.disableGeneric = this.treatyYearSelected == undefined || this.treatyYearSelected == '';
 		this.disableCopySetup = this.treatyYearSelected == undefined || this.treatyYearSelected == '';
-		this.getMtnTreatyCommRate();
+		this.getMtnTreatyCommRate(); // ilagay sa bawat year ang mga treaty comm
 	}
 
 	onTreatyYearClickDelete(ev) {
-		if(this.treatyYearTable.indvSelect.okDelete == 'N') {
-			this.warningMsg = 1;
-			$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+		if(ev != undefined) {
+			if(this.treatyYearTable.indvSelect.okDelete == 'N') {
+				this.warningMsg = 1;
+				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+			} else {
+				
+				this.treatyYearTable.confirmDelete();
+			}
 		} else {
 			this.treatyYearTable.indvSelect.edited = true;
 			this.treatyYearTable.indvSelect.deleted = true;
-			this.treatyYearTable.confirmDelete();
+			this.treatyYearData.disableGeneric = true;
+			this.treatyYearTable.refreshTable();
 		}
 	}
 
@@ -300,17 +331,23 @@ export class TreatyShareComponent implements OnInit {
 		this.treatyCommSelected = ev;
 		this.treatyCommData.disableGeneric = this.treatyCommSelected == undefined || this.treatyCommSelected == '';
 		this.tabset.select('treaty-share');
-		this.getMtnTreatyShare();
+
+		setTimeout(() => { this.getMtnTreatyShare(); }, 0);
 	}
 
-	onTreatyCommClickDelete(ev) {
-		if(this.treatyCommTable.indvSelect.okDelete == 'N') {
-			this.warningMsg = 2;
-			$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+	onTreatyCommClickDelete(ev?) {
+		if(ev != undefined) {
+			if(this.treatyCommTable.indvSelect.okDelete == 'N') {
+				this.warningMsg = 2;
+				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+			} else {
+				this.treatyCommTable.confirmDelete();
+			}
 		} else {
 			this.treatyCommTable.indvSelect.edited = true;
 			this.treatyCommTable.indvSelect.deleted = true;
-			this.treatyCommTable.confirmDelete();
+			this.treatyCommData.disableGeneric = true;
+			this.treatyCommTable.refreshTable();
 		}
 	}
 
@@ -322,13 +359,18 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	onTreatyShareClickDelete(ev) {
-		if(this.treatyShareTable.indvSelect.okDelete == 'N') {
-			this.warningMsg = 3;
-			$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+		if(ev != undefined) {
+			if(this.treatyShareTable.indvSelect.okDelete == 'N') {
+				this.warningMsg = 3;
+				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+			} else {
+				this.treatyShareTable.confirmDelete();
+			}
 		} else {
 			this.treatyShareTable.indvSelect.edited = true;
 			this.treatyShareTable.indvSelect.deleted = true;
-			this.treatyShareTable.confirmDelete();
+			this.treatyShareData.disableGeneric = true;
+			this.treatyShareTable.refreshTable();
 		}
 	}
 
@@ -339,22 +381,30 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	onCedingRetentionClickDelete(ev) {
-		if(this.cedingRetentionTable.indvSelect.okDelete == 'N') {
-			this.warningMsg = 4;
-			$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+		if(ev != undefined) {
+			if(this.cedingRetentionTable.indvSelect.okDelete == 'N') {
+				this.warningMsg = 4;
+				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
+			} else {
+				this.cedingRetentionTable.confirmDelete();
+			}
 		} else {
 			this.cedingRetentionTable.indvSelect.edited = true;
 			this.cedingRetentionTable.indvSelect.deleted = true;
-			this.cedingRetentionTable.confirmDelete();
+			this.cedingRetentionData.disableGeneric = true;
+			this.cedingRetentionTable.refreshTable();
 		}
 	}
 
 	alignTreatyYear() {
 		setTimeout(() => {
-			$('#treaty-year-table').find('th').css('text-align', 'center');
-			$('#treaty-year-table').find('td').css('text-align', 'center');
-			$('#treaty-year-table').find('td').find('input').css('text-align', 'center').css('width', '20%');
-		}, 0);
+			$('#treaty-year-table').find('td').find('input').css('width', '20%');
+
+			if(this.first) {
+				$('.ng-dirty').removeClass('ng-dirty');
+				this.first = false;
+			}
+		}, 10);
 	}
 
 	openTreatyCommLOV(ev) {
@@ -494,7 +544,6 @@ export class TreatyShareComponent implements OnInit {
 			setTimeout(() => {
 				this.treatyShareTable.refreshTable();
 				this.treatyShareTable.onRowClick(null, this.treatyShareData.tableData[this.treatyShareData.tableData.indexOf(this.treatyShareSelected)]);
-				console.log(this.cedingRetentionData);
 			}, 0);
 		} else if(ev.nextId == 'retention') {
 			setTimeout(() => {
@@ -509,9 +558,70 @@ export class TreatyShareComponent implements OnInit {
 		var td2 = this.treatyCommData.tableData;
 		var td3 = this.treatyShareData.tableData;
 		var td4 = this.cedingRetentionData.tableData;
-		var totalShare = 0;
 
 		for(let d of td1) {
+			if(d.edited && !d.deleted && (d.treatyYear == '' || d.treatyYear == null)) {
+				this.dialogIcon = 'error';
+				this.successDialog.open();
+
+				this.cancel = false;
+				return;
+			} else if(d.edited && !d.deleted && (d.treatyYear != '' && d.treatyYear != null) && d.treatyCommList.length == 0) {
+				this.dialogIcon = 'error';
+				this.successDialog.open();
+
+				this.cancel = false;
+				return;
+			}
+
+			for(let e of d.treatyCommList) {
+				if(e.edited && !e.deleted &&
+					(e.treatyId == '' || e.commRate == '' || e.commRate == null || isNaN(e.commRate) || e.sortSeq == '' || e.sortSeq == null || isNaN(e.sortSeq))) {
+					this.dialogIcon = 'error';
+					this.successDialog.open();
+
+					this.cancel = false;
+					return;
+				}
+
+				if(e.treatyShareList.length > 0) {
+					var totalShare = 0;
+					e.treatyShareList.forEach(a => totalShare += !a.deleted ? a.pctShare : 0);
+
+					for(let f of e.treatyShareList) {
+						if(f.edited && !f.deleted &&
+							(f.trtyCedId == '' || f.pctShare == '' || f.pctShare == null || isNaN(f.pctShare) || f.sortSeq == '' || f.sortSeq == null || isNaN(f.sortSeq))) {
+							this.dialogIcon = 'error';
+							this.successDialog.open();
+
+							this.cancel = false;
+							return;
+						} else if(totalShare != 100) {
+							this.dialogIcon = 'error';
+							this.successDialog.open();
+
+							this.cancel = false;
+							return;
+						}
+
+						if(f.cedRetentionList.length > 0) {
+							for(let g of f.cedRetentionList) {
+								if(g.edited && !g.deleted &&
+									(g.cedingId == '' || g.retLine1 == '' || g.retLine1 == null || isNaN(g.retLine1) || g.retLine2 == '' || g.retLine2 == null || isNaN(g.retLine2))) {
+									this.dialogIcon = 'error';
+									this.successDialog.open();
+
+									this.cancel = false;
+									return;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		/*for(let d of td1) {
 			if(d.edited && !d.deleted && (d.treatyYear == '' || d.treatyYear == null)) {
 				this.dialogIcon = 'error';
 				this.successDialog.open();
@@ -566,7 +676,7 @@ export class TreatyShareComponent implements OnInit {
 				this.cancel = false;
 				return;
 			}
-		}
+		}*/
 
 		this.confirmSave.confirmModal();
 	}
@@ -580,17 +690,79 @@ export class TreatyShareComponent implements OnInit {
 
 		this.params.saveTreatyComm = [];
  		this.params.deleteTreatyComm = [];
- 		this.params.saveTreatyShare = [];
  		this.params.deleteTreatyShare = [];
- 		this.params.saveCedRetention = [];
  		this.params.deleteCedRetention = [];
 
- 		var td1 = this.treatyYearData.tableData;
+ 		var td = this.treatyYearData.tableData;
 		var td2 = this.treatyCommData.tableData;
 		var td3 = this.treatyShareData.tableData;
 		var td4 = this.cedingRetentionData.tableData;
 
-		for(let d of td1) {
+		// this.params.saveTreatyComm = td.filter(a => a.edited && !a.deleted || a.treatyCommList.findIndex(b => b.edited) != 1)
+		// 							   .map(a => a.treatyCommList);
+
+		td.forEach(a => {
+			if(a.edited && !a.deleted) {
+				a.treatyCommList.forEach(tc => {
+					var tc1 = false;
+					var tc2 = false;
+					var tc3 = false;
+
+					tc['treatyYear'] = a.treatyYear;
+					tc['createUser'] = this.ns.getCurrentUser();
+					tc['createDate'] = this.ns.toDateTimeString(0);
+					tc['updateUser'] = this.ns.getCurrentUser();
+					tc['updateDate'] = this.ns.toDateTimeString(0);
+
+					if(tc.edited && !tc.deleted) {
+						tc1 = true;
+					} else if(tc.deleted) {
+						this.params.deleteTreatyComm.push(tc);
+					}
+
+					tc.treatyShareList.forEach(ts => {
+						ts['treatyYear'] = a.treatyYear;
+						ts['treatyId'] = tc.treatyId;
+						ts['createUser'] = this.ns.getCurrentUser();
+						ts['createDate'] = this.ns.toDateTimeString(0);
+						ts['updateUser'] = this.ns.getCurrentUser();
+						ts['updateDate'] = this.ns.toDateTimeString(0);
+
+						if(ts.edited && !ts.deleted) {
+							tc2 = true;
+						} else if(ts.deleted) {
+							this.params.deleteTreatyShare.push(ts);
+						}
+
+						ts.cedRetentionList.forEach(cr => {
+							cr['treatyYear'] = a.treatyYear;
+							cr['treatyId'] = tc.treatyId;
+							cr['trtyCedId'] = ts.trtyCedId;
+							cr['createUser'] = this.ns.getCurrentUser();
+							cr['createDate'] = this.ns.toDateTimeString(0);
+							cr['updateUser'] = this.ns.getCurrentUser();
+							cr['updateDate'] = this.ns.toDateTimeString(0);
+
+							if(cr.edited && !cr.deleted) {
+								tc3 = true;
+							} else if(cr.deleted) {
+								this.params.deleteCedRetention.push(cr);
+							}
+						});
+					});
+
+
+					if(tc1 || tc2 || tc3) {
+						this.params.saveTreatyComm.push(tc);
+					}
+					
+				});
+			}
+		});
+
+		console.log(this.params);
+
+		/*for(let d of td) {
 			if(d.deleted) {
 				td2.filter(a => a.treatyYear == d.treatyYear).forEach(b => {
 					this.params.deleteTreatyComm.push(b);
@@ -641,18 +813,18 @@ export class TreatyShareComponent implements OnInit {
 			} else if(d.deleted) {
 				this.params.deleteCedRetention.push(d);
 			}
-		}
+		}*/
 
-		this.ms.saveMtnTreatyShare(this.params).subscribe(data => {
-			if(data['returnCode'] == -1) {
-				this.dialogIcon = "success";
-				this.successDialog.open();
-				this.getMtnTreatyComm();
-			} else {
-				this.dialogIcon = "error";
-				this.successDialog.open();
-			}
-		});
+		// this.ms.saveMtnTreatyShare(this.params).subscribe(data => {
+		// 	if(data['returnCode'] == -1) {
+		// 		this.dialogIcon = "success";
+		// 		this.successDialog.open();
+		// 		this.getMtnTreatyComm();
+		// 	} else {
+		// 		this.dialogIcon = "error";
+		// 		this.successDialog.open();
+		// 	}
+		// });
 	}
 
 	onCopySetupClick() {
@@ -693,5 +865,9 @@ export class TreatyShareComponent implements OnInit {
 				$('#mtnTreatyShareConfirmationModal > #modalBtn').trigger('click');
 			}
 		});
+	}
+
+	add() {
+		this.treatyYearTable.indvSelect.edited = true;
 	}
 }

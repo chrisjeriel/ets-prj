@@ -118,12 +118,12 @@
     <div footer class="text-center w-100">
         <div class="col-sm-12 text-center">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails('mdlOk');"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="setDetails('mdlOk');"><a>Ok</a></button>
         </div>
     </div>
 </app-modal>
 
-<app-lov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+<app-lov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true" #otherLov></app-lov>
 <app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
 <app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/update-installment'" ></app-cancel-button>

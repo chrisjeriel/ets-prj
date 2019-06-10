@@ -1,11 +1,11 @@
 <div class="cust-tabs-container">
-	<h4>Maintenance / Quotation & Policy</h4>
+	<h4>Maintenance / Claims</h4>
 	<ngb-tabset >
-		<ngb-tab title="Type of Cession">
+		<ngb-tab title="Claim Event">
 			<ng-template ngbTabContent>
 				<fieldset class="scheduler-border" style="margin-top: 10px !important">
 					<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-						<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="passData.tableData=$event" #cessionTbl (genericBtn)="onDeleteTypeOfCession()" (onDelete)="cessionTbl.onClickDelete('force'); passData.disableGeneric=true">
+						<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="showLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="passData.tableData=$event;checkCode($event);" #clmEvent (genericBtn)="onDeleteMtnClmEvent()" (onDelete)="clmEvent.onClickDelete('force'); passData.disableGeneric=true" (add)="onClickAdd()">
 						</app-cust-editable-non-datatable>
 
 						<div class="form-row" style="margin-top: 40px !important;">
@@ -24,16 +24,16 @@
 				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="cessionData?.createUser" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="mtnClmEventData?.createUser" readonly>
                         <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
                         <div class="col-sm dp-cont">
-                            <datepicker [value]="cessionData?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                            <datepicker [value]="mtnClmEventData?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
                         </div>
                         <label class="form-control-sm col-sm-1">Last Update By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="cessionData?.updateUser" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="mtnClmEventData?.updateUser" readonly>
                         <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
                         <div class="col-sm dp-cont">
-                            <datepicker [value]="cessionData?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                            <datepicker [value]="mtnClmEventData?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
                         </div>
                     </div>
                 </fieldset>
@@ -54,6 +54,9 @@
     </div>
 </app-modal>
 
-<app-confirm-save (onYes)="onSaveTypeOfCession()"></app-confirm-save>
+<app-confirm-save (onYes)="onSaveMtnClmEvent()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveTypeOfCession('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="onSaveMtnClmEvent('cancel')" [url]="'/maintenance-clm'" ></app-cancel-button>
+
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-clm-event-type-lov id="eventTypeLov" (selectedData)="setEventType($event)"></app-mtn-clm-event-type-lov>

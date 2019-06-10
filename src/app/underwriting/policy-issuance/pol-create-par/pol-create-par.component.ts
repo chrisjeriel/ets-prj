@@ -131,6 +131,8 @@ export class PolCreatePARComponent implements OnInit {
           this.clearFields();
           this.getQuoteListing();
           this.showLOV();
+        } else if(this.quotationList.length == 0 && this.searchArr.includes('%%')) {
+          this.getQuoteListing();
         } else if(this.searchArr.includes('%%')) {
           this.optionId = '';
           this.optionRt = '';
@@ -186,6 +188,8 @@ export class PolCreatePARComponent implements OnInit {
           this.clearFields();
           this.getHoldCovListing();
           this.showLOV();
+        } else if(this.holCovList.length == 0 && this.searchArr.includes('%%')) {
+          this.getQuoteListing();
         } else if(this.searchArr.includes('%%')) {
           this.optionId = '';
           this.optionRt = '';
@@ -221,6 +225,8 @@ export class PolCreatePARComponent implements OnInit {
           this.clearFields();
           this.getPolOCListing();
           this.showLOV();
+        } else if(this.polOcList.length == 0 && this.searchArr.includes('%%')) {
+          this.getQuoteListing();
         } else if(this.searchArr.includes('%%')) {
           this.optionId = '';
           this.optionRt = '';
@@ -515,11 +521,11 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'year') {
         this.searchArr[1] = '%' + a + '%';
       } else if(key === 'seqNo') {
-        this.searchArr[2] = '%' + a + '%';
+        this.searchArr[2] = a == '' ? '%%' : '%' + String(a).padStart(5, '0') + '%';
       } else if(key === 'revNo') {
-        this.searchArr[3] = '%' + a + '%';
+        this.searchArr[3] = a == '' ? '%%' : '%' + String(a).padStart(2, '0') + '%';
       } else if(key === 'cedingId') {
-        this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0');
+        this.searchArr[4] = a == '' ? '%%' : '%' + String(a).padStart(3, '0');
       }
 
       if(this.searchArr.includes('')) {
@@ -537,9 +543,9 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'year') {
         this.searchArr[2] = '%' + a + '%';
       } else if(key === 'seqNo') {
-        this.searchArr[3] = '%' + a + '%';
+        this.searchArr[3] = a == '' ? '%%' : '%' + String(a).padStart(5, '0') + '%';
       } else if(key === 'revNo') {
-        this.searchArr[4] = a === '' ? '%%' : '%' + a;
+        this.searchArr[4] = a == '' ? '%%' : '%' + a;
       }
 
       if(this.searchArr.includes('')) {
@@ -557,13 +563,13 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'year') {
         this.searchArr[2] = '%' + a + '%';
       } else if(key === 'seqNo') {
-        this.searchArr[3] = '%' + a + '%';
+        this.searchArr[3] = a == '' ? '%%' : '%' + String(a).padStart(5, '0') + '%';
       } else if(key === 'cedingId') {
-        this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0') + '%';
+        this.searchArr[4] = a == '' ? '%%' : '%' + String(a).padStart(3, '0') + '%';
       } else if(key === 'coSeriesNo') {
-        this.searchArr[5] = '%' + a + '%';
+        this.searchArr[5] = a == '' ? '%%' : '%' + String(a).padStart(4, '0') + '%';
       } else if(key === 'altNo') {
-        this.searchArr[6] = a === '' ? '%%' : '%' + a;
+        this.searchArr[6] = a == '' ? '%%' : '%' + String(a).padStart(3, '0');
       }
 
       if(this.searchArr.includes('')) {
@@ -608,7 +614,6 @@ export class PolCreatePARComponent implements OnInit {
         this.ns.lovLoader(ev, 1);
 
         this.quoteService.getQuoteOptions(this.selected.quoteId).subscribe(data => {
-          console.log(data);
           var options = data['quotation']['optionsList'];
 
           
