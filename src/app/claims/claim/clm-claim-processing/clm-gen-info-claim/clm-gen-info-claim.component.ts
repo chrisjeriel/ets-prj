@@ -67,5 +67,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
     this.passData.tableData = this.tableData;
   }
 
-
+  openAdjustersModal() {
+    $('#adjustersModal #modalBtn').trigger('click');
+  }
 }

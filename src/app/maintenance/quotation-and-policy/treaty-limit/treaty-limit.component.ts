@@ -7,6 +7,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTreatyComponent } from '@app/maintenance/mtn-treaty/mtn-treaty.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-treaty-limit',
@@ -110,9 +111,10 @@ export class TreatyLimitComponent implements OnInit {
 	hiddenTreaty: any[] = [];
 	treatyLOVRow: number;
 
-	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
+	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
+		this.titleService.setTitle("Mtn | Treaty Limit");
 		setTimeout(() => { this.treatyLimitTable.refreshTable(); this.treatyLayerTable.refreshTable(); }, 0);
 	}
 
@@ -179,10 +181,15 @@ export class TreatyLimitComponent implements OnInit {
 		this.treatyLayerData.disableGeneric = this.treatyLayerSelected == null || this.treatyLayerSelected == '' || this.treatyLayerSelected.showMG == undefined;
 	}
 
-	onTreatyLayerClickDelete() {
-		this.treatyLayerTable.indvSelect.edited = true;
-		this.treatyLayerTable.indvSelect.deleted = true;
-		this.treatyLayerTable.confirmDelete();
+	onTreatyLayerClickDelete(ev) {
+		if(ev != undefined) {
+			this.treatyLayerTable.confirmDelete();
+		} else {
+			this.treatyLayerTable.indvSelect.edited = true;
+			this.treatyLayerTable.indvSelect.deleted = true;
+			this.treatyLayerData.disableGeneric = true;
+			this.treatyLayerTable.refreshTable();
+		}
 	}
 
 	checkCode(ev) {
@@ -312,14 +319,16 @@ export class TreatyLimitComponent implements OnInit {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 				this.cancel = false;
+				console.log('here 1');
 				return;
 			}
 
 			if(d.edited && !d.deleted || d.treatyLayerList.findIndex(b => b.edited) != -1) {
-				if(d.treatyLayerList.findIndex(b => b.treatyId == '') != -1) {
+				if(d.treatyLayerList.findIndex(b => b.treatyId == '' && !b.deleted) != -1) {
 					this.dialogIcon = "error";
 					this.successDialog.open();
 					this.cancel = false;
+					console.log('here 2');
 					return;
 				}
 			}
@@ -345,6 +354,7 @@ export class TreatyLimitComponent implements OnInit {
 								this.errorMsg = 1;
 								$('#mtnTreatyLimitWarningModal > #modalBtn').trigger('click');
 								this.cancel = false;
+								console.log('here 3');
 								return;
 							}
 						}
@@ -353,12 +363,17 @@ export class TreatyLimitComponent implements OnInit {
 			}
 		}
 
-		this.confirmSave.confirmModal();
+		if(!this.cancel) {
+			this.confirmSave.confirmModal();	
+		} else {
+			this.save(false);
+		}
 	}
 
 	save(cancel?) {
 		this.cancel = cancel !== undefined;
-		if(this.cancel) {
+
+		if(this.cancel && cancel) {
 			this.onClickSave();
 			return;
 		}

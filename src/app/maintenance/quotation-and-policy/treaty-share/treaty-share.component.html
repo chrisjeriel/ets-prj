@@ -112,7 +112,7 @@
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="save(true)" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 <app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
 <app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
 <app-ceding-company #cedingRetention (selectedData)="setSelectedCedCoCedRet($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>

@@ -7,6 +7,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnTreatyComponent } from '@app/maintenance/mtn-treaty/mtn-treaty.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-treaty-share',
@@ -183,9 +184,10 @@ export class TreatyShareComponent implements OnInit {
 
  	first: boolean = true;
 
-	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
+	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
+		this.titleService.setTitle("Mtn | Treaty Share");
 		setTimeout(() => {
 			this.treatyYearTable.refreshTable();
 			this.treatyCommTable.refreshTable();
@@ -320,7 +322,6 @@ export class TreatyShareComponent implements OnInit {
 				this.warningMsg = 1;
 				$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
 			} else {
-				
 				this.treatyYearTable.confirmDelete();
 			}
 		} else {
@@ -630,13 +631,17 @@ export class TreatyShareComponent implements OnInit {
 				}
 			}
 		}
-
-		this.confirmSave.confirmModal();
+		if(!this.cancel) {
+			this.confirmSave.confirmModal();	
+		} else {
+			this.save(false);
+		}
 	}
 
 	save(cancel?) {
 		this.cancel = cancel !== undefined;
-		if(this.cancel) {
+
+		if(this.cancel && cancel) {
 			this.onClickSave();
 			return;
 		}
