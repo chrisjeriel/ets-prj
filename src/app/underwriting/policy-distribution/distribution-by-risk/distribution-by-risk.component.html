@@ -104,7 +104,7 @@
           <label class="form-control-sm col-sm-1">Risk Dist Status</label>
           <input type="text" placeholder="00001" class="form-control form-control-sm col-sm-3" readonly [ngModel]="riskDistributionData?.status">
           <label class="form-control-sm col-sm-1">Rate (%)</label>
-          <input type="text" placeholder="0.025000" class="form-control form-control-sm txt-content-rght col-sm" readonly [ngModel]="round((riskDistributionData?.premAmt / riskDistributionData?.tsiAmt) * 100) | number: '1.2-2'">
+          <input type="text" placeholder="0.025000" class="form-control form-control-sm txt-content-rght col-sm" readonly [ngModel]="round((riskDistributionData?.premAmt / riskDistributionData?.tsiAmt) * 100) | number: '1.10-10'">
           <label class="form-control-sm col-sm-1">Ceding Co</label>
           <input type="text" placeholder="FLT Prime" class="form-control form-control-sm col-sm-3" readonly [ngModel]="params.cedingName">
         </div>
@@ -163,6 +163,10 @@
       <legend class="scheduler-border">Treaty Share and Comm Share Parameters</legend>
       <div style="margin-top: 10px; margin-bottom: 8px;">
             <app-cust-editable-non-datatable #wparam [passData]="wparamData">
+              <ng-container controls-r>
+                <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc === 'Y' : riskDistributionData.autoCalc === 'N'">
+                <label class="form-control-sm">Auto Calculation</label>
+              </ng-container>
             </app-cust-editable-non-datatable>
       </div>
     </fieldset>
@@ -328,7 +332,7 @@
                 <app-cust-editable-non-datatable [passData]="poolDistributionData" #poolDistTable></app-cust-editable-non-datatable>
               </div>
             </div>
-            <div class="row" *ngIf="!poolDistTable.loadingFlag">
+            <!-- <div class="row" *ngIf="!poolDistTable.loadingFlag">
               <div class="col-sm-2">
               </div>
               <div class="col-sm-8" style="margin-top: -22px; margin-left: -20px;">
@@ -353,7 +357,7 @@
               </div>
               <div class="col-sm-2">
               </div>
-            </div>
+            </div> -->
           </fieldset>
         </div>
         <div footer class="d-flex justify-content-center" style="width: 100% !important;">
