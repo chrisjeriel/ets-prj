@@ -257,7 +257,7 @@
 			<div class="row" style="margin-right: 400px">
 				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>CAT Perils</a></button>
 				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-				<button class="cust-btn" type="button" (click)="savePolicyChanges();"><a>Save</a></button>
+				<button class="cust-btn" type="button" (click)="onClickSave();"><a>Save</a></button>
 			</div>
 		</div>
 	</app-modal>
@@ -334,3 +334,7 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save id="coverageConfirm" (onYes)="savePolicyChanges()"></app-confirm-save>
+<app-cancel-button id="coverageCancel" (onYes)="savePolicyChanges('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

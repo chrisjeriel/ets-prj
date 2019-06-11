@@ -8,7 +8,7 @@ import { DecimalPipe } from '@angular/common';
 import { MtnSectionCoversComponent } from '@app/maintenance/mtn-section-covers/mtn-section-covers.component';
 import { Router } from '@angular/router';
 import { MtnNonrenewReasonComponent } from '@app/maintenance/mtn-nonrenew-reason/mtn-nonrenew-reason.component';
-
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-expiry-listing',
@@ -23,6 +23,7 @@ export class ExpiryListingComponent implements OnInit {
   @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
   @ViewChild('table') table: CustEditableNonDatatableComponent;
   @ViewChild('mtnNonRenewReason') nrReasonLOV: MtnNonrenewReasonComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   tableData: ExpiryListing[] = [];
   renewedPolicyList: RenewedPolicy[] = [];
@@ -237,7 +238,8 @@ export class ExpiryListingComponent implements OnInit {
    };
 
    ExpcoverageData: any = {
-     expSecCovers: []
+     expSecCovers: [],
+     delexpSecCovers: []
    }
 
   selectedPolicyString :any; 
@@ -251,6 +253,9 @@ export class ExpiryListingComponent implements OnInit {
   rowPolicyId: any;
   rowProjId: any;
   rowRiskId:any;
+  dialogIcon:string = '';
+  dialogMessage:string;
+  cancelFlag:boolean;
 
   constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title, private ns: NotesService,  private decimal : DecimalPipe, private router : Router) { }
 
@@ -467,6 +472,13 @@ export class ExpiryListingComponent implements OnInit {
   prepareSectionCoverData(data:any) {
     this.passDataSectionCover.tableData = [];
     this.editModal = this.coverageData;
+    this.secISi = 0;
+    this.secIISi = 0; 
+    this.secIIISi = 0;
+    this.secIPrem = 0;
+    this.secIIPrem = 0;
+    this.secIIIPrem = 0;
+    this.totalPrem = 0;
     for(var i = 0 ; i < data.length;i++){
       this.passDataSectionCover.tableData.push(data[i]);
 
@@ -571,6 +583,7 @@ export class ExpiryListingComponent implements OnInit {
   }
 
   updateSectionCover(data){
+    console.log('edited')
     this.secISi     = 0;
     this.secIISi    = 0;
     this.secIIISi   = 0;
@@ -672,6 +685,7 @@ export class ExpiryListingComponent implements OnInit {
       this.totalPerSection.refreshTable();
 
       this.editModal.totalSi = this.totalSi;
+      console.log(this.totalSi)
       this.editModal.totalPrem = this.totalPrem;
 
       for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
@@ -754,16 +768,26 @@ export class ExpiryListingComponent implements OnInit {
 
   savePolicyChanges() {
     this.prepareCoverage();
-    console.log(JSON.stringify(this.ExpcoverageData))
     console.log(this.ExpcoverageData)
     this.underWritingService.saveExpEdit(this.ExpcoverageData).subscribe((data:any) => {
       if(data['returnCode'] == 0) {
         console.log('failed')
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
       } else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
         console.log('success')
+        //this.modalService.dismissAll();
+        this.retrieveExpPolList();
       }
     });
-      //console.log("savePolicyChanges :" + JSON.stringify(this.passDataSectionCover.tableData));
+  }
+
+  onClickSave(){
+    $('#coverageConfirm #confirm-save #modalBtn2').trigger('click');
   }
 
   tagProcess(mode) {
@@ -836,13 +860,13 @@ export class ExpiryListingComponent implements OnInit {
       this.ExpcoverageData.policyId         = this.coverageData.policyId;
       this.ExpcoverageData.projId           = this.coverageData.projId;
       this.ExpcoverageData.riskId           = this.coverageData.riskId;
-      this.ExpcoverageData.sectionISi       = this.coverageData.sectionISi;
-      this.ExpcoverageData.sectionIiSi      = this.coverageData.sectionIiSi;
-      this.ExpcoverageData.sectionIiiSi     = this.coverageData.sectionIiiSi;
+      this.ExpcoverageData.sectionISi       = this.secISi;
+      this.ExpcoverageData.sectionIiSi      = this.secIISi;
+      this.ExpcoverageData.sectionIiiSi     = this.secIIISi;
       this.ExpcoverageData.totalSi          = this.coverageData.totalSi;
-      this.ExpcoverageData.sectionIPrem     = this.coverageData.sectionIPrem;
-      this.ExpcoverageData.sectionIiPrem    = this.coverageData.sectionIiPrem;
-      this.ExpcoverageData.sectionIiiPrem   = this.coverageData.sectionIiiPrem;
+      this.ExpcoverageData.sectionIPrem     = this.secIPrem;
+      this.ExpcoverageData.sectionIiPrem    = this.secIIPrem;
+      this.ExpcoverageData.sectionIiiPrem   = this.secIIIPrem;
       this.ExpcoverageData.totalPrem        = this.coverageData.totalPrem;
       this.ExpcoverageData.currencyCd       = this.coverageData.currencyCd;
       this.ExpcoverageData.currencyRt       = this.coverageData.currencyRt;
@@ -866,10 +890,16 @@ export class ExpiryListingComponent implements OnInit {
       for(var i = 0 ;i < this.passDataSectionCover.tableData.length; i++){
         if(this.passDataSectionCover.tableData[i].edited && !this.passDataSectionCover.tableData[i].deleted){
           this.ExpcoverageData.expSecCovers.push(this.passDataSectionCover.tableData[i]);
+          this.ExpcoverageData.expSecCovers[this.ExpcoverageData.expSecCovers.length - 1].createDate = this.ns.toDateTimeString(this.passDataSectionCover.tableData[i].createDate);
+          this.ExpcoverageData.expSecCovers[this.ExpcoverageData.expSecCovers.length - 1].updateDate = this.ns.toDateTimeString(this.passDataSectionCover.tableData[i].updateDate);
           this.ExpcoverageData.expSecCovers[this.ExpcoverageData.expSecCovers.length - 1].lineCd = this.lineCd;
           this.ExpcoverageData.expSecCovers[this.ExpcoverageData.expSecCovers.length - 1].policyId = this.rowPolicyId;
           this.ExpcoverageData.expSecCovers[this.ExpcoverageData.expSecCovers.length - 1].projId = this.rowProjId;
           this.ExpcoverageData.expSecCovers[this.ExpcoverageData.expSecCovers.length - 1].riskId = this.rowRiskId;
+        }
+
+        if(this.passDataSectionCover.tableData[i].deleted){
+          this.ExpcoverageData.delexpSecCovers.push(this.passDataSectionCover.tableData[i]);
         }
       }
   }
