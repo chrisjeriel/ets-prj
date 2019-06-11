@@ -90,6 +90,7 @@ export class DeductibleComponent implements OnInit {
     counter             : number;
     arrDeductibleCd     : any     = [];
     warnMsg             : string  = '';
+    fromCancel          : boolean;
 
     params : any =    {
         saveDeductibles    : [],
@@ -157,8 +158,10 @@ export class DeductibleComponent implements OnInit {
               (record.deductibleType == 'F' && record.deductibleAmt == null || isNaN(record.deductibleAmt)==true || (record.deductibleType != 'F' && record.deductibleRate == null || isNaN(record.deductibleRate)== true ))){
                 if(!record.deleted){
                     isEmpty = 1;
+                    this.fromCancel = false;
                 }
             }else{
+                this.fromCancel = true;
                 if(record.edited && !record.deleted){
                     record.createUser = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
                     record.createDate = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
@@ -347,6 +350,16 @@ export class DeductibleComponent implements OnInit {
                 }
             })
         }        
+    }
+
+    checkCancel(){
+        if(this.cancelFlag == true){
+            if(this.fromCancel){
+                this.cancelBtn.onNo();
+            }else{
+                return;
+            }
+        }
     }
 
 

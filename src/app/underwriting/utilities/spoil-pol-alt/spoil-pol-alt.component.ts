@@ -316,7 +316,8 @@ export class SpoilPolAltComponent implements OnInit {
 		var msgA 		= 'Policy/Alteration cannot be spoiled, creation of alteration connected to this record is on going.';
 		var msgB 		= 'Policy with existing valid alteration cannot be spoiled.';
 
-		if(this.spoilPolRecord.reason == ''){
+		console.log(this.spoilPolRecord.reason);
+		if(this.spoilPolRecord.reason == '' || this.spoilPolRecord.reason == null){
 			this.dialogIcon = 'error';
 			$('app-sucess-dialog #modalBtn').trigger('click');
 			$('.dirty').focus();

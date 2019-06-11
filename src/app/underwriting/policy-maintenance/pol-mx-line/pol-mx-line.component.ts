@@ -55,7 +55,7 @@ export class PolMxLineComponent implements OnInit {
 	};
 
 	cancelFlag				: boolean;
-	//loading					: boolean;
+	fromCancel				: boolean;
 	dialogIcon				: string;
 	dialogMessage			: string;
 	arrLineCd     			: any     	= [];
@@ -104,8 +104,10 @@ export class PolMxLineComponent implements OnInit {
 			if(record.lineCd === '' || record.lineCd === null || record.description === '' || record.description === null || record.cutOffTime === '' || record.cutOffTime === null){
 				if(!record.deleted){
 					isEmpty = 1;
+					this.fromCancel = false;
 				}
 			}else{
+				this.fromCancel = true;
 				if(record.edited && !record.deleted){
 					record.createUser		= (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
 					record.createDate		= (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
@@ -248,6 +250,16 @@ export class PolMxLineComponent implements OnInit {
 	  		this.table.selected  = [this.table.indvSelect]
 	  		this.table.confirmDelete();
 	  	}
+	}
+
+	checkCancel(){
+		if(this.cancelFlag == true){
+			if(this.fromCancel){
+				this.cancelBtn.onNo();
+			}else{
+				return;
+			}
+		}
 	}
 
 }
