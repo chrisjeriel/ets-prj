@@ -107,6 +107,9 @@ export class PolicyInformationComponent implements OnInit {
   }
 
   goToPDistribution(){
+    console.log(this.selectedPol.policyId);
+    console.log(this.policyInfo.lineCd);
+    console.log(this.policyInfo.lineClassCd);
     this.router.navigate(['policy-dist', {policyId:this.selectedPol.policyId,
                                               fromInq:true,
                                               policyNo: this.selectedPol.policyNo,

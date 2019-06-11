@@ -16,6 +16,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('limit') limitTable: CustEditableNonDatatableComponent;
   @ViewChild('poolDistTable') poolDistTable: CustEditableNonDatatableComponent;
   @ViewChild('coInsTable') coInsTable: CustEditableNonDatatableComponent;
+  @ViewChild('wparam') wparam: CustEditableNonDatatableComponent;
 
   @Output() riskDistId = new EventEmitter<any>();
 
@@ -88,18 +89,20 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //NECO 06/03/2019
   treatyDistData: any = {
     tableData: [],
-    tHeader: ['Treaty', 'Treaty Company', 'Share (%)', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
+    tHeader: ['Treaty', 'Treaty Company', 'Treaty Share (%)', 'SI Amount', 'Premium Amount', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
     magnifyingGlass: [],
     options: [],
-    dataTypes: ['text', 'text', 'percent', 'currency', 'currency', 'percent'],
-    keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commShare'],
+    dataTypes: ['text', 'text', 'percent', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
+    keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
     opts: [],
+    total:[null, 'TOTAL', 'pctShare', 'siAmt', 'premAmt', null, 'commAmt', 'vatRiComm', 'netDue'],
+    uneditable:[true,true,true,true,true,true,true,true,true],
     nData: {},
     checkFlag: true,
     selectFlag: false,
-    addFlag: true,
+    addFlag: false,
     editFlag: false,
-    deleteFlag: true,
+    deleteFlag: false,
     paginateFlag: true,
     infoFlag: true,
     searchFlag: false,
@@ -126,6 +129,29 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     widths: [],
     pageID: 'treatyLimitsTable'
   };
+
+  wparamData: any = {
+    tableData: [],
+    tHeader: ['Treaty', 'Treaty Company', 'Treaty Share (%)', 'Comm Rate (%)'],
+    magnifyingGlass: [],
+    options: [],
+    dataTypes: ['text', 'text', 'percent', 'percent'],
+    keys: ['treatyName', 'trtyCedName', 'pctShare', 'commRt'],
+    opts: [],
+    nData: {},
+    checkFlag: true,
+    selectFlag: false,
+    addFlag: true,
+    editFlag: false,
+    paginateFlag: true,
+    infoFlag: true,
+    searchFlag: false,
+    checkboxFlag: true,
+    pageLength: 10,
+    widths: [],
+    pageID: 'treatyDistTable',
+    genericBtn: 'Delete'
+  }
 
   poolDistributionData: any = {
     tableData: [],
@@ -299,6 +325,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         var appendTreatyLimitId: number = 0;
         //var treatyLimitAmt: any;
         this.treatyDistData.tableData = data.distWrisk.distRiskWtreaty;
+        this.wparamData.tableData = data.distRiskWparam;
         for(var i of data.wriskLimit){
           if(appendTreatyLimitId === 0){
             appendTreatyName = i.treatyName;
@@ -315,6 +342,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         }
         this.treatyTable.refreshTable();
         this.limitTable.refreshTable();
+        this.wparam.refreshTable();
         setTimeout(()=>{
           $('input[type=text]').focus();
           $('input[type=text]').blur();
