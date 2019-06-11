@@ -116,7 +116,7 @@ export class ExpiryListingComponent implements OnInit {
     pageLength: 'unli',
     widths:[0,0,210,125,100,125,0,0],
     magnifyingGlass: ['coverName'],
-    uneditable:[true,true,false,false,false,false,false,false],
+    uneditable:[true,false,false,false,false,false,false,false],
     keys:['section','bulletNo','coverName','sumInsured','premRt','premAmt','discountTag','addSi'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
@@ -264,6 +264,7 @@ export class ExpiryListingComponent implements OnInit {
 
       for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
         if (this.passDataRenewalPolicies.tableData[i].processTag == 'Y') {
+          console.log(this.passDataRenewalPolicies.tableData)
             var policyId = this.passDataRenewalPolicies.tableData[i].policyId;
 
             if (this.passDataRenewalPolicies.tableData[i].renAsIsTag == 'Y') {
@@ -758,6 +759,7 @@ export class ExpiryListingComponent implements OnInit {
 
   processRenewalPolicies() {
       this.underWritingService.processRenewablePolicy(this.processRenewalPoliciesParams).subscribe(data => {
+        console.log(data)
           console.log("processRenewablePolicy: " + JSON.stringify(data));
           if (data['errorList'].length > 0) {
 
