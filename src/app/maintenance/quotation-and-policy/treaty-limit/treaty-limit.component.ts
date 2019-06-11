@@ -319,7 +319,6 @@ export class TreatyLimitComponent implements OnInit {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 				this.cancel = false;
-				console.log('here 1');
 				return;
 			}
 
@@ -328,7 +327,6 @@ export class TreatyLimitComponent implements OnInit {
 					this.dialogIcon = "error";
 					this.successDialog.open();
 					this.cancel = false;
-					console.log('here 2');
 					return;
 				}
 			}
@@ -354,7 +352,6 @@ export class TreatyLimitComponent implements OnInit {
 								this.errorMsg = 1;
 								$('#mtnTreatyLimitWarningModal > #modalBtn').trigger('click');
 								this.cancel = false;
-								console.log('here 3');
 								return;
 							}
 						}
