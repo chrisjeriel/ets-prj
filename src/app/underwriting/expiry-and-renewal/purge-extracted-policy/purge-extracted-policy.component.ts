@@ -56,6 +56,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   getPolPurging(){
     this.underwritingService.getPolForPurging(null).subscribe((data:any) => {
+      console.log(data)
       this.passData.tableData = [];
       var datas = data.polForPurging;
       for(var i = 0; i < datas.length;i++){
@@ -137,7 +138,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
         console.log('success')
         this.getPolPurging()
       }
-    })
+    });  
 
   }
 
@@ -219,5 +220,9 @@ export class PurgeExtractedPolicyComponent implements OnInit {
    clearDates() {
     $('#fromDate').val("");
     $('#toDate').val("");
+  }
+
+  row(data){
+    console.log(data)
   }
 }

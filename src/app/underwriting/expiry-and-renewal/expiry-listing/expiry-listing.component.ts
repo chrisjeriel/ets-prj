@@ -761,11 +761,11 @@ export class ExpiryListingComponent implements OnInit {
       this.underWritingService.processRenewablePolicy(this.processRenewalPoliciesParams).subscribe(data => {
         console.log(data)
           console.log("processRenewablePolicy: " + JSON.stringify(data));
-          if (data['errorList'].length > 0) {
+          /*if (data['errorList'].length > 0) {
 
           } else {
             
-          }
+          }*/
       });
 
   }
