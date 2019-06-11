@@ -27,7 +27,12 @@ export class ExpiryListingComponent implements OnInit {
   tableData: ExpiryListing[] = [];
   renewedPolicyList: RenewedPolicy[] = [];
   byDate: boolean = true;
-  searchParams: any[] = [];
+  searchParams: any = {
+    policyId: '',
+    processTag: '',
+    renewalFlag: '',
+    extractUser: '',
+  };
   fetchedData: any;
   disabledFlag: boolean = true;
   secCoverData: any;
@@ -230,6 +235,10 @@ export class ExpiryListingComponent implements OnInit {
   showEdit :boolean = false;
   validForRenewalProcessing:boolean = false;
 
+  renewedPolicies:any = [];
+  wcPolicies:any = [];
+  nrPolicies:any = [];
+
   constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title, private ns: NotesService,  private decimal : DecimalPipe, private router : Router) { }
 
   ngOnInit() {
@@ -270,7 +279,8 @@ export class ExpiryListingComponent implements OnInit {
             if (this.passDataRenewalPolicies.tableData[i].renAsIsTag == 'Y') {
                 var policy = {
                   policyId : policyId,
-                  summaryTag : this.passDataRenewalPolicies.tableData[i].summaryTag
+                  summaryTag : this.passDataRenewalPolicies.tableData[i].summaryTag,
+                  procBy : JSON.parse(window.localStorage.currentUser).username,
                 };
 
                 renAsIsPolicyList.push(policy);
@@ -291,7 +301,8 @@ export class ExpiryListingComponent implements OnInit {
             if (this.passDataRenewalPolicies.tableData[i].nonRenTag == 'Y') {
                 var policyNR = {
                   policyId : policyId,
-                  nrReasonCd : this.passDataRenewalPolicies.tableData[i].nrReasonCd
+                  nrReasonCd : this.passDataRenewalPolicies.tableData[i].nrReasonCd,
+                  procBy : JSON.parse(window.localStorage.currentUser).username,
                 };
                 nonRenPolicyList.push(policyNR);
             }
@@ -324,6 +335,9 @@ export class ExpiryListingComponent implements OnInit {
 
   retrieveExpPolList(){
        this.passDataRenewalPolicies.tableData = [];
+       this.searchParams.renewalFlag = 'N';
+       this.searchParams.processTag = 'N';
+       console.log(this.searchParams)
        this.underWritingService.getExpPolList(this.searchParams).subscribe(data => {
           console.log(data);
           var records = data['expPolicyList'];
@@ -761,11 +775,18 @@ export class ExpiryListingComponent implements OnInit {
       this.underWritingService.processRenewablePolicy(this.processRenewalPoliciesParams).subscribe(data => {
         console.log(data)
           console.log("processRenewablePolicy: " + JSON.stringify(data));
-          /*if (data['errorList'].length > 0) {
+          if (data['errorList'].length > 0) {
 
           } else {
-            
-          }*/
+
+              this.renewedPolicies = data['renAsIsPolicyList'];
+              this.wcPolicies = data['renWithChangesPolicyList'];
+              this.nrPolicies = data['nonRenPolicyList'];
+
+              $('#renewableProcessSuccess > #modalBtn').trigger('click');
+
+              this.retrieveExpPolList();
+          }
       });
 
   }

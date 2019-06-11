@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Policy/ Expiry & Renewal/ Expiry List</h4>
 	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Renewable Policies">
+		<ngb-tab class="ngb-tab" title="Renewable Policies" (click)="retrieveExpPolList();">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12" >
@@ -296,5 +296,41 @@
     <div footer class="w-100 text-right">
         <button class="cust-btn" type="button" (click)="gotoPurgeExtractedPolicy(); modalService.dismissAll();"><a>Yes</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
+
+
+<app-modal class="d-none" id="renewableProcessSuccess">
+    <div header>Success</div>
+    <div body style="min-width: 300px !important;">
+    	<div *ngIf="renewedPolicies.length > 0">
+	        <div class="custom-row-inline-inset" style="text-align: left">                
+	            <p><b>Renewed Policies: </b></p>
+	        </div>
+	        <div class="custom-row-inline-inset" style="text-align: center">                
+	            <span *ngFor="let renPol of renewedPolicies">{{renPol.newPolicyNo}}<br/></span>
+	        </div>
+	    </div>
+
+	    <div *ngIf="wcPolicies.length > 0">
+	        <div class="custom-row-inline-inset" style="text-align: left">                
+	            <p><b>Renewed Policies with changes: </b></p>
+	        </div>
+	        <div class="custom-row-inline-inset" style="text-align: center">                
+	            <span *ngFor="let renPol of wcPolicies">{{renPol.policyId}}<br/></span>
+	        </div>
+	    </div>
+
+	    <div *ngIf="nrPolicies.length > 0">
+	        <div class="custom-row-inline-inset" style="text-align: left">                
+	            <p><b>Non-renewable Policies: </b></p>
+	        </div>
+	        <div class="custom-row-inline-inset" style="text-align: center">                
+	            <span *ngFor="let renPol of nrPolicies">{{renPol.policyId}} for reason {{renPol.nrReasonCd}}<br/></span>
+	        </div>
+	    </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>
