@@ -85,7 +85,7 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-					<app-cust-editable-non-datatable [passData]="passDataExtensionPolicies"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable #nrTable [passData]="passDataNonRenewalPolicies" (newClick)="onRowClickNR($event)" (tableDataChange)="updateNRPolicy($event)"></app-cust-editable-non-datatable>
 					</div>
 					<div class="col-sm-12" style="margin-bottom: 10px;">
 						<fieldset class="scheduler-border">
@@ -95,22 +95,22 @@
 									<div class="row">
 										<div class="col-sm">
 											<div class="row" style="margin-top: 0px;margin-right: -4px;">
-												<button class="cust col-sm">Delete</button>
-												<button class="cust col-sm" (click)="showEditModal()">Edit</button>
-												<button class="cust col-sm">Purge</button>
+												<button class="cust col-sm" (click)="gotoInfo();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Details</button>
+												<button class="cust col-sm" [disabled]="true" [class.cust-btn-disabled]="true">Edit</button>
+												<button class="cust col-sm" (click)="onClickPurge();">Purge</button>
 												<button class="cust col-sm">Save</button>
 											</div>
 											<div class="row" style="margin-right: -4px;">
 												<button class="cust col-sm">Print</button>
 												<button class="cust col-sm">Search</button>
 												<button class="cust col-sm">Update</button>
-												<button class="cust col-sm">Process</button>
+												<button class="cust col-sm" (click)="onClickProcessNR()">Process</button>
 											</div>
-											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
+											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
-												<input type="text" class="form-control form-control-sm col-sm-3">
+												<input type="text" [ngModel]="nrReasonCd" (ngModelChange)="nrReasonCd = $event.toUpperCase()" (change)="checkCode($event, 'nrReason');" class="form-control form-control-sm col-sm-3" [disabled]="!reasonFlag">
 												<div class="text-search-ico"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
-												<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;">
+												<input type="text" [ngModel]="nrReasonDescription" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;" [disabled]="!reasonFlag">
 											</div>
 											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Remarks</label>
