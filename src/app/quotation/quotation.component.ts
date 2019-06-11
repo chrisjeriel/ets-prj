@@ -143,7 +143,7 @@ export class QuotationComponent implements OnInit {
         $('#printListQuotation > #printModalBtn').trigger('click');
       } else
 
-     if($('.ng-dirty.ng-touched').length != 0 ){
+     if($('.ng-dirty.ng-touched:not([type="search"])').length != 0 ){
         $event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{
