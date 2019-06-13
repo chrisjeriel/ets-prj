@@ -6,7 +6,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
-
+import { ModalComponent }  from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-purge-extracted-policy',
@@ -15,8 +15,10 @@ import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol
 })
 export class PurgeExtractedPolicyComponent implements OnInit {
   
+  @ViewChild('mdl') modal : ModalComponent;
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
-  @ViewChild(CustEditableNonDatatableComponent) table :CustEditableNonDatatableComponent;
+  @ViewChild('tbl') table :CustEditableNonDatatableComponent;
+  @ViewChild('lov') tableLov :CustEditableNonDatatableComponent;
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
   passData:any={
@@ -27,8 +29,22 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     keys:['policyNo','totalSi','totalPrem','expiryDate','processTag','expiryTag'],
     uneditable:[true,true,true,true,true,true],
   	paginateFlag:true,
-  	infoFlag:true
+  	infoFlag:true,
+    pageID:'purge',
 
+  }
+
+  passDataLov :any ={
+    tableData:[],
+    tHeader: ['Policy No', 'Ceding Company', 'Insured'],
+    dataTypes:['text','text','text'],
+    tooltip:[null,null,null],
+    keys:['policyNo','cedingName','insuredName'],
+    uneditable:[true,true,true],
+    widths:[180,200,230],
+    paginateFlag:true,
+    infoFlag:true,
+    pageID:'LOV',
   }
 
   purgeData: any = {
@@ -48,6 +64,16 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   first = true;
   cedingId = "";
   cedingName = "";
+  policyLov:any;
+  selected:any;
+  PolicyNo: any = {
+    line: null,
+    year: null,
+    sequenceNo: null,
+    companyNo: null,
+    coSeriesNo: null,
+    altNo: null
+  }
   constructor(private modalService: NgbModal,private underwritingService: UnderwritingService,private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
@@ -58,6 +84,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     this.underwritingService.getPolForPurging(null).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
+      this.policyLov = data.polForPurging;
       var datas = data.polForPurging;
       for(var i = 0; i < datas.length;i++){
         this.passData.tableData.push(datas[i]);
@@ -125,13 +152,46 @@ export class PurgeExtractedPolicyComponent implements OnInit {
         }
       }
     }
+
+    if(this.baseOnParam){
+      if(this.line !== null){
+        for(var i = 0 ; i < this.passData.tableData.length;i++){
+          if(this.passData.tableData[i].policyNo.split('-')[0] === this.line){
+            this.purgeData.deletePurge.push(this.passData.tableData[i]);
+          }
+        }
+      }
+
+      if(this.typeOfCessionId !== null){
+        for(var i = 0 ; i < this.passData.tableData.length;i++){
+          if(this.passData.tableData[i].cessionId === this.typeOfCessionId){
+            this.purgeData.deletePurge.push(this.passData.tableData[i]);
+          }
+        }
+      }
+
+      if(this.cedingId !== null){
+        for(var i = 0 ; i < this.passData.tableData.length;i++){
+          if(this.passData.tableData[i].cedingId == this.cedingId){
+            this.purgeData.deletePurge.push(this.passData.tableData[i]);
+          }
+        }
+      }
+
+      if(this.PolicyNo.lineCd !== null && this.PolicyNo.altNo !== null){
+        var polNo = this.PolicyNo.lineCd+'-'+this.PolicyNo.year+'-'+this.PolicyNo.sequenceNo+'-'+this.PolicyNo.companyNo+'-'+this.PolicyNo.coSeriesNo+'-'+this.PolicyNo.altNo;
+        for(var i = 0 ; i < this.passData.tableData.length; i++){
+          if(this.passData.tableData[i].policyNo == polNo){
+            this.purgeData.deletePurge.push(this.passData.tableData[i]);
+          }
+        }
+      }
+    }
   }
 
   saveData(cancelFlag?){
     this.prepareData();
-    console.log(this.purgeData);
     console.log(this.purgeData.deletePurge);
-    console.log(this.purgeData.deletePurge.length);
 
     if (this.purgeData.deletePurge.length > 0) {
       this.underwritingService.savePolForPurging(this.purgeData).subscribe((data:any)=>{
@@ -140,6 +200,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
         } else{
           console.log('success')
           this.getPolPurging();
+          this.clearData();
           $('#purgeMsgModal > #modalBtn').trigger('click');
         }
       });
@@ -152,9 +213,6 @@ export class PurgeExtractedPolicyComponent implements OnInit {
       },1000); 
       
     }
-
-    
-
   }
 
   parameter() {
@@ -220,7 +278,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   showCedingCompanyLOV() {
-    $('#cedingCompany #modalBtn').trigger('click');
+    this.cedingCoLov.modal.openNoClose();
   }
 
   clearData(){
@@ -230,6 +288,12 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     this.typeOfCessionId = null;
     this.cedingId = null;
     this.cedingName = null;
+    this.PolicyNo.lineCd = null;
+    this.PolicyNo.year = null;
+    this.PolicyNo.companyNo = null;
+    this.PolicyNo.sequenceNo = null;
+    this.PolicyNo.coSeriesNo = null;
+    this.PolicyNo.altNo = null;
   }
 
    clearDates() {
@@ -243,5 +307,31 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   onClickPurge() {
     $('#purgeModal > #modalBtn').trigger('click');
+  }
+
+  showPolicyLov(){
+    
+    for(var i = 0 ; i  < this.policyLov.length; i++){
+      this.passDataLov.tableData.push(this.policyLov[i]);
+    }
+    this.tableLov.refreshTable();
+    this.modal.openNoClose()
+  }
+
+  onClick(data){
+    console.log(data)
+    this.selected = data;
+  }
+
+  setLOV(){
+    if(this.selected !== null){
+      var polNo = this.selected.policyNo.split('-');
+      this.PolicyNo.lineCd  = polNo[0];
+      this.PolicyNo.year  = polNo[1];
+      this.PolicyNo.sequenceNo  = polNo[2];
+      this.PolicyNo.companyNo  = polNo[3];
+      this.PolicyNo.coSeriesNo  = polNo[4];
+      this.PolicyNo.altNo  = polNo[5];
+    }
   }
 }
