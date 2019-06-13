@@ -246,7 +246,7 @@ export class DeductibleComponent implements OnInit {
     }
 
     showWarnLov(){
-            $('#warnMdl > #modalBtn').trigger('click');
+        $('#warnMdl > #modalBtn').trigger('click');
     }
 
     showLineLOV(){
