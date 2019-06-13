@@ -5,6 +5,7 @@ import { UnderwritingService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-pol-distribution',
@@ -15,7 +16,11 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   //NECO 06/04/2019
   @ViewChild('mainTable') mainTable: CustEditableNonDatatableComponent;
+  @ViewChild('poolTable') poolTable: CustEditableNonDatatableComponent;
   //END
+
+  @ViewChild('confirmPost') confirmPostMdl: ModalComponent;
+  @ViewChild('success') sucessMdl: ModalComponent;
 
   nData: DistributionByRiskInfo = new DistributionByRiskInfo(null, null, null, null, null, null);
 
@@ -118,6 +123,20 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       paginateFlag: true,
       infoFlag: true,
       pageID: 'trtyDistTable'
+    }
+
+    poolDistributionData: any = {
+      tableData: [],
+      tHeader: ['Section', 'Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
+      dataTypes: ['text', 'text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
+      keys: ['section', 'treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+      widths: [1,1,250,1,140,140,1,140,140,1,140,140,140],
+      uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true],
+      total:[null, null,'TOTAL',null, 'retOneTsiAmt', 'retOnePremAmt', null, 'retTwoTsiAmt', 'retTwoPremAmt', null, 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+      paginateFlag: true,
+      infoFlag: true,
+      pageLength: 10,
+      pageID: 'poolDistTable'
     }
 
     sub: any;
@@ -278,6 +297,15 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     })
   }
 
+  retrievePoolDistribution(){
+    this.poolTable.loadingFlag = true;
+    this.polService.getPolPoolDistribution(this.polDistributionData.distNo,this.params.policyId ).subscribe((data:any)=>{
+      this.poolDistributionData.tableData = data.poolDistList;
+      this.poolTable.refreshTable();
+      this.poolTable.loadingFlag = false;
+    });
+  }
+
   pad(str: string, key: string){
       return String(str).padStart(5, '0');
   }
@@ -291,6 +319,11 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   }
   //END
 
+  showConfirmPostMdl(){
+    this.confirmPostMdl.openNoClose();
+
+  }
+
   postDistribution(){
     let postData:any = {
       riskDistId: this.riskDistId,
@@ -298,8 +331,19 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       policyId  : this.params.policyId
     }
     this.polService.postDistribution(postData).subscribe(a=>{
-      console.log(a);
+      if(a['returnCode'] == -1){
+        this.sucessMdl.openNoClose();
+      }
     });
+    this.confirmPostMdl.closeModal();
   }
 
+  padStart(s:string,l:number):String{
+    return String(s).padStart(l,'0');
+  }
+
+  onClickCancel(){
+    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}])
+  }
 }
+

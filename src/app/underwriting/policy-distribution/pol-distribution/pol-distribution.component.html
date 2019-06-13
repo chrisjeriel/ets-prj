@@ -55,7 +55,7 @@
 					<label class="form-control-sm col-sm-1">Total SI</label>
 					<input readonly type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.sumInsured" appCurrency>
 					<label class="form-control-sm col-sm-1">Risk</label>
-					<input readonly type="text" placeholder="APMC Bldg." class="form-control form-control-sm col-sm" [ngModel]="params.riskName">
+					<input readonly type="text" placeholder="APMC Bldg." class="form-control form-control-sm col-sm" [ngModel]="polDistributionData?.riskName">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Risk Dist Status</label>
@@ -75,7 +75,7 @@
 					<label class="form-control-sm col-sm-1">Total Premium</label>
 					<input readonly type="text" placeholder="1,250,000.00" class="form-control txt-content-rght form-control-sm col-sm-2" [ngModel]="polDistributionData?.premium" appCurrency>
 					<label class="form-control-sm col-sm-1">Insured</label>
-					<input readonly type="text" placeholder="2nd Inn, Inc. (Sogo Cubao 2) and/or A.G. Sanchez Const. & Dev't Corp." class="form-control form-control-sm col-sm" [ngModel]="params.insured">
+					<input readonly type="text" placeholder="2nd Inn, Inc. (Sogo Cubao 2) and/or A.G. Sanchez Const. & Dev't Corp." class="form-control form-control-sm col-sm" [ngModel]="polDistributionData?.insured">
 					
 				</div>
 				<div class="input-group">
@@ -159,7 +159,7 @@
 	<div class="form-group col-sm">
 		<div class="col-sm" style="text-align: center; padding: 10px;">
 			<div class="cust-btn-container">
-				<app-modal [btnTitle]="'View Treaty Charges'">
+				<!-- <app-modal [btnTitle]="'View Treaty Charges'">
 					<div header>Treaty Charges</div>
 					<div body>
 						<fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
@@ -185,18 +185,18 @@
 					<div footer class="d-flex justify-content-center" style="width: 100% !important;">
 						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
 					</div>
-				</app-modal>
+				</app-modal> -->
 
-				<app-modal [btnTitle]="'View Pool Dist'">
+				<app-modal [btnTitle]="'View Pool Dist'" (modalOpened)="retrievePoolDistribution();">
 					<div header>Pool Distribution Per Section</div>
 					<div body>
 						<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
 							<div class="row" style="padding-top: 5px;">
 								<div class="col-sm" style="margin-top: -28px;">
-									<app-cust-editable-non-datatable [passData]="passDataPoolDist"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="poolDistributionData" #poolTable></app-cust-editable-non-datatable>
 								</div>
 							</div>
-							<div class="row" style="margin-top: -18px;">
+							<!-- <div class="row" style="margin-top: -18px;">
 								<div class="col-sm-2">
 								</div>
 								<div class="col-sm-8" style="margin-left: -25px;">
@@ -239,7 +239,7 @@
 								</div>
 								<div class="col-sm-2">
 								</div>
-							</div>
+							</div> -->
 						</fieldset>
 					</div>
 					<div footer class="d-flex justify-content-center" style="width: 100% !important;">
@@ -247,7 +247,7 @@
 					</div>
 				</app-modal>
 
-				<app-modal [btnTitle]="'View Pool Charges'">
+				<!-- <app-modal [btnTitle]="'View Pool Charges'">
 					<div header>Pool Charges</div>
 					<div body>
 						<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
@@ -279,13 +279,37 @@
 					<div footer class="d-flex justify-content-center" style="width: 100% !important;">
 						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
 					</div>
-				</app-modal>
+				</app-modal> -->
 				<button type="button" class="cust-btn"><a>Print</a></button>
-				<button type="button" class="cust-btn"><a>Cancel</a></button>
-				<button type="button" class="cust-btn" (click)="postDistribution()"><a>Post</a></button>
+				<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()"><a>Post</a></button>
 			</div>
 		</div>
 	</div>
 </div>
 
+
+<app-modal #confirmPost class="d-none">
+	<div header>Confirmation</div>
+	<div body>
+		Are you sure to post this distribtuion to final?
+	</div>
+	<div footer class="w-100 text-right">
+		<button type="button" class="cust-btn" (click)="postDistribution()"><a>Yes</a></button>
+		<button type="button" class="cust-btn" (click)="confirmPostMdl.closeModal();"><a>No</a></button>
+	</div>
+</app-modal>
+
+<app-modal #success class="d-none">
+	<div header>Confirmation</div>
+	<div body class="w-100 text-center">
+		Dist No {{padStart(polDistributionData?.distNo,5)}} for<br>
+		Policy No {{polDistributionData?.policyNo}}<br>
+		was sucessfully posted. 
+	</div>
+	<div footer class="w-100 text-center">
+		<button type="button" class="cust-btn" (click)="sucessMdl.closeModal();"><a>Print</a></button>
+		<button type="button" class="cust-btn" (click)="sucessMdl.closeModal();"><a>Ok</a></button>
+	</div>
+</app-modal>
 
