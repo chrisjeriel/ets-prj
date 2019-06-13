@@ -66,7 +66,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div id="ceding-retention-table" class="col-sm">
-									<app-cust-editable-non-datatable #cedingRetentionTable [passData]="cedingRetentionData"addtableDataChange)="treatyShareSelected.cedRetentionList=$event; cedingRetentionTDataChange($event);" (newClick)="onCedingRetentionRowClick($event)" (genericBtn)="onCedingRetentionClickDelete($event)" (onDelete)="cedingRetentionTable.onClickDelete('force'); onCedingRetentionClickDelete();" (clickLOV)="openCedingCoRetentionLOV($event)" (add)="add()"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #cedingRetentionTable [passData]="cedingRetentionData" (tableDataChange)="treatyShareSelected.cedRetentionList=$event; cedingRetentionTDataChange($event);" (newClick)="onCedingRetentionRowClick($event)" (genericBtn)="onCedingRetentionClickDelete($event)" (onDelete)="cedingRetentionTable.onClickDelete('force'); onCedingRetentionClickDelete();" (clickLOV)="openCedingCoRetentionLOV($event)" (add)="add()"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
@@ -112,7 +112,7 @@
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="save(true)" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 <app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
 <app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
 <app-ceding-company #cedingRetention (selectedData)="setSelectedCedCoCedRet($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>

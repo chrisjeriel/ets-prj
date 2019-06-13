@@ -46,7 +46,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-4"></div>
 								<div id="treaty-layer-table" class="col-sm-4">
-									<app-cust-editable-non-datatable #treatyLayerTable [passData]="treatyLayerData" (tableDataChange)="treatyLimitSelected.treatyLayerList=$event; treatyLayerDataChange($event);" (newClick)="onTreatyLayerRowClick($event)" (genericBtn)="onTreatyLayerClickDelete($event)" (onDelete)="treatyLayerTable.onClickDelete('force'); treatyLayerData.disableGeneric=true;" (clickLOV)="openTreatyLOV($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #treatyLayerTable [passData]="treatyLayerData" (tableDataChange)="treatyLimitSelected.treatyLayerList=$event; treatyLayerDataChange($event);" (newClick)="onTreatyLayerRowClick($event)" (genericBtn)="onTreatyLayerClickDelete($event)" (onDelete)="treatyLayerTable.onClickDelete('force'); onTreatyLayerClickDelete();" (clickLOV)="openTreatyLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 								<div class="col-sm-4"></div>
 							</div>
@@ -94,7 +94,7 @@
 <app-mtn-line (selectedData)="setLineCopy($event)" #lineLovCopy></app-mtn-line>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="save(true)" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 <app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
 
 <app-modal class="d-none" id="mtnTreatyLimitWarningModal">
