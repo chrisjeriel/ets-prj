@@ -39,7 +39,7 @@ select + input {
 }
 
 input + div + input{
-	margin-left: 6px;
+	/*margin-left: 6px;*/
 }
 
 .fa-check-circle{
