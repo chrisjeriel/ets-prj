@@ -18,7 +18,7 @@
 							</div>
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -19px;">
-									<div class="col-sm-2"></div>
+									<!-- <div class="col-sm-2"></div>
 									<label class="form-control-sm cust-sm from" style="color:white;" for="fromDate">From</label>
 		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm-2 cap-input" [(ngModel)]="expiryParameters.polLineCd" ngbTooltip="Line">
 		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.polYear" ngbTooltip="Year">
@@ -27,7 +27,18 @@
 		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.coSeriesNo" ngbTooltip="Co Series No">
 		                             <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.altNo" ngbTooltip="Alt No">
 		                            <div style="padding-left: 3px; margin-top: -3px;"><a><i class="fa fa-search"></i></a></div>
+									<div class="col-sm-2"></div> -->
 									<div class="col-sm-2"></div>
+									<label class="form-control-sm cust-sm from">Policy No</label>
+		                            <input type="text" [ngModel]="polNo[0]" mask="SSS" (ngModelChange)="polNo[0]=$event.toUpperCase()" style="margin-left: 3px;" (change)="search('lineCd',$event)" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line" appRequired>
+		                            <input type="text" [(ngModel)]="polNo[1]" mask="9999" (change)="search('year',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Year" appRequired>
+		                            <input type="text" [(ngModel)]="polNo[2]" mask="99999" (blur)="polNo[2]=pad($event,5)" (change)="search('seqNo',$event)" class="form-control form-control-sm col-sm-3 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" appRequired>
+		                            <input type="text" [(ngModel)]="polNo[3]" mask="999" (blur)="polNo[3]=pad($event,3)" (change)="search('cedingId',$event)" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company No" appRequired>
+		                            <input type="text" [(ngModel)]="polNo[4]" mask="9999" (blur)="polNo[4]=pad($event,4)" (change)="search('coSeriesNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" appRequired>
+		                             <input type="text" [(ngModel)]="polNo[5]" mask="999" (blur)="polNo[5]=pad($event,3)" (change)="search('altNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" appRequired>
+		                            <span>&nbsp;</span>
+		                            <div class="text-search-ico"><a><i (click)="showLOV()" class="fa fa-search"></i></a></div>
+		                            <div class="col-sm-2"></div>
 								</div>
 							</div>
 							<div class="form-row custom-row-inline-inset">
@@ -156,30 +167,25 @@
 					<div class="form-group col-sm">
 						<div class="col-md-13 text-center">
 							<div class="cust-btn-container" style="margin-top: 5px;">
-							<app-modal [btnTitle]="'Extract'" (click)="extract()">
-								<div header>Extract Expiring Policies</div>
-						        <div body class="row">
-						           <!-- <div class="col-sm-1 text-right my-modal-icon">
-							            <i class="fa fa-check-circle"></i>
-							       </div>
-							       <div class="col-sm-9 text-left my-modal-text">
-						           		<p>Extracted Policies: {{extractedPolicies}}</p>
-						           </div> -->
+								<!-- <app-modal [btnTitle]="'Extract'" (click)="extract()">
+									<div header>Extract Expiring Policies</div>
+							        <div body class="row">
+							            <div class="col-sm-1 text-right my-modal-icon">
+						           			<i class="fa fa-check-circle"></i>
+							           </div>
+							           <div class="col-sm-8 my-modal-text">
+							           		<span>Extracted Policies: {{extractedPolicies}}</span>
+							           </div>
 
-						            <div class="col-sm-1 text-right my-modal-icon">
-					           			<i class="fa fa-check-circle"></i>
-						           </div>
-						           <div class="col-sm-8 my-modal-text">
-						           		<span>Extracted Policies: {{extractedPolicies}}</span>
-						           </div>
-
-						        </div>
-						        <div footer>
-						            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
-						        </div>
-							</app-modal>
-							<button type="button" class="cust-btn" (click)="modalService.dismissAll();clearAll();"><a>Clear</a></button>
-						</div>
+							        </div>
+							        <div footer>
+							            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+							        </div>
+								</app-modal>
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll();clearAll();"><a>Clear</a></button> -->
+								<button class="cust-btn" type="button" (click)="onClickExtract();"><a>Extract</a></button>
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();clearAll();"><a>Clear</a></button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -191,3 +197,42 @@
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
+
+
+<app-modal class="d-none" id="extractModal">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset" style="text-align: center">                
+            <p>Extract using selected parameters?</p>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="extract(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
+
+
+<app-modal class="d-none" id="extractMsgModal">
+    <div header>Extraction</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset row" style="text-align: center">
+        	<div *ngIf="extractedPolicies == 0" style="width: 100% !important;">
+	           	<div class="col-sm my-modal-text" style="margin-left: 0px !important;">
+	           		<span>No policy extracted.</span>
+	           	</div>
+           	</div>
+        	<div *ngIf="extractedPolicies > 0" class="custom-row-inline-inset row" style="width: 100% !important;">
+	            <div class="col-sm-1 text-right my-modal-icon">
+	       			<i class="fa fa-check-circle"></i>
+	           	</div>
+	           	<div class="col-sm-7 my-modal-text">
+	           		<span>Extracted Policies: {{extractedPolicies}}</span>
+	           	</div>
+           	</div>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>

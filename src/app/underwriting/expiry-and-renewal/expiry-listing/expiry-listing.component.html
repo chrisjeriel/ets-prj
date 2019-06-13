@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Policy/ Expiry & Renewal/ Expiry List</h4>
 	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Renewable Policies">
+		<ngb-tab class="ngb-tab" title="Renewable Policies" (click)="retrieveExpPolList();">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12" >
@@ -85,7 +85,7 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-					<app-cust-editable-non-datatable [passData]="passDataExtensionPolicies"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable #nrTable [passData]="passDataNonRenewalPolicies" (newClick)="onRowClickNR($event)" (tableDataChange)="updateNRPolicy($event)"></app-cust-editable-non-datatable>
 					</div>
 					<div class="col-sm-12" style="margin-bottom: 10px;">
 						<fieldset class="scheduler-border">
@@ -95,22 +95,22 @@
 									<div class="row">
 										<div class="col-sm">
 											<div class="row" style="margin-top: 0px;margin-right: -4px;">
-												<button class="cust col-sm">Delete</button>
-												<button class="cust col-sm" (click)="showEditModal()">Edit</button>
-												<button class="cust col-sm">Purge</button>
+												<button class="cust col-sm" (click)="gotoInfo();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Details</button>
+												<button class="cust col-sm" [disabled]="true" [class.cust-btn-disabled]="true">Edit</button>
+												<button class="cust col-sm" (click)="onClickPurge();">Purge</button>
 												<button class="cust col-sm">Save</button>
 											</div>
 											<div class="row" style="margin-right: -4px;">
 												<button class="cust col-sm">Print</button>
 												<button class="cust col-sm">Search</button>
 												<button class="cust col-sm">Update</button>
-												<button class="cust col-sm">Process</button>
+												<button class="cust col-sm" (click)="onClickProcessNR()">Process</button>
 											</div>
-											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
+											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
-												<input type="text" class="form-control form-control-sm col-sm-3">
+												<input type="text" [ngModel]="nrReasonCd" (ngModelChange)="nrReasonCd = $event.toUpperCase()" (change)="checkCode($event, 'nrReason');" class="form-control form-control-sm col-sm-3" [disabled]="!reasonFlag">
 												<div class="text-search-ico"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
-												<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;">
+												<input type="text" [ngModel]="nrReasonDescription" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;" [disabled]="!reasonFlag">
 											</div>
 											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Remarks</label>
@@ -257,7 +257,7 @@
 			<div class="row" style="margin-right: 400px">
 				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>CAT Perils</a></button>
 				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-				<button class="cust-btn" type="button" (click)="savePolicyChanges();"><a>Save</a></button>
+				<button class="cust-btn" type="button" (click)="onClickSave();"><a>Save</a></button>
 			</div>
 		</div>
 	</app-modal>
@@ -298,3 +298,43 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>
+
+
+<app-modal class="d-none" id="renewableProcessSuccess">
+    <div header>Success</div>
+    <div body style="min-width: 300px !important;">
+    	<div *ngIf="renewedPolicies.length > 0">
+	        <div class="custom-row-inline-inset" style="text-align: left">                
+	            <p><b>Renewed Policies: </b></p>
+	        </div>
+	        <div class="custom-row-inline-inset" style="text-align: center">                
+	            <span *ngFor="let renPol of renewedPolicies">{{renPol.newPolicyNo}}<br/></span>
+	        </div>
+	    </div>
+
+	    <div *ngIf="wcPolicies.length > 0">
+	        <div class="custom-row-inline-inset" style="text-align: left">                
+	            <p><b>Renewed Policies with changes: </b></p>
+	        </div>
+	        <div class="custom-row-inline-inset" style="text-align: center">                
+	            <span *ngFor="let renPol of wcPolicies">{{renPol.newPolicyNo}}<br/></span>
+	        </div>
+	    </div>
+
+	    <div *ngIf="nrPolicies.length > 0">
+	        <div class="custom-row-inline-inset" style="text-align: left">                
+	            <p><b>Non-renewable Policies: </b></p>
+	        </div>
+	        <div class="custom-row-inline-inset" style="text-align: center">                
+	            <span *ngFor="let renPol of nrPolicies">{{renPol.policyId}} for reason {{renPol.nrReasonCd}}<br/></span>
+	        </div>
+	    </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save id="coverageConfirm" (onYes)="savePolicyChanges()"></app-confirm-save>
+<app-cancel-button id="coverageCancel" (onYes)="savePolicyChanges('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

@@ -6,7 +6,7 @@
 				<div class="row">
 					<div class="col-sm-2"></div>
 					<div class="col-sm">
-						<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+						<app-cust-editable-non-datatable [passData]="passData" (newClick)="row($event)"></app-cust-editable-non-datatable>
 					</div>
 					<div class="col-sm-2"></div>
 				</div>
@@ -20,7 +20,7 @@
 										<button type="button" class="cust-btn"  style="margin-left: 7px;width: 100%;margin-bottom: 5px;z-index: 99 !important"><a>Cancel</a></button>
 									</div>
 									<div class="row">
-										<button type="button" class="cust-btn"  style="margin-left: 7px;width: 100%; margin-bottom: 5px;z-index: 99 !important" (click)="saveData()"><a>Purge</a></button>
+										<button type="button" class="cust-btn"  style="margin-left: 7px;width: 100%; margin-bottom: 5px;z-index: 99 !important" (click)="onClickPurge();"><a>Purge</a></button>
 									</div>
 								</div>
 								<div class=" col-sm-4">
@@ -176,3 +176,54 @@
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+
+
+<app-modal class="d-none" id="purgeModal">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset" style="text-align: center">                
+            <p>Purge using selected parameters?</p>
+			<span *ngIf="expiredAndProcessed"><b>[All Expired And Processed]</b><br/></span>
+			<span *ngIf="unProcess"><b>[All Unprocessed]</b><br/></span>
+			<span *ngIf="allProcess"><b>[All Processed]</b><br/></span>
+			<span *ngIf="baseOnParam"><b>[Based on Parameter]</b><br/></span>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="saveData(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
+
+
+<app-modal class="d-none" id="purgeMsgModal">
+	<div header>Purge</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset row" style="text-align: center">
+        	<div style="width: 100% !important;">
+	           	<div class="col-sm my-modal-text" style="margin-left: 0px !important;">
+	           		<span>Successfully purged policies.</span>
+	           	</div>
+           	</div>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="purgeNoSelectedMsgModal">
+	<div header>Purge</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset row" style="text-align: center">
+        	<div style="width: 100% !important;">
+	           	<div class="col-sm my-modal-text" style="margin-left: 0px !important;">
+	           		<span>No policy selected.</span>
+	           	</div>
+           	</div>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>

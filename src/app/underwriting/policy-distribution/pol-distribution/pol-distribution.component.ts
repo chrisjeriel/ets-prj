@@ -289,4 +289,15 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   }
   //END
 
+  postDistribution(){
+    let postData:any = {
+      riskDistId: this.riskDistId,
+      distId    : this.polDistributionData.distNo,
+      policyId  : this.params.policyId
+    }
+    this.polService.postDistribution(postData).subscribe(a=>{
+      console.log(a);
+    });
+  }
+
 }
