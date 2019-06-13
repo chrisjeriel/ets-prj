@@ -159,7 +159,7 @@
 	<div class="form-group col-sm">
 		<div class="col-sm" style="text-align: center; padding: 10px;">
 			<div class="cust-btn-container">
-				<app-modal [btnTitle]="'View Treaty Charges'">
+				<!-- <app-modal [btnTitle]="'View Treaty Charges'">
 					<div header>Treaty Charges</div>
 					<div body>
 						<fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
@@ -185,18 +185,18 @@
 					<div footer class="d-flex justify-content-center" style="width: 100% !important;">
 						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
 					</div>
-				</app-modal>
+				</app-modal> -->
 
-				<app-modal [btnTitle]="'View Pool Dist'">
+				<app-modal [btnTitle]="'View Pool Dist'" (modalOpened)="retrievePoolDistribution();">
 					<div header>Pool Distribution Per Section</div>
 					<div body>
 						<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
 							<div class="row" style="padding-top: 5px;">
 								<div class="col-sm" style="margin-top: -28px;">
-									<app-cust-editable-non-datatable [passData]="passDataPoolDist"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="poolDistributionData" #poolTable></app-cust-editable-non-datatable>
 								</div>
 							</div>
-							<div class="row" style="margin-top: -18px;">
+							<!-- <div class="row" style="margin-top: -18px;">
 								<div class="col-sm-2">
 								</div>
 								<div class="col-sm-8" style="margin-left: -25px;">
@@ -239,7 +239,7 @@
 								</div>
 								<div class="col-sm-2">
 								</div>
-							</div>
+							</div> -->
 						</fieldset>
 					</div>
 					<div footer class="d-flex justify-content-center" style="width: 100% !important;">
@@ -247,7 +247,7 @@
 					</div>
 				</app-modal>
 
-				<app-modal [btnTitle]="'View Pool Charges'">
+				<!-- <app-modal [btnTitle]="'View Pool Charges'">
 					<div header>Pool Charges</div>
 					<div body>
 						<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
@@ -279,7 +279,7 @@
 					<div footer class="d-flex justify-content-center" style="width: 100% !important;">
 						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
 					</div>
-				</app-modal>
+				</app-modal> -->
 				<button type="button" class="cust-btn"><a>Print</a></button>
 				<button type="button" class="cust-btn"><a>Cancel</a></button>
 				<button type="button" class="cust-btn" (click)="postDistribution()"><a>Post</a></button>

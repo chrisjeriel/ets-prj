@@ -15,6 +15,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   //NECO 06/04/2019
   @ViewChild('mainTable') mainTable: CustEditableNonDatatableComponent;
+  @ViewChild('poolTable') poolTable: CustEditableNonDatatableComponent;
   //END
 
   nData: DistributionByRiskInfo = new DistributionByRiskInfo(null, null, null, null, null, null);
@@ -118,6 +119,20 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       paginateFlag: true,
       infoFlag: true,
       pageID: 'trtyDistTable'
+    }
+
+    poolDistributionData: any = {
+      tableData: [],
+      tHeader: ['Section', 'Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
+      dataTypes: ['text', 'text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
+      keys: ['section', 'treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+      widths: [1,1,250,1,140,140,1,140,140,1,140,140,140],
+      uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true],
+      total:[null, null,'TOTAL','retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', null, 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+      paginateFlag: true,
+      infoFlag: true,
+      pageLength: 10,
+      pageID: 'poolDistTable'
     }
 
     sub: any;
@@ -276,6 +291,15 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
          $('input[type=text]').blur();
       },0);
     })
+  }
+
+  retrievePoolDistribution(){
+    this.poolTable.loadingFlag = true;
+    this.polService.getPolPoolDistribution(this.polDistributionData.distNo).subscribe((data:any)=>{
+      this.poolDistributionData.tableData = data.poolDistList;
+      this.poolTable.refreshTable();
+      this.poolTable.loadingFlag = false;
+    });
   }
 
   pad(str: string, key: string){

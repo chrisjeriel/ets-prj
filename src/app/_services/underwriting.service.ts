@@ -1058,6 +1058,12 @@ export class UnderwritingService {
         }
         return this.http.post(environment.prodApiUrl + '/underwriting-service/purgeExpiringPol',JSON.stringify(params),header);
     }
+
+    getPolPoolDistribution(riskDistId){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolPoolDist', {params});
+    }
 }            
 
             
