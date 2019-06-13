@@ -1070,6 +1070,15 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/saveExpCoverage',JSON.stringify(params),header);
         
     }
+
+    saveExpCat(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/saveExpCatPeril',JSON.stringify(params),header);
+    }
 }            
 
             
