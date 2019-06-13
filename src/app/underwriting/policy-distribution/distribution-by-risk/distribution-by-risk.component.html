@@ -128,7 +128,7 @@
       <div style="margin-top: 53px !important;margin-bottom: 53px !important;">
         <div class="input-group">
           <label class="form-control-sm col-sm-5">One Retention Line</label>
-          <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.retLineAmt" (ngModelChange)="riskDistributionData.retLineAmt = $event" appCurrency>
+          <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.retLineAmt" (ngModelChange)="riskDistributionData.retLineAmt = $event" appCurrency [readonly]="riskDistributionData?.status.toUpperCase() === 'POSTED'">
         </div>
         <div class="input-group">
           <label class="form-control-sm col-sm-5">1st Retention Line</label>
@@ -162,7 +162,7 @@
     <fieldset class="scheduler-border">
       <legend class="scheduler-border">Treaty Share and Comm Share Parameters</legend>
       <div style="margin-top: 10px; margin-bottom: 8px;">
-            <app-cust-editable-non-datatable #wparam [passData]="wparamData">
+            <app-cust-editable-non-datatable #wparam [passData]="wparamData" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')">
               <ng-container controls-r>
                 <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc === 'Y' : riskDistributionData.autoCalc === 'N'">
                 <label class="form-control-sm">Auto Calculation</label>
@@ -399,3 +399,6 @@
     </div>
   </div>
 </div>
+
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
