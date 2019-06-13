@@ -107,12 +107,13 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   //NECO 06/04/2019
     treatyDistData: any = {
-      tHeader: ['Section', 'Treaty', 'Treaty Company', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
+      tHeader: ['Section', 'Treaty', 'Treaty Company', 'SI Amount', 'Premium Amount', 'Comm Rt (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
       tableData: [],
-      dataTypes: ['text', 'text', 'text', 'currency', 'currency', 'percent'],
-      keys: ['section', 'treatyAbbr', 'trtyCedName', 'siAmt', 'premAmt', 'commShare'],
-      uneditable: [true,true,true,true,true,true],
-      widths: [1,1,'auto',150,150,150],
+      dataTypes: ['text', 'text', 'text', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
+      keys: ['section', 'treatyAbbr', 'trtyCedName', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
+      uneditable: [true,true,true,true,true,true,true,true,true],
+      widths: [1,1,'auto',150,150,150,150,150,150],
+      total: [null,null,'TOTAL', 'siAmt', 'premAmt', null, 'commAmt', 'vatRiComm', 'netDue'],
       searchFlag: true,
       paginateFlag: true,
       infoFlag: true,
@@ -123,6 +124,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     params: any;
     polDistributionData: any;
     @Input() riskDistId: number;
+    @Input() riskDistStatus: string;
   //END
 
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
