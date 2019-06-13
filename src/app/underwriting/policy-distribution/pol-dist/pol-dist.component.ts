@@ -122,7 +122,7 @@ export class PolDistComponent implements OnInit {
 		this.policyListingData.tableData = [];
 		setTimeout(()=>{
 			this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any) =>{
-				data.policyList = data.policyList === null ? [] : data.policyList.filter(a=>{return parseInt(a.policyNo.split('-')[5]) === 0}); //filter out all policies with alteration
+				data.policyList = data.policyList === null ? [] : data.policyList; //filter out all policies with alteration
 				if(data.policyList.length !== 0){
 					this.noDataFound = false;
 					for(var rec of data.policyList){
@@ -136,7 +136,7 @@ export class PolDistComponent implements OnInit {
 							totalSi: rec.project.coverage.totalSi
 						});
 					}
-					this.policyListingData.tableData = this.policyListingData.tableData.filter(a=> {return a.statusDesc === 'Expired' || a.statusDesc === 'On Hold Cover'});
+					this.policyListingData.tableData = this.policyListingData.tableData.filter(a=> {return a.statusDesc === 'In Force'});
 					if(this.isType && !this.isIncomplete){
 						this.isIncomplete = false;
 						this.policyInfo 					= this.policyListingData.tableData[0];
@@ -195,10 +195,6 @@ export class PolDistComponent implements OnInit {
 		this.tempPolNo = this.policyInfo.policyNo.split('-');
 	}
 
-	onClickCancel(){
-		$('#cancelModal > #modalBtn').trigger('click');
-	}
-
 	onTabChange($event: NgbTabChangeEvent) {
   		if ($event.nextId === 'Exit') {
     		this.router.navigateByUrl('/pol-hold-cov-monitoring');
@@ -253,6 +249,24 @@ export class PolDistComponent implements OnInit {
 	  		}
   		}
   	}
+
+   onClickNext(){
+   	this.router.navigate(['policy-dist', {policyId:this.selectedPolicy.policyId,
+                                              fromInq:false,
+                                              policyNo: this.selectedPolicy.policyNo,
+                                              line: this.policyInfo.lineCd,
+                                              lineClassCd: this.policyInfo.lineClassCd,
+                                              statusDesc:this.policyInfo.statusDesc,
+                                              insured: this.selectedPolicy.insured,
+                                              cedingName: this.policyInfo.cedingName,
+                                              status: this.selectedPolicy.status,
+                                              exitLink: '/pol-dist'
+                                              }], { skipLocationChange: true });
+   }
+
+   onClickCancel(){
+   	this.router.navigate(['/']);
+   }
 
 }
 

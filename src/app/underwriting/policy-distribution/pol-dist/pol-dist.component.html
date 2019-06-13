@@ -155,20 +155,13 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
-                                <button type="button" class="cust-btn" [disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status) || isModify" [class.cust-btn-disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status) || isModify" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
-                                <button type="button" class="cust-btn" [disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" [class.cust-btn-disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" (click)="test(content)"><a>Approval</a></button>
-                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify" [class.cust-btn-disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify"><a>Save</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickNext()" ><a>Next</a></button>
                             </div>
                         </div>
                     </div>
                 </div>
             </ng-template>
-        </ngb-tab>
-        <ngb-tab id="Exit">
-                <ng-template ngbTabTitle>
-                    <div>Exit</div>
-                </ng-template>
-                <ng-template ngbTabContent></ng-template>
         </ngb-tab>
     </ngb-tabset>
 
