@@ -394,8 +394,9 @@
           <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
         </div>
       </app-modal>
-      <button type="button" class="cust-btn"><a>Cancel</a></button>
+      <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
       <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+      <button type="button" class="cust-btn" (click)="distribute()"><a>Distribute</a></button>
     </div>
   </div>
 </div>
