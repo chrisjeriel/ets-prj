@@ -396,8 +396,11 @@ export class ExpiryListingComponent implements OnInit {
             if (this.passDataNonRenewalPolicies.tableData[i].nonRenTag == 'Y') {
                 var policyNR = {
                   policyId : policyId,
+                  policyNo : this.passDataNonRenewalPolicies.tableData[i].policyNo,
                   nrReasonCd : this.passDataNonRenewalPolicies.tableData[i].nrReasonCd,
+                  nrReasonDesc : this.passDataNonRenewalPolicies.tableData[i].nrReasonDesc,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
+                  renewalFlag : "NR"
                 };
                 nonRenPolicyList.push(policyNR);
             }
