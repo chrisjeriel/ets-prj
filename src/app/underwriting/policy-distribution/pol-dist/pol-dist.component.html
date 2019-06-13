@@ -1,4 +1,4 @@
-<div class="cust-tabs-container">
+<!-- <div class="cust-tabs-container">
 	<h4>Policy / Distribution</h4>
 	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Policy Distribution">
@@ -61,3 +61,147 @@
 		</ngb-tab>
 	</ngb-tabset>
 </div>
+ -->
+
+ <style type="text/css">
+    .input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .form-control-sm{
+        
+    }
+    /*.input-group > .form-control {
+        margin-bottom: 5px !important;
+    }*/
+
+    .ig-row {
+        margin: -3px !important;
+    }
+
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+
+    .input-radio {
+        margin-bottom: -10px !important;
+    }
+
+    .input-ig-row {
+        margin-left: 2px !important;
+    }
+
+</style>
+
+
+<div class="cust-tabs-container">
+    <h4>Policy / Distribution</h4>
+    <ngb-tabset (tabChange)="onTabChange($event)">
+        <ngb-tab title="Policy Distribution">
+            <ng-template ngbTabContent>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                            <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+                          <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Policy Info</legend>
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm">
+                                <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                                    <div class="input-group" style="margin-top: -12px !important;">
+                                    &nbsp; 
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Policy No</label>
+                                            <div class="input-group col-sm-8">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired [ngModel]="policyInfo.policyNo.split('-')[0]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'lineCd')" maxlength="7">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[1]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'year')" maxlength="4">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[2]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'seqNo')" maxlength="5">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[3]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'cedingId')" maxlength="3">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[4]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'coSeriesNo')" maxlength="4">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[5]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'altNo')" maxlength="3">
+                                            </div>
+                                            <span>&nbsp;</span>
+                                            <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
+                                        </div>
+                                        <div class="input-group ig-row" style="margin-top: -3px !important;">
+                                            <label class="form-control-sm col-sm-2">Ceding Company</label>
+                                            <input type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.cedingName" tabindex="-1">
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Insured</label>
+                                            <input type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.insuredDesc" tabindex="-1">
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Risk</label>
+                                            <input type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.riskName" tabindex="-1">
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-13 text-center" style="margin-top:10px">
+                            <div class="cust-btn-container">
+                                <button type="button" class="cust-btn" [disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status) || isModify" [class.cust-btn-disabled]="cancelBtnDisabledStatus.includes(this.polHoldCoverParams.status) || isModify" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
+                                <button type="button" class="cust-btn" [disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" [class.cust-btn-disabled]="approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)" (click)="test(content)"><a>Approval</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify" [class.cust-btn-disabled]="saveBtnDisabledStatus.includes(this.polHoldCoverParams.status) && !this.isModify"><a>Save</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="Exit">
+                <ng-template ngbTabTitle>
+                    <div>Exit</div>
+                </ng-template>
+                <ng-template ngbTabContent></ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+
+<!-- ALL MODALS BEGIN HERE -->
+    <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl">
+        <div header>List Of Values</div>
+        <div body>
+           <app-cust-non-datatable [passData]="policyListingData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+        </div>
+        <div footer class="text-center w-100">
+            <div class="col-sm-12 text-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="selectPol()" [disabled]="emptySelect || selectedPolicy === null || selectedPolicy === undefined" [class.cust-btn-disabled]="emptySelect || selectedPolicy === null || selectedPolicy === undefined"><a>Ok</a></button>
+            </div>
+        </div>
+    </app-modal>
+
+    <app-modal hidden [btnTitle]="'Cancel Hold Cover'" id="cancelModal">
+        <div header>Prompt</div>
+        <div body>
+           <p>Cancel Hold Cover No <strong>{{this.holdCoverNo}}</strong> ?</p>
+        </div>
+        <div footer class="text-center w-100">
+            <div class="col-sm-12 text-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();cancelHoldCover();"><a>Yes</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+            </div>
+        </div>
+    </app-modal>
+
+    <app-confirm-save (onYes)="onClickSave()"></app-confirm-save>
+    <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false; approveType === 'reject' ? modalService.dismissAll() : null"></app-sucess-dialog>
+    <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
+
+
+   
