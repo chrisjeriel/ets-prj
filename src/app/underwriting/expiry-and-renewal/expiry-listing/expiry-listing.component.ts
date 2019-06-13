@@ -538,7 +538,7 @@ export class ExpiryListingComponent implements OnInit {
       this.coverageData = data.coverageList[0];
       this.deductibleData = data.deductiblesList;
       this.nrReasonCd = data.nrReasonCd;
-      this.nrReasonDescription = data.nrReasonDescription;
+      this.nrReasonDescription = data.nrReasonDesc;
       this.changes = data.changes;
       this.rowPolicyId = data.policyId;
       this.rowProjId  = data.projectList[0].projId;
@@ -581,7 +581,7 @@ export class ExpiryListingComponent implements OnInit {
       this.coverageData = data.coverageList[0];
       this.deductibleData = data.deductiblesList;
       this.nrReasonCd = data.nrReasonCd;
-      this.nrReasonDescription = data.nrReasonDescription;
+      this.nrReasonDescription = data.nrReasonDesc;
       this.changes = data.changes;
 
       if(data.renWithChange === 'Y'){
