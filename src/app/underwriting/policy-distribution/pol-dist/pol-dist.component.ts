@@ -254,13 +254,14 @@ export class PolDistComponent implements OnInit {
    	this.router.navigate(['policy-dist', {policyId:this.selectedPolicy.policyId,
                                               fromInq:false,
                                               policyNo: this.selectedPolicy.policyNo,
-                                              line: this.policyInfo.lineCd,
-                                              lineClassCd: this.policyInfo.lineClassCd,
-                                              statusDesc:this.policyInfo.statusDesc,
-                                              insured: this.selectedPolicy.insured,
-                                              cedingName: this.policyInfo.cedingName,
+                                              line: this.selectedPolicy.lineCd,
+                                              lineClassCd: this.selectedPolicy.lineClassCd,
+                                              statusDesc:this.selectedPolicy.statusDesc,
+                                              insured: this.selectedPolicy.insuredDesc,
+                                              cedingName: this.selectedPolicy.cedingName,
                                               status: this.selectedPolicy.status,
-                                              exitLink: '/pol-dist'
+                                              exitLink: '/pol-dist',
+                                              riskName: this.selectedPolicy.riskName
                                               }], { skipLocationChange: true });
    }
 

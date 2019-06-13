@@ -1087,6 +1087,15 @@ export class UnderwritingService {
         }
         return this.http.post(environment.prodApiUrl + '/underwriting-service/saveRiskDist',JSON.stringify(params),header);
     }
+
+    distributeRisk(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/distributeRiskDist',JSON.stringify(params),header);
+    }
 }            
 
             
