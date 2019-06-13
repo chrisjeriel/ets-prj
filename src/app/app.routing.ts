@@ -153,6 +153,7 @@ import { QuotationToHoldCoverComponent } from './quotation/quotation-to-hold-cov
 import { TreatyComponent } from './maintenance/quotation-and-policy/treaty/treaty.component';
 import { RetentionLineComponent } from './maintenance/quotation-and-policy/retention-line/retention-line.component';
 import { TreatyShareComponent } from './maintenance/quotation-and-policy/treaty-share/treaty-share.component';
+import { TreatyLimitComponent } from './maintenance/quotation-and-policy/treaty-limit/treaty-limit.component';
 import { ApproverComponent } from './maintenance/quotation-and-policy/approver/approver.component';
 import { MtnApprovalFunctionComponent } from './maintenance/quotation-and-policy/mtn-approval-function/mtn-approval-function.component';
 import { SystemComponent } from './maintenance/system/system.component';
@@ -161,7 +162,12 @@ import { RoundingErrorComponent } from './maintenance/quotation-and-policy/round
 import { ReportComponent } from './maintenance/system/report/report.component';
 import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
 import { LossCodeComponent } from './maintenance/claims/loss-code/loss-code.component';
-
+import { AdjusterComponent } from './maintenance/claims/adjuster/adjuster.component';
+import { MtnClaimsComponent } from './maintenance/claims/mtn-claims.component';
+import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-form/adjuster-form.component';
+import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-status.component';
+import { ClaimEventTypeComponent } from './maintenance/mtn-claims/claim-event-type/claim-event-type.component';
+import { ClaimEventComponent } from './maintenance/mtn-claims/claim-event/claim-event.component';
 
 const appRoutes: Routes = [
 
@@ -326,6 +332,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-treaty', component: TreatyComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-retention-line', component: RetentionLineComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-treaty-share', component: TreatyShareComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-treaty-limit', component: TreatyLimitComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-approver', component: ApproverComponent },
     { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
     { path: 'mtn-system', component: SystemComponent },
@@ -334,6 +341,12 @@ const appRoutes: Routes = [
     { path: 'mtn-report', component: ReportComponent },
     { path: 'mtn-report-param', component: ReportParamComponent },
     { path: 'maintenance-loss-code', component: LossCodeComponent },
+    { path: 'mtn-adjuster-list', component: AdjusterComponent },
+    { path: 'adjuster-form', component: AdjusterFormComponent },
+    { path: 'claim-status', component: ClaimStatusComponent },
+    { path: 'maintenance-clm', component: MtnClaimsComponent },
+    { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

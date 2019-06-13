@@ -39,10 +39,10 @@ export class NotesService {
 
       if(num == 0) {
         ic.removeClass('fa-spinner fa-spin')
-        ic.closest('div').css('pointer-events', 'initial');
+        ic.closest('div').css('pointer-events', 'initial').css('font-size', '14px');
       } else if(num == 1) {
         ic.addClass('fa-spinner fa-spin');
-        ic.closest('div').css('pointer-events', 'none');
+        ic.closest('div').css('pointer-events', 'none').css('font-size', '13px');
       }  
     }       
   }

@@ -841,6 +841,14 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyRetAmtSetup', params, header);
     }
 
+    getMtnTreatyLimit(lineCd, lineClassCd){
+		const params = new HttpParams()
+		     		.set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyLimit", {params});
+	}
+
 	getMtnReportsParam(reportId?: string){
 		const params = new HttpParams()
 			.set('reportId', (reportId === null || reportId === undefined ? '' : reportId));
@@ -861,6 +869,7 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReportParam', JSON.stringify(params), header);
 	}
 
+
 	getMtnLossCode(lossCd?){
 		const params = new HttpParams()
 			.set('lossCd',lossCd===undefined || lossCd===null ? '' : lossCd)
@@ -868,13 +877,127 @@ export class MaintenanceService{
 	}
 
 	saveMtnLossCode(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnLossCd', params, header);
+
+	}
+
+
+	saveMtnTreatyLimit(params) {
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnTreatyLimit', params, header);
+    }
+
+	getMtnAdjusterList(searchParams: any[]){
+        var params;
+        if(searchParams.length < 1){
+        	params = new HttpParams()
+            .set('adjName','')
+            .set('adjRefNo','')
+            .set('fullAddress','')
+            .set('zipCd','')
+            .set('contactNo','')
+            .set('emailAdd','')
+            .set('createUser','')
+            .set('createDateFrom','')
+            .set('createDateTo','')
+            .set('updateUser','')
+            .set('updateDateFrom','')
+            .set('updateDateTo','')
+        }else{
+        	params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+
+	    return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAdjusterList', {params});
+    }
+
+    getMtnAdjRepresentative(adjId){
+    	const params = new HttpParams()
+    		.set('adjId', (adjId === null || adjId === undefined ? '' : adjId));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAdjRepresentative',{params});
+    }
+
+    saveMtnAdjuster(params){
     	let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnLossCd',params,header);
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdjuster',params,header);
     }
 
-}
+    copyTreatyLimit(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyTreatyLimit', params, header);
+    }
 
+    getClaimStatus(statusCode){
+    	const params = new HttpParams()
+    		.set('statusCode', (statusCode === null || statusCode === undefined ? '' : statusCode));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnClaimStatus',{params});
+    }
+
+    saveMtnClaimStatus(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClaimStatus',params,header);
+    }
+    
+    
+	getMtnClmEventType(eventTypeCd?:string){
+		const params = new HttpParams()
+			.set('eventTypeCd', (eventTypeCd == null || eventTypeCd == undefined ? '' : eventTypeCd));
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnClmEventType',{params});	
+	}
+
+	saveMtnClmEventType(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+         console.log(params);
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmEventType',params,header);
+	}
+
+	getMtnClmEvent(eventCd?:string){
+		const params = new HttpParams()
+			.set('eventCd', (eventCd == null || eventCd == undefined ? '' : eventCd));
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnClmEvent',{params});	
+	}
+
+	saveMtnClmEvent(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+         console.log(params);
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmEvent',params,header);
+	}
+
+}

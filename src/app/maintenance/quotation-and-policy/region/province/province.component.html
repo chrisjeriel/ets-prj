@@ -4,7 +4,7 @@
                             <div class="col-sm-3"></div>
                             <label class="form-control-sm"  style="margin-bottom: 0px">Region</label>
                             <input id="regionCode" class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event)" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' maxlength="2" numbers-only  [(ngModel)]="regionCD">
-                            <div id=search class="text-search-ico" style="padding-left: 1px" (click)="showRegionLOV()"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
+                            <div id=search class="text-search-ico" style="padding-left: 1px" (click)="showRegionLOV($event)"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="desc" readonly>
                             <div class="col-sm-3"></div>
                         </div>

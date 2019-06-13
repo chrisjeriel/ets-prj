@@ -4,7 +4,7 @@
 	(ngModelChange)="datepickerVal=$event; valueUpdated()"
 	[showTime]="true"
 	[hourFormat]="12"
-	[showIcon]="showIcon && !disabled"
+	[showIcon]="true && !disabled"
 	[style]="spanStyle"
 	[inputStyle]="inputStyle"
 	[inputStyleClass]="inputStyeClass"
@@ -34,7 +34,7 @@
 <p-calendar 
 	[ngModel]="datepickerVal"
 	(ngModelChange)="datepickerVal=$event; valueUpdated()"
-	[showIcon]="showIcon && !disabled"
+	[showIcon]="true && !disabled"
 	[style]="spanStyle"
 	[inputStyle]="inputStyle"
 	[inputStyleClass]="inputStyeClass"
@@ -58,7 +58,6 @@
 	(onSelect)="onSelect()"
 	(onFocus)="focused()"
 	(onClearClick)="onClearClick()"></p-calendar></ng-container>
-<!-- (onClearClick)="clearInput($event)" (onBlur)="testCh($event)"  [clearButtonStyleClass]="'cust-btn'" [monthNavigator]="true" [yearNavigator]="true" -->
 
 <ng-container *ngIf="type == 'time'" #ttpl>
 <p-calendar

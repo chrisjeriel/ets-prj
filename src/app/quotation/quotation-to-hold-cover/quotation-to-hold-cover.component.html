@@ -18,10 +18,10 @@
 										<div class="input-group" style="margin-bottom: -14px !important;">
 											<label class="form-control-sm col-sm-2">Quotation No</label>
 											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="3" appRequired ngbTooltip="Line" (change)="search('lineCd',$event)" [(ngModel)]="quoteInfo.quotationNo[0]">
-											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="4" appRequired ngbTooltip="Year" style="margin-left: 3px;"  (change)="search('year',$event)" [(ngModel)]="quoteInfo.quotationNo[1]">
-											<input type="text" class="form-control form-control-sm cap-input col-sm-2 warn text-right" maxlength="5" appRequired ngbTooltip="Sequence No" style="margin-left: 3px;"  (change)="search('seqNo',$event)" [(ngModel)]="quoteInfo.quotationNo[2]">
-											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="2" appRequired ngbTooltip="Revision No" style="margin-left: 3px;"  (change)="search('revNo',$event)" [(ngModel)]="quoteInfo.quotationNo[3]">
-											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="3" appRequired ngbTooltip="Company No" style="margin-left: 3px;"  (change)="search('cedingId',$event)" [(ngModel)]="quoteInfo.quotationNo[4]">
+											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="4" appRequired ngbTooltip="Year" style="margin-left: 3px;"  (change)="search('year',$event)" [(ngModel)]="quoteInfo.quotationNo[1]" numbers-only>
+											<input type="text" class="form-control form-control-sm cap-input col-sm-2 warn text-right" maxlength="5" appRequired ngbTooltip="Sequence No" style="margin-left: 3px;"  (change)="search('seqNo',$event)" [(ngModel)]="quoteInfo.quotationNo[2]" numbers-only>
+											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="2" appRequired ngbTooltip="Revision No" style="margin-left: 3px;"  (change)="search('revNo',$event)" [(ngModel)]="quoteInfo.quotationNo[3]" numbers-only>
+											<input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="3" appRequired ngbTooltip="Company No" style="margin-left: 3px;"  (change)="search('cedingId',$event)" [(ngModel)]="quoteInfo.quotationNo[4]" numbers-only>
 											<span>&nbsp;</span>
 											<div (click)="showQuoteLov()"><a><i class="fa fa-search"></i></a></div>
 											<!-- <div class="form-group" style="margin-bottom: 0px !important;margin-top: -3px !important;">
@@ -65,25 +65,25 @@
 											<label class="form-control-sm col-sm-2">Hold Cover No</label>
 											<input type="text" class="form-control form-control-sm cust-sm" readonly [(ngModel)]="holdCoverNo">
 											<label class="form-control-sm col-sm-2">Option No</label>
-											<input type="text" class="form-control form-control-sm col-sm-7 warn r-only" readonly appRequired numbers-only [(ngModel)]="holdCover.optionId" (change)="searchQuoteId()">
+											<input type="text" class="form-control form-control-sm col-sm-7 warn r-only" readonly appRequired numbers-only [(ngModel)]="holdCover.optionId" (change)="searchQuoteId();addDirty();">
 											<div *ngIf="!fieldIconDsbl" class="text-search-ico" (click)="showOptionsLov()"><a><i class="fa fa-search"></i></a></div>
 										</div>
 										<div class="input-group" style="margin-bottom: -14px !important;">
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Period From</label>
-													<div class="warn col-sm r-only dp-cont"  style="margin-left: 0px !important">
-							                            <datepicker id="perFrom" [type]="'date'" [value]="periodFromArr[0]" [disabled]="fieldIconDsbl" (valueChange)="periodFromArr[0]=$event; setPeriodTo()" [required]="true"></datepicker>
+													<div class="warn pf0 col-sm r-only dp-cont"  style="margin-left: 0px !important">
+							                            <datepicker id="perFrom" [type]="'date'" [value]="periodFromArr[0]" (valueChange)="periodFromArr[0]=$event; setPeriodTo()" [required]="true" [disabled]="fieldIconDsbl"></datepicker>
 							                        </div>
-							                        <div class="warn col-sm-3 r-only dp-cont">
-							                            <datepicker [type]="'time'" [(value)]="periodFromArr[1]" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
+							                        <div class="warn pf1 col-sm-3 r-only dp-cont">
+							                            <datepicker [type]="'time'" [value]="periodFromArr[1]" (valueChange)="periodFromArr[1]=$event;addDirty();" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
 							                        </div>
 												</div>
 											</div>
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Requested By</label>
-													<input type="text" class="form-control form-control-sm col-sm r-only" readonly  maxlength="50" [(ngModel)]="holdCover.reqBy">
+													<input type="text" class="form-control form-control-sm col-sm r-only" readonly  maxlength="50" [ngModel]="holdCover.reqBy" (ngModelChange)="holdCover.reqBy=$event;addDirty();">
 												</div>
 											</div>
 										</div>
@@ -91,11 +91,11 @@
 											<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Period To</label>
-													<div id="periodTo" class="warn col-sm r-only dp-cont" style="margin-left: 0px !important">
-							                            <datepicker [type]="'date'" [(value)]="periodToArr[0]" [disabled]="fieldIconDsbl"  [minDate]="periodFromArr[0]" [required]="true"></datepicker>
+													<div id="periodTo" class="warn pt0 col-sm r-only dp-cont" style="margin-left: 0px !important">
+							                            <datepicker [type]="'date'" [value]="periodToArr[0]" (valueChange)="periodToArr[0]=$event;addDirty();" [disabled]="fieldIconDsbl"  [minDate]="periodFromArr[0]" [required]="true"></datepicker>
 							                        </div>
-							                        <div class="warn col-sm-3 r-only dp-cont">
-							                            <datepicker [type]="'time'" [(value)]="periodToArr[1]" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
+							                        <div class="warn pt1 col-sm-3 r-only dp-cont">
+							                            <datepicker [type]="'time'" [value]="periodToArr[1]" (valueChange)="periodToArr[1]=$event;addDirty();" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
 							                        </div>
 												</div>
 											</div>
@@ -103,14 +103,14 @@
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Request Date</label>
 													<div class="col-sm r-only dp-cont" style="margin-left: 0px !important">
-							                            <datepicker [type]="'date'" [(value)]="holdCover.reqDate" [disabled]="fieldIconDsbl"></datepicker>
+							                            <datepicker [type]="'date'" [value]="holdCover.reqDate" (valueChange)="holdCover.reqDate=$event;addDirty();" [disabled]="fieldIconDsbl"></datepicker>
 							                        </div>
 												</div>
 											</div>
 										</div>
 										<div class="input-group" style="margin-bottom: -14px !important;">
 											<label class="form-control-sm col-sm-2" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
-											<input type="text" class="form-control form-control-sm col-sm r-only" maxlength="25" readonly [(ngModel)]="holdCover.compRefHoldCovNo">
+											<input type="text" class="form-control form-control-sm col-sm r-only" maxlength="25" readonly [ngModel]="holdCover.compRefHoldCovNo" (ngModelChange)="holdCover.compRefHoldCovNo=$event;addDirty();">
 											<label class="form-control-sm col-sm-2">Prepared By</label>
 											<input type="text" class="form-control form-control-sm col-sm-7" maxlength="50" readonly tabindex="-1" [(ngModel)]="holdCover.preparedBy">
 										</div>
@@ -134,7 +134,7 @@
 							<div class="cust-btn-container" style="margin-top: 10px !important;">
 								<button type="button" class="cust-btn" [disabled]="disableCancelHc" (click)="showCancelHcMdl()">Cancel Hold Cover</button>
 								<button type="button" class="cust-btn" [disabled]="disableApproval" (click)="showApprovalMdl()">Approval</button>
-								<button type="button" class="cust-btn" [disabled]="disableSave" (click)="onClickSave()">Save</button>
+								<button type="button" class="cust-btn" [disabled]="disableSave" (click)="addDirty();onClickSave();">Save</button>
 							</div>
 						</div>
 					</div>
@@ -157,7 +157,7 @@
 <app-modal class="d-none" id="quoteMdl">
     <div header>List Of Values</div>
     <div body class="container-flex">
-       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
@@ -180,7 +180,7 @@
     <div header>Confirmation</div>
     <div body>Are you sure you want to cancel this Hold Cover?</div>
     <div footer class="cust-btn-container">                    
-        <button type="button" class="cust-btn" (click)="onCancelHc();modalService.dismissAll();"><a>Yes</a></button>
+        <button type="button" class="cust-btn" (click)="onCancelHc()"><a>Yes</a></button>
 		<button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>
@@ -197,11 +197,11 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onCancelModifLov()"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="onClickView()"><a>View</a></button>
-        <button class="cust-btn" type="button" (click)="disableSave=false;modalService.dismissAll();"><a>Modification</a></button>
+        <button class="cust-btn" type="button" (click)="onClickModif()"><a>Modification</a></button>
     </div>
 </app-modal>
 
-<app-modal class="d-none" id="approvalMdl">
+<app-modal class="d-none" id="approvalMdl" #approvalMdl>
     <div header>Approval</div>
     <div body class="container-flex" style="min-width: 700px !important">
     	<div class="row">
@@ -209,15 +209,15 @@
  	    		<fieldset class="scheduler-border" style="padding-bottom: 21px !important;padding-top: 15px !important;">
  	    			<div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important; margin-bottom: -14px !important;" >
  	    				<label class="form-control-sm">Status</label>
-						<input type="text" class="form-control form-control-sm" [(ngModel)]="holdCover.status" readonly>
+						<input type="text" class="form-control form-control-sm" tabindex="-1" [(ngModel)]="holdCover.status" readonly>
 						<div class="col-sm-1"></div>
  	    			</div>
  	    			<div class="input-group" style="padding-right: 10px!important;padding-left: 10px !important;">
 						<div class="cust-btn-container col-sm" style="padding-right: 0px !important">
-							<button type="button" class="cust-btn col-sm" (click)="(aprrovalBtnTxt.toUpperCase() == 'APPROVE')?updateHcStatus('APPROVE'):updateHcStatus('FOR APPROVAL');"><a>{{ aprrovalBtnTxt }}</a></button>
+							<button type="button" class="cust-btn col-sm" (click)="(aprrovalBtnTxt.toUpperCase() == 'APPROVED')?updateHcStatus('APPROVED'):updateHcStatus('FOR APPROVAL');" [disabled]="holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED' || holdCover.status.toUpperCase() == 'REJECTED'">{{ aprrovalBtnTxt }}</button>
 						</div>		
 						<div class="cust-btn-container col-sm" style="padding-left: 0px !important">
-							<button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="updateHcStatus('REJECTED');">Rejected</button>
+							<button type="button" class="cust-btn col-sm" [disabled]="!isApproved || holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED' || holdCover.status.toUpperCase() == 'REJECTED'" (click)="updateHcStatus('REJECTED');">Rejected</button>
 						</div>
  	    			</div>
  	    		</fieldset>
@@ -226,9 +226,10 @@
  	    		<fieldset class="scheduler-border" style="padding-bottom: 15px !important;padding-top: 15px !important;">
  	    			<div class="input-group" style="margin-bottom: -14px !important;">
  	    				<label class="form-control-sm col-sm-3">Report</label>
-						<select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="report">
+ 	    				<input type="text" class="form-control form-control-sm" [(ngModel)]="report" readonly>
+						<!-- <select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="report">
 							<option value="HOLD COVER LETTER">Hold Cover Letter</option>
-						</select>
+						</select> -->
  	    			</div>
  	    			<div class="input-group" style="margin-bottom: -14px !important;">
  	    				<label class="form-control-sm col-sm-3">Destination</label>
@@ -244,10 +245,13 @@
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-		<button type="button" class="cust-btn" (click)="onClickPrint();modalService.dismissAll();" [disabled]="(report == '')?true:false">Print</button>
+		<button type="button" class="cust-btn" (click)="onClickPrint();modalService.dismissAll();">Print</button>
     </div>
 </app-modal>
 
 <app-confirm-save (onYes)="onSaveHoldCover()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo() : null"></app-sucess-dialog>
 <app-cancel-button (onYes)="onSaveHoldCover('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>

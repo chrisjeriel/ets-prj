@@ -69,7 +69,7 @@ export class TypeOfCessionComponent implements OnInit {
 		this.mtnService.getMtnTypeOfCession('')
 		.subscribe(data => {
 			console.log(data);
-			var rec = data['cession'];
+			var rec = data['cession'].map(i => { i.createDate = this.ns.toDateTimeString(i.createDate); i.updateDate = this.ns.toDateTimeString(i.updateDate); return i} );
 			this.passData.tableData = rec;
 			this.table.refreshTable();
 			this.table.onRowClick(null, this.passData.tableData[0]);
@@ -136,9 +136,9 @@ export class TypeOfCessionComponent implements OnInit {
 
 	onRowClick(event){
 		if(event !== null){
-			this.cessionData.updateDate  = this.ns.toDateTimeString(event.updateDate);
+			this.cessionData.updateDate  = event.updateDate;
 	        this.cessionData.updateUser  = event.updateUser;
-	        this.cessionData.createDate  = this.ns.toDateTimeString(event.createDate);
+	        this.cessionData.createDate  = event.createDate;
 	        this.cessionData.createUser  = event.createUser;
 	        this.passData.disableGeneric = false;
 		}else{

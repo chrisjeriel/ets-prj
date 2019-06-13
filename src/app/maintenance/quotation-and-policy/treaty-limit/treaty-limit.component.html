@@ -1,0 +1,177 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Treaty Limit">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+						    <div class="form-row custom-row-inline-inset">
+						        <div class="input-group">
+						            <div class="col-sm-1"></div>
+						            <div class="col-sm-5">
+						            	<div class="input-group">
+							            	<label class="form-control-sm text-right" style="margin-bottom: 0px">Line Code</label>
+							            	<input class="form-control form-control-sm col-sm-2 not-form" type="text" (change)="checkCode($event)" [ngModel]="lineCd" (ngModelChange)="lineCd=$event.toUpperCase()" mask="SSS">
+							            	<div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+							            	<input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="lineDesc" readonly>
+						            	</div>
+						            </div>
+						            <div class="col-sm-5">
+						            	<div class="input-group">
+							            	<label class="form-control-sm text-right" style="margin-bottom: 0px">Line Class</label>
+							            	<select id="lc-list" class="form-control form-control-sm cust-sm" [(ngModel)]="lineClassCd" [disabled]="lineDesc == '' || lineClassList.length == 0 || disableLCList" (change)="lineClassChanged($event)">
+							            		<option *ngIf="lineClassList.length > 0" [value]="'DEF'">Default (Applicable to Line Class without setup)</option>
+							            		<option *ngFor="let lc of lineClassList" [value]="lc.lineClassCd">{{ lc.lineClassCdDesc }}</option>
+							            	</select>
+						            	</div>
+						            </div>
+						            <div class="col-sm-1"></div>
+						        </div>
+						    </div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
+							<div class="row" style="margin-top: 12px;">
+								<div class="col-sm-12" id="treaty-limit-table">
+									<app-cust-editable-non-datatable #treatyLimitTable [passData]="treatyLimitData" (tableDataChange)="treatyLimitData.tableData=$event" (newClick)="onTreatyLimitRowClick($event)" (genericBtn)="onTreatyLimitClickDelete($event)" (onDelete)="treatyLimitTable.onClickDelete('force'); treatyLimitData.disableGeneric=true;">
+										<ng-container controls-l>
+											<button type="button" [disabled]="disableCopySetup" class="cust-btn" (click)="onCopySetupClick()"><a>Copy Setup</a></button>
+										</ng-container>
+									</app-cust-editable-non-datatable>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Treaty Layer</legend>
+							<div class="row" style="margin-top: 12px;">
+								<div class="col-sm-4"></div>
+								<div id="treaty-layer-table" class="col-sm-4">
+									<app-cust-editable-non-datatable #treatyLayerTable [passData]="treatyLayerData" (tableDataChange)="treatyLimitSelected.treatyLayerList=$event; treatyLayerDataChange($event);" (newClick)="onTreatyLayerRowClick($event)" (genericBtn)="onTreatyLayerClickDelete($event)" (onDelete)="treatyLayerTable.onClickDelete('force'); treatyLayerData.disableGeneric=true;" (clickLOV)="openTreatyLOV($event)"></app-cust-editable-non-datatable>
+								</div>
+								<div class="col-sm-4"></div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-sm">
+									<div class="col-md-13 text-center">
+										<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row" style="margin-top: 12px">
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border" style="padding-top: 4px !important;">
+							<div class="custom-row-inline-inset">
+								<div class="input-group" style="margin-bottom: -14px !important;">
+									<label class="form-control-sm col-sm-1 no-margin">Created By</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" readonly>
+									<label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+									<div class="col-sm-2 dp-cont">
+										<datepicker [value]="selected?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+									</div>
+									<label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" readonly>
+									<label class="form-control-sm col-sm-1 no-margin">Last Update</label>									
+									<div class="col-sm-2 dp-cont">
+										<datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-mtn-line (selectedData)="setLine($event)" #lineLov></app-mtn-line>
+<app-mtn-line (selectedData)="setLineCopy($event)" #lineLovCopy></app-mtn-line>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
+
+<app-modal class="d-none" id="mtnTreatyLimitWarningModal">
+    <div header>Warning Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">
+            	<p *ngIf="errorMsg == 1">Unable to save the record. Treaty Setup<br />
+                must be outside the effectivity of an active treaty limit.</p>
+                <p *ngIf="errorMsg == 2">Unable to copy details. <strong>Treaty Setup</strong> of the<br />
+                highlighted record must be outside the effectivity of an active<br />
+            	treaty limit.</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); errorMsg=0;"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="mtnTreatyLimitCopyModal">
+    <div header>Copy Setup</div>
+    <div body style="width: 450px !important;">
+        <fieldset class="scheduler-border" style="padding: 5px 20px 5px 8px !important;">
+        	<legend class="scheduler-border">Copy From</legend>
+            <div class="input-group" style="margin-bottom: -14px !important;">
+              	<label class="form-control-sm col-sm-3">Line Code</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="lineCd" tabindex="-1" readonly>
+				<input type="text" class="form-control form-control-sm col-sm" [ngModel]="lineDesc" tabindex="-1" readonly style="margin-left: 2px;">
+            </div>
+            <div class="input-group" style="margin-bottom: -14px !important;">
+              	<label class="form-control-sm col-sm-3">Line Class</label>
+				<input type="text" class="form-control form-control-sm col-sm" [ngModel]="lineClassCdDesc" tabindex="-1" readonly>
+            </div>
+            <div class="input-group" style="margin-bottom: -14px !important;">
+              	<label class="form-control-sm col-sm-3">Ret. Line Amt ID</label>
+				<input type="text" class="form-control form-control-sm col-sm-2 text-right" [ngModel]="treatyLimitSelected?.treatyLimitId" tabindex="-1" readonly>
+				<input type="text" class="form-control form-control-sm col-sm text-right" [ngModel]="treatyLimitSelected?.amount | number: '1.2-2'" tabindex="-1" readonly style="margin-left: 2px;">
+            </div>
+        </fieldset>
+        <fieldset class="scheduler-border" style="padding: 5px 20px 5px 8px !important;">
+        	<legend class="scheduler-border">Copy To</legend>
+            <div class="input-group" style="margin-bottom: -14px !important;">
+				<label class="form-control-sm col-sm-3">Line Code</label>
+				<input class="form-control form-control-sm col-sm-2 not-form" type="text" (change)="checkCodeCopy($event)" [ngModel]="copyLineCd" (ngModelChange)="copyLineCd=$event.toUpperCase()" mask="SSS">
+				<div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOVCopy()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+				<input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="copyLineDesc" readonly>
+            </div>
+            <div class="input-group" style="margin-bottom: -14px !important;">
+				<label class="form-control-sm col-sm-3">Line Class</label>
+				<select id="lc-list-copy" class="form-control form-control-sm cust-sm" [(ngModel)]="copyLineClassCd" [disabled]="copyLineDesc == '' || copyLineClassList.length == 0 || disableCopyLCList">
+					<option *ngIf="copyLineClassList.length > 0 && lineClassCd != 'DEF'" [value]="'DEF'">Default (Applicable to Line Class without setup)</option>
+				    <ng-container *ngFor="let lc of copyLineClassList">
+				    	<ng-container *ngIf="lc.lineClassCd != lineClassCd">
+				    		<option [value]="lc.lineClassCd">{{ lc.lineClassCdDesc }}</option>
+				    	</ng-container>
+				    </ng-container>
+				</select>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); onCopyCancel();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onClickModalCopy()"><a>Copy</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="mtnTreatyLimitSuccessModal">
+    <div header>Success Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>Treaty Limit was successfully copied.</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
