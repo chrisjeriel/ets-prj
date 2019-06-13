@@ -19,6 +19,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('wparam') wparam: CustEditableNonDatatableComponent;
 
   @Output() riskDistId = new EventEmitter<any>();
+  @Output() riskDistStatus = new EventEmitter<any>();
 
   private polDistributionByRisk: DistributionByRiskInfo;
   // tableData: any[] = [];
@@ -321,6 +322,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         console.log(data);
         this.riskDistributionData = data.distWrisk;
         this.riskDistId.emit(this.riskDistributionData.riskDistId);
+        this.riskDistStatus.emit(this.riskDistributionData.status);
         console.log(this.riskDistributionData.tsiAmt)
         var appendTreatyName: string = '';
         var appendTreatyLimitId: number = 0;
