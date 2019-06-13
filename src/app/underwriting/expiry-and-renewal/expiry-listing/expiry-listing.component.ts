@@ -9,6 +9,9 @@ import { MtnSectionCoversComponent } from '@app/maintenance/mtn-section-covers/m
 import { Router } from '@angular/router';
 import { MtnNonrenewReasonComponent } from '@app/maintenance/mtn-nonrenew-reason/mtn-nonrenew-reason.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { MtnCatPerilModalComponent } from '@app/maintenance/mtn-cat-peril-modal/mtn-cat-peril-modal.component';
+import { ModalComponent }  from '@app/_components/common/modal/modal.component';
+
 
 @Component({
   selector: 'app-expiry-listing',
@@ -16,15 +19,19 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
   styleUrls: ['./expiry-listing.component.css']
 })
 export class ExpiryListingComponent implements OnInit {
+  @ViewChild(MtnCatPerilModalComponent) catPerils: MtnCatPerilModalComponent;
   @ViewChild('mtnSectionCover') secCoversLov: MtnSectionCoversComponent;
   @ViewChild('totalPerSection') totalPerSection:CustEditableNonDatatableComponent;
   @ViewChild('contentEditPol') contentEditPol;
+  @ViewChild('catPerils') catPerilsTable :CustEditableNonDatatableComponent;
   @ViewChild('sectionTable') sectionTable :CustEditableNonDatatableComponent;
   @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
   @ViewChild('table') table: CustEditableNonDatatableComponent;
   @ViewChild('nrTable') nrTable: CustEditableNonDatatableComponent;
   @ViewChild('mtnNonRenewReason') nrReasonLOV: MtnNonrenewReasonComponent;
-  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild('editCov') successDiag: SucessDialogComponent;
+  @ViewChild('editCatPeril') successDiagCat: SucessDialogComponent;
+  @ViewChild('mdl') modal : ModalComponent;
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   tableData: ExpiryListing[] = [];
   renewedPolicyList: RenewedPolicy[] = [];
@@ -41,6 +48,7 @@ export class ExpiryListingComponent implements OnInit {
   secCoverData: any;
   coverageData:any;
   deductibleData:any;
+  catPerilData:any;
   secCoverCd: any;
   lineCd:any;
   secISi:number =0;
@@ -230,6 +238,14 @@ export class ExpiryListingComponent implements OnInit {
         uneditable: [false,true,true,true,true,true,true,true,true,true,true,true,true],
    };
 
+   passDataCATPerils: any = {
+        tHeader: ["CAT Perils", "Percentage Share on Premium(%)"],
+        dataTypes: ["text", "percent"],
+        tableData: [],
+        keys:['catPerilName','pctSharePrem'],
+        pageLength:10,
+    };
+
    editModal: any = {
      currencyCd: null,
      currencyRt: null,
@@ -244,6 +260,10 @@ export class ExpiryListingComponent implements OnInit {
    ExpcoverageData: any = {
      expSecCovers: [],
      delexpSecCovers: []
+   }
+
+   ExpCatPerilsData: any = {
+     expcatPeril: []
    }
 
   selectedPolicyString :any; 
@@ -549,6 +569,7 @@ export class ExpiryListingComponent implements OnInit {
       this.secCoverData = data.sectionCoverList;
       this.coverageData = data.coverageList[0];
       this.deductibleData = data.deductiblesList;
+      this.catPerilData = data.catPerilList;
       this.nrReasonCd = data.nrReasonCd;
       this.nrReasonDescription = data.nrReasonDesc;
       this.changes = data.changes;
@@ -623,6 +644,8 @@ export class ExpiryListingComponent implements OnInit {
   prepareSectionCoverData(data:any) {
     this.passDataSectionCover.tableData = [];
     this.editModal = this.coverageData;
+    this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
+    this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare, '1.10-10');
     this.secISi = 0;
     this.secIISi = 0; 
     this.secIIISi = 0;
@@ -631,7 +654,9 @@ export class ExpiryListingComponent implements OnInit {
     this.secIIIPrem = 0;
     this.totalPrem = 0;
     for(var i = 0 ; i < data.length;i++){
+      console.log(data[i])
       this.passDataSectionCover.tableData.push(data[i]);
+      this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].deleted = false;
 
       if(this.lineCd === 'CAR' || this.lineCd === 'EAR'){
         if(data[i].section == 'I'){
@@ -735,6 +760,7 @@ export class ExpiryListingComponent implements OnInit {
 
   updateSectionCover(data){
     console.log('edited')
+    console.log(this.passDataSectionCover.tableData)
     this.secISi     = 0;
     this.secIISi    = 0;
     this.secIIISi   = 0;
@@ -755,20 +781,20 @@ export class ExpiryListingComponent implements OnInit {
       for(var i = 0 ; i < this.passDataSectionCover.tableData.length;i++){
         this.passDataSectionCover.tableData[i].premAmt = this.passDataSectionCover.tableData[i].discountTag == 'Y'? this.passDataSectionCover.tableData[i].premAmt:this.passDataSectionCover.tableData[i].sumInsured * (this.passDataSectionCover.tableData[i].premRt/100);
         if(this.lineCd === 'CAR' || this.lineCd === 'EAR'){
-            if(this.passDataSectionCover.tableData[i].section == 'I'){
+            if(this.passDataSectionCover.tableData[i].section == 'I' && !this.passDataSectionCover.tableData[i].deleted){
                 if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                   this.secISi += this.passDataSectionCover.tableData[i].sumInsured;
                   this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
                 }
                   this.secIPrem += this.passDataSectionCover.tableData[i].premAmt;
                   this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'II' && !this.passDataSectionCover.tableData[i].deleted){
                 if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                   this.secIISi += this.passDataSectionCover.tableData[i].sumInsured;
                 }
                   this.secIIPrem += this.passDataSectionCover.tableData[i].premAmt;
                   this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'III' && !this.passDataSectionCover.tableData[i].deleted){
                 if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                   this.secIIISi += this.passDataSectionCover.tableData[i].sumInsured;
                   this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
@@ -777,21 +803,21 @@ export class ExpiryListingComponent implements OnInit {
                   this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
             } 
         }else if(this.lineCd === 'EEI'){
-            if(this.passDataSectionCover.tableData[i].section == 'I'){
+            if(this.passDataSectionCover.tableData[i].section == 'I' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secISi += this.passDataSectionCover.tableData[i].sumInsured;
                  this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
                }
                  this.secIPrem += this.passDataSectionCover.tableData[i].premAmt;
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'II' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secIISi += this.passDataSectionCover.tableData[i].sumInsured;
                  this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
                }
                  this.secIIPrem += this.passDataSectionCover.tableData[i].premAmt;
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'III' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secIIISi += this.passDataSectionCover.tableData[i].sumInsured;
                  this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
@@ -800,20 +826,20 @@ export class ExpiryListingComponent implements OnInit {
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
             } 
         }else {
-            if(this.passDataSectionCover.tableData[i].section == 'I'){
+            if(this.passDataSectionCover.tableData[i].section == 'I' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secISi += this.passDataSectionCover.tableData[i].sumInsured;
                  this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
                }
                  this.secIPrem += this.passDataSectionCover.tableData[i].premAmt;
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'II' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secIISi += this.passDataSectionCover.tableData[i].sumInsured;
                }
                  this.secIIPrem += this.passDataSectionCover.tableData[i].premAmt;
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'III' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secIIISi += this.passDataSectionCover.tableData[i].sumInsured;
                }
@@ -836,7 +862,6 @@ export class ExpiryListingComponent implements OnInit {
       this.totalPerSection.refreshTable();
 
       this.editModal.totalSi = this.totalSi;
-      console.log(this.totalSi)
       this.editModal.totalPrem = this.totalPrem;
 
       for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
@@ -847,6 +872,16 @@ export class ExpiryListingComponent implements OnInit {
       }
       this.table.refreshTable();
       this.getEditableCov();
+  }
+
+  pctShare(){
+    this.coverageData.totalValue = this.coverageData.totalSi/this.coverageData.pctShare*100;
+    this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');
+  }
+
+  totalValue(){
+    this.coverageData.pctShare = this.coverageData.totalSi/this.coverageData.totalValue*100;
+    this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare, '1.10-10');
   }
 
   getEditableCov(){
@@ -1084,5 +1119,54 @@ export class ExpiryListingComponent implements OnInit {
           this.ExpcoverageData.delexpSecCovers.push(this.passDataSectionCover.tableData[i]);
         }
       }
+  }
+
+  catPeril(){
+    if(this.catPerilData.length !== 0){
+      this.prepareCatPeril(this.catPerilData);
+    }else{
+      this.prepareCatPeril([]);
+    }
+    this.modal.openNoClose()
+  }
+
+  prepareCatPeril(data){
+    console.log(data)
+    this.passDataCATPerils.tableData = [];
+    for(var i = 0 ; i < data.length; i ++){
+      this.passDataCATPerils.tableData.push(data[i]);
+    }
+    console.log(this.passDataCATPerils.tableData)
+    this.catPerilsTable.refreshTable();
+  }
+
+  prepareSaveCatPeril(){
+    for(var i = 0 ; i < this.passDataCATPerils.tableData.length;i++){
+      if(this.passDataCATPerils.tableData[i].edited){
+        this.ExpCatPerilsData.expcatPeril.push(this.passDataCATPerils.tableData[i]);
+        this.ExpCatPerilsData.expcatPeril[this.ExpCatPerilsData.expcatPeril.length - 1].createDate = this.ns.toDateTimeString(this.ExpCatPerilsData.expcatPeril[this.ExpCatPerilsData.expcatPeril.length - 1].createDate);
+        this.ExpCatPerilsData.expcatPeril[this.ExpCatPerilsData.expcatPeril.length - 1].updateDate = this.ns.toDateTimeString(this.ExpCatPerilsData.expcatPeril[this.ExpCatPerilsData.expcatPeril.length - 1].updateDate);
+      }
+    }
+  }
+
+  saveCatPeril(){
+    this.prepareSaveCatPeril();
+    this.underWritingService.saveExpCat(this.ExpCatPerilsData).subscribe((data:any) => {
+      if(data['returnCode'] == 0) {
+        console.log('failed')
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.modal.closeModal();
+        this.successDiagCat.open();
+      } else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.modal.closeModal();
+        this.successDiagCat.open();
+        console.log('success')
+        this.retrieveExpPolList();
+      }
+    });
   }
 }

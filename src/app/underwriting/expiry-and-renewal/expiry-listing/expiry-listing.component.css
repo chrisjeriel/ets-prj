@@ -140,3 +140,7 @@ div h4{
 .modal-size > .modal-dialog {
     max-width: 90% !important;
 }
+
+.hidden {
+    display: none;
+}

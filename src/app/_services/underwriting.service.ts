@@ -1071,6 +1071,7 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/saveExpCoverage',JSON.stringify(params),header);
     }
 
+
     getPolPoolDistribution(riskDistId,policyId){
         const params = new HttpParams()
             .set('riskDistId', riskDistId)
@@ -1125,6 +1126,18 @@ export class UnderwritingService {
          }
           return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDistList',{params});
      }
+
+
+     saveExpCat(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/saveExpCatPeril',JSON.stringify(params),header);
+    }
+
+
 }            
 
             

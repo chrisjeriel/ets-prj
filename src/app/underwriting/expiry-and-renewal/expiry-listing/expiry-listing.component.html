@@ -214,13 +214,13 @@
 		 	                </div>
 		 	                <div class="input-group" style="margin-bottom: -13px !important">
 		 	                 <label class="form-control-sm col-sm-3">Share(%)</label>
-		 	                 <input type="text" class="form-control form-control-sm req" appOtherRates [(ngModel)]="editModal.pctShare">
+		 	                 <input type="text" class="form-control form-control-sm req" appOtherRates [(ngModel)]="editModal.pctShare" (blur)="pctShare()">
 		 	                 
 		 	                 <span class="col-sm-1"></span>
 		 	               </div>
 		 	               <div class="input-group" style="margin-bottom: -6px !important">
 		 	                 <label class="form-control-sm col-sm-3" style="margin-bottom: 1px;">100% Value</label>
-		 	                 <input type="text" class="form-control form-control-sm calc" appCurrency [(ngModel)]="editModal.totalValue">
+		 	                 <input type="text" class="form-control form-control-sm calc" appCurrency [(ngModel)]="editModal.totalValue" (blur)="totalValue()">
 		 	                 <span class="col-sm-1"></span>
 		 	               </div>
 		 	               <div class="input-group" style="margin-bottom: -6px !important">
@@ -255,7 +255,7 @@
 		</div>
 		<div footer class="text-center">
 			<div class="row" style="margin-right: 400px">
-				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>CAT Perils</a></button>
+				<button class="cust-btn" type="button" (click)="catPeril();"><a>CAT Perils</a></button>
 				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
 				<button class="cust-btn" type="button" (click)="onClickSave();"><a>Save</a></button>
 			</div>
@@ -334,6 +334,18 @@
     </div>
 </app-modal>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-modal class="hidden" id="CATPerils" #mdl>
+    <div header>CAT Perils Exposure</div>
+    <div body style=" margin-top: -10px !important; width: 400px ! important">
+       <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
+    </div>                
+    <div footer style="margin-right: 145px !important;">
+      <button class="cust-btn" type="button" (click)="modal.closeModal();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="saveCatPeril();"><a>Save</a></button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog #editCov [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog #editCatPeril [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save id="coverageConfirm" (onYes)="savePolicyChanges()"></app-confirm-save>
 <app-cancel-button id="coverageCancel" (onYes)="savePolicyChanges('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
