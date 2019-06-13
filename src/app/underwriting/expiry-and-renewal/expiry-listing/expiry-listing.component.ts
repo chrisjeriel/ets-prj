@@ -480,6 +480,7 @@ export class ExpiryListingComponent implements OnInit {
     this.secIIIPrem = 0;
     this.totalPrem = 0;
     for(var i = 0 ; i < data.length;i++){
+      console.log(data[i])
       this.passDataSectionCover.tableData.push(data[i]);
 
       if(this.lineCd === 'CAR' || this.lineCd === 'EAR'){
@@ -584,6 +585,7 @@ export class ExpiryListingComponent implements OnInit {
 
   updateSectionCover(data){
     console.log('edited')
+    console.log(this.passDataSectionCover.tableData)
     this.secISi     = 0;
     this.secIISi    = 0;
     this.secIIISi   = 0;
@@ -604,43 +606,44 @@ export class ExpiryListingComponent implements OnInit {
       for(var i = 0 ; i < this.passDataSectionCover.tableData.length;i++){
         this.passDataSectionCover.tableData[i].premAmt = this.passDataSectionCover.tableData[i].discountTag == 'Y'? this.passDataSectionCover.tableData[i].premAmt:this.passDataSectionCover.tableData[i].sumInsured * (this.passDataSectionCover.tableData[i].premRt/100);
         if(this.lineCd === 'CAR' || this.lineCd === 'EAR'){
-            if(this.passDataSectionCover.tableData[i].section == 'I'){
+            if(this.passDataSectionCover.tableData[i].section == 'I' && !this.passDataSectionCover.tableData[i].deleted){
                 if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                   this.secISi += this.passDataSectionCover.tableData[i].sumInsured;
                   this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
                 }
                   this.secIPrem += this.passDataSectionCover.tableData[i].premAmt;
                   this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'II' && !this.passDataSectionCover.tableData[i].deleted){
                 if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                   this.secIISi += this.passDataSectionCover.tableData[i].sumInsured;
                 }
                   this.secIIPrem += this.passDataSectionCover.tableData[i].premAmt;
                   this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'III' && !this.passDataSectionCover.tableData[i].deleted){
                 if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                   this.secIIISi += this.passDataSectionCover.tableData[i].sumInsured;
+                  console.log('SECIII' + this.passDataSectionCover.tableData[i].sumInsured);
                   this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
                 }
                   this.secIIIPrem += this.passDataSectionCover.tableData[i].premAmt;
                   this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
             } 
         }else if(this.lineCd === 'EEI'){
-            if(this.passDataSectionCover.tableData[i].section == 'I'){
+            if(this.passDataSectionCover.tableData[i].section == 'I' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secISi += this.passDataSectionCover.tableData[i].sumInsured;
                  this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
                }
                  this.secIPrem += this.passDataSectionCover.tableData[i].premAmt;
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'II' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secIISi += this.passDataSectionCover.tableData[i].sumInsured;
                  this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
                }
                  this.secIIPrem += this.passDataSectionCover.tableData[i].premAmt;
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'III' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secIIISi += this.passDataSectionCover.tableData[i].sumInsured;
                  this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
@@ -649,20 +652,20 @@ export class ExpiryListingComponent implements OnInit {
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
             } 
         }else {
-            if(this.passDataSectionCover.tableData[i].section == 'I'){
+            if(this.passDataSectionCover.tableData[i].section == 'I' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secISi += this.passDataSectionCover.tableData[i].sumInsured;
                  this.totalSi += this.passDataSectionCover.tableData[i].sumInsured;
                }
                  this.secIPrem += this.passDataSectionCover.tableData[i].premAmt;
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'II' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secIISi += this.passDataSectionCover.tableData[i].sumInsured;
                }
                  this.secIIPrem += this.passDataSectionCover.tableData[i].premAmt;
                  this.totalPrem += this.passDataSectionCover.tableData[i].premAmt;
-            }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+            }else if(this.passDataSectionCover.tableData[i].section == 'III' && !this.passDataSectionCover.tableData[i].deleted){
                if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                  this.secIIISi += this.passDataSectionCover.tableData[i].sumInsured;
                }
@@ -685,7 +688,6 @@ export class ExpiryListingComponent implements OnInit {
       this.totalPerSection.refreshTable();
 
       this.editModal.totalSi = this.totalSi;
-      console.log(this.totalSi)
       this.editModal.totalPrem = this.totalPrem;
 
       for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
