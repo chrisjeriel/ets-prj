@@ -306,6 +306,7 @@ export class ExpiryListingComponent implements OnInit {
                   summaryTag : this.passDataRenewalPolicies.tableData[i].summaryTag,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
                   remarks : this.passDataRenewalPolicies.tableData[i].remarks,
+                  renewalFlag : "RA"
                 };
 
                 renAsIsPolicyList.push(policy);
@@ -320,6 +321,7 @@ export class ExpiryListingComponent implements OnInit {
                   summaryTag : this.passDataRenewalPolicies.tableData[i].summaryTag,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
                   remarks : this.passDataRenewalPolicies.tableData[i].remarks,
+                  renewalFlag : "RC"
                 };
 
                 renWithChangesPolicyList.push(policyWC);
@@ -332,6 +334,7 @@ export class ExpiryListingComponent implements OnInit {
                   nrReasonCd : this.passDataRenewalPolicies.tableData[i].nrReasonCd,
                   nrReasonDesc : this.passDataRenewalPolicies.tableData[i].nrReasonDesc,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
+                  renewalFlag : "NR"
                 };
                 nonRenPolicyList.push(policyNR);
             }
