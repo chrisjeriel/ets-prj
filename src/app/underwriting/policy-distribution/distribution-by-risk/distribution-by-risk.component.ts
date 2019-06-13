@@ -406,6 +406,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.treatyTable.refreshTable();
         this.limitTable.refreshTable();
         this.wparam.refreshTable();
+        this.readOnlyAll();
         setTimeout(()=>{
           $('input[type=text]').focus();
           $('input[type=text]').blur();
@@ -599,6 +600,10 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         }
       }
       );
+  }
+
+  onClickCancel(){
+    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}]);
   }
 
 }
