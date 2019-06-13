@@ -7,6 +7,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-other-charge',
@@ -65,9 +66,10 @@ export class OtherChargeComponent implements OnInit, OnDestroy {
  	cancel: boolean = false;
  	subscription: Subscription = new Subscription();
 
-  	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
+  	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal, private titleService: Title) { }
 
   	ngOnInit() {
+  		this.titleService.setTitle("Mtn | Other Charge");
   		setTimeout(() => { this.table.refreshTable(); this.getMtnOtherCharges(); }, 0);
   	}
 
@@ -125,6 +127,7 @@ export class OtherChargeComponent implements OnInit, OnDestroy {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 
+				this.cancel = false;
 				return;
 			}
 
@@ -132,6 +135,7 @@ export class OtherChargeComponent implements OnInit, OnDestroy {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 
+				this.cancel = false;
 				return;
 			}
 
@@ -139,15 +143,26 @@ export class OtherChargeComponent implements OnInit, OnDestroy {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 
+				this.cancel = false;
 				return;
 			}
 		}
 
-		this.confirmSave.confirmModal();
+		if(!this.cancel) {
+			this.confirmSave.confirmModal();
+		} else {
+			this.save(false);
+		}
 	}
 
 	save(cancel?) {
 		this.cancel = cancel !== undefined;
+
+		if(this.cancel && cancel) {
+			this.onClickSave();
+			return;
+		}
+
 		this.params.saveOChrg = [];
 		this.params.deleteOChrg = [];
 

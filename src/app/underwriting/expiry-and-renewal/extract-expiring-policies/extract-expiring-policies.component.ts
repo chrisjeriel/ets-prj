@@ -70,6 +70,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
         } else {
           this.extractedPolicies = data['recordCount'];
+          $('#extractMsgModal > #modalBtn').trigger('click');
         }
     });
 
@@ -183,6 +184,9 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.ns.lovLoader(data.ev, 0);   
   }
 
+  onClickExtract(){
+    $('#extractModal > #modalBtn').trigger('click');
+  }
 
 
   pad(str, num?) {

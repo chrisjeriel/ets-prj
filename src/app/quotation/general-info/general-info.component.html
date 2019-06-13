@@ -99,7 +99,7 @@
 										<!-- <input  [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="date" [ngModel]="genInfoData.expiryDate.split('T')[0]" (ngModelChange)="genInfoData.expiryDate = $event" class="form-control form-control-sm req" min="{{ genInfoData.issueDate }}" appRequired> -->
 
 										<div class="col-sm dp-cont">
-											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="genInfoData.expiryDate.split('T')[0]" (valueChange)="genInfoData.expiryDate=$event" [minDate]="genInfoData.issueDate.split('T')[0]"></datepicker>
+											<datepicker [type]="'date'" [required]="true" [showIcon]="!inquiryFlag" [disabled]="inquiryFlag" [value]="genInfoData.expiryDate.split('T')[0]" (valueChange)="genInfoData.expiryDate=$event" [minDate]="genInfoData.issueDate.split('T')[0]"></datepicker>
 										</div>
 									</div>
 									<div class="input-group ig-cust">
@@ -328,9 +328,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification'" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification' || inquiryFlag" maxlength="10">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification'" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification' || inquiryFlag" maxlength="10">
 								</div>
 							</div>
 						</div>
@@ -421,9 +421,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification'" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification' || inquiryFlag" maxlength="10">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification'" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification' || inquiryFlag" maxlength="10">
 								</div>
 							</div>
 						</div>
@@ -511,9 +511,9 @@
 								</div>
 								<div class="input-group">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification'" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification' || inquiryFlag" maxlength="10">
 									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
-									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification'" maxlength="10">
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification' || inquiryFlag" maxlength="10">
 								</div>
 							</div>
 						</div>

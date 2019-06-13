@@ -27,110 +27,82 @@
             <div class="col-sm-6">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Policy No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" ngbTooltip="Line" placeholder=""
-                        [ngModel]="line+'-2018-00001-99-0001-000'">
+                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="line+'-2018-00001-99-0001-000'" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Claim No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="line+'-2018-00001'">
+                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="line+'-2018-00001'" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Claim No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;"
-                        placeholder="" [(ngModel)]="coClaimNo">
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="coClaimNo">
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Type of Cession</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;" placeholder="Direct"
-                        readonly>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;" readonly>
                     <label class="form-control-sm col-sm-2">Line Class</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 1px !important;"
-                        placeholder="CAR Wet Risk" [(ngModel)]="lineClass" readonly>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 1px !important;" [(ngModel)]="lineClass" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2" style="font-size: 9.5px !important;">Ceding Company</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
-                        placeholder="99" readonly>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;"
-                        placeholder="Asia United Insurance Inc." readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Ref No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;"
-                        placeholder="EN-CAR-HO-2018-006792-01" [(ngModel)]="coRefNo" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="coRefNo" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: -15px !important;"
-                        placeholder="AArema Adjusters and Surveyors, Inc. / TLP Adj. / ACD Co. Inc.">
-                    <div class="text-search-ico" style="margin-right: 8px !important; margin-left: -6px !important;"><a><i
-                                class="fa fa-search"></i></a></div>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="'AArema Adjusters and Surveyors, Inc. / TLP Adj. / ACD Co. Inc.'" readonly>
+                    <!-- <div class="text-search-ico" style="margin-right: 8px !important; margin-left: -6px !important;"><a><i
+                                class="fa fa-search"></i></a></div> -->
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster Ref No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;"
-                        placeholder="PMMSC-CAR-2018-025 / ADJ2 REF 001 / ADJ3 REF 001" [(ngModel)]="adjRefNo">
-                    <div class="cust-btn-container col-sm-2" style="padding-right: 0px !important;
-                        padding-bottom: 0px !important; 
-                        padding-left: 3px !important;
-                        margin-right: -29px !important;
-                        margin-top: -3px !important;
-                        margin-top: 0px !important;
-                        line-height: 13px !important;">
-                        <app-modal [btnTitle]="'Adjusters'" style="margin-bottom: 2px;padding-top: 2px !important;">
-                            <div header style="width: 800px !important;">Adjusters</div>
-                            <div body>
-                                <app-cust-editable-non-datatable [passData]="passData">
-                                </app-cust-editable-non-datatable>
-                            </div>
-                            <div footer class="text-center" style="width: 100% !important;">
-                                <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="modalService.dismissAll()"><a>Adjusters
-                                        Maintenance</a></button>
-                                <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-                                <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
-                            </div>
-                        </app-modal>
-                    </div>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="adjRefNo" readonly>
+                    <button type="button" class="cust-btn" (click)="openAdjustersModal();" style="margin-left: 2px; max-height: 21px; padding: 0 10px; margin-right: 0; z-index: 1 !important;"><a>Adjusters</a></button>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-row" style="margin-top: 0px !important;">
                     <div class="col-sm-6">
                         <div class="input-group">
-                            <label class="form-control-sm col-sm-4" style="margin-left: -22px !important;">Loss
-                                Date</label>
-                            <input type="date" class="form-control form-control-sm col-sm-5" style="padding-right: 0px !important;"
-                                value="2018-12-01">
-                            <input type="time" class="form-control form-control-sm col-sm-4" style="padding-right: 0px !important;"
-                                value="03:00">
+                            <label class="form-control-sm col-sm-4">Loss Date</label>
+                            <div class="col-sm-5 dp-cont">
+                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="''"></datepicker> <!-- valueChange -->
+                            </div>
+                            <div class="col-sm dp-cont">
+                                <datepicker [type]="'time'" [required]="true" [value]="''" [textAlign]="'center'"></datepicker>  <!-- valueChange -->
+                            </div>
                         </div>
                         <div class="input-group">
-                            <label class="form-control-sm col-sm-4" style="margin-left: -22px !important;">Report
-                                Date</label>
-                            <input type="date" class="form-control form-control-sm col-sm-5" style="padding-right: 0px !important;"
-                                value="2019-01-01">
-                            <input type="time" class="form-control form-control-sm col-sm-4" style="padding-right: 0px !important;"
-                                value="03:00">
+                            <label class="form-control-sm col-sm-4">Report Date</label>
+                            <div class="col-sm-5 dp-cont">
+                                <datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="''"></datepicker> <!-- valueChange -->
+                            </div>
+                            <div class="col-sm dp-cont">
+                                <datepicker [type]="'time'" [required]="false" [value]="''" [textAlign]="'center'"></datepicker>  <!-- valueChange -->
+                            </div>
                         </div>
                         <div class="input-group">
-                            <label class="form-control-sm col-sm-4" style="margin-left: -22px !important;padding-top: 2px !important;">Creation
-                                Date</label>
-                            <input type="date" class="form-control form-control-sm col-sm-5" style="padding-right: 0px !important;"
-                                value="2019-02-01">
-                            <input type="time" class="form-control form-control-sm col-sm-4" style="padding-right: 0px !important;"
-                                value="03:00">
+                            <label class="form-control-sm col-sm-4">Creation Date</label>
+                            <div class="col-sm-5 dp-cont">
+                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="'2019-12-01'"></datepicker> <!-- valueChange -->
+                            </div>
+                            <div class="col-sm dp-cont">
+                                <datepicker [type]="'time'" [disabled]="true" [value]="'13:00:58'" [textAlign]="'center'"></datepicker>  <!-- valueChange -->
+                            </div>
                         </div>
                         <div class="input-group">
-                            <label class="form-control-sm col-sm-4" style="margin-left: -22px !important;padding-top: 2px !important;">&nbsp;&nbsp;Loss
-                                Cause</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="E.Q. Volcanism">
+                            <label class="form-control-sm col-sm-4">&nbsp;&nbsp;Loss Cause</label>
+                            <input type="text" class="form-control form-control-sm col-sm" placeholder="E.Q. Volcanism" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label class="form-control-sm col-sm-4" style="margin-left: -22px !important;padding-top: 2px !important;">&nbsp;Event
-                                Type</label>
+                            <label class="form-control-sm col-sm-4">&nbsp;Event Type</label>
                             <input type="text" class="form-control form-control-sm col-sm" placeholder="Earthquake">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search"></i></a>
@@ -140,25 +112,25 @@
 
                     <div class="col-sm-6" style="padding-top: 25px !important;">
                         <div class="input-group">
-                            <label class="form-control-sm col-sm-4" style="margin-left: -27px !important;">Reported
-                                By</label>
+                            <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Reported By</label>
                             <input type="text" class="form-control form-control-sm col-sm" placeholder="Juan Dela Cruz">
                         </div>
                         <div class="input-group">
-                            <label class="form-control-sm col-sm-4" style="margin-left: -27px !important;">Processed
-                                By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="Juan Dela Cruz">
-                        </div>
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-4" style="margin-left: -27px !important;">Loss
-                                Period</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="Basic Period">
+                            <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Processed By</label>
+                            <input type="text" class="form-control form-control-sm col-sm" placeholder="Juan Dela Cruz" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label class="form-control-sm col-sm-4" style="margin-left: -27px !important;">Event</label>
+                            <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Loss Period</label>
+                            <input type="text" class="form-control form-control-sm col-sm" placeholder="Basic Period" appRequired>
+                            <div class="text-search-ico" style="margin-right: 5px !important;">
+                                <a><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Event</label>
                             <input type="text" class="form-control form-control-sm col-sm" placeholder="The Big 1 (Magnitude 7.5)">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search"></i></a>
@@ -168,9 +140,9 @@
 
                     <div class="col-sm-12">
                         <div class="input-group">
-                            <label class="form-control-sm col-sm-2" style="margin-left: -24px !important;">Loss Details</label>
-                            <textarea class="form-control form-control-sm col-sm" style="margin-bottom: 17px !important;margin-left: 2px;min-height: 72px !important; font-size: 0.7rem !important"
-                                placeholder="Damaged electric cables and supply lines on 2nd and 3rd floors due to earthquake."></textarea>
+                            <label class="form-control-sm col-sm-2">Loss Details</label>
+                            <textarea class="form-control form-control-sm col-sm" style="margin-bottom: 17px !important; min-height: 72px !important; font-size: 0.7rem !important"
+                                placeholder="Damaged electric cables and supply lines on 2nd and 3rd floors due to earthquake." appRequired></textarea>
                         </div>
                     </div>
 
@@ -758,3 +730,17 @@
         </div>
     </div>
 </div>
+
+<app-modal id="adjustersModal" class="d-none" style="margin-bottom: 2px;padding-top: 2px !important;">
+    <div header style="width: 800px !important;">Adjusters</div>
+    <div body>
+        <app-cust-editable-non-datatable [passData]="passData">
+        </app-cust-editable-non-datatable>
+    </div>
+    <div footer class="text-center" style="width: 100% !important;">
+        <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="modalService.dismissAll()"><a>Adjusters
+                   Maintenance</a></button>
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+    </div>
+</app-modal>
