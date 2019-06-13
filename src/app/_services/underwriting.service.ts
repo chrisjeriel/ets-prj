@@ -995,6 +995,7 @@ export class UnderwritingService {
             .set('policyId', searchParams.policyId == undefined ? '' : searchParams.policyId)
             .set('processTag', searchParams.processTag == undefined ? '' : searchParams.processTag)
             .set('renewalFlag', searchParams.renewalFlag == undefined ? '' : searchParams.renewalFlag)
+            .set('renewable', searchParams.renewable == undefined ? '' : searchParams.renewable)
             .set('extractUser', searchParams.extractUser == undefined ? '' : searchParams.extractUser);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveExpPolList', {params});
     }

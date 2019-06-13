@@ -34,6 +34,7 @@ export class ExpiryListingComponent implements OnInit {
     processTag: '',
     renewalFlag: '',
     extractUser: '',
+    renewable: '',
   };
   fetchedData: any;
   disabledFlag: boolean = true;
@@ -55,6 +56,7 @@ export class ExpiryListingComponent implements OnInit {
   hideSectionCoverArray:any;
   sectionCoverLOVRow:number;
   changes:string = "";
+  remarks:string = "";
 
   nrReasonCd:string = "";
   nrReasonDescription:string = "";
@@ -303,6 +305,7 @@ export class ExpiryListingComponent implements OnInit {
                   policyId : policyId,
                   summaryTag : this.passDataRenewalPolicies.tableData[i].summaryTag,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
+                  remarks : this.passDataRenewalPolicies.tableData[i].remarks,
                 };
 
                 renAsIsPolicyList.push(policy);
@@ -316,6 +319,7 @@ export class ExpiryListingComponent implements OnInit {
                   deductiblesList : this.passDataRenewalPolicies.tableData[i].deductiblesList,
                   summaryTag : this.passDataRenewalPolicies.tableData[i].summaryTag,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
+                  remarks : this.passDataRenewalPolicies.tableData[i].remarks,
                 };
 
                 renWithChangesPolicyList.push(policyWC);
@@ -324,7 +328,9 @@ export class ExpiryListingComponent implements OnInit {
             if (this.passDataRenewalPolicies.tableData[i].nonRenTag == 'Y') {
                 var policyNR = {
                   policyId : policyId,
+                  policyNo : this.passDataRenewalPolicies.tableData[i].policyNo,
                   nrReasonCd : this.passDataRenewalPolicies.tableData[i].nrReasonCd,
+                  nrReasonDesc : this.passDataRenewalPolicies.tableData[i].nrReasonDesc,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
                 };
                 nonRenPolicyList.push(policyNR);
@@ -393,8 +399,9 @@ export class ExpiryListingComponent implements OnInit {
 
   retrieveExpPolList(){
        this.passDataRenewalPolicies.tableData = [];
-       this.searchParams.renewalFlag = 'N';
+       this.searchParams.renewalFlag = '';
        this.searchParams.processTag = 'N';
+       this.searchParams.renewable = 'Y';
        console.log(this.searchParams)
        this.underWritingService.getExpPolList(this.searchParams).subscribe(data => {
           console.log(data);
@@ -425,6 +432,7 @@ export class ExpiryListingComponent implements OnInit {
        this.passDataNonRenewalPolicies.tableData = [];
        this.searchParams.renewalFlag = '';
        this.searchParams.processTag = 'N';
+       this.searchParams.renewable = 'N';
        this.underWritingService.getExpPolList(this.searchParams).subscribe(data => {
           console.log(data);
           var records = data['expPolicyList'];
@@ -530,6 +538,7 @@ export class ExpiryListingComponent implements OnInit {
     this.nrReasonCd = "";
     this.nrReasonDescription = "";
     this.changes = "";
+    this.remarks = "";
 
     if(data !== null){
       this.disabledFlag = false;
@@ -543,6 +552,7 @@ export class ExpiryListingComponent implements OnInit {
       this.rowPolicyId = data.policyId;
       this.rowProjId  = data.projectList[0].projId;
       this.rowRiskId  = data.projectList[0].riskId;
+      this.remarks = data.remarks;
 
       if(data.renWithChange === 'Y'){
          this.changesFlag = true;
@@ -883,14 +893,14 @@ export class ExpiryListingComponent implements OnInit {
          for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
               if (this.passDataRenewalPolicies.tableData[i].policyId == this.table.indvSelect.policyId) {
                 this.passDataRenewalPolicies.tableData[i].nrReasonCd = this.nrReasonCd;
-                this.passDataRenewalPolicies.tableData[i].nrReasonDescription = this.nrReasonDescription;
+                this.passDataRenewalPolicies.tableData[i].nrReasonDesc = this.nrReasonDescription;
               }
          }
        } else {
          for(var i = 0; i < this.passDataNonRenewalPolicies.tableData.length;i++){
               if (this.passDataNonRenewalPolicies.tableData[i].policyId == this.nrTable.indvSelect.policyId) {
                 this.passDataNonRenewalPolicies.tableData[i].nrReasonCd = this.nrReasonCd;
-                this.passDataNonRenewalPolicies.tableData[i].nrReasonDescription = this.nrReasonDescription;
+                this.passDataNonRenewalPolicies.tableData[i].nrReasonDesc = this.nrReasonDescription;
               }
          }
        }
@@ -1011,6 +1021,16 @@ export class ExpiryListingComponent implements OnInit {
     for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
         if (this.passDataRenewalPolicies.tableData[i].policyId == this.table.indvSelect.policyId) {
           this.passDataRenewalPolicies.tableData[i].changes = this.changes;
+        }
+    }
+  }
+
+  remarksValueChanged(data) {
+    console.log("remarksValueChanged : " + this.changes);
+    console.log(data);
+    for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
+        if (this.passDataRenewalPolicies.tableData[i].policyId == this.table.indvSelect.policyId) {
+          this.passDataRenewalPolicies.tableData[i].remarks = this.remarks;
         }
     }
   }

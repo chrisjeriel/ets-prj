@@ -38,7 +38,7 @@
 											</div>
 											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Remarks</label>
-												<input type="text" class="form-control form-control-sm col-sm-8">
+												<input type="text" class="form-control form-control-sm col-sm-8" [disabled]="disabledFlag" (change)="remarksValueChanged($event);" [ngModel]="remarks" (ngModelChange)="remarks = $event">
 											</div>
 											<div class="row">
 											<div class="col-sm-12"  style="padding: 0px !important;margin-bottom: 7px;">
@@ -325,7 +325,7 @@
 	            <p><b>Non-renewable Policies: </b></p>
 	        </div>
 	        <div class="custom-row-inline-inset" style="text-align: center">                
-	            <span *ngFor="let renPol of nrPolicies">{{renPol.policyId}} for reason {{renPol.nrReasonCd}}<br/></span>
+	            <span *ngFor="let renPol of nrPolicies">{{renPol.policyNo}} for reason {{renPol.nrReasonDesc}}<br/></span>
 	        </div>
 	    </div>
     </div>
