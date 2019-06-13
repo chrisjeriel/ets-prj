@@ -415,7 +415,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
     openPoolDistribution(){
       this.poolDistTable.loadingFlag = true;
-      this.polService.getPoolDistribution(this.riskDistributionData.riskDistId).subscribe((data: any)=>{
+      this.polService.getPoolDistribution(this.riskDistributionData.riskDistId, this.riskDistributionData.altNo).subscribe((data: any)=>{
         this.poolDistributionData.tableData = data.poolDistList;
         this.poolDistTable.refreshTable();
         this.poolDistTable.loadingFlag = false;
@@ -470,22 +470,22 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
       this.savedData = [];
       this.deletedData = [];
       //setting up ceding rep updates
-      for (var i = 0 ; this.wparam.tableData.length > i; i++) {
-        if(this.wparam.tableData[i].edited && !this.wparam.tableData[i].deleted){
-            this.wparam.tableData[i].eSignature = this.wparam.tableData[i].fileName;
-            this.savedData.push(this.wparam.tableData[i]);
+      for (var i = 0 ; this.wparamData.tableData.length > i; i++) {
+        if(this.wparamData.tableData[i].edited && !this.wparamData.tableData[i].deleted){
+            this.wparamData.tableData[i].eSignature = this.wparamData.tableData[i].fileName;
+            this.savedData.push(this.wparamData.tableData[i]);
             this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
             this.savedData[this.savedData.length-1].createUser = JSON.parse(window.localStorage.currentUser).username;
             this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
             this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
         }
-        else if(this.wparam.tableData[i].edited && this.wparam.tableData[i].deleted){
-            this.deletedData.push(this.wparam.tableData[i]);
+        else if(this.wparamData.tableData[i].edited && this.wparamData.tableData[i].deleted){
+            this.deletedData.push(this.wparamData.tableData[i]);
             this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
             this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
         }
       }
-
+      console.log(this.riskDistributionData.autoCalc)
       /*
         //PARAMS:
         //  One Retention Line -> this.riskDistributionData.retLineAmt
