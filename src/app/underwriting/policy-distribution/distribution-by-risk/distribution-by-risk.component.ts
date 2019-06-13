@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
-import { UnderwritingService } from '@app/_services';
+import { UnderwritingService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -17,9 +18,17 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('poolDistTable') poolDistTable: CustEditableNonDatatableComponent;
   @ViewChild('coInsTable') coInsTable: CustEditableNonDatatableComponent;
   @ViewChild('wparam') wparam: CustEditableNonDatatableComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
   @Output() riskDistId = new EventEmitter<any>();
   @Output() riskDistStatus = new EventEmitter<any>();
+
+  dialogIcon: string = '';
+  dialogMessage: string = '';
+  cancelFlag: boolean = false;
+
+  savedData: any[] = [];
+  deletedData: any[] = [];
 
   private polDistributionByRisk: DistributionByRiskInfo;
   // tableData: any[] = [];
@@ -106,7 +115,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     deleteFlag: false,
     paginateFlag: true,
     infoFlag: true,
-    searchFlag: false,
+    searchFlag: true,
     checkboxFlag: true,
     pageLength: 10,
     widths: [],
@@ -138,9 +147,21 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     options: [],
     dataTypes: ['text', 'text', 'percent', 'percent'],
     keys: ['treatyName', 'trtyCedName', 'pctShare', 'commRt'],
+    /*nData: {
+     commRt: 0,
+     createDate: '',
+     createUser: JSON.parse(window.localStorage.currentUser).username,
+     pctShare: 0,
+     treatyId: 0,
+     treatyName: 'Facultative',
+     treatyYear: new Date().getFullYear(),
+     trtyCedId: '',
+     trtyCedName: '',
+     updateDate: '',
+     updateUser: JSON.parse(window.localStorage.currentUser).username,
+    },*/
     opts: [],
     nData: {},
-    checkFlag: true,
     selectFlag: false,
     addFlag: true,
     editFlag: false,
@@ -150,7 +171,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     checkboxFlag: true,
     pageLength: 10,
     widths: [],
-    pageID: 'treatyDistTable',
+    pageID: 'wparamTable',
     genericBtn: 'Delete'
   }
 
@@ -234,7 +255,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     sub: any;
     //END
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
+  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
+              private ns: NotesService) { }
 
 
   ngOnInit() {
@@ -326,22 +348,60 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         console.log(this.riskDistributionData.tsiAmt)
         var appendTreatyName: string = '';
         var appendTreatyLimitId: number = 0;
+        var counter: number = 0;
         //var treatyLimitAmt: any;
         this.treatyDistData.tableData = data.distWrisk.distRiskWtreaty;
-        this.wparamData.tableData = data.distRiskWparam;
+
+        this.wparamData.nData = {
+                                 commRt: 0,
+                                 createDate: '',
+                                 createUser: JSON.parse(window.localStorage.currentUser).username,
+                                 pctShare: 0,
+                                 treatyId: 0,
+                                 treatyName: 'Facultative',
+                                 treatyYear: new Date().getFullYear(),
+                                 trtyCedId: '',
+                                 trtyCedName: '',
+                                 updateDate: '',
+                                 updateUser: JSON.parse(window.localStorage.currentUser).username,
+                                };
+        
+        for(var h of data.distRiskWparam){
+          if(this.riskDistributionData.altNo != 0 && String(h.treatyName).toUpperCase() !== 'FACULTATIVE'){
+            h.uneditable = ['treatyName', 'trtyCedName', 'pctShare', 'commRt'];
+          }else{
+           h.uneditable = ['treatyName', 'trtyCedName'];
+          }
+          h.riskDistId = this.riskDistributionData.riskDistId;
+          h.altNo = this.riskDistributionData.altNo;
+          this.wparamData.tableData.push(h);
+        }
+        //this.wparamData.tableData = data.distRiskWparam;
+
+
         for(var i of data.wriskLimit){
-          if(appendTreatyLimitId === 0){
+          if(appendTreatyLimitId == 0){
             appendTreatyName = i.treatyName;
             appendTreatyLimitId = i.treatyLimitId;
+            counter++;
+            continue;
           }
-          else if(appendTreatyLimitId === i.treatyLimitId){
+          else if(appendTreatyLimitId == i.treatyLimitId){
             appendTreatyName = appendTreatyName.length == 0 ? i.treatyName : appendTreatyName + ' & ' + i.treatyName;
-          }else{
             i.treatyName = appendTreatyName;
-            this.limitsData.tableData.push(i);
+          }else{
             appendTreatyName = '';
             appendTreatyLimitId = i.treatyLimitId;
+            if(counter+1 === data.wriskLimit.length){
+              this.limitsData.tableData.push(i);
+              break;
+            }else{
+              counter++;
+              continue;
+            }
           }
+          this.limitsData.tableData.push(i);
+          counter++;
         }
         this.treatyTable.refreshTable();
         this.limitTable.refreshTable();
@@ -391,6 +451,75 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(){
       this.sub.unsubscribe();
+    }
+
+    onClickDelete(event){
+      this.wparam.selected = [this.wparam.indvSelect];
+      if(this.wparam.selected[0].treatyName.toUpperCase() !== 'FACULTATIVE'){
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Can only delete Facultative Treaty';
+        this.successDiag.open();
+      }else{
+        this.wparam.confirmDelete();
+      }
+    }
+
+    //PARAMETERS FOR SAVING PREPARATION
+    save(cancelFlag?){
+      this.cancelFlag = cancelFlag !== undefined;
+      this.savedData = [];
+      this.deletedData = [];
+      //setting up ceding rep updates
+      for (var i = 0 ; this.wparam.tableData.length > i; i++) {
+        if(this.wparam.tableData[i].edited && !this.wparam.tableData[i].deleted){
+            this.wparam.tableData[i].eSignature = this.wparam.tableData[i].fileName;
+            this.savedData.push(this.wparam.tableData[i]);
+            this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
+            this.savedData[this.savedData.length-1].createUser = JSON.parse(window.localStorage.currentUser).username;
+            this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
+            this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
+        }
+        else if(this.wparam.tableData[i].edited && this.wparam.tableData[i].deleted){
+            this.deletedData.push(this.wparam.tableData[i]);
+            this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
+            this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
+        }
+      }
+
+      /*
+        //PARAMS:
+        //  One Retention Line -> this.riskDistributionData.retLineAmt
+        //  Saved Data For Treaty Share and Comm Share Parameters -> this.savedData
+        //  Deleted Data For Treaty Share and Comm Share Parameters -> this.deletedData
+        //  Auto Calculation -> this.riskDistributionData.autoCalc
+
+        this.polService.saveRiskDistribution(this.riskDistributionData.retLineAmt, this.savedData, this.deletedData).subscribe((data: any)=>{
+        console.log(data);
+        if(data.returnCode === 0){
+          this.dialogIcon = 'error';
+          this.successDiag.open();
+        }else{
+          this.wparam.markAsPristine();
+          this.dialogIcon = '';
+          this.successDiag.open();
+        }
+      });
+      */
+    }
+
+    readOnlyAll(){
+      if(this.riskDistributionData.status.toUpperCase() === 'POSTED'){
+        this.wparamData.opts = [];
+        this.wparamData.uneditable = [];
+        this.wparamData.magnifyingGlass = [];
+        this.wparamData.addFlag = false;
+        this.wparamData.deleteFlag = false;
+        this.wparamData.checkFlag = false;
+        this.wparamData.uneditable=[true,true,true,true,true,]
+        for(var count = 0; count < this.wparamData.tHeader.length; count++){
+          this.wparamData.uneditable.push(true);
+        }
+      }
     }
   //END
 
