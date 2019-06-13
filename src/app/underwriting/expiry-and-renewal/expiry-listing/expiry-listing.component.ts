@@ -1087,9 +1087,9 @@ export class ExpiryListingComponent implements OnInit {
       this.ExpcoverageData.totalPrem        = this.coverageData.totalPrem;
       this.ExpcoverageData.currencyCd       = this.coverageData.currencyCd;
       this.ExpcoverageData.currencyRt       = this.coverageData.currencyRt;
-      this.ExpcoverageData.pctShare         = this.coverageData.pctShare;
+      this.ExpcoverageData.pctShare         = parseFloat(this.coverageData.pctShare.toString().split(',').join(''));
       this.ExpcoverageData.pctPml           = this.coverageData.pctPml;
-      this.ExpcoverageData.totalValue       = this.coverageData.totalValue;
+      this.ExpcoverageData.totalValue       = parseFloat(this.coverageData.totalValue.toString().split(',').join(''));
       this.ExpcoverageData.remarks          = this.coverageData.remarks;
       this.ExpcoverageData.origSeciSi       = this.coverageData.origSeciSi;
       this.ExpcoverageData.origSeciiSi      = this.coverageData.origSeciiSi;
