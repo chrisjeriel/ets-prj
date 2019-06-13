@@ -56,6 +56,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   getPolPurging(){
     this.underwritingService.getPolForPurging(null).subscribe((data:any) => {
+      console.log(data)
       this.passData.tableData = [];
       var datas = data.polForPurging;
       for(var i = 0; i < datas.length;i++){
@@ -127,17 +128,32 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   saveData(cancelFlag?){
-    console.log('pasok')
     this.prepareData();
-    console.log(this.purgeData)
-    this.underwritingService.savePolForPurging(this.purgeData).subscribe((data:any)=>{
-      if(data['returnCode'] == 0) {
-        console.log('fail')
-      } else{
-        console.log('success')
-        this.getPolPurging()
-      }
-    })
+    console.log(this.purgeData);
+    console.log(this.purgeData.deletePurge);
+    console.log(this.purgeData.deletePurge.length);
+
+    if (this.purgeData.deletePurge.length > 0) {
+      this.underwritingService.savePolForPurging(this.purgeData).subscribe((data:any)=>{
+        if(data['returnCode'] == 0) {
+          console.log('fail')
+        } else{
+          console.log('success')
+          this.getPolPurging();
+          $('#purgeMsgModal > #modalBtn').trigger('click');
+        }
+      });
+    } else {
+      
+
+      setTimeout(() => {
+          console.log('this.purgeData.deletePurge is 0');
+          $('#purgeNoSelectedMsgModal > #modalBtn').trigger('click');
+      },1000); 
+      
+    }
+
+    
 
   }
 
@@ -219,5 +235,13 @@ export class PurgeExtractedPolicyComponent implements OnInit {
    clearDates() {
     $('#fromDate').val("");
     $('#toDate').val("");
+  }
+
+  row(data){
+    console.log(data)
+  }
+
+  onClickPurge() {
+    $('#purgeModal > #modalBtn').trigger('click');
   }
 }
