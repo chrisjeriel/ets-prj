@@ -121,7 +121,6 @@ export class ProvinceComponent implements OnInit {
             windowClass : 'modal-size'
         });
         modal.componentInstance.subject = subject;
-
         subject.subscribe(a=>{
            if(a){
             $('#regionLOV #modalBtn').trigger('click');
@@ -216,9 +215,8 @@ export class ProvinceComponent implements OnInit {
    
   }
 
-
   showProvinceList(ev){
-     $('.ng-dirty').removeClass('ng-dirty');
+            $('.ng-dirty').removeClass('ng-dirty');
             $('#cust-table-container').removeClass('ng-dirty');
             this.mtnProvinceReq.saveProvince = [];
             this.mtnProvinceReq.deleteProvince = [];
@@ -264,7 +262,6 @@ export class ProvinceComponent implements OnInit {
   }
 
   checkFields(){
-
       for(let check of this.passData.tableData){
         if(check.provinceCd === null || check.provinceCd.toString().length > 6 || Number.isNaN(check.provinceCd)  || check.description === null || check.description.length === 0){    
           return false;
