@@ -1017,9 +1017,10 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveRiskDist', {params});
     }
 
-    getPoolDistribution(riskDistId){
+    getPoolDistribution(riskDistId,altNo){
         const params = new HttpParams()
             .set('riskDistId', riskDistId)
+            .set('altNo', altNo)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePoolDist', {params});
     }
 
@@ -1075,6 +1076,16 @@ export class UnderwritingService {
             .set('riskDistId', riskDistId)
             .set('policyId', policyId)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolPoolDist', {params});
+    }
+
+
+    saveDistRisk(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/saveRiskDist',JSON.stringify(params),header);
     }
 }            
 

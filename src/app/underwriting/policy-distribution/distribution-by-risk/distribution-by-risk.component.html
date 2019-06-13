@@ -164,7 +164,7 @@
       <div style="margin-top: 10px; margin-bottom: 8px;">
             <app-cust-editable-non-datatable #wparam [passData]="wparamData" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')">
               <ng-container controls-r>
-                <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc === 'Y' : riskDistributionData.autoCalc === 'N'">
+                <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc = 'Y' : riskDistributionData.autoCalc = 'N'">
                 <label class="form-control-sm">Auto Calculation</label>
               </ng-container>
             </app-cust-editable-non-datatable>
@@ -395,7 +395,7 @@
         </div>
       </app-modal>
       <button type="button" class="cust-btn"><a>Cancel</a></button>
-      <button type="button" class="cust-btn"><a>Save</a></button>
+      <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
     </div>
   </div>
 </div>
