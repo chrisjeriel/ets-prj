@@ -995,6 +995,7 @@ export class UnderwritingService {
             .set('policyId', searchParams.policyId == undefined ? '' : searchParams.policyId)
             .set('processTag', searchParams.processTag == undefined ? '' : searchParams.processTag)
             .set('renewalFlag', searchParams.renewalFlag == undefined ? '' : searchParams.renewalFlag)
+            .set('renewable', searchParams.renewable == undefined ? '' : searchParams.renewable)
             .set('extractUser', searchParams.extractUser == undefined ? '' : searchParams.extractUser);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveExpPolList', {params});
     }
@@ -1016,9 +1017,10 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveRiskDist', {params});
     }
 
-    getPoolDistribution(riskDistId){
+    getPoolDistribution(riskDistId,altNo){
         const params = new HttpParams()
             .set('riskDistId', riskDistId)
+            .set('altNo', altNo)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePoolDist', {params});
     }
 
@@ -1067,8 +1069,75 @@ export class UnderwritingService {
             })
         }
         return this.http.post(environment.prodApiUrl + '/underwriting-service/saveExpCoverage',JSON.stringify(params),header);
-        
     }
+
+
+    getPolPoolDistribution(riskDistId,policyId){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+            .set('policyId', policyId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolPoolDist', {params});
+    }
+
+    saveDistRisk(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/saveRiskDist',JSON.stringify(params),header);
+    }
+
+    distributeRisk(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/distributeRiskDist',JSON.stringify(params),header);
+    }
+
+     getPolDistList(searchParams: any []) {
+         var params;
+         if(searchParams.length < 1){
+              params = new HttpParams()
+                     .set('distId','')
+                     .set('riskDistId', '')
+                     .set('status', '')
+                     .set('policyNo','')
+                     .set('cedingName','')
+                     .set('insuredDesc','')
+                     .set('riskName','')
+                     .set('currencyCd','')
+                     .set('distDateFrom','')
+                     .set('distDateTo','')
+                     .set('acctDateFrom','')
+                     .set('acctDateTo','')
+                     // .set('paginationRequest.position',null)
+                     // .set('paginationRequest.count',null)
+                     // .set('sortRequest.sortKey',null)
+                     // .set('sortRequest.order',null);
+         }
+         else{
+              params = new HttpParams();
+             for(var i of searchParams){
+                 params = params.append(i.key, i.search);
+             }
+         }
+          return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDistList',{params});
+     }
+
+
+     saveExpCat(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/saveExpCatPeril',JSON.stringify(params),header);
+    }
+
+
 }            
 
             
