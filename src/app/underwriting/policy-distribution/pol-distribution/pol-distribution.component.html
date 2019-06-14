@@ -65,7 +65,7 @@
 					<label class="form-control-sm col-sm-1">Rate (%)</label>
 					<input type="text" placeholder="0.025000" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="round((polDistributionData?.premium / polDistributionData?.sumInsured) * 100) | number: '1.10-10'">
 					<label class="form-control-sm col-sm-1">Ceding Co</label>
-					<input readonly type="text" placeholder="FLT Prime" class="form-control form-control-sm col-sm" [ngModel]="params.cedingName">
+					<input readonly type="text" placeholder="FLT Prime" class="form-control form-control-sm col-sm" [ngModel]="polDistributionData?.cedingName">
 				</div>
 				<div class="input-group">
 					<!-- <label class="form-control-sm col-sm-1">Sum Insured</label>
