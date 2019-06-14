@@ -167,8 +167,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
         //for mask
         setTimeout(() => { 
-            if(this.passData.mask) {
-                this.markAsPristine();
+            if(this.passData.mask != undefined) {
+                // this.markAsPristine();
+                $('td input.ng-dirty').removeClass('ng-dirty');
             }
         }, 0);
     }
