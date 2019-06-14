@@ -115,7 +115,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   		this.datepickerVal = this.value == '' || this.value == null ? null : new Date(this.value);
   	} else if(this.datepickerVal != null && this.type == 'datetime' && this.ns.toDateTimeString(this.datepickerVal) != this.value){
       if(new Date(this.value).getSeconds() == 0) {
-        this.value = this.value.substring(0, 16) + ':00';
+        this.value = this.value == '' || this.value == null ? null : this.value.substring(0, 16) + ':00';
       }
       
       this.datepickerVal = this.value == '' || this.value == null ? null : new Date(this.value);
