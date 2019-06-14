@@ -26,6 +26,11 @@ export class TypeOfCessionComponent implements OnInit {
             activeTag   : 'N',
             remarks    	: null
         },
+        limit: {
+	  		cessionAbbr : 10,
+	  		description : 50,
+	  		remarks		: 100
+	  	},
         paginateFlag        : true,
         infoFlag            : true,
         searchFlag          : true,

@@ -72,26 +72,35 @@ export class ClmClaimHistoryComponent implements OnInit {
   };
 
   clmHistoryData : any ={
-    updateDate   : null,
-    updateUser   : null,
-    createDate   : null,
-    createUser   : null,
-    claimNo      : null,
-    policyNo     : null,
-    insured      : null,
-    risk         : null,
-    lossResAmt   : null,
-    lossStatCd   : null,
-    lossPdAmt    : null,
-    expResAmt    : null,
-    expStatCd    : null,
-    expPdAmt     : null,
-    totalRes     : null,
-    totalPayt    : null,
-    claimStat    : null,
-    approvedAmt  : null,
-    approvedBy   : null,
-    approvedDate : null
+    updateDate   : '',
+    updateUser   : '',
+    createDate   : '',
+    createUser   : '',
+    claimNo      : '',
+    policyNo     : '',
+    insured      : '',
+    risk         : '',
+    lossResAmt   : '',
+    lossStatCd   : '',
+    lossPdAmt    : '',
+    expResAmt    : '',
+    expStatCd    : '',
+    expPdAmt     : '',
+    totalRes     : '',
+    totalPayt    : '',
+    claimStat    : '',
+    approvedAmt  : '',
+    approvedBy   : '',
+    approvedDate : ''
+  };
+
+  dialogIcon     : string;
+  dialogMessage  : string;
+  fromCancel     : boolean;
+  cancelFlag     : boolean;
+
+  params : any =    {
+    saveClaimHistory   : []
   };
 
   constructor(private titleService: Title, private clmService: ClaimsService,private ns : NotesService, private mtnService: MaintenanceService, private modalService: NgbModal) {
@@ -129,6 +138,61 @@ export class ClmClaimHistoryComponent implements OnInit {
     });
   }
 
+  onSaveClaimHistory(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    this.dialogIcon = '';
+    this.dialogMessage = '';
+    var saveClaimHistory = this.params.saveClaimHistory;
+    var isEmpty = 0;
+
+    for(let record of this.passDataHistory.tableData){
+      console.log(record);
+      if(record.histCategory == '' || record.histType == '' || record.currencyCd == '' || record.reserveAmt == ''){
+        if(!record.deleted){
+          isEmpty = 1;
+          this.fromCancel = false;
+        }
+      }else{
+        this.fromCancel = true;
+        if(record.edited && !record.deleted){
+          record.createUser    = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
+          record.createDate    = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):record.createDate;
+          record.updateUser    = this.ns.getCurrentUser();
+          record.updateDate    = this.ns.toDateTimeString(0);
+          this.params.saveClaimHistory.push(record);
+        }
+      }
+    }
+
+    if(isEmpty == 1){
+        setTimeout(()=>{
+          $('.globalLoading').css('display','none');
+          this.dialogIcon = 'error';
+          $('app-sucess-dialog #modalBtn').trigger('click');
+          this.params.saveClaimHistory   = [];
+        },500);
+      }else{
+        if(this.params.saveClaimHistory.length == 0){
+          setTimeout(()=>{
+            $('.globalLoading').css('display','none');
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'Nothing to save.';
+            $('app-sucess-dialog #modalBtn').trigger('click');
+            this.params.saveClaimHistory   = [];
+            this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
+          },500);
+        }else{
+          this.clmService.saveClaimHistory(JSON.stringify(this.params))
+          .subscribe(data => {
+            console.log(data);
+            this.getClaimHistory();
+            $('app-sucess-dialog #modalBtn').trigger('click');
+            this.params.saveClaimHistory = [];
+          });
+        }  
+      }
+  }
+
   compResPayt(){
     const arrSum = arr => arr.reduce((a,b) => a + b, 0);
     this.clmHistoryData.lossResAmt = arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.reserveAmt;}));
@@ -153,6 +217,24 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.clmHistoryData.createDate  = '';
       this.clmHistoryData.createUser  = '';
     }
+  }
+
+  checkCancel(){
+    if(this.cancelFlag == true){
+      if(this.fromCancel){
+        this.cancelBtn.onNo();
+      }else{
+        return;
+      }
+    }
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
+  }
+
+  onClickSave(){
+    $('#confirm-save #modalBtn2').trigger('click');
   }
 
   showResStatMdl(){

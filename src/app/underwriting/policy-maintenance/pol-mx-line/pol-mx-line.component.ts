@@ -49,7 +49,13 @@ export class PolMxLineComponent implements OnInit {
 		widths				: ['auto','350',1,1,1,1,1,1,'auto','auto','auto'],
 		pageID				: 'line-mtn-line',
 		mask: {
-	  		lineCd: 'AAAAAAA'
+	  		lineCd		: 'AAAAAAA',
+	  	},
+	  	limit: {
+	  		description : 100,
+	  		referenceNo : 4,
+	  		sortSeq		: 3,
+	  		remarks		: 100
 	  	},
 		keys				: ['lineCd','description','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks'],
 	};
@@ -181,8 +187,7 @@ export class PolMxLineComponent implements OnInit {
 			console.log(data);
 			this.passData.tableData = [];
 			this.arrLineCd = [];
-			var rec = data['line'].map(i => { i.createDate = this.ns.toDateTimeString(i.createDate); i.updateDate = this.ns.toDateTimeString(i.updateDate); return i} );
-			console.log(rec);
+			var rec = data['line'].map(i => { i.createDate = this.ns.toDateTimeString(i.createDate); i.updateDate = this.ns.toDateTimeString(i.updateDate);return i;});
 			this.passData.tableData = rec;
 			for(let i of rec){
 				this.arrLineCd.push(i.lineCd);

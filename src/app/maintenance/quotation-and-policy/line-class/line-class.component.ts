@@ -35,6 +35,11 @@ export class LineClassComponent implements OnInit {
       updateUser        : null,
       updateDate        : this.ns.toDateTimeString(0)
     },
+    limit: {
+      lineClassCd : 7,
+      lineCdDesc  : 200,
+      remarks     : 100
+    },
     addFlag				      : true,
     paginateFlag		    : true,
     infoFlag			      : true,

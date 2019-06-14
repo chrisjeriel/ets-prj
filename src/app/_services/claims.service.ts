@@ -25,25 +25,20 @@ export class ClaimsService {
 		return this.claimPaymentRequestData;
 	}
 
-	// getClaimsHistoryInfo() {
-	// 	this.claimsHistoryInfo = [
-	// 		// new ClaimsHistoryInfo("1","Loss","Initial Reserve","Php",10000000,"Initial OS Reserve",34800,new Date()),
-	// 		new ClaimsHistoryInfo("1", "Loss", "Initial Reserve",false, "PHP", 500000, 0, "JV-000996", new Date("2018-11-14"), ""),
-	// 		new ClaimsHistoryInfo("2", "Loss", "Increase Reserve",false, "PHP", 300000, 0, "JV-000999", new Date("2018-11-14"), "Ceding Company Info"),
-	// 		new ClaimsHistoryInfo("3", "Loss", "Decrease Reserve",false, "PHP", -100000, 0, "JV-001000", new Date("2018-11-20"), "Email: Reserve Adjustment"),
-	// 		new ClaimsHistoryInfo("4", "Loss", "Partial Payment",false, "PHP", -351000, 350842.89, "CV-000101", new Date("2018-11-24"), ""),
-	// 		new ClaimsHistoryInfo("5", "Loss", "Full Payment",false, "PHP", 0, 384532.75, "CV-000102", new Date("2018-11-24"), "Final Payment"),
-	// 	];
-	// 	return this.claimsHistoryInfo;
-	// }
-
     getClaimHistory(claimId?,projId?,histNo?){
 		const params = new HttpParams()
 			.set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
 			.set('projId', (projId == null || projId == undefined ? '' : projId))
 			.set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
-
 		return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimHistory',{params});	
 	}
 
+	saveClaimHistory(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimHistory',params,header);
+	}
 }
