@@ -94,8 +94,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	rowRecOpt		: any;
 	fieldIconDsbl	: boolean = true;
 	holdCoverNo		: string = '';
-	periodFromArr	: any[] = Array(2).fill('');
-	periodToArr		: any[] = Array(2).fill('');
+	periodFromDate	: string = '';
+	periodFromTime	: string = '';
+	periodToDate	: string = '';
+	periodToTime	: string = '';
 	dialogMessage	: string = '';
 	dialogIcon		: string = '';
 	cancelFlag		: boolean;
@@ -110,6 +112,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	report			: string = '';
 	isModifClicked	: boolean = false;
 	passEvent		: any;
+	tempHcNo		: string = '';
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 				private ns : NotesService, private router: Router, private userService : UserService) { 
@@ -156,6 +159,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				var selectedRow = hcList.filter(i => i.quotationNo == quoList[0].quotationNo);
 				if(selectedRow.length != 0 && selectedRow[0].holdCover.status.toUpperCase() != 'REPLACED VIA HOLD COVER MODIFICATION'){
 					this.holdCoverNo 		 		 = selectedRow[0].holdCover.holdCoverNo;
+					this.tempHcNo					 = selectedRow[0].holdCover.holdCoverNo;
 					this.holdCover.approvedBy		 = selectedRow[0].holdCover.approvedBy;
 			  		this.holdCover.compRefHoldCovNo  = selectedRow[0].holdCover.compRefHoldCovNo;
 			  		this.holdCover.createDate		 = this.ns.toDateTimeString(selectedRow[0].holdCover.createDate);
@@ -166,8 +170,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			  		this.holdCover.holdCoverYear	 = selectedRow[0].holdCover.holdCoverYear;
 			  		this.holdCover.lineCd			 = selectedRow[0].holdCover.lineCd;
 			  		this.holdCover.optionId		 	 = selectedRow[0].holdCover.optionId;
-			  		this.periodFromArr		 		 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodFrom).split('T');
-			  		this.periodToArr		 	 	 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodTo).split('T');
+			  		this.periodFromDate				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodFrom).split('T')[0];
+			  		this.periodFromTime				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodFrom).split('T')[1];
+			  		this.periodToDate				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodTo).split('T')[0];
+			  		this.periodToTime				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodTo).split('T')[1];
 			  		this.holdCover.preparedBy		 = selectedRow[0].holdCover.preparedBy;
 			  		this.holdCover.reqBy			 = selectedRow[0].holdCover.reqBy;
 			  		this.holdCover.reqDate			 = (selectedRow[0].holdCover.reqDate == null)?'':this.ns.toDateTimeString(selectedRow[0].holdCover.reqDate).split('T')[0];
@@ -206,29 +212,32 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.dialogIcon = '';
 		this.dialogMessage = '';
 		this.cancelFlag = cancelFlag !== undefined;
-		this.periodFromArr[0]	= (this.periodFromArr[0] == '' || this.periodFromArr[0] == null || this.periodFromArr[0] == undefined)? '' : this.periodFromArr[0];
-		this.periodFromArr[1]	= (this.periodFromArr[1] == '' || this.periodFromArr[1] == null || this.periodFromArr[1] == undefined)? '' : this.periodFromArr[1];
-		this.periodToArr[0]	 	= (this.periodToArr[0] == '' || this.periodToArr[0] == null || this.periodToArr[0] == undefined)? '' : this.periodToArr[0];
-		this.periodToArr[1]	 	= (this.periodToArr[1] == '' || this.periodToArr[1] == null || this.periodToArr[1] == undefined)? '' : this.periodToArr[1];
+		this.periodFromDate	= (this.periodFromDate == '' || this.periodFromDate == null || this.periodFromDate == undefined)? '' : this.periodFromDate;
+		this.periodFromTime	= (this.periodFromTime == '' || this.periodFromTime == null || this.periodFromTime == undefined)? '' : this.periodFromTime;
+		this.periodToDate	 	= (this.periodToDate == '' || this.periodToDate == null || this.periodToDate == undefined)? '' : this.periodToDate;
+		this.periodToTime	 	= (this.periodToTime == '' || this.periodToTime == null || this.periodToTime == undefined)? '' : this.periodToTime;
+
+		var periodFromArr = [this.periodFromDate,this.periodFromTime];
+		var periodToArr	  = [this.periodToDate,this.periodToTime];
 
 		if(this.quoteInfo.quotationNo.some(i => i == '') == true || this.holdCover.optionId == '' ||
-			this.periodFromArr.some(pf => pf == '') == true ||  this.periodFromArr.length == 0 ||
-			this.periodToArr.some(pt => pt == '') == true ||  this.periodToArr.length == 0){
+			periodFromArr.some(pf => pf == '') == true ||  periodFromArr.length == 0 ||
+			periodToArr.some(pt => pt == '') == true ||  periodToArr.length == 0){
 			setTimeout(()=>{
 				this.dialogIcon = 'error';
 				$('.globalLoading').css('display','none');
 				$('app-sucess-dialog #modalBtn').trigger('click');
 				$('.warn').focus();
 				$('.warn').blur();
-				this.periodFromArr[0] == '' ? $('.pf0').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
-				this.periodFromArr[1] == '' ? $('.pf1').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
-				this.periodToArr[0] == '' ? $('.pt0').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
-				this.periodToArr[1] == '' ? $('.pt1').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
+				this.periodFromDate == '' ? $('.pf0').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
+				this.periodFromTime == '' ? $('.pf1').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
+				this.periodToDate == '' ? $('.pt0').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
+				this.periodToTime == '' ? $('.pt1').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
 			},500);
 		}else{
 			this.holdCover.holdCoverYear	= (this.holdCover.holdCoverYear == '')?String(new Date().getFullYear()):this.holdCover.holdCoverYear;
-	  		this.holdCover.periodFrom		= this.periodFromArr.join('T');
-	  		this.holdCover.periodTo			= this.periodToArr.join('T');
+	  		this.holdCover.periodFrom		= periodFromArr.join('T');
+	  		this.holdCover.periodTo			= periodToArr.join('T');
 	  		this.holdCover.createDate		= (this.holdCover.createDate == '')?this.ns.toDateTimeString(0):this.holdCover.createDate;
 			this.holdCover.createUser		= (this.holdCover.createUser == '')?this.ns.getCurrentUser():this.holdCover.createUser;
 			this.holdCover.preparedBy		= (this.holdCover.preparedBy == '')?'':this.holdCover.createUser;
@@ -270,7 +279,6 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	  		});
 	  		this.getQuoteList([{ key: 'quotationNo', search: quoNo }]);
 	  		this.modalService.dismissAll();
-	  		this.addDirty();
   		}
   	}
 
@@ -303,11 +311,17 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			this.dialogIcon = 'success-message';
   			this.dialogMessage = 'Cancelled Successfully';
   			$('app-sucess-dialog #modalBtn').trigger('click');
-  			this.clearHc();
-  			this.newHc(false);
-  			this.disableApproval = true;
+  			// this.clearHc();
+  			// this.newHc(false);
+  			// this.disableApproval = true;
+  			this.newHc(true);
+	  		this.disableSave = true;
+	  		this.disableApproval = true;
+	  		this.holdCoverNo = this.tempHcNo;
+	  		this.holdCover.status = 'Cancelled';
+	  		this.disableCancelHc = true;
   		});
-  		this.modalService.dismissAll();
+  		//this.modalService.dismissAll();
   	}
 
   	onClickView(){
@@ -318,7 +332,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	}
 
   	validateUser(){
-  		this.loading = true;
+  		//(this.aprrovalBtnTxt == '')?this.loading = true:'';
   		const subRes =  forkJoin(this.userService.retMtnUsers(this.ns.getCurrentUser()),this.userService.retMtnUserAmtLmt('',''))
   								.pipe(map(([usr, usrAmtLmt]) => { return { usr, usrAmtLmt };}));
 	  	subRes.subscribe(data => {
@@ -326,7 +340,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	  		var usrGrp 		  = data['usr']['usersList'][0].userGrp;
 	  		var curRow		  = data['usrAmtLmt']['userAmtLmtList'].filter(a => a.userGrp == usrGrp && a.lineCd.toUpperCase() == this.holdCover.lineCd.toUpperCase());
 	  		var rec			  = curRow[0];
-	  		this.loading      = false;
+	  		//this.loading      = false;
 			this.destination  = 'SCREEN';
 			this.report		  = 'Hold Cover Letter';
   			if(rec.allAmtSw == 'Y' || this.quoteInfo.totalSi <= rec.amtLimit){
@@ -393,7 +407,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	  		console.log(data);
   			$('app-sucess-dialog #modalBtn').trigger('click');
   			this.loading = false;
-  			(this.holdCover.status.toUpperCase() == 'RELEASED')?this.showModifLov():'';
+  			(this.holdCover.status.toUpperCase() == 'RELEASED')?this.onClickView():'';
 	  	});
   	}
 
@@ -457,6 +471,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.isModifClicked   = true;
   		this.disableSave	  = false;
   		this.disableApproval  = true;
+  		this.disableCancelHc  = true;
   		this.modalService.dismissAll();
   	}
 
@@ -465,6 +480,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.newHc(true);
   		this.disableSave = true;
   		this.disableApproval = true;
+  		this.quoteInfo.quotationNo = [];
   		this.modalService.dismissAll();
   		this.getQuoteList();
   	}
@@ -551,8 +567,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		this.holdCover.reqBy			 = '';
 		this.holdCover.reqDate			 = '';
 		this.holdCover.status			 = '';
-		this.periodFromArr				 = [];
-		this.periodToArr				 = [];
+		this.periodFromDate				 = '';
+		this.periodFromTime				 = ''; 
+		this.periodToDate				 = '';
+		this.periodToTime				 = '';
 		this.disableCancelHc 			 = true;
 		this.disableApproval			 = true;
 		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
@@ -567,9 +585,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	}
 
 	setPeriodTo(){
-		var d = new Date(this.periodFromArr[0]);
+		var d = new Date(this.periodFromDate);
 		var s = d.setDate(d.getDate()+30);
-		this.periodToArr[0] = (isNaN(s) == true)?'':this.ns.toDateTimeString(s).split('T')[0];
+		this.periodToDate = (isNaN(s) == true)?'':this.ns.toDateTimeString(s).split('T')[0];
 		this.addDirty();
 		$('#periodTo').find('input').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 	}

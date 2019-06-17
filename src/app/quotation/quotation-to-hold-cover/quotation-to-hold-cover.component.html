@@ -73,10 +73,10 @@
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Period From</label>
 													<div class="warn pf0 col-sm r-only dp-cont"  style="margin-left: 0px !important">
-							                            <datepicker id="perFrom" [type]="'date'" [value]="periodFromArr[0]" (valueChange)="periodFromArr[0]=$event; setPeriodTo()" [required]="true" [disabled]="fieldIconDsbl"></datepicker>
+							                            <datepicker id="perFrom" [type]="'date'" [value]="periodFromDate" (valueChange)="periodFromDate=$event; setPeriodTo()" [required]="true" [disabled]="fieldIconDsbl"></datepicker>
 							                        </div>
 							                        <div class="warn pf1 col-sm-3 r-only dp-cont">
-							                            <datepicker [type]="'time'" [value]="periodFromArr[1]" (valueChange)="periodFromArr[1]=$event;addDirty();" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
+							                            <datepicker [type]="'time'" [value]="periodFromTime" (valueChange)="periodFromTime=$event;addDirty();" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
 							                        </div>
 												</div>
 											</div>
@@ -92,10 +92,10 @@
 												<div class="input-group" style="margin-bottom: -0px !important;">
 													<label class="form-control-sm col-sm-4">Period To</label>
 													<div id="periodTo" class="warn pt0 col-sm r-only dp-cont" style="margin-left: 0px !important">
-							                            <datepicker [type]="'date'" [value]="periodToArr[0]" (valueChange)="periodToArr[0]=$event;addDirty();" [disabled]="fieldIconDsbl"  [minDate]="periodFromArr[0]" [required]="true"></datepicker>
+							                            <datepicker [type]="'date'" [value]="periodToDate" (valueChange)="periodToDate=$event;addDirty();" [disabled]="fieldIconDsbl"  [minDate]="periodFromDate" [required]="true"></datepicker>
 							                        </div>
 							                        <div class="warn pt1 col-sm-3 r-only dp-cont">
-							                            <datepicker [type]="'time'" [value]="periodToArr[1]" (valueChange)="periodToArr[1]=$event;addDirty();" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
+							                            <datepicker [type]="'time'" [value]="periodToTime" (valueChange)="periodToTime=$event;addDirty();" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
 							                        </div>
 												</div>
 											</div>
@@ -134,7 +134,7 @@
 							<div class="cust-btn-container" style="margin-top: 10px !important;">
 								<button type="button" class="cust-btn" [disabled]="disableCancelHc" (click)="showCancelHcMdl()">Cancel Hold Cover</button>
 								<button type="button" class="cust-btn" [disabled]="disableApproval" (click)="showApprovalMdl()">Approval</button>
-								<button type="button" class="cust-btn" [disabled]="disableSave" (click)="addDirty();onClickSave();">Save</button>
+								<button type="button" class="cust-btn" [disabled]="disableSave" (click)="onClickSave();">Save</button>
 							</div>
 						</div>
 					</div>
@@ -203,16 +203,23 @@
 
 <app-modal class="d-none" id="approvalMdl" #approvalMdl>
     <div header>Approval</div>
-    <div body class="container-flex" style="min-width: 700px !important">
+    <div body class="container-flex" style="min-width: 335px !important">
     	<div class="row">
- 	    	<div class="col-sm-6">
+ 	    	<div class="col-sm-12">
  	    		<fieldset class="scheduler-border" style="padding-bottom: 21px !important;padding-top: 15px !important;">
  	    			<div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important; margin-bottom: -14px !important;" >
- 	    				<label class="form-control-sm">Status</label>
+ 	    				<label class="form-control-sm col-sm-4">Status</label>
 						<input type="text" class="form-control form-control-sm" tabindex="-1" [(ngModel)]="holdCover.status" readonly>
-						<div class="col-sm-1"></div>
  	    			</div>
- 	    			<div class="input-group" style="padding-right: 10px!important;padding-left: 10px !important;">
+ 	    			<div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important;margin-bottom: -14px !important;">
+ 	    				<label class="form-control-sm col-sm-4">Destination</label>
+						<select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="destination" appRequired>
+							<option value="SCREEN">SCREEN</option>
+							<option value="PDF">PDF</option>
+							<option value="PRINTER">PRINTER</option>
+						</select>
+ 	    			</div>
+ 	    			<div class="input-group" style="padding-right: 10px!important;padding-left: 10px !important;margin-top: 10px !important;">
 						<div class="cust-btn-container col-sm" style="padding-right: 0px !important">
 							<button type="button" class="cust-btn col-sm" (click)="(aprrovalBtnTxt.toUpperCase() == 'APPROVED')?updateHcStatus('APPROVED'):updateHcStatus('FOR APPROVAL');" [disabled]="holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED'">{{ aprrovalBtnTxt }}</button>
 						</div>		
@@ -222,25 +229,18 @@
  	    			</div>
  	    		</fieldset>
  	    	</div>
- 	    	<div class="col-sm-6">
+ 	    	<!-- <div class="col-sm-6">
  	    		<fieldset class="scheduler-border" style="padding-bottom: 15px !important;padding-top: 15px !important;">
  	    			<div class="input-group" style="margin-bottom: -14px !important;">
- 	    				<label class="form-control-sm col-sm-3">Report</label>
- 	    				<input type="text" class="form-control form-control-sm" [(ngModel)]="report" readonly>
-						<!-- <select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="report">
-							<option value="HOLD COVER LETTER">Hold Cover Letter</option>
-						</select> -->
- 	    			</div>
- 	    			<div class="input-group" style="margin-bottom: -14px !important;">
  	    				<label class="form-control-sm col-sm-3">Destination</label>
-						<select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="destination">
+						<select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="destination" appRequired>
 							<option value="SCREEN">SCREEN</option>
 							<option value="PDF">PDF</option>
 							<option value="PRINTER">PRINTER</option>
 						</select>
  	    			</div>
  	    		</fieldset>
- 	    	</div>
+ 	    	</div> -->
     	</div>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
