@@ -198,7 +198,9 @@ export class ListOfQuotationsComponent implements OnInit {
                                                 issueDate: new Date(rec.issueDate),
                                                 expiryDate: new Date(rec.expiryDate),
                                                 reqBy: rec.reqBy,
-                                                createUser: rec.createUser
+                                                createUser: rec.createUser,
+                                                preparedBy: rec.preparedBy,
+                                                approvedBy: rec.approvedBy
                                             });
             }
 

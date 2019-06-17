@@ -159,7 +159,6 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
             }else{
                 this.noDataFound = false;
                 for(var i of data.quotationList){
-                    console.log(i);
                     this.quoteListingLOV.tableData.push({
                         quotationNo: i.quotationNo,
                         cessionId: i.cessionId,
