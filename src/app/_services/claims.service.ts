@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { environment } from '@environments/environment';
 import { ClaimPaymentRequests, ClaimsHistoryInfo, QSOA } from '@app/_models';
 
 @Injectable({
@@ -35,5 +36,33 @@ export class ClaimsService {
 		];
 		return this.claimsHistoryInfo;
 	}
+
+	getClaimsListing(searchParams: any []) {
+         var params;
+         if(searchParams.length < 1){
+              params = new HttpParams()
+                     .set('claimNo','')
+                     .set('cedingName', '')
+                     .set('clmStatus', '')
+                     .set('policyNo','')
+                     .set('insuredDesc','')
+                     .set('riskName','')
+                     .set('lossDateFrom','')
+                     .set('lossDateTo','')
+                     .set('currencyCd','')
+                     .set('processedBy','')
+                     // .set('paginationRequest.position',null)
+                     // .set('paginationRequest.count',null)
+                     // .set('sortRequest.sortKey',null)
+                     // .set('sortRequest.order',null);
+         }
+         else{
+              params = new HttpParams();
+             for(var i of searchParams){
+                 params = params.append(i.key, i.search);
+             }
+         }
+          return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimListing',{params});
+     }
 
 }
