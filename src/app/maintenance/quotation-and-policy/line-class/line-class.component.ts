@@ -15,58 +15,57 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class LineClassComponent implements OnInit {
 
-  @ViewChild('lineClassTable') table: CustEditableNonDatatableComponent;
-  @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
-  @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
-  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+  @ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
+  @ViewChild(MtnLineComponent) lineLov                : MtnLineComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn         : CancelButtonComponent;
 
   passData: any = {
     tableData:[],
     tHeader				      : ["Line Class Code", "Description", "Active","Remarks"],
-    dataTypes			      : ["text", "text", "checkbox", "text"],
-    genericBtn          : 'Delete',
+    dataTypes			      : ["pk-cap", "text", "checkbox", "text"],
     nData: {
-      lineClassCd       : null,
-      lineCdDesc        : null,
-      activeTag         : null,
-      remarks           : '',
-      createUser        : null,
-      createDate        : this.ns.toDateTimeString(0),
-      updateUser        : null,
-      updateDate        : this.ns.toDateTimeString(0)
+      newRec           : 1,
+      lineClassCd      : null,
+      description      : null,
+      activeTag        : 'Y',
+      remarks          : '',
+      isNew            : true
     },
     limit: {
       lineClassCd : 7,
       lineCdDesc  : 200,
       remarks     : 100
     },
+    mask: {
+      lineClassCd: 'AAAAAAA'
+    },
     addFlag				      : true,
     paginateFlag		    : true,
     infoFlag			      : true,
     pageLength			    : 10,
     resizable			      : [true, true, true, false],
-    pageID				      : 'line-mtn-line',
-    keys				        : ['lineClassCd', 'lineCdDesc', 'activeTag', 'remarks'],
+    pageID				      : 'mtn-line-class',
+    keys				        : ['lineClassCd', 'description', 'activeTag', 'remarks'],
     uneditable          : [false, false, false, false],
     widths              : [1, 'auto', 'auto', 'auto'],
+    genericBtn          : 'Delete',
     disableGeneric      : true,
-    disableAdd          : true
+    disableAdd          : true,
+    searchFlag          : true
   };
 
   cancelFlag				    : boolean = false;
-  loading					      : boolean;
-	dialogIcon				    : string;
-	dialogMessage			    : string;
-	@Input() inquiryFlag	: boolean = false;
-	successMessage			  : string	= environment.successMessage;
-	arrLineCd     			  : any = [];
-	counter					      : number;
-  mtnLineReq 				    : any;
-
+  dialogIcon				    : string;
+  dialogMessage			    : string;
   line                  : string;
   description           : string;
-  warningMsg            : any;
-  searchParams          : any[] = [];
+  warnMsg               : any;
+  fromCancel            : boolean;
+
+  params : any =    {
+    saveLineClass    : [],
+    deleteLineClass  : []
+  };
 
   lineClassData: any = {
     updateDate:  null,
@@ -75,138 +74,142 @@ export class LineClassComponent implements OnInit {
     createUser:  null,
   };
 
-  constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,
-              private modalService: NgbModal) { }
+  constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal) { }
 
   ngOnInit() {
     this.titleService.setTitle('Mtn | Line Class');
-
-    if(this.inquiryFlag) {
-      this.passData.tHeader.pop();
-      this.passData.opts = [];
-      this.passData.uneditable = [];
-      this.passData.magnifyingGlass = [];
-      this.passData.addFlag = false;
-      this.passData.deleteFlag = false;
-      for (var count = 0; count < this.passData.tHeader.length; count++){
-        this.passData.uneditable.push(true);
-      }
-    }
   }
 
-  retrieveLineClass() {
-    if(this.line === '' || this.line == null) {
+  getMtnLineClass(){
+    this.table.overlayLoader = true;
+    if(this.line === '' || this.line === null){
       this.clearTbl();
-    } else {
-      this.mtnService.getLineClassLOV(this.line).subscribe(data => {
-        if (data['lineClass'] != null) {
-          this.passData.tableData = data['lineClass'].filter(a => {
-            a.createDate = this.ns.toDateTimeString(a.createDate);
-            a.updateDate = this.ns.toDateTimeString(a.updateDate);
-            a.uneditable = ['lineClassCd'];
-            return true;
-          });
-
-          this.passData.tableData.sort((a,b) => (a.createDate > b.createDate)? -1 : 1);
-          this.passData.disableAdd = false;
-          this.table.refreshTable();
-        }
+    }else{
+      this.mtnService.getLineClassLOV(this.line.toUpperCase())
+      .subscribe(data => {
+        console.log(data);
+        this.passData.tableData  = [];
+        var rec = data['lineClass'].map(a => { a.createDate = this.ns.toDateTimeString(a.createDate); a.updateDate = this.ns.toDateTimeString(a.updateDate); return a;});
+        this.passData.tableData  = rec;
+        this.table.refreshTable();
+        this.table.onRowClick(null, this.passData.tableData[0]);
+        this.passData.disableAdd = false;
       });
     }
   }
 
-  checkLineClassCd() {
-    var lineCds = this.passData.tableData.map(a => a.lineClassCd);
-
-    var duplicates = lineCds.reduce((acc, el, i, arr) => {
-      if (arr.indexOf(el) !== i && acc.indexOf(el) < 0) {
-        acc.push(el);
-      }
-      return acc;
-    }, []);
-
-    return duplicates.length > 0? false : true;
-  }
-
-  onClickSaveLineClass(cancelFlag?) {
+  onSaveMtnLineClass(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
-    let savedData: any = {};
-    savedData.saveLineClass = [];
-    savedData.deleteLineClass = [];
-
-    for (let rec of this.passData.tableData) {
-      if (rec.edited && !rec.deleted) {
-        rec.lineCd = this.line;
-        rec.activeTag = rec.activeTag ===  '' ? 'N' : rec.activeTag;
-        rec.createUser = JSON.parse(window.localStorage.currentUser).username;
-        rec.createDate = this.ns.toDateTimeString(rec.createDate);
-        rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
-        rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
-        savedData.saveLineClass.push(rec);
-      } else if (rec.deleted) {
-        rec.lineCd = this.line;
-        rec.createUser = JSON.parse(window.localStorage.currentUser).username;
-        rec.createDate = this.ns.toDateTimeString(rec.createDate);
-        rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
-        rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
-        savedData.deleteLineClass.push(rec);
-      }
-    }
-
-    if (this.validate(savedData.saveLineClass)) {
-      if (this.checkLineClassCd()) {
-        this.mtnService.saveMtnLineClass(JSON.stringify(savedData)).subscribe((data: any) => {
-          if (data['returnCode'] === 0) {
-            this.dialogMessage = data['errorList'][0].errorMessage;
-            this.dialogIcon = "error";
-            $('#lineClassSuccess > #successModalBtn').trigger('click');
-          } else {
-            this.dialogIcon = "success";
-            $('#lineClassSuccess > #successModalBtn').trigger('click');
-            this.table.markAsPristine();
-            this.retrieveLineClass();
-          }
-        });
-      } else {
-        this.warningMsg = 0;
-        this.showWarningMdl();
-
-        setTimeout(() => {$('.globalLoading').css('display','none');},0);
-      }
-    } else {
-      this.dialogMessage = 'Please check field values';
-      this.dialogIcon = 'error';
-      $('#lineClassSuccess > #successModalBtn').trigger('click');
-
-      setTimeout(() => {$('.globalLoading').css('display', 'none');}, 0);
-    }
-  }
-
-  validate(obj) {
-    var req = ['lineClassCd', 'lineCdDesc'];
-
-    for (let rec of obj) {
-      var entries = Object.entries(rec);
-
-      for (var[key, val] of entries) {
-        if ((val == '' || val == null) && req.includes(key)) {
-          return false;
+    this.dialogIcon = '';
+    this.dialogMessage = '';
+    var isNotUnique : boolean ;
+    var saveLc = this.params.saveLineClass;
+    var isEmpty = 0;
+    for(let record of this.passData.tableData){
+      record.lineCd  = this.line;
+      if(record.lineClassCd == null || record.description == null){
+        if(!record.deleted){
+          isEmpty = 1;
+          this.fromCancel = false;
+        }
+      }else{
+        this.fromCancel = true;
+        if(record.edited && !record.deleted){
+          record.createUser = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
+          record.createDate = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
+          record.updateUser = this.ns.getCurrentUser();
+          record.updateDate = this.ns.toDateTimeString(0);
+          this.params.saveLineClass.push(record);
+        }else if(record.edited && record.deleted){
+          this.params.deleteLineClass.push(record);
         }
       }
+
     }
-    return true;
+
+    this.passData.tableData.forEach(function(tblData){
+      if(tblData.isNew != true){
+        saveLc.forEach(function(sLcData){
+          if(tblData.lineClassCd.toString().toUpperCase() == sLcData.lineClassCd.toString().toUpperCase()){
+            if(sLcData.isNew === true){
+              isNotUnique = true;    
+            }
+          }
+        });
+      }
+    });
+
+    if(isNotUnique == true){
+      setTimeout(()=>{
+        $('.globalLoading').css('display','none');
+        this.warnMsg = 'Unable to save the record. Line Class Code must be unique per Line.';
+        this.showWarnLov();
+        this.params.saveLineClass  = [];
+      },500);
+    }else{
+      if(isEmpty == 1){
+        setTimeout(()=>{
+          $('.globalLoading').css('display','none');
+          this.dialogIcon = 'error';
+          $('app-sucess-dialog #modalBtn').trigger('click');
+          this.params.saveLineClass     = [];
+        },500);
+      }else{
+        if(this.params.saveLineClass.length == 0 && this.params.deleteLineClass.length == 0){
+          setTimeout(()=>{
+            $('.globalLoading').css('display','none');
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'Nothing to save.';
+            $('app-sucess-dialog #modalBtn').trigger('click');
+            this.params.saveLineClass     = [];
+            this.passData.tableData = this.passData.tableData.filter(a => a.lineClassCd != '');
+          },500);
+        }else{
+          this.mtnService.saveMtnLineClass(JSON.stringify(this.params))
+          .subscribe(data => {
+            console.log(data);
+            this.getMtnLineClass();
+            $('app-sucess-dialog #modalBtn').trigger('click');
+            this.params.saveLineClass     = [];
+            this.passData.disableGeneric = true;
+          });
+        }    
+      }
+    }
   }
 
-  showWarningMdl() {
-    $("#altWarningModal > #modalBtn").trigger('click');
+  onDeleteLineClass(){
+    if(this.table.indvSelect.okDelete == 'N'){
+      this.warnMsg = 'You are not allowed to delete a Line Class that is already used in quotation processing.';
+      this.showWarnLov();
+    }else{
+      this.table.indvSelect.deleted = true;
+      this.table.selected  = [this.table.indvSelect]
+      this.table.confirmDelete();
+    }
   }
 
-  onClickCancel() {
-    this.cancel.clickCancel();
+  clearTbl(){
+    this.passData.disableGeneric = true;
+    this.passData.disableAdd     = true;
+    this.passData.tableData      = [];
+    this.table.refreshTable();
+  }
+
+  showWarnLov(){
+    $('#warnMdl > #modalBtn').trigger('click');
   }
 
   showLineLOV(){
     $('#lineLOV #modalBtn').trigger('click');
+  }
+
+  setLine(data){
+    this.line = data.lineCd;
+    this.description = data.description;
+    this.ns.lovLoader(data.ev, 0);
+    this.getMtnLineClass();
+    setTimeout(() => {try{$(data.ev.target).removeClass('ng-dirty');}catch(e){}}, 0);
   }
 
   checkCode(ev){
@@ -214,52 +217,38 @@ export class LineClassComponent implements OnInit {
     this.lineLov.checkCode(this.line.toUpperCase(), ev);
   }
 
-  clickRow(ev) {
-    if (ev != null) {
-      this.lineClassData.createUser = ev.createUser;
-      this.lineClassData.createDate = ev.createDate;
-      this.lineClassData.updateUser = ev.updateUser;
-      this.lineClassData.updateDate = ev.updateDate;
-
-      this.passData.disableGeneric = false;
-      this.enableFields();
+  onClickRow(event){
+    if(event !== null){
+      this.lineClassData.createUser = event.createUser;
+      this.lineClassData.createDate = event.createDate;
+      this.lineClassData.updateDate = event.updateDate;
+      this.lineClassData.updateUser = event.updateUser;
+      this.passData.disableGeneric    = false;
+      this.table.refreshTable();
+    }else{
+      this.lineClassData.createUser = '';
+      this.lineClassData.createDate = '';
+      this.lineClassData.updateDate = '';
+      this.lineClassData.updateUser = '';
+      this.passData.disableGeneric    = true;
     }
   }
 
-  enableFields() {
-    this.passData.tableData.forEach(a => {
-      if (a.add) {
-        a.activeTag = 'Y';
-        a.uneditable = [];
-      }
-    });
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 
-  setLine(data) {
-    this.line = data.lineCd;
-    this.description = data.description;
-    this.ns.lovLoader(data.ev, 0);
-    this.lineClassData = {};
-    this.retrieveLineClass();
-  }
-
-  onClickSave() {
+  onClickSave(){
     $('#confirm-save #modalBtn2').trigger('click');
   }
 
-  clearTbl() {
-    this.passData.tableData = [];
-    this.table.refreshTable();
-  }
-
-  deleteLineClass() {
-    if ('Y' === this.table.indvSelect.okDelete) {
-      this.table.indvSelect.deleted = true;
-      this.table.selected = [this.table.indvSelect];
-      this.table.confirmDelete();
-    } else {
-      this.warningMsg = 1;
-      this.showWarningMdl();
+  checkCancel(){
+    if(this.cancelFlag == true){
+      if(this.fromCancel){
+        this.cancelBtn.onNo();
+      }else{
+        return;
+      }
     }
   }
 

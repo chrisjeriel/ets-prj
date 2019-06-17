@@ -137,7 +137,7 @@ export class DeductibleComponent implements OnInit {
                 this.table.refreshTable();
                 this.table.onRowClick(null, this.passData.tableData[0]);
                 this.passData.disableAdd = false;
-                 this.dedType();
+                this.dedType();
             });
         }
     }
@@ -241,9 +241,9 @@ export class DeductibleComponent implements OnInit {
           }
     }
 
-    cbFunc(chxbox:boolean){
-        return (chxbox === null  || chxbox === false )? 'N' : 'Y';
-    }
+    // cbFunc(chxbox:boolean){
+    //     return (chxbox === null  || chxbox === false )? 'N' : 'Y';
+    // }
 
     showWarnLov(){
         $('#warnMdl > #modalBtn').trigger('click');

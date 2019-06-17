@@ -125,13 +125,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		var parameter;
 		if(param !== undefined){
 			parameter = param;
-			console.log('not undefined');		
 		}else{
 			parameter = this.searchParams;
-			console.log('undefined');
 		}
 
-		console.log(parameter);
   		const subRes =  forkJoin(this.quotationService.getQuoProcessingData(parameter),this.quotationService.getQuotationHoldCoverList([]))
   								.pipe(map(([quo, hc]) => { return { quo, hc };}));
 
@@ -199,7 +196,6 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				if(quoList.length == 0){
 					this.showQuoteLov();
 					this.getQuoteList();
-					console.log('abc');
 				}
 			}
   		});

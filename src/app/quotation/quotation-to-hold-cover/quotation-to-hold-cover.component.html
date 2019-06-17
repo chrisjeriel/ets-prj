@@ -214,7 +214,7 @@
  	    			</div>
  	    			<div class="input-group" style="padding-right: 10px!important;padding-left: 10px !important;">
 						<div class="cust-btn-container col-sm" style="padding-right: 0px !important">
-							<button type="button" class="cust-btn col-sm" (click)="(aprrovalBtnTxt.toUpperCase() == 'APPROVED')?updateHcStatus('APPROVED'):updateHcStatus('FOR APPROVAL');" [disabled]="holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED' || holdCover.status.toUpperCase() == 'REJECTED'">{{ aprrovalBtnTxt }}</button>
+							<button type="button" class="cust-btn col-sm" (click)="(aprrovalBtnTxt.toUpperCase() == 'APPROVED')?updateHcStatus('APPROVED'):updateHcStatus('FOR APPROVAL');" [disabled]="holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED'">{{ aprrovalBtnTxt }}</button>
 						</div>		
 						<div class="cust-btn-container col-sm" style="padding-left: 0px !important">
 							<button type="button" class="cust-btn col-sm" [disabled]="!isApproved || holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED' || holdCover.status.toUpperCase() == 'REJECTED'" (click)="updateHcStatus('REJECTED');">Rejected</button>

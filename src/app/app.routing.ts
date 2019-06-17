@@ -214,7 +214,7 @@ const appRoutes: Routes = [
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'maintenance-line', component: PolMxLineComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'maintenance-line-class', component: LineClassComponent },
+    { path: 'maintenance-line-class', component: LineClassComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'batch-processing', component: PolBatchProcessingComponent },
     { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-risk-list', component: RiskListComponent },
