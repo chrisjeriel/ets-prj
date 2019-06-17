@@ -11,14 +11,14 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group">
 									<div class="col-sm-2"></div>
-									<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" value="bypolno" [(ngModel)]="byDate" (click)="clearDates()">	
-									<label class="form-control-sm col-sm-4" for="byDate">&nbsp;By Policy No</label>
+									<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" value="bypolno" [(ngModel)]="radioVal" (click)="clearDates(); getPolListing();">	
+									<label class="form-control-sm col-sm-4" for="byPolNo">&nbsp;By Policy No</label>
 									<div class="col-sm-2"></div>
 								</div>
 							</div>
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -19px;">
-									<div class="col-sm-2"></div>
+									<!-- <div class="col-sm-2"></div>
 									<label class="form-control-sm cust-sm from" style="color:white;" for="fromDate">From</label>
 		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm-2 cap-input" [(ngModel)]="expiryParameters.polLineCd" ngbTooltip="Line">
 		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.polYear" ngbTooltip="Year">
@@ -27,13 +27,24 @@
 		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.coSeriesNo" ngbTooltip="Co Series No">
 		                             <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.altNo" ngbTooltip="Alt No">
 		                            <div style="padding-left: 3px; margin-top: -3px;"><a><i class="fa fa-search"></i></a></div>
+									<div class="col-sm-2"></div> -->
 									<div class="col-sm-2"></div>
+									<!-- <label class="form-control-sm cust-sm from">Policy No</label> -->
+		                            <input type="text" [ngModel]="polNo[0]" mask="SSS" (ngModelChange)="polNo[0]=$event.toUpperCase()" style="margin-left: 3px;" (change)="search('lineCd',$event)" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line" appRequired [readonly]="radioVal != 'bypolno'" style="margin-left: 34px !important; margin-bottom: 18px !important;">
+		                            <input type="text" [(ngModel)]="polNo[1]" mask="9999" (change)="search('year',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Year" appRequired [readonly]="radioVal != 'bypolno'">
+		                            <input type="text" [(ngModel)]="polNo[2]" mask="99999" (blur)="polNo[2]=pad($event,5)" (change)="search('seqNo',$event)" class="form-control form-control-sm col-sm-3 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" appRequired [readonly]="radioVal != 'bypolno'">
+		                            <input type="text" [(ngModel)]="polNo[3]" mask="999" (blur)="polNo[3]=pad($event,3)" (change)="search('cedingId',$event)" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company No" appRequired [readonly]="radioVal != 'bypolno'">
+		                            <input type="text" [(ngModel)]="polNo[4]" mask="9999" (blur)="polNo[4]=pad($event,4)" (change)="search('coSeriesNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" appRequired [readonly]="radioVal != 'bypolno'">
+		                             <input type="text" [(ngModel)]="polNo[5]" mask="999" (blur)="polNo[5]=pad($event,3)" (change)="search('altNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" appRequired [readonly]="radioVal != 'bypolno'">
+		                            <span>&nbsp;</span>
+		                            <div class="text-search-ico" style="margin-left: 0 !important;"><a><i (click)="showLOV()" class="fa fa-search"></i></a></div>
+		                            <div class="col-sm-2"></div>
 								</div>
 							</div>
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -11px;">
 									<div class="col-sm-2"></div>
-									<input class="form-control-sm " type="radio" name="optradio" id="byDate" value="bydate" [(ngModel)]="byDate" (click)="clearDates()">	
+									<input class="form-control-sm " type="radio" name="optradio" id="byDate" value="bydate" [(ngModel)]="radioVal" (click)="clearDates()">	
 									<label class="form-control-sm col-sm-4" for="byDate">&nbsp;By Date</label>
 									<div class="col-sm-2"></div>
 								</div>
@@ -44,12 +55,12 @@
 									<label class="form-control-sm cust-sm from" for="fromDate">From</label>
 									<!-- <input [(ngModel)]="expiryParameters.fromExpiryDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="fromDate" value="2018-12-04" [disabled]="byDate != 'bydate'"> -->
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [showIcon]="true" [value]="fromExpiryDate.split('T')[0]" (valueChange)="fromExpiryDate=$event" [disabled]="byDate != 'bydate'"></datepicker>
+										<datepicker [type]="'date'" [showIcon]="true" [value]="fromExpiryDate.split('T')[0]" (valueChange)="fromExpiryDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
 									</div>
 
 									<label class="form-control-sm cust-sm" style="margin-left: 15px">To</label>
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [showIcon]="true" [value]="toExpiryDate.split('T')[0]" (valueChange)="toExpiryDate=$event" [disabled]="byDate != 'bydate'"></datepicker>
+										<datepicker [type]="'date'" [showIcon]="true" [value]="toExpiryDate.split('T')[0]" (valueChange)="toExpiryDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
 									</div>
 									<div class="col-sm-2"></div>
 								</div>
@@ -57,7 +68,7 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -11px;">
 									<div class="col-sm-2"></div>
-									<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" value="bymoyo" [(ngModel)]="byDate" (click)="clearDates()">
+									<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" value="bymoyo" [(ngModel)]="radioVal" (click)="clearDates()">
 									<label class="form-control-sm col-sm-5 text-left" for="byMonthYear">&nbsp;By Month/Year</label>
 									<div class="col-sm-2"></div>
 								</div>
@@ -67,7 +78,7 @@
 								<div class="input-group" style="margin-top: -19px;">
 									<div class="col-sm-2"></div>
 									<label class="form-control-sm cust-sm from">From</label>
-									<select [(ngModel)]="fromMonth" class="form-control form-control-sm cust-sm col-sm-3" name="fromMonth" [disabled]="byDate != 'bymoyo'">
+									<select [(ngModel)]="fromMonth" class="form-control form-control-sm cust-sm col-sm-3" name="fromMonth" [disabled]="radioVal != 'bymoyo'">
 										<option value="1">January</option>
 										<option value="2">February</option>
 										<option value="3">March</option>
@@ -81,9 +92,9 @@
 										<option value="11">November</option>
 										<option value="12">December</option>
 									</select>
-									<input [(ngModel)]="fromYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [disabled]="byDate != 'bymoyo'">
+									<input [(ngModel)]="fromYear" mask="9999" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [readonly]="radioVal != 'bymoyo'">
 									<label class="form-control-sm cust-sm toMonth" style="margin-left: 15px">To</label>
-									<select [(ngModel)]="toMonth" class="form-control form-control-sm cust-sm col-sm-3" name="toMonth" [disabled]="byDate != 'bymoyo'">
+									<select [(ngModel)]="toMonth" class="form-control form-control-sm cust-sm col-sm-3" name="toMonth" [disabled]="radioVal != 'bymoyo'">
 										<option value="1">January</option>
 										<option value="2">February</option>
 										<option value="3">March</option>
@@ -97,7 +108,7 @@
 										<option value="11">November</option>
 										<option value="12">December</option>
 									</select>
-									<input [(ngModel)]="toYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [disabled]="byDate != 'bymoyo'">
+									<input [(ngModel)]="toYear" mask="9999" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [readonly]="radioVal != 'bymoyo'">
 									<div class="col-sm-2"></div>
 								</div>
 							</div>
@@ -156,30 +167,25 @@
 					<div class="form-group col-sm">
 						<div class="col-md-13 text-center">
 							<div class="cust-btn-container" style="margin-top: 5px;">
-							<app-modal [btnTitle]="'Extract'" (click)="extract()">
-								<div header>Extract Expiring Policies</div>
-						        <div body class="row">
-						           <!-- <div class="col-sm-1 text-right my-modal-icon">
-							            <i class="fa fa-check-circle"></i>
-							       </div>
-							       <div class="col-sm-9 text-left my-modal-text">
-						           		<p>Extracted Policies: {{extractedPolicies}}</p>
-						           </div> -->
+								<!-- <app-modal [btnTitle]="'Extract'" (click)="extract()">
+									<div header>Extract Expiring Policies</div>
+							        <div body class="row">
+							            <div class="col-sm-1 text-right my-modal-icon">
+						           			<i class="fa fa-check-circle"></i>
+							           </div>
+							           <div class="col-sm-8 my-modal-text">
+							           		<span>Extracted Policies: {{extractedPolicies}}</span>
+							           </div>
 
-						            <div class="col-sm-1 text-right my-modal-icon">
-					           			<i class="fa fa-check-circle"></i>
-						           </div>
-						           <div class="col-sm-8 my-modal-text">
-						           		<span>Extracted Policies: {{extractedPolicies}}</span>
-						           </div>
-
-						        </div>
-						        <div footer>
-						            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
-						        </div>
-							</app-modal>
-							<button type="button" class="cust-btn" (click)="modalService.dismissAll();clearAll();"><a>Clear</a></button>
-						</div>
+							        </div>
+							        <div footer>
+							            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+							        </div>
+								</app-modal>
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll();clearAll();"><a>Clear</a></button> -->
+								<button class="cust-btn" type="button" (click)="onClickExtract();"><a>Extract</a></button>
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();clearAll();"><a>Clear</a></button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -191,3 +197,56 @@
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
+
+
+<app-modal class="d-none" id="extractModal">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset" style="text-align: center">                
+            <p>Extract using selected parameters?</p>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="extract(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
+
+
+<app-modal class="d-none" id="extractMsgModal">
+    <div header>Extraction</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset row" style="text-align: center">
+        	<div *ngIf="extractedPolicies == 0" style="width: 100% !important;">
+	           	<div class="col-sm my-modal-text" style="margin-left: 0px !important;">
+	           		<span>No policy extracted.</span>
+	           	</div>
+           	</div>
+        	<div *ngIf="extractedPolicies > 0" class="custom-row-inline-inset row" style="width: 100% !important;">
+	            <div class="col-sm-1 text-right my-modal-icon">
+	       			<i class="fa fa-check-circle"></i>
+	           	</div>
+	           	<div class="col-sm-7 my-modal-text">
+	           		<span>Extracted Policies: {{extractedPolicies}}</span>
+	           	</div>
+           	</div>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal hidden [btnTitle]="'List Of Values'" id="extPolLov">
+    <div header>List Of Values</div>
+    <div body>
+       <!-- <app-cust-non-datatable [passData]="passDataLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable> -->
+       <app-cust-non-datatable [passData]="passDataLOV" #extPolLov (rowClick)="onRowClick($event);" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails('mdlOk');"><a>Ok</a></button>        
+        </div>
+    </div>
+</app-modal>

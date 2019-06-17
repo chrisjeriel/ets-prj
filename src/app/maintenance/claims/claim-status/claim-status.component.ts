@@ -57,8 +57,8 @@ export class ClaimStatusComponent implements OnInit {
   }
 
   saveData:any ={
-    delParameters :[],
-    saveParameters: []
+    delClaimStatus :[],
+    saveClaimStatus: []
   }
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
@@ -72,7 +72,7 @@ export class ClaimStatusComponent implements OnInit {
   		console.log(data)
   		if(data.claimStatus !== null){
   			var datas = data.claimStatus;
-
+        this.passData.tableData = [];
   			for(var i = 0; i < datas.length; i++){
   				this.passData.tableData.push(datas[i]);
   			}
@@ -88,7 +88,52 @@ export class ClaimStatusComponent implements OnInit {
    	   this.claimStat = data;
    	   this.claimStat.createDate = this.ns.toDateTimeString(data.createDate);
    	   this.claimStat.updateDate = this.ns.toDateTimeString(data.updateDate);
-   	 }
+       this.passData.disableGeneric = false;
+   	}else{
+       this.passData.disableGeneric = true;
+    }
+  }
+
+  onClickSave(){
+    $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+  prepareData(){
+    for(var i = 0; i < this.passData.tableData.length;i++){
+      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+        this.saveData.saveClaimStatus.push(this.passData.tableData[i]);
+      }
+
+      if(this.passData.tableData[i].deleted){
+        this.saveData.delClaimStatus.push(this.passData.tableData[i]);
+      }
+    }
+  }
+
+  saveClaimStatus(cancelFlag?){
+    this.prepareData();
+
+    this.maintenanceService.saveMtnClaimStatus(this.saveData).subscribe((data:any) => {
+      if(data['returnCode'] == 0) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      } else{
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.getClaimStat();
+      }
+    });
+  }
+
+  deleteCurr(){
+      this.table.indvSelect.deleted = true;
+      this.table.selected  = [this.table.indvSelect]
+      this.table.confirmDelete();
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 
 }

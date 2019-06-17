@@ -69,11 +69,14 @@ export class PolPostComponent implements OnInit {
    //  }
 
     checkAcctDate(){
-      this.postBtn = true;
-      this.progress = 0;
-      this.loadMsg = "Checking Accounting date";
-      this.progress +=25;
-      this.checkCoverage();
+      this.post();
+
+      // commented for testing 
+      // this.postBtn = true;
+      // this.progress = 0;
+      // this.loadMsg = "Checking Accounting date";
+      // this.progress +=25;
+      // this.checkCoverage();
     }
 
     checkSign(secCvrs):string{

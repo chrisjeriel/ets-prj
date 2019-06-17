@@ -4,7 +4,7 @@ import { CreateAlterationParInfo } from '../../../_models/CreateAlterationPolicy
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
   selector: 'app-pol-create-alteration-par',
@@ -22,7 +22,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
   policyLine: any;
 
   polNo: any[] = [];
-  searchArr: any[] = Array(6).fill('');;
+  searchArr: any[] = Array(6).fill('');
   cedingName: any = '';
   insuredDesc: any = '';
   riskName: any = '';

@@ -35,9 +35,9 @@
                     </div>
                 </fieldset>  
 
-                <app-confirm-save (onYes)="saveParameters()"></app-confirm-save>
+                <app-confirm-save (onYes)="saveClaimStatus()"></app-confirm-save>
                 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-                <app-cancel-button (onYes)="saveParameters('cancel')" [url]="'/mtn-system'" ></app-cancel-button>          
+                <app-cancel-button (onYes)="saveClaimStatus('cancel')" [url]="'/mtn-claims'" ></app-cancel-button>          
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
