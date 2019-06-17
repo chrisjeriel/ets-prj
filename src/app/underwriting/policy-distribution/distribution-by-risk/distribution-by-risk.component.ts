@@ -377,7 +377,6 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           this.wparamData.tableData.push(h);
         }
         //this.wparamData.tableData = data.distRiskWparam;
-
         this.limitsData.tableData = [];
         for(var i of data.wriskLimit){
           if(appendTreatyLimitId == 0){
