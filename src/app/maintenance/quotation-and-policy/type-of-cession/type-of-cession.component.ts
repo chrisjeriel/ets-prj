@@ -26,6 +26,11 @@ export class TypeOfCessionComponent implements OnInit {
             activeTag   : 'N',
             remarks    	: null
         },
+        limit: {
+	  		cessionAbbr : 10,
+	  		description : 50,
+	  		remarks		: 100
+	  	},
         paginateFlag        : true,
         infoFlag            : true,
         searchFlag          : true,
@@ -52,6 +57,7 @@ export class TypeOfCessionComponent implements OnInit {
     cancelFlag      : boolean;
     warnMsg			: string = '';
     type			: string = '';
+    fromCancel		: boolean;
 
     params : any =	{
 		saveTypeOfCession 	: [],
@@ -89,8 +95,10 @@ export class TypeOfCessionComponent implements OnInit {
 			if(record.cessionAbbr === null || record.description === null){
 				if(!record.deleted){
 					isEmpty = 1;
+					this.fromCancel = false;
 				}
 			}else{
+				this.fromCancel = true;
 				if(record.edited && !record.deleted){
 					record.createUser		= (record.createUser === '' || record.createUser === undefined)?this.ns.getCurrentUser():record.createUser;
 					record.createDate		= (record.createDate === '' || record.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
@@ -171,6 +179,16 @@ export class TypeOfCessionComponent implements OnInit {
 
 	showWarnLov(){
 		$('#warnMdl > #modalBtn').trigger('click');
+	}
+
+	checkCancel(){
+		if(this.cancelFlag == true){
+			if(this.fromCancel){
+				this.cancelBtn.onNo();
+			}else{
+				return;
+			}
+		}
 	}
 
 }

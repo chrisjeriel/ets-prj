@@ -28,7 +28,8 @@ export class UpdateGeneralInfoComponent implements OnInit {
   disabledOldBool: boolean;
   chosenPolicy: any = [];
   splitPolNo: string[] = [];
-  tempPolNo: string[] = ['', '', '', '', '','0'];
+  tempPolNo: string[] = ['', '', '', '', '',''];
+  temporaryPolNum: string[] = ['', '', '', '', '',''];
   cancelFlag: boolean;
   loading: boolean = false;
   dialogIcon: string = "";
@@ -160,9 +161,9 @@ export class UpdateGeneralInfoComponent implements OnInit {
     this.titleService.setTitle("Pol | Update General Info");
   }
 
-  getPolListing() {
+  getPolListing(obj) {
       this.quListTable.loadingFlag = true;
-        this.us.getParListing(this.searchParams).subscribe(data => {
+        this.us.getParListing(obj).subscribe(data => {
         var records = data['policyList'];
         this.fetchedData = records;
           for(let rec of records){
@@ -225,7 +226,8 @@ export class UpdateGeneralInfoComponent implements OnInit {
         this.disabledBool = true;
         this.typeOfCession = null;
         this.splitPolNo = [];
-        this.tempPolNo = ['','','','','','0'];
+        this.tempPolNo = ['','','','','',''];
+        this.temporaryPolNum = ['','','','','',''];
          $('#searchicon').removeClass('fa-spinner fa-spin')
          $('#search').css('pointer-events', 'initial');
          this.disabledSearch = false;
@@ -257,8 +259,31 @@ export class UpdateGeneralInfoComponent implements OnInit {
   }
 
   showLOV() {
-      this.getPolListing();
       $('#polLovMdl > #modalBtn').trigger('click');
+      this.searchParams = [];
+        if(this.tempPolNo[0].length !== 0 ||
+         this.tempPolNo[1].length !== 0 ||
+         this.tempPolNo[2].length !== 0 ||
+         this.tempPolNo[3].length !== 0 ||
+         this.tempPolNo[4].length !== 0 ||
+         this.tempPolNo[5].length !== 0){
+
+
+        for (let i=0; i<this.temporaryPolNum.length; i++){
+          if (this.isEmptyObject(this.temporaryPolNum[i])){
+             this.temporaryPolNum[i] = "%"
+          }
+        }
+  
+         this.searchParams.push(
+                               {
+                                 key: 'policyNo' , search: this.temporaryPolNum.join('-') 
+                               }
+                               );
+          this.getPolListing(this.searchParams);
+        } else {
+          this.getPolListing(this.searchParams);
+        }
   }
 
    cancel(){
@@ -313,12 +338,10 @@ export class UpdateGeneralInfoComponent implements OnInit {
       this.removeNgDirty();
       this.us.getPolGenInfo(obj,'').subscribe(data => {
           var records = data['policy'];
-          console.log(records);
-
           if(this.isEmptyObject(records)){
             this.clear();
           } else {
-          this.policyInfo.policyId = records.policyId;
+          this.policyInfo.policyId = records.policyId;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
           this.policyInfo.policyNo = records.policyNo;
           this.splitPolNo = records.policyNo.split('-');
           this.tempPolNo = records.policyNo.split('-');
@@ -359,9 +382,6 @@ export class UpdateGeneralInfoComponent implements OnInit {
         });
     }
 
-
-
-
     isEmptyObject(obj) {
       for(var prop in obj) {
          if (obj.hasOwnProperty(prop)) {
@@ -388,7 +408,6 @@ export class UpdateGeneralInfoComponent implements OnInit {
     }
 
     pad2(num, size) {
-    
       if (this.isEmptyObject(num)){
        return s = '';
       } else {
@@ -401,23 +420,30 @@ export class UpdateGeneralInfoComponent implements OnInit {
     }
 
     searchPolNoFields(data: string, key: string){
+
       if(key === 'lineCd'){
         this.tempPolNo[0] = data.toUpperCase();
+        this.temporaryPolNum[0] = data.toUpperCase();
       }else if(key === 'year'){
         this.tempPolNo[1] = data;
+         this.temporaryPolNum[1] = data;
       }else if(key === 'seqNo'){
         this.tempPolNo[2] = this.pad2(data,5);
+        this.temporaryPolNum[2] =  this.pad2(data,5);
       }else if(key === 'coCode'){
         this.tempPolNo[3] = this.pad2(data,3);
+        this.temporaryPolNum[3] =  this.pad2(data,3);
       }else if(key === 'coSeriesNo'){
         this.tempPolNo[4] = this.pad2(data,4);
+        this.temporaryPolNum[4] =  this.pad2(data,4);
       }else if(key === 'altNo'){
         this.tempPolNo[5] = this.pad2(data,3);
+        this.temporaryPolNum[5] =  this.pad2(data,3);
       }
     }
 
-    checkPolNoParams(ev){
 
+    checkPolNoParams(ev){
       if(this.tempPolNo[0].length !== 0 &&
          this.tempPolNo[1].length !== 0 &&
          this.tempPolNo[2].length !== 0 &&
@@ -433,10 +459,12 @@ export class UpdateGeneralInfoComponent implements OnInit {
          var tempPolNum =  this.tempPolNo.join('-');
          this.searchParams2.push(
                                {
-                                 key: 'policyNo' , search: this.policyNo(tempPolNum) + '%'
+                                 key: 'policyNo' , search: tempPolNum 
                                }
                                );
          var records : any;
+
+         console.log(this.searchParams2);
          this.us.getParListing(this.searchParams2)
          .pipe(
            finalize(() => this.setDetailsPolicy(records) )
@@ -452,8 +480,11 @@ export class UpdateGeneralInfoComponent implements OnInit {
       }else{
          $('#searchicon').removeClass('fa-spinner fa-spin')
          $('#search').css('pointer-events', 'initial');
-         this.tempPolNo[5] = this.pad(0,3);
-         this.splitPolNo[5] = this.pad(0,3);
+         this.disabledBool = true;
+         this.policyInfo = {};
+         this.policyInfo.project = {};
+         this.typeOfCession = null;
+         this.removeNgDirty();
       }
     }
 
@@ -462,15 +493,17 @@ export class UpdateGeneralInfoComponent implements OnInit {
       this.chosenPolicy = [];
       $('#searchicon').removeClass('fa-spinner fa-spin')
       $('#search').css('pointer-events', 'initial');
+
+      console.log(obj);
+
        for(let rec of obj){
-           if (rec.statusDesc === 'In Force' || rec.statusDesc === 'Distributed') {
+           if (rec.statusDesc === 'In Force' || rec.statusDesc === 'Distributed' || rec.statusDesc === 'In Progress'  ) {
                 this.chosenPolicy.push(
                                   {
                                     policyid: rec.policyId, 
                                     altNo : parseInt(rec.altNo)
                                     }
                                   );
-
             }  
        }
       
@@ -491,7 +524,8 @@ export class UpdateGeneralInfoComponent implements OnInit {
     callModal(){
               this.disabledBool = false;
               this.searchParams2 = [];
-              this.getPolListing();
+              this.searchParams = [];
+              this.getPolListing(this.searchParams);
               this.clear();
               $('#polLovMdl > #modalBtn').trigger('click');
     }
@@ -513,8 +547,8 @@ export class UpdateGeneralInfoComponent implements OnInit {
          "updateUser"      : JSON.parse(window.localStorage.currentUser).username
        }
 
-       console.log(savePolGenInfoParam);
-/*       this.loading = true;*/
+       
+         /*       this.loading = true;*/
           this.us.updatePolGenInfo(savePolGenInfoParam).subscribe(data => {
            console.log(data);
         /*     this.loading = false;*/
@@ -530,8 +564,6 @@ export class UpdateGeneralInfoComponent implements OnInit {
                 $('#updatePolGenInfo #successModalBtn').trigger('click');
             }
           });
-
-    
     }
 
    onClickSave(){
@@ -547,6 +579,12 @@ export class UpdateGeneralInfoComponent implements OnInit {
   }
 
   removeNgDirty(){
+    $('#line').removeClass('ng-dirty');
+    $('#year').removeClass('ng-dirty');
+    $('#seqNo').removeClass('ng-dirty');
+    $('#coCode').removeClass('ng-dirty');
+    $('#coSeriesNo').removeClass('ng-dirty');
+    $('#altNo').removeClass('ng-dirty');
     $('#insured').removeClass('ng-dirty');
     $('#coRefNo').removeClass('ng-dirty');
     $('#riBinderNo').removeClass('ng-dirty');
