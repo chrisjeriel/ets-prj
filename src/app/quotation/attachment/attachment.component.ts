@@ -98,6 +98,7 @@ export class AttachmentComponent implements OnInit {
     pageLength: 10,
     widths: [],
     uneditable: [true,false,false],
+    dataTypes: ['text', 'text'],
     keys:['fileName','description']
   };
 
