@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
+import { ClaimsService, NotesService } from '@app/_services'
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-clm-section-covers',
@@ -7,47 +11,99 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClmSectionCoversComponent implements OnInit {
 
-  /*passData: any = {
-        tableData: [],
-        tHeader: [],
-        dataTypes: [],
-        resizable: [],
-        filters: [],
-        pageLength: 10,
-        expireFilter: false,
-        checkFlag: false,
-        tableOnly: false,
-        fixedCol: false,
-        printBtn: false,
-        pageStatus: false,
-        pagination: false,
-        addFlag: false,
-        editFlag: false,
-        deleteFlag: false,
-        copyFlag: false,
-        pageID: 1
-    }*/
-
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   passData: any = {
     tableData: [],
-    tHeader: [],
-    dataTypes: [],
+    tHeader: ["Deductible Level","Deductible Code", "Deductible Title", "Rate (%)", "Amount", "Deductible Text"],
+    dataTypes: ["text","text", "text", "percent", "currency", "text"],
     paginateFlag: true,
     infoFlag: true,
     searchFlag: true,
     pageLength: 5,
-    widths: [],
+    uneditable:[true,true,true,true,true,true],
+    keys:['deductibleLevel','deductibleCd','deductibleTitle','deductibleRt','deductibleAmt','deductibleTxt'],
+    widths: ['auto',1,'auto','auto','auto','auto'],
     pageID: 1
   };
 
-  constructor() { }
+  coverageData : any = {
+    sectionISi: null,
+    sectionIISi: null,
+    sectionIIISi: null,
+    currencyCd: null,
+    currencyRt: null,
+    allowMaxSi: null,
+    totalSi: null
+  }
+  secI: any
+  secII:any;
+  secIII:any;
+  
+  dialogIcon:string = '';
+  dialogMessage:string;
+  cancelFlag:boolean;
+
+  constructor(private claimService: ClaimsService, private ns: NotesService) { }
 
   ngOnInit() {
-  	this.passData.tHeader.push("Deductible Code", "Deductible Title", "Rate (%)", "Amount", "Deductible Text");
-  	this.passData.tableData.push(["AOG30", "ACTS OF GOD 30", "0.50000000000","","Acts of Nature - Php 1,800,000.00 each and every loss"],
-  								 ["AOC31", "39,000 - AOC", "","39000","Any Other Cause - Php 39,000.00 for each and every loss"]);
-  	this.passData.dataTypes.push("text", "text", "percent", "currency", "text");
-  	this.passData.widths.push("1","auto","auto","auto","auto");
+    this.getClmSec();
   }
 
+  getClmSec(){
+    this.claimService.getClaimSecCover(1,null).subscribe((data:any)=>{
+      console.log(data)
+      this.coverageData = data.claims.clmProject.clmCoverage;
+
+      var deductibles = data.claims.clmDeductibles;
+
+      for(var i = 0 ; i < deductibles.length;i++){
+        this.passData.tableData.push(deductibles[i]);
+      }
+      this.table.refreshTable();
+      this.getSum();
+    });
+  }
+
+  getSum(){
+    var totalClaim =0;
+    if(this.coverageData.secISiTag === 'Y'){
+      totalClaim += this.coverageData.sectionISi;
+    }
+    if(this.coverageData.secIISiTag === 'Y'){
+      totalClaim += this.coverageData.sectionIISi;
+    }
+    if(this.coverageData.secIIISiTag === 'Y'){
+      totalClaim += this.coverageData.sectionIIISi;
+    }
+    this.coverageData.allowMaxSi = totalClaim;
+  }
+
+  onClickSave(){
+    $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+  saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    console.log(this.coverageData)
+    this.coverageData.createDate = this.ns.toDateTimeString(this.coverageData.createDate);
+    this.coverageData.updateDate = this.ns.toDateTimeString(this.coverageData.updateDate);
+    this.claimService.saveClaimSecCover(this.coverageData).subscribe((data: any) => {
+      if(data['returnCode'] == 0) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      } else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.getClmSec();
+      }
+    });
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
+  }
 }

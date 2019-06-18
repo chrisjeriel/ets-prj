@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { environment } from '@environments/environment';
 import { ClaimPaymentRequests, ClaimsHistoryInfo, QSOA } from '@app/_models';
-
+import { environment } from '@environments/environment';
 @Injectable({
 	providedIn: 'root'
 })
 export class ClaimsService {
-
+	
 	claimPaymentRequestData: ClaimPaymentRequests[] = [];
 	claimsHistoryInfo: ClaimsHistoryInfo[] = [];
 	qsoaData: QSOA[] = [];
@@ -44,4 +43,21 @@ export class ClaimsService {
 
         return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmGenInfo',{params});
 	}
+
+	getClaimSecCover(claimId,claimNo){
+		 const params = new HttpParams()
+            .set('claimId', claimId === undefined || claimId === null || claimId === '' ? '' : claimId)
+            .set('claimNo', claimNo === undefined || claimNo === null || claimNo === '' ? '' : claimNo)
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimSecCover', {params});
+	}
+
+	saveClaimSecCover(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimSecCover',JSON.stringify(params),header);
+	}
+
 }

@@ -10,8 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ClmClaimProcessingComponent implements OnInit {
   tableData: any[] = [
-    ["CAR-2018-00013", "In Progress", "CAR-2018-00001-099-0001-000", "ASIA INSURANCE (PHILIPPINES) CORP", "Cornerdot Contructions / Solid Builders Corp", "C-National Steel/Iligan City", "03/09/2018", "Damaged electricl cables and supply line on 2nd", "PHP", "1000000", "330000", "TLP Adj./ ACD Co Inc.", "CLETC"],
-    ["EAR-2018-00044", "In Progress", "EAR-2018-00555-067-0003-000", "BANKERS ASSURANCE CORP.", "Solid Square Buildings Corp/ DP Cornerstone Build & Traiding Corp", "C.Ayala Land,Inc./Rehab of Amara", "08/09/2018", "Damaged electricl cables and supply line on 2nd", "PHP", "4000000", "505189", "TLP Adj./ ACD Co Inc.", "CLCCZ"],
+    
     ["EEI-2018-00043", "In Progress", "EEI-2018-00066-078-0008-000", "CHARTER PING AN INSURANCE CORP.", "A.B Industries, Inc.", "C.Ayala Land,Inc./Gatewalk Central Estate", "05/09/2018", "Damaged electricl cables and supply line on 2nd", "PHP", "4000000", "0", "TLP Adj./ ACD Co Inc.", "CLETC"],
     ["MBI-2018-00087", "In Progress", "MBI-2018-00075-008-0004-000", "Dela Merced Adjustment Corp.", "A.C.G Construction", "JG Summit Holdings,Inc./Rob Gourmet", "02/09/2018", "Damaged electricl cables and supply line on 2nd", "PHP", "4000000", "0", "TLP Adj./ ACD Co Inc.", "CLCCZ"],
     ["BPV-2018-00055", "In Progress", "BPV-2018-00134-006-0009-000", "DOMESTIC INC. CO. OF THE PHIL.", "A.D. Reality and Contruction Corporation", "Producer's Bank Bldg.- Paseo, Makati", "11/09/2018", "Damaged electricl cables and supply line on 2nd", "PHP", "4000000", "0", "TLP Adj./ ACD Co Inc.", "CLCJCZ"],
@@ -40,16 +39,17 @@ export class ClmClaimProcessingComponent implements OnInit {
   pageLength = 10;
 
   passData: any = {
-    tableData: [],
-    tHeader: [],
-    dataTypes: [],
+    tableData: [{claimNo:"CAR-2018-00013", status:"In Progress", policyNo:"CAR-2018-00001-099-0001-000", cedingCompany:"ASIA INSURANCE (PHILIPPINES) CORP", insured:"Cornerdot Contructions / Solid Builders Corp", risk:"C-National Steel/Iligan City", lossDate:"03/09/2018", lossDetails:"Damaged electricl cables and supply line on 2nd", currency:"PHP", totalReserve:"1000000", totalPayment:"330000", adjusters:"TLP Adj./ ACD Co Inc."}],
+    tHeader: ['Claim No','Status','Policy No', 'Ceding Company','Inusred','Risk','Loss Date','Loss Details','Currency','Total Reserve','Total Payment','Adjusters'],
+    dataTypes: ["text", "text", "text", "text", "text", "text", "date", "text", "text", "currency", "currency", "text"],
     addFlag: true,
     editFlag: true,
     pagination: true,
     pageStatus: true,
     searchFlag: true,
     pageLength: 10,
-    resizable: [true, true, true, true, true, true, true, true, true, true, true, true, true],
+    keys:['claimNo','status','policyNo','cedingCompany','insured','risk','lossDate','lossDetails','currency','totalReserve','totalPayment','adjusters'],
+    resizable: [true, true, true, true, true, true, true, true, true, true, true, true],
   };
 
 
@@ -57,12 +57,6 @@ export class ClmClaimProcessingComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim Processing");
-
-    this.passData.tHeader.push("Claim No", "Status", "Policy No", "Ceding Company", "Insured",
-      "Risk", "Loss Date", "Loss Details", "Currency", "Total Reserve", "Total Payment", "Adjusters",
-      "Processed By");
-    this.passData.dataTypes.push("text", "text", "text", "text", "text", "text", "date", "text", "text", "currency", "currency", "text", "text");
-    this.passData.tableData = this.tableData;
   }
   navigateToGenInfo() {
     var pLine = this.polLine.toUpperCase();

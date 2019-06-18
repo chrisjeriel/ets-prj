@@ -3,7 +3,8 @@ import { NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
-
+import { Title } from '@angular/platform-browser';
+ 
 @Component({
   selector: 'app-mtn-cresta',
   templateUrl: './mtn-cresta.component.html',
@@ -61,9 +62,10 @@ export class MtnCrestaComponent implements OnInit {
   dialogMessage : string = '';
   dialogIcon: any;
 
-  constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
+  constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Mtn | Cresta Zone");
   	this.getCresta()
   }
 
@@ -146,5 +148,9 @@ export class MtnCrestaComponent implements OnInit {
           this.getCresta();
         }
   	})
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 }
