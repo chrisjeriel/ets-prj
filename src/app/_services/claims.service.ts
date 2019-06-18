@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { environment } from '@environments/environment';
 import { ClaimPaymentRequests, ClaimsHistoryInfo, QSOA } from '@app/_models';
 
 @Injectable({
@@ -36,4 +37,11 @@ export class ClaimsService {
 		return this.claimsHistoryInfo;
 	}
 
+	getClmGenInfo(claimId, claimNo) {
+		const params = new HttpParams()
+             .set('claimId', claimId === null || claimId === undefined ? '' : claimId)
+             .set('claimNo', claimNo === null || claimNo === undefined ? '' : claimNo);
+
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmGenInfo',{params});
+	}
 }

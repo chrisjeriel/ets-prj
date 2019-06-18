@@ -50,5 +50,21 @@ export class NotesService {
   getCurrentUser() {
     return JSON.parse(window.localStorage.currentUser).username;
   }
+
+  dateConstructor(ev, data, type) {
+    if(data != null && data != '') {
+      var dArr = data.split('T');
+
+      if(type == 'd') {
+        dArr[0] = ev;
+      } else if(type == 't') {
+        dArr[1] = ev;
+      }
+
+      return dArr.join('T') == 'T' ? '' : dArr.join('T');  
+    } else {
+      return type == 'd' ? ev + 'T' : type == 't' ? 'T' + ev : '';
+    }
+  }
   
 }

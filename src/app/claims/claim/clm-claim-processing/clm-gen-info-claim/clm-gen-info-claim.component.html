@@ -16,41 +16,45 @@
             <div class="col-sm-6">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Policy No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="line+'-2018-00001-99-0001-000'" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.policyNo" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Claim No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="line+'-2018-00001'" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.claimNo" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Claim No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="coClaimNo">
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.coClaimNo">
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Type of Cession</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;" readonly>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;" [ngModel]="claimData.cessionDesc" readonly>
                     <label class="form-control-sm col-sm-2">Line Class</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 1px !important;" [(ngModel)]="lineClass" readonly>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 1px !important;" [ngModel]="claimData.lineClassDesc" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2" style="font-size: 9.5px !important;">Ceding Company</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" readonly>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" [ngModel]="claimData.cedingId" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.cedingName" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Ref No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="coRefNo" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.coRefNo" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="'AArema Adjusters and Surveyors, Inc. / TLP Adj. / ACD Co. Inc.'" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.adjNames" readonly>
                     <!-- <div class="text-search-ico" style="margin-right: 8px !important; margin-left: -6px !important;"><a><i
                                 class="fa fa-search"></i></a></div> -->
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster Ref No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="adjRefNo" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.adjRefNos" readonly>
                     <button type="button" class="cust-btn" (click)="openAdjustersModal();" style="margin-left: 2px; max-height: 21px; padding: 0 10px; margin-right: 0; z-index: 1 !important;"><a>Adjusters</a></button>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-2" style="margin-bottom: 0;"></label>
+                    <i style="font-size: 13px; color: red;">The policy has unpaid premium.</i>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -59,19 +63,19 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">Loss Date</label>
                             <div class="col-sm-5 dp-cont">
-                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="''"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d')"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'time'" [required]="true" [value]="''" [textAlign]="'center'"></datepicker>  <!-- valueChange -->
+                                <datepicker [type]="'time'" [required]="true" [value]="claimData.lossDate?.split('T')[1]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'t')" [textAlign]="'center'"></datepicker>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">Report Date</label>
                             <div class="col-sm-5 dp-cont">
-                                <datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="''"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="claimData.reportDate?.split('T')[0]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'d')"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'time'" [required]="false" [value]="''" [textAlign]="'center'"></datepicker>  <!-- valueChange -->
+                                <datepicker [type]="'time'" [required]="false" [value]="claimData.reportDate?.split('T')[1]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'t')" [textAlign]="'center'"></datepicker>
                             </div>
                         </div>
                         <div class="input-group">
@@ -85,14 +89,14 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">&nbsp;&nbsp;Loss Cause</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="E.Q. Volcanism" appRequired>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossDesc" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">&nbsp;Event Type</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="Earthquake">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search"></i></a>
                             </div>
@@ -102,25 +106,25 @@
                     <div class="col-sm-6" style="padding-top: 25px !important;">
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Reported By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="Juan Dela Cruz">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.reportedBy">
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Processed By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="Juan Dela Cruz" appRequired>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.processedBy" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Loss Period</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="Basic Period" appRequired>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossPeriod" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Event</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="The Big 1 (Magnitude 7.5)">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search"></i></a>
                             </div>
@@ -131,7 +135,7 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-2">Loss Details</label>
                             <textarea class="form-control form-control-sm col-sm" style="margin-bottom: 17px !important; min-height: 72px !important; font-size: 0.7rem !important"
-                                placeholder="Damaged electric cables and supply lines on 2nd and 3rd floors due to earthquake." appRequired></textarea>
+                                [(ngModel)]="claimData.lossDtl" appRequired></textarea>
                         </div>
                     </div>
 
@@ -150,50 +154,50 @@
                     <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
                         <div class="input-group" style="margin-top: 10px;">
                             <label class="form-control-sm col-sm-1">Principal</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1" placeholder="001" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="claimData.prinId" readonly>
                             <input type="text" class="form-control form-control-sm" style="margin-left: 5px;"
-                                placeholder="Seirgreich Solutions, Inc." readonly>
+                                [ngModel]="claimData.principalName" readonly>
                             <label class="form-control-sm col-sm-1">Contractor</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1" placeholder="002" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="claimData.contractorId" readonly>
                             <input type="text" class="form-control form-control-sm" style="margin-left: 5px;"
-                                placeholder="CJM Electromechanical Services" readonly>
+                                [ngModel]="claimData.contractorName" readonly>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Insured</label>
                             <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"
-                                placeholder="Seirgreich Solutions, Inc. / CJM Electromechanical Services" readonly></textarea>
+                                [ngModel]="claimData.insuredDesc" readonly></textarea>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Risk</label>
-                            <input type="text" class="form-control form-control-sm" placeholder="La Perla Warehouse Mandaluyong" readonly>
+                            <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.riskName" readonly>
                         </div>
                         <div class="input-group" style="margin-bottom: 0px !important;">
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Object</label>
-                                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="009" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="claimData.project.objectId" readonly>
                                 <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;"
-                                    placeholder="Hall Buildings" readonly>
+                                    [ngModel]="claimData.project.objectDesc" readonly>
                             </div>
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Region</label>
-                                <input type="text" class="form-control form-control-sm col-sm-10" placeholder="NATIONAL CAPITAL REGION" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="claimData.project.regionDesc" readonly>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Nature of Work</label>
                             <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"
-                                placeholder="Warehouse" readonly></textarea>
+                                [ngModel]="claimData.project.projDesc" readonly></textarea>
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">Province</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="METRO MANILA" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.provinceDesc" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">City/Town</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="MANDALUYONG CITY" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.cityDesc" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -201,23 +205,23 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Site</label>
                             <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 12px; margin-left: 2px;"
-                                placeholder="Sheridan cor. Reliance St. Mandaluyong City" readonly></textarea>
+                                [ngModel]="claimData.project.site" readonly></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">District</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="HIGH WAY HILLS" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.districtDesc" readonly>
                                         <label class="form-control-sm col-sm-2">Block</label>
-                                        <input type="text" class="form-control form-control-sm" placeholder="442B" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.blockDesc" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">Lat</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.latitude" readonly>
                                         <label class="form-control-sm col-sm-2">Long</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.longitude" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -237,69 +241,69 @@
                     <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
                         <div class="input-group" style="margin-top: 10px;">
                             <label class="form-control-sm col-sm-1">Principal</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1" readonly>
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="claimData.prinId" readonly>
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [ngModel]="claimData.principalName" readonly>
                             <label class="form-control-sm col-sm-1">Contractor</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1" readonly>
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="claimData.contractorId" readonly>
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [ngModel]="claimData.contractorName" readonly>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Insured</label>
-                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [ngModel]="claimData.insuredDesc" readonly></textarea>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Risk</label>
-                            <input type="text" class="form-control form-control-sm" readonly>
+                            <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.riskName" readonly>
                         </div>
                         <div class="input-group" style="margin-bottom: 0px !important;">
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Object</label>
-                                <input type="text" class="form-control form-control-sm col-sm-2" readonly>
-                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="claimData.project.objectId" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [ngModel]="claimData.project.objectDesc" readonly>
                             </div>
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Region</label>
-                                <input type="text" class="form-control form-control-sm col-sm-10" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="claimData.project.regionDesc" readonly>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Nature of Work</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [ngModel]="claimData.project.projDesc" readonly></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">Province</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.provinceDesc" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">City/Town</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.cityDesc" readonly>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Site</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [ngModel]="claimData.project.site" readonly></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">District</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.districtDesc" readonly>
                                         <label class="form-control-sm col-sm-2">Block</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.blockDesc" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">Lat</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.latitude" readonly>
                                         <label class="form-control-sm col-sm-2">Long</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.longitude" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -309,7 +313,7 @@
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2" style="margin-bottom: 16px !important;">Testing</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-10" readonly>
+                                        <input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="claimData.project.testing" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -328,16 +332,16 @@
                     <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
                         <div class="input-group" style="margin-top: 10px;">
                             <label class="form-control-sm col-sm-1">Insured</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1" readonly>
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="claimData.prinId" readonly>
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [ngModel]="claimData.principalName" readonly>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1"></label>
-                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [ngModel]="claimData.insuredDesc" readonly></textarea>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Risk</label>
-                            <input type="text" class="form-control form-control-sm" readonly>
+                            <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.riskName" readonly>
                         </div>
                         <div class="input-group" style="margin-bottom: 0px !important;">
                             <div class="col-sm-6 input-group" style="padding: 0px;">

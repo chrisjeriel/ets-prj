@@ -543,10 +543,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
     onDataChange(ev,data,key){
         // if($(ev.target).next().children().prop("tagName") === 'A') {
           this.instllmentKey = key;
-        if(key == 'activeTag' && data.hasOwnProperty('defaultTag') && data['activeTag']=='N'){
+        if((key == 'activeTag' && data.hasOwnProperty('defaultTag') && data['activeTag']=='N')
+            || (key == 'defaultTag' && data.hasOwnProperty('activeTag') && data['activeTag']=='N')){
             data['defaultTag'] = 'N';
+            ev.target.checked = false; //for ticking default tag with unchecked active tag
         }
-
 
         if(!data.others){
             if($(ev.target).hasClass('lovInput')) {
