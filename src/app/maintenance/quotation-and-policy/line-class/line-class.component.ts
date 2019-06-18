@@ -26,7 +26,7 @@ export class LineClassComponent implements OnInit {
     nData: {
       newRec           : 1,
       lineClassCd      : null,
-      description      : null,
+      lineClassCdDesc  : null,
       activeTag        : 'Y',
       remarks          : '',
       isNew            : true
@@ -45,7 +45,7 @@ export class LineClassComponent implements OnInit {
     pageLength			    : 10,
     resizable			      : [true, true, true, false],
     pageID				      : 'mtn-line-class',
-    keys				        : ['lineClassCd', 'description', 'activeTag', 'remarks'],
+    keys				        : ['lineClassCd', 'lineClassCdDesc', 'activeTag', 'remarks'],
     uneditable          : [false, false, false, false],
     widths              : [1, 'auto', 'auto', 'auto'],
     genericBtn          : 'Delete',
@@ -107,7 +107,7 @@ export class LineClassComponent implements OnInit {
     var isEmpty = 0;
     for(let record of this.passData.tableData){
       record.lineCd  = this.line;
-      if(record.lineClassCd == null || record.description == null){
+      if(record.lineClassCd == null || record.lineClassCdDesc == null){
         if(!record.deleted){
           isEmpty = 1;
           this.fromCancel = false;
