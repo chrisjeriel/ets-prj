@@ -132,6 +132,9 @@ export class PolAttachmentComponent implements OnInit {
                 if(data.uploadDate != null){
                   this.uploadMethod(data.uploadDate);
                 }
+                if(this.deletedData.length !== 0){
+                  this.deleteFileMethod();
+                }
                 $('#polAttachment > #successModalBtn').trigger('click');
                 this.retrievePolAttachmentOc();
             }
@@ -148,6 +151,9 @@ export class PolAttachmentComponent implements OnInit {
                 this.dialogIcon = "";
                 if(data.uploadDate != null){
                   this.uploadMethod(data.uploadDate);
+                }
+                if(this.deletedData.length !== 0){
+                  this.deleteFileMethod();
                 }
                 $('#polAttachment > #successModalBtn').trigger('click');
                 this.retrievePolAttachment();
@@ -188,6 +194,24 @@ export class PolAttachmentComponent implements OnInit {
         //clear filelist array after upload
         this.table.filesToUpload = [];
         this.table.refreshTable();
+    }
+
+    deleteFileMethod(){
+      let deleteFile = this.deletedData;
+      for(var i of deleteFile){
+        console.log(i.fileNameServer);
+        this.upload.deleteFile(i.fileNameServer).subscribe(
+            data =>{
+              console.log(data);
+            },
+            error =>{
+              console.log('Error: '+ error);
+            },
+            () =>{
+              console.log('Successfully deleted');
+            }
+          );
+      }
     }
 
     cancel(){
