@@ -99,6 +99,7 @@ export class SpoilPolAltComponent implements OnInit {
 	dialogMessage		: string = '';
 	cancelFlag			: boolean;
 	valResult			: number;
+	passEvent			: any;
 
 	constructor(private underwritingService: UnderwritingService, private ns: NotesService,
 		private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService, private router:Router) { }
@@ -166,7 +167,6 @@ export class SpoilPolAltComponent implements OnInit {
 			}else{
 				
 			}
-			
 		});
 	}
 
@@ -181,6 +181,7 @@ export class SpoilPolAltComponent implements OnInit {
 		this.passDataSpoilageReason.tableData = [];	
 		this.mtnService.getMtnSpoilageReason('','Y')
 		.subscribe(data => {
+			this.ns.lovLoader(this.passEvent,0);
 			this.passDataSpoilageReason.tableData = []
 			console.log(data)
 			var rec = data['spoilageReason'];
@@ -212,7 +213,9 @@ export class SpoilPolAltComponent implements OnInit {
 		$('#spoilLov > #modalBtn').trigger('click');
 	}
 
-	onChangeReason(){
+	onChangeReason(event?){
+		this.passEvent = event;
+		this.ns.lovLoader(this.passEvent,1);
 		this.checkSpoilCd = 0;
 		this.getSpoilList();
 		if(this.spoilPolRecord.reason === '' || this.spoilPolRecord.reason === null){
@@ -231,7 +234,6 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	onClickOkLov(){
-		console.log(this.rowRec);
 		if(Object.keys(this.rowRec).length != 0){
 			this.spoilPolRecord.reason  	= '';
 			this.spoilPolRecord.reasonDesc 	= '';
@@ -242,7 +244,7 @@ export class SpoilPolAltComponent implements OnInit {
 			this.splitPolNo(this.spoilPolRecord.policyNo);
 			this.getPolGenInfo();
 			this.modalService.dismissAll();
-			$('.dirty').addClass('ng-dirty');
+			$('.dirty').addClass('ng-dirty ng-touched');
 		}
 	}
 
@@ -314,7 +316,8 @@ export class SpoilPolAltComponent implements OnInit {
 		var msgA 		= 'Policy/Alteration cannot be spoiled, creation of alteration connected to this record is on going.';
 		var msgB 		= 'Policy with existing valid alteration cannot be spoiled.';
 
-		if(this.spoilPolRecord.reason == ''){
+		console.log(this.spoilPolRecord.reason);
+		if(this.spoilPolRecord.reason == '' || this.spoilPolRecord.reason == null){
 			this.dialogIcon = 'error';
 			$('app-sucess-dialog #modalBtn').trigger('click');
 			$('.dirty').focus();
@@ -327,40 +330,52 @@ export class SpoilPolAltComponent implements OnInit {
 				var rec = data['policyList'];
 				rec.sort((a,b) => a.altNo - b.altNo);
 
-				for(var i=0;i<rec.length;i++){
-					if(parseInt(this.spoilPolRecord.altNo) === 0){
-						if(rec[i].statusDesc.toUpperCase() === 'DISTRIBUTED'){
-							dist = true;
-						}else if(rec[i].statusDesc.toUpperCase() === 'IN PROGRESS'){
-							inProg = true;
-						}
-					}else {
-						if(parseInt(this.spoilPolRecord.altNo) === rec[i].altNo){
-							if(rec[i+1] !== undefined && rec[i+1].statusDesc.toUpperCase() === 'IN PROGRESS'){
-								inProg = true;
-							}else{
-								this.validPolicyAlt();
-							}	
-						}
-					}
-					
-				}
-
-				if(rec.length === 0){
+				if(rec.length == 0){
 					this.validPolicyAlt();
 				}else{
-					if(inProg === true){
+					if(rec.some(i => i.statusDesc.toUpperCase() == 'IN PROGRESS') == true){
 						this.warnMsg1 = msgA;
 						this.showWarnLov();
-					}
-					if(dist === true && inProg === false){
+					}else{
 						this.warnMsg1 = msgB;
 						this.showWarnLov();
 					}
-					if(dist === false && inProg === false){
-						this.validPolicyAlt();
-					}
 				}
+
+				// for(var i=0;i<rec.length;i++){
+				// 	if(parseInt(this.spoilPolRecord.altNo) === 0){
+				// 		if(rec[i].statusDesc.toUpperCase() === 'DISTRIBUTED'){
+				// 			dist = true;
+				// 		}else if(rec[i].statusDesc.toUpperCase() === 'IN PROGRESS'){
+				// 			inProg = true;
+				// 		}
+				// 	}else {
+				// 		if(parseInt(this.spoilPolRecord.altNo) === rec[i].altNo){
+				// 			if(rec[i+1] !== undefined && rec[i+1].statusDesc.toUpperCase() === 'IN PROGRESS'){
+				// 				inProg = true;
+				// 			}else{
+				// 				this.validPolicyAlt();
+				// 			}	
+				// 		}
+				// 	}
+					
+				// }
+
+				// if(rec.length === 0){
+				// 	this.validPolicyAlt();
+				// }else{
+				// 	if(inProg === true){
+				// 		this.warnMsg1 = msgA;
+				// 		this.showWarnLov();
+				// 	}
+				// 	if(dist === true && inProg === false){
+				// 		this.warnMsg1 = msgB;
+				// 		this.showWarnLov();
+				// 	}
+				// 	if(dist === false && inProg === false){
+				// 		this.validPolicyAlt();
+				// 	}
+				// }
 
 			});
 		}
@@ -433,29 +448,23 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
-		
-		if ($event.nextId === 'mainScreen') {
-			console.log('main screen');
-		}else{
-				console.log('EVENT ELSE ON TAB CHANGE');
-				if($('.ng-dirty').length != 0 ){
-				    $event.preventDefault();
-				    const subject = new Subject<boolean>();
-				    const modal = this.modalService.open(ConfirmLeaveComponent,{
-				        centered: true, 
-				        backdrop: 'static', 
-				        windowClass : 'modal-size'
-				    });
-				    modal.componentInstance.subject = subject;
+		if($('.ng-dirty').length > 0 ){
+			$event.preventDefault();
+			const subject = new Subject<boolean>();
+			const modal = this.modalService.open(ConfirmLeaveComponent,{
+			        centered: true, 
+			        backdrop: 'static', 
+			        windowClass : 'modal-size'
+			});
+			modal.componentInstance.subject = subject;
 
-				    subject.subscribe(a=>{
-				        if(a){
-				           $('.ng-dirty').removeClass('ng-dirty');
-			               this.tabset.select($event.nextId)
-					    }
-				    })
-	      		}	
-		}
+			subject.subscribe(a=>{
+			    if(a){
+			        $('.ng-dirty').removeClass('ng-dirty');
+			        this.tabset.select($event.nextId)
+			    }
+			})
+	    }		
 	}
 
 }

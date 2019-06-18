@@ -22,6 +22,7 @@ export class IntermediaryComponent implements OnInit {
   	dialogMessage 	: string = '';
   	type			: string;
   	intmReq 		: any;
+  	fromCancel		: boolean;
 
   	intmRecord : any = {
 	  	intmId			: null,
@@ -103,7 +104,9 @@ export class IntermediaryComponent implements OnInit {
 
 	  		    $('.warn').focus();
 				$('.warn').blur();
+				this.fromCancel = false;
   		}else{
+  			this.fromCancel = true;
   			this.intmReq = {
 						"activeTag"		: this.cbFuncSave(this.intmRecord.activeTag),
 						"addrLine1"		: this.intmRecord.addrLine1,
@@ -222,6 +225,16 @@ export class IntermediaryComponent implements OnInit {
 			    }
 			})
 	    }		
+	}
+
+	checkCancel(){
+		if(this.cancelFlag == true){
+			if(this.fromCancel){
+				this.cancelBtn.onNo();
+			}else{
+				return;
+			}
+		}
 	}
 
 

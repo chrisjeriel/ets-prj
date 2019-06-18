@@ -5,16 +5,16 @@
                             <div class="col-sm">
                                 <div class="input-group">
                                     <label class="form-control-sm"  style="margin-bottom: 0px">Region</label>
-                                    <input class="form-control form-control-sm  col-sm-2" type="text" (change)="checkCode($event, 'region')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' maxlength="2" numbers-only  [ngModel]="locData?.regionCd" (ngModelChange)="locData.regionCd = $event.toUpperCase()">
-                                    <div id=search class="text-search-ico" style="padding-left: 1px" (click)="openGenericLOV('region')"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
+                                    <input id="regionCode" class="form-control form-control-sm  col-sm-2" type="text" (change)="checkCode($event, 'region')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' maxlength="2" numbers-only  [ngModel]="locData?.regionCd" (ngModelChange)="locData.regionCd = $event.toUpperCase()">
+                                    <div id=search class="text-search-ico" style="padding-left: 1px" (click)="openGenericLOV('region', $event)"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
                                     <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [ngModel]="locData?.regionDesc" readonly>
                                 </div>
                             </div>
                             <div class="col-sm">
                                 <div class="input-group">
                                     <label class="form-control-sm"  style="margin-bottom: 0px">Province</label>
-                                    <input class="form-control form-control-sm  col-sm-2" type="text" (change)="checkCode($event, 'province')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' numbers-only   [ngModel]="locData?.provinceCd" (ngModelChange)="locData.provinceCd = $event.toUpperCase()">
-                                    <div id=search class="text-search-ico" style="padding-left: 1px" (click)="openGenericLOV('province')"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
+                                    <input id="provinceCode" class="form-control form-control-sm  col-sm-2" type="text" (change)="checkCode($event, 'province')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' numbers-only   [ngModel]="locData?.provinceCd" (ngModelChange)="locData.provinceCd = $event.toUpperCase()">
+                                    <div id=search class="text-search-ico" style="padding-left: 1px" (click)="openGenericLOV('province', $event)"><a><i id=searchicon class="fa fa-search"></i></a></div>&nbsp;
                                     <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;"  [ngModel]="locData?.provinceDesc" readonly>
                                 </div>
                             </div>

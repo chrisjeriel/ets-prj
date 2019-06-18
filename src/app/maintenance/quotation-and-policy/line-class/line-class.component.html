@@ -9,7 +9,7 @@
             <div class="input-group">
               <div class="col-sm-3"></div>
                 <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
-                <input class="form-control form-control-sm  col-sm-1 not-form" type="text" (change)="checkCode($event)" [(ngModel)]="line">
+                <input class="form-control form-control-sm  col-sm-1 not-form cap-input" type="text" (change)="checkCode($event)" [(ngModel)]="line">
                 <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
                 <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="description" readonly>
                 <div class="col-sm-3"></div>
@@ -19,7 +19,7 @@
 
         <fieldset class="scheduler-border" style="margin-top: 10px !important">
           <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-            <app-cust-editable-non-datatable #lineClassTable [passData]="passData" (genericBtn)="deleteLineClass()" (newClick)="clickRow($event)"
+            <app-cust-editable-non-datatable #lineClassTable [passData]="passData" (genericBtn)="onDeleteLineClass()" (newClick)="onClickRow($event)"
               (tableDataChange)="passData.tableData=$event" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true">
             </app-cust-editable-non-datatable>
 
@@ -27,7 +27,7 @@
               <div class="form-group col-sm">
                 <div class="text-center">
                   <div class="cust-btn-container">
-                    <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
                     <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                   </div>
                 </div>
@@ -36,18 +36,22 @@
 
             </div>
         </fieldset>
-
+        
         <fieldset class="scheduler-border" style="margin-top: 10px !important;">
-            <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
-                <label class="form-control-sm col-sm-1">Created By</label>
-                <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.createUser" readonly>
-                <label class="form-control-sm col-sm-1">Created Date</label>
-                <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.createDate" readonly>
-                <label class="form-control-sm col-sm-1">Last Update By</label>
-                <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.updateUser" readonly>
-                <label class="form-control-sm col-sm-1">Last Update</label>
-                <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.updateDate" readonly>
+          <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+            <label class="form-control-sm col-sm-1">Created By</label>
+            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.createUser" readonly>
+            <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+            <div class="col-sm dp-cont">
+              <datepicker [value]="lineClassData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
             </div>
+            <label class="form-control-sm col-sm-1">Last Update By</label>
+            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="lineClassData.updateUser" readonly>
+            <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+            <div class="col-sm dp-cont">
+              <datepicker [value]="lineClassData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+            </div>
+          </div>
         </fieldset>
 
 			</ng-template>
@@ -56,11 +60,24 @@
 </div>
 
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
-<app-confirm-save (onYes)="onClickSaveLineClass()"></app-confirm-save>
-<app-sucess-dialog id="lineClassSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag? cancel.onNo() : null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSaveLineClass('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-confirm-save (onYes)="onSaveMtnLineClass()"></app-confirm-save>
+<app-sucess-dialog  [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button (onYes)="onSaveMtnLineClass('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 
-<app-modal class="d-none" id="altWarningModal">
+<app-modal class="d-none" id="warnMdl">
+    <div header>Warning Message</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg }}</b></p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+
+<!-- <app-modal class="d-none" id="altWarningModal">
   <div header>Warning Message</div>
   <div body style="min-width: 420px !important;">
       <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
@@ -73,7 +90,4 @@
   <div footer class="w-100 text-center">
       <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
   </div>
-</app-modal>
-
-<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
-<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
+</app-modal> -->
