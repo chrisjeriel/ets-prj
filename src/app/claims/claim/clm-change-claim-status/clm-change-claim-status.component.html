@@ -67,55 +67,54 @@
                                   <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Policy
                                     No</label>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required ngbTooltip="Line"  [(ngModel)]= params.polLine>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required ngbTooltip="Year" [(ngModel)]= params.polYear>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required ngbTooltip="Sequence No" [(ngModel)]= params.polSeq>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required ngbTooltip="Company No" [(ngModel)]= params.polComp>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required ngbTooltip="Co Series No" [(ngModel)]= params.polCoSeries>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required ngbTooltip="Alt No" [(ngModel)]= params.polAlt>
                                   <div class="text-search-ico" style="margin-left: 3px !important;">
-                                    <a><i class="fa fa-search"></i></a></div>
+                                    <a><i class="fa fa-search" (click)="showPolicyLov()"></i></a></div>
                                 </div>
                                 <div class="input-group">
                                   <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Type
                                     of Cession</label>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required (change)="checkCode($event, 'cessionId')" [ngModel]="params.cessionId" (ngModelChange)="params.cessionId = $event.toUpperCase()">
                                   <div class="text-search-ico" style="margin: -2px 5px 17px -18px !important;padding-top: 2px !important;">
-                                    <a><i class="fa fa-search"></i></a></div>
+                                    <a><i class="fa fa-search" (click)="showTypeOfCessionLOV()"></i></a></div>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required [(ngModel)]="params.cessionDesc">
                                 </div>
                                 <div class="input-group">
                                   <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Ceding
                                     Company</label>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required (change)="checkCode($event,'cedingId')" [ngModel]="params.cedingId" (ngModelChange)="params.cedingId=$event.toUpperCase()">
                                   <div class="text-search-ico" style="margin: -2px 5px 17px -18px !important;padding-top: 2px !important;">
-                                    <a><i class="fa fa-search"></i></a></div>
+                                    <a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required [(ngModel)]="params.cedingDesc">
                                 </div>
                                 <div class="input-group">
                                   <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Risk</label>
                                   <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required>
+                                    style="margin-left: 3px !important;" required (change)="checkCode($event,'riskId')" [ngModel]="params.riskId" (ngModelChange)="params.riskId=$event.toUpperCase()">
                                   <div class="text-search-ico" style="margin: -2px 5px 17px -18px !important;padding-top: 2px !important;">
-                                    <a><i class="fa fa-search"></i></a></div>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" required>
+                                    <a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" required [(ngModel)]="params.riskName">
                                 </div>
                               </div>
                             </fieldset>
                           </div>
-
                           <div footer class="text-center" style="width: 100% !important;">
                             <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-                            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+                            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Ok</a></button>
                           </div>
                         </app-modal>
                       </div>
@@ -230,3 +229,7 @@
     </ngb-tab>
   </ngb-tabset>
 </div>
+
+<app-mtn-risk id="riskLOV" #riskLOV (selectedData)="setRisks($event)"></app-mtn-risk>
+<app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
+<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
