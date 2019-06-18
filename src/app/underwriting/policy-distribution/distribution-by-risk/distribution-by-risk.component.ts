@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -19,7 +20,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('coInsTable') coInsTable: CustEditableNonDatatableComponent;
   @ViewChild('wparam') wparam: CustEditableNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
-
+  @ViewChild('treatyShare') cedingCoLOV: CedingCompanyComponent;
   @Output() riskDistId = new EventEmitter<any>();
   @Output() riskDistStatus = new EventEmitter<any>();
 
@@ -143,7 +144,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   wparamData: any = {
     tableData: [],
     tHeader: ['Treaty', 'Treaty Company', 'Treaty Share (%)', 'Comm Rate (%)'],
-    magnifyingGlass: [],
+    magnifyingGlass: ['trtyCedName'],
     options: [],
     dataTypes: ['text', 'text', 'percent', 'percent'],
     keys: ['treatyName', 'trtyCedName', 'pctShare', 'commRt'],
@@ -353,17 +354,20 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.treatyDistData.tableData = data.distWrisk.distRiskWtreaty;
 
         this.wparamData.nData = {
+                                 riskDistId: this.riskDistributionData.riskDistId,
+                                 altNo: this.riskDistributionData.altNo,
                                  commRt: 0,
                                  createDate: '',
                                  createUser: JSON.parse(window.localStorage.currentUser).username,
                                  pctShare: 0,
-                                 treatyId: 0,
+                                 treatyId: 4,
                                  treatyName: 'Facultative',
                                  treatyYear: new Date().getFullYear(),
                                  trtyCedId: '',
                                  trtyCedName: '',
                                  updateDate: '',
                                  updateUser: JSON.parse(window.localStorage.currentUser).username,
+                                 showMG : 1
                                 };
         this.wparamData.tableData = [];
         for(var h of data.distRiskWparam){
@@ -492,6 +496,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         //  Auto Calculation -> this.riskDistributionData.autoCalc
         let params: any = {
           saveWParam:  this.savedData,
+          delWParam: this.deletedData,
           riskDistId:  this.riskDistributionData.riskDistId,
           altNo: this.riskDistributionData.altNo,
           retLineAmt: this.riskDistributionData.retLineAmt,
@@ -605,4 +610,43 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}]);
   }
 
+// PAUL'S DOMAIN
+
+  hiddenCedingCo: string[] = [];
+  treatyShareLOVRow: any;
+  openCedingCoLOV(ev) {
+    this.hiddenCedingCo = this.wparamData.tableData.filter(a => a.trtyCedId !== undefined && !a.deleted && a.showMG != 1).map(a => a.trtyCedId);
+    this.cedingCoLOV.modal.openNoClose();
+    this.treatyShareLOVRow = ev.index;
+  }
+
+  setSelectedCedCoTreatyShare(data) {
+    if(data.hasOwnProperty('singleSearchLov') && data.singleSearchLov) {
+        this.treatyShareLOVRow = data.ev.index;
+        this.ns.lovLoader(data.ev, 0);
+        if(data.cedingId != '' && data.cedingId != null && data.cedingId != undefined) {
+          this.wparamData.tableData[this.treatyShareLOVRow].showMG = 0;
+          this.wparamData.tableData[this.treatyShareLOVRow].trtyCedId = data.cedingId;
+          this.wparamData.tableData[this.treatyShareLOVRow].trtyCedName = data.cedingName;
+          this.wparamData.tableData[this.treatyShareLOVRow].cedingAbbr = data.cedingAbbr;
+          this.wparamData.tableData[this.treatyShareLOVRow].edited = true;
+        } else {
+          this.wparamData.tableData[this.treatyShareLOVRow].trtyCedId = '';
+          this.wparamData.tableData[this.treatyShareLOVRow].trtyCedName = '';
+          this.wparamData.tableData[this.treatyShareLOVRow].cedingAbbr = '';
+          this.wparamData.tableData[this.treatyShareLOVRow].edited = true;
+        }
+      } else {
+        this.wparamData.tableData = this.wparamData.tableData.filter(a => a.showMG != 1);
+        for(let i of data) {
+          this.wparamData.tableData.push(JSON.parse(JSON.stringify(this.wparamData.nData)));
+          this.wparamData.tableData[this.wparamData.tableData.length - 1].showMG = 0;
+          this.wparamData.tableData[this.wparamData.tableData.length - 1].trtyCedId = i.cedingId;
+          this.wparamData.tableData[this.wparamData.tableData.length - 1].trtyCedName = i.cedingName;
+          this.wparamData.tableData[this.wparamData.tableData.length - 1].cedingAbbr = i.cedingAbbr;
+          this.wparamData.tableData[this.wparamData.tableData.length - 1].edited = true;
+        }
+      }
+      this.wparam.refreshTable();
+  }
 }
