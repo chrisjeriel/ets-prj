@@ -48,7 +48,7 @@ export class ConfirmSaveComponent implements OnInit {
   onClickNo(){
     //$('.ng-dirty').removeClass('ng-dirty'); will cause nothing to save next time save is clicked
     this.onNo.emit();
-    this.modalService.dismissAll();
+    this.saveModal.closeModal();
   }
 
   showLoading(obj : boolean){

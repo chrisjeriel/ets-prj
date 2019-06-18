@@ -158,7 +158,18 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
                 }
             }else{
                 this.noDataFound = false;
-                this.quoteListingLOV.tableData = data.quotationList;
+                for(var i of data.quotationList){
+                    this.quoteListingLOV.tableData.push({
+                        quotationNo: i.quotationNo,
+                        cessionId: i.cessionId,
+                        cessionDesc: i.cessionDesc,
+                        cedingId: i.cedingId,
+                        cedingName: i.cedingName,
+                        insuredDesc: i.insuredDesc,
+                        riskId: i.project.riskId,
+                        riskName: i.project.riskName
+                    });
+                }
                 this.tableNonEditable.refreshTable();
                 this.tableNonEditable.loadingFlag = false;
                 if(this.isType){
@@ -182,8 +193,8 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
 
     selectQuote(){
         this.tempQuoteNo = this.selectedQuote.quotationNo.split('-');
-        this.searchParams.riskId = this.selectedQuote.project.riskId;
-        this.searchParams.riskName = this.selectedQuote.project.riskName;
+        this.searchParams.riskId = this.selectedQuote.riskId;
+        this.searchParams.riskName = this.selectedQuote.riskName;
         this.searchParams.cedingId = this.selectedQuote.cedingId;
         this.searchParams.cedingName = this.selectedQuote.cedingName;
         this.searchParams.cessionId = this.selectedQuote.cessionId;
