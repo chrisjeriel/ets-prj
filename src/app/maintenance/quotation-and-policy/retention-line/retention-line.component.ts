@@ -26,7 +26,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
   	retAmtData: any = {
 	  	tableData: [],
 	  	tHeader: ['Ret. Line Amt ID', 'Retention Line Amt', 'Effective From', 'Active', 'Remarks'],
-	  	dataTypes: ['sequence-3', 'currency', 'date', 'checkbox', 'text'],
+	  	dataTypes: ['sequence-6', 'currency', 'date', 'checkbox', 'text'],
 	  	keys: ['retentionId', 'retLineAmt', 'effDateFrom', 'activeTag', 'remarks'],
 	  	widths: ['1','200','140','1','auto'],
 	  	uneditable: [true,false,false,false,false,false],
@@ -97,7 +97,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 															  	i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom).split('T')[0];
 															  	i.createDate = this.ns.toDateTimeString(i.createDate);
 															  	i.updateDate = this.ns.toDateTimeString(i.updateDate);
-															  	i.retentionId = String(i.retentionId).padStart(3, '0');
+															  	i.retentionId = String(i.retentionId).padStart(6, '0');
 															  	return i;
 															  });
 			this.retAmtData.disableAdd = false;
@@ -199,7 +199,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
 			this.getMtnRetAmt();
 		}
-		
+
 		setTimeout(() => {
 			$('#lc-list').removeClass('ng-dirty');
 		}, 0);
