@@ -79,6 +79,7 @@ export class ClmClaimProcessingComponent implements OnInit {
   searchParams: any[] = [];
   selected: any;
 
+  polLine: any = "";
 
   constructor(private titleService: Title, private modalService: NgbModal, private router: Router, private cs : ClaimsService) { }
 
@@ -106,7 +107,9 @@ export class ClmClaimProcessingComponent implements OnInit {
   }
 
   navigateToGenInfo() {  
-
+    // TEMPORARY
+    this.modalService.dismissAll();
+    this.router.navigate(['/claims-claim', { line: this.polLine.toUpperCase() }], { skipLocationChange: true });
   }
 
   /*onRowDblClick(event) {

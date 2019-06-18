@@ -18,14 +18,14 @@ export class TreatyShareComponent implements OnInit {
 	@ViewChild('treatyYearTable') treatyYearTable: CustEditableNonDatatableComponent;
 	@ViewChild('treatyCommTable') treatyCommTable: CustEditableNonDatatableComponent;
 	@ViewChild('treatyShareTable') treatyShareTable: CustEditableNonDatatableComponent;
-	@ViewChild('cedingRetentionTable') cedingRetentionTable: CustEditableNonDatatableComponent;
+	// @ViewChild('cedingRetentionTable') cedingRetentionTable: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   	@ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   	@ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
   	@ViewChild(MtnTreatyComponent) treatyLOV: MtnTreatyComponent;
   	@ViewChild('treatyShare') cedingCoLOV: CedingCompanyComponent;
   	@ViewChild('cedingRetention') cedingCoRetentionLOV: CedingCompanyComponent;
-  	@ViewChild('tabset') tabset: NgbTabset;
+  	// @ViewChild('tabset') tabset: NgbTabset;
 
   	treatyYearData: any = {
 	  	tableData: [],
@@ -125,7 +125,7 @@ export class TreatyShareComponent implements OnInit {
 	  	tHeader: ['Company No', 'Company Name', '1st Retention', '2nd Retention', 'Active', 'Inactive Date', 'Remarks'],
 	  	dataTypes: ['lovInput-r', 'text', 'number', 'number', 'checkbox', 'date', 'text'],
 	  	keys: ['cedingId','cedingName','retLine1','retLine2','membershipTag','inactiveDate','remarks'],
-	  	uneditable: [false,true,false,false,true,true,false], //membership tag = y , multipleselect
+	  	uneditable: [false,true,false,false,true,true,false],
 	  	widths: ['1','auto','1','1','1','auto','auto'],
 	  	nData: {
 	  		showMG: 1,
@@ -289,21 +289,12 @@ export class TreatyShareComponent implements OnInit {
 	getMtnCedingRetention() {
 		if(this.treatyShareSelected != null && this.treatyShareSelected.cedingName == 'Quota Share Pool') {
 			this.disableRetentionTab = false;
-			/*this.ms.getMtnCedingRetention(this.treatyYearSelected.treatyYear, this.treatyCommSelected.treatyId, this.treatyShareSelected.trtyCedId).subscribe(data => {
-				var td = data['cedingRetentionList'].map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
-																a.updateDate = this.ns.toDateTimeString(a.updateDate);
-																return a; });
-				this.cedingRetentionData.tableData = td;
-				this.cedingRetentionData.disableAdd = false;
-				this.cedingRetentionData.disableGeneric = false;
-			});*/
 
 			this.cedingRetentionData.tableData = this.treatyShareSelected.cedRetentionList;
 			this.cedingRetentionData.disableAdd = false;
 			this.cedingRetentionData.disableGeneric = false;
 		} else {
 			this.disableRetentionTab = true;
-			// this.cedingRetentionData.tableData = [];
 			this.cedingRetentionData.disableAdd = true;
 			this.cedingRetentionData.disableGeneric = true;
 		}
@@ -336,7 +327,7 @@ export class TreatyShareComponent implements OnInit {
 		this.selected = ev;
 		this.treatyCommSelected = ev;
 		this.treatyCommData.disableGeneric = this.treatyCommSelected == undefined || this.treatyCommSelected == '';
-		this.tabset.select('treaty-share');
+		// this.tabset.select('treaty-share');
 
 		setTimeout(() => { this.getMtnTreatyShare(); }, 0);
 	}
@@ -380,7 +371,7 @@ export class TreatyShareComponent implements OnInit {
 		}
 	}
 
-	onCedingRetentionRowClick(ev) {
+	/*onCedingRetentionRowClick(ev) {
 		this.selected = ev;
 		this.cedingRetentionSelected = ev;
 		this.cedingRetentionData.disableGeneric = this.cedingRetentionSelected == undefined || this.cedingRetentionSelected == '';
@@ -400,7 +391,7 @@ export class TreatyShareComponent implements OnInit {
 			this.cedingRetentionData.disableGeneric = true;
 			this.cedingRetentionTable.refreshTable();
 		}
-	}
+	}*/
 
 	alignTreatyYear() {
 		setTimeout(() => {
@@ -502,7 +493,7 @@ export class TreatyShareComponent implements OnInit {
 	    }
 	}
 
-	openCedingCoRetentionLOV(ev) {
+	/*openCedingCoRetentionLOV(ev) {
 		this.hiddenCedingCo = this.cedingRetentionData.tableData.filter(a => a.cedingId !== undefined && !a.deleted && a.showMG != 1).map(a => a.cedingId);
 		this.cedingCoRetentionLOV.modal.openNoClose();
 		this.cedingRetentionLOVRow = ev.index;
@@ -562,7 +553,7 @@ export class TreatyShareComponent implements OnInit {
 				this.cedingRetentionTable.onRowClick(null, this.cedingRetentionData.tableData[this.cedingRetentionData.tableData.indexOf(this.cedingRetentionSelected)]);
 			}, 0);
 		}
-	}
+	}*/
 
 	onClickSave() {
 		var td1 = this.treatyYearData.tableData;
@@ -708,11 +699,9 @@ export class TreatyShareComponent implements OnInit {
 						});
 					});
 
-
 					if(tc1 || tc2 || tc3) {
 						this.params.saveTreatyComm.push(tc);
 					}
-					
 				});
 			} else if(a.deleted) {
 				a.treatyCommList.forEach(tc => {

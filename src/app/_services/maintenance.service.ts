@@ -677,10 +677,12 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnApproval', params, header);
     }
 
-    getMtnRetAmt(lineCd, lineClassCd){
+    getMtnRetAmt(lineCd, lineClassCd, currencyCd, retentionId){
 		const params = new HttpParams()
 		     		.set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
-		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd));
+		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd))
+		     		.set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd))
+		     		.set('retentionId', (retentionId === null || retentionId === undefined ? '' : retentionId));
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnRetAmt", {params});
 	}
