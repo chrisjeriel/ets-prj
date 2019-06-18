@@ -6,7 +6,7 @@
         <div class="custom-row-inline-inset">
           <div class="row">
             <div class="col-sm-10">
-              <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+              <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2">
               <fieldset class="scheduler-border">
@@ -14,7 +14,10 @@
                 <div class="custom-row-inline-inset">
                   <div style="margin-left: 47px !important;">
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Open</label>
+                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">In Progress</label>
+                    </div>
+                    <div class="form-row">
+                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Temporary Close</label>
                     </div>
                     <div class="form-row">
                       <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Close</label>
@@ -136,25 +139,25 @@
                     <div class="col-sm-6">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Claim No</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="EEI-2018-00043"
+                        <input type="text" class="form-control form-control-sm cust-sm"
                           required>
                         <label class="form-control-sm col-sm-2">Status</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="In Progress"
+                        <input type="text" class="form-control form-control-sm cust-sm"
                           required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Policy No</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="EEI-2018-00066-078-0008-000"
+                        <input type="text" class="form-control form-control-sm cust-sm"
                           required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Ceding Co</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="CHARTER PING AN INSURANCE CORP."
+                        <input type="text" class="form-control form-control-sm cust-sm"
                           required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Insured</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="A.B. Industries, Inc."
+                        <input type="text" class="form-control form-control-sm cust-sm"
                           required>
                       </div>
                       <div class="input-group">
@@ -167,33 +170,29 @@
                     <div class="col-sm-6">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Date</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="05/09/2018"
+                        <input type="text" class="form-control form-control-sm cust-sm"
                           required>
                         <label class="form-control-sm col-sm-2">Currency</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="PHP" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Details</label>
-                        <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"
-                          placeholder="Damage electric cables and suppply lines on 2nd"></textarea>
+                        <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"></textarea>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Total Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="4,000,000.00"
-                          numbers-only required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" numbers-only required>
                         <label class="form-control-sm col-sm-2" style="padding-right: 3px !important;">Total
                           Payment</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="0.00"
-                          numbers-only required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" numbers-only required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Adjusters</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="TLP Adj. / ACD Co. Inc."
-                          required>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Processed By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="CLECOH" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
                       </div>
                     </div>
                   </div>
@@ -203,11 +202,11 @@
                       <div class="input-group">
                         <label class="form-control-sm col-sm-1" style="margin-left:-3px !important;">Reason</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-right: 4px !important;"
-                          placeholder="IND" required>
+                          required>
                         <div class="text-search-ico" style="margin: -2px 6px 18px -23px !important;padding-top: 2px !important;">
                           <a><i class="fa fa-search"></i></a></div>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;"
-                          placeholder="Incomplete documents" required>
+                         required>
                       </div>
                     </div>
 

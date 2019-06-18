@@ -32,27 +32,29 @@ export class ClmChangeClaimStatusComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: [],
-    dataTypes: [],
-    pagination: true,
-    pageStatus: true,
-    tableOnly: true,
+    tHeader: ["Claim No", "Status", "Policy No", "Ceding Company", "Insured"],
+    dataTypes: ["text","text", "text", "text", "text"],
+    paginateFlag: true,
+    infoFlag: true,
+    searchFlag: true,
     pageLength: 10,
-    checkFlag: true,
-    resizable: [true, true, true, true, true, true, true, true, true, true, true, true, true],
+    uneditable:[true,true,true,true,true,true],
+    keys:['claimNo','status','policyNo','cedingCom','Insured'],
+    widths: ['auto','auto','auto','auto','auto'],
+    pageID: 1
   };
 
   constructor(private titleService: Title, private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Clm | Change Claim Status");
-    this.passData.tHeader.push("Claim No", "Status", "Policy No", "Ceding Company", "Insured");
-    this.passData.dataTypes.push("text", "text", "text", "text", "text");
-    this.passData.tableData = this.tableData;
+    this.getClaimStatus();
   }
 
   search(event) {
     $('#modalSearch > #modalBtn').trigger('click');
   }
 
+  getClaimStatus(){
+
+  }
 }
