@@ -21,6 +21,7 @@ export class PolAlopComponent implements OnInit {
   @ViewChild('myForm') form:any;
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
+  @ViewChild("indemFrom") indemFrom:any;
 
   aLOPInfo: ALOPInfo = new ALOPInfo();
   
@@ -195,7 +196,9 @@ export class PolAlopComponent implements OnInit {
           console.log(data)
           if (data.policy != null) {
             this.policyId = data.policy.policyId;
-            //this.polAlopData = data.policy.alop;
+            console.log(data.policy.expiryDate);
+            console.log(this.ns.toDateTimeString(data.policy.expiryDate));
+            console.log(new Date(data.policy.expiryDate).getDate()+1);
             this.polAlopData.issueDate = data.policy.inceptDate == null? null:this.ns.toDateTimeString(data.policy.inceptDate);
             this.polAlopData.expiryDate = data.policy.expiryDate == null? null:this.ns.toDateTimeString(data.policy.expiryDate);
             this.polAlopData.indemFromDate = data.policy.alop.indemFromDate == null? null:this.ns.toDateTimeString(data.policy.alop.indemFromDate);
@@ -415,6 +418,16 @@ export class PolAlopComponent implements OnInit {
      unHighlight(this.to);
      unHighlight(this.from);
      this.dateErFlag = false;
+    }
+
+    if((new Date(this.polAlopData.indemFromDate) > new Date(this.polAlopData.expiryDate))){
+      highlight(this.to);
+      highlight(this.indemFrom);
+      this.dateErFlag = true;
+    }else{
+      unHighlight(this.to);
+      unHighlight(this.indemFrom);
+      this.dateErFlag = false;
     }
 
     if(this.polAlopData.issueDate == ""){
