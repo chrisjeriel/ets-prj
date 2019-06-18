@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { ClaimPaymentRequests, ClaimsHistoryInfo, QSOA } from '@app/_models';
+import { environment } from '@environments/environment';
 
 @Injectable({
 	providedIn: 'root'
@@ -35,5 +36,21 @@ export class ClaimsService {
 		];
 		return this.claimsHistoryInfo;
 	}
+
+	getAttachment(claimId:string,claimNo?:string) {
+        const params = new HttpParams()
+             .set('claimNo', (claimNo === null || claimNo === undefined ? '' : claimNo) )
+             .set('claimId',(claimId === null || claimId === undefined ? '' : claimId) )
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimsAttachment',{params});
+    }
+
+    saveQuoteAttachment(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimsAttachment',params,header);
+    }
 
 }
