@@ -196,6 +196,10 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 	}
 
 	lineClassChanged(ev) {
+		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
+			this.getMtnRetAmt();
+		}
+		
 		setTimeout(() => {
 			$('#lc-list').removeClass('ng-dirty');
 		}, 0);

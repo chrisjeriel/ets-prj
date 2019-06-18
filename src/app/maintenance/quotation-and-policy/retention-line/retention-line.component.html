@@ -28,7 +28,7 @@
 						            <div class="col-sm-3">
 						            	<div class="input-group">
 							            	<label class="form-control-sm text-right" style="margin-bottom: 0px">Currency</label>
-							            	<select id="c-list" class="form-control form-control-sm cust-sm" [(ngModel)]="currencyCd" [disabled]="lineDesc == '' || currencyList.length == 0 || disableLCList" (change)="currencyChanged($event)">
+							            	<select id="c-list" class="form-control form-control-sm cust-sm" [(ngModel)]="currencyCd" [disabled]="lineClassCd == '' || currencyList.length == 0 || disableLCList" (change)="currencyChanged($event)">
 							            		<option *ngFor="let c of currencyList" [value]="c.currencyCd">{{ c.currencyCd + ' - ' + c.description }}</option>
 							            	</select>
 						            	</div>
