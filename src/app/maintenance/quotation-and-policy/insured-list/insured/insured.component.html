@@ -178,7 +178,7 @@
 </div>
 
 <app-confirm-save (onYes)="onSaveMtnInsured()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button (onYes)="onSaveMtnInsured('cancel')" [url]="'/maintenance-insured'" ></app-cancel-button>
 
 <ng-template #confirmLeave>

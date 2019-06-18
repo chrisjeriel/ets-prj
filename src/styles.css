@@ -663,6 +663,7 @@ body .ui-datepicker table td {
 body .ui-datepicker {
     padding: 0.6em 0.6em 0 0.6em !important;
     min-width: auto !important;
+    z-index: 1050 !important;
 }
 
 body .ui-datepicker .ui-timepicker {

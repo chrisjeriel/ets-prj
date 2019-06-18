@@ -6,17 +6,17 @@
 				<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-1">Claim No</label>
-					<input type="text" disabled value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm-3">
+					<input type="text" value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm-3" readonly> 
 					<label class="form-control-sm col-sm-1">Insured</label>
-					<input type="text" disabled value="2nd Inn. Inc" class="form-control form-control-sm cust-sm col-sm-5">
+					<input type="text" value="2nd Inn. Inc" class="form-control form-control-sm cust-sm col-sm-5" readonly>
 					<div class="col-sm-1"></div>
 				</div>
 				<div class="input-group" style="margin-bottom: -13px !important;">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-1" style="height: auto;">Policy No</label>
-					<input type="text" disabled value="CAR-2018-00001-99-0001-000" class="form-control form-control-sm cust-sm col-sm-3">
+					<input type="text" value="CAR-2018-00001-99-0001-000" class="form-control form-control-sm cust-sm col-sm-3" readonly>
 					<label class="form-control-sm col-sm-1">Risk</label>
-					<input type="text" disabled value="Ayala Wakeboard" class="form-control form-control-sm cust-sm col-sm-5">
+					<input type="text" value="Ayala Wakeboard" class="form-control form-control-sm cust-sm col-sm-5" readonly>
 					<div class="col-sm-1"></div>
 				</div>
 			</div>
@@ -28,19 +28,23 @@
 			<div class="custom-row-inline-inset">
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable [passData]="passDataHistory"></app-cust-editable-non-datatable>
+						<app-cust-editable-non-datatable [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt();" #histTbl></app-cust-editable-non-datatable>
 					</div>
 				</div>
-				<div class="form-row" style="margin-top: -10px;">
+				<div class="form-row" style="margin-top: -10px;margin-right: 22px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-1">Processed By</label>
-						<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+						<input type="text" class="form-control form-control-sm col-sm" [ngModel]="clmHistoryData.createUser" readonly>
 						<label class="form-control-sm col-sm-1">Processed Date</label>
-						<input type="datetime-local" class="form-control form-control-sm col-sm">
+						<div class="col-sm dp-cont">
+                            <datepicker [value]="clmHistoryData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                        </div>
 						<label class="form-control-sm col-sm-1">Last Updated By</label>
-						<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+						<input type="text" class="form-control form-control-sm col-sm" [ngModel]="clmHistoryData.updateUser" readonly>
 						<label class="form-control-sm col-sm-1">Last Update</label>
-						<input type="datetime-local" class="form-control form-control-sm col-sm">
+						<div class="col-sm dp-cont">
+                            <datepicker [value]="clmHistoryData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -52,23 +56,19 @@
 					<div class="custom-row-inline-inset">
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="700,000.00"
-							 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' required>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossResAmt"  mask="comma_separator.2" readonly>
 							<label class="form-control-sm col-sm-1">Status</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Open" required>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm" readonly>
 							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-							 placeholder="699,375.64" required>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossPdAmt" mask="comma_separator.2" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-							 required>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expResAmt" mask="comma_separator.2" readonly>
 							<label class="form-control-sm col-sm-1">Status</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Open" required>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm" readonly>
 							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-							 placeholder="0.00" required>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.expPdAmt" mask="comma_separator.2" readonly>
 						</div>
 						<!-- <div class="input-group">
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Total Reserve</label>
@@ -82,13 +82,11 @@
 						</div> -->
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Total Reserve</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-							 required>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.totalRes" mask="comma_separator.2" readonly>
 							<label class="form-control-sm col-sm-1"></label>
 							<div type="text" class="cust-sm col-sm" required style="padding: 0px 5px"></div>
 							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Total Payment</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-							 placeholder="0.00" required>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.totalPayt" mask="comma_separator.2" readonly>
 						</div>
 					</div>
 				</fieldset>
@@ -116,7 +114,9 @@
 							</div>
 							<div class="form-group col-sm-6" style="margin-bottom: 0px;">
 								<label class="form-control-sm top-label">&nbsp;Approved Date</label>
-								<input type="datetime-local" class="form-control form-control-sm cust-sm" placeholder="hello">
+								<div class="col-sm dp-cont" style="margin-left: -2px !important">
+		                            <datepicker [value]="clmHistoryData.approvedDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+		                        </div>
 							</div>
 						</div>
 					</div>
@@ -127,57 +127,58 @@
 			<div class="form-group col-sm">
 				<div class="col-md-13 text-center">
 					<div class="cust-btn-container" style="margin-top: 10px; width: 100% !important;">
-						<app-modal [btnTitle]="'Reserve Status'" style="margin-bottom: 2px;padding-top: 2px !important;">
-							<div header style="width: 800px !important;">Reserve Status</div>
-							<div body>
-								<fieldset class="scheduler-border" style="margin-top: -23px !important;">
-									<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-									<div class="custom-row-inline-inset">
-										<div class="input-group">
-											<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
-											<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="700,000.00"
-											 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' required>
-											<label class="form-control-sm col-sm-1">Status</label>
-											<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Open" required>
-											<div class="text-search-ico">
-												<a><i class="fa fa-search"></i></a></div>
-											<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
-											<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-											 placeholder="699,375.64" required>
-										</div>
-										<div class="input-group">
-											<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
-											<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="0.00"
-											 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' required>
-											<label class="form-control-sm col-sm-1">Status</label>
-											<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Open" required>
-											<div class="text-search-ico">
-												<a><i class="fa fa-search"></i></a></div>
-											<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
-											<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-											 placeholder="0.00" required>
-										</div>
-									</div>
-								</fieldset>
-							</div>
-							<div footer class="text-center" style="width: 100% !important;margin-top: -17px !important;">
-								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
-							</div>
-						</app-modal>
-						<app-modal [btnTitle]="'Approved Amount'" style="margin-bottom: 2px;padding-top: 2px !important;">
-							<div header style="width: 800px !important;">Approved Amount</div>
-							<div body>
-								<app-cust-editable-non-datatable [passData]="passDataAdj"></app-cust-editable-non-datatable>
-							</div>
-							<div footer class="text-center" style="width: 100% !important;">
-								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
-							</div>
-						</app-modal>
-						<button type="button" class="cust-btn"><a>Cancel</a></button>
-						<button type="button" class="cust-btn"><a>Save</a></button>
+						<button type="button" class="cust-btn" (click)="showResStatMdl()"><a>Reserve Status</a></button>
+						<button type="button" class="cust-btn" (click)="showApprovedAmtMdl()"><a>Approved Amount</a></button>
+						<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 					</div>
 				</div>
 			</div>
 		</div>
+
+<app-modal class="d-none" id="resStatMdl">
+    <div header>Reserve Status</div>
+    <div body class="container-flex text-center" style="min-width: 750px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <div class="custom-row-inline-inset">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
+					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" readonly>
+					<label class="form-control-sm col-sm-1">Status</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm" required>
+					<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+					<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
+					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" readonly>
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
+					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" readonly>
+					<label class="form-control-sm col-sm-1">Status</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm" required>
+					<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+					<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
+					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" readonly>
+				</div>
+			</div>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Save</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="approvedAmtMdl">
+    <div header>Approved Amount</div>
+    <div body class="container-flex text-center" style="min-width: 750px !important;">
+       <app-cust-editable-non-datatable [passData]="passDataApprovedAmt"></app-cust-editable-non-datatable>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Save</a></button>
+    </div>
+</app-modal>
+
+<app-confirm-save (onYes)="onSaveClaimHistory()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button (onYes)="onSaveClaimHistory('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>

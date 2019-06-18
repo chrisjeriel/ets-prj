@@ -41,9 +41,9 @@ export class MtnCrestaZoneComponent implements OnInit {
     }
   	this.maintenanceService.getMtnCrestaZone().subscribe((data: any) =>{
   		for(var zoneCount = 0; zoneCount < data.crestaZone.length; zoneCount++){
-  			this.crestaZoneListing.tableData.push(
-  				new Row(data.crestaZone[zoneCount].zoneCd, data.crestaZone[zoneCount].zoneDesc)
-  			);  		
+        if(data.crestaZone[zoneCount].activeTag === 'Y'){
+          this.crestaZoneListing.tableData.push(new Row(data.crestaZone[zoneCount].zoneCd, data.crestaZone[zoneCount].zoneDesc));  
+        }
   		}
   		this.table.refreshTable();
   	});

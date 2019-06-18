@@ -21,7 +21,7 @@ export class PolMxLineComponent implements OnInit {
 	passData: any = {
 		tableData:[],
 		tHeader				:["Line Code", "Description", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
-		dataTypes			:["pk-cap", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text"],
+		dataTypes			:["pk-cap", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text", "time-string"],
 		nData:{ 
 			newRec			: 1,
 			lineCd          : '',
@@ -35,7 +35,8 @@ export class PolMxLineComponent implements OnInit {
 			referenceNo     : '',
 			sortSeq         : '',
 			remarks         : '',
-			isNew			: true
+			isNew			: true,
+			timeString		: ''
 		},
 		addFlag				: true,
 		genericBtn			:'Delete',
@@ -49,13 +50,19 @@ export class PolMxLineComponent implements OnInit {
 		widths				: ['auto','350',1,1,1,1,1,1,'auto','auto','auto'],
 		pageID				: 'line-mtn-line',
 		mask: {
-	  		lineCd: 'AAAAAAA'
+	  		lineCd		: 'AAAAAAA',
 	  	},
-		keys				: ['lineCd','description','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks'],
+	  	limit: {
+	  		description : 100,
+	  		referenceNo : 4,
+	  		sortSeq		: 3,
+	  		remarks		: 100
+	  	},
+		keys				: ['lineCd','description','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks','timeString'],
 	};
 
 	cancelFlag				: boolean;
-	//loading					: boolean;
+	fromCancel				: boolean;
 	dialogIcon				: string;
 	dialogMessage			: string;
 	arrLineCd     			: any     	= [];
@@ -90,6 +97,7 @@ export class PolMxLineComponent implements OnInit {
 	ngOnInit() {
 		this.titleService.setTitle('Mtn | Line');
 		this.getMtnLine();
+
 	}
 
 	onSaveMtnLine(cancelFlag?){
@@ -104,8 +112,10 @@ export class PolMxLineComponent implements OnInit {
 			if(record.lineCd === '' || record.lineCd === null || record.description === '' || record.description === null || record.cutOffTime === '' || record.cutOffTime === null){
 				if(!record.deleted){
 					isEmpty = 1;
+					this.fromCancel = false;
 				}
 			}else{
+				this.fromCancel = true;
 				if(record.edited && !record.deleted){
 					record.createUser		= (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
 					record.createDate		= (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
@@ -173,18 +183,26 @@ export class PolMxLineComponent implements OnInit {
 
 	getMtnLine(){
 		this.passData.tableData = [];
-		this.arrLineCd = [];
 		this.mtnService.getLineLOV('')
 		.subscribe(data => {
 			console.log(data);
 			this.passData.tableData = [];
-			this.arrLineCd = [];
-			var rec = data['line'].map(i => { i.createDate = this.ns.toDateTimeString(i.createDate); i.updateDate = this.ns.toDateTimeString(i.updateDate); return i} );
-			console.log(rec);
+			var rec = data['line'].map(i => {
+				i.createDate = this.ns.toDateTimeString(i.createDate);
+				i.updateDate = this.ns.toDateTimeString(i.updateDate);
+				var cutOffTimeString = i.cutOffTime.split(':');
+				if(Number(cutOffTimeString[0] < 12)){
+					cutOffTimeString[0] =Number(cutOffTimeString[0]) == 0 ?'12': cutOffTimeString[0];
+					i.timeString = cutOffTimeString[0] + ':' + cutOffTimeString[1] + ' AM';
+				}else if(Number(cutOffTimeString[0] >= 12)){
+					cutOffTimeString[0] =Number(cutOffTimeString[0]) == 12 ? cutOffTimeString[0] : String(Number(cutOffTimeString[0])-12).padStart(2,'0');
+					i.timeString = cutOffTimeString[0] + ':' + cutOffTimeString[1] + ' PM';
+				}
+
+				return i;
+			});
 			this.passData.tableData = rec;
-			for(let i of rec){
-				this.arrLineCd.push(i.lineCd);
-			}
+			console.log(this.passData.tableData);
 			this.table.refreshTable();
 			this.table.onRowClick(null, this.passData.tableData[0]);
 		});
@@ -248,6 +266,16 @@ export class PolMxLineComponent implements OnInit {
 	  		this.table.selected  = [this.table.indvSelect]
 	  		this.table.confirmDelete();
 	  	}
+	}
+
+	checkCancel(){
+		if(this.cancelFlag == true){
+			if(this.fromCancel){
+				this.cancelBtn.onNo();
+			}else{
+				return;
+			}
+		}
 	}
 
 }

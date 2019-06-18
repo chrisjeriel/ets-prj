@@ -7,10 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClaimsAttachmentComponent implements OnInit {
   passData: any = {
-  	tableData:[
-  		['Sample_01.doc','Claims Specifications Sample 1'],
-  		['Sample_02.doc','Claims Specifications Sample 2'],
-	],
+  	tableData:[],
   	tHeader:['File Name', 'Description', 'Actions'],
   	widths:['auto','auto',71],
   	checkFlag:true,
