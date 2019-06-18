@@ -225,7 +225,7 @@ span.ui-column-resizer {
                                        <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                             <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                                         </button> -->
-                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileName)">
+                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
                                         </button>
                                     </div>
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
@@ -378,7 +378,7 @@ span.ui-column-resizer {
                                <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                                 </button> -->
-                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileName)">
+                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileNameServer)">
                                 </button>
                             </td>
                         </tr>

@@ -34,6 +34,7 @@ export class PolAttachmentComponent implements OnInit {
         infoFlag: true,
         paginateFlag: true,
         pageLength: 10,
+        uneditable: [true, false],
         keys: ['fileName', 'description'],
         widths: ['auto', 'auto', 1]
     }
@@ -74,6 +75,7 @@ export class PolAttachmentComponent implements OnInit {
             this.attachmentData.tableData = [];
             if(data.polAttachmentList !== null){
                 for(var i of data.polAttachmentList.attachments){
+                    i.fileNameServer = this.notes.toDateTimeString(i.updateDate).match(/\d+/g).join('') + i.fileName;
                     this.attachmentData.tableData.push(i);
                 }
             }
@@ -87,6 +89,7 @@ export class PolAttachmentComponent implements OnInit {
             this.attachmentData.tableData = [];
             if(data.attachmentsList !== null){
                 for(var i of data.attachmentsList.attachmentsOc){
+                    i.fileNameServer = this.notes.toDateTimeString(i.updateDate).match(/\d+/g).join('') + i.fileName;
                     this.attachmentData.tableData.push(i);
                 }
             }
@@ -126,6 +129,9 @@ export class PolAttachmentComponent implements OnInit {
             }else{
                 this.dialogMessage="";
                 this.dialogIcon = "";
+                if(data.uploadDate != null){
+                  this.uploadMethod(data.uploadDate);
+                }
                 $('#polAttachment > #successModalBtn').trigger('click');
                 this.retrievePolAttachmentOc();
             }
@@ -140,42 +146,48 @@ export class PolAttachmentComponent implements OnInit {
             }else{
                 this.dialogMessage="";
                 this.dialogIcon = "";
+                if(data.uploadDate != null){
+                  this.uploadMethod(data.uploadDate);
+                }
                 $('#polAttachment > #successModalBtn').trigger('click');
                 this.retrievePolAttachment();
             }
           });
         }
+        
+    }
 
+    uploadMethod(date){
+      //upload
+      for(let files of this.filesList){
+        if (files.length == 0) {
+          console.log("No file selected!");
+          return
 
-        //upload
-        for(let files of this.filesList){
-          if (files.length == 0) {
-            console.log("No file selected!");
-            return
+        }
+        let file: File = files[0];
+        var newFile = new File([file], date + file.name, {type: file.type});
 
-          }
-          let file: File = files[0];
-
-          this.upload.uploadFile(file)
-            .subscribe(
-              event => {
-                if (event.type == HttpEventType.UploadProgress) {
-                  const percentDone = Math.round(100 * event.loaded / event.total);
-                  console.log(`File is ${percentDone}% loaded.`);
-                } else if (event instanceof HttpResponse) {
-                  console.log('File is completely loaded!');
-                }
-              },
-              (err) => {
-                console.log("Upload Error:", err);
-              }, () => {
-                console.log("Upload done");
+        this.upload.uploadFile(newFile)
+          .subscribe(
+            event => {
+              if (event.type == HttpEventType.UploadProgress) {
+                const percentDone = Math.round(100 * event.loaded / event.total);
+                console.log(`File is ${percentDone}% loaded.`);
+              } else if (event instanceof HttpResponse) {
+                console.log('File is completely loaded!');
               }
-            )
-          }
-          //clear filelist array after upload
-          this.table.filesToUpload = [];
-          this.table.refreshTable();
+            },
+            (err) => {
+              console.log("Upload Error:", err);
+            }, () => {
+              console.log("Upload done");
+            }
+          )
+        }
+        //clear filelist array after upload
+        this.table.filesToUpload = [];
+        this.table.refreshTable();
     }
 
     cancel(){

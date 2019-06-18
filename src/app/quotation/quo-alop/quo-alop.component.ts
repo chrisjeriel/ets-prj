@@ -20,7 +20,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class QuoAlopComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('mainCancel') cancelBtn : CancelButtonComponent;
+  @ViewChild('itemInfoCancel') itemInfoCancel : CancelButtonComponent;
   @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
@@ -326,6 +327,7 @@ export class QuoAlopComponent implements OnInit {
     openAlopItem(){
       this.itemInfoData.tableData = [];
       this.showAlopItem = true;
+      this.table.loadingFlag = true;
       this.alopItem();
       setTimeout(()=>{
         $('#alopItemModal #modalBtn').trigger('click');
@@ -342,11 +344,17 @@ export class QuoAlopComponent implements OnInit {
               this.itemInfoData.tableData.push(dataInfos[i]);
             }
             this.table.refreshTable();
+            this.table.loadingFlag = false;
+      },
+      error =>{
+        this.table.refreshTable();
+        this.table.loadingFlag = false;
       });
 
     }
 
-    saveAlopItem(){
+    saveAlopItem(cancelFlag?){
+      //this.cancelFlag = cancelFlag !== undefined;
       let savedData: any = {};
       savedData.quoteId = this.quotationInfo.quoteId;
       

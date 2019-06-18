@@ -8,6 +8,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { MtnRegionComponent } from '@app/maintenance/mtn-region/mtn-region/mtn-region.component';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-province',
@@ -68,17 +70,16 @@ export class ProvinceComponent implements OnInit {
     desc: any;
 
   cancelFlag: boolean;
-  provinceCdArray : any = [];
   btnDisabledSave: boolean = true;
   tempTableData:[];
   mtnProvinceReq  : any = { 
                 "deleteProvince": [],
                 "saveProvince"  : []}
-  editedData:any[] = [];
   deletedData:any[] =[];
   selectedData  : any;
   provinceCD : any;
   deleteBool : boolean;
+  oldRegionCd: any;
 
   constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal) { }
 
@@ -110,9 +111,25 @@ export class ProvinceComponent implements OnInit {
   	return cb === 'Y'?true:false;
   }
 
-  showRegionLOV(){
-  	$('#regionLOV #modalBtn').trigger('click');
-    $('#regionLOV #modalBtn').addClass('ng-dirty')
+  showRegionLOV(ev){
+    ev.preventDefault();
+    if($('.ng-dirty').length != 0 ){
+        const subject = new Subject<boolean>();
+        const modal = this.modalService.open(ConfirmLeaveComponent,{
+            centered: true, 
+            backdrop: 'static', 
+            windowClass : 'modal-size'
+        });
+        modal.componentInstance.subject = subject;
+        subject.subscribe(a=>{
+           if(a){
+            $('#regionLOV #modalBtn').trigger('click');
+          } 
+        })
+    } else {
+       $('#regionLOV #modalBtn').trigger('click');
+    }
+  	
   }
 
   setProvince(event){
@@ -135,6 +152,7 @@ export class ProvinceComponent implements OnInit {
     this.btnDisabledSave = false;
     this.passData.disableGeneric = true; 
     this.passData.tableData = [];
+    this.oldRegionCd = this.regionCD;
   	this.mtnService.getMtnProvince(this.regionCD,'').subscribe(data=>{
       
        if (data['region'].length === 0){
@@ -151,7 +169,8 @@ export class ProvinceComponent implements OnInit {
                                             createDate  : this.ns.toDateTimeString(rec.createDate),
                                             updateUser  : rec.updateUser,
                                             updateDate  : this.ns.toDateTimeString(rec.updateDate),
-                                            uneditable  : ['provinceCd']
+                                            uneditable  : ['provinceCd'],
+                                            okDelete    : rec.okDelete
                                            });
             }
         }
@@ -171,12 +190,44 @@ export class ProvinceComponent implements OnInit {
   }
 
   checkCode(ev){
-    if (this.isEmptyObject(this.regionCD)){
-       this.clear();
+    $('#regionCode').removeClass('ng-dirty');
+    ev.preventDefault();
+
+    if($('.ng-dirty').length != 0 ){
+        const subject = new Subject<boolean>();
+        const modal = this.modalService.open(ConfirmLeaveComponent,{
+            centered: true, 
+            backdrop: 'static', 
+            windowClass : 'modal-size'
+        });
+        modal.componentInstance.subject = subject;
+
+        subject.subscribe(a=>{
+           if(a){
+            this.showProvinceList(ev);
+          } else {
+            this.regionCD = this.oldRegionCd; 
+          }
+        })
     } else {
-      this.ns.lovLoader(ev, 1);
-      this.regionLov.checkCode(this.regionCD,ev);
+       this.showProvinceList(ev);
     }
+   
+  }
+
+  showProvinceList(ev){
+            $('.ng-dirty').removeClass('ng-dirty');
+            $('#cust-table-container').removeClass('ng-dirty');
+            this.mtnProvinceReq.saveProvince = [];
+            this.mtnProvinceReq.deleteProvince = [];
+
+             if (this.isEmptyObject(this.regionCD)){
+               this.clear();
+            } else {
+              this.ns.lovLoader(ev, 1);
+              this.regionLov.checkCode(this.regionCD,ev);
+              this.deletedData = [];
+     }
   }
 
   isEmptyObject(obj) {
@@ -191,13 +242,15 @@ export class ProvinceComponent implements OnInit {
   onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
       if(this.checkFields()){
-        if(this.hasDuplicates(this.provinceCdArray)){
-          this.dialogMessage="Unable to save the record. Province Code must be unique.";
-          this.dialogIcon = "warning-message";
-          this.successDialog.open();
-        } else {
-          this.confirmDialog.confirmModal();
-        }
+        let provinceCds:string[] = this.provinceTable.passData.tableData.map(a=>a.provinceCd);
+          if(provinceCds.some((a,i)=>provinceCds.indexOf(a)!=i)){
+            this.dialogMessage = 'Unable to save the record. Province Code must be unique.';
+            this.dialogIcon = 'error-message';
+            this.successDialog.open();
+            return;
+          } else {
+                this.confirmDialog.confirmModal();
+          }
       }else{
         this.dialogMessage="Please check field values.";
         this.dialogIcon = "error";
@@ -206,52 +259,36 @@ export class ProvinceComponent implements OnInit {
   }
 
   change(event){
-    $('#cust-table-container').addClass('ng-dirty');
   }
 
   checkFields(){
-    this.provinceCdArray = [];
       for(let check of this.passData.tableData){
-        this.provinceCdArray.push(check.provinceCd);
-        if(check.provinceCd === null || Number.isNaN(check.provinceCd)  || check.description === null || check.description.length === 0){
+        if(check.provinceCd === null || check.provinceCd.toString().length > 6 || Number.isNaN(check.provinceCd)  || check.description === null || check.description.length === 0){    
           return false;
-        }
+        } 
       }
       return true;
   }
 
-  hasDuplicates(array) {
-    return (new Set(array)).size !== array.length;
-  }
-
   onClickSaveProvince(cancelFlag?){
-    this.mtnProvinceReq.saveProvince = [];
-    this.mtnProvinceReq.deleteProvince = [];
-    this.editedData = [];
-    this.deletedData = [];
-    
-    for(var i=0;i<this.passData.tableData.length;i++){
-       if(this.passData.tableData[i].edited){
-              this.editedData.push(this.passData.tableData[i]);
-              this.editedData[this.editedData.length - 1].regionCd   = this.regionCD;
-              this.editedData[this.editedData.length - 1].activeTag  = this.cbFunc2(this.passData.tableData[i].activeTag);
-              this.editedData[this.editedData.length - 1].updateUser = this.ns.getCurrentUser();
-              this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);             
-       }    
-    }    
-            this.mtnProvinceReq.saveProvince   = this.editedData;
-            this.mtnProvinceReq.deleteProvince = this.deletedData; 
-
-            if(this.mtnProvinceReq.saveProvince.length > 0){
+     this.mtnProvinceReq.saveProvince = [];
+     this.mtnProvinceReq.deleteProvince = [];
+     this.mtnProvinceReq.saveProvince = this.passData.tableData.filter(a=>a.edited && !a.deleted);
+     this.mtnProvinceReq.saveProvince.forEach(a=>a.updateUser = this.ns.getCurrentUser());
+     this.mtnProvinceReq.saveProvince.forEach(a=>a.activeTag = this.cbFunc2(a.activeTag));
+     this.mtnProvinceReq.saveProvince.forEach(a=>a.regionCd = this.regionCD);
+     this.mtnProvinceReq.deleteProvince = this.deletedData; 
+     
+      if(this.mtnProvinceReq.saveProvince.length === 0 && this.mtnProvinceReq.deleteProvince.length === 0  ){     
+              this.confirmDialog.showBool = false;
+              this.dialogIcon = "success";
+              this.successDialog.open();
+            } else {
               this.confirmDialog.showBool = true;
               this.passData.disableGeneric = true;
-              this.saveProvince(this.mtnProvinceReq);
-            } else {
-              this.confirmDialog.showBool = false;
-              this.dialogIcon = 'info';
-              this.dialogMessage = 'Nothing to save';
-              this.successDialog.open();
-            }
+              this.saveProvince(this.mtnProvinceReq);     
+      }
+
   }
 
   cbFunc2(cb){
@@ -259,6 +296,8 @@ export class ProvinceComponent implements OnInit {
   }
 
   saveProvince(obj){
+    this.deletedData = [];
+    console.log(JSON.stringify(obj));
     this.mtnService.saveMtnProvince(JSON.stringify(obj))
                 .subscribe(data => {
               if(data['returnCode'] == -1){
@@ -274,42 +313,37 @@ export class ProvinceComponent implements OnInit {
   }
 
   deleteProvince(){
-      if (this.selectedData.add){
+       if (this.selectedData.add){
           this.deleteBool = false;
-        }else {
-          this.deleteBool = true;  
-        }
-
-      this.provinceTable.indvSelect.deleted = true;
-      this.provinceTable.selected  = [this.provinceTable.indvSelect]
-      this.provinceTable.confirmDelete();
-
+          this.provinceTable.indvSelect.deleted = true;
+          this.provinceTable.selected  = [this.provinceTable.indvSelect];
+          this.provinceTable.confirmDelete();
+       }else {
+          this.deleteBool = true;
+          console.log(this.provinceTable.indvSelect.okDelete);  
+          if(this.provinceTable.indvSelect.okDelete == 'N'){
+            this.dialogIcon = 'info';
+            this.dialogMessage =  'You are not allowed to delete a Province that is already used by City, District or Block';
+            this.successDialog.open();
+          }else{
+            this.provinceTable.indvSelect.deleted = true;
+            this.provinceTable.selected  = [this.provinceTable.indvSelect]
+            this.provinceTable.confirmDelete();
+          }
+       }
   }
 
   onClickDelProvince(obj : boolean){
     this.mtnProvinceReq.saveProvince = [];
     this.mtnProvinceReq.deleteProvince = [];
-    this.editedData = [];
-    this.deletedData = [];
     this.passData.disableGeneric = true;
       if(obj){
-        this.mtnService.getMtnCity(this.regionCD,this.provinceCD,null).subscribe(data => {
-          if(data['region'].length > 0){
-             this.dialogMessage="You are not allowed to delete a Province that is used by City, District or Block.";
-             this.dialogIcon = "warning-message";
-             this.successDialog.open();
-             this.getMtnProvince();
-          } else {
             this.deletedData.push({
-                    "provinceCd": this.provinceCD
+                    "provinceCd": this.provinceCD,
+                    "regionCd": this.regionCD
                      });
-            this.mtnProvinceReq.saveProvince = this.editedData;
             this.mtnProvinceReq.deleteProvince = this.deletedData;     
-            this.saveProvince(this.mtnProvinceReq);
-          }
-        });
       } 
-
   }
 
   cancel(){
