@@ -95,6 +95,7 @@ export class QuoteEndorsementComponent implements OnInit {
     endorsementData: any = {
         tableData: [],
         tHeader: ['Endt Code', 'Endt Title', 'Remarks'],
+        dataTypes: ['text', 'text', 'text'],
         magnifyingGlass: ['endtCd'],
         nData:  {
           createDate: [0, 0, 0, 0, 0, 0, 0],
