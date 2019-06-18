@@ -198,11 +198,9 @@ export class PolMxLineComponent implements OnInit {
 					cutOffTimeString[0] =Number(cutOffTimeString[0]) == 12 ? cutOffTimeString[0] : String(Number(cutOffTimeString[0])-12).padStart(2,'0');
 					i.timeString = cutOffTimeString[0] + ':' + cutOffTimeString[1] + ' PM';
 				}
-
 				return i;
 			});
 			this.passData.tableData = rec;
-			console.log(this.passData.tableData);
 			this.table.refreshTable();
 			this.table.onRowClick(null, this.passData.tableData[0]);
 		});
