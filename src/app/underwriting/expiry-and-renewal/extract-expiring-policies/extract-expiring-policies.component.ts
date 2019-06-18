@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
   selector: 'app-extract-expiring-policies',
@@ -19,11 +20,14 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
   @ViewChild('ceding') cedingLov: CedingCompanyComponent;
+  @ViewChild('extPolLov') lovTable: CustNonDatatableComponent;
 
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   lastExtraction: LastExtraction = new LastExtraction();
   
   byDate: any = '';
+
+  radioVal: any = 'bypolno';
   extractedPolicies: number = 0;
 
   policyId:string = "";
@@ -53,8 +57,40 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
   polNo: any[] = [];
 
+  passDataLOV: any = {
+    tableData: [],
+    tHeader:["Policy No", "Ceding Company", "Insured", "Risk","Inception Date","Expiry Date"],  
+    dataTypes: ["text","text","text","text","date","date"],
+    pageLength: 10,
+    resizable: [false,false,false,false,false],
+    tableOnly: false,
+    keys: ['policyNo','cedingName','insuredDesc','riskName','inceptDate','expiryDate'],
+    pageStatus: true,
+    pagination: true,
+    filters: [
+    {key: 'policyNo', title: 'Policy No.', dataType: 'text'},
+    {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+    {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+    {key: 'riskName',title: 'Risk',dataType: 'text'},
+    { keys: {
+            from: 'inceptDateFrom',
+            to: 'inceptDateTo'
+        }, title: 'Incept Date',         dataType: 'datespan'},
+    { keys: {
+            from: 'expiryDateFrom',
+            to: 'expiryDateTo'
+        }, title: 'Expiry Date',         dataType: 'datespan'},
+    ],
+    pageID: 'extPolLov'
+  }
+
+  selected: any = null;
+  searchArr: any[] = Array(6).fill('');
+  filtSearch: any[] = [];
+
   ngOnInit() {
     this.titleService.setTitle("Pol | Extract Expiring Policy");
+    this.getPolListing();
   }
 
   extract() {
@@ -76,10 +112,110 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
   }
 
+  getPolListing(param?) {
+    if(this.radioVal == 'bypolno') {
+      return;
+    } else {
+      this.lovTable.loadingFlag = true;
+      this.underWritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
+        var polList = data['policyList'];
+
+        polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE')
+                         .map(p => { p.riskName = p.project.riskName; return p; });
+        this.passDataLOV.tableData = polList;
+        this.lovTable.refreshTable();
+
+        if(param !== undefined) {
+          if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  
+            this.selected = polList[0];
+            this.setDetails();
+          } else if(polList.length === 0 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {
+            this.selected = null;
+            this.searchArr = Array(6).fill('');
+            this.polNo = Array(6).fill('');
+            this.getPolListing();
+            this.showLOV();
+          } else if(polList.length === 0 && this.searchArr.includes('%%')) {
+            this.getPolListing();
+          } else if(this.searchArr.includes('%%')) {
+            this.selected = null;
+          }
+        }
+      });
+    }
+  }
+
+  onRowClick(event) {    
+    if(Object.entries(event).length === 0 && event.constructor === Object){
+      this.selected = null;
+    } else {
+      this.selected = event;
+    }    
+  }
+
+  showLOV() {
+    $('#extPolLov > #modalBtn').trigger('click');
+  }
+
+  searchQuery(searchParams){
+    this.filtSearch = searchParams;
+    this.passDataLOV.tableData = [];
+    this.getPolListing(this.filtSearch);
+  }
+
+  setDetails(fromMdl?) {
+    if(this.selected != null) {
+      this.policyId = this.selected.policyId;
+      this.polNo = this.selected.policyNo.split('-');
+
+      if(fromMdl !== undefined) {
+        this.searchArr = this.polNo.map((a, i) => {
+          return (i == 0) ? a + '%' : (i == this.polNo.length - 1) ? '%' + a : '%' + a + '%';
+        });
+
+        this.search('forceSearch',{ target: { value: '' } });
+      }
+    }
+  }
+
+  search(key,ev) {
+    if(!this.searchArr.includes('%%')) {
+      this.selected = null;
+    }
+
+    var a = ev.target.value;
+
+    if(key === 'lineCd') {
+      this.searchArr[0] = a == '' ? '%%' : a.toUpperCase() + '%';
+    } else if(key === 'year') {
+      this.searchArr[1] = '%' + a + '%';
+    } else if(key === 'seqNo') {
+      this.searchArr[2] = a == '' ? '%%' : '%' + String(a).padStart(5, '0') + '%';
+    } else if(key === 'cedingId') {
+      this.searchArr[3] = a == '' ? '%%' : '%' + String(a).padStart(3, '0') + '%';
+    } else if(key === 'coSeriesNo') {
+      this.searchArr[4] = a == '' ? '%%' : '%' + String(a).padStart(4, '0') + '%';
+    } else if(key === 'altNo') {
+      this.searchArr[5] = a == '' ? '%%' : '%' + String(a).padStart(3, '0');
+    }
+
+    if(this.searchArr.includes('')) {
+      this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+    }
+    
+    this.getPolListing([{ key: 'policyNo', search: this.searchArr.join('-') }]);
+  }
+
   prepareExtractParameters() {
-    this.expiryParameters.policyId         = this.policyId; 
-    this.expiryParameters.fromExpiryDate   = this.fromExpiryDate; 
-    this.expiryParameters.toExpiryDate     = this.toExpiryDate; 
+    this.expiryParameters.policyId         = this.radioVal == 'bypolno' ? this.policyId : '';
+    this.expiryParameters.polLineCd        = this.radioVal == 'bypolno' ? this.polNo[0] : '';
+    this.expiryParameters.polYear          = this.radioVal == 'bypolno' ? this.polNo[1] : '';
+    this.expiryParameters.polSeqNo         = this.radioVal == 'bypolno' ? this.polNo[2] : '';
+    this.expiryParameters.polCedingId      = this.radioVal == 'bypolno' ? this.polNo[3] : '';
+    this.expiryParameters.coSeriesNo       = this.radioVal == 'bypolno' ? this.polNo[4] : '';
+    this.expiryParameters.altNo            = this.radioVal == 'bypolno' ? this.polNo[5] : '';
+    this.expiryParameters.fromExpiryDate   = this.radioVal == 'bydate' ? this.fromExpiryDate : this.radioVal == 'bymoyo' ? this.getFromAndToMon('from') : ''; 
+    this.expiryParameters.toExpiryDate     = this.radioVal == 'bydate' ? this.toExpiryDate : this.radioVal == 'bymoyo' ? this.getFromAndToMon('to') : ''; 
     this.expiryParameters.lineCd           = this.lineCd; 
     this.expiryParameters.cedingId         = this.cedingId; 
     this.expiryParameters.cessionType      = this.typeOfCessionId; 
@@ -102,6 +238,8 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   */
 
   clearPolicyNo() {
+    this.polNo = [];
+    this.searchArr = Array(6).fill('');
     this.expiryParameters.polLineCd = null;
     this.expiryParameters.polYear = null;
     this.expiryParameters.polSeqNo = null;
@@ -190,10 +328,20 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
 
   pad(str, num?) {
+    var str = str.target.value;
+
     if(str === '' || str == null){
       return '';
     }
     
     return String(str).padStart(num != null ? num : 3, '0');
+  }
+
+  getFromAndToMon(str) {
+    if(str == 'from') {
+      return this.ns.toDateTimeString(new Date(Number(this.fromYear), Number(this.fromMonth)-1, 1)).split('T')[0];
+    } else if(str == 'to') {
+      return this.ns.toDateTimeString(new Date(Number(this.toYear), Number(this.toMonth), 0)).split('T')[0];
+    }
   }
 }

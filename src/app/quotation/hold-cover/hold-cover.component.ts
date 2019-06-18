@@ -9,6 +9,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { Router } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class HoldCoverComponent implements OnInit {
 	tHeader: any[] = [];
 	quoteLine: string = "";
 	private holdCoverInfo: HoldCoverInfo;
+	private sub: any;
 	
 	passDataQuoteLOV : any = {
 		tableData: [],
@@ -86,7 +88,7 @@ export class HoldCoverComponent implements OnInit {
 	searchParams2: any[] = [];
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
-		private decPipe: DecimalPipe, private ns : NotesService, private router: Router) { 
+		private decPipe: DecimalPipe, private ns : NotesService, private router: Router,  private route: ActivatedRoute) { 
 	}
 
 	qLine: string;
@@ -99,6 +101,7 @@ export class HoldCoverComponent implements OnInit {
 	cedCo:string;
 	insured:string;
 	risk:string;
+	from: string;
 
 	rowRec;
 
@@ -192,7 +195,15 @@ export class HoldCoverComponent implements OnInit {
 		this.passDataQuoteLOV.filters[0].enabled = false;
 		this.showAll = true;
 		this.cancelHcBtnEnabled = false;
+		
 
+		this.sub = this.route.params.subscribe(params => {
+			this.from = params['from'];
+			if (this.from == "hold-cover-monitoring") {
+				this.sliceQuoteNo(params['quotationNo']);	
+				this.getQuoteInfo();			
+			}
+		});
 	}
 
 

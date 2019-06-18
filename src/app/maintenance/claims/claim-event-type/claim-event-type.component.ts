@@ -55,6 +55,7 @@ export class ClaimEventTypeComponent implements OnInit {
 	dialogIcon				: string;
 	dialogMessage			: string;
 	warnMsg					: string;
+	fromCancel				: boolean;
 
     params : any =	{
 		saveEventType 		: [],
@@ -103,8 +104,10 @@ export class ClaimEventTypeComponent implements OnInit {
 			if(record.eventTypeCd === '' || record.eventTypeCd === null || record.eventTypeDesc === '' || record.eventTypeDesc === null){
 				if(!record.deleted){
 					isEmpty = 1;
+					this.fromCancel = false;
 				}
 			}else{
+				this.fromCancel = true;
 				if(record.edited && !record.deleted){
 					record.createUser		= (record.createUser === '' || record.createUser === undefined)?this.ns.getCurrentUser():record.createUser;
 					record.createDate		= (record.createDate === '' || record.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
@@ -221,6 +224,16 @@ export class ClaimEventTypeComponent implements OnInit {
 
 	onClickSave(){
 		$('#confirm-save #modalBtn2').trigger('click');
+	}
+
+	checkCancel(){
+		if(this.cancelFlag == true){
+			if(this.fromCancel){
+				this.cancelBtn.onNo();
+			}else{
+				return;
+			}
+		}
 	}
 
 }

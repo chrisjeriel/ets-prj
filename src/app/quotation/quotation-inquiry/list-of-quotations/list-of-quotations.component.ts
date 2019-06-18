@@ -178,31 +178,49 @@ export class ListOfQuotationsComponent implements OnInit {
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
             for(let rec of this.records){
-                this.passData.tableData.push(new QuotationProcessing(
-                                                rec.quotationNo,
-                                                rec.cessionDesc,
-                                                rec.lineClassCdDesc,
-                                                rec.status,
-                                                rec.cedingName,
-                                                rec.principalName,
-                                                rec.contractorName,
-                                                rec.insuredDesc,
-                                                (rec.project == null) ? '' : rec.project.riskName,
-                                                (rec.project == null) ? '' : rec.project.objectDesc,
-                                                (rec.project == null) ? '' : rec.project.site,
-                                                rec.policyNo,
-                                                rec.currencyCd,
-                                                new Date(rec.issueDate),
-                                                new Date(rec.expiryDate),
-                                                rec.reqBy,
-                                                rec.createUser
-                                            ));
+                this.passData.tableData.push({
+                                                quotationNo: rec.quotationNo,
+                                                cessionDesc: rec.cessionDesc,
+                                                lineClassCdDesc: rec.lineClassCdDesc,
+                                                status: rec.status,
+                                                cedingId: rec.cedingId,
+                                                cedingName: rec.cedingName,
+                                                prinId: rec.principalId,
+                                                principalName: rec.principalName,
+                                                contractorId: rec.contractorId,
+                                                contractorName: rec.contractorName,
+                                                insuredDesc: rec.insuredDesc,
+                                                riskName: (rec.project == null) ? '' : rec.project.riskName,
+                                                objectDesc: (rec.project == null) ? '' : rec.project.objectDesc,
+                                                site: (rec.project == null) ? '' : rec.project.site,
+                                                policyNo: rec.policyNo,
+                                                currencyCd: rec.currencyCd,
+                                                issueDate: new Date(rec.issueDate),
+                                                expiryDate: new Date(rec.expiryDate),
+                                                reqBy: rec.reqBy,
+                                                createUser: rec.createUser,
+                                                preparedBy: rec.preparedBy,
+                                                approvedBy: rec.approvedBy
+                                            });
             }
 
 
                this.table.forEach(table => { table.refreshTable() });
         });
     }
+
+    pad(str, field) {
+    if(str === '' || str == null){
+      return '';
+    }else{
+      if(field === 'cedingId'){
+        return String(str).padStart(3, '0');
+      }else if(field === 'insured'){
+        return String(str).padStart(6, '0');
+      }
+    }
+    
+  }
 
     //Method for DB query
     searchQuery(searchParams){
@@ -216,6 +234,7 @@ export class ListOfQuotationsComponent implements OnInit {
 
         //Method for print on/off and getting of quoteId used for Reports generation
     onRowClick(event) {
+        console.log(event);
         if(this.quoteList == event || event === null){
             this.quoteList = {};
             this.passData.btnDisabled = true;

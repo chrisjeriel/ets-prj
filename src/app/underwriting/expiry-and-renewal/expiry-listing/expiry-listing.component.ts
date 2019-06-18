@@ -326,6 +326,7 @@ export class ExpiryListingComponent implements OnInit {
                   summaryTag : this.passDataRenewalPolicies.tableData[i].summaryTag,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
                   remarks : this.passDataRenewalPolicies.tableData[i].remarks,
+                  renewalFlag : "RA"
                 };
 
                 renAsIsPolicyList.push(policy);
@@ -340,6 +341,7 @@ export class ExpiryListingComponent implements OnInit {
                   summaryTag : this.passDataRenewalPolicies.tableData[i].summaryTag,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
                   remarks : this.passDataRenewalPolicies.tableData[i].remarks,
+                  renewalFlag : "RC"
                 };
 
                 renWithChangesPolicyList.push(policyWC);
@@ -352,6 +354,7 @@ export class ExpiryListingComponent implements OnInit {
                   nrReasonCd : this.passDataRenewalPolicies.tableData[i].nrReasonCd,
                   nrReasonDesc : this.passDataRenewalPolicies.tableData[i].nrReasonDesc,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
+                  renewalFlag : "NR"
                 };
                 nonRenPolicyList.push(policyNR);
             }
@@ -393,8 +396,11 @@ export class ExpiryListingComponent implements OnInit {
             if (this.passDataNonRenewalPolicies.tableData[i].nonRenTag == 'Y') {
                 var policyNR = {
                   policyId : policyId,
+                  policyNo : this.passDataNonRenewalPolicies.tableData[i].policyNo,
                   nrReasonCd : this.passDataNonRenewalPolicies.tableData[i].nrReasonCd,
+                  nrReasonDesc : this.passDataNonRenewalPolicies.tableData[i].nrReasonDesc,
                   procBy : JSON.parse(window.localStorage.currentUser).username,
+                  renewalFlag : "NR"
                 };
                 nonRenPolicyList.push(policyNR);
             }
@@ -1084,9 +1090,9 @@ export class ExpiryListingComponent implements OnInit {
       this.ExpcoverageData.totalPrem        = this.coverageData.totalPrem;
       this.ExpcoverageData.currencyCd       = this.coverageData.currencyCd;
       this.ExpcoverageData.currencyRt       = this.coverageData.currencyRt;
-      this.ExpcoverageData.pctShare         = this.coverageData.pctShare;
+      this.ExpcoverageData.pctShare         = parseFloat(this.coverageData.pctShare.toString().split(',').join(''));
       this.ExpcoverageData.pctPml           = this.coverageData.pctPml;
-      this.ExpcoverageData.totalValue       = this.coverageData.totalValue;
+      this.ExpcoverageData.totalValue       = parseFloat(this.coverageData.totalValue.toString().split(',').join(''));
       this.ExpcoverageData.remarks          = this.coverageData.remarks;
       this.ExpcoverageData.origSeciSi       = this.coverageData.origSeciSi;
       this.ExpcoverageData.origSeciiSi      = this.coverageData.origSeciiSi;

@@ -658,7 +658,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                 let alopFlag = false;
                 if(data.policy.project !== null){
                   for(let sectionCover of data.policy.project.coverage.sectionCovers){
-                        if(sectionCover.section == 'III'){
+                        if(sectionCover.section == 'III' && (this.policyInfo.lineCd == 'CAR' || this.policyInfo.lineCd == 'EAR') ){
                             alopFlag = true;
                            break;
                          }
@@ -704,7 +704,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           let alopFlag = false;
           if(data.policy.project !== null){
             for(let sectionCover of data.policy.project.coverage.sectionCovers){
-                  if(sectionCover.section == 'III'){
+                  if(sectionCover.section == 'III' && (this.policyInfo.lineCd == 'CAR' || this.policyInfo.lineCd == 'EAR')){
                       alopFlag = true;
                      break;
                    }

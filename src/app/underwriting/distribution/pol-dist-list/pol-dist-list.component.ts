@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { UnderwritingService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
     selector: 'app-pol-dist-list',
@@ -11,26 +12,26 @@ import { Router } from '@angular/router';
     styleUrls: ['./pol-dist-list.component.css']
 })
 export class PolDistListComponent implements OnInit {
-
+    @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 
     passData: any = {
         tHeader: [
-            "Dist No.", "Risk Dist No.", "Status","Line", "Policy No.",
+            "Dist No.", "Risk Dist No.", "Status", "Line", "Policy No.",
             "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Accounting Date"
         ],
         filters: [
            {
-                key: 'distNo',
+                key: 'distId',
                 title:'Dist. No.',
                 dataType: 'text'
             },
             {
-                key: 'riskDistNo',
+                key: 'riskDistId',
                 title:'Risk Dist. No.',
                 dataType: 'text'
             },
             {
-                key: 'status',
+                key: 'Sstatus',
                 title:'Status',
                 dataType: 'text'
             },
@@ -40,52 +41,86 @@ export class PolDistListComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'cedingCompany',
+                key: 'cedingName',
                 title:'Ceding Co.',
                 dataType: 'text'
             },
             {
-                key: 'insured',
+                key: 'insuredDesc',
                 title:'Insured',
                 dataType: 'text'
             },
             {
-                key: 'risk',
+                key: 'riskName',
                 title:'Risk',
                 dataType: 'text'
             },
             {
-                key: 'accountingDate',
-                title:'Accounting Date',
-                dataType: 'datespan'
+                 keys: {
+                      from: 'distDateFrom',
+                      to: 'distDateTo'
+                  },
+                  title: 'Dist Date',
+                  dataType: 'datespan'
             },
-        ],
-        resizable: [
-            false, false, true,false, false, true, true, true,false,true,false, false,
+            {
+                 keys: {
+                      from: 'acctDateFrom',
+                      to: 'acctDateTo'
+                  },
+                  title: 'Acct Date',
+                  dataType: 'datespan'
+              },
         ],
         dataTypes: [
-            "text", "text", "text","text", "text", "text", "text", "text","text","currency","date", "date"
+            "sequence-5", "sequence-5", "text","text", "text", "text", "text", "text","text","currency","date", "date"
         ],
-        tableData: this.underwritingService.getPolicyDistListInfo(),
-        pageLength: 10,
-        printBtn: true,
-        addFlag: true,
+        tableData: [],
+        keys: ['distId', 'riskDistId', 'status', 'lineCd' ,'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'currencyCd', 'totalSi', 'distDate', 'acctDate'],
+        pageLength: 20,
+        printBtn: false,
+        addFlag: false,
         pagination: true,
         pageStatus: true,
 
     }
-    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private route: Router) {
+
+    searchParams: any[] = [];
+    selected: any;
+    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private router: Router) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Policy Distribution List");
+        this.retrievePolDistList();
     }
 
-    onClickAdd(event) {
-        //do something
-        this.route.navigateByUrl('/pol-dist');
+    retrievePolDistList(){
+        this.underwritingService.getPolDistList(this.searchParams).subscribe((data:any)=>{
+            this.passData.tableData = data.polDistList;
+            this.table.refreshTable();
+        });
     }
+
+    searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        //this.passData.btnDisabled = true;
+        this.retrievePolDistList();
+
+   }
+
+   gotoInfo(){
+       this.router.navigate(['policy-dist', {policyId:this.selected.policyId,
+                                                 lineCd:this.selected.lineCd,
+                                                 lineClassCd: this.selected.lineClassCd,
+                                                 cedingName: this.selected.cedingName,
+                                                 insured: this.selected.insuredDesc,
+                                                 riskName: this.selected.riskName,
+                                                 exitLink: '/pol-dist-list'
+                                                 }], { skipLocationChange: true });
+   }
 
 }

@@ -22,6 +22,7 @@ export class InsuredComponent implements OnInit {
   	dialogMessage 	: string = '';
   	type			: string;
   	insuredReq 		: any;
+  	fromCancel		: boolean;
 
   	insuredRecord : any = {
 	  	insuredId		: null,
@@ -109,7 +110,9 @@ export class InsuredComponent implements OnInit {
 
 	  		    $('.warn').focus();
 				$('.warn').blur();
+				this.fromCancel = false;
   		}else{
+  			this.fromCancel = true;
   			this.insuredReq = {
 						"activeTag"		: this.cbFuncSave(this.insuredRecord.activeTag),
 						"addrLine1"		: this.insuredRecord.addrLine1,
@@ -231,4 +234,13 @@ export class InsuredComponent implements OnInit {
 	    }		
 	}
 
+	checkCancel(){
+		if(this.cancelFlag == true){
+			if(this.fromCancel){
+				this.cancelBtn.onNo();
+			}else{
+				return;
+			}
+		}
+	}
 }

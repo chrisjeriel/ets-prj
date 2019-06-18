@@ -405,13 +405,14 @@ import { ProgramParameterComponent } from './maintenance/system/program-paramete
 import { RoundingErrorComponent } from './maintenance/quotation-and-policy/rounding-error/rounding-error.component';
 import { ReportComponent } from './maintenance/system/report/report.component';
 import { ReportParamComponent } from './maintenance/system/report-param/report-param.component';
+import { LossCodeComponent } from './maintenance/claims/loss-code/loss-code.component';
 import { MtnNonrenewReasonComponent } from './maintenance/mtn-nonrenew-reason/mtn-nonrenew-reason.component';
 import { MtnClaimsComponent } from './maintenance/claims/mtn-claims.component';
 import { AdjusterComponent } from './maintenance/claims/adjuster/adjuster.component';
 import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-form/adjuster-form.component';
 import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-status.component';
-import { ClaimEventTypeComponent } from './maintenance/mtn-claims/claim-event-type/claim-event-type.component';
-import { ClaimEventComponent } from './maintenance/mtn-claims/claim-event/claim-event.component';
+import { ClaimEventTypeComponent } from './maintenance/claims/claim-event-type/claim-event-type.component';
+import { ClaimEventComponent } from './maintenance/claims/claim-event/claim-event.component';
 import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lov/mtn-clm-event-type-lov.component';
 
 @NgModule({
@@ -824,6 +825,7 @@ import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lo
         RoundingErrorComponent,
         ReportComponent,
         ReportParamComponent,
+        LossCodeComponent,
         MtnNonrenewReasonComponent,
         MtnClaimsComponent,
         AdjusterComponent,
