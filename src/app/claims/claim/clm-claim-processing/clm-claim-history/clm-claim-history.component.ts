@@ -15,6 +15,7 @@ import { map } from 'rxjs/operators';
 })
 export class ClmClaimHistoryComponent implements OnInit {
   @ViewChild('histTbl') histTbl    : CustEditableNonDatatableComponent;
+  @ViewChild('apAmtTbl') apAmtTbl  : CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn       : CancelButtonComponent;
 
   private claimsHistoryInfo = ClaimsHistoryInfo;
@@ -22,8 +23,10 @@ export class ClmClaimHistoryComponent implements OnInit {
   passDataHistory: any = {
     tableData     : [],
     tHeader       : ['Hist. No.', 'Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Reserve', 'Payment Amount', 'Ref. No.', 'Ref. Date', 'Remarks'],
-    dataTypes     : ['number', 'select', 'select', 'checkbox', 'select', 'currency', 'currency', 'text', 'date', 'text'],
+    dataTypes     : ['sequence-3', 'select', 'select', 'checkbox', 'select', 'currency', 'currency', 'text', 'date', 'text'],
     nData: {
+      claimId      : 1,
+      projId       : 1,
       histNo       : '',
       histCategory : '',
       histType     : '',
@@ -110,6 +113,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim History");
     this.getClaimHistory();
+    this.getClaimApprovedAmt();
   }
 
   getClaimHistory(){
@@ -135,6 +139,16 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.passDataHistory.tableData = recClmHist;
       this.histTbl.refreshTable();
       this.compResPayt();
+    });
+  }
+
+  getClaimApprovedAmt(){
+    this.clmService.getClaimApprovedAmt()
+    .subscribe(data => {
+      console.log(data);
+      var rec = data['claimApprovedAmtList'];
+      this.passDataApprovedAmt.tableData = rec;
+      this.apAmtTbl.refreshTable();
     });
   }
 

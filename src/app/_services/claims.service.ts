@@ -85,6 +85,14 @@ export class ClaimsService {
           return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimListing',{params});
      }
 
+    getClaimApprovedAmt(claimId?,histNo?){
+		const params = new HttpParams()
+			.set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+			.set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
+		return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimApprovedAmt',{params});	
+	}
+
+
 	saveClaimHistory(params){
 		let header : any = {
             headers: new HttpHeaders({

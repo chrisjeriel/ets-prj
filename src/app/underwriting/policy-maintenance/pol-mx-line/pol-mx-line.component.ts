@@ -260,9 +260,10 @@ export class PolMxLineComponent implements OnInit {
 	  		this.warnMsg = 'You are not allowed to delete a Line that is already used in quotation processing.';
 			this.showWarnLov();
 	  	}else{
-	  		this.table.indvSelect.deleted = true;
+	  		this.table.indvSelect.deleted = true; 
 	  		this.table.selected  = [this.table.indvSelect]
 	  		this.table.confirmDelete();
+	  		console.log('from onDeleteLine else');
 	  	}
 	}
 

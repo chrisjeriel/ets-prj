@@ -171,7 +171,7 @@
 <app-modal class="d-none" id="approvedAmtMdl">
     <div header>Approved Amount</div>
     <div body class="container-flex text-center" style="min-width: 750px !important;">
-       <app-cust-editable-non-datatable [passData]="passDataApprovedAmt"></app-cust-editable-non-datatable>
+       <app-cust-editable-non-datatable [passData]="passDataApprovedAmt" #apAmtTbl></app-cust-editable-non-datatable>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Cancel</a></button>
