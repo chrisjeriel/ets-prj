@@ -57,15 +57,25 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   expiredAndProcessed:boolean = false;
   unProcess:boolean = false;
   allProcess:boolean = false;
-  line: string = "";
-  typeOfCessionId = "";
-  lineDescription:string ="";
-  typeOfCession:string ="";
   first = true;
-  cedingId = "";
-  cedingName = "";
   policyLov:any;
   selected:any;
+
+  params:any = {
+    cedingId : "",
+    cedingName : "",
+    line: "",
+    typeOfCessionId : "",
+    lineDescription :"",
+    typeOfCession :"",
+    byDateFrom: null,
+    byDateTo: null,
+    byMonthFrom:null,
+    byMonthTo:null,
+    byYearTo: null,
+    byYearFrom: null
+  }
+
   PolicyNo: any = {
     line: null,
     year: null,
@@ -154,25 +164,25 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     }
 
     if(this.baseOnParam){
-      if(this.line !== null){
+      if(this.params.line !== null){
         for(var i = 0 ; i < this.passData.tableData.length;i++){
-          if(this.passData.tableData[i].policyNo.split('-')[0] === this.line){
+          if(this.passData.tableData[i].policyNo.split('-')[0] === this.params.line){
             this.purgeData.deletePurge.push(this.passData.tableData[i]);
           }
         }
       }
 
-      if(this.typeOfCessionId !== null){
+      if(this.params.typeOfCessionId !== null){
         for(var i = 0 ; i < this.passData.tableData.length;i++){
-          if(this.passData.tableData[i].cessionId === this.typeOfCessionId){
+          if(this.passData.tableData[i].cessionId === this.params.typeOfCessionId){
             this.purgeData.deletePurge.push(this.passData.tableData[i]);
           }
         }
       }
 
-      if(this.cedingId !== null){
+      if(this.params.cedingId !== null){
         for(var i = 0 ; i < this.passData.tableData.length;i++){
-          if(this.passData.tableData[i].cedingId == this.cedingId){
+          if(this.passData.tableData[i].cedingId == this.params.cedingId){
             this.purgeData.deletePurge.push(this.passData.tableData[i]);
           }
         }
@@ -186,6 +196,17 @@ export class PurgeExtractedPolicyComponent implements OnInit {
           }
         }
       }
+
+      if(this.byDate && this.params.byDateTo !== undefined){
+        if(this.params.byDateFom !== undefined && this.params.byDateFom !== ''){
+          for(var i = 0; i < this.passData.tableData.length; i++){
+            if(this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0].trim() === this.params.byDateFrom){
+
+            }
+          }
+        }
+      }
+
     }
   }
 
@@ -223,17 +244,17 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     this.ns.lovLoader(ev, 1);
 
     if(field === 'line') {            
-        this.lineLov.checkCode(this.line, ev);
+        this.lineLov.checkCode(this.params.line, ev);
     } else if(field === 'typeOfCession'){
-        this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
+        this.typeOfCessionLov.checkCode(this.params.typeOfCessionId, ev);
     } else if(field === 'cedingCo') {         
-        this.cedingCoLov.checkCode(this.cedingId, ev);
+        this.cedingCoLov.checkCode(this.params.cedingId, ev);
     }
   }
 
   setLine(data){
-    this.line = data.lineCd;
-    this.lineDescription = data.description;
+    this.params.line = data.lineCd;
+    this.params.lineDescription = data.description;
     this.ns.lovLoader(data.ev, 0);
 
     if(data.hasOwnProperty('fromLOV')){
@@ -242,8 +263,8 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   setTypeOfCession(data) {        
-        this.typeOfCessionId = data.cessionId;
-        this.typeOfCession = data.description;
+        this.params.typeOfCessionId = data.cessionId;
+        this.params.typeOfCession = data.description;
         this.ns.lovLoader(data.ev, 0);
         
         if(data.hasOwnProperty('fromLOV')){
@@ -252,16 +273,16 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   setCedingcompany(event){
-    this.cedingId = event.cedingId;
-    this.cedingName = event.cedingName;
+    this.params.cedingId = event.cedingId;
+    this.params.cedingName = event.cedingName;
     this.ns.lovLoader(event.ev, 0);
   }
 
    onClickAdd(event) {
     if(this.first){
         this.maintenanceService.getMtnTypeOfCession(1).subscribe(data => {            
-          this.typeOfCessionId = data['cession'][0].cessionId;
-          this.typeOfCession = data['cession'][0].cessionAbbr;
+          this.params.typeOfCessionId = data['cession'][0].cessionId;
+          this.params.typeOfCession = data['cession'][0].cessionAbbr;
 
           this.first = false;
         });
@@ -282,12 +303,12 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   clearData(){
-    this.line = null;
-    this.lineDescription = null;
-    this.typeOfCession = null;
-    this.typeOfCessionId = null;
-    this.cedingId = null;
-    this.cedingName = null;
+    this.params.line = null;
+    this.params.lineDescription = null;
+    this.params.typeOfCession = null;
+    this.params.typeOfCessionId = null;
+    this.params.cedingId = null;
+    this.params.cedingName = null;
     this.PolicyNo.lineCd = null;
     this.PolicyNo.year = null;
     this.PolicyNo.companyNo = null;
@@ -333,5 +354,12 @@ export class PurgeExtractedPolicyComponent implements OnInit {
       this.PolicyNo.coSeriesNo  = polNo[4];
       this.PolicyNo.altNo  = polNo[5];
     }
+  }
+
+  test(){
+    console.log(this.byDate)
+    console.log(this.params.byDateFrom == this.ns.toDateTimeString(this.passData.tableData[0].expiryDate).split('T')[0].trim())
+    /*console.log(this.params.byDateFrom)
+    console.log(this.params.byDateFrom.trim())*/
   }
 }
