@@ -34,6 +34,7 @@ export class PolAttachmentComponent implements OnInit {
         infoFlag: true,
         paginateFlag: true,
         pageLength: 10,
+        uneditable: [true, false],
         keys: ['fileName', 'description'],
         widths: ['auto', 'auto', 1]
     }
