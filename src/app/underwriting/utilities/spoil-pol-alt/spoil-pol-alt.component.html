@@ -8,7 +8,7 @@
 						<div class="input-group">
 							<div class="col-sm-2"></div>
 							<label class="form-control-sm col-sm-1">Policy No</label>
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "spoilPolRecord.line" (change)="search('lineCd',$event)" maxlength="7" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input dirty" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "spoilPolRecord.line" (change)="search('lineCd',$event)" maxlength="7" appRequired>
 							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "spoilPolRecord.year" (change)="search('year',$event)" numbers-only maxlength="4" appRequired>
 							<input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "spoilPolRecord.seqNo" (change)="search('seqNo',$event)" numbers-only maxlength="5" appRequired>
 							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company Code" [(ngModel)] = "spoilPolRecord.coCode" (change)="search('cedingId',$event)" maxlength="3" appRequired>
@@ -148,9 +148,9 @@
 							<div class="input-group">
 								<div class="col-sm-1" style="margin-right: 49px !important"></div>
 								<label class="form-control-sm col-sm-2">Reason for Spoilage</label>
-									<input *ngIf="reasonLovEnabled" class="form-control form-control-sm  col-sm-1 dirty" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason()" appRequired>
+									<input *ngIf="reasonLovEnabled" class="form-control form-control-sm  col-sm-1 dirty" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason($event)" appRequired>
 									<div *ngIf="reasonLovEnabled" class="text-search-ico" style="padding-left: 1px" (click)="showLovSpoil()"><a><i class="fa fa-search"></i></a></div>&nbsp;
-									<input  *ngIf="!reasonLovEnabled" class="form-control form-control-sm  col-sm-1" readonly type="text" style="margin-right: 1px !important;     margin-left: -5px !important;">
+									<input  *ngIf="!reasonLovEnabled" class="form-control form-control-sm col-sm-1 dirty" readonly type="text" style="margin-right: 1px !important;     margin-left: -5px !important;">
 								<input class="form-control form-control-sm col-sm" type="text" style="margin-left: 2px;" readonly [(ngModel)]="spoilPolRecord.reasonDesc">
 								<div class="col-sm-2" style="margin-left: 50px !important;"></div>
 							</div>
@@ -163,8 +163,8 @@
 						<div class="col-md-12 text-center">
 							<div class="cust-btn-container">
 								<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" *ngIf="postBtnEnabled" (click)="onClickSave()"><a>Post Spoilage</a></button>
-								<button type="button" class="cust-btn dsbld" disabled="disabled" *ngIf="!postBtnEnabled">Post Spoilage</button>
+								<button type="button" class="cust-btn" (click)="onClickSave()" [disabled]="!postBtnEnabled">Post Spoilage</button>
+								<!-- <button type="button" class="cust-btn dsbld" disabled="disabled" *ngIf="!postBtnEnabled">Post Spoilage</button> -->
 							</div>
 						</div>
 					</div>
@@ -235,7 +235,3 @@
 
 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
-
-<ng-template #confirmLeave>
-    <app-confirm-leave></app-confirm-leave>
-</ng-template>

@@ -55,5 +55,5 @@
 </app-modal>
 
 <app-confirm-save (onYes)="onSaveTypeOfCession()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button (onYes)="onSaveTypeOfCession('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>

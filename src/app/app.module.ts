@@ -410,8 +410,8 @@ import { MtnClaimsComponent } from './maintenance/claims/mtn-claims.component';
 import { AdjusterComponent } from './maintenance/claims/adjuster/adjuster.component';
 import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-form/adjuster-form.component';
 import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-status.component';
-import { ClaimEventTypeComponent } from './maintenance/mtn-claims/claim-event-type/claim-event-type.component';
-import { ClaimEventComponent } from './maintenance/mtn-claims/claim-event/claim-event.component';
+import { ClaimEventTypeComponent } from './maintenance/claims/claim-event-type/claim-event-type.component';
+import { ClaimEventComponent } from './maintenance/claims/claim-event/claim-event.component';
 import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lov/mtn-clm-event-type-lov.component';
 
 @NgModule({
