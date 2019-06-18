@@ -6,7 +6,7 @@
 				<div class="row">
 					<div class="col-sm-2"></div>
 					<div class="col-sm">
-						<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+						<app-cust-editable-non-datatable #tbl [passData]="passData" (newClick)="row($event)"></app-cust-editable-non-datatable>
 					</div>
 					<div class="col-sm-2"></div>
 				</div>
@@ -20,7 +20,7 @@
 										<button type="button" class="cust-btn"  style="margin-left: 7px;width: 100%;margin-bottom: 5px;z-index: 99 !important"><a>Cancel</a></button>
 									</div>
 									<div class="row">
-										<button type="button" class="cust-btn"  style="margin-left: 7px;width: 100%; margin-bottom: 5px;z-index: 99 !important" (click)="saveData()"><a>Purge</a></button>
+										<button type="button" class="cust-btn"  style="margin-left: 7px;width: 100%; margin-bottom: 5px;z-index: 99 !important" (click)="onClickPurge();"><a>Purge</a></button>
 									</div>
 								</div>
 								<div class=" col-sm-4">
@@ -63,7 +63,7 @@
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-left: 100px;">
 											<div class="col-sm-1"></div>
-											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" [(ngModel)]="byDate">	
+											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true">
 											<label class="form-control-sm col-sm-2" for="byDate" style="margin-left: -25px;">&nbsp;By Date</label>
 										</div>
 									</div>
@@ -124,7 +124,7 @@
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -22px;">
 												<label class="form-control-sm col-sm-2 text-right">Line</label>
-												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'line')" [(ngModel)]="line">
+												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'line')" [ngModel]="line" (ngModelChange)="line = $event.toUpperCase()">
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
 												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="lineDescription">
 											</div>
@@ -132,7 +132,7 @@
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -8px;">
 												<label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
-												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'typeOfCession')" [(ngModel)]="typeOfCessionId">
+												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'typeOfCession')" [ngModel]="typeOfCessionId" (ngModelChange)="typeOfCessionId = $event.toUpperCase()"> 
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showTypeOfCessionLOV()"></i></a></div>
 												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="typeOfCession"> 
 											</div>
@@ -140,7 +140,7 @@
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -8px;"> 
 												<label class="form-control-sm col-sm-2" style="padding-right: 4px;">Ceding Company</label>
-												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event,'cedingCo')" [(ngModel)]="cedingId">
+												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event,'cedingCo')" [ngModel]="cedingId" (ngModelChange)="cedingId=$event.toUpperCase()">
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="cedingName"> 
 											</div>	
@@ -148,13 +148,13 @@
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -8px;"> 
 												<label class="form-control-sm col-sm-2">Policy No</label>
-                            						<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
-									                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year">
-									                <input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No">
-									                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">
-									                <input type="text" class="form-control form-control-sm col-sm-2	 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">
-									                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">  
-									                <div style="padding-left: 14px;"><a><i class="fa fa-search"></i></a></div> 
+                            						<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line" [(ngModel)]="PolicyNo.lineCd">
+									                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)]="PolicyNo.year">
+									                <input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)]="PolicyNo.sequenceNo">
+									                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Company No" [(ngModel)]="PolicyNo.companyNo">
+									                <input type="text" class="form-control form-control-sm col-sm-2	 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)]="PolicyNo.coSeriesNo">
+									                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)]="PolicyNo.altNo">  
+									                <div style="padding-left: 14px;"><a><i class="fa fa-search" (click)="showPolicyLov()"></i></a></div> 
 
 											</div>	
 										</div>
@@ -176,3 +176,65 @@
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+
+
+<app-modal class="d-none" id="purgeModal">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset" style="text-align: center">                
+            <p>Purge using selected parameters?</p>
+			<span *ngIf="expiredAndProcessed"><b>[All Expired And Processed]</b><br/></span>
+			<span *ngIf="unProcess"><b>[All Unprocessed]</b><br/></span>
+			<span *ngIf="allProcess"><b>[All Processed]</b><br/></span>
+			<span *ngIf="baseOnParam"><b>[Based on Parameter]</b><br/></span>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="saveData(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
+
+
+<app-modal class="d-none" id="purgeMsgModal">
+	<div header>Purge</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset row" style="text-align: center">
+        	<div style="width: 100% !important;">
+	           	<div class="col-sm my-modal-text" style="margin-left: 0px !important;">
+	           		<span>Successfully purged policies.</span>
+	           	</div>
+           	</div>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="purgeNoSelectedMsgModal">
+	<div header>Purge</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset row" style="text-align: center">
+        	<div style="width: 100% !important;">
+	           	<div class="col-sm my-modal-text" style="margin-left: 0px !important;">
+	           		<span>No policy selected.</span>
+	           	</div>
+           	</div>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="hidden" id="PolicyLOVS" #mdl>
+    <div header>List of Values</div>
+    <div body style="min-width: 800px !important">
+       <app-cust-editable-non-datatable #lov [passData]="passDataLov" (newClick)="onClick($event)"></app-cust-editable-non-datatable>
+    </div>                
+    <div footer style="margin-right: 330px !important;">
+      <button class="cust-btn" type="button" (click)="modal.closeModal();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="setLOV();modal.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>

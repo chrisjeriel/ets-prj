@@ -160,11 +160,16 @@ export class AttachmentComponent implements OnInit {
   }
 
   getAttachment(){
+    this.passData.tableData = [];
     this.quotationService.getAttachment(null, this.quoteNo)
       .subscribe(data => {
         this.quoteId = data['quotation'][0].quoteId;
         this.attachmentData =  data['quotation'][0].attachmentsList;
-        this.passData.tableData = this.attachmentData;
+        //this.passData.tableData = this.attachmentData;
+        for(var i of this.attachmentData){
+          i.fileNameServer = this.ns.toDateTimeString(i.updateDate).match(/\d+/g).join('') + i.fileName;
+          this.passData.tableData.push(i);
+        }
         this.table.refreshTable();
         console.log(JSON.stringify(this.attachmentData) + " >>>> this.attachmentData");
       });
@@ -201,17 +206,27 @@ export class AttachmentComponent implements OnInit {
 
    this.quotationService.saveQuoteAttachment(JSON.stringify(params))
      .subscribe((data: any) => {
+       console.log(data);
        if(data.returnCode === 0){
          this.dialogIcon = 'error';
          this.successDiag.open();
        }else{
          this.dialogIcon = 'success';
          this.successDiag.open();
+         if(data.uploadDate != null){
+           this.uploadMethod(data.uploadDate);
+         }
          this.getAttachment();
        }
        this.loading = false;
      });
 
+  
+/*>>>>>>> 461f752f32c09197d725373c176be5a6d657dcff*/
+ 
+ } 
+
+ uploadMethod(date){
    //upload
    for(let files of this.filesList){
      if (files.length == 0) {
@@ -220,8 +235,8 @@ export class AttachmentComponent implements OnInit {
 
      }
      let file: File = files[0];
-
-     this.upload.uploadFile(file)
+     var newFile = new File([file], date + file.name, {type: file.type});
+     this.upload.uploadFile(newFile)
        .subscribe(
          event => {
            if (event.type == HttpEventType.UploadProgress) {
@@ -241,9 +256,7 @@ export class AttachmentComponent implements OnInit {
      //clear filelist array after upload
      this.table.filesToUpload = [];
      this.table.refreshTable();
-/*>>>>>>> 461f752f32c09197d725373c176be5a6d657dcff*/
- 
- } 
+ }
 
   cancel(){
     this.cancelBtn.clickCancel();

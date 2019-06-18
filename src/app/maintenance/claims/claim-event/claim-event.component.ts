@@ -66,6 +66,7 @@ export class ClaimEventComponent implements OnInit {
     cancelFlag      : boolean;
     warnMsg			: string = '';
     rowData			: any;
+    fromCancel		: boolean;
 
     params : any =	{
 		saveEvent 	: [],
@@ -103,8 +104,10 @@ export class ClaimEventComponent implements OnInit {
 			if(record.eventDesc == '' || record.eventTypeCd == ''){
 				if(!record.deleted){
 					isEmpty = 1;
+					this.fromCancel = false;
 				}
 			}else{
+				this.fromCancel = true;
 				if(record.edited && !record.deleted){
 					record.lossDateFrom		= (record.lossDateFrom == '' || record.lossDateFrom == null)? '' : this.ns.toDateTimeString(record.lossDateFrom);
 					record.lossDateTo		= (record.lossDateTo == '' || record.lossDateTo == null)? '' : this.ns.toDateTimeString(record.lossDateTo);
@@ -252,5 +255,15 @@ export class ClaimEventComponent implements OnInit {
 
 	onClickAdd(){
 		this.passData.tableData.map((d,i) => { d.index = i; return d;});
+	}
+
+	checkCancel(){
+		if(this.cancelFlag == true){
+			if(this.fromCancel){
+				this.cancelBtn.onNo();
+			}else{
+				return;
+			}
+		}
 	}
 }

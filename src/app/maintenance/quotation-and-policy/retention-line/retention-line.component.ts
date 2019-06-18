@@ -6,6 +6,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-retention-line',
@@ -72,9 +73,10 @@ export class RetentionLineComponent implements OnInit {
 	copyLineClassList: any[] = [];
 	disableCopyLCList: boolean = true;
 
-	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
+	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
+		this.titleService.setTitle("Mtn | Retention Line");
 		setTimeout(() => { this.table.refreshTable(); }, 0);
 	}
 
@@ -221,12 +223,17 @@ export class RetentionLineComponent implements OnInit {
 			}
 		}
 
-		this.confirmSave.confirmModal();
+		if(!this.cancel) {
+			this.confirmSave.confirmModal();	
+		} else {
+			this.save(false);
+		}
 	}
 
 	save(cancel?) {
 		this.cancel = cancel !== undefined;
-		if(this.cancel) {
+
+		if(this.cancel && cancel) {
 			this.onClickSave();
 			return;
 		}

@@ -55,7 +55,7 @@
 </app-modal>
 
 <app-confirm-save (onYes)="onSaveMtnClmEvent()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button (onYes)="onSaveMtnClmEvent('cancel')" [url]="'/maintenance-clm'" ></app-cancel-button>
 
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>

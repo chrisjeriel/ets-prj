@@ -166,8 +166,8 @@ import { AdjusterComponent } from './maintenance/claims/adjuster/adjuster.compon
 import { MtnClaimsComponent } from './maintenance/claims/mtn-claims.component';
 import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-form/adjuster-form.component';
 import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-status.component';
-import { ClaimEventTypeComponent } from './maintenance/mtn-claims/claim-event-type/claim-event-type.component';
-import { ClaimEventComponent } from './maintenance/mtn-claims/claim-event/claim-event.component';
+import { ClaimEventTypeComponent } from './maintenance/claims/claim-event-type/claim-event-type.component';
+import { ClaimEventComponent } from './maintenance/claims/claim-event/claim-event.component';
 
 const appRoutes: Routes = [
 
@@ -215,7 +215,7 @@ const appRoutes: Routes = [
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'maintenance-line', component: PolMxLineComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'maintenance-line-class', component: LineClassComponent },
+    { path: 'maintenance-line-class', component: LineClassComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'batch-processing', component: PolBatchProcessingComponent },
     { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-risk-list', component: RiskListComponent },
@@ -298,7 +298,7 @@ const appRoutes: Routes = [
     { path: 'pol-oc-inquiry', component: PolOcInquiryComponent},
     { path: 'open-cover-list', component: PolOpenCovListComponent},
     { path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent},
-    { path: 'spoil-pol-alt', component: SpoilPolAltComponent,  canDeactivate: [UnsavedChangesGuard] },
+    { path: 'spoil-pol-alt', component: SpoilPolAltComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
     // { path: 'maintenance-insured', component: InsuredListComponent},
     // { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },

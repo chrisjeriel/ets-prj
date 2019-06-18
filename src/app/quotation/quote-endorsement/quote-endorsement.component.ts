@@ -239,6 +239,7 @@ export class QuoteEndorsementComponent implements OnInit {
           this.endorsementData.magnifyingGlass = [];
           this.endorsementData.addFlag = false;
           this.endorsementData.deleteFlag = false;
+          this.endorsementData.checkFlag = false;
           for(var count = 0; count < this.endorsementData.tHeader.length; count++){
             this.endorsementData.uneditable.push(true);
           }
@@ -615,6 +616,7 @@ export class QuoteEndorsementComponent implements OnInit {
                   
               }
               for(let ded of this.endorsementData.tableData[i].deductiblesList){
+                  console.log(ded);
                   ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
                   ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
                   ded.endtCd = this.endorsementData.tableData[i].endtCd;
@@ -642,9 +644,11 @@ export class QuoteEndorsementComponent implements OnInit {
                   this.dialogIcon = 'Success';
                   this.table.markAsPristine();
                   $('#quote-endorsment #successMdl > #modalBtn').trigger('click');
+                  console.log(this.endorsementData.tableData[0].deductiblesList)
                 }else{
                   this.dialogIcon = 'error';
                   $('#quote-endorsment #successMdl > #modalBtn').trigger('click');
+                  console.log(this.endorsementData.tableData[0].deductiblesList)
                 }
               });
         }else{

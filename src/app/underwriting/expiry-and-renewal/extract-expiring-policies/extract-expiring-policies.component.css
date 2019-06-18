@@ -39,7 +39,7 @@ select + input {
 }
 
 input + div + input{
-	margin-left: 6px;
+	/*margin-left: 6px;*/
 }
 
 .fa-check-circle{
@@ -61,7 +61,7 @@ input + div + input{
 }
 
 .my-modal-text span{
-	font-size: 12px;
+	font-size: 17px;
 }
 
 div h4{

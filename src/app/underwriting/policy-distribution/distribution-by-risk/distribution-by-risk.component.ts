@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
-import { UnderwritingService } from '@app/_services';
+import { UnderwritingService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -16,8 +17,18 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('limit') limitTable: CustEditableNonDatatableComponent;
   @ViewChild('poolDistTable') poolDistTable: CustEditableNonDatatableComponent;
   @ViewChild('coInsTable') coInsTable: CustEditableNonDatatableComponent;
+  @ViewChild('wparam') wparam: CustEditableNonDatatableComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
   @Output() riskDistId = new EventEmitter<any>();
+  @Output() riskDistStatus = new EventEmitter<any>();
+
+  dialogIcon: string = '';
+  dialogMessage: string = '';
+  cancelFlag: boolean = false;
+
+  savedData: any[] = [];
+  deletedData: any[] = [];
 
   private polDistributionByRisk: DistributionByRiskInfo;
   // tableData: any[] = [];
@@ -88,21 +99,23 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //NECO 06/03/2019
   treatyDistData: any = {
     tableData: [],
-    tHeader: ['Treaty', 'Treaty Company', 'Share (%)', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
+    tHeader: ['Treaty', 'Treaty Company', 'Treaty Share (%)', 'SI Amount', 'Premium Amount', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
     magnifyingGlass: [],
     options: [],
-    dataTypes: ['text', 'text', 'percent', 'currency', 'currency', 'percent'],
-    keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commShare'],
+    dataTypes: ['text', 'text', 'percent', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
+    keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
     opts: [],
+    total:[null, 'TOTAL', 'pctShare', 'siAmt', 'premAmt', null, 'commAmt', 'vatRiComm', 'netDue'],
+    uneditable:[true,true,true,true,true,true,true,true,true],
     nData: {},
-    checkFlag: true,
+    checkFlag: false,
     selectFlag: false,
-    addFlag: true,
+    addFlag: false,
     editFlag: false,
-    deleteFlag: true,
+    deleteFlag: false,
     paginateFlag: true,
     infoFlag: true,
-    searchFlag: false,
+    searchFlag: true,
     checkboxFlag: true,
     pageLength: 10,
     widths: [],
@@ -127,13 +140,49 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     pageID: 'treatyLimitsTable'
   };
 
+  wparamData: any = {
+    tableData: [],
+    tHeader: ['Treaty', 'Treaty Company', 'Treaty Share (%)', 'Comm Rate (%)'],
+    magnifyingGlass: [],
+    options: [],
+    dataTypes: ['text', 'text', 'percent', 'percent'],
+    keys: ['treatyName', 'trtyCedName', 'pctShare', 'commRt'],
+    /*nData: {
+     commRt: 0,
+     createDate: '',
+     createUser: JSON.parse(window.localStorage.currentUser).username,
+     pctShare: 0,
+     treatyId: 0,
+     treatyName: 'Facultative',
+     treatyYear: new Date().getFullYear(),
+     trtyCedId: '',
+     trtyCedName: '',
+     updateDate: '',
+     updateUser: JSON.parse(window.localStorage.currentUser).username,
+    },*/
+    opts: [],
+    nData: {},
+    selectFlag: false,
+    addFlag: true,
+    editFlag: false,
+    paginateFlag: true,
+    infoFlag: true,
+    searchFlag: false,
+    checkboxFlag: true,
+    pageLength: 10,
+    widths: [],
+    pageID: 'wparamTable',
+    genericBtn: 'Delete'
+  }
+
   poolDistributionData: any = {
     tableData: [],
-    tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt'],
-    dataTypes: ['text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency'],
-    keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt'],
-    widths: [1,250,1,140,140,1,140,140],
-    uneditable: [true,true,true,true,true,true,true,true],
+    tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
+    dataTypes: ['text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
+    keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+    widths: [1,250,1,140,140,1,140,140,1,140,140,140],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true],
+    total:[null,'TOTAL','retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', null, 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
     paginateFlag: true,
     infoFlag: true,
     pageLength: 10,
@@ -206,7 +255,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     sub: any;
     //END
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
+  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
+              private ns: NotesService) { }
 
 
   ngOnInit() {
@@ -294,27 +344,69 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         console.log(data);
         this.riskDistributionData = data.distWrisk;
         this.riskDistId.emit(this.riskDistributionData.riskDistId);
+        this.riskDistStatus.emit(this.riskDistributionData.status);
         console.log(this.riskDistributionData.tsiAmt)
         var appendTreatyName: string = '';
         var appendTreatyLimitId: number = 0;
+        var counter: number = 0;
         //var treatyLimitAmt: any;
         this.treatyDistData.tableData = data.distWrisk.distRiskWtreaty;
+
+        this.wparamData.nData = {
+                                 commRt: 0,
+                                 createDate: '',
+                                 createUser: JSON.parse(window.localStorage.currentUser).username,
+                                 pctShare: 0,
+                                 treatyId: 0,
+                                 treatyName: 'Facultative',
+                                 treatyYear: new Date().getFullYear(),
+                                 trtyCedId: '',
+                                 trtyCedName: '',
+                                 updateDate: '',
+                                 updateUser: JSON.parse(window.localStorage.currentUser).username,
+                                };
+        this.wparamData.tableData = [];
+        for(var h of data.distRiskWparam){
+          if(this.riskDistributionData.altNo != 0 && String(h.treatyName).toUpperCase() !== 'FACULTATIVE'){
+            h.uneditable = ['treatyName', 'trtyCedName', 'pctShare', 'commRt'];
+          }else{
+           h.uneditable = ['treatyName', 'trtyCedName'];
+          }
+          h.riskDistId = this.riskDistributionData.riskDistId;
+          h.altNo = this.riskDistributionData.altNo;
+          this.wparamData.tableData.push(h);
+        }
+        //this.wparamData.tableData = data.distRiskWparam;
+
+        this.limitsData.tableData = [];
         for(var i of data.wriskLimit){
-          if(appendTreatyLimitId === 0){
+          if(appendTreatyLimitId == 0){
             appendTreatyName = i.treatyName;
             appendTreatyLimitId = i.treatyLimitId;
+            counter++;
+            continue;
           }
-          else if(appendTreatyLimitId === i.treatyLimitId){
+          else if(appendTreatyLimitId == i.treatyLimitId){
             appendTreatyName = appendTreatyName.length == 0 ? i.treatyName : appendTreatyName + ' & ' + i.treatyName;
-          }else{
             i.treatyName = appendTreatyName;
-            this.limitsData.tableData.push(i);
+          }else{
             appendTreatyName = '';
             appendTreatyLimitId = i.treatyLimitId;
+            if(counter+1 === data.wriskLimit.length){
+              this.limitsData.tableData.push(i);
+              break;
+            }else{
+              counter++;
+              continue;
+            }
           }
+          this.limitsData.tableData.push(i);
+          counter++;
         }
         this.treatyTable.refreshTable();
         this.limitTable.refreshTable();
+        this.wparam.refreshTable();
+        this.readOnlyAll();
         setTimeout(()=>{
           $('input[type=text]').focus();
           $('input[type=text]').blur();
@@ -324,7 +416,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
     openPoolDistribution(){
       this.poolDistTable.loadingFlag = true;
-      this.polService.getPoolDistribution(this.riskDistributionData.riskDistId).subscribe((data: any)=>{
+      this.polService.getPoolDistribution(this.riskDistributionData.riskDistId, this.riskDistributionData.altNo).subscribe((data: any)=>{
         this.poolDistributionData.tableData = data.poolDistList;
         this.poolDistTable.refreshTable();
         this.poolDistTable.loadingFlag = false;
@@ -337,7 +429,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
     openCoInsurance(){
       this.coInsTable.loadingFlag = true;
-      this.polService.getDistCoIns(this.riskDistributionData.riskDistId).subscribe((data: any)=>{
+      this.polService.getDistCoIns(this.riskDistributionData.riskDistId,this.params.policyId).subscribe((data: any)=>{
         this.coInsuranceData.tableData = data.distCoInsList;
         this.coInsTable.refreshTable();
         this.coInsTable.loadingFlag = false;
@@ -361,57 +453,157 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     ngOnDestroy(){
       this.sub.unsubscribe();
     }
+
+    onClickDelete(event){
+      this.wparam.selected = [this.wparam.indvSelect];
+      if(this.wparam.selected[0].treatyName.toUpperCase() !== 'FACULTATIVE'){
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Can only delete Facultative Treaty';
+        this.successDiag.open();
+      }else{
+        this.wparam.confirmDelete();
+      }
+    }
+
+    //PARAMETERS FOR SAVING PREPARATION
+    save(cancelFlag?){
+      this.cancelFlag = cancelFlag !== undefined;
+      this.savedData = [];
+      this.deletedData = [];
+      //setting up ceding rep updates
+      for (var i = 0 ; this.wparamData.tableData.length > i; i++) {
+        if(this.wparamData.tableData[i].edited && !this.wparamData.tableData[i].deleted){
+            this.wparamData.tableData[i].eSignature = this.wparamData.tableData[i].fileName;
+            this.savedData.push(this.wparamData.tableData[i]);
+            this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
+            this.savedData[this.savedData.length-1].createUser = JSON.parse(window.localStorage.currentUser).username;
+            this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
+            this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
+        }
+        else if(this.wparamData.tableData[i].edited && this.wparamData.tableData[i].deleted){
+            this.deletedData.push(this.wparamData.tableData[i]);
+            this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
+            this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
+        }
+      }
+        //PARAMS:
+        //  One Retention Line -> this.riskDistributionData.retLineAmt
+        //  Saved Data For Treaty Share and Comm Share Parameters -> this.savedData
+        //  Deleted Data For Treaty Share and Comm Share Parameters -> this.deletedData
+        //  Auto Calculation -> this.riskDistributionData.autoCalc
+        let params: any = {
+          saveWParam:  this.savedData,
+          riskDistId:  this.riskDistributionData.riskDistId,
+          altNo: this.riskDistributionData.altNo,
+          retLineAmt: this.riskDistributionData.retLineAmt,
+          autoCalc: this.riskDistributionData.autoCalc,
+          updateUser: JSON.parse(window.localStorage.currentUser).username,
+          policyId: this.params.policyId
+        };
+        console.log(params)
+        this.polService.saveDistRisk(params).subscribe((data: any)=>{
+        if(data.returnCode === 0){
+          this.dialogIcon = 'error';
+          this.successDiag.open();
+        }else{
+          this.wparam.markAsPristine();
+          this.dialogIcon = '';
+          this.successDiag.open();
+          this.retrieveRiskDistribution();
+        }
+      });
+      
+    }
+
+    readOnlyAll(){
+      if(this.riskDistributionData.status.toUpperCase() === 'POSTED'){
+        this.wparamData.opts = [];
+        this.wparamData.uneditable = [];
+        this.wparamData.magnifyingGlass = [];
+        this.wparamData.addFlag = false;
+        this.wparamData.deleteFlag = false;
+        this.wparamData.checkFlag = false;
+        this.wparamData.uneditable=[true,true,true,true,true,]
+        for(var count = 0; count < this.wparamData.tHeader.length; count++){
+          this.wparamData.uneditable.push(true);
+        }
+      }
+    }
   //END
 
-  onClickViewPoolDist () {
-    this.passData.tHeader = ["Treaty", "Treaty Company", "1st Ret Line", "1st Ret SI Amt", "1st Ret Prem Amt", "2nd Ret Line", "2nd Ret SI Amt", "2nd Ret Prem Amt"];
-    this.passData.tableData = [
-                               ["QS","MAPFRE INSULAR","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
-                               ["QS","RELIANCE","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
-                               ["QS","INSTRA_STRATA","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
-                               ["QS","PHIL_FIRE","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
-                               ["QS","FEDERAL_PHOENIX","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
-                               ["QS","LIBERTY","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
-                              ];
-    this.passData.dataTypes = ["text", "text", "number", "number", "number", "number", "number", "number"];
-    this.distFlag = 'pool';
-    this.passData.addFlag = false;
-    this.passData.deleteFlag = false;
+  // onClickViewPoolDist () {
+  //   this.passData.tHeader = ["Treaty", "Treaty Company", "1st Ret Line", "1st Ret SI Amt", "1st Ret Prem Amt", "2nd Ret Line", "2nd Ret SI Amt", "2nd Ret Prem Amt"];
+  //   this.passData.tableData = [
+  //                              ["QS","MAPFRE INSULAR","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
+  //                              ["QS","RELIANCE","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
+  //                              ["QS","INSTRA_STRATA","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
+  //                              ["QS","PHIL_FIRE","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
+  //                              ["QS","FEDERAL_PHOENIX","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
+  //                              ["QS","LIBERTY","1","200,000.00","62.50","199","39,800,000.00","12,437.50"],
+  //                             ];
+  //   this.passData.dataTypes = ["text", "text", "number", "number", "number", "number", "number", "number"];
+  //   this.distFlag = 'pool';
+  //   this.passData.addFlag = false;
+  //   this.passData.deleteFlag = false;
+  // }
+
+  // onClickViewCoInsurance () {
+  //   this.passData.tHeader = ["Risk Dist No", "Dist No", "Policy No", "Ceding Company", "Share (%)", "SI Amount", "Premium Amount"];
+  //   this.passData.tableData = [
+  //                              ["00001","00001","CAR-2018-00001-099-0001-0000","FLT Prime","100.000000","4,000,000,000.00","62.50"],
+  //                             ];
+  //   this.passData.dataTypes = ["text", "text", "text", "text", "number", "number", "number"];
+  //   this.distFlag = 'coinsurance';
+  //   this.passData.addFlag = false;
+  //   this.passData.deleteFlag = false;
+  // }
+
+  // onClickReturn () {
+  //   this.passData.tHeader = [];
+  //   this.passData.dataTypes = [];
+
+  //   this.passData.tHeader.push("Treaty");
+  //   this.passData.tHeader.push("Treaty Company");
+  //   this.passData.tHeader.push("Share (%)");
+  //   this.passData.tHeader.push("SI Amount");
+  //   this.passData.tHeader.push("Premium Amount");
+  //   this.passData.tHeader.push("Comm Share");
+
+  //   this.passData.dataTypes.push("text");
+  //   this.passData.dataTypes.push("text");
+  //   this.passData.dataTypes.push("percent");
+  //   this.passData.dataTypes.push("number");
+  //   this.passData.dataTypes.push("number");
+  //   this.passData.dataTypes.push("number");
+
+  //   this.passData.tableData = this.polService.getDistByRiskData();
+  //   this.distFlag = 'treaty';
+  //   this.passData.addFlag = true;
+  //   this.passData.deleteFlag = true;
+  // }
+
+  distribute(){
+    let params: any = {
+          riskDistId:  this.riskDistributionData.riskDistId,
+          altNo: this.riskDistributionData.altNo,
+          updateUser: JSON.parse(window.localStorage.currentUser).username
+        };
+    this.polService.distributeRisk(params).subscribe((data:any)=>{
+         if(data.returnCode === 0){
+          this.dialogIcon = 'error';
+          this.successDiag.open();
+        }else{
+          this.wparam.markAsPristine();
+          this.dialogIcon = '';
+          this.successDiag.open();
+          this.retrieveRiskDistribution();
+        }
+      }
+      );
   }
 
-  onClickViewCoInsurance () {
-    this.passData.tHeader = ["Risk Dist No", "Dist No", "Policy No", "Ceding Company", "Share (%)", "SI Amount", "Premium Amount"];
-    this.passData.tableData = [
-                               ["00001","00001","CAR-2018-00001-099-0001-0000","FLT Prime","100.000000","4,000,000,000.00","62.50"],
-                              ];
-    this.passData.dataTypes = ["text", "text", "text", "text", "number", "number", "number"];
-    this.distFlag = 'coinsurance';
-    this.passData.addFlag = false;
-    this.passData.deleteFlag = false;
-  }
-
-  onClickReturn () {
-    this.passData.tHeader = [];
-    this.passData.dataTypes = [];
-
-    this.passData.tHeader.push("Treaty");
-    this.passData.tHeader.push("Treaty Company");
-    this.passData.tHeader.push("Share (%)");
-    this.passData.tHeader.push("SI Amount");
-    this.passData.tHeader.push("Premium Amount");
-    this.passData.tHeader.push("Comm Share");
-
-    this.passData.dataTypes.push("text");
-    this.passData.dataTypes.push("text");
-    this.passData.dataTypes.push("percent");
-    this.passData.dataTypes.push("number");
-    this.passData.dataTypes.push("number");
-    this.passData.dataTypes.push("number");
-
-    this.passData.tableData = this.polService.getDistByRiskData();
-    this.distFlag = 'treaty';
-    this.passData.addFlag = true;
-    this.passData.deleteFlag = true;
+  onClickCancel(){
+    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}]);
   }
 
 }

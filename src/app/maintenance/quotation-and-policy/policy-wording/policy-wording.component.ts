@@ -8,6 +8,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-policy-wording',
@@ -94,9 +95,10 @@ export class PolicyWordingComponent implements OnInit, OnDestroy {
 	msgNo: number = 1;
 	subscription: Subscription = new Subscription();
 
-	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
+	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal, private titleService: Title) { }
 
   	ngOnInit() {
+  		this.titleService.setTitle("Mtn | Policy Wording");
   		setTimeout(() => { this.table.refreshTable(); }, 0);
   	}
 
@@ -170,7 +172,7 @@ export class PolicyWordingComponent implements OnInit, OnDestroy {
 
 	onRowClick(data){
 		this.selected = data;	
-		this.policyWordingData.disableGeneric = this.selected == null ? true : false;
+		this.policyWordingData.disableGeneric = this.selected == null || this.selected == '';
 	}
 
 	onClickDelete() {
@@ -193,6 +195,8 @@ export class PolicyWordingComponent implements OnInit, OnDestroy {
 				this.successDialog.open();
 
 				this.tblHighlightReq('#policy-wording-table',this.policyWordingData.dataTypes,[0,1,2,3,8]);
+
+				this.cancel = false;
 				return;
 			}
 		}
@@ -204,20 +208,35 @@ export class PolicyWordingComponent implements OnInit, OnDestroy {
 		})) {
 			this.msgNo = 1;
 			$('#mtnPWWarningModal > #modalBtn').trigger('click');
+
+			this.cancel = false;
 			return;
 		}
 
 		if(pTd > 1 || aTd > 1 || pTdOc > 1 || aTdOc > 1) {
 			this.msgNo = 2;
 			$('#mtnPWWarningModal > #modalBtn').trigger('click');
+
+			this.cancel = false;
 			return;
 		}
 
-		this.confirmSave.confirmModal();
+		if(!this.cancel) {
+			this.confirmSave.confirmModal();	
+		} else {
+			this.save(false);
+		}
+		
 	}
 
 	save(cancel?) {
 		this.cancel = cancel !== undefined;
+
+		if(this.cancel && cancel) {
+			this.onClickSave();
+			return;
+		}
+
 		this.params.savePW = [];
 		this.params.deletePW = [];
 
