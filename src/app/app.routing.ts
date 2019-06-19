@@ -219,7 +219,7 @@ const appRoutes: Routes = [
     { path: 'batch-processing', component: PolBatchProcessingComponent },
     { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-risk-list', component: RiskListComponent },
-    { path: 'maintenance-risk', component: RiskFormComponent },
+    { path: 'maintenance-risk', component: RiskFormComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
     { path: 'pol-util-gen-info', component: UpdateGeneralInfoComponent },

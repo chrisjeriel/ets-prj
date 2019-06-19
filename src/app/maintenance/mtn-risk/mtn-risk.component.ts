@@ -100,7 +100,7 @@ export class MtnRiskComponent implements OnInit {
 
       this.maintenanceService.getMtnRiskListing([]).subscribe(data =>{
         var records = data['risk'];
-
+        records = records.filter(a=>{return a.activeTag !== 'N'});
               for(let rec of records){
                 this.riskListing.tableData.push({
                       riskId: rec.riskId,
