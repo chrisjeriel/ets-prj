@@ -70,16 +70,6 @@
 							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
 							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.expPdAmt" mask="comma_separator.2" readonly>
 						</div>
-						<!-- <div class="input-group">
-							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Total Reserve</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="700,000.00"
-							 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' required>
-							<label class="form-control-sm col-sm-1"></label>
-							<div class="col-sm"></div>
-							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Total Payment</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-							 placeholder="699,375.64" required>
-						</div> -->
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Total Reserve</label>
 							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.totalRes" mask="comma_separator.2" readonly>
@@ -129,7 +119,7 @@
 					<div class="cust-btn-container" style="margin-top: 10px; width: 100% !important;">
 						<button type="button" class="cust-btn" (click)="showResStatMdl()"><a>Reserve Status</a></button>
 						<button type="button" class="cust-btn" (click)="showApprovedAmtMdl()"><a>Approved Amount</a></button>
-						<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
 						<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 					</div>
 				</div>
@@ -174,11 +164,15 @@
        <app-cust-editable-non-datatable [passData]="passDataApprovedAmt" #apAmtTbl></app-cust-editable-non-datatable>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Save</a></button>
+        <button class="cust-btn" type="button" (click)="onClickCancelAppAmt()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onClickSaveAppAmt()"><a>Save</a></button>
     </div>
 </app-modal>
 
 <app-confirm-save (onYes)="onSaveClaimHistory()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveClaimHistory('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>
+<app-cancel-button #cancelClmHist (onYes)="onSaveClaimHistory('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>
+
+<app-confirm-save id="confirm-appAmt" (onYes)="onSaveClaimApprovedAmt()"></app-confirm-save>
+<app-sucess-dialog #successAppAmt [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelAppAmt();"></app-sucess-dialog>
+<app-cancel-button #cancelAppAmt (onYes)="onSaveClaimApprovedAmt('cancel')"></app-cancel-button>

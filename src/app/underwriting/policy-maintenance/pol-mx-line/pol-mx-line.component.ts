@@ -113,6 +113,9 @@ export class PolMxLineComponent implements OnInit {
 				if(!record.deleted){
 					isEmpty = 1;
 					this.fromCancel = false;
+				}else{
+					console.log('WOWW entered herereerrererere');
+					this.params.deleteLine.push(record);
 				}
 			}else{
 				this.fromCancel = true;

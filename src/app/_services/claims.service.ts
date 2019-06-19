@@ -102,4 +102,13 @@ export class ClaimsService {
         return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimHistory',params,header);
 	}
 
+	saveClaimApprovedAmt(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimApprovedAmt',params,header);
+	}
+
 }
