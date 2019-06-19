@@ -314,6 +314,7 @@ export class PolCoverageComponent implements OnInit {
       alttotalPrem: 0,
       extotalSi:0,
       extotalPrem:0,
+      exCumTprem:0,
       comtotalSi: 0,
       comtotalPrem: 0,
       exDays:0,
@@ -1458,6 +1459,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   updateAlteration(data){
+    console.log('updated')
     this.prevsectionISi     = 0;
     this.prevsectionIPrem   = 0;
     this.altsectionIPrem    = 0;
@@ -1500,7 +1502,7 @@ export class PolCoverageComponent implements OnInit {
     }   
 
     this.getEditableAlt();
-
+    console.log(this.passData.tableData)
     for(var j=0;j<this.passData.tableData.length;j++){
       if(!this.passData.tableData[j].edited){
         this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
@@ -1514,20 +1516,20 @@ export class PolCoverageComponent implements OnInit {
         this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].prevPremAmt) ? this.passData.tableData[j].premAmt+0 : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt + (isNaN(this.passData.tableData[j].exPremAmt) ? 0:this.passData.tableData[j].exPremAmt);
         
         if(this.line == 'EAR' || this.line == 'CAR'){
-          if(this.passData.tableData[j].section == 'I'){
+          if(this.passData.tableData[j].section == 'I' && !this.passData.tableData[j].deleted){
             if(this.passData.tableData[j].addSi == 'Y'){
                 this.prevsectionISi     += this.passData.tableData[j].prevSumInsured;
                 this.altsectionISi      += this.passData.tableData[j].sumInsured;
                 this.comsectionISi      += this.passData.tableData[j].cumSi;
                 
                 this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
+                console.log(j + '-'  + this.prevtotalSi)
                 this.comtotalSi   += this.passData.tableData[j].cumSi;
                 this.alttotalSi   += this.passData.tableData[j].sumInsured;
             }
             
             this.prevsectionIPrem   += this.passData.tableData[j].prevPremAmt;
             this.altsectionIPrem    += this.passData.tableData[j].premAmt;
-            console.log(this.passData.tableData[j].exPremAmt)
             this.exsectionIPrem     += this.passData.tableData[j].exPremAmt;
             this.comsectionIPrem    += this.passData.tableData[j].cumPrem;
 
@@ -1537,7 +1539,7 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'II'){
+          if(this.passData.tableData[j].section == 'II' && !this.passData.tableData[j].deleted){
             if(this.passData.tableData[j].addSi == 'Y'){
                 this.prevsectionIISi     += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured;
                 this.altsectionIISi      += this.passData.tableData[j].sumInsured;
@@ -1555,13 +1557,14 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'III'){
+          if(this.passData.tableData[j].section == 'III' && !this.passData.tableData[j].deleted){
             if(this.passData.tableData[j].addSi == 'Y'){
                 this.prevsectionIIISi   += this.passData.tableData[j].prevSumInsured;
                 this.altsectionIIISi    += this.passData.tableData[j].sumInsured;
                 this.comsectionIIISi    += this.passData.tableData[j].cumSi;
                 
                 this.prevtotalSi  += isNaN(this.passData.tableData[j].prevSumInsured) ? 0:this.passData.tableData[j].prevSumInsured
+                console.log(this.prevtotalSi)
                 this.comtotalSi   += this.passData.tableData[j].cumSi;
                 this.alttotalSi   += this.passData.tableData[j].sumInsured;
             }
@@ -1577,7 +1580,7 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
         }else if(this.line == 'EEI'){
-          if(this.passData.tableData[j].section == 'I'){
+          if(this.passData.tableData[j].section == 'I' && !this.passData.tableData[j].deleted){
             if(this.passData.tableData[j].addSi == 'Y'){
                 this.prevsectionISi     += this.passData.tableData[j].prevSumInsured;
                 this.altsectionISi      += this.passData.tableData[j].sumInsured;
@@ -1599,7 +1602,7 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'II'){
+          if(this.passData.tableData[j].section == 'II' && !this.passData.tableData[j].deleted){
             if(this.passData.tableData[j].addSi == 'Y'){
                 this.prevsectionIISi     += this.passData.tableData[j].prevSumInsured;
                 this.altsectionIISi      += this.passData.tableData[j].sumInsured;
@@ -1621,7 +1624,7 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'III'){
+          if(this.passData.tableData[j].section == 'III' && !this.passData.tableData[j].deleted){
             if(this.passData.tableData[j].addSi == 'Y'){
                 this.prevsectionIIISi   += this.passData.tableData[j].prevSumInsured;
                 this.altsectionIIISi    += this.passData.tableData[j].sumInsured;
@@ -1643,7 +1646,7 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
         }else{
-          if(this.passData.tableData[j].section == 'I'){
+          if(this.passData.tableData[j].section == 'I' && !this.passData.tableData[j].deleted){
             if(this.passData.tableData[j].addSi == 'Y'){
                 this.prevsectionISi     += this.passData.tableData[j].prevSumInsured;
                 this.altsectionISi      += this.passData.tableData[j].sumInsured;
@@ -1665,7 +1668,7 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'II'){
+          if(this.passData.tableData[j].section == 'II' && !this.passData.tableData[j].deleted){
             if(this.passData.tableData[j].addSi == 'Y'){
                 this.prevsectionIISi     += this.passData.tableData[j].prevSumInsured;
                 this.altsectionIISi      += this.passData.tableData[j].sumInsured;
@@ -1683,7 +1686,7 @@ export class PolCoverageComponent implements OnInit {
             this.comtotalPrem      += this.passData.tableData[j].cumPrem;
           }
 
-          if(this.passData.tableData[j].section == 'III'){
+          if(this.passData.tableData[j].section == 'III' && !this.passData.tableData[j].deleted){
             if(this.passData.tableData[j].addSi == 'Y'){
                 this.prevsectionIIISi   += this.passData.tableData[j].prevSumInsured;
                 this.altsectionIIISi    += this.passData.tableData[j].sumInsured;
@@ -1713,7 +1716,6 @@ export class PolCoverageComponent implements OnInit {
       this.successAlt.open();
       this.errorFlag = true;
     }
-    console.log(this.exsectionIPrem)
     this.passData2.tableData[0].section  = 'SECTION I'; 
     this.passData2.tableData[0].prevSi   = isNaN(this.prevsectionISi) ? 0:this.prevsectionISi;
     this.passData2.tableData[0].prevAmt  = isNaN(this.prevsectionIPrem)? 0:this.prevsectionIPrem;
@@ -1746,6 +1748,7 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.alttotalPrem     = this.alttotalPrem;
     this.altCoverageData.extotalSi        = 0;
     this.altCoverageData.extotalPrem      = this.extotalPrem;
+    this.altCoverageData.exCumTprem       = this.extotalPrem;
     this.altCoverageData.comtotalSi       = this.comtotalSi;
     this.altCoverageData.comtotalPrem     = this.comtotalPrem;
 
@@ -1779,7 +1782,8 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.exSecIIPrem    = this.exsectionIIPrem;
     this.altCoverageData.exSecIIIPrem   = this.exsectionIIIPrem;
     this.altCoverageData.extotalPrem    = this.extotalPrem;
-    this.altCoverageData.exDays      = 15;
+    this.altCoverageData.exCumTprem     = this.extotalPrem;
+    this.altCoverageData.exDays         = 15;
     this.altCoverageData.totalDays      = 30;
 
     this.altCoverageData.cumSecISi      = this.comsectionISi;
