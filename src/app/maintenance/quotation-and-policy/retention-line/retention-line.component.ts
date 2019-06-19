@@ -29,8 +29,10 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 	  	dataTypes: ['sequence-6', 'currency', 'date', 'checkbox', 'text'],
 	  	keys: ['retentionId', 'retLineAmt', 'effDateFrom', 'activeTag', 'remarks'],
 	  	widths: ['1','200','140','1','auto'],
-	  	uneditable: [true,false,false,false,false,false],
+	  	uneditable: [true,false,false,false,false],
+	  	uneditableKeys: ['retLineAmt','effDateFrom'],
 	  	nData: {
+	  		newRec: 1,
 	  		retentionId: '',
 	  		retLineAmt: '',
 	  		effDateFrom: '',
@@ -202,6 +204,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 
 		setTimeout(() => {
 			$('#lc-list').removeClass('ng-dirty');
+			this.table.markAsPristine();
 		}, 0);
 	}
 
@@ -212,6 +215,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 
 		setTimeout(() => {
 			$('#c-list').removeClass('ng-dirty');
+			this.table.markAsPristine();
 		}, 0);
 	}
 
@@ -219,19 +223,44 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 		var td = this.retAmtData.tableData;
 
 		for(let d of td) {
-			if(d.edited && !d.deleted && (d.retLineAmt == null || isNaN(d.retLineAmt) || d.effDateFrom == '' || d.effDateTo == '')) {
+			if(d.edited && !d.deleted && (d.retLineAmt == null || isNaN(d.retLineAmt) || d.effDateFrom == '')) {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 				this.cancel = false;
 				return;
 			}
 
-			if(d.edited && !d.deleted) {
-				for(let e of td) {
+			if(d.edited && !d.deleted && d.activeTag == 'Y') {
+				if(td.filter(c => c.activeTag == 'Y' && c.retentionId != '').length > 0) {
+					var dEDF = new Date(d.effDateFrom);
+					var lEDF = new Date(td.filter(c => c.activeTag == 'Y' && c.retentionId != '')
+										  .sort((a, b) => Number(new Date(b.effDateFrom)) - Number(new Date(a.effDateFrom)))[0].effDateFrom);
+					if(dEDF <= lEDF) {
+						this.errorMsg = 1;
+						$('#mtnRetLineWarningModal > #modalBtn').trigger('click');
+						this.cancel = false;
+						return;
+					}
+				}
+
+				if(td.filter(c => c.activeTag == 'Y' && c.retentionId == '').length > 1) {
+					var newList = td.filter(c => c.activeTag == 'Y' && c.retentionId == '');
+
+					for(var x = 1; x < newList.length; x++) {
+						if(new Date(newList[x].effDateFrom) <= new Date(newList[x-1].effDateFrom)) {
+							this.errorMsg = 1;
+							$('#mtnRetLineWarningModal > #modalBtn').trigger('click');
+							this.cancel = false;
+							return;
+						}
+					}
+				}
+
+				/*for(let e of td) {
 					var dEDF = new Date(d.effDateFrom);
 					var dEDT = new Date(d.effDateTo);
 
-					if(e != d && e.activeTag == 'Y' && e.retentionId != '') { //mga bago lang nachecheck, pag inedit yung existing tapos may bago na natamaan, di gumagana (no retentionId)
+					if(e != d && e.activeTag == 'Y' && e.retentionId != '') {
 						var eEDF = new Date(e.effDateFrom);
 						var eEDT = new Date(e.effDateTo);
 
@@ -242,7 +271,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 							return;
 						}
 					}
-				}
+				}*/
 			}
 		}
 
@@ -270,6 +299,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 			if(d.edited && !d.deleted) {
 				d.lineCd = this.lineCd;
 				d.lineClassCd = this.lineClassCd;
+				d.currencyCd = this.currencyCd;
 				d.createUser = this.ns.getCurrentUser();
 				d.createDate = this.ns.toDateTimeString(d.createDate);
 				d.updateUser = this.ns.getCurrentUser();
@@ -317,6 +347,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 			 copyFromRetentionId: this.selected.retentionId,
 			 copyToLineCd: this.copyLineCd,
 			 copyToLineClassCd: this.copyLineClassCd,
+			 copyToCurrencyCd: this.currencyCd,
 			 createDate: this.ns.toDateTimeString(0),
 			 createUser: this.ns.getCurrentUser(),
 			 updateDate: this.ns.toDateTimeString(0),
