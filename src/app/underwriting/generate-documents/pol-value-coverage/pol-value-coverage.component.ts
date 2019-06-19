@@ -166,6 +166,8 @@ export class PolValueCoverageComponent implements OnInit {
     risk: any;
     insured: any;
     policyNo: any;
+    promptMessage: string = "";
+    promptType: string = "";
 
   constructor( private ns: NotesService, private underwritingService: UnderwritingService, private modalService: NgbModal, private decimal : DecimalPipe, private route: ActivatedRoute) { }
 
@@ -211,61 +213,74 @@ export class PolValueCoverageComponent implements OnInit {
   			for(var i = 0 ; i < datas.length;i++){
   				this.passData.tableData.push(datas[i]);
   				if(this.line == 'CAR' || this.line == 'EAR'){
-  					if(datas[i].section == 'I' && datas[i].addSi == 'Y'){
-  						this.sectionISi   	+= datas[i].sumInsured;
-  						this.sectionIPrem   += datas[i].premAmt;
+  					if(datas[i].section == 'I' ){
+              if(datas[i].addSi == 'Y'){
+    						this.sectionISi   	+= datas[i].sumInsured;
+    						this.sectionIPrem   += datas[i].premAmt;
 
-  						this.totalSi 		+= datas[i].sumInsured;
+                this.totalSi     += datas[i].sumInsured;
+              }
   						this.totalPrem 		+= datas[i].premAmt;
-  					}else if(datas[i].section == 'II' && datas[i].addSi == 'Y'){
-  						this.sectionIISi  	+= datas[i].sumInsured;
-  						this.sectionIIPrem   += datas[i].premAmt;
-
+  					}else if(datas[i].section == 'II'){
+              if(datas[i].addSi == 'Y'){
+                this.sectionIISi    += datas[i].sumInsured;
+                this.sectionIIPrem   += datas[i].premAmt;
+              }
   						this.totalPrem		+= datas[i].premAmt;
-  					}else if(datas[i].section == 'III' && datas[i].addSi == 'Y'){
-  						this.sectionIIISi  	 += datas[i].sumInsured;
-  						this.sectionIIIPrem  += datas[i].premAmt;
+  					}else if(datas[i].section == 'III'){
+              if(datas[i].addSi == 'Y'){
+                this.sectionIIISi     += datas[i].sumInsured;
+                this.sectionIIIPrem  += datas[i].premAmt;
 
-  						this.totalSi		+= datas[i].sumInsured;
+                this.totalSi    += datas[i].sumInsured;
+              }
   						this.totalPrem		+= datas[i].premAmt;
   					}
   				}else if(this.line == 'EEI'){
-  					if(datas[i].section == 'I' && datas[i].addSi == 'Y'){
-  						this.sectionISi   	+= datas[i].sumInsured;
-  						this.sectionIPrem   += datas[i].premAmt;
+  					if(datas[i].section == 'I'){
+              if(datas[i].addSi == 'Y'){
+                this.sectionISi     += datas[i].sumInsured;
+                this.sectionIPrem   += datas[i].premAmt;
 
-  						this.totalSi 		+= datas[i].sumInsured;
+                this.totalSi     += datas[i].sumInsured;
+              }
   						this.totalPrem 		+= datas[i].premAmt;
-  					}else if(datas[i].section == 'II' && datas[i].addSi == 'Y'){
-  						this.sectionIISi  	+= datas[i].sumInsured;
-  						this.sectionIIPrem   += datas[i].premAmt;
-  						this.totalSi		+= datas[i].sumInsured;
-
+  					}else if(datas[i].section == 'II'){
+              if(datas[i].addSi == 'Y'){
+                this.sectionIISi    += datas[i].sumInsured;
+                this.sectionIIPrem   += datas[i].premAmt;
+                this.totalSi    += datas[i].sumInsured;
+              }
   						this.totalPrem		+= datas[i].premAmt;
-  					}else if(datas[i].section == 'III' && datas[i].addSi == 'Y'){
-  						this.sectionIIISi  	 += datas[i].sumInsured;
-  						this.sectionIIIPrem  += datas[i].premAmt;
+  					}else if(datas[i].section == 'III'){
+              if(datas[i].addSi == 'Y'){
+                this.sectionIIISi     += datas[i].sumInsured;
+                this.sectionIIIPrem  += datas[i].premAmt;
 
-  						this.totalSi		+= datas[i].sumInsured;
+                this.totalSi    += datas[i].sumInsured;
+              }
   						this.totalPrem		+= datas[i].premAmt;
   					}
   				}else {
-  					if(datas[i].section == 'I' && datas[i].addSi == 'Y'){
-  						this.sectionISi   	+= datas[i].sumInsured;
-  						this.sectionIPrem   += datas[i].premAmt;
+  					if(datas[i].section == 'I'){
+              if(datas[i].addSi == 'Y'){
+                this.sectionISi     += datas[i].sumInsured;
+                this.sectionIPrem   += datas[i].premAmt;
 
-  						this.totalSi 		+= datas[i].sumInsured;
+                this.totalSi     += datas[i].sumInsured;
+              }
   						this.totalPrem 		+= datas[i].premAmt;
-  					}else if(datas[i].section == 'II' && datas[i].addSi == 'Y'){
-  						this.sectionIISi  	+= datas[i].sumInsured;
-  						this.sectionIIPrem   += datas[i].premAmt;
-  						this.totalSi		+= datas[i].sumInsured;
-
+  					}else if(datas[i].section == 'II'){
+              if(datas[i].addSi == 'Y'){
+                this.sectionIISi    += datas[i].sumInsured;
+                this.sectionIIPrem   += datas[i].premAmt;
+              }
   						this.totalPrem		+= datas[i].premAmt;
-  					}else if(datas[i].section == 'III' && datas[i].addSi == 'Y'){
-  						this.sectionIIISi  	 += datas[i].sumInsured;
-  						this.sectionIIIPrem  += datas[i].premAmt;
-
+  					}else if(datas[i].section == 'III'){
+              if(datas[i].addSi == 'Y'){
+                this.sectionIIISi     += datas[i].sumInsured;
+                this.sectionIIIPrem  += datas[i].premAmt;
+              }
   						this.totalPrem		+= datas[i].premAmt;
   					}
   				}
@@ -343,65 +358,77 @@ export class PolValueCoverageComponent implements OnInit {
   	for(var i = 0; i< this.passData.tableData.length;i++){
   		this.passData.tableData[i].premAmt = this.passData.tableData[i].discountTag == 'Y' ? this.passData.tableData[i].premAmt: this.passData.tableData[i].sumInsured * (this.passData.tableData[i].premRt/100);
   		if(this.line == 'CAR' || this.line == 'EAR'){
-  			if(this.passData.tableData[i].section == 'I' && this.passData.tableData[i].addSi == 'Y'){
-  				this.sectionISi   	+= this.passData.tableData[i].sumInsured;
-  				this.sectionIPrem   += this.passData.tableData[i].premAmt;
+  			if(this.passData.tableData[i].section == 'I'){
+          if(this.passData.tableData[i].addSi == 'Y'){
+            this.sectionISi     += this.passData.tableData[i].sumInsured;
+            this.sectionIPrem   += this.passData.tableData[i].premAmt;
 
-  				this.totalSi 		+= this.passData.tableData[i].sumInsured;
+            this.totalSi     += this.passData.tableData[i].sumInsured;
+          }
   				this.totalPrem 		+= this.passData.tableData[i].premAmt;
-  			}else if(this.passData.tableData[i].section == 'II' && this.passData.tableData[i].addSi == 'Y'){
-  				this.sectionIISi  	+= this.passData.tableData[i].sumInsured;
-  				this.sectionIIPrem   += this.passData.tableData[i].premAmt;
-
+  			}else if(this.passData.tableData[i].section == 'II'){
+          if(this.passData.tableData[i].addSi == 'Y'){
+            this.sectionIISi    += this.passData.tableData[i].sumInsured;
+            this.sectionIIPrem   += this.passData.tableData[i].premAmt;
+          }
   				this.totalPrem		+= this.passData.tableData[i].premAmt;
-  			}else if(this.passData.tableData[i].section == 'III' && this.passData.tableData[i].addSi == 'Y'){
-  				this.sectionIIISi  	 += this.passData.tableData[i].sumInsured;
-  				this.sectionIIIPrem  += this.passData.tableData[i].premAmt;
+  			}else if(this.passData.tableData[i].section == 'III'){
+          if(this.passData.tableData[i].addSi == 'Y'){
+            this.sectionIIISi     += this.passData.tableData[i].sumInsured;
+            this.sectionIIIPrem  += this.passData.tableData[i].premAmt;
 
-  				this.totalSi		+= this.passData.tableData[i].sumInsured;
+            this.totalSi    += this.passData.tableData[i].sumInsured;
+          }
   				this.totalPrem		+= this.passData.tableData[i].premAmt;
   			}
   		}else if(this.line == 'EEI'){
-  			if(this.passData.tableData[i].section == 'I' && this.passData.tableData[i].addSi == 'Y'){
-  				this.sectionISi   	+= this.passData.tableData[i].sumInsured;
-  				this.sectionIPrem   += this.passData.tableData[i].premAmt;
+  			if(this.passData.tableData[i].section == 'I'){
+          if(this.passData.tableData[i].addSi == 'Y'){
+            this.sectionISi     += this.passData.tableData[i].sumInsured;
+            this.sectionIPrem   += this.passData.tableData[i].premAmt;
 
-  				this.totalSi 		+= this.passData.tableData[i].sumInsured;
+            this.totalSi     += this.passData.tableData[i].sumInsured;
+          }
   				this.totalPrem 		+= this.passData.tableData[i].premAmt;
-  			}else if(this.passData.tableData[i].section == 'II' && this.passData.tableData[i].addSi == 'Y'){
-  				this.sectionIISi  	+= this.passData.tableData[i].sumInsured;
-  				this.sectionIIPrem   += this.passData.tableData[i].premAmt;
-  				this.totalSi		+= this.passData.tableData[i].sumInsured;
-
+  			}else if(this.passData.tableData[i].section == 'II'){
+          if(this.passData.tableData[i].addSi == 'Y'){
+            this.sectionIISi    += this.passData.tableData[i].sumInsured;
+            this.sectionIIPrem   += this.passData.tableData[i].premAmt;
+            this.totalSi    += this.passData.tableData[i].sumInsured;
+          }
   				this.totalPrem		+= this.passData.tableData[i].premAmt;
-  			}else if(this.passData.tableData[i].section == 'III' && this.passData.tableData[i].addSi == 'Y'){
-  				this.sectionIIISi  	 += this.passData.tableData[i].sumInsured;
-  				this.sectionIIIPrem  += this.passData.tableData[i].premAmt;
+  			}else if(this.passData.tableData[i].section == 'III'){
+          if(this.passData.tableData[i].addSi == 'Y'){
+            this.sectionIIISi     += this.passData.tableData[i].sumInsured;
+            this.sectionIIIPrem  += this.passData.tableData[i].premAmt;
 
-  				this.totalSi		+= this.passData.tableData[i].sumInsured;
+            this.totalSi    += this.passData.tableData[i].sumInsured;
+          }
   				this.totalPrem		+= this.passData.tableData[i].premAmt;
   			}
   		}else {
-  			if(this.passData.tableData[i].section == 'I' && this.passData.tableData[i].addSi == 'Y'){
-  				this.sectionISi   	+= this.passData.tableData[i].sumInsured;
-  				this.sectionIPrem   += this.passData.tableData[i].premAmt;
+  			if(this.passData.tableData[i].section == 'I'){
+          if(this.passData.tableData[i].addSi == 'Y'){
+            this.sectionISi     += this.passData.tableData[i].sumInsured;
+            this.sectionIPrem   += this.passData.tableData[i].premAmt;
 
-  				this.totalSi 		+= this.passData.tableData[i].sumInsured;
+            this.totalSi     += this.passData.tableData[i].sumInsured;
+          }
   				this.totalPrem 		+= this.passData.tableData[i].premAmt;
-  			}else if(this.passData.tableData[i].section == 'II' && this.passData.tableData[i].addSi == 'Y'){
-  				this.sectionIISi  	+= this.passData.tableData[i].sumInsured;
-  				this.sectionIIPrem   += this.passData.tableData[i].premAmt;
-  				this.totalSi		+= this.passData.tableData[i].sumInsured;
-
+  			}else if(this.passData.tableData[i].section == 'II'){
+          if(this.passData.tableData[i].addSi == 'Y'){
+            this.sectionIISi    += this.passData.tableData[i].sumInsured;
+            this.sectionIIPrem   += this.passData.tableData[i].premAmt;
+          }
   				this.totalPrem		+= this.passData.tableData[i].premAmt;
-  			}else if(this.passData.tableData[i].section == 'III' && this.passData.tableData[i].addSi == 'Y'){
-  				this.sectionIIISi  	 += this.passData.tableData[i].sumInsured;
-  				this.sectionIIIPrem  += this.passData.tableData[i].premAmt;
-
+  			}else if(this.passData.tableData[i].section == 'III'){
+          if(this.passData.tableData[i].addSi == 'Y'){
+            this.sectionIIISi     += this.passData.tableData[i].sumInsured;
+            this.sectionIIIPrem  += this.passData.tableData[i].premAmt;
+          }
   				this.totalPrem		+= this.passData.tableData[i].premAmt;
   			}
   		}
-
   	}
 
   	this.passDataPerSection.tableData[0].section = 'SECTION I'
@@ -425,6 +452,12 @@ export class PolValueCoverageComponent implements OnInit {
   	this.fullCoverageDetails.sectionIIIPrem = this.sectionIIIPrem;
 
   	this.getEditableCov();
+
+    if(this.fullCoverageDetails.totalSi > parseFloat(this.fullCoverageDetails.totalValue.toString().split(',').join(''))){
+      this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";
+      this.promptType = "totalval";
+      this.modal.open();
+    }
   }
 
   regenerate(){

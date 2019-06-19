@@ -106,7 +106,13 @@ export class ClmClaimProcessingComponent implements OnInit {
   }
 
   navigateToGenInfo() {  
+    this.router.navigate(
+                    ['/claims-claim', {
+                        from: 'add',
 
+                    }],
+                    { skipLocationChange: true }
+      );
   }
 
   /*onRowDblClick(event) {
@@ -120,6 +126,20 @@ export class ClmClaimProcessingComponent implements OnInit {
 
   onClickAdd(event) {
     $('#addClaim > #modalBtn').trigger('click');
+  }
+
+  onClickEdit(event){
+    let line = this.selected.policyNo.split('-')[0];
+    this.router.navigate(
+                    ['/claims-claim', {
+                        from: 'edit',
+                        claimId: this.selected.claimId,
+                        claimNo: this.selected.claimNo,
+                        line: line,
+                        exitLink: 'clm-claim-processing'
+                    }],
+                    { skipLocationChange: true }
+      );
   }
 
   searchQuery(searchParams){

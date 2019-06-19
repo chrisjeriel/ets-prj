@@ -1163,11 +1163,11 @@ export class ExpiryListingComponent implements OnInit {
         this.modal.closeModal();
         this.successDiagCat.open();
       } else{
+        console.log('success')
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.modal.closeModal();
         this.successDiagCat.open();
-        console.log('success')
         this.retrieveExpPolList();
       }
     });
