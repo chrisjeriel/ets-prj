@@ -34,7 +34,7 @@ export class RiskListComponent implements OnInit {
             {
                 key: 'riskId',
                 title: 'Risk No.',
-                dataType: 'number'
+                dataType: 'text'
             },
             {
                 key: 'riskName',
@@ -118,6 +118,10 @@ export class RiskListComponent implements OnInit {
             }
         
             this.table.refreshTable();
+        },
+        (error)=>{
+            this.table.refreshTable();
+            this.table.loadingTableFlag = false;
         });
     }
     
