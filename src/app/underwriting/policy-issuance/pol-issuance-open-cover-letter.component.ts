@@ -40,7 +40,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
         this.router.navigateByUrl(this.exitLink);
       }
 
-      if($('.ng-dirty.ng-touched').length != 0 ){
+      else if($('.ng-dirty.ng-touched').length != 0 ){
          $event.preventDefault();
          const subject = new Subject<boolean>();
          const modal = this.modalService.open(ConfirmLeaveComponent,{
