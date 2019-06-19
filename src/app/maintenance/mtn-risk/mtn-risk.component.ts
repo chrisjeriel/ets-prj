@@ -36,6 +36,7 @@ export class MtnRiskComponent implements OnInit {
   };
 
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @Output() cancelBtn: EventEmitter<any> = new EventEmitter();
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
   @Input() lovCheckBox: boolean = false;
@@ -157,6 +158,10 @@ export class MtnRiskComponent implements OnInit {
   maintainRisk(){
     this.router.navigate(['/maintenance-risk', { info: 'new'}], {skipLocationChange: false});
     this.modalService.dismissAll();
+  }
+
+  cancel(){
+    this.cancelBtn.next();
   }
 
 }
