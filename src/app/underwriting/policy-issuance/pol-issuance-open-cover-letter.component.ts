@@ -39,8 +39,10 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
         $event.preventDefault();
         this.router.navigateByUrl(this.exitLink);
       }
-
-      else if($('.ng-dirty.ng-touched').length != 0 ){
+      else if ($event.nextId === 'print-tab') {
+          $event.preventDefault();
+      }
+      else if($('.ng-dirty.ng-touched:not([type="search"])').length != 0 ){
          $event.preventDefault();
          const subject = new Subject<boolean>();
          const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -59,6 +61,10 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
 
 
        }
+    }
+
+    showApprovalModal(content) {
+      this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
     }
 
 }

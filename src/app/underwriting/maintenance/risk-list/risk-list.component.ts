@@ -34,7 +34,7 @@ export class RiskListComponent implements OnInit {
             {
                 key: 'riskId',
                 title: 'Risk No.',
-                dataType: 'text'
+                dataType: 'number'
             },
             {
                 key: 'riskName',
