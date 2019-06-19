@@ -207,7 +207,7 @@ export class TreatyShareComponent implements OnInit {
 				   .map(a => { return { treatyYear: a } });
 
 			td.forEach(a => {
-				a['okDelete'] = this.mtnTreatyComm.find(b => b.treatyYear == a.treatyYear).okDelete;
+				a['okDelete'] = this.mtnTreatyComm.find(b => b.treatyYear == a.treatyYear && b.okDelete == 'N') == undefined ? 'Y' : 'N';
 				a['treatyCommList'] = this.mtnTreatyComm.sort((x, y) => y.createDate - x.createDate)
 														.filter(b => b.treatyYear == a.treatyYear)
 														.map(b => { b.treatyId = String(b.treatyId).padStart(2, '0');
