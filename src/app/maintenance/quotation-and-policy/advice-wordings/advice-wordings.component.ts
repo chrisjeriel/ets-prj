@@ -80,7 +80,12 @@ export class AdviceWordingsComponent implements OnInit {
     }
 
   onRowClick(data){
-  	this.selectedRow = data;
+    if(data !== null){
+      this.adviceWordingsData.disableGeneric = false;
+      this.selectedRow = data;
+    }else{
+      this.adviceWordingsData.disableGeneric = true;
+    }
   }
 
   onClickAdd(event){
