@@ -198,6 +198,8 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 	}
 
 	lineClassChanged(ev) {
+		this.lineClassCdDesc = ev.target.options[ev.target.selectedIndex].text;
+
 		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
 			this.getMtnRetAmt();
 		}
@@ -345,6 +347,9 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 		$('.globalLoading').css('display','block');
 		var params = {
 			 copyFromRetentionId: this.selected.retentionId,
+			 copyFromLineCd: this.lineCd,
+			 copyFromLineClassCd: this.lineClassCd,
+			 copyFromCurrencyCd: this.currencyCd,
 			 copyToLineCd: this.copyLineCd,
 			 copyToLineClassCd: this.copyLineClassCd,
 			 copyToCurrencyCd: this.currencyCd,

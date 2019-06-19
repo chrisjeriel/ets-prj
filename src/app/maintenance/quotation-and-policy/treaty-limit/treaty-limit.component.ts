@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -8,13 +8,15 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTreatyComponent } from '@app/maintenance/mtn-treaty/mtn-treaty.component';
 import { Title } from '@angular/platform-browser';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-treaty-limit',
   templateUrl: './treaty-limit.component.html',
   styleUrls: ['./treaty-limit.component.css']
 })
-export class TreatyLimitComponent implements OnInit {
+export class TreatyLimitComponent implements OnInit, OnDestroy {
 	@ViewChild('treatyLimitTable') treatyLimitTable: CustEditableNonDatatableComponent;
 	@ViewChild('treatyLayerTable') treatyLayerTable: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
@@ -26,17 +28,16 @@ export class TreatyLimitComponent implements OnInit {
 
   	treatyLimitData: any = {
 	  	tableData: [],
-	  	tHeader: ['Treaty Limit ID', 'Treaty Limit Amt', 'Treaty Layer Description', 'Effective From', 'Effective To', 'Active', 'Remarks'],
-	  	dataTypes: ['sequence-3', 'currency', 'text', 'date', 'date', 'checkbox', 'text'],
-	  	keys: ['treatyLimitId', 'amount', 'trtyLayerDesc', 'effDateFrom', 'effDateTo', 'activeTag', 'remarks'],
-	  	widths: ['1','200','1','140','140','1','auto'],
-	  	uneditable: [true,false,false,false,false,false, false],
+	  	tHeader: ['Treaty Limit ID', 'Treaty Limit Amt', 'Treaty Layer Description', 'Effective From','Active', 'Remarks'],
+	  	dataTypes: ['sequence-6', 'currency', 'text', 'date', 'checkbox', 'text'],
+	  	keys: ['treatyLimitId', 'amount', 'trtyLayerDesc', 'effDateFrom', 'activeTag', 'remarks'],
+	  	widths: ['1','200','1','140','1','auto'],
+	  	uneditable: [true,false,false,false,false, false],
 	  	nData: {
 	  		treatyLimitId: '',
 	  		amount: '',
 	  		trtyLayerDesc: '',
 	  		effDateFrom: '',
-	  		effDateTo: '',
 	  		activeTag: 'Y',
 	  		remarks: '',
 	  		createUser: '',
@@ -96,6 +97,8 @@ export class TreatyLimitComponent implements OnInit {
 	lineClassCd: string = '';
 	lineClassCdDesc: string = '';
   	lineClassList: any[] = [];
+  	currencyCd: any = '';
+  	currencyList: any[] = [];
   	disableCopySetup: boolean = true;
   	disableLCList: boolean = true;
   	errorMsg: number = 0;
@@ -111,6 +114,8 @@ export class TreatyLimitComponent implements OnInit {
 	hiddenTreaty: any[] = [];
 	treatyLOVRow: number;
 
+	subscription: Subscription = new Subscription();
+
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
@@ -118,9 +123,13 @@ export class TreatyLimitComponent implements OnInit {
 		setTimeout(() => { this.treatyLimitTable.refreshTable(); this.treatyLayerTable.refreshTable(); }, 0);
 	}
 
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+	}
+
 	getMtnTreatyLimit() {
 		this.treatyLimitTable.overlayLoader = true;
-		this.ms.getMtnTreatyLimit(this.lineCd, this.lineClassCd).subscribe(data => {
+		this.ms.getMtnTreatyLimit(this.lineCd, this.lineClassCd, this.currencyCd, '').subscribe(data => {
 			this.treatyLimitData.tableData = data['treatyLimitList'].sort((a, b) => b.createDate - a.createDate)
 																	.map(i => {
 																			i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom).split('T')[0];
@@ -212,10 +221,16 @@ export class TreatyLimitComponent implements OnInit {
 
     	this.lineClassCd = '';
     	this.lineClassList = [];
+    	this.currencyCd = '';
+    	this.currencyList = [];
 
     	if(this.lineDesc != '' && this.lineDesc != null) {
-    		this.ms.getLineClassLOV(this.lineCd).subscribe(data => {
-    			this.lineClassList = data['lineClass'];
+    		var sub$ = forkJoin(this.ms.getLineClassLOV(this.lineCd),
+    							this.ms.getMtnCurrencyList('')).pipe(map(([lineClass, currency]) => { return { lineClass, currency }; }));
+
+    		this.subscription = sub$.subscribe(data => {
+    			this.lineClassList = data['lineClass']['lineClass'];
+    			this.currencyList = data['currency']['currency'];
     		});
     	}
 
@@ -263,13 +278,26 @@ export class TreatyLimitComponent implements OnInit {
 	}
 
 	lineClassChanged(ev) {
-		this.lineClassCdDesc = ev.target.options[ev.target.selectedIndex].text;
-		if(this.lineCd != '' && this.lineClassCd != '') {
+		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
 			this.getMtnTreatyLimit();
 		}
 
 		setTimeout(() => {
 			$('#lc-list').removeClass('ng-dirty');
+			this.treatyLimitTable.markAsPristine();
+			this.treatyLayerTable.markAsPristine();
+		}, 0);
+	}
+
+	currencyChanged(ev) {
+		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
+			this.getMtnTreatyLimit();
+		}
+
+		setTimeout(() => {
+			$('#c-list').removeClass('ng-dirty');
+			this.treatyLimitTable.markAsPristine();
+			this.treatyLayerTable.markAsPristine();
 		}, 0);
 	}
 
@@ -314,7 +342,7 @@ export class TreatyLimitComponent implements OnInit {
 		var td = this.treatyLimitData.tableData;
 
 		for(let d of td) {
-			if(d.edited && !d.deleted && (d.amount == null || isNaN(d.amount) || d.effDateFrom == '' || d.effDateTo == ''
+			if(d.edited && !d.deleted && (d.amount == null || isNaN(d.amount) || d.effDateFrom == ''
 				|| d.treatyLayerList.filter(a => !a.deleted).length == 0)) {
 				this.dialogIcon = "error";
 				this.successDialog.open();
@@ -383,6 +411,7 @@ export class TreatyLimitComponent implements OnInit {
 										.map(a => {
 											a.lineCd = this.lineCd;
 											a.lineClassCd = this.lineClassCd;
+											a.currencyCd = this.currencyCd;
 											a.createUser = this.ns.getCurrentUser();
 											a.createDate = this.ns.toDateTimeString(a.createDate);
 											a.updateUser = this.ns.getCurrentUser();
@@ -392,6 +421,9 @@ export class TreatyLimitComponent implements OnInit {
 		this.params.saveTreatyLimit.forEach(a => {
 			a.treatyLayerList = a.treatyLayerList.filter(b => b.edited && !b.deleted)
 												  .map(b => {
+												  	b.lineCd = a.lineCd;
+													b.lineClassCd = a.lineClassCd;
+													b.currencyCd = a.currencyCd;
 												  	b.treatyLimitId = a.treatyLimitId;
 												  	b.createUser = this.ns.getCurrentUser();
 												  	b.createDate = this.ns.toDateTimeString(b.createDate);
@@ -437,8 +469,12 @@ export class TreatyLimitComponent implements OnInit {
 		$('.globalLoading').css('display','block');
 		var params = {
 			 copyFromTreatyLimitId: this.treatyLimitSelected.treatyLimitId,
+			 copyFromLineCd: this.treatyLimitSelected.lineCd,
+			 copyFromLineClassCd: this.treatyLimitSelected.lineClassCd,
+			 copyFromCurrencyCd: this.treatyLimitSelected.currencyCd,
 			 copyToLineCd: this.copyLineCd,
 			 copyToLineClassCd: this.copyLineClassCd,
+			 copyToCurrencyCd: this.currencyCd,
 			 createDate: this.ns.toDateTimeString(0),
 			 createUser: this.ns.getCurrentUser(),
 			 updateDate: this.ns.toDateTimeString(0),

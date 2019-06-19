@@ -843,10 +843,12 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyRetAmtSetup', params, header);
     }
 
-    getMtnTreatyLimit(lineCd, lineClassCd){
+    getMtnTreatyLimit(lineCd, lineClassCd, currencyCd, treatyLimitId){
 		const params = new HttpParams()
 		     		.set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
-		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd));
+		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd))
+		     		.set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd))
+		     		.set('treatyLimitId', (treatyLimitId === null || treatyLimitId === undefined ? '' : treatyLimitId));
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyLimit", {params});
 	}
