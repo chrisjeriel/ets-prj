@@ -33,7 +33,9 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 	  	keys: ['treatyLimitId', 'amount', 'trtyLayerDesc', 'effDateFrom', 'activeTag', 'remarks'],
 	  	widths: ['1','200','1','140','1','auto'],
 	  	uneditable: [true,false,false,false,false, false],
+	  	uneditableKeys: ['amount','effDateFrom'],
 	  	nData: {
+	  		newRec: 1,
 	  		treatyLimitId: '',
 	  		amount: '',
 	  		trtyLayerDesc: '',
@@ -160,8 +162,8 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 																		i.treatyId = i.treatyId == '' ? '' : String(i.treatyId).padStart(2, '0');
 																		return i;
 																	});
-			this.treatyLayerData.disableAdd = false;
-			this.treatyLayerData.disableGeneric = false;
+			// this.treatyLayerData.disableAdd = false;
+			// this.treatyLayerData.disableGeneric = false;
 			this.treatyLayerTable.refreshTable();
 	  		this.treatyLayerTable.onRowClick(null, this.treatyLayerData.tableData[0]);
 		} else if(data != '' && data != null && data.treatyLimitId == '') {
@@ -178,16 +180,29 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	onTreatyLimitClickDelete() {
-		this.treatyLimitTable.indvSelect.edited = true;
-		this.treatyLimitTable.indvSelect.deleted = true;
-		this.treatyLimitTable.confirmDelete();
+	onTreatyLimitClickDelete(ev) {
+		if(ev != undefined) {
+			this.treatyLimitTable.confirmDelete();
+		} else {
+			this.treatyLimitTable.indvSelect.edited = true;
+			this.treatyLimitTable.indvSelect.deleted = true;
+			this.treatyLimitData.disableGeneric = true;
+			this.treatyLimitTable.refreshTable();
+			this.treatyLimitTable.onRowClick(null, this.treatyLimitData.tableData[0]);
+
+			this.treatyLayerData.tableData = [];
+			this.treatyLayerTable.indvSelect.edited = true;
+			this.treatyLayerTable.indvSelect.deleted = true;
+			this.treatyLayerData.disableGeneric = true;
+			this.treatyLayerTable.refreshTable();
+		}
 	}
 
 	onTreatyLayerRowClick(data) {
 		this.selected = data;
 		this.treatyLayerSelected = data;
 		this.treatyLayerData.disableGeneric = this.treatyLayerSelected == null || this.treatyLayerSelected == '' || this.treatyLayerSelected.showMG == undefined;
+		this.treatyLayerData.disableAdd = this.treatyLayerSelected == null || this.treatyLayerSelected == '' || this.treatyLayerSelected.treatyLimitId != '';
 	}
 
 	onTreatyLayerClickDelete(ev) {
@@ -278,6 +293,8 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 	}
 
 	lineClassChanged(ev) {
+		this.lineClassCdDesc = ev.target.options[ev.target.selectedIndex].text;
+
 		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
 			this.getMtnTreatyLimit();
 		}
@@ -363,7 +380,7 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 				for(let e of td) {
 					var dList = d.treatyLayerList.filter(a => a.treatyId != undefined && !a.deleted).map(a => Number(a.treatyId)).sort((a, b) => a - b);
 
-					if(e != d && e.activeTag == 'Y' && e.treatyLimitId != '') {
+					if(e != d && e.activeTag == 'Y' && d.activeTag == 'Y') {
 						var eList = e.treatyLayerList.filter(a => a.treatyId != undefined && !a.deleted).map(a => Number(a.treatyId)).sort((a, b) => a - b);
 						
 						if(dList.length == eList.length) {
@@ -469,9 +486,9 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 		$('.globalLoading').css('display','block');
 		var params = {
 			 copyFromTreatyLimitId: this.treatyLimitSelected.treatyLimitId,
-			 copyFromLineCd: this.treatyLimitSelected.lineCd,
-			 copyFromLineClassCd: this.treatyLimitSelected.lineClassCd,
-			 copyFromCurrencyCd: this.treatyLimitSelected.currencyCd,
+			 copyFromLineCd: this.lineCd,
+			 copyFromLineClassCd: this.lineClassCd,
+			 copyFromCurrencyCd: this.currencyCd,
 			 copyToLineCd: this.copyLineCd,
 			 copyToLineClassCd: this.copyLineClassCd,
 			 copyToCurrencyCd: this.currencyCd,
