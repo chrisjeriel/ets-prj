@@ -20,7 +20,7 @@ export class CedingCompaniesListComponent implements OnInit {
 
   maintenanceCedingCoListData: any = {
       tableData: [],
-      tHeader: ['Co No.', 'Name', 'Abbreviation', 'Address', 'Active', 'Treaty', 'Govt.', 'Member', 'Membership Date', 'Termination Date', 'Inactive Date'],
+      tHeader: ['Co No.', 'Name', 'Abbreviation', 'Address', 'Member', 'Treaty', 'Active.', 'Withdrawal', 'Membership Date', 'Inactive Date', 'Withdrawal Date'],
       dataTypes: ['sequence-3', 'text', 'text', 'text', 'checkbox', 'checkbox', 'checkbox', 'checkbox', 'date', 'date', 'date'],
       tableOnly: false,
       addFlag: true,
@@ -29,7 +29,7 @@ export class CedingCompaniesListComponent implements OnInit {
       pageStatus: true,
       pagination: true,
       pageLength: 15,
-      keys: ['cedingId','cedingName','cedingAbbr','address','activeTag','treatyTag','govtTag','membershipTag','membershipDate','terminationDate','inactiveDate'],
+      keys: ['cedingId','cedingName','cedingAbbr','address','membershipTag','treatyTag','activeTag','withdrawTag','membershipDate','inactiveDate','withdrawDate'],
       filters: [
           {
               key: 'cedingId',
@@ -57,8 +57,8 @@ export class CedingCompaniesListComponent implements OnInit {
               dataType: 'date'
           },
           {
-              key: 'terminationDate',
-              title: 'Termination Date',
+              key: 'withdrawDate',
+              title: 'Withdrawal Date',
               dataType: 'date'
           },
           {
@@ -159,8 +159,8 @@ export class CedingCompaniesListComponent implements OnInit {
         importData.push(i);
     }
 
-    alasql('SELECT cedingId AS CoNo, cedingName AS Name, cedingAbbr AS Abbreviation, address AS Address, activeTag AS Active, '+
-           'govtTag AS Govt, membershipTag AS Member, membershipDate AS MemberShipDate, terminationDate AS TerminationDate, inactiveDate AS InactiveDate '+
+    alasql('SELECT cedingId AS CoNo, cedingName AS Name, cedingAbbr AS Abbreviation, address AS Address, membershipTag AS Member, '+
+           'treatyTag AS Treaty, activeTag AS Active, withdrawTag AS Withdrawal, membershipDate AS MemberShipDate, inactiveDate AS InactiveDate, withdrawDate AS WithdrawalDate '+
            'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,importData]);
   }
 
