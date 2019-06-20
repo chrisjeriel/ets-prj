@@ -398,6 +398,10 @@ span.ui-column-resizer {
                                     <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
                                     <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
                                 </div>
+                                <div *ngSwitchCase="'percent'" style="text-align: right">
+                                    <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.10-10' | negativeAmount}}</span>
+                                    <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                </div>
                                 <div  *ngSwitchCase="'number'" style="text-align: right">
                                     <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
                                     <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
