@@ -101,13 +101,13 @@ export class ClaimsService {
         return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimsAttachment',{params});
     }
 
-    saveQuoteAttachment(params){
+    saveClaimAttachment(params){
          let header : any = {
              headers: new HttpHeaders({
                  'Content-Type': 'application/json'
              })
          };
-         return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimsAttachment',params,header);
+         return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimsAttachment',JSON.stringify(params),header);
     }
 
 }
