@@ -1004,4 +1004,31 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmEvent',params,header);
 	}
 
+	getMtnSecIITrtyLimit(lineCd, lineClassCd, currencyCd, seciiTrtyLimId){
+		const params = new HttpParams()
+		     		.set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		     		.set('lineClassCd', (lineClassCd === null || lineClassCd === undefined ? '' : lineClassCd))
+		     		.set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd))
+		     		.set('seciiTrtyLimId', (seciiTrtyLimId === null || seciiTrtyLimId === undefined ? '' : seciiTrtyLimId));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnSecIITrtyLimit", {params});
+	}
+
+	saveMtnSecIITrtyLimit(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSecIITrtyLimit', params, header);
+    }
+
+    copySecIITrtyLimit(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copySecIITrtyLimit', params, header);
+    }
 }
