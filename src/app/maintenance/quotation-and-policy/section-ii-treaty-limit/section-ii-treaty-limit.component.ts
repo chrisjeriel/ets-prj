@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './section-ii-treaty-limit.component.html',
   styleUrls: ['./section-ii-treaty-limit.component.css']
 })
-export class SectionIiTreatyLimitComponent implements OnInit {
+export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   	@ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
