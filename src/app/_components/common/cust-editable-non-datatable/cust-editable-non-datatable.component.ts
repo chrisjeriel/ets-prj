@@ -85,7 +85,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //use if you have different tables in 1 page
         pageID:1,
         keys:[],
-        tabIndexes:[]
+        tabIndexes:[],
+        radioGroup: [],
     };
     indvSelect: any;
     dataKeys: any[] = [];
@@ -627,6 +628,35 @@ export class CustEditableNonDatatableComponent implements OnInit {
             data[key] = event.target.checked;
         else
             data[key] = event.target.checked ? 'Y' : 'N';
+    }
+
+
+    assignRadio(event,data,key){
+        console.log(event);
+        console.log('-----------------');
+        console.log(data);
+        console.log('-----------------');
+        console.log(key);
+        console.log('-----------------');
+        console.log(data[key]);
+        console.log(typeof (data[key]) );
+        if(typeof data[key] == 'boolean') {
+            data[key] = event.target.checked;
+            console.log("Boolean");
+        } else {
+            console.log("String");
+            console.log(this.passData.radioGroup);
+            for (let rad of this.passData.radioGroup) {
+                console.log(rad);
+                if (rad.radCols.includes(key)) {
+                    for (let i of rad.radCols) {
+                        console.log(i);
+                        data[i] = 'N';
+                    }
+                    data[key] = 'Y';
+                }
+            }
+        }
     }
 
     retrieveFromSub(){

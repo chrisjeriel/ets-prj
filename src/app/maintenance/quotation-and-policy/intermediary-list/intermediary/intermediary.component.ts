@@ -182,13 +182,10 @@ export class IntermediaryComponent implements OnInit {
   			$('.ind-name').prop('readonly',true);
   			$('.ind-name').removeClass('warn');
   			$('.ind-name').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
-  			
-			
   			this.intmRecord.firstName = '';
   			this.intmRecord.middleInitial = '';
   			this.intmRecord.lastName = '';
   		}
-  		this.addDirty();
   	}
 
   	onClickSave(){
@@ -200,6 +197,7 @@ export class IntermediaryComponent implements OnInit {
 	}
 
 	addDirty(){
+		console.log('dirtyyy');
 		$('.cus-dirty').addClass('ng-dirty');
 	}
 

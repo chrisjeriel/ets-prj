@@ -414,6 +414,8 @@ import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-st
 import { ClaimEventTypeComponent } from './maintenance/claims/claim-event-type/claim-event-type.component';
 import { ClaimEventComponent } from './maintenance/claims/claim-event/claim-event.component';
 import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lov/mtn-clm-event-type-lov.component';
+import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-policy/section-ii-treaty-limit/section-ii-treaty-limit.component';
+import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
 
 @NgModule({
     imports: [
@@ -834,6 +836,8 @@ import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lo
         ClaimEventTypeComponent,
         ClaimEventComponent,
         MtnClmEventTypeLovComponent,
+        SectionIiTreatyLimitComponent,
+        RetentionPerPoolMemberComponent,
     ],
 
   	providers: [

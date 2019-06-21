@@ -85,6 +85,14 @@ export class ClaimsService {
           return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimListing',{params});
      }
 
+    getClaimApprovedAmt(claimId?,histNo?){
+		const params = new HttpParams()
+			.set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+			.set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
+		return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimApprovedAmt',{params});	
+	}
+
+
 	saveClaimHistory(params){
 		let header : any = {
             headers: new HttpHeaders({
@@ -104,4 +112,28 @@ export class ClaimsService {
         return this.http.get(environment.prodApiUrl + '/claims-service/retrieveChangeClmStatus', {params});
 	}
 
+	saveClaimApprovedAmt(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimApprovedAmt',params,header);
+	}
+
+	getAttachment(claimId:string,claimNo?:string) {
+        const params = new HttpParams()
+             .set('claimNo', (claimNo === null || claimNo === undefined ? '' : claimNo) )
+             .set('claimId',(claimId === null || claimId === undefined ? '' : claimId) )
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimsAttachment',{params});
+    }
+
+    saveClaimAttachment(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimsAttachment',JSON.stringify(params),header);
+    }
 }

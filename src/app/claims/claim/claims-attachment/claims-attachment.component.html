@@ -25,18 +25,18 @@
 		<legend class="scheduler-border">Claim Info</legend>
 		<div class="custom-row-inline-inset">
 			<div class="form-row">
-				<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (uploadedFiles)="uploads($event)" style="width: 100%"></app-cust-editable-non-datatable>
+				<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (uploadedFiles)="uploads($event)" (newClick)="onRowClick($event)" style="width: 100%"></app-cust-editable-non-datatable>
 			</div>
 			<div class="form-row" style="margin-top: -10px;">
 				<div class="input-group" style="margin-left: -20px;">
 					<label class="form-control-sm col-sm-1">Created By</label>
-					<input type="text" class="form-control form-control-sm col-sm">
+					<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="attachRecord.createUser" readonly>
 					<label class="form-control-sm col-sm-1">Date Created</label>
-					<input type="text" class="form-control form-control-sm col-sm">	
+					<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="attachRecord.createDate" readonly>	
 					<label class="form-control-sm col-sm-1">Last Updated By</label>
-					<input type="text" class="form-control form-control-sm col-sm">
+					<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="attachRecord.updateUser" readonly>
 					<label class="form-control-sm col-sm-1">Last Update</label>
-					<input type="text" class="form-control form-control-sm col-sm">	
+					<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="attachRecord.updateDate" readonly>	
 				</div>
 			</div>
 		</div>
@@ -54,8 +54,6 @@
 </div>
 
 <app-sucess-dialog [message]="successMessage"></app-sucess-dialog>
-<app-confirm-save (onYes)="onSaveAttachment()"></app-confirm-save>
+<app-confirm-save #confirmSave (onYes)="onSaveAttachment()"></app-confirm-save>
 <app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveAttachment('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
-<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
-<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
+<app-cancel-button (onYes)="onSaveAttachment('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>

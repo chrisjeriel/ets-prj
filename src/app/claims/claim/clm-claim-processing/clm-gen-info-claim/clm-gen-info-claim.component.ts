@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ClaimsService, NotesService } from '@app/_services';
-
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-clm-gen-info-claim',
@@ -11,42 +11,34 @@ import { ClaimsService, NotesService } from '@app/_services';
   styleUrls: ['./clm-gen-info-claim.component.css']
 })
 export class ClmGenInfoClaimComponent implements OnInit {
+  @ViewChild('adjTblGI') adjTable: CustEditableNonDatatableComponent;
 
   line: string;
-  coClaimNo;
-  lineClass;
-  coRefNo;
-  adjRefNo
-  private sub: any;
+  sub: any;
 
-  tableData: any[] = [
-    ["001", "AArema Adjusters and Surveyors, Inc.", "PMMSC-MLP-2018-025"],
-    ["002", "TLP Adj", "ADJ2 REF 001"],
-    ["003", "ACD Co. Inc.", "ADJ3 REF 001"],
-  ];
-
-  tHeader: string[] = [];
-  dataTypes: string[] = [];
-  dataTypes2: string[] = [];
-  magnifyingGlass;
-  addFlag;
-  deleteFlag;
-  paginateFlag;
-  infoFlag;
-  pageLength = 10;
-
-  passData: any = {
+  adjData: any = {
     tableData: [],
-    tHeader: [],
-    dataTypes: [],
+    tHeader: ['Adjuster No','Adjuster Name','Adjuster Reference No'],
+    keys: ['adjId','adjName','adjRefNo'],
+    dataTypes: ['lovInput-r','text','text'],
+    uneditable: [false,true,true],
     addFlag: true,
     deleteFlag: true,
     paginateFlag: true,
     infoFlag: true,
     pageLength: 10,
-    magnifyingGlass: ['0'],
-    widths: [],
-    nData: [null, null, null]
+    magnifyingGlass: ['adjId'],
+    widths: ['1','auto','auto'],
+    nData: {
+      showMG: 1,
+      adjId: '',
+      adjName: '',
+      adjRefNo: '',
+      createUser: '',
+      createDate: '',
+      updateUser: '',
+      updateDate: ''
+    }
   };
 
   claimData: any = {
@@ -149,19 +141,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
 
     this.sub = this.router.params.subscribe(params => {
       this.line = params['line'];
-      // temporary data
-      this.lineClass = this.line + " Wet Risk";
-      this.coClaimNo = this.line + "-HO-2018-00015666";
-      this.coRefNo = "EN-" + this.line + "-HO-2018-006792-01";
-      this.adjRefNo = "PMMSC-" + this.line + "-2018-025 / ADJ2 REF 001 / ADJ3 REF 001";
-      console.log(this.line);
-      //end of temporary data
     });
-    
-    this.passData.tHeader.push("Adjuster No", "Adjuster Name", "Adjuster Reference No");
-    this.passData.dataTypes.push("number", "text", "text");
-    this.passData.widths.push("1", "auto", "auto");
-    this.passData.tableData = this.tableData;
   }
 
   retrieveClmGenInfo() {
@@ -182,6 +162,11 @@ export class ClmGenInfoClaimComponent implements OnInit {
 
       if(this.claimData.clmAdjusterList.length > 0) {
         this.claimData.adjNames = this.claimData.clmAdjusterList.map(a => a.adjName).join(' / ');
+        //add adjuster refs
+        this.adjData.tableData = this.claimData.clmAdjusterList.map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
+                                                                           a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                                                                           return a; });
+        this.adjTable.refreshTable();
       }
     });
   }

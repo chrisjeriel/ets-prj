@@ -20,12 +20,13 @@ export class PolMxLineComponent implements OnInit {
 
 	passData: any = {
 		tableData:[],
-		tHeader				:["Line Code", "Description", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
-		dataTypes			:["pk-cap", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text", "time-string"],
+		tHeader				:["Line Code", "Description", "Menu Line", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
+		dataTypes			:["pk-cap", "text", "select", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text", "time-string"],
 		nData:{ 
 			newRec			: 1,
 			lineCd          : '',
 			description     : '',
+			menuLineCd		: '',
 			cutOffTime      : '',
 			activeTag       : 'Y',
 			catTag          : 'N',
@@ -45,20 +46,26 @@ export class PolMxLineComponent implements OnInit {
 		paginateFlag		: true,
 		infoFlag			: true,
 		pageLength			: 10,
-		resizable			: [true, true, true, false, true, true, false,true, true,true,true],
-		uneditable			: [false,false,false,false,false,false,false,false,false,false,false],
-		widths				: ['auto','350',1,1,1,1,1,1,'auto','auto','auto'],
+		resizable			: [true, true, true, true, false, true, true, false,true, true,true,true],
+		uneditable			: [false,false,false,false,false,false,false,false,false,false,false,false],
+		widths				: ['auto','350',1,1,1,1,1,1,1,'auto','auto','auto'],
 		pageID				: 'line-mtn-line',
+		opts: [{
+            selector        : 'menuLineCd',
+            prev            : [],
+            vals            : [],
+        }],
 		mask: {
 	  		lineCd		: 'AAAAAAA',
 	  	},
 	  	limit: {
 	  		description : 100,
+	  		menuLineCd  : 7,
 	  		referenceNo : 4,
 	  		sortSeq		: 3,
 	  		remarks		: 100
 	  	},
-		keys				: ['lineCd','description','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks','timeString'],
+		keys				: ['lineCd','description','menuLineCd','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks','timeString'],
 	};
 
 	cancelFlag				: boolean;
@@ -74,20 +81,8 @@ export class PolMxLineComponent implements OnInit {
 	};
 
 	saveMtnLine:any = {
-		activeTag		: false,
-		alopTag			: false,
-		catTag			: false,
 		createDate		: "",
 		createUser		: "",
-		cutOffTime		: "",
-		deleteMtnLine	: "",
-		description		: "",
-		lineCd			: "",
-		openCoverTag	: false,
-		referenceNo		: "",
-		remarks			: "",
-		renewalTag		: false,
-		sortSeq			: "",
 		updateDate		: "",
 		updateUser		: "",
 	};
@@ -109,10 +104,13 @@ export class PolMxLineComponent implements OnInit {
 		var isEmpty = 0;
 		
 		for(let record of this.passData.tableData){
-			if(record.lineCd === '' || record.lineCd === null || record.description === '' || record.description === null || record.cutOffTime === '' || record.cutOffTime === null){
+			if(record.lineCd === '' || record.lineCd === null || record.description === '' || record.description === null || 
+				record.cutOffTime === '' || record.cutOffTime === null || record.menuLineCd === '' || record.menuLineCd === null){
 				if(!record.deleted){
 					isEmpty = 1;
 					this.fromCancel = false;
+				}else{
+					this.params.deleteLine.push(record);
 				}
 			}else{
 				this.fromCancel = true;
@@ -187,9 +185,13 @@ export class PolMxLineComponent implements OnInit {
 		.subscribe(data => {
 			console.log(data);
 			this.passData.tableData = [];
+			this.passData.opts[0].vals = [];
+            this.passData.opts[0].prev = [];
+
 			var rec = data['line'].map(i => {
 				i.createDate = this.ns.toDateTimeString(i.createDate);
 				i.updateDate = this.ns.toDateTimeString(i.updateDate);
+
 				var cutOffTimeString = i.cutOffTime.split(':');
 				if(Number(cutOffTimeString[0] < 12)){
 					cutOffTimeString[0] =Number(cutOffTimeString[0]) == 0 ?'12': cutOffTimeString[0];
@@ -198,11 +200,12 @@ export class PolMxLineComponent implements OnInit {
 					cutOffTimeString[0] =Number(cutOffTimeString[0]) == 12 ? cutOffTimeString[0] : String(Number(cutOffTimeString[0])-12).padStart(2,'0');
 					i.timeString = cutOffTimeString[0] + ':' + cutOffTimeString[1] + ' PM';
 				}
-
 				return i;
 			});
+
+			this.passData.opts[0].vals = rec.filter(i => i.menuLineTag == 'Y').map(a => a.menuLineCd);
+			this.passData.opts[0].prev = rec.filter(i => i.menuLineTag == 'Y').map(a => a.menuLineCd);
 			this.passData.tableData = rec;
-			console.log(this.passData.tableData);
 			this.table.refreshTable();
 			this.table.onRowClick(null, this.passData.tableData[0]);
 		});
@@ -218,7 +221,7 @@ export class PolMxLineComponent implements OnInit {
 
 	onRowClick(event){
 		if(event !== null){
-			this.saveMtnLine.lineCd		 = event.lineCd;
+			//this.saveMtnLine.lineCd		 = event.lineCd;
 			this.saveMtnLine.updateDate  = event.updateDate;
 	        this.saveMtnLine.updateUser  = event.updateUser;
 	        this.saveMtnLine.createDate  = event.createDate;
@@ -262,9 +265,10 @@ export class PolMxLineComponent implements OnInit {
 	  		this.warnMsg = 'You are not allowed to delete a Line that is already used in quotation processing.';
 			this.showWarnLov();
 	  	}else{
-	  		this.table.indvSelect.deleted = true;
+	  		this.table.indvSelect.deleted = true; 
 	  		this.table.selected  = [this.table.indvSelect]
 	  		this.table.confirmDelete();
+	  		console.log('from onDeleteLine else');
 	  	}
 	}
 

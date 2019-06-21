@@ -120,9 +120,10 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       widths: [1,1,'auto',150,150,150,150,150,150],
       total: [null,null,'TOTAL', 'siAmt', 'premAmt', null, 'commAmt', 'vatRiComm', 'netDue'],
       searchFlag: true,
-      paginateFlag: true,
-      infoFlag: true,
-      pageID: 'trtyDistTable'
+      paginateFlag: false,
+      infoFlag: false,
+      pageID: 'trtyDistTable',
+      pageLength: 'unli'
     }
 
     poolDistributionData: any = {

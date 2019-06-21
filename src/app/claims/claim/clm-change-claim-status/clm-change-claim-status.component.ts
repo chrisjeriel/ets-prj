@@ -16,6 +16,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class ClmChangeClaimStatusComponent implements OnInit {
 
+
   @ViewChild('queryMdl') queryModal : ModalComponent;
   @ViewChild('clmListMdl') clmListModal : ModalComponent;
   @ViewChild('polListMdl') polListModal : ModalComponent;
@@ -326,5 +327,5 @@ export class ClmChangeClaimStatusComponent implements OnInit {
    this.selectedPolicy = {};
    this.selectedClaim = {};
   }
-
 }
+

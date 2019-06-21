@@ -82,5 +82,5 @@
 </div>  
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="prepareData()"></app-confirm-save>
-<app-cancel-button (onYes)="prepareData('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-confirm-save (onYes)="saveItem()"></app-confirm-save>
+<app-cancel-button (onYes)="saveItem('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

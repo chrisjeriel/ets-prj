@@ -17,16 +17,15 @@ export class RoundingErrorComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(MtnCedingCompanyComponent) mtnCedingLov: MtnCedingCompanyComponent;
   passData: any = {
-    tHeader: [ "Company No","Company Name","Abbreviation","Effective From", "Effective To","Active","Remarks"],
+    tHeader: [ "Company No","Company Name","Abbreviation","Effective From","Active","Remarks"],
     tableData:[],
-    dataTypes: ['lovInput','text','text','date','date','checkbox', "text"],
+    dataTypes: ['lovInput','text','text','date','checkbox', "text"],
     nData: {
       showMG: 1,
       companyId: null,
       companyName: null,
       abbreviation: null,
       effDateFrom: null,
-      effDateTo: null,
       activeTag: 'Y',
       remarks: null,
       uneditable: [],
@@ -47,9 +46,9 @@ export class RoundingErrorComponent implements OnInit {
     pageLength: 10,
     paginateFlag: true,
     infoFlag: true,
-    uneditable:[false,true,true,false,false,false,false],
-    widths:['auto','auto','auto','auto','auto','auto','auto'],
-    keys:['companyId','companyName','abbreviation','effDateFrom','effDateTo','activeTag','remarks']
+    uneditable:[false,true,true,false,false,false],
+    widths:['auto','auto','auto','auto','auto','auto'],
+    keys:['companyId','companyName','abbreviation','effDateFrom','activeTag','remarks']
   };
 
   cancelFlag:boolean;
@@ -196,19 +195,7 @@ export class RoundingErrorComponent implements OnInit {
   }
 
   onClickSave(){
-  	this.errorFlag = false;
-  	for(var i = 0 ; i < this.passData.tableData.length; i++){
-  		if(this.passData.tableData[i].effDateFrom > this.passData.tableData[i].effDateTo){
-  	  		this.errorFlag = true;
-  	  	}
-  	}
-  	if(this.errorFlag){
-  		this.dialogMessage = "Effective Date From is higher than Effective Date to.";
-  		this.dialogIcon = "error-message";
-  		this.successDiag.open();
-  	}else{
   		$('#confirm-save #modalBtn2').trigger('click');
-  	}
   }
 
   cancel(){

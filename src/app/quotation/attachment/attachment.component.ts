@@ -84,6 +84,7 @@ export class AttachmentComponent implements OnInit {
 
   passData : any = {
     tableData: [],
+    dataTypes: ['text', 'text'],
     tHeader: ['File Name', 'Description', 'Action'],
     nData : new AttachmentInfo(null,null),
     checkFlag: true,
@@ -98,7 +99,6 @@ export class AttachmentComponent implements OnInit {
     pageLength: 10,
     widths: [],
     uneditable: [true,false,false],
-    dataTypes: ['text', 'text'],
     keys:['fileName','description']
   };
 
