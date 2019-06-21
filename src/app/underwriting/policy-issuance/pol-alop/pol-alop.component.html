@@ -103,7 +103,7 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="polAlopData.indemFromDate?.split('T')[0]" (ngModelChange)="polAlopData.indemFromDate=$event" name="indemFromDate">
+				<input #indemFrom class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="polAlopData.indemFromDate?.split('T')[0]" (ngModelChange)="polAlopData.indemFromDate=$event" (change)="checkDates()" name="indemFromDate">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
@@ -139,7 +139,7 @@
 		         </div>  
 			</div>
 			<div footer class="text-center">
-					<button type="button" class="cust-btn" (click)="modalService.dismissAll(); showAlopItem=false"><a>Cancel</a></button>
+					<button type="button" class="cust-btn" (click)="cancelModal();showAlopItem=false"><a>Cancel</a></button>
 					<button type="button" class="cust-btn" (click)="onClickSavePolAlopItem()"><a>Save</a></button>
 <!-- 
 					<button type="button" class="cust-btn" (click)="cancelModal(); showAlopItem=false"><a>Cancel</a></button>

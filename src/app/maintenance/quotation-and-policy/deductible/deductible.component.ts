@@ -83,7 +83,6 @@ export class DeductibleComponent implements OnInit {
     description         : string;
     mtnDeductiblesReq   : any;
     cancelFlag          : boolean;
-    loading             : boolean;
     dialogIcon          : string;
     dialogMessage       : string;
     successMessage      : string  = environment.successMessage;
@@ -132,7 +131,13 @@ export class DeductibleComponent implements OnInit {
                 this.passData.tableData  = [];
                 this.arrDeductibleCd     = [];
 
-                var dedRec = data['ded']['deductibles'].map(a => { a.createDate = this.ns.toDateTimeString(a.createDate); a.updateDate = this.ns.toDateTimeString(a.updateDate); return a;});
+                var dedRec = data['ded']['deductibles'].map(a => { 
+                    a.createDate     = this.ns.toDateTimeString(a.createDate); 
+                    a.updateDate     = this.ns.toDateTimeString(a.updateDate);
+                    a.endorsement    = (a.coverCd != 0 && a.endtCd == 0)?'':a.endorsement;
+                    a.sectionCover   = (a.coverCd == 0 && a.endtCd != 0)?'':a.sectionCover;
+                    return a;
+                });
                 this.passData.tableData  = dedRec;
                 this.table.refreshTable();
                 this.table.onRowClick(null, this.passData.tableData[0]);
@@ -147,8 +152,6 @@ export class DeductibleComponent implements OnInit {
         this.cancelFlag = cancelFlag !== undefined;
         this.dialogIcon = '';
         this.dialogMessage = '';
-        var isNotUnique : boolean ;
-        var saveDed = this.params.saveDeductibles;
         var isEmpty = 0;
         console.log(this.passData.tableData);
         for(let record of this.passData.tableData){
@@ -178,26 +181,6 @@ export class DeductibleComponent implements OnInit {
         }
         console.log(this.params);
 
-        this.passData.tableData.forEach(function(tblData){
-            if(tblData.isNew != true){
-                saveDed.forEach(function(sdData){
-                    if(tblData.deductibleCd.toString().toUpperCase() == sdData.deductibleCd.toString().toUpperCase()){
-                        if(sdData.isNew === true){
-                            isNotUnique = true;    
-                        }
-                    }
-                });
-            }
-        });
-
-        if(isNotUnique == true){
-            setTimeout(()=>{
-                $('.globalLoading').css('display','none');
-                this.warnMsg = 'Unable to save the record. Deductible must be unique per Line.';
-                this.showWarnLov();
-                this.params.saveDeductibles     = [];
-            },500);
-        }else{
             if(isEmpty == 1){
                 setTimeout(()=>{
                     $('.globalLoading').css('display','none');
@@ -226,8 +209,6 @@ export class DeductibleComponent implements OnInit {
                     });
                 }    
             }
-        }
-
     }
 
     onDeleteDeductibles(){
@@ -240,10 +221,6 @@ export class DeductibleComponent implements OnInit {
               this.table.confirmDelete();
           }
     }
-
-    // cbFunc(chxbox:boolean){
-    //     return (chxbox === null  || chxbox === false )? 'N' : 'Y';
-    // }
 
     showWarnLov(){
         $('#warnMdl > #modalBtn').trigger('click');
@@ -280,7 +257,7 @@ export class DeductibleComponent implements OnInit {
             }else{
                 event.deductibleAmt  = null;
             }
-            this.table.refreshTable();
+           // this.table.refreshTable();
         }else{
             this.deductiblesData.createUser = '';
             this.deductiblesData.createDate = '';
@@ -302,7 +279,30 @@ export class DeductibleComponent implements OnInit {
     }
 
     onClickSave(){
-        $('#confirm-save #modalBtn2').trigger('click');
+        var isNotUnique : boolean ;
+        var saveDed = this.passData.tableData.filter(i => i.isNew == true);
+        console.log(this.passData.tableData);
+        console.log(saveDed);
+
+        this.passData.tableData.forEach(function(tblData){
+            if(tblData.isNew != true){
+                saveDed.forEach(function(sdData){
+                    if(tblData.deductibleCd.toString().toUpperCase() == sdData.deductibleCd.toString().toUpperCase() && tblData.coverCd == 0 && tblData.endtCd == 0){
+                        if(sdData.isNew === true){
+                            isNotUnique = true;    
+                        }
+                    }
+                });
+            }
+        });
+
+        if(isNotUnique == true){
+            this.warnMsg = 'Unable to save the record. Deductible must be unique per Line.';
+            this.showWarnLov();
+            this.params.saveDeductibles     = [];
+        }else{
+            $('#confirm-save #modalBtn2').trigger('click');
+        }
     }
 
     dedType(){

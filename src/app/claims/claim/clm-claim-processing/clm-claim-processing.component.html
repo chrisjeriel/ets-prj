@@ -4,80 +4,83 @@
     <ngb-tab title="Claim Processing">
       <ng-template ngbTabContent>
         <div style="margin-top: 12px">
-          <app-cust-non-datatable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="selected=$event;" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)"></app-cust-non-datatable>
+          <app-cust-non-datatable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="selected=$event; onClickEdit($event)" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" #mainTable></app-cust-non-datatable>
         </div>
 
         <br><br>
         <div class="cust-btn-container">
-          <app-modal hidden [btnTitle]="'Add (Temporary)'" style="margin-bottom: 2px;" id="addClaim">
+          <app-modal hidden [btnTitle]="'Add (Temporary)'" style="margin-bottom: 2px;" id="addClaim" #add>
             <div header style="width: 600px !important;">Enter General Info</div>
             <div body style="width: 600px !important;">
               <fieldset class="scheduler-border col-sm-12 left" style="padding-top: 7px !important;padding-bottom: 4px !important;">
+                <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                <div style="position: fixed;width: 46%;height: 65%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
                 <div class="form-row custom-row-inline-inset" style="margin-left: -56px !important;">
 
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">Policy No</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="polLine"
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[0]" (change)="policyNoChecker($event, 'line')"
                       style="margin-left: 3px;" ngbTooltip="Line">
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[1]" (change)="policyNoChecker($event, 'year')" style="margin-left: 3px;"
                       ngbTooltip="Year">
-                    <input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-3 cap-input" [(ngModel)]="tempPolNo[2]" (change)="policyNoChecker($event, 'seqNo')" style="margin-left: 3px;"
                       ngbTooltip="Sequence No">
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[3]" (change)="policyNoChecker($event, 'cedingId')" style="margin-left: 3px;"
                       ngbTooltip="Co Code">
-                    <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-2 cap-input" [(ngModel)]="tempPolNo[4]" (change)="policyNoChecker($event, 'coSeriesNo')" style="margin-left: 3px;"
                       ngbTooltip="Co Series No">
-                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[5]" (change)="policyNoChecker($event, 'altNo')" style="margin-left: 3px;"
                       ngbTooltip="Alt No">
                     <span>&nbsp;</span>
-                    <div class="text-search-ico" style=" margin-right: 19px !important;"><a><i class="fa fa-search"></i></a></div>
+                    <div class="text-search-ico" style=" margin-right: 19px !important;"><a (click)="openPolLOV()"><i class="fa fa-search"></i></a></div>
                   </div>
 
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">Ceding
                       Company</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 19px !important;">
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 19px !important;" [ngModel]="policyDetails.cedingName" readonly>
                   </div>
 
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">Insured</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;" [ngModel]="policyDetails.insuredDesc" readonly>
                   </div>
 
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">Risk</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;">
-                    <div class="text-search-ico magni-pos"><a><i class="fa fa-search"></i></a></div>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px; margin-right: 19px !important;">
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" [(ngModel)]="policyDetails.riskId" (change)="checkCode($event, 'risk')">
+                    <div class="text-search-ico magni-pos"><a (click)="openRiskLOV();"><i class="fa fa-search"></i></a></div>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px; margin-right: 19px !important;" [ngModel]="policyDetails.riskName" readonly>
                   </div>
 
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">Region</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;" [ngModel]="policyDetails.regionDesc" readonly>
                   </div>
 
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">Province</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;" [ngModel]="policyDetails.provinceDesc" readonly>
                   </div>
 
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">City/Town</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;" [ngModel]="policyDetails.cityDesc" readonly>
                   </div>
 
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">District</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;">
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;" [ngModel]="policyDetails.districtDesc" readonly>
                     <label class="form-control-sm col-sm-1">Block</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;" [ngModel]="policyDetails.blockDesc" readonly>
                   </div>
                 </div>
               </fieldset>
             </div>
             <div footer class="text-center" style="width:100% !important; margin-top: -17px !important;">
-              <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-              <button type="button" class="cust-btn" (click)="navigateToGenInfo()"><a>Next</a></button>
+              <button type="button" class="cust-btn" (click)="clearAddFields(); tempPolNo = ['','','','','','']"><a>Clear</a></button>
+              <button type="button" class="cust-btn" (click)="addModal.closeModal(); clearAddFields('exceptPolNo');"><a>Cancel</a></button>
+              <button type="button" class="cust-btn" (click)="addModal.closeModal();navigateToGenInfo();" [class.cust-btn-disabled]="policyDetails.policyNo.length === 0" [disabled]="policyDetails.policyNo.length === 0"><a>Next</a></button>
             </div>
 
           </app-modal>
@@ -86,3 +89,20 @@
     </ngb-tab>
   </ngb-tabset>
 </div>
+
+
+<!-- ALL LOV MODALS HERE!!!! -->
+
+<app-modal hidden [btnTitle]="" style="margin-bottom: 2px;" #polList>
+  <div header style="width: 1000px !important;">List of Values</div>
+  <div body style="width: 1000 !important;">
+      <app-cust-non-datatable [passData]="policyListingData" (rowClick)="polListRowClick($event)" #polListTbl></app-cust-non-datatable>
+  </div>
+  <div footer class="text-center" style="width:100% !important;">
+    <button type="button" class="cust-btn" (click)="polListModal.closeModal();"><a>Cancel</a></button>
+    <button type="button" class="cust-btn" (click)="polListModal.closeModal();setPolicyDetails(selectedPolicyRow.policyId, selectedPolicyRow.policyNo);"><a>Ok</a></button>
+  </div>
+
+</app-modal>
+
+<app-mtn-risk id="riskLOV" #riskLOV (selectedData)="setRisks($event)" (cancelBtn)="clearAddFields(); tempPolNo = ['','','','','','']"></app-mtn-risk>

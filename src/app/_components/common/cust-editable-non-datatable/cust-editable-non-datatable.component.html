@@ -223,6 +223,9 @@ span.ui-column-resizer {
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                         <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data,key)" ngModel>
                                     </div>
+                                    <div *ngSwitchCase="'radio'" style="text-align: center;">
+                                        <input (focus)="focus(data)" id="checkbox" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [checked]="data[key] === undefined || data[key] === 'N' ? false : true" type="checkbox" (click)="assignRadio($event,data,key);onDataChange($event,data,key)" ngModel>
+                                    </div>
                                     <div *ngSwitchCase="'file'" style="text-align: center;">
                                         <button class="fa fa-paperclip btn-file" title="Attach Image">
                                             <input type="file" accept="image/*" (change)="upload(data,$event)">
@@ -407,6 +410,10 @@ span.ui-column-resizer {
                             <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]">
                                 <div *ngSwitchCase="'currency'" style="text-align: right">
                                     <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
+                                    <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                </div>
+                                <div *ngSwitchCase="'percent'" style="text-align: right">
+                                    <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.10-10' | negativeAmount}}</span>
                                     <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
                                 </div>
                                 <div  *ngSwitchCase="'number'" style="text-align: right">
