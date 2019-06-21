@@ -168,7 +168,7 @@
     </div>
 </app-modal>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null;modalService.dismissAll()"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save id="saveCov" (onYes)="saveCoverage()"></app-confirm-save>
 <app-confirm-save id="saveCat" (onYes)="saveCatPeril()"></app-confirm-save>
 <app-cancel-button #cancelCov (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
