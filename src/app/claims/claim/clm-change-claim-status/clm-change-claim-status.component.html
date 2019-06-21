@@ -6,7 +6,7 @@
         <div class="custom-row-inline-inset">
           <div class="row">
             <div class="col-sm-10">
-              <app-cust-non-datatable [passData]="queryData"></app-cust-non-datatable>
+              <app-cust-editable-non-datatable [passData]="queryData" (newClick)="onRowClickQuery($event)" #queryTbl></app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2">
               <fieldset class="scheduler-border">

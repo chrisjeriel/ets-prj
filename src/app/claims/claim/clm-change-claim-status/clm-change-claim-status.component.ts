@@ -27,15 +27,17 @@ export class ClmChangeClaimStatusComponent implements OnInit {
 
   @ViewChild('clmListTable') clmListTable : CustNonDatatableComponent;
   @ViewChild('polListTable') polListTable : CustNonDatatableComponent;
+  @ViewChild('queryTbl') queryTable : CustNonDatatableComponent;
 
   queryData: any = {
     tableData: [],
     tHeader: ['Claim No', 'Status', 'Policy No', 'Ceding Company', 'Insured'],
     dataTypes: ['text', 'text', 'text', 'text', 'text'],
     keys: ['claimNo', 'clmStatus', 'policyNo', 'cedingName', 'insuredDesc'],
-    pagination: true,
-    pageStatus: true,
-    tableOnly: true,
+    uneditable: [true,true,true,true,true],
+    paginateFlag: true,
+    infoFlag: true,
+    searchFlag: false,
     pageLength: 10,
     checkFlag: true,
     pageID: 'queryTable'
@@ -74,6 +76,8 @@ export class ClmChangeClaimStatusComponent implements OnInit {
   tempPolNo: string[] = ['','','','','',''];
 
   searchParams: any = {
+    claimId: '',
+    policyId: '',
     riskName:'',
     riskId: '',
     cedingName: '',
@@ -145,7 +149,11 @@ export class ClmChangeClaimStatusComponent implements OnInit {
                             {key: 'riskName', search: this.searchParams.riskName.toUpperCase()}
                           ]).subscribe(
       (data: any)=>{
-        this.polListData.tableData = data.policyList;
+        this.polListData.tableData = [];
+        for(var i of data.policyList){
+          i.riskName = i.project.riskName;
+          this.polListData.tableData.push(i);
+        }
         this.polListTable.refreshTable();
         this.polListTable.loadingFlag = false;
       },
@@ -155,12 +163,44 @@ export class ClmChangeClaimStatusComponent implements OnInit {
     );
   }
 
+  retrieveQueryList(){
+    this.queryTable.loadingFlag = true;
+    this.cs.getChangeClaimStatus(this.searchParams).subscribe(
+       (data: any)=>{
+         console.log(data);
+         if(data.claimList.length !== 0){
+           for(var i of data.claimList){
+             for(var j of i.clmAdjusterList){
+               if(i.adjName === undefined){
+                 i.adjName = j.adjName;
+               }else{
+                 i.adjName = i.adjName + '/' + j.adjName;
+               }
+             }
+             this.queryData.tableData.push(i);
+           }
+           this.queryTable.refreshTable();
+         }
+         this.queryTable.loadingFlag = false;
+       },
+       (error: any)=>{
+         this.queryTable.loadingFlag = false;
+       }
+    );
+  }
+
+  onRowClickQuery(data){
+    console.log(data);
+  }
+
   setClaim(){
     this.tempClmNo = this.selectedClaim.claimNo.split('-');
     this.tempPolNo = this.selectedClaim.policyNo.split('-');
+    this.searchParams.claimId = this.selectedClaim.claimId;
     this.selectedPolicy.policyNo = this.selectedClaim.policyNo;
     this.us.getPolGenInfo(null,this.selectedClaim.policyNo).subscribe(
       (data: any)=>{
+        this.searchParams.policyId = data.policy.policyId;
         this.searchParams.cessionId = data.policy.cessionId;
         this.searchParams.cessionDesc = data.policy.cessionDesc;
         this.searchParams.cedingId = data.policy.cedingId;
@@ -176,6 +216,7 @@ export class ClmChangeClaimStatusComponent implements OnInit {
 
   setPolicy(){
     this.tempPolNo = this.selectedPolicy.policyNo.split('-');
+    this.searchParams.policyId = this.selectedPolicy.policyId;
     this.us.getPolGenInfo(this.selectedPolicy.policyId).subscribe(
       (data: any)=>{
         this.searchParams.cessionId = data.policy.cessionId;
@@ -194,6 +235,7 @@ export class ClmChangeClaimStatusComponent implements OnInit {
       (data: any)=>{
         if(data.claimsList.length === 1){
           this.tempClmNo = data.claimsList[0].claimNo.split('-');
+          this.searchParams.claimId = data.claimsList[0].claimId;
         }
       },
       (error: any)=>{
@@ -262,6 +304,7 @@ export class ClmChangeClaimStatusComponent implements OnInit {
   validateSearch(){
     if(!this.checkSearchFields()){
       this.queryModal.closeModal();
+      this.retrieveQueryList();
     }else{
       this.dialogIcon = 'info';
       this.dialogMessage = 'No values were entered.';
