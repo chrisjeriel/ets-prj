@@ -1058,21 +1058,21 @@ export class PolCoverageComponent implements OnInit {
     for(var i=0; i< this.passDataSectionCover.tableData.length;i++){
       this.passDataSectionCover.tableData[i].cumPrem = this.passDataSectionCover.tableData[i].discountTag == 'Y'?  this.passDataSectionCover.tableData[i].cumPrem:this.passDataSectionCover.tableData[i].cumSi * (this.passDataSectionCover.tableData[i].premRt /100 )
       if(this.line == 'CAR' || this.line == 'EAR'){
-          if(this.passDataSectionCover.tableData[i].section == 'I'){
+          if(this.passDataSectionCover.tableData[i].section == 'I' && !this.passDataSectionCover.tableData[i].deleted){
               if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                 this.sectionISi += this.passDataSectionCover.tableData[i].cumSi;
                 this.totalSi += this.passDataSectionCover.tableData[i].cumSi;
               }
                 this.sectionIPrem += this.passDataSectionCover.tableData[i].cumPrem;
                 this.totalPrem += this.passDataSectionCover.tableData[i].cumPrem;
-          }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+          }else if(this.passDataSectionCover.tableData[i].section == 'II' && !this.passDataSectionCover.tableData[i].deleted){
               if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                 this.sectionIISi += this.passDataSectionCover.tableData[i].cumSi;
               }  
                  
                 this.sectionIIPrem += this.passDataSectionCover.tableData[i].cumPrem;
                 this.totalPrem += this.passDataSectionCover.tableData[i].cumPrem;
-          }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+          }else if(this.passDataSectionCover.tableData[i].section == 'III' && !this.passDataSectionCover.tableData[i].deleted){
               if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                 this.sectionIIISi += this.passDataSectionCover.tableData[i].cumSi;
                 this.totalSi += this.passDataSectionCover.tableData[i].cumSi;
@@ -1081,21 +1081,21 @@ export class PolCoverageComponent implements OnInit {
                 this.totalPrem += this.passDataSectionCover.tableData[i].cumPrem;
              }
       }else if(this.line == 'EEI'){
-          if(this.passDataSectionCover.tableData[i].section == 'I'){
+          if(this.passDataSectionCover.tableData[i].section == 'I' && !this.passDataSectionCover.tableData[i].deleted){
               if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                 this.sectionISi += this.passDataSectionCover.tableData[i].cumSi;
                 this.totalSi += this.passDataSectionCover.tableData[i].cumSi;
               }
                 this.sectionIPrem += this.passDataSectionCover.tableData[i].cumPrem;
                 this.totalPrem += this.passDataSectionCover.tableData[i].cumPrem;
-           }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+           }else if(this.passDataSectionCover.tableData[i].section == 'II' && !this.passDataSectionCover.tableData[i].deleted){
               if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                 this.sectionIISi += this.passDataSectionCover.tableData[i].cumSi;
                 this.totalSi += this.passDataSectionCover.tableData[i].cumSi;
               } 
               this.sectionIIPrem += this.passDataSectionCover.tableData [i].cumPrem;
               this.totalPrem += this.passDataSectionCover.tableData[i].cumPrem;
-           }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+           }else if(this.passDataSectionCover.tableData[i].section == 'III' && !this.passDataSectionCover.tableData[i].deleted){
               if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                 this.sectionIIISi += this.passDataSectionCover.tableData[i].cumSi;
                 this.totalSi += this.passDataSectionCover.tableData[i].cumSi;
@@ -1104,21 +1104,21 @@ export class PolCoverageComponent implements OnInit {
               this.totalPrem += this.passDataSectionCover.tableData[i].cumPrem;
            }
       }else {
-          if(this.passDataSectionCover.tableData[i].section == 'I'){
+          if(this.passDataSectionCover.tableData[i].section == 'I' && !this.passDataSectionCover.tableData[i].deleted){
               if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                 this.sectionISi += this.passDataSectionCover.tableData[i].cumSi;
                 this.totalSi += this.passDataSectionCover.tableData[i].cumSi;
               }
                 this.sectionIPrem += this.passDataSectionCover.tableData[i].cumPrem;
                 this.totalPrem += this.passDataSectionCover.tableData[i].cumPrem;
-           }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+           }else if(this.passDataSectionCover.tableData[i].section == 'II' && !this.passDataSectionCover.tableData[i].deleted){
               if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                 this.sectionIISi += this.passDataSectionCover.tableData[i].cumSi;
               }
                
               this.sectionIIPrem += this.passDataSectionCover.tableData[i].cumPrem;
               this.totalPrem += this.passDataSectionCover.tableData [i].cumPrem;
-           }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+           }else if(this.passDataSectionCover.tableData[i].section == 'III' && !this.passDataSectionCover.tableData[i].deleted){
               if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
                 this.sectionIIISi += this.passDataSectionCover.tableData[i].cumSi;
               }
