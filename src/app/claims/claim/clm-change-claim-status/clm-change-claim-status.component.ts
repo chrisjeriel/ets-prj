@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { UnderwritingService, ClaimsService, MaintenanceService, NotesService } from '@app/_services';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
+import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-clm-change-claim-status',
@@ -9,50 +15,273 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./clm-change-claim-status.component.css']
 })
 export class ClmChangeClaimStatusComponent implements OnInit {
-  tableData: any[] = [
-    ["CAR-2018-00013", "In Progress", "CAR-2018-00001-099-0001-000", "ASIA INSURANCE (PHILIPPINES) CORP", "Cornerdot Contructions / Solid Builders Corp"],
-    ["EAR-2018-00044", "In Progress", "EAR-2018-00555-067-0003-000", "BANKERS ASSURANCE CORP.", "Solid Square Buildings Corp/ DP Cornerstone Build & Traiding Corp"],
-    ["EEI-2018-00043", "In Progress", "EEI-2018-00066-078-0008-000", "CHARTER PING AN INSURANCE CORP.", "A.B Industries, Inc."],
-    ["MBI-2018-00087", "In Progress", "MBI-2018-00075-008-0004-000", "Dela Merced Adjustment Corp.", "A.C.G Construction"],
-    ["BPV-2018-00055", "In Progress", "BPV-2018-00134-006-0009-000", "DOMESTIC INC. CO. OF THE PHIL.", "A.D. Reality and Contruction Corporation"],
-    ["MLP-2018-00043", "In Progress", "MLP-2018-00077-009-0033-000", "EASTERN ASSURANCE AND SURETY CORP.", "A.G.S. Engineering and Management Resources, Inc."],
-    ["DOS-2018-00009", "In Progress", "DOS-2018-00001-001-0001-000", "GENERAL ACCIDENT INSURANCE ASIAL LTD", "Aguilar Consolidated Construction Industries, Corp."],
-    ["CEC-2018-00014", "In Progress", "CEC-2018-00117-032-0001-000", "J.G. Bernas Adjusters and Surveyors, Inc.", "Chinmaya Mission Philippines, Inc."],
-    ["EAR-2018-00001", "In Progress", "EAR-2018-00111-034-0010-000", "LIBERTY INSURANCE CORP.", "DP Cornerstone Build & Trading Corp./ Cornerdot Construction"],
-    ["CAR-2018-00115", "In Progress", "CAR-2018-00001-082-0023-000", "MAA GENERAL INSURANCE PHILS., INC.", "Brostek Furniture / Barillo Construction & Enterprises"],
-  ];
-  tHeader: any[] = [];
-  dataTypes: any[] = [];
-  addFlag;
-  editFlag;
-  checkFlag;
-  pagination;
-  pageStatus;
-  resizable;
 
-  passData: any = {
+  @ViewChild('queryMdl') queryModal : ModalComponent;
+  @ViewChild('clmListMdl') clmListModal : ModalComponent;
+  @ViewChild('polListMdl') polListModal : ModalComponent;
+  @ViewChild('successDiagSave') successDiag: SucessDialogComponent;
+
+  @ViewChild(MtnTypeOfCessionComponent) cessionModal: MtnTypeOfCessionComponent;
+  @ViewChild(MtnRiskComponent) riskModal: MtnRiskComponent;
+  @ViewChild(CedingCompanyComponent) cedCoModal: CedingCompanyComponent;
+
+  @ViewChild('clmListTable') clmListTable : CustNonDatatableComponent;
+  @ViewChild('polListTable') polListTable : CustNonDatatableComponent;
+
+  queryData: any = {
     tableData: [],
-    tHeader: [],
-    dataTypes: [],
+    tHeader: ['Claim No', 'Status', 'Policy No', 'Ceding Company', 'Insured'],
+    dataTypes: ['text', 'text', 'text', 'text', 'text'],
+    keys: ['claimNo', 'clmStatus', 'policyNo', 'cedingName', 'insuredDesc'],
     pagination: true,
     pageStatus: true,
     tableOnly: true,
     pageLength: 10,
     checkFlag: true,
-    resizable: [true, true, true, true, true, true, true, true, true, true, true, true, true],
+    pageID: 'queryTable'
   };
 
-  constructor(private titleService: Title, private modalService: NgbModal) { }
+  clmListData: any = {
+    tableData: [],
+    tHeader: ['Claim No', 'Status', 'Policy No', 'Ceding Company', 'Insured'],
+    dataTypes: ['text', 'text', 'text', 'text', 'text'],
+    keys: ['claimNo', 'clmStatus', 'policyNo', 'cedingName', 'insuredDesc'],
+    pagination: true,
+    pageStatus: true,
+    pageLength: 10,
+    pageID: 'clmListTable'
+  };
+
+  polListData: any = {
+    tableData: [],
+    tHeader: ['Policy No.', 'Ceding Company', 'Insured', 'Risk'],
+    dataTypes: ['text', 'text', 'text', 'text'],
+    pageLength: 10,
+    pagination: true,
+    pageStatus: true,
+    keys: ['policyNo','cedingName', 'insuredDesc', 'riskName'],
+    pageID: 'polListData'
+  }
+
+  batchOption: string = 'IP';
+  dialogIcon: string = '';
+  dialogMessage: string = '';
+
+  selectedClaim: any = {};
+  selectedPolicy: any = {};
+
+  tempClmNo: string[] = ['','',''];
+  tempPolNo: string[] = ['','','','','',''];
+
+  searchParams: any = {
+    riskName:'',
+    riskId: '',
+    cedingName: '',
+    cedingId: '',
+    cessionDesc: '',
+    cessionId: ''
+  }
+
+  constructor(private titleService: Title, private modalService: NgbModal, private us: UnderwritingService,
+              private cs: ClaimsService, private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Change Claim Status");
-    this.passData.tHeader.push("Claim No", "Status", "Policy No", "Ceding Company", "Insured");
-    this.passData.dataTypes.push("text", "text", "text", "text", "text");
-    this.passData.tableData = this.tableData;
+    setTimeout(()=>{$('#searchBtn').trigger('click');},0);
   }
 
   search(event) {
-    $('#modalSearch > #modalBtn').trigger('click');
+    this.queryModal.openNoClose();
+  }
+
+  openClmListing(){
+    this.retrieveClaimList();
+    this.clmListModal.openNoClose();
+  }
+
+  openPolListing(){
+    this.retrievePolList();
+    this.polListModal.openNoClose();
+  }
+
+  openRiskLOV() {
+      //$('#riskLOV #modalBtn').trigger('click');
+      this.riskModal.modal.openNoClose();
+  }
+
+  openCedingCompanyLOV() {
+      //$('#cedingCompanyLOV #modalBtn').trigger('click');
+      this.cedCoModal.modal.openNoClose();
+  }
+
+  openTypeOfCessionLOV(){
+      //$('#typeOfCessionLOV #modalBtn').trigger('click');
+      this.cessionModal.modal.openNoClose();
+  }
+
+  retrieveClaimList(){
+    this.clmListTable.loadingFlag = true;
+    this.cs.getClaimsListing([
+                                {key: 'policyNo', search: Object.keys(this.selectedPolicy).length === 0 ? '' : this.selectedPolicy.policyNo},
+                                {key: 'claimNo', search: this.tempClmNo.join('%-%')}
+                             ]).subscribe(
+      (data:any)=>{
+        this.clmListData.tableData = data.claimsList;
+        this.clmListTable.refreshTable();
+        this.clmListTable.loadingFlag = false;
+      },
+      (error: any)=>{
+        this.clmListTable.loadingFlag = false;
+      }
+    );
+  }
+
+  retrievePolList(){
+    this.polListTable.loadingFlag = true;
+    this.us.getParListing([
+                            {key: 'policyNo', search: this.tempPolNo.join('%-%')},
+                            {key: 'cessionDesc', search: this.searchParams.cessionDesc.toUpperCase()},
+                            {key: 'cedingName', search: this.searchParams.cedingName.toUpperCase()},
+                            {key: 'riskName', search: this.searchParams.riskName.toUpperCase()}
+                          ]).subscribe(
+      (data: any)=>{
+        this.polListData.tableData = data.policyList;
+        this.polListTable.refreshTable();
+        this.polListTable.loadingFlag = false;
+      },
+      (error: any)=>{
+        this.polListTable.loadingFlag = false;
+      }
+    );
+  }
+
+  setClaim(){
+    this.tempClmNo = this.selectedClaim.claimNo.split('-');
+    this.tempPolNo = this.selectedClaim.policyNo.split('-');
+    this.selectedPolicy.policyNo = this.selectedClaim.policyNo;
+    this.us.getPolGenInfo(null,this.selectedClaim.policyNo).subscribe(
+      (data: any)=>{
+        this.searchParams.cessionId = data.policy.cessionId;
+        this.searchParams.cessionDesc = data.policy.cessionDesc;
+        this.searchParams.cedingId = data.policy.cedingId;
+        this.searchParams.cedingName = data.policy.cedingName;
+        this.searchParams.riskId = data.policy.project.riskId;
+        this.searchParams.riskName = data.policy.project.riskName;
+      },
+      (error: any)=>{
+
+      }
+    );
+  }
+
+  setPolicy(){
+    this.tempPolNo = this.selectedPolicy.policyNo.split('-');
+    this.us.getPolGenInfo(this.selectedPolicy.policyId).subscribe(
+      (data: any)=>{
+        this.searchParams.cessionId = data.policy.cessionId;
+        this.searchParams.cessionDesc = data.policy.cessionDesc;
+        this.searchParams.cedingId = data.policy.cedingId;
+        this.searchParams.cedingName = data.policy.cedingName;
+        this.searchParams.riskId = data.policy.project.riskId;
+        this.searchParams.riskName = data.policy.project.riskName;
+      },
+      (error: any)=>{
+
+      }
+    );
+
+    this.cs.getClaimsListing([{key: 'policyNo', search: this.selectedPolicy.policyNo}]).subscribe(
+      (data: any)=>{
+        if(data.claimsList.length === 1){
+          this.tempClmNo = data.claimsList[0].claimNo.split('-');
+        }
+      },
+      (error: any)=>{
+        console.log('error')
+      }
+    );
+  }
+
+  setRisks(data){
+      this.searchParams.riskId = data.riskId;
+      this.searchParams.riskName = data.riskName;
+      this.ns.lovLoader(data.ev, 0);
+  }
+
+  setTypeOfCession(data) {    
+      this.searchParams.cessionId = data.cessionId;
+      this.searchParams.cessionDesc = data.description;
+      this.ns.lovLoader(data.ev, 0);
+  }
+
+  setCedingcompany(data){
+      this.searchParams.cedingId = data.cedingId;
+      this.searchParams.cedingName = data.cedingName;
+      this.ns.lovLoader(data.ev, 0);    
+  }
+
+  checkCode(ev, field){
+      this.ns.lovLoader(ev, 1);
+
+      if(field === 'typeOfCession'){
+          this.cessionModal.checkCode(this.searchParams.cessionId, ev);
+      } else if(field === 'risk') {
+          this.riskModal.checkCode(this.searchParams.riskId, '#riskLOV', ev);
+      } else if(field === 'cedingCo') {
+          this.cedCoModal.checkCode(this.searchParams.cedingId === '' ? '' : String(this.searchParams.cedingId).padStart(3, '0'), ev, '#cedingCompanyLOV');
+      } /*else if(field === 'reason'){
+          this.mtnReason.checkCode(this.selectedData.reasonCd, ev);
+      }*/
+  }
+
+  checkSearchFields(): boolean{
+    //check claim no fields if empty
+    for(var i of this.tempClmNo){
+      if(i.trim().length !== 0){
+        return false; //return false if not empty
+      }
+    }
+    //check policy no fields if empty
+    for(var j of this.tempPolNo){
+      if(i.trim().length !== 0){
+        return false; //return false if not empty
+      }
+    }
+
+    //check cession type, ceding company, and risk fields if empty
+    if((String(this.searchParams.cessionId).trim().length !== 0 && String(this.searchParams.cessionDesc).trim().length !== 0) ||
+       (String(this.searchParams.cedingId).trim().length !== 0 && String(this.searchParams.cedingName).trim().length !== 0) ||
+       (String(this.searchParams.riskId).trim().length !== 0 && String(this.searchParams.riskName).trim().length !== 0)){
+      return false; //return false if one of the three fields are not empty
+    }
+
+    return true; //return true if all fields are empty, therefore triggering the popup
+
+  }
+
+  validateSearch(){
+    if(!this.checkSearchFields()){
+      this.queryModal.closeModal();
+    }else{
+      this.dialogIcon = 'info';
+      this.dialogMessage = 'No values were entered.';
+      this.successDiag.open();
+    }
+  }
+
+  clearSearchFields(){
+    this.searchParams =  {
+                            riskName:'',
+                            riskId: '',
+                            cedingName: '',
+                            cedingId: '',
+                            cessionDesc: '',
+                            cessionId: ''
+                          };
+   this.tempClmNo = ['','',''];
+   this.tempPolNo = ['','','','','',''];
+   this.selectedPolicy = {};
+   this.selectedClaim = {};
   }
 
 }
