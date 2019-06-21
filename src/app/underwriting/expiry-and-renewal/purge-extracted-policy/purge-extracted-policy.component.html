@@ -63,7 +63,7 @@
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-left: 100px;">
 											<div class="col-sm-1"></div>
-											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true">
+											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [(ngModel)]="byDate" [value]="true" (change)="test()">
 											<label class="form-control-sm col-sm-2" for="byDate" style="margin-left: -25px;">&nbsp;By Date</label>
 										</div>
 									</div>
@@ -71,15 +71,15 @@
 										<div class="input-group" style="margin-top: -10px;margin-left: 90px;">
 											<div class="col-sm-1"></div>
 											<label class="form-control-sm col-sm-1 cust-sm from" for="fromDate">From</label>
-											<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="fromDate" value="2018-12-04" (click)="clearDates()" [disabled]="!byDate" style="margin-left: 10px;">
+											<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="fromDate" [disabled]="!byDate" style="margin-left: 10px;" [ngModel]="params.byDateFom" (ngModelChange)="params.byDateFom = $event;test()">
 											<label class="form-control-sm col-sm-1 cust-sm" style="margin-left: -10px !important;">To</label>
-											<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="toDate" value="2018-12-04" [disabled]="!byDate">
+											<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="toDate" [disabled]="!byDate" [ngModel]="params.byDateTo" (ngModelChange)="params.byDateTo = $event">
 										</div>
 									</div>
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-top: -10px;margin-left: 100px;">
 											<div class="col-sm-1"></div>
-											<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" [(ngModel)]="byDate" (click)="clearDates()">
+											<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" [(ngModel)]="byDate" (change)="test()">
 											<label class="form-control-sm col-sm-3 text-left" for="byMonthYear" style="margin-left: -34px;">&nbsp;By Month/Year</label>
 										</div>
 									</div>
@@ -87,7 +87,7 @@
 											<div class="input-group" style="margin-top: -10px; margin-left: 90px;">
 												<div class="col-sm-1"></div>
 												<label class="form-control-sm col-sm-1 cust-sm from">From</label>
-												<select class="form-control form-control-sm cust-sm col-sm-2" name="fromMonth" [disabled]="byDate" style="margin-left: 8px;">
+												<select class="form-control form-control-sm cust-sm col-sm-2" name="fromMonth" [disabled]="byDate" style="margin-left: 8px;" [ngModel]="params.byMonthFrom" (ngModelChange)="params.byMonthFrom">
 													<option value="1">January</option>
 													<option value="2">February</option>
 													<option value="3">March</option>
@@ -101,9 +101,9 @@
 													<option value="11">November</option>
 													<option value="12">December</option>
 												</select>
-												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [disabled]="byDate" style="margin-left: 2px;">
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [disabled]="byDate" style="margin-left: 2px;" [ngModel]="params.byYearFrom" (ngModelChange)="params.byYearFrom = $event">
 												<label class="form-control-sm col-sm-1 cust-sm toMonth" style="margin-left: -10px !important;">To</label>
-												<select class="form-control form-control-sm cust-sm col-sm-2" name="toMonth" [disabled]="byDate" style="margin-left: -2px;">
+												<select class="form-control form-control-sm cust-sm col-sm-2" name="toMonth" [disabled]="byDate" style="margin-left: -2px;" [ngModel]="params.byMonthTo"(ngModelChange)="params.byMonthTo">
 													<option value="1">January</option>
 													<option value="2">February</option>
 													<option value="3">March</option>
@@ -117,32 +117,32 @@
 													<option value="11">November</option>
 													<option value="12">December</option>
 												</select>
-												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [disabled]="byDate" style="margin-left: 2px;">
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [disabled]="byDate" style="margin-left: 2px;"  [ngModel]="params.byYearTo" (ngModelChange)="params.byYearTo = $event">
 											</div>
 										</div>
 									<br>
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -22px;">
 												<label class="form-control-sm col-sm-2 text-right">Line</label>
-												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'line')" [ngModel]="line" (ngModelChange)="line = $event.toUpperCase()">
+												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'line')" [ngModel]="params.line" (ngModelChange)="params.line = $event.toUpperCase()">
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
-												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="lineDescription">
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.lineDescription">
 											</div>
 										</div>
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -8px;">
 												<label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
-												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'typeOfCession')" [ngModel]="typeOfCessionId" (ngModelChange)="typeOfCessionId = $event.toUpperCase()"> 
+												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'typeOfCession')" [ngModel]="params.typeOfCessionId" (ngModelChange)="params.typeOfCessionId = $event.toUpperCase()"> 
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showTypeOfCessionLOV()"></i></a></div>
-												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="typeOfCession"> 
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.typeOfCession"> 
 											</div>
 										</div>
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -8px;"> 
 												<label class="form-control-sm col-sm-2" style="padding-right: 4px;">Ceding Company</label>
-												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event,'cedingCo')" [ngModel]="cedingId" (ngModelChange)="cedingId=$event.toUpperCase()">
+												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event,'cedingCo')" [ngModel]="params.cedingId" (ngModelChange)="params.cedingId=$event.toUpperCase()">
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
-												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="cedingName"> 
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.cedingName"> 
 											</div>	
 										</div>
 										<div class="form-row custom-row-inline-inset">
