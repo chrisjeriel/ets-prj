@@ -61,8 +61,8 @@ export class QuotationProcessingComponent implements OnInit {
 
     passData: any = {
         tableData: [],
-        tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Insured', 'Risk', 'Object', 'Site', 'Policy No', 'Currency', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
-        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'date', 'date', 'text',],
+        tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Risk', 'Object', 'Site', 'Currency', 'Sum Insured', '1st Option Rate', 'Quote Date', 'Valid Until', 'Requested By','Created By'],
+        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent','date', 'date', 'text', 'text'],
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
         filters: [
         {
@@ -161,7 +161,7 @@ export class QuotationProcessingComponent implements OnInit {
         ],
         pageLength: 20,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: false, infoFlag: true, paginateFlag: true, pageID: 'quotationProcessingMainTbl',
-        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser'],
+        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','riskName','objectDesc','site','currencyCd', 'sumInsured', 'optionRt','issueDate','expiryDate','reqBy','createUser'],
         colSize: ['', '', '120px', '', '', '120px', '120px', '120px', '', '', '', '', '', '', '', ''],
         genericBtn1: 'Copy Quote Details',
         genericBtn2: 'Internal Competition',

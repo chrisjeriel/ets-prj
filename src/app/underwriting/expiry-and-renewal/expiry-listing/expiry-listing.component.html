@@ -21,7 +21,7 @@
 												<button class="cust col-sm" (click)="onClickRenSave();">Save</button>
 											</div>
 											<div class="row" style="margin-right: -4px;">
-												<button class="cust col-sm">Print</button>
+												<button class="cust col-sm" (click)="onClickPrint();" [disabled]="!printFlag">Print</button>
 												<button class="cust col-sm">Search</button>
 												<button class="cust col-sm" (click)="onClickUpdate();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Update</button>
 												<button class="cust col-sm" (click)="onClickProcess();">Process</button>
@@ -101,7 +101,7 @@
 												<button class="cust col-sm">Save</button>
 											</div>
 											<div class="row" style="margin-right: -4px;">
-												<button class="cust col-sm">Print</button>
+												<button class="cust col-sm" (click)="onClickPrint();" [disabled]="!printFlag">Print</button>
 												<button class="cust col-sm">Search</button>
 												<button class="cust col-sm">Update</button>
 												<button class="cust col-sm" (click)="onClickProcessNR()">Process</button>
@@ -282,6 +282,19 @@
     </div>
     <div footer class="w-100 text-right" *ngIf="!validForRenewalProcessing">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>OK</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="printPolicyModal">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset" style="text-align: center">                
+            <p>Are you sure you want to print selected record(s)?</p>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>
 
