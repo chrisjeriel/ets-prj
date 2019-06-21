@@ -149,12 +149,6 @@ export class ClmClaimProcessingComponent implements OnInit {
     });
   }
 
-  navigateToGenInfo() {
-    // TEMPORARY
-    this.modalService.dismissAll();
-    this.router.navigate(['/claims-claim', { line: this.polLine.toUpperCase() }], { skipLocationChange: true });
-  }
-
   openPolLOV(){
     this.isType = false;
     this.retrievePolList();
