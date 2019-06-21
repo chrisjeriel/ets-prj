@@ -35,4 +35,8 @@ export class UploadService {
      //return this.http.get(url);
      return url;
    }
+
+   deleteFile(fileName){
+     return this.http.delete(environment.prodApiUrl +'/file-upload-service/?fileNames='+fileName);
+   }
 }

@@ -58,11 +58,12 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 		activeTag: 'Y',
 		govtTag: '',
 		oldCedingId: '',
-		membershipTag: '',
+		membershipTag: 'N',
 		membershipDate: '',
-		terminationDate: '',
+		withdrawDate: '',
 		inactiveDate: '',
-    treatyTag: '',
+    treatyTag: 'N',
+    withdrawTag: 'N',
 		remarks: '',
 		createUser: '',
 		createDate: '',
@@ -96,7 +97,8 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 		paginateFlag: true,
 		pageLength: 5,
 		pageID: 'cedingRepTable',
-		restrict: 'image'
+		restrict: 'image',
+    disableGeneric: true,
 	}
 
   constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, 
@@ -116,11 +118,12 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   retrieveMtnCedingCompanyMethod(cedingId: string){
   		this.mtnService.getCedingCompany(cedingId).subscribe((data: any)=>{
   			data.cedingCompany[0].membershipDate = data.cedingCompany[0].membershipDate === null ? '' : this.ns.toDateTimeString(data.cedingCompany[0].membershipDate);
-  			data.cedingCompany[0].terminationDate = data.cedingCompany[0].terminationDate === null ? '' : this.ns.toDateTimeString(data.cedingCompany[0].terminationDate);
+  			data.cedingCompany[0].withdrawDate = data.cedingCompany[0].withdrawDate === null ? '' : this.ns.toDateTimeString(data.cedingCompany[0].withdrawDate);
   			data.cedingCompany[0].inactiveDate = data.cedingCompany[0].inactiveDate === null ? '' : this.ns.toDateTimeString(data.cedingCompany[0].inactiveDate);
   			//put eSignature to filename for the table to recognize it
   			for(var i = 0; i < data.cedingCompany[0].cedingRepresentative.length; i++){
   				data.cedingCompany[0].cedingRepresentative[i].fileName = data.cedingCompany[0].cedingRepresentative[i].eSignature;
+          data.cedingCompany[0].cedingRepresentative[i].fileNameServer = this.ns.toDateTimeString(data.cedingCompany[0].cedingRepresentative[i].updateDate).match(/\d+/g).join('') + data.cedingCompany[0].cedingRepresentative[i].eSignature;
   			}
 
   			this.companyData = data.cedingCompany[0];
@@ -135,17 +138,21 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   	this.sub.unsubscribe();
   }
 
-  onClickSave(){
+  onClickSave(fromCancel?){
   	if(!this.checkParams()){
-  		this.dialogIcon = 'info';
-  		this.dialogMessage = 'Please fill all required fields.';
+  		this.dialogIcon = 'error';
+  		//this.dialogMessage = 'Please fill all required fields.';
   		this.successDiag.open();
   	}else if(!this.checkDefaultTag()){
   		this.dialogIcon = 'info';
   		this.dialogMessage = 'Please enter one default company representative.';
   		this.successDiag.open();
   	}else{
-  		$('#confirm-save #modalBtn2').trigger('click');
+      if(fromCancel !== undefined){
+        this.save('cancel');
+      }else{
+  		  $('#confirm-save #modalBtn2').trigger('click');
+      }
   	}
   }
 
@@ -163,7 +170,10 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   	}
 
   	//check if mandatory fields are filled on form
-  	if(this.companyData.cedingName.length === 0 || this.companyData.cedingAbbr.length === 0 || this.companyData.addrLine1.length === 0 ){
+  	if(this.companyData.cedingName.length === 0 || this.companyData.cedingAbbr.length === 0 || this.companyData.addrLine1.length === 0 ||
+       (this.companyData.membershipTag === 'Y' && this.companyData.membershipDate.length === 0) ||
+       (this.companyData.activeTag === 'N' && this.companyData.inactiveDate.length === 0) ||
+       (this.companyData.withdrawTag === 'Y' && this.companyData.withdrawDate.length === 0)){
   		return false;
   	}
 
@@ -246,6 +256,12 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   			this.dialogIcon = 'error';
   			this.successDiag.open();
   		}else{
+        if(data.uploadDate != null){
+          this.uploadMethod(data.uploadDate);
+        }
+        if(this.deletedData.length !== 0){
+          this.deleteFileMethod();
+        }
   			this.companyData.cedingId = data.outCedingId;
   			this.retrieveMtnCedingCompanyMethod(data.outCedingId);
   			this.form.control.markAsPristine();
@@ -254,37 +270,57 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   			this.successDiag.open();
   		}
   	});
+  }
 
-  	//upload
-  	for(let files of this.filesList){
-  	  if (files.length == 0) {
-  	    console.log("No file selected!");
-  	    return
+  uploadMethod(date){
+    //upload
+    for(let files of this.filesList){
+      if (files.length == 0) {
+        console.log("No file selected!");
+        return
 
-  	  }
-  	  let file: File = files[0];
+      }
+      let file: File = files[0];
+      var newFile = new File([file], date + file.name, {type: file.type});
 
-  	  this.upload.uploadFile(file)
-  	    .subscribe(
-  	      event => {
-  	        if (event.type == HttpEventType.UploadProgress) {
-  	          const percentDone = Math.round(100 * event.loaded / event.total);
-  	          console.log(`File is ${percentDone}% loaded.`);
-  	        } else if (event instanceof HttpResponse) {
-  	          console.log('File is completely loaded!');
-  	        }
-  	      },
-  	      (err) => {
-  	        console.log("Upload Error:", err);
-  	      }, () => {
-  	        console.log("Upload done");
-  	      }
-  	    )
-  	  }
-  	  //clear filelist array after upload
-  	  this.table.filesToUpload = [];
-  	  this.table.refreshTable();
+      this.upload.uploadFile(newFile)
+        .subscribe(
+          event => {
+            if (event.type == HttpEventType.UploadProgress) {
+              const percentDone = Math.round(100 * event.loaded / event.total);
+              console.log(`File is ${percentDone}% loaded.`);
+            } else if (event instanceof HttpResponse) {
+              console.log('File is completely loaded!');
+            }
+          },
+          (err) => {
+            console.log("Upload Error:", err);
+          }, () => {
+            console.log("Upload done");
+          }
+        )
+      }
+      //clear filelist array after upload
+      this.table.filesToUpload = [];
+      this.table.refreshTable();
+  }
 
+  deleteFileMethod(){
+    let deleteFile = this.deletedData;
+    for(var i of deleteFile){
+      console.log(i.fileNameServer);
+      this.upload.deleteFile(i.fileNameServer).subscribe(
+          data =>{
+            console.log(data);
+          },
+          error =>{
+            console.log('Error: '+ error);
+          },
+          () =>{
+            console.log('Successfully deleted');
+          }
+        );
+    }
   }
 
   onClickCancel(){
@@ -292,8 +328,12 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(data){
-  	this.selected = data;
-  	console.log(data);
+    if(data !== null){
+      this.selected = data;
+      this.repData.disableGeneric = false;
+    }else{
+      this.repData.disableGeneric = true;
+    }
   }
 
   onClickAdd(event){

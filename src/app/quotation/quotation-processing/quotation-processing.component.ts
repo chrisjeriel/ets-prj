@@ -61,8 +61,8 @@ export class QuotationProcessingComponent implements OnInit {
 
     passData: any = {
         tableData: [],
-        tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Risk', 'Object', 'Site', 'Currency', 'Sum Insured', '1st Option Rate', 'Quote Date', 'Valid Until', 'Requested By','Created By'],
-        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent','date', 'date', 'text', 'text'],
+        tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Risk', 'Object', 'Site', 'Currency', 'Sum Insured', '1st Option Rate (%)', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
+        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent', 'date', 'date', 'text',],
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
         filters: [
         {
@@ -98,11 +98,6 @@ export class QuotationProcessingComponent implements OnInit {
         {
             key: 'contractorName',
             title: 'Contractor',
-            dataType: 'text'
-        },
-        {
-            key: 'insuredDesc',
-            title: 'Insured',
             dataType: 'text'
         },
         {
@@ -161,8 +156,8 @@ export class QuotationProcessingComponent implements OnInit {
         ],
         pageLength: 20,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: false, infoFlag: true, paginateFlag: true, pageID: 'quotationProcessingMainTbl',
-        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','riskName','objectDesc','site','currencyCd', 'sumInsured', 'optionRt','issueDate','expiryDate','reqBy','createUser'],
-        colSize: ['', '', '120px', '', '', '120px', '120px', '120px', '', '', '', '', '', '', '', ''],
+        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','riskName','objectDesc','site','currencyCd','sumInsured','firstOptionRt','issueDate','expiryDate','reqBy','createUser'],
+        colSize: ['', '', '120px', '', '', '120px', '120px', '120px', '', '', '', '', '', '', '', '',''],
         genericBtn1: 'Copy Quote Details',
         genericBtn2: 'Internal Competition',
         exportFlag: true,

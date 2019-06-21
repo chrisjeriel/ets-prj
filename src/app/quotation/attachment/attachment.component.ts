@@ -99,6 +99,7 @@ export class AttachmentComponent implements OnInit {
     pageLength: 10,
     widths: [],
     uneditable: [true,false,false],
+    dataTypes: ['text', 'text'],
     keys:['fileName','description']
   };
 
@@ -217,6 +218,9 @@ export class AttachmentComponent implements OnInit {
          if(data.uploadDate != null){
            this.uploadMethod(data.uploadDate);
          }
+         if(this.deletedData.length !== 0){
+           this.deleteFileMethod();
+         }
          this.getAttachment();
        }
        this.loading = false;
@@ -258,6 +262,24 @@ export class AttachmentComponent implements OnInit {
      this.table.filesToUpload = [];
      this.table.refreshTable();
  }
+
+ deleteFileMethod(){
+      let deleteFile = this.deletedData;
+      for(var i of deleteFile){
+        console.log(i.fileNameServer);
+        this.upload.deleteFile(i.fileNameServer).subscribe(
+            data =>{
+              console.log(data);
+            },
+            error =>{
+              console.log('Error: '+ error);
+            },
+            () =>{
+              console.log('Successfully deleted');
+            }
+          );
+      }
+    }
 
   cancel(){
     this.cancelBtn.clickCancel();
