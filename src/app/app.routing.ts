@@ -168,6 +168,8 @@ import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-fo
 import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-status.component';
 import { ClaimEventTypeComponent } from './maintenance/claims/claim-event-type/claim-event-type.component';
 import { ClaimEventComponent } from './maintenance/claims/claim-event/claim-event.component';
+import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-policy/section-ii-treaty-limit/section-ii-treaty-limit.component';
+import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
 
 const appRoutes: Routes = [
 
@@ -347,6 +349,8 @@ const appRoutes: Routes = [
     { path: 'maintenance-clm', component: MtnClaimsComponent },
     { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-sec-ii-treaty-limit', component: SectionIiTreatyLimitComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-retention-per-pool-member', component: RetentionPerPoolMemberComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
