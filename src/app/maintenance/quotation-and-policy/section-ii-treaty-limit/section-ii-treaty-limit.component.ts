@@ -11,11 +11,11 @@ import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-retention-line',
-  templateUrl: './retention-line.component.html',
-  styleUrls: ['./retention-line.component.css']
+  selector: 'app-section-ii-treaty-limit',
+  templateUrl: './section-ii-treaty-limit.component.html',
+  styleUrls: ['./section-ii-treaty-limit.component.css']
 })
-export class RetentionLineComponent implements OnInit, OnDestroy {
+export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   	@ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
@@ -23,18 +23,18 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
   	@ViewChild('lineLov') lineLov : MtnLineComponent;
   	@ViewChild('lineLovCopy') lineLovCopy : MtnLineComponent;
 
-  	retAmtData: any = {
+  	secIIData: any = {
 	  	tableData: [],
-	  	tHeader: ['Ret. Line Amt ID', 'Retention Line Amt', 'Effective From', 'Active', 'Remarks'],
+	  	tHeader: ['Sec II Trty Limit ID', 'Treaty Limit Amt', 'Effective From', 'Active', 'Remarks'],
 	  	dataTypes: ['sequence-6', 'currency', 'date', 'checkbox', 'text'],
-	  	keys: ['retentionId', 'retLineAmt', 'effDateFrom', 'activeTag', 'remarks'],
+	  	keys: ['seciiTrtyLimId', 'amount', 'effDateFrom', 'activeTag', 'remarks'],
 	  	widths: ['1','200','140','1','auto'],
 	  	uneditable: [true,false,false,false,false],
-	  	uneditableKeys: ['retLineAmt','effDateFrom'],
+	  	uneditableKeys: ['amount','effDateFrom'],
 	  	nData: {
 	  		newRec: 1,
-	  		retentionId: '',
-	  		retLineAmt: '',
+	  		seciiTrtyLimId: '',
+	  		amount: '',
 	  		effDateFrom: '',
 	  		activeTag: 'Y',
 	  		remarks: '',
@@ -53,11 +53,11 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
   	}
 
   	params: any = {
-  		saveRetAmt: [],
-  		deleteRetAmt: []
+  		saveSecIITrtyLimit: [],
+  		deleteSecIITrtyLimit: []
   	}
 
-  	selected: any = null;
+	selected: any = null;
   	dialogIcon:string = '';
  	dialogMessage: string = '';
  	cancel: boolean = false;
@@ -83,7 +83,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
-		this.titleService.setTitle("Mtn | Retention Line");
+		this.titleService.setTitle("Mtn | Section II Treaty Limit");
 		setTimeout(() => { this.table.refreshTable(); }, 0);
 	}
 
@@ -91,28 +91,28 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 		this.subscription.unsubscribe();
 	}
 
-	getMtnRetAmt() {
+	getMtnSecIITrtyLimit() {
 		this.table.overlayLoader = true;
-		this.ms.getMtnRetAmt(this.lineCd, this.lineClassCd, this.currencyCd, '').subscribe(data => {
-			this.retAmtData.tableData = data['retAmtList'].sort((a, b) => b.effDateFrom - a.effDateFrom)
-														  .map(i => {
-															  	i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom).split('T')[0];
-															  	i.createDate = this.ns.toDateTimeString(i.createDate);
-															  	i.updateDate = this.ns.toDateTimeString(i.updateDate);
-															  	i.retentionId = String(i.retentionId).padStart(6, '0');
-															  	return i;
-															  });
-			this.retAmtData.disableAdd = false;
-			// this.retAmtData.disableGeneric = false;
+		this.ms.getMtnSecIITrtyLimit(this.lineCd, this.lineClassCd, this.currencyCd, '').subscribe(data => {
+			this.secIIData.tableData = data['secIITreatyLimList'].sort((a, b) => b.effDateFrom - a.effDateFrom)
+																 .map(i => {
+																  	i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom).split('T')[0];
+																  	i.createDate = this.ns.toDateTimeString(i.createDate);
+																  	i.updateDate = this.ns.toDateTimeString(i.updateDate);
+																  	i.seciiTrtyLimId = String(i.seciiTrtyLimId).padStart(6, '0');
+																  	return i;
+																  });
+			this.secIIData.disableAdd = false;
+			// this.secIIData.disableGeneric = false;
 			this.table.refreshTable();
-  			this.table.onRowClick(null, this.retAmtData.tableData[0]);
+  			this.table.onRowClick(null, this.secIIData.tableData[0]);
 		});
 	}
 
 	onRowClick(data) {
 		this.selected = data;	
-		this.retAmtData.disableGeneric = this.selected == null || this.selected == '' || this.selected.retentionId != '';
-		this.disableCopySetup = this.selected == null || this.selected == '' || this.selected.retentionId == '';
+		this.secIIData.disableGeneric = this.selected == null || this.selected == '' || this.selected.seciiTrtyLimId != '';
+		this.disableCopySetup = this.selected == null || this.selected == '' || this.selected.seciiTrtyLimId == '';
 	}
 
 	onClickDelete() {
@@ -154,9 +154,9 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
     		});
     	}
 
-		this.retAmtData.tableData = [];
-		this.retAmtData.disableAdd = true;
-  		this.retAmtData.disableGeneric = true;
+		this.secIIData.tableData = [];
+		this.secIIData.disableAdd = true;
+  		this.secIIData.disableGeneric = true;
   		this.disableCopySetup = true;
 		this.table.refreshTable();
 
@@ -201,7 +201,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 		this.lineClassCdDesc = ev.target.options[ev.target.selectedIndex].text;
 
 		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
-			this.getMtnRetAmt();
+			this.getMtnSecIITrtyLimit();
 		}
 
 		setTimeout(() => {
@@ -212,7 +212,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 
 	currencyChanged(ev) {
 		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
-			this.getMtnRetAmt();
+			this.getMtnSecIITrtyLimit();
 		}
 
 		setTimeout(() => {
@@ -222,39 +222,39 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 	}
 
 	onClickSave() {
-		var td = this.retAmtData.tableData;
+		var td = this.secIIData.tableData;
 
 		for(let d of td) {
-			if(d.edited && !d.deleted && (d.retLineAmt == null || isNaN(d.retLineAmt) || d.effDateFrom == '')) {
+			if(d.edited && !d.deleted && (d.amount == null || isNaN(d.amount) || d.effDateFrom == '')) {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 				this.cancel = false;
 				return;
 			}
 
-			if(d.edited && !d.deleted && d.activeTag == 'Y' && d.retentionId == '') {
+			if(d.edited && !d.deleted && d.activeTag == 'Y' && d.seciiTrtyLimId == '') {
 				if(td.length > 1) {
-					if(td.filter(c => c.activeTag == 'Y' && c.retentionId != '').length > 0) {
+					if(td.filter(c => c.activeTag == 'Y' && c.seciiTrtyLimId != '').length > 0) {
 						var dEDF = new Date(d.effDateFrom);
 						var max = td.filter(c => c.activeTag == 'Y' && c.retHistId != '' && !c.deleted)
 									.sort((a, b) => Number(new Date(b.effDateFrom)) - Number(new Date(a.effDateFrom)))[0];
 
 						if(max != d && dEDF <= new Date(max.effDateFrom)) {
 							this.errorMsg = 1;
-							$('#mtnRetLineWarningModal > #modalBtn').trigger('click');
+							$('#mtnSecIITrtyLimWarningModal > #modalBtn').trigger('click');
 							this.cancel = false;
 							return;
 						}
-					}
+					}	
 				}
 
-				if(td.filter(c => c.activeTag == 'Y' && c.retentionId == '').length > 1) {
-					var newList = td.filter(c => c.activeTag == 'Y' && c.retentionId == '');
+				if(td.filter(c => c.activeTag == 'Y' && c.seciiTrtyLimId == '').length > 1) {
+					var newList = td.filter(c => c.activeTag == 'Y' && c.seciiTrtyLimId == '');
 
 					for(var x = 1; x < newList.length; x++) {
 						if(new Date(newList[x].effDateFrom) <= new Date(newList[x-1].effDateFrom)) {
 							this.errorMsg = 1;
-							$('#mtnRetLineWarningModal > #modalBtn').trigger('click');
+							$('#mtnSecIITrtyLimWarningModal > #modalBtn').trigger('click');
 							this.cancel = false;
 							return;
 						}
@@ -278,10 +278,10 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 			return;
 		}
 
-		this.params.saveRetAmt = [];
-		this.params.deleteRetAmt = [];
+		this.params.saveSecIITrtyLimit = [];
+		this.params.deleteSecIITrtyLimit = [];
 
-		var td = this.retAmtData.tableData;
+		var td = this.secIIData.tableData;
 
 		for(let d of td) {
 			if(d.edited && !d.deleted) {
@@ -293,17 +293,17 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 				d.updateUser = this.ns.getCurrentUser();
 				d.updateDate = this.ns.toDateTimeString(0);
 
-				this.params.saveRetAmt.push(d);
+				this.params.saveSecIITrtyLimit.push(d);
 			} else if(d.deleted) {
-				this.params.deleteRetAmt.push(d);
+				this.params.deleteSecIITrtyLimit.push(d);
 			}
 		}
 
-		this.ms.saveMtnRetAmt(this.params).subscribe(data => {
+		this.ms.saveMtnSecIITrtyLimit(this.params).subscribe(data => {
 			if(data['returnCode'] == -1) {
 				this.dialogIcon = "success";
 				this.successDialog.open();
-				this.getMtnRetAmt();
+				this.getMtnSecIITrtyLimit();
 			} else {
 				this.dialogIcon = "error";
 				this.successDialog.open();
@@ -312,7 +312,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 	}
 
 	onCopySetupClick() {
-		$('#mtnRetLineCopyModal > #modalBtn').trigger('click');
+		$('#mtnSecIITrtyLimCopyModal > #modalBtn').trigger('click');
 	}
 
 	onCopyCancel() {
@@ -332,7 +332,7 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 
 		$('.globalLoading').css('display','block');
 		var params = {
-			 copyFromRetentionId: this.selected.retentionId,
+			 copyFromSeciiTrtyLimId: this.selected.seciiTrtyLimId,
 			 copyFromLineCd: this.lineCd,
 			 copyFromLineClassCd: this.lineClassCd,
 			 copyFromCurrencyCd: this.currencyCd,
@@ -345,17 +345,17 @@ export class RetentionLineComponent implements OnInit, OnDestroy {
 			 updateUser: this.ns.getCurrentUser()
 		}
 
-		this.ms.copyRetAmtSetup(JSON.stringify(params)).subscribe(data => {
+		this.ms.copySecIITrtyLimit(JSON.stringify(params)).subscribe(data => {
 			$('.globalLoading').css('display','none');
 			if(data['returnCode'] == -1) {
-				$('#mtnRetLineSuccessModal > #modalBtn').trigger('click');
-				this.getMtnRetAmt();
+				$('#mtnSecIITrtyLimSuccessModal > #modalBtn').trigger('click');
+				this.getMtnSecIITrtyLimit();
 				this.onCopyCancel();
 			} else if(data['returnCode'] == 2) {
 				this.modalService.dismissAll();
 				this.errorMsg = 2;
 				this.onCopyCancel();
-				$('#mtnRetLineWarningModal > #modalBtn').trigger('click');
+				$('#mtnSecIITrtyLimWarningModal > #modalBtn').trigger('click');
 			}
 		});
 	}

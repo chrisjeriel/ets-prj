@@ -61,8 +61,8 @@ export class ListOfQuotationsComponent implements OnInit {
 
     passData: any = {
         tableData: [],
-        tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Insured', 'Risk', 'Object', 'Site', 'Policy No', 'Currency'],
-        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'],
+        tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Risk', 'Object', 'Site', 'Currency', 'Sum Insured', '1st Option Rate (%)', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
+        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent', 'date', 'date', 'text', 'text'],
         filters: [
         {
             key: 'quotationNo',
@@ -97,11 +97,6 @@ export class ListOfQuotationsComponent implements OnInit {
         {
             key: 'contractorName',
             title: 'Contractor',
-            dataType: 'text'
-        },
-        {
-            key: 'insuredDesc',
-            title: 'Insured',
             dataType: 'text'
         },
         {
@@ -155,7 +150,7 @@ export class ListOfQuotationsComponent implements OnInit {
         ],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, pageID: 1, exportFlag: true,
-        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd'],
+        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','riskName','objectDesc','site','currencyCd', 'sumInsured', 'firstOptionRt', 'issueDate', 'expiryDate', 'reqBy', 'createUser'],
     }
 
     constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private notes: NotesService) { 
@@ -200,7 +195,9 @@ export class ListOfQuotationsComponent implements OnInit {
                                                 reqBy: rec.reqBy,
                                                 createUser: rec.createUser,
                                                 preparedBy: rec.preparedBy,
-                                                approvedBy: rec.approvedBy
+                                                approvedBy: rec.approvedBy,
+                                                firstOptionRt: rec.firstOptionRt,
+                                                sumInsured: rec.sumInsured
                                             });
             }
 

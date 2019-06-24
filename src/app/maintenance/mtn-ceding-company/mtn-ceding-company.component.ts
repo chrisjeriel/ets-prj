@@ -86,7 +86,7 @@ export class MtnCedingCompanyComponent implements OnInit {
   openModalNotMember(){
     this.passDataCedingCompanyNotMember.tableData = [];
 
-    this.underwritingService.getCedingCompanyList('','','','','','','','','','N').subscribe((data: any) => {
+    this.underwritingService.getCedingCompanyList('','','','','','','','Y','','N').subscribe((data: any) => {
          for(var i=0;i< data.cedingcompany.length;i++){
             // this.passDataCedingCompanyNotMember.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
            /*this.passDataCedingCompanyNotMember.tableData.push({

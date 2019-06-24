@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -14,16 +15,21 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./clm-claim-history.component.css']
 })
 export class ClmClaimHistoryComponent implements OnInit {
-  @ViewChild('histTbl') histTbl    : CustEditableNonDatatableComponent;
-  @ViewChild(CancelButtonComponent) cancelBtn       : CancelButtonComponent;
+  @ViewChild('histTbl') histTbl   : CustEditableNonDatatableComponent;
+  @ViewChild('apAmtTbl') apAmtTbl : CustEditableNonDatatableComponent;
+  @ViewChild('cancelClmHist') cancelBtn       : CancelButtonComponent;
+  @ViewChild('cancelAppAmt') cancelBtnAppAmt  : CancelButtonComponent;
+  @ViewChild('successAppAmt') successAppAmt   : SucessDialogComponent;
 
   private claimsHistoryInfo = ClaimsHistoryInfo;
 
   passDataHistory: any = {
     tableData     : [],
     tHeader       : ['Hist. No.', 'Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Reserve', 'Payment Amount', 'Ref. No.', 'Ref. Date', 'Remarks'],
-    dataTypes     : ['number', 'select', 'select', 'checkbox', 'select', 'currency', 'currency', 'text', 'date', 'text'],
+    dataTypes     : ['sequence-3', 'select', 'select', 'checkbox', 'select', 'currency', 'currency', 'text', 'date', 'text'],
     nData: {
+      claimId      : 1,
+      projId       : 1,
       histNo       : '',
       histCategory : '',
       histType     : '',
@@ -103,6 +109,10 @@ export class ClmClaimHistoryComponent implements OnInit {
     saveClaimHistory   : []
   };
 
+  paramsApvAmt : any =    {
+    saveClaimApprovedAmt   : []
+  };
+
   constructor(private titleService: Title, private clmService: ClaimsService,private ns : NotesService, private mtnService: MaintenanceService, private modalService: NgbModal) {
 
   }
@@ -138,11 +148,85 @@ export class ClmClaimHistoryComponent implements OnInit {
     });
   }
 
+  getClaimApprovedAmt(){
+    this.apAmtTbl.overlayLoader = true;
+    this.clmService.getClaimApprovedAmt()
+    .subscribe(data => {
+      console.log(data);
+      this.passDataApprovedAmt.tableData = [];
+      var rec = data['claimApprovedAmtList'].map(i => { 
+        i.createDate = this.ns.toDateTimeString(i.createDate);
+        i.updateDate = this.ns.toDateTimeString(i.updateDate); 
+        i.approvedDate = this.ns.toDateTimeString(i.approvedDate); 
+        return i; 
+      });
+      this.passDataApprovedAmt.tableData = rec;
+      this.apAmtTbl.refreshTable();
+    });
+  }
+
+  onSaveClaimApprovedAmt(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    console.log(this.cancelFlag);
+    this.dialogIcon = '';
+    this.dialogMessage = '';
+    var isEmpty = 0;
+
+    for(let record of this.passDataApprovedAmt.tableData){
+      console.log(record);
+      record.claimId = 1;
+      if(record.approvedAmt == '' || record.approvedBy == '' || record.approvedDate == ''){
+        if(!record.deleted){
+          isEmpty = 1;
+          this.fromCancel = false;
+        }
+      }else{
+        this.fromCancel = true;
+        if(record.edited && !record.deleted){
+          record.approvedDate  = (record.approvedDate == '' || record.approvedDate == undefined)?this.ns.toDateTimeString(0):record.approvedDate;
+          record.createUser    = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
+          record.createDate    = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):record.createDate;
+          record.updateUser    = this.ns.getCurrentUser();
+          record.updateDate    = this.ns.toDateTimeString(0);
+          this.paramsApvAmt.saveClaimApprovedAmt.push(record);
+        }
+      }
+    }
+
+    if(isEmpty == 1){
+        setTimeout(()=>{
+          $('.globalLoading').css('display','none');
+          this.dialogIcon = 'error';
+          this.successAppAmt.open();
+          this.paramsApvAmt.saveClaimApprovedAmt   = [];
+        },500);
+    }else{
+      if(this.paramsApvAmt.saveClaimApprovedAmt == 0){
+        setTimeout(()=>{
+          $('.globalLoading').css('display','none');
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'Nothing to save.';
+          this.successAppAmt.open();
+          this.paramsApvAmt.saveClaimApprovedAmt   = [];
+          this.passDataApprovedAmt.tableData = this.passDataApprovedAmt.tableData.filter(a => a.approvedAmt != '');
+        },500);
+      }else{
+        this.clmService.saveClaimApprovedAmt(JSON.stringify(this.paramsApvAmt))
+        .subscribe(data => {
+          console.log(data);
+          this.getClaimApprovedAmt();
+          this.successAppAmt.open();
+          this.paramsApvAmt.saveClaimApprovedAmt = [];
+        });
+      }  
+    }
+  }
+
   onSaveClaimHistory(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
-    var saveClaimHistory = this.params.saveClaimHistory;
+   // var saveClaimHistory = this.params.saveClaimHistory;
     var isEmpty = 0;
 
     for(let record of this.passDataHistory.tableData){
@@ -171,26 +255,26 @@ export class ClmClaimHistoryComponent implements OnInit {
           $('app-sucess-dialog #modalBtn').trigger('click');
           this.params.saveClaimHistory   = [];
         },500);
+    }else{
+      if(this.params.saveClaimHistory.length == 0){
+        setTimeout(()=>{
+          $('.globalLoading').css('display','none');
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'Nothing to save.';
+          $('app-sucess-dialog #modalBtn').trigger('click');
+          this.params.saveClaimHistory   = [];
+          this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
+        },500);
       }else{
-        if(this.params.saveClaimHistory.length == 0){
-          setTimeout(()=>{
-            $('.globalLoading').css('display','none');
-            this.dialogIcon = 'info';
-            this.dialogMessage = 'Nothing to save.';
-            $('app-sucess-dialog #modalBtn').trigger('click');
-            this.params.saveClaimHistory   = [];
-            this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
-          },500);
-        }else{
-          this.clmService.saveClaimHistory(JSON.stringify(this.params))
-          .subscribe(data => {
-            console.log(data);
-            this.getClaimHistory();
-            $('app-sucess-dialog #modalBtn').trigger('click');
-            this.params.saveClaimHistory = [];
-          });
-        }  
-      }
+        this.clmService.saveClaimHistory(JSON.stringify(this.params))
+        .subscribe(data => {
+          console.log(data);
+          this.getClaimHistory();
+          $('app-sucess-dialog #modalBtn').trigger('click');
+          this.params.saveClaimHistory = [];
+        });
+      }  
+    }
   }
 
   compResPayt(){
@@ -229,12 +313,30 @@ export class ClmClaimHistoryComponent implements OnInit {
     }
   }
 
-  cancel(){
+  checkCancelAppAmt(){
+    if(this.cancelFlag == true){
+      if(this.fromCancel){
+        this.cancelBtnAppAmt.onNo();
+      }else{
+        return;
+      }
+    }
+  }
+
+  onClickCancel(){
     this.cancelBtn.clickCancel();
   }
 
   onClickSave(){
     $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+  onClickCancelAppAmt(){
+    this.cancelBtnAppAmt.clickCancel();
+  }
+
+  onClickSaveAppAmt(){
+    $('#confirm-appAmt #confirm-save #modalBtn2').trigger('click');
   }
 
   showResStatMdl(){
@@ -243,6 +345,7 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   showApprovedAmtMdl(){
     $('#approvedAmtMdl > #modalBtn').trigger('click');
+    this.getClaimApprovedAmt();
   }
 
 }

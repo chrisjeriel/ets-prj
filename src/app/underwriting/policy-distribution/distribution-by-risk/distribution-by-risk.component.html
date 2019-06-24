@@ -162,7 +162,7 @@
     <fieldset class="scheduler-border">
       <legend class="scheduler-border">Treaty Share and Comm Share Parameters</legend>
       <div style="margin-top: 10px; margin-bottom: 8px;">
-            <app-cust-editable-non-datatable #wparam [passData]="wparamData" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')">
+            <app-cust-editable-non-datatable #wparam [passData]="wparamData" (genericBtn)="onClickDelete($event)" (onDelete)="wparam.onClickDelete('a')"  (clickLOV)="openCedingCoLOV($event)">
               <ng-container controls-r>
                 <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc = 'Y' : riskDistributionData.autoCalc = 'N'">
                 <label class="form-control-sm">Auto Calculation</label>
@@ -403,3 +403,5 @@
 
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+
+<app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>

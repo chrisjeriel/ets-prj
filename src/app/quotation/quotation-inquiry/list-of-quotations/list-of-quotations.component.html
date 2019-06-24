@@ -79,14 +79,14 @@
                         <div class="col-sm-1"></div>
                     </div>
                 </div>
-                <div class="form-row custom-row-inline-inset">
+                <!-- <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Insured</label>
                         <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.insuredDesc === undefined ? '' : quoteList.insuredDesc" readonly>
                         <div class="col-sm-1"></div>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <div class="col-sm-1"></div>
@@ -104,12 +104,22 @@
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
-                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Object</label>
                         <input type="text" class="form-control form-control-sm col-sm-3" [value]="quoteList.objectDesc === undefined ? '' : quoteList.objectDesc" readonly>
                         <label class="form-control-sm col-sm-2 text-right">Currency</label>
                         <input type="text" name="" class="form-control form-control-sm col-sm-3" [value]="quoteList.currencyCd === undefined ? '' : quoteList.currencyCd" readonly> 
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
+                        <div class="col-sm-1"></div>
+                        <label class="form-control-sm col-sm-2 text-right">Sum Insured</label>
+                        <input type="text" class="form-control form-control-sm col-sm-3" [value]="quoteList.sumInsured === undefined ? '' : quoteList.sumInsured | number: '1.2-2'" readonly>
+                        <label class="form-control-sm col-sm-2 text-right">1st Option Rate</label>
+                        <input type="text" name="" class="form-control form-control-sm col-sm-3" [value]="quoteList.firstOptionRt === undefined ? '' : quoteList.firstOptionRt | number: '1.10-10'" readonly> 
                         <div class="col-sm-1"></div>
                     </div>
                 </div>

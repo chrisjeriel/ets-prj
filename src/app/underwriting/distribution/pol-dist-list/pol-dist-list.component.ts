@@ -114,6 +114,7 @@ export class PolDistListComponent implements OnInit {
 
    gotoInfo(){
        this.router.navigate(['policy-dist', {policyId:this.selected.policyId,
+                                                 policyNo: this.selected.policyNo,
                                                  lineCd:this.selected.lineCd,
                                                  lineClassCd: this.selected.lineClassCd,
                                                  cedingName: this.selected.cedingName,

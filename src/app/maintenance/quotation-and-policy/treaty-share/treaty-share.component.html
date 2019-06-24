@@ -18,7 +18,7 @@
 								<div class="col-sm-3"></div>
 							</div>
 						</fieldset>
-						<fieldset class="scheduler-border" style="margin-bottom: 5px !important;">
+						<fieldset class="scheduler-border">
 							<legend class="scheduler-border">Treaty</legend>
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
@@ -28,12 +28,30 @@
 								<div class="col-sm-3"></div>
 							</div>
 						</fieldset>
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Treaty Share</legend>
+							<div class="row" style="margin-top: 12px;">
+								<div id="treaty-share-table" class="col-sm">
+									<app-cust-editable-non-datatable #treatyShareTable [passData]="treatyShareData" (tableDataChange)="treatyCommSelected.treatyShareList=$event; treatyShareTDataChange($event);" (newClick)="onTreatyShareRowClick($event)" (genericBtn)="onTreatyShareClickDelete($event)" (onDelete)="treatyShareTable.onClickDelete('force'); onTreatyShareClickDelete();" (clickLOV)="openCedingCoLOV($event)" (add)="add()"></app-cust-editable-non-datatable>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-sm">
+									<div class="col-md-12 text-center">
+										<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
-	<ngb-tabset (tabChange)="onTabChange($event)" #tabset>
+	<!-- <ngb-tabset (tabChange)="onTabChange($event)" #tabset>
 		<ngb-tab class="ngb-tab" title="Treaty Share" id="treaty-share">
 			<ng-template ngbTabContent>
 				<div class="row">
@@ -84,7 +102,7 @@
 				</div>
 			</ng-template>
 		</ngb-tab>
-	</ngb-tabset>
+	</ngb-tabset> -->
 
 	<div class="row" style="margin-top: 12px">
 		<div class="col-sm-12">
