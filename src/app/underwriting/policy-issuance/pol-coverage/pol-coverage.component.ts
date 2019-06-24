@@ -1761,8 +1761,6 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.exSecIIIPrem   = this.exsectionIIIPrem;
     this.altCoverageData.extotalPrem    = this.extotalPrem;
     this.altCoverageData.exCumTprem     = this.extotalPrem;
-    this.altCoverageData.exDays         = 15;
-    this.altCoverageData.totalDays      = 30;
 
     this.altCoverageData.cumSecISi      = this.comsectionISi;
     this.altCoverageData.cumSecIISi     = this.comsectionIISi;
