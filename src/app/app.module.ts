@@ -417,6 +417,7 @@ import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lo
 import { MtnCurrencyCodeComponent } from './maintenance/mtn-currency-code/mtn-currency-code.component';
 import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-policy/section-ii-treaty-limit/section-ii-treaty-limit.component';
 import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
+import { MtnClaimStatusLovComponent } from './maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 
 @NgModule({
     imports: [
@@ -840,6 +841,7 @@ import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-pol
         MtnCurrencyCodeComponent,
         SectionIiTreatyLimitComponent,
         RetentionPerPoolMemberComponent,
+        MtnClaimStatusLovComponent,
     ],
 
   	providers: [
