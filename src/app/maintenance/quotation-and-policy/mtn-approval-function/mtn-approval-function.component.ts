@@ -18,7 +18,8 @@ export class MtnApprovalFunctionComponent implements OnInit {
   @ViewChild('userModal') modal: ModalComponent;
   @ViewChild('approval') table: CustEditableNonDatatableComponent;
   @ViewChild('user') usertable: CustEditableNonDatatableComponent;
-  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('cancelApprover') cancelBtn : CancelButtonComponent;
+  @ViewChild('cancelUser') cancelUserBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('userSuccess') userSuccess: SucessDialogComponent;
   @ViewChild('mtnUser') mtnUser: MtnApproverComponent;
@@ -32,9 +33,9 @@ export class MtnApprovalFunctionComponent implements OnInit {
       approvalFn:null,
        description: null,
       remarks: null,
-      createDate: '',
+      createDate: this.ns.toDateTimeString(0),
       createUser: this.ns.getCurrentUser(),
-      updateDate: '',
+      updateDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser()
     },
     pageID: 'approval',
@@ -59,9 +60,9 @@ export class MtnApprovalFunctionComponent implements OnInit {
       showMG: 1,
       userId: null,
       userName: null,
-      createDate: '',
+      createDate: this.ns.toDateTimeString(0),
       createUser: this.ns.getCurrentUser(),
-      updateDate: '',
+      updateDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser()
     },
     pageID: 'users',
@@ -95,6 +96,8 @@ export class MtnApprovalFunctionComponent implements OnInit {
   dialogIcon:string;
   userRow:any;
   hideUserArray: any;
+  errorFlag:boolean = false;
+  editedFlag: boolean = false;
 
   saveDetails: any = {
     deleteMtnApproval: [],
@@ -119,6 +122,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
       this.passData.tableData = [];
       for (var i = 0; i < datas.length;i++ ){
         this.passData.tableData.push(datas[i]);
+        this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['approvalCd'];
       }
       this.table.refreshTable();
       this.table.loadingFlag = false;
@@ -165,11 +169,16 @@ export class MtnApprovalFunctionComponent implements OnInit {
     });
   }
 
-  saveUserModal(){
+  saveUserModal(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    this.userDetails.saveMtnApprovalFn   = [];
+    this.userDetails.deleteMtnApprovalFn = [];
     for(var i = 0 ; i < this.passDataUser.tableData.length; i++){
       if(this.passDataUser.tableData[i].edited && !this.passDataUser.tableData[i].deleted){
         this.userDetails.saveMtnApprovalFn.push(this.passDataUser.tableData[i])
         this.userDetails.saveMtnApprovalFn[this.userDetails.saveMtnApprovalFn.length - 1].approvalCd = this.approvalCd;
+        this.userDetails.saveMtnApprovalFn[this.userDetails.saveMtnApprovalFn.length - 1].updateDate = this.ns.toDateTimeString(this.userDetails.saveMtnApprovalFn[this.userDetails.saveMtnApprovalFn.length - 1].updateDate);
+        this.userDetails.saveMtnApprovalFn[this.userDetails.saveMtnApprovalFn.length - 1].createDate = this.ns.toDateTimeString(this.userDetails.saveMtnApprovalFn[this.userDetails.saveMtnApprovalFn.length - 1].createDate);
       }
 
       if(this.passDataUser.tableData[i].deleted){
@@ -191,6 +200,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
            this.dialogMessage = data['errorList'][0].errorMessage;
            this.dialogIcon = "error";
            this.userSuccess.open();
+           this.table.markAsPristine();
          }else{
            this.dialogMessage = "";
            this.dialogIcon = "success";
@@ -205,7 +215,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
 
   deleteCurr(){
     if(this.table.indvSelect.okDelete == 'N'){
-      this.dialogMessage = "Unable to delete record. Approval has existing user";
+      this.dialogMessage = "You are not allowed to delete an Approval Function Code with existing approver";
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
@@ -216,9 +226,12 @@ export class MtnApprovalFunctionComponent implements OnInit {
   }
 
   prepareData(){
+    this.edited = [];
+    this.deleted = [];
     for(var i = 0; i < this.passData.tableData.length;i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         this.edited.push(this.passData.tableData[i]);
+        this.edited[this.edited.length - 1].createDat
       }
       if(this.passData.tableData[i].deleted){
         this.deleted.push(this.passData.tableData[i]);
@@ -232,12 +245,13 @@ export class MtnApprovalFunctionComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     if(this.edited.length === 0 && this.deleted.length === 0){
-      setTimeout(()=> {
-      this.dialogMessage = "Nothing to Save.";
-      this.dialogIcon = "info";
-      this.successDiag.open();
-      },0);
-    }else{
+      setTimeout(() => {
+        this.dialogMessage = "Nothing to Save.";
+        this.dialogIcon = "info";
+        this.successDiag.open();
+      }
+      ,0);
+    } else {
       this.maintenanceService.saveMtnApproval(this.saveDetails).subscribe((data:any) => {
         if(data['returnCode'] == 0){
           this.dialogMessage = data['errorList'][0].errorMessage;
@@ -260,7 +274,28 @@ export class MtnApprovalFunctionComponent implements OnInit {
   }
 
   onClickSave(){
-    $('#approvalConfirm #confirm-save #modalBtn2').trigger('click');
+    this.errorFlag = false;
+    for(var i = 0 ; i < this.passData.tableData.length;i++){
+      for(var j = 0 ; j < this.passData.tableData.length;j++){
+        if(i !== j){
+          if(this.passData.tableData[i].approvalCd === this.passData.tableData[j].approvalCd){
+            this.errorFlag = true;
+          }
+        }
+      }
+    }
+    if(this.errorFlag){
+      this.dialogMessage = "Unable to save the record. Approval Function Code must be unique.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      $('#approvalConfirm #confirm-save #modalBtn2').trigger('click');
+    }
+    
+  }
+
+  onCancelUser(){
+    this.cancelUserBtn.clickCancel()
   }
 
   onClickSaveUser(){

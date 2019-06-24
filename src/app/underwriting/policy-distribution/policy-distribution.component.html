@@ -6,7 +6,7 @@
 				<app-distribution-by-risk (riskDistId)="riskDistId = $event" (riskDistStatus)="riskDistStatus = $event"></app-distribution-by-risk>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Policy Distribution">
+		<ngb-tab [title]="distTtitle">
 			<ng-template ngbTabContent>
 				<app-pol-distribution [riskDistId]="riskDistId" [riskDistStatus]="riskDistStatus"></app-pol-distribution>
 			</ng-template>
