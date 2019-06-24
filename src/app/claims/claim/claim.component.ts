@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-claim',
@@ -8,6 +11,7 @@ import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./claim.component.css']
 })
 export class ClaimComponent implements OnInit {
+
 
   passDataHistory: any = {
         tHeader: ["History No", "Amount Type", "History Type", "Currency","mount","Remarks","Accounting Tran ID","Accounting Date"],
@@ -21,7 +25,8 @@ export class ClaimComponent implements OnInit {
         addFlag:true,
   };
 
-  constructor( private router: Router) { }
+  constructor( private router: Router, private modalService: NgbModal) { }
+  @ViewChild('tabset') tabset: any;
 
   ngOnInit() {
   }
@@ -30,7 +35,25 @@ export class ClaimComponent implements OnInit {
       if ($event.nextId === 'Exit') {
         this.router.navigateByUrl('');
       } 
+
+      if($('.ng-dirty').length != 0 ){
+        $event.preventDefault();
+        const subject = new Subject<boolean>();
+        const modal = this.modalService.open(ConfirmLeaveComponent,{
+            centered: true, 
+            backdrop: 'static', 
+            windowClass : 'modal-size'
+        });
+        modal.componentInstance.subject = subject;
+
+        subject.subscribe(a=>{
+          if(a){
+            $('.ng-dirty').removeClass('ng-dirty');
+            this.tabset.select($event.nextId)
+          }
+        })
   
+    }
   }
-  
+
 }

@@ -30,7 +30,7 @@ export class ClaimsAttachmentComponent implements OnInit {
   passData: any = {
   	    tableData: [],
         tHeader: ['File Name', 'Description', 'Actions'],
-        dataTypes: ['string', 'string'],
+        dataTypes: ['string', 'reqText'],
         nData:{
           fileName        : null,
           description     : null,
@@ -181,7 +181,20 @@ export class ClaimsAttachmentComponent implements OnInit {
 
   onSaveAttachment(cancelFlag?){
      this.cancelFlag = cancelFlag !== undefined;  
+     if(this.cancelFlag){
+        if(this.checkFields()){
+          this.saveDataAttachment();
+        }else{
+          this.dialogMessage="Please fill up required fields.";
+          this.dialogIcon = "info";
+          $('#attchmntMdl > #successModalBtn').trigger('click');
+        }
+     } else {
+       this.saveDataAttachment();
+     }
+  }
 
+  saveDataAttachment(){
      this.savedData = [];
      this.deletedData = [];
      this.savedData = this.passData.tableData.filter(a=>a.edited && !a.deleted);
