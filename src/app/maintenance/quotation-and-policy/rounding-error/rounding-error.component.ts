@@ -150,7 +150,6 @@ export class RoundingErrorComponent implements OnInit {
   	  	if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
   	  		this.edited.push(this.passData.tableData[i]);
   	  		this.edited[this.edited.length - 1].effDateFrom = this.ns.toDateTimeString(this.passData.tableData[i].effDateFrom);
-  	  		this.edited[this.edited.length - 1].effDateTo = this.ns.toDateTimeString(this.passData.tableData[i].effDateTo);
   	  		this.edited[this.edited.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
   	  		this.edited[this.edited.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
   	  	}
@@ -158,7 +157,6 @@ export class RoundingErrorComponent implements OnInit {
   	  	if(this.passData.tableData[i].deleted){
   	  		this.deleted.push(this.passData.tableData[i]);
   	  		this.deleted[this.deleted.length - 1].effDateFrom = this.ns.toDateTimeString(this.passData.tableData[i].effDateFrom);
-  	  		this.deleted[this.deleted.length - 1].effDateTo = this.ns.toDateTimeString(this.passData.tableData[i].effDateTo);
   	  	}
   	  }
   	  
@@ -179,6 +177,7 @@ export class RoundingErrorComponent implements OnInit {
   			this.successDiag.open();
   		},0);
   	}else{
+      console.log(this.saveData)
   		this.maintenanceService.saveMtnRoundingError(this.saveData).subscribe((data:any) => {
 	  		if(data['returnCode'] == 0) {
 	          this.dialogMessage = data['errorList'][0].errorMessage;
