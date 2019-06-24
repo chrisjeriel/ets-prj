@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
+						<fieldset class="scheduler-border">
 							<legend class="scheduler-border">History</legend>
 							<div class="row" style="margin-top: 12px;">
 								<div id="history-table" class="col-sm">
@@ -22,7 +22,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="pool-member-table" class="col-sm">
-									<app-cust-editable-non-datatable #poolMemberTable [passData]="poolMemberData" (tableDataChange)="historySelected.poolMemberList=$event; poolMemberTDataChange($event);" (newClick)="onPoolMemberRowClick($event)" (genericBtn)="onPoolMemberClickDelete($event)" (onDelete)="poolMemberTable.onClickDelete('force'); onPoolMemberClickDelete();" (clickLOV)="openCedingCoLOV($event)" (add)="add()"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #poolMemberTable [passData]="poolMemberData" (tableDataChange)="historySelected.poolMemberList=$event; poolMemberTDataChange($event);" (newClick)="onPoolMemberRowClick($event)" (genericBtn)="onPoolMemberClickDelete($event)" (onDelete)="poolMemberTable.onClickDelete('force'); onPoolMemberClickDelete();" (clickLOV)="openCedingCoLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 								<div class="col-sm-3"></div>
 							</div>
@@ -66,3 +66,82 @@
 		</div>
 	</div>
 </div>
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save(true)" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-ceding-company #cedingCoLOV (selectedData)="setSelectedCedingCo($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>
+
+<app-modal class="d-none" id="retPerPoolMemberWarningModal">
+    <div header>Warning Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">
+            	<p *ngIf="errorMsg == 1">You are not allowed to delete a History No that is already<br />
+            	used in the distribution of policy.</p>
+                <p *ngIf="errorMsg == 2">Unable to save. <strong>Effective From</strong> must be later than the<br />
+                effectivity of an active History No.</p>
+            	<p *ngIf="errorMsg == 3">Unable to save the record. Please specify at least one Pool<br />
+            	Member with details.</p>
+            	<p *ngIf="errorMsg == 4">Unable to copy details. <strong>Effective From</strong> of the highlighted<br />
+                record must be later than the effectivity of an active History<br />
+            	No.</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="mtnPoolRetHistCopyModal">
+    <div header>Copy Setup</div>
+    <div body style="width: 450px !important;">
+        <fieldset class="scheduler-border" style="padding: 18px 45px 18px 8px !important;">
+        	<legend class="scheduler-border">Copy From</legend>
+            <div class="input-group" style="margin-bottom: -14px !important;">
+              	<label class="form-control-sm col-sm-3">History No</label>
+				<input type="text" class="form-control form-control-sm col-sm-3 text-right" [ngModel]="historySelected?.retHistId" tabindex="-1" readonly>
+				<label class="form-control-sm col-sm-3">Effective From</label>
+				<div class="col-sm-3 dp-cont" style="margin-left: 0px !important;">
+					<datepicker [type]="'date'" [value]="historySelected?.effDateFrom.split('T')[0]" [disabled]="true"></datepicker>
+				</div>
+            </div>
+            <div class="input-group" style="margin-bottom: -14px !important;">
+              	<label class="form-control-sm col-sm-3">1st Ret Line</label>
+				<input type="text" class="form-control form-control-sm col-sm-3 text-right" [ngModel]="historySelected?.retLine1 | number" tabindex="-1" readonly>
+				<label class="form-control-sm col-sm-3">2nd Ret Line</label>
+				<input type="text" class="form-control form-control-sm col-sm-3 text-right" [ngModel]="historySelected?.retLine2 | number" tabindex="-1" readonly>
+            </div>
+        </fieldset>
+        <fieldset class="scheduler-border" style="padding: 18px 20px 18px 8px !important;">
+        	<legend class="scheduler-border">Copy To</legend>
+        	<div class="input-group" style="margin-bottom: -14px !important;">
+	        	<div class="col-sm-2"></div>
+	            <label class="form-control-sm col-sm-3">Effective From</label>
+	            <div class="col-sm-4 dp-cont" style="margin-left: 0px !important;">
+	            	<datepicker [type]="'date'" [(value)]="copyToEffDate" [disabled]="false"></datepicker>
+	            </div>
+	            <div class="col-sm-1"></div>
+        	</div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); copyToEffDate = '';"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onClickModalCopy()"><a>Copy</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="mtnPoolRetHistSuccessModal">
+    <div header>Success Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>Retention per Pool Member setup was successfully copied.</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
