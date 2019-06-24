@@ -4,6 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ClaimsService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { MtnLossCdComponent } from '@app/maintenance/mtn-loss-cd/mtn-loss-cd.component';
+import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 
 @Component({
   selector: 'app-clm-gen-info-claim',
@@ -12,6 +14,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 })
 export class ClmGenInfoClaimComponent implements OnInit {
   @ViewChild('adjTblGI') adjTable: CustEditableNonDatatableComponent;
+  @ViewChild('lossCdLOV') lossCdLOV: MtnLossCdComponent;
 
   line: string;
   sub: any;
@@ -133,6 +136,9 @@ export class ClmGenInfoClaimComponent implements OnInit {
     adjRefNos: null
   }
 
+  lossCdFilter: any = null;
+  lossCdType: any = null;
+
   constructor(private router: ActivatedRoute, private modalService: NgbModal, private titleService: Title, private cs: ClaimsService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -175,7 +181,32 @@ export class ClmGenInfoClaimComponent implements OnInit {
     $('#adjustersModal #modalBtn').trigger('click');
   }
 
+  showLossCdLOV(type) {
+    this.lossCdType = type;
+    this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == type };
+
+    this.lossCdLOV.modal.openNoClose();
+  }
+
+  setLossCd(ev) {
+    if(this.lossCdType == 'C') {
+      this.claimData.lossCd = ev.lossCd;
+      this.claimData.lossDesc = ev.lossAbbr;
+    } else if(this.lossCdType == 'P') {
+      this.claimData.lossPeriod = ev.lossAbbr;
+    }
+  }
+
+  showUsersLOV() {
+    $('#usersLOV #modalBtn').trigger('click');
+  }
+
+  setProcessedBy(ev) {
+    this.claimData.processedBy = ev.userId;
+  }
+
   dc(ev, data, type) {
     return this.ns.dateConstructor(ev, data, type);
   }
+
 }
