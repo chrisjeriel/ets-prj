@@ -14,22 +14,22 @@
                 <div class="custom-row-inline-inset">
                   <div style="margin-left: 40px !important;">
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [(ngModel)]="batchOption" [value]="'IP'" name="batchOption"><label class="rd-lbl">In Progress</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'IP'" name="batchOption"><label class="rd-lbl">In Progress</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [(ngModel)]="batchOption" [value]="'TC'" name="batchOption"><label class="rd-lbl">Temporary Close</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'TC'" name="batchOption"><label class="rd-lbl">Temporary Close</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [(ngModel)]="batchOption" [value]="'CD'" name="batchOption"><label class="rd-lbl">Close</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'CD'" name="batchOption"><label class="rd-lbl">Close</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [(ngModel)]="batchOption" [value]="'WD'" name="batchOption"><label class="rd-lbl">Withdraw</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'WD'" name="batchOption"><label class="rd-lbl">Withdraw</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [(ngModel)]="batchOption" [value]="'SP'" name="batchOption"><label class="rd-lbl">Spoil</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'SP'" name="batchOption"><label class="rd-lbl">Spoil</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [(ngModel)]="batchOption" [value]="'DN'" name="batchOption"><label class="rd-lbl">Deny</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'DN'" name="batchOption"><label class="rd-lbl">Deny</label>
                     </div>
                   </div>
                 </div>
@@ -40,7 +40,7 @@
                   <div class="text-center" class="min-width: 100% !important;">
                     <div class="cust-btn-container">
                       <div class="input-group" style="margin-bottom: 3px !important;">
-                        <button type="button" class="cust-btn" style="z-index: 0 !important;min-width: 100% !important; margin-top: 3px !important;"><a>Process</a></button>
+                        <button type="button" class="cust-btn" style="z-index: 0 !important;min-width: 100% !important; margin-top: 3px !important;" [class.cust-btn-disabled]="processBtnDisabled || queryTable?.selected.length === 0" [disabled]="processBtnDisabled || queryTable?.selected.length === 0"><a>Process</a></button>
                       </div>
                       <div class="input-group">
                         <button type="button" id="searchBtn" class="cust-btn" style="z-index: 0 !important; min-width: 100% !important;"
@@ -54,9 +54,9 @@
                                 <div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;margin-bottom: 12px !important;">
                                     <div class="input-group alignment" style="margin-bottom: -13px !important;">
                                         <label class="form-control-sm col-sm-2 text-right">Claim No</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="tempClmNo[0]" ngbTooltip="Line">
-                                        <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="tempClmNo[1]" ngbTooltip="Year" style="margin-left: 2px">
-                                        <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="tempClmNo[2]" ngbTooltip="Sequence No." style="margin-left: 2px">
+                                        <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="tempClmNo[0]" (change)="checkClaim('line', $event)" ngbTooltip="Line">
+                                        <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="tempClmNo[1]" (change)="checkClaim('year', $event)" ngbTooltip="Year" style="margin-left: 2px">
+                                        <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="tempClmNo[2]" (change)="checkClaim('seqNo', $event)" ngbTooltip="Sequence No." style="margin-left: 2px">
                                         <a style="margin-left: 5px;" (click)="openClmListing();"><i class="fa fa-search"></i></a>
                                     </div>
                                 </div>
@@ -127,30 +127,30 @@
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Claim No</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly>
+                          readonly [ngModel]="claimDetails.claimNo">
                         <label class="form-control-sm col-sm-2">Status</label>
                         <input type="text" class="form-control form-control-sm cust-sm" 
-                          readonly>
+                          readonly [ngModel]="claimDetails.clmStatus">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Policy No</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly>
+                          readonly [ngModel]="claimDetails.policyNo">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Ceding Co</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly>
+                          readonly [ngModel]="claimDetails.cedingName">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Insured</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly>
+                          readonly [ngModel]="claimDetails.insuredDesc">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Risk</label>
                         <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"
-                          placeholder="C. Ayala Land, Inc. / Gatewalk Central Estate" readonly></textarea>
+                          readonly [ngModel]="claimDetails.riskName"></textarea>
                       </div>
                     </div>
 
@@ -158,32 +158,32 @@
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Date</label>
                         <input type="text" class="form-control form-control-sm cust-sm" 
-                          readonly>
+                          readonly [ngModel]="claimDetails.lossDate">
                         <label class="form-control-sm col-sm-2">Currency</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails.currencyCd">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Details</label>
                         <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"
-                          readonly></textarea>
+                          readonly [ngModel]="claimDetails.lossDtl"></textarea>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Total Reserve</label>
                         <input type="text" class="form-control form-control-sm cust-sm text-right" 
-                          numbers-only readonly>
+                          readonly [ngModel]="claimDetails.totalLossExpRes | number: '1.2-2'">
                         <label class="form-control-sm col-sm-2" style="padding-right: 3px !important;">Total
                           Payment</label>
                         <input type="text" class="form-control form-control-sm cust-sm text-right" 
-                          numbers-only readonly>
+                          readonly [ngModel]="claimDetails.totalLossExpPd | number: '1.2-2'">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Adjusters</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly>
+                          readonly [ngModel]="claimDetails.adjName">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Processed By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails.processedBy">
                       </div>
                     </div>
                   </div>
@@ -192,12 +192,12 @@
                     <div class="col-sm-12">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-1" style="margin-left:-3px !important;">Reason</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-right: 4px !important;"
-                           required>
-                        <div class="text-search-ico" style="margin: -2px 6px 18px -23px !important;padding-top: 2px !important;">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                           required [readonly]="batchOption === 'IP'">
+                        <div class="text-search-ico" *ngIf="batchOption !== 'IP'">
                           <a><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;"
-                           readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm"
+                           readonly style="margin-left: 2px !important">
                       </div>
                     </div>
 

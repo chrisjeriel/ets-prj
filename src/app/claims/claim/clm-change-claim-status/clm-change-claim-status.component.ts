@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -14,7 +14,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
   templateUrl: './clm-change-claim-status.component.html',
   styleUrls: ['./clm-change-claim-status.component.css']
 })
-export class ClmChangeClaimStatusComponent implements OnInit {
+export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
 
   @ViewChild('queryMdl') queryModal : ModalComponent;
@@ -87,12 +87,42 @@ export class ClmChangeClaimStatusComponent implements OnInit {
     cessionId: ''
   }
 
+  claimDetails: any = {
+    claimNo: '',
+    clmStatus: '',
+    policyNo: '',
+    cedingName: '',
+    insuredDesc: '',
+    riskName: '',
+    lossDate: '',
+    currencyCd: '',
+    lossDtl: '',
+    totalLossExpRes: '',
+    totalLossExpPd: '',
+    adjName: '',
+    processedBy: '',
+    reasonCd: '',
+    reasonDesc: ''
+  }
+
+  processBtnDisabled: boolean = true;
+  claimNoDataFound: boolean = false;
+  polNoDataFound: boolean = false;
+  claimNoIsType: boolean = false;
+  claimNoIsIncomplete: boolean = true;
+
   constructor(private titleService: Title, private modalService: NgbModal, private us: UnderwritingService,
               private cs: ClaimsService, private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Change Claim Status");
     setTimeout(()=>{$('#searchBtn').trigger('click');},0);
+  }
+
+  ngAfterViewInit(){
+    setTimeout(()=>{
+        this.processBtnDisabled = false;
+    });
   }
 
   search(event) {
@@ -127,13 +157,27 @@ export class ClmChangeClaimStatusComponent implements OnInit {
   retrieveClaimList(){
     this.clmListTable.loadingFlag = true;
     this.cs.getClaimsListing([
-                                {key: 'policyNo', search: Object.keys(this.selectedPolicy).length === 0 ? '' : this.selectedPolicy.policyNo},
-                                {key: 'claimNo', search: this.tempClmNo.join('%-%')}
+                                {key: 'policyNo', search: Object.keys(this.selectedPolicy).length === 0 || this.claimNoDataFound ? '' : this.selectedPolicy.policyNo},
+                                {key: 'claimNo', search: this.claimNoDataFound ? '' : this.tempClmNo.join('%-%')}
                              ]).subscribe(
       (data:any)=>{
-        this.clmListData.tableData = data.claimsList;
-        this.clmListTable.refreshTable();
-        this.clmListTable.loadingFlag = false;
+        if(data.claimsList.length !== 0){
+          this.claimNoDataFound = false;
+          this.clmListData.tableData = data.claimsList;
+          this.clmListTable.refreshTable();
+          if(this.claimNoIsType){
+            this.selectedClaim = this.clmListData.tableData[0];
+            this.setClaim();
+          }
+          this.clmListTable.loadingFlag = false;
+        }else{
+          this.claimNoDataFound = true;
+          console.log('yeet');
+          if(this.claimNoIsType){
+            this.claimNoIsType = false;
+            this.openClmListing();
+          }
+        }
       },
       (error: any)=>{
         this.clmListTable.loadingFlag = false;
@@ -166,6 +210,7 @@ export class ClmChangeClaimStatusComponent implements OnInit {
 
   retrieveQueryList(){
     this.queryTable.loadingFlag = true;
+    this.queryData.tableData = [];
     this.cs.getChangeClaimStatus(this.searchParams).subscribe(
        (data: any)=>{
          console.log(data);
@@ -191,10 +236,16 @@ export class ClmChangeClaimStatusComponent implements OnInit {
   }
 
   onRowClickQuery(data){
-    console.log(data);
+    if(data !== null){
+      this.claimDetails = data;
+    }else{
+      this.clearDetails();
+    }
   }
 
   setClaim(){
+    this.claimNoIsType = false;
+    this.claimNoIsIncomplete = false;
     this.tempClmNo = this.selectedClaim.claimNo.split('-');
     this.tempPolNo = this.selectedClaim.policyNo.split('-');
     this.searchParams.claimId = this.selectedClaim.claimId;
@@ -277,6 +328,34 @@ export class ClmChangeClaimStatusComponent implements OnInit {
       }*/
   }
 
+  checkClaim(key, event){
+    this.claimNoIsType = true;
+    if(event.target.value.length === 0){
+      this.claimNoIsIncomplete = true;
+      this.tempPolNo = ['','','','','',''];
+      this.searchParams.cessionId = '';
+      this.searchParams.cessionDesc = '';
+      this.searchParams.cedingId = '';
+      this.searchParams.cedingName = '';
+      this.searchParams.riskId = '';
+      this.searchParams.riskName = '';
+    }
+    else if(key === 'seqNo'){
+      this.tempClmNo[2] = String(this.tempClmNo[2]).padStart(5, '0');
+      for(var i of this.tempClmNo){
+        if(i.length === 0){
+          this.claimNoIsIncomplete = true;
+          break;
+        }else{
+          this.claimNoIsIncomplete = false;
+        }
+      }
+    }
+    if(!this.claimNoIsIncomplete){
+      this.retrieveClaimList();
+    }
+  }
+
   checkSearchFields(): boolean{
     //check claim no fields if empty
     for(var i of this.tempClmNo){
@@ -305,6 +384,8 @@ export class ClmChangeClaimStatusComponent implements OnInit {
   validateSearch(){
     if(!this.checkSearchFields()){
       this.queryModal.closeModal();
+      this.searchParams.batchOpt = this.batchOption;
+      this.clearDetails();
       this.retrieveQueryList();
     }else{
       this.dialogIcon = 'info';
@@ -314,6 +395,7 @@ export class ClmChangeClaimStatusComponent implements OnInit {
   }
 
   clearSearchFields(){
+   this.claimNoIsIncomplete = true;
     this.searchParams =  {
                             riskName:'',
                             riskId: '',
@@ -326,6 +408,26 @@ export class ClmChangeClaimStatusComponent implements OnInit {
    this.tempPolNo = ['','','','','',''];
    this.selectedPolicy = {};
    this.selectedClaim = {};
+  }
+
+  clearDetails(){
+    this.claimDetails = {
+      claimNo: '',
+      clmStatus: '',
+      policyNo: '',
+      cedingName: '',
+      insuredDesc: '',
+      riskName: '',
+      lossDate: '',
+      currencyCd: '',
+      lossDtl: '',
+      totalLossExpRes: '',
+      totalLossExpPd: '',
+      adjName: '',
+      processedBy: '',
+      reasonCd: '',
+      reasonDesc: ''
+    }
   }
 }
 

@@ -109,6 +109,7 @@ export class ClaimsService {
             .set('cessionId', parameters.cessionId === undefined || parameters.cessionId === null || parameters.cessionId === '' ? '' : parameters.cessionId)
             .set('cedingId', parameters.cedingId === undefined || parameters.cedingId === null || parameters.cedingId === '' ? '' : parameters.cedingId)
             .set('riskId', parameters.riskId === undefined || parameters.riskId === null || parameters.riskId === '' ? '' : parameters.riskId)
+            .set('batchOpt', parameters.batchOpt === undefined || parameters.batchOpt === null || parameters.batchOpt === '' ? '' : parameters.batchOpt)
         return this.http.get(environment.prodApiUrl + '/claims-service/retrieveChangeClmStatus', {params});
 	}
 
