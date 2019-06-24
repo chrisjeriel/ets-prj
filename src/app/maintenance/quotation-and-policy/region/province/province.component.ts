@@ -372,5 +372,4 @@ export class ProvinceComponent implements OnInit {
      this.cancelBtn.clickCancel();
   }
 
-
 }
