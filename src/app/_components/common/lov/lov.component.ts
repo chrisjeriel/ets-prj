@@ -389,13 +389,15 @@ export class LovComponent implements OnInit {
         console.log(data);
           for (var a = 0; a < data.region.length; a++) {
             for (var b = 0; b < data.region[a].provinceList.length; b++) {
-              let row : any = new Object();
+              if (data.region[a].provinceList[b].activeTag === 'Y'){
+                let row : any = new Object();
                 row.regionCd = data.region[a].regionCd;
                 row.regionDesc = data.region[a].regionDesc;
                 row.provinceCd = data.region[a].provinceList[b].provinceCd;
                 row.provinceDesc = data.region[a].provinceList[b].provinceDesc;
                 row.remarks = data.region[a].provinceList[b].remarks;
                 this.passTable.tableData.push(row);
+              }
             }
           }
           this.table.refreshTable();
