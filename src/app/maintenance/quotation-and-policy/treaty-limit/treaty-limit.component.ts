@@ -135,7 +135,6 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 			this.treatyLimitData.tableData = data['treatyLimitList'].sort((a, b) => b.createDate - a.createDate)
 																	.map(i => {
 																			i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom).split('T')[0];
-																			i.effDateTo = this.ns.toDateTimeString(i.effDateTo).split('T')[0];
 																			i.createDate = this.ns.toDateTimeString(i.createDate);
 																			i.updateDate = this.ns.toDateTimeString(i.updateDate);
 																			i.treatyLimitId = String(i.treatyLimitId).padStart(3, '0');

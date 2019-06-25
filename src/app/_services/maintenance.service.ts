@@ -1032,6 +1032,7 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copySecIITrtyLimit', params, header);
     }
 
+
     getMtnClaimReason(clmStatCd?, activeTag?){
     	const params = new HttpParams()
     	     		.set('clmStatCd', (clmStatCd === null || clmStatCd === undefined ? '' : clmStatCd))
@@ -1045,6 +1046,31 @@ export class MaintenanceService{
                  'Content-Type': 'application/json'
             })
          };
-        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClaimReason', params, header);
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClaimReason', params, header);
+     }
+
+    getMtnPoolRetHist(retHistId){
+		const params = new HttpParams()
+		     		.set('retHistId', (retHistId === null || retHistId === undefined ? '' : retHistId));
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPoolRetHist", {params});
+	}
+
+	saveMtnPoolRetHist(params) {
+		let header : any = {
+			headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPoolRetHist', params, header);
+    }
+
+    copyPoolRetHist(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyPoolRetHist', params, header);
     }
 }

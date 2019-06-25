@@ -1,14 +1,14 @@
 <div class="cust-tabs-container">
-	<h4>Maintenance / Quotation & Policy</h4>
+	<h4>Maintenance / Claims</h4>
 	<ngb-tabset (tabChange)="onTabChange($event)">
-		<ngb-tab class="ngb-tab" title="Non-renewal Reason">
+		<ngb-tab class="ngb-tab" title="Claim Status Reason">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="nonRenewalReasonData" (tableDataChange)="nonRenewalReasonData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (add)="onClickAdd($event)" (onDelete)="table.onClickDelete('a')"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="claimStatReasonData" (tableDataChange)="claimStatReasonData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (add)="onClickAdd($event)" (onDelete)="table.onClickDelete('a')"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">

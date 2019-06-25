@@ -32,25 +32,28 @@ export class ClaimStatusReasonComponent implements OnInit {
   savedData: any = [];
   deletedData: any = [];
 
-  nonRenewalReasonData: any = {
+  claimStatReasonData: any = {
   	tableData: [],
-  	tHeader: ['Reason Code', 'Description', 'Active', 'Remarks'],
-  	dataTypes: ['text', 'text', 'checkbox', 'text'],
-  	keys: ['reasonCd', 'description', 'activeTag', 'remarks'],
-  	widths: [1,'auto',1,'auto'],
-  	uneditable: [false,false,false,false],
+  	tHeader: ['Reason Code', 'Description', 'Active', 'Claim Status', 'Remarks'],
+  	dataTypes: ['text', 'text', 'checkbox', 'lovInput', 'text'],
+  	keys: ['reasonCd', 'description', 'activeTag', 'clmStatCd','remarks'],
+  	widths: [1,'auto',1,'auto', 'auto'],
+  	uneditable: [false,false,false,false, false],
   	nData: {
   		reasonCd: '',
         addCounter: '1',
   		description: '',
   		activeTag: 'Y',
+  		clmStatCd: '',
   		renarks: '',
   		createUser: this.currentUser,
   		createDate: this.ns.toDateTimeString(0),
   		updateUser: this.currentUser,
-  		updateDate: this.ns.toDateTimeString(0)
+  		updateDate: this.ns.toDateTimeString(0),
+  		showMG: 1
   	},
   	paginateFlag: true,
+  	magnifyingGlass: ['clmStatCd'],
   	infoFlag: true,
   	addFlag: true,
   	searchFlag: true,
@@ -60,20 +63,20 @@ export class ClaimStatusReasonComponent implements OnInit {
   constructor(private route: ActivatedRoute,private router: Router, private ms: MaintenanceService, private ns: NotesService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	this.retrieveMtnNonRenewalReason();
+  	this.retrieveMtnClaimReason();
   }
 
-  retrieveMtnNonRenewalReason(){
-  	this.nonRenewalReasonData.tableData = [];
-  	this.ms.getMtnNonRenewalReason('','').subscribe((data: any)=>{
+  retrieveMtnClaimReason(){
+  	this.claimStatReasonData.tableData = [];
+  	this.ms.getMtnClaimReason().subscribe((data: any)=>{
   		console.log(data);
-  		for(let i of data.nonRenewalReasonList){
+  		for(let i of data.clmReasonList){
   			i.uneditable = 'reasonCd';
-  			this.nonRenewalReasonData.tableData.push(i);
+  			this.claimStatReasonData.tableData.push(i);
   		}
-  		//this.nonRenewalReasonData.tableData = data.nonRenewalReasonList;
+  		//this.claimStatReasonData.tableData = data.nonRenewalReasonList;
   		this.table.refreshTable();
-  		this.table.onRowClick(null, this.nonRenewalReasonData.tableData[0]);
+  		this.table.onRowClick(null, this.claimStatReasonData.tableData[0]);
   	});
   }
 
@@ -86,17 +89,17 @@ export class ClaimStatusReasonComponent implements OnInit {
 
   onRowClick(data){
     if(data !== null){
-      this.nonRenewalReasonData.disableGeneric = false;
+      this.claimStatReasonData.disableGeneric = false;
       this.selectedRow = data;
     }else{
-      this.nonRenewalReasonData.disableGeneric = true;
+      this.claimStatReasonData.disableGeneric = true;
     }
   	
   }
 
   onClickAdd(event){
     this.counter += 1;
-    this.nonRenewalReasonData.nData.addCounter = this.counter.toString();
+    this.claimStatReasonData.nData.addCounter = this.counter.toString();
   }
 
   onClickSave(){
@@ -127,7 +130,7 @@ export class ClaimStatusReasonComponent implements OnInit {
   delete(){
     this.table.markAsDirty();
     this.deletedData.push(this.indvSelect);
-    this.nonRenewalReasonData.tableData = this.nonRenewalReasonData.tableData.filter(a =>{
+    this.claimStatReasonData.tableData = this.claimStatReasonData.tableData.filter(a =>{
                                             if(this.indvSelect.addCounter === undefined){
                                               return a.adviceWordId !== this.indvSelect.adviceWordId;
                                             }else{
@@ -146,17 +149,17 @@ export class ClaimStatusReasonComponent implements OnInit {
   	this.savedData = [];
   	this.deletedData = [];
 
-  	for (var i = 0 ; this.nonRenewalReasonData.tableData.length > i; i++) {
-  	  if(this.nonRenewalReasonData.tableData[i].edited && !this.nonRenewalReasonData.tableData[i].deleted){
-  	      this.savedData.push(this.nonRenewalReasonData.tableData[i]);
+  	for (var i = 0 ; this.claimStatReasonData.tableData.length > i; i++) {
+  	  if(this.claimStatReasonData.tableData[i].edited && !this.claimStatReasonData.tableData[i].deleted){
+  	      this.savedData.push(this.claimStatReasonData.tableData[i]);
   	      //this.savedData[this.savedData.length-1].adviceWordId = '0';
   	      this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
   	      this.savedData[this.savedData.length-1].createUser = JSON.parse(window.localStorage.currentUser).username;
   	      this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
   	      this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
   	  }
-  	  else if(this.nonRenewalReasonData.tableData[i].edited && this.nonRenewalReasonData.tableData[i].deleted){
-  	     this.deletedData.push(this.nonRenewalReasonData.tableData[i]);
+  	  else if(this.claimStatReasonData.tableData[i].edited && this.claimStatReasonData.tableData[i].deleted){
+  	     this.deletedData.push(this.claimStatReasonData.tableData[i]);
   	     this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
   	     this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
   	  }
@@ -170,10 +173,14 @@ export class ClaimStatusReasonComponent implements OnInit {
           this.deletedData = [];
           this.savedData = [];
           this.table.markAsPristine();
-          this.retrieveMtnNonRenewalReason();
+          this.retrieveMtnClaimReason();
         },0);
     }else{
-      this.ms.saveMtnNonRenewalReason(this.savedData, this.deletedData).subscribe((data:any)=>{
+    	let params: any = {
+    		saveClmReason: this.savedData,
+    		delClmReason: this.deletedData
+    	}
+      this.ms.getMtnClaimReason(JSON.stringify(params)).subscribe((data:any)=>{
         if(data.returnCode === 0){
           this.dialogIcon = 'error';
           this.successDiag.open();
@@ -183,7 +190,7 @@ export class ClaimStatusReasonComponent implements OnInit {
           this.deletedData = [];
           this.savedData = [];
           this.table.markAsPristine();
-          this.retrieveMtnNonRenewalReason();
+          this.retrieveMtnClaimReason();
         }
       });
     }
@@ -191,7 +198,7 @@ export class ClaimStatusReasonComponent implements OnInit {
 
   checkFields(){
   	//check if required values are filled
-  	for(var i of this.nonRenewalReasonData.tableData){
+  	for(var i of this.claimStatReasonData.tableData){
   		if(i.reasonCd.length === 0 || i.reasonCd === undefined || i.reasonCd === null ||
   		   i.description.length === 0 || i.description === undefined || i.description === null){
   			return false;
@@ -202,9 +209,9 @@ export class ClaimStatusReasonComponent implements OnInit {
 
   checkForDuplicates(){
   	//check if there are similar reasonCd
-  	for(var j = 0; j < this.nonRenewalReasonData.tableData.length; j++){
-  		for(var k = j; k < this.nonRenewalReasonData.tableData.length; k++){
-  			if(j !== k && this.nonRenewalReasonData.tableData[j].reasonCd === this.nonRenewalReasonData.tableData[k].reasonCd){
+  	for(var j = 0; j < this.claimStatReasonData.tableData.length; j++){
+  		for(var k = j; k < this.claimStatReasonData.tableData.length; k++){
+  			if(j !== k && this.claimStatReasonData.tableData[j].reasonCd === this.claimStatReasonData.tableData[k].reasonCd){
   				return false;
   			}
   		}

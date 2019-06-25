@@ -118,7 +118,7 @@ export class MtnCurrencyRateComponent implements OnInit {
   setCurrency(data){
     console.log(data)
     this.currencyCd = data.currencyCd;
-    this.description = data.currencyDesc;
+    this.description = data.description;
     this.ns.lovLoader(data.ev, 0);
     this.getCurrencyRate();
   }

@@ -232,13 +232,14 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 				return;
 			}
 
-			if(d.edited && !d.deleted && d.activeTag == 'Y') {
+			if(d.edited && !d.deleted && d.activeTag == 'Y' && d.seciiTrtyLimId == '') {
 				if(td.length > 1) {
 					if(td.filter(c => c.activeTag == 'Y' && c.seciiTrtyLimId != '').length > 0) {
 						var dEDF = new Date(d.effDateFrom);
-						var lEDF = new Date(td.filter(c => c.activeTag == 'Y' && c.seciiTrtyLimId != '')
-											  .sort((a, b) => Number(new Date(b.effDateFrom)) - Number(new Date(a.effDateFrom)))[0].effDateFrom);
-						if(dEDF <= lEDF) {
+						var max = td.filter(c => c.activeTag == 'Y' && c.retHistId != '' && !c.deleted)
+									.sort((a, b) => Number(new Date(b.effDateFrom)) - Number(new Date(a.effDateFrom)))[0];
+
+						if(max != d && dEDF <= new Date(max.effDateFrom)) {
 							this.errorMsg = 1;
 							$('#mtnSecIITrtyLimWarningModal > #modalBtn').trigger('click');
 							this.cancel = false;
