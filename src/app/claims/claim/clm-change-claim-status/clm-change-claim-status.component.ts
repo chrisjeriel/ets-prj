@@ -21,6 +21,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   @ViewChild('clmListMdl') clmListModal : ModalComponent;
   @ViewChild('polListMdl') polListModal : ModalComponent;
   @ViewChild('reasonMdl') reasonModal : ModalComponent;
+  @ViewChild('processPrompt') processModal : ModalComponent;
   @ViewChild('successDiagSave') successDiag: SucessDialogComponent;
 
   @ViewChild(MtnTypeOfCessionComponent) cessionModal: MtnTypeOfCessionComponent;
@@ -80,6 +81,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   batchOption: string = 'IP';
+  batchOptionDesc: string = 'In Progress';
   dialogIcon: string = '';
   dialogMessage: string = '';
   reasonCd: string = '';
@@ -91,6 +93,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   tempClmNo: string[] = ['','',''];
   tempPolNo: string[] = ['','','','','',''];
+  arrClaimStatus: any[] = [];
 
   searchParams: any = {
     claimId: '',
@@ -126,12 +129,17 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   polNoDataFound: boolean = false;
   claimNoIsType: boolean = false;
   claimNoIsIncomplete: boolean = true;
+  polNoIsType: boolean = false;
+  polNoIsIncomplete: boolean = false;
+  batchOptionLoading: boolean = false;
+  searchLoading: boolean = false;
 
   constructor(private titleService: Title, private modalService: NgbModal, private us: UnderwritingService,
               private cs: ClaimsService, private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Change Claim Status");
+    this.retrieveClaimStatus();
     setTimeout(()=>{$('#searchBtn').trigger('click');},0);
   }
 
@@ -182,6 +190,21 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     this.reasonModal.openNoClose();
   }
 
+  retrieveClaimStatus(){
+    this.batchOptionLoading = true;
+    this.ms.getClaimStatus(null).subscribe(
+      (data: any)=>{
+        if(data.claimStatus.length !== 0){
+          this.arrClaimStatus = data.claimStatus;
+          this.batchOptionLoading = false;
+        }
+      },
+      (error: any)=>{
+
+      }
+    );
+  }
+
   retrieveClaimList(){
     this.clmListTable.loadingFlag = true;
     this.cs.getClaimsListing([
@@ -200,7 +223,6 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
           this.clmListTable.loadingFlag = false;
         }else{
           this.claimNoDataFound = true;
-          console.log('yeet');
           if(this.claimNoIsType){
             this.claimNoIsType = false;
             this.openClmListing();
@@ -216,23 +238,38 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   retrievePolList(){
     this.polListTable.loadingFlag = true;
     this.us.getParListing([
-                            {key: 'policyNo', search: this.tempPolNo.join('%-%')},
+                            {key: 'policyNo', search: this.polNoDataFound ? '' : this.tempPolNo.join('%-%')},
                             {key: 'cessionDesc', search: this.searchParams.cessionDesc.toUpperCase()},
                             {key: 'cedingName', search: this.searchParams.cedingName.toUpperCase()},
                             {key: 'riskName', search: this.searchParams.riskName.toUpperCase()}
                           ]).subscribe(
       (data: any)=>{
-        this.polListData.tableData = [];
-        for(var i of data.policyList){
-          i.riskName = i.project.riskName;
-          this.polListData.tableData.push(i);
+        if(data.policyList.length !== 0){
+          this.polNoDataFound = false;
+          this.polListData.tableData = [];
+          for(var i of data.policyList){
+            i.riskName = i.project.riskName;
+            this.polListData.tableData.push(i);
+          }
+          this.polListTable.refreshTable();
+          console.log('y')
+          if(this.polNoIsType){
+            console.log('yeet');
+            this.selectedPolicy = this.polListData.tableData[0];
+            this.setPolicy();
+          }
+          this.polListTable.loadingFlag = false;
+        }else{
+          this.polNoDataFound = true;
+          if(this.polNoIsType){
+            this.polNoIsType = false;
+            this.openPolListing();
+          }
         }
-        this.polListTable.refreshTable();
-        this.polListTable.loadingFlag = false;
       },
       (error: any)=>{
         this.polListTable.loadingFlag = false;
-      }
+      },
     );
   }
 
@@ -254,6 +291,9 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
              this.queryData.tableData.push(i);
            }
            this.queryTable.refreshTable();
+         }else{
+           this.queryData.tableData = [];
+           this.queryTable.refreshTable();
          }
          this.queryTable.loadingFlag = false;
        },
@@ -266,12 +306,15 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   onRowClickQuery(data){
     if(data !== null){
       this.claimDetails = data;
+      this.reasonCd = data.reasonCd;
+      this.reasonDesc = data.reasonDesc;
     }else{
       this.clearDetails();
     }
   }
 
   setClaim(){
+    this.searchLoading = true;
     this.claimNoIsType = false;
     this.claimNoIsIncomplete = false;
     this.tempClmNo = this.selectedClaim.claimNo.split('-');
@@ -287,14 +330,20 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         this.searchParams.cedingName = data.policy.cedingName;
         this.searchParams.riskId = data.policy.project.riskId;
         this.searchParams.riskName = data.policy.project.riskName;
+        this.searchLoading = false;
       },
       (error: any)=>{
-
+        this.searchLoading = false;
       }
     );
   }
 
   setPolicy(){
+    this.searchLoading = true;
+    this.polNoIsType = false;
+    this.claimNoIsIncomplete = false;
+    let polDone: boolean = false;
+    let claimDone: boolean = false;
     this.tempPolNo = this.selectedPolicy.policyNo.split('-');
     this.searchParams.policyId = this.selectedPolicy.policyId;
     this.us.getPolGenInfo(this.selectedPolicy.policyId).subscribe(
@@ -305,9 +354,16 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         this.searchParams.cedingName = data.policy.cedingName;
         this.searchParams.riskId = data.policy.project.riskId;
         this.searchParams.riskName = data.policy.project.riskName;
+        polDone = true;
+        if(polDone && claimDone){
+          this.searchLoading = false;
+        }
       },
       (error: any)=>{
-
+        claimDone = true;
+        if(polDone && claimDone){
+          this.searchLoading = false;
+        }
       }
     );
 
@@ -317,9 +373,16 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
           this.tempClmNo = data.claimsList[0].claimNo.split('-');
           this.searchParams.claimId = data.claimsList[0].claimId;
         }
+        claimDone = true;
+        if(polDone && claimDone){
+          this.searchLoading = false;
+        }
       },
       (error: any)=>{
-        console.log('error')
+        claimDone = true;
+        if(polDone && claimDone){
+          this.searchLoading = false;
+        }
       }
     );
   }
@@ -361,7 +424,6 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.reasonCd = '';
             this.reasonDesc = '';
             this.ns.lovLoader(ev, 0);
-            this.openReasonLOV();
           } else {
             this.ms.getMtnClaimReason(this.reasonCd,this.batchOption, 'Y').subscribe(data => {
               if(data['clmReasonList'].length > 0) {
@@ -392,17 +454,55 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     }
     else if(key === 'seqNo'){
       this.tempClmNo[2] = String(this.tempClmNo[2]).padStart(5, '0');
-      for(var i of this.tempClmNo){
-        if(i.length === 0){
-          this.claimNoIsIncomplete = true;
-          break;
-        }else{
-          this.claimNoIsIncomplete = false;
-        }
-      }
     }
+
+    for(var i of this.tempClmNo){
+       if(i.length === 0){
+         this.claimNoIsIncomplete = true;
+         break;
+       }else{
+         this.claimNoIsIncomplete = false;
+       }
+    }
+
     if(!this.claimNoIsIncomplete){
       this.retrieveClaimList();
+    }
+  }
+
+  checkPol(key, event){
+    this.polNoIsType = true;
+    if(event.target.value.length === 0){
+      this.polNoIsIncomplete = true;
+      this.tempClmNo = ['','',''];
+      this.searchParams.cessionId = '';
+      this.searchParams.cessionDesc = '';
+      this.searchParams.cedingId = '';
+      this.searchParams.cedingName = '';
+      this.searchParams.riskId = '';
+      this.searchParams.riskName = '';
+    }
+    else if(key === 'seqNo'){
+      this.tempPolNo[2] = String(this.tempPolNo[2]).padStart(5, '0');
+    }else if(key === 'cedingId'){
+      this.tempPolNo[3] = String(this.tempPolNo[3]).padStart(3, '0');
+    }else if(key === 'coSeriesNo'){
+      this.tempPolNo[4] = String(this.tempPolNo[4]).padStart(4, '0');
+    }else if(key === 'altNo'){
+      this.tempPolNo[5] = String(this.tempPolNo[5]).padStart(2, '0');
+    }
+
+    for(var i of this.tempPolNo){
+      if(i.length === 0){
+        this.polNoIsIncomplete = true;
+        break;
+      }else{
+        this.polNoIsIncomplete = false;
+      }
+    }
+
+    if(!this.polNoIsIncomplete){
+      this.retrievePolList();
     }
   }
 
@@ -444,6 +544,51 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     }
   }
 
+  process(){
+    switch(this.batchOption){
+      case 'IP':
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Are you sure you want to re-open this claim?';
+        this.processModal.openNoClose();
+        break;
+      default:
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Are you sure you want to '+ this.batchOptionDesc + ' this claim?';
+        this.processModal.openNoClose();
+    }
+  }
+
+  updateClaimStatus(){
+    let updateClaimStatus: any[] = [];
+    for(var i of this.queryTable.selected){
+      updateClaimStatus.push({
+        claimId: i.claimId,
+        clmStatCd: this.batchOption,
+        reasonCd: this.batchOption === 'IP' ? '' : this.reasonCd,
+        updateUser: this.ns.getCurrentUser(),
+        updateDate: this.ns.toDateTimeString(0)
+      });
+    }
+    let params: any = {
+      updateClaim: updateClaimStatus
+    }
+    this.cs.updateClaimStatus(JSON.stringify(params)).subscribe(
+      (data: any)=>{
+        if(data.returnCode === 0){
+          this.dialogIcon = 'error';
+          this.successDiag.open();
+        }else{
+          this.dialogIcon = '';
+          this.successDiag.open();
+          this.queryData.tableData = [];
+          this.queryTable.selected = [];
+          this.clearDetails();
+          this.retrieveQueryList();
+        }
+      }
+    );
+  }
+
   clearSearchFields(){
    this.claimNoIsIncomplete = true;
     this.searchParams =  {
@@ -475,9 +620,9 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
       totalLossExpPd: '',
       adjName: '',
       processedBy: '',
-      reasonCd: '',
-      reasonDesc: ''
     }
+    this.reasonCd = '';
+    this.reasonDesc = '';
   }
 }
 

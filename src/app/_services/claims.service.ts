@@ -137,4 +137,13 @@ export class ClaimsService {
          };
          return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimsAttachment',JSON.stringify(params),header);
     }
+
+    updateClaimStatus(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/claims-service/updateClaimStatus',params,header);
+    }
 }
