@@ -291,11 +291,14 @@ span.ui-column-resizer {
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'pk' && passData.dataTypes[i].split('-')[1] === 'cap' ? passData.dataTypes[i] : ''" class="editable-text form-control-sm" type="text" [ngModel]="data[key]" (ngModelChange)="data[key]=$event.toUpperCase()" (change)="onDataChange($event,data,key)" [disabled]="data.newRec != 1" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered">
 
                                     <!-- pk -->
-                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'pk'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [disabled]="data.newRec != 1" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered">
+                                    <ng-container *ngSwitchCase="'pk'">
+                                        <span *ngIf="data.newRec != 1 && !data.others; else pk" class="unclickable">{{ data[key] }}</span>
+                                        <ng-template #pk>
+                                            <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered" [ngStyle]="{'width': passData.centered ? '20%' : 'auto'}">
+                                        </ng-template>
+                                    </ng-container>
 
                                     <ng-container *ngSwitchCase="'lovInput'">
-                                        <!-- <input *ngIf="data.showMG == 1 && data.others" (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.unclickable]="data.showMG != 1 && !data.others"> -->
-
                                         <span *ngIf="data.showMG != 1 && !data.others; else lovInp">{{ data[key] }}</span>
                                         <ng-template #lovInp>
                                             <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">

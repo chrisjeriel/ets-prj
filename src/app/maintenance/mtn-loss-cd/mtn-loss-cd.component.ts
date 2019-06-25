@@ -17,7 +17,6 @@ export class MtnLossCdComponent implements OnInit {
 		tableData: [],
 	    tHeader: ['Loss Code','Abbreviation','Description'],
 	    dataTypes: ['sequence-3', 'text','text'],
-	    widths: ['1','auto','auto'],
 	    pageLength: 10,
 	    searchFlag: true,
 	    pageStatus: true,

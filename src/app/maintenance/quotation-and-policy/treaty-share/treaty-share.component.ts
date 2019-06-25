@@ -32,7 +32,7 @@ export class TreatyShareComponent implements OnInit {
 	  	tHeader: ['Treaty Year'],
 	  	dataTypes: ['pk'],
 	  	keys: ['treatyYear'],
-	  	widths: ['auto'],
+	  	widths: ['1'],
 	  	nData: {
 	  		newRec: 1,
 	  		treatyYear: '',
@@ -303,7 +303,7 @@ export class TreatyShareComponent implements OnInit {
 	onTreatyYearRowClick(ev) {
 		this.treatyYearSelected = ev;
 		this.treatyYearData.disableGeneric = this.treatyYearSelected == undefined || this.treatyYearSelected == '';
-		this.disableCopySetup = this.treatyYearSelected == undefined || this.treatyYearSelected == '';
+		this.disableCopySetup = this.treatyYearSelected == undefined || this.treatyYearSelected == '' || this.treatyYearSelected.newRec != undefined;
 		this.getMtnTreatyCommRate(); // ilagay sa bawat year ang mga treaty comm
 	}
 
@@ -395,7 +395,8 @@ export class TreatyShareComponent implements OnInit {
 
 	alignTreatyYear() {
 		setTimeout(() => {
-			$('#treaty-year-table').find('td').find('input').css('width', '20%');
+			// $('#treaty-year-table').find('td').find('input').css('width', '20%');
+			this.treatyYearTable.onRowClick(null, this.treatyYearData.tableData[this.treatyYearData.tableData.length-1]);
 
 			if(this.first) {
 				$('.ng-dirty').removeClass('ng-dirty');
@@ -599,8 +600,8 @@ export class TreatyShareComponent implements OnInit {
 							this.cancel = false;
 							return;
 						} else if(totalShare != 100 && e.treatyShareList.filter(a => a.trtyCedId != undefined && !a.deleted).length > 0) {
-							this.dialogIcon = 'error';
-							this.successDialog.open();
+							this.warningMsg = 6;
+							$('#mtnTreatyShareWarningModal > #modalBtn').trigger('click');
 
 							this.cancel = false;
 							return;
