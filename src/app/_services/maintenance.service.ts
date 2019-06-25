@@ -1031,4 +1031,20 @@ export class MaintenanceService{
         }
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copySecIITrtyLimit', params, header);
     }
+
+    getMtnClaimReason(clmStatCd?, activeTag?){
+    	const params = new HttpParams()
+    	     		.set('clmStatCd', (clmStatCd === null || clmStatCd === undefined ? '' : clmStatCd))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClaimReason", {params});
+    }
+
+    saveMtnClaimReason(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClaimReason', params, header);
+    }
 }
