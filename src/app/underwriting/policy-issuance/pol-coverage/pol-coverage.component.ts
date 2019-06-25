@@ -342,12 +342,14 @@ export class PolCoverageComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
     this.policyId = this.policyInfo.policyId;
+    
     console.log(this.policyInfo)
     this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
-            if(this.alteration)
+            if(this.alteration){
               this.policyIdAlt = params['policyId'];
-              this.parameters = params.policyNo.split(/[-]/g);
+              this.parameters = this.policyInfo.policyNo.split(/[-]/g);
+            }
 
     });
 
@@ -444,6 +446,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   getPolCoverageAlt(){
+    console.log(this.parameters)
     this.underwritingservice.getUWCoverageAlt(this.parameters[0],this.parameters[1],this.parameters[2],this.parameters[3],this.parameters[4],this.parameters[5]).subscribe((data: any) => {
       console.log(data)
       this.passData.tableData  = [];  
