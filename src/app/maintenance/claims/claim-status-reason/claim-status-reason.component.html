@@ -8,7 +8,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="claimStatReasonData" (tableDataChange)="claimStatReasonData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (add)="onClickAdd($event)" (onDelete)="table.onClickDelete('a')"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="claimStatReasonData" (tableDataChange)="update($event)" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (add)="onClickAdd($event)" (onDelete)="table.onClickDelete('a')" (clickLOV)="claimStatusLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">
@@ -54,7 +54,7 @@
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-clm'" ></app-cancel-button>
 
 <app-modal class="d-none" id="delete">
     <div header>Delete</div>
@@ -64,3 +64,5 @@
         <button class="cust-btn" (click)="modalService.dismissAll();">No</button>
     </div>
 </app-modal>
+
+<app-mtn-claim-status-lov #statusMdl (selectedData)="setStatus($event)"></app-mtn-claim-status-lov>

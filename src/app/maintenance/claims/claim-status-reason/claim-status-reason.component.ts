@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { MaintenanceService, NotesService } from '@app/_services';
 
 @Component({
@@ -16,6 +17,7 @@ export class ClaimStatusReasonComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild('statusMdl') statusLOV : MtnClaimStatusLovComponent;
 
   private currentUser: string = JSON.parse(window.localStorage.currentUser).username;
 
@@ -23,6 +25,7 @@ export class ClaimStatusReasonComponent implements OnInit {
   dialogMessage: string = "";
 
   counter: number = 1;
+  clmStatCdIndex: number = 0;
 
   selectedRow: any;
   indvSelect: any;
@@ -72,6 +75,7 @@ export class ClaimStatusReasonComponent implements OnInit {
   		console.log(data);
   		for(let i of data.clmReasonList){
   			i.uneditable = 'reasonCd';
+  			i.clmStatCd = i.clmStatCd + ' - ' + i.clmStatDesc;
   			this.claimStatReasonData.tableData.push(i);
   		}
   		//this.claimStatReasonData.tableData = data.nonRenewalReasonList;
@@ -118,9 +122,9 @@ export class ClaimStatusReasonComponent implements OnInit {
 
   onClickDelete(data){
     this.table.selected = [this.table.indvSelect];
-    if(this.table.selected[0].okDelete === 'N'){
+    if(this.table.selected[0].okDelete > 0){
     	this.dialogIcon = 'info';
-    	this.dialogMessage = 'You are not allowed to delete a Reason Code that is already used in renewal processing.';
+    	this.dialogMessage = 'You are not allowed to delete a Reason Code that is already used in Change Claim Status Screen.';
     	this.successDiag.open();
     }else{
     	this.table.confirmDelete();
@@ -153,6 +157,7 @@ export class ClaimStatusReasonComponent implements OnInit {
   	  if(this.claimStatReasonData.tableData[i].edited && !this.claimStatReasonData.tableData[i].deleted){
   	      this.savedData.push(this.claimStatReasonData.tableData[i]);
   	      //this.savedData[this.savedData.length-1].adviceWordId = '0';
+  	      this.savedData[this.savedData.length-1].clmStatCd = String(this.savedData[this.savedData.length-1].clmStatCd).split('-')[0].trim();
   	      this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
   	      this.savedData[this.savedData.length-1].createUser = JSON.parse(window.localStorage.currentUser).username;
   	      this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
@@ -180,7 +185,7 @@ export class ClaimStatusReasonComponent implements OnInit {
     		saveClmReason: this.savedData,
     		delClmReason: this.deletedData
     	}
-      this.ms.getMtnClaimReason(JSON.stringify(params)).subscribe((data:any)=>{
+      this.ms.saveMtnClaimReason(JSON.stringify(params)).subscribe((data:any)=>{
         if(data.returnCode === 0){
           this.dialogIcon = 'error';
           this.successDiag.open();
@@ -217,6 +222,33 @@ export class ClaimStatusReasonComponent implements OnInit {
   		}
   	}
   	return true;
+  }
+
+  update(data){
+  	this.claimStatReasonData.tableData = data;
+  	if(data.hasOwnProperty('lovInput') && data.key === 'clmStatCd'){
+  		this.clmStatCdIndex = data.index;
+  		console.log(data.ev.target.value);
+  		this.statusLOV.checkCode(String(data.ev.target.value).toUpperCase(), data.ev);
+  	}
+  }
+
+  setStatus(data){
+  	console.log(data);
+  	if(data.statusCode.length !== 0){
+  		this.claimStatReasonData.tableData[this.clmStatCdIndex].clmStatCd = data.statusCode + ' - ' + data.description;
+  	}else{
+  		this.claimStatReasonData.tableData[this.clmStatCdIndex].clmStatCd = '';
+  	}
+  	this.ns.lovLoader(data.ev, 0);
+  	this.table.refreshTable();
+  }
+
+  claimStatusLOV(data){
+  	if(data.key === 'clmStatCd'){
+  		this.clmStatCdIndex = data.index;
+  		this.statusLOV.modal.openNoClose();
+  	}
   }
 
 }
