@@ -420,6 +420,7 @@ import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-pol
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 import { MtnClaimStatusLovComponent } from './maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -437,7 +438,7 @@ import { MtnClaimStatusLovComponent } from './maintenance/mtn-claim-status-lov/m
         QuillModule,
         NgxMaskModule.forRoot(),
         CalendarModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
     ],
     declarations: [
         AppComponent,
