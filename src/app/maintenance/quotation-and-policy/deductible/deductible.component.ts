@@ -24,8 +24,6 @@ export class DeductibleComponent implements OnInit {
     @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild(ConfirmSaveComponent) cs : ConfirmSaveComponent;
-    @ViewChild('tabset') tabset: any;
-
 
     passData: any = {
         tableData            : [],
@@ -66,13 +64,18 @@ export class DeductibleComponent implements OnInit {
         genericBtn          :'Delete',
         disableGeneric      : true,
         disableAdd          : true,  
-        keys                : ['deductibleCd','deductibleTitle','deductibleType','deductibleAmt','deductibleRate','minAmt','maxAmt','deductibleText','sectionCover','endorsement','activeTag','defaultTag','remarks'],
         uneditable          : [false,false,false,false,false,false,false,false,true,true,false,false,false],
         pageID              : 'mtn-deductibles',
         mask: {
-            deductibleCd: 'AAAAAAA'
+            deductibleCd    : 'AAAAAAA'
         },
-        widths              : ['auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto']
+        limit: {
+            deductibleTitle : 250,
+            deductibleText  : 2000,
+            remarks         : 4000
+        },
+        keys                : ['deductibleCd','deductibleTitle','deductibleType','deductibleAmt','deductibleRate','minAmt','maxAmt','deductibleText','sectionCover','endorsement','activeTag','defaultTag','remarks'],
+        widths              : ['100','200','200','100','100','100','100','200','auto','auto','auto','auto','200']
 
     };
     data: any;
@@ -87,12 +90,13 @@ export class DeductibleComponent implements OnInit {
     cancelFlag          : boolean;
     dialogIcon          : string;
     dialogMessage       : string;
-    successMessage      : string  = environment.successMessage;
     warnMsg             : string  = '';
     firstLoading        : boolean;
     passEvent           : any;
     changeLine          : boolean;
     tempLineCd          : string = '';
+    counter             : number = 0;
+    exit                : boolean;
 
     params : any =    {
         saveDeductibles    : [],
@@ -106,9 +110,10 @@ export class DeductibleComponent implements OnInit {
         this.firstLoading = true;
     }
 
-    getMtnDeductibles(){
+    getMtnDeductibles(){ 
+        console.log('getMtnDeductibles');
         this.table.overlayLoader = true;
-
+        this.counter = 0;
         if(this.line === '' || this.line === null){
            this.clearTbl();
         }else{
@@ -124,7 +129,7 @@ export class DeductibleComponent implements OnInit {
                                 this.mtnService.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')).pipe(map(([ded, ref]) => { return { ded, ref }; }));
 
             subs.subscribe(data => {
-                console.log(data);
+                
                 this.passData.opts[0].vals = [];
                 this.passData.opts[0].prev = [];
 
@@ -148,21 +153,16 @@ export class DeductibleComponent implements OnInit {
                 this.dedType();
             });
         }
-        this.tempLineCd = this.line.toUpperCase();
+        this.tempLineCd    = this.line.toUpperCase();
     }
 
     onSaveMtnDeductibles(){
-
-        console.log(this.changeLine);
-        console.log(this.tempLineCd + ' tempLineCd');
-
+        console.log('onSaveMtnDeductibles');
         if(this.changeLine){
             this.params.saveDeductibles.map(i => i.lineCd = this.tempLineCd );
             this.params.deleteDeductibles.map(i => i.lineCd = this.tempLineCd );
         }
-
-        console.log(JSON.stringify(this.params));
-
+        this.counter++;
         this.mtnService.saveMtnDeductibles(JSON.stringify(this.params))
         .subscribe(data => {
             console.log(data);
@@ -171,6 +171,7 @@ export class DeductibleComponent implements OnInit {
             this.params.saveDeductibles  = [];
             this.params.deleteDeductibles  = [];
             this.passData.disableGeneric = true;
+            $('.ng-dirty').removeClass('ng-dirty');
         });
     }
 
@@ -182,7 +183,7 @@ export class DeductibleComponent implements OnInit {
             this.table.selected  = [this.table.indvSelect];
             this.table.indvSelect.deleted = true;
             var i = this.table.selected[0];
-            console.log(i);
+            
             if(i.deductibleCd == '' && i.deductibleTitle == '' && (i.deductibleType == 'F' && (i.deductibleAmt == '' || isNaN(i.deductibleAmt))) &&
                i.deductibleText == '' && i.activeTag == 'Y' && i.defaultTag == 'N' && i.remarks == '' 
             ){
@@ -195,31 +196,20 @@ export class DeductibleComponent implements OnInit {
         }
     }
     
-
-    showWarnLov(){
-        $('#warnMdl > #modalBtn').trigger('click');
-    }
-
-    showLineLOV(){
-        $('#lineLOV #modalBtn').trigger('click');
-    }
-
     setLine(data){
-        console.log(data);
         console.log('setLine');
-        console.log($('.ng-dirty').length);
         this.line = data.lineCd;
         this.description = data.description;
         this.ns.lovLoader(data.ev, 0);
         this.firstLoading = false;
-
-        // if($('.ng-dirty').length != 0){
-        //     this.changeLine = true;
-        //     this.cancel();
-        // }else{
-        //     this.changeLine = false;
+        if($('.ng-dirty').length != 0){
+            this.counter++;
+            this.changeLine = true;
+            (this.counter<2)?this.cancelBtn.clickCancel():'';
+        }else{
+            this.changeLine = false;
             this.getMtnDeductibles();
-        //}
+        }
     }
 
     checkCode(ev){
@@ -230,51 +220,16 @@ export class DeductibleComponent implements OnInit {
             this.lineLov.checkCode(this.line.toUpperCase(), ev);
             $('.ng-dirty').removeClass('ng-dirty');   
         }else{
-            console.log('else at checkCode');
             if($('.ng-dirty').length != 0){
                 this.changeLine = true;
-                this.cancel();
+                this.cancelBtn.clickCancel();
             }else{
-                console.log('2nd else at checkCode');
+                
                 this.changeLine = false;
                 this.ns.lovLoader(ev, 1);
                 this.lineLov.checkCode(this.line.toUpperCase(), ev);
             }
         }
-    }
-
-    clickRow(event){
-        if(event !== null){
-            this.deductiblesData.createUser = event.createUser;
-            this.deductiblesData.createDate = event.createDate;
-            this.deductiblesData.updateDate = event.updateDate;
-            this.deductiblesData.updateUser = event.updateUser;
-            this.passData.disableGeneric    = false;
-            if(event.deductibleType == 'F'){
-                event.deductibleRate = '';
-                event.minAmt         = '';
-                event.maxAmt         = '';
-            }else{
-                event.deductibleAmt  = '';
-            }
-        }else{
-            this.deductiblesData.createUser = '';
-            this.deductiblesData.createDate = '';
-            this.deductiblesData.updateDate = '';
-            this.deductiblesData.updateUser = '';
-            this.passData.disableGeneric    = true;
-        }
-    }
-
-    clearTbl(){
-        this.passData.disableGeneric = true;
-        this.passData.disableAdd     = true;
-        this.passData.tableData      = [];
-        this.table.refreshTable();
-    }
-
-    cancel(){
-        this.cancelBtn.clickCancel();
     }
 
     onClickSave(cancelFlag?){
@@ -285,9 +240,7 @@ export class DeductibleComponent implements OnInit {
         var isEmpty = 0;
         var isNotUnique : boolean ;
         var saveDed = this.passData.tableData.filter(i => i.isNew == true);
-
-        console.log(this.changeLine + ' change line');
-
+        
         for(let record of this.passData.tableData){
             record.lineCd  = this.line.toUpperCase();
             if(record.deductibleCd == '' || record.deductibleCd == null ||  record.deductibleTitle == '' || record.deductibleType == '' || record.deductibleType == null ||
@@ -314,7 +267,7 @@ export class DeductibleComponent implements OnInit {
                 }
             }
         }
-        console.log(this.passData.tableData);
+        
 
         this.passData.tableData.forEach(function(tblData){
             if(tblData.isNew != true){
@@ -332,7 +285,7 @@ export class DeductibleComponent implements OnInit {
             this.dialogIcon = 'error';
             $('app-sucess-dialog #modalBtn').trigger('click');
             this.params.saveDeductibles = [];
-            (this.changeLine == true)?this.line=this.tempLineCd:'';
+            this.line = (this.changeLine == true)?this.tempLineCd:this.line;
         }else{
             if(isNotUnique == true){
                 this.warnMsg = 'Unable to save the record. Deductible must be unique per Line.';
@@ -340,7 +293,6 @@ export class DeductibleComponent implements OnInit {
                 this.params.saveDeductibles = [];
             }else{
                 if(this.params.saveDeductibles.length == 0 && this.params.deleteDeductibles.length == 0){
-                    console.log(this.params);
                     $('.ng-dirty').removeClass('ng-dirty');
                     this.cs.confirmModal();
                     this.params.saveDeductibles  = [];
@@ -349,7 +301,6 @@ export class DeductibleComponent implements OnInit {
                     if(this.changeLine == true){
                         this.lineLoading();
                         this.line=this.tempLineCd;
-                        console.log('pumasok dito');
                     }
                     if(this.cancelFlag == true){
                         this.cs.showLoading(true);
@@ -384,43 +335,47 @@ export class DeductibleComponent implements OnInit {
         },0);
     }
 
-    onTabChange($event: NgbTabChangeEvent) {
-        if($('.ng-dirty').length != 0 ){
-            console.log('entered here');
-            $event.preventDefault();
-            const subject = new Subject<boolean>();
-            const modal = this.modalService.open(ConfirmLeaveComponent,{
-                    centered: true, 
-                    backdrop: 'static', 
-                    windowClass : 'modal-size'
-            });
-            modal.componentInstance.subject = subject;
-
-            subject.subscribe(a=>{
-                if(a){
-                    $('.ng-dirty').removeClass('ng-dirty');
-                    this.tabset.select($event.nextId)
-                }
-            })
-        }        
-    }
-
     checkCancel(){
-        console.log(this.cancelFlag + ' this.cancelFlag at checkCancel()');
         if(this.cancelFlag == true){
             if(this.passData.tableData.some(i => i.fromCancel == false)){
                 return;
             }else{
-                console.log(this.changeLine);
                 if(this.changeLine == true){
-                    this.modalService.dismissAll();
                     this.changeLine = false;
-                    return;
+                    if(this.exit == true){
+                        this.cancelBtn.url = '/maintenance-qu-pol';
+                        this.cancelBtn.onNo(); 
+                    }else{
+                        this.modalService.dismissAll();
+                        return;
+                    }
                 }else{
-                    console.log('entered here at on no change line');
                     this.cancelBtn.onNo();
                 }
             }
+        }
+    }
+
+    clickRow(event){
+        if(event !== null){
+            this.deductiblesData.createUser = event.createUser;
+            this.deductiblesData.createDate = event.createDate;
+            this.deductiblesData.updateDate = event.updateDate;
+            this.deductiblesData.updateUser = event.updateUser;
+            this.passData.disableGeneric    = false;
+            if(event.deductibleType == 'F'){
+                event.deductibleRate = '';
+                event.minAmt         = '';
+                event.maxAmt         = '';
+            }else{
+                event.deductibleAmt  = '';
+            }
+        }else{
+            this.deductiblesData.createUser = '';
+            this.deductiblesData.createDate = '';
+            this.deductiblesData.updateDate = '';
+            this.deductiblesData.updateUser = '';
+            this.passData.disableGeneric    = true;
         }
     }
 
@@ -430,15 +385,41 @@ export class DeductibleComponent implements OnInit {
     }
 
     onCancel(){
-        console.log('onCancel');
+        this.counter = 0;
         this.line = this.tempLineCd;
         this.modalService.dismissAll();
     }
 
     onClickNo(){
-        console.log('onClickNo');
-        this.lineLoading();
-        this.getMtnDeductibles();
+        if(this.exit == true){
+            this.changeLine = false;
+            this.cancelBtn.url = '/maintenance-qu-pol';
+            this.cancelBtn.onNo(); 
+        }else{
+            this.lineLoading();
+            this.getMtnDeductibles();
+            this.table.refreshTable();
+        }
+    }
+
+    clearTbl(){
+        this.passData.disableGeneric = true;
+        this.passData.disableAdd     = true;
+        this.passData.tableData      = [];
         this.table.refreshTable();
     }
+
+    cancel(){
+        this.exit = true;
+        this.cancelBtn.clickCancel();
+    }
+
+    showWarnLov(){
+        $('#warnMdl > #modalBtn').trigger('click');
+    }
+
+    showLineLOV(){
+        $('#lineLOV #modalBtn').trigger('click');
+    }
+
 }

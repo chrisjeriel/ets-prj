@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
     <h4>Maintenance / Quotation & Policy</h4>
-    <ngb-tabset #tabset (tabChange)="onTabChange($event)">
+    <ngb-tabset>
         <ngb-tab title="Deductibles">
             <ng-template ngbTabContent>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
@@ -60,7 +60,6 @@
 
 <app-confirm-save (onYes)="onSaveMtnDeductibles()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<!-- <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button> -->
 <app-cancel-button (onYes)="onClickSave('cancel')" (no)="onClickNo()" (onCancel)="onCancel()" [url]="(changeLine == true)?null:'/maintenance-qu-pol'" ></app-cancel-button>
 
 
