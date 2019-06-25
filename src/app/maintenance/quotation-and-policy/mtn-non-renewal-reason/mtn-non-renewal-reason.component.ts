@@ -85,8 +85,13 @@ export class MtnNonRenewalReasonComponent implements OnInit {
     }
 
   onRowClick(data){
-  	console.log(data);
-  	this.selectedRow = data;
+    if(data !== null){
+      this.nonRenewalReasonData.disableGeneric = false;
+      this.selectedRow = data;
+    }else{
+      this.nonRenewalReasonData.disableGeneric = true;
+    }
+  	
   }
 
   onClickAdd(event){
@@ -158,18 +163,30 @@ export class MtnNonRenewalReasonComponent implements OnInit {
 
   	}
 
-  	this.ms.saveMtnNonRenewalReason(this.savedData, this.deletedData).subscribe((data:any)=>{
-  		if(data.returnCode === 0){
-  			this.dialogIcon = 'error';
-  			this.successDiag.open();
-  		}else{
-  			this.dialogIcon = '';
-  			this.successDiag.open();
-        this.deletedData = [];
-        this.table.markAsPristine();
-  			this.retrieveMtnNonRenewalReason();
-  		}
-  	});
+  	if(this.savedData.length === 0 && this.deletedData.length === 0){
+        setTimeout(()=>{
+          this.dialogIcon = '';
+          this.successDiag.open();
+          this.deletedData = [];
+          this.savedData = [];
+          this.table.markAsPristine();
+          this.retrieveMtnNonRenewalReason();
+        },0);
+    }else{
+      this.ms.saveMtnNonRenewalReason(this.savedData, this.deletedData).subscribe((data:any)=>{
+        if(data.returnCode === 0){
+          this.dialogIcon = 'error';
+          this.successDiag.open();
+        }else{
+          this.dialogIcon = '';
+          this.successDiag.open();
+          this.deletedData = [];
+          this.savedData = [];
+          this.table.markAsPristine();
+          this.retrieveMtnNonRenewalReason();
+        }
+      });
+    }
   }
 
   checkFields(){

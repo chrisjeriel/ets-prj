@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -7,13 +7,15 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { Title } from '@angular/platform-browser';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-retention-line',
   templateUrl: './retention-line.component.html',
   styleUrls: ['./retention-line.component.css']
 })
-export class RetentionLineComponent implements OnInit {
+export class RetentionLineComponent implements OnInit, OnDestroy {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   	@ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
@@ -23,16 +25,17 @@ export class RetentionLineComponent implements OnInit {
 
   	retAmtData: any = {
 	  	tableData: [],
-	  	tHeader: ['Ret. Line Amt ID', 'Retention Line Amt', 'Eff. Date From', 'Eff. Date To', 'Active', 'Remarks'],
-	  	dataTypes: ['sequence-3', 'currency', 'date', 'date', 'checkbox', 'text'],
-	  	keys: ['retentionId', 'retLineAmt', 'effDateFrom', 'effDateTo', 'activeTag', 'remarks'],
-	  	widths: ['1','200','140','140','1','auto'],
-	  	uneditable: [true,false,false,false,false,false],
+	  	tHeader: ['Ret. Line Amt ID', 'Retention Line Amt', 'Effective From', 'Active', 'Remarks'],
+	  	dataTypes: ['sequence-6', 'currency', 'date', 'checkbox', 'text'],
+	  	keys: ['retentionId', 'retLineAmt', 'effDateFrom', 'activeTag', 'remarks'],
+	  	widths: ['1','200','140','1','auto'],
+	  	uneditable: [true,false,false,false,false],
+	  	uneditableKeys: ['retLineAmt','effDateFrom'],
 	  	nData: {
+	  		newRec: 1,
 	  		retentionId: '',
 	  		retLineAmt: '',
 	  		effDateFrom: '',
-	  		effDateTo: '',
 	  		activeTag: 'Y',
 	  		remarks: '',
 	  		createUser: '',
@@ -63,6 +66,8 @@ export class RetentionLineComponent implements OnInit {
 	lineClassCd: string = '';
 	lineClassCdDesc: string = '';
   	lineClassList: any[] = [];
+  	currencyCd: any = '';
+  	currencyList: any[] = [];
   	disableCopySetup: boolean = true;
   	disableLCList: boolean = true;
   	errorMsg: number = 0;
@@ -73,6 +78,8 @@ export class RetentionLineComponent implements OnInit {
 	copyLineClassList: any[] = [];
 	disableCopyLCList: boolean = true;
 
+	subscription: Subscription = new Subscription();
+
 	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
@@ -80,20 +87,23 @@ export class RetentionLineComponent implements OnInit {
 		setTimeout(() => { this.table.refreshTable(); }, 0);
 	}
 
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+	}
+
 	getMtnRetAmt() {
 		this.table.overlayLoader = true;
-		this.ms.getMtnRetAmt(this.lineCd, this.lineClassCd).subscribe(data => {
-			this.retAmtData.tableData = data['retAmtList'].sort((a, b) => b.createDate - a.createDate)
+		this.ms.getMtnRetAmt(this.lineCd, this.lineClassCd, this.currencyCd, '').subscribe(data => {
+			this.retAmtData.tableData = data['retAmtList'].sort((a, b) => b.effDateFrom - a.effDateFrom)
 														  .map(i => {
 															  	i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom).split('T')[0];
-															  	i.effDateTo = this.ns.toDateTimeString(i.effDateTo).split('T')[0];
 															  	i.createDate = this.ns.toDateTimeString(i.createDate);
 															  	i.updateDate = this.ns.toDateTimeString(i.updateDate);
-															  	i.retentionId = String(i.retentionId).padStart(3, '0');
+															  	i.retentionId = String(i.retentionId).padStart(6, '0');
 															  	return i;
 															  });
 			this.retAmtData.disableAdd = false;
-			this.retAmtData.disableGeneric = false;
+			// this.retAmtData.disableGeneric = false;
 			this.table.refreshTable();
   			this.table.onRowClick(null, this.retAmtData.tableData[0]);
 		});
@@ -131,10 +141,16 @@ export class RetentionLineComponent implements OnInit {
 
     	this.lineClassCd = '';
     	this.lineClassList = [];
+    	this.currencyCd = '';
+    	this.currencyList = [];
 
     	if(this.lineDesc != '' && this.lineDesc != null) {
-    		this.ms.getLineClassLOV(this.lineCd).subscribe(data => {
-    			this.lineClassList = data['lineClass'];
+    		var sub$ = forkJoin(this.ms.getLineClassLOV(this.lineCd),
+    							this.ms.getMtnCurrencyList('')).pipe(map(([lineClass, currency]) => { return { lineClass, currency }; }));
+
+    		this.subscription = sub$.subscribe(data => {
+    			this.lineClassList = data['lineClass']['lineClass'];
+    			this.currencyList = data['currency']['currency'];
     		});
     	}
 
@@ -183,12 +199,25 @@ export class RetentionLineComponent implements OnInit {
 
 	lineClassChanged(ev) {
 		this.lineClassCdDesc = ev.target.options[ev.target.selectedIndex].text;
-		if(this.lineCd != '' && this.lineClassCd != '') {
+
+		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
 			this.getMtnRetAmt();
 		}
 
 		setTimeout(() => {
 			$('#lc-list').removeClass('ng-dirty');
+			this.table.markAsPristine();
+		}, 0);
+	}
+
+	currencyChanged(ev) {
+		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
+			this.getMtnRetAmt();
+		}
+
+		setTimeout(() => {
+			$('#c-list').removeClass('ng-dirty');
+			this.table.markAsPristine();
 		}, 0);
 	}
 
@@ -196,23 +225,34 @@ export class RetentionLineComponent implements OnInit {
 		var td = this.retAmtData.tableData;
 
 		for(let d of td) {
-			if(d.edited && !d.deleted && (d.retLineAmt == null || isNaN(d.retLineAmt) || d.effDateFrom == '' || d.effDateTo == '')) {
+			if(d.edited && !d.deleted && (d.retLineAmt == null || isNaN(d.retLineAmt) || d.effDateFrom == '')) {
 				this.dialogIcon = "error";
 				this.successDialog.open();
 				this.cancel = false;
 				return;
 			}
 
-			if(d.edited && !d.deleted) {
-				for(let e of td) {
-					var dEDF = new Date(d.effDateFrom);
-					var dEDT = new Date(d.effDateTo);
+			if(d.edited && !d.deleted && d.activeTag == 'Y' && d.retentionId == '') {
+				if(td.length > 1) {
+					if(td.filter(c => c.activeTag == 'Y' && c.retentionId != '').length > 0) {
+						var dEDF = new Date(d.effDateFrom);
+						var max = td.filter(c => c.activeTag == 'Y' && c.retHistId != '' && !c.deleted)
+									.sort((a, b) => Number(new Date(b.effDateFrom)) - Number(new Date(a.effDateFrom)))[0];
 
-					if(e != d && e.activeTag == 'Y' && e.retentionId != '') { //mga bago lang nachecheck, pag inedit yung existing tapos may bago na natamaan, di gumagana (no retentionId)
-						var eEDF = new Date(e.effDateFrom);
-						var eEDT = new Date(e.effDateTo);
+						if(max != d && dEDF <= new Date(max.effDateFrom)) {
+							this.errorMsg = 1;
+							$('#mtnRetLineWarningModal > #modalBtn').trigger('click');
+							this.cancel = false;
+							return;
+						}
+					}
+				}
 
-						if((dEDF >= eEDF && dEDF <= eEDT) || (dEDT >= eEDF && dEDT <= eEDT)) {
+				if(td.filter(c => c.activeTag == 'Y' && c.retentionId == '').length > 1) {
+					var newList = td.filter(c => c.activeTag == 'Y' && c.retentionId == '');
+
+					for(var x = 1; x < newList.length; x++) {
+						if(new Date(newList[x].effDateFrom) <= new Date(newList[x-1].effDateFrom)) {
 							this.errorMsg = 1;
 							$('#mtnRetLineWarningModal > #modalBtn').trigger('click');
 							this.cancel = false;
@@ -247,6 +287,7 @@ export class RetentionLineComponent implements OnInit {
 			if(d.edited && !d.deleted) {
 				d.lineCd = this.lineCd;
 				d.lineClassCd = this.lineClassCd;
+				d.currencyCd = this.currencyCd;
 				d.createUser = this.ns.getCurrentUser();
 				d.createDate = this.ns.toDateTimeString(d.createDate);
 				d.updateUser = this.ns.getCurrentUser();
@@ -292,8 +333,12 @@ export class RetentionLineComponent implements OnInit {
 		$('.globalLoading').css('display','block');
 		var params = {
 			 copyFromRetentionId: this.selected.retentionId,
+			 copyFromLineCd: this.lineCd,
+			 copyFromLineClassCd: this.lineClassCd,
+			 copyFromCurrencyCd: this.currencyCd,
 			 copyToLineCd: this.copyLineCd,
 			 copyToLineClassCd: this.copyLineClassCd,
+			 copyToCurrencyCd: this.currencyCd,
 			 createDate: this.ns.toDateTimeString(0),
 			 createUser: this.ns.getCurrentUser(),
 			 updateDate: this.ns.toDateTimeString(0),

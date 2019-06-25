@@ -346,52 +346,52 @@
                         <div class="input-group" style="margin-bottom: 0px !important;">
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Object</label>
-                                <input type="text" class="form-control form-control-sm col-sm-2" readonly>
-                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="claimData.project.objectId" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [ngModel]="claimData.project.objectDesc" readonly>
                             </div>
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Region</label>
-                                <input type="text" class="form-control form-control-sm col-sm-10" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="claimData.project.regionDesc" readonly>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Items<br />to be Insured</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [ngModel]="claimData.project.projDesc" readonly></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">Province</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.provinceDesc" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">City/Town</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.cityDesc" readonly>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Site</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [ngModel]="claimData.project.site" readonly></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">District</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.districtDesc" readonly>
                                         <label class="form-control-sm col-sm-2">Block</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.blockDesc" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">Long</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.longitude" readonly>
                                         <label class="form-control-sm col-sm-2">Lat</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.latitude" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -411,58 +411,62 @@
                     <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
                         <div class="input-group" style="margin-top: 10px;">
                             <label class="form-control-sm col-sm-1">Insured</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1" readonly>
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="claimData.prinId" readonly>
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [ngModel]="claimData.principalName" readonly>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1"></label>
-                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [ngModel]="claimData.insuredDesc" readonly></textarea>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Risk</label>
-                            <input type="text" class="form-control form-control-sm" readonly>
+                            <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.riskName" readonly>
                         </div>
                         <div class="input-group" style="margin-bottom: 0px !important;">
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Object</label>
-                                <input type="text" class="form-control form-control-sm col-sm-2" readonly>
-                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="claimData.project.objectId" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [ngModel]="claimData.project.objectDesc" readonly>
                             </div>
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Region</label>
-                                <input type="text" class="form-control form-control-sm col-sm-10" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="claimData.project.regionDesc" readonly>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Items<br />to be Insured</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [ngModel]="claimData.project.projDesc" readonly></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">Province</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.provinceDesc" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">City/Town</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.cityDesc" readonly>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Site</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [ngModel]="claimData.project.site" readonly></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">District</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.districtDesc" readonly>
                                         <label class="form-control-sm col-sm-2">Block</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.blockDesc" readonly>
+                                    </div>
+                                    <div *ngIf="line === 'DOS'" class="input-group">
+                                        <label tabindex="-1" class="form-control-sm col-sm-2">No Claim Period</label>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.noClaimPd" readonly ngbTooltip="Hour/s">
                                     </div>
                                 </div>
                             </div>
@@ -481,66 +485,66 @@
                     <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
                         <div class="input-group" style="margin-top: 10px;">
                             <label class="form-control-sm col-sm-1">Insured</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1" readonly>
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="claimData.prinId" readonly>
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [ngModel]="claimData.principalName" readonly>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1"></label>
-                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [ngModel]="claimData.insuredDesc" readonly></textarea>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Risk</label>
-                            <input type="text" class="form-control form-control-sm" readonly>
+                            <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.riskName" readonly>
                         </div>
                         <div class="input-group" style="margin-bottom: 0px !important;">
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Object</label>
-                                <input type="text" class="form-control form-control-sm col-sm-2" readonly>
-                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="claimData.project.objectId" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [ngModel]="claimData.project.objectDesc" readonly>
                             </div>
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Region</label>
-                                <input type="text" class="form-control form-control-sm col-sm-10" readonly>
+                                <input type="text" class="form-control form-control-sm col-sm-10" [ngModel]="claimData.project.regionDesc" readonly>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Items<br />to be Insured</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [ngModel]="claimData.project.projDesc" readonly></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">Province</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.provinceDesc" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">City/Town</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.cityDesc" readonly>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Site</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" readonly></textarea>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [ngModel]="claimData.project.site" readonly></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">District</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.districtDesc" readonly>
                                         <label class="form-control-sm col-sm-2">Block</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.blockDesc" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">IPL</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
-                                        <label class="form-control-sm col-sm-2">Time Exc.</label>
-                                        <input type="text" class="form-control form-control-sm" readonly>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.ipl" readonly ngbTooltip="Month/s">
+                                        <label class="form-control-sm col-sm-2">Time Excess</label>
+                                        <input type="text" class="form-control form-control-sm" [ngModel]="claimData.project.timeExc" readonly ngbTooltip="Day/s">
                                     </div>
                                 </div>
                             </div>
@@ -560,13 +564,13 @@
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Inception Date</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="'2019-01-01'"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.inceptDate?.split('T')[0]"></datepicker> <!-- valueChange -->
                             </div>
                         </div>
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Expiry Date</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="'2019-02-13'"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.expiryDate?.split('T')[0]"></datepicker> <!-- valueChange -->
                             </div>
                         </div>
                     </div>
@@ -574,29 +578,27 @@
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Lapse From</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="'2019-01-01'"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.lapseFrom?.split('T')[0]"></datepicker> <!-- valueChange -->
                             </div>
                         </div>
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Lapse To</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="'2019-02-13'"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.lapseTo?.split('T')[0]"></datepicker> <!-- valueChange -->
                             </div>
                         </div>
                     </div>
                     <div *ngIf="line === 'CAR' || line === 'EAR'" class="form-row" style="margin-bottom: 19px !important; margin-top: 18px !important;">
                         <div class="form-group col-sm-6">
                             <label class="form-control-sm top-label">&nbsp;Maintenance From</label>
-                            <!-- <input type="date" class="form-control form-control-sm cust-sm" value="2019-01-01"> -->
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="'2019-01-01'"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.maintenanceFrom?.split('T')[0]"></datepicker> <!-- valueChange -->
                             </div>
                         </div>
                         <div class="form-group col-sm-6">
                             <label class="form-control-sm top-label">&nbsp;Maintenance To</label>
-                            <!-- <input type="date" class="form-control form-control-sm cust-sm" value="2019-02-21"> -->
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="'2019-02-21'"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.maintenanceTo?.split('T')[0]"></datepicker> <!-- valueChange -->
                             </div>
                         </div>
                     </div>
@@ -717,15 +719,13 @@
     </div>
 </div>
 
-<app-modal id="adjustersModal" class="d-none" style="margin-bottom: 2px;padding-top: 2px !important;">
+<app-modal hidden id="adjustersModal" style="margin-bottom: 2px;padding-top: 2px !important;">
     <div header style="width: 800px !important;">Adjusters</div>
     <div body>
-        <app-cust-editable-non-datatable [passData]="passData">
-        </app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable #adjTblGI [passData]="adjData"></app-cust-editable-non-datatable>
     </div>
     <div footer class="text-center" style="width: 100% !important;">
-        <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="modalService.dismissAll()"><a>Adjusters
-                   Maintenance</a></button>
+        <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="modalService.dismissAll()"><a>Adjusters Maintenance</a></button>
         <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
         <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
     </div>

@@ -97,7 +97,7 @@ export class CedingCompanyComponent implements OnInit {
      this.passDataCedingCompanyMember.tableData = [];
      
 
-     this.underwritingService.getCedingCompanyList('','','','','','','','','','Y').subscribe((data: any) => {
+     this.underwritingService.getCedingCompanyList('','','','','','','','Y','','Y').subscribe((data: any) => {
          for(var i=0; i < data.cedingcompany.length;i++){
            if(!this.exclude.includes(String(data.cedingcompany[i].cedingId).padStart(3, '0'))) {
              this.passDataCedingCompanyMember.tableData.push(data.cedingcompany[i]);

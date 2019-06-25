@@ -5,19 +5,18 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+						<fieldset class="scheduler-border" style="margin-top: 10px !important; padding-bottom: 3px !important;">
 						    <div class="form-row custom-row-inline-inset">
 						        <div class="input-group">
-						            <div class="col-sm-1"></div>
 						            <div class="col-sm-5">
 						            	<div class="input-group">
 							            	<label class="form-control-sm text-right" style="margin-bottom: 0px">Line Code</label>
 							            	<input class="form-control form-control-sm col-sm-2 not-form" type="text" (change)="checkCode($event)" [ngModel]="lineCd" (ngModelChange)="lineCd=$event.toUpperCase()" mask="SSS">
-							            	<div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+							            	<div class="text-search-ico" style="padding-left: 1px; height: 1px;" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
 							            	<input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="lineDesc" readonly>
 						            	</div>
 						            </div>
-						            <div class="col-sm-5">
+						            <div class="col-sm-4">
 						            	<div class="input-group">
 							            	<label class="form-control-sm text-right" style="margin-bottom: 0px">Line Class</label>
 							            	<select id="lc-list" class="form-control form-control-sm cust-sm" [(ngModel)]="lineClassCd" [disabled]="lineDesc == '' || lineClassList.length == 0 || disableLCList" (change)="lineClassChanged($event)">
@@ -26,7 +25,14 @@
 							            	</select>
 						            	</div>
 						            </div>
-						            <div class="col-sm-1"></div>
+						            <div class="col-sm-3">
+						            	<div class="input-group">
+							            	<label class="form-control-sm text-right" style="margin-bottom: 0px">Currency</label>
+							            	<select id="c-list" class="form-control form-control-sm cust-sm" [(ngModel)]="currencyCd" [disabled]="lineClassCd == '' || currencyList.length == 0 || disableLCList" (change)="currencyChanged($event)">
+							            		<option *ngFor="let c of currencyList" [value]="c.currencyCd">{{ c.currencyCd + ' - ' + c.description }}</option>
+							            	</select>
+						            	</div>
+						            </div>
 						        </div>
 						    </div>
 						</fieldset>
@@ -91,11 +97,11 @@
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
             <div class="custom-row-inline-inset" style="text-align: center">
-            	<p *ngIf="errorMsg == 1">Unable to save the record. Eff Date From or Eff Date To<br />
-                must be outside the effectivity of an active retention.</p>
-                <p *ngIf="errorMsg == 2">Unable to copy details. <strong>Eff Date From</strong> or <strong>Eff Date To</strong> of the<br />
-                highlighted record must be outside the effectivity of an active<br />
-            	retention line.</p>
+            	<p *ngIf="errorMsg == 1">Unable to save. <strong>Effective From</strong> must be later than the<br />
+                effectivity of an active retention line amount.</p>
+                <p *ngIf="errorMsg == 2">Unable to copy details. <strong>Effective From</strong> of the highlighted<br />
+                record must be later than the effectivity of an active retention<br />
+            	line amount for the selected <strong>Line</strong> and <strong>Line Class.</strong></p>
             </div>
         </fieldset>
     </div>
@@ -129,7 +135,7 @@
             <div class="input-group" style="margin-bottom: -14px !important;">
 				<label class="form-control-sm col-sm-3">Line Code</label>
 				<input class="form-control form-control-sm col-sm-2 not-form" type="text" (change)="checkCodeCopy($event)" [ngModel]="copyLineCd" (ngModelChange)="copyLineCd=$event.toUpperCase()" mask="SSS">
-				<div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOVCopy()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+				<div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOVCopy()" style="height: 1px;"><a><i class="fa fa-search"></i></a></div>&nbsp;
 				<input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="copyLineDesc" readonly>
             </div>
             <div class="input-group" style="margin-bottom: -14px !important;">

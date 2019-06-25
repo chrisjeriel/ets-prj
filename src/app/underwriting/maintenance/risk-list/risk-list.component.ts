@@ -118,6 +118,10 @@ export class RiskListComponent implements OnInit {
             }
         
             this.table.refreshTable();
+        },
+        (error)=>{
+            this.table.refreshTable();
+            this.table.loadingTableFlag = false;
         });
     }
     

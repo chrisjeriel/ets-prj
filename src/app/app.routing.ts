@@ -168,6 +168,8 @@ import { AdjusterFormComponent } from './maintenance/claims/adjuster/adjuster-fo
 import { ClaimStatusComponent } from './maintenance/claims/claim-status/claim-status.component';
 import { ClaimEventTypeComponent } from './maintenance/claims/claim-event-type/claim-event-type.component';
 import { ClaimEventComponent } from './maintenance/claims/claim-event/claim-event.component';
+import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-policy/section-ii-treaty-limit/section-ii-treaty-limit.component';
+import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
 
 const appRoutes: Routes = [
 
@@ -219,7 +221,7 @@ const appRoutes: Routes = [
     { path: 'batch-processing', component: PolBatchProcessingComponent },
     { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-risk-list', component: RiskListComponent },
-    { path: 'maintenance-risk', component: RiskFormComponent },
+    { path: 'maintenance-risk', component: RiskFormComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
     { path: 'pol-util-gen-info', component: UpdateGeneralInfoComponent },
@@ -314,10 +316,10 @@ const appRoutes: Routes = [
     { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
     { path: 'maintenance-spoil-reason', component: SpoilageReasonComponent },
     { path: 'maintenance-policy-wording', component: PolicyWordingComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'maintenance-currency', component: MtnCurrencyListComponent },
-    { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
-    { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
-    { path: 'maintenance-cresta-zone', component: MtnCrestaComponent },
+    { path: 'maintenance-currency', component: MtnCurrencyListComponent ,  canDeactivate: [UnsavedChangesGuard]},
+    { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent ,  canDeactivate: [UnsavedChangesGuard]},
+    { path: 'maintenance-cat-peril', component: MtnCATPerilComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-cresta-zone', component: MtnCrestaComponent ,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'pol-value-coverage', component: PolValueCoverageComponent },
     { path: 'maintenance-insured', component: InsuredListComponent },
     { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },
@@ -327,17 +329,17 @@ const appRoutes: Routes = [
     { path: 'maintenance-other-charge', component: OtherChargeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-location/:id', component: RegionComponent },
     { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
-    { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent },
+    { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'quotation-to-hold-cover', component: QuotationToHoldCoverComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-treaty', component: TreatyComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-retention-line', component: RetentionLineComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-treaty-share', component: TreatyShareComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-treaty-limit', component: TreatyLimitComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-approver', component: ApproverComponent },
-    { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent },
+    { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent ,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'mtn-system', component: SystemComponent },
     { path: 'mtn-program-parameter', component: ProgramParameterComponent },
-    { path: 'mtn-rounding-error', component: RoundingErrorComponent },
+    { path: 'mtn-rounding-error', component: RoundingErrorComponent,  canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-report', component: ReportComponent },
     { path: 'mtn-report-param', component: ReportParamComponent },
     { path: 'maintenance-loss-code', component: LossCodeComponent },
@@ -347,6 +349,8 @@ const appRoutes: Routes = [
     { path: 'maintenance-clm', component: MtnClaimsComponent },
     { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-sec-ii-treaty-limit', component: SectionIiTreatyLimitComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-retention-per-pool-member', component: RetentionPerPoolMemberComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

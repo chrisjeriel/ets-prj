@@ -188,13 +188,14 @@ export class ExpiryListingComponent implements OnInit {
   };
   
   passDataRenewalPolicies: any = {
-        tHeader: ["P", "RA", "RC", "NR", "Policy No", "Type of Cession","Ceding Company", "Co Ref No","Ren TSI Amount","Ren Pre Amount","TSI Amount","Prem Amount","S","B","C","R","SP"],
+        tHeader: ["Print", "P", "RA", "RC", "NR", "Policy No", "Type of Cession","Ceding Company", "Co Ref No","Ren TSI Amount","Ren Pre Amount","TSI Amount","Prem Amount","S","B","C","R","SP"],
         dataTypes: [
                     /*"checkbox", "checkbox", "checkbox", "checkbox", "text", "text","text","text","currency","currency","currency","currency","text","checkbox","checkbox","checkbox","checkbox", "checkbox"*/
-                    "checkbox", "checkbox", "checkbox", "checkbox", "text","text", "text","text","currency","currency","currency","currency","checkbox","checkbox","checkbox","checkbox", "checkbox"
+                    "checkbox", "checkbox", "radio", "radio", "radio", "text","text", "text","text","currency","currency","currency","currency","checkbox","checkbox","checkbox","checkbox", "checkbox"
                    ],
-        tooltip:['Process','Renewal As Is','Renewal With Changes','Non-Renewal',null,,null,null,null,null,null,null,'Summarized Policy','With Balance Flag','With Claim Flag','With Reminder','Special Policy'],
+        tooltip:[null,'Process','Renewal As Is','Renewal With Changes','Non-Renewal',null,,null,null,null,null,null,null,'Summarized Policy','With Balance Flag','With Claim Flag','With Reminder','Special Policy'],
         nData: {
+                 printTag : false,
                  processTag : false,
                  renAsIsTag : false,
                  renWithChange : false,
@@ -215,27 +216,31 @@ export class ExpiryListingComponent implements OnInit {
                  regPolicyTag : false
                },
         tableData: [],
-        keys:['processTag', 'renAsIsTag', 'renWithChange', 'nonRenTag', 'policyNo', 'cessionDesc','cedingName', 'coRefNo', 'renTsiAmount', 'renPremAmount', 'totalSi', 'totalPrem', 'summaryTag', 'balanceTag', 'claimTag', 'reminderTag', 'specialPolicyTag'],
+        keys:['printTag', 'processTag', 'renAsIsTag', 'renWithChange', 'nonRenTag', 'policyNo', 'cessionDesc','cedingName', 'coRefNo', 'renTsiAmount', 'renPremAmount', 'totalSi', 'totalPrem', 'summaryTag', 'balanceTag', 'claimTag', 'reminderTag', 'specialPolicyTag'],
         pageLength: 10,
         pageID:'RenewalPolicies',
         paginateFlag:true,
         infoFlag:true,
-        uneditable: [false,false,false,false,true,true,true,true,true,true,true,true,false,true,true,true,true],
+        radioGroup: [ {
+          radTitle : "nonRenFlag",
+          radCols : ['renAsIsTag', 'renWithChange', 'nonRenTag']
+        }],
+        uneditable: [false, false,false,false,false,true,true,true,true,true,true,true,true,false,true,true,true,true],
    };
 
    passDataNonRenewalPolicies: any = {
-        tHeader: ["P", "NR","Policy No", "Type of Cession", "Ceding Company", "Co Ref No","TSI Amount","Prem Amount","S","B","C","R","RP"],
+        tHeader: ["Print", "P", "NR","Policy No", "Type of Cession", "Ceding Company", "Co Ref No","TSI Amount","Prem Amount","S","B","C","R","RP"],
         dataTypes: [
-                    "checkbox", "checkbox", "text","text","text","text","currency","currency","checkbox","checkbox","checkbox","checkbox", "checkbox"
+                    "checkbox", "checkbox", "checkbox", "text","text","text","text","currency","currency","checkbox","checkbox","checkbox","checkbox", "checkbox"
                    ],
-        tableData: [[false,"TEST","TEST","TEST","TEST","TEST","TEST","TEST",false,false,false,false,false]],
+        tableData: [[false,false,"TEST","TEST","TEST","TEST","TEST","TEST","TEST",false,false,false,false,false]],
         pageLength: 10,
         paginateFlag:true,
         pageID:'NonRenewalPolicies',
         infoFlag:true,
-        tooltip:['Process Policy',"Non-Renewal",null,null,null,null,null,null,'Summarized','With Balance','With Claim','With Reminder','Reqular Policy'],
-        keys:['processTag', 'nonRenTag', 'policyNo', 'cessionDesc','cedingName', 'coRefNo', 'totalSi', 'totalPrem', 'summaryTag', 'balanceTag', 'claimTag', 'reminderTag', 'specialPolicyTag'],
-        uneditable: [false,true,true,true,true,true,true,true,true,true,true,true,true],
+        tooltip:[null, 'Process Policy',"Non-Renewal",null,null,null,null,null,null,'Summarized','With Balance','With Claim','With Reminder','Reqular Policy'],
+        keys:['printTag','processTag', 'nonRenTag', 'policyNo', 'cessionDesc','cedingName', 'coRefNo', 'totalSi', 'totalPrem', 'summaryTag', 'balanceTag', 'claimTag', 'reminderTag', 'specialPolicyTag'],
+        uneditable: [false,false,true,true,true,true,true,true,true,true,true,true,true,true],
    };
 
    passDataCATPerils: any = {
@@ -281,6 +286,7 @@ export class ExpiryListingComponent implements OnInit {
   dialogIcon:string = '';
   dialogMessage:string;
   cancelFlag:boolean;
+  printFlag:boolean = false;
 
   constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title, private ns: NotesService,  private decimal : DecimalPipe, private router : Router) { }
 
@@ -304,6 +310,10 @@ export class ExpiryListingComponent implements OnInit {
     this.expiryParameters.fromYear = null;
     this.expiryParameters.toMonth = null;
     this.expiryParameters.toYear = null;*/
+  }
+
+  onClickPrint() {
+      $('#printPolicyModal > #modalBtn').trigger('click');
   }
 
   onClickUpdate() {
@@ -505,6 +515,13 @@ export class ExpiryListingComponent implements OnInit {
     }else{
        this.reasonFlag = false;
     }
+
+    this.printFlag = false;
+    for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
+        if (this.passDataRenewalPolicies.tableData[i].printTag == 'Y') {
+          this.printFlag = true;
+        }
+    }
   }
 
   updateNRPolicy(data){
@@ -526,6 +543,13 @@ export class ExpiryListingComponent implements OnInit {
        this.reasonFlag = true;
     }else{
        this.reasonFlag = false;
+    }
+
+    this.printFlag = false;
+    for(var i = 0; i < this.passDataNonRenewalPolicies.tableData.length;i++){
+        if (this.passDataNonRenewalPolicies.tableData[i].printTag == 'Y') {
+          this.printFlag = true;
+        }
     }
   }
 
@@ -1163,11 +1187,11 @@ export class ExpiryListingComponent implements OnInit {
         this.modal.closeModal();
         this.successDiagCat.open();
       } else{
+        console.log('success')
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.modal.closeModal();
         this.successDiagCat.open();
-        console.log('success')
         this.retrieveExpPolList();
       }
     });

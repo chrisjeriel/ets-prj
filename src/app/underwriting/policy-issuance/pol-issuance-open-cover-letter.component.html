@@ -21,16 +21,64 @@
 				<app-pol-attachment [policyInfo]="policyInfo" [openCoverFlag]="true"> </app-pol-attachment>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Print">
+		<ngb-tab id="print-tab">
+			<ng-template #content>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">Print</span>
+				</div>
+				<div class="modal-body">
+					<fieldset class="scheduler-border">
+						<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="form-control-sm col-sm-3 labels">Report</label>
+								<select class="form-control form-control-sm cust-sm col-sm-8">
+									<option value="">Policy Schedule</option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="form-control-sm col-sm-3 labels">Destination</label>
+								<select class="form-control form-control-sm cust-sm col-sm-8">
+									<option value="">Screen</option>
+									<option value="">PDF</option>
+									<option value="">Printer</option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<div class="col-sm-2"></div>&nbsp;&nbsp;&nbsp;&nbsp;
+								<div class="col-sm-8">
+									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
+									&nbsp;&nbsp;&nbsp;&nbsp; -->
+									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm">
+						<div class="col-md-13 text-center" style="margin-top: -6px;">
+							<div class="cust-btn-container">
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-template>
+
+			<ng-template ngbTabTitle>
+				<div (click)="showApprovalModal(content)">Print</div>
+			</ng-template>
+
+		</ngb-tab>
+		<!-- <ngb-tab title="Post" *ngIf="!inqFlag">
 			<ng-template ngbTabContent>
 				
 			</ng-template>
-		</ngb-tab>
-		<ngb-tab title="Post" *ngIf="!inqFlag">
-			<ng-template ngbTabContent>
-				
-			</ng-template>
-		</ngb-tab>
+		</ngb-tab> -->
 		<ngb-tab title="Exit" id="Exit">
 			<ng-template ngbTabContent>
 				
