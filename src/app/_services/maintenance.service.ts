@@ -1033,8 +1033,9 @@ export class MaintenanceService{
     }
 
 
-    getMtnClaimReason(clmStatCd?, activeTag?){
+    getMtnClaimReason(reasonCd?, clmStatCd?, activeTag?){
     	const params = new HttpParams()
+    				.set('reasonCd', (reasonCd === null || reasonCd === undefined ? '' : reasonCd))
     	     		.set('clmStatCd', (clmStatCd === null || clmStatCd === undefined ? '' : clmStatCd))
     	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClaimReason", {params});

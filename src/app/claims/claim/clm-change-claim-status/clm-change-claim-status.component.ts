@@ -20,6 +20,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   @ViewChild('queryMdl') queryModal : ModalComponent;
   @ViewChild('clmListMdl') clmListModal : ModalComponent;
   @ViewChild('polListMdl') polListModal : ModalComponent;
+  @ViewChild('reasonMdl') reasonModal : ModalComponent;
   @ViewChild('successDiagSave') successDiag: SucessDialogComponent;
 
   @ViewChild(MtnTypeOfCessionComponent) cessionModal: MtnTypeOfCessionComponent;
@@ -29,6 +30,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   @ViewChild('clmListTable') clmListTable : CustNonDatatableComponent;
   @ViewChild('polListTable') polListTable : CustNonDatatableComponent;
   @ViewChild('queryTbl') queryTable : CustNonDatatableComponent;
+  @ViewChild('reasonListTable') reasonTable : CustNonDatatableComponent;
 
   queryData: any = {
     tableData: [],
@@ -66,12 +68,26 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     pageID: 'polListData'
   }
 
+  reasonData: any = {
+    tableData: [],
+    tHeader: ['Reason Code', 'Description'],
+    dataTypes: ['text', 'text'],
+    pageLength: 10,
+    pagination: true,
+    pageStatus: true,
+    keys: ['reasonCd','description'],
+    pageID: 'reasonData'
+  }
+
   batchOption: string = 'IP';
   dialogIcon: string = '';
   dialogMessage: string = '';
+  reasonCd: string = '';
+  reasonDesc: string = '';
 
   selectedClaim: any = {};
   selectedPolicy: any = {};
+  selectedReason: any = null;
 
   tempClmNo: string[] = ['','',''];
   tempPolNo: string[] = ['','','','','',''];
@@ -140,18 +156,30 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   openRiskLOV() {
-      //$('#riskLOV #modalBtn').trigger('click');
       this.riskModal.modal.openNoClose();
   }
 
   openCedingCompanyLOV() {
-      //$('#cedingCompanyLOV #modalBtn').trigger('click');
       this.cedCoModal.modal.openNoClose();
   }
 
   openTypeOfCessionLOV(){
-      //$('#typeOfCessionLOV #modalBtn').trigger('click');
       this.cessionModal.modal.openNoClose();
+  }
+
+  openReasonLOV(){
+    this.reasonTable.loadingFlag = true;
+    this.ms.getMtnClaimReason(null,this.batchOption, 'Y').subscribe(
+       (data:any)=>{
+         this.reasonData.tableData = data.clmReasonList;
+         this.reasonTable.refreshTable();
+         this.reasonTable.loadingFlag = false;
+       },
+       (error:any)=>{
+         this.reasonTable.loadingFlag = false;
+       }
+    );
+    this.reasonModal.openNoClose();
   }
 
   retrieveClaimList(){
@@ -314,6 +342,11 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
       this.ns.lovLoader(data.ev, 0);    
   }
 
+  setReason(){
+    this.reasonCd = this.selectedReason.reasonCd;
+    this.reasonDesc = this.selectedReason.description;
+  }
+
   checkCode(ev, field){
       this.ns.lovLoader(ev, 1);
 
@@ -323,9 +356,26 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
           this.riskModal.checkCode(this.searchParams.riskId, '#riskLOV', ev);
       } else if(field === 'cedingCo') {
           this.cedCoModal.checkCode(this.searchParams.cedingId === '' ? '' : String(this.searchParams.cedingId).padStart(3, '0'), ev, '#cedingCompanyLOV');
-      } /*else if(field === 'reason'){
-          this.mtnReason.checkCode(this.selectedData.reasonCd, ev);
-      }*/
+      } else if(field === 'reason'){
+          if(this.reasonCd.trim() === ''){
+            this.reasonCd = '';
+            this.reasonDesc = '';
+            this.ns.lovLoader(ev, 0);
+            this.openReasonLOV();
+          } else {
+            this.ms.getMtnClaimReason(this.reasonCd,this.batchOption, 'Y').subscribe(data => {
+              if(data['clmReasonList'].length > 0) {
+                this.reasonCd = data['clmReasonList'][0].reasonCd;
+                this.reasonDesc = data['clmReasonList'][0].description;
+              } else {
+                this.reasonCd = '';
+                this.reasonDesc = '';
+                this.openReasonLOV();
+              }
+               this.ns.lovLoader(ev, 0);
+            });
+          }
+      }
   }
 
   checkClaim(key, event){
