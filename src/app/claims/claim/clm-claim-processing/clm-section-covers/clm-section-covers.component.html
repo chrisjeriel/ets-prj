@@ -1,3 +1,4 @@
+<form #myForm="ngForm">
 <div class="row">
 	<div class="col-sm-12">
 		<fieldset class="scheduler-border">
@@ -6,17 +7,17 @@
 				<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-1">Claim No</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled value="CAR-2018-000001">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled value="CAR-2018-000001" name="claimNo">
 					<label class="form-control-sm col-sm-1">Insured</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" disabled value="2nd Inn. Inc">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" disabled value="2nd Inn. Inc" name="secISiTag" name="insured">
 					<div class="col-sm-1"></div>
 				</div>
 				<div class="input-group" style="margin-bottom: -13px !important;">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-1" style="height: auto;">Policy No</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled value="CAR-2018-00001-99-0001-000">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled value="CAR-2018-00001-99-0001-000" name="polNo">
 					<label class="form-control-sm col-sm-1">Risk</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" disabled value="Ayala Wakeboard">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" disabled value="Ayala Wakeboard" name="risk">
 					<div class="col-sm-1"></div>
 				</div>
 			</div>
@@ -30,33 +31,33 @@
 			<div class="form-row custom-row-inline-inset" style="margin-top: 10px !important;">
 				<div class="input-group cust-ig">
 					<div class="col-sm-2 text-right pr-0">
-						<input type="checkbox" [checked]="coverageData.secISiTag === 'Y'" (change)="coverageData.secISiTag = (coverageData.secISiTag === 'Y') ? 'N' : 'Y';getSum()">
+						<input type="checkbox" [ngModel]="coverageData.secISiTag === 'Y'" (change)="coverageData.secISiTag = (coverageData.secISiTag === 'Y') ? 'N' : 'Y';getSum()" name="secISiTag">
 					</div>
 					<label class="form-control-sm col-sm-2">Section I</label>
-					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionISi = $event;getSum()" readonly>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionISi = $event;getSum()" readonly name="sectionISi">
 					<div class="col-sm-3"></div>
 				</div>
 				<div class="input-group cust-ig">
 					<div class="col-sm-2 text-right pr-0">
-						<input type="checkbox" [checked]="coverageData.secIISiTag === 'Y'" (change)="coverageData.secIISiTag = (coverageData.secIISiTag === 'Y') ? 'N' : 'Y';getSum()">
+						<input type="checkbox" [ngModel]="coverageData.secIISiTag === 'Y'" (change)="coverageData.secIISiTag = (coverageData.secIISiTag === 'Y') ? 'N' : 'Y';getSum()" name="secIISiTag">
 					</div>
 					<label class="form-control-sm col-sm-2">Section II</label>
-					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIISi = $event;getSum()" readonly>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIISi = $event;getSum()" readonly name="sectionIISi">
 					<div class="col-sm-3"></div>
 				</div>
 				<div class="input-group cust-ig">
 					<div class="col-sm-2 text-right pr-0">
-						<input type="checkbox" [checked]="coverageData.secIIISiTag === 'Y'" (change)="coverageData.secIIISiTag = (coverageData.secIIISiTag === 'Y') ? 'N' : 'Y';getSum()">
+						<input type="checkbox" [ngModel]="coverageData.secIIISiTag === 'Y'" (change)="coverageData.secIIISiTag = (coverageData.secIIISiTag === 'Y') ? 'N' : 'Y';getSum()" name="secIIISiTag">
 					</div>
 					<label class="form-control-sm col-sm-2">Section III</label>
-					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionIIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIIISi = $event;getSum()" readonly>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionIIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIIISi = $event;getSum()" readonly name="sectionIIISi">
 					<div class="col-sm-3"></div>
 				</div>
 				<br/>
 				<br/>
 				<div class="input-group cust-ig">
 					<label class="form-control-sm col-sm-4">Allowable Maximum Claim</label>
-					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.allowMaxSi | number:'1.2-2'" (ngModelChange)= "coverageData.allowMaxSi =$event" readonly>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.allowMaxSi | number:'1.2-2'" (ngModelChange)= "coverageData.allowMaxSi =$event" readonly name="allowMaxSi">
 					<div class="col-sm-3"></div>
 				</div>
 			</div>
@@ -69,21 +70,22 @@
 				<div class="input-group cust-ig">
 					<div class="col-sm-2"></div>
 					<label class="form-control-sm col-sm-2">Currency</label>
-					<input type="text"class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="coverageData.currencyCd" readonly>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="coverageData.currencyCd" readonly name="currencyCd">
 					<label class="form-control-sm col-sm">Exch. Rt.</label>
-					<input type="text"class="form-control form-control-sm cust-sm col-sm-2 text-right" [ngModel]="coverageData.currencyRt | number:'1.10-10'" (ngModelChange)="coverageData.currencyRt =$event" readonly>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm-2 text-right" [ngModel]="coverageData.currencyRt | number:'1.10-10'" (ngModelChange)="coverageData.currencyRt =$event" readonly name="currencyRt">
 					<div class="col-sm-3"></div>
 				</div>
 				<div class="input-group cust-ig">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-3">Total Sum Insured</label>
-					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.totalSi | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event" readonly>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.totalSi | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event" readonly name="totalSi">
 					<div class="col-sm-3"></div>
 				</div>
 			</div>
 		</fieldset>
 	</div>
 </div>
+</form>
 <div class="row">
 	<div class="col-sm-12">
 		<fieldset class="scheduler-border">
