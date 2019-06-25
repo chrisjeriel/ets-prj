@@ -201,7 +201,7 @@
                       <div class="input-group">
                         <label class="form-control-sm col-sm-1" style="margin-left:-3px !important;">Reason</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                           required [readonly]="batchOption === 'IP'" [ngModel]="reasonCd" (ngModelChange)="reasonCd = $event.toUppperCase();" (change)="checkCode($event, 'reason')">
+                           required [readonly]="batchOption === 'IP'" [ngModel]="reasonCd" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
                         <div class="text-search-ico" *ngIf="batchOption !== 'IP'">
                           <a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm"
