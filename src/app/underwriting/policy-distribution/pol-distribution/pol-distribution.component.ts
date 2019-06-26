@@ -39,7 +39,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       paginateFlag: false,
       infoFlag: false,
       pageID: 'trtyDistTable',
-      pageLength: 'unli'
+      pageLength: 'unli',
+      exportFlag: true,
     }
 
     poolDistributionData: any = {
