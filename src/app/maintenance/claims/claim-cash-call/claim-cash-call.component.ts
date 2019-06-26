@@ -76,10 +76,17 @@ export class ClaimCashCallComponent implements OnInit {
 
   ngOnInit() {
   	this.titleService.setTitle("Mtn | Claim Cash Call");
+    this.getMtnCurrencyList();
   }
 
   ngOnDestroy() {
 		this.subscription.unsubscribe();
+  }
+
+  getMtnCurrencyList(){
+  	this.ms.getMtnCurrencyList('').subscribe(data => {
+      this.currencyList = data['currency'];
+  	});
   }
 
   onRowClick(data) {
@@ -102,12 +109,9 @@ export class ClaimCashCallComponent implements OnInit {
   }
 
   setSelectedCedCoTreatyShare(data){
-  	console.log(data);
   	this.treatyCompCd = data.cedingId;
   	this.treatyComp = data.cedingName;
 
   }
-
-
 
 }
