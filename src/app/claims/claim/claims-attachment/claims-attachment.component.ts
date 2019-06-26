@@ -103,14 +103,14 @@ export class ClaimsAttachmentComponent implements OnInit {
             var records = data['claimsAttachmentList'];
             for(let rec of records){
               this.passData.tableData.push({
-                                            fileserver  : this.notes.toDateTimeString(rec.updateDate).match(/\d+/g).join('') + rec.fileName,
-                                            fileName    : rec.fileName,
-                                            fileNo      : rec.fileNo,
-                                            description : rec.description,
-                                            createUser  : rec.createUser,
-                                            createDate  : this.notes.toDateTimeString(rec.createDate),
-                                            updateUser  : rec.updateUser,
-                                            updateDate  : this.notes.toDateTimeString(rec.updateDate),
+                                            fileNameServer  : this.notes.toDateTimeString(rec.updateDate).match(/\d+/g).join('') + rec.fileName,
+                                            fileName        : rec.fileName,
+                                            fileNo          : rec.fileNo,
+                                            description     : rec.description,
+                                            createUser      : rec.createUser,
+                                            createDate      : this.notes.toDateTimeString(rec.createDate),
+                                            updateUser      : rec.updateUser,
+                                            updateDate      : this.notes.toDateTimeString(rec.updateDate),
                                            });
             }
          } 
@@ -213,15 +213,37 @@ export class ClaimsAttachmentComponent implements OnInit {
                 this.dialogIcon = "error-message";
                 $('#attchmntMdl > #successModalBtn').trigger('click');
             }else{
-                this.dialogMessage="";
+                this.dialogIcon = "success";
                 if(data.uploadDate != null){
                   this.uploadMethod(data.uploadDate);
+                }
+                if(this.deletedData.length !== 0){
+                  this.deleteFileMethod();
                 }
                 $('#attchmntMdl > #successModalBtn').trigger('click');
                 this.getAttachment();
             }
       });         
   }
+
+  deleteFileMethod(){
+      let deleteFile = this.deletedData;
+      console.log(this.deletedData);
+      for(var i of deleteFile){
+        console.log(i.fileNameServer);
+        this.upload.deleteFile(i.fileNameServer).subscribe(
+            data =>{
+              console.log(data);
+            },
+            error =>{
+              console.log('Error: '+ error);
+            },
+            () =>{
+              console.log('Successfully deleted');
+            }
+          );
+      }
+    }
 
    onRowClick(event){
     if(event !== null){
