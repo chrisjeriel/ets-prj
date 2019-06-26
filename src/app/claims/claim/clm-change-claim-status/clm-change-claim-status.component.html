@@ -6,30 +6,36 @@
         <div class="custom-row-inline-inset">
           <div class="row">
             <div class="col-sm-10">
-              <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+              <app-cust-editable-non-datatable [passData]="queryData" (newClick)="onRowClickQuery($event)" #queryTbl></app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2">
               <fieldset class="scheduler-border">
                 <legend class="scheduler-border">Batch Option</legend>
                 <div class="custom-row-inline-inset">
-                  <div style="margin-left: 47px !important;">
-                    <div class="form-row">
-                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">In Progress</label>
+                  <div style="margin-left: 40px !important;">
+                    <div class="form-row" *ngIf="batchOptionLoading">
+                      <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="">
+                    </div>
+                    <!-- <div class="form-row">
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'IP'" name="batchOption"><label class="rd-lbl">In Progress</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Temporary Close</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'TC'" name="batchOption"><label class="rd-lbl">Temporary Close</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Close</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'CD'" name="batchOption"><label class="rd-lbl">Close</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Withdraw</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'WD'" name="batchOption"><label class="rd-lbl">Withdraw</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Spoil</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'SP'" name="batchOption"><label class="rd-lbl">Spoil</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Deny</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'DN'" name="batchOption"><label class="rd-lbl">Deny</label>
+                    </div> -->
+                    <div class="form-row" *ngFor="let status of arrClaimStatus">
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; batchOptionDesc = status.description; clearDetails(); queryData.tableData = []; queryTable.refreshTable(); queryTable.selected = [];" [value]="status.statusCode" name="batchOption"><label class="rd-lbl">{{status.description}}</label>
                     </div>
                   </div>
                 </div>
@@ -40,81 +46,72 @@
                   <div class="text-center" class="min-width: 100% !important;">
                     <div class="cust-btn-container">
                       <div class="input-group" style="margin-bottom: 3px !important;">
-                        <button type="button" class="cust-btn" style="z-index: 0 !important;min-width: 100% !important; margin-top: 3px !important;"><a>Process</a></button>
+                        <button type="button" class="cust-btn" style="z-index: 0 !important;min-width: 100% !important; margin-top: 3px !important;" [class.cust-btn-disabled]="processBtnDisabled || queryTable?.selected.length === 0" [disabled]="processBtnDisabled || queryTable?.selected.length === 0" (click)="process()"><a>Process</a></button>
                       </div>
                       <div class="input-group">
-                        <button type="button" class="cust-btn" style="z-index: 0 !important; min-width: 100% !important;"
+                        <button type="button" id="searchBtn" class="cust-btn" style="z-index: 0 !important; min-width: 100% !important;"
                           (click)="search($event)"><a>Search</a></button>
-                        <app-modal [btnTitle]="'Search'" hidden id="modalSearch">
-                          <div header style="width: 800px !important;">Search</div>
+                        <app-modal [btnTitle]="'Search'" hidden id="modalSearch" #queryMdl>
+                          <div header>Search</div>
                           <div body>
-                            <fieldset class="scheduler-border" style="margin-top: -21px !important;">
-                              <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-                              <div class="custom-row-inline-inset">
-                                <div class="input-group">
-                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Claim
-                                    No</label>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-                                    style="margin-left: 3px !important;" required>
-                                  <div class="text-search-ico" style="margin-left: 3px !important;">
-                                    <a><i class="fa fa-search"></i></a></div>
+                            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="searchLoading">
+                                            <div style="position: fixed;width: 47%;height: 62%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="searchLoading"></div>
+                            <div style="width: 600px">
+                              <fieldset class="scheduler-border">
+                                <br />
+                                <div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;margin-bottom: 12px !important;">
+                                    <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                                        <label class="form-control-sm col-sm-2 text-right">Claim No</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="tempClmNo[0]" (ngModelChange)="tempClmNo[0] = $event.toUpperCase();" (change)="checkClaim('line', $event)" ngbTooltip="Line">
+                                        <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="tempClmNo[1]" (change)="checkClaim('year', $event)" ngbTooltip="Year" style="margin-left: 2px">
+                                        <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="tempClmNo[2]" (change)="checkClaim('seqNo', $event)" ngbTooltip="Sequence No." style="margin-left: 2px">
+                                        <a style="margin-left: 5px;" (click)="openClmListing();"><i class="fa fa-search"></i></a>
+                                    </div>
                                 </div>
-                                <div class="input-group">
-                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Policy
-                                    No</label>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required ngbTooltip="Line"  [(ngModel)]= params.polLine>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required ngbTooltip="Year" [(ngModel)]= params.polYear>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-                                    style="margin-left: 3px !important;" required ngbTooltip="Sequence No" [(ngModel)]= params.polSeq>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required ngbTooltip="Company No" [(ngModel)]= params.polComp>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-                                    style="margin-left: 3px !important;" required ngbTooltip="Co Series No" [(ngModel)]= params.polCoSeries>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required ngbTooltip="Alt No" [(ngModel)]= params.polAlt>
-                                  <div class="text-search-ico" style="margin-left: 3px !important;">
-                                    <a><i class="fa fa-search" (click)="showPolicyLov()"></i></a></div>
+                                <div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;">
+                                    <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                                        <label class="form-control-sm col-sm-2 text-right">Policy No</label>
+                                        <input type="text" class="form-control form-control-sm" ngbTooltip="Line" [ngModel]="tempPolNo[0]" (ngModelChange)="tempPolNo[0] = $event.toUpperCase();" (change)="checkPol('line', $event)">
+                                        <input type="text" class="form-control form-control-sm" ngbTooltip="Year" style="margin-left: 2px" [(ngModel)]="tempPolNo[1]" (change)="checkPol('year', $event)">
+                                        <input type="text" class="form-control form-control-sm" ngbTooltip="Sequence No." style="margin-left: 2px" [(ngModel)]="tempPolNo[2]" (change)="checkPol('seqNo', $event)">
+                                        <input type="text" class="form-control form-control-sm" ngbTooltip="Ceding Company ID" style="margin-left: 2px" [(ngModel)]="tempPolNo[3]" (change)="checkPol('cedingId', $event)">
+                                        <input type="text" class="form-control form-control-sm" ngbTooltip="Company Series No." style="margin-left: 2px" [(ngModel)]="tempPolNo[4]" (change)="checkPol('coSeriesNo', $event)">
+                                        <input type="text" class="form-control form-control-sm" ngbTooltip="Alteration No." style="margin-left: 2px" [(ngModel)]="tempPolNo[5]" (change)="checkPol('altNo', $event)">
+                                        <a style="margin-left: 5px;" (click)="openPolListing();"><i class="fa fa-search"></i></a>
+                                    </div>
                                 </div>
-                                <div class="input-group">
-                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Type
-                                    of Cession</label>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required (change)="checkCode($event, 'cessionId')" [ngModel]="params.cessionId" (ngModelChange)="params.cessionId = $event.toUpperCase()">
-                                  <div class="text-search-ico" style="margin: -2px 5px 17px -18px !important;padding-top: 2px !important;">
-                                    <a><i class="fa fa-search" (click)="showTypeOfCessionLOV()"></i></a></div>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm"
-                                    style="margin-left: 3px !important;" required [(ngModel)]="params.cessionDesc">
+                                <div class="form-row custom-row-inline-inset">
+                                    <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                                        <label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
+                                        <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" [(ngModel)]="searchParams.cessionId" (change)="checkCode($event, 'typeOfCession')">
+                                        <div class="text-search-ico"><a (click)="openTypeOfCessionLOV()"><i class="fa fa-search"></i></a></div>
+                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;" tabindex="-1" readonly [ngModel]="searchParams.cessionDesc">
+                                    </div>
                                 </div>
-                                <div class="input-group">
-                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Ceding
-                                    Company</label>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required (change)="checkCode($event,'cedingId')" [ngModel]="params.cedingId" (ngModelChange)="params.cedingId=$event.toUpperCase()">
-                                  <div class="text-search-ico" style="margin: -2px 5px 17px -18px !important;padding-top: 2px !important;">
-                                    <a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm"
-                                    style="margin-left: 3px !important;" required [(ngModel)]="params.cedingDesc">
+                                <div class="form-row custom-row-inline-inset">
+                                    <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                                        <label class="form-control-sm col-sm-2 text-right" style="padding-left: 0px">Ceding Company</label>
+                                        <input type="text" id="cedingId" class="form-control form-control-sm col-sm-2" [(ngModel)]="searchParams.cedingId" (change)="checkCode($event, 'cedingCo')">
+                                        <div class="text-search-ico"><a (click)="openCedingCompanyLOV();"><i class="fa fa-search"></i></a></div>
+                                        <input type="text"class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;" tabindex="-1" readonly [ngModel]="searchParams.cedingName">
+                                    </div>
                                 </div>
-                                <div class="input-group">
-                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Risk</label>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                                    style="margin-left: 3px !important;" required (change)="checkCode($event,'riskId')" [ngModel]="params.riskId" (ngModelChange)="params.riskId=$event.toUpperCase()">
-                                  <div class="text-search-ico" style="margin: -2px 5px 17px -18px !important;padding-top: 2px !important;">
-                                    <a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
-                                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" required [(ngModel)]="params.riskName">
+                                <div class="form-row custom-row-inline-inset">
+                                    <div class="input-group alignment" style="margin-bottom: -20px !important;">
+                                        <label class="form-control-sm col-sm-2 text-right">Risk</label>
+                                        <input type="text" id="riskCd" class="form-control form-control-sm col-sm-2" [(ngModel)]="searchParams.riskId" (change)="checkCode($event, 'risk')">
+                                        <div class="text-search-ico"><a (click)="openRiskLOV()"><i class="fa fa-search"></i></a></div>
+                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;" tabindex="-1" readonly [ngModel]="searchParams.riskName">
+                                    </div>
                                 </div>
-                              </div>
+                                <br>
                             </fieldset>
+                            </div>
                           </div>
                           <div footer class="text-center" style="width: 100% !important;">
-                            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-                            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Ok</a></button>
+                            <button type="button" class="cust-btn" (click)="clearSearchFields();"><a>Clear</a></button>
+                            <button type="button" class="cust-btn" (click)="queryModal.closeModal()"><a>Cancel</a></button>
+                            <button type="button" class="cust-btn" (click)="validateSearch();"><a>Ok</a></button>
                           </div>
                         </app-modal>
                       </div>
@@ -138,58 +135,63 @@
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Claim No</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          required>
+                          readonly [ngModel]="claimDetails.claimNo">
                         <label class="form-control-sm col-sm-2">Status</label>
-                        <input type="text" class="form-control form-control-sm cust-sm"
-                          required>
+                        <input type="text" class="form-control form-control-sm cust-sm" 
+                          readonly [ngModel]="claimDetails.clmStatus">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Policy No</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          required>
+                          readonly [ngModel]="claimDetails.policyNo">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Ceding Co</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          required>
+                          readonly [ngModel]="claimDetails.cedingName">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Insured</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          required>
+                          readonly [ngModel]="claimDetails.insuredDesc">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Risk</label>
-                        <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"></textarea>
+                        <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"
+                          readonly [ngModel]="claimDetails.riskName"></textarea>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Date</label>
-                        <input type="text" class="form-control form-control-sm cust-sm"
-                          required>
+                        <input type="text" class="form-control form-control-sm cust-sm" 
+                          readonly [ngModel]="claimDetails.lossDate">
                         <label class="form-control-sm col-sm-2">Currency</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails.currencyCd">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Details</label>
-                        <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"></textarea>
+                        <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"
+                          readonly [ngModel]="claimDetails.lossDtl"></textarea>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Total Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" numbers-only required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" 
+                          readonly [ngModel]="claimDetails.totalLossExpRes | number: '1.2-2'">
                         <label class="form-control-sm col-sm-2" style="padding-right: 3px !important;">Total
                           Payment</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" numbers-only required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" 
+                          readonly [ngModel]="claimDetails.totalLossExpPd | number: '1.2-2'">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Adjusters</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm"
+                          readonly [ngModel]="claimDetails.adjName">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Processed By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails.processedBy">
                       </div>
                     </div>
                   </div>
@@ -198,12 +200,12 @@
                     <div class="col-sm-12">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-1" style="margin-left:-3px !important;">Reason</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-right: 4px !important;"
-                          required>
-                        <div class="text-search-ico" style="margin: -2px 6px 18px -23px !important;padding-top: 2px !important;">
-                          <a><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;"
-                         required>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                           required [readonly]="batchOption === 'IP'" [ngModel]="reasonCd" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
+                        <div class="text-search-ico" *ngIf="batchOption !== 'IP'">
+                          <a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm"
+                           readonly style="margin-left: 2px !important" [ngModel]="reasonDesc">
                       </div>
                     </div>
 
@@ -213,23 +215,65 @@
             </div>
           </div>
         </div>
-
-        <div class="form-row" style="margin-left: -4px !important;">
-          <div class="form-group col-sm-10">
-            <div class="text-center">
-              <div class="cust-btn-container">
-                <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" class="cust-btn"><a>Save</a></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </ng-template>
     </ngb-tab>
   </ngb-tabset>
 </div>
 
-<app-mtn-risk id="riskLOV" #riskLOV (selectedData)="setRisks($event)"></app-mtn-risk>
-<app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
-<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<!-- LOV MODALS STARTS HERE -->
+<app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl" #clmListMdl>
+    <div header>List Of Values</div>
+    <div body>
+       <app-cust-non-datatable [passData]="clmListData" (rowClick)="selectedClaim=$event" #clmListTable></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="clmListModal.closeModal();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="clmListModal.closeModal(); setClaim();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-modal hidden [btnTitle]="'List Of Values'" #polListMdl>
+    <div header>List Of Values</div>
+    <div body>
+       <app-cust-non-datatable [passData]="polListData" (rowClick)="selectedPolicy=$event" #polListTable></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="polListModal.closeModal();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="polListModal.closeModal(); setPolicy();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #reasonMdl>
+  <div header>List of Values</div>
+  <div body>
+    <app-cust-non-datatable [passData]="reasonData" (rowClick)="selectedReason = $event" #reasonListTable></app-cust-non-datatable>
+  </div>
+  <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="reasonModal.closeModal();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="reasonModal.closeModal(); setReason();" [disabled]="selectedReason === null" [class.cust-btn-disabled]="selectedReason === null"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #processPrompt>
+  <div header>Confirmation</div>
+  <div body>
+    <span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{dialogMessage}}</span>
+  </div>
+  <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="processModal.closeModal(); updateClaimStatus();"><a>Yes</a></button>
+            <button class="cust-btn" type="button" (click)="processModal.closeModal();"><a>No</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)" #riskMdl></app-mtn-risk>
+<app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)" #cedCoMdl></app-ceding-company>
+<app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)" #cessionMdl></app-mtn-type-of-cession>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null;" #successDiagSave></app-sucess-dialog>

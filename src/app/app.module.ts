@@ -419,6 +419,7 @@ import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-pol
 import { MtnCurrencyCodeComponent } from './maintenance/mtn-currency-code/mtn-currency-code.component';
 import { MtnClaimStatusLovComponent } from './maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { MtnLossCdComponent } from './maintenance/mtn-loss-cd/mtn-loss-cd.component';
+import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 
 @NgModule({
     imports: [
@@ -437,7 +438,7 @@ import { MtnLossCdComponent } from './maintenance/mtn-loss-cd/mtn-loss-cd.compon
         QuillModule,
         NgxMaskModule.forRoot(),
         CalendarModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
     ],
     declarations: [
         AppComponent,
@@ -844,6 +845,7 @@ import { MtnLossCdComponent } from './maintenance/mtn-loss-cd/mtn-loss-cd.compon
         MtnCurrencyCodeComponent,
         MtnClaimStatusLovComponent,
         MtnLossCdComponent,
+        ClaimStatusReasonComponent,
     ],
 
   	providers: [

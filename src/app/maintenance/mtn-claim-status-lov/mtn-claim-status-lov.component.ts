@@ -74,17 +74,17 @@ export class MtnClaimStatusLovComponent implements OnInit {
    	   this.selectedData.emit(arr);
    	 }else {
    	 	this.passData.tableData = [];
-   	 	this.maintenanceService.getClaimStatus(null).subscribe((data:any)=> {
+   	 	this.maintenanceService.getClaimStatus(code).subscribe((data:any)=> {
    	 		//data.claimStatus = data.claimStatus.filter((a)=>{return ev.filter.indexOf(a.statusCode)==-1});
 
    	 		if(data.claimStatus.length == 1){
-   	 			data.claimStatus[0]['ev'] = ev;
+   	 			/*data.claimStatus[0]['ev'] = ev;
    	 			data.claimStatus[0]['singleSearchLov'] = true;
 
    	 			var arr = [];
-   	 			arr.push(data['sectionCovers'][0]);
-
-   	 			this.selectedData.emit(arr);
+   	 			arr.push(data['sectionCovers'][0]);*/
+          data.claimStatus[0]['ev'] = ev;
+   	 			this.selectedData.emit(data.claimStatus[0]);
    	 		}else if(data.claimStatus.length > 1){
    	 			this.fromInput = true;
 
@@ -98,10 +98,10 @@ export class MtnClaimStatusLovComponent implements OnInit {
 
    	 			//this.modal.openNoClose();
    	 		} else {
-	          var arr = [];
+	          /*var arr = [];
 	          arr.push(obj);
-
-	          this.selectedData.emit(arr);
+            */
+	          this.selectedData.emit(obj);
 	            
 	          this.modal.openNoClose();
 	        }
