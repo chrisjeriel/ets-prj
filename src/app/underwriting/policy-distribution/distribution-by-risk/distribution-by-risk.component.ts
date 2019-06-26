@@ -213,7 +213,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
   controlHidden:any = {
     saveBtn: false,
-    distributeBtn: false
+    distributeBtn: false,
+    coinsBtn:true
   }
 
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
@@ -224,8 +225,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     this.titleService.setTitle("Pol | Risk Distribution");
 
     this.sub = this.route.params.subscribe((data: any)=>{
+
                   this.params = data;
-                  if(data.fromInq){
+                  if(this.params.fromInq == 'true'){
                     this.controlHidden.saveBtn = true;
                     this.controlHidden.distributeBtn = true;
 
@@ -244,6 +246,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
                   }
                   
                 this.retrieveRiskDistribution();
+
               });
 
   }
@@ -251,11 +254,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //NECO 05/31/2019
     retrieveRiskDistribution(){
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
-        console.log(data);
         this.riskDistributionData = data.distWrisk;
         this.riskDistId.emit(this.riskDistributionData.riskDistId);
         this.riskDistStatus.emit(this.riskDistributionData.status);
-        console.log(this.riskDistributionData.tsiAmt)
         var appendTreatyName: string = '';
         var appendTreatyLimitId: number = 0;
         var counter: number = 0;
@@ -318,7 +319,14 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.treatyTable.refreshTable();
         this.limitTable.refreshTable();
         this.wparam.refreshTable();
+
+        this.openCoInsurance();
         this.readOnlyAll();
+
+        // if(){
+          
+        // }
+
         setTimeout(()=>{
           $('input[type=text]').focus();
           $('input[type=text]').blur();
@@ -340,15 +348,14 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     }
 
     openCoInsurance(){
-      this.coInsTable.loadingFlag = true;
       this.polService.getDistCoIns(this.riskDistributionData.riskDistId,this.params.policyId).subscribe((data: any)=>{
         this.coInsuranceData.tableData = data.distCoInsList;
         this.coInsTable.refreshTable();
         this.coInsTable.loadingFlag = false;
-        setTimeout(()=>{
-          $('input[type=text]').focus();
-          $('input[type=text]').blur();
-        },0);
+        console.log(data.distCoInsList);
+        if(data.distCoInsList.length != 1){
+          this.controlHidden.coinsBtn = false
+        }
       });
     }
 
@@ -413,7 +420,6 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           updateUser: JSON.parse(window.localStorage.currentUser).username,
           policyId: this.params.policyId
         };
-        console.log(params)
         this.polService.saveDistRisk(params).subscribe((data: any)=>{
         if(data.returnCode === 0){
           this.dialogIcon = 'error';
@@ -429,7 +435,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     }
 
     readOnlyAll(){
-      if(this.params.fromInq || this.riskDistributionData.status.toUpperCase() === 'POSTED'){
+      if(this.params.fromInq == 'true' || this.riskDistributionData.status.toUpperCase() === 'POSTED'){
         this.controlHidden.saveBtn = true;
         this.controlHidden.distributeBtn = true;
 

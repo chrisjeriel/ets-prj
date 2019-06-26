@@ -114,7 +114,7 @@
         </div>
       </app-modal>
 
-      <app-modal [btnTitle]="'View Co-Insurance'" (modalOpened)="openCoInsurance()">
+      <app-modal [btnTitle]="'View Co-Insurance'"   [class.d-none]="controlHidden.coinsBtn">
         <div header>Co-Insurance Distribution</div>
         <div body>
           <fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
