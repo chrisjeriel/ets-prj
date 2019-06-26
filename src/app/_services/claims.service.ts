@@ -25,10 +25,10 @@ export class ClaimsService {
 		return this.claimPaymentRequestData;
 	}
 
-    getClaimHistory(claimId?,projId?,histNo?){
+    getClaimHistory(claimId?,claimNo?,histNo?){
 		const params = new HttpParams()
 			.set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
-			.set('projId', (projId == null || projId == undefined ? '' : projId))
+			.set('claimNo', (claimNo == null || claimNo == undefined ? '' : claimNo))
 			.set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
 		return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimHistory',{params});	
 	}

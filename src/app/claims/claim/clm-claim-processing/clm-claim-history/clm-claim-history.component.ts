@@ -123,7 +123,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   }
 
   getClaimHistory(){
-    var subs = forkJoin(this.clmService.getClaimHistory(),this.mtnService.getRefCode('HIST_CATEGORY'),this.mtnService.getRefCode('HIST_TYPE'),this.mtnService.getMtnCurrencyList(''))
+    var subs = forkJoin(this.clmService.getClaimHistory(2,2,''),this.mtnService.getRefCode('HIST_CATEGORY'),this.mtnService.getRefCode('HIST_TYPE'),this.mtnService.getMtnCurrencyList(''))
                        .pipe(map(([clmHist,histCat,histType,curr]) => { return { clmHist,histCat,histType,curr }; }));
     subs.subscribe(data => {
       console.log(data);
@@ -140,7 +140,7 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.passDataHistory.opts[2].vals = recCurr.map(i => i.currencyCd);
       this.passDataHistory.opts[2].prev = recCurr.map(i => i.currencyCd);      
 
-      var recClmHist = data['clmHist']['claimHistoryList'].map(i => { i.refDate = this.ns.toDateTimeString(i.refDate); i.createDate = this.ns.toDateTimeString(i.createDate);
+      var recClmHist = data['clmHist']['claimReserveList']['clmHistory'].map(i => { i.refDate = this.ns.toDateTimeString(i.refDate); i.createDate = this.ns.toDateTimeString(i.createDate);
                                                                       i.updateDate = this.ns.toDateTimeString(i.updateDate); return i;});
       this.passDataHistory.tableData = recClmHist;
       this.histTbl.refreshTable();
