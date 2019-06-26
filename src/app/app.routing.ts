@@ -170,6 +170,7 @@ import { ClaimEventTypeComponent } from './maintenance/claims/claim-event-type/c
 import { ClaimEventComponent } from './maintenance/claims/claim-event/claim-event.component';
 import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-policy/section-ii-treaty-limit/section-ii-treaty-limit.component';
 import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
+import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 
 const appRoutes: Routes = [
 
@@ -310,7 +311,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-endt', component: EndorsementComponent },
     { path: 'maintenance-object', component: ObjectComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
-    { path: 'total-val-pol-print', component: HundredValPolPrintComponent },
+    { path: 'total-val-pol-print', component: HundredValPolPrintComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-qu-pol', component: QuotationAndPolicyComponent},
     { path: 'maintenance-quote-wording', component: QuoteWordingComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
@@ -351,6 +352,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-sec-ii-treaty-limit', component: SectionIiTreatyLimitComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-retention-per-pool-member', component: RetentionPerPoolMemberComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-clm-stat-reason', component: ClaimStatusReasonComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

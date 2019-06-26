@@ -1052,8 +1052,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.passLOVData.selector = 'polWordings';
       this.passLOVData.params = {
         wordType: 'P',
-        activeTag:'Y',
-        ocTag : 'N',
+        activeTag: 'Y',
+        ocTag : this.policyInfo.openCoverTag,
         lineCd : this.policyInfo.lineCd,
       }
     }else if(data == 'polWordingsAlt'){
@@ -1062,7 +1062,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.passLOVData.params = {
         wordType: 'A',
         activeTag:'Y',
-        ocTag : 'N',
+        ocTag : this.policyInfo.openCoverTag,
         lineCd : this.policyInfo.lineCd,
       }
     }else{

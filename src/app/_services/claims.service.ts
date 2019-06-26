@@ -102,6 +102,17 @@ export class ClaimsService {
         return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimHistory',params,header);
 	}
 
+	getChangeClaimStatus(parameters:any){
+		const params = new HttpParams()
+            .set('claimId', parameters.claimId === undefined || parameters.claimId === null || parameters.claimId === '' ? '' : parameters.claimId)
+            .set('policyId', parameters.policyId === undefined || parameters.policyId === null || parameters.policyId === '' ? '' : parameters.policyId)
+            .set('cessionId', parameters.cessionId === undefined || parameters.cessionId === null || parameters.cessionId === '' ? '' : parameters.cessionId)
+            .set('cedingId', parameters.cedingId === undefined || parameters.cedingId === null || parameters.cedingId === '' ? '' : parameters.cedingId)
+            .set('riskId', parameters.riskId === undefined || parameters.riskId === null || parameters.riskId === '' ? '' : parameters.riskId)
+            .set('batchOpt', parameters.batchOpt === undefined || parameters.batchOpt === null || parameters.batchOpt === '' ? '' : parameters.batchOpt)
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveChangeClmStatus', {params});
+	}
+
 	saveClaimApprovedAmt(params){
 		let header : any = {
             headers: new HttpHeaders({
@@ -127,4 +138,12 @@ export class ClaimsService {
          return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimsAttachment',JSON.stringify(params),header);
     }
 
+    updateClaimStatus(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/claims-service/updateClaimStatus',params,header);
+    }
 }

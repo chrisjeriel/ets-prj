@@ -28,18 +28,19 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   //NECO 06/04/2019
     treatyDistData: any = {
-      tHeader: ['Section', 'Treaty', 'Treaty Company', 'SI Amount', 'Premium Amount', 'Comm Rt (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
+      tHeader: ['Section', 'Treaty', 'Treaty Company', 'SI Amount', 'Premium Amount', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
       tableData: [],
       dataTypes: ['text', 'text', 'text', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
       keys: ['section', 'treatyAbbr', 'trtyCedName', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
       uneditable: [true,true,true,true,true,true,true,true,true],
       widths: [1,1,'auto',150,150,150,150,150,150],
-      total: [null,null,'TOTAL', 'siAmt', 'premAmt', null, 'commAmt', 'vatRiComm', 'netDue'],
+      // total: [null,null,'TOTAL', 'siAmt', 'premAmt', null, 'commAmt', 'vatRiComm', 'netDue'],
       searchFlag: true,
       paginateFlag: false,
       infoFlag: false,
       pageID: 'trtyDistTable',
-      pageLength: 'unli'
+      pageLength: 'unli',
+      exportFlag: true,
     }
 
     poolDistributionData: any = {
@@ -53,7 +54,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       paginateFlag: true,
       infoFlag: true,
       pageLength: 10,
-      pageID: 'poolDistTable'
+      pageID: 'poolDistTable',
+      searchFlag : true
     }
 
     sub: any;
@@ -114,12 +116,12 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
         this.ts2.vat  += a.vatRiComm;
         this.ts2.net  += a.netDue;
       }
-        this.total.si   += a.siAmt;
-        this.total.prem += a.premAmt;
-        this.total.comm += a.commAmt;
-        this.total.vat  += a.vatRiComm;
-        this.total.net  += a.netDue;
     });
+      this.total.si   +=  this.ts1.si +  this.ts2.si;
+      this.total.prem += this.ts1.prem +  this.ts2.prem;
+      this.total.comm += this.ts1.comm +  this.ts2.comm;
+      this.total.vat  += this.ts1.vat +  this.ts2.vat;
+      this.total.net  += this.ts1.net +  this.ts2.net;
   }
 
   //NECO 06/04/2019

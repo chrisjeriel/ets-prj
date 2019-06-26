@@ -417,6 +417,9 @@ import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lo
 import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-policy/section-ii-treaty-limit/section-ii-treaty-limit.component';
 import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
 import { MtnCurrencyCodeComponent } from './maintenance/mtn-currency-code/mtn-currency-code.component';
+import { MtnClaimStatusLovComponent } from './maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
+import { MtnLossCdComponent } from './maintenance/mtn-loss-cd/mtn-loss-cd.component';
+import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 
 @NgModule({
     imports: [
@@ -435,7 +438,7 @@ import { MtnCurrencyCodeComponent } from './maintenance/mtn-currency-code/mtn-cu
         QuillModule,
         NgxMaskModule.forRoot(),
         CalendarModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
     ],
     declarations: [
         AppComponent,
@@ -839,7 +842,10 @@ import { MtnCurrencyCodeComponent } from './maintenance/mtn-currency-code/mtn-cu
         MtnClmEventTypeLovComponent,
         SectionIiTreatyLimitComponent,
         RetentionPerPoolMemberComponent,
-        MtnCurrencyCodeComponent
+        MtnCurrencyCodeComponent,
+        MtnClaimStatusLovComponent,
+        MtnLossCdComponent,
+        ClaimStatusReasonComponent,
     ],
 
   	providers: [
