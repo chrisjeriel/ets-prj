@@ -48,7 +48,8 @@
                 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
                 <app-confirm-save id="userConfirm" (onYes)="saveUserModal()"></app-confirm-save>
                 <app-sucess-dialog #userSuccess [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-                <app-cancel-button (onYes)="saveData('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>          
+                <app-cancel-button #cancelApprover (onYes)="saveData('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>   
+                <app-cancel-button #cancelUser (onYes)="saveUserModal('cancel')" [url]="null" ></app-cancel-button>          
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
@@ -56,12 +57,16 @@
 <app-modal class="d-none" id="usersModal">
 	<div header>Users</div>
 	<div body>
-		 <div>
-                <app-cust-editable-non-datatable #user [passData]="passDataUser" (tableDataChange)="updateUser($event)" (clickLOV)="showUsersLOV($event)"></app-cust-editable-non-datatable>
-         </div>
+        <div class="row" style="margin-left: 25px">
+            <label class="form-control-sm text-right">Approval Function Code: </label>
+            <input class="form-control form-control-sm  col-sm-4" type="text" [(ngModel)]="approvalCd" readonly>
+        </div>
+        <div>
+            <app-cust-editable-non-datatable #user [passData]="passDataUser" (tableDataChange)="updateUser($event)" (clickLOV)="showUsersLOV($event)"></app-cust-editable-non-datatable>
+        </div>
 	</div>
 	<div footer class="text-center">
-			<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+			<button type="button" class="cust-btn" (click)="onCancelUser()"><a>Cancel</a></button>
 			<button type="button" class="cust-btn" (click)="onClickSaveUser()"><a>Save</a></button>
 	</div>
 </app-modal>

@@ -305,7 +305,6 @@ export class ClmGenInfoClaimComponent implements OnInit {
 
   adjTableRowClick(data) {
     this.adjData.disableGeneric = data == null || data == '';
-    this.adjData.disableAdd = data == null || data == '';
   }
 
   clmAdjClickDelete(ev) {

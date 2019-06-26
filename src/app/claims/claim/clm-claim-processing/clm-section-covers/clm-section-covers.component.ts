@@ -14,6 +14,7 @@ export class ClmSectionCoversComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('myForm') form:any;
   passData: any = {
     tableData: [],
     tHeader: ["Deductible Level","Deductible Code", "Deductible Title", "Rate (%)", "Amount", "Deductible Text"],
@@ -53,11 +54,9 @@ export class ClmSectionCoversComponent implements OnInit {
 
   getClmSec(){
     this.claimService.getClaimSecCover(1,null).subscribe((data:any)=>{
-      console.log(data)
       this.coverageData = data.claims.clmProject.clmCoverage;
-
       var deductibles = data.claims.clmDeductibles;
-
+      this.passData.tableData = [];
       for(var i = 0 ; i < deductibles.length;i++){
         this.passData.tableData.push(deductibles[i]);
       }
@@ -99,6 +98,7 @@ export class ClmSectionCoversComponent implements OnInit {
         this.dialogIcon = "success";
         this.successDiag.open();
         this.getClmSec();
+        this.form.control.markAsPristine();
       }
     });
   }

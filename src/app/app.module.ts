@@ -416,10 +416,13 @@ import { ClaimEventComponent } from './maintenance/claims/claim-event/claim-even
 import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lov/mtn-clm-event-type-lov.component';
 import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-policy/section-ii-treaty-limit/section-ii-treaty-limit.component';
 import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
+import { MtnCurrencyCodeComponent } from './maintenance/mtn-currency-code/mtn-currency-code.component';
+import { MtnClaimStatusLovComponent } from './maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { MtnLossCdComponent } from './maintenance/mtn-loss-cd/mtn-loss-cd.component';
 import { MtnClmEventComponent } from './maintenance/mtn-clm-event/mtn-clm-event.component';
 import { MtnClmEventTypeComponent } from './maintenance/mtn-clm-event-type/mtn-clm-event-type.component';
 import { MtnAdjusterComponent } from './maintenance/mtn-adjuster/mtn-adjuster.component';
+import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 
 @NgModule({
     imports: [
@@ -438,7 +441,7 @@ import { MtnAdjusterComponent } from './maintenance/mtn-adjuster/mtn-adjuster.co
         QuillModule,
         NgxMaskModule.forRoot(),
         CalendarModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
     ],
     declarations: [
         AppComponent,
@@ -842,10 +845,13 @@ import { MtnAdjusterComponent } from './maintenance/mtn-adjuster/mtn-adjuster.co
         MtnClmEventTypeLovComponent,
         SectionIiTreatyLimitComponent,
         RetentionPerPoolMemberComponent,
+        MtnCurrencyCodeComponent,
+        MtnClaimStatusLovComponent,
         MtnLossCdComponent,
         MtnClmEventComponent,
         MtnClmEventTypeComponent,
         MtnAdjusterComponent,
+        ClaimStatusReasonComponent,
     ],
 
   	providers: [
