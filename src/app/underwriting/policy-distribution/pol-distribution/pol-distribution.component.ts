@@ -89,6 +89,41 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     net:0
   };
 
+
+  pts1:any = {
+    ret: 0.00,
+    ret1si: 0.00,
+    ret1prem: 0.00,
+    ret2si: 0.00,
+    ret2prem: 0.00,
+    comAmt:0.00,
+    vat:0.00,
+    net:0.00
+  };
+
+  pts2:any = {
+    ret: 0.00,
+    ret1si: 0.00,
+    ret1prem: 0.00,
+    ret2si: 0.00,
+    ret2prem: 0.00,
+    comAmt:0.00,
+    vat:0.00,
+    net:0.00
+  };
+
+  ptotal:any = {
+    ret: 0.00,
+    ret1si: 0.00,
+    ret1prem: 0.00,
+    ret2si: 0.00,
+    ret2prem: 0.00,
+    comAmt:0.00,
+    vat:0.00,
+    net:0.00
+  };
+
+
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
@@ -124,6 +159,73 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.total.net  += this.ts1.net +  this.ts2.net;
   }
 
+  getSumsPool(){
+      this.pts1 = {
+      ret: 0.00,
+      ret1si: 0.00,
+      ret1prem: 0.00,
+      ret2si: 0.00,
+      ret2prem: 0.00,
+      comAmt:0.00,
+      vat:0.00,
+      net:0.00
+    };
+    this.pts2 = {
+      ret: 0.00,
+      ret1si: 0.00,
+      ret1prem: 0.00,
+      ret2si: 0.00,
+      ret2prem: 0.00,
+      comAmt:0.00,
+      vat:0.00,
+      net:0.00
+    };
+
+    this.ptotal = {
+      ret: 0.00,
+      ret1si: 0.00,
+      ret1prem: 0.00,
+      ret2si: 0.00,
+      ret2prem: 0.00,
+      comAmt:0.00,
+      vat:0.00,
+      net:0.00
+    };
+
+
+    this.poolDistributionData.tableData.forEach(a=>{
+      if(a.section == 'I'){
+        this.pts1.ret += a.retOneLines + a.retTwoLines;
+        this.pts1.ret1si += a.retOneTsiAmt;
+        this.pts1.ret1prem += a.retOnePremAmt;
+        this.pts1.ret2si += a.retTwoTsiAmt;
+        this.pts1.ret2prem += a.retTwoPremAmt;
+        this.pts1.comAmt += a.totalCommAmt;
+        this.pts1.vat += a.totalVatRiComm;
+        this.pts1.net += a.totalNetDue;
+        console.log(a.totalCommAmt);
+        console.log(this.pts1.comAmt);
+      }else{
+        this.pts2.ret += a.retOneLines + a.retTwoLines;
+        this.pts2.ret1si += a.retOneTsiAmt;
+        this.pts2.ret1prem += a.retOnePremAmt;
+        this.pts2.ret2si += a.retTwoTsiAmt;
+        this.pts2.ret2prem += a.retTwoPremAmt;
+        this.pts2.comAmt += a.totalCommAmt;
+        this.pts2.vat += a.totalVatRiComm;
+        this.pts2.net += a.totalNetDue;
+      }
+    });
+      this.ptotal.ret = this.pts1.ret + this.pts2.ret;
+      this.ptotal.ret1si = this.pts1.ret1si + this.pts2.ret1si;
+      this.ptotal.ret1prem = this.pts1.ret1prem + this.pts2.ret1prem;
+      this.ptotal.ret2si = this.pts1.ret2si + this.pts2.ret2si;
+      this.ptotal.ret2prem = this.pts1.ret2prem + this.pts2.ret2prem;
+      this.ptotal.comAmt = this.pts1.comAmt + this.pts2.comAmt;
+      this.ptotal.vat = this.pts1.vat + this.pts2.vat;
+      this.ptotal.net = this.pts1.net + this.pts2.net;
+  }
+
   //NECO 06/04/2019
   retrievePolicyDistribution(){
     this.polService.getPolDistribution(this.params.policyId).subscribe((data: any)=>{
@@ -145,6 +247,11 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.poolDistributionData.tableData = data.poolDistList;
       this.poolTable.refreshTable();
       this.poolTable.loadingFlag = false;
+      this.getSumsPool();
+      // setTimeout(()=>{
+      //    $('input[type=text]').focus();
+      //    $('input[type=text]').blur();
+      // },0);
     });
   }
 
