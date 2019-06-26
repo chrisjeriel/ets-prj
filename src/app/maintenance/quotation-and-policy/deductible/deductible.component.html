@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
     <h4>Maintenance / Quotation & Policy</h4>
-    <ngb-tabset #tabset (tabChange)="onTabChange($event)">
+    <ngb-tabset>
         <ngb-tab title="Deductibles">
             <ng-template ngbTabContent>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
@@ -18,7 +18,7 @@
 
                 <fieldset class="scheduler-border" style="margin-top: 10px !important">
                     <div class="custom-row-inline-inset" style="margin-top: 25px !important;" id="deductibleTbl">
-                        <app-cust-editable-non-datatable [passData]="passData" (newClick)="clickRow($event)" (tableDataChange)="passData.tableData=$event; dedType();" #dedTbl (genericBtn)="onDeleteDeductibles()" (onDelete)="dedTbl.onClickDelete('force'); passData.disableGeneric=true">
+                        <app-cust-editable-non-datatable [passData]="passData" (newClick)="clickRow($event)" (tableDataChange)="passData.tableData=$event; dedType();" #dedTbl (genericBtn)="onDeleteDeductibles()" (onDelete)="dedTbl.onClickDelete('force'); passData.disableGeneric=true;">
                         </app-cust-editable-non-datatable>
 
                             <div class="form-row" style="margin-top: 40px !important;">
@@ -60,7 +60,8 @@
 
 <app-confirm-save (onYes)="onSaveMtnDeductibles()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveMtnDeductibles('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSave('cancel')" (no)="onClickNo()" (onCancel)="onCancel()" [url]="(changeLine == true)?null:'/maintenance-qu-pol'" ></app-cancel-button>
+
 
 <app-modal class="d-none" id="warnMdl">
     <div header>Warning Message</div>

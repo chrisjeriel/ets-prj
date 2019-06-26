@@ -240,7 +240,6 @@ export class ProvinceComponent implements OnInit {
   }
 
   onClickSave(cancelFlag?){
-    this.cancelFlag = cancelFlag !== undefined;
       if(this.checkFields()){
         let provinceCds:string[] = this.provinceTable.passData.tableData.map(a=>a.provinceCd);
           if(provinceCds.some((a,i)=>provinceCds.indexOf(a)!=i)){
@@ -271,6 +270,8 @@ export class ProvinceComponent implements OnInit {
   }
 
   onClickSaveProvince(cancelFlag?){
+     this.cancelFlag = cancelFlag !== undefined;
+
      this.mtnProvinceReq.saveProvince = [];
      this.mtnProvinceReq.deleteProvince = [];
      this.mtnProvinceReq.saveProvince = this.passData.tableData.filter(a=>a.edited && !a.deleted);
@@ -300,6 +301,7 @@ export class ProvinceComponent implements OnInit {
     console.log(JSON.stringify(obj));
     this.mtnService.saveMtnProvince(JSON.stringify(obj))
                 .subscribe(data => {
+                  console.log(data);
               if(data['returnCode'] == -1){
                   this.dialogIcon = "success";
                   this.successDialog.open();
