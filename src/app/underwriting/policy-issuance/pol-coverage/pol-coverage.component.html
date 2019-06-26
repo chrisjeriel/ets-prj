@@ -163,14 +163,16 @@
        <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
     </div>                
     <div footer style="margin-right: 145px !important;">
-      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-      <button class="cust-btn" type="button" (click)="saveCatPeril();" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
+      <button class="cust-btn" type="button" (click)="onCancelCat()"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="onClickSaveCat();" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
     </div>
 </app-modal>
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="saveCoverage()"></app-confirm-save>
-<app-cancel-button (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-confirm-save id="saveCov" (onYes)="saveCoverage()"></app-confirm-save>
+<app-confirm-save id="saveCat" (onYes)="saveCatPeril()"></app-confirm-save>
+<app-cancel-button #cancelCov (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" [url]="null" ></app-cancel-button>
 
 
 <app-modal #infoCov hidden [btnTitle]="'Confirmation'" id="confirmationModal">
