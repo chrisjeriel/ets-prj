@@ -36,13 +36,16 @@ export class NotesService {
   lovLoader(ev, num){
     if(ev != null) {
       var ic = $(ev.target).next().find('i');
-
+      console.log(ic.closest('td'));
       if(num == 0) {
-        ic.removeClass('fa-spinner fa-spin')
-        ic.closest('div').css('pointer-events', 'initial').css('font-size', '14px');
+        if(ic.closest('td').length == 0) {
+          ic.css('font-size', '14px');
+        }
+        ic.removeClass('fa-spinner fa-spin');
+        ic.closest('div').css('pointer-events', 'initial');
       } else if(num == 1) {
-        ic.addClass('fa-spinner fa-spin');
-        ic.closest('div').css('pointer-events', 'none').css('font-size', '13px');
+        ic.addClass('fa-spinner fa-spin').css('font-size', '13px');
+        ic.closest('div').css('pointer-events', 'none');
       }  
     }       
   }

@@ -26,7 +26,8 @@ export class ClmGenInfoClaimComponent implements OnInit {
   @ViewChild('clmEventTypeLOV') clmEventTypeLOV: MtnClmEventComponent;
   @ViewChild('adjusterLOV') adjusterLOV: MtnAdjusterComponent;
   @ViewChild('adjConfirmSave') adjConfirmSave: ConfirmSaveComponent;
-  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+  @ViewChild('adjSuccessDialog') adjSuccessDialog: SucessDialogComponent;
+  @ViewChild('adjCancelBtn') adjCancelBtn: CancelButtonComponent;
 
   line: string;
   sub: any;
@@ -163,6 +164,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
   dialogIcon: string = "";
   dialogMessage: string = "";
   cancel: boolean = false;
+  container: any;
 
   constructor(private actRoute: ActivatedRoute, private modalService: NgbModal, private titleService: Title,
     private cs: ClaimsService, private ns: NotesService, private router: Router) { }
@@ -207,7 +209,21 @@ export class ClmGenInfoClaimComponent implements OnInit {
   }
 
   openAdjustersModal() {
+    /*setTimeout(() => {
+      this.container = $('.ng-dirty');
+      this.container.removeClass('ng-dirty');
+    }, 0);*/
+
+    this.adjTable.refreshTable();
+    this.adjTable.onRowClick(null, this.adjData.tableData[0]);
     $('#adjustersModal #modalBtn').trigger('click');
+  }
+
+  adjCancelConfirmNo() {
+    this.adjData.tableData.forEach(a => {
+      a.edited = false;
+      a.deleted = false;
+    });
   }
 
   showLossCdLOV(type) {
@@ -332,12 +348,20 @@ export class ClmGenInfoClaimComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
+  onAdjClickCancel() {
+    if($('#adj-table .ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+      this.adjCancelBtn.saveModal.openNoClose();
+    } else {
+      this.modalService.dismissAll();
+    }
+  }
+
   onAdjClickSave() {
     var td = this.adjData.tableData;
 
     if(td.filter(a => a.edited && !a.deleted && (a.adjId == '' || a.adjName == '')).length > 0) {
       this.dialogIcon = 'error';
-      this.successDialog.open();
+      this.adjSuccessDialog.open();
 
       this.cancel = false;
       return;
@@ -378,7 +402,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
     this.cs.saveClmAdjuster(params).subscribe(data => {
       if(data['returnCode'] == -1) {
         this.dialogIcon = "success";
-        this.successDialog.open();
+        this.adjSuccessDialog.open();
         this.adjNameAndRefs();
 
         this.adjData.tableData.forEach(a => {
@@ -388,7 +412,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
         });
       } else {
         this.dialogIcon = "error";
-        this.successDialog.open();
+        this.adjSuccessDialog.open();
       }
     });
   }

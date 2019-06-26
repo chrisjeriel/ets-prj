@@ -733,11 +733,13 @@
 <app-modal hidden id="adjustersModal" style="margin-bottom: 2px;padding-top: 2px !important;">
     <div header style="width: 600px !important;">Adjusters</div>
     <div body>
-        <app-cust-editable-non-datatable #adjTblGI [passData]="adjData" (tableDataChange)="claimData.clmAdjusterList=$event; clmAdjTDataChange($event);" (newClick)="adjTableRowClick($event)" (genericBtn)="clmAdjClickDelete($event)" (onDelete)="adjTable.onClickDelete('force'); clmAdjClickDelete();" (clickLOV)="showAdjLOV($event)"></app-cust-editable-non-datatable>
+        <div id="adj-table">
+            <app-cust-editable-non-datatable #adjTblGI [passData]="adjData" (tableDataChange)="claimData.clmAdjusterList=$event; clmAdjTDataChange($event);" (newClick)="adjTableRowClick($event)" (genericBtn)="clmAdjClickDelete($event)" (onDelete)="adjTable.onClickDelete('force'); clmAdjClickDelete();" (clickLOV)="showAdjLOV($event)"></app-cust-editable-non-datatable>    
+        </div>
     </div>
     <div footer class="text-center" style="width: 100% !important;">
         <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="maintainAdjuster()"><a>Adjusters Maintenance</a></button>
-        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="onAdjClickCancel()"><a>Cancel</a></button>
         <button type="button" class="cust-btn" (click)="onAdjClickSave()"><a>Save</a></button>
     </div>
 </app-modal>
@@ -749,5 +751,5 @@
 <app-mtn-users id="usersLOV" (selectedData)="setProcessedBy($event)"></app-mtn-users>
 
 <app-confirm-save #adjConfirmSave (onYes)="adjSave()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
-<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? adjCancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="adjCancelConfirmNo()"></app-cancel-button>
