@@ -417,6 +417,9 @@ import { MtnClmEventTypeLovComponent } from './maintenance/mtn-clm-event-type-lo
 import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-policy/section-ii-treaty-limit/section-ii-treaty-limit.component';
 import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
 import { MtnLossCdComponent } from './maintenance/mtn-loss-cd/mtn-loss-cd.component';
+import { MtnClmEventComponent } from './maintenance/mtn-clm-event/mtn-clm-event.component';
+import { MtnClmEventTypeComponent } from './maintenance/mtn-clm-event-type/mtn-clm-event-type.component';
+import { MtnAdjusterComponent } from './maintenance/mtn-adjuster/mtn-adjuster.component';
 
 @NgModule({
     imports: [
@@ -840,6 +843,9 @@ import { MtnLossCdComponent } from './maintenance/mtn-loss-cd/mtn-loss-cd.compon
         SectionIiTreatyLimitComponent,
         RetentionPerPoolMemberComponent,
         MtnLossCdComponent,
+        MtnClmEventComponent,
+        MtnClmEventTypeComponent,
+        MtnAdjusterComponent,
     ],
 
   	providers: [

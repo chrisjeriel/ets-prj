@@ -6,6 +6,9 @@ import { ClaimsService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { MtnLossCdComponent } from '@app/maintenance/mtn-loss-cd/mtn-loss-cd.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
+import { MtnClmEventComponent } from '@app/maintenance/mtn-clm-event/mtn-clm-event.component';
+import { MtnClmEventTypeComponent } from '@app/maintenance/mtn-clm-event-type/mtn-clm-event-type.component';
+import { MtnAdjusterComponent } from '@app/maintenance/mtn-adjuster/mtn-adjuster.component';
 
 @Component({
   selector: 'app-clm-gen-info-claim',
@@ -15,6 +18,9 @@ import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.componen
 export class ClmGenInfoClaimComponent implements OnInit {
   @ViewChild('adjTblGI') adjTable: CustEditableNonDatatableComponent;
   @ViewChild('lossCdLOV') lossCdLOV: MtnLossCdComponent;
+  @ViewChild('clmEventLOV') clmEventLOV: MtnClmEventComponent;
+  @ViewChild('clmEventTypeLOV') clmEventTypeLOV: MtnClmEventComponent;
+  @ViewChild('adjusterLOV') adjusterLOV: MtnAdjusterComponent;
 
   line: string;
   sub: any;
@@ -26,7 +32,6 @@ export class ClmGenInfoClaimComponent implements OnInit {
     dataTypes: ['lovInput-r','text','text'],
     uneditable: [false,true,true],
     addFlag: true,
-    deleteFlag: true,
     paginateFlag: true,
     infoFlag: true,
     pageLength: 10,
@@ -41,7 +46,10 @@ export class ClmGenInfoClaimComponent implements OnInit {
       createDate: '',
       updateUser: '',
       updateDate: ''
-    }
+    },
+    genericBtn: 'Delete',
+    disableGeneric: true,
+    disableAdd: false
   };
 
   claimData: any = {
@@ -141,7 +149,11 @@ export class ClmGenInfoClaimComponent implements OnInit {
   }
 
   lossCdFilter: any = null;
+  clmEventFilter: any = null;
+  clmEventTypeFilter: any = null;
   lossCdType: any = null;
+  hiddenAdj: any[] = [];
+  adjLOVRow: number;
 
   constructor(private router: ActivatedRoute, private modalService: NgbModal, private titleService: Title, private cs: ClaimsService, private ns: NotesService) { }
 
@@ -213,9 +225,97 @@ export class ClmGenInfoClaimComponent implements OnInit {
     this.claimData.processedBy = ev.userId;
   }
 
+  showClmEventLOV() {
+    var eventTypeCd = this.claimData.eventTypeCd;
+    var line = this.line;
+
+    this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lineCd == line };
+    this.clmEventLOV.modal.openNoClose();
+  }
+
+  setClmEvent(ev) {
+    this.claimData.eventCd = ev.eventCd;
+    this.claimData.eventDesc = ev.eventDesc;
+  }
+
+  showClmEventTypeLOV() {
+    this.clmEventTypeFilter = function(a) { return a.activeTag == 'Y' };
+    this.clmEventTypeLOV.modal.openNoClose();
+  }
+
+  setClmEventType(ev) {
+    this.claimData.eventTypeCd = ev.eventTypeCd;
+    this.claimData.eventTypeDesc = ev.eventTypeDesc;
+  }
+
   adjNameAndRefs() {
     this.claimData.adjNames = this.claimData.clmAdjusterList.map(a => a.adjName).join(' / ');
     this.claimData.adjRefNos = this.claimData.clmAdjusterList.map(a => a.adjRefNo).join(' / ');
+  }
+
+  clmAdjTDataChange(data) {
+    if(data.hasOwnProperty('lovInput')) {
+      this.hiddenAdj = this.adjData.tableData.filter(a => a.adjId !== undefined && !a.deleted && a.showMG != 1).map(a => a.adjId);
+
+      data.ev['index'] = data.index;
+      this.adjusterLOV.checkCode(data.ev.target.value, data.ev);
+    }
+  }
+
+  showAdjLOV(ev) {
+    this.hiddenAdj = this.adjData.tableData.filter(a => a.adjId !== undefined && !a.deleted && a.showMG != 1).map(a => a.adjId);
+    this.adjusterLOV.modal.openNoClose();
+    this.adjLOVRow = ev.index;
+  }
+
+  setSelectedAdjuster(data) {
+    console.log(data);
+    if(data.hasOwnProperty('singleSearchLov') && data.singleSearchLov) {
+      this.adjLOVRow = data.ev.index;
+      this.ns.lovLoader(data.ev, 0);
+
+      if(data.adjId != '' && data.adjId != null && data.adjId != undefined) {
+        this.adjData.tableData[this.adjLOVRow].showMG = 0;
+        this.adjData.tableData[this.adjLOVRow].adjId = data.adjId;
+        this.adjData.tableData[this.adjLOVRow].adjName = data.adjName;
+        this.adjData.tableData[this.adjLOVRow].adjRefNo = data.adjRefNo;
+        this.adjData.tableData[this.adjLOVRow].edited = true;
+      } else {
+        this.adjData.tableData[this.adjLOVRow].adjId = '';
+        this.adjData.tableData[this.adjLOVRow].adjName = '';
+        this.adjData.tableData[this.adjLOVRow].adjRefNo = '';
+        this.adjData.tableData[this.adjLOVRow].edited = true;
+      }
+    } else {
+      this.adjData.tableData = this.adjData.tableData.filter(a => a.showMG != 1);
+        for(let i of data) {
+          this.adjData.tableData.push(JSON.parse(JSON.stringify(this.adjData.nData)));
+          this.adjData.tableData[this.adjData.tableData.length - 1].showMG = 0;
+          this.adjData.tableData[this.adjData.tableData.length - 1].adjId = i.adjId;
+          this.adjData.tableData[this.adjData.tableData.length - 1].adjName = i.adjName;
+          this.adjData.tableData[this.adjData.tableData.length - 1].adjRefNo = i.adjRefNo;
+          this.adjData.tableData[this.adjData.tableData.length - 1].edited = true;
+        }
+      }
+
+    $('#cust-table-container').addClass('ng-dirty');
+
+    this.adjTable.refreshTable();
+  }
+
+  adjTableRowClick(data) {
+    this.adjData.disableGeneric = data == null || data == '';
+    this.adjData.disableAdd = data == null || data == '';
+  }
+
+  clmAdjClickDelete(ev) {
+    if(ev != undefined) {
+      this.adjTable.confirmDelete();
+    } else {
+      this.adjTable.indvSelect.edited = true;
+      this.adjTable.indvSelect.deleted = true;
+      this.adjTable.refreshTable();
+    }
   }
 
   dc(ev, data, type) {

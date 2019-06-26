@@ -111,7 +111,7 @@
                             <label class="form-control-sm col-sm-4">&nbsp;Event Type</label>
                             <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
-                                <a><i class="fa fa-search"></i></a>
+                                <a><i class="fa fa-search" (click)="showClmEventTypeLOV()"></i></a>
                             </div>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Event</label>
                             <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
-                                <a><i class="fa fa-search"></i></a>
+                                <a><i class="fa fa-search" (click)="showClmEventLOV()"></i></a>
                             </div>
                         </div>
                     </div>
@@ -731,9 +731,9 @@
 </div>
 
 <app-modal hidden id="adjustersModal" style="margin-bottom: 2px;padding-top: 2px !important;">
-    <div header style="width: 800px !important;">Adjusters</div>
+    <div header style="width: 600px !important;">Adjusters</div>
     <div body>
-        <app-cust-editable-non-datatable #adjTblGI [passData]="adjData"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable #adjTblGI [passData]="adjData" (tableDataChange)="claimData.clmAdjusterList=$event; clmAdjTDataChange($event);" (newClick)="adjTableRowClick($event)" (genericBtn)="clmAdjClickDelete($event)" (onDelete)="adjTable.onClickDelete('force'); clmAdjClickDelete();" (clickLOV)="showAdjLOV($event)"></app-cust-editable-non-datatable>
     </div>
     <div footer class="text-center" style="width: 100% !important;">
         <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="modalService.dismissAll()"><a>Adjusters Maintenance</a></button>
@@ -743,4 +743,7 @@
 </app-modal>
 
 <app-mtn-loss-cd #lossCdLOV id="lossCdLOV" (selectedData)="setLossCd($event)" [filters]="lossCdFilter"></app-mtn-loss-cd>
+<app-mtn-clm-event #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)" [filters]="clmEventFilter"></app-mtn-clm-event>
+<app-mtn-clm-event-type #clmEventTypeLOV id="clmEventTypeLOV" (selectedData)="setClmEventType($event)" [filters]="clmEventTypeFilter"></app-mtn-clm-event-type>
+<app-mtn-adjuster #adjusterLOV (selectedData)="setSelectedAdjuster($event)" [exclude]="hiddenAdj" [lovCheckBox]="true"></app-mtn-adjuster>
 <app-mtn-users id="usersLOV" (selectedData)="setProcessedBy($event)"></app-mtn-users>

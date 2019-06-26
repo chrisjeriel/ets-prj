@@ -5,28 +5,28 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { ModalComponent }  from '@app/_components/common/modal/modal.component';
 
 @Component({
-  selector: 'app-mtn-loss-cd',
-  templateUrl: './mtn-loss-cd.component.html',
-  styleUrls: ['./mtn-loss-cd.component.css']
+  selector: 'app-mtn-clm-event-type',
+  templateUrl: './mtn-clm-event-type.component.html',
+  styleUrls: ['./mtn-clm-event-type.component.css']
 })
-export class MtnLossCdComponent implements OnInit {
+export class MtnClmEventTypeComponent implements OnInit {
+
 	@ViewChild('mdl') modal : ModalComponent;
 	selected: any = null;
 
-	lossCd: any = {
+	clmEventType: any = {
 		tableData: [],
-	    tHeader: ['Loss Code','Abbreviation','Description'],
-	    dataTypes: ['sequence-3', 'text','text'],
+	    tHeader: ['Event Type Code','Description'],
+	    dataTypes: ['text','text'],
 	    pageLength: 10,
 	    searchFlag: true,
 	    pageStatus: true,
 	    pagination: true,
 	    fixedCol: false,
-	    pageID: 'lossCd'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
+	    pageID: 'clmEventType'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
 	    keys:[
-	    	'lossCd',
-	    	'lossAbbr',
-	    	'lossDesc'
+	    	'eventTypeCd',
+	    	'eventTypeDesc'
 	    	]
 	};
 
@@ -44,7 +44,7 @@ export class MtnLossCdComponent implements OnInit {
 		setTimeout(() => { this.table.refreshTable(); }, 0);
 
 		if(this.lovCheckBox){
-	    	this.lossCd.checkFlag = true;
+	    	this.clmEventType.checkFlag = true;
 	    }
 	}
 
@@ -63,9 +63,9 @@ export class MtnLossCdComponent implements OnInit {
 	    	this.selected = null;
 	    }
 	    else{
-	    	for(var i = 0; i < this.lossCd.tableData.length; i++){
-	        	if(this.lossCd.tableData[i].checked){
-	        		this.selects.push(this.lossCd.tableData[i]);
+	    	for(var i = 0; i < this.clmEventType.tableData.length; i++){
+	        	if(this.clmEventType.tableData[i].checked){
+	        		this.selects.push(this.clmEventType.tableData[i]);
 	        	}
 	      }
 	      this.selectedData.emit(this.selects);
@@ -74,15 +74,15 @@ export class MtnLossCdComponent implements OnInit {
     }
 
     openModal(){
-    	this.lossCd.tableData = [];
+    	this.clmEventType.tableData = [];
     	this.table.overlayLoader = true;
-    	this.maintenanceService.getMtnLossCode([]).subscribe(data =>{
-        	var records = data['lossCd'];
+    	this.maintenanceService.getMtnClmEventType('').subscribe(data =>{
+        	var records = data['eventTypeList'];
         	if(this.filters != null) {
         		records = records.filter(this.filters);
         	}
         	
-            this.lossCd.tableData = records;
+            this.clmEventType.tableData = records;
         	this.table.refreshTable();
       	});
  	}
