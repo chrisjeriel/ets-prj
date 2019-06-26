@@ -69,14 +69,14 @@ export class PolPostComponent implements OnInit {
    //  }
 
     checkAcctDate(){
-      this.post();
+      // this.post();
 
       // commented for testing 
-      // this.postBtn = true;
-      // this.progress = 0;
-      // this.loadMsg = "Checking Accounting date";
-      // this.progress +=25;
-      // this.checkCoverage();
+      this.postBtn = true;
+      this.progress = 0;
+      this.loadMsg = "Checking Accounting date";
+      this.progress +=25;
+      this.checkCoverage();
     }
 
     checkSign(secCvrs):string{
@@ -89,20 +89,21 @@ export class PolPostComponent implements OnInit {
       this.loadMsg = "Checking Coverage"
       this.uwService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe(a=>{
         if(a['policy'] == null){
-          this.loadMsg = 'No Data for Coverage.';
+          this.progress +=50;
+          this.post();
           return;
         }
         let covData = a['policy'].project.coverage;
         let secCvrs = covData.sectionCovers;
         if(this.alterationFlag){
-          if(secCvrs.every(a=>a.premAmt>=0 && a.sumInsured>=0)){
-            this.altSign = 'positive';
-          }else if(secCvrs.every(a=>a.premAmt<=0 && a.sumInsured<=0)){
-            this.altSign = 'negative';
-          }else{
-            this.loadMsg = 'Invalid amounts. Please create separate alteration for positive and negative amounts in Coverage tab.';
-            return;
-          }
+          // if(secCvrs.every(a=>a.premAmt>=0 && a.sumInsured>=0)){
+          //   this.altSign = 'positive';
+          // }else if(secCvrs.every(a=>a.premAmt<=0 && a.sumInsured<=0)){
+          //   this.altSign = 'negative';
+          // }else{
+          //   this.loadMsg = 'Invalid amounts. Please create separate alteration for positive and negative amounts in Coverage tab.';
+          //   return;
+          // }
         }
 
         if(!this.alterationFlag && !coveragaAmts.every(a=>covData[a]>=0)){

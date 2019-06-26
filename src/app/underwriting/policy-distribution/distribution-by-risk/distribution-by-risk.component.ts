@@ -101,7 +101,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //NECO 06/03/2019
   treatyDistData: any = {
     tableData: [],
-    tHeader: ['Treaty', 'Treaty Company', 'Treaty Share (%)', 'SI Amount', 'Premium Amount', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
+    tHeader: ['Treaty', 'Treaty Company', 'Treaty Share (%)', 'SI Amount', 'Premium Amount', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
     magnifyingGlass: [],
     options: [],
     dataTypes: ['text', 'text', 'percent', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
@@ -167,7 +167,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
   poolDistributionData: any = {
     tableData: [],
-    tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
+    tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
     dataTypes: ['text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
     keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
     widths: [1,250,1,140,140,1,140,140,1,140,140,140],
@@ -190,6 +190,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     uneditable: [true,true,true,true,true,true,true],
     infoFlag: true,
     paginateFlag: true,
+    total:[null,null,null,'TOTAL','pctShare', 'siAmt', 'premAmt'],
     pageID: 'distCoInsTable'
   }
 
@@ -460,7 +461,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.wparamData.genericBtn = undefined;
       }else{
         this.wparamData.uneditable = [];
-        this.controlDisabled.oneRetLine = false;
+        if(parseInt(this.params.policyNo.substr(-3))==0){
+          this.controlDisabled.oneRetLine = false;
+        }
         this.wparamData.addFlag = true;
         this.wparamData.genericBtn = 'Delete';
       }
