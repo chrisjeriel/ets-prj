@@ -97,7 +97,7 @@ export class MtnCurrencyCodeComponent implements OnInit {
           ev: ev
         });
       } else {
-        this.maintenanceService.getMtnCurrency(code,'Y').subscribe(data => {
+        this.maintenanceService.getMtnCurrencyList(code).subscribe(data => {
           if(data['currency'].length > 0) {
             data['currency'][0]['ev'] = ev;
             this.selectedData.emit(data['currency'][0]);

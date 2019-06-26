@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaintenanceService, NotesService} from '@app/_services'
-import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
+import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { Title } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-mtn-currency-rate',
   templateUrl: './mtn-currency-rate.component.html',
@@ -11,21 +13,20 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class MtnCurrencyRateComponent implements OnInit {
 
-  @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
+  @ViewChild(MtnCurrencyCodeComponent) currencyLov: MtnCurrencyCodeComponent;
   @ViewChild('currency') table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
   passData: any = {
-    tHeader: [ "Hist No","Currency Rate","Eff Date From","Eff Date To", "Active","Remarks"],
+    tHeader: [ "Hist No","Currency Rate","Eff Date From", "Active","Remarks"],
     tableData:[],
-    dataTypes: ['sequence-3','percent','date','date',"checkbox", "text"],
+    dataTypes: ['sequence-3','percent','date',"checkbox", "text"],
     nData: {
       histNo: null,
       currencyRt: null,
       effDateFrom: null,
-      effDateTo: null,
-      activeTag: 'N',
+      activeTag: 'Y',
       remarks: null,
       createDate: '',
       createUser: JSON.parse(window.localStorage.currentUser).username,
@@ -36,15 +37,16 @@ export class MtnCurrencyRateComponent implements OnInit {
     pageID: 'currencyRt',
     //checkFlag: true,
     disableGeneric : true,
+    disableAdd:true,
     addFlag: true,
     genericBtn:'Delete',
     searchFlag: true,
     pageLength: 10,
     paginateFlag: true,
     infoFlag: true,
-    uneditable:[true,false,false,false,false,false],
-    widths:[100,'auto','auto','auto',70,400],
-    keys:['histNo','currencyRt','effDateFrom','effDateTo','activeTag','remarks'],
+    uneditable:[true,false,false,false,,false],
+    widths:[100,'auto','auto',70,400],
+    keys:['histNo','currencyRt','effDateFrom','activeTag','remarks'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -67,9 +69,10 @@ export class MtnCurrencyRateComponent implements OnInit {
   dialogMessage : string = '';
   dialogIcon: any;
   errorFlag: boolean = false;
-  constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
+  constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Mtn | Currency Rate");
     this.getCurrencyRate();
   }
 
@@ -91,7 +94,8 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   clickRow(data){
-    if(data !== null){
+    console.log(this.table.indvSelect)
+    if(data !== null && data.okDelete !== 'N'){
       this.passData.disableGeneric = false
       this.currencyData = data;
       this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
@@ -117,6 +121,7 @@ export class MtnCurrencyRateComponent implements OnInit {
 
   setCurrency(data){
     console.log(data)
+    this.passData.disableAdd = false;
     this.currencyCd = data.currencyCd;
     this.description = data.description;
     this.ns.lovLoader(data.ev, 0);
@@ -202,13 +207,14 @@ export class MtnCurrencyRateComponent implements OnInit {
             this.dialogIcon = "success";
             this.successDiag.open();
             this.getCurrencyRate();
+            this.table.markAsPristine();
+            this.passData.disableGeneric = false;
           }
         });
       }
   }
 
   deleteCurr(){
-      this.table.indvSelect.deleted = true;
       this.table.selected  = [this.table.indvSelect]
       this.table.confirmDelete();
   }
