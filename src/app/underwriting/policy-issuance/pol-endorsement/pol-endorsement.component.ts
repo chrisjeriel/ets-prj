@@ -154,8 +154,6 @@ export class PolEndorsementComponent implements OnInit {
                 this.passData.tableData.forEach(a=>{
                     if(a.policyId!= this.policyInfo.policyId){
                         a.policyId = this.policyInfo.policyId;
-                        a.edited = true;
-                        this.endtTable.markAsDirty();
                     }
                 })
                 this.passData.tableData.forEach(a=>{
@@ -454,4 +452,11 @@ export class PolEndorsementComponent implements OnInit {
         
     }
 
+    onEndtEdit(data){
+        if(data.key == 'text'){
+            this.endtTable.indvSelect.changeTag = 'Y';
+        }
+    }
+
 }
+

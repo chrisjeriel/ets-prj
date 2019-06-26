@@ -154,8 +154,21 @@ export class EndorsementComponent implements OnInit {
   }
 
   checkCode(ev){
-    this.ns.lovLoader(ev, 1);
-    this.lineLov.checkCode(this.line.lineCd.toUpperCase(), ev);
+    if(this.line.lineCd.toUpperCase() == null || this.line.lineCd.toUpperCase() == ''){
+      this.line.description = '';
+      this.passEndtTable.disableAdd = true;
+      this.passEndtTable.disableGeneric = true;
+      this.passEndtTable.tableData = [];
+      this.endtTable.refreshTable();
+
+      this.passDedTable.disableAdd = true;
+      this.passDedTable.disableGeneric = true;
+      this.passDedTable.tableData = [];
+      this.dedTable.refreshTable();
+    }else{
+      this.ns.lovLoader(ev, 1);
+      this.lineLov.checkCode(this.line.lineCd.toUpperCase(), ev); 
+    }
   }
 
   setLine(data){

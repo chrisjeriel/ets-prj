@@ -46,7 +46,7 @@ export class InwardPolBalanceComponent implements OnInit {
       otherCharges:[]
     },
     addFlag: true,
-    deleteFlag: true,
+    genericBtn: 'Delete',
     widths: ["1", "1", "1", "auto", "auto", "auto"],
     pageID:'installment',
     pageLength: 5,
@@ -62,7 +62,7 @@ export class InwardPolBalanceComponent implements OnInit {
     uneditable:[true,true],
     magnifyingGlass: ['chargeCd'],
     addFlag: true,
-    deleteFlag: true,
+    genericBtn: 'Delete',
     widths: [1,'auto','auto'],
     pageLength: 5,
     pageID:'otherCharges',
@@ -76,7 +76,8 @@ export class InwardPolBalanceComponent implements OnInit {
       updateDate: this.ns.toDateTimeString(0),
       showMG :1
     },
-    checkFlag: false
+    checkFlag: false,
+    disableGeneric: true
   };
 
   passLOVData:any = {
@@ -104,7 +105,6 @@ export class InwardPolBalanceComponent implements OnInit {
     }
     if(this.policyInfo.fromInq){
       this.passData.addFlag=false;
-      this.passData.deleteFlag=false;
       this.passData2.addFlag=false;
       this.passData2.deleteFlag=false;
       this.passData.uneditable = [];
@@ -124,7 +124,6 @@ export class InwardPolBalanceComponent implements OnInit {
       console.log(data);
       if(data.policyList.length != 0){
         this.currency = data.policyList[0].project.coverage.currencyCd;
-        this.totalPrem = data.policyList[0].inwPolBalance[0].premAmt;
         if(data.policyList[0].inwPolBalance.length !=0){
           this.passData.tableData = data.policyList[0].inwPolBalance.filter(a=>{
             a.dueDate     = this.ns.toDateTimeString(a.dueDate);
@@ -138,33 +137,27 @@ export class InwardPolBalanceComponent implements OnInit {
       this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       this.instllmentTable.refreshTable();
 
-      this.underwritingservice.getUWCoverageInfos(null, this.policyInfo.policyId).subscribe((data:any)=>{
-      console.log(data);
-      if(data.policy !== null){
-        let alopFlag = false;
-        if(data.policy.project !== null){
-          for(let sectionCover of data.policy.project.coverage.sectionCovers){
-                if(sectionCover.section == 'III'){
-                    alopFlag = true;
-                   break;
-                 }
+      this.underwritingservice.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+          this.totalPrem = data.policy.project.coverage.totalPrem;
+          if(data.policy.project.coverage.holdCoverTag == 'Y'){
+            this.totalPrem = data.policy.project.coverage.holdCoverPremAmt;
           }
-        }
-
-               this.showAlop.emit(alopFlag);
-      }
-    });
+        });
     })
   }
 
   updateOtherCharges(data){
     if(data == null){
+        this.passData.disableGeneric = true;
         this.passData2.disableAdd = true;
+        this.passData2.disableGeneric = true;
         this.passData2.tableData = [];
       }
     else{
       this.passData2.nData.instNo = data.instNo;
       this.passData2.disableAdd = false;
+      this.passData.disableGeneric = false;
+      this.passData2.disableGeneric = true;
       this.passData2.tableData = data.otherCharges;
     }
     this.otherTable.refreshTable();
@@ -292,30 +285,26 @@ export class InwardPolBalanceComponent implements OnInit {
       return null;
     }
 
-    if(this.passData.tableData[this.passData.tableData.length -1 ].add){
-      this.passData.tableData.pop();
+    if(this.instllmentTable.indvSelect.add){
+       this.passData.tableData = this.passData.tableData.filter(a=> a!=this.instllmentTable.indvSelect);
+       this.instllmentTable.refreshTable();
     }else{
-      this.passData.tableData.forEach(a=>{
-        if(a==this.instllmentTable.displayData[this.instllmentTable.displayData.filter(a=>a!=this.instllmentTable.fillData).length -1 ]){
-          a.deleted = true;
-          a.edited = true;
-        }
-      })
+      this.instllmentTable.indvSelect.deleted = true;
     }
+    this.passData2.tableData = [];
+    this.passData2.disableAdd = true;
+    this.passData2.disableGeneric = true;
     this.instllmentTable.markAsDirty();
     this.instllmentTable.refreshTable();
+    this.otherTable.refreshTable();
   }
 
   delOth(){
-    if(this.passData2.tableData[this.passData2.tableData.length -1 ].add){
-      this.passData2.tableData.pop();
+   if(this.otherTable.indvSelect.add){
+       this.passData2.tableData = this.passData2.tableData.filter(a=> a!=this.otherTable.indvSelect);
+       this.otherTable.refreshTable();
     }else{
-      this.passData2.tableData.forEach(a=>{
-        if(a==this.otherTable.displayData[this.otherTable.displayData.filter(a=>a!=this.otherTable.fillData).length -1 ]){
-          a.deleted = true;
-          a.edited = true;
-        }
-      })
+      this.otherTable.indvSelect.deleted = true;
     }
     this.instllmentTable.indvSelect.otherCharges = this.passData2.tableData;
     this.otherTable.markAsDirty();
@@ -323,6 +312,12 @@ export class InwardPolBalanceComponent implements OnInit {
     this.compute();
   }
 
-
+  onOtherClick(data){
+    if(data == null){
+      this.passData2.disableGeneric = true;
+    }else{
+      this.passData2.disableGeneric = false;
+    }
+  }
 }
 

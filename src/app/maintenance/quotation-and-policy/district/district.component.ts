@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -31,11 +32,11 @@ export class DistrictComponent implements OnInit {
   	dataTypes:['text','text','checkbox','text'],
   	keys:['districtCd','districtDesc','activeTag','remarks'],
   	addFlag: true,
-  	genericBtn:'Delete',
   	paginateFlag:true,
   	infoFlag:true,
   	searchFlag:true,
   	pageLength: 10,
+    genericBtn:'Delete',
   	nData:{
   	  districtCd:'',
   	  districtDesc:'',
@@ -45,13 +46,16 @@ export class DistrictComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-  	}
+  	},
+    disableAdd : true,
+    disableGeneric : true
   }
   cancelFlag:boolean;
 
-  constructor(private ns:NotesService,private ms:MaintenanceService) { }
+  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService) { }
 
   ngOnInit() {
+    this.titleService.setTitle('Mtn | District');
   	setTimeout(a=>this.table.refreshTable(),0)
   }
 
@@ -61,6 +65,8 @@ export class DistrictComponent implements OnInit {
       if(a['region'].length != 0){
     		this.passTable.tableData = a['region'][0]['provinceList'][0]['cityList'][0]['districtList'];
     		this.passTable.tableData.forEach(a=>{
+          this.passTable.disableGeneric = false;
+          this.passTable.disableAdd = false;
     			a.uneditable=['districtCd'];
     			a.createDate = this.ns.toDateTimeString(a.createDate);
     			a.updateDate = this.ns.toDateTimeString(a.updateDate);
