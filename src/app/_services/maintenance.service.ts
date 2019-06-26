@@ -290,7 +290,7 @@ export class MaintenanceService{
     getMtnSpoilageReason(spoilCd,activeTag){
     	const params = new HttpParams()
 			.set('spoilCd', spoilCd)
-			.set('activeTag', spoilCd);
+			.set('activeTag', activeTag);
        	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSpoilageReason', {params});
     }
 
