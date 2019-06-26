@@ -24,7 +24,7 @@
 		<div class="col-sm-6" style="padding-right: 2px">
 			<fieldset class="scheduler-border" style="margin: 12px 0px 8px 0px !important;">
 				<div style="padding-top: 9px;">
-					<app-cust-editable-non-datatable #endtTable [passData]="passData" (newClick)="rowClick($event)" (clickLOV)="clickEndtLov($event)"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable #endtTable [passData]="passData" (newClick)="rowClick($event)" (clickLOV)="clickEndtLov($event)" (tableDataChange)="onEndtEdit($event)"></app-cust-editable-non-datatable>
 				</div>
 			</fieldset>
 		</div>
@@ -56,4 +56,4 @@
 
 <app-sucess-dialog [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="alteration?'/alt-policy-listing': '/policy-listing'" ></app-cancel-button>
