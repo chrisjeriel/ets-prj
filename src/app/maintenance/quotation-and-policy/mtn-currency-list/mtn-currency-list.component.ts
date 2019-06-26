@@ -3,6 +3,7 @@ import { MaintenanceService, NotesService } from '@app/_services'
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-mtn-currency-list',
@@ -22,7 +23,7 @@ export class MtnCurrencyListComponent implements OnInit {
     nData: {
       currencyCd: null,
       currencyWord: null,
-      activeTag: 'N',
+      activeTag: 'Y',
       remarks: null,
       createDate: '',
       createUser: JSON.parse(window.localStorage.currentUser).username,
@@ -62,9 +63,10 @@ export class MtnCurrencyListComponent implements OnInit {
   	saveCurrency: []
   }
 
-  constructor(private maintenanceService:MaintenanceService, private ns: NotesService) { }
+  constructor(private maintenanceService:MaintenanceService, private ns: NotesService, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Mtn | Currency");
     this.getMtnCurrency();
   }
 
@@ -115,8 +117,8 @@ export class MtnCurrencyListComponent implements OnInit {
 
   saveCurrency(cancelFlag?){
       this.cancelFlag = cancelFlag !== undefined;
+
       this.prepareData();
-      console.log(this.currencyList)
      if(this.errorFlag){
        setTimeout(()=> {
         this.dialogIcon = 'error-message';
