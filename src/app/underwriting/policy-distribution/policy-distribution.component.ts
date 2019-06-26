@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-policy-distribution',
@@ -7,12 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PolicyDistributionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
 
   riskDistId: number;
   riskDistStatus: string;
 
+  sub:any;
+  distTtitle:string;
   ngOnInit() {
+  	this.sub = this.route.params.subscribe((data: any)=>{
+    	if(parseInt(data.policyNo.substr(-3))>0){
+    		this.distTtitle = "Alteration Distribution";
+    	}else{
+    		this.distTtitle = "Policy Distribution";
+    	}
+    });
   }
 
 }

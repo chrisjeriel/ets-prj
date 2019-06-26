@@ -1,12 +1,48 @@
-.input-group {
-    margin-bottom: -14px !important;
-}
-
 .rd-lbl {
     margin: 3px !important;
 }
+
+label{
+    margin: 0;
+}
+.alignment{
+    margin-right: 25px;
+}
+.form-group{
+    padding-top: 15px;
+}
+.radioLabels{
+    font-size: 14px;
+}
+.buttons{
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+.borders{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.cust-btn-extend{
+    max-width: inherit;
+    width: 100%;
+    margin-bottom: 5px;
+}
 .text-search-ico {
-	margin-left: -18px;
-	z-index: 200;
-	font-size: 14px;
+    margin-left: -18px;
+    margin-right: 5px;
+    z-index: 99;
+    font-size: 14px;
+}
+.hidden{
+    display: none;
+}
+.max-size{
+    width: 500px;
+}
+#fieldsetLabel{
+    text-align: center;
+}
+#modalBtn{
+    width: 100%;
 }
