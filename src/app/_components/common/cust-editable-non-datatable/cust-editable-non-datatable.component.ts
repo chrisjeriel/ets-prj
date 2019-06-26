@@ -49,6 +49,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() genericBtn : EventEmitter<any> = new EventEmitter();
     @Output() uploadedFiles : EventEmitter<any> = new EventEmitter();
+    @Output() export: EventEmitter<any> = new EventEmitter();
 
     acceptedImageFormats: string[] = [
         'image/jpeg', 'image/png', 'image/jpg', 'image/gif'
@@ -87,6 +88,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         keys:[],
         tabIndexes:[],
         radioGroup: [],
+        exportFlag: false, //For exporting of records
     };
     indvSelect: any;
     dataKeys: any[] = [];
@@ -642,10 +644,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         console.log(typeof (data[key]) );
         if(typeof data[key] == 'boolean') {
             data[key] = event.target.checked;
-            console.log("Boolean");
         } else {
-            console.log("String");
-            console.log(this.passData.radioGroup);
             for (let rad of this.passData.radioGroup) {
                 console.log(rad);
                 if (rad.radCols.includes(key)) {
@@ -784,5 +783,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     focus(data){
         this.indvSelect=data;
+    }
+
+    onClickExport(event){
+        //do some exporting
+        this.export.next(event);
     }
 }

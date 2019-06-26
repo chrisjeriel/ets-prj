@@ -4,6 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ClaimsService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { MtnLossCdComponent } from '@app/maintenance/mtn-loss-cd/mtn-loss-cd.component';
+import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 
 @Component({
   selector: 'app-clm-gen-info-claim',
@@ -12,6 +14,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 })
 export class ClmGenInfoClaimComponent implements OnInit {
   @ViewChild('adjTblGI') adjTable: CustEditableNonDatatableComponent;
+  @ViewChild('lossCdLOV') lossCdLOV: MtnLossCdComponent;
 
   line: string;
   sub: any;
@@ -70,8 +73,9 @@ export class ClmGenInfoClaimComponent implements OnInit {
     coClaimNo: null,
     lossDate: null,
     lossCd: null,
-    lossDesc: null,
+    lossAbbr: null,
     lossPeriod: null,
+    lossPdAbbr: null,
     lossDtl: null,
     eventTypeCd: null,
     eventTypeDesc: null,
@@ -89,6 +93,9 @@ export class ClmGenInfoClaimComponent implements OnInit {
     lapseTo: null,
     maintenanceFrom: null,
     maintenanceTo: null,
+    pctShare: null,
+    totalSi: null,
+    totalValue: null,
     riskId: null,
     riskName: null,
     currencyCd: null,
@@ -133,6 +140,9 @@ export class ClmGenInfoClaimComponent implements OnInit {
     adjRefNos: null
   }
 
+  lossCdFilter: any = null;
+  lossCdType: any = null;
+
   constructor(private router: ActivatedRoute, private modalService: NgbModal, private titleService: Title, private cs: ClaimsService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -155,14 +165,17 @@ export class ClmGenInfoClaimComponent implements OnInit {
       this.claimData.closeDate = this.ns.toDateTimeString(this.claimData.closeDate);
       this.claimData.createDate = this.ns.toDateTimeString(this.claimData.createDate);
       this.claimData.updateDate = this.ns.toDateTimeString(this.claimData.updateDate);
+      this.claimData.lapseFrom = this.claimData.lapseFrom == '' || this.claimData.lapseFrom == null ? '' : this.ns.toDateTimeString(this.claimData.lapseFrom);
+      this.claimData.lapseTo = this.claimData.lapseTo == '' || this.claimData.lapseTo == null ? '' : this.ns.toDateTimeString(this.claimData.lapseTo);
+      this.claimData.maintenanceFrom = this.claimData.maintenanceFrom == '' || this.claimData.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.claimData.maintenanceFrom);
+      this.claimData.maintenanceTo = this.claimData.maintenanceTo == '' || this.claimData.maintenanceTo == null ? '' : this.ns.toDateTimeString(this.claimData.maintenanceTo);
 
       this.claimData.prinId = this.claimData.prinId == '' || this.claimData.prinId == null ? '' : String(this.claimData.prinId).padStart(6, '0');
       this.claimData.contractorId = this.claimData.contractorId == '' || this.claimData.contractorId == null ? '' : String(this.claimData.contractorId).padStart(6, '0');
       this.claimData.project.objectId = this.claimData.project.objectId == '' || this.claimData.project.objectId == null ? '' : String(this.claimData.project.objectId).padStart(3, '0');
 
       if(this.claimData.clmAdjusterList.length > 0) {
-        this.claimData.adjNames = this.claimData.clmAdjusterList.map(a => a.adjName).join(' / ');
-        //add adjuster refs
+        this.adjNameAndRefs();
         this.adjData.tableData = this.claimData.clmAdjusterList.map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
                                                                            a.updateDate = this.ns.toDateTimeString(a.updateDate);
                                                                            return a; });
@@ -175,7 +188,38 @@ export class ClmGenInfoClaimComponent implements OnInit {
     $('#adjustersModal #modalBtn').trigger('click');
   }
 
+  showLossCdLOV(type) {
+    this.lossCdType = type;
+    this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == type };
+
+    this.lossCdLOV.modal.openNoClose();
+  }
+
+  setLossCd(ev) {
+    if(this.lossCdType == 'C') {
+      this.claimData.lossCd = ev.lossCd;
+      this.claimData.lossAbbr = ev.lossAbbr;
+    } else if(this.lossCdType == 'P') {
+      this.claimData.lossPeriod = ev.lossCd;
+      this.claimData.lossPdAbbr = ev.lossAbbr;
+    }
+  }
+
+  showUsersLOV() {
+    $('#usersLOV #modalBtn').trigger('click');
+  }
+
+  setProcessedBy(ev) {
+    this.claimData.processedBy = ev.userId;
+  }
+
+  adjNameAndRefs() {
+    this.claimData.adjNames = this.claimData.clmAdjusterList.map(a => a.adjName).join(' / ');
+    this.claimData.adjRefNos = this.claimData.clmAdjusterList.map(a => a.adjRefNo).join(' / ');
+  }
+
   dc(ev, data, type) {
     return this.ns.dateConstructor(ev, data, type);
   }
+
 }

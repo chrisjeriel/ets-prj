@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import * as alasql from 'alasql';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -120,7 +121,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     checkboxFlag: true,
     pageLength: 10,
     widths: [],
-    pageID: 'treatyDistTable'
+    pageID: 'treatyDistTable',
+    exportFlag: true,
   };
 
   limitsData: any = {
@@ -174,7 +176,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     paginateFlag: true,
     infoFlag: true,
     pageLength: 10,
-    pageID: 'poolDistTable'
+    pageID: 'poolDistTable',
+    searchFlag: true,
+    exportFlag: true,
   }
 
   coInsuranceData: any = {
@@ -536,4 +540,58 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
       }
       this.wparam.refreshTable();
   }
+
+  exportTreatyDist(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'PolTreatyRiskDist_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+      //keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
+     alasql('SELECT treatyName AS TreatyName, trtyCedName AS CedingName, pctShare AS PctShare, siAmt AS SumInsured, premAmt AS PremiumAmount, commRt AS CommissionRate, commAmt as CommissionAmount, vatRiComm as VATRiCommision, netDue AS NetDue INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.treatyDistData.tableData]);
+  }
+
+  exportPoolDist(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'PolPoolDist_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+      //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+     alasql('SELECT treatyAbbr AS TreatyName, cedingName AS CedingName, retOneLines AS RetentionOneLines, retOneTsiAmt AS RetentionOneTSIAmount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
+  }
+
+  //poolDistributionData
+  //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+
 }

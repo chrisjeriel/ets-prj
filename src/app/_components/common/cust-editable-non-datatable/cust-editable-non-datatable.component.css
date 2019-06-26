@@ -481,3 +481,31 @@ body {
 .container {
   margin: 0 auto;
 }
+
+.cust-export {
+    height: calc(1.3rem + 1px) !important;
+    position: absolute !important;
+    right: -14px;
+    top: 2.9px;
+    font-size: 0.7rem !important;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    border-radius: 3px 3px 3px 3px;
+    z-index: 1000 !important;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+}
+
+.cust-export::after {
+    display:none;
+}
+
+.dropdown-item-export{
+    width: auto;
+    height: 200px;
+    overflow: auto;
+    padding: 10px;
+}

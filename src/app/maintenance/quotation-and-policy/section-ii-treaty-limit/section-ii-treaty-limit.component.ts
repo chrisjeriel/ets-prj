@@ -234,7 +234,7 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 
 			if(d.edited && !d.deleted && d.activeTag == 'Y' && d.seciiTrtyLimId == '') {
 				if(td.length > 1) {
-					if(td.filter(c => c.activeTag == 'Y' && c.seciiTrtyLimId != '').length > 0) {
+					if(td.filter(c => c.activeTag == 'Y' && c.seciiTrtyLimId != '' && !c.deleted).length > 0) {
 						var dEDF = new Date(d.effDateFrom);
 						var max = td.filter(c => c.activeTag == 'Y' && c.retHistId != '' && !c.deleted)
 									.sort((a, b) => Number(new Date(b.effDateFrom)) - Number(new Date(a.effDateFrom)))[0];
@@ -248,7 +248,7 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 					}	
 				}
 
-				if(td.filter(c => c.activeTag == 'Y' && c.seciiTrtyLimId == '').length > 1) {
+				if(td.filter(c => c.edited && !c.deleted && c.activeTag == 'Y' && c.seciiTrtyLimId == '').length > 1) {
 					var newList = td.filter(c => c.activeTag == 'Y' && c.seciiTrtyLimId == '');
 
 					for(var x = 1; x < newList.length; x++) {
@@ -261,6 +261,28 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 					}
 				}
 			}
+
+			if(d.edited && !d.deleted && d.activeTag == 'Y' && d.seciiTrtyLimId != '') {
+				if(td.filter(c => c.activeTag == 'Y').length > 0) {
+					var dEDF = new Date(d.effDateFrom);
+					var max = td.filter(c => c != d && c.activeTag == 'Y' && !c.deleted)
+								.sort((a, b) => Number(new Date(b.effDateFrom)) - Number(new Date(a.effDateFrom)))[0];
+
+					if(max != d && dEDF <= new Date(max.effDateFrom)) {
+						this.errorMsg = 1;
+						$('#mtnSecIITrtyLimWarningModal > #modalBtn').trigger('click');
+						this.cancel = false;
+						return;
+					}
+				}
+			}
+		}
+
+		if(td.filter(a => a.deleted).length > 0 && td.filter(a => a.edited && !a.deleted).length == 0) {
+			this.confirmSave.dialogMessage = "Nothing to save.";
+		    this.confirmSave.dialogIcon = "info"
+		    this.confirmSave.sucessDialog.open();
+		    return;
 		}
 
 		if(!this.cancel) {

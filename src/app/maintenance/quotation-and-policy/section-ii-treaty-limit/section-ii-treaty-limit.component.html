@@ -125,9 +125,9 @@
 				<input type="text" class="form-control form-control-sm col-sm" [ngModel]="lineClassCdDesc" tabindex="-1" readonly>
             </div>
             <div class="input-group" style="margin-bottom: -14px !important;">
-              	<label class="form-control-sm col-sm-3">Ret. Line Amt ID</label>
-				<input type="text" class="form-control form-control-sm col-sm-2 text-right" [ngModel]="selected?.retentionId" tabindex="-1" readonly>
-				<input type="text" class="form-control form-control-sm col-sm text-right" [ngModel]="selected?.retLineAmt | number: '1.2-2'" tabindex="-1" readonly style="margin-left: 2px;">
+              	<label class="form-control-sm col-sm-3">Sec II Trty Limit ID</label>
+				<input type="text" class="form-control form-control-sm col-sm-2 text-right" [ngModel]="selected?.seciiTrtyLimId" tabindex="-1" readonly>
+				<input type="text" class="form-control form-control-sm col-sm text-right" [ngModel]="selected?.amount | number: '1.2-2'" tabindex="-1" readonly style="margin-left: 2px;">
             </div>
         </fieldset>
         <fieldset class="scheduler-border" style="padding: 5px 20px 5px 8px !important;">
@@ -136,7 +136,7 @@
 				<label class="form-control-sm col-sm-3">Line Code</label>
 				<input class="form-control form-control-sm col-sm-2 not-form" type="text" (change)="checkCodeCopy($event)" [ngModel]="copyLineCd" (ngModelChange)="copyLineCd=$event.toUpperCase()" mask="SSS">
 				<div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOVCopy()" style="height: 1px;"><a><i class="fa fa-search"></i></a></div>&nbsp;
-				<input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="copyLineDesc" readonly>
+				<input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 3px;" [(ngModel)]="copyLineDesc" readonly>
             </div>
             <div class="input-group" style="margin-bottom: -14px !important;">
 				<label class="form-control-sm col-sm-3">Line Class</label>

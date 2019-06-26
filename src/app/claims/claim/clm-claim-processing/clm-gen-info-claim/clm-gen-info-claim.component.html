@@ -41,6 +41,19 @@
                     <label class="form-control-sm col-sm-2">Co Ref No</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.coRefNo" readonly>
                 </div>
+                <div *ngIf="claimData.cessionDesc?.toUpperCase() == 'RETROCESSION'" class="input-group">
+                    <label class="form-control-sm col-sm-2">RI Binder No</label>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.riBinderNo">
+                </div>
+                <div *ngIf="claimData.cessionDesc?.toUpperCase() == 'RETROCESSION'" class="input-group">
+                    <label class="form-control-sm col-sm-2">Reinsurance From</label>
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" [ngModel]="claimData.reinsurerId" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.reinsurerName" readonly>
+                </div>
+                <div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
+                    <label class="form-control-sm col-sm-2">MBI Ref No</label>
+                    <input type="text" class="form-control form-control-sm" [ngModel]="claimData.mbiRefNo">
+                </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.adjNames" readonly>
@@ -89,9 +102,9 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">&nbsp;&nbsp;Loss Cause</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossDesc" appRequired>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossAbbr" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;">
-                                <a><i class="fa fa-search"></i></a>
+                                <a><i class="fa fa-search" (click)="showLossCdLOV('C')"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
@@ -112,14 +125,14 @@
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Processed By</label>
                             <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.processedBy" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;">
-                                <a><i class="fa fa-search"></i></a>
+                                <a><i class="fa fa-search" (click)="showUsersLOV()"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Loss Period</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossPeriod" appRequired>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossPdAbbr" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;">
-                                <a><i class="fa fa-search"></i></a>
+                                <a><i class="fa fa-search" (click)="showLossCdLOV('P')"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
@@ -609,20 +622,18 @@
                 <div class="custom-row-inline-inset" style="margin-left: -30px !important;">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3">Currency</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required readonly>
+                        <input type="text" [ngModel]="claimData?.currencyCd" class="form-control form-control-sm cust-sm" required readonly>
 
                         <label class="form-control-sm">% Share</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" numbers-only required style="text-align: right;" readonly>
+                        <input type="text" [ngModel]="claimData?.pctShare | number:'1.10-10'" class="form-control form-control-sm cust-sm text-right" required readonly>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3">Total SI</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                            style="text-align: right;" readonly>
+                        <input type="text" [ngModel]="claimData?.totalSi | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3">100% Value</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                            placeholder="1,000,000,000.00" style="text-align: right;" readonly>
+                        <input type="text" [ngModel]="claimData?.totalValue | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
                     </div>
                 </div>
             </fieldset>
@@ -730,3 +741,6 @@
         <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
     </div>
 </app-modal>
+
+<app-mtn-loss-cd #lossCdLOV id="lossCdLOV" (selectedData)="setLossCd($event)" [filters]="lossCdFilter"></app-mtn-loss-cd>
+<app-mtn-users id="usersLOV" (selectedData)="setProcessedBy($event)"></app-mtn-users>
