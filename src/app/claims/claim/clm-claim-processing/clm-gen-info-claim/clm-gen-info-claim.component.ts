@@ -9,6 +9,10 @@ import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.componen
 import { MtnClmEventComponent } from '@app/maintenance/mtn-clm-event/mtn-clm-event.component';
 import { MtnClmEventTypeComponent } from '@app/maintenance/mtn-clm-event-type/mtn-clm-event-type.component';
 import { MtnAdjusterComponent } from '@app/maintenance/mtn-adjuster/mtn-adjuster.component';
+import { Router } from '@angular/router';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-clm-gen-info-claim',
@@ -21,6 +25,8 @@ export class ClmGenInfoClaimComponent implements OnInit {
   @ViewChild('clmEventLOV') clmEventLOV: MtnClmEventComponent;
   @ViewChild('clmEventTypeLOV') clmEventTypeLOV: MtnClmEventComponent;
   @ViewChild('adjusterLOV') adjusterLOV: MtnAdjusterComponent;
+  @ViewChild('adjConfirmSave') adjConfirmSave: ConfirmSaveComponent;
+  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
   line: string;
   sub: any;
@@ -154,14 +160,18 @@ export class ClmGenInfoClaimComponent implements OnInit {
   lossCdType: any = null;
   hiddenAdj: any[] = [];
   adjLOVRow: number;
+  dialogIcon: string = "";
+  dialogMessage: string = "";
+  cancel: boolean = false;
 
-  constructor(private router: ActivatedRoute, private modalService: NgbModal, private titleService: Title, private cs: ClaimsService, private ns: NotesService) { }
+  constructor(private actRoute: ActivatedRoute, private modalService: NgbModal, private titleService: Title,
+    private cs: ClaimsService, private ns: NotesService, private router: Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | General Info");
     this.retrieveClmGenInfo();
 
-    this.sub = this.router.params.subscribe(params => {
+    this.sub = this.actRoute.params.subscribe(params => {
       this.line = params['line'];
     });
   }
@@ -249,8 +259,8 @@ export class ClmGenInfoClaimComponent implements OnInit {
   }
 
   adjNameAndRefs() {
-    this.claimData.adjNames = this.claimData.clmAdjusterList.map(a => a.adjName).join(' / ');
-    this.claimData.adjRefNos = this.claimData.clmAdjusterList.map(a => a.adjRefNo).join(' / ');
+    this.claimData.adjNames = this.claimData.clmAdjusterList.filter(a => !a.deleted).map(a => a.adjName).join(' / ');
+    this.claimData.adjRefNos = this.claimData.clmAdjusterList.filter(a => !a.deleted).map(a => a.adjRefNo).join(' / ');
   }
 
   clmAdjTDataChange(data) {
@@ -269,7 +279,6 @@ export class ClmGenInfoClaimComponent implements OnInit {
   }
 
   setSelectedAdjuster(data) {
-    console.log(data);
     if(data.hasOwnProperty('singleSearchLov') && data.singleSearchLov) {
       this.adjLOVRow = data.ev.index;
       this.ns.lovLoader(data.ev, 0);
@@ -311,10 +320,77 @@ export class ClmGenInfoClaimComponent implements OnInit {
     if(ev != undefined) {
       this.adjTable.confirmDelete();
     } else {
+      this.adjData.disableGeneric = true;
       this.adjTable.indvSelect.edited = true;
       this.adjTable.indvSelect.deleted = true;
       this.adjTable.refreshTable();
     }
+  }
+
+  maintainAdjuster() {
+    this.router.navigate(['/mtn-adjuster-list'], { skipLocationChange: false });
+    this.modalService.dismissAll();
+  }
+
+  onAdjClickSave() {
+    var td = this.adjData.tableData;
+
+    if(td.filter(a => a.edited && !a.deleted && (a.adjId == '' || a.adjName == '')).length > 0) {
+      this.dialogIcon = 'error';
+      this.successDialog.open();
+
+      this.cancel = false;
+      return;
+    }
+
+    if(!this.cancel) {
+      this.adjConfirmSave.confirmModal();  
+    } else {
+      this.adjSave(false);
+    }
+  }
+
+  adjSave(cancel?) {
+    this.cancel = cancel !== undefined;
+
+    if(this.cancel && cancel) {
+      this.onAdjClickSave();
+      return;
+    }
+
+    var td = this.adjData.tableData;
+
+    var params = {
+      saveAdjuster: [],
+      deleteAdjuster: []
+    }
+
+    params.saveAdjuster = td.filter(a => a.edited && !a.deleted).map(a => {
+                                                                   a.claimId = this.claimData.claimId;
+                                                                   a.createUser = this.ns.getCurrentUser();
+                                                                   a.createDate = this.ns.toDateTimeString(0);
+                                                                   a.updateUser = this.ns.getCurrentUser();
+                                                                   a.updateDate = this.ns.toDateTimeString(0);
+                                                                   return a;
+                                                                 });
+    params.deleteAdjuster = td.filter(a => a.deleted);
+
+    this.cs.saveClmAdjuster(params).subscribe(data => {
+      if(data['returnCode'] == -1) {
+        this.dialogIcon = "success";
+        this.successDialog.open();
+        this.adjNameAndRefs();
+
+        this.adjData.tableData.forEach(a => {
+          if(a.edited && !a.deleted) {
+            a.edited = false;
+          }
+        });
+      } else {
+        this.dialogIcon = "error";
+        this.successDialog.open();
+      }
+    });
   }
 
   dc(ev, data, type) {

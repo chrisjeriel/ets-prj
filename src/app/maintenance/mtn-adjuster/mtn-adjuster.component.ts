@@ -78,7 +78,7 @@ export class MtnAdjusterComponent implements OnInit {
     	this.adjuster.tableData = [];
     	this.table.overlayLoader = true;
     	this.maintenanceService.getMtnAdjusterList([]).subscribe(data =>{
-        	var records = data['adjusterList'].filter(a => !this.exclude.includes(a.adjId));
+        	var records = data['adjusterList'].filter(a => !this.exclude.includes(a.adjId) && a.activeTag == 'Y');
 
         	if(this.filters != null) {
         		records = records.filter(this.filters);
@@ -114,7 +114,7 @@ export class MtnAdjusterComponent implements OnInit {
 		    this.modal.openNoClose();    
 		} else {
 			this.maintenanceService.getMtnAdjusterList([{ key: 'adjId', search: String(code).padStart(3, '0') }]).subscribe(data => {
-				data['adjusterList'] = data['adjusterList'].filter(a => a.adjId == String(code).padStart(3, '0'));
+				data['adjusterList'] = data['adjusterList'].filter(a => a.adjId == String(code).padStart(3, '0') && a.activeTag == 'Y');
 
 				if(data['adjusterList'].length == 1 && !this.exclude.includes(data['adjusterList'][0].adjId)) {
 					data['adjusterList'][0]['ev'] = ev;

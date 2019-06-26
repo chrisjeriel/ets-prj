@@ -689,7 +689,7 @@
                     <div class="form-row">
                         <div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
                             <label class="form-control-sm top-label">&nbsp;Status</label>
-                            <input type="text" class="form-control form-control-sm cust-sm" placeholder="In Progress" appRequired>
+                            <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="claimData.clmStatus" appRequired>
 
                         </div>
                         <div class="text-search-ico" style="z-index: 1 !important; margin: 8px 9px -10px -22px !important;padding-top: 2px !important;">
@@ -736,9 +736,9 @@
         <app-cust-editable-non-datatable #adjTblGI [passData]="adjData" (tableDataChange)="claimData.clmAdjusterList=$event; clmAdjTDataChange($event);" (newClick)="adjTableRowClick($event)" (genericBtn)="clmAdjClickDelete($event)" (onDelete)="adjTable.onClickDelete('force'); clmAdjClickDelete();" (clickLOV)="showAdjLOV($event)"></app-cust-editable-non-datatable>
     </div>
     <div footer class="text-center" style="width: 100% !important;">
-        <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="modalService.dismissAll()"><a>Adjusters Maintenance</a></button>
+        <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="maintainAdjuster()"><a>Adjusters Maintenance</a></button>
         <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+        <button type="button" class="cust-btn" (click)="onAdjClickSave()"><a>Save</a></button>
     </div>
 </app-modal>
 
@@ -747,3 +747,7 @@
 <app-mtn-clm-event-type #clmEventTypeLOV id="clmEventTypeLOV" (selectedData)="setClmEventType($event)" [filters]="clmEventTypeFilter"></app-mtn-clm-event-type>
 <app-mtn-adjuster #adjusterLOV (selectedData)="setSelectedAdjuster($event)" [exclude]="hiddenAdj" [lovCheckBox]="true"></app-mtn-adjuster>
 <app-mtn-users id="usersLOV" (selectedData)="setProcessedBy($event)"></app-mtn-users>
+
+<app-confirm-save #adjConfirmSave (onYes)="adjSave()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
