@@ -8,7 +8,7 @@
                         <div class="input-group">
                             <div class="col-sm-3"></div>
                             <label class="form-control-sm text-right"  style="margin-bottom: 0px">Currency Code</label>
-                            <input class="form-control form-control-sm  col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="currencyCd" (ngModelChange)="currencyCd = $event.toUpperCase()">
+                            <input class="form-control form-control-sm col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="currencyCd" (ngModelChange)="currencyCd = $event.toUpperCase()">
                             <div class="text-search-ico" style="margin-left: -20px;z-index: 100"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 5px;" readonly [(ngModel)]="description">
                             <div class="col-sm-3"></div>
