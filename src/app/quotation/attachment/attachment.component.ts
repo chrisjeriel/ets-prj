@@ -239,8 +239,8 @@ export class AttachmentComponent implements OnInit {
 
      }
      let file: File = files[0];
-     var newFile = new File([file], date + file.name, {type: file.type});
-     this.upload.uploadFile(newFile)
+     //var newFile = new File([file], date + file.name, {type: file.type});
+     this.upload.uploadFile(file, date)
        .subscribe(
          event => {
            if (event.type == HttpEventType.UploadProgress) {

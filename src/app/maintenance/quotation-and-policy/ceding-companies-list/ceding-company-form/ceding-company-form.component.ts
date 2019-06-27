@@ -145,7 +145,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   		this.successDiag.open();
   	}else if(!this.checkDefaultTag()){
   		this.dialogIcon = 'info';
-  		this.dialogMessage = 'Please enter one default company representative.';
+  		this.dialogMessage = 'Unable to save the record, Only one default company representative is allowed.';
   		this.successDiag.open();
   	}else{
       if(fromCancel !== undefined){
@@ -281,9 +281,9 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 
       }
       let file: File = files[0];
-      var newFile = new File([file], date + file.name, {type: file.type});
+      //var newFile = new File([file], date + file.name, {type: file.type});
 
-      this.upload.uploadFile(newFile)
+      this.upload.uploadFile(file, date)
         .subscribe(
           event => {
             if (event.type == HttpEventType.UploadProgress) {
