@@ -160,7 +160,8 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   	//check if mandatory fields are filled on table
   	this.defaultTagCounter = 0;
   	for(var i of this.repData.tableData){
-  		if(i.firstName === '' || i.lastName === ''){
+      console.log(i.deleted);
+  		if((i.firstName === '' || i.lastName === '') && (i.deleted !== undefined && !i.deleted)){
   			return false;
   		}
   		//check if theres only 1 default tag in ceding rep table
