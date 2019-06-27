@@ -689,11 +689,12 @@
                     <div class="form-row">
                         <div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
                             <label class="form-control-sm top-label">&nbsp;Status</label>
-                            <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="claimData.clmStatus" appRequired>
-
+                            <div class="input-group" style="padding-right: 3px;">
+                                <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="claimData.clmStatus" appRequired>
+                                <div class="text-search-ico" style="z-index: 1 !important;">
+                                <a><i class="fa fa-search"></i></a></div>
+                            </div>
                         </div>
-                        <div class="text-search-ico" style="z-index: 1 !important; margin: 8px 9px -10px -22px !important;padding-top: 2px !important;">
-                            <a><i class="fa fa-search"></i></a></div>
                         <div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
                             <label class="form-control-sm top-label">&nbsp;Approved Amount</label>
                             <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="800,000.00"
