@@ -73,11 +73,8 @@ export class PolicyInformationComponent implements OnInit {
       this.policyInfo = data.policy;
       this.policyInfo.inceptDate = this.ns.toDateTimeString(data.policy.inceptDate);
       this.policyInfo.expiryDate = this.ns.toDateTimeString(data.policy.expiryDate);
-      this.policyInfo.lapseFrom = this.ns.toDateTimeString(data.policy.lapseFrom);
-      this.policyInfo.lapseTo = this.ns.toDateTimeString(data.policy.lapseTo); 
-      this.policyInfo.lapseTo = data.policy.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseTo));
-      this.policyInfo.lapseFrom = this.ns.toDateTimeString(data.policy.lapseFrom);
-      this.policyInfo.lapseFrom == data.policy.lapseFrom ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
+      this.policyInfo.lapseTo = data.policy.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(data.policy.lapseTo));
+      this.policyInfo.lapseFrom == data.policy.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(data.policy.lapseFrom));
       this.policyInfo.maintenanceFrom = this.ns.toDateTimeString(data.policy.maintenanceFrom);
       this.policyInfo.maintenanceTo = this.ns.toDateTimeString(data.policy.maintenanceTo);
       this.policyInfo.issueDate = this.ns.toDateTimeString(data.policy.issueDate);
