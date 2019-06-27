@@ -329,7 +329,7 @@ const appRoutes: Routes = [
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-other-charge', component: OtherChargeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-location/:id', component: RegionComponent },
-    { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent },
+    { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent, canDeactivate: [UnsavedChangesGuard]  },
     { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'quotation-to-hold-cover', component: QuotationToHoldCoverComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-treaty', component: TreatyComponent, canDeactivate: [UnsavedChangesGuard] },
