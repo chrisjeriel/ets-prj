@@ -184,7 +184,6 @@ export class EndorsementComponent implements OnInit {
   	this.endtTable.loadingFlag = true;
   	this.ms.getEndtCode(this.line.lineCd,'').subscribe(a=>{
   		this.passEndtTable.disableAdd = false;
-  		this.passEndtTable.disableGeneric = false;
   		this.passEndtTable.tableData = a['endtCode'];
   		this.passEndtTable.tableData.forEach(a=>{{
         a.endtCd = String(a.endtCd).padStart(3,'0')
@@ -219,6 +218,11 @@ export class EndorsementComponent implements OnInit {
   		this.dialogMessage =  'You are not allowed to delete an Endorsement that is already used in quotation processing.';
   		this.successDialog.open();
   	}else{
+      this.passEndtTable.disableGeneric = true;
+      this.passDedTable.disableGeneric = true;
+      this.passDedTable.disableAdd = true;
+      this.passDedTable.tableData = [];
+      this.dedTable.refreshTable();
   		this.endtTable.selected  = [this.endtTable.indvSelect]
   		this.endtTable.confirmDelete();
   	}
@@ -239,11 +243,13 @@ export class EndorsementComponent implements OnInit {
   	if(data != null){
   		this.passDedTable.tableData = data.deductibles;
   		this.passDedTable.disableAdd = false;
-  		this.passDedTable.disableGeneric = false;
+      this.passDedTable.disableGeneric = true;
   		this.passDedTable.nData.endtCd = data.endtCd;
+      this.passEndtTable.disableGeneric = false;
   		this.disableFields();
   		this.info = data;
   	}else{
+      this.passEndtTable.disableGeneric = true;
   		this.passDedTable.disableAdd = true;
   		this.passDedTable.disableGeneric = true;
   		this.passDedTable.tableData = [];
