@@ -321,7 +321,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
     { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
     { path: 'maintenance-cresta-zone', component: MtnCrestaComponent ,  canDeactivate: [UnsavedChangesGuard]},
-    { path: 'pol-value-coverage', component: PolValueCoverageComponent },
+    { path: 'pol-value-coverage', component: PolValueCoverageComponent , canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-insured', component: InsuredListComponent },
     { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },

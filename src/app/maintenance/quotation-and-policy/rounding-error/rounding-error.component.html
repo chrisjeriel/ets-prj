@@ -30,7 +30,7 @@
 					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="roundingError.updateDate" readonly>
 					    </div>
 				</fieldset>
-                <app-mtn-ceding-company id="roundingModal" (selectedData)="setRoundingError($event)"></app-mtn-ceding-company>
+                <app-mtn-ceding-company-member id="roundingModal" (selectedData)="setRoundingError($event)"></app-mtn-ceding-company-member>
                 <app-confirm-save (onYes)="saveRoundingError()"></app-confirm-save>
                 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
                 <app-cancel-button (onYes)="saveRoundingError('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>                

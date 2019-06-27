@@ -420,6 +420,7 @@ import { MtnCurrencyCodeComponent } from './maintenance/mtn-currency-code/mtn-cu
 import { MtnClaimStatusLovComponent } from './maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { MtnLossCdComponent } from './maintenance/mtn-loss-cd/mtn-loss-cd.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
+import { MtnCedingCompanyMemberComponent } from './maintenance/mtn-ceding-company-member/mtn-ceding-company-member.component';
 
 @NgModule({
     imports: [
@@ -846,6 +847,7 @@ import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-re
         MtnClaimStatusLovComponent,
         MtnLossCdComponent,
         ClaimStatusReasonComponent,
+        MtnCedingCompanyMemberComponent,
     ],
 
   	providers: [
