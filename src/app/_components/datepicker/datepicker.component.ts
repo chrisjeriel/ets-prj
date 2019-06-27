@@ -155,12 +155,14 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   }
 
   onBlur(ev) {
-  	this.ev = ev;
-  	if(this.datepickerVal == null && this.required) {
-  		$(ev.target).css('boxShadow', 'rgb(255, 51, 51) 0px 0px 5px');
-  	} else if(this.datepickerVal != null && this.required) {
-  		$(ev.target).css('boxShadow', 'none');
-  	}
+   setTimeout(() => {
+     this.ev = ev;
+     if(this.datepickerVal == null && this.required) {
+       $(ev.target).css('boxShadow', 'rgb(255, 51, 51) 0px 0px 5px');
+     } else if(this.datepickerVal != null && this.required) {
+       $(ev.target).css('boxShadow', 'none');
+     }
+   }, 0);
   }
 
   onSelect() {

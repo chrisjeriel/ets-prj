@@ -3,6 +3,7 @@ import { MaintenanceService, NotesService } from '@app/_services'
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 
 @Component({
   selector: 'app-claim-status',
@@ -14,12 +15,13 @@ export class ClaimStatusComponent implements OnInit {
   @ViewChild('claimStatus') table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
-
+  @ViewChild('modal') modal: MtnClaimStatusLovComponent;
   passData: any = {
     tHeader: [ "Status Code","Description","Active","Remarks"],
     tableData:[],
-    dataTypes: ['text','text','checkbox','text'],
+    dataTypes: ['text','text','checkbox','lovInput'],
     nData: {
+      showMG:1,
       statusCode: null,
       description: null,
       remarks: null,
@@ -29,6 +31,7 @@ export class ClaimStatusComponent implements OnInit {
       updateDate: '',
       updateUser: JSON.parse(window.localStorage.currentUser).username
     },
+    magnifyingGlass: ['remarks'],
     pageID: 'claimStatus',
     disableGeneric : true,
     addFlag: true,
@@ -136,4 +139,24 @@ export class ClaimStatusComponent implements OnInit {
     this.cancelBtn.clickCancel();
   }
 
+  openLov($event){
+    this.modal.modal.openNoClose()
+  }
+
+  selectedData(data){
+    if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
+      //this.sectionCoverLOVRow = data[0].ev.index;
+      this.ns.lovLoader(data[0].ev, 0);
+    }
+    console.log(data)
+  }
+
+  test(data){
+    if(data.hasOwnProperty('lovInput')) {
+      data.ev['index'] = data.index;
+
+      this.modal.checkCode(data.ev.target.value, data.ev);
+    }    
+  }
+  
 }

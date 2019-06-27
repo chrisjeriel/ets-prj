@@ -57,6 +57,7 @@ export class MtnCurrencyListComponent implements OnInit {
   cancelFlag:boolean;
   dialogMessage : string = '';
   dialogIcon: any;
+  errorFlag: boolean = false;
   saveData : any = {
   	saveCurrency: []
   }
@@ -94,6 +95,7 @@ export class MtnCurrencyListComponent implements OnInit {
   prepareData(){
   	this.edited = [];
     this.deleted = [];
+    this.errorFlag = false;
   	for(var i =0; i< this.passData.tableData.length;i++){
   		if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
   			this.edited.push(this.passData.tableData[i])
@@ -101,6 +103,10 @@ export class MtnCurrencyListComponent implements OnInit {
         this.edited[this.edited.length - 1].updateDate = this.ns.toDateTimeString(0);
   		}else if(this.passData.tableData[i].deleted){
         this.deleted.push(this.passData.tableData[i]);
+      }
+
+      if(this.passData.tableData[i].currencyCd === null || this.passData.tableData[i].currencyCd === ''){
+        this.errorFlag = true;
       }
   	}
   	this.saveData.saveCurrency = this.edited;
@@ -110,7 +116,14 @@ export class MtnCurrencyListComponent implements OnInit {
   saveCurrency(cancelFlag?){
       this.cancelFlag = cancelFlag !== undefined;
       this.prepareData();
-     if(this.currencyList.indvSelect.okDelete == 'N'){
+      console.log(this.currencyList)
+     if(this.errorFlag){
+       setTimeout(()=> {
+        this.dialogIcon = 'error-message';
+        this.dialogMessage =  'Please Check Field Values.';
+        this.successDialog.open();
+        },0);
+     }else if(this.currencyList.indvSelect.okDelete == 'N'){
       this.dialogIcon = 'info';
       this.dialogMessage =  'You are not allowed to delete a Currency Code that is already used in Quotation Processing.';
       this.successDialog.open();

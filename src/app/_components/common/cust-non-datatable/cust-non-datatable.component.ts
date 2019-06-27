@@ -124,6 +124,8 @@ export class CustNonDatatableComponent implements OnInit {
     pinDatatypes:any[] = [];
     loadingFlag:boolean = true;
     loadingTableFlag: boolean = false;
+    overlayLoader: boolean = false;
+
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService, private appComponent: AppComponent) {
         config.placement = 'bottom-right';
         config.autoClose = false;
@@ -222,6 +224,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.addFiller();
         //this.appComponent.ngOnInit();
         this.loadingTableFlag = false;
+        this.overlayLoader = false;
         this.selected = [];
 
         //select the first row

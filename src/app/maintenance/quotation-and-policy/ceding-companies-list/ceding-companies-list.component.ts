@@ -150,12 +150,12 @@ export class CedingCompaniesListComponent implements OnInit {
 
     var importData: any[] = [];
     for(var i of this.maintenanceCedingCoListData.tableData){
-        i.membershipDate = i.membershipDate === null ? '' : i.membershipDate;
-        i.terminationDate = i.terminationDate === null ? '' : i.terminationDate;
-        i.inactiveDate = i.inactiveDate === null ? '' : i.inactiveDate;
+        i.membershipDate = i.membershipDate === null ? '' : this.ns.toDateTimeString(i.membershipDate).split('T')[0];
+        i.withdrawDate = i.withdrawDate === null ? '' : this.ns.toDateTimeString(i.withdrawDate).split('T')[0];
+        i.inactiveDate = i.inactiveDate === null ? '' : this.ns.toDateTimeString(i.inactiveDate).split('T')[0];
         i.activeTag = i.activeTag === null ? '' : i.activeTag;
         i.membershipTag = i.membershipTag === null ? '' : i.membershipTag;
-        i.govtTag = i.govtTag === null ? '' : i.govtTag;
+        i.withdrawTag = i.withdrawTag === null ? '' : i.withdrawTag;
         importData.push(i);
     }
 

@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import * as alasql from 'alasql';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -100,7 +101,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //NECO 06/03/2019
   treatyDistData: any = {
     tableData: [],
-    tHeader: ['Treaty', 'Treaty Company', 'Treaty Share (%)', 'SI Amount', 'Premium Amount', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
+    tHeader: ['Treaty', 'Treaty Company', 'Treaty Share (%)', 'SI Amount', 'Premium Amount', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
     magnifyingGlass: [],
     options: [],
     dataTypes: ['text', 'text', 'percent', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
@@ -120,7 +121,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     checkboxFlag: true,
     pageLength: 10,
     widths: [],
-    pageID: 'treatyDistTable'
+    pageID: 'treatyDistTable',
+    exportFlag: true,
   };
 
   limitsData: any = {
@@ -165,7 +167,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
   poolDistributionData: any = {
     tableData: [],
-    tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
+    tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
     dataTypes: ['text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
     keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
     widths: [1,250,1,140,140,1,140,140,1,140,140,140],
@@ -174,7 +176,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     paginateFlag: true,
     infoFlag: true,
     pageLength: 10,
-    pageID: 'poolDistTable'
+    pageID: 'poolDistTable',
+    searchFlag: true,
+    exportFlag: true,
   }
 
   coInsuranceData: any = {
@@ -186,6 +190,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     uneditable: [true,true,true,true,true,true,true],
     infoFlag: true,
     paginateFlag: true,
+    total:[null,null,null,'TOTAL','pctShare', 'siAmt', 'premAmt'],
     pageID: 'distCoInsTable'
   }
 
@@ -456,7 +461,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.wparamData.genericBtn = undefined;
       }else{
         this.wparamData.uneditable = [];
-        this.controlDisabled.oneRetLine = false;
+        if(parseInt(this.params.policyNo.substr(-3))==0){
+          this.controlDisabled.oneRetLine = false;
+        }
         this.wparamData.addFlag = true;
         this.wparamData.genericBtn = 'Delete';
       }
@@ -527,4 +534,58 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
       }
       this.wparam.refreshTable();
   }
+
+  exportTreatyDist(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'PolTreatyRiskDist_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+      //keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
+     alasql('SELECT treatyName AS TreatyName, trtyCedName AS CedingName, pctShare AS PctShare, siAmt AS SumInsured, premAmt AS PremiumAmount, commRt AS CommissionRate, commAmt as CommissionAmount, vatRiComm as VATRiCommision, netDue AS NetDue INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.treatyDistData.tableData]);
+  }
+
+  exportPoolDist(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'PolPoolDist_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+      //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+     alasql('SELECT treatyAbbr AS TreatyName, cedingName AS CedingName, retOneLines AS RetentionOneLines, retOneTsiAmt AS RetentionOneTSIAmount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
+  }
+
+  //poolDistributionData
+  //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+
 }

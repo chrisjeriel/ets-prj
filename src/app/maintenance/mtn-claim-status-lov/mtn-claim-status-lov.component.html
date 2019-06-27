@@ -1,0 +1,12 @@
+<app-modal class="d-none" (modalOpened)="openModal()" id="sectionCovers"  #modal>
+	<div header>List of Values</div>
+	<div body>
+		<app-cust-non-datatable [passData]="passData"  (rowClick)="select($event)" ></app-cust-non-datatable>
+	</div>
+	<div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modal.closeModal();" ><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modal.closeModal(); okBtnClick($event);"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>

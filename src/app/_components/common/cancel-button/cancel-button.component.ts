@@ -12,6 +12,8 @@ export class CancelButtonComponent implements OnInit {
   @ViewChild('saveModal') saveModal: ModalComponent;
   @Input() url:any;
   @Output() onYes: EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Output() no: EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Output() onCancel: EventEmitter<any[]> = new EventEmitter<any[]>();
   constructor(private router:Router, private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -40,6 +42,14 @@ export class CancelButtonComponent implements OnInit {
 
   onClickYes(){
   	this.onYes.emit();
+  }
+
+  onClickNo(){
+    this.no.emit();
+  }
+
+  onClickCancel(){
+    this.onCancel.emit();
   }
 
 }

@@ -7,6 +7,7 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-extract-expiring-policies',
@@ -15,7 +16,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class ExtractExpiringPoliciesComponent implements OnInit {
 
-  constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title, private ns: NotesService) { }
+  constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title, private ns: NotesService, private router: Router) { }
 
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
@@ -155,6 +156,10 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
   showLOV() {
     $('#extPolLov > #modalBtn').trigger('click');
+  }
+
+  gotoExpiryListing() {
+    this.router.navigate(['/expiry-listing', { }], { skipLocationChange: false });
   }
 
   searchQuery(searchParams){
