@@ -3,6 +3,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
+import { UnderwritingService } from '@app/_services';
 
 @Component({
   selector: 'app-policy-issuance',
@@ -43,7 +44,8 @@ export class PolicyIssuanceComponent implements OnInit {
   title: string = "Policy / Policy Issuance / Create Policy";
   exitLink:string;
   
-  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
+  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router, private underwritingService: UnderwritingService) { }
+
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
@@ -62,6 +64,8 @@ export class PolicyIssuanceComponent implements OnInit {
             }
             this.policyInfo.fromSummary = this.fromSummary;
             this.exitLink = params['exitLink'] == undefined? '/policy-listing' : params['exitLink'];
+            this.checkAlop();
+            this.checkCoins();
         });   
 
   }
@@ -97,7 +101,7 @@ export class PolicyIssuanceComponent implements OnInit {
         $event.preventDefault();
         this.openPost();
       } else 
-       if($('.ng-dirty.ng-touched').length != 0 ){
+       if($('.ng-dirty.ng-touched:not([type="search"])').length != 0 ){
           $event.preventDefault();
           const subject = new Subject<boolean>();
           const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -117,7 +121,7 @@ export class PolicyIssuanceComponent implements OnInit {
 
       if(this.fromInq=='true'){
         setTimeout(a=>{
-          $('input').attr('readonly','readonly');
+          $('input:not([type="search"])').attr('readonly','readonly');
           $('textarea').attr('readonly','readonly');
           $('select').attr('readonly','readonly');
         },0)
@@ -145,6 +149,30 @@ export class PolicyIssuanceComponent implements OnInit {
 
   openPost(){
     this.post = true;
+  }
+
+
+  checkAlop(){
+    this.underwritingService.getUWCoverageInfos(null, this.policyInfo.policyId).subscribe((data: any) => {
+        if(data.policy !== null){
+          let alopFlag = false;
+          if(data.policy.project !== null){
+            for(let sectionCover of data.policy.project.coverage.sectionCovers){
+                  if(sectionCover.section == 'III' && (this.line == 'CAR' || this.line == 'EAR')){
+                      alopFlag = true;
+                     break;
+                   }
+            }
+          }
+            this.policyInfo.showPolAlop = alopFlag;
+        }
+      });
+  }
+
+  checkCoins(){
+    this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
+             this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+    });
   }
   
 }

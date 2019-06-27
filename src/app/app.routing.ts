@@ -308,7 +308,7 @@ const appRoutes: Routes = [
     { path: 'adv-word-mtn', component: AdviceWordingsComponent },
     { path: 'ceding-co-list', component: CedingCompaniesListComponent },
     { path: 'ceding-co-form', component: CedingCompanyFormComponent},
-    { path: 'maintenance-endt', component: EndorsementComponent },
+    { path: 'maintenance-endt', component: EndorsementComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-object', component: ObjectComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },
     { path: 'total-val-pol-print', component: HundredValPolPrintComponent, canDeactivate: [UnsavedChangesGuard] },

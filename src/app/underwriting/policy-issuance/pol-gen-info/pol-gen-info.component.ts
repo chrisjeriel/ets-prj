@@ -697,7 +697,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                   });
               });
 
-            });}
+            });
+    }
     else{
       this.underwritingService.getUWCoverageInfos(null, this.policyInfo.policyId).subscribe((data: any) => {
         if(data.policy !== null){

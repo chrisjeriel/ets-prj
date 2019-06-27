@@ -1138,9 +1138,9 @@
 							<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
 							<div class="form-control-sm col-sm-11 edtr-cont" style="height: 65px; padding-right: 6px !important; min-height: 60px;">
-								<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [required]="false">
+								<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [required]="false" [readonly]="fromInq">
 									<ng-container icon-1>
-										<a (click)="clickDeductiblesLOV('polWordings')"><i class="fa fa-search"></i></a>
+										<a (click)="clickDeductiblesLOV('polWordings')" *ngIf="!fromInq"><i class="fa fa-search"></i></a>
 									</ng-container>
 								</text-editor>
 							</div>
@@ -2359,9 +2359,9 @@
 						<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
 						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
-							<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2">
+							<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [readonly]="fromInq">
 								<ng-container icon-1>
-									<a (click)="clickDeductiblesLOV('polWordings')"><i class="fa fa-search"></i></a>
+									<a (click)="clickDeductiblesLOV('polWordings')" *ngIf="!fromInq"><i class="fa fa-search"></i></a>
 								</ng-container>
 							</text-editor>
 						</div>
@@ -2373,9 +2373,9 @@
 						<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
 						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
-							<text-editor [editorContent]="policyInfo?.polWordings.altText" (fetchContent)="policyInfo?.polWordings.altText = $event" [edtrOpnrPos]="2" [required]="true">
+							<text-editor [editorContent]="policyInfo?.polWordings.altText" (fetchContent)="policyInfo?.polWordings.altText = $event" [edtrOpnrPos]="2" [required]="true" [readonly]="fromInq">
 								<ng-container icon-1>
-									<a (click)="clickDeductiblesLOV('polWordingsAlt')"><i class="fa fa-search"></i></a>
+									<a (click)="clickDeductiblesLOV('polWordingsAlt')"  *ngIf="!fromInq"><i class="fa fa-search"></i></a>
 								</ng-container>
 							</text-editor>
 						</div>

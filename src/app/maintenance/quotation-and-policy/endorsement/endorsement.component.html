@@ -8,7 +8,7 @@
                         <div class="input-group">
                             <div class="col-sm-3"></div>
                             <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
-                            <input class="form-control form-control-sm  col-sm-1 not-form" type="text" (change)="checkCode($event)" [(ngModel)]="line.lineCd">
+                            <input class="form-control form-control-sm  col-sm-1 not-form" type="search" (change)="checkCode($event)" [ngModel]="line.lineCd">
                             <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="line.description" readonly>
                             <div class="col-sm-3"></div>
@@ -51,5 +51,5 @@
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="exitUrl" ></app-cancel-button>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
