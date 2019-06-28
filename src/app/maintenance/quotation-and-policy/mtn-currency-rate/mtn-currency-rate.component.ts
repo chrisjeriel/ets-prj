@@ -115,8 +115,14 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   checkCode(ev){
-    this.ns.lovLoader(ev, 1);
-    this.currencyLov.checkCode(this.currencyCd.toUpperCase(), ev);
+   if(this.currencyCd === null || this.currencyCd === ''){
+      this.description = null;
+      this.passData.tableData = [];
+      this.table.refreshTable();
+    }else{
+      this.ns.lovLoader(ev, 1);
+      this.currencyLov.checkCode(this.currencyCd.toUpperCase(), ev);
+    }
   }
 
   setCurrency(data){
