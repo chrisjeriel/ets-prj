@@ -25,8 +25,9 @@ import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.co
   styleUrls: ['./pol-gen-info.component.css']
 })
 export class PolGenInfoComponent implements OnInit, OnDestroy {
-  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('main') cancelBtn : CancelButtonComponent;
   //add by paul for deductibles
+  @ViewChild('dedCancel') dedCancelBtn : CancelButtonComponent;
   @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
   @ViewChild('deductiblesModal') deductiblesModal :ModalComponent;
   @ViewChild('dedSuccess') successDlg: SucessDialogComponent;
@@ -975,7 +976,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveDeductibles(){
+  saveDeductibles(cancel?){
     let params:any = {
       policyId:this.policyId,
       saveDeductibleList: [],
@@ -1001,7 +1002,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         if(data['returnCode'] == -1){
           this.dialogIcon = '';
           this.successDlg.open();
-          this.getDeductibles();
+          if(cancel == undefined)
+            this.getDeductibles();
+          else
+            this.deductiblesModal.closeModal();
         }else{
           this.deductiblesTable.loadingFlag = false;
           this.dialogIcon = 'error';
@@ -1409,5 +1413,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         }
         this.passLOVData.selector = selector;
         this.lov.openLOV();
+    }
+
+    onDedCancel(){
+      if(this.passDataDeductibles.tableData.filter(a=>a.edited || a.deleted).length != 0 ){
+        this.dedCancelBtn.saveModal.openNoClose();
+      }else{
+        this.deductiblesModal.closeModal();
+      }
     }
 }

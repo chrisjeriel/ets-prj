@@ -158,6 +158,7 @@ export class EndorsementComponent implements OnInit {
 
   checkCode(ev,force?){
      this.newLineEv = ev;
+     console.log(ev)
      if($('.ng-dirty.ng-touched:not([type="search"])').length == 0 || force !=undefined){
         if(ev.target.value == null || ev.target.value.toUpperCase() == ''){
           this.line.description = '';
@@ -207,7 +208,7 @@ export class EndorsementComponent implements OnInit {
 
   getMtnEndorsements(){
   	this.endtTable.loadingFlag = true;
-  	this.ms.getEndtCode(this.line.lineCd,'').subscribe(a=>{
+  	this.ms.getEndtCode(this.line.lineCd.trim(),'').subscribe(a=>{
   		this.passEndtTable.disableAdd = false;
   		this.passEndtTable.tableData = a['endtCode'];
   		this.passEndtTable.tableData.forEach(a=>{{
