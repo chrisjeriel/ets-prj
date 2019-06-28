@@ -123,7 +123,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   			//put eSignature to filename for the table to recognize it
   			for(var i = 0; i < data.cedingCompany[0].cedingRepresentative.length; i++){
   				data.cedingCompany[0].cedingRepresentative[i].fileName = data.cedingCompany[0].cedingRepresentative[i].eSignature;
-          data.cedingCompany[0].cedingRepresentative[i].fileNameServer = this.ns.toDateTimeString(data.cedingCompany[0].cedingRepresentative[i].updateDate).match(/\d+/g).join('') + data.cedingCompany[0].cedingRepresentative[i].eSignature;
+          data.cedingCompany[0].cedingRepresentative[i].fileNameServer = this.ns.toDateTimeString(data.cedingCompany[0].cedingRepresentative[i].createDate).match(/\d+/g).join('') + data.cedingCompany[0].cedingRepresentative[i].eSignature;
   			}
 
   			this.companyData = data.cedingCompany[0];
