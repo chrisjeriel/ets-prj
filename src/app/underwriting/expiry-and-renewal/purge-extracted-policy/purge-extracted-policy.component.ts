@@ -68,13 +68,19 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     typeOfCessionId : "",
     lineDescription :"",
     typeOfCession :"",
-    byDateFrom: null,
+    byDateFrom: '',
     byDateTo: null,
     byMonthFrom:null,
     byMonthTo:null,
     byYearTo: null,
     byYearFrom: null
   }
+
+  dateParams:any = {
+    byDateFrom: ''
+  }
+
+  
 
   PolicyNo: any = {
     line: null,
@@ -201,7 +207,8 @@ export class PurgeExtractedPolicyComponent implements OnInit {
         if(this.params.byDateFom !== undefined && this.params.byDateFom !== ''){
           for(var i = 0; i < this.passData.tableData.length; i++){
             if(this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0].trim() === this.params.byDateFrom){
-
+               console.log(this.params.byDateFom);
+               console.log(this.params.byDateFom);
             }
           }
         }
@@ -357,9 +364,14 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   test(){
-    console.log(this.byDate)
-    console.log(this.params.byDateFrom == this.ns.toDateTimeString(this.passData.tableData[0].expiryDate).split('T')[0].trim())
-    /*console.log(this.params.byDateFrom)
-    console.log(this.params.byDateFrom.trim())*/
+    var arr =[];
+    console.log(this.passData.tableData[0].expiryDate)
+    console.log(this.dateParams.byDateFrom)
+    for(var i= 0 ; i <  this.passData.tableData.length; i++){
+      if(this.passData.tableData[i].expiryDate > this.ns.toDateTimeString(this.dateParams.byDateFrom)){
+        arr.push(this.passData.tableData[i]);
+      }
+    }
+    console.log(arr)
   }
 }

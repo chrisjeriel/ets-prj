@@ -54,7 +54,6 @@
 					</div>
 					<div class="col-sm-2"></div>
 				</div>
-
 				 	<app-modal class="hidden" id="parameter">
                      	<div header>Parameter</div>
 							<div body style="width: 600px !important">
@@ -67,15 +66,21 @@
 											<label class="form-control-sm col-sm-2" for="byDate" style="margin-left: -25px;">&nbsp;By Date</label>
 										</div>
 									</div>
+
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-top: -10px;margin-left: 90px;">
 											<div class="col-sm-1"></div>
 											<label class="form-control-sm col-sm-1 cust-sm from" for="fromDate">From</label>
-											<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="fromDate" [disabled]="!byDate" style="margin-left: 10px;" [ngModel]="params.byDateFom" (ngModelChange)="params.byDateFom = $event;test()">
+											<div class="col-sm-3 dp-cont">
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [(value)]="dateParams.byDateFrom" [disabled]="!byDate"></datepicker>
+											</div>
 											<label class="form-control-sm col-sm-1 cust-sm" style="margin-left: -10px !important;">To</label>
-											<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="toDate" [disabled]="!byDate" [ngModel]="params.byDateTo" (ngModelChange)="params.byDateTo = $event">
+											<div class="col-sm-3 dp-cont">
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="params.byDateTo" (valueChange)="params.byDateTo=$event; updateExpiryDate($event);" [disabled]="!byDate"></datepicker>
+											</div>	
 										</div>
 									</div>
+									
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-top: -10px;margin-left: 100px;">
 											<div class="col-sm-1"></div>
@@ -163,6 +168,7 @@
 							</div>
 							   	<div footer>
 							        <div class="cust-btn-container text-center" style="margin-right: 215px;">
+							        	<button type="button" class="cust-btn" (click)="test();"><a>test</a></button>
 							            <button type="button" class="cust-btn" (click)="clearData();"><a>Clear</a></button>
 							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
 							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Ok</a></button>
