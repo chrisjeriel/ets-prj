@@ -118,17 +118,30 @@ export class MtnCurrencyListComponent implements OnInit {
   saveCurrency(cancelFlag?){
       this.cancelFlag = cancelFlag !== undefined;
 
-      this.prepareData();
+      if(this.cancelFlag){
+        let currCds:string[] = this.passData.tableData.filter(a=>!a.deleted).map(a=>String(a.currencyCd).padStart(3,'0'));
+
+        if(currCds.some((a,i)=>currCds.indexOf(a) != i)){
+          if(this.cancelFlag){
+             this.cancelFlag = false;
+          }
+          this.dialogMessage = 'Unable to save the record. Currency Code must be unique per Line';
+          this.dialogIcon = 'error-message';
+          this.successDialog.open();
+          return;
+        }
+      }
+
+     this.prepareData();
      if(this.errorFlag){
        setTimeout(()=> {
+        if(this.cancelFlag){
+           this.cancelFlag = false;
+        }
         this.dialogIcon = 'error-message';
         this.dialogMessage =  'Please Check Field Values.';
         this.successDialog.open();
         },0);
-     }else if(this.currencyList.indvSelect.okDelete == 'N'){
-      this.dialogIcon = 'info';
-      this.dialogMessage =  'You are not allowed to delete a Currency Code that is already used in Quotation Processing.';
-      this.successDialog.open();
      }else if(this.edited.length === 0 && this.deleted.length === 0){
         setTimeout(()=> {
         this.dialogMessage = "Nothing to Save.";
@@ -138,6 +151,9 @@ export class MtnCurrencyListComponent implements OnInit {
      }else{
        this.maintenanceService.saveMtnCurrency(this.saveData).subscribe((data:any) => {
          if(data['returnCode'] == 0) {
+           if(this.cancelFlag){
+             this.cancelFlag = false;
+           }
            this.dialogMessage = data['errorList'][0].errorMessage;
            this.dialogIcon = "error";
            this.successDialog.open();
