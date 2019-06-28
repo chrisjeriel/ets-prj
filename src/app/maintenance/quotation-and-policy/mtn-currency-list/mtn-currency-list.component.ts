@@ -117,7 +117,6 @@ export class MtnCurrencyListComponent implements OnInit {
 
   saveCurrency(cancelFlag?){
       this.cancelFlag = cancelFlag !== undefined;
-
       if(this.cancelFlag){
         let currCds:string[] = this.passData.tableData.filter(a=>!a.deleted).map(a=>String(a.currencyCd).padStart(3,'0'));
 
@@ -131,7 +130,6 @@ export class MtnCurrencyListComponent implements OnInit {
           return;
         }
       }
-
      this.prepareData();
      if(this.errorFlag){
        setTimeout(()=> {

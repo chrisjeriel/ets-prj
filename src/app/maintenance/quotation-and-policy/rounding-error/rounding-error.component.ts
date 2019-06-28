@@ -98,8 +98,8 @@ export class RoundingErrorComponent implements OnInit {
    	  	this.roundingError.createDate = this.ns.toDateTimeString(data.createDate);
    	  	this.roundingError.updateDate = this.ns.toDateTimeString(data.updateDate);
    	  }else{
-         this.passData.disableGeneric = true
-       }
+        this.passData.disableGeneric = true
+      }
 
    	 if(data.okDelete == 'Y'){
    	   this.passData.disableGeneric = false
