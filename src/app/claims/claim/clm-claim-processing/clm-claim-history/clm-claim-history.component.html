@@ -28,7 +28,7 @@
 			<div class="custom-row-inline-inset">
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable id="histId" [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt();" #histTbl></app-cust-editable-non-datatable>
+						<app-cust-editable-non-datatable id="histId" [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt(); checkDirtyTbl();" (add)="onClickAddHistTbl()" #histTbl></app-cust-editable-non-datatable>
 					</div>
 				</div>
 				<div class="form-row" style="margin-top: -10px;margin-right: 22px !important;">
@@ -88,11 +88,7 @@
 						<div class="form-row">
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
 								<label class="form-control-sm top-label">&nbsp;Status</label>
-								<div class="input-group" style="padding-right: 5px !important">
-	                               <input type="text" class="form-control form-control-sm cust-sm" (change)="checkCodeStats($event)" [(ngModel)]="clmHistoryData.claimStat" appRequired>
-	                               <div class="text-search-ico" style="z-index: 3 !important;" >
-	                               <a><i class="fa fa-search" (click)="showStatsLov()"></i></a></div>
-	                           </div>
+	                            <input type="text" class="form-control form-control-sm cust-sm" readonly [(ngModel)]="clmHistoryData.claimStat">
 							</div>
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
 								<label class="form-control-sm top-label">&nbsp;Approved Amount</label>
@@ -163,7 +159,7 @@
 <app-modal class="d-none" id="approvedAmtMdl">
     <div header>Approved Amount</div>
     <div body class="container-flex text-center" style="min-width: 750px !important;">
-       <app-cust-editable-non-datatable id="appAmtId" [passData]="passDataApprovedAmt" #apAmtTbl></app-cust-editable-non-datatable>
+       <app-cust-editable-non-datatable id="appAmtId" [passData]="passDataApprovedAmt" #apAmtTbl (tableDataChange)="passDataApprovedAmt.tableData=$event; checkDirtyTbl();"></app-cust-editable-non-datatable>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onClickCancelAppAmt()"><a>Cancel</a></button>
