@@ -137,6 +137,7 @@ export class EndorsementComponent implements OnInit {
 
   cancelFlag:boolean;
   exitUrl:string = '/maintenance-qu-pol';
+  newLineEv: string;
 
   constructor(private ns: NotesService, private ms: MaintenanceService) { }
 
@@ -155,9 +156,40 @@ export class EndorsementComponent implements OnInit {
     });
   }
 
-  checkCode(ev){
-    
-      if(this.line.lineCd.toUpperCase() == null || this.line.lineCd.toUpperCase() == ''){
+  checkCode(ev,force?){
+     this.newLineEv = ev;
+     if($('.ng-dirty.ng-touched:not([type="search"])').length == 0 || force !=undefined){
+        if(ev.target.value == null || ev.target.value.toUpperCase() == ''){
+          this.line.description = '';
+          this.passEndtTable.disableAdd = true;
+          this.passEndtTable.disableGeneric = true;
+          this.passEndtTable.tableData = [];
+          this.endtTable.refreshTable();
+
+          this.passDedTable.disableAdd = true;
+          this.passDedTable.disableGeneric = true;
+          this.passDedTable.tableData = [];
+          this.dedTable.refreshTable();
+        }else{
+          this.ns.lovLoader(ev, 1);
+          this.lineLov.checkCode(ev.target.value.toUpperCase(), ev); 
+        }
+      }else{
+        this.exitUrl = null;
+        this.cnclBtn.clickCancel();
+      }
+  }
+
+  setLine(data){
+      this.ns.lovLoader(data.ev, 0);
+      if(data.lineCd != null){
+        this.getMtnEndorsements();
+        this.line.lineCd = data.lineCd;
+        this.passEndtTable.nData.lineCd = data.lineCd;
+        this.passDedTable.nData.lineCd = data.lineCd;
+        this.line.description = data.description;
+      }
+      else{
         this.line.description = '';
         this.passEndtTable.disableAdd = true;
         this.passEndtTable.disableGeneric = true;
@@ -168,25 +200,9 @@ export class EndorsementComponent implements OnInit {
         this.passDedTable.disableGeneric = true;
         this.passDedTable.tableData = [];
         this.dedTable.refreshTable();
-      }else{
-        this.ns.lovLoader(ev, 1);
-        this.lineLov.checkCode(this.line.lineCd.toUpperCase(), ev); 
       }
-  }
-
-  setLine(data){
-    if($('.ng-dirty.ng-touched:not([type="search"])').length == 0){
-      this.line.lineCd = data.lineCd;
-      this.passEndtTable.nData.lineCd = data.lineCd;
-      this.passDedTable.nData.lineCd = data.lineCd;
-      this.line.description = data.description;
-      this.ns.lovLoader(data.ev, 0);
-      this.getMtnEndorsements();
       this.exitUrl = '/maintenance-qu-pol';
-    }else{
-      this.exitUrl = null;
-      this.cnclBtn.clickCancel();
-    }
+    
   }
 
   getMtnEndorsements(){
@@ -227,7 +243,7 @@ export class EndorsementComponent implements OnInit {
   		this.dialogMessage =  'You are not allowed to delete an Endorsement that is already used in quotation processing.';
   		this.successDialog.open();
   	}else{
-      this.passEndtTable.disableGeneric = true;
+      //this.passEndtTable.disableGeneric = true;
       this.passDedTable.disableGeneric = true;
       this.passDedTable.disableAdd = true;
       this.passDedTable.tableData = [];

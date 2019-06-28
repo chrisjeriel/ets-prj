@@ -51,5 +51,5 @@
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="exitUrl" ></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="exitUrl" (onCancel)="line.lineCd = line.lineCd.trim();line.lineCd = this.line.lineCd.toString()+' '" (no)="checkCode(newLineEv,'a')"></app-cancel-button>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>

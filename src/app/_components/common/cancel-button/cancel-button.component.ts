@@ -32,8 +32,8 @@ export class CancelButtonComponent implements OnInit {
   }
 
   onNo(){
+    $('.ng-dirty').removeClass('ng-dirty');
     if (this.url != null) {
-      $('.ng-dirty').removeClass('ng-dirty');
       this.router.navigate([this.url]);
     } else {
       this.modalService.dismissAll();
