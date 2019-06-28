@@ -254,6 +254,9 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   	this.mtnService.saveMtnCedingCompany(JSON.stringify(params)).subscribe((data: any)=>{
   		console.log(data);
   		if(data.returnCode === 0){
+        if(this.cancelFlag){
+          this.cancelFlag = false;
+        }
   			this.dialogIcon = 'error';
   			this.successDiag.open();
   		}else{

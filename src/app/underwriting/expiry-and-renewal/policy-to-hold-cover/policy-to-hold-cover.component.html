@@ -57,12 +57,12 @@
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Policy No</label>
                                             <div class="input-group col-sm-8">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired [ngModel]="policyInfo.policyNo.split('-')[0]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'lineCd')" maxlength="7">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[1]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'year')" maxlength="4">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[2]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'seqNo')" maxlength="5">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[3]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'cedingId')" maxlength="3">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[4]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'coSeriesNo')" maxlength="4">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[5]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'altNo')" maxlength="3">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired [(ngModel)]="tempPolNo[0]" (change)="policyNoChecker($event, 'line')" maxlength="7">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[1]" (change)="policyNoChecker($event, 'year')" maxlength="4">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[2]" (change)="policyNoChecker($event, 'seqNo')" maxlength="5">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[3]" (change)="policyNoChecker($event, 'cedingId')" maxlength="3">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[4]" (change)="policyNoChecker($event, 'coSeriesNo')" maxlength="4">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[5]" (change)="policyNoChecker($event, 'altNo')" maxlength="3">
                                             </div>
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
@@ -273,12 +273,12 @@
                                     <span>&nbsp;</span>
                                     <input type="text" class="form-control form-control-sm col-sm" [ngModel]="statusDesc" readonly>
                                 </div>
-                                <div class="input-group">
+                                <div class="input-group" style="text-align: center;">
                                     <div class="cust-btn-container col-sm" style="padding: 0px !important">
-                                        <button type="button" class="cust-btn col-sm" (click)="approve($event)" [class.cust-btn-disabled]="this.statusDesc.toUpperCase() === 'APPROVED'" [disabled]="this.statusDesc.toUpperCase() === 'APPROVED'"><a>{{authorization !== userName ? 'For Approval' : 'Approve'}}</a></button>
+                                        <button type="button" class="cust-btn col-sm" (click)="approve($event)" style="width: 100px"><a>{{authorization !== userName ? 'For Approval' : 'Approve'}}</a></button>
                                     </div>      
                                     <div class="cust-btn-container col-sm" style="padding: 0px !important">
-                                        <button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="approve($event);" [class.cust-btn-disabled]="this.statusDesc.toUpperCase() === 'APPROVED' || authorization !== userName" [disabled]="this.statusDesc.toUpperCase() === 'APPROVED' || authorization !== userName">Rejected</button>
+                                        <button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="approve($event);" [class.cust-btn-disabled]="authorization !== userName" [disabled]="authorization !== userName" style="width: 100px">Rejected</button>
                                     </div>
                                 </div>
                             </fieldset>

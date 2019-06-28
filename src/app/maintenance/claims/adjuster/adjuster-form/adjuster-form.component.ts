@@ -100,6 +100,7 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   			this.retrieveMtnAdjuster(params.adjId);
   		}
   	});
+    this.repData.disableGeneric = true;
   }
 
   retrieveMtnAdjuster(adjId: string){
@@ -221,6 +222,9 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   	this.mtnService.saveMtnAdjuster(JSON.stringify(params)).subscribe((data: any)=>{
   		console.log(data);
   		if(data.returnCode === 0){
+        if(this.cancelFlag){
+          this.cancelFlag = false;
+        }
   			this.dialogIcon = 'error';
   			this.successDiag.open();
   		}else{
@@ -270,8 +274,12 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(data){
-  	this.selected = data;
-  	console.log(data);
+    if(data !== null){
+  	  this.selected = data;
+      this.repData.disableGeneric = false;
+    }else{
+      this.repData.disableGeneric = true;
+    }
   }
 
   onClickAdd(event){

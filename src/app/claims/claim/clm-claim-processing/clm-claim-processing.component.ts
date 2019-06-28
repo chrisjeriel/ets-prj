@@ -298,7 +298,7 @@ export class ClmClaimProcessingComponent implements OnInit {
              }
          }
      }
-
+     console.log(this.isIncomplete);
      if(!this.isIncomplete){
          //this.getQuoteListing();
          this.retrievePolList();

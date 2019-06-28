@@ -263,7 +263,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	retrievePolListing(){
 		this.table.loadingFlag = true;
 		this.policyListingData.tableData = [];
-		setTimeout(()=>{
+		//setTimeout(()=>{
+			console.log(this.tempPolNo.join('%-%'));
 			this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any) =>{
 				data.policyList = data.policyList === null ? [] : data.policyList.filter(a=>{return parseInt(a.policyNo.split('-')[5]) === 0}); //filter out all policies with alteration
 				if(data.policyList.length !== 0){
@@ -312,7 +313,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				this.modalOpen = true;
 				this.table.loadingFlag = false;
 			});
-		}, 100);
+		//}, 100);
 		
 	}
 
@@ -392,6 +393,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	}
 
 	selectPol(){
+		//this.focusBlur();
 		this.isIncomplete = false;
 		this.noDataFound = false;
 		this.isModify = false;
@@ -565,7 +567,51 @@ export class PolicyToHoldCoverComponent implements OnInit {
   		}
   	}
 
-  	policySearchParams(data:string, key:string){
+  	policyNoChecker(event, key){
+     this.isType = true;
+     if(event.target.value.length === 0){
+         this.isIncomplete = true;
+         this.clearHcFields();
+         this.policyInfo.cedingName = '';
+		 this.policyInfo.insuredDesc = '';
+		 this.policyInfo.riskName = '';
+		 this.policyInfo.statusDesc = '';
+		 this.policyInfo.policyId = '';
+     }else{
+         if(key === 'seqNo'){
+             this.tempPolNo[2] = String(this.tempPolNo[2]).padStart(5, '0');
+         }else if(key === 'cedingId'){
+             this.tempPolNo[3] = String(this.tempPolNo[3]).padStart(3, '0');
+         }else if(key ==='coSeriesNo'){
+             this.tempPolNo[4] = String(this.tempPolNo[4]).padStart(4, '0');
+         }else if(key ==='altNo'){
+             this.tempPolNo[5] = String(this.tempPolNo[5]).padStart(3, '0');
+         }else if(key === 'line'){
+             this.tempPolNo[0] = String(this.tempPolNo[0]).toUpperCase();
+         }
+         for(var i of this.tempPolNo){
+             if(i.length === 0){
+                 this.isIncomplete = true;
+                 break;
+             }else{
+                 this.isIncomplete = false;
+             }
+         }
+     }
+
+     if(!this.isIncomplete){
+         this.retrievePolListing();
+     }
+   }
+
+   focusBlur(){
+   	setTimeout(()=>{
+   		$('input[type=text]').focus();
+   		$('input[type=text]').blur();
+   	},0);
+   }
+
+  	/*policySearchParams(data:string, key:string){
   		this.fromHcMonitoring = '';
   		this.isType = true;
 
@@ -614,7 +660,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				this.policyInfo.statusDesc = '';
 	  		}
   		}
-  	}
+  	}*/
 
   	modificationOption(option: string){
   		if(option === 'cancel'){

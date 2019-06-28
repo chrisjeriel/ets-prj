@@ -175,6 +175,9 @@ export class MtnNonRenewalReasonComponent implements OnInit {
     }else{
       this.ms.saveMtnNonRenewalReason(this.savedData, this.deletedData).subscribe((data:any)=>{
         if(data.returnCode === 0){
+          if(this.cancelFlag){
+            this.cancelFlag = false;
+          }
           this.dialogIcon = 'error';
           this.successDiag.open();
         }else{
