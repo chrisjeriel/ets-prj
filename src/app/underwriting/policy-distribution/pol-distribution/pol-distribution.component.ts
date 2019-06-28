@@ -50,7 +50,6 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       keys: ['section', 'treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
       widths: [1,1,250,1,140,140,1,140,140,1,140,140,140],
       uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true],
-      total:[null, null,'TOTAL',null, 'retOneTsiAmt', 'retOnePremAmt', null, 'retTwoTsiAmt', 'retTwoPremAmt', null, 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
       paginateFlag: true,
       infoFlag: true,
       pageLength: 10,
@@ -192,8 +191,12 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       net:0.00
     };
 
-
+    let test = 0;
     this.poolDistributionData.tableData.forEach(a=>{
+      test = test + a.totalCommAmt;
+      test = Number(test.toFixed(2));
+      console.log("Test Inc");
+      console.log(test);
       if(a.section == 'I'){
         this.pts1.ret += a.retOneLines + a.retTwoLines;
         this.pts1.ret1si += a.retOneTsiAmt;
@@ -203,8 +206,6 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
         this.pts1.comAmt += a.totalCommAmt;
         this.pts1.vat += a.totalVatRiComm;
         this.pts1.net += a.totalNetDue;
-        console.log(a.totalCommAmt);
-        console.log(this.pts1.comAmt);
       }else{
         this.pts2.ret += a.retOneLines + a.retTwoLines;
         this.pts2.ret1si += a.retOneTsiAmt;
@@ -224,6 +225,31 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.ptotal.comAmt = this.pts1.comAmt + this.pts2.comAmt;
       this.ptotal.vat = this.pts1.vat + this.pts2.vat;
       this.ptotal.net = this.pts1.net + this.pts2.net;
+
+      this.pts1.ret =Number(this.pts1.ret).toFixed(2);
+      this.pts1.ret1si =Number(this.pts1.ret1si).toFixed(2);
+      this.pts1.ret1prem =Number(this.pts1.ret1prem).toFixed(2);
+      this.pts1.ret2si =Number(this.pts1.ret2si).toFixed(2);
+      this.pts1.ret2prem =Number(this.pts1.ret2prem).toFixed(2);
+      this.pts1.comAmt =Number(this.pts1.comAmt).toFixed(2);
+      this.pts1.vat =Number(this.pts1.vat).toFixed(2);
+      this.pts1.net =Number(this.pts1.net).toFixed(2);
+      this.pts2.ret =Number(this.pts2.ret).toFixed(2);
+      this.pts2.ret1si =Number(this.pts2.ret1si).toFixed(2);
+      this.pts2.ret1prem =Number(this.pts2.ret1prem).toFixed(2);
+      this.pts2.ret2si =Number(this.pts2.ret2si).toFixed(2);
+      this.pts2.ret2prem =Number(this.pts2.ret2prem).toFixed(2);
+      this.pts2.comAmt =Number(this.pts2.comAmt).toFixed(2);
+      this.pts2.vat =Number(this.pts2.vat).toFixed(2);
+      this.pts2.net =Number(this.pts2.net).toFixed(2);
+      this.ptotal.ret =Number(this.ptotal.ret).toFixed(2);
+      this.ptotal.ret1si =Number(this.ptotal.ret1si).toFixed(2);
+      this.ptotal.ret1prem =Number(this.ptotal.ret1prem).toFixed(2);
+      this.ptotal.ret2si =Number(this.ptotal.ret2si).toFixed(2);
+      this.ptotal.ret2prem =Number(this.ptotal.ret2prem).toFixed(2);
+      this.ptotal.comAmt =Number(this.ptotal.comAmt).toFixed(2);
+      this.ptotal.vat =Number(this.ptotal.vat).toFixed(2);
+      this.ptotal.net =Number(this.ptotal.net).toFixed(2);
   }
 
   //NECO 06/04/2019
@@ -248,10 +274,10 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.poolTable.refreshTable();
       this.poolTable.loadingFlag = false;
       this.getSumsPool();
-      // setTimeout(()=>{
-      //    $('input[type=text]').focus();
-      //    $('input[type=text]').blur();
-      // },0);
+      setTimeout(()=>{
+         $('input[type=text]').focus();
+         $('input[type=text]').blur();
+      },0);
     });
   }
 

@@ -4,7 +4,7 @@
         <ngb-tab title="Approver">
             <ng-template ngbTabContent>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
-	                	<app-cust-editable-non-datatable #table [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="info=$event"
+	                	<app-cust-editable-non-datatable #table [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"
                         (clickLOV)="openUsersModal($event)" (tableDataChange)="checkUserCode($event)"></app-cust-editable-non-datatable>
                     <div class="w-100 text-center my-2" style="margin-top: 30px !important">
                         <button class="cust-btn" (click)="openApprovalFn()" [disabled]="info==null || info.add">Approval Function</button>

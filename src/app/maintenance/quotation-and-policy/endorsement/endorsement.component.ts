@@ -5,6 +5,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 
 @Component({
   selector: 'app-endorsement',
@@ -135,6 +136,8 @@ export class EndorsementComponent implements OnInit {
     };
 
   cancelFlag:boolean;
+  exitUrl:string = '/maintenance-qu-pol';
+  newLineEv: string;
 
   constructor(private ns: NotesService, private ms: MaintenanceService) { }
 
@@ -153,38 +156,60 @@ export class EndorsementComponent implements OnInit {
     });
   }
 
-  checkCode(ev){
-    if(this.line.lineCd.toUpperCase() == null || this.line.lineCd.toUpperCase() == ''){
-      this.line.description = '';
-      this.passEndtTable.disableAdd = true;
-      this.passEndtTable.disableGeneric = true;
-      this.passEndtTable.tableData = [];
-      this.endtTable.refreshTable();
+  checkCode(ev,force?){
+     this.newLineEv = ev;
+     console.log(ev)
+     if($('.ng-dirty.ng-touched:not([type="search"])').length == 0 || force !=undefined){
+        if(ev.target.value == null || ev.target.value.toUpperCase() == ''){
+          this.line.description = '';
+          this.passEndtTable.disableAdd = true;
+          this.passEndtTable.disableGeneric = true;
+          this.passEndtTable.tableData = [];
+          this.endtTable.refreshTable();
 
-      this.passDedTable.disableAdd = true;
-      this.passDedTable.disableGeneric = true;
-      this.passDedTable.tableData = [];
-      this.dedTable.refreshTable();
-    }else{
-      this.ns.lovLoader(ev, 1);
-      this.lineLov.checkCode(this.line.lineCd.toUpperCase(), ev); 
-    }
+          this.passDedTable.disableAdd = true;
+          this.passDedTable.disableGeneric = true;
+          this.passDedTable.tableData = [];
+          this.dedTable.refreshTable();
+        }else{
+          this.ns.lovLoader(ev, 1);
+          this.lineLov.checkCode(ev.target.value.toUpperCase(), ev); 
+        }
+      }else{
+        this.exitUrl = null;
+        this.cnclBtn.clickCancel();
+      }
   }
 
   setLine(data){
-      this.line.lineCd = data.lineCd;
-      this.passEndtTable.nData.lineCd = data.lineCd;
-      this.passDedTable.nData.lineCd = data.lineCd;
-      this.line.description = data.description;
       this.ns.lovLoader(data.ev, 0);
-      this.getMtnEndorsements();
+      if(data.lineCd != null){
+        this.getMtnEndorsements();
+        this.line.lineCd = data.lineCd;
+        this.passEndtTable.nData.lineCd = data.lineCd;
+        this.passDedTable.nData.lineCd = data.lineCd;
+        this.line.description = data.description;
+      }
+      else{
+        this.line.description = '';
+        this.passEndtTable.disableAdd = true;
+        this.passEndtTable.disableGeneric = true;
+        this.passEndtTable.tableData = [];
+        this.endtTable.refreshTable();
+
+        this.passDedTable.disableAdd = true;
+        this.passDedTable.disableGeneric = true;
+        this.passDedTable.tableData = [];
+        this.dedTable.refreshTable();
+      }
+      this.exitUrl = '/maintenance-qu-pol';
+    
   }
 
   getMtnEndorsements(){
   	this.endtTable.loadingFlag = true;
-  	this.ms.getEndtCode(this.line.lineCd,'').subscribe(a=>{
+  	this.ms.getEndtCode(this.line.lineCd.trim(),'').subscribe(a=>{
   		this.passEndtTable.disableAdd = false;
-  		this.passEndtTable.disableGeneric = false;
   		this.passEndtTable.tableData = a['endtCode'];
   		this.passEndtTable.tableData.forEach(a=>{{
         a.endtCd = String(a.endtCd).padStart(3,'0')
@@ -219,6 +244,11 @@ export class EndorsementComponent implements OnInit {
   		this.dialogMessage =  'You are not allowed to delete an Endorsement that is already used in quotation processing.';
   		this.successDialog.open();
   	}else{
+      //this.passEndtTable.disableGeneric = true;
+      this.passDedTable.disableGeneric = true;
+      this.passDedTable.disableAdd = true;
+      this.passDedTable.tableData = [];
+      this.dedTable.refreshTable();
   		this.endtTable.selected  = [this.endtTable.indvSelect]
   		this.endtTable.confirmDelete();
   	}
@@ -239,11 +269,13 @@ export class EndorsementComponent implements OnInit {
   	if(data != null){
   		this.passDedTable.tableData = data.deductibles;
   		this.passDedTable.disableAdd = false;
-  		this.passDedTable.disableGeneric = false;
+      this.passDedTable.disableGeneric = true;
   		this.passDedTable.nData.endtCd = data.endtCd;
+      this.passEndtTable.disableGeneric = false;
   		this.disableFields();
   		this.info = data;
   	}else{
+      this.passEndtTable.disableGeneric = true;
   		this.passDedTable.disableAdd = true;
   		this.passDedTable.disableGeneric = true;
   		this.passDedTable.tableData = [];
