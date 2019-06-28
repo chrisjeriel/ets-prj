@@ -797,7 +797,7 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyApprover',{params});
     }
 
-    getPolGenInfo(policyId: string, policyNo?: string) {
+    getPolGenInfo(policyId: any, policyNo?: any) {
         const params = new HttpParams()
             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo));

@@ -156,4 +156,14 @@ export class ClaimsService {
          
          return this.http.post(environment.prodApiUrl + '/claims-service/saveClmAdjuster',JSON.stringify(params),header);
     }
+
+    saveClmGenInfo(saveClmGenInfoParam:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/claims-service/saveClmGenInfo', JSON.stringify(saveClmGenInfoParam), header);
+    }
 }

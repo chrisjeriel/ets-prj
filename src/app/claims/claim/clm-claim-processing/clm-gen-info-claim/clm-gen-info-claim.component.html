@@ -63,9 +63,9 @@
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster Ref No</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.adjRefNos" readonly>
-                    <button type="button" class="cust-btn" (click)="openAdjustersModal();" style="margin-left: 2px; max-height: 21px; padding: 0 10px; margin-right: 0; z-index: 1 !important;"><a>Adjusters</a></button>
+                    <button type="button" class="cust-btn" (click)="openAdjustersModal();" style="margin-left: 2px; max-height: 21px; padding: 0 10px; margin-right: 0; z-index: 1 !important;" [disabled]="disableAdjusterBtn"><a>Adjusters</a></button>
                 </div>
-                <div class="input-group">
+                <div class="input-group" [class.d-none]="hideUnpaidMsg">
                     <label class="form-control-sm col-sm-2" style="margin-bottom: 0;"></label>
                     <i style="font-size: 13px; color: red;">The policy has unpaid premium.</i>
                 </div>
@@ -137,8 +137,8 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Event</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc">
-                            <div class="text-search-ico" style="margin-right: 5px !important;">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc" [readonly]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == ''">
+                            <div [class.d-none]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == ''" class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search" (click)="showClmEventLOV()"></i></a>
                             </div>
                         </div>
@@ -725,7 +725,7 @@
             <div class="cust-btn-container">
                 <button type="button" class="cust-btn"><a>Refresh</a></button>
                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" class="cust-btn"><a>Save</a></button>
+                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             </div>
         </div>
     </div>
@@ -735,7 +735,7 @@
     <div header style="width: 600px !important;">Adjusters</div>
     <div body>
         <div id="adj-table">
-            <app-cust-editable-non-datatable #adjTblGI [passData]="adjData" (tableDataChange)="claimData.clmAdjusterList=$event; clmAdjTDataChange($event);" (newClick)="adjTableRowClick($event)" (genericBtn)="clmAdjClickDelete($event)" (onDelete)="adjTable.onClickDelete('force'); clmAdjClickDelete();" (clickLOV)="showAdjLOV($event)"></app-cust-editable-non-datatable>    
+            <app-cust-editable-non-datatable #adjTblGI [passData]="adjData" (tableDataChange)="adjData.tableData=$event; clmAdjTDataChange($event);" (newClick)="adjTableRowClick($event)" (genericBtn)="clmAdjClickDelete($event)" (onDelete)="adjTable.onClickDelete('force'); clmAdjClickDelete();" (clickLOV)="showAdjLOV($event)"></app-cust-editable-non-datatable>    
         </div>
     </div>
     <div footer class="text-center" style="width: 100% !important;">
@@ -753,4 +753,8 @@
 
 <app-confirm-save #adjConfirmSave (onYes)="adjSave()"></app-confirm-save>
 <app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? adjCancelBtn.onNo() : null"></app-sucess-dialog>
-<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="adjCancelConfirmNo()"></app-cancel-button>
+<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null"></app-cancel-button>
+
+<app-confirm-save #confirmSave (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog #successDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button #cancelBtn (onYes)="save(true)" [url]="'/clm-claim-processing'" (no)="cancelConfirmNo()"></app-cancel-button>

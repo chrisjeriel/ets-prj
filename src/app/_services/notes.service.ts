@@ -24,6 +24,9 @@ export class NotesService {
   }
 
   toDateTimeString(millis: any) {
+    if(millis == null) {
+      return '';
+    }
     var d = (millis == 0) ? new Date() : new Date(millis);
 
     function pad(num) {
