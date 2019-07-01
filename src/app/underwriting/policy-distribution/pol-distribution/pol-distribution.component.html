@@ -222,3 +222,19 @@
 		<button type="button" class="cust-btn" (click)="goToNegateScreen();sucessnegMdl.closeModal()"><a>Ok</a></button>
 	</div>
 </app-modal>
+
+<app-modal #successNegateWCoIns class="d-none">
+	<div header>Success Message</div>
+	<div body class="w-100 text-center">
+		The policy has co-insurance. The following Policy No must be negated to update its Risk distributio records.
+		<div class="w-100 text-center">
+			<div *ngFor="let dist of postedList">
+				{{dist.policyNo}}
+			</div>
+		</div>
+	</div>
+	<div footer class="w-100 text-center">
+		<button type="button" class="cust-btn" (click)="sucessNegWCoMdl.closeModal();goToRiskDistribution()"><a>View</a></button>
+		<button type="button" class="cust-btn" (click)="sucessNegWCoMdl.closeModal();goToNegateScreen();"><a>Ok</a></button>
+	</div>
+</app-modal>

@@ -23,6 +23,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   @ViewChild('confirmNegate') confirmNegMdl: ModalComponent;
   @ViewChild('success') sucessMdl: ModalComponent;
   @ViewChild('successNegate') sucessnegMdl: ModalComponent;
+  @ViewChild('successNegateWCoIns') sucessNegWCoMdl: ModalComponent;
+  
   
 
   nData: DistributionByRiskInfo = new DistributionByRiskInfo(null, null, null, null, null, null);
@@ -194,12 +196,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       net:0.00
     };
 
-    let test = 0;
     this.poolDistributionData.tableData.forEach(a=>{
-      test = test + a.totalCommAmt;
-      test = Number(test.toFixed(2));
-      console.log("Test Inc");
-      console.log(test);
       if(a.section == 'I'){
         this.pts1.ret += a.retOneLines + a.retTwoLines;
         this.pts1.ret1si += a.retOneTsiAmt;
@@ -258,7 +255,6 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   //NECO 06/04/2019
   retrievePolicyDistribution(){
     this.polService.getPolDistribution(this.params.policyId).subscribe((data: any)=>{
-      console.log(data);
       this.polDistributionData = data.polDistribution;
       this.treatyDistData.tableData = data.polDistribution.trtyListPerSec;
       this.mainTable.refreshTable();
@@ -328,6 +324,11 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}])
   }
 
+
+ // negate part
+
+  postedList:any[] = [];
+
   negateDistribution(){
     let params:any = {
       riskDistId: this.riskDistId,
@@ -336,8 +337,14 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       updateUser: JSON.parse(window.localStorage.currentUser).username
     };
     this.polService.negateDist(params).subscribe(a=>{
-      if(a['returnCode'] == -1){
+
+      console.log(a);
+
+      if(a['returnCode'] == -1 && a['postedDist'].length == 0){
         this.sucessnegMdl.openNoClose();
+      }else if(a['returnCode'] == -1 && a['postedDist'].length > 0){
+        this.postedList = a['postedDist'];
+        this.sucessNegWCoMdl.open();
       }
     })
     this.confirmNegMdl.closeModal();
@@ -348,9 +355,20 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   }
 
   goToRiskDistribution(){
-    this.params.writable = true;
-    this.params.fromNegate = false;
-    this.router.navigate(['policy-dist', this.params]);
+    // this.params.writable = true;
+    // this.params.fromNegate = false;
+    // this.router.navigate(['policy-dist', this.params]);
+
+    this.router.navigate(['policy-dist', {policyId:this.params.policyId,
+                                                 policyNo: this.params.policyNo,
+                                                 lineCd:this.params.lineCd,
+                                                 lineClassCd: this.params.lineClassCd,
+                                                 cedingName: this.params.cedingName,
+                                                 insured: this.params.insuredDesc,
+                                                 riskName: this.params.riskName,
+                                                 exitLink: '/pol-dist-list',
+                                                 fromNegate : false
+                                                 }], { skipLocationChange: true });
   }
 }
 

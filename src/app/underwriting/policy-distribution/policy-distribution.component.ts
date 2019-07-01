@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-policy-distribution',
@@ -12,6 +13,7 @@ export class PolicyDistributionComponent implements OnInit {
 
   riskDistId: number;
   riskDistStatus: string;
+  @ViewChild(NgbTabset) tabset: NgbTabset;
 
   sub:any;
   distTtitle:string;
@@ -26,7 +28,10 @@ export class PolicyDistributionComponent implements OnInit {
 
       if(data.fromNegate == 'true'){
         this.title = 'Negate Distribution'
+      }else{
+        this.title = 'Policy Dist'
       }
+      setTimeout(a=>this.tabset.select("risk"),0);
     });
   }
 
