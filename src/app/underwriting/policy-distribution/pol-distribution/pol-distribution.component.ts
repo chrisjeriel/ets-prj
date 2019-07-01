@@ -20,7 +20,10 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   //END
 
   @ViewChild('confirmPost') confirmPostMdl: ModalComponent;
+  @ViewChild('confirmNegate') confirmNegMdl: ModalComponent;
   @ViewChild('success') sucessMdl: ModalComponent;
+  @ViewChild('successNegate') sucessnegMdl: ModalComponent;
+  
 
   nData: DistributionByRiskInfo = new DistributionByRiskInfo(null, null, null, null, null, null);
 
@@ -296,7 +299,10 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   showConfirmPostMdl(){
     this.confirmPostMdl.openNoClose();
+  }
 
+  showConfirmNegMdl(){
+    this.confirmNegMdl.openNoClose();
   }
 
   postDistribution(){
@@ -320,6 +326,31 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   onClickCancel(){
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}])
+  }
+
+  negateDistribution(){
+    let params:any = {
+      riskDistId: this.riskDistId,
+      distId    : this.polDistributionData.distNo,
+      policyId  : this.params.policyId,
+      updateUser: JSON.parse(window.localStorage.currentUser).username
+    };
+    this.polService.negateDist(params).subscribe(a=>{
+      if(a['returnCode'] == -1){
+        this.sucessnegMdl.openNoClose();
+      }
+    })
+    this.confirmNegMdl.closeModal();
+  }
+
+  goToNegateScreen(){
+    this.router.navigate([this.params.exitLink])
+  }
+
+  goToRiskDistribution(){
+    this.params.writable = true;
+    this.params.fromNegate = false;
+    this.router.navigate(['policy-dist', this.params]);
   }
 }
 

@@ -114,19 +114,6 @@
         </div>
     </app-modal>
 
-    <app-modal hidden [btnTitle]="'Cancel Hold Cover'" id="cancelModal">
-        <div header>Prompt</div>
-        <div body>
-           <p>Cancel Hold Cover No <strong>{{this.holdCoverNo}}</strong> ?</p>
-        </div>
-        <div footer class="text-center w-100">
-            <div class="col-sm-12 text-center">
-            <button class="cust-btn" type="button" (click)="modalService.dismissAll();cancelHoldCover();"><a>Yes</a></button>
-            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
-            </div>
-        </div>
-    </app-modal>
-
     <app-confirm-save (onYes)="onClickSave()"></app-confirm-save>
     <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false; approveType === 'reject' ? modalService.dismissAll() : null"></app-sucess-dialog>
     <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>

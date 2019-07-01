@@ -15,6 +15,7 @@ export class PolicyDistributionComponent implements OnInit {
 
   sub:any;
   distTtitle:string;
+  title:string = 'Policy Dist';
   ngOnInit() {
   	this.sub = this.route.params.subscribe((data: any)=>{
     	if(parseInt(data.policyNo.substr(-3))>0){
@@ -22,6 +23,10 @@ export class PolicyDistributionComponent implements OnInit {
     	}else{
     		this.distTtitle = "Policy Distribution";
     	}
+
+      if(data.fromNegate == 'true'){
+        this.title = 'Negate Distribution'
+      }
     });
   }
 
