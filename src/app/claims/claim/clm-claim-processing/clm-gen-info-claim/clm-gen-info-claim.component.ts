@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -13,13 +13,16 @@ import { Router } from '@angular/router';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clm-gen-info-claim',
   templateUrl: './clm-gen-info-claim.component.html',
   styleUrls: ['./clm-gen-info-claim.component.css']
 })
-export class ClmGenInfoClaimComponent implements OnInit {
+export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   @ViewChild('adjTblGI') adjTable: CustEditableNonDatatableComponent;
   @ViewChild('lossCdLOV') lossCdLOV: MtnLossCdComponent;
   @ViewChild('clmEventLOV') clmEventLOV: MtnClmEventComponent;
@@ -31,6 +34,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
   @ViewChild('confirmSave') confirmSave: ConfirmSaveComponent;
   @ViewChild('successDialog') successDialog: SucessDialogComponent;
   @ViewChild('cancelBtn') cancelBtn: CancelButtonComponent;
+  @ViewChild('statusLOV') statusLOV: MtnClaimStatusLovComponent;
 
   line: string;
   sub: any;
@@ -155,6 +159,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
       updateDate: null
     },
     clmAdjusterList: [],
+    clmReserve: null,
     adjNames: null,
     adjRefNos: null
   }
@@ -169,7 +174,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
   dialogMessage: string = "";
   cancel: boolean = false;
 
-  claimId: number = 2;
+  claimId: number = 0;
   claimNo: string = '';
 
   policyId: number = 0;
@@ -177,12 +182,21 @@ export class ClmGenInfoClaimComponent implements OnInit {
 
   hideUnpaidMsg: boolean = true;
   disableAdjusterBtn: boolean = false;
+  showCustLoader: boolean = false;
+  mdlType: string = 'conf';
+  tempLossDate: string = '';
+  uneditableLossDate: boolean = false;
+
+  @Output() emitClaimInfoId = new EventEmitter<any>();
+
+  subscription: Subscription = new Subscription();
 
   constructor(private actRoute: ActivatedRoute, private modalService: NgbModal, private titleService: Title,
     private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService, private router: Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | General Info");
+    $('.globalLoading').css('display','block');
 
     this.sub = this.actRoute.params.subscribe(params => {
       this.line = params['line'];
@@ -203,8 +217,13 @@ export class ClmGenInfoClaimComponent implements OnInit {
     
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   retrieveClmGenInfo() {
     this.cs.getClmGenInfo(this.claimId, this.claimNo).subscribe(data => {
+      $('.globalLoading').css('display','none');
       this.claimData = data['claim'];
 
       this.claimData.inceptDate = this.ns.toDateTimeString(this.claimData.inceptDate);
@@ -223,6 +242,11 @@ export class ClmGenInfoClaimComponent implements OnInit {
       this.claimData.contractorId = this.claimData.contractorId == '' || this.claimData.contractorId == null ? '' : String(this.claimData.contractorId).padStart(6, '0');
       this.claimData.project.objectId = this.claimData.project.objectId == '' || this.claimData.project.objectId == null ? '' : String(this.claimData.project.objectId).padStart(3, '0');
 
+      if(data['claim']['clmReserve'] != null) {
+        this.uneditableLossDate = true;
+        this.tempLossDate = this.claimData.lossDate;
+      }
+
       if(this.claimData.clmAdjusterList.length > 0) {
         this.adjNameAndRefs();
         // this.adjData.tableData = this.claimData.clmAdjusterList.map(a => { a.createDate = this.ns.toDateTimeString(a.createDate);
@@ -235,6 +259,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
 
   retrievePolDetails() {
     this.us.getPolGenInfo(this.policyId, this.policyNo).subscribe(data => {
+      $('.globalLoading').css('display','none');
       this.disableAdjusterBtn = true;
       var pol = data['policy'];
 
@@ -242,6 +267,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
       this.claimData.polYear = pol['polYear'];
       this.claimData.polSeqNo = pol['polSeqNo'];
       this.claimData.cedingId = pol['cedingId'];
+      this.claimData.coSeriesNo = pol['coSeriesNo'];
       this.claimData.altNo = pol['altNo'];
       this.claimData.policyNo = pol['policyNo'];
       this.claimData.cedingName = pol['cedingName'];
@@ -291,10 +317,11 @@ export class ClmGenInfoClaimComponent implements OnInit {
       this.claimData.project.timeExc = pol['project']['timeExc'];
       this.claimData.project.noClaimPd = pol['project']['noClaimPd'];
 
-      this.claimData.prinId = this.claimData.prinId == '' || this.claimData.prinId == null ? '' : String(this.claimData.prinId).padStart(6, '0');
-      this.claimData.contractorId = this.claimData.contractorId == '' || this.claimData.contractorId == null ? '' : String(this.claimData.contractorId).padStart(6, '0');
-      this.claimData.project.objectId = this.claimData.project.objectId == '' || this.claimData.project.objectId == null ? '' : String(this.claimData.project.objectId).padStart(3, '0');
+      this.claimData.prinId = this.pad(this.claimData.prinId, 6);
+      this.claimData.contractorId = this.pad(this.claimData.contractorId, 6);
+      this.claimData.project.objectId = this.pad(this.claimData.project.objectId, 3);
 
+      this.claimData.clmYear = new Date().getFullYear();
       this.claimData.clmStatCd = 'IP';
       this.claimData.clmStatus = 'In Progress';
       this.claimData.processedBy = this.ns.getCurrentUser();
@@ -302,8 +329,6 @@ export class ClmGenInfoClaimComponent implements OnInit {
   }
 
   openAdjustersModal() {
-    console.log(this.adjData.tableData);
-    console.log(this.claimData.clmAdjusterList);
     this.adjData.tableData = this.claimData.clmAdjusterList;
     this.adjTable.refreshTable();
     this.adjTable.onRowClick(null, this.adjData.tableData[0]);
@@ -433,6 +458,15 @@ export class ClmGenInfoClaimComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
+  showStatusLOV() {
+    this.statusLOV.modal.openNoClose();
+  }
+
+  setStatus(ev) {
+    this.claimData.clmStatCd = ev.statusCode;
+    this.claimData.clmStatus = ev.description;
+  }
+
   onAdjClickCancel() {
     if($('#adj-table .ng-dirty:not([type="search"]):not(.not-form)').length != 0){
       this.adjCancelBtn.saveModal.openNoClose();
@@ -550,12 +584,8 @@ export class ClmGenInfoClaimComponent implements OnInit {
 
     var entries = Object.entries(this.claimData.project);
     for(var [key, val] of entries) {      
-      if(key === 'createUser') {
-        this.claimData['prjCreateUser'] = val;
-      } else if(key === 'createDate') {
+      if(key === 'createDate') {
         this.claimData['prjCreateDate'] = this.ns.toDateTimeString(val);
-      } else if(key === 'updateUser') {
-        this.claimData['prjUpdateUser'] = val;
       } else if(key === 'updateDate') {
         this.claimData['prjUpdateDate'] = this.ns.toDateTimeString(val);
       } else {
@@ -563,6 +593,11 @@ export class ClmGenInfoClaimComponent implements OnInit {
       }
     }
 
+    this.claimData.prjCreateUser = this.ns.getCurrentUser();
+    this.claimData.prjUpdateUser = this.ns.getCurrentUser();
+
+    this.claimData.createUser = this.ns.getCurrentUser();
+    this.claimData.createDate = this.ns.toDateTimeString(0);
     this.claimData.updateUser = this.ns.getCurrentUser();
     this.claimData.updateDate = this.ns.toDateTimeString(0);
 
@@ -574,8 +609,105 @@ export class ClmGenInfoClaimComponent implements OnInit {
       } else if(data['returnCode'] == -1) {
         this.dialogIcon = "success";
         this.successDialog.open();
+        this.claimId = data['claimId'];
+        this.claimNo = data['claimNo'];
+        this.disableAdjusterBtn = false;
+
         this.retrieveClmGenInfo();
       }
+    });
+  }
+
+  checkClmIdF(ev) {
+    this.emitClaimInfoId.emit({
+      claimId: event,
+      claimNo: this.claimData.claimNo,
+      policyNo: this.claimData.policyNo,
+      riskName: this.claimData.project.riskName,
+      insuredDesc: this.claimData.insuredDesc
+    });
+  }
+
+  validateLossDate() {
+    setTimeout(() => {
+      if(this.uneditableLossDate) {
+        this.claimData.lossDate = this.tempLossDate;
+        this.mdlType = 'warn2';
+        $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+        return;
+      }
+
+      if(!this.claimData.lossDate.split('T').includes('')) {
+        var inceptD = new Date(this.claimData.inceptDate);
+        var expiryD = new Date(this.claimData.expiryDate);
+        var lapseF = this.claimData.lapseFrom == null || this.claimData.lapseFrom == '' ? '' : new Date(this.claimData.lapseFrom);
+        var lapseT = this.claimData.lapseTo == null || this.claimData.lapseTo == '' ? '' : new Date(this.claimData.lapseTo);
+        var lossD = new Date(this.claimData.lossDate);
+        
+        if(lapseF != '' && lapseT != '' && (lossD < inceptD || lossD > expiryD) && lossD >= lapseF && lossD <= lapseT) {
+          this.mdlType = 'conf';
+          $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+        } else if(lossD >= inceptD && lossD <= expiryD) {
+          this.onClickConfYes();
+        } else {
+          this.mdlType = 'warn';
+          $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+        }
+      }
+    }, 0);
+  }
+
+  onClickConfYes() {
+    var pNo = this.claimData.policyNo.split('-');
+    pNo[pNo.length-1] = '%';
+    this.showCustLoader = true;
+
+    this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }]).subscribe(data => {
+      var res = data['policyList'].filter(a => a.effDate <= new Date(this.claimData.lossDate))
+                                  .sort((a, b) => b.altNo - a.altNo);
+
+      var sub$ = forkJoin(this.us.getPolGenInfo(res[0].policyId, res[0].policyNo),
+                          this.us.getUWCoverageInfos(res[0].policyNo, res[0].policyId)).pipe(map(([gi, cov]) => { return { gi, cov }; }));
+
+      this.subscription = sub$.subscribe(data => {
+        this.showCustLoader = false;
+
+        var cp = data['cov']['policy'];
+        var gip = data['gi']['policy'];
+
+        this.claimData.currencyCd = cp['currencyCd'];
+        this.claimData.pctShare = cp['project']['fullCoverage']['pctShare'];
+        this.claimData.totalSi = cp['project']['fullCoverage']['totalSi'];
+        this.claimData.totalValue = cp['project']['fullCoverage']['totalValue'];
+
+        this.claimData.prinId = this.pad(gip['principalId'], 6);
+        this.claimData.principalName = gip['principalName'];
+        this.claimData.contractorId = this.pad(gip['contractorId'], 6);
+        this.claimData.contractorName = gip['contractorName'];
+        this.claimData.insuredDesc = gip['insuredDesc'];
+        this.claimData.project.projDesc = gip['project']['projDesc'];
+        this.claimData.project.riskId = gip['project']['riskId'];
+        this.claimData.project.riskName = gip['project']['riskName'];
+        this.claimData.project.objectId = this.pad(gip['project']['objectId'], 3);
+        this.claimData.project.objectDesc = gip['project']['objectDesc'];
+        this.claimData.project.regionCd = gip['project']['regionCd'];
+        this.claimData.project.regionDesc = gip['project']['regionDesc'];
+        this.claimData.project.provinceCd = gip['project']['provinceCd'];
+        this.claimData.project.provinceDesc = gip['project']['provinceDesc'];
+        this.claimData.project.cityCd = gip['project']['cityCd'];
+        this.claimData.project.cityDesc = gip['project']['cityDesc'];
+        this.claimData.project.districtCd = gip['project']['districtCd'];
+        this.claimData.project.districtDesc = gip['project']['districtDesc'];
+        this.claimData.project.blockCd = gip['project']['blockCd'];
+        this.claimData.project.blockDesc = gip['project']['blockDesc'];
+        this.claimData.project.latitude = gip['project']['latitude'];
+        this.claimData.project.longitude = gip['project']['longitude'];
+        this.claimData.project.site = gip['project']['site'];
+        this.claimData.project.testing = gip['project']['testing'];
+        this.claimData.project.timeExc = gip['project']['timeExc'];
+        this.claimData.project.ipl = gip['project']['ipl'];
+        this.claimData.project.noClaimPd = gip['project']['noClaimPd'];
+      });
     });
   }
 
@@ -583,4 +715,11 @@ export class ClmGenInfoClaimComponent implements OnInit {
     return this.ns.dateConstructor(ev, data, type);
   }
 
+  pad(val, num) {
+    if(val == '' || val == null) {
+      return '';
+    }
+
+    return String(val).padStart(num, '0');
+  }
 }
