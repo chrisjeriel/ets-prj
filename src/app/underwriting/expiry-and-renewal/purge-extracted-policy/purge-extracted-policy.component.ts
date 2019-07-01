@@ -77,10 +77,13 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   dateParams:any = {
-    byDateFrom: ''
+    byDateFrom: '',
+    byDateTo: '',
+    byMonthFrom:'',
+    byMonthTo:'',
+    byYearFrom:'',
+    byYearTo:''
   }
-
-  
 
   PolicyNo: any = {
     line: null,
@@ -145,6 +148,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   prepareData(){
     this.purgeData.deletePurge = [];
+    console.log(this.byDate)
     if(this.expiredAndProcessed){
       for(var i = 0; i < this.passData.tableData.length;i++){
         if(this.passData.tableData[i].expiryTag === 'Y' && this.passData.tableData[i].processTag === 'Y'){
@@ -203,17 +207,28 @@ export class PurgeExtractedPolicyComponent implements OnInit {
         }
       }
 
-      if(this.byDate && this.params.byDateTo !== undefined){
-        if(this.params.byDateFom !== undefined && this.params.byDateFom !== ''){
+      if(this.byDate){
+        if((this.dateParams.byDateFrom !== undefined && this.dateParams.byDateFrom !== '') && (this.dateParams.byDateTo !== undefined && this.dateParams.byDateTo !== '')){
           for(var i = 0; i < this.passData.tableData.length; i++){
-            if(this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0].trim() === this.params.byDateFrom){
-               console.log(this.params.byDateFom);
-               console.log(this.params.byDateFom);
+            if(this.dateParams.byDateTo >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
+               this.dateParams.byDateFrom <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0]){
+               this.purgeData.deletePurge.push(this.passData.tableData[i]);
+            }
+          }
+        }
+      }else{
+        if(this.dateParams.byYearFrom !== '' && this.dateParams.byMonthFrom !== '' && this.dateParams.byYearTo !== '' && this.dateParams.byMonthTo !== ''){
+          var from = this.dateParams.byYearFrom+'-'+this.dateParams.byMonthFrom+'-01';
+          var to = this.dateParams.byYearTo+'-'+this.dateParams.byMonthTo+'-31';
+
+          for(var i = 0; i < this.passData.tableData.length; i++){
+            if(to >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
+               from <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0]){
+               this.purgeData.deletePurge.push(this.passData.tableData[i]);
             }
           }
         }
       }
-
     }
   }
 
@@ -233,8 +248,6 @@ export class PurgeExtractedPolicyComponent implements OnInit {
         }
       });
     } else {
-      
-
       setTimeout(() => {
           console.log('this.purgeData.deletePurge is 0');
           $('#purgeNoSelectedMsgModal > #modalBtn').trigger('click');
@@ -322,9 +335,15 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     this.PolicyNo.sequenceNo = null;
     this.PolicyNo.coSeriesNo = null;
     this.PolicyNo.altNo = null;
+    this.dateParams.byDateFrom = '';
+    this.dateParams.byDateTo = '';
+    this.dateParams.byMonthFrom = '';
+    this.dateParams.byMonthTo = '';
+    this.dateParams.byYearFrom = '';
+    this.dateParams.byYearTo = '';
   }
 
-   clearDates() {
+  clearDates() {
     $('#fromDate').val("");
     $('#toDate').val("");
   }
@@ -338,7 +357,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   showPolicyLov(){
-    
+    this.passDataLov.tableData = [];
     for(var i = 0 ; i  < this.policyLov.length; i++){
       this.passDataLov.tableData.push(this.policyLov[i]);
     }
@@ -364,14 +383,27 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   test(){
-    var arr =[];
-    console.log(this.passData.tableData[0].expiryDate)
-    console.log(this.dateParams.byDateFrom)
-    for(var i= 0 ; i <  this.passData.tableData.length; i++){
-      if(this.passData.tableData[i].expiryDate > this.ns.toDateTimeString(this.dateParams.byDateFrom)){
-        arr.push(this.passData.tableData[i]);
-      }
+    /*console.log(this.dateParams.byMonthFrom);
+    console.log(this.dateParams.byMonthTo);
+    console.log(this.dateParams.byYearFrom);
+    console.log(this.dateParams.byYearTo);*/
+    var from = this.dateParams.byYearFrom+'-'+this.dateParams.byMonthFrom+'-01';
+    var to = this.dateParams.byYearTo+'-'+this.dateParams.byMonthTo+'-31';
+
+    if(!this.byDate){
+      //if(this.dateParams.byDateFrom !== undefined && this.dateParams.byDateFrom !== ''){
+        for(var i = 0; i < this.passData.tableData.length; i++){
+          if(to >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
+             from <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0]){
+             this.purgeData.deletePurge.push(this.passData.tableData[i]);
+          }
+        }
+      //}
+      console.log('pasok')
     }
-    console.log(arr)
+    console.log(this.purgeData.deletePurge)
+    
+    //console.log(this.dateParams.byDateTo >= this.ns.toDateTimeString(this.passData.tableData[0].expiryDate).split('T')[0])
+    //console.log(this.dateParams.byDateFrom <= this.ns.toDateTimeString(this.passData.tableData[0].expiryDate).split('T')[0])
   }
 }

@@ -152,7 +152,7 @@ export class MtnCurrencyRateComponent implements OnInit {
       if(this.cancelFlag){
         if(this.changeCurr){
             this.changeCurr = false;
-            if(this.exit == true){
+            if(this.exit){
                 this.cancelBtn.url = '/maintenance-qu-pol';
                 this.cancelBtn.onNo(); 
             }else{
@@ -167,7 +167,7 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   onClickNo(){
-      if(this.exit == true){
+      if(this.exit){
           this.changeCurr = false;
           this.cancelBtn.url = '/maintenance-qu-pol';
           this.cancelBtn.onNo(); 
