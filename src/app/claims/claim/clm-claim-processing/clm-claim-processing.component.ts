@@ -146,6 +146,9 @@ export class ClmClaimProcessingComponent implements OnInit {
         }
         this.table.refreshTable();
       }
+    },
+    (error)=>{
+      
     });
   }
 
@@ -223,6 +226,9 @@ export class ClmClaimProcessingComponent implements OnInit {
       this.policyDetails.cityDesc = data.policy.project.cityDesc;
       this.policyDetails.districtDesc = data.policy.project.districtDesc;
       this.policyDetails.blockDesc = data.policy.project.blockDesc;
+      this.loading = false;
+    },
+    (error)=>{
       this.loading = false;
     });
   }
