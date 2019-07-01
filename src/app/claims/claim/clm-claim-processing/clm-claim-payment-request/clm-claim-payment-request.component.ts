@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-clm-claim-payment-request',
   templateUrl: './clm-claim-payment-request.component.html',
@@ -30,7 +30,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     tableOnly: true,
     resizable: [false, false, false, false, false, false, false, false, false, false],
   };
-  constructor(private titleService: Title) { }
+  constructor(private titleService: Title, private router: Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Generate Payment Request");
@@ -39,4 +39,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     this.passData.tableData = this.tableData;
   }
 
+  generateRequest(){
+    this.router.navigate(['generate-payt-req'], {skipLocationChange: true});
+  }
 }
