@@ -180,6 +180,7 @@ export class PolAlopComponent implements OnInit {
         if(data.policy.policyId != this.policyInfo.policyId && this.policyInfo.fromInq!='true'){
           this.form.control.markAsDirty()
         }
+        this.getSumInsured();
 
       } else {
         this.mtnService.getMtnInsured(this.policyInfo.principalId).subscribe((data: any) => {
@@ -228,6 +229,7 @@ export class PolAlopComponent implements OnInit {
      });
    }else{
      this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+       console.log(data)
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i <sectionCovers.length;i++){
