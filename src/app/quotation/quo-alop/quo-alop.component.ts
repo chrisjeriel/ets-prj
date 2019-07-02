@@ -12,6 +12,7 @@ import { FormsModule }   from '@angular/forms';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
  
 @Component({
     selector: 'app-quo-alop',
@@ -22,6 +23,7 @@ export class QuoAlopComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild('mainCancel') cancelBtn : CancelButtonComponent;
   @ViewChild('itemInfoCancel') itemInfoCancel : CancelButtonComponent;
+  @ViewChild('itemInfoModal') itmInfoMdl: ModalComponent;
   @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
@@ -150,6 +152,7 @@ export class QuoAlopComponent implements OnInit {
     refresh:boolean = true;
     optionsList:any = [];
     disabledFlag:boolean = true;
+    promptClickItem:boolean = false;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService, private ns: NotesService) { }
 
@@ -224,6 +227,7 @@ export class QuoAlopComponent implements OnInit {
 
               this.alopData.insuredId = this.pad(this.alopData.insuredId, 6);
             }else{
+                this.disabledFlag = true;
                 this.mtnService.getMtnInsured(this.quotationInfo.principalId).subscribe((data: any) => {
                   this.alopData.insuredId = data.insured[0].insuredId;
                   this.alopData.insuredName = data.insured[0].insuredAbbr;
@@ -280,7 +284,8 @@ export class QuoAlopComponent implements OnInit {
               this.dialogMessage = "";
               this.dialogIcon = "success";
               $('#successModalBtn').trigger('click');
-              this.form.control.markAsPristine()
+              this.form.control.markAsPristine();
+              
               //this.getAlop();
               //this.emptyVar();
               this.alopDetails = this.alopData.alopDetails.filter(a => a.optionId == this.alopDetails.optionId)[0];
@@ -325,13 +330,26 @@ export class QuoAlopComponent implements OnInit {
     }
 
     openAlopItem(){
-      this.itemInfoData.tableData = [];
+      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+        this.onClickSave();
+        this.promptClickItem = true;
+      }else{
+        this.promptClickItem = false;
+        this.itemInfoData.tableData = [];
+              this.showAlopItem = true;
+              this.table.loadingFlag = true;
+              this.alopItem();
+              setTimeout(()=>{
+                $('#alopItemModal #modalBtn').trigger('click');
+              },0)
+      }
+      /*this.itemInfoData.tableData = [];
       this.showAlopItem = true;
       this.table.loadingFlag = true;
       this.alopItem();
       setTimeout(()=>{
         $('#alopItemModal #modalBtn').trigger('click');
-      },0)
+      },0)*/
       
        
     }
@@ -393,6 +411,9 @@ export class QuoAlopComponent implements OnInit {
           } else{
             this.dialogIcon = "success";
             $('#successModalBtn').trigger('click');
+            if(cancelFlag !== undefined){
+              this.itmInfoMdl.closeModal();
+            }
             this.table.markAsPristine();
             this.alopItem();
           }
@@ -516,33 +537,50 @@ export class QuoAlopComponent implements OnInit {
   }
 
   clickRow(data) {
-      if(Object.keys(data).length == 0){
+      if(data === null || (data !== null && Object.keys(data).length == 0)){
         this.readonlyFlag = true;
+        /*this.alopDetails.annSi = '';
+        this.alopDetails.maxIndemPdSi = '';
+        this.alopDetails.maxIndemPd = '';
+        this.alopDetails.timeExc = '';
+        this.alopDetails.repInterval = '';*/
         this.emptyVar();
         unHighlight(this.to);
         unHighlight(this.from);
         this.disabledFlag = true;
+        console.log(this.alopDetails.annSi);
       }else{
         /*console.log(this.optionsList)
         if(this.optionsList.length > 1){
           this.getAlop();
         }*/
-
+        //this.getAlop();
         this.getAlopSumInsured();
         unHighlight(this.to);
         unHighlight(this.from);
-        this.disabledFlag = false;
+        
         this.readonlyFlag = false;
         this.alopDetails.optionId = data.optionId;
           if(this.optionsList.filter(a => a.optionId == data.optionId)[0] != undefined){
+              console.log('hmmm');
               this.alopDetails = this.optionsList.filter(a => a.optionId == data.optionId)[0].alopDetails
+              console.log(this.alopDetails);
               this.alopDetails.annSi = this.alopSI;
               this.alopDetails.issueDate = this.alopDetails.issueDate == '' || this.alopDetails.issueDate == null? '':this.ns.toDateTimeString(this.alopDetails.issueDate);
               this.alopDetails.expiryDate = this.alopDetails.expiryDate == '' || this.alopDetails.expiryDate == null? '':this.ns.toDateTimeString(this.alopDetails.expiryDate);
               this.alopDetails.indemFromDate = this.alopDetails.indemFromDate == '' || this.alopDetails.indemFromDate == null? '':this.ns.toDateTimeString(this.alopDetails.indemFromDate);
               this.alopDetails.maxIndemPdSi = ((this.alopDetails.maxIndemPd/12)*this.alopDetails.annSi);
+              if((this.alopDetails.maxIndemPd === null || (this.alopDetails.maxIndemPd !== null && String(this.alopDetails.maxIndemPd).trim().length === 0)) &&
+                (this.alopDetails.timeExc === null || (this.alopDetails.timeExc !== null && String(this.alopDetails.timeExc).trim().length === 0)) &&
+                (this.alopDetails.repInterval === null || (this.alopDetails.repInterval !== null && String(this.alopDetails.repInterval).trim().length === 0))){
+                this.disabledFlag = true;
+              }else{
+                this.disabledFlag = false;
+              }
           }else{
             //this.optionsList = []
+            console.log('2nd');
+            console.log(this.newAlopDetails);
             this.optionsList.push({
               optionId: data.optionId,
               alopDetails: JSON.parse(JSON.stringify(this.newAlopDetails))
