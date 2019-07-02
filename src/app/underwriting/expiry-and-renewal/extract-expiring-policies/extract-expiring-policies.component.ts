@@ -217,7 +217,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   }
 
   prepareExtractParameters() {
-    /*this.expiryParameters.policyId         = this.radioVal == 'bypolno' ? this.policyId : '';
+    this.expiryParameters.policyId         = this.radioVal == 'bypolno' ? this.policyId : '';
     this.expiryParameters.polLineCd        = this.radioVal == 'bypolno' ? this.polNo[0] : '';
     this.expiryParameters.polYear          = this.radioVal == 'bypolno' ? this.polNo[1] : '';
     this.expiryParameters.polSeqNo         = this.radioVal == 'bypolno' ? this.polNo[2] : '';
@@ -230,8 +230,8 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.expiryParameters.cedingId         = this.cedingId; 
     this.expiryParameters.cessionType      = this.typeOfCessionId; 
     this.expiryParameters.extractUser      = JSON.parse(window.localStorage.currentUser).username; 
-*/
-    if(this.radioVal == 'bypolno'){
+
+    /*if(this.radioVal == 'bypolno'){
       this.expiryParameters.policyId         = this.policyId;
       this.expiryParameters.polLineCd        = this.polNo[0];
       this.expiryParameters.polYear          = this.polNo[1];
@@ -256,7 +256,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
     if(this.typeOfCessionId !== ''){
       
-    }
+    }*/
 
   }
 
