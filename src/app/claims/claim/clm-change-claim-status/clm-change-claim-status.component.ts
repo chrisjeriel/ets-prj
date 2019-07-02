@@ -97,7 +97,9 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   searchParams: any = {
     claimId: '',
+    claimNo: '',
     policyId: '',
+    policyNo: '',
     riskName:'',
     riskId: '',
     cedingName: '',
@@ -277,6 +279,9 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   retrieveQueryList(){
     this.queryTable.overlayLoader = true;
     this.queryData.tableData = [];
+    this.searchParams.claimNo = this.tempClmNo.join('%-%');
+    this.searchParams.policyNo = this.tempPolNo.join('%-%');
+    console.log(this.searchParams);
     this.cs.getChangeClaimStatus(this.searchParams).subscribe(
        (data: any)=>{
          console.log(data);
@@ -509,27 +514,34 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   checkSearchFields(): boolean{
     //check claim no fields if empty
+    console.log(this.tempClmNo);
+    console.log(this.tempPolNo);
+    let clmPolEmpty: boolean = true;
     for(var i of this.tempClmNo){
       if(i.trim().length !== 0){
-        return false; //return false if not empty
+        clmPolEmpty = false; //return false if not empty
+        break;
       }
     }
     //check policy no fields if empty
     for(var j of this.tempPolNo){
-      if(i.trim().length !== 0){
-        return false; //return false if not empty
+      if(j.trim().length !== 0){
+        clmPolEmpty =  false; //return false if not empty
+        break;
       }
     }
+    if(!clmPolEmpty){
+      return false;
+    }else{
+      //check cession type, ceding company, and risk fields if empty
+      if((String(this.searchParams.cessionId).trim().length !== 0 && String(this.searchParams.cessionDesc).trim().length !== 0) ||
+         (String(this.searchParams.cedingId).trim().length !== 0 && String(this.searchParams.cedingName).trim().length !== 0) ||
+         (String(this.searchParams.riskId).trim().length !== 0 && String(this.searchParams.riskName).trim().length !== 0)){
+        return false; //return false if one of the three fields are not empty
+      }
 
-    //check cession type, ceding company, and risk fields if empty
-    if((String(this.searchParams.cessionId).trim().length !== 0 && String(this.searchParams.cessionDesc).trim().length !== 0) ||
-       (String(this.searchParams.cedingId).trim().length !== 0 && String(this.searchParams.cedingName).trim().length !== 0) ||
-       (String(this.searchParams.riskId).trim().length !== 0 && String(this.searchParams.riskName).trim().length !== 0)){
-      return false; //return false if one of the three fields are not empty
+      return true; //return true if all fields are empty, therefore triggering the popup
     }
-
-    return true; //return true if all fields are empty, therefore triggering the popup
-
   }
 
   validateSearch(){
