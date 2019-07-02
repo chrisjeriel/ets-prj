@@ -26,7 +26,7 @@ export class CancelButtonComponent implements OnInit {
       if (this.url != null) {
         this.router.navigate([this.url]);
       } else {
-        this.modalService.dismissAll();
+        this.saveModal.closeModal();
       }
   	}
   }
@@ -36,7 +36,7 @@ export class CancelButtonComponent implements OnInit {
     if (this.url != null) {
       this.router.navigate([this.url]);
     } else {
-      this.modalService.dismissAll();
+      this.saveModal.closeModal();
     }
   }
 

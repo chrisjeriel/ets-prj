@@ -1,12 +1,12 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Distribution / Policy Dist</h4>
-	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Risk Distribution">
+	<h4>Policy / Distribution / {{title}}</h4>
+	<ngb-tabset >
+		<ngb-tab class="ngb-tab" title="Risk Distribution" id="risk">
 			<ng-template ngbTabContent>
 				<app-distribution-by-risk (riskDistId)="riskDistId = $event" (riskDistStatus)="riskDistStatus = $event"></app-distribution-by-risk>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [title]="distTtitle">
+		<ngb-tab [title]="distTtitle" id="policy">
 			<ng-template ngbTabContent>
 				<app-pol-distribution [riskDistId]="riskDistId" [riskDistStatus]="riskDistStatus"></app-pol-distribution>
 			</ng-template>

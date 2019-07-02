@@ -149,8 +149,12 @@ export class AdviceWordingsComponent implements OnInit {
 
   	this.ms.saveMtnAdviceWordings(this.savedData, this.deletedData).subscribe((data:any)=>{
   		if(data.returnCode === 0){
+        if(this.cancelFlag){
+          this.cancelFlag = false;
+        }
   			this.dialogIcon = 'error';
   			this.successDiag.open();
+        
   		}else{
   			this.dialogIcon = '';
   			this.successDiag.open();

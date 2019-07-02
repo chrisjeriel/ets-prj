@@ -101,7 +101,7 @@
                         <div class="col-md-13 text-center">
                             <div class="cust-btn-container" style="margin-top: 10px">
                                 <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="goToPolicy()" [disabled]="selectedPol===null"><a>Policy/Alteration</a></button>
-                                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="goToPDistribution()" [disabled]="selectedPol===null"><a>Distribution</a></button>
+                                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="goToPDistribution()" [disabled]="selectedPol?.status!='In Force'"><a>Distribution</a></button>
                             </div>
                         </div>
                     </div>

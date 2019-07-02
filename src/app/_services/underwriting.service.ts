@@ -1137,7 +1137,14 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/saveExpCatPeril',JSON.stringify(params),header);
     }
 
-
+    negateDist(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/negateDistribution',JSON.stringify(params),header);
+    }
 }            
 
             

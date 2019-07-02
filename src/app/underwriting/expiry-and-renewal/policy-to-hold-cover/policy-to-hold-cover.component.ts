@@ -80,6 +80,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	isReleasing: boolean = false;
 	isModify: boolean = false;
 	loading: boolean = false;
+	approveLoading: boolean = false;
 
 	btnDisabled: boolean = false; //button for print
 
@@ -97,6 +98,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	dialogIcon: string = '';
 	dialogMessage: string = '';
+	destination: string = 'SCREEN';
 	cancelFlag: boolean = false;
 
 	authorization: string = '';
@@ -108,7 +110,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	fromHcMonitoring: any;		// ARNEILLE DATE: Apr.10, 2019
 
 	cancelBtnDisabledStatus: string[] = ['3','4','5','6', ''];
-	approveBtnDisabledStatus: string[] = ['2','3','4','5','6','R', ''];
+	approveBtnDisabledStatus: string[] = ['2','3','4','5','6', ''];
 	saveBtnDisabledStatus: string[] = ['2','3','4','5','6'];
 
 	ngOnInit() {
@@ -199,13 +201,19 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	}
 
 	approveListMethod(policyId: string){
+		this.approveLoading = true;
 		this.us.retrievePolicyApprover(policyId).subscribe((data: any) =>{
 			this.approveList = data.approverList;
+			console.log(this.approveList);
 			for(let names of this.approveList){
 				if(this.userName == names.userId){
 					this.authorization = this.userName;
 				}
 			}
+			this.approveLoading = false;
+		},
+		(error)=>{
+			this.approveLoading = false;
 		});
 	}
 
@@ -249,7 +257,11 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			}
 
 			this.isIncomplete = false;
-			this.isForViewing = false;
+			if(this.isReleasing){
+				this.isForViewing = true;
+			}else{
+				this.isForViewing = false;	
+			}
 			this.btnDisabled = false;
 			if(this.polHoldCoverParams.status === '2' && !this.isReleasing){
 				$('#modificationModal > #modalBtn').trigger('click');
@@ -263,7 +275,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	retrievePolListing(){
 		this.table.loadingFlag = true;
 		this.policyListingData.tableData = [];
-		setTimeout(()=>{
+		//setTimeout(()=>{
+			console.log(this.tempPolNo.join('%-%'));
 			this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any) =>{
 				data.policyList = data.policyList === null ? [] : data.policyList.filter(a=>{return parseInt(a.policyNo.split('-')[5]) === 0}); //filter out all policies with alteration
 				if(data.policyList.length !== 0){
@@ -282,6 +295,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 					this.policyListingData.tableData = this.policyListingData.tableData.filter(a=> {return a.statusDesc === 'Expired' || a.statusDesc === 'On Hold Cover'});
 					if(this.isType && !this.isIncomplete){
 						this.isIncomplete = false;
+						this.isForViewing = false;
 						this.policyInfo 					= this.policyListingData.tableData[0];
 						this.polHoldCoverParams.policyId 	= this.policyInfo.policyId;
 						this.polHoldCoverParams.lineCd 		= this.policyInfo.policyNo.split('-')[0];
@@ -312,7 +326,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				this.modalOpen = true;
 				this.table.loadingFlag = false;
 			});
-		}, 100);
+		//}, 100);
 		
 	}
 
@@ -392,8 +406,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	}
 
 	selectPol(){
+		this.focusBlur();
 		this.isIncomplete = false;
 		this.noDataFound = false;
+		this.isForViewing = false;
 		this.isModify = false;
 		this.policyInfo = this.selectedPolicy;
 		this.modalService.dismissAll();
@@ -432,7 +448,13 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				this.dialogIcon = 'success-message';
 				this.dialogMessage = 'Hold Cover No. ' + this.holdCoverNo + ' is cancelled';
 				this.successDiag.open();
-				this.clearHcFields();
+				//this.clearHcFields();
+				this.isForViewing = true;
+				//this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
+				this.polHoldCoverParams.status = '6';
+				this.statusDesc = 'Cancelled';
+				this.isModify = false;
+				this.isReleasing = false;
 			}
 		});
 	}
@@ -557,6 +579,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	  			this.isReleasing = true;
 	  			//this.onClickSave();
 	  			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
+	  			this.isForViewing = true;
 	  			//this.isReleasing = false;
 	  		});
   		}else{
@@ -565,7 +588,51 @@ export class PolicyToHoldCoverComponent implements OnInit {
   		}
   	}
 
-  	policySearchParams(data:string, key:string){
+  	policyNoChecker(event, key){
+     this.isType = true;
+     if(event.target.value.length === 0){
+         this.isIncomplete = true;
+         this.clearHcFields();
+         this.policyInfo.cedingName = '';
+		 this.policyInfo.insuredDesc = '';
+		 this.policyInfo.riskName = '';
+		 this.policyInfo.statusDesc = '';
+		 this.policyInfo.policyId = '';
+     }else{
+         if(key === 'seqNo'){
+             this.tempPolNo[2] = String(this.tempPolNo[2]).padStart(5, '0');
+         }else if(key === 'cedingId'){
+             this.tempPolNo[3] = String(this.tempPolNo[3]).padStart(3, '0');
+         }else if(key ==='coSeriesNo'){
+             this.tempPolNo[4] = String(this.tempPolNo[4]).padStart(4, '0');
+         }else if(key ==='altNo'){
+             this.tempPolNo[5] = String(this.tempPolNo[5]).padStart(3, '0');
+         }else if(key === 'line'){
+             this.tempPolNo[0] = String(this.tempPolNo[0]).toUpperCase();
+         }
+         for(var i of this.tempPolNo){
+             if(i.length === 0){
+                 this.isIncomplete = true;
+                 break;
+             }else{
+                 this.isIncomplete = false;
+             }
+         }
+     }
+
+     if(!this.isIncomplete){
+         this.retrievePolListing();
+     }
+   }
+
+   focusBlur(){
+   	setTimeout(()=>{
+   		$('.temp-pol-no').focus();
+   		$('.temp-pol-no').blur();
+   	},0);
+   }
+
+  	/*policySearchParams(data:string, key:string){
   		this.fromHcMonitoring = '';
   		this.isType = true;
 
@@ -614,7 +681,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				this.policyInfo.statusDesc = '';
 	  		}
   		}
-  	}
+  	}*/
 
   	modificationOption(option: string){
   		if(option === 'cancel'){

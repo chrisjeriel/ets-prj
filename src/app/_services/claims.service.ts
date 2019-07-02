@@ -25,9 +25,10 @@ export class ClaimsService {
 		return this.claimPaymentRequestData;
 	}
 
-    getClaimHistory(claimId?,projId?,histNo?){
+    getClaimHistory(claimId?,claimNo?,projId?,histNo?){
 		const params = new HttpParams()
 			.set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+			.set('claimNo', (claimNo == null || claimNo == undefined ? '' : claimNo))
 			.set('projId', (projId == null || projId == undefined ? '' : projId))
 			.set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
 		return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimHistory',{params});	
@@ -166,4 +167,15 @@ export class ClaimsService {
 
         return this.http.post(environment.prodApiUrl + '/claims-service/saveClmGenInfo', JSON.stringify(saveClmGenInfoParam), header);
     }
+
+    saveClaimResStat(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimResStat',params,header);
+    }
+
 }

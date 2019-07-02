@@ -1,5 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { PolicyHoldCoverInfo } from '../../../_models/PolicyToHoldCover';
+import { Title } from '@angular/platform-browser';
+import { NotesService, UnderwritingService } from '@app/_services';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { FormsModule }   from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-negate-distribution',
@@ -7,90 +16,263 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./negate-distribution.component.css']
 })
 export class NegateDistributionComponent implements OnInit {
-  limitsPassData:any = {
-  	tableData:[
-  		['Quota & 1st Surplus',1500000000],
-  		['2nd Surplus', 1500000000]
-  	],
-  	tHeader: ['Treaty Name', 'Amount'],
-  	dataTypes:['text','currency'],
-  	pageLength: 3,
-  	resizable: [true,true],
-  	tableOnly: true,
 
+  private policyHoldCoverInfo: PolicyHoldCoverInfo;
+  private userName: string = JSON.parse(window.localStorage.currentUser).username;
+
+  @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  //@ViewChild(PrintModalComponent) print : PrintModalComponent;
+  @ViewChild('myForm') form:any;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+
+  constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal, private router: Router,
+          private activatedRoute: ActivatedRoute) { }
+
+  policyListingData: any = {
+    tableData: [],
+    tHeader: ['Policy No.', 'Ceding Company', 'Insured', 'Risk'],
+    dataTypes: ['text', 'text', 'text', 'text'],
+    pageLength: 10,
+    pagination: true,
+    pageStatus: true,
+    keys: ['policyNo','cedingName', 'insuredDesc', 'riskName']
   }
 
-  distributionPassData:any = {
-  	tableData:[
-  		['QS','Munich Re',38,570000000,142500,30],
-      ['QS','PhilNaRe',2,30000000,7500,30],
-      ['QS','Pool',60,627800000,156950,30],
-      ['1Surp','Munich Re',95,258590000,64647.50,30],
-      ['1Surp','PhilNaRe',5,13610000,3420.50,30],
-      ['2Surp','Munich Re',95,1425000000,356250,30],
-      ['2Surp','PhilNaRe',5,75000000,18750,30],
-      ['Facul','Munich Re',100,1000000000,250000,30],
-  	],
-  	tHeader: ['Treaty', 'Treaty Company','Share (%)', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
-  	dataTypes:['text','text', 'percent', 'currency', 'currency', 'percent'],
-  	pageLength: 10,
-  	resizable: [true,true,true,true,true,true],
-  	pageStatus: true,
-  	pagination: true,
-  	tableOnly:true
-  	
+  polHoldCoverParams: any = {
+    policyId: '',
+    holdCovId: '',
+    lineCd: '',
+    holdCovYear: new Date().getFullYear(),
+    holdCovSeqNo: '',
+    holdCovRevNo: '',
+    periodFrom: '',
+    periodTo: '',
+    compRefHoldCovNo: '',
+    status: '',
+    reqBy: '',
+    reqDate: '',
+    preparedBy: '',
+    approvedBy: '',
+    createUser: '',
+    createDate: '',
+    updateUser: '',
+    updateDate: ''
+  }
+  periodFromDate: any = {
+    date: '',
+    time: ''
+  }
+  periodToDate: any = {
+    date: '',
+    time: ''
+  }
+  holdCoverNo: string = '';
+  statusDesc: string = '';
+  approveType: string = '';
+  printType: string ;
+  modalOpen: boolean = false;
+  isType: boolean = false;
+  isIncomplete: boolean = true;
+  noDataFound: boolean = false;
+  isForViewing: boolean = false;
+  isApproval: boolean = false;
+  isReleasing: boolean = false;
+  isModify: boolean = false;
+  loading: boolean = false;
+
+  btnDisabled: boolean = false; //button for print
+
+  selectedPolicy: any;
+  emptySelect: boolean = false;
+
+  policyInfo: any = {
+    policyId: 0,
+    policyNo: '',
+    cedingName: '',
+    insuredDesc: '',
+    riskName: '',
+    totalSi: 0
   }
 
-  poolPassData:any = {
-  	tableData:[
-  		['QS','MAPFRE INSULAR',1,200000,62.50,199,39800000,12437.50],
-  	],
-  	tHeader: ['Treaty', 'Treaty Company','1st Ret Line', '1st Ret SI Amt','1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt'],
-  	dataTypes:['text','text', 'number', 'currency', 'currency', 'number', 'currency', 'currency'],
-  	pageLength: 10,
-  	resizable: [true,true,true,true,true,true],
-  	pageStatus: true,
-  	pagination: true,
-  	tableOnly:true
-  }
+  dialogIcon: string = '';
+  dialogMessage: string = '';
+  cancelFlag: boolean = false;
 
-  policyNo:string;
-  negateDistribution:any = {
-  	distNo : "",
-  	riskDistNo : "",
-  	status : "",
-  	cedingCo : "",
-  	insured : "",
-  	risk : "",
-  	totalSI : "",
-  	rate : "",
-  	totalPremium : "",
-  	oneRetLine : "",
-  	firstRetLine : "",
-  	secRetLine : "",
-  };
+  authorization: string = '';
 
-  constructor(private modalService: NgbModal) { }
+  tempPolNo: string[] = ['','','','','',''];
+  approveList: any[] = [];
+
+  private sub: any;      // ARNEILLE DATE: Apr.10, 2019
+  fromHcMonitoring: any;    // ARNEILLE DATE: Apr.10, 2019
+
+  cancelBtnDisabledStatus: string[] = ['3','4','5','6', ''];
+  approveBtnDisabledStatus: string[] = ['2','3','4','5','6','R', ''];
+  saveBtnDisabledStatus: string[] = ['2','3','4','5','6'];
 
   ngOnInit() {
-  	this.policyNo  = "CAR-2018-00001-009-0001-000";
-  	this.negateDistribution.distNo = "";
-  	this.negateDistribution.riskDistNo = "";
-  	this.negateDistribution.status = "";
-  	this.negateDistribution.cedingCo = "";
-  	this.negateDistribution.insured = "";
-  	this.negateDistribution.risk = "";
-  	this.negateDistribution.totalSI = "";
-  	this.negateDistribution.rate = "";
-  	this.negateDistribution.totalPremium = "";
-  	this.negateDistribution.oneRetLine = "";
-  	this.negateDistribution.firstRetLine = "";
-  	this.negateDistribution.secRetLine = "";
-
+      this.titleService.setTitle("Pol | Negate Distribution");
+    this.printType = 'SCREEN';
   }
 
-  test(){
-  	console.log(this.negateDistribution.totalSI);
+  retrievePolListing(){
+    this.table.loadingFlag = true;
+    this.policyListingData.tableData = [];
+    setTimeout(()=>{
+      this.us.getParListing([{key: 'statusDesc', search: 'IN FORCE'}, 
+                           {key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any) =>{
+        //data.policyList = data.policyList === null ? [] : data.policyList; //filter out all policies with alteration
+        if(data.policyList.length !== 0){
+          this.noDataFound = false;
+          for(var rec of data.policyList){
+            this.policyListingData.tableData.push({
+              policyId: rec.policyId,
+              policyNo: rec.policyNo,
+              cedingName: rec.cedingName,
+              insuredDesc: rec.insuredDesc,
+              riskName: rec.project.riskName,
+              statusDesc: rec.statusDesc,
+              totalSi: rec.project.coverage.totalSi,
+              distStatDesc: rec.distStatDesc
+            });
+          }
+
+          this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return a.distStatDesc === 'P'});
+          if(this.isType && !this.isIncomplete){
+            this.isIncomplete = false;
+            this.policyInfo           = this.policyListingData.tableData[0];
+            this.polHoldCoverParams.policyId   = this.policyInfo.policyId;
+            this.polHoldCoverParams.lineCd     = this.policyInfo.policyNo.split('-')[0];
+            this.tempPolNo            = this.policyInfo.policyNo.split('-');
+          }
+        }else{
+          this.noDataFound = true;
+          this.policyListingData.tableData = [];
+          if(this.isType){
+            this.policyInfo.cedingName = '';
+            this.policyInfo.insuredDesc = '';
+            this.policyInfo.riskName = '';
+            this.policyInfo.statusDesc = '';
+            setTimeout(()=>{
+              this.openModal();
+            }, 100);
+          }
+        }
+        this.table.refreshTable();
+        this.modalOpen = true;
+        this.table.loadingFlag = false;
+      });
+    }, 100);
+    
   }
+
+  onRowClick(data){
+    this.selectedPolicy = data;
+    console.log(data)
+    this.selectedPolicy = this.selectedPolicy === null ? {} : this.selectedPolicy;
+    if(Object.keys(this.selectedPolicy).length === 0){
+      this.emptySelect = true;
+    }else{
+      this.emptySelect = false;
+    }
+  }
+
+  openModal(){
+    this.isType = false;
+    //this.tempPolNo[0] = this.tempPolNo[0].length === 0 ? ' '
+    $('#lovMdl #modalBtn').trigger('click');
+    this.selectedPolicy = null;
+    this.retrievePolListing();
+  }
+
+  selectPol(){
+    this.isIncomplete = false;
+    this.noDataFound = false;
+    this.isModify = false;
+    this.policyInfo = this.selectedPolicy;
+    this.modalService.dismissAll();
+    this.polHoldCoverParams.policyId = this.policyInfo.policyId;
+    this.polHoldCoverParams.lineCd = this.policyInfo.policyNo.split('-')[0];
+    this.tempPolNo = this.policyInfo.policyNo.split('-');
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('/pol-hold-cov-monitoring');
+      } 
+    }
+
+    policySearchParams(data:string, key:string){
+      this.fromHcMonitoring = '';
+      this.isType = true;
+
+      if(data.length === 0){
+        this.isIncomplete = true;
+      this.policyInfo.cedingName = '';
+      this.policyInfo.insuredDesc = '';
+      this.policyInfo.riskName = '';
+      this.policyInfo.statusDesc = '';
+      this.policyInfo.policyId = '';
+      }
+
+      if(key === 'lineCd'){
+        this.tempPolNo[0] = data.toUpperCase();
+      }else if(key === 'year'){
+        this.tempPolNo[1] = data;
+      }else if(key === 'seqNo'){
+        this.tempPolNo[2] = data;
+      }else if(key === 'cedingId'){
+        this.tempPolNo[3] = data;
+      }else if(key === 'coSeriesNo'){
+        this.tempPolNo[4] = data;
+      }else if(key === 'altNo'){
+        this.tempPolNo[5] = data;
+      }
+    }
+
+    checkPolParams(){
+      this.isModify = false;
+      if(this.isIncomplete){
+        if(this.tempPolNo[0].length !== 0 &&
+           this.tempPolNo[1].length !== 0 &&
+           this.tempPolNo[2].length !== 0 &&
+           this.tempPolNo[3].length !== 0 &&
+           this.tempPolNo[4].length !== 0 &&
+           this.tempPolNo[5].length !== 0){
+          this.isIncomplete = false;
+          this.retrievePolListing();
+        }else{
+          this.isIncomplete = true;
+        this.policyInfo.cedingName = '';
+        this.policyInfo.insuredDesc = '';
+        this.policyInfo.riskName = '';
+        this.policyInfo.statusDesc = '';
+        }
+      }
+    }
+
+   onClickNext(){
+     this.router.navigate(['policy-dist', {policyId:this.selectedPolicy.policyId,
+                                              fromInq:false,
+                                              policyNo: this.selectedPolicy.policyNo,
+                                              line: this.selectedPolicy.lineCd,
+                                              lineClassCd: this.selectedPolicy.lineClassCd,
+                                              statusDesc:this.selectedPolicy.statusDesc,
+                                              insured: this.selectedPolicy.insuredDesc,
+                                              cedingName: this.selectedPolicy.cedingName,
+                                              status: this.selectedPolicy.status,
+                                              exitLink: 'negate-distribution',
+                                              riskName: this.selectedPolicy.riskName,
+                                              fromNegate: true
+                                              }], { skipLocationChange: true });
+   }
+
+   onClickCancel(){
+     this.router.navigate(['/']);
+   }
 
 }
+
+
+

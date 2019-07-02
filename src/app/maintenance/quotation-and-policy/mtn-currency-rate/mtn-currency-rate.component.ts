@@ -1,9 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaintenanceService, NotesService} from '@app/_services'
-import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
+import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { Title } from '@angular/platform-browser';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
+
 @Component({
   selector: 'app-mtn-currency-rate',
   templateUrl: './mtn-currency-rate.component.html',
@@ -11,21 +15,21 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class MtnCurrencyRateComponent implements OnInit {
 
-  @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
+  @ViewChild(MtnCurrencyCodeComponent) currencyLov: MtnCurrencyCodeComponent;
   @ViewChild('currency') table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(ConfirmSaveComponent) cs : ConfirmSaveComponent;
 
   passData: any = {
-    tHeader: [ "Hist No","Currency Rate","Eff Date From","Eff Date To", "Active","Remarks"],
+    tHeader: [ "Hist No","Currency Rate","Eff Date From", "Active","Remarks"],
     tableData:[],
-    dataTypes: ['sequence-3','percent','date','date',"checkbox", "text"],
+    dataTypes: ['sequence-3','percent','date',"checkbox", "text"],
     nData: {
       histNo: null,
       currencyRt: null,
       effDateFrom: null,
-      effDateTo: null,
-      activeTag: 'N',
+      activeTag: 'Y',
       remarks: null,
       createDate: '',
       createUser: JSON.parse(window.localStorage.currentUser).username,
@@ -36,15 +40,16 @@ export class MtnCurrencyRateComponent implements OnInit {
     pageID: 'currencyRt',
     //checkFlag: true,
     disableGeneric : true,
+    disableAdd:true,
     addFlag: true,
     genericBtn:'Delete',
     searchFlag: true,
     pageLength: 10,
     paginateFlag: true,
     infoFlag: true,
-    uneditable:[true,false,false,false,false,false],
-    widths:[100,'auto','auto','auto',70,400],
-    keys:['histNo','currencyRt','effDateFrom','effDateTo','activeTag','remarks'],
+    uneditable:[true,false,false,false,,false],
+    widths:[100,'auto','auto',70,400],
+    keys:['histNo','currencyRt','effDateFrom','activeTag','remarks'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -67,9 +72,16 @@ export class MtnCurrencyRateComponent implements OnInit {
   dialogMessage : string = '';
   dialogIcon: any;
   errorFlag: boolean = false;
-  constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
+  firstLoading: boolean;
+  changeCurr: boolean;
+  tempCurr: string = '';
+  prevEvent:any;
+  exit: boolean ;
+  constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private titleService: Title, private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Mtn | Currency Rate");
+    this.firstLoading = true;
     this.getCurrencyRate();
   }
 
@@ -77,21 +89,23 @@ export class MtnCurrencyRateComponent implements OnInit {
     if(this.currencyCd == '' || this.currencyCd == null){
       this.emptyTbl();
     }else{
-      this.passData.tableData = [];
       this.maintenanceService.getMtnCurrencyRt(this.currencyCd).subscribe((data:any) => {
         console.log(data)
         var currData = data.currencyCd;
+        this.passData.tableData = [];
         for(var i = 0;i < currData.length;i++){
           this.passData.tableData.push(currData[i]);
           this.passData.tableData[i].uneditable = ['histNo']
         }
          this.table.refreshTable();
-      })
+      });
+      this.tempCurr = this.currencyCd;
     }
   }
 
   clickRow(data){
-    if(data !== null){
+    console.log(this.table.indvSelect)
+    if(data !== null && data.okDelete !== 'N'){
       this.passData.disableGeneric = false
       this.currencyData = data;
       this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
@@ -111,12 +125,67 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   checkCode(ev){
-    this.ns.lovLoader(ev, 1);
-    this.currencyLov.checkCode(this.currencyCd.toUpperCase(), ev);
+    this.prevEvent = ev;
+    if(this.currencyCd === null || this.currencyCd === ''){
+      this.description = null;
+      this.passData.tableData = [];
+      this.table.refreshTable();
+    }
+
+    if(this.firstLoading){
+     this.ns.lovLoader(ev, 1);
+     this.currencyLov.checkCode(this.currencyCd.toUpperCase(), ev);
+     $('.ng-dirty').removeClass('ng-dirty'); 
+    }else{
+      if($('.ng-dirty').length != 0){
+        this.changeCurr = true;
+        this.cancelBtn.clickCancel();
+      }else{
+        this.changeCurr = false;
+        this.ns.lovLoader(ev, 1);
+        this.currencyLov.checkCode(this.currencyCd.toUpperCase(), ev);
+      }
+    }
+  }
+
+  checkCancel(){
+      if(this.cancelFlag){
+        if(this.changeCurr){
+            this.changeCurr = false;
+            if(this.exit){
+                this.cancelBtn.url = '/maintenance-qu-pol';
+                this.cancelBtn.onNo(); 
+            }else{
+                this.modalService.dismissAll();
+                return;
+            }
+        }else{
+            this.cancelBtn.onNo();
+        }
+          
+      }
+  }
+
+  onClickNo(){
+      if(this.exit){
+          this.changeCurr = false;
+          this.cancelBtn.url = '/maintenance-qu-pol';
+          this.cancelBtn.onNo(); 
+      }else{
+          this.currencyLoading();
+          this.getCurrencyRate();
+      }
+  }
+
+  onCancel(){
+      this.currencyCd = this.tempCurr;
+      this.modalService.dismissAll();
   }
 
   setCurrency(data){
     console.log(data)
+    this.passData.disableAdd = false;
+    this.firstLoading = false;
     this.currencyCd = data.currencyCd;
     this.description = data.description;
     this.ns.lovLoader(data.ev, 0);
@@ -127,12 +196,16 @@ export class MtnCurrencyRateComponent implements OnInit {
     this.passData.tableData = [];
   }
 
-  prepareData(){
+  prepareData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    //this.prepareData();
     this.editedData = [];
+    this.deletedData = [];
+
     for(var i = 0; i< this.passData.tableData.length; i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         this.editedData.push(this.passData.tableData[i]);
-        this.editedData[this.editedData.length - 1].currencyCd = this.currencyCd;
+        this.editedData[this.editedData.length - 1].currencyCd = this.tempCurr;
         this.editedData[this.editedData.length - 1].effDateFrom = this.ns.toDateTimeString(this.passData.tableData[i].effDateFrom);
         this.editedData[this.editedData.length - 1].effDateTo = this.ns.toDateTimeString(this.passData.tableData[i].effDateTo);
         this.editedData[this.editedData.length - 1].updateUser = JSON.parse(window.localStorage.currentUser).username;
@@ -145,10 +218,29 @@ export class MtnCurrencyRateComponent implements OnInit {
 
     this.saveData.saveCurrencyRt = this.editedData;
     this.saveData.delCurrencyRt = this.deletedData;
+
+    if(this.editedData.length === 0 && this.deletedData.length === 0){
+      setTimeout(()=> {
+      this.dialogMessage = "Nothing to Save.";
+      this.dialogIcon = "info";
+      this.successDiag.open();
+      },0);
+    }else {
+      if(this.changeCurr){
+        this.currencyLoading();
+        this.currencyCd = this.tempCurr;
+      }
+      if(cancelFlag){
+        this.cs.showLoading(true);
+        setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},0);
+      }else{
+        this.cs.confirmModal();
+      }
+    }
   }
 
   onClickSave(){
-    this.errorFlag = false;
+    /*this.errorFlag = false;
     let currEffDateTo:Date;
     let currEffDateFrom:Date;
     let nextEffDateTo:Date;
@@ -178,42 +270,39 @@ export class MtnCurrencyRateComponent implements OnInit {
         }
 
       }
-    }
+    }*/
     
      $('#confirm-save #modalBtn2').trigger('click');
   }
 
-  saveCurrRt(cancelFlag?){
-      this.cancelFlag = cancelFlag !== undefined;
-      this.prepareData();
-      if(this.editedData.length === 0 && this.deletedData.length === 0){
-        setTimeout(()=> {
-        this.dialogMessage = "Nothing to Save.";
-        this.dialogIcon = "info";
-        this.successDiag.open();
-        },0);
-      }else {
-        this.maintenanceService.saveMtnCurrencyRt(this.saveData).subscribe((data:any) => {
-          if(data['returnCode'] == 0) {
-            this.dialogMessage = data['errorList'][0].errorMessage;
-            this.dialogIcon = "error";
-            this.successDiag.open();
-          } else{
-            this.dialogIcon = "success";
-            this.successDiag.open();
-            this.getCurrencyRate();
-          }
-        });
-      }
+  saveCurrRt(){
+    this.maintenanceService.saveMtnCurrencyRt(this.saveData).subscribe((data:any) => {
+     if(data['returnCode'] == 0) {
+       this.dialogMessage = data['errorList'][0].errorMessage;
+       this.dialogIcon = "error";
+       this.successDiag.open();
+     } else{
+       this.dialogIcon = "success";
+       this.successDiag.open();
+       this.getCurrencyRate();
+       this.table.markAsPristine();
+       this.passData.disableGeneric = false;
+     }
+    });
   }
 
   deleteCurr(){
-      this.table.indvSelect.deleted = true;
       this.table.selected  = [this.table.indvSelect]
       this.table.confirmDelete();
   }
 
   cancel(){
+    this.exit = true;
     this.cancelBtn.clickCancel();
+  }
+
+  currencyLoading(){
+    this.ns.lovLoader(this.prevEvent, 1);
+    this.currencyLov.checkCode(this.currencyCd.toUpperCase(), this.prevEvent);
   }
 }

@@ -73,9 +73,8 @@ export class PolicyInformationComponent implements OnInit {
       this.policyInfo = data.policy;
       this.policyInfo.inceptDate = this.ns.toDateTimeString(data.policy.inceptDate);
       this.policyInfo.expiryDate = this.ns.toDateTimeString(data.policy.expiryDate);
-      this.policyInfo.lapseFrom = this.ns.toDateTimeString(data.policy.lapseFrom);
-      this.policyInfo.lapseTo = this.ns.toDateTimeString(data.policy.lapseTo);
-      this.policyInfo.lapseFrom = this.ns.toDateTimeString(data.policy.lapseFrom);
+      this.policyInfo.lapseTo = data.policy.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(data.policy.lapseTo));
+      this.policyInfo.lapseFrom == data.policy.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(data.policy.lapseFrom));
       this.policyInfo.maintenanceFrom = this.ns.toDateTimeString(data.policy.maintenanceFrom);
       this.policyInfo.maintenanceTo = this.ns.toDateTimeString(data.policy.maintenanceTo);
       this.policyInfo.issueDate = this.ns.toDateTimeString(data.policy.issueDate);
@@ -101,9 +100,6 @@ export class PolicyInformationComponent implements OnInit {
                                               status: this.selectedPol.status,
                                               exitLink: '/policy-information'
                                               }], { skipLocationChange: true });
-
-
-   // line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
   }
 
   goToPDistribution(){
@@ -127,9 +123,6 @@ export class PolicyInformationComponent implements OnInit {
   }
 
   onTabChange($event:NgbTabChangeEvent) {
-     // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
-     //     $event.preventDefault();
-   //   }                     
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
         this.router.navigateByUrl('/policy-inquiry');
@@ -148,6 +141,11 @@ export class PolicyInformationComponent implements OnInit {
                                              status: this.policyInfo.status,
                                              }], { skipLocationChange: true });
  }
+
+ setSec(d) {
+    d = new Date(d);
+    return d.setSeconds(0);
+  }
 
 
 }
