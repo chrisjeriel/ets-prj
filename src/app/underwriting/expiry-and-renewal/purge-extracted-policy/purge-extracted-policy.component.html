@@ -54,7 +54,6 @@
 					</div>
 					<div class="col-sm-2"></div>
 				</div>
-
 				 	<app-modal class="hidden" id="parameter">
                      	<div header>Parameter</div>
 							<div body style="width: 600px !important">
@@ -67,15 +66,21 @@
 											<label class="form-control-sm col-sm-2" for="byDate" style="margin-left: -25px;">&nbsp;By Date</label>
 										</div>
 									</div>
+
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-top: -10px;margin-left: 90px;">
 											<div class="col-sm-1"></div>
 											<label class="form-control-sm col-sm-1 cust-sm from" for="fromDate">From</label>
-											<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="fromDate" [disabled]="!byDate" style="margin-left: 10px;" [ngModel]="params.byDateFom" (ngModelChange)="params.byDateFom = $event;test()">
+											<div class="col-sm-3 dp-cont">
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [(value)]="dateParams.byDateFrom" [disabled]="!byDate"></datepicker>
+											</div>
 											<label class="form-control-sm col-sm-1 cust-sm" style="margin-left: -10px !important;">To</label>
-											<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="toDate" [disabled]="!byDate" [ngModel]="params.byDateTo" (ngModelChange)="params.byDateTo = $event">
+											<div class="col-sm-3 dp-cont">
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [(value)]="dateParams.byDateTo" [disabled]="!byDate"></datepicker>
+											</div>	
 										</div>
 									</div>
+									
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-top: -10px;margin-left: 100px;">
 											<div class="col-sm-1"></div>
@@ -87,37 +92,37 @@
 											<div class="input-group" style="margin-top: -10px; margin-left: 90px;">
 												<div class="col-sm-1"></div>
 												<label class="form-control-sm col-sm-1 cust-sm from">From</label>
-												<select class="form-control form-control-sm cust-sm col-sm-2" name="fromMonth" [disabled]="byDate" style="margin-left: 8px;" [ngModel]="params.byMonthFrom" (ngModelChange)="params.byMonthFrom">
-													<option value="1">January</option>
-													<option value="2">February</option>
-													<option value="3">March</option>
-													<option value="4">April</option>
-													<option value="5">May</option>
-													<option value="6">June</option>
-													<option value="7">July</option>
-													<option value="8">August</option>
-													<option value="9">September</option>
+												<select class="form-control form-control-sm cust-sm col-sm-2" name="fromMonth" [disabled]="byDate" style="margin-left: 8px;" [ngModel]="dateParams.byMonthFrom" (ngModelChange)="dateParams.byMonthFrom = $event">
+													<option value="01">January</option>
+													<option value="02">February</option>
+													<option value="03">March</option>
+													<option value="04">April</option>
+													<option value="05">May</option>
+													<option value="06">June</option>
+													<option value="07">July</option>
+													<option value="08">August</option>
+													<option value="09">September</option>
 													<option value="10">October</option>
 													<option value="11">November</option>
 													<option value="12">December</option>
 												</select>
-												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [disabled]="byDate" style="margin-left: 2px;" [ngModel]="params.byYearFrom" (ngModelChange)="params.byYearFrom = $event">
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [disabled]="byDate" style="margin-left: 2px;" [ngModel]="dateParams.byYearFrom" (ngModelChange)="dateParams.byYearFrom = $event">
 												<label class="form-control-sm col-sm-1 cust-sm toMonth" style="margin-left: -10px !important;">To</label>
-												<select class="form-control form-control-sm cust-sm col-sm-2" name="toMonth" [disabled]="byDate" style="margin-left: -2px;" [ngModel]="params.byMonthTo"(ngModelChange)="params.byMonthTo">
-													<option value="1">January</option>
-													<option value="2">February</option>
-													<option value="3">March</option>
-													<option value="4">April</option>
-													<option value="5">May</option>
-													<option value="6">June</option>
-													<option value="7">July</option>
-													<option value="8">August</option>
-													<option value="9">September</option>
+												<select class="form-control form-control-sm cust-sm col-sm-2" name="toMonth" [disabled]="byDate" style="margin-left: -2px;" [ngModel]="dateParams.byMonthTo"(ngModelChange)="dateParams.byMonthTo=$event">
+													<option value="01">January</option>
+													<option value="02">February</option>
+													<option value="03">March</option>
+													<option value="04">April</option>
+													<option value="05">May</option>
+													<option value="06">June</option>
+													<option value="07">July</option>
+													<option value="08">August</option>
+													<option value="09">September</option>
 													<option value="10">October</option>
 													<option value="11">November</option>
 													<option value="12">December</option>
 												</select>
-												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [disabled]="byDate" style="margin-left: 2px;"  [ngModel]="params.byYearTo" (ngModelChange)="params.byYearTo = $event">
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [disabled]="byDate" style="margin-left: 2px;"  [ngModel]="dateParams.byYearTo" (ngModelChange)="dateParams.byYearTo = $event">
 											</div>
 										</div>
 									<br>
@@ -126,7 +131,7 @@
 												<label class="form-control-sm col-sm-2 text-right">Line</label>
 												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'line')" [ngModel]="params.line" (ngModelChange)="params.line = $event.toUpperCase()">
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
-												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.lineDescription">
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.lineDescription" readonly>
 											</div>
 										</div>
 										<div class="form-row custom-row-inline-inset">
@@ -134,7 +139,7 @@
 												<label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
 												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'typeOfCession')" [ngModel]="params.typeOfCessionId" (ngModelChange)="params.typeOfCessionId = $event.toUpperCase()"> 
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showTypeOfCessionLOV()"></i></a></div>
-												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.typeOfCession"> 
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.typeOfCession" readonly> 
 											</div>
 										</div>
 										<div class="form-row custom-row-inline-inset">
@@ -142,7 +147,7 @@
 												<label class="form-control-sm col-sm-2" style="padding-right: 4px;">Ceding Company</label>
 												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event,'cedingCo')" [ngModel]="params.cedingId" (ngModelChange)="params.cedingId=$event.toUpperCase()">
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
-												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.cedingName"> 
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.cedingName" readonly> 
 											</div>	
 										</div>
 										<div class="form-row custom-row-inline-inset">
@@ -163,6 +168,7 @@
 							</div>
 							   	<div footer>
 							        <div class="cust-btn-container text-center" style="margin-right: 215px;">
+							        	<button type="button" class="cust-btn" (click)="test();"><a>test</a></button>
 							            <button type="button" class="cust-btn" (click)="clearData();"><a>Clear</a></button>
 							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
 							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Ok</a></button>

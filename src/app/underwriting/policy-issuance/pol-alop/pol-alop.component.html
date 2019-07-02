@@ -170,7 +170,9 @@
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
 
 <!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="(cancelFlag && alopFlag === 'alop') ? cancelBtn.onNo() : (cancelFlag && alopFlag === 'alopitem')? cancelModalBtn.onNo() : (dialogMessage === '' || (dialogMessage === 'Successfully Saved')? modalService.dismissAll():null)" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> -->
-<app-sucess-dialog id="polAlopSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog #alopSuccess id="polAlopSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+
+<app-sucess-dialog #alopItemSuccess id="polAlopSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save id="polAlop" (onYes)="savePolAlop()"></app-confirm-save>
 <app-cancel-button (onYes)="savePolAlop('cancel')" [url]="polURL" #cancelButtonComponent></app-cancel-button>
 

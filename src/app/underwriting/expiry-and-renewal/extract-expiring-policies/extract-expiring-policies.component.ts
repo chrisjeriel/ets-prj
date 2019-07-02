@@ -8,6 +8,7 @@ import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Router } from '@angular/router';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-extract-expiring-policies',
@@ -22,7 +23,8 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
   @ViewChild('ceding') cedingLov: CedingCompanyComponent;
   @ViewChild('extPolLov') lovTable: CustNonDatatableComponent;
-
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   lastExtraction: LastExtraction = new LastExtraction();
   
@@ -30,7 +32,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
   radioVal: any = 'bypolno';
   extractedPolicies: number = 0;
-
+  cancelFlag:boolean;
   policyId:string = "";
   polLineCd: string = "";
   polYear:string = "";
@@ -88,6 +90,8 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   selected: any = null;
   searchArr: any[] = Array(6).fill('');
   filtSearch: any[] = [];
+  dialogIcon:string = '';
+  dialogMessage:string;
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Extract Expiring Policy");
@@ -101,49 +105,50 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.extractedPolicies = 0;
     console.log("this.expiryParameters : " + JSON.stringify(this.expiryParameters));
 
-    this.underWritingService.extractExpiringPolicies(this.expiryParameters).subscribe(data => {
+    this.underWritingService.extractExpiringPolicies(this.expiryParameters).subscribe((data:any) => {
         console.log("extractExpiringPolicies: " + JSON.stringify(data));
-        if (data['errorList'].length > 0) {
-
+        if (data.returnCode != -1) {
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = "error";
+          this.successDiag.open();
         } else {
           this.extractedPolicies = data['recordCount'];
           $('#extractMsgModal > #modalBtn').trigger('click');
+          this.clearAll();  
+          this.getPolListing()
         }
     });
 
   }
 
   getPolListing(param?) {
-    if(this.radioVal == 'bypolno') {
-      return;
-    } else {
-      this.lovTable.loadingFlag = true;
-      this.underWritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
-        var polList = data['policyList'];
+    this.lovTable.loadingFlag = true;
+    this.underWritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
+      console.log(data)
+      var polList = data['policyList'];
 
-        polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE')
-                         .map(p => { p.riskName = p.project.riskName; return p; });
-        this.passDataLOV.tableData = polList;
-        this.lovTable.refreshTable();
+      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE')
+                       .map(p => { p.riskName = p.project.riskName; return p; });
+      this.passDataLOV.tableData = polList;
+      this.lovTable.refreshTable();
 
-        if(param !== undefined) {
-          if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  
-            this.selected = polList[0];
-            this.setDetails();
-          } else if(polList.length === 0 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {
-            this.selected = null;
-            this.searchArr = Array(6).fill('');
-            this.polNo = Array(6).fill('');
-            this.getPolListing();
-            this.showLOV();
-          } else if(polList.length === 0 && this.searchArr.includes('%%')) {
-            this.getPolListing();
-          } else if(this.searchArr.includes('%%')) {
-            this.selected = null;
-          }
+      if(param !== undefined) {
+        if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  
+          this.selected = polList[0];
+          this.setDetails();
+        } else if(polList.length === 0 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {
+          this.selected = null;
+          this.searchArr = Array(6).fill('');
+          this.polNo = Array(6).fill('');
+          this.getPolListing();
+          this.showLOV();
+        } else if(polList.length === 0 && this.searchArr.includes('%%')) {
+          this.getPolListing();
+        } else if(this.searchArr.includes('%%')) {
+          this.selected = null;
         }
-      });
-    }
+      }
+    });
   }
 
   onRowClick(event) {    
@@ -212,7 +217,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   }
 
   prepareExtractParameters() {
-    this.expiryParameters.policyId         = this.radioVal == 'bypolno' ? this.policyId : '';
+    /*this.expiryParameters.policyId         = this.radioVal == 'bypolno' ? this.policyId : '';
     this.expiryParameters.polLineCd        = this.radioVal == 'bypolno' ? this.polNo[0] : '';
     this.expiryParameters.polYear          = this.radioVal == 'bypolno' ? this.polNo[1] : '';
     this.expiryParameters.polSeqNo         = this.radioVal == 'bypolno' ? this.polNo[2] : '';
@@ -225,22 +230,35 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.expiryParameters.cedingId         = this.cedingId; 
     this.expiryParameters.cessionType      = this.typeOfCessionId; 
     this.expiryParameters.extractUser      = JSON.parse(window.localStorage.currentUser).username; 
-  }
+*/
+    if(this.radioVal == 'bypolno'){
+      this.expiryParameters.policyId         = this.policyId;
+      this.expiryParameters.polLineCd        = this.polNo[0];
+      this.expiryParameters.polYear          = this.polNo[1];
+      this.expiryParameters.polSeqNo         = this.polNo[2];
+      this.expiryParameters.polCedingId      = this.polNo[3];
+      this.expiryParameters.coSeriesNo       = this.polNo[4];
+      this.expiryParameters.altNo            = this.polNo[5];
+      this.expiryParameters.extractUser      = this.ns.getCurrentUser(); 
+    }else if(this.radioVal == 'bydate'){
 
-  /*
-  policyId:string;
-  lineCd:string;
-  polYear:string;
-  polSeqNo:string;
-  polCedingId:string;
-  coSeriesNo:string;
-  altNo:string;
-  fromExpiryDate:string;
-  toExpiryDate:string;
-  cedingId:string;
-  cessionType:string;
-  extractUser:string;
-  */
+    }else if(this.radioVal == 'bymoyo'){
+      
+    }
+
+    if(this.lineCd!== ''){
+      this.expiryParameters.lineCd           = this.lineCd; 
+    }
+
+    if(this.cedingId !== ''){
+
+    }
+
+    if(this.typeOfCessionId !== ''){
+      
+    }
+
+  }
 
   clearPolicyNo() {
     this.polNo = [];

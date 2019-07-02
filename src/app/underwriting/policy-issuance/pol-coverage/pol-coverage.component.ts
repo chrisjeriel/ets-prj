@@ -902,8 +902,49 @@ export class PolCoverageComponent implements OnInit {
 
   CATPerils() {
         //$('#modalBtn').trigger('click');
-        $('#CATPerils > #modalBtn').trigger('click');
-        this.getCATPerils();
+        this.editedData = [];
+        this.deletedData = [];
+        this.editedDedt = [];
+        this.deletedData = [];
+        for(var i = 0; i < this.passDataSectionCover.tableData.length;i++){
+          if(this.passDataSectionCover.tableData[i].edited && !this.passDataSectionCover.tableData[i].deleted){
+            this.editedData.push(this.passDataSectionCover.tableData[i]);
+            if(this.passDataSectionCover.tableData[i].discountTag != 'Y'){
+              this.editedData[this.editedData.length - 1].cumPrem =  this.editedData[this.editedData.length - 1].cumSi *(this.editedData[this.editedData.length - 1].premRt/100);
+            }else{
+              this.editedData[this.editedData.length - 1].cumPrem =  this.passDataSectionCover.tableData[i].cumPrem;
+            }
+            this.editedData[this.editedData.length - 1].sumInsured = this.passDataSectionCover.tableData[i].cumSi;
+            this.editedData[this.editedData.length - 1].premAmt = this.passDataSectionCover.tableData[i].cumPrem;
+            this.editedData[this.editedData.length - 1].createDateSec =  this.ns.toDateTimeString(0)
+            this.editedData[this.editedData.length - 1].updateDateSec = this.ns.toDateTimeString(0); 
+            this.editedData[this.editedData.length - 1].lineCd = this.line;
+          }else if(this.passDataSectionCover.tableData[i].deleted){
+            this.deletedData.push(this.passDataSectionCover.tableData[i]);
+            this.deletedData[this.deletedData.length - 1].sumInsured = this.passDataSectionCover.tableData[i].cumSi;
+            this.deletedData[this.deletedData.length - 1].premAmt = this.passDataSectionCover.tableData[i].cumPrem;
+            this.deletedData[this.deletedData.length - 1].createDateSec =  this.ns.toDateTimeString(0)
+            this.deletedData[this.deletedData.length - 1].updateDateSec = this.ns.toDateTimeString(0); 
+            this.deletedData[this.deletedData.length - 1].lineCd = this.line;
+          }
+
+          for(var j = 0 ; j < this.passDataSectionCover.tableData[i].deductiblesSec.length;j++){
+              if(this.passDataSectionCover.tableData[i].deductiblesSec[j].edited && !this.passDataSectionCover.tableData[i].deductiblesSec[j].deleted){
+                this.editedDedt.push(this.passDataSectionCover.tableData[i].deductiblesSec[j]);
+                this.editedDedt[this.editedDedt.length - 1].createDate = this.ns.toDateTimeString(this.editedDedt[this.editedDedt.length - 1].createDate)
+                this.editedDedt[this.editedDedt.length - 1].updateDate = this.ns.toDateTimeString(this.editedDedt[this.editedDedt.length - 1].updateDate)
+              }else if(this.passDataSectionCover.tableData[i].deductiblesSec[j].deleted){
+                this.deletedDedt.push(this.passDataSectionCover.tableData[i].deductiblesSec[j]);
+              }
+          }
+        }
+
+        if(this.editedData.length == 0 && this.deletedData.length == 0 && this.editedDedt.length == 0 && this.deletedDedt.length ==0){
+          $('#CATPerils > #modalBtn').trigger('click');
+          this.getCATPerils();
+        }else{
+          this.onClickSave();
+        }
   }
 
   getCATPerils(){
@@ -1369,7 +1410,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   onCancelCat(){
-    console.log('pasok')
     this.cancelCatBtn.clickCancel();
   }
 

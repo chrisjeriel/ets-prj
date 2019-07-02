@@ -116,7 +116,7 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -35px;padding-right: 40px">
 									<label class="form-control-sm col-sm-2 text-right">Line</label>
-				                    <input type="text" [ngModel]="lineCd" (ngModelChange)="lineCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')">
+				                    <input type="text" [ngModel]="lineCd" (ngModelChange)="lineCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')">
 				                    <div class="text-search-ico" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>
 				                    &nbsp;&nbsp;
 				                    <input type="text" class="form-control form-control-sm" [(ngModel)]="lineDescription" readonly tabindex="-1">
@@ -125,7 +125,7 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -18px;padding-right: 40px">
 									<label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
-				                    <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-1" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')" maxlength="4" numbers-only>
+				                    <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')" maxlength="4" numbers-only>
 				                    <div class="text-search-ico" (click)="showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
 				                    &nbsp;&nbsp;
 				                    <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly tabindex="-1">
@@ -134,7 +134,7 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -16px;padding-right: 40px"> 
 									<label class="form-control-sm col-sm-2" style="padding-left: 0;">Ceding Company</label>
-			                        <input type="text"class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" [(ngModel)]="cedingId" (change)="checkCode($event, 'cedingCo')">
+			                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="cedingId" (change)="checkCode($event, 'cedingCo')">
 			                        <div class="text-search-ico" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
 			                        &nbsp;&nbsp;
 			                        <input type="text" class="form-control form-control-sm" [(ngModel)]="cedingName" readonly>
@@ -251,3 +251,5 @@
         </div>
     </div>
 </app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
