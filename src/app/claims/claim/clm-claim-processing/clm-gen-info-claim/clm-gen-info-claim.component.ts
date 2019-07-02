@@ -15,7 +15,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { forkJoin, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { tap, mergeMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clm-gen-info-claim',
@@ -38,6 +38,11 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   line: string;
   sub: any;
+
+  @Input() claimInfo = {
+    claimId: '',
+    claimNo: ''
+  }
 
   adjData: any = {
     tableData: [],
@@ -160,6 +165,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     },
     clmAdjusterList: [],
     clmReserve: null,
+    approvalInfo: null,
     adjNames: null,
     adjRefNos: null
   }
@@ -200,7 +206,13 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
     this.sub = this.actRoute.params.subscribe(params => {
       this.line = params['line'];
-      if(params['from'] == 'edit') {
+
+      if(this.claimInfo.claimId != '' || this.claimInfo.claimNo != '') {
+        this.claimId = Number(this.claimInfo.claimId);
+        this.claimNo = this.claimInfo.claimNo;
+
+        this.retrieveClmGenInfo();
+      } else if(params['from'] == 'edit') {
         this.claimId = params['claimId'];
         this.claimNo = params['claimNo'];
 
@@ -211,10 +223,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
         this.retrievePolDetails();
       }
-
     });
-
-    
   }
 
   ngOnDestroy() {
@@ -662,52 +671,49 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     pNo[pNo.length-1] = '%';
     this.showCustLoader = true;
 
-    this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }]).subscribe(data => {
-      var res = data['policyList'].filter(a => a.effDate <= new Date(this.claimData.lossDate))
-                                  .sort((a, b) => b.altNo - a.altNo);
+    var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
+                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.effDate <= new Date(this.claimData.lossDate))
+                                                                               .sort((a, b) => b.altNo - a.altNo)),
+                            mergeMap(data => this.us.getPolGenInfo(data['policyList'][0].policyId, data['policyList'][0].policyNo)));
 
-      var sub$ = forkJoin(this.us.getPolGenInfo(res[0].policyId, res[0].policyNo),
-                          this.us.getUWCoverageInfos(res[0].policyNo, res[0].policyId)).pipe(map(([gi, cov]) => { return { gi, cov }; }));
+    this.subscription = sub$.subscribe(data => {
+      this.showCustLoader = false;
 
-      this.subscription = sub$.subscribe(data => {
-        this.showCustLoader = false;
+      var pol = data['policy'];
+      var prj = pol['project'];
 
-        var cp = data['cov']['policy'];
-        var gip = data['gi']['policy'];
-
-        this.claimData.currencyCd = cp['currencyCd'];
-        this.claimData.pctShare = cp['project']['fullCoverage']['pctShare'];
-        this.claimData.totalSi = cp['project']['fullCoverage']['totalSi'];
-        this.claimData.totalValue = cp['project']['fullCoverage']['totalValue'];
-
-        this.claimData.prinId = this.pad(gip['principalId'], 6);
-        this.claimData.principalName = gip['principalName'];
-        this.claimData.contractorId = this.pad(gip['contractorId'], 6);
-        this.claimData.contractorName = gip['contractorName'];
-        this.claimData.insuredDesc = gip['insuredDesc'];
-        this.claimData.project.projDesc = gip['project']['projDesc'];
-        this.claimData.project.riskId = gip['project']['riskId'];
-        this.claimData.project.riskName = gip['project']['riskName'];
-        this.claimData.project.objectId = this.pad(gip['project']['objectId'], 3);
-        this.claimData.project.objectDesc = gip['project']['objectDesc'];
-        this.claimData.project.regionCd = gip['project']['regionCd'];
-        this.claimData.project.regionDesc = gip['project']['regionDesc'];
-        this.claimData.project.provinceCd = gip['project']['provinceCd'];
-        this.claimData.project.provinceDesc = gip['project']['provinceDesc'];
-        this.claimData.project.cityCd = gip['project']['cityCd'];
-        this.claimData.project.cityDesc = gip['project']['cityDesc'];
-        this.claimData.project.districtCd = gip['project']['districtCd'];
-        this.claimData.project.districtDesc = gip['project']['districtDesc'];
-        this.claimData.project.blockCd = gip['project']['blockCd'];
-        this.claimData.project.blockDesc = gip['project']['blockDesc'];
-        this.claimData.project.latitude = gip['project']['latitude'];
-        this.claimData.project.longitude = gip['project']['longitude'];
-        this.claimData.project.site = gip['project']['site'];
-        this.claimData.project.testing = gip['project']['testing'];
-        this.claimData.project.timeExc = gip['project']['timeExc'];
-        this.claimData.project.ipl = gip['project']['ipl'];
-        this.claimData.project.noClaimPd = gip['project']['noClaimPd'];
-      });
+      this.claimData['refPolId'] = pol['policyId'];
+      this.claimData.currencyCd = pol['currencyCd'];
+      this.claimData.prinId = this.pad(pol['principalId'], 6);
+      this.claimData.principalName = pol['principalName'];
+      this.claimData.contractorId = this.pad(pol['contractorId'], 6);
+      this.claimData.contractorName = pol['contractorName'];
+      this.claimData.insuredDesc = pol['insuredDesc'];
+      this.claimData.pctShare = prj['coverage']['pctShare'];
+      this.claimData.totalSi = prj['coverage']['totalSi'];
+      this.claimData.totalValue = prj['coverage']['totalValue'];
+      this.claimData.project.projDesc = prj['projDesc'];
+      this.claimData.project.riskId = prj['riskId'];
+      this.claimData.project.riskName = prj['riskName'];
+      this.claimData.project.objectId = this.pad(prj['objectId'], 3);
+      this.claimData.project.objectDesc = prj['objectDesc'];
+      this.claimData.project.regionCd = prj['regionCd'];
+      this.claimData.project.regionDesc = prj['regionDesc'];
+      this.claimData.project.provinceCd = prj['provinceCd'];
+      this.claimData.project.provinceDesc = prj['provinceDesc'];
+      this.claimData.project.cityCd = prj['cityCd'];
+      this.claimData.project.cityDesc = prj['cityDesc'];
+      this.claimData.project.districtCd = prj['districtCd'];
+      this.claimData.project.districtDesc = prj['districtDesc'];
+      this.claimData.project.blockCd = prj['blockCd'];
+      this.claimData.project.blockDesc = prj['blockDesc'];
+      this.claimData.project.latitude = prj['latitude'];
+      this.claimData.project.longitude = prj['longitude'];
+      this.claimData.project.site = prj['site'];
+      this.claimData.project.testing = prj['testing'];
+      this.claimData.project.timeExc = prj['timeExc'];
+      this.claimData.project.ipl = prj['ipl'];
+      this.claimData.project.noClaimPd = prj['noClaimPd'];
     });
   }
 
