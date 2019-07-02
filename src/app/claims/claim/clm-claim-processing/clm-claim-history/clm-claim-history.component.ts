@@ -10,6 +10,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-clm-claim-history',
@@ -19,6 +20,7 @@ import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lo
 export class ClmClaimHistoryComponent implements OnInit {
   @ViewChild('histTbl') histTbl                      : CustEditableNonDatatableComponent;
   @ViewChild('apAmtTbl') apAmtTbl                    : CustEditableNonDatatableComponent;
+  @ViewChild('resStatTbl') resStatTbl                : CustEditableNonDatatableComponent;
   @ViewChild('cancelClmHist') cancelBtn              : CancelButtonComponent;
   @ViewChild('cancelAppAmt') cancelBtnAppAmt         : CancelButtonComponent;
   @ViewChild('successClmHist') successClmHist        : SucessDialogComponent;
@@ -26,6 +28,8 @@ export class ClmClaimHistoryComponent implements OnInit {
   @ViewChild('confirmClmHist') cs                    : ConfirmSaveComponent;
   @ViewChild('confirmAppAmt') csAppAmt               : ConfirmSaveComponent;
   @ViewChild(MtnClaimStatusLovComponent) clmStatsLov : MtnClaimStatusLovComponent;
+  @ViewChild('resStatMdl') resStatMdl                : ModalComponent; 
+  @ViewChild('resStatLov') resStatLov                : ModalComponent; 
 
   private claimsHistoryInfo = ClaimsHistoryInfo;
 
@@ -86,6 +90,20 @@ export class ClmClaimHistoryComponent implements OnInit {
     pageID        : 'clm-app-amt',
   };
 
+  passDataResStat : any = {
+    tableData       : [],
+      tHeader       : ['Reserve Status', 'Description'],
+      dataTypes     : ['text', 'text'],
+      pageLength    : 10,
+      searchFlag    : true,
+      infoFlag      : true,
+      paginateFlag  : true,
+      pageID        : 11,
+      keys          : ['code','description'],
+      widths        : [1,'auto'],
+      uneditable    : [true,true]
+  };
+
   clmHistoryData : any ={
     updateDate   : '',
     updateUser   : '',
@@ -109,7 +127,9 @@ export class ClmClaimHistoryComponent implements OnInit {
     approvedDate : '',
 
     allowMaxSi   : '',
-    mtnParam     : ''
+    mtnParam     : '',
+    claimId      : '3',
+    projId       : '1'
   };
 
   dialogIcon        : string;
@@ -117,6 +137,8 @@ export class ClmClaimHistoryComponent implements OnInit {
   cancelFlag        : boolean;
   cancelFlagAppAmt  : boolean;
   warnMsg           : string = '';
+  lovData           : any;
+  fromStat          : string = '';
 
   dirtyCounter : any = {
     hist     : 0,
@@ -140,6 +162,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.titleService.setTitle("Clm | Claim History");
     this.getClaimHistory();
     this.getClaimApprovedAmt();
+    this.getResStat();
   }
 
   getClaimHistory(){
@@ -167,6 +190,8 @@ export class ClmClaimHistoryComponent implements OnInit {
         if(data['clmHist']['claimReserveList'].length == 0){
           var recClmHist = data['clmHist']['claimReserveList'];
         }else{
+          this.clmHistoryData.lossStatCd = data['clmHist']['claimReserveList'][0].lossStatCd;
+          this.clmHistoryData.expStatCd  = data['clmHist']['claimReserveList'][0].expStatCd;
           var recClmHist = data['clmHist']['claimReserveList'][0]['clmHistory']
                         .map(i => {  
                           i.refDate      = this.ns.toDateTimeString(i.refDate);
@@ -208,6 +233,17 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.clmHistoryData.approvedAmt  = statsInfo.approvedAmt;
       this.clmHistoryData.approvedBy   = statsInfo.approvedBy;
       this.clmHistoryData.approvedDate = this.ns.toDateTimeString(statsInfo.approvedDate);
+    });
+  }
+
+  getResStat(){
+    this.resStatTbl.overlayLoader = true;
+    this.mtnService.getRefCode('RESERVE_STATUS')
+    .subscribe(data => {
+      console.log(data);
+      var rec = data['refCodeList'];
+      this.passDataResStat.tableData = rec;
+      this.resStatTbl.refreshTable();
     });
   }
 
@@ -278,14 +314,44 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   onSaveClaimHistory(){
     console.log(JSON.parse(JSON.stringify(this.params)));
+    var saveReserve = {
+      claimId     : this.clmHistoryData.claimId,
+      createDate  : (this.clmHistoryData.createDate == '' || this.clmHistoryData.createDate == undefined)?this.ns.toDateTimeString(0):this.clmHistoryData.createDate,
+      createUser  : (this.clmHistoryData.createUser == '' || this.clmHistoryData.createUser == undefined)?this.ns.getCurrentUser():this.clmHistoryData.createUser,
+      expPdAmt    : this.clmHistoryData.expPdAmt,
+      expResAmt   : this.clmHistoryData.expResAmt,
+      expStatCd   : this.clmHistoryData.expStatCd,
+      lossPdAmt   : this.clmHistoryData.lossPdAmt,
+      lossResAmt  : this.clmHistoryData.lossResAmt,
+      lossStatCd  : this.clmHistoryData.lossStatCd,
+      projId      : this.clmHistoryData.projId,
+      updateDate  : this.ns.toDateTimeString(0),
+      updateUser  : this.ns.getCurrentUser()
+    };
 
-    this.clmService.saveClaimHistory(JSON.stringify(this.params))
-    .subscribe(data => {
+    console.log(saveReserve);
+    var subs = forkJoin(this.clmService.saveClaimHistory(JSON.stringify(this.params)), this.clmService.saveClaimReserve(JSON.stringify(saveReserve)))
+                       .pipe(map(([hist,res]) => {return [hist,res]} ));
+
+    subs.subscribe(data => {
       console.log(data);
       this.getClaimHistory();
       this.successClmHist.open();
       this.params.saveClaimHistory = [];
     });
+
+    // this.clmService.saveClaimHistory(JSON.stringify(this.params))
+    // .subscribe(data => {
+    //   console.log(data);
+    //   this.getClaimHistory();
+    //   this.successClmHist.open();
+    //   this.params.saveClaimHistory = [];
+    // });
+
+    // this.clmService.saveClaimReserve(JSON.stringify(saveReserve))
+    // .subscribe(data => {
+    //   console.log(data);
+    // });
   }
 
   onClickSave(cancelFlag?){
@@ -337,6 +403,13 @@ export class ClmClaimHistoryComponent implements OnInit {
             }else{
               this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
               this.showWarnMsg();
+            }
+          }else{
+            if(this.cancelFlag == true){
+              this.cs.showLoading(true);
+              setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+            }else{
+              this.cs.confirmModal();
             }
           }
       }
@@ -403,6 +476,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         this.addDirtyHistTbl();
       }
     }else{
+      this.modalService.dismissAll();
       this.addDirtyHistTbl();
     }
   }
@@ -412,12 +486,44 @@ export class ClmClaimHistoryComponent implements OnInit {
   }
 
   onClickCancelAppAmt(){
+    console.log(this.cancelFlagAppAmt);
     this.cancelBtnAppAmt.clickCancel();
     this.addDirtyHistTbl();
   }
 
   showResStatMdl(){
-    $('#resStatMdl > #modalBtn').trigger('click');
+    this.resStatMdl.openNoClose();
+  }
+
+  showResStatLov(){
+    this.resStatLov.openNoClose();
+  }
+
+  onRowClickResStat(event){
+    this.lovData = event;
+    console.log(this.lovData);
+  }
+
+  setResStat(){
+    (this.fromStat == 'loss')?this.clmHistoryData.lossStatCd=this.lovData.description:this.clmHistoryData.expStatCd=this.lovData.description;
+  }
+
+  checkLossStat(ev){
+    var a = this.passDataResStat.tableData.filter(rec => rec.code == this.clmHistoryData.lossStatCd).map(rec => rec.description)[0];
+    if(a == '' || a == undefined){
+      this.showResStatLov();
+    }else{
+      this.clmHistoryData.lossStatCd = a;
+    }
+  }
+
+  checkExpStat(){
+    var a = this.passDataResStat.tableData.filter(rec => rec.code == this.clmHistoryData.expStatCd).map(rec => rec.description)[0];
+    if(a == '' || a == undefined){
+      this.showResStatLov();
+    }else{
+      this.clmHistoryData.expStatCd = a;
+    }
   }
 
   showApprovedAmtMdl(){
