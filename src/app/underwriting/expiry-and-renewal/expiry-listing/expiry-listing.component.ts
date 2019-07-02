@@ -31,6 +31,7 @@ export class ExpiryListingComponent implements OnInit {
   @ViewChild('mtnNonRenewReason') nrReasonLOV: MtnNonrenewReasonComponent;
   @ViewChild('editCov') successDiag: SucessDialogComponent;
   @ViewChild('editCatPeril') successDiagCat: SucessDialogComponent;
+  @ViewChild('renewable') successDiagRN: SucessDialogComponent;
   @ViewChild('mdl') modal : ModalComponent;
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   tableData: ExpiryListing[] = [];
@@ -271,6 +272,10 @@ export class ExpiryListingComponent implements OnInit {
      expcatPeril: []
    }
 
+   ExpGenInfo: any = {
+     saveExpRenewable: []
+   }
+
   selectedPolicyString :any; 
   selectedPolicy :any;
   showEdit :boolean = false;
@@ -327,7 +332,6 @@ export class ExpiryListingComponent implements OnInit {
 
       for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
         if (this.passDataRenewalPolicies.tableData[i].processTag == 'Y') {
-          console.log(this.passDataRenewalPolicies.tableData)
             var policyId = this.passDataRenewalPolicies.tableData[i].policyId;
 
             if (this.passDataRenewalPolicies.tableData[i].renAsIsTag == 'Y') {
@@ -1077,6 +1081,37 @@ export class ExpiryListingComponent implements OnInit {
   saveChangesToExtPolicy() {
     console.log("saveChangesToExtPolicy : ");
     console.log(this.passDataRenewalPolicies.tableData);
+    this.ExpGenInfo.saveExpRenewable = [];
+    for( var i =0 ; i < this.passDataRenewalPolicies.tableData.length; i++){
+      if(this.passDataRenewalPolicies.tableData[i].edited){
+        this.ExpGenInfo.saveExpRenewable.push(this.passDataRenewalPolicies.tableData[i]);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].expiryDate = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].expiryDate);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].extractDate = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].extractDate);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].processedDate = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].processedDate);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].inceptDate = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].inceptDate);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].lapseFrom = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].lapseFrom);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].lapseTo = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].lapseTo);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].maintenanceFrom = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].maintenanceFrom);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].maintenanceTo = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].maintenanceTo);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].issueDate = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].issueDate);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].effDate = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].effDate);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].distDate = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].distDate);
+        this.ExpGenInfo.saveExpRenewable[this.ExpGenInfo.saveExpRenewable.length - 1].acctDate = this.ns.toDateTimeString(this.passDataRenewalPolicies.tableData[i].acctDate);
+        
+      }
+    }
+
+    this.underWritingService.saveExpGenInfo(this.ExpGenInfo).subscribe((data:any) => {
+      if(data['returnCode'] == 0) {
+        console.log('Failed')
+      } else{
+        console.log('Success!!!!!!!')
+        this.dialogIcon = 'success';
+        this.dialogMessage = '';
+        this.successDiagRN.open();
+        this.retrieveExpPolList();
+      }
+    });
   }
 
   changesValueChanged(data) {
