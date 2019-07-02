@@ -8,14 +8,13 @@
                         <div class="input-group">
                             <div class="col-sm-3"></div>
                             <label class="form-control-sm text-right"  style="margin-bottom: 0px">Currency Code</label>
-                            <input class="form-control form-control-sm  col-sm-1" type="text" (change)="checkCode($event,'currency')" [ngModel]="currencyCd" (ngModelChange)="currencyCd = $event.toUpperCase()">
+                            <input class="form-control form-control-sm col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="currencyCd" (ngModelChange)="currencyCd = $event.toUpperCase()">
                             <div class="text-search-ico" style="margin-left: -20px;z-index: 100"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 5px;" readonly [(ngModel)]="description">
                             <div class="col-sm-3"></div>
                         </div>
                     </div>
                 </fieldset>
-
                 <fieldset class="scheduler-border" style="margin-top: 10px !important">
                     <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
                         <app-cust-editable-non-datatable #currency [passData]="passData" (newClick)="clickRow($event)" (onDelete)="currency.onClickDelete('force');" (genericBtn)="deleteCurr()"></app-cust-editable-non-datatable>
@@ -23,15 +22,14 @@
                                 <div class="form-group col-sm">
                                     <div class="text-center">
                                         <div class="cust-btn-container">
-                                            <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                                            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                                            <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+                                            <button type="button" class="cust-btn" (click)="prepareData()"><a>Save</a></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                     </div>
                 </fieldset>
-
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
 					    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
 					        <label class="form-control-sm col-sm-1">Created By</label>
@@ -47,8 +45,8 @@
 
                 <app-mtn-currency-code  id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency-code>
                 <app-confirm-save (onYes)="saveCurrRt()"></app-confirm-save>
-                <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-                <app-cancel-button (onYes)="saveCurrRt('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>                
+                <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel()"></app-sucess-dialog>
+                <app-cancel-button (onYes)="prepareData('cancel')" (no)="onClickNo()" (onCancel)="onCancel()" [url]="changeCurr?null:'/maintenance-qu-pol'" ></app-cancel-button>                
             </ng-template>
         </ngb-tab>
     </ngb-tabset>

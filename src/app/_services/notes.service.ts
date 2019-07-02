@@ -39,10 +39,13 @@ export class NotesService {
   lovLoader(ev, num){
     if(ev != null) {
       var ic = $(ev.target).next().find('i');
-
+      
       if(num == 0) {
-        ic.removeClass('fa-spinner fa-spin')
-        ic.closest('div').css('pointer-events', 'initial').css('font-size', '14px');
+        if(ic.closest('td').length == 0) {
+          ic.closest('div').css('font-size', '14px');
+        }
+        ic.removeClass('fa-spinner fa-spin');
+        ic.closest('div').css('pointer-events', 'initial');
       } else if(num == 1) {
         ic.addClass('fa-spinner fa-spin');
         ic.closest('div').css('pointer-events', 'none').css('font-size', '13px');

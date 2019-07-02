@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-clm-claim-payment-request',
   templateUrl: './clm-claim-payment-request.component.html',
@@ -22,21 +22,22 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: [],
-    dataTypes: [],
+    tHeader: ["Payment Request No.", "Status", "Hist. No.", "Hist. Type", "Type", "Curr", "Reserve", "Payment Amount", "Ref. No.", "Ref. Date"],
+    dataTypes: ["text", "text", "number", "text", "text", "text", "number", "number", "text", "date"],
     pagination: true,
     pageStatus: true,
     pageLength: 10,
     tableOnly: true,
     resizable: [false, false, false, false, false, false, false, false, false, false],
   };
-  constructor(private titleService: Title) { }
+  constructor(private titleService: Title, private router: Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Generate Payment Request");
-    this.passData.tHeader.push("Payment Request No.", "Status", "Hist. No.", "Hist. Type", "Type", "Curr", "Reserve", "Payment Amount", "Ref. No.", "Ref. Date");
-    this.passData.dataTypes.push("text", "text", "number", "text", "text", "text", "number", "number", "text", "date");
     this.passData.tableData = this.tableData;
   }
 
+  generateRequest(){
+    this.router.navigate(['generate-payt-req'], {skipLocationChange: true});
+  }
 }

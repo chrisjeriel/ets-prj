@@ -20,7 +20,12 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   //END
 
   @ViewChild('confirmPost') confirmPostMdl: ModalComponent;
+  @ViewChild('confirmNegate') confirmNegMdl: ModalComponent;
   @ViewChild('success') sucessMdl: ModalComponent;
+  @ViewChild('successNegate') sucessnegMdl: ModalComponent;
+  @ViewChild('successNegateWCoIns') sucessNegWCoMdl: ModalComponent;
+  
+  
 
   nData: DistributionByRiskInfo = new DistributionByRiskInfo(null, null, null, null, null, null);
 
@@ -50,7 +55,6 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       keys: ['section', 'treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
       widths: [1,1,250,1,140,140,1,140,140,1,140,140,140],
       uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true],
-      total:[null, null,'TOTAL',null, 'retOneTsiAmt', 'retOnePremAmt', null, 'retTwoTsiAmt', 'retTwoPremAmt', null, 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
       paginateFlag: true,
       infoFlag: true,
       pageLength: 10,
@@ -89,6 +93,41 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     net:0
   };
 
+
+  pts1:any = {
+    ret: 0.00,
+    ret1si: 0.00,
+    ret1prem: 0.00,
+    ret2si: 0.00,
+    ret2prem: 0.00,
+    comAmt:0.00,
+    vat:0.00,
+    net:0.00
+  };
+
+  pts2:any = {
+    ret: 0.00,
+    ret1si: 0.00,
+    ret1prem: 0.00,
+    ret2si: 0.00,
+    ret2prem: 0.00,
+    comAmt:0.00,
+    vat:0.00,
+    net:0.00
+  };
+
+  ptotal:any = {
+    ret: 0.00,
+    ret1si: 0.00,
+    ret1prem: 0.00,
+    ret2si: 0.00,
+    ret2prem: 0.00,
+    comAmt:0.00,
+    vat:0.00,
+    net:0.00
+  };
+
+
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
@@ -124,10 +163,98 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.total.net  += this.ts1.net +  this.ts2.net;
   }
 
+  getSumsPool(){
+      this.pts1 = {
+      ret: 0.00,
+      ret1si: 0.00,
+      ret1prem: 0.00,
+      ret2si: 0.00,
+      ret2prem: 0.00,
+      comAmt:0.00,
+      vat:0.00,
+      net:0.00
+    };
+    this.pts2 = {
+      ret: 0.00,
+      ret1si: 0.00,
+      ret1prem: 0.00,
+      ret2si: 0.00,
+      ret2prem: 0.00,
+      comAmt:0.00,
+      vat:0.00,
+      net:0.00
+    };
+
+    this.ptotal = {
+      ret: 0.00,
+      ret1si: 0.00,
+      ret1prem: 0.00,
+      ret2si: 0.00,
+      ret2prem: 0.00,
+      comAmt:0.00,
+      vat:0.00,
+      net:0.00
+    };
+
+    this.poolDistributionData.tableData.forEach(a=>{
+      if(a.section == 'I'){
+        this.pts1.ret += a.retOneLines + a.retTwoLines;
+        this.pts1.ret1si += a.retOneTsiAmt;
+        this.pts1.ret1prem += a.retOnePremAmt;
+        this.pts1.ret2si += a.retTwoTsiAmt;
+        this.pts1.ret2prem += a.retTwoPremAmt;
+        this.pts1.comAmt += a.totalCommAmt;
+        this.pts1.vat += a.totalVatRiComm;
+        this.pts1.net += a.totalNetDue;
+      }else{
+        this.pts2.ret += a.retOneLines + a.retTwoLines;
+        this.pts2.ret1si += a.retOneTsiAmt;
+        this.pts2.ret1prem += a.retOnePremAmt;
+        this.pts2.ret2si += a.retTwoTsiAmt;
+        this.pts2.ret2prem += a.retTwoPremAmt;
+        this.pts2.comAmt += a.totalCommAmt;
+        this.pts2.vat += a.totalVatRiComm;
+        this.pts2.net += a.totalNetDue;
+      }
+    });
+      this.ptotal.ret = this.pts1.ret + this.pts2.ret;
+      this.ptotal.ret1si = this.pts1.ret1si + this.pts2.ret1si;
+      this.ptotal.ret1prem = this.pts1.ret1prem + this.pts2.ret1prem;
+      this.ptotal.ret2si = this.pts1.ret2si + this.pts2.ret2si;
+      this.ptotal.ret2prem = this.pts1.ret2prem + this.pts2.ret2prem;
+      this.ptotal.comAmt = this.pts1.comAmt + this.pts2.comAmt;
+      this.ptotal.vat = this.pts1.vat + this.pts2.vat;
+      this.ptotal.net = this.pts1.net + this.pts2.net;
+
+      this.pts1.ret =Number(this.pts1.ret).toFixed(2);
+      this.pts1.ret1si =Number(this.pts1.ret1si).toFixed(2);
+      this.pts1.ret1prem =Number(this.pts1.ret1prem).toFixed(2);
+      this.pts1.ret2si =Number(this.pts1.ret2si).toFixed(2);
+      this.pts1.ret2prem =Number(this.pts1.ret2prem).toFixed(2);
+      this.pts1.comAmt =Number(this.pts1.comAmt).toFixed(2);
+      this.pts1.vat =Number(this.pts1.vat).toFixed(2);
+      this.pts1.net =Number(this.pts1.net).toFixed(2);
+      this.pts2.ret =Number(this.pts2.ret).toFixed(2);
+      this.pts2.ret1si =Number(this.pts2.ret1si).toFixed(2);
+      this.pts2.ret1prem =Number(this.pts2.ret1prem).toFixed(2);
+      this.pts2.ret2si =Number(this.pts2.ret2si).toFixed(2);
+      this.pts2.ret2prem =Number(this.pts2.ret2prem).toFixed(2);
+      this.pts2.comAmt =Number(this.pts2.comAmt).toFixed(2);
+      this.pts2.vat =Number(this.pts2.vat).toFixed(2);
+      this.pts2.net =Number(this.pts2.net).toFixed(2);
+      this.ptotal.ret =Number(this.ptotal.ret).toFixed(2);
+      this.ptotal.ret1si =Number(this.ptotal.ret1si).toFixed(2);
+      this.ptotal.ret1prem =Number(this.ptotal.ret1prem).toFixed(2);
+      this.ptotal.ret2si =Number(this.ptotal.ret2si).toFixed(2);
+      this.ptotal.ret2prem =Number(this.ptotal.ret2prem).toFixed(2);
+      this.ptotal.comAmt =Number(this.ptotal.comAmt).toFixed(2);
+      this.ptotal.vat =Number(this.ptotal.vat).toFixed(2);
+      this.ptotal.net =Number(this.ptotal.net).toFixed(2);
+  }
+
   //NECO 06/04/2019
   retrievePolicyDistribution(){
     this.polService.getPolDistribution(this.params.policyId).subscribe((data: any)=>{
-      console.log(data);
       this.polDistributionData = data.polDistribution;
       this.treatyDistData.tableData = data.polDistribution.trtyListPerSec;
       this.mainTable.refreshTable();
@@ -145,6 +272,11 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.poolDistributionData.tableData = data.poolDistList;
       this.poolTable.refreshTable();
       this.poolTable.loadingFlag = false;
+      this.getSumsPool();
+      setTimeout(()=>{
+         $('input[type=text]').focus();
+         $('input[type=text]').blur();
+      },0);
     });
   }
 
@@ -163,7 +295,10 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   showConfirmPostMdl(){
     this.confirmPostMdl.openNoClose();
+  }
 
+  showConfirmNegMdl(){
+    this.confirmNegMdl.openNoClose();
   }
 
   postDistribution(){
@@ -187,6 +322,53 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   onClickCancel(){
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}])
+  }
+
+
+ // negate part
+
+  postedList:any[] = [];
+
+  negateDistribution(){
+    let params:any = {
+      riskDistId: this.riskDistId,
+      distId    : this.polDistributionData.distNo,
+      policyId  : this.params.policyId,
+      updateUser: JSON.parse(window.localStorage.currentUser).username
+    };
+    this.polService.negateDist(params).subscribe(a=>{
+
+      console.log(a);
+
+      if(a['returnCode'] == -1 && a['postedDist'].length == 0){
+        this.sucessnegMdl.openNoClose();
+      }else if(a['returnCode'] == -1 && a['postedDist'].length > 0){
+        this.postedList = a['postedDist'];
+        this.sucessNegWCoMdl.open();
+      }
+    })
+    this.confirmNegMdl.closeModal();
+  }
+
+  goToNegateScreen(){
+    this.router.navigate([this.params.exitLink])
+  }
+
+  goToRiskDistribution(){
+    // this.params.writable = true;
+    // this.params.fromNegate = false;
+    // this.router.navigate(['policy-dist', this.params]);
+
+    this.router.navigate(['policy-dist', {policyId:this.params.policyId,
+                                                 policyNo: this.params.policyNo,
+                                                 lineCd:this.params.lineCd,
+                                                 lineClassCd: this.params.lineClassCd,
+                                                 cedingName: this.params.cedingName,
+                                                 insured: this.params.insuredDesc,
+                                                 riskName: this.params.riskName,
+                                                 exitLink: '/pol-dist-list',
+                                                 fromNegate : false
+                                                 }], { skipLocationChange: true });
   }
 }
 

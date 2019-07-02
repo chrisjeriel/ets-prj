@@ -73,7 +73,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
     pageLength: 10,
     paginateFlag: true,
     infoFlag: true,
-    uneditable:[false,false],
+    uneditable:[false,true],
     magnifyingGlass: ['userId'],
     widths:[100,'auto'],
     keys:['userId','userName']

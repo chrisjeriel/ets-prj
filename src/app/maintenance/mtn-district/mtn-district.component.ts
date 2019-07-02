@@ -51,7 +51,6 @@ export class MtnDistrictComponent implements OnInit {
         this.passData.tableData.pop();
       }
       this.mtnService.getMtnDistrict().subscribe((data: any) => {
-        console.log(data);
         for (var a = 0; a < data.region.length; a++) {
           for (var b = 0; b < data.region[a].provinceList.length; b++) {
             for (var c = 0; c < data.region[a].provinceList[b].cityList.length; c++) {
@@ -71,11 +70,9 @@ export class MtnDistrictComponent implements OnInit {
           }
         }
         this.table.refreshTable();
-        console.log(this.passData.tableData);
       });
     }
   select(data){
-      console.log("SELECT triggered");
   	  this.selected = data;
   }
 
@@ -104,8 +101,7 @@ export class MtnDistrictComponent implements OnInit {
         ev: ev
       });
     } else {
-      this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd).subscribe(data => {
-        console.log("Data from LOV: " + JSON.stringify(data['region'][0]));
+      this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd, 'Y').subscribe(data => {
         if(data['region'].length > 0) {
           data['region'][0]['ev'] = ev;
           this.selectedData.emit(data['region'][0]);

@@ -137,7 +137,7 @@
 	</div>
 </form>
 <ng-container>
-	<app-modal class="d-none" id="alopItemModal">
+	<app-modal class="d-none" id="alopItemModal" #itemInfoModal>
 		<div header>Item Information</div>
 		<div body>
 			 <div>
@@ -156,7 +156,7 @@
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null; promptClickItem ? openAlopItem() : null;"></app-sucess-dialog>
 <app-confirm-save id="alop" (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/quotation-processing'" #mainCancel></app-cancel-button>
 <app-confirm-save id="alopItem" (onYes)="saveAlopItem()"></app-confirm-save>

@@ -101,7 +101,7 @@ export class AdjusterComponent implements OnInit {
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
-        this.router.navigateByUrl('/mtn-claims');
+        this.router.navigateByUrl('/maintenance-clm');
       }
     }
 

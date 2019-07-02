@@ -338,6 +338,9 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             if(data['returnCode'] == 0) {
               /*this.errorMdlMessage = data['errorList'][0].errorMessage;
               $('#errorMdl > #modalBtn').trigger('click');*/
+              if(this.cancelFlag){
+                this.cancelFlag = false;
+              }
               this.dialogIcon = "error";
               this.successDiag.open();
             } else{

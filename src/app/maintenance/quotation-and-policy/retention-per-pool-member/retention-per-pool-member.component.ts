@@ -33,9 +33,9 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 	  	nData: {
 	  		newRec: 1,
 	  		retHistId: '',
-	  		retLine1: '',
-	  		retLine2: '',
-	  		totalRetLine: '',
+	  		retLine1: 0,
+	  		retLine2: 0,
+	  		totalRetLine: 0,
 	  		effDateFrom: '',
 	  		activeTag: 'Y',
 	  		remarks: '',

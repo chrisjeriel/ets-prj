@@ -201,7 +201,7 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 		this.selected = data;
 		this.treatyLayerSelected = data;
 		this.treatyLayerData.disableGeneric = this.treatyLayerSelected == null || this.treatyLayerSelected == '' || this.treatyLayerSelected.showMG == undefined;
-		this.treatyLayerData.disableAdd = this.treatyLayerSelected == null || this.treatyLayerSelected == '' || this.treatyLayerSelected.treatyLimitId != '';
+		this.treatyLayerData.disableAdd = this.treatyLimitSelected == null || this.treatyLimitSelected == '' || this.treatyLimitSelected.treatyLimitId != '';
 	}
 
 	onTreatyLayerClickDelete(ev) {
@@ -358,7 +358,7 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 		var td = this.treatyLimitData.tableData;
 
 		for(let d of td) {
-			if(d.edited && !d.deleted && (d.amount == null || isNaN(d.amount) || d.effDateFrom == ''
+			if(d.edited && !d.deleted && (d.amount == null || isNaN(d.amount) || d.effDateFrom == '' || d.trtyLayerDesc == ''
 				|| d.treatyLayerList.filter(a => !a.deleted).length == 0)) {
 				this.dialogIcon = "error";
 				this.successDialog.open();
@@ -377,9 +377,16 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 
 			if(d.edited && !d.deleted || (d.treatyLayerList.findIndex(b => b.edited) != -1) && d.treatyLayerList.length != 0) {
 				for(let e of td) {
+					var chck = 0;
 					var dList = d.treatyLayerList.filter(a => a.treatyId != undefined && !a.deleted).map(a => Number(a.treatyId)).sort((a, b) => a - b);
+					var max = td.filter(c => c.activeTag == 'Y' && c.treatyLimitId != '' && !c.deleted)
+								.sort((a, b) => Number(new Date(b.effDateFrom)) - Number(new Date(a.effDateFrom)))[0];
 
-					if(e != d && e.activeTag == 'Y' && d.activeTag == 'Y') {
+					if(max != undefined && max != d && new Date(d.effDateFrom) < new Date(max.effDateFrom)) {
+						chck = 1;
+					}
+
+					if(e != d && e.activeTag == 'Y' && d.activeTag == 'Y' && !e.deleted) {
 						var eList = e.treatyLayerList.filter(a => a.treatyId != undefined && !a.deleted).map(a => Number(a.treatyId)).sort((a, b) => a - b);
 						
 						if(dList.length == eList.length) {
@@ -392,7 +399,7 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 								}
 							}
 
-							if(ctr == dList.length) {
+							if(chck == 1 || (ctr == dList.length && d.effDateFrom == e.effDateFrom)) {
 								this.errorMsg = 1;
 								$('#mtnTreatyLimitWarningModal > #modalBtn').trigger('click');
 								this.cancel = false;

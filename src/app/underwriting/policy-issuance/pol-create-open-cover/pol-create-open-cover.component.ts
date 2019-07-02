@@ -115,6 +115,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     //rowclick for quote listing LOV
     onRowClick(data){
+      console.log(data);
         if(data !== null){
             if(Object.keys(data).length !== 0){
                 this.selectedQuote = data;
@@ -213,7 +214,9 @@ export class PolCreateOpenCoverComponent implements OnInit {
         if(this.quotationList.length !== 0){
           this.noDataFound = false;
           this.passDataLOV.tableData = this.quotationList.filter(a=>{return a.openCoverTag === 'Y';}).map(q => { q.riskName = q.project.riskName; return q; });
+          console.log('data found')
           if(this.isType && !this.isIncomplete){
+            console.log('data found isType')
             this.isIncomplete = false;
             this.quoteData                     = this.passDataLOV.tableData[0];
             this.quoteData.quoteNo             = this.quoteData.quotationNo;
@@ -235,6 +238,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
           setTimeout(()=>{
               this.quListTable.refreshTable();
               this.quListTable.loadingFlag = false;
+              this.loading = false;
           }, 0)
         }
         else{
@@ -247,12 +251,15 @@ export class PolCreateOpenCoverComponent implements OnInit {
             this.passDataOptionLOV.tableData = [];
             this.optListTable.refreshTable();
             //this.tempPolNoContainer = ['','','','','',''];
-            setTimeout(()=>{
-              this.loading = false;
-              this.showLOV();
-            }, 100);
           }
+          setTimeout(()=>{
+            this.loading = false;
+            this.showLOV();
+          }, 100);
         }
+      },
+      (error)=>{
+        this.loading = false;
       });
     }
 

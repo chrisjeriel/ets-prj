@@ -81,21 +81,7 @@ export class MtnLossCdComponent implements OnInit {
         	if(this.filters != null) {
         		records = records.filter(this.filters);
         	}
-
-    		// records = records.filter(a => {return a.activeTag !== 'N'});
-            	/*for(let rec of records){
-                	this.lossCd.tableData.push({
-                    	riskId: rec.riskId,
-                    	riskName: rec.riskName,
-                    	regionDesc: rec.regionDesc,
-                    	provinceDesc: rec.provinceDesc,
-                    	 cityDesc: rec.cityDesc,
-                    	districtDesc: rec.districtDesc,
-                    	blockDesc: rec.blockDesc,
-                    	latitude: rec.latitude,
-                    	longitude: rec.longitude
-                  });
-              	}*/
+        	
             this.lossCd.tableData = records;
         	this.table.refreshTable();
       	});
