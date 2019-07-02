@@ -149,7 +149,7 @@ export class LovComponent implements OnInit {
           ev: ev
         });
       } else {
-        this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd).subscribe((data: any) => {
+        this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd, 'Y').subscribe((data: any) => {
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -332,7 +332,7 @@ export class LovComponent implements OnInit {
                 'cityDesc',
                 'districtCd',
                 'districtDesc'];
-      this.mtnService.getMtnDistrict(this.passData.regionCd,this.passData.provinceCd,this.passData.cityCd).subscribe((data: any) => {
+      this.mtnService.getMtnDistrict(this.passData.regionCd,this.passData.provinceCd,this.passData.cityCd,undefined, 'Y').subscribe((data: any) => {
         console.log(data);
         for (var a = 0; a < data.region.length; a++) {
           for (var b = 0; b < data.region[a].provinceList.length; b++) {

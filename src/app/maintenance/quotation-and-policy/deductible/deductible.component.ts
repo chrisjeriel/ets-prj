@@ -198,6 +198,7 @@ export class DeductibleComponent implements OnInit {
     
     setLine(data){
         console.log('setLine');
+        console.log(data);
         this.line = data.lineCd;
         this.description = data.description;
         this.ns.lovLoader(data.ev, 0);
@@ -215,6 +216,7 @@ export class DeductibleComponent implements OnInit {
     checkCode(ev){
         console.log('checkCode');
         this.passEvent = ev;
+        console.log(ev);
         if(this.firstLoading == true){
             this.ns.lovLoader(ev, 1);
             this.lineLov.checkCode(this.line.toUpperCase(), ev);

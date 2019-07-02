@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -48,9 +49,10 @@ export class SpoilageReasonComponent implements OnInit {
   }
   cancelFlag:boolean;
 
-  constructor(private ns:NotesService,private ms:MaintenanceService) { }
+  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService) { }
 
   ngOnInit() {
+    this.titleService.setTitle('Mtn | Spoilage Reason');
   	this.getSpoilageReasons();
   }
 

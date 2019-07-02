@@ -4,7 +4,9 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
-import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component'
+import { MtnCedingCompanyMemberComponent } from '@app/maintenance/mtn-ceding-company-member/mtn-ceding-company-member.component';
+import { Title } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-rounding-error',
   templateUrl: './rounding-error.component.html',
@@ -15,7 +17,7 @@ export class RoundingErrorComponent implements OnInit {
   @ViewChild('roundingerror') table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
-  @ViewChild(MtnCedingCompanyComponent) mtnCedingLov: MtnCedingCompanyComponent;
+  @ViewChild(MtnCedingCompanyMemberComponent) mtnCedingLov: MtnCedingCompanyMemberComponent;
   passData: any = {
     tHeader: [ "Company No","Company Name","Abbreviation","Effective From","Active","Remarks"],
     tableData:[],
@@ -47,7 +49,7 @@ export class RoundingErrorComponent implements OnInit {
     paginateFlag: true,
     infoFlag: true,
     uneditable:[false,true,true,false,false,false],
-    widths:['auto','auto','auto','auto','auto','auto'],
+    widths:[250,'auto','auto','auto','auto','auto'],
     keys:['companyId','companyName','abbreviation','effDateFrom','activeTag','remarks']
   };
 
@@ -72,33 +74,34 @@ export class RoundingErrorComponent implements OnInit {
     saveRoundingError: []
   }
 
-  constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
+  constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Mtn | Rounding Error Company");
   	this.getRoundingError();
   }
 
   getRoundingError(){
   	this.passData.tableData = [];
   	this.maintenanceService.getMtnRoundingError(null).subscribe((data:any) => {
-  		console.log(data)
   		for(var i = 0 ; i < data.roundingError.length; i++){
   			this.passData.tableData.push(data.roundingError[i]);
+        this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['effDateFrom']
   		}
   		this.table.refreshTable();
-  		console.log(this.passData.tableData)
   	});
   }
 
    clickRow(data){
-   	console.log(data)
    	  if(data !== null){
    	  	this.roundingError = data;
    	  	this.roundingError.createDate = this.ns.toDateTimeString(data.createDate);
    	  	this.roundingError.updateDate = this.ns.toDateTimeString(data.updateDate);
-   	  }
+   	  }else{
+        this.passData.disableGeneric = true
+      }
 
-   	  if(data.okDelete == 'Y'){
+   	 if(data.okDelete == 'Y'){
    	   this.passData.disableGeneric = false
    	 }else{
    	   this.passData.disableGeneric = true
@@ -112,16 +115,24 @@ export class RoundingErrorComponent implements OnInit {
    }
 
    update(data){
-
     if(data.hasOwnProperty('lovInput')) {
       //this.hide = this.passData.tableData.map(a=> a.lineCd);
       data.ev['index'] = data.index;
       this.mtnCedingLov.checkCode(data.ev.target.value, data.ev);
     }
+
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      for (var j = 0; j < this.passData.tableData.length; j++) {
+        if(i!==j){
+          if(this.passData.tableData[i].effDateFrom > this.passData.tableData[j].effDateFrom){
+
+          }
+        }
+      }
+    }
    }
 
    setRoundingError(data){
-    console.log(data)
     if(data.hasOwnProperty('singleSearchLov') && data.singleSearchLov) {
       this.roundingLOVRow = data.ev.index;
       this.ns.lovLoader(data.ev, 0);
@@ -133,11 +144,9 @@ export class RoundingErrorComponent implements OnInit {
       this.passData.tableData[this.roundingLOVRow].showMG = 0;
     }
     this.table.refreshTable();
-    console.log(this.passData.tableData)
   }
 
   showRoundingLOV(data){
-  	console.log(data)
       $('#roundingModal #modalBtn').trigger('click');
       //this.hide = this.passData.tableData.map(a=> a.lineCd);
       this.roundingLOVRow = data.index;

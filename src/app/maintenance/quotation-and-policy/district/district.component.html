@@ -2,21 +2,21 @@
     <div class="form-row custom-row-inline-inset">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">Region</label>
-            <input type="text" [ngModel]="locData?.regionCd" (ngModelChange)="locData.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'region')">
+            <input type="search" [ngModel]="locData?.regionCd" (ngModelChange)="locData.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'region')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
             <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
-            <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [ngModel]="locData?.regionDesc" style="margin-left: 6px !important">
+            <input disabled="disabled"  type="search" class="form-control form-control-sm col-sm-4" [ngModel]="locData?.regionDesc" style="margin-left: 6px !important">
             <label class="form-control-sm col-sm-1 text-right labels">Province</label>
-            <input type="text" [ngModel]="locData?.provinceCd" (ngModelChange)="locData.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'province')">
+            <input type="search" [ngModel]="locData?.provinceCd" (ngModelChange)="locData.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'province')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
             <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
-            <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [ngModel]="locData?.provinceDesc" style="margin-left: 6px !important">
+            <input disabled="disabled"  type="search" class="form-control form-control-sm col-sm-4" [ngModel]="locData?.provinceDesc" style="margin-left: 6px !important">
         </div>
     </div>
     <div class="form-row custom-row-inline-inset">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">City/Town</label>
-            <input type="text" [ngModel]="locData?.cityCd" (ngModelChange)="locData.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'city')">
+            <input type="search" [ngModel]="locData?.cityCd" (ngModelChange)="locData.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'city')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
             <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')" ></i></a></div>
-            <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [ngModel]="locData?.cityDesc">
+            <input disabled="disabled"  type="search" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [ngModel]="locData?.cityDesc">
         </div>
     </div>
 </fieldset>
@@ -45,8 +45,8 @@
 </fieldset>           
          
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cnclBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
-
+    
 <app-mtn-city id="cityModal" (selectedData)="setCity($event)"></app-mtn-city>
 <app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>

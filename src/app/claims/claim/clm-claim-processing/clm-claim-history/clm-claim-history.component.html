@@ -28,7 +28,7 @@
 			<div class="custom-row-inline-inset">
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt();" #histTbl></app-cust-editable-non-datatable>
+						<app-cust-editable-non-datatable id="histId" [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt(); checkDirtyTbl();" (add)="onClickAddHistTbl()" #histTbl></app-cust-editable-non-datatable>
 					</div>
 				</div>
 				<div class="form-row" style="margin-top: -10px;margin-right: 22px !important;">
@@ -56,27 +56,27 @@
 					<div class="custom-row-inline-inset">
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossResAmt"  mask="comma_separator.2" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossResAmt  | number:'1.2-2'" readonly>
 							<label class="form-control-sm col-sm-1">Status</label>
 							<input type="text" class="form-control form-control-sm cust-sm col-sm" readonly>
 							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossPdAmt" mask="comma_separator.2" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossPdAmt | number:'1.2-2'" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expResAmt" mask="comma_separator.2" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expResAmt | number:'1.2-2'" readonly>
 							<label class="form-control-sm col-sm-1">Status</label>
 							<input type="text" class="form-control form-control-sm cust-sm col-sm" readonly>
 							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.expPdAmt" mask="comma_separator.2" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.expPdAmt | number:'1.2-2'" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Total Reserve</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.totalRes" mask="comma_separator.2" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.totalRes | number:'1.2-2'" readonly>
 							<label class="form-control-sm col-sm-1"></label>
 							<div type="text" class="cust-sm col-sm" required style="padding: 0px 5px"></div>
 							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Total Payment</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.totalPayt" mask="comma_separator.2" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.totalPayt | number:'1.2-2'" readonly>
 						</div>
 					</div>
 				</fieldset>
@@ -88,23 +88,21 @@
 						<div class="form-row">
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
 								<label class="form-control-sm top-label">&nbsp;Status</label>
-								<input type="text" class="form-control form-control-sm cust-sm" placeholder="In Progress">
+	                            <input type="text" class="form-control form-control-sm cust-sm" readonly [(ngModel)]="clmHistoryData.claimStat">
 							</div>
-							<div class="text-search-ico" style="z-index: 1 !important; margin: 8px 9px -10px -24px !important;padding-top: 2px !important;">
-								<a><i class="fa fa-search"></i></a></div>
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
 								<label class="form-control-sm top-label">&nbsp;Approved Amount</label>
-								<input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="800,000.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+								<input type="text" class="form-control form-control-sm cust-sm text-right" [ngModel]="clmHistoryData.approvedAmt | number:'1.2-2'" readonly>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-sm-6" style="margin-bottom: 0px;">
 								<label class="form-control-sm top-label">&nbsp;Approved By</label>
-								<input type="text" class="form-control form-control-sm cust-sm" placeholder="Monica Reyes">
+								<input type="text" class="form-control form-control-sm cust-sm"  [(ngModel)]="clmHistoryData.approvedBy" readonly>
 							</div>
 							<div class="form-group col-sm-6" style="margin-bottom: 0px;">
 								<label class="form-control-sm top-label">&nbsp;Approved Date</label>
-								<div class="col-sm dp-cont" style="margin-left: -2px !important">
+								<div class="col-sm dp-cont" style="margin-left: 1px !important">
 		                            <datepicker [value]="clmHistoryData.approvedDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
 		                        </div>
 							</div>
@@ -161,7 +159,7 @@
 <app-modal class="d-none" id="approvedAmtMdl">
     <div header>Approved Amount</div>
     <div body class="container-flex text-center" style="min-width: 750px !important;">
-       <app-cust-editable-non-datatable [passData]="passDataApprovedAmt" #apAmtTbl></app-cust-editable-non-datatable>
+       <app-cust-editable-non-datatable id="appAmtId" [passData]="passDataApprovedAmt" #apAmtTbl (tableDataChange)="passDataApprovedAmt.tableData=$event; checkDirtyTbl();"></app-cust-editable-non-datatable>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onClickCancelAppAmt()"><a>Cancel</a></button>
@@ -169,10 +167,12 @@
     </div>
 </app-modal>
 
-<app-confirm-save (onYes)="onSaveClaimHistory()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<app-cancel-button #cancelClmHist (onYes)="onSaveClaimHistory('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>
+<app-confirm-save  #confirmClmHist (onYes)="onSaveClaimHistory()"></app-confirm-save>
+<app-sucess-dialog #successClmHist [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button #cancelClmHist  (onYes)="onClickSave('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>
 
-<app-confirm-save id="confirm-appAmt" (onYes)="onSaveClaimApprovedAmt()"></app-confirm-save>
+<app-confirm-save  #confirmAppAmt (onYes)="onSaveClaimApprovedAmt()"></app-confirm-save>
 <app-sucess-dialog #successAppAmt [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelAppAmt();"></app-sucess-dialog>
-<app-cancel-button #cancelAppAmt (onYes)="onSaveClaimApprovedAmt('cancel')"></app-cancel-button>
+<app-cancel-button #cancelAppAmt  (onYes)="onClickSaveAppAmt('cancel')"></app-cancel-button>
+
+<app-mtn-claim-status-lov id="clmStatsLov" (selectedData)="setStats($event)"></app-mtn-claim-status-lov>

@@ -6,8 +6,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 
 @Component({
   selector: 'app-clm-claim-history',
@@ -15,26 +17,32 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./clm-claim-history.component.css']
 })
 export class ClmClaimHistoryComponent implements OnInit {
-  @ViewChild('histTbl') histTbl   : CustEditableNonDatatableComponent;
-  @ViewChild('apAmtTbl') apAmtTbl : CustEditableNonDatatableComponent;
-  @ViewChild('cancelClmHist') cancelBtn       : CancelButtonComponent;
-  @ViewChild('cancelAppAmt') cancelBtnAppAmt  : CancelButtonComponent;
-  @ViewChild('successAppAmt') successAppAmt   : SucessDialogComponent;
+  @ViewChild('histTbl') histTbl                      : CustEditableNonDatatableComponent;
+  @ViewChild('apAmtTbl') apAmtTbl                    : CustEditableNonDatatableComponent;
+  @ViewChild('cancelClmHist') cancelBtn              : CancelButtonComponent;
+  @ViewChild('cancelAppAmt') cancelBtnAppAmt         : CancelButtonComponent;
+  @ViewChild('successClmHist') successClmHist        : SucessDialogComponent;
+  @ViewChild('successAppAmt') successAppAmt          : SucessDialogComponent;
+  @ViewChild('confirmClmHist') cs                    : ConfirmSaveComponent;
+  @ViewChild('confirmAppAmt') csAppAmt               : ConfirmSaveComponent;
+  @ViewChild(MtnClaimStatusLovComponent) clmStatsLov : MtnClaimStatusLovComponent;
 
   private claimsHistoryInfo = ClaimsHistoryInfo;
 
   passDataHistory: any = {
     tableData     : [],
-    tHeader       : ['Hist. No.', 'Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Reserve', 'Payment Amount', 'Ref. No.', 'Ref. Date', 'Remarks'],
-    dataTypes     : ['sequence-3', 'select', 'select', 'checkbox', 'select', 'currency', 'currency', 'text', 'date', 'text'],
+    tHeader       : ['Hist. No.', 'Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Curr Rt', 'Reserve', 'Payment Amount', 'Ref. No.', 'Ref. Date', 'Remarks'],
+    dataTypes     : ['sequence-3', 'req-select', 'req-select', 'checkbox', 'text', 'percent', 'currency', 'currency', 'text', 'date', 'text'],
     nData: {
-      claimId      : 1,
-      projId       : 1,
+      newRec       : 1,
+      claimId      : '2',
+      projId       : '1',
       histNo       : '',
       histCategory : '',
       histType     : '',
       exGratia     : '',
       currencyCd   : '',
+      currencyRt   : '',
       reserveAmt   : '',
       paytAmt      : 0,
       refNo        : '',
@@ -43,16 +51,16 @@ export class ClmClaimHistoryComponent implements OnInit {
     },
     opts: [
       {selector   : 'histCategory',prev : [], vals: []},
-      {selector   : 'histType',    prev : [], vals: []},
-      {selector   : 'currencyCd',  prev : [], vals: []}
+      {selector   : 'histType',    prev : [], vals: []}
     ],
-    keys          : ['histNo','histCategory','histType','exGratia','currencyCd','reserveAmt','paytAmt','refNo','refDate','remarks'],
-    uneditable    : [true,false,false,false,false,false,true,true,true,false],
+    keys          : ['histNo','histCategory','histType','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','refNo','refDate','remarks'],
+    uneditable    : [true,false,false,false,true,true,false,true,true,true,false],
+    uneditableKeys: ['exGratia'], 
     pageLength    : 10,
     paginateFlag  : true,
     infoFlag      : true,
     addFlag       : true,
-    widths        : [1,150,147,1,67,91,118,78,1,'auto'],
+    widths        : [1,150,147,1,67,'auto',91,118,78,1,'auto'],
     pageID        : 'clm-history',
   };
 
@@ -61,6 +69,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     tHeader       : ['Hist. No.', 'Approved Amount', 'Approved By', 'Approved Date', 'Remarks'],
     dataTypes     : ['sequence-3', 'currency', 'text', 'date', 'text'],
     nData: {
+      claimId      : '2',
       histNo       : '',
       approvedAmt  : '',
       approvedBy   : '',
@@ -100,10 +109,17 @@ export class ClmClaimHistoryComponent implements OnInit {
     approvedDate : ''
   };
 
-  dialogIcon     : string;
-  dialogMessage  : string;
-  fromCancel     : boolean;
-  cancelFlag     : boolean;
+  dialogIcon        : string;
+  dialogMessage     : string;
+  cancelFlag        : boolean;
+  cancelFlagAppAmt  : boolean;
+  tempTblData       : any;
+
+  dirtyCounter : any = {
+    hist     : 0,
+    appAmt   : 0,
+    resStats : 0  
+  };
 
   params : any =    {
     saveClaimHistory   : []
@@ -120,37 +136,54 @@ export class ClmClaimHistoryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim History");
     this.getClaimHistory();
+    this.getClaimApprovedAmt();
   }
 
   getClaimHistory(){
-    var subs = forkJoin(this.clmService.getClaimHistory(),this.mtnService.getRefCode('HIST_CATEGORY'),this.mtnService.getRefCode('HIST_TYPE'),this.mtnService.getMtnCurrencyList(''))
+    var subs = forkJoin(this.clmService.getClaimHistory('2','','1',''),this.mtnService.getRefCode('HIST_CATEGORY'),this.mtnService.getRefCode('HIST_TYPE'),this.clmService.getClaimSecCover(2,''))
                        .pipe(map(([clmHist,histCat,histType,curr]) => { return { clmHist,histCat,histType,curr }; }));
     subs.subscribe(data => {
       console.log(data);
 
       var recHistCat = data['histCat']['refCodeList'];
+      var recHistType = data['histType']['refCodeList'];
+      var recCurr = data['curr']['claims']['clmProject']['clmCoverage'];
+
       this.passDataHistory.opts[0].vals = recHistCat.map(i => i.code);
       this.passDataHistory.opts[0].prev = recHistCat.map(i => i.description);
 
-      var recHistType = data['histType']['refCodeList'];
-      this.passDataHistory.opts[1].vals = recHistType.map(i => i.code);
-      this.passDataHistory.opts[1].prev = recHistType.map(i => i.description);
+      this.passDataHistory.nData.currencyCd = recCurr.currencyCd;
+      this.passDataHistory.nData.currencyRt = recCurr.currencyRt;
 
-      var recCurr = data['curr']['currency'];
-      this.passDataHistory.opts[2].vals = recCurr.map(i => i.currencyCd);
-      this.passDataHistory.opts[2].prev = recCurr.map(i => i.currencyCd);      
-
-      var recClmHist = data['clmHist']['claimHistoryList'].map(i => { i.refDate = this.ns.toDateTimeString(i.refDate); i.createDate = this.ns.toDateTimeString(i.createDate);
-                                                                      i.updateDate = this.ns.toDateTimeString(i.updateDate); return i;});
-      this.passDataHistory.tableData = recClmHist;
-      this.histTbl.refreshTable();
-      this.compResPayt();
-    });
+      try{
+        if(data['clmHist']['claimReserveList'].length == 0){
+          var recClmHist = data['clmHist']['claimReserveList'];
+        }else{
+          var recClmHist = data['clmHist']['claimReserveList'][0]['clmHistory']
+                        .map(i => { 
+                          i.refDate    = this.ns.toDateTimeString(i.refDate);
+                          i.createDate = this.ns.toDateTimeString(i.createDate);
+                          i.updateDate = this.ns.toDateTimeString(i.updateDate);
+                          recHistCat.map(a => (a.code == i.histCategory)?i.histCategory=a.description:i.histCategory);
+                          recHistType.map(a => (a.code == i.histType)?i.histType=a.description:i.histType);
+                          return i;
+                        });  
+        }
+                
+        this.passDataHistory.tableData = recClmHist;
+        this.tempTblData = recClmHist;
+        this.compResPayt();
+        this.passDataHistory.opts[1].vals = (this.passDataHistory.tableData.length==0)?Array(recHistType[0].code):recHistType.map(i => i.code);
+        this.passDataHistory.opts[1].prev = (this.passDataHistory.tableData.length==0)?Array(recHistType[0].description):recHistType.map(i => i.description);
+        this.histTbl.refreshTable();
+      }catch(e){}
+  
+      });
   }
 
   getClaimApprovedAmt(){
     this.apAmtTbl.overlayLoader = true;
-    this.clmService.getClaimApprovedAmt()
+    this.clmService.getClaimApprovedAmt('2','')
     .subscribe(data => {
       console.log(data);
       this.passDataApprovedAmt.tableData = [];
@@ -162,26 +195,45 @@ export class ClmClaimHistoryComponent implements OnInit {
       });
       this.passDataApprovedAmt.tableData = rec;
       this.apAmtTbl.refreshTable();
+      this.apAmtTbl.onRowClick(null, this.passDataApprovedAmt.tableData[0]);
+      console.log(this.passDataApprovedAmt.tableData[0]);
+      var statsInfo = this.passDataApprovedAmt.tableData[0];
+      this.clmHistoryData.approvedAmt  = statsInfo.approvedAmt;
+      this.clmHistoryData.approvedBy   = statsInfo.approvedBy;
+      this.clmHistoryData.approvedDate = this.ns.toDateTimeString(statsInfo.approvedDate);
     });
   }
 
-  onSaveClaimApprovedAmt(cancelFlag?){
-    this.cancelFlag = cancelFlag !== undefined;
-    console.log(this.cancelFlag);
+  onSaveClaimApprovedAmt(){
+    console.log(JSON.parse(JSON.stringify(this.paramsApvAmt)));
+    if(this.dirtyCounter.appAmt != 0){
+      this.clmService.saveClaimApprovedAmt(JSON.stringify(this.paramsApvAmt))
+      .subscribe(data => {
+        console.log(data);
+        this.getClaimApprovedAmt();
+        this.successAppAmt.open();
+        this.paramsApvAmt.saveClaimApprovedAmt = [];
+        this.dirtyCounter.appAmt = 0;
+        this.addDirtyHistTbl();
+      });
+    }
+  }
+
+  onClickSaveAppAmt(cancelFlag?){
+    this.cancelFlagAppAmt = cancelFlag !== undefined;
+    console.log(this.cancelFlagAppAmt);
     this.dialogIcon = '';
     this.dialogMessage = '';
     var isEmpty = 0;
 
     for(let record of this.passDataApprovedAmt.tableData){
-      console.log(record);
-      record.claimId = 1;
       if(record.approvedAmt == '' || record.approvedBy == '' || record.approvedDate == ''){
         if(!record.deleted){
           isEmpty = 1;
-          this.fromCancel = false;
+          record.fromCancel = false;
         }
       }else{
-        this.fromCancel = true;
+        record.fromCancel = true;
         if(record.edited && !record.deleted){
           record.approvedDate  = (record.approvedDate == '' || record.approvedDate == undefined)?this.ns.toDateTimeString(0):record.approvedDate;
           record.createUser    = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
@@ -194,99 +246,107 @@ export class ClmClaimHistoryComponent implements OnInit {
     }
 
     if(isEmpty == 1){
-        setTimeout(()=>{
-          $('.globalLoading').css('display','none');
-          this.dialogIcon = 'error';
-          this.successAppAmt.open();
-          this.paramsApvAmt.saveClaimApprovedAmt   = [];
-        },500);
+      this.dialogIcon = 'error';
+      this.successAppAmt.open();
+      this.paramsApvAmt.saveClaimApprovedAmt   = [];
     }else{
-      if(this.paramsApvAmt.saveClaimApprovedAmt == 0){
-        setTimeout(()=>{
-          $('.globalLoading').css('display','none');
-          this.dialogIcon = 'info';
-          this.dialogMessage = 'Nothing to save.';
-          this.successAppAmt.open();
-          this.paramsApvAmt.saveClaimApprovedAmt   = [];
-          this.passDataApprovedAmt.tableData = this.passDataApprovedAmt.tableData.filter(a => a.approvedAmt != '');
-        },500);
+      if(this.paramsApvAmt.saveClaimApprovedAmt.length == 0){
+        console.log('this.paramsApvAmt.saveClaimApprovedAmt');
+        this.removeDirtyAppTbl();
+        this.removeDirtyHistTbl();
+        this.csAppAmt.confirmModal();
+        this.paramsApvAmt.saveClaimApprovedAmt   = [];
+        this.passDataApprovedAmt.tableData = this.passDataApprovedAmt.tableData.filter(a => a.approvedAmt != '');
       }else{
-        this.clmService.saveClaimApprovedAmt(JSON.stringify(this.paramsApvAmt))
-        .subscribe(data => {
-          console.log(data);
-          this.getClaimApprovedAmt();
-          this.successAppAmt.open();
-          this.paramsApvAmt.saveClaimApprovedAmt = [];
-        });
+        console.log('ELSE this.paramsApvAmt.saveClaimApprovedAmt');
+        if(this.cancelFlagAppAmt == true){
+          this.csAppAmt.showLoading(true);
+          setTimeout(() => { try{this.csAppAmt.onClickYes();}catch(e){}},500);
+        }else{
+          this.csAppAmt.confirmModal();
+        }
       }  
     }
   }
 
-  onSaveClaimHistory(cancelFlag?){
+  onSaveClaimHistory(){
+    console.log(JSON.parse(JSON.stringify(this.params)));
+
+    this.clmService.saveClaimHistory(JSON.stringify(this.params))
+    .subscribe(data => {
+      console.log(data);
+      this.getClaimHistory();
+      this.successClmHist.open();
+      this.params.saveClaimHistory = [];
+    });
+  }
+
+  onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
-   // var saveClaimHistory = this.params.saveClaimHistory;
     var isEmpty = 0;
 
     for(let record of this.passDataHistory.tableData){
-      console.log(record);
-      if(record.histCategory == '' || record.histType == '' || record.currencyCd == '' || record.reserveAmt == ''){
+      if(record.histCategory == '' || record.histType == '' || record.currencyCd == '' || record.reserveAmt == '' || isNaN(record.reserveAmt)){
         if(!record.deleted){
           isEmpty = 1;
-          this.fromCancel = false;
+          record.fromCancel = false;
         }
       }else{
-        this.fromCancel = true;
+        record.fromCancel = true;
         if(record.edited && !record.deleted){
           record.createUser    = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
           record.createDate    = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):record.createDate;
           record.updateUser    = this.ns.getCurrentUser();
           record.updateDate    = this.ns.toDateTimeString(0);
+
+          this.passDataHistory.opts[0].prev.map((e,i) => {
+            (record.histCategory== e)?record.histCategory=this.passDataHistory.opts[0].vals[i]:'';
+          });
+          this.passDataHistory.opts[1].prev.map((e,i) => {
+           (record.histType== e)?record.histType=this.passDataHistory.opts[1].vals[i]:'';
+          });
           this.params.saveClaimHistory.push(record);
         }
       }
     }
 
+    console.log(this.passDataHistory.tableData);
     if(isEmpty == 1){
-        setTimeout(()=>{
-          $('.globalLoading').css('display','none');
-          this.dialogIcon = 'error';
-          $('app-sucess-dialog #modalBtn').trigger('click');
-          this.params.saveClaimHistory   = [];
-        },500);
+      this.dialogIcon = 'error';
+      this.successClmHist.open();
+      this.params.saveClaimHistory   = [];
     }else{
       if(this.params.saveClaimHistory.length == 0){
-        setTimeout(()=>{
-          $('.globalLoading').css('display','none');
-          this.dialogIcon = 'info';
-          this.dialogMessage = 'Nothing to save.';
-          $('app-sucess-dialog #modalBtn').trigger('click');
-          this.params.saveClaimHistory   = [];
-          this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
-        },500);
+        this.removeDirtyHistTbl();
+        this.cs.confirmModal();
+        this.params.saveClaimHistory   = [];
+        this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
       }else{
-        this.clmService.saveClaimHistory(JSON.stringify(this.params))
-        .subscribe(data => {
-          console.log(data);
-          this.getClaimHistory();
-          $('app-sucess-dialog #modalBtn').trigger('click');
-          this.params.saveClaimHistory = [];
-        });
-      }  
+        if(this.cancelFlag == true){
+          this.cs.showLoading(true);
+          setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+        }else{
+          this.cs.confirmModal();
+        }
+      }
     }
+     console.log(this.cancelFlag + ' onClickSave cancelFlag');
   }
 
   compResPayt(){
     const arrSum = arr => arr.reduce((a,b) => a + b, 0);
-    this.clmHistoryData.lossResAmt = arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.reserveAmt;}));
-    this.clmHistoryData.expResAmt = arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O').map(i => { return i.reserveAmt;}));
+
+    this.clmHistoryData.lossResAmt = arrSum(this.tempTblData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.reserveAmt;}));
+    this.clmHistoryData.expResAmt = arrSum(this.tempTblData.filter(i => i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O').map(i => { return i.reserveAmt;}));
   
-    this.clmHistoryData.lossPdAmt  = arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.paytAmt;}));
-    this.clmHistoryData.expPdAmt  = arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O').map(i => { return i.paytAmt;}));
+    this.clmHistoryData.lossPdAmt  = arrSum(this.tempTblData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.paytAmt;}));
+    this.clmHistoryData.expPdAmt  = arrSum(this.tempTblData.filter(i => i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O').map(i => { return i.paytAmt;}));
   
     this.clmHistoryData.totalRes = this.clmHistoryData.lossResAmt + this.clmHistoryData.expResAmt;
     this.clmHistoryData.totalPayt = this.clmHistoryData.lossPdAmt + this.clmHistoryData.expPdAmt;
+
   }
 
   clickRow(event){
@@ -305,21 +365,26 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   checkCancel(){
     if(this.cancelFlag == true){
-      if(this.fromCancel){
-        this.cancelBtn.onNo();
-      }else{
+      if(this.passDataHistory.tableData.some(i => i.fromCancel == false)){
         return;
+      }else{
+        this.cancelBtn.onNo();
       }
     }
   }
 
   checkCancelAppAmt(){
-    if(this.cancelFlag == true){
-      if(this.fromCancel){
-        this.cancelBtnAppAmt.onNo();
-      }else{
+    console.log(this.cancelFlagAppAmt + ' checkCancelAppAmt cancelFlagAppAmt');
+
+    if(this.cancelFlagAppAmt == true){
+      if(this.passDataApprovedAmt.tableData.some(i => i.fromCancel == false)){
         return;
+      }else{
+        this.cancelBtnAppAmt.onNo();
+        this.addDirtyHistTbl();
       }
+    }else{
+      this.addDirtyHistTbl();
     }
   }
 
@@ -327,16 +392,9 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.cancelBtn.clickCancel();
   }
 
-  onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
-  }
-
   onClickCancelAppAmt(){
     this.cancelBtnAppAmt.clickCancel();
-  }
-
-  onClickSaveAppAmt(){
-    $('#confirm-appAmt #confirm-save #modalBtn2').trigger('click');
+    this.addDirtyHistTbl();
   }
 
   showResStatMdl(){
@@ -346,6 +404,45 @@ export class ClmClaimHistoryComponent implements OnInit {
   showApprovedAmtMdl(){
     $('#approvedAmtMdl > #modalBtn').trigger('click');
     this.getClaimApprovedAmt();
+    this.removeDirtyHistTbl();
   }
 
+  setStats(event){
+    this.clmHistoryData.claimStat = event.description;
+    this.ns.lovLoader(event.ev, 0);
+  }
+
+  checkCodeStats(event){
+    this.ns.lovLoader(event, 1);
+    this.clmStatsLov.checkCode(this.clmHistoryData.claimStat.toUpperCase(), event);
+  }
+
+  showStatsLov(){
+    $('#clmStatsLov #modalBtn').trigger('click');
+  }
+
+  addDirtyHistTbl(){
+    (this.dirtyCounter.hist != 0)?$('#histId .ng-untouched').addClass('ng-dirty'):'';
+  }
+
+  removeDirtyHistTbl(){
+    $('#histId .ng-dirty').removeClass('ng-dirty');
+  }
+
+  addDirtyAppTbl(){
+    $('#appAmtId .ng-untouched').addClass('ng-dirty');
+  }
+
+  removeDirtyAppTbl(){
+    $('#appAmtId .ng-dirty').removeClass('ng-dirty');
+  }
+
+  checkDirtyTbl(){
+    ($('#histId .ng-dirty').length != 0)?this.dirtyCounter.hist++:'';
+    ($('#appAmtId .ng-dirty').length != 0)?this.dirtyCounter.appAmt++:'';
+  }
+
+  onClickAddHistTbl(){
+    console.log('ADD');
+  }
 }

@@ -138,6 +138,13 @@ lineListing: any = {
     }
   }
 
+  cancel(){
+    this.selectedData.emit({
+            lineCd: '',
+            description: ''
+          });
+  }
+
 }
 
 class Row {

@@ -21,6 +21,15 @@ export class ClaimComponent implements OnInit {
         addFlag:true,
   };
 
+  claimInfo = {
+        claimId: '',
+        claimNo: '',
+        policyNo: '',
+        riskId: '',
+        riskName:'',
+        insuredDesc:''
+  }
+
   constructor( private router: Router) { }
 
   ngOnInit() {
@@ -31,6 +40,14 @@ export class ClaimComponent implements OnInit {
         this.router.navigateByUrl('');
       } 
   
+  }
+
+  getClmInfo(ev) {
+    this.claimInfo.claimId = ev.claimId;
+    this.claimInfo.claimNo = ev.claimNo;
+    this.claimInfo.policyNo = ev.policyNo;
+    this.claimInfo.riskName = ev.riskName;
+    this.claimInfo.insuredDesc = ev.insuredDesc;
   }
   
 }
