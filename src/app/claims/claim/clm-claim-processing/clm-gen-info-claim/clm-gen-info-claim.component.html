@@ -5,8 +5,8 @@
     }
 
     .pad-b {
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
+        padding-top: 12px !important;
+        padding-bottom: 11px !important;
     }
 </style>
 <div>
@@ -629,7 +629,7 @@
                     <div class="custLoader" style="position: absolute;top:7px;left:-7px;width: 102%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
                     </div>
                 </ng-container>
-                <fieldset class="scheduler-border" style="margin-left: -7px !important;" [class.pad-b]="line != 'CAR' && line != 'EAR'">
+                <fieldset class="scheduler-border" style="margin-left: -7px !important; padding-bottom: 3px !important;" [class.pad-b]="line != 'CAR' && line != 'EAR'">
                     <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
                     <div class="custom-row-inline-inset" style="margin-left: -30px !important;">
                         <div class="input-group">
@@ -693,7 +693,7 @@
                             <label class="form-control-sm top-label">&nbsp;Status</label>
                             <div class="input-group" style="padding-right: 3px;">
                                 <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="claimData.clmStatus" appRequired>
-                                <div class="text-search-ico" style="z-index: 1 !important;">
+                                <div class="text-search-ico" style="z-index: 3 !important;">
                                 <a><i class="fa fa-search" (click)="showStatusLOV()"></i></a></div>
                             </div>
                         </div>
@@ -725,7 +725,7 @@
     <div class="form-group col-sm">
         <div class="col-md-13 text-center">
             <div class="cust-btn-container">
-                <button type="button" class="cust-btn"><a>Refresh</a></button>
+                <button type="button" class="cust-btn" [disabled]="claimData.refreshSw != 'Y'" (click)="showRefModal()"><a>Refresh</a></button>
                 <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
                 <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             </div>
@@ -764,7 +764,7 @@
 
 <app-modal class="d-none" id="clmGenInfoConfirmationModal">
     <div header>
-        <ng-container *ngIf="mdlType == 'conf'">Confirmation</ng-container>
+        <ng-container *ngIf="mdlType == 'conf' || mdlType == 'ref'">Confirmation</ng-container>
         <ng-container *ngIf="mdlType == 'warn' || mdlType == 'warn2'">Warning Message</ng-container>
     </div>
     <div body style="min-width: 300px !important;">
@@ -782,14 +782,20 @@
                     <p>Unable to exchange the Loss Date. Claim Reserve setup<br />
                     already exists.</p>
                 </ng-container>
+                <ng-container *ngIf="mdlType == 'ref'">
+                    <p>Are you sure you want to apply the latest changes<br />
+                    of the policy?</p>
+                </ng-container>
             </div>
         </fieldset>
     </div>
     <div footer class="w-100 text-right" [class.text-center]="mdlType == 'warn' || mdlType == 'warn2'">
         <button *ngIf="mdlType == 'conf'" class="cust-btn" type="button" (click)="modalService.dismissAll(); onClickConfYes()"><a>Yes</a></button>
+        <button *ngIf="mdlType == 'ref'" class="cust-btn" type="button" (click)="modalService.dismissAll(); onClickConfRefYes()"><a>Yes</a></button>
         <button *ngIf="mdlType == 'conf' || mdlType == 'warn'" class="cust-btn" type="button" (click)="modalService.dismissAll(); claimData.lossDate = ''">
             <a>{{ mdlType == 'conf' ? 'No' : 'Ok' }}</a>
         </button>
         <button *ngIf="mdlType == 'warn2'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="mdlType == 'ref'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>

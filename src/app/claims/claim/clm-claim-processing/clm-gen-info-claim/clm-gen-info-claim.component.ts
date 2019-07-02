@@ -242,7 +242,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.claimData.contractorId = this.claimData.contractorId == '' || this.claimData.contractorId == null ? '' : String(this.claimData.contractorId).padStart(6, '0');
       this.claimData.project.objectId = this.claimData.project.objectId == '' || this.claimData.project.objectId == null ? '' : String(this.claimData.project.objectId).padStart(3, '0');
 
-      if(data['claim']['clmReserve'] != null) {
+      if(this.claimData.clmReserve && this.claimData.clmReserve.claimId != null) {
         this.uneditableLossDate = true;
         this.tempLossDate = this.claimData.lossDate;
       }
@@ -709,6 +709,15 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.claimData.project.noClaimPd = gip['project']['noClaimPd'];
       });
     });
+  }
+
+  showRefModal() {
+    this.mdlType = 'ref';
+    $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+  }
+
+  onClickConfRefYes() {
+    //do something for refresh
   }
 
   dc(ev, data, type) {
