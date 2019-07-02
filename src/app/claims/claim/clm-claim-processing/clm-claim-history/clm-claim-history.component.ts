@@ -35,7 +35,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     dataTypes     : ['sequence-3', 'req-select', 'req-select', 'checkbox', 'text', 'percent', 'currency', 'currency', 'text', 'date', 'text'],
     nData: {
       newRec       : 1,
-      claimId      : '2',
+      claimId      : '3',
       projId       : '1',
       histNo       : '',
       histCategory : '',
@@ -50,10 +50,10 @@ export class ClmClaimHistoryComponent implements OnInit {
       remarks      : ''
     },
     opts: [
-      {selector   : 'histCategory',prev : [], vals: []},
-      {selector   : 'histType',    prev : [], vals: []}
+      {selector   : 'histCatDesc', prev : [], vals: []},
+      {selector   : 'histTypeDesc',prev : [], vals: []}
     ],
-    keys          : ['histNo','histCategory','histType','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','refNo','refDate','remarks'],
+    keys          : ['histNo','histCatDesc','histTypeDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','refNo','refDate','remarks'],
     uneditable    : [true,false,false,false,true,true,false,true,true,true,false],
     uneditableKeys: ['exGratia'], 
     pageLength    : 10,
@@ -106,14 +106,17 @@ export class ClmClaimHistoryComponent implements OnInit {
     claimStat    : '',
     approvedAmt  : '',
     approvedBy   : '',
-    approvedDate : ''
+    approvedDate : '',
+
+    allowMaxSi   : '',
+    mtnParam     : ''
   };
 
   dialogIcon        : string;
   dialogMessage     : string;
   cancelFlag        : boolean;
   cancelFlagAppAmt  : boolean;
-  tempTblData       : any;
+  warnMsg           : string = '';
 
   dirtyCounter : any = {
     hist     : 0,
@@ -140,15 +143,20 @@ export class ClmClaimHistoryComponent implements OnInit {
   }
 
   getClaimHistory(){
-    var subs = forkJoin(this.clmService.getClaimHistory('2','','1',''),this.mtnService.getRefCode('HIST_CATEGORY'),this.mtnService.getRefCode('HIST_TYPE'),this.clmService.getClaimSecCover(2,''))
-                       .pipe(map(([clmHist,histCat,histType,curr]) => { return { clmHist,histCat,histType,curr }; }));
+    var subs = forkJoin(this.clmService.getClaimHistory('3','','1',''),this.mtnService.getRefCode('HIST_CATEGORY'),this.mtnService.getRefCode('HIST_TYPE'),
+                        this.clmService.getClaimSecCover(3,''),this.mtnService.getMtnParameters('V'))
+                       .pipe(map(([clmHist,histCat,histType,cov,param]) => { return { clmHist,histCat,histType,cov,param }; }));
+
     subs.subscribe(data => {
       console.log(data);
 
       var recHistCat = data['histCat']['refCodeList'];
       var recHistType = data['histType']['refCodeList'];
-      var recCurr = data['curr']['claims']['clmProject']['clmCoverage'];
+      var recCurr = data['cov']['claims']['clmProject']['clmCoverage'];
+      var recParam = data['param']['parameters'].filter(el => el.paramName.toUpperCase() == 'ALLOW_MAX_SI').map(el => {return el});
 
+      this.clmHistoryData.mtnParam = String(recParam[0].paramValueV);
+      this.clmHistoryData.allowMaxSi = data['cov']['claims']['clmProject']['clmCoverage'].allowMaxSi; 
       this.passDataHistory.opts[0].vals = recHistCat.map(i => i.code);
       this.passDataHistory.opts[0].prev = recHistCat.map(i => i.description);
 
@@ -160,22 +168,21 @@ export class ClmClaimHistoryComponent implements OnInit {
           var recClmHist = data['clmHist']['claimReserveList'];
         }else{
           var recClmHist = data['clmHist']['claimReserveList'][0]['clmHistory']
-                        .map(i => { 
-                          i.refDate    = this.ns.toDateTimeString(i.refDate);
-                          i.createDate = this.ns.toDateTimeString(i.createDate);
-                          i.updateDate = this.ns.toDateTimeString(i.updateDate);
-                          recHistCat.map(a => (a.code == i.histCategory)?i.histCategory=a.description:i.histCategory);
-                          recHistType.map(a => (a.code == i.histType)?i.histType=a.description:i.histType);
+                        .map(i => {  
+                          i.refDate      = this.ns.toDateTimeString(i.refDate);
+                          i.createDate   = this.ns.toDateTimeString(i.createDate);
+                          i.updateDate   = this.ns.toDateTimeString(i.updateDate);
+                          recHistCat.forEach(a => (a.description == i.histCatDesc)?i.histCategory=a.code:i.histCategory);
+                          recHistType.forEach(a => (a.description == i.histTypeDesc)?i.histType=a.code:i.histType);
                           return i;
                         });  
         }
                 
         this.passDataHistory.tableData = recClmHist;
-        this.tempTblData = recClmHist;
-        this.compResPayt();
         this.passDataHistory.opts[1].vals = (this.passDataHistory.tableData.length==0)?Array(recHistType[0].code):recHistType.map(i => i.code);
         this.passDataHistory.opts[1].prev = (this.passDataHistory.tableData.length==0)?Array(recHistType[0].description):recHistType.map(i => i.description);
         this.histTbl.refreshTable();
+        this.compResPayt();
       }catch(e){}
   
       });
@@ -300,13 +307,6 @@ export class ClmClaimHistoryComponent implements OnInit {
           record.createDate    = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):record.createDate;
           record.updateUser    = this.ns.getCurrentUser();
           record.updateDate    = this.ns.toDateTimeString(0);
-
-          this.passDataHistory.opts[0].prev.map((e,i) => {
-            (record.histCategory== e)?record.histCategory=this.passDataHistory.opts[0].vals[i]:'';
-          });
-          this.passDataHistory.opts[1].prev.map((e,i) => {
-           (record.histType== e)?record.histType=this.passDataHistory.opts[1].vals[i]:'';
-          });
           this.params.saveClaimHistory.push(record);
         }
       }
@@ -318,18 +318,27 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.successClmHist.open();
       this.params.saveClaimHistory   = [];
     }else{
+
       if(this.params.saveClaimHistory.length == 0){
         this.removeDirtyHistTbl();
         this.cs.confirmModal();
         this.params.saveClaimHistory   = [];
         this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
       }else{
-        if(this.cancelFlag == true){
-          this.cs.showLoading(true);
-          setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
-        }else{
-          this.cs.confirmModal();
-        }
+
+          if(this.clmHistoryData.mtnParam == 'Y'){
+            if(Number(this.clmHistoryData.allowMaxSi) > Number(this.clmHistoryData.totalRes)){
+              if(this.cancelFlag == true){
+                this.cs.showLoading(true);
+                setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+              }else{
+                this.cs.confirmModal();
+              }
+            }else{
+              this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
+              this.showWarnMsg();
+            }
+          }
       }
     }
      console.log(this.cancelFlag + ' onClickSave cancelFlag');
@@ -338,14 +347,24 @@ export class ClmClaimHistoryComponent implements OnInit {
   compResPayt(){
     const arrSum = arr => arr.reduce((a,b) => a + b, 0);
 
-    this.clmHistoryData.lossResAmt = arrSum(this.tempTblData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.reserveAmt;}));
-    this.clmHistoryData.expResAmt = arrSum(this.tempTblData.filter(i => i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O').map(i => { return i.reserveAmt;}));
+    this.passDataHistory.tableData.map(record => {
+      this.passDataHistory.opts[0].vals.forEach((e,i) => {
+        (record.histCatDesc == e)?record.histCategory = e:'';
+      });
+      this.passDataHistory.opts[1].vals.forEach((e,i) => {
+        (record.histTypeDesc == e)?record.histType=e:'';
+      });
+      return record;
+    });
+
+    this.clmHistoryData.lossResAmt = arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.reserveAmt;}));
+    this.clmHistoryData.expResAmt  = arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O').map(i => { return i.reserveAmt;}));
   
-    this.clmHistoryData.lossPdAmt  = arrSum(this.tempTblData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.paytAmt;}));
-    this.clmHistoryData.expPdAmt  = arrSum(this.tempTblData.filter(i => i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O').map(i => { return i.paytAmt;}));
+    this.clmHistoryData.lossPdAmt  = arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.paytAmt;}));
+    this.clmHistoryData.expPdAmt   = arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O').map(i => { return i.paytAmt;}));
   
-    this.clmHistoryData.totalRes = this.clmHistoryData.lossResAmt + this.clmHistoryData.expResAmt;
-    this.clmHistoryData.totalPayt = this.clmHistoryData.lossPdAmt + this.clmHistoryData.expPdAmt;
+    this.clmHistoryData.totalRes   = this.clmHistoryData.lossResAmt + this.clmHistoryData.expResAmt;
+    this.clmHistoryData.totalPayt  = this.clmHistoryData.lossPdAmt + this.clmHistoryData.expPdAmt;
 
   }
 
@@ -444,5 +463,9 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   onClickAddHistTbl(){
     console.log('ADD');
+  }
+
+  showWarnMsg(){
+    $('#warnMdl #modalBtn').trigger('click');
   }
 }

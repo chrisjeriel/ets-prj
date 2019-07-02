@@ -167,6 +167,18 @@
     </div>
 </app-modal>
 
+<app-modal class="d-none" id="warnMdl">
+    <div header>Warning Message</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">{{ warnMsg }}</p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
 <app-confirm-save  #confirmClmHist (onYes)="onSaveClaimHistory()"></app-confirm-save>
 <app-sucess-dialog #successClmHist [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button #cancelClmHist  (onYes)="onClickSave('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>
