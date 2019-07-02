@@ -176,15 +176,15 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   openReasonLOV(){
-    this.reasonTable.loadingFlag = true;
+    this.reasonTable.overlayLoader = true;
     this.ms.getMtnClaimReason(null,this.batchOption, 'Y').subscribe(
        (data:any)=>{
          this.reasonData.tableData = data.clmReasonList;
          this.reasonTable.refreshTable();
-         this.reasonTable.loadingFlag = false;
+         this.reasonTable.overlayLoader = false;
        },
        (error:any)=>{
-         this.reasonTable.loadingFlag = false;
+         this.reasonTable.overlayLoader = false;
        }
     );
     this.reasonModal.openNoClose();
@@ -206,7 +206,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   retrieveClaimList(){
-    this.clmListTable.loadingFlag = true;
+    this.clmListTable.overlayLoader = true;
     this.cs.getClaimsListing([
                                 {key: 'policyNo', search: Object.keys(this.selectedPolicy).length === 0 || this.claimNoDataFound ? '' : this.selectedPolicy.policyNo},
                                 {key: 'claimNo', search: this.claimNoDataFound ? '' : this.tempClmNo.join('%-%')}
@@ -220,7 +220,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.selectedClaim = this.clmListData.tableData[0];
             this.setClaim();
           }
-          this.clmListTable.loadingFlag = false;
+          this.clmListTable.overlayLoader = false;
         }else{
           this.claimNoDataFound = true;
           if(this.claimNoIsType){
@@ -228,15 +228,16 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.openClmListing();
           }
         }
+        this.clmListTable.overlayLoader = false;
       },
       (error: any)=>{
-        this.clmListTable.loadingFlag = false;
+        this.clmListTable.overlayLoader = false;
       }
     );
   }
 
   retrievePolList(){
-    this.polListTable.loadingFlag = true;
+    this.polListTable.overlayLoader = true;
     this.us.getParListing([
                             {key: 'policyNo', search: this.polNoDataFound ? '' : this.tempPolNo.join('%-%')},
                             {key: 'cessionDesc', search: this.searchParams.cessionDesc.toUpperCase()},
@@ -258,7 +259,6 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.selectedPolicy = this.polListData.tableData[0];
             this.setPolicy();
           }
-          this.polListTable.loadingFlag = false;
         }else{
           this.polNoDataFound = true;
           if(this.polNoIsType){
@@ -266,15 +266,16 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.openPolListing();
           }
         }
+        this.polListTable.overlayLoader = false;
       },
       (error: any)=>{
-        this.polListTable.loadingFlag = false;
+        this.polListTable.overlayLoader = false;
       },
     );
   }
 
   retrieveQueryList(){
-    this.queryTable.loadingFlag = true;
+    this.queryTable.overlayLoader = true;
     this.queryData.tableData = [];
     this.cs.getChangeClaimStatus(this.searchParams).subscribe(
        (data: any)=>{
@@ -295,10 +296,10 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
            this.queryData.tableData = [];
            this.queryTable.refreshTable();
          }
-         this.queryTable.loadingFlag = false;
+         this.queryTable.overlayLoader = false;
        },
        (error: any)=>{
-         this.queryTable.loadingFlag = false;
+         this.queryTable.overlayLoader = false;
        }
     );
   }
