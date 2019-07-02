@@ -381,29 +381,4 @@ export class PurgeExtractedPolicyComponent implements OnInit {
       this.PolicyNo.altNo  = polNo[5];
     }
   }
-
-  test(){
-    /*console.log(this.dateParams.byMonthFrom);
-    console.log(this.dateParams.byMonthTo);
-    console.log(this.dateParams.byYearFrom);
-    console.log(this.dateParams.byYearTo);*/
-    var from = this.dateParams.byYearFrom+'-'+this.dateParams.byMonthFrom+'-01';
-    var to = this.dateParams.byYearTo+'-'+this.dateParams.byMonthTo+'-31';
-
-    if(!this.byDate){
-      //if(this.dateParams.byDateFrom !== undefined && this.dateParams.byDateFrom !== ''){
-        for(var i = 0; i < this.passData.tableData.length; i++){
-          if(to >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
-             from <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0]){
-             this.purgeData.deletePurge.push(this.passData.tableData[i]);
-          }
-        }
-      //}
-      console.log('pasok')
-    }
-    console.log(this.purgeData.deletePurge)
-    
-    //console.log(this.dateParams.byDateTo >= this.ns.toDateTimeString(this.passData.tableData[0].expiryDate).split('T')[0])
-    //console.log(this.dateParams.byDateFrom <= this.ns.toDateTimeString(this.passData.tableData[0].expiryDate).split('T')[0])
-  }
 }
