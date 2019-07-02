@@ -419,6 +419,9 @@ import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-pol
 import { MtnCurrencyCodeComponent } from './maintenance/mtn-currency-code/mtn-currency-code.component';
 import { MtnClaimStatusLovComponent } from './maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { MtnLossCdComponent } from './maintenance/mtn-loss-cd/mtn-loss-cd.component';
+import { MtnClmEventComponent } from './maintenance/mtn-clm-event/mtn-clm-event.component';
+import { MtnClmEventTypeComponent } from './maintenance/mtn-clm-event-type/mtn-clm-event-type.component';
+import { MtnAdjusterComponent } from './maintenance/mtn-adjuster/mtn-adjuster.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 
 @NgModule({
@@ -845,6 +848,9 @@ import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-re
         MtnCurrencyCodeComponent,
         MtnClaimStatusLovComponent,
         MtnLossCdComponent,
+        MtnClmEventComponent,
+        MtnClmEventTypeComponent,
+        MtnAdjusterComponent,
         ClaimStatusReasonComponent,
     ],
 
