@@ -489,7 +489,6 @@ export class ExpiryListingComponent implements OnInit {
                 this.passDataNonRenewalPolicies.tableData[this.passDataNonRenewalPolicies.tableData.length - 1].renPremAmount = 0;
                 this.passDataNonRenewalPolicies.tableData[this.passDataNonRenewalPolicies.tableData.length - 1].renTsiAmount = 0;
             }
-            
           }
           this.nrTable.refreshTable();
        });

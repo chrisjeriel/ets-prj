@@ -8,6 +8,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { ActivatedRoute } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { highlight,unHighlight } from '@app/_directives/highlight';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-pol-alop',
@@ -22,6 +23,8 @@ export class PolAlopComponent implements OnInit {
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
   @ViewChild("indemFrom") indemFrom:any;
+  @ViewChild('alopSuccess') successDiag: SucessDialogComponent;
+  @ViewChild('alopItemSuccess') successItemDiag: SucessDialogComponent;
 
   aLOPInfo: ALOPInfo = new ALOPInfo();
   
@@ -177,6 +180,7 @@ export class PolAlopComponent implements OnInit {
         if(data.policy.policyId != this.policyInfo.policyId && this.policyInfo.fromInq!='true'){
           this.form.control.markAsDirty()
         }
+        this.getSumInsured();
 
       } else {
         this.mtnService.getMtnInsured(this.policyInfo.principalId).subscribe((data: any) => {
@@ -225,6 +229,7 @@ export class PolAlopComponent implements OnInit {
      });
    }else{
      this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+       console.log(data)
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i <sectionCovers.length;i++){
@@ -282,11 +287,11 @@ export class PolAlopComponent implements OnInit {
       if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
+          this.successDiag.open();
         } else{
           this.dialogMessage = "";
           this.dialogIcon = "success";
-          $('#successModalBtn').trigger('click');
+          this.successDiag.open()
 
           if(this.newAlt) {
             this.newAlt = false;
@@ -300,7 +305,7 @@ export class PolAlopComponent implements OnInit {
     } else {
       this.dialogMessage="Please check field values.";
       this.dialogIcon = "error";
-      $('#polAlopSuccess > #successModalBtn').trigger('click');
+      this.successDiag.open();
 
       setTimeout(()=>{$('.globalLoading').css('display','none');},0);
     }
@@ -337,10 +342,10 @@ export class PolAlopComponent implements OnInit {
           if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
             this.dialogIcon = "error";
-            $('#successModalBtn').trigger('click');
+            this.successItemDiag.open();
           } else{
             this.dialogIcon = "success";
-            $('#successModalBtn').trigger('click');
+            this.successItemDiag.open();
             this.table.markAsPristine();
 
             if(this.newAlt) {
@@ -354,7 +359,7 @@ export class PolAlopComponent implements OnInit {
      } else {
        this.dialogMessage="Please check field values.";
        this.dialogIcon = "error";
-       $('#polAlopSuccess > #successModalBtn').trigger('click');
+       this.successItemDiag.open();
 
        setTimeout(()=>{$('.globalLoading').css('display','none');},0);
      }
@@ -410,6 +415,8 @@ export class PolAlopComponent implements OnInit {
 
   checkDates(){
     console.log('check')
+    console.log(this.polAlopData.issueDate)
+    console.log(new Date(this.polAlopData.issueDate))
     if((new Date(this.polAlopData.issueDate) >= new Date(this.polAlopData.expiryDate))){
      highlight(this.to);
      highlight(this.from);
@@ -420,7 +427,7 @@ export class PolAlopComponent implements OnInit {
      this.dateErFlag = false;
     }
 
-    if((new Date(this.polAlopData.indemFromDate) > new Date(this.polAlopData.expiryDate))){
+    if((new Date(this.polAlopData.indemFromDate) <= new Date(this.polAlopData.expiryDate))){
       highlight(this.to);
       highlight(this.indemFrom);
       this.dateErFlag = true;

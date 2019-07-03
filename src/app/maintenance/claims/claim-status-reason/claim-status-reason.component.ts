@@ -187,6 +187,9 @@ export class ClaimStatusReasonComponent implements OnInit {
     	}
       this.ms.saveMtnClaimReason(JSON.stringify(params)).subscribe((data:any)=>{
         if(data.returnCode === 0){
+          if(this.cancelFlag){
+            this.cancelFlag = false;
+          }
           this.dialogIcon = 'error';
           this.successDiag.open();
         }else{

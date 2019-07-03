@@ -146,6 +146,9 @@ export class ClmClaimProcessingComponent implements OnInit {
         }
         this.table.refreshTable();
       }
+    },
+    (error)=>{
+      
     });
   }
 
@@ -224,6 +227,9 @@ export class ClmClaimProcessingComponent implements OnInit {
       this.policyDetails.districtDesc = data.policy.project.districtDesc;
       this.policyDetails.blockDesc = data.policy.project.blockDesc;
       this.loading = false;
+    },
+    (error)=>{
+      this.loading = false;
     });
   }
 
@@ -298,7 +304,7 @@ export class ClmClaimProcessingComponent implements OnInit {
              }
          }
      }
-
+     console.log(this.isIncomplete);
      if(!this.isIncomplete){
          //this.getQuoteListing();
          this.retrievePolList();

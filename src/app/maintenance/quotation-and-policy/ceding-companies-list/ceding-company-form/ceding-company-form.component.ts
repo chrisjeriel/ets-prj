@@ -123,7 +123,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   			//put eSignature to filename for the table to recognize it
   			for(var i = 0; i < data.cedingCompany[0].cedingRepresentative.length; i++){
   				data.cedingCompany[0].cedingRepresentative[i].fileName = data.cedingCompany[0].cedingRepresentative[i].eSignature;
-          data.cedingCompany[0].cedingRepresentative[i].fileNameServer = this.ns.toDateTimeString(data.cedingCompany[0].cedingRepresentative[i].updateDate).match(/\d+/g).join('') + data.cedingCompany[0].cedingRepresentative[i].eSignature;
+          data.cedingCompany[0].cedingRepresentative[i].fileNameServer = this.ns.toDateTimeString(data.cedingCompany[0].cedingRepresentative[i].createDate).match(/\d+/g).join('') + data.cedingCompany[0].cedingRepresentative[i].eSignature;
   			}
 
   			this.companyData = data.cedingCompany[0];
@@ -145,7 +145,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   		this.successDiag.open();
   	}else if(!this.checkDefaultTag()){
   		this.dialogIcon = 'info';
-  		this.dialogMessage = 'Please enter one default company representative.';
+  		this.dialogMessage = 'Unable to save the record, Only one default company representative is allowed.';
   		this.successDiag.open();
   	}else{
       if(fromCancel !== undefined){
@@ -160,7 +160,8 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   	//check if mandatory fields are filled on table
   	this.defaultTagCounter = 0;
   	for(var i of this.repData.tableData){
-  		if(i.firstName === '' || i.lastName === ''){
+      console.log(i.deleted);
+  		if((i.firstName === '' || i.lastName === '') && (i.deleted !== undefined && !i.deleted)){
   			return false;
   		}
   		//check if theres only 1 default tag in ceding rep table
@@ -253,6 +254,9 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   	this.mtnService.saveMtnCedingCompany(JSON.stringify(params)).subscribe((data: any)=>{
   		console.log(data);
   		if(data.returnCode === 0){
+        if(this.cancelFlag){
+          this.cancelFlag = false;
+        }
   			this.dialogIcon = 'error';
   			this.successDiag.open();
   		}else{
@@ -281,9 +285,9 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 
       }
       let file: File = files[0];
-      var newFile = new File([file], date + file.name, {type: file.type});
+      //var newFile = new File([file], date + file.name, {type: file.type});
 
-      this.upload.uploadFile(newFile)
+      this.upload.uploadFile(file, date)
         .subscribe(
           event => {
             if (event.type == HttpEventType.UploadProgress) {

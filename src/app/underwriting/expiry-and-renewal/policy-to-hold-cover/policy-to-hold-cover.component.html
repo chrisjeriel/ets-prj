@@ -57,12 +57,12 @@
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Policy No</label>
                                             <div class="input-group col-sm-8">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired [ngModel]="policyInfo.policyNo.split('-')[0]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'lineCd')" maxlength="7">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[1]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'year')" maxlength="4">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[2]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'seqNo')" maxlength="5">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[3]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'cedingId')" maxlength="3">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[4]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'coSeriesNo')" maxlength="4">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[5]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'altNo')" maxlength="3">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Line" appRequired [(ngModel)]="tempPolNo[0]" (change)="policyNoChecker($event, 'line')" maxlength="7">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Year" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[1]" (change)="policyNoChecker($event, 'year')" maxlength="4">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[2]" (change)="policyNoChecker($event, 'seqNo')" maxlength="5">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[3]" (change)="policyNoChecker($event, 'cedingId')" maxlength="3">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[4]" (change)="policyNoChecker($event, 'coSeriesNo')" maxlength="4">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[5]" (change)="policyNoChecker($event, 'altNo')" maxlength="3">
                                             </div>
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
@@ -218,7 +218,7 @@
     </app-modal>
 
     <app-confirm-save (onYes)="onClickSave()"></app-confirm-save>
-    <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false; approveType === 'reject' ? modalService.dismissAll() : null"></app-sucess-dialog>
+    <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false;"></app-sucess-dialog>
     <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
 
 <!-- <app-print-modal (selectedData)= "showPrintDialog($event)"></app-print-modal> -->
@@ -232,6 +232,8 @@
             </div>
         </div>
         <div class="modal-body" style="width: 580px">
+            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 10000" *ngIf="approveLoading">
+                            <div style="position: fixed;width: 45%;height: 40%;z-index: 10000;background-color: rgba(255, 255, 255, 0.5);" *ngIf="approveLoading"></div>
             <!-- <div class="row">
                 <div class="col-sm-6" style="padding-right : 10px ! important;">
                     <fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
@@ -266,19 +268,19 @@
                 </div>
             </div> -->
                     <div class="row">
-                        <div class="col-sm-6">
-                            <fieldset class="scheduler-border" style="padding-bottom: 25px !important;padding-top: 24px !important;">
+                        <div class="col-sm-6" style="padding-right: 0px">
+                            <fieldset class="scheduler-border" style="padding-bottom: 11px !important;padding-top: 12px !important;">
                                 <div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important;" >
                                     <label class="form-control-sm col-sm-3">Status</label>
                                     <span>&nbsp;</span>
                                     <input type="text" class="form-control form-control-sm col-sm" [ngModel]="statusDesc" readonly>
                                 </div>
-                                <div class="input-group">
+                                <div class="input-group" style="text-align: center;">
                                     <div class="cust-btn-container col-sm" style="padding: 0px !important">
-                                        <button type="button" class="cust-btn col-sm" (click)="approve($event)" [class.cust-btn-disabled]="this.statusDesc.toUpperCase() === 'APPROVED'" [disabled]="this.statusDesc.toUpperCase() === 'APPROVED'"><a>{{authorization !== userName ? 'For Approval' : 'Approve'}}</a></button>
+                                        <button type="button" class="cust-btn col-sm" (click)="approve($event)" style="width: 100px"><a>{{authorization !== userName ? 'For Approval' : 'Approve'}}</a></button>
                                     </div>      
                                     <div class="cust-btn-container col-sm" style="padding: 0px !important">
-                                        <button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="approve($event);" [class.cust-btn-disabled]="this.statusDesc.toUpperCase() === 'APPROVED' || authorization !== userName" [disabled]="this.statusDesc.toUpperCase() === 'APPROVED' || authorization !== userName">Rejected</button>
+                                        <button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="approve($event);" [class.cust-btn-disabled]="authorization !== userName" [disabled]="authorization !== userName" style="width: 100px">Rejected</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -286,19 +288,12 @@
                         <div class="col-sm-6">
                             <fieldset class="scheduler-border" style="padding-bottom: 30px !important;padding-top: 31px !important;">
                                 <div class="input-group" style="margin-bottom: -14px !important;">
-                                    <label class="form-control-sm col-sm-3" style="margin-bottom: 8px !important;">Report</label>
-                                    <span>&nbsp;</span>
-                                    <select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="report">
-                                        <option value="HOLD COVER LETTER">Hold Cover Letter</option>
-                                    </select>
-                                </div>
-                                <div class="input-group" style="margin-bottom: -14px !important;">
                                     <label class="form-control-sm col-sm-3">Destination</label>
                                     <span>&nbsp;</span>
                                     <select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="destination">
-                                        <option value="SCREEN">SCREEN</option>
-                                        <option value="PDF">PDF</option>
-                                        <option value="PRINTER">PRINTER</option>
+                                        <option [value]="'SCREEN'">SCREEN</option>
+                                        <option [value]="'PDF'">PDF</option>
+                                        <option [value]="'PRINTER'">PRINTER</option>
                                     </select>
                                 </div>
                             </fieldset>

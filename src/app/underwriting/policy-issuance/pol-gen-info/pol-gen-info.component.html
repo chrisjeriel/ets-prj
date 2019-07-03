@@ -108,7 +108,7 @@
 											<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.intmName"> -->
 											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId, 6)" (change)="checkCode($event,'intermediary')" mask="999999">
 											<!-- <input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')"> -->
-											<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
+											<div *ngIf="!fromInq" class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 											<span>&nbsp;</span>
 											<input type="text" class="form-control form-control-sm col-sm ig-mrgn" tabindex="-1" [(ngModel)]="policyInfo.intmName" style="margin-left: -2px !important;" readonly>
 										</div>
@@ -145,10 +145,10 @@
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Inception Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]; updateExpiryDate();"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]; updateExpiryDate();"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>								
 								<!-- <input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.inceptDate?.split('T')[1]" (ngModelChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" appRequired> -->
@@ -156,10 +156,10 @@
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.expiryDate?.split('T')[0]" (valueChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" [minDate]="policyInfo.inceptDate?.split('T')[0]"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.expiryDate?.split('T')[0]" (valueChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" [minDate]="policyInfo.inceptDate?.split('T')[0]"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [value]="policyInfo.expiryDate?.split('T')[1]" (valueChange)="policyInfo.expiryDate=policyInfo.expiryDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.expiryDate?.split('T')[1]" (valueChange)="policyInfo.expiryDate=policyInfo.expiryDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>	
 								<!-- <input type="date" class="form-control form-control-sm req" min="{{ policyInfo.inceptDate?.split('T')[0] }}" [ngModel]="policyInfo.expiryDate?.split('T')[0]" (ngModelChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate?.split('T')[1]" appRequired> -->
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.expiryDate?.split('T')[1]" (ngModelChange)="policyInfo.expiryDate=policyInfo.expiryDate?.split('T')[0]+'T'+$event" appRequired> -->
@@ -169,10 +169,10 @@
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Lapse From</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [showIcon]="true" [value]="policyInfo.lapseFrom?.split('T')[0]" (valueChange)="policyInfo.lapseFrom=$event+'T'+policyInfo.lapseFrom.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [showIcon]="true" [value]="policyInfo.lapseFrom?.split('T')[0]" (valueChange)="policyInfo.lapseFrom=$event+'T'+policyInfo.lapseFrom.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [value]="policyInfo.lapseFrom?.split('T')[1]" (valueChange)="policyInfo.lapseFrom=policyInfo.lapseFrom.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [value]="policyInfo.lapseFrom?.split('T')[1]" (valueChange)="policyInfo.lapseFrom=policyInfo.lapseFrom.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>								
 								<!-- <input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.lapseFrom?.split('T')[0]" (ngModelChange)="policyInfo.lapseFrom=$event+'T'+policyInfo.lapseFrom?.split('T')[1]" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.lapseFrom?.split('T')[1]" (ngModelChange)="policyInfo.lapseFrom=policyInfo.lapseFrom?.split('T')[0]+'T'+$event" appRequired> -->
@@ -180,10 +180,10 @@
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Lapse To</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [showIcon]="true" [value]="policyInfo.lapseTo?.split('T')[0]" (valueChange)="policyInfo.lapseTo=$event+'T'+policyInfo.lapseTo.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [showIcon]="true" [value]="policyInfo.lapseTo?.split('T')[0]" (valueChange)="policyInfo.lapseTo=$event+'T'+policyInfo.lapseTo.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [value]="policyInfo.lapseTo?.split('T')[1]" (valueChange)="policyInfo.lapseTo=policyInfo.lapseTo.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [value]="policyInfo.lapseTo?.split('T')[1]" (valueChange)="policyInfo.lapseTo=policyInfo.lapseTo.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>
 								<!-- <input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.lapseTo?.split('T')[0]" (ngModelChange)="policyInfo.lapseTo=$event+'T'+policyInfo.lapseTo?.split('T')[1]" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.lapseTo?.split('T')[1]" (ngModelChange)="policyInfo.lapseTo=policyInfo.lapseTo?.split('T')[0]+'T'+$event" appRequired> -->
@@ -193,10 +193,10 @@
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Maintenance From</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [showIcon]="true" [value]="policyInfo.maintenanceFrom?.split('T')[0]" (valueChange)="policyInfo.maintenanceFrom=$event+'T'+policyInfo.maintenanceFrom.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [showIcon]="true" [value]="policyInfo.maintenanceFrom?.split('T')[0]" (valueChange)="policyInfo.maintenanceFrom=$event+'T'+policyInfo.maintenanceFrom.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [value]="policyInfo.maintenanceFrom?.split('T')[1]" (valueChange)="policyInfo.maintenanceFrom=policyInfo.maintenanceFrom.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [value]="policyInfo.maintenanceFrom?.split('T')[1]" (valueChange)="policyInfo.maintenanceFrom=policyInfo.maintenanceFrom.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>
 								<!-- <input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.maintenanceFrom?.split('T')[0]" (ngModelChange)="policyInfo.maintenanceFrom=$event+'T'+policyInfo.maintenanceFrom.split('T')[1]">
 								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.maintenanceFrom?.split('T')[1]" (ngModelChange)="policyInfo.maintenanceFrom=policyInfo.maintenanceFrom.split('T')[0]+'T'+$event"> -->
@@ -204,10 +204,10 @@
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Maintenance To</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [showIcon]="true" [value]="policyInfo.maintenanceTo?.split('T')[0]" (valueChange)="policyInfo.maintenanceTo=$event+'T'+policyInfo.maintenanceTo.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [showIcon]="true" [value]="policyInfo.maintenanceTo?.split('T')[0]" (valueChange)="policyInfo.maintenanceTo=$event+'T'+policyInfo.maintenanceTo.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [value]="policyInfo.maintenanceTo?.split('T')[1]" (valueChange)="policyInfo.maintenanceTo=policyInfo.maintenanceTo.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [value]="policyInfo.maintenanceTo?.split('T')[1]" (valueChange)="policyInfo.maintenanceTo=policyInfo.maintenanceTo.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>
 								<!-- <input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.maintenanceTo?.split('T')[0]" (ngModelChange)="policyInfo.maintenanceTo=$event+'T'+policyInfo.maintenanceTo.split('T')[1]">
 								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.maintenanceTo?.split('T')[1]" (ngModelChange)="policyInfo.maintenanceTo=policyInfo.maintenanceTo.split('T')[0]+'T'+$event"> -->
@@ -225,10 +225,10 @@
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Issue Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.issueDate?.split('T')[0]" (valueChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.issueDate?.split('T')[0]" (valueChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [value]="policyInfo.issueDate?.split('T')[1]" (valueChange)="policyInfo.issueDate=policyInfo.issueDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.issueDate?.split('T')[1]" (valueChange)="policyInfo.issueDate=policyInfo.issueDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>
 								<!-- <input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.issueDate?.split('T')[0]" (ngModelChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.issueDate?.split('T')[1]" (ngModelChange)="policyInfo.issueDate=policyInfo.issueDate.split('T')[0]+'T'+$event" appRequired> -->
@@ -236,10 +236,10 @@
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Distribution Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.distDate?.split('T')[0]" (valueChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.distDate?.split('T')[0]" (valueChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [value]="policyInfo.distDate?.split('T')[1]" (valueChange)="policyInfo.distDate=policyInfo.distDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.distDate?.split('T')[1]" (valueChange)="policyInfo.distDate=policyInfo.distDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>
 								<!-- <input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.distDate?.split('T')[0]" (ngModelChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.distDate?.split('T')[1]" (ngModelChange)="policyInfo.distDate=policyInfo.distDate.split('T')[0]+'T'+$event" appRequired> -->
@@ -249,10 +249,10 @@
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Effective Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [value]="policyInfo.effDate?.split('T')[1]" (valueChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.effDate?.split('T')[1]" (valueChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>
 								<!-- <input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.effDate?.split('T')[1]" (ngModelChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" appRequired> -->
@@ -260,10 +260,10 @@
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Accounting Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.acctDate?.split('T')[0]" (valueChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.acctDate?.split('T')[0]" (valueChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [value]="policyInfo.acctDate?.split('T')[1]" (valueChange)="policyInfo.acctDate=policyInfo.acctDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.acctDate?.split('T')[1]" (valueChange)="policyInfo.acctDate=policyInfo.acctDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>
 								<!-- <input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.acctDate?.split('T')[1]" (ngModelChange)="policyInfo.acctDate=policyInfo.acctDate.split('T')[0]+'T'+$event" appRequired> -->
@@ -838,9 +838,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">IPL</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Month/s" appRequired>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Month/s" appRequired oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
 										<label class="form-control-sm col-sm-2">Time Excess</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Day/s" appRequired>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Day/s" appRequired oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
 									</div>
 								</div>
 							</div>
@@ -944,7 +944,7 @@
 									</div> -->
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">No Claim Period</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" appRequired>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" appRequired oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
 									</div>
 								</div>
 							</div>
@@ -1138,9 +1138,9 @@
 							<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
 							<div class="form-control-sm col-sm-11 edtr-cont" style="height: 65px; padding-right: 6px !important; min-height: 60px;">
-								<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [required]="false">
+								<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [required]="false" [readonly]="fromInq">
 									<ng-container icon-1>
-										<a (click)="clickDeductiblesLOV('polWordings')"><i class="fa fa-search"></i></a>
+										<a (click)="clickDeductiblesLOV('polWordings')" *ngIf="!fromInq"><i class="fa fa-search"></i></a>
 									</ng-container>
 								</text-editor>
 							</div>
@@ -1185,13 +1185,13 @@
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
 								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly> -->
 								<div class="col-sm dp-cont">
-									<datepicker [value]="policyInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+									<datepicker [disabled]="fromInq" [value]="policyInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
 								</div>								
 							</div>						
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
 								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly> -->
 								<div class="col-sm dp-cont">
-									<datepicker [value]="policyInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+									<datepicker [disabled]="fromInq" [value]="policyInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
 								</div>	
 							</div>
 						</div>
@@ -1346,7 +1346,7 @@
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId, 6)" (change)="checkCode($event,'intermediary')" mask="999999">
 										<!-- <input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')"> -->
-										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
+										<div *ngIf="!fromInq" class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 										<span>&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" tabindex="-1" [(ngModel)]="policyInfo.intmName" style="margin-left: -2px !important;" readonly>
 									</div>
@@ -1387,19 +1387,19 @@
 								<div class="input-group col-sm-6">
 									<label class="form-control-sm col-sm-4">Previous</label>
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [disabled]="true" [showIcon]="false" [value]="prevInceptDate?.split('T')[0]"></datepicker>
+										<datepicker [disabled]="fromInq" [type]="'date'" [disabled]="true" [showIcon]="false" [value]="prevInceptDate?.split('T')[0]"></datepicker>
 									</div>
 									<div class="col-sm-3 dp-cont">
-										<datepicker [type]="'time'" [disabled]="true" [showIcon]="false" [value]="prevInceptDate?.split('T')[1]" [textAlign]="'center'"></datepicker>
+										<datepicker [disabled]="fromInq" [type]="'time'" [disabled]="true" [showIcon]="false" [value]="prevInceptDate?.split('T')[1]" [textAlign]="'center'"></datepicker>
 									</div>
 								</div>
 								<div class="input-group col-sm-6" style="margin-right: 0px;">
 									<label class="form-control-sm col-sm-4"></label>
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [disabled]="true" [showIcon]="false" [value]="prevExpiryDate?.split('T')[0]"></datepicker>
+										<datepicker [disabled]="fromInq" [type]="'date'" [disabled]="true" [showIcon]="false" [value]="prevExpiryDate?.split('T')[0]"></datepicker>
 									</div>
 									<div class="col-sm-3 dp-cont">
-										<datepicker [type]="'time'" [disabled]="true" [showIcon]="false" [value]="prevExpiryDate?.split('T')[1]" [textAlign]="'center'"></datepicker>
+										<datepicker [disabled]="fromInq" [type]="'time'" [disabled]="true" [showIcon]="false" [value]="prevExpiryDate?.split('T')[1]" [textAlign]="'center'"></datepicker>
 									</div>
 								</div>
 							</div>
@@ -1407,20 +1407,20 @@
 								<div class="input-group col-sm-6">
 									<label class="form-control-sm col-sm-4">This Alteration</label>
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]; updateExpiryDate();"></datepicker>
+										<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]; updateExpiryDate();"></datepicker>
 									</div>
 									<div class="col-sm-3 dp-cont">
-										<datepicker [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+										<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 									</div>
 								</div>
 								<div class="input-group col-sm-6" style="margin-right: 0px;">
 									<label class="form-control-sm col-sm-4"></label>
 
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.expiryDate?.split('T')[0]" (valueChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" [minDate]="policyInfo.inceptDate?.split('T')[0]"></datepicker>
+										<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.expiryDate?.split('T')[0]" (valueChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" [minDate]="policyInfo.inceptDate?.split('T')[0]"></datepicker>
 									</div>
 									<div class="col-sm-3 dp-cont">
-										<datepicker [type]="'time'" [required]="true" [value]="policyInfo.expiryDate?.split('T')[1]" (valueChange)="policyInfo.expiryDate=policyInfo.expiryDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+										<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.expiryDate?.split('T')[1]" (valueChange)="policyInfo.expiryDate=policyInfo.expiryDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 									</div>
 								</div>
 							</div>
@@ -1471,10 +1471,10 @@
 
 								<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [ngModel]="policyInfo.lapseFrom?.split('T')[1]" (ngModelChange)="policyInfo.lapseFrom=policyInfo.lapseFrom.split('T')[0]+'T'+$event" appRequired> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.lapseFrom?.split('T')[0]" (valueChange)="policyInfo.lapseFrom=$event+'T'+policyInfo.lapseFrom.split('T')[1]"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.lapseFrom?.split('T')[0]" (valueChange)="policyInfo.lapseFrom=$event+'T'+policyInfo.lapseFrom.split('T')[1]"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="false" [value]="policyInfo.lapseFrom?.split('T')[1]" (valueChange)="policyInfo.lapseFrom=policyInfo.lapseFrom.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="false" [value]="policyInfo.lapseFrom?.split('T')[1]" (valueChange)="policyInfo.lapseFrom=policyInfo.lapseFrom.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>
 							</div>
 							<div class="input-group col-sm-6" style="margin-right: 0px;">
@@ -1482,10 +1482,10 @@
 								<!-- <input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.lapseTo?.split('T')[0]" (ngModelChange)="policyInfo.lapseTo=$event+'T'+policyInfo.lapseTo.split('T')[1]" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [ngModel]="policyInfo.lapseTo?.split('T')[1]" (ngModelChange)="policyInfo.lapseTo=policyInfo.lapseTo.split('T')[0]+'T'+$event" appRequired> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.lapseTo?.split('T')[0]" (valueChange)="policyInfo.lapseTo=$event+'T'+policyInfo.lapseTo.split('T')[1]"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.lapseTo?.split('T')[0]" (valueChange)="policyInfo.lapseTo=$event+'T'+policyInfo.lapseTo.split('T')[1]"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="false" [value]="policyInfo.lapseTo?.split('T')[1]" (valueChange)="policyInfo.lapseTo=policyInfo.lapseTo.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="false" [value]="policyInfo.lapseTo?.split('T')[1]" (valueChange)="policyInfo.lapseTo=policyInfo.lapseTo.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
 								</div>
 							</div>
 						</div>
@@ -1496,10 +1496,10 @@
 
 								<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [ngModel]="policyInfo.maintenanceFrom?.split('T')[1]" (ngModelChange)="policyInfo.maintenanceFrom=policyInfo.maintenanceFrom.split('T')[0]+'T'+$event"> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.maintenanceFrom?.split('T')[0]" (valueChange)="policyInfo.maintenanceFrom=$event+'T'+policyInfo.maintenanceFrom.split('T')[1]"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.maintenanceFrom?.split('T')[0]" (valueChange)="policyInfo.maintenanceFrom=$event+'T'+policyInfo.maintenanceFrom.split('T')[1]"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="false" [value]="policyInfo.maintenanceFrom?.split('T')[1]" (valueChange)="policyInfo.maintenanceFrom=policyInfo.maintenanceFrom.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="false" [value]="policyInfo.maintenanceFrom?.split('T')[1]" (valueChange)="policyInfo.maintenanceFrom=policyInfo.maintenanceFrom.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
 								</div>
 							</div>
 							<div class="input-group col-sm-6" style="margin-right: 0px;">
@@ -1509,10 +1509,10 @@
 								<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;"
 								[ngModel]="policyInfo.maintenanceTo?.split('T')[1]" (ngModelChange)="policyInfo.maintenanceTo=policyInfo.maintenanceTo.split('T')[0]+'T'+$event"> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.maintenanceTo?.split('T')[0]" (valueChange)="policyInfo.maintenanceTo=$event+'T'+policyInfo.maintenanceTo.split('T')[1]"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.maintenanceTo?.split('T')[0]" (valueChange)="policyInfo.maintenanceTo=$event+'T'+policyInfo.maintenanceTo.split('T')[1]"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="false" [value]="policyInfo.maintenanceTo?.split('T')[1]" (valueChange)="policyInfo.maintenanceTo=policyInfo.maintenanceTo.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="false" [value]="policyInfo.maintenanceTo?.split('T')[1]" (valueChange)="policyInfo.maintenanceTo=policyInfo.maintenanceTo.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
 								</div>
 							</div>
 						</div>
@@ -2107,9 +2107,9 @@
 												<div class="row">
 													<div class="input-group">
 														<label class="form-control-sm col-sm-2">IPL</label>
-														<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Month/s" appRequired>
+														<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Month/s" appRequired oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
 														<label class="form-control-sm col-sm-2">Time Excess</label>
-														<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Day/s" appRequired>
+														<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Day/s" appRequired oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
 													</div>
 												</div>
 											</div>
@@ -2218,7 +2218,7 @@
 													</div> -->
 													<div class="input-group">
 														<label class="form-control-sm col-sm-2">No Claim Period</label>
-														<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" appRequired>
+														<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" appRequired oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
 													</div>
 												</div>
 											</div>
@@ -2250,10 +2250,10 @@
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" appRequired> -->
 
 													<div class="col-sm dp-cont">
-														<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]"></datepicker>
 													</div>
 													<div class="col-sm-3 dp-cont">
-														<datepicker [type]="'time'" [required]="true" [value]="policyInfo.effDate?.split('T')[1]" (valueChange)="policyInfo.effDate=policyInfo.effDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.effDate?.split('T')[1]" (valueChange)="policyInfo.effDate=policyInfo.effDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
 													</div>
 												</div>
 												<div class="input-group">
@@ -2262,10 +2262,10 @@
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]" appRequired> -->
 
 													<div class="col-sm dp-cont">
-														<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.issueDate?.split('T')[0]" (valueChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.issueDate?.split('T')[0]" (valueChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]"></datepicker>
 													</div>
 													<div class="col-sm-3 dp-cont">
-														<datepicker [type]="'time'" [required]="true" [value]="policyInfo.issueDate?.split('T')[1]" (valueChange)="policyInfo.issueDate=policyInfo.issueDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.issueDate?.split('T')[1]" (valueChange)="policyInfo.issueDate=policyInfo.issueDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
 													</div>
 												</div>
 												<div class="input-group">
@@ -2274,10 +2274,10 @@
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.distDate?.split('T')[1]" appRequired> -->
 
 													<div class="col-sm dp-cont">
-														<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.distDate?.split('T')[0]" (valueChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.distDate?.split('T')[0]" (valueChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]"></datepicker>
 													</div>
 													<div class="col-sm-3 dp-cont">
-														<datepicker [type]="'time'" [required]="true" [value]="policyInfo.distDate?.split('T')[1]" (valueChange)="policyInfo.distDate=policyInfo.distDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.distDate?.split('T')[1]" (valueChange)="policyInfo.distDate=policyInfo.distDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
 													</div>
 												</div>
 												<div class="input-group">
@@ -2286,10 +2286,10 @@
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]" appRequired> -->
 
 													<div class="col-sm dp-cont">
-														<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.acctDate?.split('T')[0]" (valueChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.acctDate?.split('T')[0]" (valueChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]"></datepicker>
 													</div>
 													<div class="col-sm-3 dp-cont">
-														<datepicker [type]="'time'" [required]="true" [value]="policyInfo.acctDate?.split('T')[1]" (valueChange)="policyInfo.acctDate=policyInfo.acctDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.acctDate?.split('T')[1]" (valueChange)="policyInfo.acctDate=policyInfo.acctDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
 													</div>
 												</div>
 											</div>
@@ -2359,9 +2359,9 @@
 						<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
 						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
-							<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2">
+							<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [readonly]="fromInq">
 								<ng-container icon-1>
-									<a (click)="clickDeductiblesLOV('polWordings')"><i class="fa fa-search"></i></a>
+									<a (click)="clickDeductiblesLOV('polWordings')" *ngIf="!fromInq"><i class="fa fa-search"></i></a>
 								</ng-container>
 							</text-editor>
 						</div>
@@ -2373,9 +2373,9 @@
 						<!-- <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
 						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
-							<text-editor [editorContent]="policyInfo?.polWordings.altText" (fetchContent)="policyInfo?.polWordings.altText = $event" [edtrOpnrPos]="2" [required]="true">
+							<text-editor [editorContent]="policyInfo?.polWordings.altText" (fetchContent)="policyInfo?.polWordings.altText = $event" [edtrOpnrPos]="2" [required]="true" [readonly]="fromInq">
 								<ng-container icon-1>
-									<a (click)="clickDeductiblesLOV('polWordingsAlt')"><i class="fa fa-search"></i></a>
+									<a (click)="clickDeductiblesLOV('polWordingsAlt')"  *ngIf="!fromInq"><i class="fa fa-search"></i></a>
 								</ng-container>
 							</text-editor>
 						</div>
@@ -2397,7 +2397,7 @@
 						<label class="form-control-sm top-label">Date Created</label>
 						<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly> -->
 						<div class="col-sm dp-cont">
-							<datepicker [value]="policyInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+							<datepicker [disabled]="fromInq" [value]="policyInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
 						</div>
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
@@ -2408,7 +2408,7 @@
 						<label class="form-control-sm top-label">Last Update</label>
 						<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly> -->
 						<div class="col-sm dp-cont">
-							<datepicker [value]="policyInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+							<datepicker [disabled]="fromInq" [value]="policyInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
 						</div>
 					</div>
 				</div>
@@ -2599,15 +2599,15 @@
 		<app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
 	</div>
 	<div footer>
-		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+		<button class="cust-btn" type="button" (click)="onDedCancel();"><a>Cancel</a></button>
 		<button class="cust-btn" type="button" (click)="saveDeductibles();" *ngIf="!fromInq"><a>Save</a></button>
 	</div>
 </app-modal>
 
 <app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
 <app-sucess-dialog id="polGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button *ngIf="!alteration" (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
-<app-cancel-button *ngIf="alteration" (onYes)="prepareParam('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
+<app-cancel-button #main *ngIf="!alteration" (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-cancel-button #main *ngIf="alteration" (onYes)="prepareParam('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
 
 <app-lov #dedLov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="lovCheckBox"></app-lov>
 <app-sucess-dialog #dedSuccess [message]="dialogMsg" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
@@ -2633,7 +2633,9 @@
         <!-- </fieldset> -->
     </div>
     <div footer class="w-100 text-right">
+
         <button class="cust-btn" type="button" (click)="forceExt = 1; prepareParam(); modalService.dismissAll();"><a>Yes</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>
+<app-cancel-button #dedCancel (onYes)="saveDeductibles('cancel')" (no)="deductiblesModal.closeModal()"></app-cancel-button>

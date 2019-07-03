@@ -39,20 +39,21 @@ export class UserAmtLimitComponent implements OnInit {
   	widths:[95,180,1,'auto'],
     magnifyingGlass: ['lineCd'],
   	nData:{
-    showMG:1,
-  	userGrp:'',
-		lineCd:'',
-		allAmtSw:'N',
-		amtLimit:'',
-		remarks:'',
-		createUser:this.ns.getCurrentUser(),
-		createDate:this.ns.toDateTimeString(0),
-		updateUser:this.ns.getCurrentUser(),
-		updateDate:this.ns.toDateTimeString(0),
+      showMG:1,
+    	userGrp:'',
+  		lineCd:'',
+  		allAmtSw:'N',
+  		amtLimit:'',
+  		remarks:'',
+  		createUser:this.ns.getCurrentUser(),
+  		createDate:this.ns.toDateTimeString(0),
+  		updateUser:this.ns.getCurrentUser(),
+  		updateDate:this.ns.toDateTimeString(0),
   	},
     uneditable:[false,false,false,false],
   	disableGeneric:true,
-  	disableAdd: true
+  	disableAdd: true,
+    searchFlag: true
   }
 
   info:any;
@@ -94,6 +95,15 @@ export class UserAmtLimitComponent implements OnInit {
   		})
   		this.passData.disableAdd =  false;
   		this.passData.disableGeneric = true;
+      this.passData.tableData.forEach(a=>{
+        if(a.allAmtSw == 'Y' ){
+          if(a.edited)
+            a.amtLimit = '';
+          a.uneditable = ['amtLimit'];
+        }else{
+          a.uneditable = [];
+        }
+      })
   		this.table.refreshTable();
   	})
   }
@@ -115,15 +125,15 @@ export class UserAmtLimitComponent implements OnInit {
   onClickSave(){
   	if(this.passData.tableData.some(a=>(a.amtLimit==null || a.amtLimit=='') && a.allAmtSw=='N' && !a.deleted)){
   		this.dialogIcon = "error";
-		this.successDialog.open();
-		return;
+		  this.successDialog.open();
+		  return;
   	}else{
-		this.conSave.confirmModal();
+		  this.conSave.confirmModal();
   	}
   }
+
   cancelFlag:boolean = false;
   dialogIcon:string = '';
-
 
   save(can?){
   	this.cancelFlag = can !== undefined;
@@ -190,6 +200,16 @@ export class UserAmtLimitComponent implements OnInit {
       data.ev['index'] = data.index;
       this.mtnLineLov.checkCode(data.ev.target.value, data.ev);
     }
+
+    this.passData.tableData.forEach(a=>{
+      if(a.allAmtSw == 'Y'){
+        if(a.edited && data.key == 'allAmtSw' )
+          a.amtLimit = '';
+        a.uneditable = ['amtLimit'];
+      }else{
+        a.uneditable = [];
+      }
+    })
   }
 
 

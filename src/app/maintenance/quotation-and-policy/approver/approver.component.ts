@@ -50,10 +50,11 @@ export class ApproverComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-      showMG: 1
+      showMG: 1,
   	},
   	pageID: '1',
   	magnifyingGlass:['userId'],
+    disableGeneric: true
   }
 
   passTablFn:any={
@@ -267,4 +268,8 @@ export class ApproverComponent implements OnInit {
     }
   }
 
+  onTableClick(data){
+    this.info = event;
+    this.passTable.disableGeneric = data==null;
+  }
 }

@@ -3,6 +3,7 @@ import { ClaimsService, NotesService } from '@app/_services'
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-clm-section-covers',
@@ -45,15 +46,20 @@ export class ClmSectionCoversComponent implements OnInit {
   dialogIcon:string = '';
   dialogMessage:string;
   cancelFlag:boolean;
+  claimId:any;
 
-  constructor(private claimService: ClaimsService, private ns: NotesService) { }
+  constructor(private claimService: ClaimsService, private ns: NotesService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.params.subscribe((data:any)=>{
+      console.log(data)
+      this.claimId = data.claimId;
+    });
     this.getClmSec();
   }
 
   getClmSec(){
-    this.claimService.getClaimSecCover(1,null).subscribe((data:any)=>{
+    this.claimService.getClaimSecCover(this.claimId,null).subscribe((data:any)=>{
       this.coverageData = data.claims.clmProject.clmCoverage;
       var deductibles = data.claims.clmDeductibles;
       this.passData.tableData = [];

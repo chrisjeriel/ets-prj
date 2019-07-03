@@ -2,49 +2,6 @@
 	<div class="col-sm">
 		<fieldset class="scheduler-border" style="padding-bottom: 10px !important;">
 			<legend class="scheduler-border">Distribution Info</legend>
-			<!-- <div class="custom-row-inline-inset">
-				<div class="col-sm-1"></div>
-				<div class="col-sm">
-					<div class="row" style="margin-right: 2%;">
-						<div class="input-group">
-							<label class="form-control-sm col-sm-2">Dist No</label>
-							<input type="text" class="form-control form-control-sm col-sm-4">
-							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important; z-index: -1;">Risk Dist No</label>
-							<input type="text" class="form-control form-control-sm col-sm">
-						</div>
-					</div>
-					<div class="row" style="margin-right: 2%;">
-						<div class="input-group">
-							<label class="form-control-sm col-sm-2">Policy No</label>
-							<input type="text" class="form-control form-control-sm col-sm-10">
-						</div>
-					</div>
-					<div class="row" style="margin-right: 2%;">
-						<div class="input-group">
-							<label class="form-control-sm col-sm-2">Total Sum Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-4">
-							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important; z-index: -1;">Total Premium</label>
-							<input type="text" class="form-control form-control-sm col-sm">
-						</div>
-					</div>
-					<div class="row" style="margin-right: 2%;">
-						<div class="input-group">
-							<label class="form-control-sm col-sm-2">Retention Line</label>
-							<input type="text" class="form-control form-control-sm col-sm-4">
-							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important; z-index: -1;">Status</label>
-							<input type="text" class="form-control form-control-sm col-sm">
-						</div>
-					</div>
-					<div class="row" style="margin-right: 2%; margin-top: -2px;">
-						<div class="input-group">
-							<div class="col-sm-2"></div>
-							<div class="col-sm-10" style="padding-left: 0px;">
-								<input type="checkbox">&nbsp;<label style="vertical-align: middle;">Auto Calculation</label>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div> -->
 
 			<div class="custom-row-inline-inset" style="margin-bottom: -12px !important;">
 				<div class="input-group">
@@ -60,16 +17,12 @@
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Risk Dist Status</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="riskDistStatus">
-					<!-- <label class="form-control-sm col-sm-1">Dist Status</label>
-					<input readonly type="text" placeholder="Distributed but not posted." class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.status"> -->
 					<label class="form-control-sm col-sm-1">Rate (%)</label>
 					<input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="round((polDistributionData?.premium / polDistributionData?.sumInsured) * 100) | number: '1.10-10'">
 					<label class="form-control-sm col-sm-1">Ceding Co</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="polDistributionData?.cedingName">
 				</div>
 				<div class="input-group">
-					<!-- <label class="form-control-sm col-sm-1">Sum Insured</label>
-					<input readonly type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.sumInsured" appCurrency> -->
 					<label class="form-control-sm col-sm-1">Policy No</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.policyNo">
 					<label class="form-control-sm col-sm-1">Total Premium</label>
@@ -79,19 +32,11 @@
 					
 				</div>
 				<div class="input-group">
-					<!-- <label class="form-control-sm col-sm-1">Retention Line</label>
-					<input readonly type="text" placeholder="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.retLine" appCurrency> -->
 					<label class="form-control-sm col-sm-1">Pol Dist No</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="pad(polDistributionData?.distNo, 'distNo')">
 					<label class="form-control-sm col-sm-1">Pol Dist Status</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.status">
 
-					<!-- <div class="col-sm-2" style="margin-top: -2px; margin-left: -15px;">
-						<div class="col-sm-2"></div>
-						<div class="col-sm-10" style="padding-left: 0px;">
-							<input readonly type="checkbox" [ngModel]="polDistributionData?.autoCalc === 'Y' ? true : false" (ngModelChange)="$event ? polDistributionData.autoCalc === 'Y' : polDistributionData.autoCalc === 'N'">&nbsp;<label style="vertical-align: middle;">Auto Calculation</label>
-						</div>
-					</div> -->
 				</div>
 			</div>
 		</fieldset>
@@ -155,33 +100,6 @@
 	<div class="form-group col-sm">
 		<div class="col-sm" style="text-align: center; padding: 10px;">
 			<div class="cust-btn-container">
-				<!-- <app-modal [btnTitle]="'View Treaty Charges'">
-					<div header>Treaty Charges</div>
-					<div body>
-						<fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
-							<div class="row" style="padding-top: 5px;">
-								<div class="col-sm" >
-									<app-cust-editable-non-datatable [passData]="passDataTreatyCharges"></app-cust-editable-non-datatable>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-2">
-								</div>
-								<div class="col-sm-8" style="margin-top: -15px; padding-left: 54px;">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-3">Total Charges</label>
-										<input type="text" placeholder="41,650.87" class="form-control form-control-sm txt-content-rght col-sm-7">
-									</div>
-								</div>
-								<div class="col-sm-2">
-								</div>
-							</div>
-						</fieldset>
-					</div>
-					<div footer class="d-flex justify-content-center" style="width: 100% !important;">
-						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
-					</div>
-				</app-modal> -->
 
 				<app-modal [btnTitle]="'View Pool Dist'" (modalOpened)="retrievePoolDistribution();">
 					<div header>Pool Distribution Per Section</div>
@@ -192,50 +110,54 @@
 									<app-cust-editable-non-datatable [passData]="poolDistributionData" #poolTable></app-cust-editable-non-datatable>
 								</div>
 							</div>
-							<!-- <div class="row" style="margin-top: -18px;">
-								<div class="col-sm-2">
-								</div>
-								<div class="col-sm-8" style="margin-left: -25px;">
+							<div class="row">
+								<div class="col-sm-12">
 									<div class="input-group" style="margin-bottom: -18px !important;">
-										<label class="form-control-sm col-sm-2"></label>
-										<label class="form-control-sm col-sm label-center">1st Retention</label>
-										<label class="form-control-sm col-sm label-center">2nd Retention</label>
-										<label class="form-control-sm col-sm label-center">Total</label>
+										<label class="form-control-sm col-sm-1"></label>
+										<label class="form-control-sm col-sm-1 label-center">Ret Line</label>
+										<label class="form-control-sm col-sm label-center">1st Ret SI Amt</label>
+										<label class="form-control-sm col-sm label-center">1st Ret Prem Amt</label>
+										<label class="form-control-sm col-sm label-center">2nd Ret SI Amt</label>
+										<label class="form-control-sm col-sm label-center">2st Ret Prem Amt</label>
+										<label class="form-control-sm col-sm label-center">Comm Amt</label>
+										<label class="form-control-sm col-sm label-center">VAT on R/I Comm</label>
+										<label class="form-control-sm col-sm label-center">Net Due</label>
 									</div>
 									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Section I</label>
-										<input type="text" placeholder="8,000,000.00" class="form-control form-control-sm txt-content-rght col-sm">
-										<input type="text" placeholder="819,600,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-										<input type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+										<label class="form-control-sm col-sm-1">Section I</label>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-1 input-margin-left" [ngModel]="pts1?.ret" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.ret1si" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.ret1prem" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.ret2si" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.ret2prem" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.comAmt" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.vat" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.net" appCurrency>
 									</div>
 									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Section II</label>
-										<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm">
-										<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-										<input type="text" placeholder="2,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+										<label class="form-control-sm col-sm-1">Section II</label>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-1 input-margin-left" [ngModel]="pts2?.ret" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.ret1si" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.ret1prem" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.ret2si" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.ret2prem" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.comAmt" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.vat" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.net" appCurrency>
 									</div>
 									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Section III</label>
-										<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm">
-										<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-										<input type="text" placeholder="0.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-									</div>
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Premium Amount</label>
-										<input type="text" placeholder="2,5000.00" class="form-control form-control-sm txt-content-rght col-sm">
-										<input type="text" placeholder="256,125.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-										<input type="text" placeholder="1,250,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-									</div>
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Comm Amount</label>
-										<input type="text" placeholder="750.00" class="form-control form-control-sm txt-content-rght col-sm">
-										<input type="text" placeholder="76,837.50" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-										<input type="text" placeholder="345,529.69" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+										<label class="form-control-sm col-sm-1">Total</label>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-1 input-margin-left" [ngModel]="ptotal?.ret" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.ret1si" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.ret1prem" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.ret2si" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.ret2prem" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.comAmt" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.vat" appCurrency>
+										<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.net" appCurrency>
 									</div>
 								</div>
-								<div class="col-sm-2">
-								</div>
-							</div> -->
+							</div>
 						</fieldset>
 					</div>
 					<div footer class="d-flex justify-content-center" style="width: 100% !important;">
@@ -243,42 +165,11 @@
 					</div>
 				</app-modal>
 
-				<!-- <app-modal [btnTitle]="'View Pool Charges'">
-					<div header>Pool Charges</div>
-					<div body>
-						<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
-							<div class="row" style="padding-top: 5px;">
-								<div class="col-sm-1"></div>
-								<div class="col-sm" style="margin-top: -28px;">
-									<app-cust-editable-non-datatable [passData]="passDataPoolCharges"></app-cust-editable-non-datatable>
-								</div>
-								<div class="col-sm-1"></div>
-							</div>
-							<div class="row" style="margin-top: -12px;">
-								<div class="col-sm" style="margin-left: -30px;">
-									<div class="input-group" style="margin-bottom: -18px !important;">
-										<label class="form-control-sm col-sm-2"></label>
-										<label class="form-control-sm col-sm label-center">1st Retention</label>
-										<label class="form-control-sm col-sm label-center">2nd Retention</label>
-										<label class="form-control-sm col-sm label-center">Total</label>
-									</div>
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Total Charges</label>
-										<input type="text" placeholder="90.00" class="form-control form-control-sm txt-content-rght col-sm">
-										<input type="text" placeholder="9,220.50" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-										<input type="text" placeholder="9,310.50" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
-									</div>
-								</div>
-							</div>
-						</fieldset>
-					</div>
-					<div footer class="d-flex justify-content-center" style="width: 100% !important;">
-						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
-					</div>
-				</app-modal> -->
+				
 				<button type="button" class="cust-btn"><a>Print</a></button>
 				<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq"><a>Post</a></button>
+				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq == 'true' || params.fromNegate == 'true'"><a>Post</a></button>
+				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Posted'" (click)="showConfirmNegMdl()" [class.d-none]="params.fromInq == 'true'|| params.fromNegate != 'true' "><a>Negate</a></button>
 			</div>
 		</div>
 	</div>
@@ -296,6 +187,17 @@
 	</div>
 </app-modal>
 
+<app-modal #confirmNegate class="d-none">
+	<div header>Confirmation</div>
+	<div body>
+		Are you sure to negate this policy distribution?
+	</div>
+	<div footer class="w-100 text-right">
+		<button type="button" class="cust-btn" (click)="negateDistribution()"><a>Yes</a></button>
+		<button type="button" class="cust-btn" (click)="confirmNegMdl.closeModal();"><a>No</a></button>
+	</div>
+</app-modal>
+
 <app-modal #success class="d-none">
 	<div header>Confirmation</div>
 	<div body class="w-100 text-center">
@@ -309,3 +211,30 @@
 	</div>
 </app-modal>
 
+<app-modal #successNegate class="d-none">
+	<div header>Success Message</div>
+	<div body class="w-100 text-center">
+		Policy distribution was negated successfully!<br>
+		Please go to Distribution List to modify the Dist No {{padStart(polDistributionData?.distNo,5)}}.
+	</div>
+	<div footer class="w-100 text-center">
+		<button type="button" class="cust-btn" (click)="goToRiskDistribution();sucessnegMdl.closeModal()"><a>View</a></button>
+		<button type="button" class="cust-btn" (click)="goToNegateScreen();sucessnegMdl.closeModal()"><a>Ok</a></button>
+	</div>
+</app-modal>
+
+<app-modal #successNegateWCoIns class="d-none">
+	<div header>Success Message</div>
+	<div body class="w-100 text-center">
+		The policy has co-insurance. The following Policy No must be negated to update its Risk distributio records.
+		<div class="w-100 text-center">
+			<div *ngFor="let dist of postedList">
+				{{dist.policyNo}}
+			</div>
+		</div>
+	</div>
+	<div footer class="w-100 text-center">
+		<button type="button" class="cust-btn" (click)="sucessNegWCoMdl.closeModal();goToRiskDistribution()"><a>View</a></button>
+		<button type="button" class="cust-btn" (click)="sucessNegWCoMdl.closeModal();goToNegateScreen();"><a>Ok</a></button>
+	</div>
+</app-modal>

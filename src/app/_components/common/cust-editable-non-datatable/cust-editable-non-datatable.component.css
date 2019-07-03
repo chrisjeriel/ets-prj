@@ -181,6 +181,7 @@ div.input-group {
     top: 1px;
     /*width: 4%;*/
     line-height : calc(1.3rem + 1px);
+    font-size: 13px !important;
 }
 
 .number{

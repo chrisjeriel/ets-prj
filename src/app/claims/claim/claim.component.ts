@@ -25,6 +25,15 @@ export class ClaimComponent implements OnInit {
         addFlag:true,
   };
 
+  claimInfo = {
+        claimId: '',
+        claimNo: '',
+        policyNo: '',
+        riskId: '',
+        riskName:'',
+        insuredDesc:''
+  }
+
   constructor( private router: Router, private modalService: NgbModal) { }
   @ViewChild('tabset') tabset: any;
 
@@ -56,4 +65,12 @@ export class ClaimComponent implements OnInit {
     }
   }
 
+  getClmInfo(ev) {
+    this.claimInfo.claimId = ev.claimId;
+    this.claimInfo.claimNo = ev.claimNo;
+    this.claimInfo.policyNo = ev.policyNo;
+    this.claimInfo.riskName = ev.riskName;
+    this.claimInfo.insuredDesc = ev.insuredDesc;
+  }
+  
 }

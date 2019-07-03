@@ -191,7 +191,12 @@ export class ReportParamComponent implements OnInit {
     }
 
   onRowClick(data){
-  	this.selectedRow = data;
+  	if(data !== null){
+      this.selectedRow = data;
+      this.reportParamsData.disableGeneric = false;
+    }else{
+      this.reportParamsData.disableGeneric = true;
+    }
   }
 
   update(data){
@@ -258,6 +263,9 @@ export class ReportParamComponent implements OnInit {
   	}else{
   		this.ms.saveMtnReportParam(this.savedData, this.deletedData).subscribe((data:any)=>{
 	  		if(data.returnCode === 0){
+          if(this.cancelFlag){
+            this.cancelFlag = false;
+          }
 	  			this.dialogIcon = 'error';
 	  			this.successDiag.open();
 	  		}else{
