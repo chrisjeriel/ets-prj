@@ -131,21 +131,21 @@
             <div class="custom-row-inline-inset">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
-					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossResAmt  | number:'1.2-2'" readonly>
 					<label class="form-control-sm col-sm-1">Status</label>
 					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.lossStatCd" (ngModelChange)="clmHistoryData.lossStatCd=$event.toUpperCase()" (change)="checkLossStat($event)" required>
-					<div class="text-search-ico"><a (click)="showResStatLov();fromStat='loss';"><i class="fa fa-search"></i></a></div>
+					<div class="text-search-ico"><a (click)="fromStat='loss';showResStatLov();"><i class="fa fa-search"></i></a></div>
 					<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
-					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossPdAmt  | number:'1.2-2'" readonly>
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
-					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expResAmt  | number:'1.2-2'" readonly>
 					<label class="form-control-sm col-sm-1">Status</label>
 					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.expStatCd" (ngModelChange)="clmHistoryData.expStatCd=$event.toUpperCase()" (change)="checkExpStat($event)" required>
-					<div class="text-search-ico"><a (click)="showResStatLov();fromStat='exp';"><i class="fa fa-search"></i></a></div>
+					<div class="text-search-ico"><a (click)="fromStat='exp';showResStatLov();"><i class="fa fa-search"></i></a></div>
 					<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
-					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expPdAmt  | number:'1.2-2'" readonly>
 				</div>
 			</div>
         </fieldset>
@@ -156,7 +156,7 @@
     </div>
 </app-modal>
 
-<app-modal class="d-none" id="approvedAmtMdl">
+<app-modal class="d-none" id="approvedAmtMdl" #approvedAmtMdl>
     <div header>Approved Amount</div>
     <div body class="container-flex text-center" style="min-width: 750px !important;">
        <app-cust-editable-non-datatable id="appAmtId" [passData]="passDataApprovedAmt" #apAmtTbl (tableDataChange)="passDataApprovedAmt.tableData=$event; checkDirtyTbl();"></app-cust-editable-non-datatable>
@@ -198,6 +198,6 @@
 
 <app-confirm-save  #confirmAppAmt (onYes)="onSaveClaimApprovedAmt()"></app-confirm-save>
 <app-sucess-dialog #successAppAmt [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelAppAmt();"></app-sucess-dialog>
-<app-cancel-button #cancelAppAmt  (onYes)="onClickSaveAppAmt('cancel')"></app-cancel-button>
+<app-cancel-button #cancelAppAmt  (onYes)="onClickSaveAppAmt('cancel')" (no)="onClickNoAppAmt()" ></app-cancel-button>
 
 <app-mtn-claim-status-lov id="clmStatsLov" (selectedData)="setStats($event)"></app-mtn-claim-status-lov>
