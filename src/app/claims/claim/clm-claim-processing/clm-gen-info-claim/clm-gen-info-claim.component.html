@@ -10,7 +10,7 @@
     }
 </style>
 <div>
-    <input type="text" class="d-none t" [ngModel]="claimData.claimId" (ngModelChange)="checkClmIdF($event)">
+    <input id="hiddenInpClm" type="text" class="d-none t" [ngModel]="claimData.claimId" (ngModelChange)="checkClmIdF($event)">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Claim Record</legend>
         <div class="form-row custom-row-inline-inset">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Claim No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.coClaimNo">
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.coClaimNo" tabindex="1">
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Type of Cession</label>
@@ -77,19 +77,19 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">Loss Date</label>
                             <div class="col-sm-5 dp-cont">
-                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();"></datepicker>
+                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();" [tabindex]="2"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'time'" [required]="true" [value]="claimData.lossDate?.split('T')[1]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'t'); validateLossDate();" [textAlign]="'center'"></datepicker>
+                                <datepicker [type]="'time'" [required]="true" [value]="claimData.lossDate?.split('T')[1]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'t'); validateLossDate();" [textAlign]="'center'" [tabindex]="3"></datepicker>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">Report Date</label>
                             <div class="col-sm-5 dp-cont">
-                                <datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="claimData.reportDate?.split('T')[0]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'d')"></datepicker>
+                                <datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="claimData.reportDate?.split('T')[0]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'d')" [tabindex]="4"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'time'" [required]="false" [value]="claimData.reportDate?.split('T')[1]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'t')" [textAlign]="'center'"></datepicker>
+                                <datepicker [type]="'time'" [required]="false" [value]="claimData.reportDate?.split('T')[1]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'t')" [textAlign]="'center'" [tabindex]="5"></datepicker>
                             </div>
                         </div>
                         <div class="input-group">
@@ -103,14 +103,14 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">&nbsp;&nbsp;Loss Cause</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossAbbr" appRequired>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossAbbr" (change)="checkCode($event, 'lc')" appRequired tabindex="8">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search" (click)="showLossCdLOV('C')"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">&nbsp;Event Type</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc" tabindex="10">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search" (click)="showClmEventTypeLOV()"></i></a>
                             </div>
@@ -120,18 +120,18 @@
                     <div class="col-sm-6" style="padding-top: 25px !important;">
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Reported By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.reportedBy">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.reportedBy" tabindex="6">
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Processed By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.processedBy" appRequired>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.processedBy" appRequired tabindex="7">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search" (click)="showUsersLOV()"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Loss Period</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossPdAbbr" appRequired>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossPdAbbr" (change)="checkCode($event, 'lp')" appRequired tabindex="9">
                             <div class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search" (click)="showLossCdLOV('P')"></i></a>
                             </div>

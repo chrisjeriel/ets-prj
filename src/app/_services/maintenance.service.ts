@@ -1075,4 +1075,12 @@ export class MaintenanceService{
         }
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyPoolRetHist', params, header);
     }
+
+    getMtnLossCodeLov(lossCdType, searchStr){
+		const params = new HttpParams()
+			.set('lossCdType', lossCdType === undefined || lossCdType === null ? '' : lossCdType)
+			.set('searchStr', searchStr === undefined || searchStr === null ? '' : searchStr);
+			
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnLossCdLov",{params});
+	}
 }

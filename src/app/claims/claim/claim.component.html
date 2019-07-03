@@ -6,7 +6,7 @@
         <app-clm-gen-info-claim (emitClaimInfoId)="getClmInfo($event)" [claimInfo]="claimInfo"></app-clm-gen-info-claim>
       </ng-template>
     </ngb-tab>
-    <ngb-tab class="ngb-tab" title="Section Covers">
+    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Section Covers">
       <ng-template ngbTabContent>
         <app-clm-section-covers></app-clm-section-covers>
       </ng-template>
@@ -26,7 +26,7 @@
         <app-clm-claim-payment-request></app-clm-claim-payment-request>
       </ng-template>
     </ngb-tab>
-    <ngb-tab class="ngb-tab" title="Attachment">
+    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Attachment">
       <ng-template ngbTabContent>
         <app-claims-attachment></app-claims-attachment>
       </ng-template>
