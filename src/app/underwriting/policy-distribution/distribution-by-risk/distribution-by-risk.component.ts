@@ -8,6 +8,9 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import * as alasql from 'alasql';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -24,6 +27,13 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('treatyShare') cedingCoLOV: CedingCompanyComponent;
   @Output() riskDistId = new EventEmitter<any>();
   @Output() riskDistStatus = new EventEmitter<any>();
+  @ViewChild('warningPosted') warningPostedMdl: ModalComponent;
+  @ViewChild('warningUnsaved') warningUnsvdedMdl: ModalComponent;
+  @ViewChild('warningUndistAlt') warningUndistAltMdl: ModalComponent;
+  @ViewChild('warningInvShare') warningInvShareMdl: ModalComponent;
+
+  @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -221,6 +231,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     coinsBtn:true
   }
 
+  postedList:any[] = [];
+  undistAlt:any[]=[];
+
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
               private ns: NotesService) { }
 
@@ -258,6 +271,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //NECO 05/31/2019
     retrieveRiskDistribution(){
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
+        console.log(data);
+        this.undistAlt = data.undistAlt;
         this.riskDistributionData = data.distWrisk;
         this.riskDistId.emit(this.riskDistributionData.riskDistId);
         this.riskDistStatus.emit(this.riskDistributionData.status);
@@ -360,6 +375,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           this.controlHidden.coinsBtn = false
         }
         if(data.postedDist.length>0){
+          this.postedList = data.postedDist.filter(a=>a.policyNo != this.params.policyNo);
+          if(this.params.fromNegate == 'false')
+            this.warningPostedMdl.openNoClose();
           this.readOnlyAll("yes");
         }
       });
@@ -480,27 +498,48 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
 
   distribute(){
-    let params: any = {
-          riskDistId:  this.riskDistributionData.riskDistId,
-          altNo: this.riskDistributionData.altNo,
-          updateUser: JSON.parse(window.localStorage.currentUser).username
-        };
-    this.polService.distributeRisk(params).subscribe((data:any)=>{
-         if(data.returnCode === 0){
-          this.dialogIcon = 'error';
-          this.successDiag.open();
-        }else{
-          this.wparam.markAsPristine();
-          this.dialogIcon = '';
-          this.successDiag.open();
-          this.retrieveRiskDistribution();
+    if(this.undistAlt.length != 0){
+      this.warningUndistAltMdl.openNoClose();
+      return;
+    }
+
+    if($('.ng-dirty').length ==0){
+      let params: any = {
+            riskDistId:  this.riskDistributionData.riskDistId,
+            altNo: this.riskDistributionData.altNo,
+            updateUser: JSON.parse(window.localStorage.currentUser).username
+          };
+      this.polService.distributeRisk(params).subscribe((data:any)=>{
+           if(data.returnCode === 0){
+            this.dialogIcon = 'error';
+            this.successDiag.open();
+          }else{
+            this.wparam.markAsPristine();
+            this.dialogIcon = '';
+            this.successDiag.open();
+            this.retrieveRiskDistribution();
+          }
         }
-      }
-      );
+        );
+    }else{
+      this.warningUnsvdedMdl.openNoClose();
+    }
   }
 
   onClickCancel(){
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}]);
+  }
+
+  onClickSave(){
+    let treaty:string[] = this.wparamData.tableData.map(a=>a.treatyId).filter((value, index, self) => self.indexOf(value) === index);
+    console.log(treaty);
+    for(let i of treaty){
+      if(this.wparamData.tableData.filter(a=>a.treatyId == i).reduce((a, b) => a + (b['pctShare'] || 0), 0) !== 100){
+        this.warningInvShareMdl.openNoClose();
+        return;
+      }
+    }
+    this.confirmSave.confirmModal()
   }
 
 // PAUL'S DOMAIN
