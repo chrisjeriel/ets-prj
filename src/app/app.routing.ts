@@ -307,7 +307,7 @@ const appRoutes: Routes = [
     // { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'adv-word-mtn', component: AdviceWordingsComponent },
     { path: 'ceding-co-list', component: CedingCompaniesListComponent },
-    { path: 'ceding-co-form', component: CedingCompanyFormComponent},
+    { path: 'ceding-co-form', component: CedingCompanyFormComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-endt', component: EndorsementComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-object', component: ObjectComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent },

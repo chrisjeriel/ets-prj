@@ -65,7 +65,6 @@ export class DistrictComponent implements OnInit {
       if(a['region'].length != 0){
     		this.passTable.tableData = a['region'][0]['provinceList'][0]['cityList'][0]['districtList'];
     		this.passTable.tableData.forEach(a=>{
-          this.passTable.disableGeneric = false;
           this.passTable.disableAdd = false;
     			a.uneditable=['districtCd'];
     			a.createDate = this.ns.toDateTimeString(a.createDate);
@@ -182,7 +181,12 @@ export class DistrictComponent implements OnInit {
                 this.ns.lovLoader(ev, 1);
                 this.lovMdl.checkCode('city', this.locData.regionCd, this.locData.provinceCd, this.locData.cityCd, '', '', ev);
             }
-        }   
+        }
+
+        this.passTable.tableData = [];
+        this.passTable.disableAdd = true;
+        this.passTable.disableGeneric = true;
+        this.table.refreshTable();
     }
 
     setCity(data){

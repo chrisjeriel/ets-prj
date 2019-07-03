@@ -75,7 +75,7 @@ export class PolAttachmentComponent implements OnInit {
             this.attachmentData.tableData = [];
             if(data.polAttachmentList !== null){
                 for(var i of data.polAttachmentList.attachments){
-                    i.fileNameServer = this.notes.toDateTimeString(i.updateDate).match(/\d+/g).join('') + i.fileName;
+                    i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
                     this.attachmentData.tableData.push(i);
                 }
             }
@@ -89,7 +89,7 @@ export class PolAttachmentComponent implements OnInit {
             this.attachmentData.tableData = [];
             if(data.attachmentsList !== null){
                 for(var i of data.attachmentsList.attachmentsOc){
-                    i.fileNameServer = this.notes.toDateTimeString(i.updateDate).match(/\d+/g).join('') + i.fileName;
+                    i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
                     this.attachmentData.tableData.push(i);
                 }
             }
@@ -172,9 +172,9 @@ export class PolAttachmentComponent implements OnInit {
 
         }
         let file: File = files[0];
-        var newFile = new File([file], date + file.name, {type: file.type});
+        //var newFile = new File([file], date + file.name, {type: file.type});
 
-        this.upload.uploadFile(newFile)
+        this.upload.uploadFile(file, date)
           .subscribe(
             event => {
               if (event.type == HttpEventType.UploadProgress) {

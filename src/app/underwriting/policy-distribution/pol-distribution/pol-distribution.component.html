@@ -168,7 +168,8 @@
 				
 				<button type="button" class="cust-btn"><a>Print</a></button>
 				<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq == 'true'"><a>Post</a></button>
+				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq == 'true' || params.fromNegate == 'true'"><a>Post</a></button>
+				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Posted'" (click)="showConfirmNegMdl()" [class.d-none]="params.fromInq == 'true'|| params.fromNegate != 'true' "><a>Negate</a></button>
 			</div>
 		</div>
 	</div>
@@ -186,6 +187,17 @@
 	</div>
 </app-modal>
 
+<app-modal #confirmNegate class="d-none">
+	<div header>Confirmation</div>
+	<div body>
+		Are you sure to negate this policy distribution?
+	</div>
+	<div footer class="w-100 text-right">
+		<button type="button" class="cust-btn" (click)="negateDistribution()"><a>Yes</a></button>
+		<button type="button" class="cust-btn" (click)="confirmNegMdl.closeModal();"><a>No</a></button>
+	</div>
+</app-modal>
+
 <app-modal #success class="d-none">
 	<div header>Confirmation</div>
 	<div body class="w-100 text-center">
@@ -199,3 +211,30 @@
 	</div>
 </app-modal>
 
+<app-modal #successNegate class="d-none">
+	<div header>Success Message</div>
+	<div body class="w-100 text-center">
+		Policy distribution was negated successfully!<br>
+		Please go to Distribution List to modify the Dist No {{padStart(polDistributionData?.distNo,5)}}.
+	</div>
+	<div footer class="w-100 text-center">
+		<button type="button" class="cust-btn" (click)="goToRiskDistribution();sucessnegMdl.closeModal()"><a>View</a></button>
+		<button type="button" class="cust-btn" (click)="goToNegateScreen();sucessnegMdl.closeModal()"><a>Ok</a></button>
+	</div>
+</app-modal>
+
+<app-modal #successNegateWCoIns class="d-none">
+	<div header>Success Message</div>
+	<div body class="w-100 text-center">
+		The policy has co-insurance. The following Policy No must be negated to update its Risk distributio records.
+		<div class="w-100 text-center">
+			<div *ngFor="let dist of postedList">
+				{{dist.policyNo}}
+			</div>
+		</div>
+	</div>
+	<div footer class="w-100 text-center">
+		<button type="button" class="cust-btn" (click)="sucessNegWCoMdl.closeModal();goToRiskDistribution()"><a>View</a></button>
+		<button type="button" class="cust-btn" (click)="sucessNegWCoMdl.closeModal();goToNegateScreen();"><a>Ok</a></button>
+	</div>
+</app-modal>

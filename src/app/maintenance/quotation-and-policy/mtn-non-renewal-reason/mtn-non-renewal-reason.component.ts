@@ -175,6 +175,9 @@ export class MtnNonRenewalReasonComponent implements OnInit {
     }else{
       this.ms.saveMtnNonRenewalReason(this.savedData, this.deletedData).subscribe((data:any)=>{
         if(data.returnCode === 0){
+          if(this.cancelFlag){
+            this.cancelFlag = false;
+          }
           this.dialogIcon = 'error';
           this.successDiag.open();
         }else{
@@ -192,8 +195,8 @@ export class MtnNonRenewalReasonComponent implements OnInit {
   checkFields(){
   	//check if required values are filled
   	for(var i of this.nonRenewalReasonData.tableData){
-  		if(i.reasonCd.length === 0 || i.reasonCd === undefined || i.reasonCd === null ||
-  		   i.description.length === 0 || i.description === undefined || i.description === null){
+  		if((i.reasonCd.length === 0 || i.reasonCd === undefined || i.reasonCd === null ||
+  		   i.description.length === 0 || i.description === undefined || i.description === null ) && (i.deleted !== undefined && !i.deleted)){
   			return false;
   		}
   	}

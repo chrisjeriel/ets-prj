@@ -168,7 +168,7 @@ export class AttachmentComponent implements OnInit {
         this.attachmentData =  data['quotation'][0].attachmentsList;
         //this.passData.tableData = this.attachmentData;
         for(var i of this.attachmentData){
-          i.fileNameServer = this.ns.toDateTimeString(i.updateDate).match(/\d+/g).join('') + i.fileName;
+          i.fileNameServer = this.ns.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
           this.passData.tableData.push(i);
         }
         this.table.refreshTable();
@@ -239,8 +239,8 @@ export class AttachmentComponent implements OnInit {
 
      }
      let file: File = files[0];
-     var newFile = new File([file], date + file.name, {type: file.type});
-     this.upload.uploadFile(newFile)
+     //var newFile = new File([file], date + file.name, {type: file.type});
+     this.upload.uploadFile(file, date)
        .subscribe(
          event => {
            if (event.type == HttpEventType.UploadProgress) {

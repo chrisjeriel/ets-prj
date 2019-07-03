@@ -356,9 +356,11 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.coInsuranceData.tableData = data.distCoInsList;
         this.coInsTable.refreshTable();
         this.coInsTable.loadingFlag = false;
-        console.log(data.distCoInsList);
         if(data.distCoInsList.length != 1){
           this.controlHidden.coinsBtn = false
+        }
+        if(data.postedDist.length>0){
+          this.readOnlyAll("yes");
         }
       });
     }
@@ -438,8 +440,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
       
     }
 
-    readOnlyAll(){
-      if(this.params.fromInq == 'true' || this.riskDistributionData.status.toUpperCase() === 'POSTED'){
+    readOnlyAll(force?){
+      if(this.params.fromInq == 'true' || this.riskDistributionData.status.toUpperCase() === 'POSTED' || force!=undefined){
         this.controlHidden.saveBtn = true;
         this.controlHidden.distributeBtn = true;
 

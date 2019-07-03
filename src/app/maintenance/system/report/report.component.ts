@@ -113,7 +113,13 @@ export class ReportComponent implements OnInit {
     }
 
   onRowClick(data){
-  	this.selectedRow = data;
+    if(data !== null){
+      this.selectedRow = data;
+      this.reportsData.disableGeneric = false;
+    }
+    else{
+      this.reportsData.disableGeneric = true;
+    }
   }
 
   onClickSave(){

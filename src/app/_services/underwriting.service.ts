@@ -797,7 +797,7 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyApprover',{params});
     }
 
-    getPolGenInfo(policyId: string, policyNo?: string) {
+    getPolGenInfo(policyId: any, policyNo?: any) {
         const params = new HttpParams()
             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo));
@@ -1146,7 +1146,14 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/saveExpGenInfo',JSON.stringify(params),header);
     }
 
-
+    negateDist(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/negateDistribution',JSON.stringify(params),header);
+    }
 }            
 
             

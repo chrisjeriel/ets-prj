@@ -81,7 +81,7 @@
     </div>
     <div footer class="text-center w-100">
         <div class="col-sm-12 text-center">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); btnDisabled = true;"><a>Cancel</a></button>
         <button  class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails();" [disabled]="btnDisabled" [class.cust-btn-disabled]="btnDisabled"><a>Ok</a></button>
         </div>
     </div>
