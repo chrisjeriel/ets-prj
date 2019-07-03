@@ -241,6 +241,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.claimData.reportDate = this.ns.toDateTimeString(this.claimData.reportDate);
       this.claimData.closeDate = this.ns.toDateTimeString(this.claimData.closeDate);
       this.claimData.createDate = this.ns.toDateTimeString(this.claimData.createDate);
+      console.log(this.ns.toDateTimeString(this.claimData.createDate));
       this.claimData.updateDate = this.ns.toDateTimeString(this.claimData.updateDate);
       this.claimData.lapseFrom = this.claimData.lapseFrom == '' || this.claimData.lapseFrom == null ? '' : this.ns.toDateTimeString(this.claimData.lapseFrom);
       this.claimData.lapseTo = this.claimData.lapseTo == '' || this.claimData.lapseTo == null ? '' : this.ns.toDateTimeString(this.claimData.lapseTo);

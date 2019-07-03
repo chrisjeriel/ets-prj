@@ -1185,13 +1185,13 @@
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
 								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly> -->
 								<div class="col-sm dp-cont">
-									<datepicker [disabled]="fromInq" [value]="policyInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+									<datepicker [value]="policyInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
 								</div>								
 							</div>						
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
 								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly> -->
 								<div class="col-sm dp-cont">
-									<datepicker [disabled]="fromInq" [value]="policyInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+									<datepicker [value]="policyInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
 								</div>	
 							</div>
 						</div>
@@ -1387,19 +1387,19 @@
 								<div class="input-group col-sm-6">
 									<label class="form-control-sm col-sm-4">Previous</label>
 									<div class="col-sm dp-cont">
-										<datepicker [disabled]="fromInq" [type]="'date'" [disabled]="true" [showIcon]="false" [value]="prevInceptDate?.split('T')[0]"></datepicker>
+										<datepicker [type]="'date'" [disabled]="true" [showIcon]="false" [value]="prevInceptDate?.split('T')[0]"></datepicker>
 									</div>
 									<div class="col-sm-3 dp-cont">
-										<datepicker [disabled]="fromInq" [type]="'time'" [disabled]="true" [showIcon]="false" [value]="prevInceptDate?.split('T')[1]" [textAlign]="'center'"></datepicker>
+										<datepicker [type]="'time'" [disabled]="true" [showIcon]="false" [value]="prevInceptDate?.split('T')[1]" [textAlign]="'center'"></datepicker>
 									</div>
 								</div>
 								<div class="input-group col-sm-6" style="margin-right: 0px;">
 									<label class="form-control-sm col-sm-4"></label>
 									<div class="col-sm dp-cont">
-										<datepicker [disabled]="fromInq" [type]="'date'" [disabled]="true" [showIcon]="false" [value]="prevExpiryDate?.split('T')[0]"></datepicker>
+										<datepicker [type]="'date'" [disabled]="true" [showIcon]="false" [value]="prevExpiryDate?.split('T')[0]"></datepicker>
 									</div>
 									<div class="col-sm-3 dp-cont">
-										<datepicker [disabled]="fromInq" [type]="'time'" [disabled]="true" [showIcon]="false" [value]="prevExpiryDate?.split('T')[1]" [textAlign]="'center'"></datepicker>
+										<datepicker [type]="'time'" [disabled]="true" [showIcon]="false" [value]="prevExpiryDate?.split('T')[1]" [textAlign]="'center'"></datepicker>
 									</div>
 								</div>
 							</div>
@@ -2390,25 +2390,25 @@
 			<div class="custom-row-inline-inset">
 				<div class="form-row">
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
-						<label class="form-control-sm top-label">Created By</label>
+						<label class="form-control-sm top-label" style="margin-left: 2px;">Created By</label>
 						<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createUser" readonly>
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
-						<label class="form-control-sm top-label">Date Created</label>
+						<label class="form-control-sm top-label" style="margin-left: 2px;">Date Created</label>
 						<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly> -->
 						<div class="col-sm dp-cont">
-							<datepicker [disabled]="fromInq" [value]="policyInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+							<datepicker [value]="policyInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
 						</div>
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
-						<label class="form-control-sm top-label">Last Update By</label>
+						<label class="form-control-sm top-label" style="margin-left: 2px;">Last Update By</label>
 						<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateUser" readonly>
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
-						<label class="form-control-sm top-label">Last Update</label>
+						<label class="form-control-sm top-label" style="margin-left: 2px;">Last Update</label>
 						<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly> -->
 						<div class="col-sm dp-cont">
-							<datepicker [disabled]="fromInq" [value]="policyInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+							<datepicker [value]="policyInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
 						</div>
 					</div>
 				</div>
