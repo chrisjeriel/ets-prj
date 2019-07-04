@@ -145,6 +145,6 @@ div h4{
     display: none;
 }
 
-.cust:hover {
+.cust:hover[disabled] {
     background: gray !important;
 }
