@@ -12,18 +12,11 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     ["CSR-2018-12-00002", "Issued", "5", "Loss", "Full Payment", "PHP", 0, 348532.75, "CV-000102", new Date("2018-11-24")],
   ];
 
-  tHeader: string[] = [];
-  dataTypes: string[] = [];
-  dataTypes2: string[] = [];
-  paginateFlag;
-  pageStatus;
-  pageLength = 10;
-  resizable;
-
   passData: any = {
     tableData: [],
     tHeader: ["Payment Request No.", "Status", "Hist. No.", "Hist. Type", "Type", "Curr", "Reserve", "Payment Amount", "Ref. No.", "Ref. Date"],
     dataTypes: ["text", "text", "number", "text", "text", "text", "number", "number", "text", "date"],
+    keys: ['paytReqNo','paytReqStatDesc','histNo','histCategory','histType','currencyCd','reserveAmt','paytAmt','refNo','refDate'],
     pagination: true,
     pageStatus: true,
     pageLength: 10,
@@ -34,7 +27,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Generate Payment Request");
-    this.passData.tableData = this.tableData;
+    // this.passData.tableData = this.tableData;
   }
 
   generateRequest(){

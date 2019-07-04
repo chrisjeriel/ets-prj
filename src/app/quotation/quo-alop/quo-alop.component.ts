@@ -340,7 +340,8 @@ export class QuoAlopComponent implements OnInit {
               this.table.loadingFlag = true;
               this.alopItem();
               setTimeout(()=>{
-                $('#alopItemModal #modalBtn').trigger('click');
+                //$('#alopItemModal #modalBtn').trigger('click');
+                this.itmInfoMdl.openNoClose();
               },0)
       }
       /*this.itemInfoData.tableData = [];
@@ -616,4 +617,9 @@ export class QuoAlopComponent implements OnInit {
     return String(str).padStart(num != null ? num : 3, '0');
   }
   //end
+
+  itemCancelClick(){
+    console.log(this.itemInfoCancel);
+    this.itemInfoCancel.clickCancel();
+  }
 }

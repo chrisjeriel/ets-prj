@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -7,7 +7,7 @@ import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './claim.component.html',
   styleUrls: ['./claim.component.css']
 })
-export class ClaimComponent implements OnInit {
+export class ClaimComponent implements OnInit, OnDestroy {
 
   passDataHistory: any = {
         tHeader: ["History No", "Amount Type", "History Type", "Currency","mount","Remarks","Accounting Tran ID","Accounting Date"],
@@ -30,9 +30,25 @@ export class ClaimComponent implements OnInit {
         insuredDesc:''
   }
 
-  constructor( private router: Router) { }
+  sub: any;
+  isInquiry: boolean = false;
+
+  constructor( private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.sub = this.route.params.subscribe(
+      (params)=>{
+        if(params['readonly'] !== undefined){
+          this.isInquiry = true;
+        }else{
+          this.isInquiry = false;
+        }
+      }
+    );
+  }
+
+  ngOnDestroy(){
+    this.sub.unsubscribe();
   }
 
   onTabChange($event: NgbTabChangeEvent) {

@@ -15,7 +15,7 @@
 		line-height: .9 !important;
 	}
 </style>
-<input type="text" class="d-none t" [ngModel]="genInfoData.quoteId" (ngModelChange)="checkQuoteIdF($event)" > <!-- <button (click)="testClick();">test</button> -->
+<input type="text" id="hiddenInp" class="d-none t" [ngModel]="genInfoData.quoteId" (ngModelChange)="checkQuoteIdF($event)" > <!-- <button (click)="testClick();">test</button> -->
 
 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
@@ -258,14 +258,14 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label tabindex="-1" class="form-control-sm col-sm-2">Principal</label>
-								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2 req" (blur)="genInfoData.principalId=pad(genInfoData.principalId, 6)" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
+								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2 req" (blur)="genInfoData.principalId=pad(genInfoData.principalId, 6)" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" mask="999999" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span>
 								<input tabindex="-1" type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label tabindex="-1" class="form-control-sm col-sm-2">Contractor</label>
-								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.contractorId" (change)="checkCode($event,'contractor')" appRequired>
+								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.contractorId" (change)="checkCode($event,'contractor')" mask="999999" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span>
 								<input tabindex="-1" type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;" readonly>
@@ -351,14 +351,14 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label tabindex="-1" class="form-control-sm col-sm-2">Principal</label>
-								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
+								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" mask="999999" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span>
 								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label tabindex="-1" class="form-control-sm col-sm-2">Contractor</label>
-								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.contractorId" (change)="checkCode($event,'contractor')" appRequired>
+								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.contractorId" (change)="checkCode($event,'contractor')" mask="999999" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span>
 								<input  type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;" readonly>
@@ -448,7 +448,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
+								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" mask="999999" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span>
 								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" readonly>
@@ -528,7 +528,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
+								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" mask="999999" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span>
 								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" readonly>
@@ -602,7 +602,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
+								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" mask="999999" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span>
 								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" readonly>
@@ -682,7 +682,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
+								<input [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" mask="999999" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'">&nbsp;</span>
 								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" readonly>
