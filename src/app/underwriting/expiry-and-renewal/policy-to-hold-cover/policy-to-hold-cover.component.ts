@@ -526,7 +526,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
   		if(this.approveType === 'Approve'){
   			this.approveType = 'approve';
-  		}else if(this.approveType === 'Rejected'){
+  		}else if(this.approveType === 'Reject'){
   			this.approveType = 'reject';
   		}else{
   			this.approveType = 'pending';
