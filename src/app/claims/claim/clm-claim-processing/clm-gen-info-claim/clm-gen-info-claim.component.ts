@@ -239,7 +239,11 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
       this.claimData = data['clm']['claim'];
 
-      this.claimData.approvalInfo = data['hist']['claimApprovedAmtList'].length == 0 ? null : data['hist']['claimApprovedAmtList'].sort((a, b) => b.histNo - a.histNo)[0];
+      this.claimData.approvalInfo = data['hist']['claimApprovedAmtList'].length == 0 ? null : data['hist']['claimApprovedAmtList'].sort((a, b) => b.histNo - a.histNo)
+                                                                                                                                  .map(a => {
+                                                                                                                                    a.approvedDate = this.ns.toDateTimeString(a.approvedDate);
+                                                                                                                                    return a;
+                                                                                                                                  })[0];
       this.claimData.inceptDate = this.ns.toDateTimeString(this.claimData.inceptDate);
       this.claimData.expiryDate = this.ns.toDateTimeString(this.claimData.expiryDate);
       this.claimData.lossDate = this.ns.toDateTimeString(this.claimData.lossDate);
@@ -761,7 +765,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   onClickConfRefYes() {
     var params = {
-      claimId: this.claimData.claimData,
+      claimId: this.claimData.claimId,
       refPolId: '',
       createUser: this.ns.getCurrentUser(),
       createDate: this.ns.toDateTimeString(0),
@@ -769,7 +773,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       updateDate: this.ns.toDateTimeString(0)
     }
 
-    this.cs.updateClaimStatus(params).subscribe(data => {
+    this.cs.updateClmDetails(params).subscribe(data => {
       if(data['returnCode'] == 0) {
         this.dialogIcon = 'error';
         this.dialogMessage = data['errorList'][0].errorMessage;
