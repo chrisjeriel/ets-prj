@@ -192,6 +192,9 @@ export class DistrictComponent implements OnInit {
         this.passTable.tableData = [];
         this.passTable.disableAdd = true;
         this.passTable.disableGeneric = true;
+        for(let key of Object.keys(this.locData)){
+          this.locData[key] = null;
+        }
         this.table.refreshTable();
     }
 
