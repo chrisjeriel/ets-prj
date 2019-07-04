@@ -8,7 +8,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { tap, mergeMap, map } from 'rxjs/operators';
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
@@ -23,10 +23,13 @@ export class ClmClaimHistoryComponent implements OnInit {
   @ViewChild('resStatTbl') resStatTbl                : CustEditableNonDatatableComponent;
   @ViewChild('cancelClmHist') cancelBtn              : CancelButtonComponent;
   @ViewChild('cancelAppAmt') cancelBtnAppAmt         : CancelButtonComponent;
+  @ViewChild('cancelResStat') cancelBtnResStat       : CancelButtonComponent;
   @ViewChild('successClmHist') successClmHist        : SucessDialogComponent;
   @ViewChild('successAppAmt') successAppAmt          : SucessDialogComponent;
+  @ViewChild('successResStat') successResStat        : SucessDialogComponent;
   @ViewChild('confirmClmHist') cs                    : ConfirmSaveComponent;
   @ViewChild('confirmAppAmt') csAppAmt               : ConfirmSaveComponent;
+  @ViewChild('confirmResStat') csResStat             : ConfirmSaveComponent;
   @ViewChild(MtnClaimStatusLovComponent) clmStatsLov : MtnClaimStatusLovComponent;
   @ViewChild('resStatMdl') resStatMdl                : ModalComponent; 
   @ViewChild('resStatLov') resStatLov                : ModalComponent;
@@ -65,6 +68,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     paginateFlag  : true,
     infoFlag      : true,
     addFlag       : true,
+    disableAdd    : false,
     widths        : [1,150,147,1,67,'auto',91,118,78,1,'auto'],
     pageID        : 'clm-history',
   };
@@ -106,40 +110,45 @@ export class ClmClaimHistoryComponent implements OnInit {
   };
 
   clmHistoryData : any ={
-    updateDate   : '',
-    updateUser   : '',
-    createDate   : '',
-    createUser   : '',
-    claimNo      : '',
-    policyNo     : '',
-    insured      : '',
-    risk         : '',
-    lossResAmt   : '',
-    lossStatCd   : '',
-    lossPdAmt    : '',
-    expResAmt    : '',
-    expStatCd    : '',
-    expPdAmt     : '',
-    totalRes     : '',
-    totalPayt    : '',
-    claimStat    : '',
-    approvedAmt  : '',
-    approvedBy   : '',
-    approvedDate : '',
+    updateDate         : '',
+    updateUser         : '',
+    createDate         : '',
+    createUser         : '',
+    createDateRes      : '',
+    createUserRes      : '',
+    claimNo            : '',
+    policyNo           : '',
+    insured            : '',
+    risk               : '',
+    lossResAmt         : '',
+    lossStatCd         : '',
+    lossPdAmt          : '',
+    expResAmt          : '',
+    expStatCd          : '',
+    expPdAmt           : '',
+    totalRes           : '',
+    totalPayt          : '',
+    claimStat          : '',
+    approvedAmt        : '',
+    approvedBy         : '',
+    approvedDate       : '',
 
-    allowMaxSi   : '',
-    mtnParam     : '',
-    claimId      : '3',
-    projId       : '1'
+    allowMaxSi         : '',
+    mtnParam           : '',
+    claimId            : '3',
+    projId             : '1'
   };
 
   dialogIcon        : string;
   dialogMessage     : string;
   cancelFlag        : boolean;
   cancelFlagAppAmt  : boolean;
+  cancelFlagResStat : boolean;
   warnMsg           : string = '';
   lovData           : any;
   fromStat          : string = '';
+  histTypeData      : any;
+  fromCancelResStat : boolean;
 
   dirtyCounter : any = {
     hist     : 0,
@@ -179,8 +188,11 @@ export class ClmClaimHistoryComponent implements OnInit {
       var recCurr      = data['cov']['claims']['clmProject']['clmCoverage'];
       var recParam     = data['param']['parameters'].filter(el => el.paramName.toUpperCase() == 'ALLOW_MAX_SI').map(el => {return el});
 
+      this.histTypeData = recHistType;
+
       this.clmHistoryData.mtnParam = String(recParam[0].paramValueV);
-      this.clmHistoryData.allowMaxSi = data['cov']['claims']['clmProject']['clmCoverage'].allowMaxSi; 
+      this.clmHistoryData.allowMaxSi = data['cov']['claims']['clmProject']['clmCoverage'].allowMaxSi;
+      console.log(this.clmHistoryData.allowMaxSi + ' >>>> this.clmHistoryData.allowMaxSi');
       this.passDataHistory.opts[0].vals = recHistCat.map(i => i.code);
       this.passDataHistory.opts[0].prev = recHistCat.map(i => i.description);
 
@@ -192,8 +204,10 @@ export class ClmClaimHistoryComponent implements OnInit {
           var recClmHist = data['clmHist']['claimReserveList'];
         }else{
           var res = data['clmHist']['claimReserveList'][0];
-          this.clmHistoryData.lossStatCd = res.lossStatCd; 
-          this.clmHistoryData.expStatCd  = res.expStatCd;
+          this.clmHistoryData.lossStatCd    = res.lossStatus; 
+          this.clmHistoryData.expStatCd     = res.expStatus;
+          this.clmHistoryData.createUserRes = (res.createUser == '' || res.createUser == null)?this.ns.getCurrentUser():res.createUser;
+          this.clmHistoryData.createDateRes = (res.createDate == '' || res.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(res.createDate);
           var recClmHist = data['clmHist']['claimReserveList'][0]['clmHistory']
                         .map(i => {  
                           i.refDate      = this.ns.toDateTimeString(i.refDate);
@@ -206,8 +220,6 @@ export class ClmClaimHistoryComponent implements OnInit {
         }
 
         this.passDataHistory.tableData = recClmHist;
-        this.passDataHistory.opts[1].vals = (this.passDataHistory.tableData.length==0)?Array(recHistType[0].code):recHistType.map(i => i.code);
-        this.passDataHistory.opts[1].prev = (this.passDataHistory.tableData.length==0)?Array(recHistType[0].description):recHistType.map(i => i.description);
         this.histTbl.refreshTable();
         this.histTbl.onRowClick(null, this.passDataHistory.tableData[0]);
         this.compResPayt();
@@ -233,10 +245,12 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.apAmtTbl.refreshTable();
       this.apAmtTbl.onRowClick(null, this.passDataApprovedAmt.tableData[0]);
       console.log(this.passDataApprovedAmt.tableData[0]);
-      var statsInfo = this.passDataApprovedAmt.tableData[0];
-      this.clmHistoryData.approvedAmt  = statsInfo.approvedAmt;
-      this.clmHistoryData.approvedBy   = statsInfo.approvedBy;
-      this.clmHistoryData.approvedDate = this.ns.toDateTimeString(statsInfo.approvedDate);
+      if(this.passDataApprovedAmt.tableData.length != 0){
+        var statsInfo = this.passDataApprovedAmt.tableData[0];
+        this.clmHistoryData.approvedAmt  = statsInfo.approvedAmt;
+        this.clmHistoryData.approvedBy   = statsInfo.approvedBy;
+        this.clmHistoryData.approvedDate = this.ns.toDateTimeString(statsInfo.approvedDate);
+      }
     });
   }
 
@@ -248,12 +262,11 @@ export class ClmClaimHistoryComponent implements OnInit {
       var rec = data['refCodeList'];
       this.passDataResStat.tableData = rec;
       this.resStatTbl.refreshTable();
-      this.resStatTbl.onRowClick(null, this.passDataResStat.tableData[0]);
 
-      rec.forEach(el => {
-        (el.code.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase())?this.clmHistoryData.lossStatCd=el.description:'';
-        (el.code.toUpperCase() == this.clmHistoryData.expStatCd.toUpperCase())?this.clmHistoryData.expStatCd=el.description:'';
-      });      
+      // rec.forEach(el => {
+      //   (el.code.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase())?this.clmHistoryData.lossStatCd=el.description:'';
+      //   (el.code.toUpperCase() == this.clmHistoryData.expStatCd.toUpperCase())?this.clmHistoryData.expStatCd=el.description:'';
+      // });      
     });
   }
 
@@ -270,6 +283,57 @@ export class ClmClaimHistoryComponent implements OnInit {
         this.addDirtyHistTbl();
       });
     }
+  }
+
+  onSaveResStat(){
+    var saveResStat = {
+        claimId     : '3',
+        expStatCd   : this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.expStatCd.toUpperCase()).map(el => {return el.code})[0],
+        lossStatCd  : this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase()).map(el => {return el.code})[0],
+        projId      : '1',
+        updateUser  : this.ns.getCurrentUser()
+      };
+
+    console.log(saveResStat);
+    if(this.dirtyCounter.resStats != 0){
+      this.clmService.saveClaimResStat(JSON.stringify(saveResStat))
+      .subscribe(data => {
+        console.log(data);
+        this.successResStat.open();
+        this.dirtyCounter.resStats = 0;
+        this.addDirtyHistTbl();
+      });
+    }
+  }
+
+  onClickSaveResStat(cancelFlag?){
+    this.cancelFlagResStat = cancelFlag !== undefined;
+    this.dialogIcon = '';
+   
+    if(this.clmHistoryData.lossStatCd == '' || this.clmHistoryData.lossStatCd == null || this.clmHistoryData.expStatCd == '' || this.clmHistoryData.expStatCd == null){
+      this.dialogIcon = 'error';
+      this.successResStat.open();
+      this.fromCancelResStat = true;
+    }else{
+      // if(this.cancelFlagResStat == true){
+      //     this.csResStat.showLoading(true);
+      //     setTimeout(() => { try{this.csResStat.onClickYes();}catch(e){}},500);
+      //   }else{
+      //     this.csResStat.confirmModal();
+      //   }
+
+      // if(this.dirtyCounter.resStats != 0){
+      //   this.csResStat.confirmModal();
+      // }else{
+      //   this.removeDirtyHistTbl();
+      //   this.csResStat.confirmModal();
+      // }
+    }
+  }
+
+  onClickNoResStat(){
+    this.resStatMdl.closeModal();
+    this.addDirtyHistTbl();
   }
 
   onClickSaveAppAmt(cancelFlag?){
@@ -325,14 +389,14 @@ export class ClmClaimHistoryComponent implements OnInit {
   onSaveClaimHistory(){
     var saveReserve = {
       claimId     : this.clmHistoryData.claimId,
-      createDate  : (this.clmHistoryData.createDate == '' || this.clmHistoryData.createDate == undefined)?this.ns.toDateTimeString(0):this.clmHistoryData.createDate,
-      createUser  : (this.clmHistoryData.createUser == '' || this.clmHistoryData.createUser == undefined)?this.ns.getCurrentUser():this.clmHistoryData.createUser,
+      createDate  : (this.clmHistoryData.createDateRes == '' || this.clmHistoryData.createDateRes == null)?this.ns.toDateTimeString(0):this.clmHistoryData.createDateRes,
+      createUser  : (this.clmHistoryData.createUserRes == '' || this.clmHistoryData.createUserRes == null)?this.ns.getCurrentUser():this.clmHistoryData.createUserRes,
       expPdAmt    : this.clmHistoryData.expPdAmt,
       expResAmt   : this.clmHistoryData.expResAmt,
-      expStatCd   : this.clmHistoryData.expStatCd = (this.clmHistoryData.expStatCd == '' || this.clmHistoryData.expStatCd == null)?'OP':this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.expStatCd.toUpperCase()).map(el => {return el.code})[0],
+      expStatCd   : (this.clmHistoryData.expStatCd == '' || this.clmHistoryData.expStatCd == null)?'OP':this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.expStatCd.toUpperCase()).map(el => {return el.code})[0],
       lossPdAmt   : this.clmHistoryData.lossPdAmt,
       lossResAmt  : this.clmHistoryData.lossResAmt,
-      lossStatCd  : this.clmHistoryData.lossStatCd = (this.clmHistoryData.lossStatCd == '' || this.clmHistoryData.lossStatCd == null)?'OP':this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase()).map(el => {return el.code})[0],
+      lossStatCd  : (this.clmHistoryData.lossStatCd == '' || this.clmHistoryData.lossStatCd == null)?'OP':this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase()).map(el => {return el.code})[0],
       projId      : this.clmHistoryData.projId,
       updateDate  : this.ns.toDateTimeString(0),
       updateUser  : this.ns.getCurrentUser()
@@ -345,20 +409,16 @@ export class ClmClaimHistoryComponent implements OnInit {
       console.log(data);
       this.getClaimHistory();
       this.getResStat();
-      // if(this.passDataHistory.tableData.some(e => e.histType == 4 || e.histType == 5)){
-      //   var params2 = {
-      //     saveClmPaytReq : this.params.saveClaimHistory.map(e => { e.paytReqId=''; e.paytReqStat=''; return e})
-      //   };
-
-      //   this.clmService.saveClaimPaytReq(params2)
-      //   .subscribe(data => {
-      //     console.log(data);
-      //   }); 
-      // }
-      
       this.successClmHist.open();
       this.params.saveClaimHistory = [];
+      this.passDataHistory.disableAdd = false;
     });
+
+  }
+
+  onClickNoSave(){
+    console.log('Save? >>> No');
+    this.params.saveClaimHistory = [];
   }
 
   onClickSave(cancelFlag?){
@@ -390,15 +450,6 @@ export class ClmClaimHistoryComponent implements OnInit {
     const arrSum = arr => arr.reduce((a,b) => a + b, 0);
     var catArr  = this.passDataHistory.tableData.filter(e => e.newRec != 1).map(e => e.histCategory);
     var totResAmt = arrSum(this.passDataHistory.tableData.filter(e => e.histType ==4 || e.histType == 5).map(e => e.reserveAmt));
-    console.log(totResAmt);
-    this.passDataHistory.tableData.forEach(e => {
-      if(e.newRec == 1){ 
-        error1 = catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())
-                  ?false
-                  :((e.histType != 1)?true:false); 
-        error2 = ((e.histType == 4 || e.histType == 5) && this.passDataApprovedAmt.tableData.length == 0)?true:false;
-      }
-    });
 
     if(isEmpty == 1){
       this.dialogIcon = 'error';
@@ -411,15 +462,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         this.params.saveClaimHistory   = [];
         this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
       }else{
-        if(error1){
-          this.warnMsg = 'Please setup initial reserve for the selected History Category before creating claim history for payment.';
-          this.showWarnMsg();
-          this.params.saveClaimHistory   = [];
-        }else if(error2){
-          this.warnMsg = 'Please add Approved Amount before proceeding.';
-          this.showWarnMsg();
-          this.params.saveClaimHistory   = [];
-        }else if(Number(totResAmt) > Number(this.clmHistoryData.approvedAmt)){
+        if(Number(totResAmt) > Number(this.clmHistoryData.approvedAmt)){
           this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
           this.showWarnMsg();
           this.params.saveClaimHistory   = [];
@@ -435,6 +478,7 @@ export class ClmClaimHistoryComponent implements OnInit {
             }else{
               this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the Allowable Maximum Sum Insured.';
               this.showWarnMsg();
+              this.params.saveClaimHistory   = [];
             }
           }else{
             if(this.cancelFlag == true){
@@ -447,7 +491,47 @@ export class ClmClaimHistoryComponent implements OnInit {
         }
       }
     }
-     console.log(this.cancelFlag + ' onClickSave cancelFlag');
+  }
+
+  limitHistType(){
+    var catArr  = this.passDataHistory.tableData.filter(e => e.newRec != 1).map(e => e.histCategory);
+    var ths = this;
+
+    console.log(this.histTypeData);
+    this.passDataHistory.tableData.forEach(e => {
+      if(e.newRec == 1){ 
+        if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())){
+          this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code != 1).map(e => e.code);
+          this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code != 1).map(e => e.description);
+          this.passDataHistory.opts[1].vals.unshift(' ');
+          this.passDataHistory.opts[1].prev.unshift(' ');
+        }else{
+          this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code == 1).map(e => e.code);
+          this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code == 1).map(e => e.description);
+          this.passDataHistory.opts[1].vals.unshift(' ');
+          this.passDataHistory.opts[1].prev.unshift(' ');
+        }
+      }
+    });
+
+    setTimeout(() => {      
+      $('#histId').find('tbody').children().each(function(a){
+        var histSelects = $(this).find('select');
+        var histCat = $(histSelects[0]);
+        var histType = $(histSelects[1]);
+        if(histCat.val() == '' || histCat.val() == null || histCat.val() == undefined){
+          histType.addClass('unclickable');
+        }else{
+          histType.removeClass('unclickable');
+          if((histType.val() == 4 || histType.val() == 5) && ths.passDataApprovedAmt.tableData.length == 0){
+            ths.warnMsg = 'Please add Approved Amount before proceeding.';
+            ths.showWarnMsg();
+            histType.val('');
+          }
+        }
+
+      });
+    },0);
   }
 
   compResPayt(){
@@ -499,19 +583,28 @@ export class ClmClaimHistoryComponent implements OnInit {
   }
 
   checkCancelAppAmt(){
-    console.log('checkCancelAppAmt');
     if(this.cancelFlagAppAmt == true){
       if(this.passDataApprovedAmt.tableData.some(i => i.fromCancel == false)){
         return;
       }else{
-        console.log('checkCancelAppAmt  >> else');
-        //this.cancelBtnAppAmt.onNo();
         this.approvedAmtMdl.closeModal();
         this.addDirtyHistTbl();
       }
     }else{
       this.addDirtyHistTbl();
-      console.log('checkCancelAppAmt()');
+    }
+  }
+
+  checkCancelResStat(){
+    if(this.cancelFlagResStat == true){
+      if(this.fromCancelResStat == true){
+        return;
+      }else{
+        this.resStatMdl.closeModal();
+        this.addDirtyHistTbl();
+      }
+    }else{
+      this.addDirtyHistTbl();
     }
   }
 
@@ -519,9 +612,17 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.cancelBtn.clickCancel();
   }
 
+  onClickCancelResStat(){
+    console.log(this.dirtyCounter.resStats);
+    if(this.dirtyCounter.resStats != 0){
+      this.cancelBtnResStat.saveModal.openNoClose();
+    }else{
+      this.resStatMdl.closeModal();
+    }
+    this.addDirtyHistTbl();
+  }
+
   onClickCancelAppAmt(){
-    console.log(this.cancelFlagAppAmt);
-    console.log(this.dirtyCounter.appAmt);
     if(this.dirtyCounter.appAmt != 0){
       this.cancelBtnAppAmt.clickCancel();
     }else{
@@ -529,6 +630,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     }
     this.addDirtyHistTbl();
   }
+
   onClickNoAppAmt(){
     this.approvedAmtMdl.closeModal();
     this.addDirtyHistTbl();
@@ -536,6 +638,8 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   showResStatMdl(){
     this.resStatMdl.openNoClose();
+    this.removeDirtyAppTbl();
+    this.removeDirtyHistTbl();
   }
 
   showResStatLov(){
@@ -548,10 +652,12 @@ export class ClmClaimHistoryComponent implements OnInit {
   }
 
   setResStat(){
+    this.dirtyCounter.resStats++;
     (this.fromStat == 'loss')?this.clmHistoryData.lossStatCd=this.lovData.description:this.clmHistoryData.expStatCd=this.lovData.description;
   }
 
   checkLossStat(ev){
+    this.dirtyCounter.resStats++;
     var a = this.passDataResStat.tableData.filter(rec => rec.code == this.clmHistoryData.lossStatCd).map(rec => rec.description)[0];
     if(a == '' || a == undefined){
       this.showResStatLov();
@@ -560,7 +666,8 @@ export class ClmClaimHistoryComponent implements OnInit {
     }
   }
 
-  checkExpStat(){
+  checkExpStat(ev){
+    this.dirtyCounter.resStats++;
     var a = this.passDataResStat.tableData.filter(rec => rec.code == this.clmHistoryData.expStatCd).map(rec => rec.description)[0];
     if(a == '' || a == undefined){
       this.showResStatLov();
@@ -612,6 +719,7 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   onClickAddHistTbl(){
     console.log('ADD');
+    this.passDataHistory.disableAdd = true;
   }
 
   showWarnMsg(){

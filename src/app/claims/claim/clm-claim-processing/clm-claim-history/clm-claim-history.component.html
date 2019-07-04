@@ -28,7 +28,7 @@
 			<div class="custom-row-inline-inset">
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable id="histId" [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt(); checkDirtyTbl();" (add)="onClickAddHistTbl()" #histTbl></app-cust-editable-non-datatable>
+						<app-cust-editable-non-datatable id="histId" [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt(); checkDirtyTbl();limitHistType();" (add)="onClickAddHistTbl()" #histTbl></app-cust-editable-non-datatable>
 					</div>
 				</div>
 				<div class="form-row" style="margin-top: -10px;margin-right: 22px !important;">
@@ -151,8 +151,8 @@
         </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="resStatMdl.closeModal()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Save</a></button>
+        <button class="cust-btn" type="button" (click)="onClickCancelResStat()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onClickSaveResStat()"><a>Save</a></button>
     </div>
 </app-modal>
 
@@ -192,12 +192,16 @@
     </div>
 </app-modal>
 
-<app-confirm-save  #confirmClmHist (onYes)="onSaveClaimHistory()"></app-confirm-save>
+<app-confirm-save  #confirmClmHist (onYes)="onSaveClaimHistory()" (onNo)="onClickNoSave()"></app-confirm-save>
 <app-sucess-dialog #successClmHist [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button #cancelClmHist  (onYes)="onClickSave('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>
 
 <app-confirm-save  #confirmAppAmt (onYes)="onSaveClaimApprovedAmt()"></app-confirm-save>
 <app-sucess-dialog #successAppAmt [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelAppAmt();"></app-sucess-dialog>
 <app-cancel-button #cancelAppAmt  (onYes)="onClickSaveAppAmt('cancel')" (no)="onClickNoAppAmt()" ></app-cancel-button>
+
+<app-confirm-save  #confirmResStat (onYes)="onSaveResStat()"></app-confirm-save>
+<app-sucess-dialog #successResStat [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelResStat();"></app-sucess-dialog>
+<app-cancel-button #cancelResStat  (onYes)="onClickSaveResStat('cancel')" (no)="onClickNoResStat()" ></app-cancel-button>
 
 <app-mtn-claim-status-lov id="clmStatsLov" (selectedData)="setStats($event)"></app-mtn-claim-status-lov>
