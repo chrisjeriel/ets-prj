@@ -456,7 +456,6 @@ export class ExpiryListingComponent implements OnInit {
        this.searchParams.renewalFlag = '';
        this.searchParams.processTag = 'N';
        this.searchParams.renewable = 'Y';
-       console.log(this.searchParams)
        this.underWritingService.getExpPolList(this.searchParams).subscribe(data => {
           console.log(data);
           var records = data['expPolicyList'];
@@ -484,6 +483,7 @@ export class ExpiryListingComponent implements OnInit {
             
           }
           this.table.refreshTable();
+          this.table.loadingFlag = false;
        });
   }
 
