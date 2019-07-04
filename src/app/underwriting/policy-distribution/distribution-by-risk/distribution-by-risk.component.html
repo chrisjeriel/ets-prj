@@ -151,7 +151,7 @@
 </div>
 
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()"></app-cancel-button>
 
@@ -201,5 +201,16 @@
   </div>
   <div footer class="w-100 text-center">
     <button type="button" class="cust-btn" (click)="warningInvShareMdl.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-modal #confirmAlt class="d-none">
+  <div header>Confirmation</div>
+  <div body>
+    The status of the subsequent alteration is Distribtuted but not Posted. Saving these changes will update the status of the subsequent alteration to Undistribtuted. Do you want to proceed?
+  </div>
+  <div footer class="w-100 text-right">
+    <button type="button" class="cust-btn" (click)="save();confirmAltMdl.closeModal()" ><a>Yes</a></button>
+    <button type="button" class="cust-btn" (click)="confirmAltMdl.closeModal()" ><a>No</a></button>
   </div>
 </app-modal>

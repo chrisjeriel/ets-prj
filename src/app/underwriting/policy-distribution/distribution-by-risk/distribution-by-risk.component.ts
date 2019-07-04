@@ -31,6 +31,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('warningUnsaved') warningUnsvdedMdl: ModalComponent;
   @ViewChild('warningUndistAlt') warningUndistAltMdl: ModalComponent;
   @ViewChild('warningInvShare') warningInvShareMdl: ModalComponent;
+  @ViewChild('confirmAlt') confirmAltMdl: ModalComponent;
 
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
@@ -233,6 +234,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
   postedList:any[] = [];
   undistAlt:any[]=[];
+  distAlt:any[]=[];
 
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
               private ns: NotesService) { }
@@ -272,6 +274,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     retrieveRiskDistribution(){
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
         console.log(data);
+        this.distAlt = data.distAlt;
         this.undistAlt = data.undistAlt;
         this.riskDistributionData = data.distWrisk;
         this.riskDistId.emit(this.riskDistributionData.riskDistId);
@@ -439,7 +442,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           delWParam: this.deletedData,
           riskDistId:  this.riskDistributionData.riskDistId,
           altNo: this.riskDistributionData.altNo,
-          retLineAmt: this.riskDistributionData.retLineAmt,
+          retLineAmt: this.riskDistributionData.retLineAmt.toString().replace(/[,]/g,''),
           autoCalc: this.riskDistributionData.autoCalc,
           updateUser: JSON.parse(window.localStorage.currentUser).username,
           policyId: this.params.policyId
@@ -532,12 +535,16 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
   onClickSave(){
     let treaty:string[] = this.wparamData.tableData.map(a=>a.treatyId).filter((value, index, self) => self.indexOf(value) === index);
-    console.log(treaty);
     for(let i of treaty){
-      if(this.wparamData.tableData.filter(a=>a.treatyId == i).reduce((a, b) => a + (b['pctShare'] || 0), 0) !== 100){
+      if( Number(this.wparamData.tableData.filter(a=>a.treatyId == i && !a.deleted).reduce((a, b) => a + (parseInt(b['pctShare']) || 0), 0)).toFixed(2) != '100.00'){
         this.warningInvShareMdl.openNoClose();
         return;
       }
+    }
+    if(this.distAlt.length != 0){
+      this.confirmAltMdl.openNoClose();
+      console.log('oyyyy');
+      return;
     }
     this.confirmSave.confirmModal()
   }
