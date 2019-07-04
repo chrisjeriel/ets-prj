@@ -126,6 +126,11 @@ export class DistrictComponent implements OnInit {
   	this.cnclBtn.clickCancel();
   }
 
+  onClickTable(data){
+    this.info = data;
+    this.passTable.disableGeneric = data==null;
+  }
+
 // --------------location stuff----------------------------------------------
   @ViewChild(LovComponent) lovMdl: LovComponent;
   passLOV: any = {};
@@ -148,6 +153,7 @@ export class DistrictComponent implements OnInit {
   }
 
   checkCode(ev, field){
+        this.info = null;
         if(field === 'region'){
             this.oldValue = this.locData.regionCd;
             if (this.locData.regionCd == null || this.locData.regionCd == '') {
