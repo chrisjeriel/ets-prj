@@ -252,6 +252,15 @@ export class ClmClaimProcessingComponent implements OnInit {
     this.selectedPolicyRow = data;
   }
 
+  onRowClick(data){
+    if(data === null || (data !== null && Object.keys(data).length !== 0)){
+      this.selected = data;
+      this.passData.btnDisabled = false;
+    }else{
+      this.passData.btnDisabled = true;
+    }
+  }
+
   onClickAdd(event) {
     this.addModal.openNoClose();
   }
@@ -274,6 +283,7 @@ export class ClmClaimProcessingComponent implements OnInit {
         this.searchParams = searchParams;
         this.passData.tableData = [];
         //this.passData.btnDisabled = true;
+        this.passData.btnDisabled = true;
         this.retrieveClaimsList();
 
    }

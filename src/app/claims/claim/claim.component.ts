@@ -52,9 +52,11 @@ export class ClaimComponent implements OnInit, OnDestroy {
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-      if ($event.nextId === 'Exit') {
-        this.router.navigateByUrl('');
-      } 
+      if ($event.nextId === 'Exit' && this.isInquiry) {
+        this.router.navigateByUrl('/claims-inquiry');
+      } else if($event.nextId === 'Exit' && !this.isInquiry){
+        this.router.navigateByUrl('/clm-claim-processing');
+      }
   
   }
 

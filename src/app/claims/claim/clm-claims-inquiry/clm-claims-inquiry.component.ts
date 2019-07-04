@@ -157,7 +157,6 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	}
 
 	onRowClick(data){
-		console.log(data);
 		let rowData = data;
 		this.loading = true;
 		if(data === null || (data !== null && Object.keys(data).length === 0)){
@@ -188,12 +187,11 @@ export class ClmClaimsInquiryComponent implements OnInit {
 			};
 			this.loading = false;
 		}else{
+			this.claimId = data.claimId;
+			this.claimNo = data.claimNo;
+			this.policyNo = data.policyNo;
 			this.claimsService.getClmGenInfo(rowData.claimId, rowData.claimNo).subscribe(
 				(genData: any)=>{
-					console.log(genData);
-					this.claimId = genData.claim.claimId;
-					this.claimNo = genData.claim.claimNo;
-					this.policyNo = genData.claim.policyNo;
 					this.selected = genData.claim === null ? {} : genData.claim;
 					this.selected.totalLossExpRes = rowData.totalLossExpRes;
 					this.selected.totalLossExpPd = rowData.totalLossExpPd;
