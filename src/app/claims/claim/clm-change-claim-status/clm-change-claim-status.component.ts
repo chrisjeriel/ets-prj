@@ -255,9 +255,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.polListData.tableData.push(i);
           }
           this.polListTable.refreshTable();
-          console.log('y')
           if(this.polNoIsType){
-            console.log('yeet');
             this.selectedPolicy = this.polListData.tableData[0];
             this.setPolicy();
           }
@@ -281,10 +279,8 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     this.queryData.tableData = [];
     this.searchParams.claimNo = this.tempClmNo.join('%-%');
     this.searchParams.policyNo = this.tempPolNo.join('%-%');
-    console.log(this.searchParams);
     this.cs.getChangeClaimStatus(this.searchParams).subscribe(
        (data: any)=>{
-         console.log(data);
          if(data.claimList.length !== 0){
            for(var i of data.claimList){
              for(var j of i.clmAdjusterList){
@@ -514,8 +510,6 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   checkSearchFields(): boolean{
     //check claim no fields if empty
-    console.log(this.tempClmNo);
-    console.log(this.tempPolNo);
     let clmPolEmpty: boolean = true;
     for(var i of this.tempClmNo){
       if(i.trim().length !== 0){

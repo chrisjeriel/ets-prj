@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 //import { UnderwritingPolicyInquiryInfo } from '@app/_models';
-import { ClaimsService } from '@app/_services';
+import { ClaimsService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
@@ -13,14 +13,14 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 	passData: any = {
 	    tHeader: ["Claim No", "Status", "Policy No", "Ceding Company", "Insured", 
-	    		  "Risk", "Loss Date", "Loss Details","Event Type", "Event", 
+	    		  "Risk", "Loss Date", "Loss Details",
 	    		  "Currency", "Total Reserve", "Total Payment", "Adjusters", "Processed By"],
 		dataTypes: ["text", "text", "text", "text", "text", 
-					"text", "date", "text","text","text", 
+					"text", "date", "text",
 					"text", "currency", "currency", "text", "text"],
 	    keys: ['claimNo','clmStatus','policyNo','cedingName','insuredDesc',
-	    	   'riskName', 'lossDate', 'lossDtl', 'eventTypeDesc', 'eventDesc',
-	    	   'currencyCd', 'totalLossExpRes', 'totalLossExpPd', 'riskId', 'processedBy'],
+	    	   'riskName', 'lossDate', 'lossDtl',
+	    	   'currencyCd', 'totalLossExpRes', 'totalLossExpPd', 'adjName', 'processedBy'],
 	    infoFlag: true,
 	    searchFlag: true,
 	    pageLength: 10,
@@ -108,7 +108,9 @@ export class ClmClaimsInquiryComponent implements OnInit {
   		totalLossExpPd: '',
   	};
 
-	constructor(private claimsService: ClaimsService, private titleService: Title) { }
+  	loading: boolean = false;
+
+	constructor(private claimsService: ClaimsService, private titleService: Title, private ns : NotesService) { }
 
   	ngOnInit() {
     	this.titleService.setTitle("Clm | Claim Inquiry");
@@ -133,12 +135,76 @@ export class ClmClaimsInquiryComponent implements OnInit {
          	
          );*/
 		 console.log(data.claimsList);
-       	 if (data != null) {
-       	 	for (var rec of data.claimsList) {
-       	 		this.passData.tableData.push(rec);
-       	 	}
-       	 }
-         this.table.refreshTable();
+       	 if(data != null){
+	         for(var i of data.claimsList){
+	           for(var j of i.clmAdjusterList){
+	             if(i.adjName === undefined){
+	               i.adjName = j.adjName;
+	             }else{
+	               i.adjName = i.adjName + '/' + j.adjName;
+	             }
+	           }
+	           this.passData.tableData.push(i);
+	         }
+	         this.table.refreshTable();
+	       }
        });
+	}
+
+	onRowClick(data){
+		console.log(data);
+		let rowData = data;
+		this.loading = true;
+		if(data === null || (data !== null && Object.keys(data).length === 0)){
+			this.selected = {
+				claimNo: '',
+				clmStatus: '',
+				policyNo: '',
+				coClaimNo: '',
+				cessionDesc: '',
+				lineClassDesc: '',
+				cedingName:'',
+				adjusters:'',
+				adjRefNo:'',
+				riskName: '',
+				lossDate: null,
+				reportDate: null,
+				reportedBy: '',
+				createDate: null,
+				processedBy: '',
+				lossDesc: '',
+				lossPeriod: '',
+				eventTypeDesc: '',
+				eventDesc: '',
+				lossDtl: '',
+				currencyCd: '',
+				totalLossExpRes: '',
+				totalLossExpPd: '',
+			};
+			this.loading = false;
+		}else{
+			this.claimsService.getClmGenInfo(rowData.claimId, rowData.claimNo).subscribe(
+				(genData: any)=>{
+					console.log(genData);
+					this.selected = genData.claim === null ? {} : genData.claim;
+					this.selected.totalLossExpRes = rowData.totalLossExpRes;
+					this.selected.totalLossExpPd = rowData.totalLossExpPd;
+					if(genData.claim !== null){
+						this.selected.adjusters = '';
+						for(var i = 0; i < genData.claim.clmAdjusterList.length; i++){
+							if(i+1 === genData.claim.clmAdjusterList.length){
+								this.selected.adjusters += genData.claim.clmAdjusterList[i].adjName;
+							}else{
+								this.selected.adjusters += genData.claim.clmAdjusterList[i].adjName + ' / ';
+							}
+						}
+					}
+					this.loading = false;
+				},
+				(error: any)=>{
+					this.loading = false;
+				}
+			);
+		}
 	}
 }
