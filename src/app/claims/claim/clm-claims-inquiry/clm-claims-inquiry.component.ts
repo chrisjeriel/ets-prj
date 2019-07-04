@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 //import { UnderwritingPolicyInquiryInfo } from '@app/_models';
 import { ClaimsService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
@@ -110,7 +111,11 @@ export class ClmClaimsInquiryComponent implements OnInit {
 
   	loading: boolean = false;
 
-	constructor(private claimsService: ClaimsService, private titleService: Title, private ns : NotesService) { }
+  	claimId: string = '';
+  	claimNo: string = '';
+  	policyNo: string = '';
+
+	constructor(private claimsService: ClaimsService, private titleService: Title, private ns : NotesService, private router: Router) { }
 
   	ngOnInit() {
     	this.titleService.setTitle("Clm | Claim Inquiry");
@@ -186,6 +191,9 @@ export class ClmClaimsInquiryComponent implements OnInit {
 			this.claimsService.getClmGenInfo(rowData.claimId, rowData.claimNo).subscribe(
 				(genData: any)=>{
 					console.log(genData);
+					this.claimId = genData.claim.claimId;
+					this.claimNo = genData.claim.claimNo;
+					this.policyNo = genData.claim.policyNo;
 					this.selected = genData.claim === null ? {} : genData.claim;
 					this.selected.totalLossExpRes = rowData.totalLossExpRes;
 					this.selected.totalLossExpPd = rowData.totalLossExpPd;
@@ -208,4 +216,19 @@ export class ClmClaimsInquiryComponent implements OnInit {
 			);
 		}
 	}
+
+	navigateToGenInfo() {  
+	    let line = this.policyNo.split('-')[0];
+	    this.router.navigate(
+	                    ['/claims-claim', {
+	                        from: 'edit',
+	                        readonly: true,
+	                        claimId: this.claimId,
+	                        claimNo: this.claimNo,
+	                        line: line,
+	                        exitLink: 'claims-inquiry'
+	                    }],
+	                    { skipLocationChange: true }
+	      );
+  	}
 }
