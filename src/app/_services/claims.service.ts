@@ -189,4 +189,12 @@ export class ClaimsService {
 
         return this.http.post(environment.prodApiUrl + '/claims-service/updateClmDetails',params,header);
     }
+
+    getClmPaytReq(claimId, paytReqNo){
+        const params = new HttpParams()
+            .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+            .set('paytReqNo', (paytReqNo == null || paytReqNo == undefined ? '' : paytReqNo));
+
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmPaytReq',{params});    
+    }
 }
