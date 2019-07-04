@@ -7,6 +7,7 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { ModalComponent }  from '@app/_components/common/modal/modal.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-purge-extracted-policy',
@@ -21,6 +22,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   @ViewChild('lov') tableLov :CustEditableNonDatatableComponent;
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   passData:any={
   	tableData:[],
   	tHeader: ['Policy No', 'TSI Amount', 'Premium Amount', 'Expiry Date', 'P', 'X'],
@@ -60,6 +62,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   first = true;
   policyLov:any;
   selected:any;
+  cancelFlag: boolean= false;
 
   params:any = {
     cedingId : "",
@@ -233,6 +236,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined; 
     this.prepareData();
     console.log(this.purgeData.deletePurge);
 
@@ -380,5 +384,9 @@ export class PurgeExtractedPolicyComponent implements OnInit {
       this.PolicyNo.coSeriesNo  = polNo[4];
       this.PolicyNo.altNo  = polNo[5];
     }
+  }
+
+  onClickCancel(){
+     this.cancelBtn.clickCancel();
   }
 }
