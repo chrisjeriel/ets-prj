@@ -18,7 +18,7 @@
 											<div class="row" style="margin-top: 0px;margin-right: -4px;">
 												<button class="cust-btn col-sm" (click)="gotoInfo();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Details</button>
 												<button class="cust-btn col-sm" (click)="showEditModal(content)">Edit</button>
-												<button class="cust-btn col-sm" (click)="onClickPurge();">Purge</button>
+												<button class="cust-btn col-sm" (click)="onClickPurge();" [disabled]="purgeFlag" [class.cust-btn-disabled]="purgeFlag">Purge</button>
 												<button class="cust-btn col-sm" (click)="onClickRenSave();">Save</button>
 											</div>
 											<div class="row" style="margin-right: -4px;">
@@ -100,7 +100,7 @@
 											<div class="row" style="margin-top: 0px;margin-right: -4px;">
 												<button class="cust-btn col-sm" (click)="gotoInfo();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Details</button>
 												<button class="cust-btn col-sm" [disabled]="true" [class.cust-btn-disabled]="true">Edit</button>
-												<button class="cust-btn col-sm" (click)="onClickPurge();">Purge</button>
+												<button class="cust-btn col-sm" (click)="onClickPurgeNR();" [disabled]="purgeFlagNR" [class.cust-btn-disabled]="purgeFlagNR">Purge</button>
 												<button class="cust-btn col-sm" (click)="onClickNRSave()">Save</button>
 											</div>
 											<div class="row" style="margin-right: -4px;">
@@ -307,7 +307,7 @@
     <div header>Confirmation</div>
     <div body style="min-width: 300px !important;">
         <div class="custom-row-inline-inset" style="text-align: center">                
-            <p>Proceed to Purge Extracted Policy screen?</p>
+            <p>Are you sure you want to purge selected policy?</p>
         </div>
     </div>
     <div footer class="w-100 text-right">
@@ -316,6 +316,18 @@
     </div>
 </app-modal>
 
+<app-modal class="d-none" id="purgeRenewablePolicyModalNR">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset" style="text-align: center">                
+            <p>Are you sure you want to purge selected policy?</p>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="gotoPurgeExtractedPolicyNR(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
 
 <app-modal class="d-none" id="renewableProcessSuccess">
     <div header>Success</div>
@@ -360,6 +372,23 @@
     <div footer style="margin-right: 145px !important;">
       <button class="cust-btn" type="button" (click)="modal.closeModal();"><a>Cancel</a></button>
       <button class="cust-btn" type="button" (click)="saveCatPeril();"><a>Save</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="purgeMsgModal">
+	<div header>Purge</div>
+    <div body style="min-width: 300px !important;">
+        <div class="custom-row-inline-inset row" style="text-align: center">
+        	<div style="width: 100% !important;">
+	           	<div class="col-sm my-modal-text" style="margin-left: 0px !important;">
+	           		<p *ngIf="returnCode == -1">Successfully purged policies.</p>
+	           		<p *ngIf="returnCode == 0">Failed to purge policy.</p>
+	           	</div>
+           	</div>
+        </div>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>
 

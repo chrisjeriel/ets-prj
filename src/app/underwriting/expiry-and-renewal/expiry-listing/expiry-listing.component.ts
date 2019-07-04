@@ -69,6 +69,9 @@ export class ExpiryListingComponent implements OnInit {
   sectionCoverLOVRow:number;
   changes:string = "";
   remarks:string = "";
+  purgeFlag: boolean = true;
+  purgeFlagNR: boolean = true;
+  returnCode: any;
 
   nrReasonCd:string = "";
   nrReasonDescription:string = "";
@@ -280,6 +283,10 @@ export class ExpiryListingComponent implements OnInit {
      saveExpRenewable: []
    }
 
+   purgeData: any = {
+    deletePurge:[]
+   }
+
   selectedPolicyString :any; 
   selectedPolicy :any;
   showEdit :boolean = false;
@@ -298,6 +305,7 @@ export class ExpiryListingComponent implements OnInit {
   printFlag:boolean = false;
   tblIndex: any;
   tblIndexNR: any;
+  selectedData: any;
 
   constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title, private ns: NotesService,  private decimal : DecimalPipe, private router : Router) { }
 
@@ -578,12 +586,43 @@ export class ExpiryListingComponent implements OnInit {
   }
 
   onClickPurge() {
-      //$('#purgeRenewablePolicyModal #modalBtn').trigger('click');
-      console.log(this.passDataNonRenewalPolicies.tableData)
+      $('#purgeRenewablePolicyModal #modalBtn').trigger('click');
+  }
+
+  onClickPurgeNR() {
+      $('#purgeRenewablePolicyModalNR #modalBtn').trigger('click');
   }
 
   gotoPurgeExtractedPolicy() {
-    this.router.navigate(['/purge-extracted-policy', { }], { skipLocationChange: false });
+    //this.router.navigate(['/purge-extracted-policy', { }], { skipLocationChange: false });
+    this.purgeData.deletePurge.push(this.selectedData);
+    this.underWritingService.savePolForPurging(this.purgeData).subscribe((data:any) => {
+      if(data['returnCode'] == 0) {
+        console.log('fail')
+        this.returnCode = 0;
+      } else{
+        this.returnCode = -1;
+        this.purgeFlag = true;
+        this.retrieveExpPolList();
+        $('#purgeMsgModal > #modalBtn').trigger('click');
+      }
+    });
+  }
+
+  gotoPurgeExtractedPolicyNR() {
+    //this.router.navigate(['/purge-extracted-policy', { }], { skipLocationChange: false });
+    this.purgeData.deletePurge.push(this.selectedData);
+    this.underWritingService.savePolForPurging(this.purgeData).subscribe((data:any) => {
+      if(data['returnCode'] == 0) {
+        console.log('fail')
+        this.returnCode = 0;
+      } else{
+        this.returnCode = -1;
+        this.purgeFlagNR = true;
+        this.retrieveExpPolListNR();
+        $('#purgeMsgModal > #modalBtn').trigger('click');
+      }
+    });
   }
 
   showNRReasonLOV() {
@@ -623,6 +662,8 @@ export class ExpiryListingComponent implements OnInit {
       this.remarks = data.remarks;
       this.tblIndex = data.index;
       this.changesFlag = true;
+      this.purgeFlag = false;
+      this.selectedData = data;
       
       if(data.nonRenTag === 'Y'){
          this.reasonFlag = true;
@@ -638,6 +679,8 @@ export class ExpiryListingComponent implements OnInit {
       this.tblIndex = null;
       this.lineCd = null;
       this.changesFlag = false;
+      this.purgeFlag = true;
+      this.selectedData = null;
       this.clearVar();
     }
   }
@@ -657,6 +700,7 @@ export class ExpiryListingComponent implements OnInit {
     this.nrReasonCd = "";
     this.nrReasonDescription = "";
     this.remarks = "";
+    this.selectedData = null;
 
     if(data !== null){
       this.disabledFlag = false;
@@ -669,6 +713,8 @@ export class ExpiryListingComponent implements OnInit {
       this.nrRemarks = data.remarks;
       this.tblIndexNR = data.index;
       this.changesFlag = true;
+      this.purgeFlagNR = false;
+      this.selectedData = data;
       
 
       if(data.nonRenTag === 'Y'){
@@ -682,9 +728,11 @@ export class ExpiryListingComponent implements OnInit {
       this.disabledFlag = true;
       this.secCoverData = data;
       this.coverageData = data;
-      this.tblIndexNR = data.index
+      this.tblIndexNR = data;
       this.lineCd = null;
       this.changesFlag = false;
+      this.purgeFlagNR = true;
+      this.selectedData = null;
       this.clearVar();
     }
     
