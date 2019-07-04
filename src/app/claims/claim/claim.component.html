@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-  <h4>Claim / Claim Processing</h4>
+  <h4>Claim / {{isInquiry ? 'Claim Inquiry' : 'Claim Processing'}}</h4>
   <ngb-tabset (tabChange)="onTabChange($event)">
     <ngb-tab title="General Info">
       <ng-template ngbTabContent>

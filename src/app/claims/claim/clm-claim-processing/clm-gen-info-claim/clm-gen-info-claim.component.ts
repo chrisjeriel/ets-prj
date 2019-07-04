@@ -192,6 +192,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   mdlType: string = 'conf';
   tempLossDate: string = '';
   uneditableLossDate: boolean = false;
+  isInquiry: boolean = false;
 
   @Output() emitClaimInfoId = new EventEmitter<any>();
 
@@ -215,7 +216,21 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       } else if(params['from'] == 'edit') {
         this.claimId = params['claimId'];
         this.claimNo = params['claimNo'];
-
+        //neco
+        if(params['readonly'] !== undefined){
+          this.isInquiry = true;
+          this.adjData.addFlag = false;
+          this.adjData.deleteFlag = false;
+          this.adjData.genericBtn = undefined;
+          this.adjData.uneditable = [];
+          for(var i in this.adjData.tHeader){
+            this.adjData.uneditable.push(true);
+          }
+          this.adjTable.refreshTable();
+        }else{
+          this.isInquiry = false;
+        }
+        //neco end
         this.retrieveClmGenInfo();
       } else if(params['from'] == 'add') {
         this.policyId = params['policyId'];

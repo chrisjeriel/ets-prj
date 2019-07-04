@@ -106,7 +106,9 @@ export class ClaimsService {
 	getChangeClaimStatus(parameters:any){
 		const params = new HttpParams()
             .set('claimId', parameters.claimId === undefined || parameters.claimId === null || parameters.claimId === '' ? '' : parameters.claimId)
+            .set('claimNo', parameters.claimNo === undefined || parameters.claimNo === null || parameters.claimNo === '' ? '' : parameters.claimNo)
             .set('policyId', parameters.policyId === undefined || parameters.policyId === null || parameters.policyId === '' ? '' : parameters.policyId)
+            .set('policyNo', parameters.policyNo === undefined || parameters.policyNo === null || parameters.policyNo === '' ? '' : parameters.policyNo)
             .set('cessionId', parameters.cessionId === undefined || parameters.cessionId === null || parameters.cessionId === '' ? '' : parameters.cessionId)
             .set('cedingId', parameters.cedingId === undefined || parameters.cedingId === null || parameters.cedingId === '' ? '' : parameters.cedingId)
             .set('riskId', parameters.riskId === undefined || parameters.riskId === null || parameters.riskId === '' ? '' : parameters.riskId)

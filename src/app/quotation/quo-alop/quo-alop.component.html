@@ -145,12 +145,12 @@
 	         </div>
 		</div>
 		<div footer class="text-center">
-				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="itemInfoCancel.clickCancel();"><a>Cancel</a></button>
+				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="itemCancelClick();"><a>Cancel</a></button>
 				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
 				<button *ngIf="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
 		</div>
 	</app-modal>
-	<app-cancel-button (onYes)="saveAlopItem('cancel')" #itemInfoCancel></app-cancel-button>
+	<app-cancel-button (onYes)="saveAlopItem('cancel')" (no)="itmInfoMdl.closeModal();" (onCancel)="itmInfoMdl.closeModal();" #itemInfoCancel></app-cancel-button>
 </ng-container>
 
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>

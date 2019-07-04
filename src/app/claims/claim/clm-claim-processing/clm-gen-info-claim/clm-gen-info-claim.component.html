@@ -25,7 +25,7 @@
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Claim No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.coClaimNo" tabindex="1">
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.coClaimNo" [readonly]="isInquiry" tabindex="1">
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Type of Cession</label>
@@ -77,19 +77,19 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">Loss Date</label>
                             <div class="col-sm-5 dp-cont">
-                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();" [tabindex]="2"></datepicker>
+                                <datepicker [type]="'date'" [required]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();" [disabled]="isInquiry" [tabindex]="2"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'time'" [required]="true" [value]="claimData.lossDate?.split('T')[1]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'t'); validateLossDate();" [textAlign]="'center'" [tabindex]="3"></datepicker>
+                                <datepicker [type]="'time'" [required]="true" [value]="claimData.lossDate?.split('T')[1]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'t'); validateLossDate();" [textAlign]="'center'" [disabled]="isInquiry" [tabindex]="3"></datepicker>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">Report Date</label>
                             <div class="col-sm-5 dp-cont">
-                                <datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="claimData.reportDate?.split('T')[0]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'d')" [tabindex]="4"></datepicker>
+                                <datepicker [type]="'date'" [required]="false" [value]="claimData.reportDate?.split('T')[0]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'d')" [disabled]="isInquiry" [tabindex]="4"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'time'" [required]="false" [value]="claimData.reportDate?.split('T')[1]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'t')" [textAlign]="'center'" [tabindex]="5"></datepicker>
+                                <datepicker [type]="'time'" [required]="false" [value]="claimData.reportDate?.split('T')[1]" (valueChange)="claimData.reportDate=dc($event,claimData.reportDate,'t')" [textAlign]="'center'" [disabled]="isInquiry" [tabindex]="5"></datepicker>
                             </div>
                         </div>
                         <div class="input-group">
@@ -103,15 +103,15 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">&nbsp;&nbsp;Loss Cause</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossAbbr" (change)="checkCode($event, 'lc')" appRequired tabindex="8">
-                            <div class="text-search-ico" style="margin-right: 5px !important;">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossAbbr" (change)="checkCode($event, 'lc')" appRequired tabindex="8" [readonly]="isInquiry">
+                            <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showLossCdLOV('C')"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">&nbsp;Event Type</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc" tabindex="10">
-                            <div class="text-search-ico" style="margin-right: 5px !important;">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc" tabindex="10" [readonly]="isInquiry">
+                            <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showClmEventTypeLOV()"></i></a>
                             </div>
                         </div>
@@ -120,19 +120,19 @@
                     <div class="col-sm-6" style="padding-top: 25px !important;">
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Reported By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.reportedBy" tabindex="6">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.reportedBy" tabindex="6" [readonly]="isInquiry">
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Processed By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.processedBy" appRequired tabindex="7">
-                            <div class="text-search-ico" style="margin-right: 5px !important;">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.processedBy" appRequired tabindex="7" [readonly]="isInquiry">
+                            <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showUsersLOV()"></i></a>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Loss Period</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossPdAbbr" (change)="checkCode($event, 'lp')" appRequired tabindex="9">
-                            <div class="text-search-ico" style="margin-right: 5px !important;">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossPdAbbr" (change)="checkCode($event, 'lp')" appRequired tabindex="9" [readonly]="isInquiry">
+                            <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showLossCdLOV('P')"></i></a>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-2">Loss Details</label>
                             <textarea class="form-control form-control-sm col-sm" style="margin-bottom: 17px !important; min-height: 72px !important; font-size: 0.7rem !important"
-                                [(ngModel)]="claimData.lossDtl" appRequired></textarea>
+                                [(ngModel)]="claimData.lossDtl" appRequired [readonly]="isInquiry"></textarea>
                         </div>
                     </div>
 
@@ -692,8 +692,8 @@
                         <div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
                             <label class="form-control-sm top-label">&nbsp;Status</label>
                             <div class="input-group" style="padding-right: 3px;">
-                                <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="claimData.clmStatus" appRequired>
-                                <div class="text-search-ico" style="z-index: 3 !important;">
+                                <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="claimData.clmStatus" appRequired [readonly]="isInquiry">
+                                <div class="text-search-ico" style="z-index: 3 !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showStatusLOV()"></i></a></div>
                             </div>
                         </div>
@@ -726,7 +726,7 @@
             <div class="cust-btn-container">
                 <button type="button" class="cust-btn" [disabled]="claimData.refreshSw != 'Y'" (click)="showRefModal()"><a>Refresh</a></button>
                 <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
-                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                <button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="!isInquiry"><a>Save</a></button>
             </div>
         </div>
     </div>
@@ -741,8 +741,8 @@
     </div>
     <div footer class="text-center" style="width: 100% !important;">
         <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="maintainAdjuster()"><a>Adjusters Maintenance</a></button>
-        <button type="button" class="cust-btn" (click)="onAdjClickCancel()"><a>Cancel</a></button>
-        <button type="button" class="cust-btn" (click)="onAdjClickSave()"><a>Save</a></button>
+        <button type="button" class="cust-btn" (click)="onAdjClickCancel()"><a>{{isInquiry ? 'Close' : 'Cancel'}}</a></button>
+        <button type="button" class="cust-btn" (click)="onAdjClickSave()" *ngIf="!isInquiry"><a>Save</a></button>
     </div>
 </app-modal>
 
