@@ -191,11 +191,12 @@ export class ClmClaimsInquiryComponent implements OnInit {
 					this.selected.totalLossExpPd = rowData.totalLossExpPd;
 					if(genData.claim !== null){
 						this.selected.adjusters = '';
+						console.log(genData.claim.clmAdjusterList);
 						for(var i = 0; i < genData.claim.clmAdjusterList.length; i++){
 							if(i+1 === genData.claim.clmAdjusterList.length){
-								this.selected.adjusters += genData.claim.clmAdjusterList[i].adjName;
+								this.selected.adjusters += genData.claim.clmAdjusterList[i].adjName === null ? '' : genData.claim.clmAdjusterList[i].adjName;
 							}else{
-								this.selected.adjusters += genData.claim.clmAdjusterList[i].adjName + ' / ';
+								this.selected.adjusters += genData.claim.clmAdjusterList[i].adjName === null ? '' : genData.claim.clmAdjusterList[i].adjName + ' / ';
 							}
 						}
 					}
