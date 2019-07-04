@@ -101,7 +101,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
 
   ngDoCheck() {
     if(this.value == '' || this.value == null) {
-      return;
+      this.datepickerVal = null;
     }
 
   	if(this.datepickerVal != null && this.type == 'time' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1].substring(0, 5) != this.value.substring(0, 5)) {
