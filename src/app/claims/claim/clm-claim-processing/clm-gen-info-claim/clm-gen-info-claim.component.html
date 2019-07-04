@@ -720,13 +720,13 @@
     </div>
 </div>
 
-<div class="form-row" style="margin-top: 15px !important;margin-left: -4px !important;">
+<div class="form-row" style="margin-top: 15px !important;margin-left: -4px !important;" *ngIf="!isInquiry">
     <div class="form-group col-sm">
         <div class="col-md-13 text-center">
             <div class="cust-btn-container">
                 <button type="button" class="cust-btn" [disabled]="claimData.refreshSw != 'Y'" (click)="showRefModal()"><a>Refresh</a></button>
                 <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
-                <button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="!isInquiry"><a>Save</a></button>
+                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             </div>
         </div>
     </div>
