@@ -164,7 +164,7 @@ export class ClmClaimProcessingComponent implements OnInit {
   }
 
   retrievePolList(){
-    this.polListTbl.loadingFlag = true;
+    this.polListTbl.overlayLoader = true;
     this.policyListingData.tableData = [];
     this.us.getParListing([{key: 'statusDesc', search: 'IN FORCE'}, 
                            {key: 'policyNo', search: this.noDataFound || this.isFromRisk ? '' : this.tempPolNo.join('%-%')},
@@ -178,12 +178,12 @@ export class ClmClaimProcessingComponent implements OnInit {
         }
         this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return a.distStatDesc === 'P'}); //retrieve pol no with dist status of P (posted)
         this.polListTbl.refreshTable();
-        this.polListTbl.loadingFlag = false;
+        this.polListTbl.overlayLoader = false;
         this.loading = false;
         if(this.isType && this.policyListingData.tableData.length === 0){
           this.noDataFound = true;
           this.openPolLOV();
-          //this.polListTbl.loadingFlag = false;
+          //this.polListTbl.overlayLoader = false;
         }else if(this.isType && this.policyListingData.tableData.length > 0){
           if(this.isFromRisk && this.policyListingData.tableData.length > 1){
             this.openPolLOV();
@@ -198,11 +198,11 @@ export class ClmClaimProcessingComponent implements OnInit {
         this.noDataFound = true;
         this.isFromRisk = false;
         this.openPolLOV();
-        //this.polListTbl.loadingFlag = false;
+        //this.polListTbl.overlayLoader = false;
       }
     },
     (error)=>{
-      this.polListTbl.loadingFlag = false;
+      this.polListTbl.overlayLoader = false;
     });
   }
 

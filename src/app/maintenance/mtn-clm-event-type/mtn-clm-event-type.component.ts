@@ -18,6 +18,7 @@ export class MtnClmEventTypeComponent implements OnInit {
 		tableData: [],
 	    tHeader: ['Event Type Code','Description'],
 	    dataTypes: ['text','text'],
+	    colSize: ['40px', '100px'],
 	    pageLength: 10,
 	    searchFlag: true,
 	    pageStatus: true,
