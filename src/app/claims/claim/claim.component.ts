@@ -24,6 +24,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   claimInfo = {
         claimId: '',
         claimNo: '',
+        projId: '',
         policyNo: '',
         riskId: '',
         riskName:'',
@@ -61,6 +62,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   getClmInfo(ev) {
     this.claimInfo.claimId = ev.claimId;
     this.claimInfo.claimNo = ev.claimNo;
+    this.claimInfo.projId = ev.projId;
     this.claimInfo.policyNo = ev.policyNo;
     this.claimInfo.riskName = ev.riskName;
     this.claimInfo.insuredDesc = ev.insuredDesc;
