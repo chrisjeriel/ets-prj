@@ -61,7 +61,7 @@ export class ClmSectionCoversComponent implements OnInit {
   getClmSec(){
     this.claimService.getClaimSecCover(this.claimId,null).subscribe((data:any)=>{
       console.log(data)
-      this.coverageData = data.claims.clmProject.clmCoverage;
+      this.coverageData = data.claims.project.clmCoverage;
       var deductibles = data.claims.clmDeductibles;
       this.passData.tableData = [];
       for(var i = 0 ; i < deductibles.length;i++){
