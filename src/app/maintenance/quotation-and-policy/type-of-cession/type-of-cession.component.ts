@@ -3,6 +3,8 @@ import { Title } from '@angular/platform-browser';
 import { MaintenanceService, NotesService, QuotationService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -13,6 +15,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class TypeOfCessionComponent implements OnInit {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+    @ViewChild(ConfirmSaveComponent) cs 		: ConfirmSaveComponent;
+	@ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
 
 	passData: any = {
         tableData            : [],
@@ -57,7 +61,6 @@ export class TypeOfCessionComponent implements OnInit {
     cancelFlag      : boolean;
     warnMsg			: string = '';
     type			: string = '';
-    fromCancel		: boolean;
 
     params : any =	{
 		saveTypeOfCession 	: [],
@@ -82,7 +85,20 @@ export class TypeOfCessionComponent implements OnInit {
 		});
 	}
 
-	onSaveTypeOfCession(cancelFlag?){
+	onSaveTypeOfCession(){
+	    //$('#confirm-save #modalBtn2').trigger('click');
+	    this.mtnService.saveMtnTypeOfCession(JSON.stringify(this.params))
+		.subscribe(data => {
+			console.log(data);
+			this.getTypeofCession();
+			//$('app-sucess-dialog #modalBtn').trigger('click');
+			this.success.open();
+			this.params.saveTypeOfCession 	= [];
+			this.passData.disableGeneric = true;
+		});
+	}
+
+	onClickSave(cancelFlag?){
 		this.cancelFlag = cancelFlag !== undefined;
 		this.dialogIcon = '';
 		this.dialogMessage = '';
@@ -92,19 +108,20 @@ export class TypeOfCessionComponent implements OnInit {
 
 		for(let record of this.passData.tableData){
 			console.log(record);
-			if(record.cessionAbbr === null || record.description === null){
+			if(record.cessionAbbr == '' || record.cessionAbbr == null || record.description == '' || record.description == null){
 				if(!record.deleted){
 					isEmpty = 1;
-					this.fromCancel = false;
+					record.fromCancel = false;
+				}else{
+					this.params.deleteTypeOfCession.push(record);
 				}
 			}else{
-				this.fromCancel = true;
+				record.fromCancel = true;
 				if(record.edited && !record.deleted){
-					record.createUser		= (record.createUser === '' || record.createUser === undefined)?this.ns.getCurrentUser():record.createUser;
-					record.createDate		= (record.createDate === '' || record.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
+					record.createUser		= (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
+					record.createDate		= (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
 					record.updateUser		= this.ns.getCurrentUser();
 					record.updateDate		= this.ns.toDateTimeString(0);
-					
 					this.params.saveTypeOfCession.push(record);
 				}else if(record.edited && record.deleted){
 					this.params.deleteTypeOfCession.push(record);
@@ -113,31 +130,22 @@ export class TypeOfCessionComponent implements OnInit {
 		}
 
 		if(isEmpty == 1){
-			setTimeout(()=>{
-                $('.globalLoading').css('display','none');
-                this.dialogIcon = 'error';
-                $('app-sucess-dialog #modalBtn').trigger('click');
-                this.params.saveTypeOfCession 	= [];
-            },500);
+            this.dialogIcon = 'error';
+            this.success.open();
+            this.params.saveTypeOfCession 	= [];
 		}else{
 			if(this.params.saveTypeOfCession.length == 0 && this.params.deleteTypeOfCession.length == 0){
-				setTimeout(()=>{
-					$('.globalLoading').css('display','none');
-					this.dialogIcon = 'info';
-					this.dialogMessage = 'Nothing to save.';
-					$('app-sucess-dialog #modalBtn').trigger('click');
-					this.params.saveTypeOfCession 	= [];
-					this.passData.tableData = this.passData.tableData.filter(a => a.cessionAbbr != '');
-				},500);
+				$('.ng-dirty').removeClass('ng-dirty');
+				this.cs.confirmModal();
+				this.params.saveTypeOfCession 	= [];
+				this.passData.tableData = this.passData.tableData.filter(a => a.cessionAbbr != '');
 			}else{
-				this.mtnService.saveMtnTypeOfCession(JSON.stringify(this.params))
-				.subscribe(data => {
-					console.log(data);
-					this.getTypeofCession();
-					$('app-sucess-dialog #modalBtn').trigger('click');
-					this.params.saveTypeOfCession 	= [];
-					this.passData.disableGeneric = true;
-				});
+				if(this.cancelFlag == true){
+                    this.cs.showLoading(true);
+                    setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+                }else{
+                    this.cs.confirmModal();
+                }
 			}	
 		}
 	}
@@ -173,21 +181,17 @@ export class TypeOfCessionComponent implements OnInit {
   	  	this.cancelBtn.clickCancel();
 	}
 
-	onClickSave(){
-	    $('#confirm-save #modalBtn2').trigger('click');
-	}
-
 	showWarnLov(){
 		$('#warnMdl > #modalBtn').trigger('click');
 	}
 
 	checkCancel(){
 		if(this.cancelFlag == true){
-			if(this.fromCancel){
-				this.cancelBtn.onNo();
-			}else{
-				return;
-			}
+			if(this.passData.tableData.some(i => i.fromCancel == false)){
+                return;
+            }else{
+                this.cancelBtn.onNo();
+            }
 		}
 	}
 

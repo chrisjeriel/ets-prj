@@ -535,6 +535,13 @@ export class ClmClaimHistoryComponent implements OnInit {
           this.passDataHistory.opts[1].vals.unshift(' ');
           this.passDataHistory.opts[1].prev.unshift(' ');
         }
+
+        if((e.histType == 4 || e.histType == 5) && this.passDataApprovedAmt.tableData.length == 0){
+          this.warnMsg = 'Please add Approved Amount before proceeding.';
+          this.showWarnMsg();
+          e.histType = '';
+          e.histTypeDesc = '';
+        }
       }
     });
 
@@ -542,7 +549,7 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.passDataHistory.tableData.forEach(e => {(e.newRec == 1)?e.exGratia='Y':'';});
     }
 
-    setTimeout(() => {      
+    setTimeout(() => {   
       $('#histId').find('tbody').children().each(function(a){
         var cb = $(this).find('input[type=checkbox]');
         var histSelects = $(this).find('select');
@@ -553,11 +560,6 @@ export class ClmClaimHistoryComponent implements OnInit {
           histType.addClass('unclickable');
         }else{
           histType.removeClass('unclickable');
-          if((histType.val() == 4 || histType.val() == 5) && ths.passDataApprovedAmt.tableData.length == 0){
-            ths.warnMsg = 'Please add Approved Amount before proceeding.';
-            ths.showWarnMsg();
-            histType.val('');
-          }
         }
 
       });
