@@ -35,6 +35,9 @@ export class ClaimComponent implements OnInit, OnDestroy {
   sub: any;
   isInquiry: boolean = false;
 
+  disableClmHistory: boolean = true;
+  disableNextTabs: boolean = true;
+
   constructor( private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -68,6 +71,8 @@ export class ClaimComponent implements OnInit, OnDestroy {
     this.claimInfo.riskName = ev.riskName;
     this.claimInfo.insuredDesc = ev.insuredDesc;
     this.claimInfo.clmStatus = ev.clmStatus;
+    this.disableClmHistory = ev.disableClmHistory;
+    this.disableNextTabs = ev.disableNextTabs;
   }
   
 }

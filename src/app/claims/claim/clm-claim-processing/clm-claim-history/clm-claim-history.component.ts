@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ClaimsHistoryInfo } from '@app/_models';
 import { ClaimsService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -178,6 +178,8 @@ export class ClmClaimHistoryComponent implements OnInit {
     policyNo    : '',
     clmStatus   : ''
   };
+
+  @Output() disableNextTabs = new EventEmitter<any>();
 
   constructor(private titleService: Title, private clmService: ClaimsService,private ns : NotesService, private mtnService: MaintenanceService, private modalService: NgbModal) {
 
@@ -426,7 +428,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     };
 
     var subs = forkJoin(this.clmService.saveClaimReserve(JSON.stringify(saveReserve)),this.clmService.saveClaimHistory(JSON.stringify(this.params)))
-                       .pipe(map(([res,hist]) => {return [res,hist]} ));
+                       .pipe(map(([res,hist]) => {return { res, hist } } ));
 
     subs.subscribe(data => {
       console.log(data);
@@ -435,6 +437,10 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.successClmHist.open();
       this.params.saveClaimHistory = [];
       this.passDataHistory.disableAdd = false;
+
+      if(data['hist']['returnCode'] == -1) {
+        this.disableNextTabs.emit(false);
+      }
     });
 
   }
