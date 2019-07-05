@@ -78,9 +78,10 @@ export class MtnCurrencyCodeComponent implements OnInit {
         }*/
         setTimeout(()=>{    //<<<---    using ()=> syntax
              this.maintenanceService.getMtnCurrencyList('').subscribe((data: any) =>{
-             	console.log(data)
                    for(var i = 0; i < data.currency.length; i++){
-                     this.currencyListing.tableData.push(data.currency[i]);      
+                     if(data.currency[i].activeTag == 'Y'){
+                       this.currencyListing.tableData.push(data.currency[i]);
+                     }   
                    }
                    this.table.refreshTable();
                  });
@@ -98,7 +99,8 @@ export class MtnCurrencyCodeComponent implements OnInit {
         });
       } else {
         this.maintenanceService.getMtnCurrencyList(code).subscribe(data => {
-          if(data['currency'].length > 0) {
+          console.log(data)
+          if(data['currency'].length > 0 && data['currency'][0]['activeTag'] == 'Y') {
             data['currency'][0]['ev'] = ev;
             this.selectedData.emit(data['currency'][0]);
           } else {
