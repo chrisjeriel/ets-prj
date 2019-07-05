@@ -8,20 +8,20 @@
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Section Covers">
       <ng-template ngbTabContent>
-        <app-clm-section-covers [claimInfo]="claimInfo"></app-clm-section-covers>
+        <app-clm-section-covers [claimInfo]="claimInfo" (disableClmHistory)="disableClmHistory = $event"></app-clm-section-covers>
       </ng-template>
     </ngb-tab>
-    <ngb-tab class="ngb-tab" title="Claim History">
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableClmHistory" class="ngb-tab" title="Claim History">
       <ng-template ngbTabContent>
-        <app-clm-claim-history [claimInfo]="claimInfo"></app-clm-claim-history>
+        <app-clm-claim-history [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event"></app-clm-claim-history>
       </ng-template>
     </ngb-tab>
-    <ngb-tab title="Claim Distribution">
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs"  title="Claim Distribution">
       <ng-template ngbTabContent>
         <app-claim-distribution></app-claim-distribution>
       </ng-template>
     </ngb-tab>
-    <ngb-tab title="Generate Payment Request">
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs" title="Generate Payment Request">
       <ng-template ngbTabContent>
         <app-clm-claim-payment-request [claimInfo]="claimInfo"></app-clm-claim-payment-request>
       </ng-template>
@@ -31,7 +31,7 @@
         <app-claims-attachment></app-claims-attachment>
       </ng-template>
     </ngb-tab>
-    <ngb-tab title="Print">
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs" title="Print">
       <ng-template ngbTabContent>
 
       </ng-template>

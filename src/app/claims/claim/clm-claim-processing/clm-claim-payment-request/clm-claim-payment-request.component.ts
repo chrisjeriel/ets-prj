@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ClaimsService, NotesService, UnderwritingService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-clm-claim-payment-request',
@@ -12,6 +13,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 
 export class ClmClaimPaymentRequestComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
 
   passData: any = {
     tableData: [],
@@ -50,6 +52,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
   }
 
   getClmPaytReq() {
+    this.table.overlayLoader = true;
     this.cs.getClmPaytReq(this.claimInfo.claimId,'').subscribe(data => {
       this.passData.tableData = data['paytReqList'].map(a => {
                                                                a.refDate = this.ns.toDateTimeString(a.refDate);
@@ -59,13 +62,13 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
                                                                return a;
                                                              });
       this.table.refreshTable();
+      this.disableGenerateBtn = this.passData.tableData.length == 0;
     });
   }
 
   onRowClick(ev) {
-    console.log(ev);
-    this.selected = Object.entries(ev).length === 0 && ev.constructor === Object ? null : ev;
-    this.disableGenerateBtn = ev == null || (Object.entries(ev).length === 0 && ev.constructor === Object);
+    this.selected = ev == null || (Object.entries(ev).length === 0 && ev.constructor === Object) ? null : ev;
+    this.disableGenerateBtn = this.selected == null;
   }
 
   generateRequest(){

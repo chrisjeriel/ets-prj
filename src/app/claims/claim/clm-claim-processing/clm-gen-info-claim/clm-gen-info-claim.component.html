@@ -8,6 +8,10 @@
         padding-top: 12px !important;
         padding-bottom: 11px !important;
     }
+
+    .pad-c {
+        padding-bottom: 3px !important;
+    }
 </style>
 <div>
     <input id="hiddenInpClm" type="text" class="d-none t" [ngModel]="claimData.claimId" (ngModelChange)="checkClmIdF($event)">
@@ -629,7 +633,7 @@
                     <div class="custLoader" style="position: absolute;top:7px;left:-7px;width: 102%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
                     </div>
                 </ng-container>
-                <fieldset class="scheduler-border" style="margin-left: -7px !important; padding-bottom: 3px !important;" [class.pad-b]="line != 'CAR' && line != 'EAR'">
+                <fieldset class="scheduler-border" style="margin-left: -7px !important;" [ngClass]="(line != 'CAR' && line != 'EAR') ? 'pad-b' : 'pad-c'">
                     <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
                     <div class="custom-row-inline-inset" style="margin-left: -30px !important;">
                         <div class="input-group">

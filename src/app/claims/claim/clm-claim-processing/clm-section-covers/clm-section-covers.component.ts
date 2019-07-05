@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ClaimsService, NotesService } from '@app/_services'
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -56,6 +56,8 @@ export class ClmSectionCoversComponent implements OnInit {
     riskName:'',
     insuredDesc:''
   }
+
+  @Output() disableClmHistory = new EventEmitter<any>();
 
   constructor(private claimService: ClaimsService, private ns: NotesService, private route: ActivatedRoute) { }
 
@@ -117,6 +119,8 @@ export class ClmSectionCoversComponent implements OnInit {
         this.successDiag.open();
         this.getClmSec();
         this.form.control.markAsPristine();
+
+        this.disableClmHistory.emit(false);
       }
     });
   }

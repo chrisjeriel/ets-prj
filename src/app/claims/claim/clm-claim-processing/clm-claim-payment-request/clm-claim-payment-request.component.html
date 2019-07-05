@@ -56,8 +56,10 @@
     <div class="col-md-13 text-center">
       <div class="cust-btn-container">
         <button type="button" class="cust-btn" (click)="generateRequest()" [disabled]="disableGenerateBtn"><a>Generate Request</a></button>
-        <button type="button" class="cust-btn"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
       </div>
     </div>
   </div>
 </div>
+
+<app-cancel-button (onYes)="null" [url]="'/clm-claim-processing'" ></app-cancel-button>
