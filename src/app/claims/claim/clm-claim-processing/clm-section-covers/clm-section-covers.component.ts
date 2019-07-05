@@ -96,6 +96,9 @@ export class ClmSectionCoversComponent implements OnInit {
     this.coverageData.createDate = this.ns.toDateTimeString(this.coverageData.createDate);
     this.coverageData.updateDate = this.ns.toDateTimeString(this.coverageData.updateDate);
     this.coverageData.updateUser = this.ns.getCurrentUser();
+    this.coverageData.secISiTag = this.coverageData.secISiTag=='Y' ? 'Y':'N';
+    this.coverageData.secIISiTag = this.coverageData.secIISiTag=='Y' ? 'Y':'N';
+    this.coverageData.secIIISiTag = this.coverageData.secIIISiTag=='Y' ? 'Y':'N';
     this.claimService.saveClaimSecCover(this.coverageData).subscribe((data: any) => {
       if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;
