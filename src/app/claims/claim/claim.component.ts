@@ -28,7 +28,8 @@ export class ClaimComponent implements OnInit, OnDestroy {
         policyNo: '',
         riskId: '',
         riskName:'',
-        insuredDesc:''
+        insuredDesc:'',
+        clmStatus: ''
   }
 
   sub: any;
@@ -66,6 +67,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
     this.claimInfo.policyNo = ev.policyNo;
     this.claimInfo.riskName = ev.riskName;
     this.claimInfo.insuredDesc = ev.insuredDesc;
+    this.claimInfo.clmStatus = ev.clmStatus;
   }
   
 }

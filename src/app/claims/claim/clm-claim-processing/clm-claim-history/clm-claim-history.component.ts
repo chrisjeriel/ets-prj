@@ -176,6 +176,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     riskName    : '',
     insuredDesc : '',
     policyNo    : '',
+    clmStatus   : ''
   };
 
   constructor(private titleService: Title, private clmService: ClaimsService,private ns : NotesService, private mtnService: MaintenanceService, private modalService: NgbModal) {
@@ -190,19 +191,21 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.clmHistoryData.projId      = this.claimInfo.projId;
     this.clmHistoryData.riskName    = this.claimInfo.riskName;
     this.clmHistoryData.insuredDesc = this.claimInfo.insuredDesc; 
+    this.clmHistoryData.claimStat   = this.claimInfo.clmStatus;
     this.getClaimHistory();
     this.getClaimApprovedAmt();
     this.getResStat();
     console.log(this.claimInfo);
-    this.getClaimGenInfo();
+    //this.getClaimGenInfo();
   }
 
-  getClaimGenInfo(){
-    this.clmService.getClmGenInfo(this.clmHistoryData.claimId, this.claimInfo.claimNo)
-    .subscribe(data => {
-      console.log(data);
-    });
-  }
+  // getClaimGenInfo(){
+  //   this.clmService.getClmGenInfo(this.clmHistoryData.claimId, this.claimInfo.claimNo)
+  //   .subscribe(data => {
+  //     console.log(data);
+  //     this.clmHistoryData.claimStat = 
+  //   });
+  // }
 
   getClaimHistory(){
     var subs = forkJoin(this.clmService.getClaimHistory(this.clmHistoryData.claimId,'',this.clmHistoryData.projId,''),this.mtnService.getRefCode('HIST_CATEGORY'),this.mtnService.getRefCode('HIST_TYPE'),
@@ -484,7 +487,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         this.params.saveClaimHistory   = [];
         this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
       }else{
-        if(Number(totResAmt) >= Number(this.clmHistoryData.approvedAmt)){
+        if((Number(totResAmt) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
           this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
           this.showWarnMsg();
           this.params.saveClaimHistory   = [];
@@ -545,7 +548,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         var histSelects = $(this).find('select');
         var histCat = $(histSelects[0]);
         var histType = $(histSelects[1]);
-        (ths.passDataHistory.tableData.some(e => e.exGratia == 'Y'))?cb.prop('disabled',true):'';
+        (ths.passDataHistory.tableData.some(e => e.exGratia == 'Y' && e.newRec != 1))?cb.prop('disabled',true):'';
         if(histCat.val() == '' || histCat.val() == null || histCat.val() == undefined){
           histType.addClass('unclickable');
         }else{
@@ -661,6 +664,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.approvedAmtMdl.closeModal();
     this.addDirtyHistTbl();
     this.dirtyCounter.appAmt = 0;
+    this.passDataApprovedAmt.tableData = [];
   }
 
   onClickNoResStat(){

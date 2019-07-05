@@ -690,7 +690,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       projId : this.claimData.project.projId,
       policyNo: this.claimData.policyNo,
       riskName: this.claimData.project.riskName,
-      insuredDesc: this.claimData.insuredDesc
+      insuredDesc: this.claimData.insuredDesc,
+      clmStatus : this.claimData.clmStatus
     });
   }
 
