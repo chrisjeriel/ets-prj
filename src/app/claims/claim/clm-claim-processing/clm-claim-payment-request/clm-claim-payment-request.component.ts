@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ClaimsService, NotesService, UnderwritingService } from '@app/_services';
@@ -29,6 +29,15 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
   selected: any = null;
   disableGenerateBtn: boolean = false;
 
+  @Input() claimInfo = {
+    claimId: '',
+    claimNo: '',
+    policyNo: '',
+    riskId: '',
+    riskName:'',
+    insuredDesc:''
+  }
+
   constructor(private titleService: Title, private router: Router, private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService) { }
 
   ngOnInit() {
@@ -41,7 +50,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
   }
 
   getClmPaytReq() {
-    this.cs.getClmPaytReq(3,'').subscribe(data => {
+    this.cs.getClmPaytReq(this.claimInfo.claimId,'').subscribe(data => {
       this.passData.tableData = data['paytReqList'].map(a => {
                                                                a.refDate = this.ns.toDateTimeString(a.refDate);
                                                                a.createDate = this.ns.toDateTimeString(a.createDate);

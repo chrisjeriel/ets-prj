@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ClaimsService, NotesService } from '@app/_services'
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -48,6 +48,15 @@ export class ClmSectionCoversComponent implements OnInit {
   cancelFlag:boolean;
   claimId:any;
 
+  @Input() claimInfo = {
+    claimId: '',
+    claimNo: '',
+    policyNo: '',
+    riskId: '',
+    riskName:'',
+    insuredDesc:''
+  }
+
   constructor(private claimService: ClaimsService, private ns: NotesService, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -55,11 +64,12 @@ export class ClmSectionCoversComponent implements OnInit {
       console.log(data)
       this.claimId = data.claimId;
     });
+    
     this.getClmSec();
   }
 
   getClmSec(){
-    this.claimService.getClaimSecCover(this.claimId,null).subscribe((data:any)=>{
+    this.claimService.getClaimSecCover(this.claimInfo.claimId, this.claimInfo.claimNo).subscribe((data:any)=>{
       console.log(data)
       this.coverageData = data.claims.project.clmCoverage;
       var deductibles = data.claims.clmDeductibles;
