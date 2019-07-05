@@ -144,3 +144,7 @@ div h4{
 .hidden {
     display: none;
 }
+
+.cust:hover[disabled] {
+    background: gray !important;
+}

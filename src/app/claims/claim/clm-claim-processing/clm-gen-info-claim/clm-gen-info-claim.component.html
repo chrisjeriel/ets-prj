@@ -741,7 +741,7 @@
     </div>
     <div footer class="text-center" style="width: 100% !important;">
         <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="maintainAdjuster()"><a>Adjusters Maintenance</a></button>
-        <button type="button" class="cust-btn" (click)="onAdjClickCancel()"><a>{{isInquiry ? 'Close' : 'Cancel'}}</a></button>
+        <button type="button" class="cust-btn" (click)="onAdjClickCancel()"><a>{{ isInquiry ? 'Close' : 'Cancel' }}</a></button>
         <button type="button" class="cust-btn" (click)="onAdjClickSave()" *ngIf="!isInquiry"><a>Save</a></button>
     </div>
 </app-modal>
@@ -754,7 +754,7 @@
 
 <app-confirm-save #adjConfirmSave (onYes)="adjSave()"></app-confirm-save>
 <app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? adjCancelBtn.onNo() : null"></app-sucess-dialog>
-<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null"></app-cancel-button>
+<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="modalService.dismissAll()"></app-cancel-button>
 
 <app-confirm-save #confirmSave (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog #successDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>

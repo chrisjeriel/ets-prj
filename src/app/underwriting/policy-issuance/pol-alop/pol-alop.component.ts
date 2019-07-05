@@ -400,6 +400,7 @@ export class PolAlopComponent implements OnInit {
   }
 
   onClickSavePolAlop(){
+    console.log(this.dateErFlag)
     if(!this.dateErFlag)
       $('#polAlop #confirm-save #modalBtn2').trigger('click');
     else{
@@ -414,10 +415,8 @@ export class PolAlopComponent implements OnInit {
   }
 
   checkDates(){
-    console.log('check')
-    console.log(this.polAlopData.issueDate)
-    console.log(new Date(this.polAlopData.issueDate))
     if((new Date(this.polAlopData.issueDate) >= new Date(this.polAlopData.expiryDate))){
+      console.log('pasok')
      highlight(this.to);
      highlight(this.from);
      this.dateErFlag = true;
@@ -427,16 +426,18 @@ export class PolAlopComponent implements OnInit {
      this.dateErFlag = false;
     }
 
-    if((new Date(this.polAlopData.indemFromDate) <= new Date(this.polAlopData.expiryDate))){
-      highlight(this.to);
-      highlight(this.indemFrom);
-      this.dateErFlag = true;
-    }else{
-      unHighlight(this.to);
-      unHighlight(this.indemFrom);
-      this.dateErFlag = false;
+    if(!this.dateErFlag){
+      if((new Date(this.polAlopData.indemFromDate) <= new Date(this.polAlopData.expiryDate))){
+        highlight(this.to);
+        highlight(this.indemFrom);
+        this.dateErFlag = true;
+      }else{
+        unHighlight(this.to);
+        unHighlight(this.indemFrom);
+        this.dateErFlag = false;
+      }
     }
-
+    
     if(this.polAlopData.issueDate == ""){
       this.polAlopData.issueDate = null;
     }else if(this.polAlopData.expiryDate == ""){

@@ -7,17 +7,17 @@
 				<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-1">Claim No</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled value="CAR-2018-000001" name="claimNo">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" readonly [ngModel]="claimInfo.claimNo" name="claimNo">
 					<label class="form-control-sm col-sm-1">Insured</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" disabled value="2nd Inn. Inc" name="secISiTag" name="insured">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" readonly [ngModel]="claimInfo.insuredDesc" name="insuredDesc">
 					<div class="col-sm-1"></div>
 				</div>
 				<div class="input-group" style="margin-bottom: -13px !important;">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-1" style="height: auto;">Policy No</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled value="CAR-2018-00001-99-0001-000" name="polNo">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" readonly [ngModel]="claimInfo.policyNo" name="policyNo">
 					<label class="form-control-sm col-sm-1">Risk</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" disabled value="Ayala Wakeboard" name="risk">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" readonly [ngModel]="claimInfo.riskName" name="riskName">
 					<div class="col-sm-1"></div>
 				</div>
 			</div>
@@ -97,7 +97,7 @@
 <div class="row" style="margin-top: 10px !important;">
 	<div class="col-sm-12 d-flex justify-content-center">
 		<button class="cust-btn">Cancel</button>
-		<button class="cust-btn" (click)="onClickSave()">Save</button>
+		<button class="cust-btn" style="z-index: 500" (click)="onClickSave()">Save</button>
 	</div>
 </div>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>

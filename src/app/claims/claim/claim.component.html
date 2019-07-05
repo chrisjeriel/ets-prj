@@ -8,7 +8,7 @@
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Section Covers">
       <ng-template ngbTabContent>
-        <app-clm-section-covers></app-clm-section-covers>
+        <app-clm-section-covers [claimInfo]="claimInfo"></app-clm-section-covers>
       </ng-template>
     </ngb-tab>
     <ngb-tab class="ngb-tab" title="Claim History">
@@ -23,7 +23,7 @@
     </ngb-tab>
     <ngb-tab title="Generate Payment Request">
       <ng-template ngbTabContent>
-        <app-clm-claim-payment-request></app-clm-claim-payment-request>
+        <app-clm-claim-payment-request [claimInfo]="claimInfo"></app-clm-claim-payment-request>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Attachment">
