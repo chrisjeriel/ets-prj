@@ -387,6 +387,8 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.successAppAmt.open();
       this.paramsApvAmt.saveClaimApprovedAmt   = [];
     }else{
+      console.log(this.cancelFlagAppAmt + ' >> onClickSaveAppAmt this.cancelFlagAppAmt');
+      console.log(this.paramsApvAmt.saveClaimApprovedAmt.length + " >> onClickSaveAppAmt  this.paramsApvAmt.saveClaimApprovedAmt.length");
       if(this.paramsApvAmt.saveClaimApprovedAmt.length == 0){
         this.removeDirtyAppTbl();
         this.removeDirtyHistTbl();
@@ -658,11 +660,13 @@ export class ClmClaimHistoryComponent implements OnInit {
   onClickNoAppAmt(){
     this.approvedAmtMdl.closeModal();
     this.addDirtyHistTbl();
+    this.dirtyCounter.appAmt = 0;
   }
 
   onClickNoResStat(){
     this.resStatMdl.closeModal();
     this.addDirtyHistTbl();
+    this.dirtyCounter.resStats = 0;
     this.clmHistoryData.lossStatCd = this.preVal.lossStatCd;
     this.clmHistoryData.expStatCd  = this.preVal.expStatCd;
   }
