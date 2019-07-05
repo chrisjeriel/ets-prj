@@ -60,6 +60,7 @@ export class ClmSectionCoversComponent implements OnInit {
 
   getClmSec(){
     this.claimService.getClaimSecCover(this.claimId,null).subscribe((data:any)=>{
+      console.log(data)
       this.coverageData = data.claims.clmProject.clmCoverage;
       var deductibles = data.claims.clmDeductibles;
       this.passData.tableData = [];
@@ -94,6 +95,7 @@ export class ClmSectionCoversComponent implements OnInit {
     console.log(this.coverageData)
     this.coverageData.createDate = this.ns.toDateTimeString(this.coverageData.createDate);
     this.coverageData.updateDate = this.ns.toDateTimeString(this.coverageData.updateDate);
+    this.coverageData.updateUser = this.ns.getCurrentUser();
     this.claimService.saveClaimSecCover(this.coverageData).subscribe((data: any) => {
       if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;

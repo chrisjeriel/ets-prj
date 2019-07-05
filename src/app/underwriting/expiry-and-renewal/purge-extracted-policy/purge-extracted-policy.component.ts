@@ -7,6 +7,7 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { ModalComponent }  from '@app/_components/common/modal/modal.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-purge-extracted-policy',
@@ -21,6 +22,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   @ViewChild('lov') tableLov :CustEditableNonDatatableComponent;
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   passData:any={
   	tableData:[],
   	tHeader: ['Policy No', 'TSI Amount', 'Premium Amount', 'Expiry Date', 'P', 'X'],
@@ -60,6 +62,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   first = true;
   policyLov:any;
   selected:any;
+  cancelFlag: boolean= false;
 
   params:any = {
     cedingId : "",
@@ -233,6 +236,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined; 
     this.prepareData();
     console.log(this.purgeData.deletePurge);
 
@@ -382,28 +386,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     }
   }
 
-  test(){
-    /*console.log(this.dateParams.byMonthFrom);
-    console.log(this.dateParams.byMonthTo);
-    console.log(this.dateParams.byYearFrom);
-    console.log(this.dateParams.byYearTo);*/
-    var from = this.dateParams.byYearFrom+'-'+this.dateParams.byMonthFrom+'-01';
-    var to = this.dateParams.byYearTo+'-'+this.dateParams.byMonthTo+'-31';
-
-    if(!this.byDate){
-      //if(this.dateParams.byDateFrom !== undefined && this.dateParams.byDateFrom !== ''){
-        for(var i = 0; i < this.passData.tableData.length; i++){
-          if(to >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
-             from <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0]){
-             this.purgeData.deletePurge.push(this.passData.tableData[i]);
-          }
-        }
-      //}
-      console.log('pasok')
-    }
-    console.log(this.purgeData.deletePurge)
-    
-    //console.log(this.dateParams.byDateTo >= this.ns.toDateTimeString(this.passData.tableData[0].expiryDate).split('T')[0])
-    //console.log(this.dateParams.byDateFrom <= this.ns.toDateTimeString(this.passData.tableData[0].expiryDate).split('T')[0])
+  onClickCancel(){
+     this.cancelBtn.clickCancel();
   }
 }

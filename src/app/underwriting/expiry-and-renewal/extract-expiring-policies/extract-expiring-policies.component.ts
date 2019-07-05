@@ -111,6 +111,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
           this.successDiag.open();
+          this.clearAll();  
         } else {
           this.extractedPolicies = data['recordCount'];
           $('#extractMsgModal > #modalBtn').trigger('click');
@@ -152,6 +153,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   }
 
   onRowClick(event) {    
+    console.log(event)
     if(Object.entries(event).length === 0 && event.constructor === Object){
       this.selected = null;
     } else {
@@ -178,13 +180,23 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
       this.policyId = this.selected.policyId;
       this.polNo = this.selected.policyNo.split('-');
 
-      if(fromMdl !== undefined) {
+      this.underWritingService.getPolGenInfo(this.policyId,null).subscribe((data:any)=>{
+        console.log(data)
+        this.lineCd = data.policy.lineCd;
+        this.lineDescription = data.policy.lineCdDesc;
+        this.typeOfCessionId = data.policy.cessionId;
+        this.typeOfCession = data.policy.cessionDesc;
+        this.cedingId = data.policy.cedingId;
+        this.cedingName = data.policy.cedingName;
+      });
+
+      /*if(fromMdl !== undefined) {
         this.searchArr = this.polNo.map((a, i) => {
           return (i == 0) ? a + '%' : (i == this.polNo.length - 1) ? '%' + a : '%' + a + '%';
         });
 
         this.search('forceSearch',{ target: { value: '' } });
-      }
+      }*/
     }
   }
 
@@ -217,7 +229,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   }
 
   prepareExtractParameters() {
-    /*this.expiryParameters.policyId         = this.radioVal == 'bypolno' ? this.policyId : '';
+    this.expiryParameters.policyId         = this.radioVal == 'bypolno' ? this.policyId : '';
     this.expiryParameters.polLineCd        = this.radioVal == 'bypolno' ? this.polNo[0] : '';
     this.expiryParameters.polYear          = this.radioVal == 'bypolno' ? this.polNo[1] : '';
     this.expiryParameters.polSeqNo         = this.radioVal == 'bypolno' ? this.polNo[2] : '';
@@ -229,35 +241,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.expiryParameters.lineCd           = this.lineCd; 
     this.expiryParameters.cedingId         = this.cedingId; 
     this.expiryParameters.cessionType      = this.typeOfCessionId; 
-    this.expiryParameters.extractUser      = JSON.parse(window.localStorage.currentUser).username; 
-*/
-    if(this.radioVal == 'bypolno'){
-      this.expiryParameters.policyId         = this.policyId;
-      this.expiryParameters.polLineCd        = this.polNo[0];
-      this.expiryParameters.polYear          = this.polNo[1];
-      this.expiryParameters.polSeqNo         = this.polNo[2];
-      this.expiryParameters.polCedingId      = this.polNo[3];
-      this.expiryParameters.coSeriesNo       = this.polNo[4];
-      this.expiryParameters.altNo            = this.polNo[5];
-      this.expiryParameters.extractUser      = this.ns.getCurrentUser(); 
-    }else if(this.radioVal == 'bydate'){
-
-    }else if(this.radioVal == 'bymoyo'){
-      
-    }
-
-    if(this.lineCd!== ''){
-      this.expiryParameters.lineCd           = this.lineCd; 
-    }
-
-    if(this.cedingId !== ''){
-
-    }
-
-    if(this.typeOfCessionId !== ''){
-      
-    }
-
+    this.expiryParameters.extractUser      = this.ns.getCurrentUser(); 
   }
 
   clearPolicyNo() {
@@ -304,7 +288,11 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
         } else if(field === 'typeOfCession'){
             this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
         } else if(field === 'cedingCo') {
-            this.cedingLov.checkCode(String(this.cedingId).padStart(3, '0'), ev);            
+            if(this.cedingId !== ''){
+              this.cedingLov.checkCode(String(this.cedingId).padStart(3, '0'), ev);
+            }else{
+              this.ns.lovLoader(ev,0);
+            }        
         } /*else if(field === 'risk') {
             this.riskLOV.checkCode(this.riskCd, '#riskLOV', ev);
         } else if(field === 'copyRisk') {
