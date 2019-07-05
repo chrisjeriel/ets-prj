@@ -140,8 +140,8 @@ export class SectionCoverComponent implements OnInit {
   }
 
   checkCode(ev){
-    this.ns.lovLoader(ev, 1);
-    this.lineLov.checkCode(this.line.lineCd.toUpperCase(), ev);
+	this.ns.lovLoader(ev, 1);
+	this.lineLov.checkCode(this.line.lineCd.toUpperCase(), ev);
   }
 
   setLine(data){
@@ -154,14 +154,20 @@ export class SectionCoverComponent implements OnInit {
   }
 
   getMtnSectionCovers(){
-  	this.secTable.loadingFlag = true;
+	this.secTable.loadingFlag = true;
   	this.ms.getMtnSectionCovers(this.line.lineCd,'').subscribe(a=>{
   		this.passSecTable.disableAdd = false;
   		this.passSecTable.disableGeneric = false;
-  		this.passSecTable.tableData = a['sectionCovers'];
-  		this.passSecTable.tableData.forEach(a=>{{
-			a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
-  		}})
+		this.passSecTable.tableData = a['sectionCovers'];
+		//deza was here
+		if(this.line.lineCd != ''){
+			this.passSecTable.tableData.forEach(a=>{{
+				a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
+			}})
+		}else{
+			this.passSecTable.tableData = [];
+		}
+		//deza 7/5/2019
   		this.secClick(null);
   		this.secTable.refreshTable();
   	})
