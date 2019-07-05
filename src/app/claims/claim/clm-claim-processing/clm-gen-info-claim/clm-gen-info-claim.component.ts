@@ -687,6 +687,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.emitClaimInfoId.emit({
       claimId: ev,
       claimNo: this.claimNo,
+      projId : this.claimData.project.projId,
       policyNo: this.claimData.policyNo,
       riskName: this.claimData.project.riskName,
       insuredDesc: this.claimData.insuredDesc

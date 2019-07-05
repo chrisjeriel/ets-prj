@@ -180,14 +180,31 @@ export class ClaimsService {
         return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimResStat',params,header);
     }
 
+    saveClaimReserve(params){
+         let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimReserve',params,header);
+    }
     updateClmDetails(params){
         let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-
         return this.http.post(environment.prodApiUrl + '/claims-service/updateClmDetails',params,header);
+    }
+        
+    saveClaimPaytReq(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        
+        return this.http.post(environment.prodApiUrl + '/claims-service/saveClaimPaytReq',params,header);
     }
 
     getClmPaytReq(claimId, paytReqNo){
