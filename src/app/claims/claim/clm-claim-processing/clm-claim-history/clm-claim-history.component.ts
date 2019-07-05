@@ -214,13 +214,13 @@ export class ClmClaimHistoryComponent implements OnInit {
 
       var recHistCat   = data['histCat']['refCodeList'];
       var recHistType  = data['histType']['refCodeList'];
-      var recCurr      = data['cov']['claims']['clmProject']['clmCoverage'];
+      var recCurr      = data['cov']['claims']['project']['clmCoverage'];
       var recParam     = data['param']['parameters'].filter(el => el.paramName.toUpperCase() == 'ALLOW_MAX_SI').map(el => {return el});
 
       this.histTypeData = recHistType;
 
       this.clmHistoryData.mtnParam = String(recParam[0].paramValueV);
-      this.clmHistoryData.allowMaxSi = data['cov']['claims']['clmProject']['clmCoverage'].allowMaxSi;
+      this.clmHistoryData.allowMaxSi = data['cov']['claims']['project']['clmCoverage'].allowMaxSi;
       console.log(this.clmHistoryData.allowMaxSi + ' >>>> this.clmHistoryData.allowMaxSi');
       this.passDataHistory.opts[0].vals = recHistCat.map(i => i.code);
       this.passDataHistory.opts[0].prev = recHistCat.map(i => i.description);
@@ -484,13 +484,13 @@ export class ClmClaimHistoryComponent implements OnInit {
         this.params.saveClaimHistory   = [];
         this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
       }else{
-        if(Number(totResAmt) > Number(this.clmHistoryData.approvedAmt)){
+        if(Number(totResAmt) >= Number(this.clmHistoryData.approvedAmt)){
           this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
           this.showWarnMsg();
           this.params.saveClaimHistory   = [];
         }else{
           if(this.clmHistoryData.mtnParam == 'Y'){
-            if(Number(this.clmHistoryData.allowMaxSi) > Number(this.clmHistoryData.totalRes)){
+            if(Number(this.clmHistoryData.allowMaxSi) >= Number(this.clmHistoryData.totalRes)){
               if(this.cancelFlag == true){
                 this.cs.showLoading(true);
                 setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
