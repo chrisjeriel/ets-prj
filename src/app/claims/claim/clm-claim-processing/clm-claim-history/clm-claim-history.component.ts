@@ -156,6 +156,11 @@ export class ClmClaimHistoryComponent implements OnInit {
     resStats : 0  
   };
 
+  preVal : any = {
+    lossStatcd : '',
+    expStatCd  : ''
+  };
+
   params : any =    {
     saveClaimHistory   : []
   };
@@ -310,30 +315,33 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.cancelFlagResStat = cancelFlag !== undefined;
     this.dialogIcon = '';
    
+    console.log(this.dirtyCounter.resStats + ' CLICK SAVE >> this.dirtyCounter.resStats ');
+    console.log(this.cancelFlagResStat + ' CLICK SAVE >>  this.cancelFlagResStat');
+    console.log($('.ng-dirty').length);
     if(this.clmHistoryData.lossStatCd == '' || this.clmHistoryData.lossStatCd == null || this.clmHistoryData.expStatCd == '' || this.clmHistoryData.expStatCd == null){
       this.dialogIcon = 'error';
       this.successResStat.open();
       this.fromCancelResStat = true;
     }else{
-      // if(this.cancelFlagResStat == true){
-      //     this.csResStat.showLoading(true);
-      //     setTimeout(() => { try{this.csResStat.onClickYes();}catch(e){}},500);
-      //   }else{
-      //     this.csResStat.confirmModal();
-      //   }
-
-      // if(this.dirtyCounter.resStats != 0){
-      //   this.csResStat.confirmModal();
-      // }else{
-      //   this.removeDirtyHistTbl();
-      //   this.csResStat.confirmModal();
-      // }
+      if(this.cancelFlagResStat){
+        this.csResStat.showLoading(true);
+        setTimeout(() => { try{this.csResStat.onClickYes();}catch(e){}},500);
+      }else{
+        if(this.dirtyCounter.resStats != 0){
+          this.csResStat.saveModal.openNoClose();
+        }else{
+          this.removeDirtyHistTbl();
+          this.csResStat.confirmModal();
+        }
+      }
     }
   }
 
   onClickNoResStat(){
     this.resStatMdl.closeModal();
     this.addDirtyHistTbl();
+    this.clmHistoryData.lossStatCd = this.preVal.lossStatCd;
+    this.clmHistoryData.expStatCd  = this.preVal.expStatCd;
   }
 
   onClickSaveAppAmt(cancelFlag?){
@@ -640,6 +648,8 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.resStatMdl.openNoClose();
     this.removeDirtyAppTbl();
     this.removeDirtyHistTbl();
+    this.preVal.lossStatCd = this.clmHistoryData.lossStatCd;
+    this.preVal.expStatCd  = this.clmHistoryData.expStatCd;
   }
 
   showResStatLov(){
