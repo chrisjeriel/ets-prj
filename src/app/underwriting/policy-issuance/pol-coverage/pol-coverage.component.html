@@ -417,9 +417,8 @@
       <button class="cust-btn" type="button" (click)=" saveCatPeril()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
     </div>
     <app-confirm-save id="saveCat" (onYes)="saveCatPeril()"></app-confirm-save>
-    <app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" (no)="catPerilMdl.closeModal()"></app-cancel-button>
+    <app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" (no)="catPerilMdlAlt.closeModal()"></app-cancel-button>
 </app-modal>
-
 </ng-container>
 
 <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>

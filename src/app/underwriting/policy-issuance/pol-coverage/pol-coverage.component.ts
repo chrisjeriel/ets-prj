@@ -1439,7 +1439,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   onCancelCat(){
-    console.log('pasok')
     this.prepareSaveCat();
     if(this.catPerilData.saveCATPerilList.length == 0){
       this.modalService.dismissAll();
