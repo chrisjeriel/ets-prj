@@ -62,7 +62,7 @@
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-confirm-save (onYes)="onSaveMtnLineClass()"></app-confirm-save>
 <app-sucess-dialog  [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveMtnLineClass('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSave('cancel')" (no)="onClickNo()" (onCancel)="onCancel()" [url]="(changeLine == true)?null:'/maintenance-qu-pol'" ></app-cancel-button>
 
 <app-modal class="d-none" id="warnMdl">
     <div header>Warning Message</div>
