@@ -94,10 +94,10 @@ export class ClmClaimsInquiryComponent implements OnInit {
   		adjusters:'',
   		adjRefNo:'',
   		riskName: '',
-  		lossDate: null,
-  		reportDate: null,
+  		lossDate: '',
+  		reportDate: '',
   		reportedBy: '',
-  		createDate: null,
+  		createDate: '',
   		processedBy: '',
   		lossDesc: '',
   		lossPeriod: '',
@@ -114,6 +114,18 @@ export class ClmClaimsInquiryComponent implements OnInit {
   	claimId: string = '';
   	claimNo: string = '';
   	policyNo: string = '';
+
+  	report: any = {
+  		date: null,
+  		time: null
+  	}
+
+  	create: any = {
+  		date: null,
+  		time: null
+  	}
+
+  	lossDate: string = null;
 
 	constructor(private claimsService: ClaimsService, private titleService: Title, private ns : NotesService, private router: Router) { }
 
@@ -157,7 +169,6 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	}
 
 	onRowClick(data){
-		console.log(data);
 		let rowData = data;
 		this.loading = true;
 		if(data === null || (data !== null && Object.keys(data).length === 0)){
@@ -172,10 +183,10 @@ export class ClmClaimsInquiryComponent implements OnInit {
 				adjusters:'',
 				adjRefNo:'',
 				riskName: '',
-				lossDate: null,
-				reportDate: null,
+				lossDate: '',
+				reportDate: '',
 				reportedBy: '',
-				createDate: null,
+				createDate: '',
 				processedBy: '',
 				lossDesc: '',
 				lossPeriod: '',
@@ -186,17 +197,29 @@ export class ClmClaimsInquiryComponent implements OnInit {
 				totalLossExpRes: '',
 				totalLossExpPd: '',
 			};
+			this.create = {
+				date: null,
+				time: null
+			}
+			this.report = {
+				date: null,
+				time: null
+			}
 			this.loading = false;
 		}else{
+			this.claimId = data.claimId;
+			this.claimNo = data.claimNo;
+			this.policyNo = data.policyNo;
 			this.claimsService.getClmGenInfo(rowData.claimId, rowData.claimNo).subscribe(
 				(genData: any)=>{
-					console.log(genData);
-					this.claimId = genData.claim.claimId;
-					this.claimNo = genData.claim.claimNo;
-					this.policyNo = genData.claim.policyNo;
 					this.selected = genData.claim === null ? {} : genData.claim;
 					this.selected.totalLossExpRes = rowData.totalLossExpRes;
 					this.selected.totalLossExpPd = rowData.totalLossExpPd;
+					this.selected.lossDate = this.ns.toDateTimeString(this.selected.lossDate);
+					this.create.date = this.ns.toDateTimeString(this.selected.createDate).split('T')[0];
+					this.create.time = this.ns.toDateTimeString(this.selected.createDate).split('T')[1];
+					this.report.date = this.ns.toDateTimeString(this.selected.reportDate).split('T')[0];
+					this.report.time = this.ns.toDateTimeString(this.selected.reportDate).split('T')[1];
 					if(genData.claim !== null){
 						this.selected.adjusters = '';
 						console.log(genData.claim.clmAdjusterList);
@@ -215,6 +238,9 @@ export class ClmClaimsInquiryComponent implements OnInit {
 				}
 			);
 		}
+		console.log(this.create);
+		console.log(this.report);
+		console.log(this.selected.lossDate);
 	}
 
 	navigateToGenInfo() {  

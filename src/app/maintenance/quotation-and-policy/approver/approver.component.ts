@@ -269,7 +269,7 @@ export class ApproverComponent implements OnInit {
   }
 
   onTableClick(data){
-    this.info = event;
+    this.info = data;
     this.passTable.disableGeneric = data==null;
   }
 }

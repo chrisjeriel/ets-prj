@@ -58,6 +58,7 @@ export class ClmSectionCoversComponent implements OnInit {
   }
 
   @Output() disableClmHistory = new EventEmitter<any>();
+  @Input() isInquiry: boolean = false;
 
   constructor(private claimService: ClaimsService, private ns: NotesService, private route: ActivatedRoute) { }
 

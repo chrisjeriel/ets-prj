@@ -143,14 +143,74 @@
           <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
         </div>
       </app-modal>
-      <button type="button" class="cust-btn" (click)="onClickCancel()" ><a>Cancel</a></button>
-      <button type="button" class="cust-btn" (click)="save()" [class.d-none]="controlHidden.saveBtn"><a>Save</a></button>
+      <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()" ><a>Cancel</a></button>
+      <button type="button" class="cust-btn" (click)="onClickSave()" [class.d-none]="controlHidden.saveBtn"><a>Save</a></button>
       <button type="button" class="cust-btn" (click)="distribute()" [class.d-none]="controlHidden.distributeBtn" ><a>Distribute</a></button>
     </div>
   </div>
 </div>
 
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()"></app-cancel-button>
 
 <app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
+
+<app-modal #warningPosted class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+    You are not allowed to make any modification. The following policies are already posted to final.
+    <div *ngFor="let dist of postedList" class="w-100 text-center">
+      {{dist.policyNo}}
+    </div>
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningPostedMdl.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-modal #warningUnsaved class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+    Please save the changes you have made before distributing the policy.
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningUnsvdedMdl.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+
+<app-modal #warningUndistAlt class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+    Unable to distribute the record. The following policy/alteration distribution must be distributed first.
+    <div *ngFor="let dist of undistAlt" class="w-100 text-center">
+      {{dist.policyNo}}
+    </div>
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningUndistAltMdl.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-modal #warningInvShare class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+    Unable to save the record. Total Share (%) per Treaty must be equal to 100%.
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningInvShareMdl.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-modal #confirmAlt class="d-none">
+  <div header>Confirmation</div>
+  <div body>
+    The status of the subsequent alteration is Distribtuted but not Posted. Saving these changes will update the status of the subsequent alteration to Undistribtuted. Do you want to proceed?
+  </div>
+  <div footer class="w-100 text-right">
+    <button type="button" class="cust-btn" (click)="save();confirmAltMdl.closeModal()" ><a>Yes</a></button>
+    <button type="button" class="cust-btn" (click)="confirmAltMdl.closeModal()" ><a>No</a></button>
+  </div>
+</app-modal>

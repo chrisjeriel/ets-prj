@@ -24,8 +24,12 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   @ViewChild('success') sucessMdl: ModalComponent;
   @ViewChild('successNegate') sucessnegMdl: ModalComponent;
   @ViewChild('successNegateWCoIns') sucessNegWCoMdl: ModalComponent;
-  
-  
+
+  @ViewChild('inProgCoinsMdl') inProgCoinsMdl: ModalComponent;
+  @ViewChild('missingCoinsMdl') missingCoinsMdl: ModalComponent;
+
+  missingCoins:any[] = [];
+  inProgCoins:any[] = [];
 
   nData: DistributionByRiskInfo = new DistributionByRiskInfo(null, null, null, null, null, null);
 
@@ -255,6 +259,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   //NECO 06/04/2019
   retrievePolicyDistribution(){
     this.polService.getPolDistribution(this.params.policyId).subscribe((data: any)=>{
+      this.missingCoins = data.missingCoins;
+      this.inProgCoins = data.inProgCoins;
       this.polDistributionData = data.polDistribution;
       this.treatyDistData.tableData = data.polDistribution.trtyListPerSec;
       this.mainTable.refreshTable();
@@ -294,6 +300,14 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   //END
 
   showConfirmPostMdl(){
+    if(this.missingCoins.length != 0){
+      this.missingCoinsMdl.openNoClose();
+      console.log(this.missingCoins)
+      return;
+    }else if(this.inProgCoins.length != 0){
+      this.inProgCoinsMdl.openNoClose();
+      return;
+    }
     this.confirmPostMdl.openNoClose();
   }
 

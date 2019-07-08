@@ -22,16 +22,16 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   @ViewChild('lov') tableLov :CustEditableNonDatatableComponent;
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
-  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('cancelMain') cancelBtn : CancelButtonComponent;
   passData:any={
-  	tableData:[],
-  	tHeader: ['Policy No', 'TSI Amount', 'Premium Amount', 'Expiry Date', 'P', 'X'],
-  	dataTypes:['text','currency','currency','date', 'checkbox', 'checkbox'],
+       tableData:[],
+       tHeader: ['Policy No', 'TSI Amount', 'Premium Amount', 'Expiry Date', 'P', 'X'],
+       dataTypes:['text','currency','currency','date', 'checkbox', 'checkbox'],
     tooltip:[null,null,null,null,'Processed','Expired'],
     keys:['policyNo','totalSi','totalPrem','expiryDate','processTag','expiryTag'],
     uneditable:[true,true,true,true,true,true],
-  	paginateFlag:true,
-  	infoFlag:true,
+       paginateFlag:true,
+       infoFlag:true,
     pageID:'purge',
 
   }
@@ -53,7 +53,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     deletePurge:[]
   }
 
-  byDate: boolean = true;
+  radioVal: any = 'byPolNo';
   disabledFlag: boolean = true;
   baseOnParam:boolean = false;
   expiredAndProcessed:boolean = false;
@@ -62,7 +62,8 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   first = true;
   policyLov:any;
   selected:any;
-  cancelFlag: boolean= false;
+  completePol: boolean;
+  cancelFlag: boolean;
 
   params:any = {
     cedingId : "",
@@ -72,11 +73,11 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     lineDescription :"",
     typeOfCession :"",
     byDateFrom: '',
-    byDateTo: null,
-    byMonthFrom:null,
-    byMonthTo:null,
-    byYearTo: null,
-    byYearFrom: null
+    byDateTo: '',
+    byMonthFrom:'',
+    byMonthTo:'',
+    byYearTo: '',
+    byYearFrom: ''
   }
 
   dateParams:any = {
@@ -89,17 +90,18 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   PolicyNo: any = {
-    line: null,
-    year: null,
-    sequenceNo: null,
-    companyNo: null,
-    coSeriesNo: null,
-    altNo: null
+    line: '',
+    year: '',
+    sequenceNo: '',
+    companyNo: '',
+    coSeriesNo: '',
+    altNo: ''
   }
   constructor(private modalService: NgbModal,private underwritingService: UnderwritingService,private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
     this.getPolPurging();
+    console.log(this.radioVal)
   }
 
   getPolPurging(){
@@ -149,9 +151,18 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     }
   }
 
+  checkPolNo(){
+    this.completePol = false;
+    if(this.PolicyNo.line == '' || this.PolicyNo.year == '' || this.PolicyNo.sequenceNo == '' || 
+      this.PolicyNo.companyNo == '' || this.PolicyNo.coSeriesNo == '' || this.PolicyNo.altNo == ''){
+      this.completePol = false;
+    }else{
+      this.completePol = true;
+    }
+  }
+
   prepareData(){
     this.purgeData.deletePurge = [];
-    console.log(this.byDate)
     if(this.expiredAndProcessed){
       for(var i = 0; i < this.passData.tableData.length;i++){
         if(this.passData.tableData[i].expiryTag === 'Y' && this.passData.tableData[i].processTag === 'Y'){
@@ -177,66 +188,92 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     }
 
     if(this.baseOnParam){
-      if(this.params.line !== null){
-        for(var i = 0 ; i < this.passData.tableData.length;i++){
-          if(this.passData.tableData[i].policyNo.split('-')[0] === this.params.line){
-            this.purgeData.deletePurge.push(this.passData.tableData[i]);
-          }
-        }
-      }
-
-      if(this.params.typeOfCessionId !== null){
-        for(var i = 0 ; i < this.passData.tableData.length;i++){
-          if(this.passData.tableData[i].cessionId === this.params.typeOfCessionId){
-            this.purgeData.deletePurge.push(this.passData.tableData[i]);
-          }
-        }
-      }
-
-      if(this.params.cedingId !== null){
-        for(var i = 0 ; i < this.passData.tableData.length;i++){
-          if(this.passData.tableData[i].cedingId == this.params.cedingId){
-            this.purgeData.deletePurge.push(this.passData.tableData[i]);
-          }
-        }
-      }
-
-      if(this.PolicyNo.lineCd !== null && this.PolicyNo.altNo !== null){
-        var polNo = this.PolicyNo.lineCd+'-'+this.PolicyNo.year+'-'+this.PolicyNo.sequenceNo+'-'+this.PolicyNo.companyNo+'-'+this.PolicyNo.coSeriesNo+'-'+this.PolicyNo.altNo;
-        for(var i = 0 ; i < this.passData.tableData.length; i++){
-          if(this.passData.tableData[i].policyNo == polNo){
-            this.purgeData.deletePurge.push(this.passData.tableData[i]);
-          }
-        }
-      }
-
-      if(this.byDate){
-        if((this.dateParams.byDateFrom !== undefined && this.dateParams.byDateFrom !== '') && (this.dateParams.byDateTo !== undefined && this.dateParams.byDateTo !== '')){
-          for(var i = 0; i < this.passData.tableData.length; i++){
-            if(this.dateParams.byDateTo >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
-               this.dateParams.byDateFrom <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0]){
-               this.purgeData.deletePurge.push(this.passData.tableData[i]);
+      this.checkPolNo();
+      if(this.completePol){
+          var polNo = this.PolicyNo.line+'-'+this.PolicyNo.year+'-'+this.PolicyNo.sequenceNo+'-'+this.PolicyNo.companyNo+'-'+this.PolicyNo.coSeriesNo+'-'+this.PolicyNo.altNo;
+          for(var i = 0 ; i < this.passData.tableData.length;i++){
+            if(this.passData.tableData[i].policyNo === polNo){
+              this.purgeData.deletePurge.push(this.passData.tableData[i]);
             }
           }
-        }
       }else{
-        if(this.dateParams.byYearFrom !== '' && this.dateParams.byMonthFrom !== '' && this.dateParams.byYearTo !== '' && this.dateParams.byMonthTo !== ''){
-          var from = this.dateParams.byYearFrom+'-'+this.dateParams.byMonthFrom+'-01';
-          var to = this.dateParams.byYearTo+'-'+this.dateParams.byMonthTo+'-31';
+          if(this.radioVal == 'byDate'){
+               if((this.dateParams.byDateFrom !== null && this.dateParams.byDateFrom !== '') && (this.dateParams.byDateTo !== null && this.dateParams.byDateTo !== '')){
+                    if(this.params.cedingId !== '' || this.params.typeOfCessionId !== '' || this.params.line !== ''){
+                         for(var i = 0; i < this.passData.tableData.length; i++){
+                              if((this.dateParams.byDateTo >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
+                                  this.dateParams.byDateFrom <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0]) &&
+                                 (this.passData.tableData[i].cedingId === this.params.cedingId || 
+                                  this.passData.tableData[i].typeOfCessionId === this.params.typeOfCessionId ||
+                                  this.passData.tableData[i].policyNo.split('-')[0] === this.params.line )){
+                                        this.purgeData.deletePurge.push(this.passData.tableData[i]);
+                              }
+                          }
+                    }else{
+                         for(var i = 0; i < this.passData.tableData.length; i++){
+                              if((this.dateParams.byDateTo >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
+                                  this.dateParams.byDateFrom <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0])){
+                                        this.purgeData.deletePurge.push(this.passData.tableData[i]);
+                              }
+                          }
+                    }
+               }else{
+                    if(this.params.cedingId !== '' || this.params.typeOfCessionId !== '' || this.params.line !== ''){
+                         for(var i = 0; i  < this.passData.tableData.length; i++){
+                              if(this.passData.tableData[i].cedingId === this.params.cedingId || 
+                                 this.passData.tableData[i].typeOfCessionId === this.params.typeOfCessionId ||
+                                 this.passData.tableData[i].policyNo.split('-')[0] === this.params.line ){
 
-          for(var i = 0; i < this.passData.tableData.length; i++){
-            if(to >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
-               from <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0]){
-               this.purgeData.deletePurge.push(this.passData.tableData[i]);
-            }
+                                 this.purgeData.deletePurge.push(this.passData.tableData[i]);
+                              }
+                         }
+                    }
+               }
+          }else if(this.radioVal == 'byMonthYear'){
+               if((this.dateParams.byYearFrom !== '' && this.dateParams.byMonthFrom !== '' && this.dateParams.byYearTo !== '' && this.dateParams.byMonthTo !== '')){
+                    if(this.params.cedingId !== '' || this.params.typeOfCessionId !== '' || this.params.line !== ''){
+                      var from = this.ns.toDateTimeString(new Date(Number(this.dateParams.byYearFrom), Number(this.dateParams.byMonthFrom)-1, 1)).split('T')[0];
+                      var to = this.ns.toDateTimeString(new Date(Number(this.dateParams.byYearTo), Number(this.dateParams.byMonthTo)-1, 1)).split('T')[0];
+                      for(var i = 0; i  < this.passData.tableData.length; i++){
+                        if((to >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
+                            from <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0]) &&
+                           (this.passData.tableData[i].cedingId === this.params.cedingId || 
+                            this.passData.tableData[i].typeOfCessionId === this.params.typeOfCessionId ||
+                            this.passData.tableData[i].policyNo.split('-')[0] === this.params.line)){
+
+                            this.purgeData.deletePurge.push(this.passData.tableData[i]);
+                        }
+                      }     
+                    }else{
+                         var from = this.ns.toDateTimeString(new Date(Number(this.dateParams.byYearFrom), Number(this.dateParams.byMonthFrom)-1, 1)).split('T')[0];
+                         var lastDay = new Date(Number(this.dateParams.byYearTo), Number(this.dateParams.byMonthTo), 0).getDate();
+                         var to = this.ns.toDateTimeString(new Date(Number(this.dateParams.byYearTo), Number(this.dateParams.byMonthTo)-1, lastDay)).split('T')[0];
+                         for(var i = 0; i < this.passData.tableData.length; i++){
+                              if((to >= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0] && 
+                                  from <= this.ns.toDateTimeString(this.passData.tableData[i].expiryDate).split('T')[0])){
+                                        this.purgeData.deletePurge.push(this.passData.tableData[i]);
+                              }
+                          }
+                    }
+               }else{
+                    if(this.params.cedingId !== '' || this.params.typeOfCessionId !== '' || this.params.line !== ''){
+                      for(var i = 0; i  < this.passData.tableData.length; i++){
+                        if(this.passData.tableData[i].cedingId === this.params.cedingId || 
+                           this.passData.tableData[i].typeOfCessionId === this.params.typeOfCessionId ||
+                           this.passData.tableData[i].policyNo.split('-')[0] === this.params.line ){
+
+                            this.purgeData.deletePurge.push(this.passData.tableData[i]);
+                        }
+                      }
+                    }
+               }
           }
-        }
       }
     }
   }
 
   saveData(cancelFlag?){
-    this.cancelFlag = cancelFlag !== undefined; 
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     console.log(this.purgeData.deletePurge);
 
@@ -327,18 +364,18 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   }
 
   clearData(){
-    this.params.line = null;
-    this.params.lineDescription = null;
-    this.params.typeOfCession = null;
-    this.params.typeOfCessionId = null;
-    this.params.cedingId = null;
-    this.params.cedingName = null;
-    this.PolicyNo.lineCd = null;
-    this.PolicyNo.year = null;
-    this.PolicyNo.companyNo = null;
-    this.PolicyNo.sequenceNo = null;
-    this.PolicyNo.coSeriesNo = null;
-    this.PolicyNo.altNo = null;
+    this.params.line = '';
+    this.params.lineDescription = '';
+    this.params.typeOfCession = '';
+    this.params.typeOfCessionId = '';
+    this.params.cedingId = '';
+    this.params.cedingName = '';
+    this.PolicyNo.line = '';
+    this.PolicyNo.year = '';
+    this.PolicyNo.companyNo = '';
+    this.PolicyNo.sequenceNo = '';
+    this.PolicyNo.coSeriesNo = '';
+    this.PolicyNo.altNo = '';
     this.dateParams.byDateFrom = '';
     this.dateParams.byDateTo = '';
     this.dateParams.byMonthFrom = '';
@@ -377,16 +414,27 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   setLOV(){
     if(this.selected !== null){
       var polNo = this.selected.policyNo.split('-');
-      this.PolicyNo.lineCd  = polNo[0];
+      var polId = this.selected.policyId;
+      this.PolicyNo.line  = polNo[0];
       this.PolicyNo.year  = polNo[1];
       this.PolicyNo.sequenceNo  = polNo[2];
       this.PolicyNo.companyNo  = polNo[3];
       this.PolicyNo.coSeriesNo  = polNo[4];
       this.PolicyNo.altNo  = polNo[5];
+
+      this.underwritingService.getPolGenInfo(polId,null).subscribe((data:any) => {
+          console.log(data)
+          this.params.line = data.policy.lineCd;
+          this.params.lineDescription = data.policy.lineCdDesc;
+          this.params.typeOfCessionId = data.policy.cessionId;
+          this.params.typeOfCession = data.policy.cessionDesc;
+          this.params.cedingId = data.policy.cedingId;
+          this.params.cedingName = data.policy.cedingName;
+      });
     }
   }
 
-  onClickCancel(){
-     this.cancelBtn.clickCancel();
+  cancel(){
+     this.cancelBtn.clickCancel();           
   }
 }

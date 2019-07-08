@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -45,19 +46,22 @@ export class BlockComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-  	}
+  	},
+    disableAdd: true,
+    disableGeneric: true
   }
   cancelFlag:boolean;
 
-  constructor(private ns:NotesService,private ms:MaintenanceService) { }
+  constructor(private ns:NotesService,private ms:MaintenanceService,private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle('Mtn | Block');
   	setTimeout(a=>this.table.refreshTable(),0)
   }
 
   getBlock(){
   	this.table.loadingFlag = true;
-  	this.ms.getMtnBlock(this.locData.regionCd,this.locData.provinceCd,this.locData.cityCd,this.locData.districtCd).subscribe(a=>{
+  	this.ms.getMtnBlock(this.locData.regionCd,this.locData.provinceCd,this.locData.cityCd,this.locData.districtCd,null).subscribe(a=>{
   		if(a['region'].length != 0){
   			this.passTable.tableData = a['region'][0]['provinceList'][0]['cityList'][0]['districtList'][0]['blockList'];
   			  		this.passTable.tableData.forEach(a=>{
@@ -66,6 +70,7 @@ export class BlockComponent implements OnInit {
   			  			a.updateDate = this.ns.toDateTimeString(a.updateDate);
   			})
 	  	}
+      this.passTable.disableAdd = false;
   		this.table.refreshTable();
   	})
   }
@@ -95,6 +100,10 @@ export class BlockComponent implements OnInit {
   	params.saveBlock = this.passTable.tableData.filter(a=>a.edited && !a.deleted);
   	params.saveBlock.forEach(a=>a.updateUser = this.ns.getCurrentUser());
   	params.delBlock = this.passTable.tableData.filter(a=>a.deleted);
+    this.passTable.tableData.forEach(a=>{
+      a.updateUser = this.ns.getCurrentUser();
+      a.updateDate = this.ns.toDateTimeString(0);
+    })
   	this.ms.saveMtnBlock(params).subscribe(a=>{
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
@@ -207,6 +216,14 @@ export class BlockComponent implements OnInit {
                 this.lovMdl.checkCode('district',this.locData.regionCd, this.locData.provinceCd, this.locData.cityCd, this.locData.districtCd, '', ev);
             }
         }
+
+        this.passTable.tableData = [];
+        this.passTable.disableAdd = true;
+        this.passTable.disableGeneric = true;
+        for(let key of Object.keys(this.locData)){
+          this.locData[key] = null;
+        }
+        this.table.refreshTable();
     }
 
     setCity(data){
