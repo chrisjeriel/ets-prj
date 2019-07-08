@@ -5,7 +5,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject, forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -114,13 +114,48 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	passEvent		: any;
 	tempHcNo		: string = '';
 
+	private sub: any;
+	fromHcMonitoring: any;
+
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
-				private ns : NotesService, private router: Router, private userService : UserService) { 
+				private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute) { 
 	}
 
   	ngOnInit() {
   		this.titleService.setTitle('Quo | Quotation to Hold Cover');
   		this.getQuoteList();
+
+  		this.sub = this.activatedRoute.params.subscribe(params => {
+  			this.fromHcMonitoring = params['tableInfo'];
+  		});
+
+  		console.log(this.fromHcMonitoring);
+  		if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
+		}else{
+			//this.quoteInfo.quotationNo  	 = JSON.parse(this.fromHcMonitoring).quotationNo;
+			// this.quoteInfo.cedingName		 = JSON.parse(this.fromHcMonitoring).cedingName;
+			// this.quoteInfo.insuredDesc		 = JSON.parse(this.fromHcMonitoring).insuredDesc;
+			// this.quoteInfo.riskName			 = JSON.parse(this.fromHcMonitoring).riskName;
+			// this.holdCoverNo				 = JSON.parse(this.fromHcMonitoring).holdCoverNo;
+			// this.holdCover.approvedBy		 = JSON.parse(this.fromHcMonitoring).approvedBy;
+			// this.holdCover.compRefHoldCovNo  = JSON.parse(this.fromHcMonitoring).compRefHoldCovNo;
+			// this.holdCover.createDate		 = JSON.parse(this.fromHcMonitoring).createDate;
+			// this.holdCover.createUser		 = JSON.parse(this.fromHcMonitoring).createUser;
+			// this.holdCover.holdCoverId		 = JSON.parse(this.fromHcMonitoring).holdCoverId;
+			// this.holdCover.holdCoverRevNo	 = JSON.parse(this.fromHcMonitoring).holdCoverRevNo;
+			// this.holdCover.holdCoverSeqNo	 = JSON.parse(this.fromHcMonitoring).holdCoverSeqNo;
+			// this.holdCover.holdCoverYear	 = JSON.parse(this.fromHcMonitoring).holdCoverYear;
+			// this.holdCover.lineCd			 = JSON.parse(this.fromHcMonitoring).lineCd;
+			// this.holdCover.optionId		 	 = JSON.parse(this.fromHcMonitoring).optionId;
+			// this.periodFromDate				 = JSON.parse(this.fromHcMonitoring).periodFrom.split('T')[0] ;
+			// this.periodFromTime				 = JSON.parse(this.fromHcMonitoring).periodFrom.split('T')[1];
+			// this.periodToDate				 = JSON.parse(this.fromHcMonitoring).periodTo.split('T')[0] ;
+			// this.periodToTime				 = JSON.parse(this.fromHcMonitoring).periodTo.split('T')[1] ;
+			// this.holdCover.preparedBy		 = JSON.parse(this.fromHcMonitoring).preparedBy;
+			// this.holdCover.reqBy			 = JSON.parse(this.fromHcMonitoring).reqBy;
+			// this.holdCover.reqDate			 = JSON.parse(this.fromHcMonitoring).reqDate;
+			// this.holdCover.status			 = JSON.parse(this.fromHcMonitoring).status;
+		}
   	}
 
   	getQuoteList(param?){

@@ -6,6 +6,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { environment } from '@environments/environment';
 import { NgbModal,NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -16,6 +18,8 @@ import { Subject } from 'rxjs';
 export class ClaimEventTypeComponent implements OnInit {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	@ViewChild(ConfirmSaveComponent) cs 		: ConfirmSaveComponent;
+	@ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
 	@ViewChild('tabset') tabset: any;
 
 	passData: any = {
@@ -48,6 +52,10 @@ export class ClaimEventTypeComponent implements OnInit {
 		mask: {
 	  		eventTypeCd: 'AAAAAAA'
 	  	},
+	  	limit: {
+	  		eventTypeDesc : 500,
+	  		remarks		  : 4000
+	  	},
 		keys				: ['eventTypeCd','eventTypeDesc','activeTag','remarks'],
 	};
 
@@ -55,7 +63,6 @@ export class ClaimEventTypeComponent implements OnInit {
 	dialogIcon				: string;
 	dialogMessage			: string;
 	warnMsg					: string;
-	fromCancel				: boolean;
 
     params : any =	{
 		saveEventType 		: [],
@@ -81,6 +88,7 @@ export class ClaimEventTypeComponent implements OnInit {
 	}
 
 	getMtnClmEventType(){
+		this.passData.tableData = [];
 		this.mtnService.getMtnClmEventType()
 		.subscribe(data => {
 			console.log(data);
@@ -92,7 +100,18 @@ export class ClaimEventTypeComponent implements OnInit {
 		});
 	}
 
-	onSaveMtnClmEventType(cancelFlag?){
+	onSaveMtnClmEventType(){
+		this.mtnService.saveMtnClmEventType(JSON.stringify(this.params))
+		.subscribe(data => {
+			console.log(data);
+			this.getMtnClmEventType();
+			$('app-sucess-dialog #modalBtn').trigger('click');
+			this.params.saveEventType 	= [];
+			this.passData.disableGeneric = true;
+		});
+	}
+
+	onClickSave(cancelFlag?){
 		this.cancelFlag = cancelFlag !== undefined;
 		this.dialogIcon = '';
 		this.dialogMessage = '';
@@ -104,10 +123,12 @@ export class ClaimEventTypeComponent implements OnInit {
 			if(record.eventTypeCd === '' || record.eventTypeCd === null || record.eventTypeDesc === '' || record.eventTypeDesc === null){
 				if(!record.deleted){
 					isEmpty = 1;
-					this.fromCancel = false;
+					record.fromCancel = false;
+				}else{
+					this.params.deleteEventType.push(record);
 				}
 			}else{
-				this.fromCancel = true;
+				record.fromCancel = true;
 				if(record.edited && !record.deleted){
 					record.createUser		= (record.createUser === '' || record.createUser === undefined)?this.ns.getCurrentUser():record.createUser;
 					record.createDate		= (record.createDate === '' || record.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
@@ -134,40 +155,28 @@ export class ClaimEventTypeComponent implements OnInit {
 			}
 		});
 
-		if(isNotUnique == true){
-			setTimeout(()=>{
-                $('.globalLoading').css('display','none');
+		if(isEmpty == 1){
+			this.dialogIcon = 'error';
+            this.success.open();
+            this.params.saveEventType 	= [];
+		}else{
+			if(isNotUnique == true){
                 this.warnMsg = 'Unable to save the record. Claim Event Type must be unique.';
 				this.showWarnLov();
 				this.params.saveEventType 	= [];
-            },500);
-		}else{
-			if(isEmpty == 1){
-				setTimeout(()=>{
-                    $('.globalLoading').css('display','none');
-                    this.dialogIcon = 'error';
-                    $('app-sucess-dialog #modalBtn').trigger('click');
-                    this.params.saveEventType 	= [];
-                },500);
 			}else{
 				if(this.params.saveEventType.length == 0 && this.params.deleteEventType.length == 0){
-					setTimeout(()=>{
-						$('.globalLoading').css('display','none');
-						this.dialogIcon = 'info';
-						this.dialogMessage = 'Nothing to save.';
-						$('app-sucess-dialog #modalBtn').trigger('click');
-						this.params.saveEventType 	= [];
-						this.passData.tableData = this.passData.tableData.filter(a => a.eventTypeCd != '');
-					},500);
+					$('.ng-dirty').removeClass('ng-dirty');
+					this.cs.confirmModal();
+					this.params.saveEventType 	= [];
+					this.passData.tableData = this.passData.tableData.filter(a => a.eventTypeCd != '');
 				}else{
-					this.mtnService.saveMtnClmEventType(JSON.stringify(this.params))
-					.subscribe(data => {
-						console.log(data);
-						this.getMtnClmEventType();
-						$('app-sucess-dialog #modalBtn').trigger('click');
-						this.params.saveEventType 	= [];
-						this.passData.disableGeneric = true;
-					});
+					if(this.cancelFlag == true){
+                        this.cs.showLoading(true);
+                        setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+                    }else{
+                        this.cs.confirmModal();
+                    }
 				}	
 			}
 		}
@@ -222,17 +231,13 @@ export class ClaimEventTypeComponent implements OnInit {
 		this.cancelBtn.clickCancel();
 	}
 
-	onClickSave(){
-		$('#confirm-save #modalBtn2').trigger('click');
-	}
-
 	checkCancel(){
 		if(this.cancelFlag == true){
-			if(this.fromCancel){
-				this.cancelBtn.onNo();
-			}else{
-				return;
-			}
+			if(this.passData.tableData.some(i => i.fromCancel == false)){
+                return;
+            }else{
+                this.cancelBtn.onNo();
+            }
 		}
 	}
 

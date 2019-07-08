@@ -42,7 +42,7 @@
 
 <app-confirm-save (onYes)="onSaveMtnClmEventType()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveMtnClmEventType('cancel')" [url]="'/maintenance-clm'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-clm'" ></app-cancel-button>
 
 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
@@ -51,7 +51,7 @@
     <div header>Warning Message</div>
     <div body class="container-flex text-center" style="max-width: 300px !important;">
         <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
-            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg }}</b></p>
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">{{ warnMsg }}</p>
         </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    

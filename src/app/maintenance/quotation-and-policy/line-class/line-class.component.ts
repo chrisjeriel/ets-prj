@@ -90,7 +90,7 @@ export class LineClassComponent implements OnInit {
 
   getMtnLineClass(){
     this.table.overlayLoader = true;
-    this.counter = 0
+    this.counter = 0;
     if(this.line === '' || this.line === null){
       this.clearTbl();
     }else{
@@ -105,6 +105,7 @@ export class LineClassComponent implements OnInit {
         this.passData.disableAdd = false;
       });
     }
+    this.tempLineCd    = this.line.toUpperCase();
   }
 
   onSaveMtnLineClass(){
@@ -113,6 +114,9 @@ export class LineClassComponent implements OnInit {
       this.params.saveLineClass.map(i => i.lineCd = this.tempLineCd );
       this.params.deleteLineClass.map(i => i.lineCd = this.tempLineCd );
     }
+    this.params.saveLineClass.map(i => i.description = i.lineClassCdDesc);
+    this.params.deleteLineClass.map(i => i.description = i.lineClassCdDesc);
+
     console.log(this.params);
     this.counter++;
     this.mtnService.saveMtnLineClass(JSON.stringify(this.params))
@@ -277,14 +281,14 @@ export class LineClassComponent implements OnInit {
       this.lineClassData.createDate = event.createDate;
       this.lineClassData.updateDate = event.updateDate;
       this.lineClassData.updateUser = event.updateUser;
-      this.passData.disableGeneric    = false;
+      this.passData.disableGeneric  = false;
       //this.table.refreshTable();
     }else{
       this.lineClassData.createUser = '';
       this.lineClassData.createDate = '';
       this.lineClassData.updateDate = '';
       this.lineClassData.updateUser = '';
-      this.passData.disableGeneric    = true;
+      this.passData.disableGeneric  = true;
     }
   }
 

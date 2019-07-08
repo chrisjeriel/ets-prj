@@ -25,7 +25,7 @@ export class IntermediaryListComponent implements OnInit {
         addFlag     : true,
         editFlag    : true,
         exportFlag	: true,
-        keys        : ['intmId','intmName','activeTag','corpTag','vatTag','address','contactNo','oldIntmId'],
+        keys        : ['intmId','intmName','activeTag','corpTagDesc','vatTagDesc','address','contactNo','oldIntmId'],
         pageID      : 'mtn-intermediary',
         filters		: [{ key: 'intmId',title: 'Intm No',dataType: 'text'},
         			   { key: 'intmName',title: 'Name',dataType: 'text'},

@@ -4,7 +4,8 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { Title } from '@angular/platform-browser';
-import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -14,6 +15,8 @@ import { Subject } from 'rxjs';
 })
 export class InsuredComponent implements OnInit {
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+    @ViewChild(ConfirmSaveComponent) cs 		: ConfirmSaveComponent;
+	@ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
 	@ViewChild('tabset') tabset: any;
 
   	private sub		: any;
@@ -59,7 +62,6 @@ export class InsuredComponent implements OnInit {
 				   });
 
 		this.getInsuredList();
-  		
   	}
 
   	getInsuredList(){
@@ -89,7 +91,46 @@ export class InsuredComponent implements OnInit {
   		
   	}
 
-  	onSaveMtnInsured(cancelFlag?){
+  	onSaveMtnInsured(){
+  		this.insuredReq = {
+			activeTag		: this.cbFuncSave(this.insuredRecord.activeTag),
+			addrLine1		: this.insuredRecord.addrLine1,
+			addrLine2		: this.insuredRecord.addrLine2,
+			addrLine3		: this.insuredRecord.addrLine3,
+			contactNo		: this.insuredRecord.contactNo,
+			corpTag			: this.insuredRecord.corpTag,
+			createDate		: (this.insuredRecord.createDate === '' || this.insuredRecord.createDate === null)?this.ns.toDateTimeString(0):this.insuredRecord.createDate,
+			createUser		: (this.insuredRecord.createUser === '' || this.insuredRecord.createUser === null)?this.ns.getCurrentUser():this.insuredRecord.createUser,
+			emailAdd		: this.insuredRecord.emailAdd,
+			firstName		: this.insuredRecord.firstName,
+			insuredAbbr		: this.insuredRecord.insuredAbbr,
+			insuredId		: this.insuredRecord.insuredId,
+			insuredName		: this.insuredRecord.insuredName,
+			insuredType		: this.insuredRecord.insuredType,
+			lastName		: this.insuredRecord.lastName,
+			middleInitial	: this.insuredRecord.middleInitial,
+			oldInsId		: this.insuredRecord.oldInsId,
+			remarks			: this.insuredRecord.remarks,
+			updateDate		: this.ns.toDateTimeString(0),
+			updateUser		: this.ns.getCurrentUser(),
+			vatTag			: this.insuredRecord.vatTag,
+			zipCd			: this.insuredRecord.zipCd
+
+		}
+
+		this.mtnService.saveMtnInsured(JSON.stringify(this.insuredReq))
+		.subscribe(data => {
+			console.log(data);
+		  	this.dialogIcon = '';
+		  	this.dialogMessage = '';
+		  	this.success.open();
+		  	this.insuredRecord.insuredId = data['insuredIdOut'];
+		  	this.getInsuredList();
+		});	
+	}
+
+
+  	onClickSave(cancelFlag?){
   		this.cancelFlag = cancelFlag !== undefined;
   		this.insuredRecord.insuredName 	= (this.insuredRecord.insuredName === null || this.insuredRecord.insuredName === undefined)? '' : this.insuredRecord.insuredName.trim();
   		this.insuredRecord.insuredAbbr 	= (this.insuredRecord.insuredAbbr === null || this.insuredRecord.insuredAbbr === undefined)?'':this.insuredRecord.insuredAbbr;
@@ -102,55 +143,24 @@ export class InsuredComponent implements OnInit {
   		if(this.insuredRecord.insuredName === '' || this.insuredRecord.insuredAbbr === '' || this.insuredRecord.zipCd === '' || this.insuredRecord.insuredType === '' ||
   		   this.insuredRecord.corpTag === null || this.insuredRecord.vatTag === null ||  this.insuredRecord.addrLine1 === '' ||
   		   (this.insuredRecord.corpTag === 'I' && (this.insuredRecord.firstName === '' || this.insuredRecord.lastName === '') )){
-	  			setTimeout(()=>{
-                    $('.globalLoading').css('display','none');
-                    this.dialogIcon = 'error';
-                    $('app-sucess-dialog #modalBtn').trigger('click');
-                },500);
-
+	  			this.dialogIcon = 'error';
+           		this.success.open();
 	  		    $('.warn').focus();
 				$('.warn').blur();
 				this.fromCancel = false;
   		}else{
   			this.fromCancel = true;
-  			this.insuredReq = {
-						"activeTag"		: this.cbFuncSave(this.insuredRecord.activeTag),
-						"addrLine1"		: this.insuredRecord.addrLine1,
-						"addrLine2"		: this.insuredRecord.addrLine2,
-						"addrLine3"		: this.insuredRecord.addrLine3,
-						"contactNo"		: this.insuredRecord.contactNo,
-						"corpTag"		: this.insuredRecord.corpTag,
-						"createDate"	: (this.insuredRecord.createDate === '' || this.insuredRecord.createDate === null)?this.ns.toDateTimeString(0):this.insuredRecord.createDate,
-						"createUser"	: (this.insuredRecord.createUser === '' || this.insuredRecord.createUser === null)?this.ns.getCurrentUser():this.insuredRecord.createUser,
-						"emailAdd"		: this.insuredRecord.emailAdd,
-						"firstName"		: this.insuredRecord.firstName,
-						"insuredAbbr"	: this.insuredRecord.insuredAbbr,
-						"insuredId"		: this.insuredRecord.insuredId,
-						"insuredName"	: this.insuredRecord.insuredName,
-						"insuredType"	: this.insuredRecord.insuredType,
-						"lastName"		: this.insuredRecord.lastName,
-						"middleInitial"	: this.insuredRecord.middleInitial,
-						"oldInsId"		: this.insuredRecord.oldInsId,
-						"remarks"		: this.insuredRecord.remarks,
-						"updateDate"	: this.ns.toDateTimeString(0),
-						"updateUser"	: this.ns.getCurrentUser(),
-						"vatTag"		: this.insuredRecord.vatTag,
-						"zipCd"			: this.insuredRecord.zipCd
-
-		  	}
-			
-			this.mtnService.saveMtnInsured(JSON.stringify(this.insuredReq))
-		  	.subscribe(data => {
-		  		console.log(data);
-		  		this.dialogIcon = '';
-		  		this.dialogMessage = '';
-		  		$('app-sucess-dialog #modalBtn').trigger('click');
-		  		this.insuredRecord.insuredId = data['insuredIdOut'];
-		  		this.getInsuredList();
-		  	});	
+  			if(this.cancelFlag == true){
+                this.cs.showLoading(true);
+                setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+            }else{
+                this.cs.confirmModal();
+            }
   		}
 	  
   	}
+
+
 
   	cbFunc(data){
   		return data === 'Y' ? true : false;
@@ -195,43 +205,18 @@ export class InsuredComponent implements OnInit {
   			this.insuredRecord.middleInitial = '';
   			this.insuredRecord.lastName = '';
   		}
-  		this.addDirty();
   	}
-
-  	onClickSave(){
-   		$('#confirm-save #modalBtn2').trigger('click');
-	}
 
 	cancel(){
     	this.cancelBtn.clickCancel();
 	}
 
 	addDirty(){
-		$('.cus-dirty').addClass('ng-dirty');
+		$('input').addClass('ng-dirty');
 	}
 
 	fmtOnBlur(){
 		this.insuredRecord.oldInsId = (this.insuredRecord.oldInsId === '' || this.insuredRecord.oldInsId === null)?'':this.insuredRecord.oldInsId.padStart(7,'0') ;
-	}
-
-	onTabChange($event: NgbTabChangeEvent) {
-		if($('.ng-dirty').length != 0 ){
-			$event.preventDefault();
-			const subject = new Subject<boolean>();
-			const modal = this.modalService.open(ConfirmLeaveComponent,{
-			        centered: true, 
-			        backdrop: 'static', 
-			        windowClass : 'modal-size'
-			});
-			modal.componentInstance.subject = subject;
-
-			subject.subscribe(a=>{
-			    if(a){
-			        $('.ng-dirty').removeClass('ng-dirty');
-			        this.tabset.select($event.nextId)
-			    }
-			})
-	    }		
 	}
 
 	checkCancel(){
