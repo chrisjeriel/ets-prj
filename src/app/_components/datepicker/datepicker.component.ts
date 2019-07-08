@@ -100,20 +100,24 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   }
 
   ngDoCheck() {
-  	if(this.datepickerVal != null && this.type == 'time' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1] != this.value) {
-  		if(this.value != '' && this.value != null && this.value != 'undefined' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1] != this.value.substring(0, 5) + ':00') {
+    if(this.value == '' || this.value == null) {
+      this.datepickerVal = null;
+    }
+
+  	if(this.datepickerVal != null && this.type == 'time' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1].substring(0, 5) != this.value.substring(0, 5)) {
+  		if(this.value != '' && this.value != null && this.value != 'undefined') {
   			var d = new Date();
   			var hrs = Number(this.value.split(':')[0]);
   			var mins = Number(this.value.split(':')[1]);
   			d.setHours(hrs, mins, 0);
 
-  			this.datepickerVal = d;	
+  			this.datepickerVal = d;
   		} else {
   			this.datepickerVal = null;
   		}  		
   	} else if(this.datepickerVal != null && this.type == 'date' && this.ns.toDateTimeString(this.datepickerVal).split('T')[0] != this.value) {
   		this.datepickerVal = this.value == '' || this.value == null ? null : new Date(this.value);
-  	} else if(this.datepickerVal != null && this.type == 'datetime' && this.ns.toDateTimeString(this.datepickerVal) != this.value){
+  	} else if(this.datepickerVal != null && this.type == 'datetime' && this.ns.toDateTimeString(this.datepickerVal) != this.value) {
       if(new Date(this.value).getSeconds() == 0) {
         this.value = this.value == '' || this.value == null ? null : this.value.substring(0, 16) + ':00';
       }

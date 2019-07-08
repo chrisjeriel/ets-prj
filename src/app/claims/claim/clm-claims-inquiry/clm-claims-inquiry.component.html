@@ -5,53 +5,56 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-non-datatable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="selected=$event;" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)"></app-cust-non-datatable>
+						<app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="navigateToGenInfo()" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)"></app-cust-non-datatable>
 					</div>
 				</div>
 				<div class="row" style="margin-bottom:10px !important; margin-top: -19px;">
 					<div class="col-sm-6">
+						<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:152%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+						<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+						                <!-- <div style="position: fixed;width: 86%;height: 70%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div> -->
 						<fieldset class="scheduler-border" style="padding-bottom: 18px !important; margin-right: -5px !important;">
 							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 							<div style="margin-right: 20px;">
 								<div class="input-group" style="margin-top: 10px !important;">
 									<label class="form-control-sm col-sm-2">Claim No</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.claimNo">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.claimNo">
 									<label class="form-control-sm col-sm-2">Status</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.clmStatus">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.clmStatus">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Policy No</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.policyNo">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.policyNo">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Co Claim No</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.coClaimNo">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.coClaimNo">
 								</div>
 								<div class="input-group cust-ig" >
 									<label class="form-control-sm col-sm-2">Type of Cession</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.cessionDesc">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.cessionDesc">
 									<label class="form-control-sm col-sm-2">Line Class</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.lineClassDesc">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.lineClassDesc">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Ceding Company</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.cedingName">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.cedingName">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Co Ref No</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.coRefNo">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.coRefNo">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Adjuster</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.adjusters">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.adjusters">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Adjuster Ref No</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.adjRefNo">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.adjRefNo">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Risk</label>
-									<textarea class="form-control form-control-sm col-sm" readonly style="font-size: 11px; min-height: 38px;">{{ selected.riskName }}</textarea>
+									<textarea  readonly class="form-control form-control-sm col-sm" readonly style="font-size: 11px; min-height: 38px;">{{ selected?.project?.riskName }}</textarea>
 								</div>
 							</div>
 						</fieldset>
@@ -62,47 +65,62 @@
 							<div style="margin-right: 20px;">
 								<div class="input-group" style="margin-top: 10px !important;">
 									<label class="form-control-sm col-sm-2">Loss Date</label>
-									<input [value]="selected?.lossDate | date: 'MM/dd/yyyy'" type="datetime-local" class="form-control form-control-sm cust-sm col-sm-4">
+									<!-- <input readonly [value]="ns.toDateTimeString(selected?.lossDate)" type="datetime-local" class="form-control form-control-sm cust-sm col-sm-4"> -->
+									<div class="col-sm-4" style="padding: 0px">
+									    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="selected?.lossDate"></datepicker>
+									</div>
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Report Date</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="05/09/2018" >
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="02:00 AM" style="margin-left: 3px;" >
+									<!-- <input readonly type="date" class="form-control form-control-sm cust-sm col-sm-2" [value]="ns.toDateTimeString(selected?.reportDate)?.split('T')[0]" >
+									<input readonly type="time" class="form-control form-control-sm cust-sm col-sm" [value]="ns.toDateTimeString(selected?.reportDate)?.split('T')[1]" style="margin-left: 3px;" > -->
+									<div class="col-sm" style="padding: 0px">
+									    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="report.date"></datepicker>
+									</div>
+									<div class="col-sm dp-cont">
+									    <datepicker [type]="'time'" [required]="false" [disabled]="true" [value]="report.time"></datepicker>
+									</div>
 									<label class="form-control-sm col-sm-2">Reported By</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="selected.reportedBy">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.reportedBy">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Creation Date</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="05/09/2018" >
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="02:00 AM" style="margin-left: 3px;" >
+									<!-- <input readonly type="date" class="form-control form-control-sm cust-sm col-sm-2" [value]="ns.toDateTimeString(selected?.createDate)?.split('T')[0]" >
+									<input readonly type="time" class="form-control form-control-sm cust-sm col-sm" [value]="ns.toDateTimeString(selected?.createDate)?.split('T')[1]" style="margin-left: 3px;" > -->
+									<div class="col-sm" style="padding: 0px">
+									    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="create.date"></datepicker>
+									</div>
+									<div class="col-sm dp-cont">
+									    <datepicker [type]="'time'" [required]="false" [disabled]="true" [value]="create.time"></datepicker>
+									</div>
 									<label class="form-control-sm col-sm-2">Processed By</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="selected.processedBy">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.processedBy">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Loss Cause</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.lossDesc">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.lossAbbr">
 									<label class="form-control-sm col-sm-2">Loss Period</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.lossPeriod">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.lossPdAbbr">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Event Type</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.eventTypeDesc">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.eventTypeDesc">
 									<label class="form-control-sm col-sm-2">Event</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="selected.eventDesc">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.eventDesc">
 								</div>
 								<div class="input-group cust-ig" style="margin-bottom: 25px !important;">
 									<label class="form-control-sm col-sm-2">Loss Details</label>
-									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;">{{ selected.lossDtl }}</textarea>
+									<textarea  readonly class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;">{{ selected?.lossDtl }}</textarea>
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Currency</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="selected.currencyCd">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.currencyCd">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Total Reserve</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)]="selected.totalLossExpRes">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="selected?.totalLossExpRes | number: '1.2-2'">
 									<label class="form-control-sm col-sm-2">Total Payment</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)]="selected.totalLossExpPd">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="selected?.totalLossExpPd | number: '1.2-2'">
 								</div>
 							</div>
 						</fieldset>

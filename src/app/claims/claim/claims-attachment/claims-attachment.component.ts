@@ -28,6 +28,8 @@ export class ClaimsAttachmentComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @Input() claimInfo: any = {};
 
+  @Input() isInquiry: boolean = false;
+
   passData: any = {
   	    tableData: [],
         tHeader: ['File Name', 'Description', 'Actions'],
@@ -91,6 +93,20 @@ export class ClaimsAttachmentComponent implements OnInit {
   ngOnInit() {
     console.log(this.claimInfo);
     this.titleService.setTitle("Clm | Attachment");
+
+    //neco
+    if(this.isInquiry){
+      this.passData.checkFlag = false;
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.uneditable = [];
+      for(var i in this.passData.tHeader){
+        this.passData.uneditable.push(true);
+      }
+      this.table.refreshTable();
+    }
+    //neco end
+
     this.route.params.subscribe((data:any)=>{
       console.log(data)
       this.claimId = data.claimId;

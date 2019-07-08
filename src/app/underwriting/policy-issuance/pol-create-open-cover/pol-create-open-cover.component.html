@@ -16,11 +16,11 @@
                                     <div class="input-group">
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" [ngModel]="tempQuoteNo[0]" (ngModelChange)="tempQuoteNo[0] = $event.toUpperCase()" (change)="searchQuoteNoFields($event, 'line');" ngbTooltip="Line" name="line" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [(ngModel)]="tempQuoteNo[1]" (change)="searchQuoteNoFields($event, 'year');" name="year" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="tempQuoteNo[2]" (change)="searchQuoteNoFields($event, 'seqNo');" ngbTooltip="Sequence No" name="seqNo" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="tempQuoteNo[3]" (change)="searchQuoteNoFields($event, 'revNo');" ngbTooltip="Revision No" name="revNo" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="tempQuoteNo[4]" (change)="searchQuoteNoFields($event, 'cedingId');" ngbTooltip="Company No" name="cedingId" appRequired>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" [ngModel]="tempQuoteNo[0]" (ngModelChange)="tempQuoteNo[0] = $event.toUpperCase()" (change)="searchQuoteNoFields($event, 'line');" ngbTooltip="Line" name="line" appRequired maxlength="3" mask="SSS">
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [(ngModel)]="tempQuoteNo[1]" (change)="searchQuoteNoFields($event, 'year');" name="year" appRequired numbers-only maxlength="4">
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="tempQuoteNo[2]" (change)="searchQuoteNoFields($event, 'seqNo');" ngbTooltip="Sequence No" name="seqNo" appRequired numbers-only maxlength="5">
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="tempQuoteNo[3]" (change)="searchQuoteNoFields($event, 'revNo');" ngbTooltip="Revision No" name="revNo" appRequired numbers-only maxlength="2">
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="tempQuoteNo[4]" (change)="searchQuoteNoFields($event, 'cedingId');" ngbTooltip="Company No" name="cedingId" appRequired numbers-only maxlength="3">
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
                                         </div>

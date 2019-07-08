@@ -406,6 +406,8 @@ export class PolEndorsementComponent implements OnInit {
                 if(data['returnCode'] == -1){
                     this.dialogIcon = "success";
                     this.successDiag.open();
+                    this.dedTable.markAsPristine();
+                    this.endtTable.markAsPristine();
                     this.retrieveEndt();
                 }else{
                     this.dialogIcon = "error";
@@ -418,6 +420,8 @@ export class PolEndorsementComponent implements OnInit {
                 if(data['returnCode'] == -1){
                     this.dialogIcon = "success";
                     this.successDiag.open();
+                    this.dedTable.markAsPristine();
+                    this.endtTable.markAsPristine();
                     this.retrieveEndt();
                 }else{
                     this.dialogIcon = "error";

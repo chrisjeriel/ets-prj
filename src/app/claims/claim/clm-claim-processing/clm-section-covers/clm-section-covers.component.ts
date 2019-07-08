@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ClaimsService, NotesService } from '@app/_services'
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -48,6 +48,18 @@ export class ClmSectionCoversComponent implements OnInit {
   cancelFlag:boolean;
   claimId:any;
 
+  @Input() claimInfo = {
+    claimId: '',
+    claimNo: '',
+    policyNo: '',
+    riskId: '',
+    riskName:'',
+    insuredDesc:''
+  }
+
+  @Output() disableClmHistory = new EventEmitter<any>();
+  @Input() isInquiry: boolean = false;
+
   constructor(private claimService: ClaimsService, private ns: NotesService, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -55,12 +67,14 @@ export class ClmSectionCoversComponent implements OnInit {
       console.log(data)
       this.claimId = data.claimId;
     });
+    
     this.getClmSec();
   }
 
   getClmSec(){
-    this.claimService.getClaimSecCover(this.claimId,null).subscribe((data:any)=>{
-      this.coverageData = data.claims.clmProject.clmCoverage;
+    this.claimService.getClaimSecCover(this.claimInfo.claimId, this.claimInfo.claimNo).subscribe((data:any)=>{
+      console.log(data)
+      this.coverageData = data.claims.project.clmCoverage;
       var deductibles = data.claims.clmDeductibles;
       this.passData.tableData = [];
       for(var i = 0 ; i < deductibles.length;i++){
@@ -94,6 +108,7 @@ export class ClmSectionCoversComponent implements OnInit {
     console.log(this.coverageData)
     this.coverageData.createDate = this.ns.toDateTimeString(this.coverageData.createDate);
     this.coverageData.updateDate = this.ns.toDateTimeString(this.coverageData.updateDate);
+    this.coverageData.updateUser = this.ns.getCurrentUser();
     this.claimService.saveClaimSecCover(this.coverageData).subscribe((data: any) => {
       if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -105,6 +120,8 @@ export class ClmSectionCoversComponent implements OnInit {
         this.successDiag.open();
         this.getClmSec();
         this.form.control.markAsPristine();
+
+        this.disableClmHistory.emit(false);
       }
     });
   }

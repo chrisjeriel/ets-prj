@@ -97,7 +97,9 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   searchParams: any = {
     claimId: '',
+    claimNo: '',
     policyId: '',
+    policyNo: '',
     riskName:'',
     riskId: '',
     cedingName: '',
@@ -176,15 +178,15 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   openReasonLOV(){
-    this.reasonTable.loadingFlag = true;
+    this.reasonTable.overlayLoader = true;
     this.ms.getMtnClaimReason(null,this.batchOption, 'Y').subscribe(
        (data:any)=>{
          this.reasonData.tableData = data.clmReasonList;
          this.reasonTable.refreshTable();
-         this.reasonTable.loadingFlag = false;
+         this.reasonTable.overlayLoader = false;
        },
        (error:any)=>{
-         this.reasonTable.loadingFlag = false;
+         this.reasonTable.overlayLoader = false;
        }
     );
     this.reasonModal.openNoClose();
@@ -206,7 +208,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   retrieveClaimList(){
-    this.clmListTable.loadingFlag = true;
+    this.clmListTable.overlayLoader = true;
     this.cs.getClaimsListing([
                                 {key: 'policyNo', search: Object.keys(this.selectedPolicy).length === 0 || this.claimNoDataFound ? '' : this.selectedPolicy.policyNo},
                                 {key: 'claimNo', search: this.claimNoDataFound ? '' : this.tempClmNo.join('%-%')}
@@ -220,7 +222,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.selectedClaim = this.clmListData.tableData[0];
             this.setClaim();
           }
-          this.clmListTable.loadingFlag = false;
+          this.clmListTable.overlayLoader = false;
         }else{
           this.claimNoDataFound = true;
           if(this.claimNoIsType){
@@ -228,15 +230,16 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.openClmListing();
           }
         }
+        this.clmListTable.overlayLoader = false;
       },
       (error: any)=>{
-        this.clmListTable.loadingFlag = false;
+        this.clmListTable.overlayLoader = false;
       }
     );
   }
 
   retrievePolList(){
-    this.polListTable.loadingFlag = true;
+    this.polListTable.overlayLoader = true;
     this.us.getParListing([
                             {key: 'policyNo', search: this.polNoDataFound ? '' : this.tempPolNo.join('%-%')},
                             {key: 'cessionDesc', search: this.searchParams.cessionDesc.toUpperCase()},
@@ -252,13 +255,10 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.polListData.tableData.push(i);
           }
           this.polListTable.refreshTable();
-          console.log('y')
           if(this.polNoIsType){
-            console.log('yeet');
             this.selectedPolicy = this.polListData.tableData[0];
             this.setPolicy();
           }
-          this.polListTable.loadingFlag = false;
         }else{
           this.polNoDataFound = true;
           if(this.polNoIsType){
@@ -266,19 +266,21 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.openPolListing();
           }
         }
+        this.polListTable.overlayLoader = false;
       },
       (error: any)=>{
-        this.polListTable.loadingFlag = false;
+        this.polListTable.overlayLoader = false;
       },
     );
   }
 
   retrieveQueryList(){
-    this.queryTable.loadingFlag = true;
+    this.queryTable.overlayLoader = true;
     this.queryData.tableData = [];
+    this.searchParams.claimNo = this.tempClmNo.join('%-%');
+    this.searchParams.policyNo = this.tempPolNo.join('%-%');
     this.cs.getChangeClaimStatus(this.searchParams).subscribe(
        (data: any)=>{
-         console.log(data);
          if(data.claimList.length !== 0){
            for(var i of data.claimList){
              for(var j of i.clmAdjusterList){
@@ -295,10 +297,10 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
            this.queryData.tableData = [];
            this.queryTable.refreshTable();
          }
-         this.queryTable.loadingFlag = false;
+         this.queryTable.overlayLoader = false;
        },
        (error: any)=>{
-         this.queryTable.loadingFlag = false;
+         this.queryTable.overlayLoader = false;
        }
     );
   }
@@ -508,27 +510,32 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   checkSearchFields(): boolean{
     //check claim no fields if empty
+    let clmPolEmpty: boolean = true;
     for(var i of this.tempClmNo){
       if(i.trim().length !== 0){
-        return false; //return false if not empty
+        clmPolEmpty = false; //return false if not empty
+        break;
       }
     }
     //check policy no fields if empty
     for(var j of this.tempPolNo){
-      if(i.trim().length !== 0){
-        return false; //return false if not empty
+      if(j.trim().length !== 0){
+        clmPolEmpty =  false; //return false if not empty
+        break;
       }
     }
+    if(!clmPolEmpty){
+      return false;
+    }else{
+      //check cession type, ceding company, and risk fields if empty
+      if((String(this.searchParams.cessionId).trim().length !== 0 && String(this.searchParams.cessionDesc).trim().length !== 0) ||
+         (String(this.searchParams.cedingId).trim().length !== 0 && String(this.searchParams.cedingName).trim().length !== 0) ||
+         (String(this.searchParams.riskId).trim().length !== 0 && String(this.searchParams.riskName).trim().length !== 0)){
+        return false; //return false if one of the three fields are not empty
+      }
 
-    //check cession type, ceding company, and risk fields if empty
-    if((String(this.searchParams.cessionId).trim().length !== 0 && String(this.searchParams.cessionDesc).trim().length !== 0) ||
-       (String(this.searchParams.cedingId).trim().length !== 0 && String(this.searchParams.cedingName).trim().length !== 0) ||
-       (String(this.searchParams.riskId).trim().length !== 0 && String(this.searchParams.riskName).trim().length !== 0)){
-      return false; //return false if one of the three fields are not empty
+      return true; //return true if all fields are empty, therefore triggering the popup
     }
-
-    return true; //return true if all fields are empty, therefore triggering the popup
-
   }
 
   validateSearch(){

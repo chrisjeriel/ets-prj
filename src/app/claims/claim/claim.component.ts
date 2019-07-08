@@ -1,16 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModal, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
-
 
 @Component({
   selector: 'app-claim',
   templateUrl: './claim.component.html',
   styleUrls: ['./claim.component.css']
 })
-export class ClaimComponent implements OnInit {
+export class ClaimComponent implements OnInit, OnDestroy {
 
 
   passDataHistory: any = {
@@ -28,22 +27,48 @@ export class ClaimComponent implements OnInit {
   claimInfo = {
         claimId: '',
         claimNo: '',
+        projId: '',
         policyNo: '',
         riskId: '',
         riskName:'',
-        insuredDesc:''
+        insuredDesc:'',
+        clmStatus: ''
   }
 
-  constructor( private router: Router, private modalService: NgbModal) { }
+  sub: any;
+  isInquiry: boolean = false;
+
+  disableClmHistory: boolean = true;
+  disableNextTabs: boolean = true;
+
+  constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal) { }
+
   @ViewChild('tabset') tabset: any;
 
+
   ngOnInit() {
+    this.sub = this.route.params.subscribe(
+      (params)=>{
+        if(params['readonly'] !== undefined){
+          this.isInquiry = true;
+        }else{
+          this.isInquiry = false;
+        }
+      }
+    );
+  }
+
+  ngOnDestroy(){
+    this.sub.unsubscribe();
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-      if ($event.nextId === 'Exit') {
-        this.router.navigateByUrl('');
-      } 
+
+      if ($event.nextId === 'Exit' && this.isInquiry) {
+        this.router.navigateByUrl('/claims-inquiry');
+      } else if($event.nextId === 'Exit' && !this.isInquiry){
+        this.router.navigateByUrl('/clm-claim-processing');
+      }
 
       if($('.ng-dirty').length != 0 ){
         $event.preventDefault();
@@ -68,9 +93,13 @@ export class ClaimComponent implements OnInit {
   getClmInfo(ev) {
     this.claimInfo.claimId = ev.claimId;
     this.claimInfo.claimNo = ev.claimNo;
+    this.claimInfo.projId = ev.projId;
     this.claimInfo.policyNo = ev.policyNo;
     this.claimInfo.riskName = ev.riskName;
     this.claimInfo.insuredDesc = ev.insuredDesc;
+    this.claimInfo.clmStatus = ev.clmStatus;
+    this.disableClmHistory = ev.disableClmHistory;
+    this.disableNextTabs = ev.disableNextTabs;
   }
   
 }

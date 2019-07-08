@@ -57,12 +57,12 @@
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Policy No</label>
                                             <div class="input-group col-sm-8">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Line" appRequired [(ngModel)]="tempPolNo[0]" (change)="policyNoChecker($event, 'line')" maxlength="7">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Year" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[1]" (change)="policyNoChecker($event, 'year')" maxlength="4">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[2]" (change)="policyNoChecker($event, 'seqNo')" maxlength="5">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[3]" (change)="policyNoChecker($event, 'cedingId')" maxlength="3">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[4]" (change)="policyNoChecker($event, 'coSeriesNo')" maxlength="4">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[5]" (change)="policyNoChecker($event, 'altNo')" maxlength="3">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Line" appRequired [(ngModel)]="tempPolNo[0]" (change)="policyNoChecker($event, 'line')" maxlength="3" mask="SSS">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Year" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[1]" (change)="policyNoChecker($event, 'year')" maxlength="4" numbers-only>
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[2]" (change)="policyNoChecker($event, 'seqNo')" maxlength="5" numbers-only>
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[3]" (change)="policyNoChecker($event, 'cedingId')" maxlength="3" numbers-only>
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[4]" (change)="policyNoChecker($event, 'coSeriesNo')" maxlength="4" numbers-only>
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[5]" (change)="policyNoChecker($event, 'altNo')" maxlength="3" numbers-only>
                                             </div>
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
@@ -277,10 +277,10 @@
                                 </div>
                                 <div class="input-group" style="text-align: center;">
                                     <div class="cust-btn-container col-sm" style="padding: 0px !important">
-                                        <button type="button" class="cust-btn col-sm" (click)="approve($event)" style="width: 100px"><a>{{authorization !== userName ? 'For Approval' : 'Approve'}}</a></button>
+                                        <button type="button" class="cust-btn col-sm" [disabled]="statusDesc === 'Approved'" [class.cust-btn-disabled]="statusDesc === 'Approved'" (click)="approve($event)" style="width: 100px"><a>{{authorization !== userName ? 'For Approval' : 'Approve'}}</a></button>
                                     </div>      
                                     <div class="cust-btn-container col-sm" style="padding: 0px !important">
-                                        <button type="button" class="cust-btn col-sm" [disabled]="isApproved" (click)="approve($event);" [class.cust-btn-disabled]="authorization !== userName" [disabled]="authorization !== userName" style="width: 100px">Rejected</button>
+                                        <button type="button" class="cust-btn col-sm" (click)="approve($event);" [class.cust-btn-disabled]="authorization !== userName || statusDesc === 'Rejected'" [disabled]="authorization !== userName || statusDesc === 'Rejected'" style="width: 100px">Reject</button>
                                     </div>
                                 </div>
                             </fieldset>

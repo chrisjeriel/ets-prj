@@ -46,7 +46,7 @@
     <div header>Warning Message</div>
     <div body class="container-flex text-center" style="max-width: 300px !important;">
         <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
-            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"><b>{{ warnMsg }}</b></p>
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">{{ warnMsg }}</p>
         </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
@@ -54,6 +54,6 @@
     </div>
 </app-modal>
 
-<app-confirm-save (onYes)="onSaveTypeOfCession()"></app-confirm-save>
+<app-confirm-save (onYes)="onSaveTypeOfCession()" (onNo)="passData.tableData=[]"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveTypeOfCession('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
