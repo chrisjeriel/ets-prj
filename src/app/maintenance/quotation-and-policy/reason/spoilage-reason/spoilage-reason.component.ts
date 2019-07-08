@@ -45,7 +45,8 @@ export class SpoilageReasonComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-  	}
+  	},
+    disableGeneric: true
   }
   cancelFlag:boolean;
 
@@ -114,6 +115,11 @@ export class SpoilageReasonComponent implements OnInit {
 
   onClickCancel(){
   	this.cnclBtn.clickCancel();
+  }
+
+  onTableClick(data){
+    this.info = data;
+    this.passTable.disableGeneric = data == null;
   }
 
 

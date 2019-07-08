@@ -83,13 +83,14 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCurrency", {params});
 	}
 
-	getMtnBlock(regionCd?,provinceCd?,cityCd?,districtCd?,blockCd?){
+	getMtnBlock(regionCd?,provinceCd?,cityCd?,districtCd?,blockCd?,activeTag?){
 		const params = new HttpParams()
 			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
 			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
 			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
 			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
 			.set('blockCd',blockCd ===undefined || blockCd===null ? '' : blockCd)
+			.set('activeTag',activeTag === undefined ? 'Y' : activeTag)
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceBlock',{params});
   }
 
@@ -1075,4 +1076,12 @@ export class MaintenanceService{
         }
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyPoolRetHist', params, header);
     }
+
+    getMtnLossCodeLov(lossCdType, searchStr){
+		const params = new HttpParams()
+			.set('lossCdType', lossCdType === undefined || lossCdType === null ? '' : lossCdType)
+			.set('searchStr', searchStr === undefined || searchStr === null ? '' : searchStr);
+			
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnLossCdLov",{params});
+	}
 }
