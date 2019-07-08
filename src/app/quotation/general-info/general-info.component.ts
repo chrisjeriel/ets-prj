@@ -429,10 +429,11 @@ export class GeneralInfoComponent implements OnInit {
 
 	showPrincipalLOV(){
 		$('#principalLOV #modalBtn').trigger('click');
-		$('#principalLOV #modalBtn').addClass('ng-dirty');
 	}
 
 	setPrincipal(data){
+		$('#hiddenInp').addClass('ng-touched ng-dirty');
+
 		this.genInfoData.principalName = data.insuredName;
 		this.genInfoData.principalId = data.insuredId;
 		this.ns.lovLoader(data.ev, 0);
@@ -443,7 +444,6 @@ export class GeneralInfoComponent implements OnInit {
 
 	showContractorLOV(){
 		$('#contractorLOV #modalBtn').trigger('click');
-		$('#contractorLOV #modalBtn').addClass('ng-dirty');
 	}
 
 
@@ -454,11 +454,12 @@ export class GeneralInfoComponent implements OnInit {
 
 	showIntLOV(){
 		$('#intLOV #modalBtn').trigger('click');
-		$('#intLOV #modalBtn').addClass('ng-dirty')
 	}
 
 
 	setContractor(data){
+		$('#hiddenInp').addClass('ng-touched ng-dirty');
+
 		this.genInfoData.contractorName = data.insuredName;
 		this.genInfoData.contractorId = data.insuredId;
 		this.ns.lovLoader(data.ev, 0);
@@ -470,10 +471,11 @@ export class GeneralInfoComponent implements OnInit {
 
 	showCurrencyModal(){
 		$('#currencyModal #modalBtn').trigger('click');
-		$('#currencyModal #modalBtn').addClass('ng-dirty')
 	}
 
 	setCurrency(data){
+		$('#hiddenInp').addClass('ng-touched ng-dirty');
+
 		this.genInfoData.currencyCd = data.currencyCd;
 		this.genInfoData.currencyRt = data.currencyRt;
 		this.ns.lovLoader(data.ev, 0);
@@ -492,13 +494,14 @@ export class GeneralInfoComponent implements OnInit {
 		return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + arr[4];
 	}
 
-	showCedingCompanyLOV() {
+	showCedingCompanyLOV(event) {
 		$('#cedingCompany #modalBtn').trigger('click');
-		$('#cedingCompany #modalBtn').addClass('ng-dirty')
 	}
 
 
 	setCedingcompany(event){
+		$('#hiddenInp').addClass('ng-touched ng-dirty');
+
 		this.genInfoData.cedingId = this.pad(event.cedingId);
 		this.genInfoData.cedingName = event.cedingName;
 		this.ns.lovLoader(event.ev, 0);
@@ -507,11 +510,11 @@ export class GeneralInfoComponent implements OnInit {
 
 	showCedingCompanyNotMemberLOV() {
 		$('#cedingCompanyNotMember #modalBtn').trigger('click');
-		$('#cedingCompanyNotMember #modalBtn').addClass('ng-dirty')
-
 	}
 
 	setReinsurer(event) {
+		$('#hiddenInp').addClass('ng-touched ng-dirty');
+
 		this.genInfoData.reinsurerId = this.pad(event.cedingId);
 		this.genInfoData.reinsurerName = event.cedingName;
 		this.ns.lovLoader(event.ev, 0);
@@ -535,6 +538,8 @@ export class GeneralInfoComponent implements OnInit {
     }
 
     setInt(event){
+    	$('#hiddenInp').addClass('ng-touched ng-dirty');
+
         this.genInfoData.intmId = this.pad(event.intmId, 6);
         this.genInfoData.intmName = event.intmName;
         this.ns.lovLoader(event.ev, 0);
@@ -726,10 +731,11 @@ export class GeneralInfoComponent implements OnInit {
 
 	showObjectLOV() {
 		$('#objIdLov #modalBtn').trigger('click');
-		$('#objIdLov #modalBtn').addClass('ng-dirty');
 	}
 
 	setObj(data){
+		$('#hiddenInp').addClass('ng-touched ng-dirty');
+
     	this.project.objectId = this.pad(String(data.objectId));
     	this.project.objectDesc = data.description;
     	this.ns.lovLoader(data.ev, 0);
@@ -739,29 +745,33 @@ export class GeneralInfoComponent implements OnInit {
 
   	showOpeningWordingLov(){
   		$('#wordingOpeningIdLov #modalBtn').trigger('click');
-  		$('#wordingOpeningIdLov #modalBtn').addClass('ng-dirty');
   	}
 
   	setOpeningWording(data) {
+  		$('#hiddenInp').addClass('ng-touched ng-dirty');
+
   		this.genInfoData.openingParag = data.wording;
   		this.focusBlur();
   	}
 
   	showClosingWordingLov(){
   		$('#wordingClosingIdLov #modalBtn').trigger('click');
-  		$('#wordingClosingIdLov #modalBtn').addClass('ng-dirty');
   	}
 
-  	setClosingWording(data) {  		
+  	setClosingWording(data) {
+  		$('#hiddenInp').addClass('ng-touched ng-dirty');
+
   		this.genInfoData.closingParag = data.wording;
   		this.focusBlur();
   	}
 
   	showAltWordingLov(){
   		$('#wordingAltIdLov #modalBtn').trigger('click');
-  		$('#wordingAltIdLov #modalBtn').addClass('ng-dirty');
   	}
+
   	setAltWording(data) {
+  		$('#hiddenInp').addClass('ng-touched ng-dirty');
+  		
   		this.genInfoData.altWordings = data.wording;
   		this.focusBlur();
   	}

@@ -37,6 +37,7 @@ export class MtnLossCdComponent implements OnInit {
 	@Input() filters: any = null;
 	@Input() lovCheckBox: boolean = false;
 	selects: any[] = [];
+	fromInput: boolean = false;
 
 	constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
@@ -73,21 +74,73 @@ export class MtnLossCdComponent implements OnInit {
 	    }
     }
 
-    openModal(){
-    	this.lossCd.tableData = [];
-    	this.table.overlayLoader = true;
-    	this.maintenanceService.getMtnLossCode([]).subscribe(data =>{
-        	var records = data['lossCd'];
-        	if(this.filters != null) {
-        		records = records.filter(this.filters);
-        	}
-        	
-            this.lossCd.tableData = records;
-        	this.table.refreshTable();
-      	});
+    openModal() {
+    	if(!this.fromInput) {
+    		this.lossCd.tableData = [];
+	    	this.table.overlayLoader = true;
+	    	this.maintenanceService.getMtnLossCode([]).subscribe(data =>{
+	        	var records = data['lossCd'];
+	        	if(this.filters != null) {
+	        		records = records.filter(this.filters);
+	        	}
+	        	
+	            this.lossCd.tableData = records;
+	        	this.table.refreshTable();
+	      	});
+    	} else {
+    		this.fromInput = false;
+    	}
+    	
  	}
 
  	cancel() {
 		this.cancelBtn.next();
+	}
+
+	checkCode(lossCd, str, ev) {
+		var obj = {
+			lossCd: '',
+		  	lossAbbr: '',
+		  	lossDesc: ''
+		}
+
+		if(str === ''){
+			obj['lossCdType'] = lossCd;
+			obj['ev'] = ev;
+			obj['singleSearchLov'] = true;
+
+			this.selectedData.emit(obj);
+		} else {
+			this.maintenanceService.getMtnLossCodeLov(lossCd, str).subscribe(data => {
+				if(data['lossCdList'].length == 1) {
+					obj = data['lossCdList'][0];
+					obj['lossCdType'] = lossCd;
+					obj['ev'] = ev;
+					obj['singleSearchLov'] = true;
+
+					this.selectedData.emit(obj);
+				} else if(data['lossCdList'].length > 1) {
+					this.fromInput = true;
+
+					obj['lossCdType'] = lossCd;
+					obj['ev'] = ev;
+					obj['singleSearchLov'] = true;
+
+					this.selectedData.emit(obj);
+
+					this.lossCd.tableData = data['lossCdList'].filter(a => a.activeTag == 'Y');
+					this.table.refreshTable();
+
+					this.modal.openNoClose();
+				} else {
+					obj['lossCdType'] = lossCd;
+					obj['ev'] = ev;
+					obj['singleSearchLov'] = true;
+
+					this.selectedData.emit(obj);
+					this.modal.openNoClose();
+				}
+			});
+		}
 	}
 }

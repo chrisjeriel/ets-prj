@@ -510,8 +510,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                          this.policyInfo.polWordings.altText = altText;
                        });
 
-        this.policyInfo.issueDate = this.ns.toDateTimeString(new Date().setSeconds(0));
-        this.policyInfo.effDate = this.ns.toDateTimeString(new Date().setSeconds(0));
+        this.policyInfo.issueDate = this.ns.toDateTimeString(new Date());
+        this.policyInfo.effDate = this.ns.toDateTimeString(new Date());
 
       }
     });
