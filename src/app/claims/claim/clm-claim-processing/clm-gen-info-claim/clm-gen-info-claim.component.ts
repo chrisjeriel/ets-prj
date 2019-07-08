@@ -26,7 +26,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   @ViewChild('adjTblGI') adjTable: CustEditableNonDatatableComponent;
   @ViewChild('lossCdLOV') lossCdLOV: MtnLossCdComponent;
   @ViewChild('clmEventLOV') clmEventLOV: MtnClmEventComponent;
-  @ViewChild('clmEventTypeLOV') clmEventTypeLOV: MtnClmEventComponent;
+  @ViewChild('clmEventTypeLOV') clmEventTypeLOV: MtnClmEventTypeComponent;
   @ViewChild('adjusterLOV') adjusterLOV: MtnAdjusterComponent;
   @ViewChild('adjConfirmSave') adjConfirmSave: ConfirmSaveComponent;
   @ViewChild('adjSuccessDialog') adjSuccessDialog: SucessDialogComponent;
@@ -80,6 +80,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     cedingId: null,
     coSeriesNo: null,
     altNo: null,
+    policyId: null,
     policyNo: null,
     cedingName: null,
     prinId: null,
@@ -194,6 +195,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   uneditableLossDate: boolean = false;
   disableClmHistory: boolean = true;
   disableNextTabs: boolean = true;
+  disablePaytReq: boolean = true;
 
   @Input() isInquiry: boolean = false;
 
@@ -289,6 +291,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
       this.disableClmHistory = data['vldSC']['claims'] == null || data['vldSC']['claims']['project']['clmCoverage']['allowMaxSi'] == null;
       this.disableNextTabs = data['vldH']['claimReserveList'].length == 0;
+      if(!this.disableNextTabs && data['vldH']['claimReserveList'][0]['clmHistory'].length > 0) {
+        this.disablePaytReq = data['vldH']['claimReserveList'][0]['clmHistory'].filter(a => a.histTypeDesc == 'Partial Payment' || a.histTypeDesc == 'Final Payment').length == 0;
+      }
 
       this.checkClmIdF(this.claimData.claimId);
     }));
@@ -362,6 +367,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.claimData.clmStatCd = 'IP';
       this.claimData.clmStatus = 'In Progress';
       this.claimData.processedBy = this.ns.getCurrentUser();
+
+      this.checkClmIdF('');
     });
   }
 
@@ -409,6 +416,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   setClmEvent(ev) {
+    this.ns.lovLoader(ev.ev, 0);
+    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+
     this.claimData.eventCd = ev.eventCd;
     this.claimData.eventDesc = ev.eventDesc;
   }
@@ -419,8 +429,16 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   setClmEventType(ev) {
+    this.ns.lovLoader(ev.ev, 0);
+    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+
     this.claimData.eventTypeCd = ev.eventTypeCd;
     this.claimData.eventTypeDesc = ev.eventTypeDesc;
+
+    if(ev.eventTypeCd == '') {
+      this.claimData.eventCd = '';
+      this.claimData.eventDesc = '';
+    }
   }
 
   adjNameAndRefs() {
@@ -662,12 +680,14 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       claimId: ev,
       claimNo: this.claimNo,
       projId : this.claimData.project.projId,
+      policyId: this.policyId == 0 ? this.claimData.policyId : this.policyId,
       policyNo: this.claimData.policyNo,
       riskName: this.claimData.project.riskName,
       insuredDesc: this.claimData.insuredDesc,
       clmStatus : this.claimData.clmStatus,
       disableClmHistory: this.disableClmHistory,
       disableNextTabs: this.disableNextTabs,
+      disablePaytReq: this.disablePaytReq
     });
   }
 
@@ -790,6 +810,14 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       } else if(str === 'lp') {
         this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == 'P' };
         this.lossCdLOV.checkCode('P', this.claimData.lossPdAbbr, ev);
+      } else if(str === 'eventType') {
+        this.clmEventTypeLOV.checkCode(this.claimData.eventTypeDesc, ev);
+      } else if(str === 'event') {
+        var eventTypeCd = this.claimData.eventTypeCd;
+        var line = this.line;
+
+        this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lineCd == line };
+        this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev);
       }
     });
     // if(str === 'lc') {

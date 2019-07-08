@@ -1084,4 +1084,20 @@ export class MaintenanceService{
 			
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnLossCdLov",{params});
 	}
+
+	getMtnClmEventTypeLov(searchStr){
+		const params = new HttpParams()
+			.set('searchStr', searchStr === undefined || searchStr === null ? '' : searchStr);
+			
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClmEventTypeLov",{params});
+	}
+
+	getMtnClmEventLov(lineCd, eventTypeCd, searchStr){
+		const params = new HttpParams()
+			.set('lineCd', lineCd === undefined || lineCd === null ? '' : lineCd)
+			.set('eventTypeCd', eventTypeCd === undefined || eventTypeCd === null ? '' : eventTypeCd)
+			.set('searchStr', searchStr === undefined || searchStr === null ? '' : searchStr);
+			
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClmEventLov",{params});
+	}
 }

@@ -9,33 +9,33 @@
                 			<legend class="scheduler-border">Policy Record</legend>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-2">Policy No</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.policyNo">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.policyNo">
                 			</div>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-2">Type of Cession</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.cessionDesc">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.cessionDesc">
                 				<label class="form-control-sm col-sm-2">Line Class</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.lineClassDesc">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.lineClassDesc">
                 			</div>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-2">Quotation No</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.quotationNo">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.quotationNo">
                 				<label class="form-control-sm col-sm-2">Status</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.statusDesc">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.statusDesc">
                 			</div>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-2 pl-0">Ceding Company</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-1 mr-1" [ngModel]="policyInfo.cessionId">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.cedingName">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-1 mr-1" [ngModel]="policyInfo?.cessionId">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.cedingName">
                 			</div>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-2">Co Ref No</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.coRefNo">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.coRefNo">
                 			</div>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-2">Intermediary</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-1 mr-1" [ngModel]="policyInfo.intmId">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.intmName">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-1 mr-1" [ngModel]="policyInfo?.intmId">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.intmName">
                 			</div>
 
                 		</fieldset>
@@ -45,46 +45,46 @@
                 			<legend class="scheduler-border">Period of Insurance</legend>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-3">Inception Date</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.inceptDate | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.inceptDate |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.inceptDate | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.inceptDate |date: 'shortTime' ">
                 				<label class="form-control-sm col-sm-3">Expiry Date</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.expiryDate | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.expiryDate |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.expiryDate | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.expiryDate |date: 'shortTime' ">
                 			</div>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-3">Lapse From</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.lapseFrom | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.lapseFrom |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.lapseFrom | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.lapseFrom |date: 'shortTime' ">
                 				<label class="form-control-sm col-sm-3">Lapse To</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.lapseTo | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.lapseTo |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.lapseTo | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.lapseTo |date: 'shortTime' ">
                 			</div>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-3">Maintenance From</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.maintenanceFrom | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.maintenanceFrom |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.maintenanceFrom | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.maintenanceFrom |date: 'shortTime' ">
                 				<label class="form-control-sm col-sm-3">Maintenance To</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.maintenanceTo | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.maintenanceTo |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.maintenanceTo | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.maintenanceTo |date: 'shortTime' ">
                 			</div>
                 		</fieldset>
                 		<fieldset class="scheduler-border" style="padding-top: 5px !important;">
                 			<legend class="scheduler-border">Production Booking</legend>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-3">Issue Date</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.issueDate | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.issueDate |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.issueDate | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.issueDate |date: 'shortTime' ">
                 				<label class="form-control-sm col-sm-3">Distribution Date</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.distDate | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.distDate |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.distDate | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.distDate |date: 'shortTime' ">
                 			</div>
                 			<div class="input-group">
                 				<label class="form-control-sm col-sm-3">Effective Date</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.effDate | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.effDate |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.effDate | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.effDate |date: 'shortTime' ">
                 				<label class="form-control-sm col-sm-3">Accounting Date</label>
-                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo.acctDate | date: 'MM/dd/yyyy'">
-                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.acctDate |date: 'shortTime' ">
+                				<input readonly type="text" class="form-control form-control-sm col-sm-2 mr-1" [ngModel]="policyInfo?.acctDate | date: 'MM/dd/yyyy'">
+                				<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo?.acctDate |date: 'shortTime' ">
                 			</div>
                 		</fieldset>
                 	</div>

@@ -36,6 +36,7 @@ export class MtnClmEventComponent implements OnInit {
 	@Input() filters: any = null;
 	@Input() lovCheckBox: boolean = false;
 	selects: any[] = [];
+	fromInput: boolean = false;
 
 	constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
@@ -73,20 +74,66 @@ export class MtnClmEventComponent implements OnInit {
     }
 
     openModal(){
-    	this.clmEvent.tableData = [];
-    	this.table.overlayLoader = true;
-    	this.maintenanceService.getMtnClmEvent('').subscribe(data =>{
-        	var records = data['eventList'];
-        	if(this.filters != null) {
-        		records = records.filter(this.filters);
-        	}
-        	
-            this.clmEvent.tableData = records;
-        	this.table.refreshTable();
-      	});
+    	if(!this.fromInput) {
+	    	this.clmEvent.tableData = [];
+	    	this.table.overlayLoader = true;
+	    	this.maintenanceService.getMtnClmEvent('').subscribe(data =>{
+	        	var records = data['eventList'];
+	        	if(this.filters != null) {
+	        		records = records.filter(this.filters);
+	        	}
+	        	
+	            this.clmEvent.tableData = records;
+	        	this.table.refreshTable();
+	      	});
+    	} else {
+    		this.fromInput = false;
+    	}
  	}
 
  	cancel() {
 		this.cancelBtn.next();
+	}
+
+	checkCode(lineCd, eventTypeCd, str, ev) {
+		var obj = {
+			eventCd: '',
+		  	eventDesc: ''
+		}
+
+		if(str === ''){
+			obj['ev'] = ev;
+			obj['singleSearchLov'] = true;
+
+			this.selectedData.emit(obj);
+		} else {
+			this.maintenanceService.getMtnClmEventLov(lineCd, eventTypeCd, str).subscribe(data => {
+				if(data['clmEventList'].length == 1) {
+					obj = data['clmEventList'][0];
+					obj['ev'] = ev;
+					obj['singleSearchLov'] = true;
+
+					this.selectedData.emit(obj);
+				} else if(data['clmEventList'].length > 1) {
+					this.fromInput = true;
+
+					obj['ev'] = ev;
+					obj['singleSearchLov'] = true;
+
+					this.selectedData.emit(obj);
+
+					this.clmEvent.tableData = data['clmEventList'];
+					this.table.refreshTable();
+
+					this.modal.openNoClose();
+				} else {
+					obj['ev'] = ev;
+					obj['singleSearchLov'] = true;
+
+					this.selectedData.emit(obj);
+					this.modal.openNoClose();
+				}
+			});
+		}
 	}
 }
