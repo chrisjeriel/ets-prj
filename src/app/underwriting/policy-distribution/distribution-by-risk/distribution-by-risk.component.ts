@@ -186,7 +186,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     total:[null,'TOTAL','retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', null, 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
     paginateFlag: true,
     infoFlag: true,
-    pageLength: 10,
+    pageLength: 'unli',
     pageID: 'poolDistTable',
     searchFlag: true,
     exportFlag: true,
@@ -566,7 +566,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         if(data.cedingId != '' && data.cedingId != null && data.cedingId != undefined) {
           this.wparamData.tableData[this.treatyShareLOVRow].showMG = 0;
           this.wparamData.tableData[this.treatyShareLOVRow].trtyCedId = data.cedingId;
-          this.wparamData.tableData[this.treatyShareLOVRow].trtyCedName = data.cedingName;
+          this.wparamData.tableData[this.treatyShareLOVRow].trtyCedName = data.cedingAbbr;
           this.wparamData.tableData[this.treatyShareLOVRow].cedingAbbr = data.cedingAbbr;
           this.wparamData.tableData[this.treatyShareLOVRow].edited = true;
         } else {
@@ -581,7 +581,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           this.wparamData.tableData.push(JSON.parse(JSON.stringify(this.wparamData.nData)));
           this.wparamData.tableData[this.wparamData.tableData.length - 1].showMG = 0;
           this.wparamData.tableData[this.wparamData.tableData.length - 1].trtyCedId = i.cedingId;
-          this.wparamData.tableData[this.wparamData.tableData.length - 1].trtyCedName = i.cedingName;
+          this.wparamData.tableData[this.wparamData.tableData.length - 1].trtyCedName = i.cedingAbbr;
           this.wparamData.tableData[this.wparamData.tableData.length - 1].cedingAbbr = i.cedingAbbr;
           this.wparamData.tableData[this.wparamData.tableData.length - 1].edited = true;
         }
@@ -634,11 +634,15 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
             var date = new Date(dateStr);
             return date.toLocaleString();
       };
-
+      //tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
       //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
-     alasql('SELECT treatyAbbr AS TreatyName, cedingName AS CedingName, retOneLines AS RetentionOneLines, retOneTsiAmt AS RetentionOneTSIAmount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
+     alasql('SELECT treatyAbbr AS TreatyName, cedingName AS TreatyCompany, ' +
+            'retOneLines AS RetentionOneLines, retOneTsiAmt AS RetentionOneTSIAmount, retOnePremAmt AS RetentionOnePremAmt, ' +
+            'retTwoLines AS RetentionTwoLines, retTwoTsiAmt AS RetentionTwoTSIAmount, retTwoPremAmt AS RetentionTwoPremAmt, ' +
+            'commRt AS CommRate, totalCommAmt AS CommAmount, totalVatRiComm AS VATonRICOMM, totalNetDue AS NetDue ' +
+            'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
   }
-
+6
   //poolDistributionData
   //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
 

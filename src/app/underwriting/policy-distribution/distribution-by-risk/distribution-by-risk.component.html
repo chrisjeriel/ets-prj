@@ -58,12 +58,12 @@
           <div class="col-sm-3"></div>
         </div>
         <div class="input-group">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-5">Section II Treaty Limit</label>
+            <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.trtyLimitSec2 | number: '1.2-2'" readonly>
+          </div>
           <label class="form-control-sm col-sm-5">VAT on R/I Rate (%)</label>
           <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.vatRiRt | number: '1.10-10'" readonly>
-        </div>
-        <div class="input-group">
-          <label class="form-control-sm col-sm-5">Section II Treaty Limit</label>
-          <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.trtyLimitSec2 | number: '1.2-2'" readonly>
         </div>
       </div>
     </fieldset>
@@ -155,7 +155,7 @@
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()"></app-cancel-button>
 
-<app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
+<app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>
 
 <app-modal #warningPosted class="d-none">
   <div header>Warning Message</div>
