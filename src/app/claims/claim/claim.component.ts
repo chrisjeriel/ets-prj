@@ -24,14 +24,19 @@ export class ClaimComponent implements OnInit, OnDestroy {
   claimInfo = {
         claimId: '',
         claimNo: '',
+        projId: '',
         policyNo: '',
         riskId: '',
         riskName:'',
-        insuredDesc:''
+        insuredDesc:'',
+        clmStatus: ''
   }
 
   sub: any;
   isInquiry: boolean = false;
+
+  disableClmHistory: boolean = true;
+  disableNextTabs: boolean = true;
 
   constructor( private router: Router, private route: ActivatedRoute) { }
 
@@ -61,9 +66,13 @@ export class ClaimComponent implements OnInit, OnDestroy {
   getClmInfo(ev) {
     this.claimInfo.claimId = ev.claimId;
     this.claimInfo.claimNo = ev.claimNo;
+    this.claimInfo.projId = ev.projId;
     this.claimInfo.policyNo = ev.policyNo;
     this.claimInfo.riskName = ev.riskName;
     this.claimInfo.insuredDesc = ev.insuredDesc;
+    this.claimInfo.clmStatus = ev.clmStatus;
+    this.disableClmHistory = ev.disableClmHistory;
+    this.disableNextTabs = ev.disableNextTabs;
   }
   
 }
