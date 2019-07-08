@@ -7,7 +7,13 @@
                    <div class="col-sm">
           						<button [routerLink]="['/mtn-adjuster-list']" class="button btn btn-link">Adjuster</button>
           						<br />
-          						<button class="button btn btn-link">Loss Code</button>
+          						<button [routerLink]="['/maintenance-clm-event']" class="button btn btn-link ">Claim Event</button>
+          						<br />
+                   </div>
+                   <div class="col-sm">
+                      <button [routerLink]="['/maintenance-clm-cash-call']" class="button btn btn-link ">Claim Cash Call</button>
+          						<br />
+                      <button  [routerLink]="['/maintenance-loss-code']" class="button btn btn-link">Loss Code</button>
           						<br />
                    </div>
                    <div class="col-sm">
@@ -17,10 +23,7 @@
                       <br />
                    </div>
                    <div class="col-sm">
-                   		<button [routerLink]="['/maintenance-clm-event-type']" class="button btn btn-link">Claim Event Type</button>
-                   		<br />
-                   </div>
-                   <div class="col-sm">
+	                   	<button [routerLink]="['/maintenance-clm-event-type']" class="button btn btn-link">Claim Event Type</button>
 	                   	<button [routerLink]="['/mtn-clm-stat-reason']" class="button btn btn-link ">Claim Status Reason</button>
 	                   	<br />
                    </div>

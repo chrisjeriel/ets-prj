@@ -52,6 +52,6 @@
 
 <app-confirm-save #confirmSave (onYes)="onClickSaveCity()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSaveCity('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 <app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>
 <app-mtn-cresta-zone id="crestaZoneLOV" (selectedData)="selectedCrestZoneLOV($event)"></app-mtn-cresta-zone>

@@ -192,7 +192,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   mdlType: string = 'conf';
   tempLossDate: string = '';
   uneditableLossDate: boolean = false;
-  isInquiry: boolean = false;
+  disableClmHistory: boolean = true;
+  disableNextTabs: boolean = true;
+
+  @Input() isInquiry: boolean = false;
 
   @Output() emitClaimInfoId = new EventEmitter<any>();
 
@@ -217,8 +220,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.claimId = params['claimId'];
         this.claimNo = params['claimNo'];
         //neco
-        if(params['readonly'] !== undefined){
-          this.isInquiry = true;
+        if(this.isInquiry){
+          //this.isInquiry = true;
           this.adjData.addFlag = false;
           this.adjData.deleteFlag = false;
           this.adjData.genericBtn = undefined;
@@ -227,8 +230,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
             this.adjData.uneditable.push(true);
           }
           this.adjTable.refreshTable();
-        }else{
-          this.isInquiry = false;
         }
         //neco end
         this.retrieveClmGenInfo();
@@ -247,7 +248,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   retrieveClmGenInfo() {
     var sub$ = forkJoin(this.cs.getClmGenInfo(this.claimId, this.claimNo),
-                        this.cs.getClaimApprovedAmt(this.claimId)).pipe(map(([clm, hist]) => { return { clm, hist }; }));
+                        this.cs.getClaimApprovedAmt(this.claimId),
+                        this.cs.getClaimSecCover(this.claimId, this.claimNo),
+                        this.cs.getClaimHistory(this.claimId, this.claimNo)).pipe(map(([clm, hist, vldSC, vldH]) => { return { clm, hist, vldSC, vldH }; }));
 
     this.subscription.add(sub$.subscribe(data => {
       $('.globalLoading').css('display','none');
@@ -284,38 +287,11 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.adjNameAndRefs();
       }
 
+      this.disableClmHistory = data['vldSC']['claims'] == null || data['vldSC']['claims']['project']['clmCoverage']['allowMaxSi'] == null;
+      this.disableNextTabs = data['vldH']['claimReserveList'].length == 0;
+
       this.checkClmIdF(this.claimData.claimId);
     }));
-
-    /*this.cs.getClmGenInfo(this.claimId, this.claimNo).subscribe(data => {
-      $('.globalLoading').css('display','none');
-      this.claimData = data['claim'];
-
-      this.claimData.inceptDate = this.ns.toDateTimeString(this.claimData.inceptDate);
-      this.claimData.expiryDate = this.ns.toDateTimeString(this.claimData.expiryDate);
-      this.claimData.lossDate = this.ns.toDateTimeString(this.claimData.lossDate);
-      this.claimData.reportDate = this.ns.toDateTimeString(this.claimData.reportDate);
-      this.claimData.closeDate = this.ns.toDateTimeString(this.claimData.closeDate);
-      this.claimData.createDate = this.ns.toDateTimeString(this.claimData.createDate);
-      this.claimData.updateDate = this.ns.toDateTimeString(this.claimData.updateDate);
-      this.claimData.lapseFrom = this.claimData.lapseFrom == '' || this.claimData.lapseFrom == null ? '' : this.ns.toDateTimeString(this.claimData.lapseFrom);
-      this.claimData.lapseTo = this.claimData.lapseTo == '' || this.claimData.lapseTo == null ? '' : this.ns.toDateTimeString(this.claimData.lapseTo);
-      this.claimData.maintenanceFrom = this.claimData.maintenanceFrom == '' || this.claimData.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.claimData.maintenanceFrom);
-      this.claimData.maintenanceTo = this.claimData.maintenanceTo == '' || this.claimData.maintenanceTo == null ? '' : this.ns.toDateTimeString(this.claimData.maintenanceTo);
-
-      this.claimData.prinId = this.claimData.prinId == '' || this.claimData.prinId == null ? '' : String(this.claimData.prinId).padStart(6, '0');
-      this.claimData.contractorId = this.claimData.contractorId == '' || this.claimData.contractorId == null ? '' : String(this.claimData.contractorId).padStart(6, '0');
-      this.claimData.project.objectId = this.claimData.project.objectId == '' || this.claimData.project.objectId == null ? '' : String(this.claimData.project.objectId).padStart(3, '0');
-
-      if(this.claimData.clmReserve && this.claimData.clmReserve.claimId != null) {
-        this.uneditableLossDate = true;
-        this.tempLossDate = this.claimData.lossDate;
-      }
-
-      if(this.claimData.clmAdjusterList.length > 0) {
-        this.adjNameAndRefs();
-      }
-    });*/
   }
 
   retrievePolDetails() {
@@ -677,8 +653,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.disableAdjusterBtn = false;
 
         this.retrieveClmGenInfo();
-
-        setTimeout(() => { this.checkClmIdF(data['claimId']); });
       }
     });
   }
@@ -687,9 +661,13 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.emitClaimInfoId.emit({
       claimId: ev,
       claimNo: this.claimNo,
+      projId : this.claimData.project.projId,
       policyNo: this.claimData.policyNo,
       riskName: this.claimData.project.riskName,
-      insuredDesc: this.claimData.insuredDesc
+      insuredDesc: this.claimData.insuredDesc,
+      clmStatus : this.claimData.clmStatus,
+      disableClmHistory: this.disableClmHistory,
+      disableNextTabs: this.disableNextTabs,
     });
   }
 

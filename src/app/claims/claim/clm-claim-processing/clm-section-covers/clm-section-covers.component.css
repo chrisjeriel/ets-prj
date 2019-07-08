@@ -1,3 +1,7 @@
 .cust-ig {
 	margin-bottom: -14px !important;
 }
+
+.unclickable {
+    pointer-events: none;
+}
