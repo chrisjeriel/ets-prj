@@ -126,7 +126,6 @@ export class SectionCoverComponent implements OnInit {
 
   ngOnInit() {
   	setTimeout(a=>{this.secTable.refreshTable();this.dedTable.refreshTable();},0);
-
   	this.ms.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
             .subscribe(data =>{
                 this.passDedTable.opts[0].vals = [];
@@ -136,7 +135,7 @@ export class SectionCoverComponent implements OnInit {
                     this.passDedTable.opts[0].vals.push(i.code);
                     this.passDedTable.opts[0].prev.push(i.description);
                 }
-    });
+	});
   }
 
   checkCode(ev){
@@ -156,18 +155,21 @@ export class SectionCoverComponent implements OnInit {
   getMtnSectionCovers(){
 	this.secTable.loadingFlag = true;
   	this.ms.getMtnSectionCovers(this.line.lineCd,'').subscribe(a=>{
-  		this.passSecTable.disableAdd = false;
-  		this.passSecTable.disableGeneric = false;
-		this.passSecTable.tableData = a['sectionCovers'];
-		//deza was here
+		//deza was here 7/5/2019 #8221 MTN112
 		if(this.line.lineCd != ''){
+			this.passSecTable.disableAdd = false;
+			//also changed disableGeneric
+		  	this.passSecTable.disableGeneric = true;
+		 	this.passSecTable.tableData = a['sectionCovers'];
 			this.passSecTable.tableData.forEach(a=>{{
 				a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
 			}})
 		}else{
+			this.passSecTable.disableAdd = true;
+			this.passSecTable.disableGeneric = true;
 			this.passSecTable.tableData = [];
 		}
-		//deza 7/5/2019
+		//deza 7/5/2019 4:25 PM
   		this.secClick(null);
   		this.secTable.refreshTable();
   	})
@@ -197,13 +199,19 @@ export class SectionCoverComponent implements OnInit {
 
   secClick(data){
   	if(data != null){
+		//deza was here 7/5/2019 #8221 MTN112
+		this.passSecTable.disableGeneric = false;
+		//deza
   		this.passDedTable.tableData = data.deductibles;
   		this.passDedTable.disableAdd = false;
-  		this.passDedTable.disableGeneric = false;
+  		this.passDedTable.disableGeneric = true;
   		this.passDedTable.nData.coverCd = data.coverCd;
   		this.disableFields();
   		this.info = data;
   	}else{
+		//deza was here 7/5/2019 #8221 MTN112
+		this.passSecTable.disableGeneric = true;
+		//deza
   		this.passDedTable.disableAdd = true;
   		this.passDedTable.disableGeneric = true;
   		this.passDedTable.tableData = [];
@@ -216,6 +224,17 @@ export class SectionCoverComponent implements OnInit {
   	}
   	this.dedTable.refreshTable();
   }
+
+  //deza was here 7/5/2019 #8221 MTN112
+  dedClick(data){
+	if(data != null){
+  		this.passDedTable.disableGeneric = false;
+  	}else{
+  		this.passDedTable.disableGeneric = true;
+  	}
+  	this.dedTable.refreshTable();
+  }
+  //deza
 
   disableFields(){
   	// 'deductibleAmt','deductibleRate','minAmt','maxAmt'
@@ -288,13 +307,12 @@ export class SectionCoverComponent implements OnInit {
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
-            this.getMtnSectionCovers();
+            //this.getMtnSectionCovers(); //deza was here removed for #8221 MTN112 
         }else{
             this.dialogIcon = "error";
             this.successDialog.open();
         }
-  	})
-
+	  })
   }
 
   onClickSave(){
@@ -303,7 +321,15 @@ export class SectionCoverComponent implements OnInit {
   		this.dialogIcon = 'error-message';
   		this.successDialog.open();
   		return;
-  	}
+	}
+	//deza was here
+  	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.sortSeq == b.sortSeq && a.section==b.section).length != 1)){
+		this.dialogMessage = 'Unable to save the record. Sort Sequence must be unique per Section';
+		this.dialogIcon = 'error-message';
+		this.successDialog.open();
+		return;
+	}
+	//deza 7/5/2019 3:35PM
   	let dedCds : string[];
   	for(let sec of this.passSecTable.tableData){
   		dedCds = sec.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
@@ -331,6 +357,6 @@ export class SectionCoverComponent implements OnInit {
 
   showLineLOV(){
     $('#lineLOV #modalBtn').trigger('click');
-	}
+  }
 
 }

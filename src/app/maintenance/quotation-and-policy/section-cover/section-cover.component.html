@@ -22,7 +22,7 @@
 
 	                <fieldset class="scheduler-border" style="padding-top: 10px !important;">
 	                	<legend class="scheduler-border">Deductible per Section Cover</legend>
-	                	<app-cust-editable-non-datatable #dedTable [passData]="passDedTable" (genericBtn)="deleteDed()" (onDelete)="dedTable.onClickDelete('force');" (tableDataChange)="secTable.indvSelect.deductibles = $event;disableFields()"></app-cust-editable-non-datatable>
+	                	<app-cust-editable-non-datatable #dedTable [passData]="passDedTable" (genericBtn)="deleteDed()" (onDelete)="dedTable.onClickDelete('force');" (newClick)="dedClick($event)" (tableDataChange)="secTable.indvSelect.deductibles = $event;disableFields()"></app-cust-editable-non-datatable>
 	                </fieldset>
 	                <div class="w-100 text-center my-2">
                     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
