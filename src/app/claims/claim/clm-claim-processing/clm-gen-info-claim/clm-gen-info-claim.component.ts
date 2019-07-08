@@ -192,9 +192,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   mdlType: string = 'conf';
   tempLossDate: string = '';
   uneditableLossDate: boolean = false;
-  isInquiry: boolean = false;
   disableClmHistory: boolean = true;
   disableNextTabs: boolean = true;
+
+  @Input() isInquiry: boolean = false;
 
   @Output() emitClaimInfoId = new EventEmitter<any>();
 
@@ -219,8 +220,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.claimId = params['claimId'];
         this.claimNo = params['claimNo'];
         //neco
-        if(params['readonly'] !== undefined){
-          this.isInquiry = true;
+        if(this.isInquiry){
+          //this.isInquiry = true;
           this.adjData.addFlag = false;
           this.adjData.deleteFlag = false;
           this.adjData.genericBtn = undefined;
@@ -229,8 +230,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
             this.adjData.uneditable.push(true);
           }
           this.adjTable.refreshTable();
-        }else{
-          this.isInquiry = false;
         }
         //neco end
         this.retrieveClmGenInfo();

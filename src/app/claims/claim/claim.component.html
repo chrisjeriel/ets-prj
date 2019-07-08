@@ -3,12 +3,12 @@
   <ngb-tabset (tabChange)="onTabChange($event)">
     <ngb-tab title="General Info">
       <ng-template ngbTabContent>
-        <app-clm-gen-info-claim (emitClaimInfoId)="getClmInfo($event)" [claimInfo]="claimInfo"></app-clm-gen-info-claim>
+        <app-clm-gen-info-claim (emitClaimInfoId)="getClmInfo($event)" [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-clm-gen-info-claim>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Section Covers">
       <ng-template ngbTabContent>
-        <app-clm-section-covers [claimInfo]="claimInfo" (disableClmHistory)="disableClmHistory = $event"></app-clm-section-covers>
+        <app-clm-section-covers [isInquiry]="isInquiry" [claimInfo]="claimInfo" (disableClmHistory)="disableClmHistory = $event"></app-clm-section-covers>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableClmHistory" class="ngb-tab" title="Claim History">
@@ -28,7 +28,7 @@
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Attachment">
       <ng-template ngbTabContent>
-        <app-claims-attachment></app-claims-attachment>
+        <app-claims-attachment [isInquiry]="isInquiry"></app-claims-attachment>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs" title="Print">

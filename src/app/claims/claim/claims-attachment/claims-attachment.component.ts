@@ -27,6 +27,8 @@ export class ClaimsAttachmentComponent implements OnInit {
   @ViewChild("confirmSave") confirmDialog: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
+  @Input() isInquiry: boolean = false;
+
   passData: any = {
   	    tableData: [],
         tHeader: ['File Name', 'Description', 'Actions'],
@@ -90,6 +92,18 @@ export class ClaimsAttachmentComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Attachment");
+    //neco
+    if(this.isInquiry){
+      this.passData.checkFlag = false;
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.uneditable = [];
+      for(var i in this.passData.tHeader){
+        this.passData.uneditable.push(true);
+      }
+      this.table.refreshTable();
+    }
+    //neco end
     this.getAttachment();
   }
 
