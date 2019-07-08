@@ -614,7 +614,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             }
         }
         retData.data = data;
-        this.form.control.markAsDirty();
+        this.markAsDirty();
         this.clickLOV.emit(retData);
     }
 
@@ -744,10 +744,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }*/
 
     markAsPristine(){
+        $('table.non-datatable' + this.passData.pageID).parent().removeClass('ng-dirty')
         this.form.control.markAsPristine();
     }
 
     markAsDirty(){
+        $('#cust-scroll form').addClass('ng-dirty');
         this.form.control.markAsDirty();
     }
 

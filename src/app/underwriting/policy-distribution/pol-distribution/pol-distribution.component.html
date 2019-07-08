@@ -187,6 +187,35 @@
 	</div>
 </app-modal>
 
+
+<app-modal #inProgCoinsMdl class="d-none">
+	<div header>Warning Message</div>
+	<div body>
+		Unable to post the distribution to final. The following Co-Insurance policies are still In Progress:
+	    <div *ngFor="let dist of inProgCoins" class="w-100 text-center">
+	      {{dist.policyNo}}
+	    </div>
+	</div>
+	<div footer class="w-100 text-center">
+		<button type="button" class="cust-btn" (click)="inProgCoinsMdl.closeModal();"><a>Ok</a></button>
+	</div>
+</app-modal>
+
+<app-modal #missingCoinsMdl class="d-none">
+	<div header>Warning Message</div>
+	<div body>
+		Unable to post the distribution to final. The following Co-Insurance policies must have alterations:
+		<div *ngFor="let dist of missingCoins" class="w-100 text-center">
+	      {{dist.policyNo}}
+	    </div>
+	</div>
+	<div footer class="w-100 text-center">
+		<button type="button" class="cust-btn" (click)="missingCoinsMdl.closeModal();"><a>Ok</a></button>
+	</div>
+</app-modal>
+
+<!-- --------------------Negate Land---------------------------------------- -->
+
 <app-modal #confirmNegate class="d-none">
 	<div header>Confirmation</div>
 	<div body>

@@ -4,10 +4,12 @@ import { MaintenanceService, NotesService } from '@app/_services';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { environment } from '@environments/environment';
-import { NgbModal, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -22,6 +24,8 @@ export class RegionComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirmDialog: ConfirmSaveComponent;
   @ViewChild("regionTable") regionTable: CustEditableNonDatatableComponent;
+
+
 
   passData: any = {
 		tableData:[],
@@ -271,11 +275,35 @@ export class RegionComponent implements OnInit {
     if(event.nextId == 'region'){
       this.getMtnRegion();
     }
+
+    if($('.ng-dirty').length != 0 ){
+        event.preventDefault();
+        const subject = new Subject<boolean>();
+        const modal = this.modalService.open(ConfirmLeaveComponent,{
+            centered: true, 
+            backdrop: 'static', 
+            windowClass : 'modal-size'
+        });
+        modal.componentInstance.subject = subject;
+
+        subject.subscribe(a=>{
+          if(a){
+            $('.ng-dirty').removeClass('ng-dirty');
+            this.tabset.select(event.nextId)
+          }
+        })
+  
+    }
+
+
+
   }
 
   change(event){
     $('#cust-table-container').addClass('ng-dirty');
   }
+
+
 
 
 }

@@ -105,6 +105,8 @@ export class InwardPolBalanceComponent implements OnInit {
     }
     if(this.policyInfo.fromInq){
       this.passData.addFlag=false;
+      this.passData.genericBtn = undefined;
+      this.passData2.genericBtn = undefined;
       this.passData2.addFlag=false;
       this.passData2.deleteFlag=false;
       this.passData.uneditable = [];

@@ -135,6 +135,7 @@ export class EndorsementComponent implements OnInit {
 
     };
 
+  fromChng:boolean;
   cancelFlag:boolean;
   exitUrl:string = '/maintenance-qu-pol';
   newLineEv: string;
@@ -159,7 +160,7 @@ export class EndorsementComponent implements OnInit {
   checkCode(ev,force?){
      this.newLineEv = ev;
      console.log(ev)
-     if($('.ng-dirty.ng-touched:not([type="search"])').length == 0 || force !=undefined){
+     if($('.ng-dirty:not([type="search"])').length == 0 || force !=undefined){
         if(ev.target.value == null || ev.target.value.toUpperCase() == ''){
           this.line.description = '';
           this.passEndtTable.disableAdd = true;
@@ -175,22 +176,25 @@ export class EndorsementComponent implements OnInit {
           this.ns.lovLoader(ev, 1);
           this.lineLov.checkCode(ev.target.value.toUpperCase(), ev); 
         }
+        this.fromChng = false;
       }else{
         this.exitUrl = null;
         this.cnclBtn.clickCancel();
+        this.fromChng = true;
       }
   }
 
   setLine(data){
       this.ns.lovLoader(data.ev, 0);
-      if(data.lineCd != null){
-        this.getMtnEndorsements();
+      if(data.lineCd.length != 0){
         this.line.lineCd = data.lineCd;
         this.passEndtTable.nData.lineCd = data.lineCd;
         this.passDedTable.nData.lineCd = data.lineCd;
         this.line.description = data.description;
+        this.getMtnEndorsements();
       }
       else{
+        this.line.lineCd = '';
         this.line.description = '';
         this.passEndtTable.disableAdd = true;
         this.passEndtTable.disableGeneric = true;
@@ -208,34 +212,36 @@ export class EndorsementComponent implements OnInit {
 
   getMtnEndorsements(){
   	this.endtTable.loadingFlag = true;
-  	this.ms.getEndtCode(this.line.lineCd.trim(),'').subscribe(a=>{
-  		this.passEndtTable.disableAdd = false;
-  		this.passEndtTable.tableData = a['endtCode'];
-  		this.passEndtTable.tableData.forEach(a=>{{
-        a.endtCd = String(a.endtCd).padStart(3,'0')
-  			a['text'] = (a.endtText01 === null ? '' :a.endtText01) +
-			                 (a.endtText02 === null ? '' :a.endtText02) +
-			                 (a.endtText03 === null ? '' :a.endtText03) +
-			                 (a.endtText04 === null ? '' :a.endtText04) +
-			                 (a.endtText05 === null ? '' :a.endtText05) +
-			                 (a.endtText06 === null ? '' :a.endtText06) +
-			                 (a.endtText07 === null ? '' :a.endtText07) +
-			                 (a.endtText08 === null ? '' :a.endtText08) +
-			                 (a.endtText09 === null ? '' :a.endtText09) +
-			                 (a.endtText10 === null ? '' :a.endtText10) +
-			                 (a.endtText11 === null ? '' :a.endtText11) +
-			                 (a.endtText12 === null ? '' :a.endtText12) +
-			                 (a.endtText13 === null ? '' :a.endtText13) +
-			                 (a.endtText14 === null ? '' :a.endtText14) +
-			                 (a.endtText15 === null ? '' :a.endtText15) +
-			                 (a.endtText16 === null ? '' :a.endtText16) +
-			                 (a.endtText17 === null ? '' :a.endtText17) ;
-			a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
-			a.uneditable = ['endtCd']
-  		}})
-  		this.endtClick(null);
-  		this.endtTable.refreshTable();
-  	})
+    	this.ms.getEndtCode(this.line.lineCd.trim(),'').subscribe(a=>{
+    		this.passEndtTable.disableAdd = false;
+    		this.passEndtTable.tableData = a['endtCode'];
+    		this.passEndtTable.tableData.forEach(a=>{{
+          a.endtCd = String(a.endtCd).padStart(3,'0')
+    			a['text'] = (a.endtText01 === null ? '' :a.endtText01) +
+  			                 (a.endtText02 === null ? '' :a.endtText02) +
+  			                 (a.endtText03 === null ? '' :a.endtText03) +
+  			                 (a.endtText04 === null ? '' :a.endtText04) +
+  			                 (a.endtText05 === null ? '' :a.endtText05) +
+  			                 (a.endtText06 === null ? '' :a.endtText06) +
+  			                 (a.endtText07 === null ? '' :a.endtText07) +
+  			                 (a.endtText08 === null ? '' :a.endtText08) +
+  			                 (a.endtText09 === null ? '' :a.endtText09) +
+  			                 (a.endtText10 === null ? '' :a.endtText10) +
+  			                 (a.endtText11 === null ? '' :a.endtText11) +
+  			                 (a.endtText12 === null ? '' :a.endtText12) +
+  			                 (a.endtText13 === null ? '' :a.endtText13) +
+  			                 (a.endtText14 === null ? '' :a.endtText14) +
+  			                 (a.endtText15 === null ? '' :a.endtText15) +
+  			                 (a.endtText16 === null ? '' :a.endtText16) +
+  			                 (a.endtText17 === null ? '' :a.endtText17) ;
+  			a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
+  			a.uneditable = ['endtCd']
+    		}})
+    		this.endtClick(null);
+        this.endtTable.markAsPristine();
+    		this.endtTable.refreshTable();
+        this.dedTable.markAsPristine();
+    	})
   }
 
   deleteEndt(){
@@ -313,6 +319,7 @@ export class EndorsementComponent implements OnInit {
   }
 
   endtTextKeys:string[] = ['endtText01','endtText02','endtText03','endtText04','endtText05','endtText06','endtText07','endtText08','endtText09','endtText10','endtText11','endtText12','endtText13','endtText14','endtText15','endtText16','endtText17'];
+  
   save(can?){
   	this.cancelFlag = can !== undefined;
   	let params : any = {
@@ -367,10 +374,18 @@ export class EndorsementComponent implements OnInit {
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
-            this.getMtnEndorsements();
+            //this.getMtnEndorsements();
+            this.endtTable.markAsPristine();
+            this.dedTable.markAsPristine();
+            if(this.fromChng){
+              this.checkCode(this.newLineEv,'force')
+            }
         }else{
             this.dialogIcon = "error";
             this.successDialog.open();
+            this.fromChng = false;
+            this.line.lineCd = this.line.lineCd.trim();
+            this.line.lineCd = this.line.lineCd.toString()+' '
         }
   	})
 

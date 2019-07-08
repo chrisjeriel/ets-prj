@@ -6,6 +6,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { environment } from '@environments/environment';
 import { NgbModal,NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -16,12 +18,14 @@ import { Subject } from 'rxjs';
 export class PolMxLineComponent implements OnInit {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	@ViewChild(ConfirmSaveComponent) cs 		: ConfirmSaveComponent;
+	@ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
 	@ViewChild('tabset') tabset: any;
 
 	passData: any = {
 		tableData:[],
 		tHeader				:["Line Code", "Description", "Menu Line", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
-		dataTypes			:["pk-cap", "text", "select", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text", "time-string"],
+		dataTypes			:["pk-cap", "text", "req-select", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text", "time-string"],
 		nData:{ 
 			newRec			: 1,
 			lineCd          : '',
@@ -69,7 +73,6 @@ export class PolMxLineComponent implements OnInit {
 	};
 
 	cancelFlag				: boolean;
-	fromCancel				: boolean;
 	dialogIcon				: string;
 	dialogMessage			: string;
 	arrLineCd     			: any     	= [];
@@ -95,7 +98,18 @@ export class PolMxLineComponent implements OnInit {
 
 	}
 
-	onSaveMtnLine(cancelFlag?){
+	onSaveMtnLine(){
+		this.mtnService.saveMtnLine(JSON.stringify(this.params))
+		.subscribe(data => {
+			console.log(data);
+			this.getMtnLine();
+			this.success.open();
+			this.params.saveLine 	= [];
+			this.passData.disableGeneric = true;
+		});
+	}
+
+	onClickSave(cancelFlag?){
 		this.cancelFlag = cancelFlag !== undefined;
 		this.dialogIcon = '';
 		this.dialogMessage = '';
@@ -108,12 +122,12 @@ export class PolMxLineComponent implements OnInit {
 				record.cutOffTime === '' || record.cutOffTime === null || record.menuLineCd === '' || record.menuLineCd === null){
 				if(!record.deleted){
 					isEmpty = 1;
-					this.fromCancel = false;
+					record.fromCancel = false;
 				}else{
 					this.params.deleteLine.push(record);
 				}
 			}else{
-				this.fromCancel = true;
+				record.fromCancel = true;
 				if(record.edited && !record.deleted){
 					record.createUser		= (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
 					record.createDate		= (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
@@ -139,44 +153,31 @@ export class PolMxLineComponent implements OnInit {
 			}
 		});
 
-		if(isNotUnique == true){
-			setTimeout(()=>{
-                $('.globalLoading').css('display','none');
-                this.warnMsg = 'Unable to save the record. Line Code must be unique.';
+		if(isEmpty == 1){
+            this.dialogIcon = 'error';
+            this.success.open();
+            this.params.saveLine = [];
+        }else{
+        	if(isNotUnique){
+        		this.warnMsg = 'Unable to save the record. Line Code must be unique.';
 				this.showWarnLov();
-				this.params.saveLine 	= [];
-            },500);
-		}else{
-			if(isEmpty == 1){
-				setTimeout(()=>{
-                    $('.globalLoading').css('display','none');
-                    this.dialogIcon = 'error';
-                    $('app-sucess-dialog #modalBtn').trigger('click');
-                    this.params.saveLine 	= [];
-                },500);
-			}else{
-				if(this.params.saveLine.length == 0 && this.params.deleteLine.length == 0){
-					setTimeout(()=>{
-						$('.globalLoading').css('display','none');
-						this.dialogIcon = 'info';
-						this.dialogMessage = 'Nothing to save.';
-						$('app-sucess-dialog #modalBtn').trigger('click');
-						this.params.saveLine 	= [];
-						this.passData.tableData = this.passData.tableData.filter(a => a.lineCd != '');
-					},500);
-				}else{
-					this.mtnService.saveMtnLine(JSON.stringify(this.params))
-					.subscribe(data => {
-						console.log(data);
-						this.getMtnLine();
-						$('app-sucess-dialog #modalBtn').trigger('click');
-						this.params.saveLine 	= [];
-						this.passData.disableGeneric = true;
-					});
-				}	
-			}
-		}
-
+				this.params.saveLine = [];
+        	}else{
+        		if(this.params.saveLine.length == 0 && this.params.deleteLine.length == 0){
+        			$('.ng-dirty').removeClass('ng-dirty');
+					this.cs.confirmModal();
+					this.params.saveLine 	= [];
+					this.passData.tableData = this.passData.tableData.filter(a => a.lineCd != '');
+        		}else{
+        			if(this.cancelFlag == true){
+                        this.cs.showLoading(true);
+                        setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+                    }else{
+                        this.cs.confirmModal();
+                    }
+        		}
+        	}
+        }
 	}
 
 	getMtnLine(){
@@ -213,10 +214,6 @@ export class PolMxLineComponent implements OnInit {
 
 	cancel(){
 		this.cancelBtn.clickCancel();
-	}
-
-	onClickSave(){
-		$('#confirm-save #modalBtn2').trigger('click');
 	}
 
 	onRowClick(event){
@@ -274,11 +271,11 @@ export class PolMxLineComponent implements OnInit {
 
 	checkCancel(){
 		if(this.cancelFlag == true){
-			if(this.fromCancel){
-				this.cancelBtn.onNo();
-			}else{
-				return;
-			}
+			if(this.passData.tableData.some(i => i.fromCancel == false)){
+                return;
+            }else{
+                this.cancelBtn.onNo();
+            }
 		}
 	}
 
