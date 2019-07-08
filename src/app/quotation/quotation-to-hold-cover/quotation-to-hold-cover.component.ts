@@ -11,6 +11,7 @@ import { Subject, forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-quotation-to-hold-cover',
@@ -115,12 +116,22 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	tempHcNo		: string = '';
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
-				private ns : NotesService, private router: Router, private userService : UserService) { 
+				private ns : NotesService, private router: Router, private userService : UserService,   private route: ActivatedRoute) { 
 	}
 
   	ngOnInit() {
   		this.titleService.setTitle('Quo | Quotation to Hold Cover');
-  		this.getQuoteList();
+  		
+  		//Added by Engel;
+        this.route.params.subscribe((data:any)=>{
+         var quoteNo	: any[] = [];
+         quoteNo = this.splitQuoteNo(data.quotationNo);
+         for (let i = 0; i < quoteNo.length; i++) {
+  			this.quoteInfo.quotationNo[i] = quoteNo[i];
+	     }
+	    });
+
+	    this.getQuoteList();
   	}
 
   	getQuoteList(param?){
