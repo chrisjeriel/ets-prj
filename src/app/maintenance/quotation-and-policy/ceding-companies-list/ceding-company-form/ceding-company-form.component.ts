@@ -145,7 +145,11 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   		this.successDiag.open();
   	}else if(!this.checkDefaultTag()){
   		this.dialogIcon = 'info';
-  		this.dialogMessage = 'Unable to save the record, Only one default company representative is allowed.';
+  		if(this.defaultTagCounter > 1){
+        this.dialogMessage = 'Unable to save the record, Only one default company representative is allowed.';
+      }else if(this.defaultTagCounter === 0){
+        this.dialogMessage = 'Please enter one default company representative.';
+      }
   		this.successDiag.open();
   	}else{
       if(fromCancel !== undefined){

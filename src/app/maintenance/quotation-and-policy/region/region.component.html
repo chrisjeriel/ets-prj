@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Quotation & Policy</h4>
-	<ngb-tabset (tabChange)="onTabChange($event)">
+	<ngb-tabset #tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="Region" id="region" >
 			<ng-template ngbTabContent>
 			  <fieldset class="scheduler-border" style="margin-top: 10px !important">

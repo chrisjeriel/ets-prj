@@ -12,7 +12,7 @@
 					<div class="col-sm-6">
 						<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:152%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 						<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
-						                <div style="position: fixed;width: 86%;height: 70%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+						                <!-- <div style="position: fixed;width: 86%;height: 70%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div> -->
 						<fieldset class="scheduler-border" style="padding-bottom: 18px !important; margin-right: -5px !important;">
 							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 							<div style="margin-right: 20px;">
@@ -67,7 +67,7 @@
 									<label class="form-control-sm col-sm-2">Loss Date</label>
 									<!-- <input readonly [value]="ns.toDateTimeString(selected?.lossDate)" type="datetime-local" class="form-control form-control-sm cust-sm col-sm-4"> -->
 									<div class="col-sm-4" style="padding: 0px">
-									    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="ns.toDateTimeString(selected?.lossDate)?.split('T')[0]"></datepicker>
+									    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="selected?.lossDate"></datepicker>
 									</div>
 								</div>
 								<div class="input-group cust-ig">
@@ -75,10 +75,10 @@
 									<!-- <input readonly type="date" class="form-control form-control-sm cust-sm col-sm-2" [value]="ns.toDateTimeString(selected?.reportDate)?.split('T')[0]" >
 									<input readonly type="time" class="form-control form-control-sm cust-sm col-sm" [value]="ns.toDateTimeString(selected?.reportDate)?.split('T')[1]" style="margin-left: 3px;" > -->
 									<div class="col-sm" style="padding: 0px">
-									    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="ns.toDateTimeString(selected?.reportDate)?.split('T')[0]"></datepicker>
+									    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="report.date"></datepicker>
 									</div>
 									<div class="col-sm dp-cont">
-									    <datepicker [type]="'time'" [required]="false" [disabled]="true" [value]="ns.toDateTimeString(selected?.reportDate)?.split('T')[1]"></datepicker>
+									    <datepicker [type]="'time'" [required]="false" [disabled]="true" [value]="report.time"></datepicker>
 									</div>
 									<label class="form-control-sm col-sm-2">Reported By</label>
 									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.reportedBy">
@@ -88,10 +88,10 @@
 									<!-- <input readonly type="date" class="form-control form-control-sm cust-sm col-sm-2" [value]="ns.toDateTimeString(selected?.createDate)?.split('T')[0]" >
 									<input readonly type="time" class="form-control form-control-sm cust-sm col-sm" [value]="ns.toDateTimeString(selected?.createDate)?.split('T')[1]" style="margin-left: 3px;" > -->
 									<div class="col-sm" style="padding: 0px">
-									    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="ns.toDateTimeString(selected?.createDate)?.split('T')[0]"></datepicker>
+									    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="create.date"></datepicker>
 									</div>
 									<div class="col-sm dp-cont">
-									    <datepicker [type]="'time'" [required]="false" [disabled]="true" [value]="ns.toDateTimeString(selected?.createDate)?.split('T')[1]"></datepicker>
+									    <datepicker [type]="'time'" [required]="false" [disabled]="true" [value]="create.time"></datepicker>
 									</div>
 									<label class="form-control-sm col-sm-2">Processed By</label>
 									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.processedBy">

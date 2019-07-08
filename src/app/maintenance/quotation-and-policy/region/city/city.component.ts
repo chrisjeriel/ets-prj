@@ -361,7 +361,6 @@ export class CityComponent implements OnInit {
   }
 
   onClickSave(cancelFlag?){
-    this.cancelFlag = cancelFlag !== undefined;
       if(this.checkFields()){
         let cityCds:string[] = this.cityTable.passData.tableData.map(a=>a.cityCd);
           if(cityCds.some((a,i)=>cityCds.indexOf(a)!=i)){
@@ -384,7 +383,29 @@ export class CityComponent implements OnInit {
   }
 
   onClickSaveCity(cancelFlag?){
+     this.cancelFlag = cancelFlag !== undefined;
+      if(this.cancelFlag){
+        if(this.checkFields()){
+         let cityCds:string[] = this.cityTable.passData.tableData.map(a=>a.cityCd);
+          if(cityCds.some((a,i)=>cityCds.indexOf(a)!=i)){
+            this.dialogMessage = 'Unable to save the record. City Code must be unique.';
+            this.dialogIcon = 'error-message';
+            this.successDialog.open();
+            return;
+          } else {
+            this.saveDataCity();
+          }
+        }else{
+          this.dialogMessage="Please fill up required fields.";
+          this.dialogIcon = "error";
+          this.successDialog.open();
+        }
+     } else {
+       this.saveDataCity();
+     }
+  }
 
+  saveDataCity(){
      this.mtnCityReq.saveCity = [];
      this.mtnCityReq.deleteCity = [];
      this.mtnCityReq.saveCity = this.passData.tableData.filter(a=>a.edited && !a.deleted);
@@ -403,7 +424,6 @@ export class CityComponent implements OnInit {
               this.passData.disableGeneric = true;
               this.saveCity(this.mtnCityReq);     
       }
-
   }
 
   saveCity(obj){
