@@ -351,7 +351,7 @@ export class PolAlopComponent implements OnInit {
            this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
            this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createDate);
            this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
-           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(this.savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateDate);
+           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateDate);
         }
     }
   }
