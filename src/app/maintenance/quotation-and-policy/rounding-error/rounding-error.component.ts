@@ -63,10 +63,10 @@ export class RoundingErrorComponent implements OnInit {
   roundingLOVRow: any;
 
   roundingError : any = {
-  	createUser: null,
-  	createDate: '',
-  	updateUser: null,
-  	updateDate: ''
+    createUser: null,
+    createDate: '',
+    updateUser: null,
+    updateDate: ''
   }
 
   saveData:any ={
@@ -77,41 +77,43 @@ export class RoundingErrorComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private titleService: Title) { }
 
   ngOnInit() {
+    console.log(this.ns.toDateTimeString(1562544000000))
     this.titleService.setTitle("Mtn | Rounding Error Company");
-  	this.getRoundingError();
+    this.getRoundingError();
   }
 
   getRoundingError(){
-  	this.passData.tableData = [];
-  	this.maintenanceService.getMtnRoundingError(null).subscribe((data:any) => {
-  		for(var i = 0 ; i < data.roundingError.length; i++){
-  			this.passData.tableData.push(data.roundingError[i]);
+    this.passData.tableData = [];
+    this.maintenanceService.getMtnRoundingError(null).subscribe((data:any) => {
+      console.log(data)
+      for(var i = 0 ; i < data.roundingError.length; i++){
+        this.passData.tableData.push(data.roundingError[i]);
         this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['effDateFrom']
-  		}
-  		this.table.refreshTable();
-  	});
+      }
+      this.table.refreshTable();
+    });
   }
 
    clickRow(data){
-   	  if(data !== null){
-   	  	this.roundingError = data;
-   	  	this.roundingError.createDate = this.ns.toDateTimeString(data.createDate);
-   	  	this.roundingError.updateDate = this.ns.toDateTimeString(data.updateDate);
-   	  }else{
+       if(data !== null){
+         this.roundingError = data;
+         this.roundingError.createDate = this.ns.toDateTimeString(data.createDate);
+         this.roundingError.updateDate = this.ns.toDateTimeString(data.updateDate);
+
+         if(data.okDelete == 'Y'){
+           this.passData.disableGeneric = false
+         }else{
+           this.passData.disableGeneric = true
+         }
+       }else{
         this.passData.disableGeneric = true
       }
-
-   	 if(data.okDelete == 'Y'){
-   	   this.passData.disableGeneric = false
-   	 }else{
-   	   this.passData.disableGeneric = true
-   	 }
    }
 
    deleteCurr(){
-		this.table.indvSelect.deleted = true;
-		this.table.selected  = [this.table.indvSelect]
-		this.table.confirmDelete();
+    this.table.indvSelect.deleted = true;
+    this.table.selected  = [this.table.indvSelect]
+    this.table.confirmDelete();
    }
 
    update(data){
@@ -153,61 +155,63 @@ export class RoundingErrorComponent implements OnInit {
   }
 
   prepareData(){
-  	this.edited = [];
-  	this.deleted = [];
-  	  for(var i = 0 ; i < this.passData.tableData.length; i++){
-  	  	if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-  	  		this.edited.push(this.passData.tableData[i]);
-  	  		this.edited[this.edited.length - 1].effDateFrom = this.ns.toDateTimeString(this.passData.tableData[i].effDateFrom);
-  	  		this.edited[this.edited.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
-  	  		this.edited[this.edited.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
-  	  	}
+    this.edited = [];
+    this.deleted = [];
+      for(var i = 0 ; i < this.passData.tableData.length; i++){
+        if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+          this.edited.push(this.passData.tableData[i]);
+          this.edited[this.edited.length - 1].effDateFrom = this.ns.toDateTimeString(this.passData.tableData[i].effDateFrom);
+          this.edited[this.edited.length - 1].createDate = this.ns.toDateTimeString(0);
+          this.edited[this.edited.length - 1].updateUser = this.ns.getCurrentUser();
+          this.edited[this.edited.length - 1].updateDate = this.ns.toDateTimeString(0);
+        }
 
-  	  	if(this.passData.tableData[i].deleted){
-  	  		this.deleted.push(this.passData.tableData[i]);
-  	  		this.deleted[this.deleted.length - 1].effDateFrom = this.ns.toDateTimeString(this.passData.tableData[i].effDateFrom);
-  	  	}
-  	  }
-  	  
-  	  this.saveData.saveRoundingError = this.edited;
-   	  this.saveData.delRoundingError  = this.deleted;
-   	  if(this.edited.length == 0 && this.deleted.length == 0){
-   	  	this.errorFlag = true;
-   	  }
+        if(this.passData.tableData[i].deleted){
+          this.deleted.push(this.passData.tableData[i]);
+          this.deleted[this.deleted.length - 1].effDateFrom = this.ns.toDateTimeString(this.passData.tableData[i].effDateFrom);
+        }
+      }
+      
+      this.saveData.saveRoundingError = this.edited;
+       this.saveData.delRoundingError  = this.deleted;
+       if(this.edited.length == 0 && this.deleted.length == 0){
+         this.errorFlag = true;
+       }
   }
 
   saveRoundingError(cancelFlag?){
-  	this.cancelFlag = cancelFlag !== undefined;
-  	this.prepareData();
-  	if(this.errorFlag){
-  		setTimeout(()=> {
-  			this.dialogMessage = "Nothing to Save.";
-  			this.dialogIcon = "info";
-  			this.successDiag.open();
-  		},0);
-  	}else{
+    this.cancelFlag = cancelFlag !== undefined;
+    this.prepareData();
+    if(this.errorFlag){
+      setTimeout(()=> {
+        this.dialogMessage = "Nothing to Save.";
+        this.dialogIcon = "info";
+        this.successDiag.open();
+      },0);
+    }else{
       console.log(this.saveData)
-  		this.maintenanceService.saveMtnRoundingError(this.saveData).subscribe((data:any) => {
-	  		if(data['returnCode'] == 0) {
-	          this.dialogMessage = data['errorList'][0].errorMessage;
-	          this.dialogIcon = "error";
-	          this.successDiag.open();
-	        } else{
-	          this.dialogIcon = "success";
-	          this.successDiag.open();
-	          this.getRoundingError();
-	          this.passData.disableGeneric = true
+      this.maintenanceService.saveMtnRoundingError(this.saveData).subscribe((data:any) => {
+        console.log(data)
+        if(data['returnCode'] == 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            this.successDiag.open();
+          } else{
+            this.dialogIcon = "success";
+            this.successDiag.open();
+            this.getRoundingError();
+            this.passData.disableGeneric = true
         }
-  		});
-  	}
+      });
+    }
   }
 
   onClickSave(){
-  		$('#confirm-save #modalBtn2').trigger('click');
+      $('#confirm-save #modalBtn2').trigger('click');
   }
 
   cancel(){
-   	this.cancelBtn.clickCancel();
+     this.cancelBtn.clickCancel();
    }
 
 }
