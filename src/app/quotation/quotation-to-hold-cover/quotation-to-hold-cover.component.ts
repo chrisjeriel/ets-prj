@@ -116,7 +116,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	private sub		: any;
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
-				private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute) { 
+		private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute) { 
 	}
 
   	ngOnInit() {
