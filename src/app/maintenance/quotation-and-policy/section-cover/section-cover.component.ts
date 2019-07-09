@@ -5,6 +5,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-section-cover',
@@ -154,6 +155,11 @@ export class SectionCoverComponent implements OnInit {
 
   getMtnSectionCovers(){
 	this.secTable.loadingFlag = true;
+	if(this.dedTable.form.dirty || this.secTable.form.dirty){
+		this.onClickSave();
+		this.dedTable.form.markAsPristine();
+		this.secTable.form.markAsPristine();
+	}
   	this.ms.getMtnSectionCovers(this.line.lineCd,'').subscribe(a=>{
 		//deza was here 7/5/2019 #8221 MTN112
 		if(this.line.lineCd != ''){
@@ -309,9 +315,10 @@ export class SectionCoverComponent implements OnInit {
             this.successDialog.open();
             //this.getMtnSectionCovers(); //deza was here removed for #8221 MTN112 
         }else{
-            this.dialogIcon = "error";
-            this.successDialog.open();
-        }
+			this.cancelFlag = false;//deza was here 7/8/2019 #8221 MTN112
+			this.dialogIcon = "error";
+            this.successDialog.open(); 
+		}
 	  })
   }
 
@@ -326,6 +333,11 @@ export class SectionCoverComponent implements OnInit {
   	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.sortSeq == b.sortSeq && a.section==b.section).length != 1)){
 		this.dialogMessage = 'Unable to save the record. Sort Sequence must be unique per Section';
 		this.dialogIcon = 'error-message';
+		this.successDialog.open();
+		return;
+	}
+	if(this.passSecTable.tableData.some((a,i)=> a.sortSeq % 1 != 0 || a.sortSeq.toString().length > 3)){
+		this.dialogIcon = 'error';
 		this.successDialog.open();
 		return;
 	}
@@ -348,7 +360,7 @@ export class SectionCoverComponent implements OnInit {
 	  		return;
   		}
   	}
-  	this.conSave.confirmModal();
+	this.conSave.confirmModal();
   }
 
   onClickCancel(){

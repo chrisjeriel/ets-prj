@@ -29,7 +29,6 @@ export class SucessDialogComponent implements OnInit {
   }
 
   open(content?) {        
-    console.log("check");
   		// this.modalService.dismissAll();
     //     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : 'success-modal-size' });
      // $('#successMdl > #modalBtn').trigger('click');
