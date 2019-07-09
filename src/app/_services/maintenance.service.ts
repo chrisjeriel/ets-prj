@@ -1084,4 +1084,23 @@ export class MaintenanceService{
 			
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnLossCdLov",{params});
 	}
+
+    getMtnClmCashCall(treatyCd, treatyCompCd, currencyCd){
+		const params = new HttpParams()
+		     		.set('treatyId', (treatyCd === null || treatyCd === undefined ? '' : treatyCd))
+		     		.set('treatyCedId', (treatyCompCd === null || treatyCompCd === undefined ? '' : treatyCompCd))
+		     		.set('currCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd));
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClmCashCall", {params});
+	}
+
+	saveMtnClmCashCall(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmCashCall', params, header);
+
+	}
+
 }
