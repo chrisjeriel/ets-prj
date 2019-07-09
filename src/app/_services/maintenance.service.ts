@@ -1103,4 +1103,13 @@ export class MaintenanceService{
 
 	}
 
+	copyMtnClmCashCall(params) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/copyMtnClmCashCall', params, header);
+    }
+
 }
