@@ -113,9 +113,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	isModifClicked	: boolean = false;
 	passEvent		: any;
 	tempHcNo		: string = '';
-
-	private sub: any;
-	fromHcMonitoring: any;
+	private sub		: any;
 
   	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 				private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute) { 
@@ -123,39 +121,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
   	ngOnInit() {
   		this.titleService.setTitle('Quo | Quotation to Hold Cover');
-  		this.getQuoteList();
-
   		this.sub = this.activatedRoute.params.subscribe(params => {
-  			this.fromHcMonitoring = params['tableInfo'];
+  			if(Object.keys(params).length != 0){
+  				this.getQuoteList([{ key: 'quotationNo', search: this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%') }]);
+  			}else{
+  				this.getQuoteList();
+  			}
   		});
-
-  		console.log(this.fromHcMonitoring);
-  		if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
-		}else{
-			//this.quoteInfo.quotationNo  	 = JSON.parse(this.fromHcMonitoring).quotationNo;
-			// this.quoteInfo.cedingName		 = JSON.parse(this.fromHcMonitoring).cedingName;
-			// this.quoteInfo.insuredDesc		 = JSON.parse(this.fromHcMonitoring).insuredDesc;
-			// this.quoteInfo.riskName			 = JSON.parse(this.fromHcMonitoring).riskName;
-			// this.holdCoverNo				 = JSON.parse(this.fromHcMonitoring).holdCoverNo;
-			// this.holdCover.approvedBy		 = JSON.parse(this.fromHcMonitoring).approvedBy;
-			// this.holdCover.compRefHoldCovNo  = JSON.parse(this.fromHcMonitoring).compRefHoldCovNo;
-			// this.holdCover.createDate		 = JSON.parse(this.fromHcMonitoring).createDate;
-			// this.holdCover.createUser		 = JSON.parse(this.fromHcMonitoring).createUser;
-			// this.holdCover.holdCoverId		 = JSON.parse(this.fromHcMonitoring).holdCoverId;
-			// this.holdCover.holdCoverRevNo	 = JSON.parse(this.fromHcMonitoring).holdCoverRevNo;
-			// this.holdCover.holdCoverSeqNo	 = JSON.parse(this.fromHcMonitoring).holdCoverSeqNo;
-			// this.holdCover.holdCoverYear	 = JSON.parse(this.fromHcMonitoring).holdCoverYear;
-			// this.holdCover.lineCd			 = JSON.parse(this.fromHcMonitoring).lineCd;
-			// this.holdCover.optionId		 	 = JSON.parse(this.fromHcMonitoring).optionId;
-			// this.periodFromDate				 = JSON.parse(this.fromHcMonitoring).periodFrom.split('T')[0] ;
-			// this.periodFromTime				 = JSON.parse(this.fromHcMonitoring).periodFrom.split('T')[1];
-			// this.periodToDate				 = JSON.parse(this.fromHcMonitoring).periodTo.split('T')[0] ;
-			// this.periodToTime				 = JSON.parse(this.fromHcMonitoring).periodTo.split('T')[1] ;
-			// this.holdCover.preparedBy		 = JSON.parse(this.fromHcMonitoring).preparedBy;
-			// this.holdCover.reqBy			 = JSON.parse(this.fromHcMonitoring).reqBy;
-			// this.holdCover.reqDate			 = JSON.parse(this.fromHcMonitoring).reqDate;
-			// this.holdCover.status			 = JSON.parse(this.fromHcMonitoring).status;
-		}
   	}
 
   	getQuoteList(param?){
@@ -167,6 +139,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			parameter = this.searchParams;
 		}
 
+		console.log(parameter);
   		const subRes =  forkJoin(this.quotationService.getQuoProcessingData(parameter),this.quotationService.getQuotationHoldCoverList([]))
   								.pipe(map(([quo, hc]) => { return { quo, hc };}));
 
@@ -178,67 +151,68 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			
   			this.passDataQuoteLOV.tableData = quoList;
 			this.table.refreshTable();
-			if(quoList.length == 1){
-				this.quoteInfo.quotationNo 	= this.splitQuoteNo(quoList[0].quotationNo);
-				this.holdCover.quoteId		= quoList[0].quoteId;
-				this.quoteInfo.cedingName	= quoList[0].cedingName;
-				this.quoteInfo.insuredDesc	= quoList[0].insuredDesc;
-				this.quoteInfo.riskName		= quoList[0].riskName;
-				this.holdCover.lineCd		= quoList[0].lineCd;
-				this.quoteInfo.status		= quoList[0].status;
-				this.disableSave 			= false;
-				this.isModifClicked 		= false;
-				this.newHc(false);
-				this.getQuoteOptions();
+			
+				if(quoList.length == 1){
+					this.quoteInfo.quotationNo 	= this.splitQuoteNo(quoList[0].quotationNo);
+					this.holdCover.quoteId		= quoList[0].quoteId;
+					this.quoteInfo.cedingName	= quoList[0].cedingName;
+					this.quoteInfo.insuredDesc	= quoList[0].insuredDesc;
+					this.quoteInfo.riskName		= quoList[0].riskName;
+					this.holdCover.lineCd		= quoList[0].lineCd;
+					this.quoteInfo.status		= quoList[0].status;
+					this.disableSave 			= false;
+					this.isModifClicked 		= false;
+					this.newHc(false);
+					this.getQuoteOptions();
 
-				var selectedRow = hcList.filter(i => i.quotationNo == quoList[0].quotationNo);
-				if(selectedRow.length != 0 && selectedRow[0].holdCover.status.toUpperCase() != 'REPLACED VIA HOLD COVER MODIFICATION'){
-					this.holdCoverNo 		 		 = selectedRow[0].holdCover.holdCoverNo;
-					this.tempHcNo					 = selectedRow[0].holdCover.holdCoverNo;
-					this.holdCover.approvedBy		 = selectedRow[0].holdCover.approvedBy;
-			  		this.holdCover.compRefHoldCovNo  = selectedRow[0].holdCover.compRefHoldCovNo;
-			  		this.holdCover.createDate		 = this.ns.toDateTimeString(selectedRow[0].holdCover.createDate);
-			  		this.holdCover.createUser		 = selectedRow[0].holdCover.createUser;
-			  		this.holdCover.holdCoverId		 = selectedRow[0].holdCover.holdCoverId;
-			  		this.holdCover.holdCoverRevNo	 = selectedRow[0].holdCover.holdCoverRevNo;
-			  		this.holdCover.holdCoverSeqNo	 = selectedRow[0].holdCover.holdCoverSeqNo;
-			  		this.holdCover.holdCoverYear	 = selectedRow[0].holdCover.holdCoverYear;
-			  		this.holdCover.lineCd			 = selectedRow[0].holdCover.lineCd;
-			  		this.holdCover.optionId		 	 = selectedRow[0].holdCover.optionId;
-			  		this.periodFromDate				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodFrom).split('T')[0];
-			  		this.periodFromTime				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodFrom).split('T')[1];
-			  		this.periodToDate				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodTo).split('T')[0];
-			  		this.periodToTime				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodTo).split('T')[1];
-			  		this.holdCover.preparedBy		 = selectedRow[0].holdCover.preparedBy;
-			  		this.holdCover.reqBy			 = selectedRow[0].holdCover.reqBy;
-			  		this.holdCover.reqDate			 = (selectedRow[0].holdCover.reqDate == null)?'':this.ns.toDateTimeString(selectedRow[0].holdCover.reqDate).split('T')[0];
-			  		this.holdCover.status			 = selectedRow[0].holdCover.status;
-			  		this.quoteInfo.totalSi			 = selectedRow[0].holdCover.totalSi;
-			  		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
-			  		this.disableApproval = (this.holdCoverNo == '')?true:false;
+					var selectedRow = hcList.filter(i => i.quotationNo == quoList[0].quotationNo);
+					if(selectedRow.length != 0 && selectedRow[0].holdCover.status.toUpperCase() != 'REPLACED VIA HOLD COVER MODIFICATION'){
+						this.holdCoverNo 		 		 = selectedRow[0].holdCover.holdCoverNo;
+						this.tempHcNo					 = selectedRow[0].holdCover.holdCoverNo;
+						this.holdCover.approvedBy		 = selectedRow[0].holdCover.approvedBy;
+				  		this.holdCover.compRefHoldCovNo  = selectedRow[0].holdCover.compRefHoldCovNo;
+				  		this.holdCover.createDate		 = this.ns.toDateTimeString(selectedRow[0].holdCover.createDate);
+				  		this.holdCover.createUser		 = selectedRow[0].holdCover.createUser;
+				  		this.holdCover.holdCoverId		 = selectedRow[0].holdCover.holdCoverId;
+				  		this.holdCover.holdCoverRevNo	 = selectedRow[0].holdCover.holdCoverRevNo;
+				  		this.holdCover.holdCoverSeqNo	 = selectedRow[0].holdCover.holdCoverSeqNo;
+				  		this.holdCover.holdCoverYear	 = selectedRow[0].holdCover.holdCoverYear;
+				  		this.holdCover.lineCd			 = selectedRow[0].holdCover.lineCd;
+				  		this.holdCover.optionId		 	 = selectedRow[0].holdCover.optionId;
+				  		this.periodFromDate				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodFrom).split('T')[0];
+				  		this.periodFromTime				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodFrom).split('T')[1];
+				  		this.periodToDate				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodTo).split('T')[0];
+				  		this.periodToTime				 = this.ns.toDateTimeString(selectedRow[0].holdCover.periodTo).split('T')[1];
+				  		this.holdCover.preparedBy		 = selectedRow[0].holdCover.preparedBy;
+				  		this.holdCover.reqBy			 = selectedRow[0].holdCover.reqBy;
+				  		this.holdCover.reqDate			 = (selectedRow[0].holdCover.reqDate == null)?'':this.ns.toDateTimeString(selectedRow[0].holdCover.reqDate).split('T')[0];
+				  		this.holdCover.status			 = selectedRow[0].holdCover.status;
+				  		this.quoteInfo.totalSi			 = selectedRow[0].holdCover.totalSi;
+				  		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+				  		this.disableApproval = (this.holdCoverNo == '')?true:false;
 
-					if(this.holdCover.status.toUpperCase() == 'EXPIRED' || this.holdCover.status.toUpperCase() == 'CONVERTED'){
-						this.newHc(true);
-						this.disableCancelHc = true;
-						this.disableApproval = true;
-						this.disableSave	 = true;
+						if(this.holdCover.status.toUpperCase() == 'EXPIRED' || this.holdCover.status.toUpperCase() == 'CONVERTED'){
+							this.newHc(true);
+							this.disableCancelHc = true;
+							this.disableApproval = true;
+							this.disableSave	 = true;
+						}else{
+							 this.disableCancelHc = false;
+							 this.holdCover.status.toUpperCase() == 'RELEASED' ? this.showModifLov():'';
+						}
+						
 					}else{
-						 this.disableCancelHc = false;
-						 this.holdCover.status.toUpperCase() == 'RELEASED' ? this.showModifLov():'';
+						this.clearHc();
 					}
-					
-				}else{
-					this.clearHc();
-				}
 
-			}else{
-				this.newHc(true);
-				this.clearAll();
-				if(quoList.length == 0){
-					this.showQuoteLov();
-					this.getQuoteList();
-				}
-			}
+				}else{
+					this.newHc(true);
+					this.clearAll();
+					if(quoList.length == 0){
+						this.showQuoteLov();
+						this.getQuoteList();
+					}
+				}			
   		});
 
   	}
