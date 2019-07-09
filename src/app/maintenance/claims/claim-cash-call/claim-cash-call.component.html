@@ -151,7 +151,8 @@
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
             <div class="custom-row-inline-inset" style="text-align: center">
-
+            	<p *ngIf="errorMsg == 1">Unable to save. <strong>Effective From</strong> must be later than the<br />
+                effectivity of an active treaty limit.</p>
                 <p *ngIf="errorMsg == 2">Unable to copy details. <strong>Effective From</strong> of the highlighted<br />
                 record must be later than the effectivity of an active Claim<br />
             	Cash Call for selected <strong>Treaty</strong> and <strong>Treaty Company.</strong></p>
@@ -159,6 +160,6 @@
         </fieldset>
     </div>
     <div footer class="w-100 text-center">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();cancelFlag?this.cancelBtn.onNo():null"><a>Ok</a></button>
     </div>
 </app-modal>

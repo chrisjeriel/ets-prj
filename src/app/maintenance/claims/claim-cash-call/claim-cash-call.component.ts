@@ -306,9 +306,9 @@ export class ClaimCashCallComponent implements OnInit {
          if(this.checkEffFields()){
            this.confirmSave.confirmModal();
          } else {
-           this.dialogMessage = 'Unable to save the details. Effective From must be later than the effectivity of an active treaty limit.';
-           this.dialogIcon = 'error-message';
-           this.successDialog.open();
+           this.modalService.dismissAll();
+           this.errorMsg = 1;
+           $('#mtnClmCashCallWarningModal > #modalBtn').trigger('click');
          }
          
      } else {
@@ -330,9 +330,9 @@ export class ClaimCashCallComponent implements OnInit {
           if(this.checkEffFields()){
             this.saveDataClmCashCall();
           } else {
-            this.dialogMessage = 'Unable to save the details. Effective From must be later than the effectivity of an active treaty limit.';
-            this.dialogIcon = 'error-message';
-            this.successDialog.open();
+            this.modalService.dismissAll();
+            this.errorMsg = 1;
+            $('#mtnClmCashCallWarningModal > #modalBtn').trigger('click');
           }
         }else{
           this.dialogMessage="Please fill up required fields.";
