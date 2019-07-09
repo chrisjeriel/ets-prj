@@ -20,6 +20,7 @@ export class MtnCurrencyRateComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) cs : ConfirmSaveComponent;
+  @ViewChild('myForm') form:any;
 
   passData: any = {
     tHeader: [ "Hist No","Currency Rate","Eff Date From", "Active","Remarks"],
@@ -77,6 +78,7 @@ export class MtnCurrencyRateComponent implements OnInit {
   tempCurr: string = '';
   prevEvent:any;
   exit: boolean ;
+
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private titleService: Title, private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -86,6 +88,7 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   getCurrencyRate(){
+    console.log($('.ng-dirty').length)
     if(this.currencyCd == '' || this.currencyCd == null){
       this.emptyTbl();
     }else{
@@ -104,7 +107,6 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   clickRow(data){
-    console.log(this.table.indvSelect)
     if(data !== null && data.okDelete !== 'N'){
       this.passData.disableGeneric = false
       this.currencyData = data;
@@ -129,6 +131,7 @@ export class MtnCurrencyRateComponent implements OnInit {
     if(this.currencyCd === null || this.currencyCd === ''){
       this.description = null;
       this.passData.tableData = [];
+      this.passData.disableAdd = true;
       this.table.refreshTable();
     }
 
@@ -137,9 +140,9 @@ export class MtnCurrencyRateComponent implements OnInit {
      this.currencyLov.checkCode(this.currencyCd.toUpperCase(), ev);
      $('.ng-dirty').removeClass('ng-dirty'); 
     }else{
-      if($('.ng-dirty').length != 0){
+      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
         this.changeCurr = true;
-        this.cancelBtn.clickCancel();
+        this.cancelBtn.clickCancel(); 
       }else{
         this.changeCurr = false;
         this.ns.lovLoader(ev, 1);
@@ -162,7 +165,6 @@ export class MtnCurrencyRateComponent implements OnInit {
         }else{
             this.cancelBtn.onNo();
         }
-          
       }
   }
 
@@ -185,6 +187,7 @@ export class MtnCurrencyRateComponent implements OnInit {
   setCurrency(data){
     console.log(data)
     this.passData.disableAdd = false;
+    //this.passData.disableGeneric = true;
     this.firstLoading = false;
     this.currencyCd = data.currencyCd;
     this.description = data.description;
@@ -292,7 +295,7 @@ export class MtnCurrencyRateComponent implements OnInit {
   }
 
   deleteCurr(){
-      this.table.selected  = [this.table.indvSelect]
+      this.table.selected  = [this.table.indvSelect];
       this.table.confirmDelete();
   }
 

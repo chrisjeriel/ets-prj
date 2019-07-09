@@ -49,12 +49,12 @@
                 <app-confirm-save id="userConfirm" (onYes)="saveUserModal()"></app-confirm-save>
                 <app-sucess-dialog #userSuccess [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
                 <app-cancel-button #cancelApprover (onYes)="saveData('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>   
-                <app-cancel-button #cancelUser (onYes)="saveUserModal('cancel')" [url]="null" ></app-cancel-button>          
+                <app-cancel-button #cancelUser (onYes)="saveUserModal('cancel')" (no)="userModal.closeModal();"></app-cancel-button>          
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
 </div>
-<app-modal class="d-none" id="usersModal">
+<app-modal class="d-none" id="usersModal" #userModal>
 	<div header>Users</div>
 	<div body>
         <div class="row" style="margin-left: 25px">

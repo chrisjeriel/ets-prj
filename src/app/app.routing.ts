@@ -348,7 +348,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-loss-code', component: LossCodeComponent },
     { path: 'mtn-adjuster-list', component: AdjusterComponent },
     { path: 'adjuster-form', component: AdjusterFormComponent },
-    { path: 'claim-status', component: ClaimStatusComponent },
+    { path: 'claim-status', component: ClaimStatusComponent, canDeactivate: [UnsavedChangesGuard]  },
     { path: 'maintenance-clm', component: MtnClaimsComponent },
     { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },
