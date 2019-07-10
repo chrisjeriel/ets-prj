@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccountingService } from '@app/_services';
 import { CMDM } from '@app/_models';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 @Component({
@@ -9,14 +10,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./in-trust-credit-debit.component.css']
 })
 export class InTrustCreditDebitComponent implements OnInit {
+  @ViewChild("CMDMTable") CMDMTable : CustNonDatatableComponent;
 
   passDataCMDMListing: any = {
         tableData: this.accountingService.getCreditDebit(),
-        tHeader: ["CM/DM No.","CM/DM Date","Recipient","Particulars","CM/DM Type","Ref No","Prepared By","Amount"],
+        tHeader: ["CM/DM No.","CM/DM Date","Recipient","Particulars","Tran Type","Ref No","Status","Amount"],
         dataTypes: ['text','date','text','text','text','text','text','currency',],
         filters: [],
         addFlag:true,
         editFlag:true,
+        btnDisabled: true,
         pageLength: 10,
         pageStatus: true,
         pagination: true,
@@ -26,6 +29,9 @@ export class InTrustCreditDebitComponent implements OnInit {
   constructor(private accountingService: AccountingService, private router: Router, private titleService: Title) { }
 
   ngOnInit() {
+    console.log(this.passDataCMDMListing);
+  	//setTimeout(a=>{this.CMDMTable.refreshTable();},0);
+    this.titleService.setTitle("Acct-IT | Credit/Debit Memo");
   }
 
   onClickAdd(event){
