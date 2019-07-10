@@ -520,6 +520,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   setStatus(ev) {
+    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+    
     this.claimData.clmStatCd = ev.statusCode;
     this.claimData.clmStatus = ev.description;
   }
