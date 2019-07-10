@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./in-trust-credit-debit.component.css']
 })
 export class InTrustCreditDebitComponent implements OnInit {
-  @ViewChild("CMDMTable") CMDMTable : CustNonDatatableComponent;
 
   passDataCMDMListing: any = {
         tableData: this.accountingService.getCreditDebit(),
@@ -19,7 +18,6 @@ export class InTrustCreditDebitComponent implements OnInit {
         filters: [],
         addFlag:true,
         editFlag:true,
-        btnDisabled: true,
         pageLength: 10,
         pageStatus: true,
         pagination: true,
@@ -29,8 +27,6 @@ export class InTrustCreditDebitComponent implements OnInit {
   constructor(private accountingService: AccountingService, private router: Router, private titleService: Title) { }
 
   ngOnInit() {
-    console.log(this.passDataCMDMListing);
-  	//setTimeout(a=>{this.CMDMTable.refreshTable();},0);
     this.titleService.setTitle("Acct-IT | Credit/Debit Memo");
   }
 
