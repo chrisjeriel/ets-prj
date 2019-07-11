@@ -37,6 +37,8 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   private claimsHistoryInfo = ClaimsHistoryInfo;
 
+  @Input() isInquiry: boolean = false;
+
   passDataHistory: any = {
     tableData     : [],
     tHeader       : ['Hist. No.', 'Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Curr Rt', 'Reserve', 'Payment Amount', 'Ref. No.', 'Ref. Date', 'Remarks'],
@@ -194,6 +196,29 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.clmHistoryData.riskName    = this.claimInfo.riskName;
     this.clmHistoryData.insuredDesc = this.claimInfo.insuredDesc; 
     this.clmHistoryData.claimStat   = this.claimInfo.clmStatus;
+
+    //neco
+    if(this.isInquiry){
+      this.passDataHistory.uneditable = [];
+      this.passDataApprovedAmt.uneditable = [];
+
+      this.passDataHistory.addFlag = false;
+      this.passDataHistory.deleteFlag = false;
+      this.passDataHistory.disableGeneric = true;
+
+      this.passDataApprovedAmt.addFlag = false;
+      this.passDataApprovedAmt.deleteFlag = false;
+      this.passDataApprovedAmt.disableGeneric = true;
+      
+      for(var i in this.passDataHistory.tHeader){
+        this.passDataHistory.uneditable.push(true);
+      }
+      for(var j in this.passDataApprovedAmt.tHeader){
+        this.passDataApprovedAmt.uneditable.push(true);
+      }
+    }
+    //end neco
+
     this.getClaimHistory();
     this.getClaimApprovedAmt();
     this.getResStat();
