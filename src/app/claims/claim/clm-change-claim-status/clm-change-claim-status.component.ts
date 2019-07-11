@@ -282,6 +282,9 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     this.cs.getChangeClaimStatus(this.searchParams).subscribe(
        (data: any)=>{
          if(data.claimList.length !== 0){
+           if(this.batchOption !== 'IP'){
+             data.claimList = data.claimList.filter(a=>{return a.clmStatCd === 'IP'});
+           }
            for(var i of data.claimList){
              for(var j of i.clmAdjusterList){
                if(i.adjName === undefined){
@@ -558,10 +561,35 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         this.dialogMessage = 'Are you sure you want to re-open this claim?';
         this.processModal.openNoClose();
         break;
-      default:
+      case 'TC':
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Are you sure you want to temporary close this claim?';
+        this.processModal.openNoClose();
+        break;
+      case 'CD':
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Are you sure you want to close this claim?';
+        this.processModal.openNoClose();
+        break;
+      case 'WD':
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Are you sure you want to withdraw this claim?';
+        this.processModal.openNoClose();
+        break;
+      case 'SP':
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Are you sure you want to spoil this claim?';
+        this.processModal.openNoClose();
+        break;
+      case 'DN':
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Are you sure you want to deny this claim?';
+        this.processModal.openNoClose();
+        break;
+      /*default:
         this.dialogIcon = 'info';
         this.dialogMessage = 'Are you sure you want to '+ this.batchOptionDesc + ' this claim?';
-        this.processModal.openNoClose();
+        this.processModal.openNoClose();*/
     }
   }
 
