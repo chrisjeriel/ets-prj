@@ -27,7 +27,7 @@ export class CancelButtonComponent implements OnInit {
         this.router.navigate([this.url]);
       } else {
         ///this.saveModal.closeModal();
-        this.onClickCancel();
+        this.onClickNo();
       }
   	}
   }

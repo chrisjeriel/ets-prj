@@ -223,13 +223,17 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     oneRetLine:false,
     autoCalc: false,
     saveBtn: false,
-    distributeBtn: false
+    distributeBtn: false,
+    seciitrtyLimit: false,
+    seciiPremTag: false
   }
 
   controlHidden:any = {
     saveBtn: false,
     distributeBtn: false,
-    coinsBtn:true
+    coinsBtn:true,
+    seciitrtyLimit: false,
+    seciiPremTag: false
   }
 
   postedList:any[] = [];
@@ -257,13 +261,21 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
                     this.wparamData.genericBtn = undefined;
                     this.wparamData.addFlag = false;
-                    this.wparamData.uneditable=[true,true,true,true,true,]
+                    this.wparamData.uneditable=[true,true,true,true,true,];
+                    this.controlDisabled.seciitrtyLimit = true;
+                    this.controlDisabled.seciiPremTag = true;
                   }else{
                     if(parseInt(data.policyNo.substr(-3))>0){
                       this.controlDisabled.oneRetLine = true;
+                      this.controlDisabled.seciitrtyLimit = true;
+                      this.controlDisabled.seciiPremTag = true;
                     }
                   }
                   
+                  if(this.params.policyNo.split('-')[0]!='CAR' && this.params.policyNo.split('-')[0]!='EAR'){
+                      this.controlHidden.seciitrtyLimit = true;
+                      this.controlHidden.seciiPremTag = true;
+                  }
                 this.retrieveRiskDistribution();
 
               });
@@ -445,7 +457,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           retLineAmt: this.riskDistributionData.retLineAmt.toString().replace(/[,]/g,''),
           autoCalc: this.riskDistributionData.autoCalc,
           updateUser: JSON.parse(window.localStorage.currentUser).username,
-          policyId: this.params.policyId
+          policyId: this.params.policyId,
+          seciiPremTag: this.riskDistributionData.seciiPremTag,
+          trtyLimitSec2: this.riskDistributionData.trtyLimitSec2 == null ?'' : this.riskDistributionData.trtyLimitSec2.toString().replace(/[,]/g,''),
         };
         this.polService.saveDistRisk(params).subscribe((data: any)=>{
         if(data.returnCode === 0){
@@ -469,6 +483,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.controlDisabled.oneRetLine = true;
         this.controlDisabled.autoCalc = true;
         this.controlDisabled.saveBtn = true;
+        this.controlDisabled.seciitrtyLimit = true;
+        this.controlDisabled.seciiPremTag = true;
 
         this.wparamData.opts = [];
         this.wparamData.uneditable = [];
@@ -488,13 +504,18 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.controlDisabled.oneRetLine = true;
         this.wparamData.addFlag = false;
         this.wparamData.genericBtn = undefined;
+        this.controlDisabled.seciitrtyLimit = true;
+        this.controlDisabled.seciiPremTag = true;
       }else{
         this.wparamData.uneditable = [];
         if(parseInt(this.params.policyNo.substr(-3))==0){
+          this.controlDisabled.seciitrtyLimit = false;
+          this.controlDisabled.seciiPremTag = false;
           this.controlDisabled.oneRetLine = false;
         }
         this.wparamData.addFlag = true;
         this.wparamData.genericBtn = 'Delete';
+
       }
     }
   //END
@@ -530,20 +551,21 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   }
 
   onClickCancel(){
+    console.log(this.params.exitLink)
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}]);
   }
 
   onClickSave(){
     let treaty:string[] = this.wparamData.tableData.map(a=>a.treatyId).filter((value, index, self) => self.indexOf(value) === index);
     for(let i of treaty){
-      if( Number(this.wparamData.tableData.filter(a=>a.treatyId == i && !a.deleted).reduce((a, b) => a + (parseInt(b['pctShare']) || 0), 0)).toFixed(2) != '100.00'){
+      if( Number(this.wparamData.tableData.filter(a=>a.treatyId == i && !a.deleted).reduce((a, b) => a + (parseInt(b['pctShare']) || 0), 0)).toFixed(2) != '100.00' && 
+          Number(this.wparamData.tableData.filter(a=>a.treatyId == i && !a.deleted).reduce((a, b) => a + (parseInt(b['pctShare']) || 0), 0)).toFixed(2) != '0.00'){
         this.warningInvShareMdl.openNoClose();
         return;
       }
     }
     if(this.distAlt.length != 0){
       this.confirmAltMdl.openNoClose();
-      console.log('oyyyy');
       return;
     }
     this.confirmSave.confirmModal()

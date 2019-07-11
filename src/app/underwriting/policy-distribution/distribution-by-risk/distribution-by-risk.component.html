@@ -58,12 +58,20 @@
           <div class="col-sm-3"></div>
         </div>
         <div class="input-group">
-          <div class="input-group">
+          <div class="input-group" [class.d-none]="controlHidden.seciitrtyLimit">
             <label class="form-control-sm col-sm-5">Section II Treaty Limit</label>
-            <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.trtyLimitSec2 | number: '1.2-2'" readonly>
+            <input type="text" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.trtyLimitSec2" [readonly]="controlDisabled.seciitrtyLimit" appCurrency (ngModelChange)="riskDistributionData.trtyLimitSec2 = $event">
           </div>
-          <label class="form-control-sm col-sm-5">VAT on R/I Rate (%)</label>
-          <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.vatRiRt | number: '1.10-10'" readonly>
+          <div class="input-group" [class.d-none]="controlHidden.seciiPremTag">
+            <div class="col-sm-5">
+            </div>
+            <input type="checkbox" [ngModel]="riskDistributionData?.seciiPremTag === 'Y'" (ngModelChange)="$event ? riskDistributionData.seciiPremTag = 'Y' : riskDistributionData.seciiPremTag = 'N';readOnlyAll()" [disabled]="controlDisabled.seciiPremTag">
+            <label class="form-control-sm col-sm-4 text-left pt-0" style="text-align: left !important;">Consider Sec II Limit tag</label>
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-5">VAT on R/I Rate (%)</label>
+            <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.vatRiRt | number: '1.10-10'" readonly>
+          </div>
         </div>
       </div>
     </fieldset>
@@ -153,7 +161,7 @@
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()"></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()" ></app-cancel-button>
 
 <app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>
 
