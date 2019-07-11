@@ -586,6 +586,12 @@ export class ClmClaimHistoryComponent implements OnInit {
           e.histType = '';
           e.histTypeDesc = '';
         }
+        if(e.histType == 1 && (Number(e.reserveAmt) > Number(this.clmHistoryData.allowMaxSi))){
+          this.warnMsg = 'Initial Reserve must be less than or equal to the Allowable Maximum Sum Insured.';
+          this.showWarnMsg();
+          e.reserveAmt = '';
+
+        }
       }
     });
 
