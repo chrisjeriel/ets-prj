@@ -728,7 +728,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.showCustLoader = true;
 
     var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
-                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.effDate <= new Date(this.claimData.lossDate))
+                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.effDate <= new Date(this.claimData.lossDate) && a.statusDesc == 'In Force')
                                                                                .sort((a, b) => b.altNo - a.altNo)),
                             mergeMap(data => this.us.getPolGenInfo(data['policyList'][0].policyId, data['policyList'][0].policyNo)));
 
