@@ -923,7 +923,7 @@ export class PolCoverageComponent implements OnInit {
         this.promptClickCat = false;
         this.getCATPerils();
         setTimeout(()=>{
-          this.catPerilMdl.openNoClose();
+          this.catPerilMdlAlt.openNoClose();
         },0);
       }
     }
@@ -1953,16 +1953,24 @@ export class PolCoverageComponent implements OnInit {
   }
 
    onClickSaveAlt(){
+     console.log('pasol')
+     for( var i= 0; i< this.passData.tableData.length;i++){
+      if(this.passData.tableData[i].cumSi == 0 && this.passData.tableData[i].addSi == 'Y'){
+        this.errorFlag = true;
+      }
+     }
+
      if(this.errorFlag){
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Invalid amount. Cumulative Sum Insured must be greater than or equal to zero.';
         this.successAlt.open();
         this.errorFlag = true;
      }else{
+      $('#confirmSave #confirm-save #modalBtn2').trigger('click');
       //this.confirmSave.confirmModal();
-      this.catPerilMdlAlt.openNoClose();
+      //this.catPerilMdlAlt.openNoClose();
      }
-    //$('#confirm-save #confirmSave ').trigger('click');
+    //
   }
 
   sectionCoversLOV(data){
