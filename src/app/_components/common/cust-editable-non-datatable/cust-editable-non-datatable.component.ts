@@ -258,7 +258,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         if(this.passData.paginateFlag){
             setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
         }
-        this.form.control.markAsDirty();
+        this.markAsDirty();
     }
 
     onClickDelete(force?) {
@@ -276,7 +276,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                }
             }
             this.selectAllFlag = false;
-            this.form.control.markAsDirty();
+            this.markAsDirty();
             $('#cust-scroll').addClass('ng-dirty');
             this.selected = [];
             this.refreshTable(undefined, true);

@@ -91,7 +91,6 @@ export class ClaimsAttachmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.claimInfo);
     this.titleService.setTitle("Clm | Attachment");
 
     //neco
@@ -107,19 +106,12 @@ export class ClaimsAttachmentComponent implements OnInit {
     }
     //neco end
 
-    this.route.params.subscribe((data:any)=>{
-      console.log(data)
-      this.claimId = data.claimId;
-      this.claimNo = data.claimNo;
-    });
-
     this.getAttachment();
   }
 
   getAttachment(){
-    this.claimsService.getAttachment(this.claimId, this.claimNo)
+    this.claimsService.getAttachment(this.claimInfo.claimId, this.claimInfo.claimNo)
       .subscribe(data => {
-        console.log(data);
         this.passData.tableData = [];
          if(data['claimsAttachmentList'] !== null){
                   console.log(data['claimsAttachmentList']);
@@ -216,7 +208,7 @@ export class ClaimsAttachmentComponent implements OnInit {
   }
 
   saveDataAttachment(){
-     this.attachmentInfo.claimId = this.claimId;
+     this.attachmentInfo.claimId = this.claimInfo.claimId;
      this.savedData = [];
      this.deletedData = [];
      this.savedData = this.passData.tableData.filter(a=>a.edited && !a.deleted);

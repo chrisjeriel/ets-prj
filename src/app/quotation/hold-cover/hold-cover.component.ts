@@ -199,6 +199,7 @@ export class HoldCoverComponent implements OnInit {
 
 		this.sub = this.route.params.subscribe(params => {
 			this.from = params['from'];
+			console.log(params);
 			if (this.from == "hold-cover-monitoring") {
 				this.sliceQuoteNo(params['quotationNo']);	
 				this.getQuoteInfo();			

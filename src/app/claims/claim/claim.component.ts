@@ -28,6 +28,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         claimId: '',
         claimNo: '',
         projId: '',
+        policyId: '',
         policyNo: '',
         riskId: '',
         riskName:'',
@@ -40,6 +41,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
 
   disableClmHistory: boolean = true;
   disableNextTabs: boolean = true;
+  disablePaytReq: boolean = true;
 
   constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal) { }
 
@@ -68,6 +70,8 @@ export class ClaimComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('/claims-inquiry');
       } else if($event.nextId === 'Exit' && !this.isInquiry){
         this.router.navigateByUrl('/clm-claim-processing');
+      } else if($event.nextId === 'view-pol-info' && $('.ng-dirty').length == 0) {
+        this.router.navigate(['/policy-information', { policyId: this.claimInfo.policyId, policyNo: this.claimInfo.policyNo, clmInfo: JSON.stringify(this.claimInfo) }], { skipLocationChange: true });
       }
 
       if($('.ng-dirty').length != 0 ){
@@ -91,15 +95,18 @@ export class ClaimComponent implements OnInit, OnDestroy {
   }
 
   getClmInfo(ev) {
+    console.log(ev);
     this.claimInfo.claimId = ev.claimId;
     this.claimInfo.claimNo = ev.claimNo;
     this.claimInfo.projId = ev.projId;
+    this.claimInfo.policyId = ev.policyId;
     this.claimInfo.policyNo = ev.policyNo;
     this.claimInfo.riskName = ev.riskName;
     this.claimInfo.insuredDesc = ev.insuredDesc;
     this.claimInfo.clmStatus = ev.clmStatus;
     this.disableClmHistory = ev.disableClmHistory;
     this.disableNextTabs = ev.disableNextTabs;
+    this.disablePaytReq = ev.disablePaytReq;
   }
   
 }

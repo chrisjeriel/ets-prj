@@ -23,6 +23,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('userSuccess') userSuccess: SucessDialogComponent;
   @ViewChild('mtnUser') mtnUser: MtnApproverComponent;
+  //@ViewChild('itemInfoModal') itmInfoMdl: ModalComponent;
   //@ViewChild('mtnUser') mtnUser: MtnUsersComponent;
   
   passData: any = {
@@ -169,8 +170,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
     });
   }
 
-  saveUserModal(cancelFlag?){
-    this.cancelFlag = cancelFlag !== undefined;
+  prepareSaveUser(){
     this.userDetails.saveMtnApprovalFn   = [];
     this.userDetails.deleteMtnApprovalFn = [];
     for(var i = 0 ; i < this.passDataUser.tableData.length; i++){
@@ -186,6 +186,11 @@ export class MtnApprovalFunctionComponent implements OnInit {
         this.userDetails.deleteMtnApprovalFn[this.userDetails.deleteMtnApprovalFn.length - 1].approvalCd = this.approvalCd;
       }
     }
+  }
+
+  saveUserModal(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    this.prepareSaveUser();
 
     if(this.userDetails.saveMtnApprovalFn.length === 0 && this.userDetails.deleteMtnApprovalFn.length === 0){
        setTimeout(()=> {
@@ -295,7 +300,12 @@ export class MtnApprovalFunctionComponent implements OnInit {
   }
 
   onCancelUser(){
-    this.cancelUserBtn.clickCancel()
+    this.prepareSaveUser();
+    if(this.userDetails.saveMtnApprovalFn.length === 0 && this.userDetails.deleteMtnApprovalFn.length === 0){
+      this.modalService.dismissAll();
+    }else{
+       this.cancelUserBtn.clickCancel();
+    }
   }
 
   onClickSaveUser(){
