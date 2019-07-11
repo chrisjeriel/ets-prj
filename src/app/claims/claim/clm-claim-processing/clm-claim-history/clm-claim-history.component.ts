@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ClaimsHistoryInfo } from '@app/_models';
 import { ClaimsService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -28,6 +28,8 @@ export class ClmClaimHistoryComponent implements OnInit {
   @ViewChild(MtnClaimStatusLovComponent) clmStatsLov : MtnClaimStatusLovComponent;
 
   private claimsHistoryInfo = ClaimsHistoryInfo;
+
+  @Input() isInquiry: boolean = false;
 
   passDataHistory: any = {
     tableData     : [],
@@ -135,6 +137,27 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim History");
+    //neco
+    if(this.isInquiry){
+      this.passDataHistory.uneditable = [];
+      this.passDataApprovedAmt.uneditable = [];
+
+      this.passDataHistory.addFlag = false;
+      this.passDataHistory.deleteFlag = false;
+      this.passDataHistory.disableGeneric = true;
+
+      this.passDataApprovedAmt.addFlag = false;
+      this.passDataApprovedAmt.deleteFlag = false;
+      this.passDataApprovedAmt.disableGeneric = true;
+      
+      for(var i in this.passDataHistory.tHeader){
+        this.passDataHistory.uneditable.push(true);
+      }
+      for(var j in this.passDataApprovedAmt.tHeader){
+        this.passDataApprovedAmt.uneditable.push(true);
+      }
+    }
+    //end neco
     this.getClaimHistory();
     this.getClaimApprovedAmt();
   }
