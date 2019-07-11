@@ -17,22 +17,22 @@
                       <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="">
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'IP'" name="batchOption"><label class="rd-lbl">In Progress</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); searchParams.batchOpt = batchOption; retrieveQueryList();" [value]="'IP'" name="batchOption"><label class="rd-lbl">In Progress</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'TC'" name="batchOption"><label class="rd-lbl">Temporary Close</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); searchParams.batchOpt = batchOption; retrieveQueryList();" [value]="'TC'" name="batchOption"><label class="rd-lbl">Temporary Close</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'CD'" name="batchOption"><label class="rd-lbl">Close</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); searchParams.batchOpt = batchOption; retrieveQueryList();" [value]="'CD'" name="batchOption"><label class="rd-lbl">Close</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'WD'" name="batchOption"><label class="rd-lbl">Withdraw</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); searchParams.batchOpt = batchOption; retrieveQueryList();" [value]="'WD'" name="batchOption"><label class="rd-lbl">Withdraw</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'SP'" name="batchOption"><label class="rd-lbl">Spoil</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); searchParams.batchOpt = batchOption; retrieveQueryList();" [value]="'SP'" name="batchOption"><label class="rd-lbl">Spoil</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'DN'" name="batchOption"><label class="rd-lbl">Deny</label>
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); searchParams.batchOpt = batchOption; retrieveQueryList();" [value]="'DN'" name="batchOption"><label class="rd-lbl">Deny</label>
                     </div>
                     <!-- <div class="form-row" *ngFor="let status of arrClaimStatus">
                       <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; batchOptionDesc = status.description; clearDetails(); queryData.tableData = []; queryTable.refreshTable(); queryTable.selected = [];" [value]="status.statusCode" name="batchOption"><label class="rd-lbl">{{status.description}}</label>
