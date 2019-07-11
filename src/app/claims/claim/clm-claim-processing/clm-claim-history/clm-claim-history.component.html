@@ -117,8 +117,8 @@
 					<div class="cust-btn-container" style="margin-top: 10px; width: 100% !important;">
 						<button type="button" class="cust-btn" (click)="showResStatMdl()"><a>Reserve Status</a></button>
 						<button type="button" class="cust-btn" (click)="showApprovedAmtMdl()"><a>Approved Amount</a></button>
-						<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-						<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+						<button type="button" class="cust-btn" (click)="onClickCancel()" *ngIf="!isInquiry"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="!isInquiry"><a>Save</a></button>
 					</div>
 				</div>
 			</div>
@@ -133,8 +133,8 @@
 					<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
 					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossResAmt  | number:'1.2-2'" readonly>
 					<label class="form-control-sm col-sm-1">Status</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.lossStatCd" (ngModelChange)="clmHistoryData.lossStatCd=$event.toUpperCase()" (change)="checkLossStat($event)" required>
-					<div class="text-search-ico"><a (click)="fromStat='loss';showResStatLov();"><i class="fa fa-search"></i></a></div>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.lossStatCd" (ngModelChange)="clmHistoryData.lossStatCd=$event.toUpperCase()" (change)="checkLossStat($event)" required [readonly]="isInquiry">
+					<div class="text-search-ico" *ngIf="!isInquiry"><a (click)="fromStat='loss';showResStatLov();"><i class="fa fa-search"></i></a></div>
 					<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
 					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossPdAmt  | number:'1.2-2'" readonly>
 				</div>
@@ -142,8 +142,8 @@
 					<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
 					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expResAmt  | number:'1.2-2'" readonly>
 					<label class="form-control-sm col-sm-1">Status</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.expStatCd" (ngModelChange)="clmHistoryData.expStatCd=$event.toUpperCase()" (change)="checkExpStat($event)" required>
-					<div class="text-search-ico"><a (click)="fromStat='exp';showResStatLov();"><i class="fa fa-search"></i></a></div>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.expStatCd" (ngModelChange)="clmHistoryData.expStatCd=$event.toUpperCase()" (change)="checkExpStat($event)" required [readonly]="isInquiry">
+					<div class="text-search-ico" *ngIf="!isInquiry"><a (click)="fromStat='exp';showResStatLov();"><i class="fa fa-search"></i></a></div>
 					<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
 					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expPdAmt  | number:'1.2-2'" readonly>
 				</div>
@@ -151,8 +151,9 @@
         </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="onClickCancelResStat()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="onClickSaveResStat()"><a>Save</a></button>
+        <button class="cust-btn" type="button" (click)="onClickCancelResStat()" *ngIf="!isInquiry"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onClickSaveResStat()" *ngIf="!isInquiry"><a>Save</a></button>
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()" *ngIf="isInquiry"><a>Return</a></button>
     </div>
 </app-modal>
 
@@ -162,8 +163,9 @@
        <app-cust-editable-non-datatable id="appAmtId" [passData]="passDataApprovedAmt" #apAmtTbl (tableDataChange)="passDataApprovedAmt.tableData=$event; checkDirtyTbl();"></app-cust-editable-non-datatable>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="onClickCancelAppAmt()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="onClickSaveAppAmt()"><a>Save</a></button>
+        <button class="cust-btn" type="button" (click)="onClickCancelAppAmt()" *ngIf="!isInquiry"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onClickSaveAppAmt()" *ngIf="!isInquiry"><a>Save</a></button>
+        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()" *ngIf="isInquiry"><a>Return</a></button>
     </div>
 </app-modal>
 

@@ -1,3 +1,4 @@
+<form #myForm="ngForm">
 <div class="cust-tabs-container">
     <h4>Maintenance / Quotation & Policy</h4>
     <ngb-tabset>
@@ -8,9 +9,9 @@
                         <div class="input-group">
                             <div class="col-sm-3"></div>
                             <label class="form-control-sm text-right"  style="margin-bottom: 0px">Currency Code</label>
-                            <input class="form-control form-control-sm col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="currencyCd" (ngModelChange)="currencyCd = $event.toUpperCase()">
+                            <input class="form-control form-control-sm col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="currencyCd" (ngModelChange)="currencyCd = $event.toUpperCase()" name="currencyCd">
                             <div class="text-search-ico" style="margin-left: -20px;z-index: 100"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>&nbsp;
-                            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 5px;" readonly [(ngModel)]="description">
+                            <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 5px;" readonly [(ngModel)]="description" name="description">
                             <div class="col-sm-3"></div>
                         </div>
                     </div>
@@ -31,17 +32,17 @@
                     </div>
                 </fieldset>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
-					    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
-					        <label class="form-control-sm col-sm-1">Created By</label>
-					        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.createUser" readonly>
-					        <label class="form-control-sm col-sm-1">Created Date</label>
-					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.createDate" readonly>
-					        <label class="form-control-sm col-sm-1">Last Update By</label>
-					        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.updateUser" readonly>
-					        <label class="form-control-sm col-sm-1">Last Update</label>
-					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.updateDate" readonly>
-					    </div>
-				</fieldset>
+                        <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                            <label class="form-control-sm col-sm-1">Created By</label>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.createUser" readonly name="createUser">
+                            <label class="form-control-sm col-sm-1">Created Date</label>
+                            <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.createDate" readonly name="createDate">
+                            <label class="form-control-sm col-sm-1">Last Update By</label>
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.updateUser" readonly name="updateUser">
+                            <label class="form-control-sm col-sm-1">Last Update</label>
+                            <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.updateDate" readonly name="updateDate">
+                        </div>
+                </fieldset>
 
                 <app-mtn-currency-code  id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency-code>
                 <app-confirm-save (onYes)="saveCurrRt()"></app-confirm-save>
@@ -51,4 +52,7 @@
         </ngb-tab>
     </ngb-tabset>
 </div>
+</form>
+
+
 

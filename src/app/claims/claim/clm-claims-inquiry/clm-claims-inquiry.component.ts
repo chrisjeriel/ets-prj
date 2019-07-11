@@ -69,6 +69,27 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	              dataType: 'datespan'
 	        },
 	        {
+	             keys: {
+	                  from: 'totalResFrom',
+	                  to: 'totalResTo'
+	              },
+	              title: 'Total Reserve',
+	              dataType: 'textspan'
+	        },
+	        {
+	             keys: {
+	                  from: 'totalPaytFrom',
+	                  to: 'totalPaytTo'
+	              },
+	              title: 'Total Payment',
+	              dataType: 'textspan'
+	        },
+	        {
+	            key: 'adjName',
+	            title:'Adjuster',
+	            dataType: 'text'
+	        },
+	        {
 	            key: 'currencyCd',
 	            title:'Currency',
 	            dataType: 'text'
@@ -168,6 +189,15 @@ export class ClmClaimsInquiryComponent implements OnInit {
        });
 	}
 
+	searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        //this.passData.btnDisabled = true;
+        this.passData.btnDisabled = true;
+        this.retrieveClaimlist();
+
+   }
+
 	onRowClick(data){
 		let rowData = data;
 		this.loading = true;
@@ -257,4 +287,46 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	                    { skipLocationChange: true }
 	      );
   	}
+
+  	export(){
+        //do something
+     var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'ClaimsList_'+currDate+'.xlsx'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+
+      var toAlaSQLData: any[] = [];
+      for(var i  of this.passData.tableData){
+      	i.totalLossExpRes = i.totalLossExpRes === null || i.totalLossExpRes === undefined || (i.totalLossExpRes !== null && i.totalLossExpRes !== undefined && i.totalLossExpRes.length === 0) ? 0 : i.totalLossExpRes;
+      	i.totalLossExpPd = i.totalLossExpPd === null || i.totalLossExpPd === undefined || (i.totalLossExpPd !== null && i.totalLossExpPd !== undefined && i.totalLossExpPd.length === 0) ? 0 : i.totalLossExpPd;
+      	//i.adjName = i.adjName.length === 0 || i.adjName === null || i.adjName === undefined ? '' : i.adjName;
+      	toAlaSQLData.push(i);
+      }
+      alasql('SELECT claimNo AS ClaimNo, clmStatus AS Status, policyNo AS PolicyNo, '+
+      	     'cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, datetime(lossDate) AS LossDate, lossDtl AS LossDetails, '+
+      	     'currencyCd AS Currency, currency(totalLossExpRes) AS TotalReserve , currency(totalLossExpPd) AS TotalPayment, adjName AS Adjusters, processedBy AS ProcessedBy '+
+      	     ' INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,toAlaSQLData]);
+  }
 }

@@ -26,7 +26,9 @@ export class ClaimCashCallComponent implements OnInit {
   	@ViewChild("confirmSave") confirmSave: ConfirmSaveComponent;
   	@ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
   	@ViewChild(MtnTreatyComponent) treatyLOV: MtnTreatyComponent;
+    @ViewChild("treatyCopyLOV") treatyCopyLOV: MtnTreatyComponent;
   	@ViewChild('treatyShare') cedingCoLOV: CedingCompanyComponent;
+    @ViewChild("treatyCopyShare") cedingCopyCoLOV: CedingCompanyComponent;
     @ViewChild("treatyTable") treatyTable: CustEditableNonDatatableComponent;
 
 
@@ -99,6 +101,7 @@ export class ClaimCashCallComponent implements OnInit {
    copytreaty: any = '';
    copytreatyCompCd: any = '';
    copytreatyComp: any = '';
+   errorMsg: number = 0;
 
   constructor(	private ns: NotesService, 
   				private ms: MaintenanceService, 
@@ -243,15 +246,6 @@ export class ClaimCashCallComponent implements OnInit {
         this.table.refreshTable();
     }
 
-  /*currencyChanged(ev) {
-    if(this.treatyCd != '' && this.treatyCompCd != '' && this.currencyCd != '') {
-      this.getMtnClmCashCall();
-    } 
-    setTimeout(() => {
-      this.table.markAsPristine();
-    }, 0);
-  }*/
-
   getMtnClmCashCall() {
     this.table.overlayLoader = true;
     this.oldRecord.treatyCd = this.treatyCd;
@@ -312,9 +306,9 @@ export class ClaimCashCallComponent implements OnInit {
          if(this.checkEffFields()){
            this.confirmSave.confirmModal();
          } else {
-           this.dialogMessage = 'Unable to save the details. Effective From must be later than the effectivity of an active treaty limit.';
-           this.dialogIcon = 'error-message';
-           this.successDialog.open();
+           this.modalService.dismissAll();
+           this.errorMsg = 1;
+           $('#mtnClmCashCallWarningModal > #modalBtn').trigger('click');
          }
          
      } else {
@@ -336,9 +330,9 @@ export class ClaimCashCallComponent implements OnInit {
           if(this.checkEffFields()){
             this.saveDataClmCashCall();
           } else {
-            this.dialogMessage = 'Unable to save the details. Effective From must be later than the effectivity of an active treaty limit.';
-            this.dialogIcon = 'error-message';
-            this.successDialog.open();
+            this.modalService.dismissAll();
+            this.errorMsg = 1;
+            $('#mtnClmCashCallWarningModal > #modalBtn').trigger('click');
           }
         }else{
           this.dialogMessage="Please fill up required fields.";
@@ -392,9 +386,85 @@ export class ClaimCashCallComponent implements OnInit {
     $('#mtnClmCashCallCopyModal > #modalBtn').trigger('click');
   }
 
+  showTreatyCopyLOV(){
+    this.treatyCopyLOV.modal.openNoClose();
+  }
+
+  setSelectedCopyTreaty(data){
+    this.copytreatyCd = data.treatyId;
+    this.copytreaty = data.treatyName;
+    this.ns.lovLoader(data.ev, 0);
+  }
+
+  showTreatyCompCopyLOV(){
+    this.cedingCopyCoLOV.modal.openNoClose();
+  }
+
+  setSelectedCopyCedCoTreatyShare(data){
+    this.copytreatyCompCd = data.cedingId;
+    this.copytreatyComp = data.cedingName;
+    this.ns.lovLoader(data.ev, 0);
+  }
 
 
- 
+  checkCopyCode(ev, field){
+     if(field === 'treaty'){
+          this.ns.lovLoader(ev, 1);
+          this.treatyCopyLOV.checkCode(this.copytreatyCd,ev);
+     } else if(field === 'treatyComp'){
+          this.ns.lovLoader(ev, 1);
+          this.cedingCopyCoLOV.checkCode(this.copytreatyCompCd,ev);        
+    } 
+  }
+
+
+  onCopyCancel() {
+    this.copytreatyCd = '';
+    this.copytreaty = '';
+    this.copytreatyCompCd = '';
+    this.copytreatyComp = '';
+  }
+
+  onClickModalCopy(){
+
+    if(this.treatyCd == '' || this.treatyCompCd == '') {
+      this.dialogIcon = "error";
+      this.successDialog.open();
+      return;
+    }
+
+    $('.globalLoading').css('display','block');
+    var params = {
+       copyFromCurrCd: this.selectedData.currCd,
+       copyFromHistNo: this.selectedData.histNo,
+       copyFromTreatyCedId: this.selectedData.treatyCedId,
+       copyFromTreatyId: this.selectedData.treatyId,
+       copyToCurrCd: this.currencyCd,
+       copyToTreatyCedId: this.copytreatyCompCd,
+       copyToTreatyId: this.copytreatyCd,
+       createDate: this.ns.toDateTimeString(0),
+       createUser: this.ns.getCurrentUser(),
+       updateDate: this.ns.toDateTimeString(0),
+       updateUser: this.ns.getCurrentUser()
+    }
+
+    console.log(params);
+    
+    this.ms.copyMtnClmCashCall(JSON.stringify(params)).subscribe(data => {
+      $('.globalLoading').css('display','none');
+      if(data['returnCode'] == -1) {
+        $('#mtnClmCashCallSuccessModal > #modalBtn').trigger('click');
+        this.getMtnClmCashCall();
+        this.onCopyCancel();
+      } else if(data['returnCode'] == 2) {
+        this.modalService.dismissAll();
+        this.errorMsg = 2;
+        this.onCopyCancel();
+        $('#mtnClmCashCallWarningModal > #modalBtn').trigger('click');
+      }
+    });
+
+  }
 
 }
 

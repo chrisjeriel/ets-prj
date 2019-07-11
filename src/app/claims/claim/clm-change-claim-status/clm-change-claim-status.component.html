@@ -16,7 +16,7 @@
                     <div class="form-row" *ngIf="batchOptionLoading">
                       <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="">
                     </div>
-                    <!-- <div class="form-row">
+                    <div class="form-row">
                       <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'IP'" name="batchOption"><label class="rd-lbl">In Progress</label>
                     </div>
                     <div class="form-row">
@@ -33,10 +33,10 @@
                     </div>
                     <div class="form-row">
                       <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); queryData.tableData = []; queryTable.refreshTable();" [value]="'DN'" name="batchOption"><label class="rd-lbl">Deny</label>
-                    </div> -->
-                    <div class="form-row" *ngFor="let status of arrClaimStatus">
-                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; batchOptionDesc = status.description; clearDetails(); queryData.tableData = []; queryTable.refreshTable(); queryTable.selected = [];" [value]="status.statusCode" name="batchOption"><label class="rd-lbl">{{status.description}}</label>
                     </div>
+                    <!-- <div class="form-row" *ngFor="let status of arrClaimStatus">
+                      <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; batchOptionDesc = status.description; clearDetails(); queryData.tableData = []; queryTable.refreshTable(); queryTable.selected = [];" [value]="status.statusCode" name="batchOption"><label class="rd-lbl">{{status.description}}</label>
+                    </div> -->
                   </div>
                 </div>
               </fieldset>

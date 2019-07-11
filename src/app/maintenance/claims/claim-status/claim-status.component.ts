@@ -19,9 +19,8 @@ export class ClaimStatusComponent implements OnInit {
   passData: any = {
     tHeader: [ "Status Code","Description","Active","Remarks"],
     tableData:[],
-    dataTypes: ['text','text','checkbox','lovInput'],
+    dataTypes: ['text','text','checkbox','text'],
     nData: {
-      showMG:1,
       statusCode: null,
       description: null,
       remarks: null,
@@ -31,7 +30,6 @@ export class ClaimStatusComponent implements OnInit {
       updateDate: '',
       updateUser: JSON.parse(window.localStorage.currentUser).username
     },
-    magnifyingGlass: ['remarks'],
     pageID: 'claimStatus',
     disableGeneric : true,
     addFlag: true,
@@ -41,7 +39,7 @@ export class ClaimStatusComponent implements OnInit {
     paginateFlag: true,
     infoFlag: true,
     uneditable:[false,false,false,false],
-    widths:['auto','auto','auto','auto'],
+    widths:[200,400,130,410],
     keys:['statusCode','description','activeTag','remarks']
   };
 
@@ -78,6 +76,7 @@ export class ClaimStatusComponent implements OnInit {
         this.passData.tableData = [];
   			for(var i = 0; i < datas.length; i++){
   				this.passData.tableData.push(datas[i]);
+          this.passData.tableData[i].uneditable = ['statusCode'];
   			}
   		}
 
@@ -98,13 +97,40 @@ export class ClaimStatusComponent implements OnInit {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    this.errorFlag = false;
+    for(var i = 0 ; i < this.passData.tableData.length; i++){
+      for(var j = 0; j < this.passData.tableData.length; j++){
+        if( i != j){
+          if(this.passData.tableData[i].statusCode.trim() == this.passData.tableData[j].statusCode.trim()){
+            this.errorFlag = true;
+          }
+        }
+      }
+    }
+
+    this.prepareData();
+
+    if(this.errorFlag){
+      this.dialogMessage = 'Unable to save the record. Status Code must be unique.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.saveData.saveClaimStatus.length == 0 && this.saveData.delClaimStatus.length == 0){
+      this.dialogMessage = 'Nothing to save';
+      this.dialogIcon = "info";
+      this.successDiag.open();
+    }else{
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
   }
 
   prepareData(){
     for(var i = 0; i < this.passData.tableData.length;i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         this.saveData.saveClaimStatus.push(this.passData.tableData[i]);
+        this.saveData.saveClaimStatus[this.saveData.saveClaimStatus.length - 1].createDate = this.ns.getCurrentUser();
+        this.saveData.saveClaimStatus[this.saveData.saveClaimStatus.length - 1].createDate = this.ns.toDateTimeString(0);
+        this.saveData.saveClaimStatus[this.saveData.saveClaimStatus.length - 1].updateUser = this.ns.getCurrentUser();
+        this.saveData.saveClaimStatus[this.saveData.saveClaimStatus.length - 1].updateDate = this.ns.toDateTimeString(0);
       }
 
       if(this.passData.tableData[i].deleted){
@@ -125,6 +151,7 @@ export class ClaimStatusComponent implements OnInit {
         this.dialogIcon = "success";
         this.successDiag.open();
         this.getClaimStat();
+        this.passData.disableGeneric = true;
       }
     });
   }
@@ -137,26 +164,6 @@ export class ClaimStatusComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
-  }
-
-  openLov($event){
-    this.modal.modal.openNoClose()
-  }
-
-  selectedData(data){
-    if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
-      //this.sectionCoverLOVRow = data[0].ev.index;
-      this.ns.lovLoader(data[0].ev, 0);
-    }
-    console.log(data)
-  }
-
-  test(data){
-    if(data.hasOwnProperty('lovInput')) {
-      data.ev['index'] = data.index;
-
-      this.modal.checkCode(data.ev.target.value, data.ev);
-    }    
   }
   
 }

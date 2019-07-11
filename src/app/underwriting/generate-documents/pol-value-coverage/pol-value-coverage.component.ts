@@ -26,7 +26,7 @@ export class PolValueCoverageComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   passData: any = {
-    tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate(%)','Premium','Sum Insured','Rate','Premium','D/S','Add SI'],
+    tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate(%)','Premium','Sum Insured','Rate(%)','Premium','D/S','Add SI'],
     tableData:[],
     tHeaderWithColspan:[],
     dataTypes:['text','text','lovInput','currency','percent','currency','currency','percent','currency','checkbox','checkbox'],
@@ -203,7 +203,9 @@ export class PolValueCoverageComponent implements OnInit {
   		if(data.policy.project !== null){
   			var datas = data.policy.project.fullCoverage.fullSecCover;
   			this.fullCoverageDetails 			     = data.policy.project.fullCoverage;
-        console.log(this.fullCoverageDetails.treatyShare)
+        this.fullCoverageDetails.secISiTag   = this.fullCoverageDetails.secISiTag == null ? 'N': 'Y';
+        this.fullCoverageDetails.secIISiTag  = this.fullCoverageDetails.secIISiTag == null ? 'N': 'Y';
+        this.fullCoverageDetails.secIIISiTag = this.fullCoverageDetails.secIIISiTag == null ? 'N': 'Y';
   			this.fullCoverageDetails.projId 	 = data.policy.project.projId;
   			this.fullCoverageDetails.riskId 	 = data.policy.project.riskId;
   			this.fullCoverageDetails.treatyShare = this.decimal.transform(this.fullCoverageDetails.treatyShare, '1.10-10');
