@@ -822,13 +822,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev);
       }
     });
-    // if(str === 'lc') {
-    //   this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == 'C' };
-    //   this.lossCdLOV.checkCode('C', this.claimData.lossAbbr, ev);
-    // } else if(str === 'lp') {
-    //   this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == 'P' };
-    //   this.lossCdLOV.checkCode('P', this.claimData.lossPdAbbr, ev);
-    // }
   }
 
   dc(ev, data, type) {
