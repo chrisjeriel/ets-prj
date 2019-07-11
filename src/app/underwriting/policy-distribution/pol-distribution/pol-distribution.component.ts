@@ -61,7 +61,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true],
       paginateFlag: true,
       infoFlag: true,
-      pageLength: 10,
+      pageLength: 'unli',
       pageID: 'poolDistTable',
       searchFlag : true
     }
