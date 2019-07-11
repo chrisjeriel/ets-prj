@@ -88,7 +88,17 @@
         	 	 	 <div class="col-sm" style="margin-top: 20px" >
         	 	 	 	 <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
         	 	 	 </div>
-        	 	</div>	
+        	 	</div>
+                <div class="form-row" style="margin-top: 13px !important;">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <div class="cust-btn-container">
+                                <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>	
 <!--         </fieldset> -->
       <!--   <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
             <div class="row">

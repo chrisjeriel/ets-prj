@@ -119,6 +119,7 @@
                     <div *ngSwitchCase="'OFFSETTING OF RECEIVABLES IN-TRUST AGAINST LOSSES'">Offsetting of Receivables In-Trust Against Losses</div>
                     <div *ngSwitchCase="'OFFSETTING OF CLAIMS AGAINST NEGATIVE TREATY BALANCE'">Offsetting of Claims Against Negative Treaty Balance</div>
                     <div *ngSwitchCase="'OFFSETTING OF OUTSTANDING ACCOUNTS AGAINST TREATY BALANCE'">Offsetting of Outstanding Accounts Against Treaty Balance</div>
+                    <div *ngSwitchCase="'APPLICATION OF PAYMENTS TO POLICIES WITH ZERO BALANCE'">APPLICATION OF PAYMENTS TO POLICIES WITH ZERO BALANCE</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
@@ -126,25 +127,35 @@
                     <div class="col-sm-12">
                         <ng-container [ngSwitch]="jvType.toUpperCase()">
                             <ng-container *ngSwitchCase="'ADJUSTMENTS OF INWARD POLICY BALANCES'">
-                                <app-jv-inward-pol-balance></app-jv-inward-pol-balance>
+                                <app-jv-inward-pol-balance></app-jv-inward-pol-balance>                                    
                             </ng-container>
+
                             <ng-container *ngSwitchCase="'PREMIUM RESERVE RELEASED'">
                                 <app-jv-prenium-reserve></app-jv-prenium-reserve>
                             </ng-container>
+
                             <ng-container *ngSwitchCase="'INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP'">
                                 <app-jv-interest-on-overdue-accounts></app-jv-interest-on-overdue-accounts>
                             </ng-container>
+
                             <ng-container *ngSwitchCase="'LOSS RESERVE DEPOSIT'">
                                 <app-jv-loss-reserve-deposit></app-jv-loss-reserve-deposit>
                             </ng-container>
+
                             <ng-container *ngSwitchCase="'OFFSETTING OF RECEIVABLES IN-TRUST AGAINST LOSSES'">
                                 <app-jv-offsetting-against-losses></app-jv-offsetting-against-losses>
                             </ng-container>
+
                             <ng-container *ngSwitchCase="'OFFSETTING OF CLAIMS AGAINST NEGATIVE TREATY BALANCE'">
                                 <app-jv-offsetting-against-negative-treaty></app-jv-offsetting-against-negative-treaty>
                             </ng-container>
+
                             <ng-container *ngSwitchCase="'OFFSETTING OF OUTSTANDING ACCOUNTS AGAINST TREATY BALANCE'">
                                 <app-jv-overdue-accounts-against-treaty></app-jv-overdue-accounts-against-treaty>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="'APPLICATION OF PAYMENTS TO POLICIES WITH ZERO BALANCE'">
+                                <app-jv-app-payments-zero></app-jv-app-payments-zero>
                             </ng-container>
                         </ng-container>
                     </div>

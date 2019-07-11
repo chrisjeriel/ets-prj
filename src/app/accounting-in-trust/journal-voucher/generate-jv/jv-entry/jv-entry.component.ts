@@ -25,5 +25,8 @@ export class JvEntryComponent implements OnInit {
   	this.onChange.emit({ type: this.record.jvType });
   }
 
+  newJV(){
+    
+  }
 
 }

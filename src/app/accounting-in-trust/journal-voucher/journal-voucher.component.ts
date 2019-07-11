@@ -12,7 +12,7 @@ export class JournalVoucherComponent implements OnInit {
    private routeData: any;
 
    passDataJVListing: any = {
-        tableData: this.accountingService.getJVListing(),
+        tableData: [{'jvNo':'2019','jvDate':new Date(),'particulars':'Test Particulars','jvType':'Adjustments of Inward Policy Balances','jvRefNo':'2019-000000001','preparedBy':'EARL','jvStatus':'In progress','amount':'10000000000'}],
         tHeader: ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Prepared By","JV Status","Amount"],
         dataTypes: ['text','date','text','text','text','text','text','currency',],
          filters: [
@@ -63,6 +63,7 @@ export class JournalVoucherComponent implements OnInit {
         pageLength: 10,
         pageStatus: true,
         pagination: true,
+        keys:['jvNo','jvDate','particulars','jvType','jvRefNo','preparedBy','jvStatus','amount']
     };
 
   constructor(private accountingService: AccountingService,private router: Router, private titleService: Title) { }

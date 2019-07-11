@@ -30,13 +30,10 @@ export class JvInwardPolBalanceComponent implements OnInit {
     infoFlag: true,
     paginateFlag: true,
     searchFlag: true,
-    saveBtn: false,
     pagination: true,
     pageStatus: true,
     selectFlag: false,
-    editFlag: false,
     pageLength: 10,
-    genericBtn: 'Save',
     widths: [180,180,120,50,1,1,1,85,120,85,85,120,120,120,120,85]
   };
 
