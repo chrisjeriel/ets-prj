@@ -283,7 +283,13 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
        (data: any)=>{
          if(data.claimList.length !== 0){
            if(this.batchOption !== 'IP'){
-             data.claimList = data.claimList.filter(a=>{return a.clmStatCd === 'IP'});
+             data.claimList = data.claimList.filter(a=>{
+                                                           return a.clmStatCd !== 'TC' &&
+                                                                  a.clmStatCd !== 'CD' &&
+                                                                  a.clmStatCd !== 'WD' &&
+                                                                  a.clmStatCd !== 'SP' &&
+                                                                  a.clmStatCd !== 'DN'
+                                                       });
            }
            for(var i of data.claimList){
              for(var j of i.clmAdjusterList){
