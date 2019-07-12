@@ -117,20 +117,6 @@ export class RequestForPaymentComponent implements OnInit {
 
   record:any;
   onClickEdit(event){
-    //  var selectedRow = event.target.closest('tr').children;
-
-    //   this.record = {
-    //     reqNo: selectedRow[0].innerText,
-    //     payee: selectedRow[1].innerText,
-    //     paymentType: selectedRow[2].innerText,
-    //     status: selectedRow[3].innerText.trim(),
-    //     amount: selectedRow[4].innerText,
-    //     currency: selectedRow[5].innerText,
-    //     particulars: selectedRow[6].innerText,
-    //     reqDate: selectedRow[7].innerText,
-    //     reqBy: selectedRow[8].innerText
-    //   }
-    //   this.router.navigate(['/generate-payt-req', { slctd: JSON.stringify(this.record) }], { skipLocationChange: true });
 
     this.router.navigate(['generate-payt-req',
          {reqNo: "",
@@ -164,24 +150,4 @@ export class RequestForPaymentComponent implements OnInit {
           },100);
     }
   }
-
-  // onRowDblClick(event) {
-  //       /*setTimeout(() => {
-  //              this.router.navigate(['/generate-payt-req']);
-  //       },100); */
-  //       // this.onClickEdit(event);
-  //       var type = event.target.closest('tr').children[2].innerText.trim();
-        
-  //       this.router.navigate(['generate-payt-req',
-  //        {reqNo: "",
-  //         payee: "",
-  //         paymentType: type,
-  //         status: "",
-  //         amount: "",
-  //         currency: "",
-  //         particulars: "",
-  //         reqDate: "",
-  //         reqBy: "",
-  //         }], {skipLocationChange: true});
-  //   }
 }
