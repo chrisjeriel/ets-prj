@@ -11,89 +11,89 @@
 								<div class="input-group pl-4 ">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="reportDetail" value="outstanding" [(ngModel)]="detail">
+											<input type="radio" name="reportDetail" value="outstanding" [(ngModel)]="extnType">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">Outstanding</label>
+										<label class="form-control-sm col-sm text-left">Outstanding</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="Outstanding" [disabled]="detail!='outstanding'">
+											<input type="radio" name="Outstanding" value="osLossDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'outstanding'">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">Loss Date</label>
+										<label class="form-control-sm col-sm text-left">Loss Date</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="Outstanding" [disabled]="detail!='outstanding'">
+											<input type="radio" name="Outstanding" value="osClmFileDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'outstanding'">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">Claim File Date</label>
+										<label class="form-control-sm col-sm text-left">Claim File Date</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="Outstanding" [disabled]="detail!='outstanding'">
+											<input type="radio" name="Outstanding" value="osBookingMonth" [(ngModel)]="extnSubType" [disabled]="extnType != 'outstanding'">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">Booking Month</label>
+										<label class="form-control-sm col-sm text-left">Booking Month</label>
 									</div>
 								</div>
 								<div class="input-group pl-4 mt-2">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="reportDetail" value="lossesPaid" [(ngModel)]="detail">
+											<input type="radio" name="reportDetail" value="lossesPaid" [(ngModel)]="extnType">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">Losses Paid</label>
+										<label class="form-control-sm col-sm text-left">Losses Paid</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="lossPaid" [disabled]="detail!='lossesPaid'">
+											<input type="radio" name="lossPaid" value="lpTranDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'lossesPaid'">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">Tran Date</label>
+										<label class="form-control-sm col-sm text-left">Tran Date</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="lossPaid" [disabled]="detail!='lossesPaid'">
+											<input type="radio" name="lossPaid" value="lpPostingDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'lossesPaid'">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">Posting Date</label>
+										<label class="form-control-sm col-sm text-left">Posting Date</label>
 									</div>
 								</div>
 								<div class="input-group pl-4 mt">
 									<div class="col-sm d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="last">
+											<input type="radio" name="last" value="loss" [(ngModel)]="clmHistType">
 										</div>
-										<label class="form-control-sm col-sm text-left pl-0" for="xx">Loss</label>
+										<label class="form-control-sm col-sm text-left pl-0">Loss</label>
 										<div class="col-sm-1">
-											<input type="radio" name="last">
+											<input type="radio" name="last" value="exp" [(ngModel)]="clmHistType">
 										</div>
-										<label class="form-control-sm col-sm text-left pl-0" for="xx">Expense</label>
+										<label class="form-control-sm col-sm text-left pl-0">Expense</label>
 										<div class="col-sm-1">
-											<input type="radio" name="last">
+											<input type="radio" name="last" value="lossExp" [(ngModel)]="clmHistType">
 										</div>
-										<label class="form-control-sm col-sm text-left pl-0" for="xx">Loss + Expense</label>
+										<label class="form-control-sm col-sm text-left pl-0">Loss + Expense</label>
 									</div>
 								</div>
 								<div class="input-group pl-4 mt-3">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="checkbox" name="">
+											<input type="checkbox" [(ngModel)]="perLine">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">Per Line</label>
+										<label class="form-control-sm col-sm text-left">Per Line</label>
 									</div>
 								</div>
 								<div class="input-group pl-4 ">
 									<div class="col-sm-8 d-flex">
 										<div class="col-sm-1">
-											<input type="checkbox" name="">
+											<input type="checkbox" [(ngModel)]="perTypeOfCession">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">Per Type of Cession</label>
+										<label class="form-control-sm col-sm text-left">Per Type of Cession</label>
 									</div>
 								</div>
 							</div>
@@ -106,37 +106,43 @@
 								<div class="input-group">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="parameter" value="period" [(ngModel)]="parameter">
+											<input type="radio" name="dateParam" value="period" [(ngModel)]="dateParam">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx">By Period</label>
+										<label class="form-control-sm col-sm text-left">By Period</label>
 									</div>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2" for="xx">From</label>
-									<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01" [disabled]="parameter != 'period'">
-									<label class="form-control-sm col-sm-1" for="xx">To</label>
-									<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01" [disabled]="parameter != 'period'">
+									<label class="form-control-sm col-sm-2">From</label>
+									<div class="dp-cont col-sm-3">
+										<datepicker [type]="'date'" [disabled]="dateParam != 'period'" [value]="periodFrom" (valueChange)="periodFrom=$event; periodTo=$event;"></datepicker>
+									</div>
+									<label class="form-control-sm col-sm-1">To</label>
+									<div class="dp-cont col-sm-3">
+										<datepicker [type]="'date'" [disabled]="dateParam != 'period'" [(value)]="periodTo" [minDate]="periodFrom"></datepicker>
+									</div>
 								</div>
 								<div class="input-group mt-3">
 									<div class="col-sm-2 d-flex pr-0">
 										<div class="col-sm-1">
-											<input type="radio" name="parameter" value="asOf" [(ngModel)]="parameter">
+											<input type="radio" name="dateParam" value="asOf" [(ngModel)]="dateParam">
 										</div>
-										<label class="form-control-sm col-sm text-left" for="xx" >As of</label>
+										<label class="form-control-sm col-sm text-left">As of</label>
 									</div>
-									<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01" [disabled]="parameter != 'asOf'">
+									<div class="dp-cont col-sm-3">
+										<datepicker [type]="'date'" [disabled]="dateParam != 'asOf'" [(value)]="asOf"></datepicker>
+									</div>
 								</div>
 								<div class="input-group mt-4">
-									<label class="form-control-sm col-sm-3">Line</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL LINES">
+									<label class="form-control-sm col-sm-2">Line</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="lineCd">
+									<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
+									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="lineDesc" readonly>
 								</div>
 								<div class="input-group cust-ig">
-									<label class="form-control-sm col-sm-3">Type of Cession</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<label class="form-control-sm col-sm-2">Type of Cession</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cessionId">
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL TYPES OF CESSION">
+									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="cessionDesc" readonly>
 								</div>
 							</div>
 							<div class="row">
@@ -150,5 +156,13 @@
 				</div>	
 			</ng-template>
 		</ngb-tab>
+		<ngb-tab id="Exit">
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+    		<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
 	</ngb-tabset>
 </div>
+
+<app-mtn-line (selectedData)="setLine($event)" #lineLov></app-mtn-line>
