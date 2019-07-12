@@ -8,6 +8,10 @@
         padding-top: 12px !important;
         padding-bottom: 11px !important;
     }
+
+    .pad-c {
+        padding-bottom: 3px !important;
+    }
 </style>
 <div>
     <input id="hiddenInpClm" type="text" class="d-none t" [ngModel]="claimData.claimId" (ngModelChange)="checkClmIdF($event)">
@@ -110,7 +114,7 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">&nbsp;Event Type</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc" tabindex="10" [readonly]="isInquiry">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc" tabindex="10" [readonly]="isInquiry" (change)="checkCode($event, 'eventType')">
                             <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showClmEventTypeLOV()"></i></a>
                             </div>
@@ -138,7 +142,7 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Event</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc" [readonly]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc" [readonly]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" (change)="checkCode($event, 'event')">
                             <div [class.d-none]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search" (click)="showClmEventLOV()"></i></a>
                             </div>
@@ -629,7 +633,7 @@
                     <div class="custLoader" style="position: absolute;top:7px;left:-7px;width: 102%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
                     </div>
                 </ng-container>
-                <fieldset class="scheduler-border" style="margin-left: -7px !important; padding-bottom: 3px !important;" [class.pad-b]="line != 'CAR' && line != 'EAR'">
+                <fieldset class="scheduler-border" style="margin-left: -7px !important;" [ngClass]="(line != 'CAR' && line != 'EAR') ? 'pad-b' : 'pad-c'">
                     <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
                     <div class="custom-row-inline-inset" style="margin-left: -30px !important;">
                         <div class="input-group">
@@ -741,7 +745,7 @@
     </div>
     <div footer class="text-center" style="width: 100% !important;">
         <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="maintainAdjuster()"><a>Adjusters Maintenance</a></button>
-        <button type="button" class="cust-btn" (click)="onAdjClickCancel()"><a>{{isInquiry ? 'Close' : 'Cancel'}}</a></button>
+        <button type="button" class="cust-btn" (click)="onAdjClickCancel()"><a>{{ isInquiry ? 'Close' : 'Cancel' }}</a></button>
         <button type="button" class="cust-btn" (click)="onAdjClickSave()" *ngIf="!isInquiry"><a>Save</a></button>
     </div>
 </app-modal>
@@ -754,7 +758,7 @@
 
 <app-confirm-save #adjConfirmSave (onYes)="adjSave()"></app-confirm-save>
 <app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? adjCancelBtn.onNo() : null"></app-sucess-dialog>
-<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null"></app-cancel-button>
+<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="modalService.dismissAll()"></app-cancel-button>
 
 <app-confirm-save #confirmSave (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog #successDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>

@@ -302,17 +302,19 @@ export class LovComponent implements OnInit {
         for(var regionCount = 0; regionCount < data.region.length; regionCount++){
           for(var provinceCount = 0; provinceCount < data.region[regionCount].provinceList.length; provinceCount++){
             for(var cityCount = 0; cityCount < data.region[regionCount].provinceList[provinceCount].cityList.length; cityCount++){
-              let row :any = new Object();
-              row.regionCd = data.region[regionCount].regionCd;
-              row.regionDesc = data.region[regionCount].regionDesc;
-              row.provinceCd = data.region[regionCount].provinceList[provinceCount].provinceCd;
-              row.provinceDesc = data.region[regionCount].provinceList[provinceCount].provinceDesc;
-              row.cityCd = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].cityCd;
-              row.cityDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].cityDesc;
-              row.remarks = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].remarks;
-              row.zoneCd = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneCd;
-              row.zoneDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneDesc;
-              this.passTable.tableData.push(row);
+               if (data.region[regionCount].provinceList[provinceCount].cityList[cityCount].activeTag === 'Y'){
+                let row :any = new Object();
+                row.regionCd = data.region[regionCount].regionCd;
+                row.regionDesc = data.region[regionCount].regionDesc;
+                row.provinceCd = data.region[regionCount].provinceList[provinceCount].provinceCd;
+                row.provinceDesc = data.region[regionCount].provinceList[provinceCount].provinceDesc;
+                row.cityCd = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].cityCd;
+                row.cityDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].cityDesc;
+                row.remarks = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].remarks;
+                row.zoneCd = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneCd;
+                row.zoneDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneDesc;
+                this.passTable.tableData.push(row);
+              }
             }
           }
         }
@@ -389,13 +391,15 @@ export class LovComponent implements OnInit {
         console.log(data);
           for (var a = 0; a < data.region.length; a++) {
             for (var b = 0; b < data.region[a].provinceList.length; b++) {
-              let row : any = new Object();
+              if (data.region[a].provinceList[b].activeTag === 'Y'){
+                let row : any = new Object();
                 row.regionCd = data.region[a].regionCd;
                 row.regionDesc = data.region[a].regionDesc;
                 row.provinceCd = data.region[a].provinceList[b].provinceCd;
                 row.provinceDesc = data.region[a].provinceList[b].provinceDesc;
                 row.remarks = data.region[a].provinceList[b].remarks;
                 this.passTable.tableData.push(row);
+              }
             }
           }
           this.table.refreshTable();

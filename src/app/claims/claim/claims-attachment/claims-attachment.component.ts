@@ -26,13 +26,14 @@ export class ClaimsAttachmentComponent implements OnInit {
   @ViewChild('main') successDiag: SucessDialogComponent;
   @ViewChild("confirmSave") confirmDialog: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+  @Input() claimInfo: any = {};
 
   @Input() isInquiry: boolean = false;
 
   passData: any = {
   	    tableData: [],
         tHeader: ['File Name', 'Description', 'Actions'],
-        dataTypes: ['string', 'string'],
+        dataTypes: ['string', 'reqText'],
         nData:{
           fileName        : null,
           description     : null,
@@ -60,9 +61,8 @@ export class ClaimsAttachmentComponent implements OnInit {
       updateDate    : null,
   }
 
-
-  claimId: string = '1';
-  claimNo: string = 'CAR-2020-00001';
+  claimId: string;
+  claimNo: string;
   attachmentData: any;
   filesList: any [] = [];
   dialogMessage: string = "";
@@ -72,7 +72,7 @@ export class ClaimsAttachmentComponent implements OnInit {
   deletedData: any[];
 
   attachmentInfo  : any = { 
-                "claimId" : this.claimId,
+                "claimId" : null,
                 "deleteClaimsAttachments": [],
                 "saveClaimsAttachments"  : []}
 
@@ -92,6 +92,7 @@ export class ClaimsAttachmentComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Attachment");
+
     //neco
     if(this.isInquiry){
       this.passData.checkFlag = false;
@@ -104,20 +105,20 @@ export class ClaimsAttachmentComponent implements OnInit {
       this.table.refreshTable();
     }
     //neco end
+
     this.getAttachment();
   }
 
   getAttachment(){
-    this.claimsService.getAttachment(null, this.claimNo)
+    this.claimsService.getAttachment(this.claimInfo.claimId, this.claimInfo.claimNo)
       .subscribe(data => {
-        console.log(data);
         this.passData.tableData = [];
          if(data['claimsAttachmentList'] !== null){
                   console.log(data['claimsAttachmentList']);
             var records = data['claimsAttachmentList'];
             for(let rec of records){
               this.passData.tableData.push({
-                                            fileNameServer  : this.notes.toDateTimeString(rec.updateDate).match(/\d+/g).join('') + rec.fileName,
+                                            fileNameServer  : this.notes.toDateTimeString(rec.createDate).match(/\d+/g).join('') + rec.fileName,
                                             fileName        : rec.fileName,
                                             fileNo          : rec.fileNo,
                                             description     : rec.description,
@@ -145,10 +146,8 @@ export class ClaimsAttachmentComponent implements OnInit {
 
         }
         let file: File = files[0];
-        var newFile = new File([file], date + file.name, {type: file.type});
-
-        console.log(newFile)
-        this.upload.uploadFile(newFile)
+        /*var newFile = new File([file], date + file.name, {type: file.type});*/
+        this.upload.uploadFile(file, date)
           .subscribe(
             event => {
               if (event.type == HttpEventType.UploadProgress) {
@@ -195,7 +194,21 @@ export class ClaimsAttachmentComponent implements OnInit {
 
   onSaveAttachment(cancelFlag?){
      this.cancelFlag = cancelFlag !== undefined;  
+     if(this.cancelFlag){
+        if(this.checkFields()){
+          this.saveDataAttachment();
+        }else{
+          this.dialogMessage="Please fill up required fields.";
+          this.dialogIcon = "info";
+          $('#attchmntMdl > #successModalBtn').trigger('click');
+        }
+     } else {
+       this.saveDataAttachment();
+     }
+  }
 
+  saveDataAttachment(){
+     this.attachmentInfo.claimId = this.claimInfo.claimId;
      this.savedData = [];
      this.deletedData = [];
      this.savedData = this.passData.tableData.filter(a=>a.edited && !a.deleted);
@@ -205,6 +218,8 @@ export class ClaimsAttachmentComponent implements OnInit {
      this.deletedData.forEach(a=>a.createDate = this.notes.toDateTimeString(0));
      this.deletedData.forEach(a=>a.updateDate = this.notes.toDateTimeString(0));
    
+     console.log(this.savedData);
+     console.log(this.deletedData);
      this.attachmentInfo.deleteClaimsAttachments = this.deletedData;
      this.attachmentInfo.saveClaimsAttachments = this.savedData;
 

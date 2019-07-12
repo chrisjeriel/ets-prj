@@ -7,13 +7,12 @@
 						 <fieldset class="scheduler-border">
 						 	<legend class="scheduler-border">Filter Options</legend>
             						<div class="form-row custom-row-inline-inset">
-            							<div class="input-group" style="margin-bottom: -15px ! important">
+            							<div class="input-group" style="margin-bottom: -14px ! important">
             								   <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-											   <input type="text" class="form-control form-control-sm cust-sm col-sm-4"
-												placeholder="ALL">
+											   <input type="text" class="form-control form-control-sm cust-sm col-sm-4">
 											   <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-            								   <label class="form-control-sm" for="xx" style="padding-left:20px"  >Period:</label>
-            								   <label class="form-control-sm" for="xx" style="margin-left: 5px ! important">From</label>
+            								   <label class="form-control-sm" style="padding-left:20px">Period:</label>
+            								   <label class="form-control-sm" style="margin-left: 5px ! important">From</label>
             								   <select class="form-control form-control-sm cust-sm col-sm-1">
 													<option value="1st Quarter">1st Quarter</option>
 													<option value="2nd Quarter">2nd Quarter</option>
@@ -23,7 +22,7 @@
 												<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
 													<option value="2018">2018</option>
 												</select>
-            								   <label class="form-control-sm" for="xx" style="margin-left: 5px ! important">To</label>
+            								   <label class="form-control-sm" style="margin-left: 5px ! important">To</label>
             								   	<select class="form-control form-control-sm cust-sm col-sm-1">
 													<option value="1st Quarter">1st Quarter</option>
 													<option value="2nd Quarter">2nd Quarter</option>
@@ -108,8 +107,11 @@
 				<input type="text" class="form-control form-control-sm cust-sm col-sm-4"
 				placeholder="Charter Ping An">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Quarter Ending</label>
-				<input type="date" class="form-control form-control-sm cust-sm col-sm-2"
-				value="2018-03-31">
+				<!-- <input type="date" class="form-control form-control-sm cust-sm col-sm-2"
+				value="2018-03-31"> -->
+				<div class="dp-cont col-sm-2">
+					<datepicker [type]="'date'" [value]="'2018-03-31'"></datepicker>
+				</div>
 				<div class="col-sm-2"></div>
 			</div>
 		</div>

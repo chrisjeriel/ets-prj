@@ -23,7 +23,7 @@
 
 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
     <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
-    	<app-cust-editable-non-datatable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="info=$event"></app-cust-editable-non-datatable>
+    	<app-cust-editable-non-datatable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onClickTable($event)"></app-cust-editable-non-datatable>
     </fieldset>
     <div class="w-100 text-center my-2">
     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>

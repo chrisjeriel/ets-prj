@@ -16,9 +16,9 @@ export class GenerateCMDMComponent implements OnInit {
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-	if ($event.nextId === 'Exit') {
-	  this.router.navigateByUrl('');
-	}
+	  if ($event.nextId === 'Exit') {
+      this.router.navigateByUrl('/acc-s-credit-debit-memo');
+	  }
   }
 
 }

@@ -7,6 +7,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { environment } from '@environments/environment';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 @Component({
   selector: 'app-line-class',
@@ -18,6 +19,7 @@ export class LineClassComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
   @ViewChild(MtnLineComponent) lineLov                : MtnLineComponent;
   @ViewChild(CancelButtonComponent) cancelBtn         : CancelButtonComponent;
+  @ViewChild(ConfirmSaveComponent) cs : ConfirmSaveComponent;
 
   passData: any = {
     tableData:[],
@@ -25,8 +27,8 @@ export class LineClassComponent implements OnInit {
     dataTypes			      : ["pk-cap", "text", "checkbox", "text"],
     nData: {
       newRec           : 1,
-      lineClassCd      : null,
-      lineClassCdDesc  : null,
+      lineClassCd      : '',
+      lineClassCdDesc  : '',
       activeTag        : 'Y',
       remarks          : '',
       isNew            : true
@@ -47,7 +49,7 @@ export class LineClassComponent implements OnInit {
     pageID				      : 'mtn-line-class',
     keys				        : ['lineClassCd', 'lineClassCdDesc', 'activeTag', 'remarks'],
     uneditable          : [false, false, false, false],
-    widths              : [1, 'auto', 'auto', 'auto'],
+    widths              : [1, 'auto', 1, 'auto'],
     genericBtn          : 'Delete',
     disableGeneric      : true,
     disableAdd          : true,
@@ -60,7 +62,12 @@ export class LineClassComponent implements OnInit {
   line                  : string;
   description           : string;
   warnMsg               : any;
-  fromCancel            : boolean;
+  firstLoading        : boolean;
+  passEvent           : any;
+  changeLine          : boolean;
+  tempLineCd          : string = '';
+  counter             : number = 0;
+  exit                : boolean;
 
   params : any =    {
     saveLineClass    : [],
@@ -78,10 +85,12 @@ export class LineClassComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle('Mtn | Line Class');
+    this.firstLoading = true;
   }
 
   getMtnLineClass(){
     this.table.overlayLoader = true;
+    this.counter = 0;
     if(this.line === '' || this.line === null){
       this.clearTbl();
     }else{
@@ -96,24 +105,52 @@ export class LineClassComponent implements OnInit {
         this.passData.disableAdd = false;
       });
     }
+    this.tempLineCd    = this.line.toUpperCase();
   }
 
-  onSaveMtnLineClass(cancelFlag?){
+  onSaveMtnLineClass(){
+    console.log('onSaveMtnLineClass  this.changeLine >> ' + this.changeLine);
+    if(this.changeLine){
+      this.params.saveLineClass.map(i => i.lineCd = this.tempLineCd );
+      this.params.deleteLineClass.map(i => i.lineCd = this.tempLineCd );
+    }
+    this.params.saveLineClass.map(i => i.description = i.lineClassCdDesc);
+    this.params.deleteLineClass.map(i => i.description = i.lineClassCdDesc);
+
+    console.log(this.params);
+    this.counter++;
+    this.mtnService.saveMtnLineClass(JSON.stringify(this.params))
+    .subscribe(data => {
+      console.log(data);
+      this.getMtnLineClass();
+      $('app-sucess-dialog #modalBtn').trigger('click');
+      this.params.saveLineClass     = [];
+      this.params.deleteLineClass   = [];
+      this.passData.disableGeneric  = true;
+      $('.ng-dirty').removeClass('ng-dirty');
+    });
+  }
+
+  onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
+
     var isNotUnique : boolean ;
-    var saveLc = this.params.saveLineClass;
+    var saveLc = this.passData.tableData.filter(i => i.isNew == true);
     var isEmpty = 0;
+
     for(let record of this.passData.tableData){
-      record.lineCd  = this.line;
-      if(record.lineClassCd == null || record.lineClassCdDesc == null){
+      record.lineCd  = this.line.toUpperCase();
+      if(record.lineClassCd == '' || record.lineClassCd == null || record.lineClassCdDesc == '' || record.lineClassCdDesc == null){
         if(!record.deleted){
           isEmpty = 1;
-          this.fromCancel = false;
+          record.fromCancel = false;
+        }else{
+          this.params.deleteLineClass.push(record);
         }
       }else{
-        this.fromCancel = true;
+        record.fromCancel = true;
         if(record.edited && !record.deleted){
           record.createUser = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
           record.createDate = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
@@ -139,40 +176,33 @@ export class LineClassComponent implements OnInit {
       }
     });
 
-    if(isNotUnique == true){
-      setTimeout(()=>{
-        $('.globalLoading').css('display','none');
+    if(isEmpty == 1){
+        this.dialogIcon = 'error';
+        $('app-sucess-dialog #modalBtn').trigger('click');
+        this.params.saveLineClass = [];
+        this.line = (this.changeLine == true)?this.tempLineCd:this.line;
+    }else{
+      if(isNotUnique == true){
         this.warnMsg = 'Unable to save the record. Line Class Code must be unique per Line.';
         this.showWarnLov();
         this.params.saveLineClass  = [];
-      },500);
-    }else{
-      if(isEmpty == 1){
-        setTimeout(()=>{
-          $('.globalLoading').css('display','none');
-          this.dialogIcon = 'error';
-          $('app-sucess-dialog #modalBtn').trigger('click');
-          this.params.saveLineClass     = [];
-        },500);
       }else{
         if(this.params.saveLineClass.length == 0 && this.params.deleteLineClass.length == 0){
-          setTimeout(()=>{
-            $('.globalLoading').css('display','none');
-            this.dialogIcon = 'info';
-            this.dialogMessage = 'Nothing to save.';
-            $('app-sucess-dialog #modalBtn').trigger('click');
-            this.params.saveLineClass     = [];
-            this.passData.tableData = this.passData.tableData.filter(a => a.lineClassCd != '');
-          },500);
+          $('.ng-dirty').removeClass('ng-dirty');
+          this.cs.confirmModal();
+          this.params.saveLineClass  = [];
+          this.passData.tableData = this.passData.tableData.filter(a => a.lineClassCd != '');
         }else{
-          this.mtnService.saveMtnLineClass(JSON.stringify(this.params))
-          .subscribe(data => {
-            console.log(data);
-            this.getMtnLineClass();
-            $('app-sucess-dialog #modalBtn').trigger('click');
-            this.params.saveLineClass     = [];
-            this.passData.disableGeneric = true;
-          });
+          if(this.changeLine == true){
+            this.lineLoading();
+            this.line=this.tempLineCd;
+          }
+          if(this.cancelFlag == true){
+            this.cs.showLoading(true);
+            setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+          }else{
+            this.cs.confirmModal();
+          }
         }    
       }
     }
@@ -185,7 +215,15 @@ export class LineClassComponent implements OnInit {
     }else{
       this.table.indvSelect.deleted = true;
       this.table.selected  = [this.table.indvSelect]
-      this.table.confirmDelete();
+      var i = this.table.selected[0];
+
+      if(i.lineClassCd == '' && i.lineClassCdDesc == '' && i.activeTag == '' && i.remarks == ''){
+        this.table.onClickDelete('force');
+        $('.ng-dirty').removeClass('ng-dirty');
+        this.passData.disableGeneric=true;
+      }else{
+        this.table.confirmDelete();
+      }
     }
   }
 
@@ -208,13 +246,33 @@ export class LineClassComponent implements OnInit {
     this.line = data.lineCd;
     this.description = data.description;
     this.ns.lovLoader(data.ev, 0);
-    this.getMtnLineClass();
-    setTimeout(() => {try{$(data.ev.target).removeClass('ng-dirty');}catch(e){}}, 0);
+    this.firstLoading = false;
+    if($('.ng-dirty').length != 0){
+      this.counter++;
+      this.changeLine = true;
+      (this.counter<2)?this.cancelBtn.clickCancel():'';
+    }else{
+      this.changeLine = false;
+      this.getMtnLineClass();
+    }
   }
 
   checkCode(ev){
-    this.ns.lovLoader(ev, 1);
-    this.lineLov.checkCode(this.line.toUpperCase(), ev);
+    this.passEvent = ev;
+    if(this.firstLoading == true){
+      this.ns.lovLoader(ev, 1);
+      this.lineLov.checkCode(this.line.toUpperCase(), ev);
+      $('.ng-dirty').removeClass('ng-dirty');   
+    }else{
+      if($('.ng-dirty').length != 0){
+        this.changeLine = true;
+        this.cancelBtn.clickCancel();
+      }else{          
+        this.changeLine = false;
+        this.ns.lovLoader(ev, 1);
+        this.lineLov.checkCode(this.line.toUpperCase(), ev);
+      }
+    }
   }
 
   onClickRow(event){
@@ -223,31 +281,62 @@ export class LineClassComponent implements OnInit {
       this.lineClassData.createDate = event.createDate;
       this.lineClassData.updateDate = event.updateDate;
       this.lineClassData.updateUser = event.updateUser;
-      this.passData.disableGeneric    = false;
-      this.table.refreshTable();
+      this.passData.disableGeneric  = false;
+      //this.table.refreshTable();
     }else{
       this.lineClassData.createUser = '';
       this.lineClassData.createDate = '';
       this.lineClassData.updateDate = '';
       this.lineClassData.updateUser = '';
-      this.passData.disableGeneric    = true;
+      this.passData.disableGeneric  = true;
     }
   }
 
   cancel(){
+    this.exit = true
     this.cancelBtn.clickCancel();
   }
 
-  onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+  lineLoading(){
+    this.ns.lovLoader(this.passEvent, 1);
+    this.lineLov.checkCode(this.line.toUpperCase(), this.passEvent);
+  }
+
+  onCancel(){
+    this.counter = 0;
+    this.line = this.tempLineCd;
+    this.modalService.dismissAll();
+  }
+
+  onClickNo(){
+    if(this.exit == true){
+      this.changeLine = false;
+      this.cancelBtn.url = '/maintenance-qu-pol';
+      this.cancelBtn.onNo(); 
+    }else{
+      this.lineLoading();
+      this.getMtnLineClass();
+      this.table.refreshTable();
+    }
   }
 
   checkCancel(){
     if(this.cancelFlag == true){
-      if(this.fromCancel){
-        this.cancelBtn.onNo();
-      }else{
+      if(this.passData.tableData.some(i => i.fromCancel == false)){
         return;
+      }else{
+        if(this.changeLine == true){
+          this.changeLine = false;
+          if(this.exit == true){
+            this.cancelBtn.url = '/maintenance-qu-pol';
+            this.cancelBtn.onNo(); 
+          }else{
+            this.modalService.dismissAll();
+            return;
+          }
+        }else{
+          this.cancelBtn.onNo();
+        }
       }
     }
   }

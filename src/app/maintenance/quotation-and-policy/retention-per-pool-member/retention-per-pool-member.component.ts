@@ -200,6 +200,8 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 	}
 
 	openCedingCoLOV(ev) {
+		this.cedingCoLOV.selected = null;
+
 		this.hiddenCedingCo = this.poolMemberData.tableData.filter(a => a.cedingId !== undefined && !a.deleted && a.showMG != 1).map(a => a.cedingId);
 		this.cedingCoLOV.modal.openNoClose();
 		this.cedingCoLOVRow = ev.index;

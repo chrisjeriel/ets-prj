@@ -8,6 +8,9 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import * as alasql from 'alasql';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -24,6 +27,14 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('treatyShare') cedingCoLOV: CedingCompanyComponent;
   @Output() riskDistId = new EventEmitter<any>();
   @Output() riskDistStatus = new EventEmitter<any>();
+  @ViewChild('warningPosted') warningPostedMdl: ModalComponent;
+  @ViewChild('warningUnsaved') warningUnsvdedMdl: ModalComponent;
+  @ViewChild('warningUndistAlt') warningUndistAltMdl: ModalComponent;
+  @ViewChild('warningInvShare') warningInvShareMdl: ModalComponent;
+  @ViewChild('confirmAlt') confirmAltMdl: ModalComponent;
+
+  @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -175,7 +186,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     total:[null,'TOTAL','retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', null, 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
     paginateFlag: true,
     infoFlag: true,
-    pageLength: 10,
+    pageLength: 'unli',
     pageID: 'poolDistTable',
     searchFlag: true,
     exportFlag: true,
@@ -212,14 +223,22 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     oneRetLine:false,
     autoCalc: false,
     saveBtn: false,
-    distributeBtn: false
+    distributeBtn: false,
+    seciitrtyLimit: false,
+    seciiPremTag: false
   }
 
   controlHidden:any = {
     saveBtn: false,
     distributeBtn: false,
-    coinsBtn:true
+    coinsBtn:true,
+    seciitrtyLimit: false,
+    seciiPremTag: false
   }
+
+  postedList:any[] = [];
+  undistAlt:any[]=[];
+  distAlt:any[]=[];
 
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
               private ns: NotesService) { }
@@ -242,13 +261,21 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
                     this.wparamData.genericBtn = undefined;
                     this.wparamData.addFlag = false;
-                    this.wparamData.uneditable=[true,true,true,true,true,]
+                    this.wparamData.uneditable=[true,true,true,true,true,];
+                    this.controlDisabled.seciitrtyLimit = true;
+                    this.controlDisabled.seciiPremTag = true;
                   }else{
                     if(parseInt(data.policyNo.substr(-3))>0){
                       this.controlDisabled.oneRetLine = true;
+                      this.controlDisabled.seciitrtyLimit = true;
+                      this.controlDisabled.seciiPremTag = true;
                     }
                   }
                   
+                  if(this.params.policyNo.split('-')[0]!='CAR' && this.params.policyNo.split('-')[0]!='EAR'){
+                      this.controlHidden.seciitrtyLimit = true;
+                      this.controlHidden.seciiPremTag = true;
+                  }
                 this.retrieveRiskDistribution();
 
               });
@@ -258,6 +285,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //NECO 05/31/2019
     retrieveRiskDistribution(){
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
+        console.log(data);
+        this.distAlt = data.distAlt;
+        this.undistAlt = data.undistAlt;
         this.riskDistributionData = data.distWrisk;
         this.riskDistId.emit(this.riskDistributionData.riskDistId);
         this.riskDistStatus.emit(this.riskDistributionData.status);
@@ -360,6 +390,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           this.controlHidden.coinsBtn = false
         }
         if(data.postedDist.length>0){
+          this.postedList = data.postedDist.filter(a=>a.policyNo != this.params.policyNo);
+          if(this.params.fromNegate == 'false')
+            this.warningPostedMdl.openNoClose();
           this.readOnlyAll("yes");
         }
       });
@@ -421,10 +454,12 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           delWParam: this.deletedData,
           riskDistId:  this.riskDistributionData.riskDistId,
           altNo: this.riskDistributionData.altNo,
-          retLineAmt: this.riskDistributionData.retLineAmt,
+          retLineAmt: this.riskDistributionData.retLineAmt.toString().replace(/[,]/g,''),
           autoCalc: this.riskDistributionData.autoCalc,
           updateUser: JSON.parse(window.localStorage.currentUser).username,
-          policyId: this.params.policyId
+          policyId: this.params.policyId,
+          seciiPremTag: this.riskDistributionData.seciiPremTag,
+          trtyLimitSec2: this.riskDistributionData.trtyLimitSec2 == null ?'' : this.riskDistributionData.trtyLimitSec2.toString().replace(/[,]/g,''),
         };
         this.polService.saveDistRisk(params).subscribe((data: any)=>{
         if(data.returnCode === 0){
@@ -448,6 +483,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.controlDisabled.oneRetLine = true;
         this.controlDisabled.autoCalc = true;
         this.controlDisabled.saveBtn = true;
+        this.controlDisabled.seciitrtyLimit = true;
+        this.controlDisabled.seciiPremTag = true;
 
         this.wparamData.opts = [];
         this.wparamData.uneditable = [];
@@ -467,40 +504,71 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.controlDisabled.oneRetLine = true;
         this.wparamData.addFlag = false;
         this.wparamData.genericBtn = undefined;
+        this.controlDisabled.seciitrtyLimit = true;
+        this.controlDisabled.seciiPremTag = true;
       }else{
         this.wparamData.uneditable = [];
         if(parseInt(this.params.policyNo.substr(-3))==0){
+          this.controlDisabled.seciitrtyLimit = false;
+          this.controlDisabled.seciiPremTag = false;
           this.controlDisabled.oneRetLine = false;
         }
         this.wparamData.addFlag = true;
         this.wparamData.genericBtn = 'Delete';
+
       }
     }
   //END
 
 
   distribute(){
-    let params: any = {
-          riskDistId:  this.riskDistributionData.riskDistId,
-          altNo: this.riskDistributionData.altNo,
-          updateUser: JSON.parse(window.localStorage.currentUser).username
-        };
-    this.polService.distributeRisk(params).subscribe((data:any)=>{
-         if(data.returnCode === 0){
-          this.dialogIcon = 'error';
-          this.successDiag.open();
-        }else{
-          this.wparam.markAsPristine();
-          this.dialogIcon = '';
-          this.successDiag.open();
-          this.retrieveRiskDistribution();
+    if(this.undistAlt.length != 0){
+      this.warningUndistAltMdl.openNoClose();
+      return;
+    }
+
+    if($('.ng-dirty').length ==0){
+      let params: any = {
+            riskDistId:  this.riskDistributionData.riskDistId,
+            altNo: this.riskDistributionData.altNo,
+            updateUser: JSON.parse(window.localStorage.currentUser).username
+          };
+      this.polService.distributeRisk(params).subscribe((data:any)=>{
+           if(data.returnCode === 0){
+            this.dialogIcon = 'error';
+            this.successDiag.open();
+          }else{
+            this.wparam.markAsPristine();
+            this.dialogIcon = '';
+            this.successDiag.open();
+            this.retrieveRiskDistribution();
+          }
         }
-      }
-      );
+        );
+    }else{
+      this.warningUnsvdedMdl.openNoClose();
+    }
   }
 
   onClickCancel(){
+    console.log(this.params.exitLink)
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}]);
+  }
+
+  onClickSave(){
+    let treaty:string[] = this.wparamData.tableData.map(a=>a.treatyId).filter((value, index, self) => self.indexOf(value) === index);
+    for(let i of treaty){
+      if( Number(this.wparamData.tableData.filter(a=>a.treatyId == i && !a.deleted).reduce((a, b) => a + (parseInt(b['pctShare']) || 0), 0)).toFixed(2) != '100.00' && 
+          Number(this.wparamData.tableData.filter(a=>a.treatyId == i && !a.deleted).reduce((a, b) => a + (parseInt(b['pctShare']) || 0), 0)).toFixed(2) != '0.00'){
+        this.warningInvShareMdl.openNoClose();
+        return;
+      }
+    }
+    if(this.distAlt.length != 0){
+      this.confirmAltMdl.openNoClose();
+      return;
+    }
+    this.confirmSave.confirmModal()
   }
 
 // PAUL'S DOMAIN
@@ -520,7 +588,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         if(data.cedingId != '' && data.cedingId != null && data.cedingId != undefined) {
           this.wparamData.tableData[this.treatyShareLOVRow].showMG = 0;
           this.wparamData.tableData[this.treatyShareLOVRow].trtyCedId = data.cedingId;
-          this.wparamData.tableData[this.treatyShareLOVRow].trtyCedName = data.cedingName;
+          this.wparamData.tableData[this.treatyShareLOVRow].trtyCedName = data.cedingAbbr;
           this.wparamData.tableData[this.treatyShareLOVRow].cedingAbbr = data.cedingAbbr;
           this.wparamData.tableData[this.treatyShareLOVRow].edited = true;
         } else {
@@ -535,7 +603,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           this.wparamData.tableData.push(JSON.parse(JSON.stringify(this.wparamData.nData)));
           this.wparamData.tableData[this.wparamData.tableData.length - 1].showMG = 0;
           this.wparamData.tableData[this.wparamData.tableData.length - 1].trtyCedId = i.cedingId;
-          this.wparamData.tableData[this.wparamData.tableData.length - 1].trtyCedName = i.cedingName;
+          this.wparamData.tableData[this.wparamData.tableData.length - 1].trtyCedName = i.cedingAbbr;
           this.wparamData.tableData[this.wparamData.tableData.length - 1].cedingAbbr = i.cedingAbbr;
           this.wparamData.tableData[this.wparamData.tableData.length - 1].edited = true;
         }
@@ -588,11 +656,15 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
             var date = new Date(dateStr);
             return date.toLocaleString();
       };
-
+      //tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
       //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
-     alasql('SELECT treatyAbbr AS TreatyName, cedingName AS CedingName, retOneLines AS RetentionOneLines, retOneTsiAmt AS RetentionOneTSIAmount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
+     alasql('SELECT treatyAbbr AS TreatyName, cedingName AS TreatyCompany, ' +
+            'retOneLines AS RetentionOneLines, retOneTsiAmt AS RetentionOneTSIAmount, retOnePremAmt AS RetentionOnePremAmt, ' +
+            'retTwoLines AS RetentionTwoLines, retTwoTsiAmt AS RetentionTwoTSIAmount, retTwoPremAmt AS RetentionTwoPremAmt, ' +
+            'commRt AS CommRate, totalCommAmt AS CommAmount, totalVatRiComm AS VATonRICOMM, totalNetDue AS NetDue ' +
+            'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
   }
-
+6
   //poolDistributionData
   //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
 

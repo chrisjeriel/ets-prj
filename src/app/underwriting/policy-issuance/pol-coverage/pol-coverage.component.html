@@ -1,5 +1,6 @@
 <!-- NON-ALTERATION SCREEN -->
 <ng-container *ngIf="!alteration">
+ <form #secDetails="ngForm">
  <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;" *ngIf="!policyInfo.fromSummary">
   <legend class="scheduler-border">Policy Record Info</legend>
   <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
@@ -7,16 +8,15 @@
       <label class="col-sm-1"></label>
       <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
       <input type="text" id="xx" [(ngModel)]="policyInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-2"
-      placeholder="" readonly>
+      placeholder="" readonly name="policyNo">
       <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-      <input type="text" id="xx" [(ngModel)]="policyInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
-      readonly>
+      <input type="text" id="xx" [(ngModel)]="policyInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly name="insuredDesc">
     </div>
     <div class="input-group" style="margin-bottom: -13px !important;">
       <label class="col-sm-1"></label>
       <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
       <input type="text" id="xx" [(ngModel)]="policyInfo.riskName" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
-      readonly>
+      readonly name="riskName">
     </div>
   </div>
 </fieldset>
@@ -43,7 +43,6 @@
       </fieldset>
     </div>
     <div class="col-sm-4" style="padding: 0px !important">
-      <form #secDetails="ngForm">
         <div class="row">
            <div class="col-sm-12 forced-col-sm">
              <fieldset class="scheduler-border">
@@ -140,7 +139,6 @@
            </fieldset>
           </div>
         </div>
-        </form>
     </div>
   </div>
 </div>
@@ -148,7 +146,7 @@
     <div class="form-group col-sm">
       <div class="col-md-13 text-center" style="margin-top: 10px;">
         <div class="cust-btn-container">
-          <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
+          <button type="button" class="cust-btn" (click)="onClickCat()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
           <button #cancelCov type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
           <button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
         </div>
@@ -156,8 +154,7 @@
     </div>
   </div>
 
-
-<app-modal class="hidden" id="CATPerils">
+<app-modal class="hidden" id="CATPerils" #catPerilMdl>
     <div header>CAT Perils Exposure</div>
     <div body style=" margin-top: -10px !important; width: 400px ! important">
        <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
@@ -168,12 +165,11 @@
     </div>
 </app-modal>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null; promptClickCat ? onClickCat():null"></app-sucess-dialog>
 <app-confirm-save id="saveCov" (onYes)="saveCoverage()"></app-confirm-save>
 <app-confirm-save id="saveCat" (onYes)="saveCatPeril()"></app-confirm-save>
 <app-cancel-button #cancelCov (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
-<app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" [url]="null" ></app-cancel-button>
-
+<app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" (no)="catPerilMdl.closeModal()"></app-cancel-button>
 
 <app-modal #infoCov hidden [btnTitle]="'Confirmation'" id="confirmationModal">
     <div header>Confirmation Message</div>
@@ -207,6 +203,7 @@
         </div>
     </div>
 </app-modal>
+</form>
 </ng-container>
 
 
@@ -400,7 +397,7 @@
         <div class="col-sm text-center">
           <div class="cust-btn-container" style="margin-top: 10px;">
             <!-- <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Deductibles</a></button> -->
-            <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
+            <button type="button" class="cust-btn" (click)="onClickCat()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
             <button #cancelCov type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
             <button type="button" class="cust-btn" (click)="onClickSaveAlt()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
           </div>
@@ -410,17 +407,18 @@
     
 </div>
 
-<app-modal class="hidden" id="CATPerils">
+<app-modal class="hidden" id="CATPerils" #catPerilMdlAlt>
     <div header>CAT Perils Exposure</div>
     <div body style=" margin-top: -10px !important; width: 400px ! important">
        <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
     </div>                
     <div footer style="margin-right: 145px !important;">
-      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="onCancelCat();"><a>Cancel</a></button>
       <button class="cust-btn" type="button" (click)=" saveCatPeril()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
     </div>
+    <app-confirm-save id="saveCat" (onYes)="saveCatPeril()"></app-confirm-save>
+    <app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" (no)="catPerilMdlAlt.closeModal()"></app-cancel-button>
 </app-modal>
-<app-confirm-save #confirmSave (onYes)="alterationSave()"></app-confirm-save>
 </ng-container>
 
 <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
@@ -437,7 +435,8 @@
 
 <!-- <app-confirm-save  id = "alterationSaving" (onYes)="alterationSave()"></app-confirm-save> -->
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
-<app-sucess-dialog #successAlt id="deductibles-success" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save #confirmSave (onYes)="alterationSave()"></app-confirm-save>
+<app-sucess-dialog #successAlt id="deductibles-success" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null; "></app-sucess-dialog>
 
 <app-modal #info hidden [btnTitle]="'Confirmation'" id="confirmationModal">
     <div header>Confirmation Message</div>

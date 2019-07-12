@@ -170,7 +170,9 @@ import { ClaimEventTypeComponent } from './maintenance/claims/claim-event-type/c
 import { ClaimEventComponent } from './maintenance/claims/claim-event/claim-event.component';
 import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-policy/section-ii-treaty-limit/section-ii-treaty-limit.component';
 import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
+import { ClaimCashCallComponent } from './maintenance/claims/claim-cash-call/claim-cash-call.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
+
 
 const appRoutes: Routes = [
 
@@ -207,9 +209,9 @@ const appRoutes: Routes = [
     { path: 'update-info', component: UpdateInformationComponent },
     { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
     { path: 'open-cover', component: OpenCoverComponent },
-    { path: 'clm-claim-processing', component: ClmClaimProcessingComponent },
-    { path: 'clm-gen-info-claim', component: ClmGenInfoClaimComponent },
-    { path: 'claims-claim', component: ClaimComponent },
+    { path: 'clm-claim-processing', component: ClmClaimProcessingComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'clm-gen-info-claim', component: ClmGenInfoClaimComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'claims-claim', component: ClaimComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
     { path: 'update-info', component: UpdateInformationComponent },
@@ -310,7 +312,7 @@ const appRoutes: Routes = [
     { path: 'ceding-co-form', component: CedingCompanyFormComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-endt', component: EndorsementComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-object', component: ObjectComponent },
-    { path: 'maintenance-sec-cov', component: SectionCoverComponent },
+    { path: 'maintenance-sec-cov', component: SectionCoverComponent, canDeactivate: [UnsavedChangesGuard] }, //deza was here added unsavedChangesGaurd #8221 MTN112
     { path: 'total-val-pol-print', component: HundredValPolPrintComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-qu-pol', component: QuotationAndPolicyComponent},
     { path: 'maintenance-quote-wording', component: QuoteWordingComponent, canDeactivate: [UnsavedChangesGuard] },
@@ -346,12 +348,13 @@ const appRoutes: Routes = [
     { path: 'maintenance-loss-code', component: LossCodeComponent },
     { path: 'mtn-adjuster-list', component: AdjusterComponent },
     { path: 'adjuster-form', component: AdjusterFormComponent },
-    { path: 'claim-status', component: ClaimStatusComponent },
+    { path: 'claim-status', component: ClaimStatusComponent, canDeactivate: [UnsavedChangesGuard]  },
     { path: 'maintenance-clm', component: MtnClaimsComponent },
     { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-sec-ii-treaty-limit', component: SectionIiTreatyLimitComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-retention-per-pool-member', component: RetentionPerPoolMemberComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-clm-cash-call', component: ClaimCashCallComponent },
     { path: 'mtn-clm-stat-reason', component: ClaimStatusReasonComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

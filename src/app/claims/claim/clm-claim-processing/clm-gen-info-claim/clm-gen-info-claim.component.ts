@@ -26,7 +26,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   @ViewChild('adjTblGI') adjTable: CustEditableNonDatatableComponent;
   @ViewChild('lossCdLOV') lossCdLOV: MtnLossCdComponent;
   @ViewChild('clmEventLOV') clmEventLOV: MtnClmEventComponent;
-  @ViewChild('clmEventTypeLOV') clmEventTypeLOV: MtnClmEventComponent;
+  @ViewChild('clmEventTypeLOV') clmEventTypeLOV: MtnClmEventTypeComponent;
   @ViewChild('adjusterLOV') adjusterLOV: MtnAdjusterComponent;
   @ViewChild('adjConfirmSave') adjConfirmSave: ConfirmSaveComponent;
   @ViewChild('adjSuccessDialog') adjSuccessDialog: SucessDialogComponent;
@@ -80,6 +80,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     cedingId: null,
     coSeriesNo: null,
     altNo: null,
+    policyId: null,
     policyNo: null,
     cedingName: null,
     prinId: null,
@@ -192,6 +193,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   mdlType: string = 'conf';
   tempLossDate: string = '';
   uneditableLossDate: boolean = false;
+  disableClmHistory: boolean = true;
+  disableNextTabs: boolean = true;
+  disablePaytReq: boolean = true;
+
   @Input() isInquiry: boolean = false;
 
   @Output() emitClaimInfoId = new EventEmitter<any>();
@@ -245,7 +250,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   retrieveClmGenInfo() {
     var sub$ = forkJoin(this.cs.getClmGenInfo(this.claimId, this.claimNo),
-                        this.cs.getClaimApprovedAmt(this.claimId)).pipe(map(([clm, hist]) => { return { clm, hist }; }));
+                        this.cs.getClaimApprovedAmt(this.claimId),
+                        this.cs.getClaimSecCover(this.claimId, this.claimNo),
+                        this.cs.getClaimHistory(this.claimId, this.claimNo)).pipe(map(([clm, hist, vldSC, vldH]) => { return { clm, hist, vldSC, vldH }; }));
 
     this.subscription.add(sub$.subscribe(data => {
       $('.globalLoading').css('display','none');
@@ -282,38 +289,14 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.adjNameAndRefs();
       }
 
+      this.disableClmHistory = data['vldSC']['claims'] == null || data['vldSC']['claims']['project']['clmCoverage']['allowMaxSi'] == null;
+      this.disableNextTabs = data['vldH']['claimReserveList'].length == 0;
+      if(!this.disableNextTabs && data['vldH']['claimReserveList'][0]['clmHistory'].length > 0) {
+        this.disablePaytReq = data['vldH']['claimReserveList'][0]['clmHistory'].filter(a => a.histTypeDesc == 'Partial Payment' || a.histTypeDesc == 'Final Payment').length == 0;
+      }
+
       this.checkClmIdF(this.claimData.claimId);
     }));
-
-    /*this.cs.getClmGenInfo(this.claimId, this.claimNo).subscribe(data => {
-      $('.globalLoading').css('display','none');
-      this.claimData = data['claim'];
-
-      this.claimData.inceptDate = this.ns.toDateTimeString(this.claimData.inceptDate);
-      this.claimData.expiryDate = this.ns.toDateTimeString(this.claimData.expiryDate);
-      this.claimData.lossDate = this.ns.toDateTimeString(this.claimData.lossDate);
-      this.claimData.reportDate = this.ns.toDateTimeString(this.claimData.reportDate);
-      this.claimData.closeDate = this.ns.toDateTimeString(this.claimData.closeDate);
-      this.claimData.createDate = this.ns.toDateTimeString(this.claimData.createDate);
-      this.claimData.updateDate = this.ns.toDateTimeString(this.claimData.updateDate);
-      this.claimData.lapseFrom = this.claimData.lapseFrom == '' || this.claimData.lapseFrom == null ? '' : this.ns.toDateTimeString(this.claimData.lapseFrom);
-      this.claimData.lapseTo = this.claimData.lapseTo == '' || this.claimData.lapseTo == null ? '' : this.ns.toDateTimeString(this.claimData.lapseTo);
-      this.claimData.maintenanceFrom = this.claimData.maintenanceFrom == '' || this.claimData.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.claimData.maintenanceFrom);
-      this.claimData.maintenanceTo = this.claimData.maintenanceTo == '' || this.claimData.maintenanceTo == null ? '' : this.ns.toDateTimeString(this.claimData.maintenanceTo);
-
-      this.claimData.prinId = this.claimData.prinId == '' || this.claimData.prinId == null ? '' : String(this.claimData.prinId).padStart(6, '0');
-      this.claimData.contractorId = this.claimData.contractorId == '' || this.claimData.contractorId == null ? '' : String(this.claimData.contractorId).padStart(6, '0');
-      this.claimData.project.objectId = this.claimData.project.objectId == '' || this.claimData.project.objectId == null ? '' : String(this.claimData.project.objectId).padStart(3, '0');
-
-      if(this.claimData.clmReserve && this.claimData.clmReserve.claimId != null) {
-        this.uneditableLossDate = true;
-        this.tempLossDate = this.claimData.lossDate;
-      }
-
-      if(this.claimData.clmAdjusterList.length > 0) {
-        this.adjNameAndRefs();
-      }
-    });*/
   }
 
   retrievePolDetails() {
@@ -384,6 +367,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.claimData.clmStatCd = 'IP';
       this.claimData.clmStatus = 'In Progress';
       this.claimData.processedBy = this.ns.getCurrentUser();
+
+      this.checkClmIdF('');
     });
   }
 
@@ -431,6 +416,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   setClmEvent(ev) {
+    this.ns.lovLoader(ev.ev, 0);
+    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+
     this.claimData.eventCd = ev.eventCd;
     this.claimData.eventDesc = ev.eventDesc;
   }
@@ -441,8 +429,16 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   setClmEventType(ev) {
+    this.ns.lovLoader(ev.ev, 0);
+    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+
     this.claimData.eventTypeCd = ev.eventTypeCd;
     this.claimData.eventTypeDesc = ev.eventTypeDesc;
+
+    if(ev.eventTypeCd == '') {
+      this.claimData.eventCd = '';
+      this.claimData.eventDesc = '';
+    }
   }
 
   adjNameAndRefs() {
@@ -524,6 +520,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   setStatus(ev) {
+    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+    
     this.claimData.clmStatCd = ev.statusCode;
     this.claimData.clmStatus = ev.description;
   }
@@ -675,8 +673,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.disableAdjusterBtn = false;
 
         this.retrieveClmGenInfo();
-
-        setTimeout(() => { this.checkClmIdF(data['claimId']); });
       }
     });
   }
@@ -685,9 +681,15 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.emitClaimInfoId.emit({
       claimId: ev,
       claimNo: this.claimNo,
+      projId : this.claimData.project.projId,
+      policyId: this.policyId == 0 ? this.claimData.policyId : this.policyId,
       policyNo: this.claimData.policyNo,
       riskName: this.claimData.project.riskName,
-      insuredDesc: this.claimData.insuredDesc
+      insuredDesc: this.claimData.insuredDesc,
+      clmStatus : this.claimData.clmStatus,
+      disableClmHistory: this.disableClmHistory,
+      disableNextTabs: this.disableNextTabs,
+      disablePaytReq: this.disablePaytReq
     });
   }
 
@@ -726,7 +728,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.showCustLoader = true;
 
     var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
-                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.effDate <= new Date(this.claimData.lossDate))
+                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.effDate <= new Date(this.claimData.lossDate) && a.statusDesc == 'In Force')
                                                                                .sort((a, b) => b.altNo - a.altNo)),
                             mergeMap(data => this.us.getPolGenInfo(data['policyList'][0].policyId, data['policyList'][0].policyNo)));
 
@@ -810,15 +812,16 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       } else if(str === 'lp') {
         this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == 'P' };
         this.lossCdLOV.checkCode('P', this.claimData.lossPdAbbr, ev);
+      } else if(str === 'eventType') {
+        this.clmEventTypeLOV.checkCode(this.claimData.eventTypeDesc, ev);
+      } else if(str === 'event') {
+        var eventTypeCd = this.claimData.eventTypeCd;
+        var line = this.line;
+
+        this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lineCd == line };
+        this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev);
       }
     });
-    // if(str === 'lc') {
-    //   this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == 'C' };
-    //   this.lossCdLOV.checkCode('C', this.claimData.lossAbbr, ev);
-    // } else if(str === 'lp') {
-    //   this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == 'P' };
-    //   this.lossCdLOV.checkCode('P', this.claimData.lossPdAbbr, ev);
-    // }
   }
 
   dc(ev, data, type) {
