@@ -5,7 +5,9 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import * as deepEqual from "deep-equal";
 import { FormControl } from '@angular/forms';
+import { SystemComponent } from '@app/maintenance/system/system.component';
 
 @Component({
   selector: 'app-section-cover',
@@ -135,11 +137,17 @@ export class SectionCoverComponent implements OnInit {
                 for(let i of rec){
                     this.passDedTable.opts[0].vals.push(i.code);
                     this.passDedTable.opts[0].prev.push(i.description);
-                }
+				}
 	});
   }
 
   checkCode(ev){
+	if(this.dedTable.form.dirty || this.secTable.form.dirty){
+		this.onClickSave();
+		this.secTable.markAsPristine();
+		this.dedTable.markAsPristine();
+		return;
+	}
 	this.ns.lovLoader(ev, 1);
 	this.lineLov.checkCode(this.line.lineCd.toUpperCase(), ev);
   }
@@ -155,11 +163,6 @@ export class SectionCoverComponent implements OnInit {
 
   getMtnSectionCovers(){
 	this.secTable.loadingFlag = true;
-	if(this.dedTable.form.dirty || this.secTable.form.dirty){
-		this.onClickSave();
-		this.dedTable.form.markAsPristine();
-		this.secTable.form.markAsPristine();
-	}
   	this.ms.getMtnSectionCovers(this.line.lineCd,'').subscribe(a=>{
 		//deza was here 7/5/2019 #8221 MTN112
 		if(this.line.lineCd != ''){
@@ -177,8 +180,14 @@ export class SectionCoverComponent implements OnInit {
 		}
 		//deza 7/5/2019 4:25 PM
   		this.secClick(null);
-  		this.secTable.refreshTable();
+		this.secTable.refreshTable();
   	})
+  }
+
+  onCancelSave(){
+	  if(this.line.lineCd != this.passSecTable.nData.lineCd){
+		  this.getMtnSectionCovers();
+	  }
   }
 
   deleteSec(){
@@ -267,7 +276,44 @@ export class SectionCoverComponent implements OnInit {
 
   
   save(can?){
-  	this.cancelFlag = can !== undefined;
+	//deza was here 7/12/2019 **START**
+  	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=> a.bulletNo==b.bulletNo && a.section==b.section && a.deleted==undefined && b.deleted==undefined ).length > 1)){
+		this.dialogMessage = 'Unable to save the record. Bullet No must be unique per Section';
+  		this.dialogIcon = 'error-message';
+  		this.successDialog.open();
+  		return;
+	}
+  	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.sortSeq == b.sortSeq && a.section==b.section && a.deleted==undefined && b.deleted==undefined && a.sortSeq==""  && b.sortSeq=="").length > 1)){
+		this.dialogMessage = 'Unable to save the record. Sort Sequence must be unique per Section';
+		this.dialogIcon = 'error-message';
+		this.successDialog.open();
+		return;
+	}
+	if(this.passSecTable.tableData.some((a,i)=> a.sortSeq % 1 != 0 || a.sortSeq > 999  && a.deleted==undefined)){
+		this.dialogIcon = 'error';
+		this.successDialog.open();
+		return;
+	}
+  	let dedCds : string[];
+  	for(let sec of this.passSecTable.tableData){
+  		dedCds = sec.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
+		if(sec.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
+  			this.dialogIcon = "error";
+    		this.successDialog.open();
+    		return;
+		}
+
+  		if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
+  			this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Section Cover';
+	  		this.dialogIcon = 'error-message';
+	  		this.successDialog.open();
+	  		return;
+  		}
+	}
+	//deza for validation of fields **END**
+
+	this.cancelFlag = can !== undefined;
+	
   	let params : any = {
   		saveDeductibles : [],
   		deleteDeductibles :[],
@@ -320,23 +366,28 @@ export class SectionCoverComponent implements OnInit {
             this.successDialog.open(); 
 		}
 	  })
+
+	  
+	if(this.line.lineCd != this.passSecTable.nData.lineCd){
+		this.getMtnSectionCovers();
+	}
   }
 
   onClickSave(){
-  	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.bulletNo == b.bulletNo && a.section==b.section).length != 1)){
-  		this.dialogMessage = 'Unable to save the record. Bullet No must be unique per Section';
+  	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=> a.bulletNo==b.bulletNo && a.section==b.section && a.deleted==undefined && b.deleted==undefined ).length > 1)){
+		this.dialogMessage = 'Unable to save the record. Bullet No must be unique per Section';
   		this.dialogIcon = 'error-message';
   		this.successDialog.open();
   		return;
 	}
 	//deza was here
-  	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.sortSeq == b.sortSeq && a.section==b.section).length != 1)){
+  	if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.sortSeq == b.sortSeq && a.section==b.section && a.deleted==undefined && b.deleted==undefined && a.sortSeq=="" && b.sortSeq=="" ).length > 1)){
 		this.dialogMessage = 'Unable to save the record. Sort Sequence must be unique per Section';
 		this.dialogIcon = 'error-message';
 		this.successDialog.open();
 		return;
 	}
-	if(this.passSecTable.tableData.some((a,i)=> a.sortSeq % 1 != 0 || a.sortSeq.toString().length > 3)){
+	if(this.passSecTable.tableData.some((a,i)=> a.sortSeq % 1 != 0 || a.sortSeq > 999 && a.deleted==undefined)){
 		this.dialogIcon = 'error';
 		this.successDialog.open();
 		return;
@@ -355,8 +406,6 @@ export class SectionCoverComponent implements OnInit {
   			this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Section Cover';
 	  		this.dialogIcon = 'error-message';
 	  		this.successDialog.open();
-	  		this.secTable.markAsPristine();
-	  		this.dedTable.markAsPristine();
 	  		return;
   		}
   	}
