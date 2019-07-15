@@ -1,4 +1,5 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-acct-ar-entry',
@@ -60,10 +61,23 @@ export class AcctArEntryComponent implements OnInit {
                  };
   @Output() onChange: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  sub: any;
+  isAdd: boolean = false;
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.onChange.emit({ type: this.record.paymentType });
+    this.sub = this.route.params.subscribe(
+       data=>{
+         console.log(data['action']);
+         if('add' === data['action'].trim()){
+           this.isAdd = true;
+         }else{
+           this.isAdd = false;
+         }
+       }
+    );
   }
 
   tabController(event) {
