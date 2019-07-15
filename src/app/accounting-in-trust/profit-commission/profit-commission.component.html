@@ -8,28 +8,15 @@
 					<div class="custom-row-inline-inset">
 						<div class="input-group">
 							<div class="col-sm-1"></div>
-							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm"
-							placeholder="National Reinsurance Corporation of the Philippines">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCode($event)" [(ngModel)]="cedingDesc">
+							<div class="text-search-ico" (click)="showCedCompLOV()"><a><i class="fa fa-search"></i></a></div>
 							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Month</label>
-							<select class="form-control form-control-sm cust-sm col-sm-1">
-								<option value="January">January</option>
-								<option value="February">February</option>
-								<option value="March">March</option>
-								<option value="April">April</option>
-								<option value="May">May</option>
-								<option value="June">June</option>
-								<option value="July">July</option>
-								<option value="August">August</option>
-								<option value="September">September</option>
-								<option value="October">October</option>
-								<option value="November">November</option>
-								<option value="December">December</option>
+							<select id="m-list" [(ngModel)]="monthCd" class="form-control form-control-sm cust-sm col-sm-1">
+								<option *ngFor="let m of monthList" [value]="m">{{ m }}</option>
 							</select>
 							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Year</label>
-							<select class="form-control form-control-sm cust-sm col-sm-1">
-								<option value="2018">2018</option>
+							<select id="y-list" [(ngModel)]="yearCd" class="form-control form-control-sm cust-sm col-sm-1">
+								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
 							</select>
 							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
 								<button type="button" class="cust-btn"><a>Compute</a></button>
@@ -62,7 +49,7 @@
 						</div>
 						<div class="input-group" style="margin-bottom: -3px !important;">
 							<div class="col-sm-8"></div>
-							<div class="col-sm" style="padding-left: 0px !important;padding-right: 0px !important">===================================</div>
+							<div class="col-sm-2" style="padding-left: 0px !important;padding-right: 0px !important">===================================</div>
 						</div>
 					</div>
 					<!-- <div class="container-fluid"> -->
@@ -131,3 +118,4 @@
 		</ngb-tab>
 	</ngb-tabset>
 </div>
+<app-ceding-company #cedingComp (selectedData)="setSelectedCedComp($event)"></app-ceding-company>

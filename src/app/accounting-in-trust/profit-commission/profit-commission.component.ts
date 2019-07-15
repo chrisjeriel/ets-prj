@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { NotesService } from '@app/_services';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+
 
 @Component({
   selector: 'app-profit-commission',
@@ -9,7 +12,24 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./profit-commission.component.css']
 })
 export class ProfitCommissionComponent implements OnInit {
+	@ViewChild("cedingComp") cedingCoLOV: CedingCompanyComponent;
 
+    yearList: any[] = [];
+    monthList: any[] = [ 'January',
+    					 'February',
+    					 'March',
+    					 'April',
+    					 'May',
+    					 'June',
+    					 'July',
+    					 'August',
+    					 'September',
+    					 'October',
+    					 'November',
+    					 'December']
+    yearCd: any;
+    monthCd: any;
+    cedingDesc: any = '';
 	income1: any = 0;
 	income2: any = 9481348.73;
 	outgo1: any = 404777.58;
@@ -38,15 +58,36 @@ export class ProfitCommissionComponent implements OnInit {
 		widths:[270,120,120,120,120]
 	}
 
-  constructor(private route: Router, private titleService: Title) { }
+  constructor(private route: Router, private titleService: Title, private ns: NotesService,) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Profit Commission Statement");
+  	this.getYearList();
   }
 
 	onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         this.route.navigateByUrl('');
       } 
+  	}
+
+  	getYearList(){
+  		for (let i = 0; i<100; i++){
+  			this.yearList.push(2000 + i);
+  		}
+  	}
+
+  	showCedCompLOV(){
+  	  this.cedingCoLOV.modal.openNoClose();
+  	}
+
+  	setSelectedCedComp(data){
+  	  this.cedingDesc = data.cedingName;
+  	  this.ns.lovLoader(data.ev, 0);
+  	}
+
+  	checkCode(event){
+  		this.ns.lovLoader(event, 1);
+        this.cedingCoLOV.checkCode(this.cedingDesc, event);
   	}
 }
