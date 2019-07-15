@@ -218,23 +218,26 @@ export class AccountingService {
 		return this.creditableTax;
 	}
 
-	getPaytRequestsList() {
-		this.paytRequestListData = [
-			new AccountingRequestsListRP('CSR-2015-01-0001', 'SM Prime Holdings, Inc.', 'Claim Expense Payment to Ceding Company', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 1642857.14, 'Edward M. Salunson'),
-			new AccountingRequestsListRP('CSR-2017-12-0001', 'Rustan, Inc.', 'Claim Expense Payment to Other Parties', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 200000, 'Christian M. Lumen'),
-			new AccountingRequestsListRP('PRR-2017-12-0002', 'San Miguel Corporation', 'Claim Payment to Ceding Company', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 100000, 'Chie Reyes'),
-			new AccountingRequestsListRP('PRR-2017-12-0003', 'DMCI', 'Inward Policy Balances - Returns', 'Cancelled', new Date(), 'Return of Premium for Policy No.', 'USD', 1000000, 'Chie Reyes'),
-			new AccountingRequestsListRP('PRR-2018-01-0001', 'ABS-CBN', 'Payment of Service Fee by In-Trust to Service Accounting', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 710716.12, 'Juan de la Cruz'),
-			new AccountingRequestsListRP('QBR-2018-02-0001', 'SMDC', 'Treaty Balance Due Participants', 'Paid', new Date(), 'Treaty Balance due for 1st Qtr for company', 'SGD', 756929, 'Juan de la Cruz'),
-			new AccountingRequestsListRP('PRR-2018-02-0002', 'Universal Robina, Inc.', 'QSOA Balances', 'Open', new Date(), 'Return of Premium for Policy No.', 'EUR', 300000, 'Juan de la Cruz'),
-			new AccountingRequestsListRP('QBR-2018-03-0001', 'SGV & Co.', 'Investment (Placement)', 'Open', new Date(), 'Treaty Balance due for 1st Qtr for company', 'HKD', 1000000, 'Christian M. Lumen'),
-			new AccountingRequestsListRP('CSR-2018-09-0001', 'Accenture', 'Payment of Service Fee by In-Trust to Service Accounting', 'Open', new Date(), 'Payment for Claim No.', 'PHP', 230000, 'Chie Reyes'),
-			new AccountingRequestsListRP('OTR-2018-11-0001', 'NSO', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'RMB', 1500000, 'Chie Reyes'),
-			new AccountingRequestsListRP('OTR-2019-04-0095', 'DFA', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 1642857.14, 'Chie Reyes'),
-			new AccountingRequestsListRP('QBR-2019-05-0032', 'Robinsons', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'USD', 1342752.24, 'Chie Reyes'),
-		];
-		return this.paytRequestListData;
-	}
+	// getPaytRequestsList() {
+	// 	// this.paytRequestListData = [
+	// 	// 	new AccountingRequestsListRP('CSR-2015-01-0001', 'SM Prime Holdings, Inc.', 'Claim Expense Payment to Ceding Company', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 1642857.14, 'Edward M. Salunson'),
+	// 	// 	new AccountingRequestsListRP('CSR-2017-12-0001', 'Rustan, Inc.', 'Claim Expense Payment to Other Parties', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 200000, 'Christian M. Lumen'),
+	// 	// 	new AccountingRequestsListRP('PRR-2017-12-0002', 'San Miguel Corporation', 'Claim Payment to Ceding Company', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 100000, 'Chie Reyes'),
+	// 	// 	new AccountingRequestsListRP('PRR-2017-12-0003', 'DMCI', 'Inward Policy Balances - Returns', 'Cancelled', new Date(), 'Return of Premium for Policy No.', 'USD', 1000000, 'Chie Reyes'),
+	// 	// 	new AccountingRequestsListRP('PRR-2018-01-0001', 'ABS-CBN', 'Payment of Service Fee by In-Trust to Service Accounting', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 710716.12, 'Juan de la Cruz'),
+	// 	// 	new AccountingRequestsListRP('QBR-2018-02-0001', 'SMDC', 'Treaty Balance Due Participants', 'Paid', new Date(), 'Treaty Balance due for 1st Qtr for company', 'SGD', 756929, 'Juan de la Cruz'),
+	// 	// 	new AccountingRequestsListRP('PRR-2018-02-0002', 'Universal Robina, Inc.', 'QSOA Balances', 'Open', new Date(), 'Return of Premium for Policy No.', 'EUR', 300000, 'Juan de la Cruz'),
+	// 	// 	new AccountingRequestsListRP('QBR-2018-03-0001', 'SGV & Co.', 'Investment (Placement)', 'Open', new Date(), 'Treaty Balance due for 1st Qtr for company', 'HKD', 1000000, 'Christian M. Lumen'),
+	// 	// 	new AccountingRequestsListRP('CSR-2018-09-0001', 'Accenture', 'Payment of Service Fee by In-Trust to Service Accounting', 'Open', new Date(), 'Payment for Claim No.', 'PHP', 230000, 'Chie Reyes'),
+	// 	// 	new AccountingRequestsListRP('OTR-2018-11-0001', 'NSO', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'RMB', 1500000, 'Chie Reyes'),
+	// 	// 	new AccountingRequestsListRP('OTR-2019-04-0095', 'DFA', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 1642857.14, 'Chie Reyes'),
+	// 	// 	new AccountingRequestsListRP('QBR-2019-05-0032', 'Robinsons', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'USD', 1342752.24, 'Chie Reyes'),
+	// 	// ];
+	// 	// return this.paytRequestListData;
+
+	// }
+
+
 
 	getCancelledTransactions() {
 		this.cancelledTransactionsData = [
@@ -1322,4 +1325,46 @@ export class AccountingService {
          }
           return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveArList',{params});
 	}
+
+	getArEntry(tranId, arNo){
+		var params = new HttpParams()
+	            	.set('tranId', tranId)
+					.set('arNo', arNo)
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveArEntry',{params});
+	}
+
+	getPaytReq(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('reqId','')
+				.set('paytReqNo','')
+				.set('tranTypeDesc','')
+				.set('reqDateFrom','')
+				.set('reqDateTo','')
+				.set('reqStatusDesc','')
+				.set('payee','')
+				.set('currCd','')
+				.set('reqAmt','')
+				.set('particulars','')
+				.set('requestedBy','')
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPaytReq',{params});	
+	}
+
+	saveAcitPaytReq(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPaytReq',params,header);
+ 
+    }
 }

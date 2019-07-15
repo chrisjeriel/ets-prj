@@ -128,6 +128,7 @@ export class AcctArListingsComponent implements OnInit {
   toGenerateAREdit(data) {
     console.log(data);
     this.record = {
+      tranId: data.tranId,
       arNo: data.arNo,
       payor: data.payor,
       arDate: data.arDate,

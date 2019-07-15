@@ -6,44 +6,37 @@
 	               <div class="container-fluid" style="padding-left: 0px;">
    		               <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
    		                <div class="input-group" style="margin-bottom: -14px !important; margin-top: 10px !important">
-   		                    <label class="form-control-sm col-sm-1" for="xx">Request No.</label>
+   		                    <label class="form-control-sm col-sm-1">Request No.</label>
    		                    <div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-   		                    	       placeholder="CPR" style="margin-right: 3px !important;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-   		                    	       placeholder="2018" style="margin-right: 3px !important; text-align: right;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-2"
-   		                    	       placeholder="10" style="margin-right: 3px !important; text-align: right">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-4"
-   		                    	       placeholder="0001" style="text-align: right">
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 3px !important;" readonly>
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 3px !important; text-align: right;" readonly>
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 3px !important; text-align: right" readonly>
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" style="text-align: right" readonly>
    		                    </div>
-   		                    <label class="form-control-sm col-sm-1" for="xx">Request Date</label>
-   		                    <div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="date" class="form-control form-control-sm cust-sm col-sm-8" placeholder="10/01/2018" style="margin-right: 3px !important;" value="2018-01-10">
-   			                    <input type="text" class="form-control form-control-sm cust-sm col-sm-4" 
-   			                           placeholder="10:45 AM">
-   		                    </div>
-   		                    <label class="form-control-sm col-sm-1" for="xx">Status</label>
+   		                    <label class="form-control-sm col-sm-1">Request Date</label>
+                          <div class="input-group col-sm-3" style="padding: 0px;">
+                            <div class="col-sm-8 dp-cont">
+                              <datepicker  [type]="'date'" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
+                            </div>
+                            <div class="col-sm dp-cont">
+                              <datepicker  [type]="'time'" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;sample()"></datepicker>
+                            </div>
+                          </div>
+   		                    <label class="form-control-sm col-sm-1">Status</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.status == undefined ? '' : data.status"
-   		                    	       placeholder="Open">
-   		                    	<!-- <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.reqStatus" readonly>
    		                    </div>
    		                </div>
 
    		                <div class="input-group" style="margin-bottom: -14px !important;">
-                             <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Payee</label>
+                             <label class="form-control-sm col-sm-1" style="height: auto;">Payee</label>
                              <div class="p-0 col-sm-7" style="position: relative;">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.payee == undefined ? '' : data.payee" placeholder="AArema Adjusters and Surveyors">
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" [(ngModel)]="saveAcitPaytReq.payee" appRequired>
                                 <div style="position:absolute;right: 6px !important;top: -1px ;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                               </div>
-   		                    <label class="form-control-sm col-sm-1" for="xx">Payment Type</label>
+   		                    <label class="form-control-sm col-sm-1">Payment Type</label>
       	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-                                <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="data.paymentType" (change)="tabController($event);"
-                                   placeholder="" readonly>
-                                <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-
-      		                    	 <select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="data.paymentType" (change)="tabController($event);">
+      		                    	 <!-- <select class="form-control form-control-sm cust-sm col-sm-12 warn" appRequired [(ngModel)]="data.paymentType" (change)="tabController($event);">
                                     <option value="Claim Expense Payment to Ceding Company" [selected]="data.paymentType == 'Claim Expense Payment to Ceding Company'">Claim Expense Payment to Ceding Company</option>
                                     <option value="Claim Expense Payment to Other Parties" [selected]="data.paymentType == 'Claim Expense Payment to Other Parties'">Claim Expense Payment to Other Parties</option>
                                     <option value="Claim Payment to Ceding Company" [selected]="data.paymentType == 'Claim Payment to Ceding Company'">Claim Payment to Ceding Company</option>
@@ -51,114 +44,99 @@
                                     <option value="Payment of Service Fee by In-Trust to Service Accounting" [selected]="data.paymentType == 'Payment of Service Fee by In-Trust to Service Accounting'">Payment of Service Fee by In-Trust to Service Accounting</option>
                                     <option value="Treaty Balance Due Participants" [selected]="data.paymentType == 'Treaty Balance Due Participants'">Treaty Balance Due Participants</option>
                                     <option value="Investment (Placement)" [selected]="data.paymentType == 'Investment (Placement)'">Investment (Placement)</option>
-                                   <!--  <option value="QSOA Balances" [selected]="data.paymentType == 'QSOA Balances'">QSOA Balances</option> -->
                                     <option value="Others - Visible on any Payment Type" [selected]="data.paymentType == 'Others - Visible on any Payment Type'">Others</option>
+                                 </select> 
+
+                               <select (change)="selected()" [(ngModel)]="itemSelected" class="form-control form-control-sm cust-sm">
+                                  <option *ngFor="let options of optionsData" value="{{ options }}"> {{ options }}</option>
+                                </select>-->
+                                 <select class="form-control form-control-sm cust-sm col-sm-12 warn" appRequired [ngModel]="saveAcitPaytReq.tranTypeCd" (ngModelChange)="saveAcitPaytReq.tranTypeCd=$event;sample();">
+                                   <option *ngFor="let i of tranTypeList" value="{{ i.tranTypeCd }}">{{ i.tranTypeName }}</option>
                                  </select>
       		                    </div>
    		                    
    		                </div>
 
    		                <div class="input-group">
-   		                    <label class="form-control-sm col-sm-1 labels" for="xx">Amount</label>
+   		                    <label class="form-control-sm col-sm-1 labels">Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
-                              <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-                                   placeholder="PHP">
+                              <input type="text" class="form-control form-control-sm cust-sm col-sm-3 warn"  [(ngModel)]="saveAcitPaytReq.currCd" appRequired>
                               <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                             <!--  <select class="form-control form-control-sm cust-sm col-sm-4">
-                                      <option value="PHP">PHP</option>
-                                      <option value="EUR">EUR</option>
-                                      <option value="USD">USD</option>
-                              </select> -->
-                              <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency == undefined ? '' : data.currency" placeholder="PHP" style="margin-right: 4px !important;"> -->
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="text-align: right;margin-left: 8px ! important;"
-                                       placeholder="350,842.89">
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;"  [(ngModel)]="saveAcitPaytReq.reqAmt" appRequired>
                              </div>
-                             <label class="form-control-sm col-sm-1 labels" for="xx">Currency Rate</label>
-                             <input class="form-control form-control-sm cust-sm col-sm-3" type="" name="" placeholder="1.000000">
-                             <label class="form-control-sm col-sm-1 labels" for="xx">Local Amount</label>
+                             <label class="form-control-sm col-sm-1 labels">Currency Rate</label>
+                             <input class="form-control form-control-sm cust-sm col-sm-3 warn" type="text"  [(ngModel)]="saveAcitPaytReq.currRate" appRequired>
+                             <label class="form-control-sm col-sm-1 labels">Local Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
-                              <select class="form-control form-control-sm cust-sm col-sm-4">
+                              <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="saveAcitPaytReq.currCd" disabled>
                                       <option value="PHP">PHP</option>
                                       <option value="EUR">EUR</option>
                                       <option value="USD">USD</option>
                               </select>
-                              <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency == undefined ? '' : data.currency" placeholder="PHP" style="margin-right: 4px !important;"> -->
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right; margin-left: 2px;"
-                                       placeholder="350,842.89">
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="saveAcitPaytReq.localAmt" style="text-align: right; margin-left: 2px;" readonly>
                              </div>
    		                </div>
    		                <div class="input-group">
-   		                    <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Particulars</label>
-   		                    <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [value]="data.particulars == undefined ? '' : data.particulars" placeholder="Representing claim payment for San Miguel Corporation"></textarea>
+   		                    <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
+   		                    <textarea class="form-control form-control-sm warn" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="saveAcitPaytReq.particulars" appRequired></textarea>
    		                </div>
    		                <div class="input-group" style="    margin-bottom: -19px !important;">
-   		                   <!-- 	<label class="form-control-sm col-sm-1 labels" for="xx">PR ID</label> -->
    	                    	<div class="input-group col-sm-4" style="padding: 0px;">
-   		                    <!-- 	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" style="text-align: right"
-   		                    	       placeholder="00238942371"> -->
    		                    </div>
-   		                 <!--    <label class="form-control-sm col-sm-1 labels" for="xx">Ref No</label> -->
    	                    	<div class="input-group col-sm-4" style="padding: 0px;">
-   		            <!--         	<input type="text" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       placeholder="">
-   		                    	<div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
    		                    </div>
    	                    	<div class="input-group col-sm-4 labels" style="padding: 0px;">
-   	                    		<label class="form-control-sm col-sm-11 text-right" for="xx">For Board Approval</label>
+   	                    		<label class="form-control-sm col-sm-11 text-right">For Board Approval</label>
    		                        <input type="checkbox" class="col-sm-1" style="margin-top: 6px;" checked>
    		                    </div>
    		                </div>
    		                <div class="input-group" style="margin-bottom: -5px !important;">
-   		                   	<label class="form-control-sm col-sm-1 labels" for="xx">Prepared By</label>
+   		                   	<label class="form-control-sm col-sm-1 labels">Prepared By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       placeholder="Ma. Cecilia Dela Paz - Castro">
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" [(ngModel)]="saveAcitPaytReq.preparedBy" appRequired>
    		                    	<div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
    		                    </div>
-   		                    <label class="form-control-sm col-sm-1 labels" for="xx">Requested By</label>
+   		                    <label class="form-control-sm col-sm-1 labels">Requested By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.reqBy == undefined ? '' : data.reqBy"
-   		                    	       placeholder="Juan Dela Cruz">
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" [(ngModel)]="saveAcitPaytReq.requestedBy" appRequired>
    		                    	<div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
    		                    </div>
-   	                    	<label class="form-control-sm col-sm-1 labels" for="xx">Approved By</label>
+   	                    	<label class="form-control-sm col-sm-1 labels">Approved By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       placeholder="Jose Reyes">
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.approvedBy" readonly>
    		                    	<div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
    		                    </div>
    		                </div>
    		                <div class="input-group" style="margin-bottom: -5px !important;">
-   		                   	<label class="form-control-sm col-sm-1 labels" for="xx"></label>
+   		                   	<label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       placeholder="Accountant II">
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" readonly>
    		                    </div>
-   		                    <label class="form-control-sm col-sm-1 labels" for="xx"></label>
+   		                    <label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       placeholder="Section Manager">
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" readonly>
    		                    </div>
-   	                    	<label class="form-control-sm col-sm-1 labels" for="xx"></label>
+   	                    	<label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       placeholder="Comptroller">
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" readonly>
    		                    </div>
    		                </div>
    		                <div class="input-group" style="margin-bottom: -5px !important;">
-   		                   	<label class="form-control-sm col-sm-1 labels" for="xx">Date Prepared</label>
+                          <label class="form-control-sm col-sm-1 no-margin">Date Prepared</label>
+                          <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
+                            <datepicker type="datetime" [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="saveAcitPaytReq.preparedDate"></datepicker>
+                          </div>
+   		                    <label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       value="2015-10-16T08:45">
    		                    </div>
-   		                    <label class="form-control-sm col-sm-1 labels" for="xx"></label>
+   	                    	<!-- <label class="form-control-sm col-sm-1 labels">Date Approved</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    </div>
-   	                    	<label class="form-control-sm col-sm-1 labels" for="xx">Date Approved</label>
-   	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       value="2015-11-03T13:30">
-   		                    </div>
+   		                    	<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-12" readonly>
+   		                    </div> -->
+                          <label class="form-control-sm col-sm-1 no-margin">Date Approved</label>
+                          <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
+                            <datepicker type="datetime" [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="saveAcitPaytReq.approvedDate"></datepicker>
+                          </div>
    		                </div>
    		            </div>
 	            </div>
@@ -167,7 +145,7 @@
 	            		<div class="col-md-13 text-center">
 	            			<div class="cust-btn-container">
 	            				<button type="button" class="cust-btn"><a>New Request</a></button>
-	            				<button type="button" class="cust-btn"><a>Save</a></button>
+	            				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 	            				<button type="button" class="cust-btn"><a>Cancel Request</a></button>
 	            				<button type="button" class="cust-btn"><a>Print</a></button>
 	            			</div>
@@ -177,27 +155,27 @@
 	        </fieldset>
 	    </div>
 	</div>
-	<div class="row">
-		<div class="col-sm-12" style="margin-top: 15px !important;">
-		    <fieldset class="scheduler-border">
-		        <div class="container-fluid" style="padding-left: 0px">
-		        	<div class="custom-row-inline-inset">
-		        	    <div class="form-row" style="margin-bottom: -10px;">
-		        	        <div class="input-group">
-		        	            <label class="form-control-sm col-sm-1">Created By</label>
-		        	            <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-		        	            <label class="form-control-sm col-sm-1">Date Created</label>
-		        	            <input type="datetime-local" class="form-control form-control-sm col-sm" [value]="dateCreated" disabled>
-		        	            <label class="form-control-sm col-sm-1">Last Updated By</label>
-		        	            <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-		        	            <label class="form-control-sm col-sm-1">Last Update</label>
-		        	            <input type="datetime-local" class="form-control form-control-sm col-sm" [value]="lastUpdate" disabled>
-		        	        </div>
-		        	    </div>
-		        	</div>
-		        </div>
-		    </fieldset>
-		</div>
-	</div>
+  <div class="col-sm-12" style="padding-left: 0px !important;padding-right: 0px !important;">
+    <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+      <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+        <label class="form-control-sm col-sm-1">Created By</label>
+        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="saveAcitPaytReq.createUser" readonly>
+        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+        <div class="col-sm dp-cont">
+          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="saveAcitPaytReq.createDate"></datepicker>
+        </div>
+        <label class="form-control-sm col-sm-1">Last Update By</label>
+        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="saveAcitPaytReq.updateUser" readonly>
+        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+        <div class="col-sm dp-cont">
+          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="saveAcitPaytReq.updateDate"></datepicker>
+        </div>
+      </div>
+    </fieldset>
+  </div>
 </div>
+
+<app-confirm-save (onYes)="onSaveAcitPaytReq()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 

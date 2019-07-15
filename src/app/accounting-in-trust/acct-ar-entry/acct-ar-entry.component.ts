@@ -1,12 +1,13 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AccountingService, NotesService } from '@app/_services';
 
 @Component({
   selector: 'app-acct-ar-entry',
   templateUrl: './acct-ar-entry.component.html',
   styleUrls: ['./acct-ar-entry.component.css']
 })
-export class AcctArEntryComponent implements OnInit {
+export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   passData: any = {
         tableData:[
@@ -64,9 +65,52 @@ export class AcctArEntryComponent implements OnInit {
   sub: any;
   isAdd: boolean = false;
 
-  constructor(private route: ActivatedRoute) { }
+  arInfo: any = {
+    tranId: '',
+    arNo: '',
+    arDate: '',
+    arStatus: '',
+    arStatDesc: '',
+    dcbYear: '',
+    dcbUserCd: '',
+    dcbNo: '',
+    dcbBank: '',
+    dcbBankAcct: '',
+    refNo: '',
+    tranTypeCd: '',
+    tranTypeName: '',
+    prNo: '',
+    prDate: '',
+    prPreparedBy: '',
+    payor: '',
+    mailAddress: '',
+    bussTypeCd: '',
+    tin: '',
+    currCd: '',
+    arAmt: '',
+    currRate: '',
+    particulars: '',
+    createUser: '',
+    createDate: '',
+    updateUser: '',
+    updateDate: '',
+  }
+
+  arDate: any = {
+    date: '',
+    time: ''
+  }
+
+  prDate: any = {
+    date: '',
+    time: ''
+  }
+
+  constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
+    var tranId;
+    var arNo;
     this.onChange.emit({ type: this.record.paymentType });
     this.sub = this.route.params.subscribe(
        data=>{
@@ -75,13 +119,71 @@ export class AcctArEntryComponent implements OnInit {
            this.isAdd = true;
          }else{
            this.isAdd = false;
+           let params = JSON.parse(data['slctd']);
+           tranId = params.tranId;
+           arNo = params.arNo;
+           console.log(tranId);
+           console.log(arNo);
          }
        }
     );
+    console.log(this.isAdd);
+    if(!this.isAdd){
+      this.retrieveArEntry(tranId, arNo);
+    }
+  }
+
+  ngOnDestroy(){
+    this.sub.unsubscribe();
   }
 
   tabController(event) {
   	this.onChange.emit({ type: this.record.paymentType });
+  }
+
+  retrieveArEntry(tranId, arNo){
+    this.as.getArEntry(tranId, arNo).subscribe(
+      (data:any)=>{
+        console.log(data);
+        if(data.ar !== null){
+          this.arInfo.tranId         = data.ar.tranId;
+          this.arInfo.arNo           = data.ar.arNo;
+          this.arInfo.arDate         = this.ns.toDateTimeString(data.ar.arDate);
+          this.arDate.date           = this.arInfo.arDate.split('T')[0];
+          this.arDate.time           = this.arInfo.arDate.split('T')[1];
+          this.arInfo.arStatus       = data.ar.arStatus;
+          this.arInfo.arStatDesc     = data.ar.arStatDesc;
+          this.arInfo.dcbYear        = data.ar.dcbYear;
+          this.arInfo.dcbUserCd      = data.ar.dcbUserCd;
+          this.arInfo.dcbNo          = data.ar.dcbNo;
+          this.arInfo.dcbBank        = data.ar.dcbBank;
+          this.arInfo.dcbBankAcct    = data.ar.dcbBankAcct;
+          this.arInfo.refNo          = data.ar.refNo;
+          this.arInfo.tranTypeCd     = data.ar.tranTypeCd;
+          this.arInfo.tranTypeName   = data.ar.tranTypeName;
+          this.arInfo.prNo           = data.ar.prNo;
+          this.arInfo.prDate         = this.ns.toDateTimeString(data.ar.prDate);
+          this.prDate.date           = this.arInfo.prDate.split('T')[0];
+          this.prDate.time           = this.arInfo.prDate.split('T')[1];
+          this.arInfo.prPreparedBy   = data.ar.prPreparedBy;
+          this.arInfo.payor          = data.ar.payor;
+          this.arInfo.mailAddress    = data.ar.mailAddress;
+          this.arInfo.bussTypeCd     = data.ar.bussTypeCd;
+          this.arInfo.tin            = data.ar.tin;
+          this.arInfo.currCd         = data.ar.currCd;
+          this.arInfo.arAmt          = data.ar.arAmt;
+          this.arInfo.currRate       = data.ar.currRate;
+          this.arInfo.particulars    = data.ar.particulars;
+          this.arInfo.createUser     = data.ar.createUser;
+          this.arInfo.createDate     = this.ns.toDateTimeString(data.ar.createDate);
+          this.arInfo.updateUser     = data.ar.updateUser;
+          this.arInfo.updateDate     = this.ns.toDateTimeString(data.ar.updateDate);
+        }
+      },
+      (error)=>{
+
+      }
+    );
   }
 
 }
