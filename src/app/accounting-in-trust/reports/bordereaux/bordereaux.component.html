@@ -11,7 +11,7 @@
 								<div class="input-group pl-4 ">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="reportDetail" value="outstanding" [(ngModel)]="extnType">
+											<input type="radio" name="reportDetail" value="O" [(ngModel)]="extnType" (change)="setExtnSubType()">
 										</div>
 										<label class="form-control-sm col-sm text-left">Outstanding</label>
 									</div>
@@ -19,7 +19,7 @@
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="Outstanding" value="osLossDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'outstanding'">
+											<input type="radio" name="Outstanding" value="osLossDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'O'">
 										</div>
 										<label class="form-control-sm col-sm text-left">Loss Date</label>
 									</div>
@@ -27,7 +27,7 @@
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="Outstanding" value="osClmFileDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'outstanding'">
+											<input type="radio" name="Outstanding" value="osClmFileDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'O'">
 										</div>
 										<label class="form-control-sm col-sm text-left">Claim File Date</label>
 									</div>
@@ -35,7 +35,7 @@
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="Outstanding" value="osBookingMonth" [(ngModel)]="extnSubType" [disabled]="extnType != 'outstanding'">
+											<input type="radio" name="Outstanding" value="osBookingMonth" [(ngModel)]="extnSubType" [disabled]="extnType != 'O'">
 										</div>
 										<label class="form-control-sm col-sm text-left">Booking Month</label>
 									</div>
@@ -43,7 +43,7 @@
 								<div class="input-group pl-4 mt-2">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="reportDetail" value="lossesPaid" [(ngModel)]="extnType">
+											<input type="radio" name="reportDetail" value="P" [(ngModel)]="extnType" (change)="setExtnSubType()">
 										</div>
 										<label class="form-control-sm col-sm text-left">Losses Paid</label>
 									</div>
@@ -51,7 +51,7 @@
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="lossPaid" value="lpTranDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'lossesPaid'">
+											<input type="radio" name="lossPaid" value="lpTranDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'P'">
 										</div>
 										<label class="form-control-sm col-sm text-left">Tran Date</label>
 									</div>
@@ -59,7 +59,7 @@
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="lossPaid" value="lpPostingDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'lossesPaid'">
+											<input type="radio" name="lossPaid" value="lpPostingDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'P'">
 										</div>
 										<label class="form-control-sm col-sm text-left">Posting Date</label>
 									</div>
@@ -134,19 +134,19 @@
 								</div>
 								<div class="input-group mt-4">
 									<label class="form-control-sm col-sm-2">Line</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="lineCd">
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="lineCd" (ngModelChange)="lineCd = $event.toUpperCase()" (change)="checkCode($event, 'line')" mask="SSS">
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
 									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="lineDesc" readonly>
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Type of Cession</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cessionId">
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cessionId" (change)="checkCode($event, 'cession')" mask="9">
+									<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCessionLOV()"></i></a></div>
 									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="cessionDesc" readonly>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-12 text-center cust-btn-container" style="margin-bottom: 7px !important;">
+								<div class="col-sm-12 text-center cust-btn-container" style="margin-bottom: 7px !important; z-index: 3 !important;">
 									<button class="cust-btn">Extract</button>
 									<button class="cust-btn">Print</button>
 								</div>
@@ -166,3 +166,4 @@
 </div>
 
 <app-mtn-line (selectedData)="setLine($event)" #lineLov></app-mtn-line>
+<app-mtn-type-of-cession (selectedData)="setCession($event)" #cessionLov></app-mtn-type-of-cession>
