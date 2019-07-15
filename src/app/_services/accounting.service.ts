@@ -1299,7 +1299,7 @@ export class AccountingService {
 		return this.batchOR2;
 	}
 
-	getPaytReq(searchParams: any[]){
+	getPaytReqList(searchParams: any[]){
 		var params;
 			if(searchParams.length < 1){
             	params = new HttpParams()
@@ -1321,6 +1321,13 @@ export class AccountingService {
 	            }
         	}
         	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPaytReq',{params});	
+	}
+
+	getPaytReq(reqId?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId));
+
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPaytReq',{params});	
 	}
 

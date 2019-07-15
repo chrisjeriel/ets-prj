@@ -49,6 +49,8 @@ export class RequestForPaymentComponent implements OnInit {
     updateDate  : ''
   };
 
+  rowData : any;
+
   searchParams: any[] = [];
 
   constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService) { }
@@ -59,7 +61,7 @@ export class RequestForPaymentComponent implements OnInit {
   }
 
   getPaytReq(){
-    this.acctService.getPaytReq(this.searchParams)
+    this.acctService.getPaytReqList(this.searchParams)
     .subscribe(data => {
       console.log(data);
       var rec = data['acitPaytReq'].map(i => { i.createDate = this.ns.toDateTimeString(i.createDate); i.updateDate = this.ns.toDateTimeString(i.updateDate); return i; } );
@@ -101,34 +103,17 @@ export class RequestForPaymentComponent implements OnInit {
   }
 
   onClickAdd(event){
-    
-   this.router.navigate(['generate-payt-req',
-         {reqNo: "",
-          payee: "",
-          paymentType: "",
-          status: "",
-          amount: "",
-          currency: "",
-          particulars: "",
-          reqDate: "",
-          reqBy: "",
-          }], {skipLocationChange: true});
+    setTimeout(() => {
+      this.router.navigate(['/generate-payt-req'], { skipLocationChange: true });
+      this.location.go('/generate-payt-req') // temporary, to display the correct url for pol-to-hold-cover
+    },100);
   }
 
-  record:any;
   onClickEdit(event){
-
-    this.router.navigate(['generate-payt-req',
-         {reqNo: "",
-          payee: "",
-          paymentType: "",
-          status: "",
-          amount: "",
-          currency: "",
-          particulars: "",
-          reqDate: "",
-          reqBy: "",
-          }], {skipLocationChange: true});
+    setTimeout(() => {
+      this.router.navigate(['/generate-payt-req', { tableInfo : JSON.stringify(this.rowData) , from: 'req-payt-list' }], { skipLocationChange: true });
+      this.location.go('/generate-payt-req') // temporary, to display the correct url for pol-to-hold-cover
+    },100);
   }
 
   onRowClick(event){
@@ -138,6 +123,7 @@ export class RequestForPaymentComponent implements OnInit {
       this.reqPaytData.createDate = event.createDate;
       this.reqPaytData.updateUser = event.updateUser;
       this.reqPaytData.updateDate = event.updateDate;
+      this.rowData = event;
     }
   }
 
@@ -145,9 +131,9 @@ export class RequestForPaymentComponent implements OnInit {
     console.log(data);
     if(data !== null){
       setTimeout(() => {
-              this.router.navigate(['/generate-payt-req', { tableInfo : JSON.stringify(data) , from: 'req-payt-list' }], { skipLocationChange: true });
-              this.location.go('/generate-payt-req') // temporary, to display the correct url for pol-to-hold-cover
-          },100);
-    }
+        this.router.navigate(['/generate-payt-req', { tableInfo : JSON.stringify(data) , from: 'req-payt-list' }], { skipLocationChange: true });
+        this.location.go('/generate-payt-req') // temporary, to display the correct url for pol-to-hold-cover
+      },100);
+    }  
   }
 }
