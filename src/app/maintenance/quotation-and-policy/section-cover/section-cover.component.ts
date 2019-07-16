@@ -5,7 +5,6 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-import * as deepEqual from "deep-equal";
 import { FormControl } from '@angular/forms';
 import { SystemComponent } from '@app/maintenance/system/system.component';
 
