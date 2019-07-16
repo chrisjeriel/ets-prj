@@ -107,7 +107,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   ngOnInit() {
     var tranId;
     var arNo;
-    this.onChange.emit({ type: this.record.paymentType });
+    this.onChange.emit({ type: this.arInfo.tranTypeName });
     this.sub = this.route.params.subscribe(
        data=>{
          console.log(data['action']);
@@ -135,7 +135,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   tabController(event) {
-  	this.onChange.emit({ type: this.record.paymentType });
+  	this.onChange.emit({ type: this.arInfo.tranTypeName });
   }
 
   retrieveArEntry(tranId, arNo){

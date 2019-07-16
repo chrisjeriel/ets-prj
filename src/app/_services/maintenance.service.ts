@@ -1140,4 +1140,18 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitTranType", {params});
     }
 
+    getMtnBank(officialName?, activeTag?){
+    	const params = new HttpParams()
+    				.set('officialName', (officialName === null || officialName === undefined ? '' : officialName))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBank", {params});
+    }
+
+    getMtnBankAcct(bankCd?, accountNo?){
+    	const params = new HttpParams()
+    				.set('bankCd', (bankCd === null || bankCd === undefined ? '' : bankCd))
+    	     		.set('accountNo', (accountNo === null || accountNo === undefined ? '' : accountNo))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBankAcct", {params});
+    }
+
 }
