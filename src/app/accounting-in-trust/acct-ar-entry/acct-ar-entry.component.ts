@@ -1,6 +1,7 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AccountingService, NotesService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-acct-ar-entry',
@@ -8,45 +9,38 @@ import { AccountingService, NotesService } from '@app/_services';
   styleUrls: ['./acct-ar-entry.component.css']
 })
 export class AcctArEntryComponent implements OnInit, OnDestroy {
+  @ViewChild('paytDtl') paytDtlTbl: CustEditableNonDatatableComponent;
 
   passData: any = {
-        tableData:[
-          {
-            payMode: 'Check',
-            curr: 'PHP',
-            currRate: 1,
-            amount: 1642857.14,
-            bank: 'Bank of the Philippine Islands',
-            bankAccNo: '345-676345-9',
-            checkNo: 22786739,
-            checkDate: new Date('2018-09-25'),
-            checkClass: 'Local Clearing'
-          }
-        ],
+        tableData: [],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class'],
-        magnifyingGlass: ['0','1','4','7'],
         dataTypes: ['select','select','percent','currency','select','text','number','date','select'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
         widths: [130,70,100,150,210,1,"auto",100,180],
+        keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass'],
         pageID: 1,
         opts:[
           {
-            selector: 'payMode',
-            vals: ['Bank Transfer','Cash','Check','Credit Memo']
+            selector: 'paytMode',
+            vals: ['BT', 'CA', 'CK', 'CR'],
+            prev: ['Bank Transfer', 'Cash', 'Check', 'Credit Card']
           },
           {
-            selector: 'curr',
-            vals: ['EUR','PHP','USD']
+            selector: 'currCd',
+            vals: ['EUR','PHP','USD'],
+            prev: ['EUR', 'PHP', 'USD']
           },
           {
             selector: 'bank',
-            vals: ['Banco De Oro','Bank of the Philippine Islands','Philippine National Bank']
+            vals: ['1'],
+            prev: ['Bank of the Philippine Islands']
           },
           {
             selector: 'checkClass',
-            vals: ['Local Clearing','Manager\'s Check','On-Us']
+            vals: ['LC', 'RC', 'MC', 'OU'],
+            prev: ['Local Clearing', 'Regional Clearing', 'Manager\'s Check','On-Us']
           },
         ]
     };
@@ -106,7 +100,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     time: ''
   }
 
-  constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService) { }
+  paymentTypes: any[] = [];
+
+  constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
     var tranId;
@@ -131,6 +127,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     if(!this.isAdd){
       this.retrieveArEntry(tranId, arNo);
     }
+    this.retrievePaymentType();
   }
 
   ngOnDestroy(){
@@ -178,10 +175,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.createDate     = this.ns.toDateTimeString(data.ar.createDate);
           this.arInfo.updateUser     = data.ar.updateUser;
           this.arInfo.updateDate     = this.ns.toDateTimeString(data.ar.updateDate);
+
+          this.passData.tableData    = data.ar.paytDtl;
+          this.paytDtlTbl.refreshTable();
         }
       },
       (error)=>{
 
+      }
+    );
+  }
+
+  retrievePaymentType(){
+    this.ms.getMtnAcitTranType('AR').subscribe(
+      (data:any)=>{
+        this.paymentTypes = data.tranTypeList;
       }
     );
   }
