@@ -236,7 +236,7 @@ const appRoutes: Routes = [
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
     { path: 'payt-req', component: RequestForPaymentComponent },
-    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent },
+    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
     { path: 'journal-voucher', component: JournalVoucherComponent },
     { path: 'generate-jv', component: GenerateJvComponent },

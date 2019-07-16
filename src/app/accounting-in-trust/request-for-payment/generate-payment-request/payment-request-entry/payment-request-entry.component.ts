@@ -8,6 +8,7 @@ import { AccountingService, NotesService, MaintenanceService } from '@app/_servi
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -18,11 +19,11 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) cs         : ConfirmSaveComponent;
-  @ViewChild(MtnCurrencyComponent) currLov    : MtnCurrencyComponent;
+  @ViewChild('currLov') currLov               : MtnCurrencyComponent;
   @ViewChild('prepUserLov') prepUserLov       : MtnUsersComponent;
   @ViewChild('reqUserLov') reqUserLov         : MtnUsersComponent;
   @ViewChild('appUserLov') appUserLov         : MtnUsersComponent;
-  @ViewChild('appvMdl') appvMdl               : ModalComponent;
+  @ViewChild('confirmMdl') confirmMdl         : ModalComponent;
 
   @Input() data: any = {};
   @Output() onChange: EventEmitter<any> = new EventEmitter();
@@ -68,6 +69,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   tranTypeList    : any[] = [];
   private sub     : any;
   initDisabled    : boolean;
+  fromBtn         : string = '';
 
   constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router) { }
 
@@ -125,6 +127,8 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.saveAcitPaytReq.preparedDate = this.ns.toDateTimeString(0);
       }
     });
+
+    (this.saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED')?this.cancelledStats():'';
   }
 
   onSaveAcitPaytReq(){
@@ -155,11 +159,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       updateUser      : this.ns.getCurrentUser()
     };
 
-    // this.acitPaytReq.reqYear = (this.saveAcitPaytReq.reqYear == '' || this.saveAcitPaytReq.reqYear == null)?this.reqDateDate.split('-')[0]:this.saveAcitPaytReq.reqYear;
-    // this.acitPaytReq.reqMm   = (this.saveAcitPaytReq.reqMm == '' || this.saveAcitPaytReq.reqMm == null)?Number(this.reqDateDate.split('-')[1]):Number(this.saveAcitPaytReq.reqMm);
-
     console.log(this.saveAcitPaytReq);
-
     this.acctService.saveAcitPaytReq(JSON.stringify(this.acitPaytReq))
     .subscribe(data => {
       console.log(data);
@@ -168,6 +168,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.success.open();
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
+      this.initDisabled = false;
     });
   }
 
@@ -201,6 +202,12 @@ export class PaymentRequestEntryComponent implements OnInit {
       console.log(data);
       this.tranTypeList = (data['tranTypeList']).sort((a,b) => a.tranTypeCd-b.tranTypeCd);
     });
+  }
+
+  cancelledStats(){
+    $('.warn').prop('readonly',true);
+    $('.magni-icon').remove();
+    this.initDisabled = true;
   }
 
   prepareData(){
@@ -249,18 +256,41 @@ export class PaymentRequestEntryComponent implements OnInit {
   showLov(fromUser){
     console.log(fromUser);
     if(fromUser.toLowerCase() == 'curr'){
-      $('#currCdLov #modalBtn').trigger('click');
+      this.currLov.modal.openNoClose();
     }else if(fromUser.toLowerCase() == 'prep-user'){
-      $('#prepIdLov #modalBtn').trigger('click');
+      this.prepUserLov.modal.openNoClose();
     }else if(fromUser.toLowerCase() == 'req-user'){
-      $('#reqIdLov #modalBtn').trigger('click');
+      this.reqUserLov.modal.openNoClose();
     }else if(fromUser.toLowerCase() == 'app-user'){
-      $('#appIdLov #modalBtn').trigger('click');
-      // setTimeout( ()=> {
-      //   this.appvMdl.openNoClose()
-      // });
+      this.appUserLov.modal.openNoClose();
+      this.saveAcitPaytReq.approvedBy = this.ns.getCurrentUser();
     }
-    
+  }
+
+  onCancelReq(){
+    this.fromBtn = 'cancel-req';
+  }
+
+  onYesCancelReq(){
+    $('.globalLoading').css('display','block');
+    this.confirmMdl.closeModal();
+    var updatePaytReqStats = {
+      reqId       : this.saveAcitPaytReq.reqId,
+      reqStatus   : 'X',
+      updateUser  : this.ns.getCurrentUser()
+    };
+
+    console.log(JSON.stringify(updatePaytReqStats));
+    this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
+    .subscribe(data => {
+      console.log(data);
+      $('.globalLoading').css('display','none');
+      this.saveAcitPaytReq.reqStatusDesc = 'Cancelled';
+      this.dialogIcon = '';
+      this.dialogMessage = '';
+      this.success.open();
+      this.cancelledStats();
+    });
   }
 
   checkCancel(){
@@ -273,12 +303,24 @@ export class PaymentRequestEntryComponent implements OnInit {
     }
   }
 
-  showApproveMdl(){
-    this.appvMdl.openNoClose();
+  showConfirmMdl(from){
+    this.confirmMdl.openNoClose();
+    this.fromBtn = from;
   }
 
-  tabController(event) {
-  	this.onChange.emit(this.data.paymentType);
+  onNoAppby(){
+    this.saveAcitPaytReq.approvedBy = '';
+    this.saveAcitPaytReq.approvedDate = '';
+    this.confirmMdl.closeModal();
   }
+
+  onTabChange($event: NgbTabChangeEvent) {
+
+      if($event.nextId === 'Exit'){
+        $event.preventDefault();
+      this.router.navigateByUrl('/maintenance-qu-pol');
+      }
+
+   }
 }
 
