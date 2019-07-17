@@ -1,6 +1,6 @@
 import { Component, OnInit , ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService } from '../../../_services';
+import { QuotationService,NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { HoldCoverMonitoringList } from '@app/_models/quotation-list';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -43,14 +43,14 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     status: any;
 
 
-    constructor(private quotationService: QuotationService, private router: Router, private titleService: Title, private modalService: NgbModal) {
+    constructor(private quotationService: QuotationService, private router: Router, private titleService: Title, private modalService: NgbModal,private ns: NotesService) {
         this.pageLength = 10;
     }
 
     passData: any = {
         tableData: [],
         tHeader: ['Hold Cover No.', 'Status', 'Ceding Company', 'Quotation No.', 'Risk', 'Insured', 'Period From', 'Period To', 'Comp. Ref. Hold Cover No.', 'Requested By', 'Request Date'],
-        dataTypes: [],
+        dataTypes: ['text','text','text','text','text','text','date','date','text','text','date'],
         resizable: [false, false, true, false, true, true, false, false, false, true, false],
         filters: [
             {
@@ -135,59 +135,82 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     searchParams: any[] = [];
 
     ngOnInit() {
-        this.titleService.setTitle("Quo | Hold Cover Monitoring");
-        this.tHeader.push("Hold Cover No.");
-        this.tHeader.push("Status");
-        this.tHeader.push("Ceding Company");
-        this.tHeader.push("Quotation No.");
-        this.tHeader.push("Risk");
-        this.tHeader.push("Insured");
-        this.tHeader.push("Period From");
-        this.tHeader.push("Period To");
-        this.tHeader.push("Comp. Ref. Hold Cover No.");
-        this.tHeader.push("Requested By");
-        this.tHeader.push("Request Date");
+        // this.titleService.setTitle("Quo | Hold Cover Monitoring");
+        // this.tHeader.push("Hold Cover No.");
+        // this.tHeader.push("Status");
+        // this.tHeader.push("Ceding Company");
+        // this.tHeader.push("Quotation No.");
+        // this.tHeader.push("Risk");
+        // this.tHeader.push("Insured");
+        // this.tHeader.push("Period From");
+        // this.tHeader.push("Period To");
+        // this.tHeader.push("Comp. Ref. Hold Cover No.");
+        // this.tHeader.push("Requested By");
+        // this.tHeader.push("Request Date");
 
-        this.passData.dataTypes.push("text");
-        this.passData.dataTypes.push("text");
-        this.passData.dataTypes.push("text");
-        this.passData.dataTypes.push("text");
-        this.passData.dataTypes.push("text");
-        this.passData.dataTypes.push("text");
-        this.passData.dataTypes.push("date");
-        this.passData.dataTypes.push("date");
-        this.passData.dataTypes.push("text");
-        this.passData.dataTypes.push("text");
-        this.passData.dataTypes.push("date");
+        // this.passData.dataTypes.push("text");
+        // this.passData.dataTypes.push("text");
+        // this.passData.dataTypes.push("text");
+        // this.passData.dataTypes.push("text");
+        // this.passData.dataTypes.push("text");
+        // this.passData.dataTypes.push("text");
+        // this.passData.dataTypes.push("date");
+        // this.passData.dataTypes.push("date");
+        // this.passData.dataTypes.push("text");
+        // this.passData.dataTypes.push("text");
+        // this.passData.dataTypes.push("date");
 
         //this.passData.tableData = this.quotationService.getQuotationHoldCoverInfo();
     
         //this.holdCoverMonitoringList = new HoldCoverMonitoringList(null,null,null,null,null,null,null,null,null,null,null);
        
-       this.retrieveQuoteHoldCoverListingMethod();
+       //this.retrieveQuoteHoldCoverListingMethod();
+       this.getHoldCoverList();
     }
 
-    retrieveQuoteHoldCoverListingMethod(){
-         this.quotationService.getQuotationHoldCoverList(this.searchParams)
-            .subscribe((val:any) =>
-                {
-                    this.records = val.quotationList;
-                    var list = val.quotationList;
-                    for(var i = 0; i < list.length;i++){
-                        this.passData.tableData.push( new HoldCoverMonitoringList(
-                             list[i].holdCover.holdCoverNo,
-                             list[i].holdCover.status,
-                             list[i].cedingName,
-                             list[i].quotationNo,
-                             (list[i].project == null) ? '' : list[i].project.riskName,
-                             list[i].insuredDesc,
-                             new Date(this.formatDate(list[i].holdCover.periodFrom)),
-                             new Date(this.formatDate(list[i].holdCover.periodTo)),
-                             list[i].holdCover.compRefHoldCovNo,
-                             list[i].holdCover.reqBy,
-                             new Date(this.formatDate(list[i].holdCover.reqDate))
-                            ))
-                    }
+    getHoldCoverList(){
+      this.quotationService.getQuotationHoldCoverList(this.searchParams)
+      .subscribe(data => {
+        var recQuo = data['quotationList'];        
+        var recHc  = data['quotationList'].map(i => i.holdCover);
+        this.passData.tableData = recHc.map(i => {i.periodFrom = this.ns.toDateTimeString(i.periodFrom); i.periodTo = this.ns.toDateTimeString(i.periodTo);
+                                                 i.reqDate = this.ns.toDateTimeString(i.reqDate); i.createDate = this.ns.toDateTimeString(i.createDate); 
+                                                 i.updateDate = this.ns.toDateTimeString(i.updateDate); return i;});
+    
+        this.passData.tableData.map((e,i) => {
+          e.quotationNo = recQuo[i].quotationNo;
+          e.cedingName = recQuo[i].cedingName;
+          e.riskName = recQuo[i].project.riskName;
+          e.insuredDesc = recQuo[i].insuredDesc; 
+        });
+
+        this.table.refreshTable();
+        console.log(this.passData.tableData);
+      });
+
+    }
+
+    // retrieveQuoteHoldCoverListingMethod(){
+    //      this.quotationService.getQuotationHoldCoverList(this.searchParams)
+    //         .subscribe((val:any) =>
+    //             {
+    //                 this.records = val.quotationList;
+    //                 var list = val.quotationList;
+    //                 for(var i = 0; i < list.length;i++){
+    //                     this.passData.tableData.push( new HoldCoverMonitoringList(
+    //                          list[i].holdCover.holdCoverNo,
+    //                          list[i].holdCover.status,
+    //                          list[i].cedingName,
+    //                          list[i].quotationNo,
+    //                          (list[i].project == null) ? '' : list[i].project.riskName,
+    //                          list[i].insuredDesc,
+    //                          new Date(this.formatDate(list[i].holdCover.periodFrom)),
+    //                          new Date(this.formatDate(list[i].holdCover.periodTo)),
+    //                          list[i].holdCover.compRefHoldCovNo,
+    //                          list[i].holdCover.reqBy,
+    //                          new Date(this.formatDate(list[i].holdCover.reqDate))
+    //                         ))
+    //                 }
 
                     /*for(var i = val['quotationList'].length -1 ; i >= 0 ; i--){
                     this.records = val['quotationList'];
@@ -209,17 +232,18 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                          ));
                          console.log(list.holdCover.periodFrom[1]-1)
                     }*/
-                    this.table.refreshTable();
-                }
-            );
-    }
+            //         this.table.refreshTable();
+            //     }
+            // );
+    //}
 
      //Method for DB query
     searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passData.tableData = [];
         console.log(this.searchParams);
-        this.retrieveQuoteHoldCoverListingMethod();
+        //this.retrieveQuoteHoldCoverListingMethod();
+        this.getHoldCoverList();
     }
 
     onRowClick(data) {
@@ -258,26 +282,30 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     }
 
     onRowDblClick(event) {
-        for (var i = 0; i < event.target.closest("tr").children.length; i++) {
-            this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
-        }
-        this.line = this.quotationService.rowData[0].split("-")[1];
-        this.quotationService.toGenInfo = [];
-        this.quotationService.toGenInfo.push("edit", this.line);
-/*        this.router.navigate(['/quotation']);*/
-        
-        for(let rec of this.records){
-          if(rec.holdCover.holdCoverNo === this.quotationService.rowData[0] ){
-             this.quoteId = rec.quoteId;
-             this.quotationNo = rec.quotationNo;
-             this.holdCoverId = rec.holdCover.holdCoverId;
-             this.holdCoverNo = rec.holdCover.holdCoverNo;
-             this.status = rec.holdCover.status;
-          } 
-        }
-
+      console.log(event);
+//         for (var i = 0; i < event.target.closest("tr").children.length; i++) {
+//             this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
+//         }
+//         this.line = this.quotationService.rowData[0].split("-")[1];
+//         this.quotationService.toGenInfo = [];
+//         this.quotationService.toGenInfo.push("edit", this.line);
+// /*        this.router.navigate(['/quotation']);*/
+      
+//         for(let rec of this.records){
+//           if(rec.holdCover.holdCoverNo === this.quotationService.rowData[0] ){
+//              this.quoteId = rec.quoteId;
+//              this.quotationNo = rec.quotationNo;
+//              this.holdCoverId = rec.holdCover.holdCoverId;
+//              this.holdCoverNo = rec.holdCover.holdCoverNo;
+//              this.status = rec.holdCover.status;
+//           } 
+//         }
+//         this.table.selected  = [this.table.indvSelect];
+//         console.log(this.table.indvSelect);
+//         console.log(this.table.selected);
         setTimeout(() => {
-            this.router.navigate(['/quotation-to-hold-cover', { line: this.line, quoteId: this.quoteId,  holdCovId : this.holdCoverId, quotationNo: this.quotationNo, holdCoverNo: this.holdCoverNo , status: this.status, from: 'hold-cover-monitoring', inquiry: true}], { skipLocationChange: true });
+            //this.router.navigate(['/quotation-to-hold-cover', { line: this.line, quoteId: this.quoteId,  holdCovId : this.holdCoverId, quotationNo: this.quotationNo, holdCoverNo: this.holdCoverNo , status: this.status, from: 'hold-cover-monitoring', inquiry: true}], { skipLocationChange: true });
+          this.router.navigate(['/quotation-to-hold-cover', { tableInfo : JSON.stringify(event) , from: 'quo-hold-cov-monitoring' }], { skipLocationChange: true });
         },100); 
     }
 

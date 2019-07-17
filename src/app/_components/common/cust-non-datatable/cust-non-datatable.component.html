@@ -71,14 +71,34 @@
                                 <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)"> -->
                                 
                                 <!-- DATABASE VERSION -->
-                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
                                  <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'expire'"  type="hidden" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
                                 <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'seq'"  type="text" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
-                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+
+                                <!-- <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();"> -->
+
+                                <div class="dp-cont col-sm" style="margin-left: 0 !important;" *ngSwitchCase="'date'">
+                                    <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.search" (valueChange)="filt.search=$event;"></datepicker>
+                                </div>
+
                                 <ng-container *ngSwitchCase="'datespan'">
-                                             <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="From Date">                
+
+                                    <!-- OLD -->
+                                             <!-- <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="From Date">                
                                         <span class="cust-sm">-</span>
-                                             <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="To Date">
+                                             <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="To Date"> -->
+                                    <!-- END OLD -->
+                                             
+                                    <!-- NEW -->
+                                             <div class="dp-cont col-sm" style="margin-left: 0 !important;">
+                                                 <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.keys?.search" (valueChange)="filt.keys.search=$event; filt.keys.search2=$event;"></datepicker>
+                                             </div>
+                                        <span class="cust-sm">-</span>
+                                             <div class="dp-cont col-sm" style="margin-left: 0 !important;">
+                                                 <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.keys?.search2" (valueChange)="filt.keys.search2=$event" [minDate]="filt.keys?.search"></datepicker>
+                                             </div>
+                                    <!-- END NEW -->
+
                                     <!-- <span>{{filt.keys?.from}}</span>
                                     <span>{{filt.keys?.to}}</span> -->
                                 </ng-container>

@@ -5,18 +5,18 @@
               <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
                 <div class="col-sm-1"></div>
                 <label class="form-control-sm col-sm-1" for="xx">Claim No</label>
-                <input type="text" value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+                <input type="text" [ngModel]="claimInfo.claimNo" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
                  readonly>
                 <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-                <input type="text" value="2nd Inn. Inc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+                <input type="text" [ngModel]="claimInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
                 <div class="col-sm-1"></div>
               </div>
               <div class="input-group" style="margin-bottom: -13px !important;">
                 <div class="col-sm-1"></div>
                 <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Policy No</label>
-                <input type="text" value="CAR-2018-00001-99-0001-000" class="form-control form-control-sm cust-sm col-sm-3  " placeholder="" readonly>
+                <input type="text" [ngModel]="claimInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-3  " placeholder="" readonly>
                 <label class="form-control-sm col-sm-1" for="xx">Risk</label>
-                <input type="text" value="Ayala Wakeboard" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+                <input type="text" [ngModel]="claimInfo.riskName" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
                 <div class="col-sm-1"></div>
               </div>
             </div>

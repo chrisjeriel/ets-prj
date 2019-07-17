@@ -203,34 +203,34 @@
 
 <app-modal class="d-none" id="approvalMdl" #approvalMdl>
     <div header>Approval</div>
-    <div body class="container-flex" style="min-width: 335px !important">
+    <div body class="container-flex" style="min-width: 700px !important">
     	<div class="row">
- 	    	<div class="col-sm-12">
+ 	    	<div class="col-sm-6">
  	    		<fieldset class="scheduler-border" style="padding-bottom: 21px !important;padding-top: 15px !important;">
- 	    			<div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important; margin-bottom: -14px !important;" >
- 	    				<label class="form-control-sm col-sm-4">Status</label>
+ 	    			<div class="input-group" style="padding-left: 30px !important;padding-right: 50px !important; margin-bottom: -14px !important;" >
+ 	    				<label class="form-control-sm col-sm-3">Status</label>
 						<input type="text" class="form-control form-control-sm" tabindex="-1" [(ngModel)]="holdCover.status" readonly>
  	    			</div>
- 	    			<div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important;margin-bottom: -14px !important;">
+ 	    			<!-- <div class="input-group" style="padding-left: 45px !important;padding-right: 50px !important;margin-bottom: -14px !important;">
  	    				<label class="form-control-sm col-sm-4">Destination</label>
 						<select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="destination" appRequired>
 							<option value="SCREEN">SCREEN</option>
 							<option value="PDF">PDF</option>
 							<option value="PRINTER">PRINTER</option>
 						</select>
- 	    			</div>
+ 	    			</div> -->
  	    			<div class="input-group" style="padding-right: 10px!important;padding-left: 10px !important;margin-top: 10px !important;">
 						<div class="cust-btn-container col-sm" style="padding-right: 0px !important">
 							<button type="button" class="cust-btn col-sm" (click)="(aprrovalBtnTxt.toUpperCase() == 'APPROVED')?updateHcStatus('APPROVED'):updateHcStatus('FOR APPROVAL');" [disabled]="holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED'">{{ aprrovalBtnTxt }}</button>
 						</div>		
-						<div class="cust-btn-container col-sm" style="padding-left: 0px !important">
-							<button type="button" class="cust-btn col-sm" [disabled]="!isApproved || holdCover.status.toUpperCase() == 'APPROVED' || holdCover.status.toUpperCase() == 'RELEASED' || holdCover.status.toUpperCase() == 'REJECTED'" (click)="updateHcStatus('REJECTED');">Rejected</button>
+						<div class="cust-btn-container col-sm" style="padding-left: 0px !important"> <!-- !isApproved || holdCover.status.toUpperCase() == 'APPROVED' ||  -->
+							<button type="button" class="cust-btn col-sm" [disabled]="holdCover.status.toUpperCase() == 'RELEASED' || holdCover.status.toUpperCase() == 'REJECTED'" (click)="updateHcStatus('REJECTED');">Rejected</button>
 						</div>
  	    			</div>
  	    		</fieldset>
  	    	</div>
- 	    	<!-- <div class="col-sm-6">
- 	    		<fieldset class="scheduler-border" style="padding-bottom: 15px !important;padding-top: 15px !important;">
+ 	    	<div class="col-sm-6">
+ 	    		<fieldset class="scheduler-border" style="padding-bottom: 33px !important;padding-top: 32px !important;">
  	    			<div class="input-group" style="margin-bottom: -14px !important;">
  	    				<label class="form-control-sm col-sm-3">Destination</label>
 						<select  class="form-control form-control-sm col-sm cust-sm" [(ngModel)]="destination" appRequired>
@@ -240,7 +240,7 @@
 						</select>
  	    			</div>
  	    		</fieldset>
- 	    	</div> -->
+ 	    	</div>
     	</div>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    

@@ -13,7 +13,7 @@
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableClmHistory" class="ngb-tab" title="Claim History">
       <ng-template ngbTabContent>
-        <app-clm-claim-history [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event"></app-clm-claim-history>
+        <app-clm-claim-history [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event.disableNextTabs; disablePaytReq = $event.disablePaytReq" [isInquiry]="isInquiry"></app-clm-claim-history>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs"  title="Claim Distribution">
@@ -21,7 +21,7 @@
         <app-claim-distribution></app-claim-distribution>
       </ng-template>
     </ngb-tab>
-    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs" title="Generate Payment Request">
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs || disablePaytReq" title="Generate Payment Request">
       <ng-template ngbTabContent>
         <app-clm-claim-payment-request [claimInfo]="claimInfo"></app-clm-claim-payment-request>
       </ng-template>
@@ -36,7 +36,7 @@
 
       </ng-template>
     </ngb-tab>
-    <ngb-tab title="View Policy Info">
+    <ngb-tab id="view-pol-info" title="View Policy Info">
       <ng-template ngbTabContent>
 
       </ng-template>

@@ -1306,11 +1306,12 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset" style="margin-left: 1px;">Line Class</label>
-										<div class="col-sm-4" style="padding: 0 0 0 1px;">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc" readonly style="margin-right: 1px !important;">
+										<!-- <div class="col-sm-4" style="padding: 0 0 0 1px;">
 											<select class="form-control form-control-sm cust-sm req" [(ngModel)]="policyInfo.lineClassCd" appRequired>
 												<option *ngFor="let lc of lineClasses" [value]="lc.lineClassCd">{{lc.lineClassCdDesc}}</option>
 											</select>
-										</div>
+										</div> -->
 										<!-- <input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc" style="margin-right: 3px !important;" appRequired>
 											<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'" style="margin-right: 3px !important; margin-left: -18px !important;"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div> -->
 
@@ -2606,8 +2607,10 @@
 
 <app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
 <app-sucess-dialog id="polGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button #main *ngIf="!alteration" (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
-<app-cancel-button #main *ngIf="alteration" (onYes)="prepareParam('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
+<!-- <app-cancel-button #main *ngIf="!alteration" (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-cancel-button #main *ngIf="alteration" (onYes)="prepareParam('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button> -->
+
+<app-cancel-button #main (onYes)="prepareParam('cancel')" [url]="alteration ? '/alt-policy-listing' : '/policy-listing'" ></app-cancel-button>
 
 <app-lov #dedLov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="lovCheckBox"></app-lov>
 <app-sucess-dialog #dedSuccess [message]="dialogMsg" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
