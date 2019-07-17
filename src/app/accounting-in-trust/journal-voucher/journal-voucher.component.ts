@@ -89,10 +89,8 @@ export class JournalVoucherComponent implements OnInit {
   retrieveJVlist(){
     this.accountingService.getJVListing(null).subscribe((data:any) => {
       for(var i=0; i< data.transactions.length;i++){
-        for(var j=0; j < data.transactions[i].jvListings.length;j++){
-          this.passDataJVListing.tableData.push(data.transactions[i].jvListings[j]);
-          this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].jvNo = String(data.transactions[i].jvListings[j].jvYear) + '-' +  String(data.transactions[i].jvListings[j].jvNo).padStart(8,'0');
-        }
+        this.passDataJVListing.tableData.push(data.transactions[i].jvListings);
+        this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo).padStart(8,'0');
       }
       this.table.refreshTable();
     });

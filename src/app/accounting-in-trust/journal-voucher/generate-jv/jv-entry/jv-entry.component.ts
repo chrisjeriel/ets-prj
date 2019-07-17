@@ -65,8 +65,8 @@ export class JvEntryComponent implements OnInit {
   retrieveJVEntry(){
     this.accService.getJVEntry(this.tranId).subscribe((data:any) => {
       console.log(data)
-      if(data.transactions.length != 0){
-        this.entryData = data.transactions[0].jvListings[0];
+      if(data.transactions != null){
+        this.entryData = data.transactions.jvListings;
         /*this.entryData.jvDate = this.ns.toDateTimeString(this.entryData.jvDate);
         this.entryData.refnoDate = this.ns.toDateTimeString(this.entryData.refnoDate);
         this.entryData.preparedDate = this.ns.toDateTimeString(this.entryData.preparedDate);
@@ -127,7 +127,6 @@ export class JvEntryComponent implements OnInit {
   }
  
   check(ev){
-    console.log(ev)
     this.emitData.emit({ jvNo: ev.jvNo, 
                          jvYear: ev.jvYear, 
                          jvDate: ev.jvDate, 
@@ -142,7 +141,6 @@ export class JvEntryComponent implements OnInit {
   }
 
   setTranType(data){
-    console.log(data);
     this.entryData.tranTypeName = data.tranTypeName;
     this.tabController(this.entryData.tranTypeName);
 
