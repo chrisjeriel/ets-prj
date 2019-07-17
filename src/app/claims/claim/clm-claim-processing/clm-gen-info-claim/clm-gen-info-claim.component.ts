@@ -187,7 +187,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   policyId: number = 0;
   policyNo: string = '';
 
-  hideUnpaidMsg: boolean = true;
+  showUnpaidMsg: boolean = false;
   disableAdjusterBtn: boolean = false;
   showCustLoader: boolean = false;
   mdlType: string = 'conf';
@@ -811,7 +811,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.lossCdLOV.checkCode('C', this.claimData.lossAbbr, ev);
       } else if(str === 'lp') {
         this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == 'P' };
-        this.lossCdLOV.checkCode('P', this.claimData.lossPdAbbr, ev);
+        this.lossCdLOV.checkCode('P', this.claimData.lossPeriod, ev, true);
       } else if(str === 'eventType') {
         this.clmEventTypeLOV.checkCode(this.claimData.eventTypeDesc, ev);
       } else if(str === 'event') {

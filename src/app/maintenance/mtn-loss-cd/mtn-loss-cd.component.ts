@@ -97,19 +97,37 @@ export class MtnLossCdComponent implements OnInit {
 		this.cancelBtn.next();
 	}
 
-	checkCode(lossCd, str, ev) {
+	checkCode(lossCd, str, ev, code?) {
 		var obj = {
 			lossCd: '',
 		  	lossAbbr: '',
 		  	lossDesc: ''
 		}
 
-		if(str === ''){
+		if(str === '') {
 			obj['lossCdType'] = lossCd;
 			obj['ev'] = ev;
 			obj['singleSearchLov'] = true;
 
 			this.selectedData.emit(obj);
+		} else if(code != undefined) {
+			this.maintenanceService.getMtnLossCode(str).subscribe(data => {
+				if(data['lossCd'].length == 1) {
+					obj = data['lossCd'][0];
+					obj['lossCdType'] = lossCd;
+					obj['ev'] = ev;
+					obj['singleSearchLov'] = true;
+
+					this.selectedData.emit(obj);
+				} else {
+					obj['lossCdType'] = lossCd;
+					obj['ev'] = ev;
+					obj['singleSearchLov'] = true;
+
+					this.selectedData.emit(obj);
+					this.modal.openNoClose();
+				}
+			});
 		} else {
 			this.maintenanceService.getMtnLossCodeLov(lossCd, str).subscribe(data => {
 				if(data['lossCdList'].length == 1) {
