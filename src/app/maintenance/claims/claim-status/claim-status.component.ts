@@ -24,7 +24,7 @@ export class ClaimStatusComponent implements OnInit {
       statusCode: null,
       description: null,
       remarks: null,
-      ocTag: 'N',
+      openTag: 'N',
       activeTag: 'Y',
       createDate: '',
       createUser: JSON.parse(window.localStorage.currentUser).username,
@@ -41,7 +41,7 @@ export class ClaimStatusComponent implements OnInit {
     infoFlag: true,
     uneditable:[false,false,false,false,false],
     widths:[200,400,55,55,450],
-    keys:['statusCode','description','ocTag','activeTag','remarks']
+    keys:['statusCode','description','openTag','activeTag','remarks']
   };
 
   cancelFlag:boolean;
