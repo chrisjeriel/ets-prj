@@ -80,8 +80,6 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     pageID: 'reasonData'
   }
 
-  batchOption: string = 'IP';
-  batchOptionDesc: string = 'In Progress';
   dialogIcon: string = '';
   dialogMessage: string = '';
   reasonCd: string = '';
@@ -125,6 +123,12 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     reasonCd: '',
     reasonDesc: ''
   }
+
+  batchOption: any = {
+    statusCode: 'IP',
+    description: 'In Progress',
+    openTag: ''
+  };
 
   processBtnDisabled: boolean = true;
   claimNoDataFound: boolean = false;
@@ -198,6 +202,14 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
       (data: any)=>{
         if(data.claimStatus.length !== 0){
           this.arrClaimStatus = data.claimStatus;
+          for(var i of this.arrClaimStatus){
+            if('IN PROGRESS' === i.description.toUpperCase()){
+              /*this.batchOption.statusCode = i.statusCode;
+              this.batchOption.description = i.description;
+              this.batchOption.openTag = i.openTag;*/
+              this.batchOption = i;
+            }
+          }
           this.batchOptionLoading = false;
         }
       },
@@ -282,7 +294,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     this.cs.getChangeClaimStatus(this.searchParams).subscribe(
        (data: any)=>{
          if(data.claimList.length !== 0){
-           if(this.batchOption !== 'IP'){
+           /*if(this.batchOption !== 'IP'){
              data.claimList = data.claimList.filter(a=>{
                                                            return a.clmStatCd !== 'TC' &&
                                                                   a.clmStatCd !== 'CD' &&
@@ -290,7 +302,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
                                                                   a.clmStatCd !== 'SP' &&
                                                                   a.clmStatCd !== 'DN'
                                                        });
-           }
+           }*/
            for(var i of data.claimList){
              for(var j of i.clmAdjusterList){
                if(i.adjName === undefined){
@@ -436,7 +448,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.reasonDesc = '';
             this.ns.lovLoader(ev, 0);
           } else {
-            this.ms.getMtnClaimReason(this.reasonCd,this.batchOption, 'Y').subscribe(data => {
+            this.ms.getMtnClaimReason(this.reasonCd,this.batchOption.statusCode, 'Y').subscribe(data => {
               if(data['clmReasonList'].length > 0) {
                 this.reasonCd = data['clmReasonList'][0].reasonCd;
                 this.reasonDesc = data['clmReasonList'][0].description;
@@ -550,7 +562,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   validateSearch(){
     if(!this.checkSearchFields()){
       this.queryModal.closeModal();
-      this.searchParams.batchOpt = this.batchOption;
+      this.searchParams.batchOpt = this.batchOption.statusCode;
       this.clearDetails();
       this.retrieveQueryList();
     }else{
@@ -561,9 +573,11 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   changeBatchOption(data){
-     this.batchOption = data; 
+     this.batchOption.statusCode = data.statusCode;
+     this.batchOption.description = data.description;
+     this.batchOption.openTag = data.openTag;
      this.clearDetails(); 
-     this.searchParams.batchOpt = this.batchOption;
+     this.searchParams.batchOpt = this.batchOption.statusCode;
      if(!this.checkSearchFields()){
        this.retrieveQueryList();
      }else{
@@ -677,6 +691,13 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     }
     this.reasonCd = '';
     this.reasonDesc = '';
+  }
+
+  compareFn(c1:any, c2: any): boolean {
+    console.log('compareFn');
+    console.log(c1);
+    console.log(c2);
+      return c1.statusCode === c2.statusCode;
   }
 }
 

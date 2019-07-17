@@ -37,10 +37,10 @@
                     <!-- <div class="form-row" *ngFor="let status of arrClaimStatus">
                       <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; batchOptionDesc = status.description; clearDetails(); queryData.tableData = []; queryTable.refreshTable(); queryTable.selected = [];" [value]="status.statusCode" name="batchOption"><label class="rd-lbl">{{status.description}}</label>
                     </div> -->
-                    <div class="form-row">
+                    <div class="form-row" *ngIf="!batchOptionLoading">
                       <div class="input-group" style="margin-bottom: 0px !important">
-                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="batchOption" (ngModelChange)="changeBatchOption($event);">
-                          <option *ngFor="let status of arrClaimStatus" [value]="status.statusCode">{{status.description}}</option>
+                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="batchOption" (ngModelChange)="changeBatchOption($event);" [compareWith]="compareFn">
+                          <option *ngFor="let status of arrClaimStatus" [ngValue]="status">{{status.description}}</option>
                         </select>
                       </div>
                     </div>
@@ -208,8 +208,8 @@
                       <div class="input-group">
                         <label class="form-control-sm col-sm-1" style="margin-left:-3px !important;">Reason</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                           required [readonly]="batchOption === 'IP'" [ngModel]="reasonCd" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
-                        <div class="text-search-ico" *ngIf="batchOption !== 'IP'">
+                           required [readonly]="batchOption.openTag === 'Y'" [ngModel]="reasonCd" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
+                        <div class="text-search-ico" *ngIf="batchOption.openTag !== 'Y'">
                           <a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm"
                            readonly style="margin-left: 2px !important" [ngModel]="reasonDesc">
