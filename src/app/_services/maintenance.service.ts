@@ -90,7 +90,7 @@ export class MaintenanceService{
 			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
 			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
 			.set('blockCd',blockCd ===undefined || blockCd===null ? '' : blockCd)
-			.set('activeTag',activeTag === undefined ? 'Y' : activeTag)
+			.set('activeTag',activeTag === undefined ? 'Y' : activeTag==null ? '' : activeTag)
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceBlock',{params});
   }
 

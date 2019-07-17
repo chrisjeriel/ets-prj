@@ -58,6 +58,7 @@ export class SpoilageReasonComponent implements OnInit {
   }
 
   getSpoilageReasons(){
+    this.passTable.disableGeneric = true;
   	this.ms.getMtnSpoilageReason('','').subscribe(a=>{
   		this.passTable.tableData = a['spoilageReason'];
   		this.passTable.tableData.forEach(a=>{
