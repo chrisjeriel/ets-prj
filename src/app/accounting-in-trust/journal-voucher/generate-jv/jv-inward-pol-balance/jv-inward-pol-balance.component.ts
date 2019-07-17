@@ -17,7 +17,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
 
   passData: any = {
-    tableData: this.accountingService.getAccJVInPolBal(),
+    tableData: [],
     tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','Charges','Net Due','Payments','Balance',"Overdue Interest"],
     resizable: [true, true, true, true,true, true, true, true,true,true,true,true,true,true,true],
     dataTypes: ['text','text','text','number','date','date','text','percent','currency','percent','percent','currency','currency','currency','percent'],
@@ -36,15 +36,11 @@ export class JvInwardPolBalanceComponent implements OnInit {
     pageLength: 10,
     widths: [180,180,120,50,1,1,1,85,120,85,85,120,120,120,120,85]
   };
-
-
-
-
+  
   constructor(private accountingService: AccountingService,private titleService: Title) { }
 
   ngOnInit() {
-
-  	 this.titleService.setTitle(" Acct | JV | Inward Policy Balances");
+  	 
   }
 
 }

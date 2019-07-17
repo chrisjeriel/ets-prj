@@ -17,3 +17,6 @@
     height: 22px;
 }
 
+.cust:hover[disabled] {
+    background: gray !important;
+}

@@ -7,29 +7,31 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV No</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 2px !important" style="text-align: right;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="text-align: right; margin-left:2px">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 2px !important" style="text-align: right;" [(ngModel)]="entryData.jvYear" readonly>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="text-align: right; margin-left:2px" [(ngModel)]="entryData.jvNo" readonly>
                             <label class="form-control-sm col-sm">Date</label>
                             <div class="col-sm-4 dp-cont">
-                            <datepicker [type]="'date'" [showIcon]="true"></datepicker>
+                                <datepicker [type]="'date'" [showIcon]="true"></datepicker>
                             </div>
                              <!-- <input type="date" class="form-control form-control-sm cust-sm col-sm-4" style="margin-right: 2px !important;text-align: right;" > -->
                         </div>
                     </div>
                     <div class="col-sm-4" style="padding: 0;">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: -5px !important;" >
+                            <div class="col-sm-2 dp-cont" style="margin-left: -4px !important">
+                            <datepicker [type]="'time'" [showIcon]="true" ></datepicker>
+                            </div>
                             <label class="form-control-sm col-sm-2">Status</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-5">
-                            <label class="form-control-sm col-sm-2">Auto</label>
-                            <input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="entryData.jvStatus">
+                            <label class="form-control-sm col-sm-2">Auto</label> 
+                            <input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px" [checked]="entryData.autoTag === 'Y'">
                         </div>
                     </div>
                     <!-- <label class="form-control-sm col-sm-1"></label>
                     <label class="form-control-sm col-sm-2"style="text-align: right;"></label> -->
                     
                     <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;">
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" [(ngModel)]="entryData.refnoTranId">
                     <div style="margin-left: -19px !important;margin-right: 13px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                     <!-- <label class="form-control-sm col-sm-1"></label>
                     <label class="form-control-sm col-sm-2"style="text-align: right;"></label> -->
@@ -38,8 +40,8 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-8">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" value="" (change)="tabController($event);" [(ngModel)]="record.jvType">
-                         <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;"  (change)="tabController($event);" [(ngModel)]="entryData.tranTypeName">
+                         <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a (click)="openJVType()"><i class="fa fa-search"></i></a></div> 
 
                       <!--   <select class="form-control form-control-sm cust-sm col-sm">
                             <option>Error Correction</option>
@@ -50,7 +52,7 @@
                                 <option>Reversal</option>
                             </select> -->
                        
-                        <select class="form-control form-control-sm cust-sm col-sm" (change)="tabController($event);" [(ngModel)]="record.jvType">
+                       <!--  <select class="form-control form-control-sm cust-sm col-sm" (change)="tabController($event);" [(ngModel)]="record.jvType">
                                 <option value="ADJUSTMENTS OF INWARD POLICY BALANCES">Adjustments of Inward Policy Balances</option>
                                 <option value="LOSS RESERVE DEPOSIT">Loss Reserve Deposit</option>
                                 <option value="GAIN FOREIGN EXCHANGE">Gain Foreign Exchange</option>
@@ -74,24 +76,9 @@
                                 <option value="Application of Payments to Policies with Zero Balance">Application of Payments to Policies with Zero Balance</option>
                                 <option value="OFFSETTING OF OUTSTANDING ACCOUNTS AGAINST TREATY BALANCE">Offsetting Of Outstanding Accounts Against Treaty Balance</option>
                                 <option value="Others">Others</option>
-                            </select>
+                            </select> -->
                         </div>
                     </div>
-                    <!-- <div class="col-sm-1"  style="margin-left: -10px !important;"></div> -->
-                   <!--   -->
-                    <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2">
-                    <div style="margin-left: -19px !important;margin-right: 3px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-                  <!--   <select class="form-control form-control-sm cust-sm col-sm-2">
-                        <option>2017-00023974</option>
-                        <option>2017-00023463</option>
-                        <option>2017-00023432</option>
-                    </select> -->
-                    <!-- <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm">
-                    <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-
-
-
                     <label class="form-control-sm col-sm-1" >Ref No Date</label>
                     <div class="col-sm dp-cont" style="margin-left: 6px !important;margin-right: 11px !important">
                     <datepicker [type]="'date'" [showIcon]="true"></datepicker>
@@ -101,7 +88,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
                     <div class="col-sm">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;"></textarea>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="entryData.particulars"></textarea>
                         </div>
                     </div>
                 </div>
@@ -109,29 +96,29 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd">
                             <!-- <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;">
                                 <option>PHP</option>
                                 <option>USD</option>
                                 <option>EUR</option>
                             </select> -->
                             <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;    margin-left: 3px;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;    margin-left: 3px;" [(ngModel)]="entryData.jvAmt" appCurrency>
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
                         </div>
                     </div>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; text-align: right;">
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; text-align: right;" [(ngModel)]="entryData.currRate" appCurrencyRate>
                     <label class="form-control-sm col-sm-1" style="height: auto;">Local Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;" [(ngModel)]="entryData.currCd">
                             <!-- <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;">
                                 <option>PHP</option>
                                 <option>USD</option>
                                 <option>EUR</option>
                             </select> -->
                           <!--   <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="text-align: right;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="text-align: right;" [(ngModel)]="entryData.localAmt" appCurrency>
                         </div>
                     </div>
                 </div>
@@ -139,7 +126,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Prepared By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedBy">
                             <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                         </div>
                     </div>
@@ -147,7 +134,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Approved By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                             <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                             <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="entryData.approvedBy">
                             <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                         </div>
                     </div>
@@ -180,7 +167,7 @@
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" required [showIcon]="true"></datepicker>
+                                <datepicker [type]="'date'" required [showIcon]="true" ></datepicker>
                             </div>
                         </div>
                     </div>
@@ -192,12 +179,12 @@
                         <div class="cust-btn-container" style="margin-top: 10px;">
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="newJV()"><a>New JV</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Save</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Cancel JV</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Approve</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Print</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Upload Acct. Ent</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Alloc. Trans.</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>DebitCredit Memo</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="cancelJVBut" [class.cust-btn-disabled]="cancelJVBut" ><a>Cancel JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approveBut" [class.cust-btn-disabled]="approveBut" ><a>Approve</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut" [class.cust-btn-disabled]="printBut" ><a>Print</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut" [class.cust-btn-disabled]="UploadBut" ><a>Upload Acct. Ent</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut" [class.cust-btn-disabled]="allocBut" ><a>Alloc. Trans.</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut" [class.cust-btn-disabled]="dcBut" ><a>DebitCredit Memo</a></button>
                         </div>
                     </div>
                 </div>
@@ -209,15 +196,17 @@
             <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
                 <div class="input-group" style="margin-bottom: -15px !important;">
                     <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" disabled>
+                    <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createUser">
                     <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" disabled>
+                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createDate">
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" disabled>
+                    <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateUser">
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" disabled>
+                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateDate">
                 </div>
             </div>
         </fieldset>
     </div>
 </div>
+
+<app-jv-type-lov id="jvTypeModal" (selectedData)="setTranType($event)"></app-jv-type-lov>

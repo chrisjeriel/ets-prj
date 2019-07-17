@@ -14,7 +14,7 @@ type: string="";
 status: string="";
 
    passDataJVListing: any = {
-        tableData: this.accountingService.getJVListing(),
+        tableData: this.accountingService.getJVListing(null),
         tHeader: ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Prepared By","JV Status","Amount"],
         dataTypes: ['text','date','text','text','text','text','text','currency',],
          filters: [
