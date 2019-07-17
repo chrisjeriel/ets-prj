@@ -18,7 +18,7 @@
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs"  title="Claim Distribution">
       <ng-template ngbTabContent>
-        <app-claim-distribution [claimInfo]="claimInfo"></app-claim-distribution>
+        <app-claim-distribution [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-claim-distribution>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs || disablePaytReq" title="Generate Payment Request">

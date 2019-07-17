@@ -4,6 +4,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClaimsService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-claim-distribution',
@@ -16,7 +19,10 @@ export class ClaimDistributionComponent implements OnInit {
    @ViewChild('paymentDistTable') paymentDistTable: CustEditableNonDatatableComponent;
    @ViewChild('treatyTable') treatyTable: CustEditableNonDatatableComponent;
    @ViewChild('poolTable') poolTable: CustEditableNonDatatableComponent;
+   @ViewChild('confirmRedist') confirmRedist: ModalComponent;
+   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
+   @Input()isInquiry;
   distHeaderPassData: any = {
   	tableData: [],
   	tHeader: ['Distribution Header','History No', 'Amount','Distribution Status'],
@@ -59,8 +65,8 @@ export class ClaimDistributionComponent implements OnInit {
     tableData: [],
     pageLength: 5,
     pageID: 5,
-    pagination: true,
-    pageStatus: true
+    paginateFlag: true,
+    infoFlag: true
   }
 
   paymentDistPassData: any = {
@@ -72,8 +78,8 @@ export class ClaimDistributionComponent implements OnInit {
     tableData: [],
     pageLength: 5,
     pageID: 6,
-    pagination: true,
-    pageStatus: true
+    paginateFlag: true,
+    infoFlag: true
   }
 
    @Input() claimInfo = {
@@ -90,7 +96,9 @@ export class ClaimDistributionComponent implements OnInit {
 
    poolSum: any = {};
 
-  constructor(private modalService: NgbModal, private clmService : ClaimsService, private titleService: Title, private ns: NotesService) { }
+   diagIcon:string;
+
+  constructor(private modalService: NgbModal, private clmService : ClaimsService, private titleService: Title, private ns: NotesService, private router: Router) { }
 
   ngOnInit() {
      this.titleService.setTitle("Clm | Claim Distribution");
@@ -149,6 +157,7 @@ export class ClaimDistributionComponent implements OnInit {
   }
 
   redistribute(){
+   this.confirmRedist.closeModal();
        let params:any = {
            claimId:this.claimInfo.claimId,
            projId:this.claimInfo.projId,
@@ -160,8 +169,26 @@ export class ClaimDistributionComponent implements OnInit {
            updateDate:this.ns.toDateTimeString(0),
        }
       this.clmService.redistributeClaimDist(params).subscribe(a=>{
-      this.getClmHist();
+        if(a['returnCode']==-1){
+          this.diagIcon = 'nice';
+          this.getClmHist();
+        }else{
+          this.diagIcon = 'error'
+        }
+        this.successDiag.open()
     })
+  }
+
+  confirmRedsitribute(){
+    this.confirmRedist.openNoClose();
+  }
+
+  cancel(){
+    if (this.isInquiry) {
+        this.router.navigateByUrl('/claims-inquiry');
+      } else if( !this.isInquiry){
+        this.router.navigateByUrl('/clm-claim-processing');
+      }
   }
 
 }

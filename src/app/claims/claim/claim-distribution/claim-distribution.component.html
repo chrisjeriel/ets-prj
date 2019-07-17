@@ -124,7 +124,18 @@
 			</div>
 		</app-modal>
 		<button class="cust-btn">Print</button>
-		<button class="cust-btn">Cancel</button>
-		<button class="cust-btn " [disabled]="selected==null || selected==undefined" (click)="redistribute()">Redistribute</button>
+		<button class="cust-btn" (click)="cancel()">Cancel</button>
+		<button class="cust-btn " [disabled]="selected==null || selected==undefined" (click)="confirmRedsitribute()" *ngIf="!isInquiry">Redistribute</button>
 	</div>
 </div>
+
+<app-modal #confirmRedist class="d-none">
+	<div header>Confirmation</div>
+	<div body>Are you sure you want to redistribute?</div>
+	<div footer class="w-100 text-right">
+		<button class="cust-btn" (click)="redistribute()">Yes</button>
+		<button class="cust-btn" (click)="confirmRedist.closeModal()">No</button>
+	</div>
+</app-modal>
+
+<app-sucess-dialog [icon]="diagIcon"></app-sucess-dialog>
