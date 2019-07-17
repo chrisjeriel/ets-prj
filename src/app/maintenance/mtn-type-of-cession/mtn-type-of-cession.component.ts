@@ -103,7 +103,7 @@ export class MtnTypeOfCessionComponent implements OnInit {
   }
 
   checkCode(code, ev) {
-    if(code.trim() === ''){
+    if(String(code).trim() === ''){
       this.selectedData.emit({
         cessionId: '',
         description: '',

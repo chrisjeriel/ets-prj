@@ -341,7 +341,7 @@ const appRoutes: Routes = [
     { path: 'mtn-approver', component: ApproverComponent },
     { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent ,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'mtn-system', component: SystemComponent },
-    { path: 'mtn-program-parameter', component: ProgramParameterComponent },
+    { path: 'mtn-program-parameter', component: ProgramParameterComponent ,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'mtn-rounding-error', component: RoundingErrorComponent,  canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-report', component: ReportComponent },
     { path: 'mtn-report-param', component: ReportParamComponent },

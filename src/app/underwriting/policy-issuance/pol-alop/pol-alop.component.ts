@@ -132,13 +132,11 @@ export class PolAlopComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Pol | ALOP");
     this.sub = this.route.params.subscribe(params => {
-      console.log(params)
       this.policyNo = params['policyNo']
       this.line = params['line'];
       //this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];;
       this.prevPolicyId = this.policyInfo.prevPolicyId
     });
-    console.log(this.policyInfo)
 
     if(this.line == 'EAR'){
       this.passDataCar.tHeader = ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Minimization"];
@@ -169,8 +167,7 @@ export class PolAlopComponent implements OnInit {
 
   getPolAlop() {
     this.underwritingService.getPolAlop(this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
-      console.log(data)
-
+      
       if (data.policy != null) {
 
         this.policyId = data.policy.policyId;
@@ -201,12 +198,8 @@ export class PolAlopComponent implements OnInit {
         });
 
         this.underwritingService.getPolGenInfo(this.policyInfo.policyId, null).subscribe((data:any) => {
-          console.log(data)
           if (data.policy != null) {
             this.policyId = data.policy.policyId;
-            console.log(data.policy.expiryDate);
-            console.log(this.ns.toDateTimeString(data.policy.expiryDate));
-            console.log(new Date(data.policy.expiryDate).getDate()+1);
             this.polAlopData.issueDate = data.policy.inceptDate == null? null:this.ns.toDateTimeString(data.policy.inceptDate);
             this.polAlopData.expiryDate = data.policy.expiryDate == null? null:this.ns.toDateTimeString(data.policy.expiryDate);
             this.polAlopData.indemFromDate = data.policy.alop.indemFromDate == null? null:this.ns.toDateTimeString(data.policy.alop.indemFromDate);
@@ -233,7 +226,6 @@ export class PolAlopComponent implements OnInit {
      });
    }else{
      this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
-       console.log(data)
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i <sectionCovers.length;i++){
@@ -412,7 +404,7 @@ export class PolAlopComponent implements OnInit {
     else{
       this.dialogMessage = "Please check date fields";
       this.dialogIcon = "error";
-      $('#successModalBtn').trigger('click');
+      this.successDiag.open();
     }
   }
 

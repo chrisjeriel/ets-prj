@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { JVAccountingEntries } from '@app/_models'
-import { AccountingService } from '@app/_services'
+import { AccountingService, NotesService } from '@app/_services'
 
 @Component({
   selector: 'app-jv-accounting-entries',
@@ -21,13 +21,36 @@ export class JvAccountingEntriesComponent implements OnInit {
     pageID: 2,
     addFlag: true,
     deleteFlag: true,
-    total: [null, null, null, 'Total', null, null],
-    genericBtn: 'Save'
+    total: [null, null, null, 'Total', null, null]
   }
   
-  constructor(private accountingService: AccountingService) { }
+  @Input() jvData:any;
+
+    jvDetails : any = {
+       jvNo: '', 
+       jvYear: '', 
+       jvDate: '', 
+       jvType: '',
+       jvStatus: '',
+       refnoDate: '',
+       refnoTranId: '',
+       currCd: '',
+       currRate: '',
+       jvAmt: '',
+       localAmt: ''
+    }
+
+  
+  constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
+    this.retrieveJVDetails();
   }
 
+  retrieveJVDetails(){
+    console.log(this.jvData)
+    this.jvDetails = this.jvData;
+    this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
+    this.jvDetails.refnoDate = this.ns.toDateTimeString(this.jvDetails.refnoDate);
+  }
 }
