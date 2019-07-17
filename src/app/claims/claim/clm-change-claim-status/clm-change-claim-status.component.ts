@@ -560,7 +560,20 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     }
   }
 
+  changeBatchOption(data){
+     this.batchOption = data; 
+     this.clearDetails(); 
+     this.searchParams.batchOpt = this.batchOption;
+     if(!this.checkSearchFields()){
+       this.retrieveQueryList();
+     }else{
+       this.queryData.tableData = [];
+       this.queryTable.refreshTable();
+     }
+  }
+
   process(){
+    console.log(this.batchOption);
     switch(this.batchOption){
       case 'IP':
         this.dialogIcon = 'info';

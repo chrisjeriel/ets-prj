@@ -12,11 +12,11 @@
               <fieldset class="scheduler-border">
                 <legend class="scheduler-border">Batch Option</legend>
                 <div class="custom-row-inline-inset">
-                  <div style="margin-left: 40px !important;">
+                  <div>
                     <div class="form-row" *ngIf="batchOptionLoading">
                       <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="">
                     </div>
-                    <div class="form-row">
+                    <!-- <div class="form-row">
                       <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); searchParams.batchOpt = batchOption; retrieveQueryList();" [value]="'IP'" name="batchOption"><label class="rd-lbl">In Progress</label>
                     </div>
                     <div class="form-row">
@@ -33,10 +33,17 @@
                     </div>
                     <div class="form-row">
                       <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; clearDetails(); searchParams.batchOpt = batchOption; retrieveQueryList();" [value]="'DN'" name="batchOption"><label class="rd-lbl">Deny</label>
-                    </div>
+                    </div> -->
                     <!-- <div class="form-row" *ngFor="let status of arrClaimStatus">
                       <input type="radio" class="form-control-sm" [ngModel]="batchOption" (ngModelChange)="batchOption = $event; batchOptionDesc = status.description; clearDetails(); queryData.tableData = []; queryTable.refreshTable(); queryTable.selected = [];" [value]="status.statusCode" name="batchOption"><label class="rd-lbl">{{status.description}}</label>
                     </div> -->
+                    <div class="form-row">
+                      <div class="input-group" style="margin-bottom: 0px !important">
+                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="batchOption" (ngModelChange)="changeBatchOption($event);">
+                          <option *ngFor="let status of arrClaimStatus" [value]="status.statusCode">{{status.description}}</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </fieldset>

@@ -55,6 +55,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                    amount: null
                  };
   @Output() onChange: EventEmitter<any> = new EventEmitter();
+  @Output() disableTab: EventEmitter<any> = new EventEmitter();
 
   sub: any;
   isAdd: boolean = false;
@@ -100,14 +101,16 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     time: ''
   }
 
+  //maintenance variables
   paymentTypes: any[] = [];
+  currencies: any[] = [];
 
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
     var tranId;
     var arNo;
-    this.onChange.emit({ type: this.arInfo.tranTypeName });
+    this.onChange.emit({ type: this.arInfo.tranTypeCd });
     this.sub = this.route.params.subscribe(
        data=>{
          console.log(data['action']);
@@ -128,6 +131,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.retrieveArEntry(tranId, arNo);
     }
     this.retrievePaymentType();
+    this.retrieveCurrency();
   }
 
   ngOnDestroy(){
@@ -135,7 +139,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   tabController(event) {
-  	this.onChange.emit({ type: this.arInfo.tranTypeName });
+  	this.onChange.emit({ type: this.arInfo.tranTypeCd });
+    console.log(this.arInfo.tranTypeName);
   }
 
   retrieveArEntry(tranId, arNo){
@@ -178,6 +183,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
           this.passData.tableData    = data.ar.paytDtl;
           this.paytDtlTbl.refreshTable();
+          this.onChange.emit({ type: this.arInfo.tranTypeCd });
+         this.disableTab.emit(false);
         }
       },
       (error)=>{
@@ -186,12 +193,32 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     );
   }
 
+  //ALL RETRIEVALS FROM MAINTENANCE IS HERE
   retrievePaymentType(){
     this.ms.getMtnAcitTranType('AR').subscribe(
       (data:any)=>{
-        this.paymentTypes = data.tranTypeList;
+        if(data.tranTypeList.length !== 0){
+          data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
+          this.paymentTypes = data.tranTypeList;
+        }
       }
     );
+  }
+
+  retrieveCurrency(){
+    this.ms.getMtnCurrency('','Y').subscribe(
+      (data:any)=>{
+        if(data.currency.length !== 0){
+          for(var i of data.currency){
+            this.currencies.push({currencyCd: i.currencyCd, currencyRt: i.currencyRt});
+          }
+        }
+      }
+    );
+  }
+
+  test(event){
+    console.log(event.currencyCd);
   }
 
 }
