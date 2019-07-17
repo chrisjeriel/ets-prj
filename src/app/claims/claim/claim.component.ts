@@ -3,6 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
+import { ClaimsService } from '@app/_services';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+
 
 @Component({
   selector: 'app-claim',
@@ -10,7 +13,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./claim.component.css']
 })
 export class ClaimComponent implements OnInit, OnDestroy {
-
+  @ViewChild('warnModal') warnModal  : ModalComponent; 
 
   passDataHistory: any = {
         tHeader: ["History No", "Amount Type", "History Type", "Currency","mount","Remarks","Accounting Tran ID","Accounting Date"],
@@ -42,8 +45,11 @@ export class ClaimComponent implements OnInit, OnDestroy {
   disableClmHistory: boolean = true;
   disableNextTabs: boolean = true;
   disablePaytReq: boolean = true;
+  subject: Subject<boolean>;
+  preventHistory: boolean = false;
+  prevTab: string = "";
 
-  constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal) { }
+  constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal, private clmService : ClaimsService) { }
 
   @ViewChild('tabset') tabset: any;
 
@@ -74,6 +80,10 @@ export class ClaimComponent implements OnInit, OnDestroy {
         this.router.navigate(['/policy-information', { policyId: this.claimInfo.policyId, policyNo: this.claimInfo.policyNo, clmInfo: JSON.stringify(this.claimInfo) }], { skipLocationChange: true });
       }
 
+      if($event.nextId === 'clmHistoryId') {
+        this.prevTab = $event.activeId;
+      }
+
       if($('.ng-dirty').length != 0 ){
         $event.preventDefault();
         const subject = new Subject<boolean>();
@@ -91,7 +101,14 @@ export class ClaimComponent implements OnInit, OnDestroy {
           }
         })
   
-    }
+      }
+
+    // setTimeout(() => {
+    //     if($event.nextId == 'clmHistoryId' && this.preventHistory){
+    //       $event.preventDefault();
+    //       this.warnModal.openNoClose();
+    //   }
+    // }, 1000);
   }
 
   getClmInfo(ev) {
@@ -107,6 +124,18 @@ export class ClaimComponent implements OnInit, OnDestroy {
     this.disableClmHistory = ev.disableClmHistory;
     this.disableNextTabs = ev.disableNextTabs;
     this.disablePaytReq = ev.disablePaytReq;
+
+    // this.clmService.getClaimHistory(this.claimInfo.claimId,'','','')
+    //   .subscribe(data => {
+    //     this.preventHistory = !data['claimReserveList'][0]['clmHistory'].some(e => e.proceed == 'Y');
+    //   });
   }
   
+  showWarnMdl() {
+    this.warnModal.openNoClose();
+  }
+
+  prevsTab() {
+    this.tabset.select(this.prevTab);
+  }
 }

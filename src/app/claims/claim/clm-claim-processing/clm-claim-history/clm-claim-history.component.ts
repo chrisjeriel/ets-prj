@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ClaimsHistoryInfo } from '@app/_models';
-import { ClaimsService, NotesService, MaintenanceService } from '@app/_services';
+import { ClaimsService, NotesService, MaintenanceService, UnderwritingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -34,15 +34,14 @@ export class ClmClaimHistoryComponent implements OnInit {
   @ViewChild('resStatMdl') resStatMdl                : ModalComponent; 
   @ViewChild('resStatLov') resStatLov                : ModalComponent;
   @ViewChild('approvedAmtMdl') approvedAmtMdl        : ModalComponent;
-
   private claimsHistoryInfo = ClaimsHistoryInfo;
 
   @Input() isInquiry: boolean = false;
 
   passDataHistory: any = {
     tableData     : [],
-    tHeader       : ['Hist. No.', 'Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Curr Rt', 'Reserve', 'Payment Amount', 'Ref. No.', 'Ref. Date', 'Remarks'],
-    dataTypes     : ['sequence-3', 'req-select', 'req-select', 'checkbox', 'text', 'percent', 'currency', 'currency', 'text', 'date', 'text'],
+    tHeader       : ['Hist. No.', 'Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Curr Rt', 'Amount', 'Payment Amount', 'Ref. No.', 'Ref. Date', 'Remarks'],
+    dataTypes     : ['sequence-3', 'req-select', 'req-select', 'checkbox', 'text', 'percent', 'currency', 'currency', 'text', 'date', 'text-editor'],
     nData: {
       newRec       : 1,
       claimId      : '',
@@ -151,6 +150,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   fromStat          : string = '';
   histTypeData      : any;
   fromCancelResStat : boolean;
+  proceed           : boolean = true;
 
   dirtyCounter : any = {
     hist     : 0,
@@ -178,12 +178,15 @@ export class ClmClaimHistoryComponent implements OnInit {
     riskName    : '',
     insuredDesc : '',
     policyNo    : '',
-    clmStatus   : ''
+    clmStatus   : '',
+    policyId    : ''
   };
 
   @Output() disableNextTabs = new EventEmitter<any>();
+  @Output() preventHistory = new EventEmitter<any>();
 
-  constructor(private titleService: Title, private clmService: ClaimsService,private ns : NotesService, private mtnService: MaintenanceService, private modalService: NgbModal) {
+  constructor(private titleService: Title, private clmService: ClaimsService,private ns : NotesService, private mtnService: MaintenanceService, 
+              private polService: UnderwritingService, private modalService: NgbModal) {
 
   }
 
@@ -218,7 +221,6 @@ export class ClmClaimHistoryComponent implements OnInit {
       }
     }
     //end neco
-
     this.getClaimHistory();
     this.getClaimApprovedAmt();
     this.getResStat();
@@ -233,6 +235,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   //     this.clmHistoryData.claimStat = 
   //   });
   // }
+
 
   getClaimHistory(){
     var subs = forkJoin(this.clmService.getClaimHistory(this.clmHistoryData.claimId,'',this.clmHistoryData.projId,''),this.mtnService.getRefCode('HIST_CATEGORY'),this.mtnService.getRefCode('HIST_TYPE'),
@@ -259,33 +262,36 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.passDataHistory.nData.currencyRt = recCurr.currencyRt;
 
       try{
-        if(data['clmHist']['claimReserveList'].length == 0){
-          var recClmHist = data['clmHist']['claimReserveList'];
+        if(data['clmHist']['claimReserveList'][0]['clmHistory'].some(e => e.proceed == 'Y')){
+          if(data['clmHist']['claimReserveList'].length == 0){
+            var recClmHist = data['clmHist']['claimReserveList'];
+          }else{
+            var res = data['clmHist']['claimReserveList'][0];
+            this.clmHistoryData.lossStatCd    = res.lossStatus; 
+            this.clmHistoryData.expStatCd     = res.expStatus;
+            this.clmHistoryData.createUserRes = (res.createUser == '' || res.createUser == null)?this.ns.getCurrentUser():res.createUser;
+            this.clmHistoryData.createDateRes = (res.createDate == '' || res.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(res.createDate);
+            var recClmHist = data['clmHist']['claimReserveList'][0]['clmHistory']
+                          .map(i => {  
+                            i.claimID      = this.clmHistoryData.claimId;
+                            i.projId       = this.clmHistoryData.projId;
+                            i.refDate      = this.ns.toDateTimeString(i.refDate);
+                            i.createDate   = this.ns.toDateTimeString(i.createDate);
+                            i.updateDate   = this.ns.toDateTimeString(i.updateDate);
+                            recHistCat.forEach(a => (a.description == i.histCatDesc)?i.histCategory=a.code:i.histCategory);
+                            recHistType.forEach(a => (a.description == i.histTypeDesc)?i.histType=a.code:i.histType);
+                            return i;
+                          });
+          }
+
+          this.passDataHistory.tableData = recClmHist;
+          console.log(this.passDataHistory.tableData);
+          this.histTbl.refreshTable();
+          this.histTbl.onRowClick(null, this.passDataHistory.tableData[0]);
+          this.compResPayt();  
         }else{
-          var res = data['clmHist']['claimReserveList'][0];
-          this.clmHistoryData.lossStatCd    = res.lossStatus; 
-          this.clmHistoryData.expStatCd     = res.expStatus;
-          this.clmHistoryData.createUserRes = (res.createUser == '' || res.createUser == null)?this.ns.getCurrentUser():res.createUser;
-          this.clmHistoryData.createDateRes = (res.createDate == '' || res.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(res.createDate);
-          var recClmHist = data['clmHist']['claimReserveList'][0]['clmHistory']
-                        .map(i => {  
-                          i.claimID      = this.clmHistoryData.claimId;
-                          i.projId       = this.clmHistoryData.projId;
-                          i.refDate      = this.ns.toDateTimeString(i.refDate);
-                          i.createDate   = this.ns.toDateTimeString(i.createDate);
-                          i.updateDate   = this.ns.toDateTimeString(i.updateDate);
-                          recHistCat.forEach(a => (a.description == i.histCatDesc)?i.histCategory=a.code:i.histCategory);
-                          recHistType.forEach(a => (a.description == i.histTypeDesc)?i.histType=a.code:i.histType);
-                          return i;
-                        });
+          this.preventHistory.emit();
         }
-
-        this.passDataHistory.tableData = recClmHist;
-        console.log(this.passDataHistory.tableData);
-        this.histTbl.refreshTable();
-        this.histTbl.onRowClick(null, this.passDataHistory.tableData[0]);
-        this.compResPayt();
-
       }catch(e){}
   
       });
@@ -586,11 +592,17 @@ export class ClmClaimHistoryComponent implements OnInit {
           e.histType = '';
           e.histTypeDesc = '';
         }
+
+        if(e.histType == 3){
+          e.reserveAmt = '-' + e.reserveAmt;
+        }else{
+          e.reserveAmt = String(e.reserveAmt).substr(1,String(e.reserveAmt).length);
+        }
+
         if(e.histType == 1 && (Number(e.reserveAmt) > Number(this.clmHistoryData.allowMaxSi))){
           this.warnMsg = 'Initial Reserve must be less than or equal to the Allowable Maximum Sum Insured.';
           this.showWarnMsg();
           e.reserveAmt = '';
-
         }
       }
     });

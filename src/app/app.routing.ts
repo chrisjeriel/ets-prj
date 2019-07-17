@@ -173,7 +173,6 @@ import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-pol
 import { ClaimCashCallComponent } from './maintenance/claims/claim-cash-call/claim-cash-call.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 
-
 const appRoutes: Routes = [
 
 

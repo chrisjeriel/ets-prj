@@ -1,19 +1,19 @@
 <div class="cust-tabs-container">
   <h4>Claim / {{isInquiry ? 'Claim Inquiry' : 'Claim Processing'}}</h4>
   <ngb-tabset #tabset (tabChange)="onTabChange($event)">
-    <ngb-tab title="General Info">
+    <ngb-tab title="General Info" id="geninfo">
       <ng-template ngbTabContent>
         <app-clm-gen-info-claim (emitClaimInfoId)="getClmInfo($event)" [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-clm-gen-info-claim>
       </ng-template>
     </ngb-tab>
-    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Section Covers">
+    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Section Covers" id="secCover">
       <ng-template ngbTabContent>
         <app-clm-section-covers [isInquiry]="isInquiry" [claimInfo]="claimInfo" (disableClmHistory)="disableClmHistory = $event"></app-clm-section-covers>
       </ng-template>
     </ngb-tab>
-    <ngb-tab [disabled]="claimInfo.claimId == '' || disableClmHistory" class="ngb-tab" title="Claim History">
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableClmHistory" class="ngb-tab" title="Claim History" id="clmHistoryId">
       <ng-template ngbTabContent>
-        <app-clm-claim-history [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event.disableNextTabs; disablePaytReq = $event.disablePaytReq" [isInquiry]="isInquiry"></app-clm-claim-history>
+        <app-clm-claim-history [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event.disableNextTabs; disablePaytReq = $event.disablePaytReq" [isInquiry]="isInquiry" (preventHistory)="showWarnMdl()"></app-clm-claim-history>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs"  title="Claim Distribution">
@@ -26,7 +26,7 @@
         <app-clm-claim-payment-request [claimInfo]="claimInfo"></app-clm-claim-payment-request>
       </ng-template>
     </ngb-tab>
-    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Attachment">
+    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Attachment" id="attachment">
       <ng-template ngbTabContent>
         <app-claims-attachment [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-claims-attachment>
       </ng-template>
@@ -49,3 +49,16 @@
       </ngb-tab>
   </ngb-tabset>
 </div>
+
+
+<app-modal class="d-none" id="warnMdl" #warnModal >
+    <div header>Warning Message</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">The status of the policy distribution must be <b>Posted</b> before creating reserve</p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="warnModal.closeModal(); prevsTab()"><a>Ok</a></button>
+    </div>
+</app-modal>
