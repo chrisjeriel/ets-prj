@@ -22,6 +22,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   @ViewChild('polListMdl') polListModal : ModalComponent;
   @ViewChild('reasonMdl') reasonModal : ModalComponent;
   @ViewChild('processPrompt') processModal : ModalComponent;
+  @ViewChild('processedList') processedListModal : ModalComponent;
   @ViewChild('successDiagSave') successDiag: SucessDialogComponent;
 
   @ViewChild(MtnTypeOfCessionComponent) cessionModal: MtnTypeOfCessionComponent;
@@ -32,6 +33,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   @ViewChild('polListTable') polListTable : CustNonDatatableComponent;
   @ViewChild('queryTbl') queryTable : CustNonDatatableComponent;
   @ViewChild('reasonListTable') reasonTable : CustNonDatatableComponent;
+  @ViewChild('processedClaimsTbl') processedTable : CustNonDatatableComponent;
 
   queryData: any = {
     tableData: [],
@@ -78,6 +80,18 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     pageStatus: true,
     keys: ['reasonCd','description'],
     pageID: 'reasonData'
+  }
+
+  processedListData: any = {
+    tableData: [],
+    tHeader: ['Claim No', 'Status'],
+    dataTypes: ['text', 'text'],
+    pageLength: 10,
+    pagination: true,
+    pageStatus: true,
+    tableOnly: true,
+    keys: ['claimNo', 'clmStatus'],
+    pageID: 'processedClaims'
   }
 
   dialogIcon: string = '';
@@ -573,9 +587,10 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   changeBatchOption(data){
-     this.batchOption.statusCode = data.statusCode;
+     /*this.batchOption.statusCode = data.statusCode;
      this.batchOption.description = data.description;
-     this.batchOption.openTag = data.openTag;
+     this.batchOption.openTag = data.openTag;*/
+     this.batchOption = data;
      this.clearDetails(); 
      this.searchParams.batchOpt = this.batchOption.statusCode;
      if(!this.checkSearchFields()){
@@ -588,7 +603,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   process(){
     console.log(this.batchOption);
-    switch(this.batchOption){
+    switch(this.batchOption.statusCode){
       case 'IP':
         this.dialogIcon = 'info';
         this.dialogMessage = 'Are you sure you want to re-open this claim?';
@@ -619,10 +634,10 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         this.dialogMessage = 'Are you sure you want to deny this claim?';
         this.processModal.openNoClose();
         break;
-      /*default:
+      default:
         this.dialogIcon = 'info';
-        this.dialogMessage = 'Are you sure you want to '+ this.batchOptionDesc + ' this claim?';
-        this.processModal.openNoClose();*/
+        this.dialogMessage = 'Are you sure you want to '+ this.batchOption.description + ' this claim?';
+        this.processModal.openNoClose();
     }
   }
 
@@ -631,8 +646,10 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     for(var i of this.queryTable.selected){
       updateClaimStatus.push({
         claimId: i.claimId,
-        clmStatCd: this.batchOption,
-        reasonCd: this.batchOption === 'IP' ? '' : this.reasonCd,
+        claimNo: i.claimNo,
+        clmStatCd: this.batchOption.statusCode,
+        clmStatus: this.batchOption.description,
+        reasonCd: this.batchOption.statusCode === 'IP' ? '' : this.reasonCd,
         updateUser: this.ns.getCurrentUser(),
         updateDate: this.ns.toDateTimeString(0)
       });
@@ -646,8 +663,11 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
           this.dialogIcon = 'error';
           this.successDiag.open();
         }else{
-          this.dialogIcon = '';
-          this.successDiag.open();
+          /*this.dialogIcon = '';
+          this.successDiag.open();*/
+          this.processedListData.tableData = updateClaimStatus;
+          this.processedTable.refreshTable();
+          this.processedListModal.openNoClose();
           this.queryData.tableData = [];
           this.queryTable.selected = [];
           this.clearDetails();
