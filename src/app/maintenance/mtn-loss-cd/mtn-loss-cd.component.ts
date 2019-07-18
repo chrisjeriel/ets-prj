@@ -112,6 +112,8 @@ export class MtnLossCdComponent implements OnInit {
 			this.selectedData.emit(obj);
 		} else if(code != undefined) {
 			this.maintenanceService.getMtnLossCode(str).subscribe(data => {
+				data['lossCd'] = data['lossCd'].filter(a => a.lossCdType == lossCd);
+
 				if(data['lossCd'].length == 1) {
 					obj = data['lossCd'][0];
 					obj['lossCdType'] = lossCd;

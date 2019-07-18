@@ -21,7 +21,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
     height: '100%',
     width: '100%',
     font: '11px arial',
-    padding: '4px 4px',
+    padding: '5px 10px',
     color: 'black'
   };
 

@@ -81,7 +81,7 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">Loss Date</label>
                             <div class="col-sm-5 dp-cont">
-                                <datepicker [type]="'date'" [required]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();" [disabled]="isInquiry" [tabindex]="2"></datepicker>
+                                <datepicker [type]="'date'" [required]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();" [disabled]="isInquiry" [tabindex]="2" [maxDate]="maxDate"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
                                 <datepicker [type]="'time'" [required]="false" [value]="claimData.lossDate?.split('T')[1]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'t'); validateLossDate();" [textAlign]="'center'" [disabled]="isInquiry" [tabindex]="3"></datepicker>
@@ -143,7 +143,7 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Event</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc" [readonly]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" (change)="checkCode($event, 'event')">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc" [readonly]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" (change)="checkCode($event, 'event')" appRequired>
                             <div [class.d-none]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search" (click)="showClmEventLOV()"></i></a>
                             </div>
@@ -167,7 +167,7 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-2">Remarks</label>
                             <div class="form-control-sm col-sm edtr-cont" style="height: 34px;">
-                                <text-editor [editorContent]="claimData.lossDtl" (fetchContent)="claimData.lossDtl = $event" [readonly]="isInquiry">
+                                <text-editor [editorContent]="claimData.remarks" (fetchContent)="claimData.remarks = $event" [readonly]="isInquiry">
                                 </text-editor>
                             </div>
                         </div>
@@ -603,13 +603,27 @@
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Inception Date</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.inceptDate?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.inceptDate"></datepicker>
                             </div>
                         </div>
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Expiry Date</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.expiryDate?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.expiryDate"></datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top: 18px !important;">
+                        <div class="form-group col-sm-6" style="margin-bottom: 0px;">
+                            <label class="form-control-sm top-label">&nbsp;Issue Date</label>
+                            <div class="col-sm dp-cont">
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.issueDate"></datepicker>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6" style="margin-bottom: 0px;">
+                            <label class="form-control-sm top-label">&nbsp;Effective Date</label>
+                            <div class="col-sm dp-cont">
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.effDate"></datepicker>
                             </div>
                         </div>
                     </div>
@@ -617,13 +631,13 @@
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Lapse From</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.lapseFrom?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.lapseFrom"></datepicker>
                             </div>
                         </div>
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Lapse To</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.lapseTo?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.lapseTo"></datepicker>
                             </div>
                         </div>
                     </div>
@@ -631,13 +645,13 @@
                         <div class="form-group col-sm-6">
                             <label class="form-control-sm top-label">&nbsp;Maintenance From</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.maintenanceFrom?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.maintenanceFrom"></datepicker>
                             </div>
                         </div>
                         <div class="form-group col-sm-6">
                             <label class="form-control-sm top-label">&nbsp;Maintenance To</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.maintenanceTo?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.maintenanceTo"></datepicker>
                             </div>
                         </div>
                     </div>
@@ -784,7 +798,7 @@
 <app-modal class="d-none" id="clmGenInfoConfirmationModal">
     <div header>
         <ng-container *ngIf="mdlType == 'conf' || mdlType == 'ref'">Confirmation</ng-container>
-        <ng-container *ngIf="mdlType == 'warn' || mdlType == 'warn2'">Warning Message</ng-container>
+        <ng-container *ngIf="mdlType.substr(0,4) == 'warn'">Warning Message</ng-container>
     </div>
     <div body style="min-width: 300px !important;">
         <fieldset class="scheduler-border" style="padding-top: 5px !important;">
@@ -801,6 +815,22 @@
                     <p>Unable to exchange the Loss Date. Claim Reserve setup<br />
                     already exists.</p>
                 </ng-container>
+                <ng-container *ngIf="mdlType == 'warn3'">
+                    <p>Unable to change the status of the claim. Please zero out the<br />
+                    reserve amount first.</p>
+                </ng-container>
+                <ng-container *ngIf="mdlType == 'warn4'">
+                    <p>Unable to change the status of the claim. Payment must be fully<br />
+                    settled.</p>
+                </ng-container>
+                <ng-container *ngIf="mdlType == 'warn5'">
+                    <p>Loss Date is within the lapse period (Inception to Effective<br />
+                    Date) of the policy.</p>
+                </ng-container>
+                <ng-container *ngIf="mdlType == 'warn6'">
+                    <p>Loss Date is not within the period of insurance (Inception<br />
+                    to Expiry Date) of the policy.</p>
+                </ng-container>
                 <ng-container *ngIf="mdlType == 'ref'">
                     <p>Are you sure you want to apply the latest changes<br />
                     of the policy?</p>
@@ -808,13 +838,13 @@
             </div>
         </fieldset>
     </div>
-    <div footer class="w-100 text-right" [class.text-center]="mdlType == 'warn' || mdlType == 'warn2'">
+    <div footer class="w-100 text-right" [class.text-center]="mdlType.substr(0,4) == 'warn'">
         <button *ngIf="mdlType == 'conf'" class="cust-btn" type="button" (click)="modalService.dismissAll(); onClickConfYes()"><a>Yes</a></button>
         <button *ngIf="mdlType == 'ref'" class="cust-btn" type="button" (click)="modalService.dismissAll(); onClickConfRefYes()"><a>Yes</a></button>
         <button *ngIf="mdlType == 'conf' || mdlType == 'warn'" class="cust-btn" type="button" (click)="modalService.dismissAll(); claimData.lossDate = ''">
             <a>{{ mdlType == 'conf' ? 'No' : 'Ok' }}</a>
         </button>
-        <button *ngIf="mdlType == 'warn2'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="mdlType == 'warn2' || mdlType == 'warn3' || mdlType == 'warn4' || mdlType == 'warn5' || mdlType == 'warn6'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
         <button *ngIf="mdlType == 'ref'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>
