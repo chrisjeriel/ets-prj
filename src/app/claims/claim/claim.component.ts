@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter, Input} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
-import { Subject } from 'rxjs';
-import { ClaimsService } from '@app/_services';
+import { Subject, forkJoin } from 'rxjs';
+import { ClaimsService, MaintenanceService, NotesService, UserService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
-
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-claim',
@@ -13,7 +14,10 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
   styleUrls: ['./claim.component.css']
 })
 export class ClaimComponent implements OnInit, OnDestroy {
-  @ViewChild('warnModal') warnModal  : ModalComponent; 
+  @ViewChild('warnModal') warnModal    : ModalComponent;
+  @ViewChild('conModal') conModal      : ModalComponent; 
+  @ViewChild('overMdl') overMdl        : ModalComponent;
+  @ViewChild(SucessDialogComponent) success  : SucessDialogComponent;
 
   passDataHistory: any = {
         tHeader: ["History No", "Amount Type", "History Type", "Currency","mount","Remarks","Accounting Tran ID","Accounting Date"],
@@ -48,8 +52,17 @@ export class ClaimComponent implements OnInit, OnDestroy {
   subject: Subject<boolean>;
   preventHistory: boolean = false;
   prevTab: string = "";
+  msg : string = '';
+  userId : string = '';
+  password : string = '';
+  approversList : any[] = [];
+  usersList : any[] =[];
+  dialogIcon : string ='';
+  dialogMessage : string ='';
+  from : any ;
 
-  constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal, private clmService : ClaimsService) { }
+  constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal, 
+               private ns: NotesService, private clmService : ClaimsService, private mtnService: MaintenanceService, private userService: UserService) { }
 
   @ViewChild('tabset') tabset: any;
 
@@ -102,13 +115,6 @@ export class ClaimComponent implements OnInit, OnDestroy {
         })
   
       }
-
-    // setTimeout(() => {
-    //     if($event.nextId == 'clmHistoryId' && this.preventHistory){
-    //       $event.preventDefault();
-    //       this.warnModal.openNoClose();
-    //   }
-    // }, 1000);
   }
 
   getClmInfo(ev) {
@@ -125,17 +131,64 @@ export class ClaimComponent implements OnInit, OnDestroy {
     this.disableNextTabs = ev.disableNextTabs;
     this.disablePaytReq = ev.disablePaytReq;
 
-    // this.clmService.getClaimHistory(this.claimInfo.claimId,'','','')
-    //   .subscribe(data => {
-    //     this.preventHistory = !data['claimReserveList'][0]['clmHistory'].some(e => e.proceed == 'Y');
-    //   });
   }
   
-  showWarnMdl() {
-    this.warnModal.openNoClose();
+  showWarnMdl(event) {
+    this.msg = event.msg;
+    if(event.val == 1){
+      this.warnModal.openNoClose();
+    }else{
+      this.conModal.openNoClose();
+      this.from = event.apvlCd;
+    }
+
+  }
+  onClickYes(){
+    this.getApprovalFn();
+    this.conModal.closeModal();
   }
 
   prevsTab() {
     this.tabset.select(this.prevTab);
+  }
+
+  getApprovalFn(){
+    $('.globalLoading').css('display','block');
+    var subs =  forkJoin(this.mtnService.getMtnApprovalFunction(this.from),this.mtnService.getMtnApprover(), this.userService.retMtnUsers(''))
+                  .pipe(map(([appFn, app, user]) => { return { appFn, app, user };}));
+
+    subs.subscribe(data => {
+      console.log(data);
+      $('.globalLoading').css('display','none');
+      var recAppFn = data['appFn']['approverFn'];
+      this.approversList = data['app']['approverList'];
+      this.usersList = data['user']['usersList'];
+
+      if(recAppFn.some(e => e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase())){
+      }else{
+        this.overMdl.openNoClose();
+      }
+
+    });
+  }
+
+  onOkOver(){
+    var user = this.approversList.some(e => this.userId.toUpperCase() == e.userId.toUpperCase());
+    if(user){
+      var pass = this.usersList.filter(e => this.userId.toUpperCase() == e.userId.toUpperCase()).map(e => e.password);
+      if(this.password == pass.toString()){
+        this.overMdl.closeModal();
+        this.dialogIcon = 'success-message';
+        this.dialogMessage = 'Login Successfully';
+      } else{
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Invalid Password';
+      } 
+    }else{
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Invalid Username';
+    }
+
+    this.success.open();
   }
 }
