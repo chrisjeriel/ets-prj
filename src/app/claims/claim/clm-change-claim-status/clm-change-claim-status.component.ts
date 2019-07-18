@@ -90,7 +90,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     pagination: true,
     pageStatus: true,
     tableOnly: true,
-    keys: ['claimNo', 'clmStatus'],
+    keys: ['claimNo', 'clmStatDesc'],
     pageID: 'processedClaims'
   }
 
@@ -648,7 +648,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         claimId: i.claimId,
         claimNo: i.claimNo,
         clmStatCd: this.batchOption.statusCode,
-        clmStatus: this.batchOption.description,
+        clmStatDesc: this.batchOption.description,
         reasonCd: this.batchOption.statusCode === 'IP' ? '' : this.reasonCd,
         updateUser: this.ns.getCurrentUser(),
         updateDate: this.ns.toDateTimeString(0)
@@ -659,13 +659,15 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     }
     this.cs.updateClaimStatus(JSON.stringify(params)).subscribe(
       (data: any)=>{
+        console.log('RESPONSE HERE!!!!!')
+        console.log(data);
         if(data.returnCode === 0){
           this.dialogIcon = 'error';
           this.successDiag.open();
         }else{
           /*this.dialogIcon = '';
           this.successDiag.open();*/
-          this.processedListData.tableData = updateClaimStatus;
+          this.processedListData.tableData = data.updateResult;
           this.processedTable.refreshTable();
           this.processedListModal.openNoClose();
           this.queryData.tableData = [];
