@@ -520,6 +520,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   setStatus(ev) {
+    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+    
     this.claimData.clmStatCd = ev.statusCode;
     this.claimData.clmStatus = ev.description;
   }
@@ -726,7 +728,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.showCustLoader = true;
 
     var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
-                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.effDate <= new Date(this.claimData.lossDate))
+                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.effDate <= new Date(this.claimData.lossDate) && a.statusDesc == 'In Force')
                                                                                .sort((a, b) => b.altNo - a.altNo)),
                             mergeMap(data => this.us.getPolGenInfo(data['policyList'][0].policyId, data['policyList'][0].policyNo)));
 
@@ -820,13 +822,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev);
       }
     });
-    // if(str === 'lc') {
-    //   this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == 'C' };
-    //   this.lossCdLOV.checkCode('C', this.claimData.lossAbbr, ev);
-    // } else if(str === 'lp') {
-    //   this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == 'P' };
-    //   this.lossCdLOV.checkCode('P', this.claimData.lossPdAbbr, ev);
-    // }
   }
 
   dc(ev, data, type) {

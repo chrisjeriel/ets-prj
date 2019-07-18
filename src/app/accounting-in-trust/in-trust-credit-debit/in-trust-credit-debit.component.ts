@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
 import { CMDM } from '@app/_models';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 @Component({
@@ -31,6 +32,7 @@ export class InTrustCreditDebitComponent implements OnInit {
   constructor(private accountingService: AccountingService, private router: Router, private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Acct-IT | Credit/Debit Memo");
     this.getSeqDigits()
     this.getListing()
   }

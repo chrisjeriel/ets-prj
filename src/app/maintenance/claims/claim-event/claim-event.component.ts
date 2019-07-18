@@ -29,7 +29,7 @@ export class ClaimEventComponent implements OnInit {
 
     passData: any = {
         tableData            : [],
-        tHeader              : ['Event Code', 'Description', 'Line','Eventy Type','Loss Date From','Loss Date To','Active','Remarks'],
+        tHeader              : ['Event Code', 'Description', 'Line','Event Type','Loss Date From','Loss Date To','Active','Remarks'],
         dataTypes            : ['number','text','lovInput','lovInput','date','date','checkbox','text'],
         magnifyingGlass	 	 : ['lineCd','eventTypeCd'],
         nData:

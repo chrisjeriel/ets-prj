@@ -37,6 +37,8 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   private claimsHistoryInfo = ClaimsHistoryInfo;
 
+  @Input() isInquiry: boolean = false;
+
   passDataHistory: any = {
     tableData     : [],
     tHeader       : ['Hist. No.', 'Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Curr Rt', 'Reserve', 'Payment Amount', 'Ref. No.', 'Ref. Date', 'Remarks'],
@@ -194,6 +196,29 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.clmHistoryData.riskName    = this.claimInfo.riskName;
     this.clmHistoryData.insuredDesc = this.claimInfo.insuredDesc; 
     this.clmHistoryData.claimStat   = this.claimInfo.clmStatus;
+
+    //neco
+    if(this.isInquiry){
+      this.passDataHistory.uneditable = [];
+      this.passDataApprovedAmt.uneditable = [];
+
+      this.passDataHistory.addFlag = false;
+      this.passDataHistory.deleteFlag = false;
+      this.passDataHistory.disableGeneric = true;
+
+      this.passDataApprovedAmt.addFlag = false;
+      this.passDataApprovedAmt.deleteFlag = false;
+      this.passDataApprovedAmt.disableGeneric = true;
+      
+      for(var i in this.passDataHistory.tHeader){
+        this.passDataHistory.uneditable.push(true);
+      }
+      for(var j in this.passDataApprovedAmt.tHeader){
+        this.passDataApprovedAmt.uneditable.push(true);
+      }
+    }
+    //end neco
+
     this.getClaimHistory();
     this.getClaimApprovedAmt();
     this.getResStat();
@@ -496,11 +521,11 @@ export class ClmClaimHistoryComponent implements OnInit {
         this.params.saveClaimHistory   = [];
         this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
       }else{
-        if((Number(totResAmt) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
-          this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
-          this.showWarnMsg();
-          this.params.saveClaimHistory   = [];
-        }else{
+        // if((Number(totResAmt) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
+        //   this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
+        //   this.showWarnMsg();
+        //   this.params.saveClaimHistory   = [];
+        // }else{
           if(this.clmHistoryData.mtnParam == 'Y'){
             if(Number(this.clmHistoryData.allowMaxSi) >= Number(this.clmHistoryData.totalRes)){
               if(this.cancelFlag == true){
@@ -515,14 +540,24 @@ export class ClmClaimHistoryComponent implements OnInit {
               this.params.saveClaimHistory   = [];
             }
           }else{
-            if(this.cancelFlag == true){
-              this.cs.showLoading(true);
-              setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+            if((Number(totResAmt) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
+              this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
+              this.showWarnMsg();
+              this.params.saveClaimHistory   = [];
+            }else if((Number(this.clmHistoryData.totalRes) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
+              this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
+              this.showWarnMsg();
+              this.params.saveClaimHistory   = [];
             }else{
-              this.cs.confirmModal();
+                if(this.cancelFlag == true){
+                this.cs.showLoading(true);
+                setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+              }else{
+                this.cs.confirmModal();
+              }
             }
           }
-        }
+     //   }
       }
     }
   }
@@ -550,6 +585,12 @@ export class ClmClaimHistoryComponent implements OnInit {
           this.showWarnMsg();
           e.histType = '';
           e.histTypeDesc = '';
+        }
+        if(e.histType == 1 && (Number(e.reserveAmt) > Number(this.clmHistoryData.allowMaxSi))){
+          this.warnMsg = 'Initial Reserve must be less than or equal to the Allowable Maximum Sum Insured.';
+          this.showWarnMsg();
+          e.reserveAmt = '';
+
         }
       }
     });

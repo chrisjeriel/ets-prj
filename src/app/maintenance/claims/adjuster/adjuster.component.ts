@@ -94,7 +94,7 @@ export class AdjusterComponent implements OnInit {
                 private maintenanceService: MaintenanceService, private router: Router, private ns: NotesService) { }
 
   ngOnInit() {
-  	this.titleService.setTitle('Mtn | Ceding Company List');
+  	this.titleService.setTitle('Mtn | Claims | Adjuster');
   	this.retrieveMtnAdjustList();
   }
 
