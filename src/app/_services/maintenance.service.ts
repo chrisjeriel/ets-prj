@@ -737,9 +737,10 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
 	}
 
-	getMtnParameters(paramType){
+	getMtnParameters(paramType,paramName?){
 		const params = new HttpParams()
 		     .set('paramType', (paramType === null || paramType === undefined ? '' : paramType))
+		     .set('paramName', (paramName === null || paramName === undefined ? '' : paramName))
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnParameters',{params});
 	}
 

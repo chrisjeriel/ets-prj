@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '@environments/environment';
 
 import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV, CMDM, AccountingEntryCMDM, AccJvLossResDep, AccSrvInquiry, AccountingSrvcCancelledTransactions, QSOABalances, AccJvInterestOverdue, AccJvInPolBalAgainstLoss, AgainstLoss, AgainstNegativeTreaty, BatchOR, JVAccountingEntries, BatchOR2, AccJvOutAccOffset } from '@app/_models';
 
@@ -1293,5 +1294,15 @@ export class AccountingService {
 			new BatchOR2('N','N',new Date(2018,11,2),'2018-00000212','Mrs Santos',546043),
 		]
 		return this.batchOR2;
+	}
+
+
+	getCMDMListing(params){
+		// const params = new HttpParams()
+  //           .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+  //           .set('projId', (projId == null || projId == undefined ? '' : projId))
+  //           .set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
+  //           .set('clmDistNo', (clmDistNo == null || clmDistNo == undefined ? '' : clmDistNo))
+        return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCMDMList',{params});    
 	}
 }
