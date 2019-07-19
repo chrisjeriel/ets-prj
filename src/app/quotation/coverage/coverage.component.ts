@@ -452,7 +452,7 @@ export class CoverageComponent implements OnInit {
   }
 
   focusBlur() {
-    setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+    //setTimeout(() => {$('.req').focus();$('.req').blur()},0)
   }
 
   showCurrencyModal(){
