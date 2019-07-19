@@ -141,7 +141,6 @@ export class ClmSectionCoversComponent implements OnInit {
         this.successDiag.open();
         this.getClmSec();
         this.form.control.markAsPristine();
-
         this.disableClmHistory.emit(false);
       }
     });
