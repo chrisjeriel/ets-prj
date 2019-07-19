@@ -28,6 +28,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   @ViewChild('clmEventLOV') clmEventLOV: MtnClmEventComponent;
   @ViewChild('clmEventTypeLOV') clmEventTypeLOV: MtnClmEventTypeComponent;
   @ViewChild('adjusterLOV') adjusterLOV: MtnAdjusterComponent;
+  @ViewChild('adjusterLOVMain') adjusterLOVMain: MtnAdjusterComponent;
   @ViewChild('adjConfirmSave') adjConfirmSave: ConfirmSaveComponent;
   @ViewChild('adjSuccessDialog') adjSuccessDialog: SucessDialogComponent;
   @ViewChild('adjCancelBtn') adjCancelBtn: CancelButtonComponent;
@@ -46,10 +47,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   adjData: any = {
     tableData: [],
-    tHeader: ['Adjuster No','Adjuster Name','Adjuster Reference No'],
+    tHeader: ['Adjuster No','Adjuster Name','Adjuster File No'],
     keys: ['adjId','adjName','adjRefNo'],
     dataTypes: ['lovInput-r','text','text'],
-    uneditable: [false,true,true],
+    uneditable: [false,true,false],
     addFlag: true,
     paginateFlag: true,
     infoFlag: true,
@@ -137,6 +138,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     remarks: null,
     approvedBy: null,
     approvedDate: null,
+    mainAdjId: null,
+    mainAdjName: null,
+    mainAdjFileNo: null,
     createUser: null,
     createDate: null,
     updateUser: null,
@@ -522,8 +526,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   showAdjLOV(ev) {
     this.hiddenAdj = this.adjData.tableData.filter(a => a.adjId !== undefined && !a.deleted && a.showMG != 1).map(a => a.adjId);
-    this.adjusterLOV.modal.openNoClose();
     this.adjLOVRow = ev.index;
+    
+    this.adjusterLOV.modal.openNoClose();
   }
 
   setSelectedAdjuster(data) {
@@ -558,6 +563,16 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     $('#cust-table-container').addClass('ng-dirty');
 
     this.adjTable.refreshTable();
+  }
+
+  showAdjLOVMain(ev) {
+    this.adjusterLOVMain.modal.openNoClose();
+  }
+
+  setSelectedMainAdjuster(data) {
+    
+    this.claimData.mainAdjId = data.adjId;
+    this.claimData.mainAdjName = data.adjName;
   }
 
   adjTableRowClick(data) {
@@ -835,21 +850,23 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     pNo[pNo.length-1] = '%';
     this.showCustLoader = true;
 
-    var dCheck = this.claimData.polTermTag == 'Y' ? new Date(this.claimData.lossDate) : new Date();
-    console.log(dCheck);
+    var effD = new Date(this.claimData.effDate).setSeconds(0);
+    var lossD = new Date(this.claimData.lossDate).setSeconds(0);
+    var dCheck = this.claimData.polTermTag == 'Y' && effD <= lossD ? lossD : new Date();
 
     var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
-                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.effDate <= dCheck && a.statusDesc == 'In Force')
+                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => new Date(a.effDate).setSeconds(0) <= dCheck && a.statusDesc == 'In Force')
                                                                                .sort((a, b) => b.altNo - a.altNo)),
                             mergeMap(data => this.us.getPolGenInfo(data['policyList'][0].policyId, data['policyList'][0].policyNo)));
 
     this.subscription.add(sub$.subscribe(data => {
-      this.showCustLoader = false;
+      // this.showCustLoader = false;
 
       var pol = data['policy'];
       var prj = pol['project'];
 
       this.claimData['refPolId'] = pol['policyId'];
+      this.claimData.coRefNo = pol['coRefNo'];
       this.claimData.currencyCd = pol['currencyCd'];
       this.claimData.issueDate = this.ns.toDateTimeString(pol['issueDate']);
       this.claimData.prinId = this.pad(pol['principalId'], 6);
