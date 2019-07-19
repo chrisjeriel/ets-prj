@@ -41,7 +41,7 @@ span.ui-column-resizer {
     <div class="new-btn-container" style="position: absolute; margin-top:-28px;" [style.width]="(passData.searchFlag || ctrlR.innerHTML.trim()) ? '100%' : 'auto'" >
 
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()" [disabled]="passData.disableAdd !==undefined && passData.disableAdd" [class.cust-btn-disabled]="passData.disableAdd !==undefined && passData.disableAdd"><a>Add</a></button>
-        <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
+        <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()" [disabled]="passData.disableEdit !==undefined && passData.disableEdit"><a class="paginate_button previous">Edit</a></button>
         <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="confirmDelete()" [disabled]="(selected.length==0 && passData.checkFlag) || (btnDisabled || passData.btnDisabled)"><a class="paginate_button previous">Delete</a></button>
         <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()" [disabled]="passData.disableGeneric !==undefined && passData.disableGeneric"><div class="paginate_button previous" >{{passData.genericBtn}}</div></button>
         <div class="search-filter" *ngIf="passData.searchFlag">

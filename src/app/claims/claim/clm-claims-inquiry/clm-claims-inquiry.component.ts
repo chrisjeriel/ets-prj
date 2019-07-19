@@ -13,15 +13,19 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 export class ClmClaimsInquiryComponent implements OnInit {
 	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 	passData: any = {
-	    tHeader: ["Claim No", "Status", "Policy No", "Ceding Company", "Insured", 
-	    		  "Risk", "Loss Date", "Loss Details",
-	    		  "Currency", "Total Reserve", "Total Payment", "Adjusters", "Processed By"],
-		dataTypes: ["text", "text", "text", "text", "text", 
-					"text", "date", "text",
-					"text", "currency", "currency", "text", "text"],
-	    keys: ['claimNo','clmStatus','policyNo','cedingName','insuredDesc',
-	    	   'riskName', 'lossDate', 'lossDtl',
-	    	   'currencyCd', 'totalLossExpRes', 'totalLossExpPd', 'adjName', 'processedBy'],
+	    tHeader: ["Claim No", "Status", "Policy No", "Co Claim No", "Type of Cession", "Line Class", "Ceding Company", "Insured",
+	    		  "Co Ref No", "Adjuster", "Adjuster Ref No", "Risk", "Loss Date", "Report Date", "Reported By", "Creation Date", 
+	    		  "Processed By", "Loss Cause", "Loss Period", "Event Type", "Event", "Loss Details", "Remarks", "Section I",
+	    		  "Section II", "Section III", 'Currency', 'Total Reserved', 'Total Payment'],
+
+		dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", 
+					"date", "text", "date", "text", "text", "number", "text", "text", "text", "text", "checkbox", "checkbox", "checkbox", 
+					"text", "currency", "currency"],
+
+	    keys: ['claimNo','clmStatus','policyNo', 'coClaimNo', 'cessionDesc', 'lineClassDesc', 'cedingName','insuredDesc',
+	    	   'coRefNo', 'adjName', 'adjRefNo', 'riskName', 'lossDate', 'reportDate', 'reportedBy', 'createDate', 'processedBy', 
+	    	   'lossAbbr', 'lossPeriod', 'eventTypeDesc', 'eventDesc', 'lossDtl', 'remarks', 'secISiTag', 'secIISiTag', 'secIIISiTag', 
+	    	   'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
 	    infoFlag: true,
 	    searchFlag: true,
 	    pageLength: 10,
@@ -128,6 +132,10 @@ export class ClmClaimsInquiryComponent implements OnInit {
   		currencyCd: '',
   		totalLossExpRes: '',
   		totalLossExpPd: '',
+  		remarks: '',
+  		secISiTag: '',
+  		secIISiTag: '',
+  		secIIISiTag: ''
   	};
 
   	loading: boolean = false;
@@ -178,8 +186,10 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	           for(var j of i.clmAdjusterList){
 	             if(i.adjName === undefined){
 	               i.adjName = j.adjName;
+	               i.adjRefNo = j.adjRefNo;
 	             }else{
 	               i.adjName = i.adjName + '/' + j.adjName;
+	               i.adjRefNo = i.adjRefNo + '/' + j.adjRefNo;
 	             }
 	           }
 	           this.passData.tableData.push(i);
@@ -226,6 +236,10 @@ export class ClmClaimsInquiryComponent implements OnInit {
 				currencyCd: '',
 				totalLossExpRes: '',
 				totalLossExpPd: '',
+				remarks: '',
+		  		secISiTag: 'N',
+		  		secIISiTag: 'N',
+		  		secIIISiTag: 'N'
 			};
 			this.create = {
 				date: null,
@@ -237,7 +251,17 @@ export class ClmClaimsInquiryComponent implements OnInit {
 			}
 			this.loading = false;
 		}else{
+			console.log(data);
 			this.claimId = data.claimId;
+			this.claimNo = data.claimNo;
+			this.policyNo = data.policyNo;
+			this.selected = data;
+			this.selected.lossDate = this.ns.toDateTimeString(this.selected.lossDate);
+			this.create.date = this.ns.toDateTimeString(this.selected.createDate).split('T')[0];
+			this.create.time = this.ns.toDateTimeString(this.selected.createDate).split('T')[1];
+			this.report.date = this.ns.toDateTimeString(this.selected.reportDate).split('T')[0];
+			this.report.time = this.ns.toDateTimeString(this.selected.reportDate).split('T')[1];
+			/*this.claimId = data.claimId;
 			this.claimNo = data.claimNo;
 			this.policyNo = data.policyNo;
 			this.claimsService.getClmGenInfo(rowData.claimId, rowData.claimNo).subscribe(
@@ -266,11 +290,8 @@ export class ClmClaimsInquiryComponent implements OnInit {
 				(error: any)=>{
 					this.loading = false;
 				}
-			);
+			);*/
 		}
-		console.log(this.create);
-		console.log(this.report);
-		console.log(this.selected.lossDate);
 	}
 
 	navigateToGenInfo() {  
@@ -321,12 +342,21 @@ export class ClmClaimsInquiryComponent implements OnInit {
       for(var i  of this.passData.tableData){
       	i.totalLossExpRes = i.totalLossExpRes === null || i.totalLossExpRes === undefined || (i.totalLossExpRes !== null && i.totalLossExpRes !== undefined && i.totalLossExpRes.length === 0) ? 0 : i.totalLossExpRes;
       	i.totalLossExpPd = i.totalLossExpPd === null || i.totalLossExpPd === undefined || (i.totalLossExpPd !== null && i.totalLossExpPd !== undefined && i.totalLossExpPd.length === 0) ? 0 : i.totalLossExpPd;
-      	//i.adjName = i.adjName.length === 0 || i.adjName === null || i.adjName === undefined ? '' : i.adjName;
+      	i.coClaimNo = i.coClaimNo === null || i.coClaimNo === undefined || (i.coClaimNo !== null && i.coClaimNo !== undefined && i.coClaimNo.length === 0) ? '' : i.coClaimNo;
+      	i.coRefNo = i.coRefNo === null || i.coRefNo === undefined || (i.coRefNo !== null && i.coRefNo !== undefined && i.coRefNo.length === 0) ? '' : i.coRefNo;
+      	i.reportedBy = i.reportedBy === null || i.reportedBy === undefined || (i.reportedBy !== null && i.reportedBy !== undefined && i.reportedBy.length === 0) ? '' : i.reportedBy;
+      	i.eventTypeDesc = i.eventTypeDesc === null || i.eventTypeDesc === undefined || (i.eventTypeDesc !== null && i.eventTypeDesc !== undefined && i.eventTypeDesc.length === 0) ? '' : i.eventTypeDesc;
+      	i.eventDesc = i.eventDesc === null || i.eventDesc === undefined || (i.eventDesc !== null && i.eventDesc !== undefined && i.eventDesc.length === 0) ? '' : i.eventDesc;
+      	i.secISiTag = i.secISiTag === null || i.secISiTag === undefined || (i.secISiTag !== null && i.secISiTag !== undefined && i.secISiTag.length === 0) ? 'N' : i.secISiTag;
+      	i.secIISiTag = i.secIISiTag === null || i.secIISiTag === undefined || (i.secIISiTag !== null && i.secIISiTag !== undefined && i.secIISiTag.length === 0) ? 'N' : i.secIISiTag;
+      	i.secIIISiTag = i.secIIISiTag === null || i.secIIISiTag === undefined || (i.secIIISiTag !== null && i.secIIISiTag !== undefined && i.secIIISiTag.length === 0) ? 'N' : i.secIIISiTag;
+      	i.remarks = i.remarks === null || i.remarks === undefined || (i.remarks !== null && i.remarks !== undefined && i.remarks.length === 0) ? '' : i.remarks;
       	toAlaSQLData.push(i);
       }
-      alasql('SELECT claimNo AS ClaimNo, clmStatus AS Status, policyNo AS PolicyNo, '+
-      	     'cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, datetime(lossDate) AS LossDate, lossDtl AS LossDetails, '+
-      	     'currencyCd AS Currency, currency(totalLossExpRes) AS TotalReserve , currency(totalLossExpPd) AS TotalPayment, adjName AS Adjusters, processedBy AS ProcessedBy '+
+      alasql('SELECT claimNo AS ClaimNo,clmStatus AS Status, policyNo AS PolicyNo, coClaimNo AS CoClaimNo, cessionDesc AS TypeOfCession, lineClassDesc AS LineClass, cedingName AS CedingCompany, insuredDesc AS Insured,'+
+			        'coRefNo AS CoRefNo, adjName AS Adjuster, adjRefNo AS AdjusterRefNo, riskName AS Risk, datetime(lossDate) AS LossDate, datetime(reportDate) AS ReportDate, reportedBy AS ReportedBy, datetime(createDate) AS CreationDate, processedBy AS ProcessedBy,'+ 
+					'lossAbbr AS LossCause, lossPeriod AS LossPeriod, eventTypeDesc AS EventType, eventDesc AS Event, lossDtl AS LossDetails, remarks AS Remarks, secISiTag AS SectionI, secIISiTag AS SectionII, secIIISiTag AS SectionIII,'+
+					'currencyCd AS Currency, currency(totalLossExpRes) AS TotalReserve, currency(totalLossExpPd) AS TotalPayment'+
       	     ' INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,toAlaSQLData]);
   }
 }

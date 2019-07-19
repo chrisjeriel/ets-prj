@@ -25,17 +25,33 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     infoFlag: true,
     paginateFlag: true,
     searchFlag: false,
-    saveBtn: false,
     pagination: true,
     pageStatus: true,
     selectFlag: false,
     editFlag: false,
-    pageLength: 10,
-    genericBtn: 'Save',
-    opts: [],
+    pageLength: 5,
+    pageID: 'passdata',
     widths: [203,50,130,130,130],
 
   };
+
+  passDataNegative: any = {
+      tableData: [],
+      tHeader: ['Quarter Ending', 'Currency', 'Currency Rate', 'Amount', 'Amount(PHP)'],
+      dataTypes: ['text', 'text', 'text', 'text', 'text'],
+      //nData: ,
+      checkFlag: true,
+      addFlag: true,
+      deleteFlag: true,
+      searchFlag: true,
+      infoFlag: true,
+      paginateFlag: true,
+      pageLength: 3,
+      pageID: 'passDataNegative',
+      uneditable: [true, false],
+      keys: ['quarterEnding', 'currencyCd', 'currencyRt', 'amount', 'localAmount'],
+      widths: ['auto', 'auto', 1]
+  }
 
   ClaimsOffset: any = {
     tableData: this.accountingService.getClaimLosses(),

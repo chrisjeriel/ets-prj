@@ -49,6 +49,7 @@ export class ArDetailsComponent implements OnInit {
   };
 
   @Input() paymentType: string = "";
+  @Input() record: any;
    
   constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private route : ActivatedRoute) { }
 
@@ -63,6 +64,7 @@ export class ArDetailsComponent implements OnInit {
     if(this.paymentType == null){
       this.paymentType = "";
     }
+    console.log(this.record);
   }
 
 

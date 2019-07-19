@@ -19,20 +19,18 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     resizable: [true, true, true, true, true, true, true, true, true,true,true],
     dataTypes: ['text','text','text','number','date','date','number','text','percent','currency','currency'],
     nData: new AccJvInterestOverdue(null,null,null,null,new Date(),new Date(),null,null,null,null,null),
-    total:[null,null,null,null,null,null,null,null,'Total','prenium','overdueInt'],
-    magnifyingGlass: ['soaNo','policyNo'],
+    total:[null,null,null,null,null,null,null,null,'Total','premium','overdueInt'],
+    magnifyingGlass: ['soaNo'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
     paginateFlag: true,
-    saveBtn: false,
     pagination: true,
     pageStatus: true,
     selectFlag: false,
     editFlag: false,
     pageLength: 10,
-    genericBtn: 'Save',
     widths: [180,180,120,1,1,1,1,1,85,120,120]
   };
 

@@ -22,6 +22,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   @ViewChild('polListMdl') polListModal : ModalComponent;
   @ViewChild('reasonMdl') reasonModal : ModalComponent;
   @ViewChild('processPrompt') processModal : ModalComponent;
+  @ViewChild('processedList') processedListModal : ModalComponent;
   @ViewChild('successDiagSave') successDiag: SucessDialogComponent;
 
   @ViewChild(MtnTypeOfCessionComponent) cessionModal: MtnTypeOfCessionComponent;
@@ -32,6 +33,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   @ViewChild('polListTable') polListTable : CustNonDatatableComponent;
   @ViewChild('queryTbl') queryTable : CustNonDatatableComponent;
   @ViewChild('reasonListTable') reasonTable : CustNonDatatableComponent;
+  @ViewChild('processedClaimsTbl') processedTable : CustNonDatatableComponent;
 
   queryData: any = {
     tableData: [],
@@ -80,8 +82,18 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     pageID: 'reasonData'
   }
 
-  batchOption: string = 'IP';
-  batchOptionDesc: string = 'In Progress';
+  processedListData: any = {
+    tableData: [],
+    tHeader: ['Claim No', 'Status'],
+    dataTypes: ['text', 'text'],
+    pageLength: 10,
+    pagination: true,
+    pageStatus: true,
+    tableOnly: true,
+    keys: ['claimNo', 'clmStatDesc'],
+    pageID: 'processedClaims'
+  }
+
   dialogIcon: string = '';
   dialogMessage: string = '';
   reasonCd: string = '';
@@ -125,6 +137,12 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     reasonCd: '',
     reasonDesc: ''
   }
+
+  batchOption: any = {
+    statusCode: 'IP',
+    description: 'In Progress',
+    openTag: ''
+  };
 
   processBtnDisabled: boolean = true;
   claimNoDataFound: boolean = false;
@@ -198,6 +216,14 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
       (data: any)=>{
         if(data.claimStatus.length !== 0){
           this.arrClaimStatus = data.claimStatus;
+          for(var i of this.arrClaimStatus){
+            if('IN PROGRESS' === i.description.toUpperCase()){
+              /*this.batchOption.statusCode = i.statusCode;
+              this.batchOption.description = i.description;
+              this.batchOption.openTag = i.openTag;*/
+              this.batchOption = i;
+            }
+          }
           this.batchOptionLoading = false;
         }
       },
@@ -282,7 +308,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     this.cs.getChangeClaimStatus(this.searchParams).subscribe(
        (data: any)=>{
          if(data.claimList.length !== 0){
-           if(this.batchOption !== 'IP'){
+           /*if(this.batchOption !== 'IP'){
              data.claimList = data.claimList.filter(a=>{
                                                            return a.clmStatCd !== 'TC' &&
                                                                   a.clmStatCd !== 'CD' &&
@@ -290,7 +316,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
                                                                   a.clmStatCd !== 'SP' &&
                                                                   a.clmStatCd !== 'DN'
                                                        });
-           }
+           }*/
            for(var i of data.claimList){
              for(var j of i.clmAdjusterList){
                if(i.adjName === undefined){
@@ -436,7 +462,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
             this.reasonDesc = '';
             this.ns.lovLoader(ev, 0);
           } else {
-            this.ms.getMtnClaimReason(this.reasonCd,this.batchOption, 'Y').subscribe(data => {
+            this.ms.getMtnClaimReason(this.reasonCd,this.batchOption.statusCode, 'Y').subscribe(data => {
               if(data['clmReasonList'].length > 0) {
                 this.reasonCd = data['clmReasonList'][0].reasonCd;
                 this.reasonDesc = data['clmReasonList'][0].description;
@@ -550,7 +576,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   validateSearch(){
     if(!this.checkSearchFields()){
       this.queryModal.closeModal();
-      this.searchParams.batchOpt = this.batchOption;
+      this.searchParams.batchOpt = this.batchOption.statusCode;
       this.clearDetails();
       this.retrieveQueryList();
     }else{
@@ -560,8 +586,24 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     }
   }
 
+  changeBatchOption(data){
+     /*this.batchOption.statusCode = data.statusCode;
+     this.batchOption.description = data.description;
+     this.batchOption.openTag = data.openTag;*/
+     this.batchOption = data;
+     this.clearDetails(); 
+     this.searchParams.batchOpt = this.batchOption.statusCode;
+     if(!this.checkSearchFields()){
+       this.retrieveQueryList();
+     }else{
+       this.queryData.tableData = [];
+       this.queryTable.refreshTable();
+     }
+  }
+
   process(){
-    switch(this.batchOption){
+    console.log(this.batchOption);
+    switch(this.batchOption.statusCode){
       case 'IP':
         this.dialogIcon = 'info';
         this.dialogMessage = 'Are you sure you want to re-open this claim?';
@@ -592,10 +634,10 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         this.dialogMessage = 'Are you sure you want to deny this claim?';
         this.processModal.openNoClose();
         break;
-      /*default:
+      default:
         this.dialogIcon = 'info';
-        this.dialogMessage = 'Are you sure you want to '+ this.batchOptionDesc + ' this claim?';
-        this.processModal.openNoClose();*/
+        this.dialogMessage = 'Are you sure you want to '+ this.batchOption.description + ' this claim?';
+        this.processModal.openNoClose();
     }
   }
 
@@ -604,8 +646,10 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     for(var i of this.queryTable.selected){
       updateClaimStatus.push({
         claimId: i.claimId,
-        clmStatCd: this.batchOption,
-        reasonCd: this.batchOption === 'IP' ? '' : this.reasonCd,
+        claimNo: i.claimNo,
+        clmStatCd: this.batchOption.statusCode,
+        clmStatDesc: this.batchOption.description,
+        reasonCd: this.batchOption.statusCode === 'IP' ? '' : this.reasonCd,
         updateUser: this.ns.getCurrentUser(),
         updateDate: this.ns.toDateTimeString(0)
       });
@@ -615,12 +659,17 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     }
     this.cs.updateClaimStatus(JSON.stringify(params)).subscribe(
       (data: any)=>{
+        console.log('RESPONSE HERE!!!!!')
+        console.log(data);
         if(data.returnCode === 0){
           this.dialogIcon = 'error';
           this.successDiag.open();
         }else{
-          this.dialogIcon = '';
-          this.successDiag.open();
+          /*this.dialogIcon = '';
+          this.successDiag.open();*/
+          this.processedListData.tableData = data.updateResult;
+          this.processedTable.refreshTable();
+          this.processedListModal.openNoClose();
           this.queryData.tableData = [];
           this.queryTable.selected = [];
           this.clearDetails();
@@ -664,6 +713,13 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     }
     this.reasonCd = '';
     this.reasonDesc = '';
+  }
+
+  compareFn(c1:any, c2: any): boolean {
+    console.log('compareFn');
+    console.log(c1);
+    console.log(c2);
+      return c1.statusCode === c2.statusCode;
   }
 }
 
