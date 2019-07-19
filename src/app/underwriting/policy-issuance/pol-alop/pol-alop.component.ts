@@ -306,12 +306,13 @@ export class PolAlopComponent implements OnInit {
             this.dialogIcon = "success";
             this.successItemDiag.open();
             this.table.markAsPristine();
-
+            if(cancelFlag !== undefined){
+              this.itmInfoMdl.closeModal();
+            }
             if(this.newAlt) {
               this.newAlt = false;
               this.underwritingService.fromCreateAlt = false;
             }
-
             this.getPolAlopItem();
           }
         });
