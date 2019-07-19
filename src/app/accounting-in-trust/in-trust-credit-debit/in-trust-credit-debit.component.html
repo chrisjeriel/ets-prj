@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-non-datatable #table [passData]="passDataCMDMListing" (add)="onClickAdd($event)" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (edit)="onClickEdit()"></app-cust-non-datatable>
+						<app-cust-non-datatable #table [passData]="passDataCMDMListing" (add)="onClickAdd($event)" (newClick)="onRowClick($event)" (newRowDblClick)="onRowDblClick($event)" (edit)="onClickEdit()"></app-cust-non-datatable>
 					</div>
 					<div class="col-sm-12">
 						<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">

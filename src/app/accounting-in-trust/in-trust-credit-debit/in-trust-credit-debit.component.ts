@@ -65,10 +65,10 @@ export class InTrustCreditDebitComponent implements OnInit {
   }
 
   onRowClick(data){
-
+    
   }
 
   onRowDblClick(data){
-     this.router.navigate(['/acct-it-generate-cmdm'], { skipLocationChange: true }); 
+     this.router.navigate(['/acct-it-generate-cmdm',{tranId:data.tranId,memoType:data.memoType}], { skipLocationChange: true }); 
   }
 }
