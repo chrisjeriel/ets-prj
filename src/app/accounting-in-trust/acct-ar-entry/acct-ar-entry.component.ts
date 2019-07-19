@@ -21,6 +21,19 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         widths: [130,70,100,150,210,1,"auto",100,180],
         keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass'],
         pageID: 1,
+        addFlag: true,
+        genericBtn: 'Delete',
+        nData: {
+          paytMode: '',
+          currCd: 'PHP',
+          currRt: 1,
+          paytAmt: 0,
+          bank: '1',
+          bankAcct: '',
+          checkNo: '',
+          checkDate: '',
+          checkClass: ''
+        },
         opts:[
           {
             selector: 'paytMode',
@@ -29,8 +42,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           },
           {
             selector: 'currCd',
-            vals: ['EUR','PHP','USD'],
-            prev: ['EUR', 'PHP', 'USD']
+            vals: [],
+            prev: []
           },
           {
             selector: 'bank',
@@ -105,6 +118,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   paymentTypes: any[] = [];
   currencies: any[] = [];
 
+  selectedCurrency: any = {};
+
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
@@ -131,7 +146,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.retrieveArEntry(tranId, arNo);
     }
     this.retrievePaymentType();
-    this.retrieveCurrency();
+    setTimeout(()=>{
+      this.retrieveCurrency();
+    },1000);
   }
 
   ngOnDestroy(){
@@ -141,6 +158,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   tabController(event) {
   	this.onChange.emit({ type: this.arInfo.tranTypeCd });
     console.log(this.arInfo.tranTypeName);
+  }
+
+  changeCurrency(data){
+    this.selectedCurrency = data;
+    this.arInfo.currCd = data.currencyCd; 
+    this.arInfo.currRate = data.currencyRt; 
   }
 
   retrieveArEntry(tranId, arNo){
@@ -182,9 +205,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.updateDate     = this.ns.toDateTimeString(data.ar.updateDate);
 
           this.passData.tableData    = data.ar.paytDtl;
+          this.selectedCurrency.currencyCd = data.ar.currCd;
+          this.selectedCurrency.currencyRt = data.ar.currRate;
+          
           this.paytDtlTbl.refreshTable();
           this.onChange.emit({ type: this.arInfo.tranTypeCd });
-         this.disableTab.emit(false);
+          this.disableTab.emit(false);
+
         }
       },
       (error)=>{
@@ -210,15 +237,18 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       (data:any)=>{
         if(data.currency.length !== 0){
           for(var i of data.currency){
+            if(this.isAdd && 'PHP' === i.currencyCd){
+              this.selectedCurrency = {currencyCd: i.currencyCd, currencyRt: i.currencyRt};
+            }
             this.currencies.push({currencyCd: i.currencyCd, currencyRt: i.currencyRt});
+            this.passData.opts[1].vals.push(i.currencyCd);
+            this.passData.opts[1].prev.push(i.currencyCd);
           }
+          console.log(this.selectedCurrency);
+          console.log(this.currencies);
         }
       }
     );
-  }
-
-  test(event){
-    console.log(event.currencyCd);
   }
 
 }

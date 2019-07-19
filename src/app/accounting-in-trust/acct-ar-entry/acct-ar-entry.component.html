@@ -69,7 +69,8 @@
 					<div class="input-group">
 						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.currCd" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-						<select class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="currencies" (ngModelChange)="arInfo.currCd = $event.currencyCd; arInfo.currRate = $event.currencyRt; test($event)" appRequired >
+						{{selectedCurrency === currencies[1]}}
+						<select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired >
 							<option *ngFor="let curr of currencies" [ngValue]="curr">{{curr.currencyCd}}</option>
 						</select>
 						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4" [(ngModel)]="arInfo.arAmt" appRequired appCurrency>
