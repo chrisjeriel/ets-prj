@@ -349,7 +349,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
       	i.eventDesc = i.eventDesc === null || i.eventDesc === undefined || (i.eventDesc !== null && i.eventDesc !== undefined && i.eventDesc.length === 0) ? '' : i.eventDesc;
       	i.secISiTag = i.secISiTag === null || i.secISiTag === undefined || (i.secISiTag !== null && i.secISiTag !== undefined && i.secISiTag.length === 0) ? '' : i.secISiTag;
       	i.secIISiTag = i.secIISiTag === null || i.secIISiTag === undefined || (i.secIISiTag !== null && i.secIISiTag !== undefined && i.secIISiTag.length === 0) ? '' : i.secIISiTag;
-      	i.secIIISiTag = i.secIIISiTag === null || i.secIIISiTag === undefined || (i.secIIISiTag !== null && i.secIIISiTag !== undefined && i.secIIISiTag.length === 0) ? '' : i.SecIIISiTag;
+      	i.secIIISiTag = i.secIIISiTag === null || i.secIIISiTag === undefined || (i.secIIISiTag !== null && i.secIIISiTag !== undefined && i.secIIISiTag.length === 0) ? '' : i.secIIISiTag;
       	i.remarks = i.remarks === null || i.remarks === undefined || (i.remarks !== null && i.remarks !== undefined && i.remarks.length === 0) ? '' : i.remarks;
       	toAlaSQLData.push(i);
       }
