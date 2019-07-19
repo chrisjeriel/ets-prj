@@ -1,6 +1,6 @@
 <app-modal class="d-none" (modalOpened)="openModal()" id="adjusterMdl" #mdl>
 	<div header>List of Values</div>
-	<div body style="min-width: 400px !important;">
+	<div body style="min-width: 300px !important;">
         <div style="position: relative;">
             <app-cust-non-datatable [passData]="adjuster" (rowClick)="onRowClick($event)" ></app-cust-non-datatable>
         </div>

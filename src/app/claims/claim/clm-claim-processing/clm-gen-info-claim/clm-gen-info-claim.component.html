@@ -61,15 +61,15 @@
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" [ngModel]="claimData.mainAdjId" [readonly]="isInquiry">
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" [(ngModel)]="claimData.adjId" [readonly]="isInquiry" (change)="checkCode($event, 'mainAdj')">
                     <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                         <a><i class="fa fa-search" (click)="showAdjLOVMain()"></i></a>
                     </div>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.mainAdjName" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.adjName" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster File No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.mainAdjFileNo" [readonly]="claimData?.mainAdjName == null || claimData?.mainAdjName == ''">
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.adjFileNo" [readonly]="claimData?.adjName == null || claimData?.adjName == ''">
                     <button type="button" class="cust-btn" (click)="openAdjustersModal();" style="margin-left: 2px; max-height: 21px; padding: 0 10px; margin-right: 0; z-index: 1 !important;" [disabled]="disableAdjusterBtn"><a>Adjusters</a></button>
                 </div>
                 <div class="input-group" [class.d-none]="!showUnpaidMsg">

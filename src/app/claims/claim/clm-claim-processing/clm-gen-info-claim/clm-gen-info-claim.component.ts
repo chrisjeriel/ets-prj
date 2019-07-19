@@ -138,9 +138,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     remarks: null,
     approvedBy: null,
     approvedDate: null,
-    mainAdjId: null,
-    mainAdjName: null,
-    mainAdjFileNo: null,
+    adjId: null,
+    adjName: null,
+    adjFileNo: null,
     createUser: null,
     createDate: null,
     updateUser: null,
@@ -570,9 +570,12 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   setSelectedMainAdjuster(data) {
-    
-    this.claimData.mainAdjId = data.adjId;
-    this.claimData.mainAdjName = data.adjName;
+    this.ns.lovLoader(data.ev, 0);
+    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+
+    this.claimData.adjId = data.adjId;
+    this.claimData.adjName = data.adjName;
+    this.claimData.adjFileNo = '';
   }
 
   adjTableRowClick(data) {
@@ -860,7 +863,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
                             mergeMap(data => this.us.getPolGenInfo(data['policyList'][0].policyId, data['policyList'][0].policyNo)));
 
     this.subscription.add(sub$.subscribe(data => {
-      // this.showCustLoader = false;
+      this.showCustLoader = false;
 
       var pol = data['policy'];
       var prj = pol['project'];
@@ -952,6 +955,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
         this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lineCd == line };
         this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev);
+      } else if(str === 'mainAdj') {
+        this.adjusterLOVMain.checkCode(this.claimData.adjId, ev);
       }
     });
   }
