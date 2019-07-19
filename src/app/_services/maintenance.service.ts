@@ -1140,4 +1140,11 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitTranType", {params});
     }
 
+    getMtnBookingMonth(bookingMm?, bookingYear?){
+    	const params = new HttpParams()
+    				.set('bookingMm', (bookingMm === null || bookingMm === undefined ? '' : bookingMm))
+    	     		.set('bookingYear', (bookingYear === null || bookingYear === undefined ? '' : bookingYear));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBookingMonth", {params});
+    }
+
 }
