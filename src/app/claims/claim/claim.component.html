@@ -13,12 +13,12 @@
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableClmHistory" class="ngb-tab" title="Claim History">
       <ng-template ngbTabContent>
-        <app-clm-claim-history [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event.disableNextTabs; disablePaytReq = $event.disablePaytReq" [isInquiry]="isInquiry"></app-clm-claim-history>
+        <app-clm-claim-history [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event.disableNextTabs; disablePaytReq = $event.disablePaytReq" ></app-clm-claim-history>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs"  title="Claim Distribution">
       <ng-template ngbTabContent>
-        <app-claim-distribution></app-claim-distribution>
+        <app-claim-distribution [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-claim-distribution>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs || disablePaytReq" title="Generate Payment Request">

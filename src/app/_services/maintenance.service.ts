@@ -90,7 +90,7 @@ export class MaintenanceService{
 			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
 			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
 			.set('blockCd',blockCd ===undefined || blockCd===null ? '' : blockCd)
-			.set('activeTag',activeTag === undefined ? 'Y' : activeTag)
+			.set('activeTag',activeTag === undefined ? 'Y' : activeTag==null ? '' : activeTag)
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceBlock',{params});
   }
 
@@ -737,9 +737,10 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
 	}
 
-	getMtnParameters(paramType){
+	getMtnParameters(paramType,paramName?){
 		const params = new HttpParams()
 		     .set('paramType', (paramType === null || paramType === undefined ? '' : paramType))
+		     .set('paramName', (paramName === null || paramName === undefined ? '' : paramName))
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnParameters',{params});
 	}
 
@@ -1126,6 +1127,18 @@ export class MaintenanceService{
             })
         }
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyMtnClmCashCall', params, header);
+    }
+
+
+    getMtnAcitTranType(tranClass?, tranTypeCd?, typePrefix?, autoTag?, baeTag?, activeTag?){
+    	const params = new HttpParams()
+    				.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+    	     		.set('tranTypeCd', (tranTypeCd === null || tranTypeCd === undefined ? '' : tranTypeCd))
+    	     		.set('typePrefix', (typePrefix === null || typePrefix === undefined ? '' : typePrefix))
+    	     		.set('autoTag', (autoTag === null || autoTag === undefined ? '' : autoTag))
+    	     		.set('baeTag', (baeTag === null || baeTag === undefined ? '' : baeTag))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitTranType", {params});
     }
 
 }
