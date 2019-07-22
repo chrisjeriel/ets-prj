@@ -61,7 +61,7 @@ export class BlockComponent implements OnInit {
 
   getBlock(){
   	this.table.loadingFlag = true;
-  	this.ms.getMtnBlock(this.locData.regionCd,this.locData.provinceCd,this.locData.cityCd,this.locData.districtCd,null).subscribe(a=>{
+  	this.ms.getMtnBlock(this.locData.regionCd,this.locData.provinceCd,this.locData.cityCd,this.locData.districtCd,null,null).subscribe(a=>{
   		if(a['region'].length != 0){
   			this.passTable.tableData = a['region'][0]['provinceList'][0]['cityList'][0]['districtList'][0]['blockList'];
   			  		this.passTable.tableData.forEach(a=>{

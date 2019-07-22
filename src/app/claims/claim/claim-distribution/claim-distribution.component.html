@@ -6,122 +6,66 @@
 				<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-1">Claim No</label>
-					<input type="text" disabled value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm-3">
+					<input type="text"  class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="claimInfo.claimNo" readonly> 
 					<label class="form-control-sm col-sm-1">Insured</label>
-					<input type="text" disabled value="2nd Inn. Inc" class="form-control form-control-sm cust-sm col-sm-5">
+					<input type="text"  class="form-control form-control-sm cust-sm col-sm-5" [ngModel]="claimInfo.insuredDesc" readonly>
 					<div class="col-sm-1"></div>
 				</div>
 				<div class="input-group" style="margin-bottom: -13px !important;">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-1" style="height: auto;">Policy No</label>
-					<input type="text" disabled value="CAR-2018-00001-99-0001-000" class="form-control form-control-sm cust-sm col-sm-3">
+					<input type="text"  class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="claimInfo.policyNo" readonly>
 					<label class="form-control-sm col-sm-1">Risk</label>
-					<input type="text" disabled value="Ayala Wakeboard" class="form-control form-control-sm cust-sm col-sm-5">
+					<input type="text"  class="form-control form-control-sm cust-sm col-sm-5" [ngModel]="claimInfo.riskName" readonly>
 					<div class="col-sm-1"></div>
 				</div>
 			</div>
 		</fieldset>
 	</div>
-	<!-- <div class="col-sm-2 header-buttons">
-		<div class="input-group">
-			<button type="button" class="cust-btn"><a>Distribute</a></button>
-		</div>
-		<div class="input-group">
-			<button type="button" class="cust-btn"><a>Post</a></button>
-		</div>
-		<div class="input-group">
-			<button type="button" class="cust-btn"><a>Cancel</a></button>
-		</div>
-	</div> -->
 </div>
-
-<!-- <div class="row main-row">
-	<div class="col-sm-6" style="padding-right: 5px">
-		<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
-			<legend class="scheduler-border">Distribution Header</legend>
-			<app-cust-non-datatable [passData]="distHeaderPassData"></app-cust-non-datatable>
-		</fieldset>
-		<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
-			<legend class="scheduler-border">Treaty / Facultative Distribution</legend>
-			<div style="padding-top: 5px;">
-				<app-cust-non-datatable [passData]="treatyDistPassData"></app-cust-non-datatable>
-			</div>
-		</fieldset>
-	</div>
-
-	<div class="col-sm-6" style="padding-left: 5px">
-		<fieldset class="scheduler-border" style="height: 100%">
-			<legend class="scheduler-border">Quota Share Pool Distribution</legend>
-			<div style="height:95%;margin-top:2px;">
-				<app-cust-non-datatable [passData]="poolDistPassData" ></app-cust-non-datatable>
-			</div>
-			<div>
-				<div></div>
-			</div>
-		</fieldset>	
-	</div>
-</div>	
-
-<fieldset class="scheduler-border" style="margin-bottom: 5px !important">
-	<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-	<div class="custom-row-inline-inset">
-		<div class="form-row">
-			<div class="input-group" style="margin-left: -20px;">
-				<label class="form-control-sm col-sm-1">Created By</label>
-				<input type="text" class="form-control form-control-sm col-sm">
-				<label class="form-control-sm col-sm-1">Date Created</label>
-				<input type="text" class="form-control form-control-sm col-sm">	
-				<label class="form-control-sm col-sm-1">Last Updated By</label>
-				<input type="text" class="form-control form-control-sm col-sm">
-				<label class="form-control-sm col-sm-1">Last Update</label>
-				<input type="text" class="form-control form-control-sm col-sm">	
-			</div>
-		</div>
-	</div>
-</fieldset> -->
 
 <div class="row" style="margin-top: 10px;">
 	<div class="col-sm-12">
 		<div class="cust-tabs-container">
-			<ngb-tabset>
-				<ngb-tab title="Reserve Distribution">
+			<ngb-tabset #tabset  (tabChange)="onTabChange($event)" [destroyOnHide]="false">
+				<ngb-tab title="Reserve Distribution" id="reserve" >
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border">
 							<div class="col-sm-1"></div>
 							<div class="col-sm-10">
-								<app-cust-non-datatable [passData]="reserveDistPassData"></app-cust-non-datatable>
+								<app-cust-editable-non-datatable #reserveDistTable [passData]="reserveDistPassData" (newClick)="clickRow($event)" class="d-block my-2"></app-cust-editable-non-datatable>
 							</div>
 							<div class="col-sm-1"></div>
 							<div class="input-group" style="margin-left: -13px !important;">
 								<label class="form-control-sm col-sm-1">Processed By</label>
-								<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" disabled="disabled">
 								<label class="form-control-sm col-sm-1">Processed Date</label>
-								<input type="datetime-local" class="form-control form-control-sm col-sm">
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.createDate" disabled="disabled">
 								<label class="form-control-sm col-sm-1">Last Update By</label>
-								<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" disabled="disabled">
 								<label class="form-control-sm col-sm-1">Last Update</label>
-								<input type="datetime-local" class="form-control form-control-sm col-sm">
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateDate" disabled="disabled">
 							</div>
 						</div>
 					</ng-template>
 				</ngb-tab>
-				<ngb-tab title="Payment Distribution">
+				<ngb-tab title="Payment Distribution" id="payment">
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border">
 							<div class="col-sm-1"></div>
 							<div class="col-sm-10">
-								<app-cust-non-datatable [passData]="paymentDistPassData"></app-cust-non-datatable>
+								<app-cust-editable-non-datatable #paymentDistTable [passData]="paymentDistPassData" class="d-block my-2" (newClick)="clickRow($event)"></app-cust-editable-non-datatable>
 							</div>
 							<div class="col-sm-1"></div>
 							<div class="input-group" style="margin-left: -13px !important;">
 								<label class="form-control-sm col-sm-1">Processed By</label>
-								<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" disabled="disabled">
 								<label class="form-control-sm col-sm-1">Processed Date</label>
-								<input type="datetime-local" class="form-control form-control-sm col-sm">
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.createDate" disabled="disabled">
 								<label class="form-control-sm col-sm-1">Last Update By</label>
-								<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" disabled="disabled">
 								<label class="form-control-sm col-sm-1">Last Update</label>
-								<input type="datetime-local" class="form-control form-control-sm col-sm">
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateDate" disabled="disabled">
 							</div>
 						</div>
 					</ng-template>
@@ -138,7 +82,7 @@
 			<div class="input-group">
 				<div class="col-sm-2"></div>
 				<div class="col-sm-8">
-					<app-cust-non-datatable [passData]="treatyDistPassData"></app-cust-non-datatable>
+					<app-cust-editable-non-datatable #treatyTable [passData]="treatyDistPassData" class="d-block my-2"></app-cust-editable-non-datatable>
 				</div>
 				<div class="col-sm-2"></div>
 			</div>
@@ -148,13 +92,13 @@
 
 <div class="row" style="margin-top: 10px !important; margin-bottom: 15px !important; position: relative; z-index: 0;">
 	<div class="col-sm-12 d-flex justify-content-center">
-		<app-modal [btnTitle]="'View Pool Dist'">
+		<app-modal [btnTitle]="'View Pool Dist'" (modalOpened)="getPoolDist()" [disabled]="selected==null || selected==undefined">
 			<div header>Pool Distribution</div>
 			<div body>
 				<fieldset class="scheduler-border" style="padding-bottom: 5px !important; margin-bottom: -5px !important; padding-top: 34px !important;">
 					<div class="row" style="padding-top: 5px;">
 						<div class="col-sm" style="margin-top: -28px;">
-							<app-cust-non-datatable [passData]="poolDistPassData"></app-cust-non-datatable>
+							<app-cust-editable-non-datatable #poolTable [passData]="poolDistPassData" class="d-block mb-4"></app-cust-editable-non-datatable>
 						</div>
 					</div>
 					<div class="row">
@@ -167,9 +111,9 @@
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2">SI Amount</label>
-								<input type="text" placeholder="8,000,000.00" class="form-control form-control-sm txt-content-rght col-sm" style="margin-left: 3px;">
-								<input type="text" placeholder="619,800,000.00" class="form-control form-control-sm txt-content-rght col-sm" style="margin-left: 3px;">
-								<input type="text" placeholder="627,800,000.00" class="form-control form-control-sm txt-content-rght col-sm" style="margin-left: 3px;">
+								<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.ret1" style="margin-left: 3px;">
+								<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.ret2" style="margin-left: 3px;">
+								<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.total" style="margin-left: 3px;">
 							</div>
 						</div>
 					</div>
@@ -180,7 +124,18 @@
 			</div>
 		</app-modal>
 		<button class="cust-btn">Print</button>
-		<button class="cust-btn">Cancel</button>
-		<button class="cust-btn ">Redistribute</button>
+		<button class="cust-btn" (click)="cancel()">Cancel</button>
+		<button class="cust-btn " [disabled]="selected==null || selected==undefined" (click)="confirmRedsitribute()" *ngIf="!isInquiry">Redistribute</button>
 	</div>
 </div>
+
+<app-modal #confirmRedist class="d-none">
+	<div header>Confirmation</div>
+	<div body>Are you sure you want to redistribute?</div>
+	<div footer class="w-100 text-right">
+		<button class="cust-btn" (click)="redistribute()">Yes</button>
+		<button class="cust-btn" (click)="confirmRedist.closeModal()">No</button>
+	</div>
+</app-modal>
+
+<app-sucess-dialog [icon]="diagIcon"></app-sucess-dialog>

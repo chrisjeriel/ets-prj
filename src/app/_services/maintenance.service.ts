@@ -90,7 +90,7 @@ export class MaintenanceService{
 			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
 			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
 			.set('blockCd',blockCd ===undefined || blockCd===null ? '' : blockCd)
-			.set('activeTag',activeTag === undefined ? 'Y' : activeTag)
+			.set('activeTag',activeTag === undefined ? 'Y' : activeTag==null ? '' : activeTag)
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceBlock',{params});
   }
 
@@ -737,9 +737,10 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
 	}
 
-	getMtnParameters(paramType){
+	getMtnParameters(paramType,paramName?){
 		const params = new HttpParams()
 		     .set('paramType', (paramType === null || paramType === undefined ? '' : paramType))
+		     .set('paramName', (paramName === null || paramName === undefined ? '' : paramName))
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnParameters',{params});
 	}
 

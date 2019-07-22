@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AccountingService } from '@app/_services';
 import { CMDM } from '@app/_models';
 import { Title } from '@angular/platform-browser';
@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./credit-debit-memo.component.css']
 })
 export class CreditDebitMemoComponent implements OnInit {
-  
   passDataCMDMListing: any = {
         tableData: this.accountingService.getCreditDebit(),
         tHeader: ["CM/DM No.","CM/DM Date","Recipient","Particulars","CM/DM Type","Ref No","Prepared By","Amount"],
@@ -22,6 +21,8 @@ export class CreditDebitMemoComponent implements OnInit {
         pageStatus: true,
         pagination: true,
     };
+
+  selected:any;
   constructor(private accountingService: AccountingService, private router: Router, private titleService: Title) { }
 
   ngOnInit() {
@@ -31,8 +32,9 @@ export class CreditDebitMemoComponent implements OnInit {
     this.router.navigate(['/accounting-service-credit-debit-memo'], { skipLocationChange: true }); 
   }
 
-  toGenerateCMDM(event) {
-    this.router.navigate(['/accounting-service-credit-debit-memo'], { skipLocationChange: true });
+  toGenerateCMDM(data) {
+    console.log(data)
+    this.router.navigate(['/accounting-service-credit-debit-memo', {memoType:data.memoType,tranId:data.tranId}], { skipLocationChange: true });
   }
 
 }

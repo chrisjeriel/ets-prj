@@ -1296,6 +1296,15 @@ export class AccountingService {
 		return this.batchOR2;
 	}
 
+	getCMDMListing(params){
+		// const params = new HttpParams()
+  //           .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+  //           .set('projId', (projId == null || projId == undefined ? '' : projId))
+  //           .set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
+  //           .set('clmDistNo', (clmDistNo == null || clmDistNo == undefined ? '' : clmDistNo))
+        return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCMDMList',{params});    
+	}
+
 	getArList(searchParams: any[]){
 		var params;
          if(searchParams.length < 1){
@@ -1372,14 +1381,42 @@ export class AccountingService {
  
     }
 
+    saveAcitCMDM(params){
+    	let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCMDM',JSON.stringify(params),header);
+ 
+    }
+
     updateAcitPaytReqStat(params){
          let header : any = {
              headers: new HttpHeaders({
                  'Content-Type': 'application/json'
              })
          };
-         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitPaytReqStat',params,header);
+
+   		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitPaytReqStat',params,header);
  
+    }         
+
+    getRefNoLov(param){
+    	const params = new HttpParams()
+			.set('arTag', (param.arTag == null || param.arTag == undefined ? '' : param.arTag))
+			.set('cvTag', (param.cvTag == null || param.cvTag == undefined ? '' : param.cvTag))
+			.set('jvTag', (param.jvTag == null || param.jvTag == undefined ? '' : param.jvTag))
+			.set('cmTag', (param.cmTag == null || param.cmTag == undefined ? '' : param.cmTag))
+			.set('dmTag', (param.dmTag == null || param.dmTag == undefined ? '' : param.dmTag))
+			.set('tranStat', (param.tranStat == null || param.tranStat == undefined ? '' : param.tranStat))
+			.set('arStatus', (param.arStatus == null || param.arStatus == undefined ? '' : param.arStatus))
+			.set('cvStatus', (param.cvStatus == null || param.cvStatus == undefined ? '' : param.cvStatus))
+			.set('jvStatus', (param.jvStatus == null || param.jvStatus == undefined ? '' : param.jvStatus))
+			.set('memoStatus', (param.memoStatus == null || param.memoStatus == undefined ? '' : param.memoStatus));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitRefNoLOV',{params});	
     }
 
     getAcitPrqTrans(reqId?,itemNo?){

@@ -37,6 +37,7 @@ export class MtnCurrencyComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @ViewChild(ModalComponent) modal: ModalComponent;
   modalOpen: boolean = false;
 
   @Input() lovCheckBox: boolean = false;
