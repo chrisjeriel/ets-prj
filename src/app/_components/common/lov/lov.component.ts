@@ -379,8 +379,17 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text', 'text', 'text'];
       this.passTable.keys = ['regionCd','regionDesc','remarks'];
       this.mtnService.getMtnRegion().subscribe((data: any) => {
-          this.passTable.tableData = data.region;
-          this.table.refreshTable();
+        console.log(data);
+        for (var a = 0; a < data.region.length; a++) {
+          if (data.region[a].activeTag === 'Y'){
+            let row : any = new Object();
+                row.regionCd = data.region[a].regionCd;
+                row.regionDesc = data.region[a].regionDesc;
+                row.remarks = data.region[a].remarks;
+                this.passTable.tableData.push(row);
+          } 
+        }
+        this.table.refreshTable();
       });
     }
     else if(this.passData.selector == 'province'){
