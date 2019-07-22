@@ -160,6 +160,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   initFetch         : boolean = false;
   arrExpStats       : any[] = [];
   arrlossStats      : any[] = [];
+  adjRate           : any;
 
   dirtyCounter : any = {
     hist     : 0,
@@ -263,6 +264,7 @@ export class ClmClaimHistoryComponent implements OnInit {
 
       this.histTypeData = recHistType;
 
+      this.adjRate = (data['clmHist']['adjRate'] == null)?0:data['clmHist']['adjRate'];
       this.clmHistoryData.mtnParam = String(recParam[0].paramValueV);
       this.clmHistoryData.allowMaxSi = data['cov']['claims']['project']['clmCoverage'].allowMaxSi;
       console.log(this.clmHistoryData.allowMaxSi + ' >>>> allowMaxSi');
@@ -282,17 +284,16 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.passDataHistory.nData.currencyRt = recCurr.currencyRt;
 
       try{
-        var validate = true;
+
         if(this.initFetch){
           var msg = '';
           var rec2 = data['clmHist']['polDistStat'];
           var record = data['clmHist']['claimReserveList'].length == 0 ? [] : data['clmHist']['claimReserveList'][0]['clmHistory'];
           console.log(record.some(e => e.val1 == 'Y'));
           if(record.some(e => e.val1 == 'Y') || rec2 == 1){
-            if(record.map(e => e.val2 = 'N').some(e => e.val2 == 'Y')){
+            if(record.some(e => e.val2 == 'Y')){
               if(record.some(e => e.val3 == 'Y')){
                 if(record.some(e => e.val4 == 'Y')){
-                  //validate=true;
                 }else{
                   msg = 'The policy has unpaid premiums. Do you want to proceed?';
                   this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C'});
@@ -311,7 +312,6 @@ export class ClmClaimHistoryComponent implements OnInit {
           }
         }
 
-       // if(validate){
           if(data['clmHist']['claimReserveList'].length == 0){
             var recClmHist = data['clmHist']['claimReserveList'];
           }else{
@@ -340,7 +340,6 @@ export class ClmClaimHistoryComponent implements OnInit {
           this.histTbl.refreshTable();
           this.histTbl.onRowClick(null, this.passDataHistory.tableData[0]);
           this.compResPayt();
-       // }
       }catch(e){''}
         
       });
@@ -573,7 +572,9 @@ export class ClmClaimHistoryComponent implements OnInit {
     var error2 = false;
 
     for(let record of this.passDataHistory.tableData){
-      if(record.histCategory == '' || record.histType == '' || record.currencyCd == '' || record.reserveAmt == ''){
+      if(record.histCategory == '' || record.histCategory == null || record.histType == '' || record.histType == null || 
+        record.currencyCd == '' || record.currencyCd == null || record.reserveAmt == '' || record.reserveAmt == null  || isNaN(record.reserveAmt) ||
+        record.bookingMthYr == '' || record.bookingMthYr == null){
         console.log(record);
         if(!record.deleted){
           isEmpty = 1;
@@ -602,6 +603,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     var totResAmt = this.arrSum(this.passDataHistory.tableData.filter(e => e.histType == 4 || e.histType == 5).map(e => e.reserveAmt));
     var sumLossPayt = this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && (e.histType == 4 || e.histType == 5)).map(e => e.reserveAmt));
     console.log(sumLossPayt + ' - ' + this.clmHistoryData.approvedAmt);
+
     if(isEmpty == 1){
       this.dialogIcon = 'error';
       this.successClmHist.open();
@@ -664,7 +666,8 @@ export class ClmClaimHistoryComponent implements OnInit {
   limitHistType(){
     var catArr  = this.passDataHistory.tableData.filter(e => e.newRec != 1).map(e => e.histCategory);
     var ths = this;
-    // const arrSum = arr => arr.reduce((a,b) => a + b, 0);
+    var adjAmt =  Number(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && e.histType == 1).map(e => e.reserveAmt).toString()) * Number(this.adjRate);
+
     this.passDataHistory.tableData.forEach(e => {
       if(e.newRec == 1){ 
         if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())){
@@ -696,9 +699,9 @@ export class ClmClaimHistoryComponent implements OnInit {
           e.reserveAmt = (e.histType == 3 || e.histType == 6)?Number(-e.reserveAmt):e.reserveAmt;
         }
 
-
-
-        
+        if(this.passDataHistory.tableData.some(el => el.histCategory == 'L' && el.histType == 1 && el.newRec != 1) &&  e.histCategory == 'A' && e.histType == 1 && (e.reserveAmt == 0 || e.reserveAmt == '' || isNaN(e.reserveAmt)) ){
+          e.reserveAmt = adjAmt;
+        }
       }
     });
 
@@ -710,8 +713,8 @@ export class ClmClaimHistoryComponent implements OnInit {
       $('#histId').find('tbody').children().each(function(a){
         var cb = $(this).find('input[type=checkbox]');
         var histSelects = $(this).find('select');
-        var histCat = $(histSelects[0]);
-        var histType = $(histSelects[1]);
+        var histCat = $(histSelects[1]);
+        var histType = $(histSelects[2]);
         (ths.passDataHistory.tableData.some(e => e.exGratia == 'Y' && e.newRec != 1))?cb.prop('disabled',true):'';
         if(histCat.val() == '' || histCat.val() == null || histCat.val() == undefined){
           histType.addClass('unclickable');
@@ -722,12 +725,9 @@ export class ClmClaimHistoryComponent implements OnInit {
       });
     },0);
 
-    //console.log(this.passDataHistory.tableData);
   }
 
   compResPayt(){
-    // const arrSum = arr => arr.reduce((a,b) => a + b, 0);
-
     this.passDataHistory.tableData.map(record => {
       this.passDataHistory.opts[0].vals.forEach((e,i) => {
         (record.histCatDesc == e)?record.histCategory = e:'';
