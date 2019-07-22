@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccountingService, NotesService } from '../../_services';
@@ -12,8 +12,8 @@ import * as alasql from 'alasql';
   styleUrls: ['./request-for-payment.component.css']
 })
 export class RequestForPaymentComponent implements OnInit {
-  @ViewChild(CustNonDatatableComponent) table:CustNonDatatableComponent; 
-
+  @ViewChild(CustNonDatatableComponent) table:CustNonDatatableComponent;
+  
   passData: any = {
   	tableData    : [],
   	tHeader      : ['Payment Request No.', 'Payee', 'Payment Type', 'Status', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],

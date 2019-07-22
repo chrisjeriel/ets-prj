@@ -10,7 +10,8 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
   styleUrls: ['./mtn-currency.component.css']
 })
 export class MtnCurrencyComponent implements OnInit {
-
+  @ViewChild('currMdl') modal: ModalComponent;
+  
   selected: any = null;
 
   currencyListing: any = {

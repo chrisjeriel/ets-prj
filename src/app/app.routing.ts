@@ -173,7 +173,6 @@ import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-pol
 import { ClaimCashCallComponent } from './maintenance/claims/claim-cash-call/claim-cash-call.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 
-
 const appRoutes: Routes = [
 
 
@@ -236,7 +235,7 @@ const appRoutes: Routes = [
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
     { path: 'payt-req', component: RequestForPaymentComponent },
-    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent },
+    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
     { path: 'journal-voucher', component: JournalVoucherComponent },
     { path: 'generate-jv', component: GenerateJvComponent },
