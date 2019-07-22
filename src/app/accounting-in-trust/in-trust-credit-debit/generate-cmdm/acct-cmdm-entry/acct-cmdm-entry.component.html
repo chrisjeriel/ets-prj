@@ -97,7 +97,7 @@
                                 <label class="form-control-sm col-sm-3">Amount</label>
                                 <input type="text" class="form-control form-control-sm cust-sm col-sm-2 spacing" [(ngModel)]="memoInfo.currCd" appRequired>
                                 <div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a (click)="currLov.modal.openNoClose()"><i class="fa fa-search"></i></a></div>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="memoInfo.cmdmAmt" appRequired appCurrency>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="memoInfo.cmdmAmt" appRequired appCurrency (change)="memoInfo.localAmt = memoInfo.cmdmAmt * memoInfo.currRate;">
                             </div>
                         </div>
                         <div class="col-sm-8">

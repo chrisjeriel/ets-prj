@@ -148,7 +148,7 @@ seqDigits:number = 1;
   setCurrency(data){
   	this.memoInfo.currCd = data.currencyCd;
   	this.memoInfo.currRate = data.currencyRt;
-  	this.memoInfo.localAmt = this.memoInfo.cmdmAmt * data.currencyRt;
+  	this.memoInfo.localAmt = this.memoInfo.cmdmAmt * this.memoInfo.currRate;
   }
 
 }
