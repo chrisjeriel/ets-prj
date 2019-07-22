@@ -1,6 +1,32 @@
-
-<div class="row">
- 	 <div class="col-sm-12" style="margin-top: 3px" >
- 	 	 <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
- 	 </div>
-</div>	
+<div>
+	<div class="form-row custom-row-inline-inset">
+ 		 <div class="col-sm-12 text-align">
+ 		 	<div class="input-group" style="padding-right: 0px">
+ 		 		<div class="col-sm-2"></div>
+ 		 		<div class="col-sm-8">
+ 		 			<div class="input-group">
+    	 		 		<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+    	 		 		<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" placeholder="BPI/MS INSURANCE CORPORATION">
+                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+            		</div>
+            	</div>
+            	<div class="col-sm-2"></div>
+ 		 	</div>
+ 		 </div>
+ 	</div>
+	<div class="row">
+	 	 <div class="col-sm-12" style="margin-top: 3px" >
+	 	 	 <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+	 	 </div>
+	</div>	
+	<div class="form-row" style="margin-top: 13px !important;">
+	    <div class="form-group col-sm">
+	        <div class="col-md-12 text-center">
+	            <div class="cust-btn-container">
+	                <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+	                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+	            </div>
+	        </div>
+	    </div>
+	</div>	
+</div>

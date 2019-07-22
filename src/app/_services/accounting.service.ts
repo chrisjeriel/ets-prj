@@ -274,20 +274,17 @@ export class AccountingService {
 
 		return this.cancelledTransactionsData;
 	}
-	getJVListing() {
-		this.jvListing = [
-			new JVListing("2017-00000002", new Date(2015, 10, 1), "To correct entries in", "Service Fee Receivable for the Quarter", "2016-00001645", "Lourdes Gualvez", "Printed", 100000),
-            new JVListing("2017-00000003", new Date(2015, 10, 1), "To correct entries in", "Collected Certificate of Withholding Tax", "2016-00001646", "Chie Reyes", "Printed", 1000000),
-            new JVListing("2018-00000001", new Date(2015, 10, 1), "To correct entries in", "Uncollected Certificate of Withholding Tax", "2017-00000324", "Chie Reyes", "Printed", 710716.12),
-            new JVListing("2018-00000010", new Date(2015, 10, 1), "To correct entries in", "Payment of Service to In-Trust", "2018-00000009", "Lourdes Gualvez", "Open", 756929),
-            new JVListing("2018-00000016", new Date(2015, 10, 1), "To correct entries in", "Regular Payroll", "2018-00000012", "Lourdes Gualvez", "Cancelled", 300000),
-            new JVListing("2018-00000045", new Date(2015, 10, 1), "To correct entries in", "Mid-Year Bonus and Other Bonuses", "2018-00000041", "Ronwaldo Roque", "Cancelled", 1000000),
-            new JVListing("2018-00000099", new Date(2015, 10, 1), "To correct entries in", "13th Month Pay", "2018-00000098", "Ronwaldo Roque", "Open", 230000),
-            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Profit Sharing", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
-            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Monthly Depreciation Expense", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
-            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Miscellaneous / Others", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
-    		]
-		return this.jvListing;
+
+	getJVEntry(tranId){
+		const params = new HttpParams()
+             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVEntry",{params});
+	}
+	
+	getJVListing(tranId) {
+		 const params = new HttpParams()
+             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVListing",{params});
 	}
 
 	getARTaxDetailsVAT() {
@@ -1299,7 +1296,6 @@ export class AccountingService {
 		return this.batchOR2;
 	}
 
-
 	getCMDMListing(params){
 		// const params = new HttpParams()
   //           .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
@@ -1307,6 +1303,40 @@ export class AccountingService {
   //           .set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
   //           .set('clmDistNo', (clmDistNo == null || clmDistNo == undefined ? '' : clmDistNo))
         return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCMDMList',{params});    
+	}
+
+	getArList(searchParams: any[]){
+		var params;
+         if(searchParams.length < 1){
+              params = new HttpParams()
+                     .set('arNo','')
+                     .set('payor', '')
+                     .set('arDateFrom', '')
+                     .set('arDateTo','')
+                     .set('tranTypeName','')
+                     .set('arStatus','')
+                     .set('particulars','')
+                     .set('arAmtFrom','')
+                     .set('arAmtTo','')
+                     // .set('paginationRequest.position',null)
+                     // .set('paginationRequest.count',null)
+                     // .set('sortRequest.sortKey',null)
+                     // .set('sortRequest.order',null);
+         }
+         else{
+              params = new HttpParams();
+             for(var i of searchParams){
+                 params = params.append(i.key, i.search);
+             }
+         }
+          return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveArList',{params});
+	}
+
+	getArEntry(tranId, arNo){
+		var params = new HttpParams()
+	            	.set('tranId', tranId)
+					.set('arNo', arNo)
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveArEntry',{params});
 	}
 
 	getPaytReqList(searchParams: any[]){
@@ -1376,5 +1406,4 @@ export class AccountingService {
 
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitRefNoLOV',{params});	
     }
-
 }

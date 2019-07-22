@@ -369,3 +369,9 @@ padding: 0;
     font-size: -9px !important;
     width: 100%;
 }
+
+.cust-ig-text {
+    font-size: 9px !important;
+    font-weight: bold;
+    height: calc(1.3rem + 1px) !important;
+}

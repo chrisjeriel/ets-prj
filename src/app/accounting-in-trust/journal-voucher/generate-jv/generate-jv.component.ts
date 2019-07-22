@@ -18,29 +18,45 @@ export class GenerateJvComponent implements OnInit {
   record: any = {
                    jvType: null
                  };
-  jvType: string = "";
+
+  jvType: string = '';
+
+  jvData: any = {
+     type: '', 
+     jvNo: '', 
+     jvYear: '', 
+     jvDate: '', 
+     jvStatus: '',
+     refnoDate: '',
+     refnoTranId: '',
+     currCd: '',
+     currRate: '',
+     jvAmt: '',
+     localAmt: ''
+  };
+
   jvTypeFlag: boolean = true;
 
   disabledTypes: string[] = [
       "GAIN FOREIGN EXCHANGE",
       "LOSS FOREIGN EXCHANGE",
-      "Interest Income on Savings",
-      "Interest on Premium Reserve Released",
-      "Withholding Tax - Interest on Premium Reserve Released",
-      "Payment of WHTax by Service",
-      "XOL Mindep",
-      "XOL Premium Adjustment",
-      "Uncollected Creditable Withholding Tax",
-      "Bad Debts Set up",
-      "Bad Debts Write-Off",
-      "Payment of Risk Management Fee to Employees",
-      "Miscellaneous Income Allocation",
+      "INTEREST INCOME ON SAVINGS",
+      "INTEREST ON PREMIUM RESERVE RELEASED",
+      "WITHHOLDING TAX - INTEREST ON PREMIUM RESERVE RELEASED",
+      "PAYMENT OF WHTAX BY SERVICE",
+      "XOL MINDEP",
+      "XOL PREMIUM ADJUSTMENT",
+      "UNCOLLECTED CREDITABLE WITHHOLDING TAX",
+      "BAD DEBTS SET UP",
+      "BAD DEBTS WRITE-OFF",
+      "PAYMENT OF RISK MANAGEMENT FEE TO EMPLOYEES",
+      "MISCELLANEOUS INCOME ALLOCATION",
       ""
   ];
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
-      this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
+      this.exitLink = params['exitLink'] !== undefined ? params['exitLink'] : 'adasdas';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
     });
   }
@@ -53,7 +69,8 @@ export class GenerateJvComponent implements OnInit {
   }
 
   checkTabs(event) {
-    var type = event.type === null ? "" : event.type;
+     console.log(event)
+    var type = event.type === null ? "" : event.type.toUpperCase();
     if(this.disabledTypes.includes(type)){
       this.jvTypeFlag = true;
     }else{
@@ -62,5 +79,20 @@ export class GenerateJvComponent implements OnInit {
     this.jvType = type;    
   }
 
+  jvInfo(data){
+     console.log(data);
+     this.jvData.type =  data.type;
+     this.jvData.jvNo =  data.jvNo;
+     this.jvData.jvYear =  data.jvYear;
+     this.jvData.jvDate =  data.jvDate;
+     this.jvData.jvStatus =  data.jvStatus;
+     this.jvData.refnoDate =  data.refnoDate;
+     this.jvData.refnoTranId =  data.refnoTranId;
+     this.jvData.currCd =  data.currCd;
+     this.jvData.currRate =  data.currRate;
+     this.jvData.jvAmt =  data.jvAmt;
+     this.jvData.localAmt =  data.localAmt;
+     this.jvData.jvType = data.jvType;
+  }
 
 }

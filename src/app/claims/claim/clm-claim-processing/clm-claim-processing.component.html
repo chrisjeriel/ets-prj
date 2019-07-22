@@ -48,8 +48,8 @@
 
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">Risk</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" [(ngModel)]="policyDetails.riskId" (change)="checkCode($event, 'risk')">
-                    <div class="text-search-ico magni-pos"><a (click)="openRiskLOV();"><i class="fa fa-search"></i></a></div>
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" [(ngModel)]="policyDetails.riskId" (change)="checkCode($event, 'risk')" [readonly]="disableRisk">
+                    <div class="text-search-ico magni-pos" *ngIf="!disableRisk"><a (click)="openRiskLOV();"><i class="fa fa-search"></i></a></div>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px; margin-right: 19px !important;" [ngModel]="policyDetails.riskName" readonly>
                   </div>
 

@@ -95,7 +95,6 @@ export class ClaimComponent implements OnInit, OnDestroy {
   }
 
   getClmInfo(ev) {
-    console.log(ev);
     this.claimInfo.claimId = ev.claimId;
     this.claimInfo.claimNo = ev.claimNo;
     this.claimInfo.projId = ev.projId;
