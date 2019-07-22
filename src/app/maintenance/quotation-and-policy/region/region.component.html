@@ -34,7 +34,7 @@
 
               <app-confirm-save (onYes)="onClickSaveRegion()"></app-confirm-save>
 			  <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-			  <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+			  <app-cancel-button (onYes)="onClickSaveRegion('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Province"  id="province">

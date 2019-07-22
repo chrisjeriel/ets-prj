@@ -177,34 +177,7 @@ export class RegionComponent implements OnInit {
   }
 
   onClickSaveRegion(cancelFlag?){
-
-/*  	this.mtnRegionReq.saveRegion = [];
-  	this.mtnRegionReq.deleteRegion = [];
-  	this.editedData = [];
-  	this.deletedData = [];
     
-  	for(var i=0;i<this.passData.tableData.length;i++){
-  		 if(this.passData.tableData[i].edited){
-  		 	  this.editedData.push(this.passData.tableData[i]);
-  		 	  this.editedData[this.editedData.length - 1].activeTag  = this.cbFunc2(this.passData.tableData[i].activeTag);
-              this.editedData[this.editedData.length - 1].updateUser = this.ns.getCurrentUser();
-              this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);             
-         }     
-  	}
-  	        this.mtnRegionReq.saveRegion = this.editedData;
-            this.mtnRegionReq.deleteRegion = this.deletedData;     
-
-             if(this.mtnRegionReq.saveRegion.length > 0){
-              this.confirmDialog.showBool = true;
-              this.passData.disableGeneric = true;
-              this.saveRegion();
-            } else {
-              this.confirmDialog.showBool = false;
-              this.dialogIcon = 'info';
-              this.dialogMessage = 'Nothing to save';
-              this.successDialog.open();
-            }*/
-
     this.cancelFlag = cancelFlag !== undefined;
      if(this.cancelFlag){
         if(this.checkFields()){
