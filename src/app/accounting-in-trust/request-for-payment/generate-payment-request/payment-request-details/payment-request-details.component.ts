@@ -3,6 +3,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AccountingService, MaintenanceService, NotesService, ClaimsService } from '../../../../_services';
 import { Title } from '@angular/platform-browser';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-payment-request-details',
@@ -12,6 +13,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 export class PaymentRequestDetailsComponent implements OnInit {
   @Input() rowData : any;
   @ViewChild('clmLov') clmLov : ModalComponent;
+  @ViewChild('clmTbl') clmTbl : CustEditableNonDatatableComponent;
 
   cedingCompanyData: any = {
   	tableData     : [],
@@ -100,13 +102,23 @@ export class PaymentRequestDetailsComponent implements OnInit {
       console.log(data);
       var rec = data['claimReserveList'].map(e => e.clmHistory);
       console.log(rec);
-      // var list = [];
-      // //this.passDataClmHistoryLov.tableData = this.passDataClmHistoryLov.tableData.map(e => e.filter(e2 => e2.histCategory == 'L'));
+      var list = [];
+      var arr = [];
       // rec.forEach(e => {
       //   list.push(e.filter(el => el.histCategory == 'L').map(el => { return el }));
       // });
-      // console.log(list);
-      //console.log(this.passDataClmHistoryLov.tableData);
+
+      for(let i of rec){
+          for(let j of i){
+            arr.push(j);
+          }
+      }
+
+      console.log(arr);
+      this.passDataClmHistoryLov.tableData = arr;
+      this.clmTbl.refreshTable();
+
+      console.log(this.passDataClmHistoryLov.tableData);
     });
   }
 }

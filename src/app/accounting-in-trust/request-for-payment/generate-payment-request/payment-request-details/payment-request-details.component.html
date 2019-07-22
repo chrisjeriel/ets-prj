@@ -139,7 +139,7 @@
 <app-modal class="d-none" id="clmLovId" #clmLov>
     <div header style="width: 550px !important;">List of Values</div>
     <div body class="container-flex text-center">
-      <app-cust-editable-non-datatable [passData]="passDataClmHistoryLov"></app-cust-editable-non-datatable>
+      <app-cust-editable-non-datatable [passData]="passDataClmHistoryLov" #clmTbl></app-cust-editable-non-datatable>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
       <button class="cust-btn" type="button" (click)="clmLov.closeModal()">Cancel</button>
