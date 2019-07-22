@@ -99,12 +99,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       var rec = data['claimReserveList'].map(e => e.clmHistory);
-      var list = [];
-      //this.passDataClmHistoryLov.tableData = this.passDataClmHistoryLov.tableData.map(e => e.filter(e2 => e2.histCategory == 'L'));
-      rec.forEach(e => {
-        list.push(e.filter(el => el.histCategory == 'L').map(el => { return el }));
-      });
-      console.log(list);
+      console.log(rec);
+      // var list = [];
+      // //this.passDataClmHistoryLov.tableData = this.passDataClmHistoryLov.tableData.map(e => e.filter(e2 => e2.histCategory == 'L'));
+      // rec.forEach(e => {
+      //   list.push(e.filter(el => el.histCategory == 'L').map(el => { return el }));
+      // });
+      // console.log(list);
       //console.log(this.passDataClmHistoryLov.tableData);
     });
   }
