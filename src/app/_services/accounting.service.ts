@@ -1296,9 +1296,6 @@ export class AccountingService {
 		return this.batchOR2;
 	}
 
-<<<<<<< HEAD
-	getPaytReqList(searchParams: any[]){
-=======
 	getArList(searchParams: any[]){
 		var params;
          if(searchParams.length < 1){
@@ -1333,8 +1330,7 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveArEntry',{params});
 	}
 
-	getPaytReq(searchParams: any[]){
->>>>>>> 9e689d656050b4452b7d04461e4e9f8934e7b849
+	getPaytReqList(searchParams: any[]){
 		var params;
 			if(searchParams.length < 1){
             	params = new HttpParams()
@@ -1392,6 +1388,5 @@ export class AccountingService {
 			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPrqTrans',{params});	
 	}
-}
   
 }
