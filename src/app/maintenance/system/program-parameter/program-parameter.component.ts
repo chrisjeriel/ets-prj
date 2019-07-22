@@ -19,7 +19,7 @@ export class ProgramParameterComponent implements OnInit {
   passData: any = {
     tHeader: [ "Param Name","Param Type","Character Value","Numeric Value", "Date Value","Remarks"],
     tableData:[],
-    dataTypes: ['text','select','text','text','text', "text"],
+    dataTypes: ['text','select','text','text','date', "text"],
     nData: {
       paramName: null,
       paramType: null,
@@ -62,10 +62,10 @@ export class ProgramParameterComponent implements OnInit {
   errorFlag:boolean = false;
 
   parameters : any = {
-  	createUser: null,
-  	createDate: '',
-  	updateUser: null,
-  	updateDate: ''
+    createUser: null,
+    createDate: '',
+    updateUser: null,
+    updateDate: ''
   }
 
   saveData:any ={
@@ -76,87 +76,96 @@ export class ProgramParameterComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-  	this.getParameters();
+    this.getParameters();
   }
 
   getParameters(){
-  	this.passData.tableData = [];
-  	this.passData.opts[0].vals = [];
-  	this.passData.opts[0].prev = [];
-  	this.maintenanceService.getMtnParameters(null).subscribe((data:any) => {
-  		for(var i = 0; i < data.parameters.length;i++ ){
-  			this.passData.tableData.push(data.parameters[i]);
-  		}
-
-  		this.maintenanceService.getRefCode('ETS_PARAMETER.PARAM_TYPE').subscribe((data:any) => {
-  			for(var datas of data.refCodeList){
-  				this.passData.opts[0].vals.push(datas.code);
-  				this.passData.opts[0].prev.push(datas.description);
-  			}
-  			this.table.refreshTable();
-  		});
-  	});
+    this.passData.tableData = [];
+    this.passData.opts[0].vals = [];
+    this.passData.opts[0].prev = [];
+    this.maintenanceService.getMtnParameters(null).subscribe((data:any) => {
+      console.log(data)
+      for(var i = 0; i < data.parameters.length;i++ ){
+        this.passData.tableData.push(data.parameters[i]);
+        if(data.parameters[i].paramType == 'V'){
+          this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paramName','paramType','paramValueV'];
+        }else if(data.parameters[i].paramType == 'N'){
+          this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paramName','paramType','paramValueN'];
+        }else{
+          this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paramName','paramType','paramValueD'];
+        }
+        
+      }
+      this.maintenanceService.getRefCode('ETS_PARAMETER.PARAM_TYPE').subscribe((data:any) => {
+        for(var datas of data.refCodeList){
+          this.passData.opts[0].vals.push(datas.code);
+          this.passData.opts[0].prev.push(datas.description);
+        }
+      });
+      this.table.refreshTable();
+    });
    }
 
    onRowClick(data){
-   	console.log(data)
-   	  if(data !== null){
-   	   this.parameters = data;
-   	   this.parameters.createDate = this.ns.toDateTimeString(data.createDate);
-   	   this.parameters.updateDate = this.ns.toDateTimeString(data.updateDate);
-   	 }
+     console.log(data)
+       if(data !== null){
+        this.parameters = data;
+        this.parameters.createDate = this.ns.toDateTimeString(data.createDate);
+        this.parameters.updateDate = this.ns.toDateTimeString(data.updateDate);
+      }
 
      if(data.okDelete == 'Y'){
        this.passData.disableGeneric = false;
      }else{
-   	   this.passData.disableGeneric = true;
-   	 }
+        this.passData.disableGeneric = true;
+      }
    }
 
    deleteCurr(){
-   		this.table.indvSelect.deleted = true;
-   		this.table.selected  = [this.table.indvSelect]
-   		this.table.confirmDelete();
+       this.table.indvSelect.deleted = true;
+       this.table.selected  = [this.table.indvSelect]
+       this.table.confirmDelete();
    }
 
    onClickSave(){
-   		this.errorFlag = false;
-   		for(var i =0; i < this.passData.tableData.length; i++){
-   			if((this.passData.tableData[i].paramType == 'V' && (this.passData.tableData[i].paramValueV == null || this.passData.tableData[i].paramValueV == "")) || (this.passData.tableData[i].paramType == 'N' && (this.passData.tableData[i].paramValueN == null || this.passData.tableData[i].paramValueN == "")) || (this.passData.tableData[i].paramType == 'D' && (this.passData.tableData[i].paramValueD == null || this.passData.tableData[i].paramValueD == ""))){
-   				console.log(this.passData.tableData[i])
-   				this.errorFlag = true;
-   			}
-   		}
+       this.errorFlag = false;
+       for(var i =0; i < this.passData.tableData.length; i++){
+         if((this.passData.tableData[i].paramType == 'V' && (this.passData.tableData[i].paramValueV == null || this.passData.tableData[i].paramValueV == "")) || (this.passData.tableData[i].paramType == 'N' && (this.passData.tableData[i].paramValueN == null || this.passData.tableData[i].paramValueN == "")) || (this.passData.tableData[i].paramType == 'D' && (this.passData.tableData[i].paramValueD == null || this.passData.tableData[i].paramValueD == ""))){
+           console.log(this.passData.tableData[i])
+           this.errorFlag = true;
+         }
+       }
 
-   		if(this.errorFlag){
-   			this.dialogMessage = "";
-   			this.dialogIcon = "error";
-   			this.successDiag.open();
-   		}else{
-   			$('#confirm-save #modalBtn2').trigger('click');
-   		}
+       if(this.errorFlag){
+         this.dialogMessage = "";
+         this.dialogIcon = "error";
+         this.successDiag.open();
+       }else{
+         $('#confirm-save #modalBtn2').trigger('click');
+       }
    }
 
    prepareData(){
-   		for(var i = 0; i < this.passData.tableData.length;i++){
-   			if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-   				this.edited.push(this.passData.tableData[i]);
+       for(var i = 0; i < this.passData.tableData.length;i++){
+         if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+          this.edited.push(this.passData.tableData[i]);
+          this.edited[this.edited.length - 1].paramValueD = this.ns.toDateTimeString(this.passData.tableData[i].paramValueD)
           this.edited[this.edited.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
           this.edited[this.edited.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
-   			}
+         }
 
-   			if(this.passData.tableData[i].deleted){
-   				this.deleted.push(this.passData.tableData[i]);
-   			}
-   		}
+         if(this.passData.tableData[i].deleted){
+           this.deleted.push(this.passData.tableData[i]);
+         }
+       }
 
-   		this.saveData.saveParameters = this.edited;
-   		this.saveData.delParameters  = this.deleted;
+       this.saveData.saveParameters = this.edited;
+       this.saveData.delParameters  = this.deleted;
    }
 
    saveParameters(cancelFlag?){
-   	this.cancelFlag = cancelFlag !== undefined;
-   	this.prepareData();
+     this.cancelFlag = cancelFlag !== undefined;
+     this.prepareData();
 
     if(this.edited.length === 0 && this.deleted.length === 0){
       setTimeout(()=> {
@@ -165,21 +174,27 @@ export class ProgramParameterComponent implements OnInit {
         this.successDiag.open();
       },0);
     }else{
-     	this.maintenanceService.saveMtnParameters(this.saveData).subscribe((data:any) => {
-     		if(data['returnCode'] == 0) {
-     		    this.dialogMessage = data['errorList'][0].errorMessage;
-     		    this.dialogIcon = "error";
-     		    this.successDiag.open();
-     		  } else{
-     		    this.dialogIcon = "success";
-     		    this.successDiag.open();
-     		    this.getParameters();
-     		  }
-     	});
+       this.maintenanceService.saveMtnParameters(this.saveData).subscribe((data:any) => {
+         if(data['returnCode'] == 0) {
+             this.dialogMessage = data['errorList'][0].errorMessage;
+             this.dialogIcon = "error";
+             this.successDiag.open();
+           } else{
+             this.dialogIcon = "success";
+             this.successDiag.open();
+             this.getParameters();
+            this.passData.disableGeneric = true;
+           }
+       });
     }
    }
 
-   cancel(){
-   	this.cancelBtn.clickCancel();
-   }
+  cancel(){
+     this.cancelBtn.clickCancel();
+  }
+
+  dataChange(data){
+    console.log(data)
+  }
+
 }

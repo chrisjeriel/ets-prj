@@ -17,13 +17,14 @@ export class ClaimStatusComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('modal') modal: MtnClaimStatusLovComponent;
   passData: any = {
-    tHeader: [ "Status Code","Description","Active","Remarks"],
+    tHeader: [ "Status Code","Description",'O/C',"Active","Remarks"],
     tableData:[],
-    dataTypes: ['text','text','checkbox','text'],
+    dataTypes: ['text','text', 'checkbox', 'checkbox','text'],
     nData: {
       statusCode: null,
       description: null,
       remarks: null,
+      openTag: 'N',
       activeTag: 'Y',
       createDate: '',
       createUser: JSON.parse(window.localStorage.currentUser).username,
@@ -38,9 +39,9 @@ export class ClaimStatusComponent implements OnInit {
     pageLength: 10,
     paginateFlag: true,
     infoFlag: true,
-    uneditable:[false,false,false,false],
-    widths:[200,400,130,410],
-    keys:['statusCode','description','activeTag','remarks']
+    uneditable:[false,false,false,false,false],
+    widths:[200,400,55,55,450],
+    keys:['statusCode','description','openTag','activeTag','remarks']
   };
 
   cancelFlag:boolean;

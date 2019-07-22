@@ -1085,6 +1085,19 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnLossCdLov",{params});
 	}
 
+	getAcitTranType(tranClass, tranTypeCd, typePrefix, autoTag, baeTag, activeTag){
+		const params = new HttpParams()
+			.set('tranClass', tranClass === undefined || tranClass === null ? '' : tranClass)
+			.set('tranTypeCd', tranTypeCd === undefined || tranTypeCd === null ? '' : tranTypeCd)
+			.set('typePrefix', typePrefix === undefined || typePrefix === null ? '' : typePrefix)
+			.set('autoTag', autoTag === undefined || autoTag === null ? '' : autoTag)
+			.set('baeTag', baeTag === undefined || baeTag === null ? '' : baeTag)
+			.set('activeTag', activeTag === undefined || activeTag === null ? '' : activeTag)
+			
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitTranType",{params});
+		
+	}
+
 	getMtnClmEventTypeLov(searchStr){
 		const params = new HttpParams()
 			.set('searchStr', searchStr === undefined || searchStr === null ? '' : searchStr);
@@ -1127,8 +1140,7 @@ export class MaintenanceService{
         }
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyMtnClmCashCall', params, header);
     }
-
-
+    
     getMtnAcitTranType(tranClass?, tranTypeCd?, typePrefix?, autoTag?, baeTag?, activeTag?){
     	const params = new HttpParams()
     				.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
@@ -1147,4 +1159,17 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBookingMonth", {params});
     }
 
+    getMtnBank(officialName?, activeTag?){
+    	const params = new HttpParams()
+    				.set('officialName', (officialName === null || officialName === undefined ? '' : officialName))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBank", {params});
+    }
+
+    getMtnBankAcct(bankCd?, accountNo?){
+    	const params = new HttpParams()
+    				.set('bankCd', (bankCd === null || bankCd === undefined ? '' : bankCd))
+    	     		.set('accountNo', (accountNo === null || accountNo === undefined ? '' : accountNo))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBankAcct", {params});
+    }
 }

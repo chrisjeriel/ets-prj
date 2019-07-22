@@ -510,55 +510,6 @@ export class ClmClaimHistoryComponent implements OnInit {
       updateUser  : this.ns.getCurrentUser()
     };
 
-   // var subs = concat(this.clmService.saveClaimReserve(JSON.stringify(saveReserve)),this.clmService.saveClaimHistory(JSON.stringify(this.params)));
-
-
-    // var subs = forkJoin(this.clmService.saveClaimReserve(JSON.stringify(saveReserve)),this.clmService.saveClaimHistory(JSON.stringify(this.params)))
-    //                    .pipe(map(([res,hist]) => {return { res,   hist } } ));
-
-
-    // subs.subscribe(data => {
-    //   console.log('saved successfully');
-    //   this.getClaimHistory();
-    //   this.getResStat();
-    //   this.successClmHist.open();
-    //   this.params.saveClaimHistory = [];
-    //   this.passDataHistory.disableAdd = false;
-    //   this.initFetch = false;
-
-    //   var chck = 0;
-    //   if(this.clmHistoryData.lossResAmt == 0 && (this.clmHistoryData.lossPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && (e.histType == 4 || e.histType == 5))))){
-    //     chck = 1;
-    //   }else if(this.clmHistoryData.expResAmt == 0 && (this.clmHistoryData.expPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory != 'L' && (e.histType == 4 || e.histType == 5))))){
-    //     chck = 2;
-    //   }
-
-    //   if(chck != 0){
-    //     this.clmHistoryData.expStatCd  = (chck == 1)?'CD':this.clmHistoryData.expStatCd;
-    //     this.clmHistoryData.lossStatCd = (chck == 2)?'CD':this.clmHistoryData.lossStatCd;
-    //     var resStatParams = { 
-    //       claimId     : this.clmHistoryData.claimId,
-    //       expStatCd   : this.clmHistoryData.expStatCd,
-    //       lossStatCd  : this.clmHistoryData.lossStatCd,
-    //       projId      : this.clmHistoryData.projId,
-    //       updateUser  : this.ns.getCurrentUser()
-    //     };
-
-    //     this.clmService.saveClaimResStat(JSON.stringify(resStatParams))
-    //       .subscribe(data => {
-    //       console.log(data);
-    //     });
-    //   }
-
-      // setTimeout(() => {
-      //   if(data['returnCode'] == -1) {
-      //     var disableNextTabs = false;
-      //     var disablePaytReq = this.passDataHistory.tableData.filter(a => a.histType == '4' || a.histType == '5').length == 0;
-      //     this.disableNextTabs.emit({ disableNextTabs: disableNextTabs, disablePaytReq: disablePaytReq });
-      //   }
-      // }, 0);
-
-
       this.clmService.saveClaimReserve(JSON.stringify(saveReserve))
       .subscribe(data => {
         console.log(data);
@@ -606,8 +557,6 @@ export class ClmClaimHistoryComponent implements OnInit {
               }, 0);
         });
       });
-    //});
-
   }
 
   onClickNoSave(){

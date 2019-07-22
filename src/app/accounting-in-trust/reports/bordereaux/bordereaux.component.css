@@ -1,4 +1,4 @@
-.text-left{
+.text-left {
 	text-align: left !important;  
 }
 
@@ -8,16 +8,24 @@
 
 .text-search-ico {
 	margin-left: -18px;
-	z-index: 99999;
+	z-index: 3;
 	font-size: 14px;
 	position: relative;
 	padding-right: 5px !important;
 }
 
-.pl-8{
+.pl-8 {
 	padding-left: 4rem;
 }
 
 .report .input-group {
     margin-bottom: -20px !important;
+}
+
+.dp-cont {
+	margin-left: 0px !important;
+}
+
+.cust-btn {
+	z-index: 5 !important;
 }

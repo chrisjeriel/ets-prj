@@ -14,7 +14,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   private minimumDate: any = null;
   private maximumDate: any = null;
   private ev: any = null;
-  private inputStyeClass: string = 'form-control form-control-sm';
+  private inputStyleClass: string = 'form-control form-control-sm';
   private icon: string = 'fa fa-calendar';
   
   private spanStyle: any = {
@@ -63,7 +63,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
 
   	if(this.table) {
   		this.spanStyle['minWidth'] = this.type == 'time' ? '1px' : '9em';
-  		this.inputStyeClass += ' tbl-dp';
+  		this.inputStyleClass += ' tbl-dp';
   	}
 
   	if(this.table && !this.showIcon) {
@@ -170,8 +170,10 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   }
 
   onSelect() {
-  	$(this.ev.target).focus();
-  	$(this.ev.target).blur();
+    if(this.ev != null) {
+      $(this.ev.target).focus();
+      $(this.ev.target).blur();
+    }
   }
 
   focused() {

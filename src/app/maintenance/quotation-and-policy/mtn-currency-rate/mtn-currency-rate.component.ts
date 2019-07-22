@@ -212,6 +212,7 @@ export class MtnCurrencyRateComponent implements OnInit {
         this.editedData[this.editedData.length - 1].effDateFrom = this.ns.toDateTimeString(this.passData.tableData[i].effDateFrom);
         this.editedData[this.editedData.length - 1].effDateTo = this.ns.toDateTimeString(this.passData.tableData[i].effDateTo);
         this.editedData[this.editedData.length - 1].updateUser = JSON.parse(window.localStorage.currentUser).username;
+        this.editedData[this.editedData.length - 1].createDate = this.ns.toDateTimeString(0);
         this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);
       }else if(this.passData.tableData[i].deleted){
         this.deletedData.push(this.passData.tableData[i]);
