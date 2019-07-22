@@ -228,6 +228,8 @@ totalCredit: any = 1510787.46;
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | QSOA Inquiry");
+
+  	setTimeout(() => { $('#generateQSOAModal #modalBtn').trigger('click'); }, 0);
   }
 
   showModal(content) {
