@@ -427,6 +427,7 @@ import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-re
 import { MtnCedingCompanyMemberComponent } from './maintenance/mtn-ceding-company-member/mtn-ceding-company-member.component';
 import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-app-payments-zero/jv-app-payments-zero.component';
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
+import { MtnClmHistoryLovComponent } from './maintenance/mtn-clm-history-lov/mtn-clm-history-lov.component';
 
 @NgModule({
     imports: [
@@ -860,6 +861,7 @@ import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/genera
         MtnCedingCompanyMemberComponent,
         JvAppPaymentsZeroComponent,
         JvTypeLovComponent,
+        MtnClmHistoryLovComponent,
     ],
 
   	providers: [
