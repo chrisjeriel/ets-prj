@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
 import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV, CMDM, AccountingEntryCMDM, AccJvLossResDep, AccSrvInquiry, AccountingSrvcCancelledTransactions, QSOABalances, AccJvInterestOverdue, AccJvInPolBalAgainstLoss, AgainstLoss, AgainstNegativeTreaty, BatchOR, JVAccountingEntries, BatchOR2, AccJvOutAccOffset } from '@app/_models';
@@ -1292,4 +1292,31 @@ export class AccountingService {
 		]
 		return this.batchOR2;
 	}
+
+	saveAccJVEntry(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVEntry',JSON.stringify(params),header);
+	}
+
+	getJVInwPolBal(tranId,instNo,ceding) {
+		 const params = new HttpParams()
+             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+             .set('instNo', (instNo === null || instNo === undefined ? '' : instNo) )
+             .set('cedingCo', (ceding === null || ceding === undefined ? '' : ceding) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInwPolBal",{params});
+	}
+
+	getJVSOA(tranId,policyId,instNo,ceding) {
+		 const params = new HttpParams()
+		 	 .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('instNo', (instNo === null || instNo === undefined ? '' : instNo) )
+             .set('cedingId', (ceding === null || ceding === undefined ? '' : ceding) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSOAAging",{params});
+	}
+
 }

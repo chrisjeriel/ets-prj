@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccountingService,NotesService } from '../../_services';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 
 @Component({
@@ -88,9 +88,11 @@ export class JournalVoucherComponent implements OnInit {
 
   retrieveJVlist(){
     this.accountingService.getJVListing(null).subscribe((data:any) => {
+      console.log(data)
       for(var i=0; i< data.transactions.length;i++){
         this.passDataJVListing.tableData.push(data.transactions[i].jvListings);
         this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo).padStart(8,'0');
+        this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].transactions = data.transactions[i];
       }
       this.table.refreshTable();
     });
@@ -101,7 +103,8 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   onClickAdd(event){
-      this.router.navigate(['/generate-jv', {exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
+      this.router.navigate(['/generate-jv', {from: 'add',
+                                             exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
   }
 
   onClickEdit(event){
@@ -109,13 +112,29 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   toGenerateJVEdit(event) {
-    this.router.navigate(['/generate-jv', { tranId: this.dataInfo.tranId,
-                                              from: 'jv-listing', 
-                                          exitLink:'/journal-voucher'}], { skipLocationChange: true });
+    this.router.navigate(['/generate-jv', { tranId            : event.tranId,
+                                            tranTypeCd        : event.trantypeCd,
+                                            closeDateTran     : event.transactions.closeDate, 
+                                            createDateTran    : event.transactions.createDate, 
+                                            createUserTran    : event.transactions.createUser, 
+                                            deleteDateTran    : event.transactions.deleteDate,
+                                            postDateTran      : event.transactions.postDate, 
+                                            tranClassTran     : event.transactions.tranClass, 
+                                            tranClassNoTran   : event.transactions.tranClassNo, 
+                                            tranDateTran      : event.transactions.tranDate, 
+                                            tranIdTran        : event.transactions.tranId, 
+                                            tranStatTran      : event.transactions.tranStat, 
+                                            tranYearTran      : event.transactions.tranYear, 
+                                            updateDateTran    : event.transactions.updateDate, 
+                                            updateUserTran    : event.transactions.updateUser, 
+                                            from              : 'jv-listing', 
+                                            exitLink          : '/journal-voucher'}], 
+                                          { skipLocationChange: true });
   }
 
   onRowClick(data){
     if(data != null){
+      this.dataInfo            = data;
       this.dataInfo.tranId     = data.tranId;
       this.dataInfo.createUser = data.createUser;
       this.dataInfo.createDate = this.ns.toDateTimeString(data.createDate);
