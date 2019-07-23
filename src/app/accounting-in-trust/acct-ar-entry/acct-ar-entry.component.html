@@ -4,7 +4,7 @@
 			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
-				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" appRequired>
+				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" mask="999999" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
 					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event;"></datepicker>
@@ -21,7 +21,7 @@
 					<div class="input-group">
 						<input type="text" class="form-control form-control-sm text-right cust-sm col-sm-4" [ngModel]="arInfo.dcbYear" readonly>
 						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="arInfo.dcbUserCd" readonly>
-						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="arInfo.dcbNo" readonly>
+						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="pad(arInfo.dcbNo, 'dcbSeqNo')" readonly>
 					</div>
 				</div>
 				<div class="col-sm-4" style="padding: 0px !important;">
@@ -69,18 +69,17 @@
 					<div class="input-group">
 						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.currCd" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-						{{selectedCurrency === currencies[1]}}
-						<select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired >
+						<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareCurrencyFn" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired>
 							<option *ngFor="let curr of currencies" [ngValue]="curr">{{curr.currencyCd}}</option>
 						</select>
-						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4" [(ngModel)]="arInfo.arAmt" appRequired appCurrency>
+						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency>
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
 						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3" [ngModel]="arInfo.currRate | number: '1.10-10'" readonly >
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="arInfo.currCd" readonly>
-				<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-2" [ngModel]="arInfo.arAmt | number:'1.2-2'" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-1" value="PHP" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-2" [ngModel]="(arInfo.arAmt*arInfo.currRate) | number:'1.2-2'" readonly>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
@@ -109,7 +108,7 @@
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Save</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();">Save</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -137,14 +136,20 @@
 						<div class="input-group cust-ig">
 							<div class="col-sm-1"></div>
 							<label class="form-control-sm col-sm-1">DCB Bank</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="arInfo.dcbBank" appRequired>
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="arInfo.dcbBankName" appRequired>
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+							<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired>
+								<option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
+							</select>
 							<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.dcbBankAcct" appRequired>
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.dcbBankAcctNo" appRequired>
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+							<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired>
+								<option *ngFor="let bankAcct of bankAccts" [ngValue]="bankAcct">{{bankAcct.accountNo}}</option>
+							</select>
 							<div class="col-sm-1"></div>
 						</div>
-					<app-cust-editable-non-datatable [passData]="passData" #paytDtl></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')" #paytDtl></app-cust-editable-non-datatable>
 				</div>
 			</div>
 		</fieldset>
@@ -157,7 +162,7 @@ padding-right: 0px !important;">
 			<div class="form-row" style="margin-bottom: -10px;">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Created By</label>
-					<input type="text" appCurrency class="form-control form-control-sm col-sm" [ngModel]="arInfo.createUser" disabled>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="arInfo.createUser" disabled>
 					<label class="form-control-sm col-sm-1">Date Created</label>
 					<div class="col-sm" style="padding: 0px">
 					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="arInfo.createDate"></datepicker>
@@ -173,3 +178,7 @@ padding-right: 0px !important;">
 		</div>
 	</fieldset>
 </div>
+
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>

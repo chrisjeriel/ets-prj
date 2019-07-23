@@ -1364,4 +1364,14 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPaytReq',params,header);
  
     }
+
+    saveAcitArTrans(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArTrans',params,header);
+ 
+    }
 }
