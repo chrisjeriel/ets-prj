@@ -1166,4 +1166,11 @@ export class MaintenanceService{
     	     		.set('accountNo', (accountNo === null || accountNo === undefined ? '' : accountNo))
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBankAcct", {params});
     }
+
+    getMtnPayee(payeeNo?,payeeClassCd?){
+    	const params = new HttpParams()
+    				.set('payeeNo', (payeeNo === null || payeeNo === undefined ? '' : payeeNo))
+    	     		.set('payeeClassCd', (payeeClassCd === null || payeeClassCd === undefined ? '' : payeeClassCd))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPayee", {params});
+    }
 }

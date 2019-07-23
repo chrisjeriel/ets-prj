@@ -28,3 +28,7 @@
 .bottom {
     margin-bottom: -12px !important;
 }
+
+.cust-btn[disabled]:hover {
+    background: gray !important;
+}

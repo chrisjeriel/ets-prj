@@ -2,128 +2,132 @@
     <div class="col-sm-12">
         <fieldset class="scheduler-border">
             <legend class="scheduler-border">CM/DM Info</legend>
-            <div class="container-fluid" style="padding-left: 0px;">
-               <div class="form-row custom-row-inline-inset">
-                    <div class="input-group bottom">
-                        <div class="col-sm-4">
-                            <div class="row">
-                                <label class="form-control-sm col-sm-3">Memo Type</label>
-                                <select class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="memoInfo.memoType" appRequired [disabled]="!memoInfo.new">
-                                    <option value="CM">Credit Memo</option>
-                                    <option value="DM">Debit Memo</option>
-                                </select>
-                                <label class="form-control-sm col-sm">Auto
-                                    <input class="ml-1" type="checkbox" style="vertical-align: bottom;"  [ngModel]="memoInfo.autoTag == 'Y'" disabled="disabled">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-sm-5">
-                            <div class="row">
-                                <label class="form-control-sm col-sm-2">Tran Type</label>
-                                <select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="memoInfo.tranTypeCd" appRequired [disabled]="!memoInfo.new">
-                                    <option *ngFor="let type of tranTypes" [value]="type.tranTypeCd">{{type.tranTypeName}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="row">
-                                <label class="form-control-sm col-sm-4">Status</label>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="memoInfo.status" disabled="disabled">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group bottom">
-                        <div class="col-sm-4">
-                            <div class="row">
-                                <label class="form-control-sm col-sm-3">Memo No</label>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 spacing" [ngModel]="memoInfo.memoType" disabled="disabled">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm spacing" [ngModel]="memoInfo.memoTranType" disabled="disabled">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm spacing" [ngModel]="memoInfo.memoYear"  disabled="disabled">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-1 spacing" [ngModel]="memoInfo.memoMm" disabled="disabled">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="memoInfo.memoSeqNo" disabled="disabled">
-                            </div>
-                        </div>
-                        <div class="col-sm-5">
-                            <div class="row">
-                                <label class="form-control-sm col-sm-2">Memo Date</label>
-                                <div class="col-sm dp-cont">
-                                    <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="memoInfo.memoDate?.split('T')[0]" (valueChange)="memoInfo.memoDate=$event+'T'+memoInfo.memoDate.split('T')[1]"></datepicker>
+            <form #myForm="ngForm">
+                <div class="container-fluid" style="padding-left: 0px;">
+                   <div class="form-row custom-row-inline-inset">
+                        <div class="input-group bottom">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm-3">Memo Type</label>
+                                    <select class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="memoInfo.memoType" [name]="'memoType'" appRequired [disabled]="!memoInfo.new" (change)="getTranTypes($event)">
+                                        <option value="CM">Credit Memo</option>
+                                        <option value="DM">Debit Memo</option>
+                                    </select>
+                                    <label class="form-control-sm col-sm">Auto
+                                        <input class="ml-1" type="checkbox" style="vertical-align: bottom;"  [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.autoTag == 'Y'" disabled="disabled">
+                                    </label>
                                 </div>
-                                <div class="col-sm-3 dp-cont">
-                                    <datepicker [type]="'time'" [required]="true" [value]="memoInfo.memoDate?.split('T')[1]" (valueChange)="memoInfo.memoDate=memoInfo.memoDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker> 
-                                </div>  
-                                <label class="form-control-sm col-sm-2">JV Ref No</label>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="memoInfo.refNo" appRequired >
-                                <div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a (click)="openLov('refNo')"><i class="fa fa-search"></i></a></div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm-2">Tran Type</label>
+                                    <select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="memoInfo.tranTypeCd" [name]="'tranTypeCd'" appRequired [disabled]="!memoInfo.new || memoInfo.memoType==''" (change)="changeTranType($event)">
+                                        <option value=""></option>
+                                        <option *ngFor="let type of tranTypes" [value]="type.tranTypeCd">{{type.tranTypeName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm-4">Status</label>
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.status" disabled="disabled">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-3">
-                            <div class="row">
-                                <label class="form-control-sm col-sm-4">Ref. No. Date</label>
-                                <div class="col-sm dp-cont">
-                                    <datepicker [value]="memoInfo.refNoDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker> 
-                                </div>  
-                                <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="memoInfo.refNoDate" readonly="readonly"> -->
+                        <div class="input-group bottom">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm-3">Memo No</label>
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2 spacing" [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.memoType" disabled="disabled">
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm spacing" [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.memoTranType" disabled="disabled">
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm spacing" [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.memoYear"  disabled="disabled">
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm-1 spacing" [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.memoMm" disabled="disabled">
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.memoSeqNo" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm-2">Memo Date</label>
+                                    <div class="col-sm dp-cont">
+                                        <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="memoInfo.memoDate?.split('T')[0]" (valueChange)="memoInfo.memoDate=$event+'T'+memoInfo.memoDate.split('T')[1]" [disabled]="memoInfo.status != 'New'"></datepicker>
+                                    </div>
+                                    <div class="col-sm-3 dp-cont">
+                                        <datepicker [type]="'time'" [required]="true" [value]="memoInfo.memoDate?.split('T')[1]" (valueChange)="memoInfo.memoDate=memoInfo.memoDate.split('T')[0]+'T'+$event" [textAlign]="'center'" [disabled]="memoInfo.status != 'New'"></datepicker> 
+                                    </div>  
+                                    <label class="form-control-sm col-sm-2">JV Ref No</label>
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm" name="refNo" [ngModel]="memoInfo.refNo" [readonly]="memoInfo.status != 'New'" appRequired (change)="checkCode($event,'refNo')" >
+                                    <div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;" [class.d-none]="memoInfo.status != 'New'"><a (click)="openLov('refNo')"><i class="fa fa-search"></i></a></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm-4">Ref. No. Date</label>
+                                    <div class="col-sm dp-cont">
+                                        <datepicker [value]="memoInfo.refNoDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker> 
+                                    </div>  
+                                    <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.refNoDate" readonly="readonly"> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group bottom">
+                            <div class="col-sm-1">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm">Recipient</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-11">
+                                <div class="row">
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="memoInfo.payee" [name]="'payee'" appRequired (change)="memoInfo.payeeNo = null" [readonly]="memoInfo.status != 'New'">
+                                    <div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;" [class.d-none]="memoInfo.status != 'New'"><a (click)="openLov('payee')"><i class="fa fa-search"></i></a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group bottom" style="margin-bottom: -6px !important;">
+                            <div class="col-sm-1">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm" >Particulars</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-11">
+                                <div class="row">
+                                    <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="memoInfo.particulars" [name]="'particulars'" appRequired [readonly]="memoInfo.status != 'New'"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group bottom">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm-3">Amount</label>
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2 spacing" [ngModel]="memoInfo.currCd" (ngModelChange)="memoInfo.currCd = $event.toUpperCase()" [name]="'currCd'" appRequired [readonly]="memoInfo.status != 'New'" (change)="checkCode($event,'currency')">
+                                    <div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;" [class.d-none]="memoInfo.status != 'New'"><a (click)="currLov.modal.openNoClose()"><i class="fa fa-search"></i></a></div>
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="memoInfo.cmdmAmt" [name]="'cmdmAmt'" appRequired appCurrency (change)="memoInfo.localAmt = memoInfo.cmdmAmt * memoInfo.currRate;" [readonly]="memoInfo.status != 'New'">
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <label class="form-control-sm col-sm-3">Currency Rate</label>
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.currRate | number:'1.6-6'" disabled="disabled" appCurrencyRate>
+                                    <label class="form-control-sm col-sm-3">Local Amount</label>
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm-1 spacing" [(ngModel)]="memoInfo.localCurrCd" [name]="'localCurrCd'" disabled="disabled">
+                                    <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModelOptions]="{standalone: true}" [ngModel]="memoInfo.localAmt | number:'1.2-2'" disabled="disabled" appCurrency>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="input-group bottom">
-                        <div class="col-sm-1">
-                            <div class="row">
-                                <label class="form-control-sm col-sm">Recipient</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-11">
-                            <div class="row">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="memoInfo.payee" appRequired>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group bottom" style="margin-bottom: -6px !important;">
-                        <div class="col-sm-1">
-                            <div class="row">
-                                <label class="form-control-sm col-sm" >Particulars</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-11">
-                            <div class="row">
-                                <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="memoInfo.particulars" appRequired></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group bottom">
-                        <div class="col-sm-4">
-                            <div class="row">
-                                <label class="form-control-sm col-sm-3">Amount</label>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 spacing" [(ngModel)]="memoInfo.currCd" appRequired>
-                                <div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a (click)="currLov.modal.openNoClose()"><i class="fa fa-search"></i></a></div>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="memoInfo.cmdmAmt" appRequired appCurrency (change)="memoInfo.localAmt = memoInfo.cmdmAmt * memoInfo.currRate;">
-                            </div>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <label class="form-control-sm col-sm-3">Currency Rate</label>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="memoInfo.currRate | number:'1.6-6'" disabled="disabled" appCurrencyRate>
-                                <label class="form-control-sm col-sm-3">Local Amount</label>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-1 spacing" [(ngModel)]="memoInfo.localCurrCd" disabled="disabled">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="memoInfo.localAmt | number:'1.2-2'" disabled="disabled" appCurrency>
+                     <div class="form-row">
+                        <div class="form-group col-sm">
+                            <div class="col-md-12 text-center">
+                                <div class="cust-btn-container" style="margin-top: 10px;">
+                                    <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" (click)="clickNew()"><a>New CMDM</a></button>
+                                    <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" (click)="onClickSave()"><a>Save</a></button>
+                                    <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new || (memoInfo.status != 'New' && memoInfo.status != 'Printed')" (click)="cancelMdl.openNoClose()"><a>Cancel CM/DM</a></button>
+                                    <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new || memoInfo.status=='Cancelled'" (click)="openConfirmPrintMdl()"><a>Print</a></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                 <div class="form-row">
-                    <div class="form-group col-sm">
-                        <div class="col-md-12 text-center">
-                            <div class="cust-btn-container" style="margin-top: 10px;">
-                                <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" (click)="clickNew()"><a>New CMDM</a></button>
-                                <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" (click)="save()"><a>Save</a></button>
-                                <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new"><a>Cancel CM/DM</a></button>
-                                <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new"><a>Print</a></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </form>
         </fieldset>
         <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
             <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
@@ -134,14 +138,12 @@
                     <div class="col-sm-2 dp-cont">
                         <datepicker [value]="memoInfo.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker> 
                     </div>  
-                    <!-- <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="memoInfo.createDate" disabled> -->
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
                     <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="memoInfo.updateUser" disabled>
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
                     <div class="col-sm-2 dp-cont">
                         <datepicker [value]="memoInfo.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker> 
                     </div>  
-                    <!-- <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="memoInfo.updateDate" disabled> -->
                 </div>
             </div>
         </fieldset>
@@ -150,3 +152,27 @@
  
 <app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
 <app-mtn-currency #currencyModal (selectedData)="setCurrency($event)"></app-mtn-currency>
+
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()" ></app-cancel-button>
+
+<app-modal #cancelMdl class="d-none">
+    <div header>Confirmation</div>
+    <div body>Are you sure you want to cancel this Credit/Debit Memo?</div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" (click)="cancelCMDM();cancelMdl.closeModal()">Yes</button>
+        <button class="cust-btn" (click)="cancelMdl.closeModal()">No</button>
+    </div>
+</app-modal>
+
+
+<app-modal #confirmPrintMdl class="d-none">
+    <div header>Confirmation</div>
+    <div body>Was the printing of the Credit/Debit Memo successful?</div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" (click)="printCMDM();confirmPrintMdl.closeModal()">Yes</button>
+        <button class="cust-btn" (click)="confirmPrintMdl.closeModal()">No</button>
+    </div>
+</app-modal>
