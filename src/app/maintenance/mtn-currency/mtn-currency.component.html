@@ -1,4 +1,4 @@
-<app-modal class="d-none" (modalOpened)="openModal()" id="currencyMdl">
+<app-modal class="d-none" (modalOpened)="openModal()" id="currencyMdl" #currMdl>
 	<div header>List of Values</div>
 	<div body *ngIf="modalOpen">
 		<app-cust-non-datatable [passData]="currencyListing" (rowClick)="onRowClick($event)" ></app-cust-non-datatable>

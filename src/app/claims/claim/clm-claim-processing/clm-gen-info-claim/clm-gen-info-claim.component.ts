@@ -208,6 +208,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   disableNextTabs: boolean = true;
   disablePaytReq: boolean = true;
   maxDate: string = '';
+  tempAdjCont: any[] = [];
 
   @Input() isInquiry: boolean = false;
 
@@ -407,45 +408,17 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
       this.checkClmIdF('');
     }));
-
-    /*this.us.getPolGenInfo(this.policyId, this.policyNo).subscribe(data => {
-      $('.globalLoading').css('display','none');
-      this.disableAdjusterBtn = true;
-      var pol = data['policy'];
-
-      this.claimData['statusChanged'] = 0;
-      this.claimData.lineCd = pol['lineCd'];
-      this.claimData.polYear = pol['polYear'];
-      this.claimData.polSeqNo = pol['polSeqNo'];
-      this.claimData.cedingId = pol['cedingId'];
-      this.claimData.coSeriesNo = pol['coSeriesNo'];
-      this.claimData.altNo = pol['altNo'];
-      this.claimData.policyNo = pol['policyNo'];
-      this.claimData.cedingName = pol['cedingName'];
-      
-      this.claimData.cessionId = pol['cessionId'];
-      this.claimData.cessionDesc = pol['cessionDesc'];
-      this.claimData.lineClassCd = pol['lineClassCd'];
-      this.claimData.lineClassDesc = pol['lineClassDesc'];
-      this.claimData.mbiRefNo = pol['mbiRefNo'];
-      
-      
-      
-      this.claimData.effDate = this.ns.toDateTimeString(pol['effDate']);
-      
-      
-      
-      
-
-      
-    });*/
   }
 
   openAdjustersModal() {
-    this.adjData.tableData = this.claimData.clmAdjusterList;
+    this.adjData.tableData = this.claimData.clmAdjusterList.slice();
     this.adjTable.refreshTable();
     this.adjTable.onRowClick(null, this.adjData.tableData[0]);
     $('#adjustersModal #modalBtn').trigger('click');
+  }
+
+  onCancelNo() {
+    this.adjTable.markAsPristine();
   }
 
   showLossCdLOV(type) {
@@ -526,6 +499,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   showAdjLOV(ev) {
     this.hiddenAdj = this.adjData.tableData.filter(a => a.adjId !== undefined && !a.deleted && a.showMG != 1).map(a => a.adjId);
+    this.hiddenAdj.push(this.claimData.adjId);
     this.adjLOVRow = ev.index;
     
     this.adjusterLOV.modal.openNoClose();
@@ -550,17 +524,17 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       }
     } else {
       this.adjData.tableData = this.adjData.tableData.filter(a => a.showMG != 1);
-        for(let i of data) {
-          this.adjData.tableData.push(JSON.parse(JSON.stringify(this.adjData.nData)));
-          this.adjData.tableData[this.adjData.tableData.length - 1].showMG = 0;
-          this.adjData.tableData[this.adjData.tableData.length - 1].adjId = i.adjId;
-          this.adjData.tableData[this.adjData.tableData.length - 1].adjName = i.adjName;
-          this.adjData.tableData[this.adjData.tableData.length - 1].adjRefNo = i.adjRefNo;
-          this.adjData.tableData[this.adjData.tableData.length - 1].edited = true;
-        }
+      for(let i of data) {
+        this.adjData.tableData.push(JSON.parse(JSON.stringify(this.adjData.nData)));
+        this.adjData.tableData[this.adjData.tableData.length - 1].showMG = 0;
+        this.adjData.tableData[this.adjData.tableData.length - 1].adjId = i.adjId;
+        this.adjData.tableData[this.adjData.tableData.length - 1].adjName = i.adjName;
+        this.adjData.tableData[this.adjData.tableData.length - 1].adjRefNo = i.adjRefNo;
+        this.adjData.tableData[this.adjData.tableData.length - 1].edited = true;
       }
+    }
 
-    $('#cust-table-container').addClass('ng-dirty');
+      this.adjTable.markAsDirty();
 
     this.adjTable.refreshTable();
   }
@@ -575,7 +549,17 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
     this.claimData.adjId = data.adjId;
     this.claimData.adjName = data.adjName;
-    this.claimData.adjFileNo = '';
+
+    console.log(this.claimData.clmAdjusterList);
+
+    for(var i of this.claimData.clmAdjusterList) {
+      if(i.adjId == data.adjId) {
+        this.claimData.adjFileNo = i.adjRefNo;
+        return;
+      } else {
+        this.claimData.adjFileNo = '';
+      }
+    }
   }
 
   adjTableRowClick(data) {
@@ -670,7 +654,14 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.adjSuccessDialog.open();
         this.adjNameAndRefs();
 
-        this.claimData.clmAdjusterList = this.adjData.tableData;
+        this.claimData.clmAdjusterList = this.adjData.tableData.filter(a => !a.deleted).slice();
+
+        // var temp = this.claimData.clmAdjusterList.map(a => a.adjId);
+        if(!this.claimData.clmAdjusterList.map(a => a.adjId).includes(this.claimData.adjId)) {
+          this.claimData.adjId = '';
+          this.claimData.adjName = '';
+          this.claimData.adjFileNo = '';
+        }
       } else {
         this.dialogIcon = "error";
         this.adjSuccessDialog.open();

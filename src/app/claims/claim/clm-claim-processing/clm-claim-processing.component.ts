@@ -156,7 +156,7 @@ export class ClmClaimProcessingComponent implements OnInit {
   retrieveClaimsList(){
     this.cs.getClaimsListing(this.searchParams).subscribe((data : any)=>{
       if(data != null){
-        data.claimsList = data.claimsList.filter(a=>{return a.clmStatCd !== 'TC' && a.clmStatCd !== 'CD' && (a.lossStatCd !== 'CD' && a.lossStatCd !== null)});
+        data.claimsList = data.claimsList.filter(a=>{return a.clmStatCd !== 'TC' && a.clmStatCd !== 'CD' && (a.lossStatCd !== 'CD')});
         for(var i of data.claimsList){
           for(var j of i.clmAdjusterList){
             if(i.adjName === undefined){

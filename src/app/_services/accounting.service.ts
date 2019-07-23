@@ -1382,14 +1382,26 @@ export class AccountingService {
     }
 
     saveAcitCMDM(params){
+    	let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCMDM',JSON.stringify(params),header);
+ 
+    }
+
+    updateAcitPaytReqStat(params){
          let header : any = {
              headers: new HttpHeaders({
                  'Content-Type': 'application/json'
              })
          };
-         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCMDM',JSON.stringify(params),header);
+
+   		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitPaytReqStat',params,header);
  
-    }
+    }         
 
     getRefNoLov(param){
     	const params = new HttpParams()
@@ -1427,4 +1439,12 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/printCMDM',JSON.stringify(params),header);
  
     }
+
+    getAcitPrqTrans(reqId?,itemNo?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPrqTrans',{params});	
+	}
+  
 }
