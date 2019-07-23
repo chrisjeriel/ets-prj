@@ -5,19 +5,19 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-non-datatable [passData]="passDataCMDMListing" (add)="onClickAdd($event)" (rowDblClick)="toGenerateCMDM($event);"></app-cust-non-datatable>
+						<app-cust-non-datatable [passData]="passDataCMDMListing" (add)="onClickAdd($event)" (newRowDblClick)="toGenerateCMDM($event);" (newClick)="selected=$event"></app-cust-non-datatable>
 					</div>
 					<div class="col-sm-12">
 						<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
 							<div class="input-group" style="margin-top: -10px !important;">
 								<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+								<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" disabled>
 								<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+								<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createDate" disabled>
 								<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+								<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" disabled>
 								<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+								<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateDate" disabled>
 							</div>
 						</div>
 					</div>

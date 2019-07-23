@@ -3,7 +3,7 @@
 		<ngb-tabset  (tabChange)="onTabChange($event)">
 			<ngb-tab class="ngb-tab" title="CM/DM Entry">
 				<ng-template ngbTabContent>
-					<app-acct-cmdm-entry></app-acct-cmdm-entry>
+					<app-acct-cmdm-entry [passData]="passData"></app-acct-cmdm-entry>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab class="ngb-tab" title="Accounting Entries">
