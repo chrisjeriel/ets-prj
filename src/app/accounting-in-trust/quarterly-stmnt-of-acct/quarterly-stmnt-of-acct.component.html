@@ -3,82 +3,55 @@
 	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="QSOA Inquiry">
 			<ng-template ngbTabContent>	
-					<div>
-						 <fieldset class="scheduler-border">
-						 	<legend class="scheduler-border">Filter Options</legend>
-            						<div class="form-row custom-row-inline-inset">
-            							<div class="input-group" style="margin-bottom: -14px ! important">
-            								   <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-											   <input type="text" class="form-control form-control-sm cust-sm col-sm-4">
-											   <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-            								   <label class="form-control-sm" style="padding-left:20px">Period:</label>
-            								   <label class="form-control-sm" style="margin-left: 5px ! important">From</label>
-            								   <select class="form-control form-control-sm cust-sm col-sm-1">
-													<option value="1st Quarter">1st Quarter</option>
-													<option value="2nd Quarter">2nd Quarter</option>
-													<option value="3rd Quarter">3rd Quarter</option>
-													<option value="4th Quarter">4th Quarter</option>
-												</select>
-												<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
-													<option value="2018">2018</option>
-												</select>
-            								   <label class="form-control-sm" style="margin-left: 5px ! important">To</label>
-            								   	<select class="form-control form-control-sm cust-sm col-sm-1">
-													<option value="1st Quarter">1st Quarter</option>
-													<option value="2nd Quarter">2nd Quarter</option>
-													<option value="3rd Quarter">3rd Quarter</option>
-													<option value="4th Quarter">4th Quarter</option>
-												</select>
-												<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
-													<option value="2018">2018</option>
-												</select>
-            								   <button type="button" class="cust col-sm-1" style="margin-left: 20px ! important;">Search</button>
-            							</div>
-            						</div>
-						 </fieldset> 
-					</div>
-<!-- 				<fieldset class="scheduler-border">
-					<legend class="scheduler-border">Filter Options</legend>
-					<div class="form-row custom-row-inline-inset">		
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-							placeholder="ALL">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Period: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From</label>
-							<select class="form-control form-control-sm cust-sm col-sm-1">
-								<option value="1st Quarter">1st Quarter</option>
-								<option value="2nd Quarter">2nd Quarter</option>
-								<option value="3rd Quarter">3rd Quarter</option>
-								<option value="4th Quarter">4th Quarter</option>
-							</select>
-							<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
-								<option value="2018">2018</option>
-							</select>
-							<label class="form-control-sm">To</label>
-							<select class="form-control form-control-sm cust-sm col-sm-1">
-								<option value="1st Quarter">1st Quarter</option>
-								<option value="2nd Quarter">2nd Quarter</option>
-								<option value="3rd Quarter">3rd Quarter</option>
-								<option value="4th Quarter">4th Quarter</option>
-							</select>
-							<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
-								<option value="2018">2018</option>
-							</select> -->
-							<!-- <div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;"> -->
-<!-- 								<button type="button" class="cust">Search</button> -->
-							<!-- </div> -->
-<!-- 						</div>
-					</div>
-				</fieldset> -->
+				<div>
+					<fieldset class="scheduler-border">
+					 	<legend class="scheduler-border">Filter Options</legend>
+            			<div class="form-row custom-row-inline-inset">
+            				<div class="input-group" style="margin-bottom: -14px ! important">
+            					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+            					<label class="form-control-sm" style="padding-left:20px">Period:</label>
+            					<label class="form-control-sm" style="margin-left: 5px ! important">From</label>
+            					<select class="form-control form-control-sm cust-sm col-sm-1">
+									<option value="1st Quarter">1st Quarter</option>
+									<option value="2nd Quarter">2nd Quarter</option>
+									<option value="3rd Quarter">3rd Quarter</option>
+									<option value="4th Quarter">4th Quarter</option>
+								</select>
+								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
+									<option value="2018">2018</option>
+								</select>
+								<label class="form-control-sm" style="margin-left: 5px ! important">To</label>
+						   		<select class="form-control form-control-sm cust-sm col-sm-1">
+									<option value="1st Quarter">1st Quarter</option>
+									<option value="2nd Quarter">2nd Quarter</option>
+									<option value="3rd Quarter">3rd Quarter</option>
+									<option value="4th Quarter">4th Quarter</option>
+								</select>
+								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
+									<option value="2018">2018</option>
+								</select>
+								<button type="button" class="cust col-sm-1" style="margin-left: 20px ! important;">Search</button>
+	    					</div>
+	    				</div>
+					 </fieldset> 
+				</div>
 
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">List of QSOA per Company</legend>
 					<div class="custom-row-inline-inset">
 						<app-cust-editable-non-datatable [passData]="passDataListOfQsoaAperCompany" (genericBtn)="showModal(content)">
 						</app-cust-editable-non-datatable>
+						<div class="input-group">
+							<div class="w-100 text-center" style="margin-bottom: 15px">
+								<button class="cust-btn" type="button" (click)="showGenerateModal()"><a>Regenerate</a></button>
+    							<button class="cust-btn" type="button"><a>Print</a></button>
+							</div>
+						</div>
 					</div>
 				</fieldset>
+
 			</ng-template>
 		</ngb-tab>
 
@@ -199,7 +172,7 @@
 	</div>
 </ng-template>
 
-<app-modal class="d-none" id="generateQSOAModal">
+<app-modal class="d-none" id="generateQSOAModal" #generateModal>
     <div header>
         <ng-container>Generate Quarterly Statement of Account</ng-container>
     </div>
@@ -230,8 +203,29 @@
         </fieldset>
     </div>
     <div footer class="w-100 text-center">
-    	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Generate QSOA</a></button>
+    	<button class="cust-btn" type="button" (click)="showConfModal()"><a>Generate QSOA</a></button>
     	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>View QSOA</a></button>
     	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="confModal" #confModal>
+    <div header>
+        <ng-container>Confirmation</ng-container>
+    </div>
+    <div body style="min-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+        	<div class="custom-row-inline-inset" style="text-align: center">
+	            <p *ngIf="confMsg == 1" style="line-height: 1.2">QSOA was already generated for the given<br>
+	            parameters. Do you want to generate a new record<br>
+	            and overwrite the existing one?</p>
+	            <p *ngIf="confMsg == 2" style="line-height: 1.2">QSOA was not yet generated for the given<br>
+	            parameters. Do you want to generate the record?</p>
+        	</div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-right">
+    	<button class="cust-btn" type="button" (click)="confModal.closeModal()"><a>Yes</a></button>
+    	<button class="cust-btn" type="button" (click)="confModal.closeModal()"><a>No</a></button>
     </div>
 </app-modal>
