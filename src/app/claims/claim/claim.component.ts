@@ -179,6 +179,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         this.overMdl.closeModal();
         this.dialogIcon = 'success-message';
         this.dialogMessage = 'Login Successfully';
+        this.claimInfo['upUserGi'] = this.userId;
       } else{
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Invalid Password';

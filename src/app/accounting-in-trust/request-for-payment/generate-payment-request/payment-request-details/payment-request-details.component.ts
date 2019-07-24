@@ -8,6 +8,9 @@ import { MtnClmHistoryLovComponent } from '@app/maintenance/mtn-clm-history-lov/
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-payment-request-details',
@@ -62,8 +65,54 @@ export class PaymentRequestDetailsComponent implements OnInit {
   dialogMessage   : string;
 
   params : any =  {
-    savePrqTrans     : [],
-    deletePrqTrans   : []
+    savePrqTrans     : [
+      {
+        claimId       : '',
+        createDate    : '',
+        createUser    : '',
+        currAmt       : '',
+        currCd        : '',
+        currRate      : '',
+        histNo        : '',
+        instNo        : '',
+        investmentId  : '',
+        itemNo        : '',
+        localAmt      : '',
+        paymentFor    : '',
+        policyId      : '',
+        projId        : '',
+        quarterEnding : '',
+        refNo         : '',
+        remarks       : '',
+        reqId         : '',
+        updateDate    : '',
+        updateUser    : ''
+      }
+    ],
+    deletePrqTrans   : [
+      {
+        claimId       : '',
+        createDate    : '',
+        createUser    : '',
+        currAmt       : '',
+        currCd        : '',
+        currRate      : '',
+        histNo        : '',
+        instNo        : '',
+        investmentId  : '',
+        itemNo        : '',
+        localAmt      : '',
+        paymentFor    : '',
+        policyId      : '',
+        projId        : '',
+        quarterEnding : '',
+        refNo         : '',
+        remarks       : '',
+        reqId         : '',
+        updateDate    : '',
+        updateUser    : ''
+      }
+    ]
   };
 
 
@@ -77,18 +126,41 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getPrqTrans(){
-    this.acctService.getAcitPrqTrans(this.rowData.reqId,'')
-    .subscribe(data => {
+
+    var subRes = forkJoin(this.acctService.getAcitPrqTrans(this.rowData.reqId,''), this.clmService.getClaimHistory())
+                 .pipe(map(([prqTrans,clmHist]) => { return { prqTrans,clmHist }}));
+
+    subRes.subscribe(data => {
       console.log(data);
-      var rec = data['acitPrqTrans'];
-      this.cedingCompanyData.tableData = rec;
-      console.log(this.cedingCompanyData.tableData);
+
+      var recPrqTrans = data['prqTrans']['acitPrqTrans'];
+      var recClmHist  = data['clmHist']['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => e.histCategory == 'L').map(e => { return e });
+      console.log(recPrqTrans);
+      console.log(recClmHist);
+
+      recPrqTrans.forEach(e => {
+        this.cedingCompanyData.tableData.push(recClmHist.filter(e2 => e2.claimId == e.claimId && e2.histNo == e.histNo && e2.projId == e.projId )
+                                                               .map(e2 => { 
+                                                                 e2.paymentFor = e.paymentFor; 
+                                                                 e2.createUser = e.createUser;
+                                                                 e2.updateUser = e.updateUser;
+                                                                 e2.createDate = e.createDate;
+                                                                 e2.updateDate = e.updateDate;
+                                                                 return e2; 
+                                                               }));
+      });
+      this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.flatMap(e => { return e });
       this.cedCompTbl.refreshTable();
+      console.log(this.cedingCompanyData.tableData);
     });
+
   }
 
   showLOV(event){
-    console.log(event); 
+    console.log(event);
+    this.cedingCompanyData.tableData.forEach(e => {
+      this.limitClmHistTbl.push(e);
+    });
     this.clmHistLov.modal.openNoClose();
   }
 
@@ -100,7 +172,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }
     });
     
-    this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '').map(e => { e.checked = false; return e});
+    this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '').map(e => { e.edited = true; e.checked = false; e.createDate = ''; e.createUser = ''; return e});
     this.cedCompTbl.refreshTable();
   }
 
@@ -109,18 +181,44 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.dialogIcon = '';
     this.dialogMessage = '';
 
-    for(let record of this.cedingCompanyData.tableData){
-      if(record.edited && !record.deleted){
-          record.createUser    = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
-          record.createDate    = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
-          record.updateUser    = this.ns.getCurrentUser();
-          record.updateDate    = this.ns.toDateTimeString(0);
-          this.params.savePrqTrans.push(record);
-        }else if(record.edited && record.deleted){
-          this.params.deletePrqTrans.push(record);
-      }
-    }
+    // for(let record of this.cedingCompanyData.tableData){
+    //   if(record.edited && !record.deleted){
+    //     console.log('Should be successful in saving');
+    //       record.createUser    = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
+    //       record.createDate    = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
+    //       record.updateUser    = this.ns.getCurrentUser();
+    //       record.updateDate    = this.ns.toDateTimeString(0);
+    //       this.params.savePrqTrans.push(record);
+    //   }else if(record.edited && record.deleted){
+    //       this.params.deletePrqTrans.push(record);
+    //   }
+    // }
 
+    this.cedingCompanyData.tableData.forEach(e => {
+      if(e.edited && !e.deleted){
+        this.params.savePrqTrans.map(a => {
+          a.reqId = this.rowData.reqId;
+          a.claimId = e.claimId;
+          a.projId = e.projId;
+          a.histNo = e.histNo;
+          a.currCd = e.currencyCd;
+          a.currRate = e.currencyRt;
+          a.currAmt =  e.paytAmt;
+          a.localAmt = e.paytAmt;
+          a.createUser = (a.createUser == '' || a.createUser == null)?this.ns.getCurrentUser():a.createUser;
+          a.createDate = (a.createDate == '' || a.createDate == null)?this.ns.toDateTimeString(0):a.createDate;
+          a.updateUser = this.ns.getCurrentUser();
+          a.createUser = this.ns.toDateTimeString(0);
+          return a;
+        });
+      }else if(e.edited && e.deleted){
+        console.log('RECORD DELETED');
+      }else{
+        console.log('ELSE IN SAVE');
+      }
+    });
+
+    console.log(this.cedingCompanyData.tableData);
     if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
       $('.ng-dirty').removeClass('ng-dirty');
       this.cs.confirmModal();
@@ -137,6 +235,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveCPC(){
+    this.params.savePrqTrans.map(e => {
+      e.currCd   = e.currencyCd;
+      e.currRate = e.currencyRt;
+      e.currAmt  = e.paytAmt;
+      e.localAmt = e.paytAmt;
+      e.reqId    = this.rowData.reqId;
+
+    });
+
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);

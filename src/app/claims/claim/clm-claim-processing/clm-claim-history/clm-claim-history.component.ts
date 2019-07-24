@@ -189,7 +189,8 @@ export class ClmClaimHistoryComponent implements OnInit {
     insuredDesc : '',
     policyNo    : '',
     clmStatus   : '',
-    policyId    : ''
+    policyId    : '',
+    upUserGi    : ''
   };
 
   @Output() disableNextTabs = new EventEmitter<any>();
@@ -290,26 +291,30 @@ export class ClmClaimHistoryComponent implements OnInit {
           var rec2 = data['clmHist']['polDistStat'];
           var record = data['clmHist']['claimReserveList'].length == 0 ? [] : data['clmHist']['claimReserveList'][0]['clmHistory'];
           console.log(record.some(e => e.val1 == 'Y'));
-          if(record.some(e => e.val1 == 'Y') || rec2 == 1){
-            if(record.some(e => e.val2 == 'Y')){
-              if(record.some(e => e.val3 == 'Y')){
-                if(record.some(e => e.val4 == 'Y')){
+          if(record.length == 0){
+            if(record.some(e => e.val1 == 'Y') || rec2 == 1){
+              this.claimInfo.upUserGi = this.ns.getCurrentUser();
+              if(record.some(e => e.val2 == 'Y')){
+                if(record.some(e => e.val3 == 'Y')){
+                  if(record.some(e => e.val4 == 'Y')){
+                  }else{
+                    msg = 'The policy has unpaid premiums. Do you want to proceed?';
+                    this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C'});
+                  }
                 }else{
-                  msg = 'The policy has unpaid premiums. Do you want to proceed?';
-                  this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C'});
+                  msg = 'Loss Date is not within the period of insurance(Inception Date and Expiry Date) of policy. Do you want to proceed?';
+                  this.preventHistory.emit({val:3,msg:msg,apvlCd:'CLM004B'});
                 }
-              }else{
-                msg = 'Loss Date is not within the period of insurance(Inception Date and Expiry Date) of policy. Do you want to proceed?';
-                this.preventHistory.emit({val:3,msg:msg,apvlCd:'CLM004B'});
+              }else {
+                msg = 'Loss Date is within the lapse period (Inception to Effective Date) of policy. Do you want to proceed?';
+                this.preventHistory.emit({val:2,msg:msg,apvlCd:'CLM004A'});
               }
-            }else {
-              msg = 'Loss Date is within the lapse period (Inception to Effective Date) of policy. Do you want to proceed?';
-              this.preventHistory.emit({val:2,msg:msg,apvlCd:'CLM004A'});
+            }else{
+              msg = 'The status of the policy distribution must be Posted before creating reserve';
+              this.preventHistory.emit({val:1,msg:msg});
             }
-          }else{
-            msg = 'The status of the policy distribution must be Posted before creating reserve';
-            this.preventHistory.emit({val:1,msg:msg});
           }
+          
         }
 
           if(data['clmHist']['claimReserveList'].length == 0){
@@ -506,7 +511,8 @@ export class ClmClaimHistoryComponent implements OnInit {
       lossStatCd  : (this.clmHistoryData.lossStatCd == '' || this.clmHistoryData.lossStatCd == null)?'OP':this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase()).map(el => {return el.code})[0],
       projId      : this.clmHistoryData.projId,
       updateDate  : this.ns.toDateTimeString(0),
-      updateUser  : this.ns.getCurrentUser()
+      updateUser  : this.ns.getCurrentUser(),
+      upUserGi    : this.claimInfo.upUserGi
     };
 
       this.clmService.saveClaimReserve(JSON.stringify(saveReserve))
@@ -546,6 +552,8 @@ export class ClmClaimHistoryComponent implements OnInit {
                   console.log(data);
                 });
               }
+
+
 
               setTimeout(() => {
                 if(data['returnCode'] == -1) {
