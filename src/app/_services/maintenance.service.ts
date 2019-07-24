@@ -1204,4 +1204,11 @@ export class MaintenanceService{
     				.set('userid', (userId === null || userId === undefined ? '' : userId))
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnDCBUser", {params});
     }
+
+    getMtnPayee(payeeNo?,payeeClassCd?){
+    	const params = new HttpParams()
+    				.set('payeeNo', (payeeNo === null || payeeNo === undefined ? '' : payeeNo))
+    	     		.set('payeeClassCd', (payeeClassCd === null || payeeClassCd === undefined ? '' : payeeClassCd))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPayee", {params});
+    }
 }

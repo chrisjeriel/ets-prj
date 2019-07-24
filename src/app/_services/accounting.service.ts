@@ -1424,9 +1424,30 @@ export class AccountingService {
 			.set('arStatus', (param.arStatus == null || param.arStatus == undefined ? '' : param.arStatus))
 			.set('cvStatus', (param.cvStatus == null || param.cvStatus == undefined ? '' : param.cvStatus))
 			.set('jvStatus', (param.jvStatus == null || param.jvStatus == undefined ? '' : param.jvStatus))
+			.set('groupTag', (param.groupTag == null || param.groupTag == undefined ? '' : param.groupTag))
 			.set('memoStatus', (param.memoStatus == null || param.memoStatus == undefined ? '' : param.memoStatus));
 
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitRefNoLOV',{params});	
+    }
+
+    cancelCMDM(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/cancelCMDMCMDM',JSON.stringify(params),header);
+ 
+    }
+
+    printCMDM(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/printCMDM',JSON.stringify(params),header);
+ 
     }
 
     getAcitPrqTrans(reqId?,itemNo?){
