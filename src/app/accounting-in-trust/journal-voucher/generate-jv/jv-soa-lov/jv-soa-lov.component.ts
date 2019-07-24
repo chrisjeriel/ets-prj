@@ -13,6 +13,7 @@ export class JvSoaLovComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @Input() cedingId: any;
   @Input() tranId:any;
+  @Input() lovCheckBox: boolean = false;
 
   passData: any = {
     tableData: [],
@@ -30,10 +31,14 @@ export class JvSoaLovComponent implements OnInit {
 
   modalOpen: boolean = false;
   selected: any;
+  selects: any[] = [];
 
   constructor(private ns: NotesService, private maintenanceService: MaintenanceService, private modalService: NgbModal,private accountingService: AccountingService) { }
 
   ngOnInit() {
+    if(this.lovCheckBox){
+      this.passData.checkFlag = true;
+    }
   }
 
   openModal(){
@@ -63,7 +68,17 @@ export class JvSoaLovComponent implements OnInit {
   }
 
   confirm(){
-  	this.selectedData.emit(this.selected);
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+    }else {
+      for(var i = 0 ; i < this.passData.tableData.length; i++){
+        if(this.passData.tableData[i].checked){
+          this.selects.push(this.passData.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   	this.passData.tableData = [];
   	this.table.refreshTable();
   }
