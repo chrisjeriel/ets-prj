@@ -104,8 +104,8 @@ seqDigits:number = 1;
   	if(this.passData.tranId != undefined){
 	  	this.getTranTypes();
 	  	this.getSeqDigits();
-	}else
-		this.clickNew();
+	  }else
+		  this.clickNew();  
   }
 
   getSeqDigits(){
@@ -127,6 +127,10 @@ seqDigits:number = 1;
       this.memoInfo.memoSeqNo = String(this.memoInfo.memoSeqNo).padStart(this.seqDigits,'0');
       this.memoInfo.localCurrCd = 'PHP';
       this.passLov.params.groupTag = this.memoInfo.groupTag;
+
+      if(this.memoInfo.autoTag == 'Y'){
+        $('input,textarea').prop('readonly','readonly');
+      }
     });
   }
 
@@ -164,6 +168,7 @@ seqDigits:number = 1;
 		    this.memoInfo.memoSeqNo = String(this.memoInfo.memoSeqNo).padStart(this.seqDigits,'0');
 		    this.memoInfo.localCurrCd = 'PHP';
 		    this.passLov.params.groupTag = this.memoInfo.groupTag;
+        this.passData.tranId = this.memoInfo.tranId;
   		}else{
   			this.dialogIcon = 'error';
   			this.successDiag.open();

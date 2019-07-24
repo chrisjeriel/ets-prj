@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Credit/Debit Memo /Generate CM/DM</h4>
-		<ngb-tabset  (tabChange)="onTabChange($event)">
+		<ngb-tabset #tabset (tabChange)="onTabChange($event)">
 			<ngb-tab class="ngb-tab" title="CM/DM Entry">
 				<ng-template ngbTabContent>
 					<app-acct-cmdm-entry [passData]="passData"></app-acct-cmdm-entry>
