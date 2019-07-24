@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService, UnderwritingService, QuotationService } from '@app/_services';
+import { MaintenanceService, UnderwritingService, QuotationService, AccountingService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -42,7 +42,7 @@ export class LovComponent implements OnInit {
   theme =  window.localStorage.getItem("selectedTheme");
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService,
-    private quotationService: QuotationService, private router: Router) { }
+    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService) { }
 
   ngOnInit() {
   	  // if(this.lovCheckBox){
@@ -550,6 +550,14 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['approvalCd','description','remarks'];
       this.mtnService.getMtnApprovalLOV().subscribe(a=>{
         this.passTable.tableData = a["approvalFunction"].filter(a=>this.passData.hide.indexOf(a.approvalCd)==-1);
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'refNo'){
+      this.passTable.tHeader = ['Tran Class','Tran No.', 'Tran Type','Tran Date','Particulars','Amount'];
+      this.passTable.dataTypes = [ 'text','text','text','date','text','currency'];
+      this.passTable.keys = [ 'tranClass','tranNo','tranTypeName','tranDate','particulars','amount'];
+      this.accountingService.getRefNoLov(this.passData.params).subscribe(a=>{
+        this.passTable.tableData = a["refNoList"];
         this.table.refreshTable();
       })
     }

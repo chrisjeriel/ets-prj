@@ -46,7 +46,6 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
 	adjData: any = {
 		adjId: '',
 		adjName: '',
-		adjRefNo: '',
 		addrLine1: '',
 		addrLine2: '',
 		addrLine3: '',

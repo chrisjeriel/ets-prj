@@ -15,8 +15,8 @@ export class MtnAdjusterComponent implements OnInit {
 
 	adjuster: any = {
 		tableData: [],
-	    tHeader: ['Adjuster No','Adjuster Name', 'Adjuster Ref No'],
-	    dataTypes: ['sequence-3','text','text'],
+	    tHeader: ['Adjuster No','Adjuster Name'],
+	    dataTypes: ['sequence-3','text'],
 	    pageLength: 10,
 	    searchFlag: true,
 	    pageStatus: true,
@@ -25,8 +25,7 @@ export class MtnAdjusterComponent implements OnInit {
 	    pageID: 'adjuster'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
 	    keys:[
 	    	'adjId',
-	    	'adjName',
-	    	'adjRefNo'
+	    	'adjName'
 	    	]
 	};
 
@@ -98,7 +97,6 @@ export class MtnAdjusterComponent implements OnInit {
 			this.selectedData.emit({
 				adjId: '',
 				adjName: '',
-			    adjRefNo: '',
 		    	ev: ev,
 		    	singleSearchLov: true
 		  	});
@@ -106,15 +104,14 @@ export class MtnAdjusterComponent implements OnInit {
 			this.selectedData.emit({
 			    adjId: '',
 			    adjName: '',
-			    adjRefNo: '',
 			    ev: ev,
 			    singleSearchLov: true
 		  	});
 		  
 		    this.modal.openNoClose();    
 		} else {
-			this.maintenanceService.getMtnAdjusterList([{ key: 'adjId', search: String(code).padStart(3, '0') }]).subscribe(data => {
-				data['adjusterList'] = data['adjusterList'].filter(a => a.adjId == String(code).padStart(3, '0') && a.activeTag == 'Y');
+			this.maintenanceService.getMtnAdjusterList([{ key: 'adjId', search: code }]).subscribe(data => {
+				data['adjusterList'] = data['adjusterList'].filter(a => a.adjId == code && a.activeTag == 'Y');
 
 				if(data['adjusterList'].length == 1 && !this.exclude.includes(data['adjusterList'][0].adjId)) {
 					data['adjusterList'][0]['ev'] = ev;
@@ -124,7 +121,6 @@ export class MtnAdjusterComponent implements OnInit {
 					this.selectedData.emit({
 					    adjId: '',
 					    adjName: '',
-					    adjRefNo: '',
 					    ev: ev,
 					    singleSearchLov: true
 					});

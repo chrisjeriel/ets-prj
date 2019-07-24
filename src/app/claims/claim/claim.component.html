@@ -1,24 +1,24 @@
 <div class="cust-tabs-container">
   <h4>Claim / {{isInquiry ? 'Claim Inquiry' : 'Claim Processing'}}</h4>
   <ngb-tabset #tabset (tabChange)="onTabChange($event)">
-    <ngb-tab title="General Info">
+    <ngb-tab title="General Info" id="geninfo">
       <ng-template ngbTabContent>
         <app-clm-gen-info-claim (emitClaimInfoId)="getClmInfo($event)" [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-clm-gen-info-claim>
       </ng-template>
     </ngb-tab>
-    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Section Covers">
+    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Section Covers" id="secCover">
       <ng-template ngbTabContent>
         <app-clm-section-covers [isInquiry]="isInquiry" [claimInfo]="claimInfo" (disableClmHistory)="disableClmHistory = $event"></app-clm-section-covers>
       </ng-template>
     </ngb-tab>
-    <ngb-tab [disabled]="claimInfo.claimId == '' || disableClmHistory" class="ngb-tab" title="Claim History">
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableClmHistory" class="ngb-tab" title="Claim History" id="clmHistoryId">
       <ng-template ngbTabContent>
-        <app-clm-claim-history [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event.disableNextTabs; disablePaytReq = $event.disablePaytReq" [isInquiry]="isInquiry"></app-clm-claim-history>
+        <app-clm-claim-history [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event.disableNextTabs; disablePaytReq = $event.disablePaytReq" [isInquiry]="isInquiry" (preventHistory)="showWarnMdl($event)"></app-clm-claim-history>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs"  title="Claim Distribution">
       <ng-template ngbTabContent>
-        <app-claim-distribution></app-claim-distribution>
+        <app-claim-distribution [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-claim-distribution>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs || disablePaytReq" title="Generate Payment Request">
@@ -26,7 +26,7 @@
         <app-clm-claim-payment-request [claimInfo]="claimInfo"></app-clm-claim-payment-request>
       </ng-template>
     </ngb-tab>
-    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Attachment">
+    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Attachment" id="attachment">
       <ng-template ngbTabContent>
         <app-claims-attachment [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-claims-attachment>
       </ng-template>
@@ -49,3 +49,56 @@
       </ngb-tab>
   </ngb-tabset>
 </div>
+
+
+<app-modal class="d-none" id="warnMdl" #warnModal >
+    <div header>Warning Message</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"> {{ msg }}</p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="warnModal.closeModal(); prevsTab()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+
+<app-modal class="d-none" #conModal >
+    <div header>Confirmation</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">{{ msg }}</p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="onClickYes();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="conModal.closeModal();prevsTab()"><a>No</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #overMdl >
+    <div header>Override</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <div class="input-group">
+              <div class="col-sm-1"></div>
+              <label class="form-control-sm col-sm-3" style="margin-left: -36px !important;">User ID</label>
+              <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] ="userId" required>
+              <div class="col-sm-1"></div>
+            </div>
+            <div class="input-group">
+              <div class="col-sm-1"></div>
+              <label class="form-control-sm col-sm-3" style="margin-left: -36px !important;">Password</label>
+              <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] ="password" required>
+              <div class="col-sm-1"></div>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="overMdl.closeModal();prevsTab();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onOkOver()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog #sucMdl [icon]="dialogIcon" [message]="dialogMessage" (onOk)="sucMdl.modal.closeModal()"></app-sucess-dialog>

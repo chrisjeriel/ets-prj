@@ -125,6 +125,7 @@ export class ClmClaimProcessingComponent implements OnInit {
   isIncomplete: boolean = true;
   loading: boolean = false;
   isFromRisk: boolean = false;
+  disableRisk: boolean = false;
 
   policyDetails: any = {
     policyId: '',
@@ -155,6 +156,7 @@ export class ClmClaimProcessingComponent implements OnInit {
   retrieveClaimsList(){
     this.cs.getClaimsListing(this.searchParams).subscribe((data : any)=>{
       if(data != null){
+        data.claimsList = data.claimsList.filter(a=>{return a.clmStatCd !== 'TC' && a.clmStatCd !== 'CD' && (a.lossStatCd !== 'CD')});
         for(var i of data.claimsList){
           for(var j of i.clmAdjusterList){
             if(i.adjName === undefined){
@@ -190,7 +192,7 @@ export class ClmClaimProcessingComponent implements OnInit {
     console.log(this.policyDetails.riskName);
     this.polListTbl.overlayLoader = true;
     this.policyListingData.tableData = [];
-    this.us.getParListing([{key: 'statusDesc', search: 'IN FORCE'}, 
+    this.us.getParListing([/*{key: 'statusDesc', search: 'IN FORCE'},*/ 
                            {key: 'policyNo', search: (this.noDataFound || this.isFromRisk) && lovBtn === undefined ? '' : this.tempPolNo.join('%-%')},
                            {key: 'riskName', search: !this.isFromRisk ? '' : String(this.policyDetails.riskName).toUpperCase()}]).subscribe((data: any)=>{
       //this.clearAddFields();
@@ -201,7 +203,8 @@ export class ClmClaimProcessingComponent implements OnInit {
           i.riskName = i.project.riskName;
           this.policyListingData.tableData.push(i);        
         }
-        this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return a.distStatDesc === 'P'}); //retrieve pol no with dist status of P (posted)
+        //this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return a.distStatDesc === 'P'}); //retrieve pol no with dist status of P (posted)
+        this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return 'IN FORCE' === a.statusDesc.toUpperCase() || 'EXPIRED' === a.statusDesc.toUpperCase() }); //retrieve pol no with status of In Force and Expired
         this.polListTbl.refreshTable();
         this.polListTbl.overlayLoader = false;
         this.loading = false;
@@ -274,6 +277,7 @@ export class ClmClaimProcessingComponent implements OnInit {
       this.policyDetails.districtDesc = data.policy.project.districtDesc;
       this.policyDetails.blockDesc = data.policy.project.blockDesc;
       this.loading = false;
+      this.disableRisk = true;
     },
     (error)=>{
       this.loading = false;
@@ -339,6 +343,7 @@ export class ClmClaimProcessingComponent implements OnInit {
      this.isType = true;
      if(event.target.value.length === 0){
          this.isIncomplete = true;
+         this.disableRisk = false;
          this.clearAddFields();
      }else{
          if(key === 'seqNo'){
@@ -355,6 +360,7 @@ export class ClmClaimProcessingComponent implements OnInit {
          for(var i of this.tempPolNo){
              if(i.length === 0){
                  this.isIncomplete = true;
+                 this.disableRisk = false;
                  break;
              }else{
                  this.isIncomplete = false;
@@ -385,6 +391,7 @@ export class ClmClaimProcessingComponent implements OnInit {
      }
      this.isType = false;
      this.isFromRisk = false;
+     this.disableRisk = false;
    }
 
    setRisks(data){

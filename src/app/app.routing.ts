@@ -173,7 +173,6 @@ import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-pol
 import { ClaimCashCallComponent } from './maintenance/claims/claim-cash-call/claim-cash-call.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 
-
 const appRoutes: Routes = [
 
 
@@ -236,7 +235,7 @@ const appRoutes: Routes = [
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
     { path: 'payt-req', component: RequestForPaymentComponent },
-    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent },
+    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
     { path: 'journal-voucher', component: JournalVoucherComponent },
     { path: 'generate-jv', component: GenerateJvComponent },
@@ -330,7 +329,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-intermediary', component: IntermediaryListComponent },
     { path: 'intermediary-mtn', component: IntermediaryComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-other-charge', component: OtherChargeComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'maintenance-location/:id', component: RegionComponent },
+    { path: 'maintenance-location/:id', component: RegionComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-usr-amt-limit', component: UserAmtLimitComponent, canDeactivate: [UnsavedChangesGuard]  },
     { path: 'mtn-non-renewal-reason', component: MtnNonRenewalReasonComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'quotation-to-hold-cover', component: QuotationToHoldCoverComponent, canDeactivate: [UnsavedChangesGuard] },

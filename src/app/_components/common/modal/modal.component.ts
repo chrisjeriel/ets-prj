@@ -33,6 +33,7 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
     @Output() modalOpened: EventEmitter<Object> = new EventEmitter<Object>();
     modalRef: NgbModalRef;
     mdlOptions:any;
+    @Input() disabled:boolean = false;
 
     constructor(private modalService: NgbModal) { }
 

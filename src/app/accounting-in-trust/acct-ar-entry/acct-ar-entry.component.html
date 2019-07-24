@@ -4,105 +4,87 @@
 			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
-				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="record.arNo">
+				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" appRequired>
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
-				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
-				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
-				<!-- <label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Payment Type</label> -->
-				<!-- <input type="text" placeholder="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm-3" (change)="tabController($event);" [(ngModel)]="record.paymentType"> -->
-				<!-- <select class="form-control form-control-sm cust-sm col-sm-3 cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
-					<option value="Inward Policy Balances">Inward Policy Balances</option>
-					<option value="Claim Recovery">Claim Recovery</option>
-					<option value="QSOA">QSOA</option> 
-				</select> -->
-				<!-- <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
+					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event;"></datepicker>
+				</div>
+				<div class="col-sm-1 dp-cont">
+					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event"></datepicker>
+				</div>
 				<label class="form-control-sm col-sm-2">Status</label>
-				<input type="text" placeholder="New" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="record.status">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="arInfo.arStatDesc" readonly>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">DCB No.</label>
 				<div class="form-control-sm cust-sm col-sm-2" style="padding: 0;">
 					<div class="input-group">
-						<input type="text" placeholder="2018" class="form-control form-control-sm text-right cust-sm col-sm-4">
-						<input type="text" placeholder="001" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4">
-						<input type="text" placeholder="55" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4">
+						<input type="text" class="form-control form-control-sm text-right cust-sm col-sm-4" [ngModel]="arInfo.dcbYear" readonly>
+						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="arInfo.dcbUserCd" readonly>
+						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="arInfo.dcbNo" readonly>
 					</div>
 				</div>
 				<div class="col-sm-4" style="padding: 0px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-3" style="margin-right: -2px !important;padding-left: 0px !important;">Reference No.</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm" value="INV-000001">
+						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.refNo">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
-					<option value="Inward Policy Balances">Inward Policy Balances</option>
-					<option value="Claim Recovery / Overpayment">Claim Recovery / Overpayment</option>
-					<option value="Negative Treaty Balance">Negative Treaty Balance</option>
-					<option value="Payment of Claim Cash Call by Company">Payment of Claim Cash Call by Company</option>
-					<option value="Investment Pull-Out">Investment Pull-Out</option>
-					<option value="Loss Reserve Deposit">Loss Reserve Deposit</option>
-					<!-- <option value="Claim Over Payment">Claim Over Payment</option> -->
-					<option value="Payment for Advances by Service">Payment for Advances by Service</option>
-					<option value="Others">Others</option>
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="arInfo.tranTypeCd" appRequired >
+					<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
 				</select>
 			</div>
-			<!-- <div class="input-group cust-ig">
-				<label class="form-control-sm col-sm-1">DCB Bank</label>
-				<input type="text" placeholder="Bank of the Philippine Islands" class="form-control form-control-sm cust-sm col-sm-6">
-				<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
-				<input type="text" placeholder="627-147839-8" class="form-control form-control-sm cust-sm col-sm-3">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-			</div> -->
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
-				<input type="text" placeholder="435674" class="form-control form-control-sm cust-sm text-right col-sm-2">
+				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.prNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
-				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
-				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
+				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
+					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;"></datepicker>
+				</div>
+				<div class="col-sm-1 dp-cont">
+					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;"></datepicker>
+				</div>
 				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
-				<input type="text" placeholder="Ma. Cecilia Dela Paz - Castro" class="form-control form-control-sm cust-sm col-sm">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.prPreparedBy">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" placeholder="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm" [(ngModel)]="record.payor">
+				<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="arInfo.payor" appRequired>
 				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
-				<textarea placeholder="16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;"></textarea>
-				<!-- <div class="form-control-sm col-sm edtr-cont" style="height: 42px;">
-					<text-editor [editorPlaceholder]="'16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209'" (fetchContent)="test($event)"></text-editor>
-				</div> -->
+				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" readonly [ngModel]="arInfo.mailAddress"></textarea>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Business</label>
-				<input type="text" placeholder="Non-Life Insurance" class="form-control form-control-sm cust-sm col-sm-6">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="arInfo.bussTypeCd" readonly>
 				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
-				<input type="text" placeholder="777 - 888 - 999 - 0000" class="form-control form-control-sm cust-sm col-sm-3">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="arInfo.tin" readonly>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Amount</label>
 				<div class="col-sm-6" style="padding: 0;">
 					<div class="input-group">
-						<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-2">
-						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-						<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4">
+						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.currCd" appRequired>
+						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+						{{selectedCurrency === currencies[1]}}
+						<select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired >
+							<option *ngFor="let curr of currencies" [ngValue]="curr">{{curr.currencyCd}}</option>
+						</select>
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4" [(ngModel)]="arInfo.arAmt" appRequired appCurrency>
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
-						<input type="text" placeholder="1.000000" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3">
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3" [ngModel]="arInfo.currRate | number: '1.10-10'" readonly >
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>
-				<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-1">
-				<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-2">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="arInfo.currCd" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-2" [ngModel]="arInfo.arAmt | number:'1.2-2'" readonly>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
-				<textarea placeholder="Representing payment for premium of policy CAR-2018-00001-99-0001-000" class="form-control form-control-sm col-sm" [(ngModel)]="record.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;"></textarea>
-				<!-- <div class="form-control-sm col-sm edtr-cont" style="height: 60px;">
-					<text-editor [editorContent]="itest" [editorPlaceholder]="'Representing payment for premium of policy CAR-2018-00001-99-0001-000'"></text-editor>
-				</div> -->
+				<textarea class="form-control form-control-sm col-sm" [(ngModel)]="arInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired></textarea>
 			</div>
 		</fieldset>
 	</div>
@@ -117,17 +99,12 @@
 					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center">
 				</div>				
 			</div>
-			<!-- <div class="input-group cust-ig">
-				<div class="col-sm-12 text-center">
-					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center">
-				</div>	
-			</div> -->
 		</fieldset>
 		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 12px !important; padding-bottom: 12px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Cancel AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd">Cancel AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
@@ -140,12 +117,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Print AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd">Print AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Reprint AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd">Reprint AR</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -160,55 +137,16 @@
 						<div class="input-group cust-ig">
 							<div class="col-sm-1"></div>
 							<label class="form-control-sm col-sm-1">DCB Bank</label>
-							<input type="text" placeholder="Bank of the Philippine Islands" class="form-control form-control-sm cust-sm col-sm-5">
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="arInfo.dcbBank" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
-							<input type="text" placeholder="627-147839-8" class="form-control form-control-sm cust-sm col-sm-2">
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.dcbBankAcct" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<div class="col-sm-1"></div>
 						</div>
-					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="passData" #paytDtl></app-cust-editable-non-datatable>
 				</div>
 			</div>
-			<!-- <div class="row">
-				<div class="col-sm-5">
-					<div class="input-group cust-ig">
-						<label class="form-control-sm col-sm-2">P.R. No.</label>
-						<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-2">
-						<label class="form-control-sm col-sm-2">Date</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm-4" value="2019-01-01">
-						<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-2" style="margin-right: -2px;">
-					</div>
-					<div class="input-group cust-ig">
-						<label class="form-control-sm col-sm-2">Prepared By</label>
-						<input type="text" placeholder="Ma. Cecilia Dela Paz - Castro" class="form-control form-control-sm cust-sm col-sm-8">
-						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-					</div>
-					<div class="input-group cust-ig">
-						<label class="form-control-sm col-sm-2"></label>
-						<input type="text" placeholder="Accountant II" class="form-control form-control-sm cust-sm col-sm-8">
-					</div>
-				</div>
-				<div class="col-sm-7">
-					<div class="input-group cust-ig">
-						<label class="form-control-sm col-sm-2"></label>
-					</div>
-					<div class="input-group cust-ig">
-						<span class="col-sm-1"></span>
-						<label class="form-control-sm col-sm-2">Created By</label>
-						<input type="text" placeholder="cuaresma" class="form-control form-control-sm cust-sm col-sm">
-						<label class="form-control-sm col-sm-2">Date Created</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm" value="2019-01-01">
-					</div>
-					<div class="input-group cust-ig">
-						<span class="col-sm-1"></span>
-						<label class="form-control-sm col-sm-2">Last Update By</label>
-						<input type="text" placeholder="cuaresma" class="form-control form-control-sm cust-sm col-sm">
-						<label class="form-control-sm col-sm-2">Last Update</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm" value="2019-01-01">
-					</div>
-				</div>
-			</div> -->
 		</fieldset>
 	</div>
 </div>
@@ -219,13 +157,17 @@ padding-right: 0px !important;">
 			<div class="form-row" style="margin-bottom: -10px;">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Created By</label>
-					<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
+					<input type="text" appCurrency class="form-control form-control-sm col-sm" [ngModel]="arInfo.createUser" disabled>
 					<label class="form-control-sm col-sm-1">Date Created</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45" disabled>
+					<div class="col-sm" style="padding: 0px">
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="arInfo.createDate"></datepicker>
+					</div>
 					<label class="form-control-sm col-sm-1">Last Update By</label>
-					<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="arInfo.updateUser" disabled>
 					<label class="form-control-sm col-sm-1">Last Update</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00" disabled>
+					<div class="col-sm" style="padding: 0px">
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="arInfo.updateDate"></datepicker>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -51,21 +51,21 @@
 	<ngb-tabset>
 		<ngb-tab *ngIf="paymentType !== 'Others'">
 			<ng-template ngbTabTitle>
-				<ng-container [ngSwitch]="paymentType.toUpperCase()">
-					<div *ngSwitchCase="'INWARD POLICY BALANCES'">Inward Policy Balances</div>
-					<div *ngSwitchCase="'CLAIM RECOVERY / OVERPAYMENT'">Claim Recovery / Overpayment</div>
-					<div *ngSwitchCase="'NEGATIVE TREATY BALANCE'">Negative Treaty Balance</div>
-					<div *ngSwitchCase="'PAYMENT OF CLAIM CASH CALL BY COMPANY'">Payment of Claim Cash Call by Company</div>
-					<div *ngSwitchCase="'INVESTMENT PULL-OUT'">Investment Pull-Out</div>
-					<div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
-					<div *ngSwitchCase="'CLAIM OVER PAYMENT'">Claim Over Payment</div>
-					<div *ngSwitchCase="'PAYMENT FOR ADVANCES BY SERVICE'">Payment For Advances by Service</div>
+				<ng-container [ngSwitch]="paymentType">
+					<div *ngSwitchCase="'1'">Inward Policy Balances</div>
+					<div *ngSwitchCase="'2'">Claim Recovery / Overpayment</div>
+					<div *ngSwitchCase="'3'">Negative Treaty Balance</div>
+					<div *ngSwitchCase="'4'">Payment of Claim Cash Call by Company</div>
+					<div *ngSwitchCase="'5'">Investment Pull-Out</div>
+					<div *ngSwitchCase="'6'">Loss Reserve Deposit</div>
+					<!-- <div *ngSwitchCase="'7'">Claim Over Payment</div> -->
+					<div *ngSwitchCase="'7'">Payment For Advances by Service</div>
 				</ng-container>
 			</ng-template>
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<ng-container [ngSwitch]="paymentType.toUpperCase()">
+						<!-- <ng-container [ngSwitch]="paymentType.toUpperCase()">
 							<ng-container *ngSwitchCase="'INWARD POLICY BALANCES'">
 								<app-inward-policy-balances></app-inward-policy-balances>
 							</ng-container>
@@ -90,12 +90,38 @@
 							<ng-container *ngSwitchCase="'PAYMENT FOR ADVANCES BY SERVICE'">
 								<app-ar-paymentfor-advances></app-ar-paymentfor-advances>
 							</ng-container>
+						</ng-container> -->
+						<ng-container [ngSwitch]="paymentType">
+							<ng-container *ngSwitchCase="'1'">
+								<app-inward-policy-balances></app-inward-policy-balances>
+							</ng-container>
+							<ng-container *ngSwitchCase="'2'">
+								<app-claim-recovery></app-claim-recovery>
+							</ng-container>
+							<ng-container *ngSwitchCase="'3'">
+								<app-ar-details-qsoa></app-ar-details-qsoa>
+							</ng-container>
+							<ng-container *ngSwitchCase="'4'">
+								<app-ar-claim-cash-call></app-ar-claim-cash-call>
+							</ng-container>
+							<ng-container *ngSwitchCase="'5'">
+								<app-ar-details-investments></app-ar-details-investments>
+							</ng-container>
+							<ng-container *ngSwitchCase="'6'">
+								<app-ar-loss-reserve-deposit></app-ar-loss-reserve-deposit>
+							</ng-container>
+							<!-- <ng-container *ngSwitchCase="'7'">
+								<app-ar-claim-over-payment></app-ar-claim-over-payment>
+							</ng-container> -->
+							<ng-container *ngSwitchCase="'7'">
+								<app-ar-paymentfor-advances></app-ar-paymentfor-advances>
+							</ng-container>
 						</ng-container>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Investment Income" *ngIf="paymentType.toUpperCase() === 'INVESTMENT PULL-OUT'">
+		<ngb-tab class="ngb-tab" title="Investment Income" *ngIf="paymentType == '5'">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
@@ -104,7 +130,7 @@
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Unapplied Collection" *ngIf="paymentType !== 'Others'">
+		<ngb-tab class="ngb-tab" title="Unapplied Collection" *ngIf="paymentType != '8'">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
