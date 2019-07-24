@@ -293,10 +293,12 @@ export class ClmClaimHistoryComponent implements OnInit {
           console.log(record.some(e => e.val1 == 'Y'));
           if(record.length == 0){
             if(record.some(e => e.val1 == 'Y') || rec2 == 1){
-              this.claimInfo.upUserGi = this.ns.getCurrentUser();
               if(record.some(e => e.val2 == 'Y')){
+                this.claimInfo.upUserGi = this.ns.getCurrentUser();
                 if(record.some(e => e.val3 == 'Y')){
+                  this.claimInfo.upUserGi = this.ns.getCurrentUser();
                   if(record.some(e => e.val4 == 'Y')){
+                    this.claimInfo.upUserGi = this.ns.getCurrentUser();
                   }else{
                     msg = 'The policy has unpaid premiums. Do you want to proceed?';
                     this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C'});
