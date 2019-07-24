@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-quarterly-stmnt-of-acct',
@@ -10,16 +11,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./quarterly-stmnt-of-acct.component.css']
 })
 export class QuarterlyStmntOfAcctComponent implements OnInit {
+	@ViewChild('confModal') confModal: ModalComponent;
+	@ViewChild('generateModal') generateModal: ModalComponent;
 
-comStmt:boolean = false;
-receivables:boolean = false;
-summary:boolean = false;
-remittances:boolean = false;
+	comStmt:boolean = false;
+	receivables:boolean = false;
+	summary:boolean = false;
+	remittances:boolean = false;
 
-balanceDebit: any = 800071.34;
-balanceCredit: any = 0;
-totalDebit: any = 1510787.46;
-totalCredit: any = 1510787.46;
+	balanceDebit: any = 800071.34;
+	balanceCredit: any = 0;
+	totalDebit: any = 1510787.46;
+	totalCredit: any = 1510787.46;
 
 	passDataListOfQsoaAperCompany: any ={
 		tableData:[
@@ -223,12 +226,22 @@ totalCredit: any = 1510787.46;
 		widths:[1,150,1,'auto','auto',200,200]
 	}
 
+  confMsg: number = 1;
+  gnrtCedingId: string = '';
+  gnrtCedingName: string = '';
+  gnrtQtr: number = 1;
+  gnrtYear: number = 1;
+
 
   constructor(private titleService: Title, private modalService: NgbModal, private route: Router) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | QSOA Inquiry");
 
+  	this.showGenerateModal();
+  }
+
+  showGenerateModal() {
   	setTimeout(() => { $('#generateQSOAModal #modalBtn').trigger('click'); }, 0);
   }
 
@@ -268,7 +281,11 @@ totalCredit: any = 1510787.46;
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         this.route.navigateByUrl('');
-      } 
+      }
+  }
+
+  showConfModal() {
+  	this.confModal.openNoClose();
   }
 
 }
