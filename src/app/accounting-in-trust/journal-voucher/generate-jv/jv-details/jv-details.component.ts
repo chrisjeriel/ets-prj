@@ -33,11 +33,9 @@ export class JvDetailsComponent implements OnInit {
     }
 
     this.retrieveJVDetails();
-    console.log(this.jvData)
   }
 
   retrieveJVDetails(){
-    console.log(this.jvData)
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
     this.jvDetails.refnoDate = this.ns.toDateTimeString(this.jvDetails.refnoDate);

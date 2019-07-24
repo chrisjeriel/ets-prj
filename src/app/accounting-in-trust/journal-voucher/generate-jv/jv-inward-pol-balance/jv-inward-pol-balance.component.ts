@@ -21,7 +21,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
     tableData: [],
     tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','Charges','Net Due','Payments','Balance',"Overdue Interest"],
     resizable: [true, true, true, true,true, true, true, true,true,true,true,true,true,true,true],
-    dataTypes: ['text','text','text','number','date','date','text','percent','currency','percent','percent','currency','currency','currency','percent'],
+    dataTypes: ['text','text','text','number','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency'],
     nData: {
        showMG: 1,
        soaNo : '',
@@ -40,7 +40,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
        balance : '',
        overdueInt : ''
     },
-    total:[null,null,null,null,null,null,null,'Total','premAmt', 'riComm', 'charges', 'netDue', 'payment', 'balance', 'overdueInt'],
+    total:[null,null,null,null,null,null,null,'Total','premAmt', 'riComm', 'charges', 'netDue', 'totalPayments', 'balAmtDue', 'overdueInt'],
     magnifyingGlass: ['soaNo'],
     checkFlag: true,
     addFlag: true,
@@ -51,9 +51,11 @@ export class JvInwardPolBalanceComponent implements OnInit {
     pagination: true,
     pageStatus: true,
     selectFlag: false,
+    disableAdd: true,
+    disableDelete: true,
     pageLength: 10,
-    widths: [180,180,120,50,1,1,1,85,120,85,85,120,120,120,120,85],
-    keys:['soaNo','policyNo','corefNo','instNo','effDate','dueDate','currCd', 'currRate', 'premAmt', 'riComm', 'charges', 'netDue', 'payment', 'totalBalance', 'overdueInt' ]
+    widths: [215,200,160,50,115,115,40,155,130,130,120,130,130,130,130,85],
+    keys:['soaNo','policyNo','coRefNo','instNo','effDate','dueDate','currCd', 'currRate', 'premAmt', 'riComm', 'charges', 'netDue', 'totalPayments', 'balAmtDue', 'overdueInt' ]
   };
 
   jvDetails: any = {
@@ -72,7 +74,10 @@ export class JvInwardPolBalanceComponent implements OnInit {
     console.log(this.jvDetails.ceding);
     this.accountingService.getJVInwPolBal(this.tranId,'',this.jvDetails.ceding).subscribe((data:any) => {
       console.log(data)
-      var datas = data.transactions.jvListings.inwPolBal;
+      var datas = data.inwPolBal;
+      this.passData.tableData = [];
+      this.passData.disableAdd = false;
+      this.passData.disableDelete = false;
       for(var i = 0; i < datas.length; i++){
         this.passData.tableData.push(datas[i]);
         this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(datas[i].effDate);
@@ -110,7 +115,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
     console.log(data)
     this.passData.tableData[this.tableRow].soaNo = data.soaNo;
     this.passData.tableData[this.tableRow].policyNo = data.policyNo;
-    this.passData.tableData[this.tableRow].corefNo  = data.coRefNo;
+    this.passData.tableData[this.tableRow].coRefNo  = data.coRefNo;
     this.passData.tableData[this.tableRow].instNo  = data.instNo;
     this.passData.tableData[this.tableRow].effDate  = data.effDate;
     this.passData.tableData[this.tableRow].dueDate  = data.dueDate;
@@ -120,8 +125,8 @@ export class JvInwardPolBalanceComponent implements OnInit {
     this.passData.tableData[this.tableRow].riComm  = data.balRiComm;
     this.passData.tableData[this.tableRow].charges  = data.balChargesDue;
     this.passData.tableData[this.tableRow].netDue  = data.netDue;
-    this.passData.tableData[this.tableRow].payment  = data.totalPayments;
-    this.passData.tableData[this.tableRow].totalBalance  = data.balance;
+    this.passData.tableData[this.tableRow].totalPayments  = data.totalPayments;
+    this.passData.tableData[this.tableRow].balAmtDue  = data.balance;
     this.passData.tableData[this.tableRow].overdueInt  = data.balOverdueInt;
 
   }

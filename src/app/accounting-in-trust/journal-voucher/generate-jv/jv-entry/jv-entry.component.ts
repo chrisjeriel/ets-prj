@@ -150,6 +150,7 @@ export class JvEntryComponent implements OnInit {
   }
 
   tabController(event) {
+    console.log(event)
   	this.onChange.emit({ type: event});
   }
 

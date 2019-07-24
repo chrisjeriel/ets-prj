@@ -42,7 +42,6 @@ export class JvSoaLovComponent implements OnInit {
 	  			console.log(data)
 	  			for(var i=0; i < data.soaDetails.length;i++){
 	  				this.passData.tableData.push(data.soaDetails[i]);
-	  				this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(data.soaDetails[i].dueDate);
 	  			}
 	  			this.table.refreshTable();
 	  		});
