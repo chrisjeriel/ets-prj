@@ -656,8 +656,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
         this.claimData.clmAdjusterList = this.adjData.tableData.filter(a => !a.deleted).slice();
 
-        // var temp = this.claimData.clmAdjusterList.map(a => a.adjId);
-        if(!this.claimData.clmAdjusterList.map(a => a.adjId).includes(this.claimData.adjId)) {
+        if(!this.claimData.clmAdjusterList.map(a => Number(a.adjId)).includes(this.claimData.adjId)) {
           this.claimData.adjId = '';
           this.claimData.adjName = '';
           this.claimData.adjFileNo = '';

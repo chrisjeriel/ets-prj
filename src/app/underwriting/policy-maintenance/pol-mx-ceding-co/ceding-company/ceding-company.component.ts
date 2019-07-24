@@ -168,4 +168,45 @@ export class CedingCompanyComponent implements OnInit {
       });
     }
   }
+
+  checkCedingCo(cedingName, ev, id?){
+    if(String(cedingName).trim() === ''){
+      this.selectedData.emit({
+        cedingId: '',
+        cedingName: '',
+        cedingAbbr: '',
+        ev: ev,
+        singleSearchLov: true
+      });
+      if(id != undefined) {
+        $(id + ' #modalBtn').trigger('click');  
+      } else {
+        this.modal.openNoClose();  
+      }    
+    } else {
+      this.underwritingService.getCedingCompanyList('',cedingName,'','','','','','','','').subscribe((data:any) =>{
+        if(data['cedingcompany'].length > 0){
+          data['cedingcompany'][0]['ev'] = ev;
+          data['cedingcompany'][0]['singleSearchLov'] = true;
+          this.selectedData.emit(data['cedingcompany'][0]);
+        } else {
+          this.selectedData.emit({
+            cedingId: '',
+            cedingName: '',
+            cedingAbbr: '',
+            ev: ev,
+            singleSearchLov: true
+          });
+          
+          if(id != undefined) {
+            //$(id + ' #modalBtn').trigger('click');  
+            this.modal.openNoClose();
+          } else {
+            //$('#cedingCompanyMdl > #modalBtn').trigger('click');  
+            this.modal.openNoClose();
+          }   
+        }
+      });
+    }
+  }
 }

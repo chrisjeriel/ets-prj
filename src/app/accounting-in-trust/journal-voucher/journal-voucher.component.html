@@ -8,7 +8,7 @@
 					<div class="col-sm-12">
 						<!-- <app-cust-editable-non-datatable  [passData]="passDataJVListing" (newClick)="onRowClick($event)" (rowDblClick)="onDblClick($event)">
                 		</app-cust-editable-non-datatable> -->
-						<app-cust-non-datatable [passData]="passDataJVListing" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowDblClick)="toGenerateJVEdit($event);" (rowClick)="onRowClick($event)"></app-cust-non-datatable> 
+						<app-cust-non-datatable [passData]="passDataJVListing" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (newRowDblClick)="toGenerateJVEdit($event);" (rowClick)="onRowClick($event)"></app-cust-non-datatable> 
 					</div>
 					<div class="col-sm-12">
 						<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">

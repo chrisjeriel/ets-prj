@@ -69,8 +69,7 @@ export class GenerateJvComponent implements OnInit {
   }
 
   checkTabs(event) {
-     console.log(event)
-    var type = event.type === null ? "" : event.type.toUpperCase();
+    var type = event.type === null ? "" : event.type;
     if(this.disabledTypes.includes(type)){
       this.jvTypeFlag = true;
     }else{
@@ -80,8 +79,9 @@ export class GenerateJvComponent implements OnInit {
   }
 
   jvInfo(data){
-     console.log(data);
-     this.jvData.type =  data.type;
+    console.log(data)
+     this.jvData.tranId = data.jvTranId;
+     this.jvData.type =  data.jvType;
      this.jvData.jvNo =  data.jvNo;
      this.jvData.jvYear =  data.jvYear;
      this.jvData.jvDate =  data.jvDate;

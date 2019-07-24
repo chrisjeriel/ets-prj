@@ -125,7 +125,7 @@
                     <div class="col-sm-12">
                         <ng-container [ngSwitch]="jvType.toUpperCase()">
                             <ng-container *ngSwitchCase="'ADJUSTMENTS OF INWARD POLICY BALANCES'">
-                                <app-jv-inward-pol-balance ></app-jv-inward-pol-balance>                                    
+                                <app-jv-inward-pol-balance [tranId]="jvDetails.tranId"></app-jv-inward-pol-balance>                                    
                             </ng-container>
 
                             <ng-container *ngSwitchCase="'PREMIUM RESERVE RELEASED'">
