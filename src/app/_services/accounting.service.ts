@@ -1296,6 +1296,35 @@ export class AccountingService {
 		return this.batchOR2;
 	}
 
+
+	saveAccJVEntry(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVEntry',JSON.stringify(params),header);
+	}
+
+	getJVInwPolBal(tranId,instNo,ceding) {
+		 const params = new HttpParams()
+             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+             .set('instNo', (instNo === null || instNo === undefined ? '' : instNo) )
+             .set('cedingCo', (ceding === null || ceding === undefined ? '' : ceding) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInwPolBal",{params});
+	}
+
+	getJVSOA(tranId,policyId,instNo,ceding) {
+		 const params = new HttpParams()
+		 	 .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('instNo', (instNo === null || instNo === undefined ? '' : instNo) )
+             .set('cedingId', (ceding === null || ceding === undefined ? '' : ceding) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSOAAging",{params});
+	}
+
+
+
 	getCMDMListing(params){
 		// const params = new HttpParams()
   //           .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))

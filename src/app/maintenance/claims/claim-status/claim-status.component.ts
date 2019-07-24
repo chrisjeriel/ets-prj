@@ -20,6 +20,7 @@ export class ClaimStatusComponent implements OnInit {
     tHeader: [ "Status Code","Description",'O/C',"Active","Remarks"],
     tableData:[],
     dataTypes: ['text','text', 'checkbox', 'checkbox','text'],
+    tooltip:[null,null,'Open / Close',null,null],
     nData: {
       statusCode: null,
       description: null,
