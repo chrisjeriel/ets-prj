@@ -1,10 +1,12 @@
 
 import { Title } from '@angular/platform-browser';
-import { AccountingService } from '@app/_services';
-import { Component, OnInit } from '@angular/core';
+import { NotesService,AccountingService } from '@app/_services';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccInvestments} from '@app/_models';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+
 
 @Component({
   selector: 'app-investments',
@@ -12,6 +14,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./investments.component.css']
 })
 export class InvestmentsComponent implements OnInit {
+  
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 
   tableData: any[] = [];	
   tHeader: any[] = [];
@@ -19,7 +23,7 @@ export class InvestmentsComponent implements OnInit {
 
    passData: any = {
    	 tableData: [
-        {
+        /*{
           bank: 'BPI',
           certificateNo: 'BPI 1',
           investmentType: 'Time Deposit',
@@ -54,12 +58,13 @@ export class InvestmentsComponent implements OnInit {
           bankCharges: 10150,
           withholdingTax: 3000,
           maturityValue: 10150000
-        }
+        }*/
       ],
-   	 tHeader: ["Bank","Certificate No.","Investment Type","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value"],
-   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-   	 dataTypes: ['text','text','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency'],
+   	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value"],
+   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+   	 dataTypes: ['reqtext','reqtext','reqtext','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency'],
    	 nData: {
+          invesmentCd : null,
           bank: null,
           certificateNo: null,
           investmentType: null,
@@ -75,9 +80,13 @@ export class InvestmentsComponent implements OnInit {
           investmentIncome: null,
           bankCharges: null,
           withholdingTax: null,
-          maturityValue: null
+          maturityValue: null,
+          createUser: this.ns.getCurrentUser(),
+          createDate: this.ns.toDateTimeString(0),
+          updateUser: this.ns.getCurrentUser(),
+          updateDate: this.ns.toDateTimeString(0),
         },
-   	 total:[null,null,null,null,null,null,null,null,null,null,'Total','investment','investmentIncome','bankCharges','withholdingTax','maturityValue'],
+   	 total:[null,null,null,null,null,null,null,null,null,null,null,'Total','investment','investmentIncome','bankCharges','withholdingTax','maturityValue'],
      opts: [
        { selector: "durUnit", vals: ["Years","Months","Weeks","Days"] },
        { selector: "investmentType", vals: ["Time Deposit","Treatsury"] },
@@ -122,18 +131,17 @@ export class InvestmentsComponent implements OnInit {
        },
      ],
    	 addFlag: true,
-   	 deleteFlag: true,
      searchFlag: true,
      infoFlag: true,
      paginateFlag: true,
      pageStatus: true,
      pagination: true,
-     genericBtn: 'Save',
-     pageLength: 15,
-     widths: [190,190,120,120,80,85,1,1,1,85,90,120,120,120,120,120],
+     genericBtn: 'Delete',
+     pageLength: 10,
+     widths: [190,190,120,120,80,85,1,1,1,85,90,120,120,120,120,120,120],
    };
 
-  constructor(private accountingService: AccountingService,private titleService: Title,private router: Router) { }
+  constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Investments");

@@ -36,7 +36,7 @@
 						 	  	<div class="row">
 					                <div class="col-sm-12" style="margin-top: 14px; margin-bottom: -20px" >
 					                   <!--  <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button> -->
-					                    <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+					                    <app-cust-editable-non-datatable [passData]="passData" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true;"></app-cust-editable-non-datatable>
 					                </div>
             					</div>
 	            				<div class="row">

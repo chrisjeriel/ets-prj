@@ -425,6 +425,7 @@ import { MtnClmEventTypeComponent } from './maintenance/mtn-clm-event-type/mtn-c
 import { MtnAdjusterComponent } from './maintenance/mtn-adjuster/mtn-adjuster.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 import { MtnCedingCompanyMemberComponent } from './maintenance/mtn-ceding-company-member/mtn-ceding-company-member.component';
+import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 
 @NgModule({
     imports: [
@@ -856,6 +857,7 @@ import { MtnCedingCompanyMemberComponent } from './maintenance/mtn-ceding-compan
         MtnAdjusterComponent,
         ClaimStatusReasonComponent,
         MtnCedingCompanyMemberComponent,
+        AllocateInvestmentIncomeComponent,
     ],
 
   	providers: [
