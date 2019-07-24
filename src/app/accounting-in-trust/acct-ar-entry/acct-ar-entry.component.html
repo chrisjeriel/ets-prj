@@ -92,7 +92,7 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center" style="margin-bottom: 8px !important;">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">New AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="newAr()">New AR</button>
 				</div>
 				<div class="col-sm-12 text-center" style="margin-bottom: 2px !important;">
 					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center">
@@ -149,7 +149,7 @@
 							</select>
 							<div class="col-sm-1"></div>
 						</div>
-					<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')" #paytDtl></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="paytDtlTbl.onClickDelete('a')" (tableDataChange)="onTableDataChange($event)" #paytDtl></app-cust-editable-non-datatable>
 				</div>
 			</div>
 		</fieldset>
