@@ -1456,5 +1456,14 @@ export class AccountingService {
 			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPrqTrans',{params});	
 	}
+
+	cancelAr(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/cancelAr',JSON.stringify(params),header);
+	}
   
 }

@@ -4,13 +4,13 @@
 			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
-				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" mask="999999" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')">
+				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" mask="999999" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event;"></datepicker>
+					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event;" [disabled]="isCancelled"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event"></datepicker>
+					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="isCancelled"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">Status</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="arInfo.arStatDesc" readonly>
@@ -27,31 +27,32 @@
 				<div class="col-sm-4" style="padding: 0px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-3" style="margin-right: -2px !important;padding-left: 0px !important;">Reference No.</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.refNo">
+						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.refNo" [readonly]="isCancelled">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="arInfo.tranTypeCd" appRequired >
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="arInfo.tranTypeCd" appRequired [disabled]="isCancelled">
 					<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
 				</select>
+				<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled" [ngModel]="arInfo.tranTypeName"> -->
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
-				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.prNo">
+				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.prNo" [readonly]="isCancelled">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;"></datepicker>
+					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;" [disabled]="isCancelled"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;"></datepicker>
+					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.prPreparedBy">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.prPreparedBy" [readonly]="isCancelled">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="arInfo.payor" appRequired>
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled">
+				<div class="text-search-ico" (click)="openPayorLOV()" *ngIf="!isCancelled"><a><i class="fa fa-search"></i></a></div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
@@ -69,10 +70,10 @@
 					<div class="input-group">
 						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.currCd" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-						<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareCurrencyFn" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired>
+						<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareCurrencyFn" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled">
 							<option *ngFor="let curr of currencies" [ngValue]="curr">{{curr.currencyCd}}</option>
 						</select>
-						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency>
+						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
 						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3" [ngModel]="arInfo.currRate | number: '1.10-10'" readonly >
 					</div>
@@ -83,7 +84,7 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
-				<textarea class="form-control form-control-sm col-sm" [(ngModel)]="arInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired></textarea>
+				<textarea class="form-control form-control-sm col-sm" [(ngModel)]="arInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired [readonly]="isCancelled"></textarea>
 			</div>
 		</fieldset>
 	</div>
@@ -95,7 +96,7 @@
 					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="newAr()">New AR</button>
 				</div>
 				<div class="col-sm-12 text-center" style="margin-bottom: 2px !important;">
-					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center">
+					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center" readonly>
 				</div>				
 			</div>
 		</fieldset>
@@ -103,12 +104,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd">Cancel AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd" (click)="openCancelModal()" [disabled]="isCancelled" [class.cust-btn-disabled]="isCancelled">Cancel AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();">Save</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();" [disabled]="isCancelled" [class.cust-btn-disabled]="isCancelled">Save</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -116,12 +117,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd">Print AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd" [disabled]="isCancelled" [class.cust-btn-disabled]="isCancelled">Print AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd">Reprint AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd" [disabled]="isCancelled" [class.cust-btn-disabled]="isCancelled">Reprint AR</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -138,13 +139,13 @@
 							<label class="form-control-sm col-sm-1">DCB Bank</label>
 							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="arInfo.dcbBankName" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-							<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired>
+							<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired [disabled]="isCancelled">
 								<option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
 							</select>
 							<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
 							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.dcbBankAcctNo" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-							<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired>
+							<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired [disabled]="isCancelled">
 								<option *ngFor="let bankAcct of bankAccts" [ngValue]="bankAcct">{{bankAcct.accountNo}}</option>
 							</select>
 							<div class="col-sm-1"></div>
@@ -182,3 +183,21 @@ padding-right: 0px !important;">
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
+
+<app-modal class="d-none" #cancelMdl>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Are you sure you want to cancel this AR?</p>
+	  </div>
+	</div>
+	<div footer>
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="cancelMdl.closeModal();cancelAr();"><a>Yes</a></button>
+          <button class="cust-btn" type="button" (click)="cancelMdl.closeModal();"><a>No</a></button>
+        </div>
+      </div>
+  	</div>
+</app-modal>

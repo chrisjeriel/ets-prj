@@ -4,6 +4,8 @@ import { AccountingService, NotesService, MaintenanceService } from '@app/_servi
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-acct-ar-entry',
@@ -14,6 +16,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild('paytDtl') paytDtlTbl: CustEditableNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild(LovComponent) lov: LovComponent;
+  @ViewChild(ModalComponent) cancelMdl: ModalComponent;
 
   passData: any = {
         tableData: [],
@@ -81,6 +85,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   sub: any;
   isAdd: boolean = false;
   cancelFlag: boolean = false;
+  isCancelled: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -153,6 +158,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     accountNo: ''
   }
 
+  passLov:any = {
+    selector:'',
+    payeeClassCd: 1
+  };
+
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
@@ -167,16 +177,47 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
            this.isAdd = false;
            let params = JSON.parse(data['slctd']);
            tranId = params.tranId;
-           arNo = params.arNo;         }
+           arNo = params.arNo;
+           if(params.status === 'Cancelled' || params.status === 'Deleted'){
+             this.isCancelled = true;
+             this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+             this.paytDtlTbl.refreshTable();
+           }         
+         }
        }
     );
-
+    //NECO PLEASE OPTIMIZE THIS, THIS IS NOT OPTIMIZED -neco also
     if(!this.isAdd){
+      if(this.emittedValue !== undefined && this.emittedValue.arStatus === 'X'){
+        this.isCancelled = true;
+        this.passData.addFlag = false;
+        this.passData.genericBtn = undefined;
+        this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+        this.paytDtlTbl.refreshTable();
+        console.log('wat')
+      }
       this.retrieveArEntry(tranId, arNo);
     }else{
       if(this.emittedValue !== undefined){
+        if(this.emittedValue.arStatus === 'X'){
+          this.isCancelled = true;
+          this.passData.addFlag = false;
+          this.passData.genericBtn = undefined;
+          this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+          this.paytDtlTbl.refreshTable();
+          console.log('wat')
+        }
         this.retrieveArEntry(this.emittedValue.tranId, this.emittedValue.arNo);
       }else{
+
+        if(this.emittedValue.arStatus === 'X'){
+          this.isCancelled = true;
+          this.passData.addFlag = false;
+          this.passData.genericBtn = undefined;
+          this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+          this.paytDtlTbl.refreshTable();
+          console.log('wat')
+        }
         this.retrieveMtnAcitDCBNo();
         this.retrieveMtnDCBUser();
         this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
@@ -195,6 +236,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.retrieveMtnDCBUser();
     this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
     this.arDate.time = this.ns.toDateTimeString(0).split('T')[1];
+    this.isCancelled = false;
+    this.passData.uneditable = [];
+    this.passData.addFlag = true;
+    this.passData.genericBtn = 'Delete';
+    this.paytDtlTbl.refreshTable();
     this.arInfo = {
       tranId: '',
       tranClass: 'AR',
@@ -233,6 +279,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       date: '',
       time: ''
     }
+
     this.passData.tableData = [];
     this.paytDtlTbl.refreshTable();
     this.retrieveCurrency();
@@ -242,6 +289,37 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.sub.unsubscribe();
+  }
+
+  openPayorLOV(){
+    this.passLov.selector = 'payee';
+    this.lov.openLOV();
+  }
+
+  openCancelModal(){
+    this.cancelMdl.openNoClose();
+  }
+
+  cancelAr(){
+    let params: any = {
+      tranId: this.arInfo.tranId,
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0)
+    };
+    this.as.cancelAr(params).subscribe(
+      (data: any)=>{
+        if(data.returnCode !== 0){
+          this.isCancelled = true;
+          this.dialogIcon = 'success';
+          this.successDiag.open();
+          this.passData.addFlag = false;
+          this.passData.genericBtn = undefined;
+          this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+          this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+          this.paytDtlTbl.refreshTable();
+        }
+      }
+    );
   }
 
   tabController(event) {
@@ -269,6 +347,15 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   changeArAmt(data){
     this.arInfo.arAmt = (parseFloat(data.toString().split(',').join('')));
+  }
+
+  setLov(data){
+    console.log(data);
+    this.arInfo.payeeNo = data.data.payeeNo;
+    this.arInfo.payor = data.data.payeeName;
+    this.arInfo.tin = data.data.tin;
+    this.arInfo.bussTypeCd = data.data.bussTypeCd;
+    this.arInfo.mailAddress = data.data.mailAddress;
   }
 
   retrieveArEntry(tranId, arNo){
@@ -339,7 +426,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.disableTab.emit(false);
           let arDetailParams = {
             tranId: this.arInfo.tranId,
-            arNo: this.arInfo.arNo
+            arNo: this.arInfo.arNo,
+            arStatus: this.arInfo.arStatus
           }
           this.emitArInfo.emit(arDetailParams);
 
@@ -359,7 +447,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    if(this.checkArInfoFields() || this.checkPaytDtlFields() || this.passData.tableData.length === 0){
+      this.dialogIcon = 'error';
+      this.successDiag.open();
+    }else{
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
   }
 
   save(cancelFlag?){
@@ -449,6 +542,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   retrieveMtnBank(){
     this.banks = [];
+    this.passData.opts[2].vals = [];
+    this.passData.opts[2].prev = [];
     this.ms.getMtnBank().subscribe(
       (data:any)=>{
         if(data.bankList.length !== 0){
@@ -540,6 +635,32 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
       }
     );
+  }
+
+  //VALIDATION STARTS HERE
+  checkArInfoFields(): boolean{
+    if(
+       this.arDate.date.length === 0 || this.arDate.time.length === 0 ||
+       this.arInfo.dcbYear.length === 0 || this.arInfo.dcbUserCd.length === 0 ||
+       this.arInfo.dcbNo.length === 0 || this.arInfo.tranTypeCd.length === 0 ||
+       this.arInfo.payeeNo.length === 0 || this.arInfo.payor.length === 0 ||
+       this.arInfo.currCd.length === 0 || this.arInfo.arAmt.length === 0 ||
+       this.arInfo.currRate.length === 0 || this.arInfo.particulars.length === 0 ||
+       this.arInfo.dcbBank.length === 0 || this.arInfo.dcbBankAcct.length === 0
+    ){
+      return true;
+    }
+    return false;
+  }
+
+  checkPaytDtlFields(): boolean{
+    for(var i of this.passData.tableData){
+      if(i.paytMode.length === 0 || i.currCd.length === 0 || i.currRate.length === 0 ||
+         i.paytAmt.length === 0){
+         return true;
+      }
+    }
+    return false;
   }
 
   //UTILITIES STARTS HERE
