@@ -32,4 +32,4 @@
     </div>
 </div>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-jv-soa-lov id="soaMdl" [tranId]="tranId" [cedingId]="jvDetails.ceding" (selectedData)="setSoa($event)"></app-jv-soa-lov>
+<app-jv-soa-lov id="soaMdl" [tranId]="tranId" [cedingId]="jvDetails.ceding" (selectedData)="setSoa($event)" [lovCheckBox]="true" [hide]="hideSoa"></app-jv-soa-lov>

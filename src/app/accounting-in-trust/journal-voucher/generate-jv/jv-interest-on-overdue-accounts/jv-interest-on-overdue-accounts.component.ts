@@ -17,14 +17,28 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @Input() tranId:any;
+  @Input() jvDate:any;
 
   passData: any = {
     tableData: [],
     tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.', 'Eff Date','Due Date','No. of Days Overdue','Curr','Curr Rate','Premium',"Overdue Interest"],
     resizable: [true, true, true, true, true, true, true, true, true,true,true],
     dataTypes: ['text','text','text','number','date','date','number','text','percent','currency','currency'],
-    nData: new AccJvInterestOverdue(null,null,null,null,new Date(),new Date(),null,null,null,null,null),
-    total:[null,null,null,null,null,null,null,null,'Total','premium','overdueInt'],
+    nData: {
+      showMG : 1,
+      soaNo : '',
+      policyNo : '',
+      coRefNo : '',
+      instNo : '',
+      effDate : '',
+      dueDate : '',
+      daysOverdue : '',
+      currCd : '',
+      currRate : '',
+      premAmt : '',
+      overdueInt : ''
+    },
+    total:[null,null,null,null,null,null,null,null,'Total','premAmt','overdueInt'],
     magnifyingGlass: ['soaNo'],
     checkFlag: true,
     addFlag: true,
@@ -36,16 +50,34 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     selectFlag: false,
     editFlag: false,
     pageLength: 10,
-    widths: [180,180,120,1,1,1,1,1,85,120,120]
+    disableAdd: true,
+    widths: [180,180,120,1,1,1,1,1,85,120,120],
+    keys: ['soaNo','policyNo','coRefNo','instNo','effDate','dueDate','daysOverdue','currCd','currRate','premAmt','overdueInt']
   };
 
   jvDetails: any = {
     cedingName: ''
   }
 
+  hideSoa: any = [];
+
   constructor(private accountingService: AccountingService,private titleService: Title, private ns: NotesService) { }
 
   ngOnInit() {
+    console.log(this.jvDate)
+  }
+
+  getInterestOverdue(){
+    this.accountingService.getAcitJVOverdue(this.tranId,'',this.jvDetails.ceding).subscribe((data:any) => {
+      this.passData.disableAdd = false;
+      for(var i = 0; i < data.overDueAccts.length; i++){
+        this.passData.tableData.push(data.overDueAccts[i]);
+        this.passData.tableData[this.passData.tableData.length - 1].effDate = data.overDueAccts[i].effDate;
+        this.passData.tableData[this.passData.tableData.length - 1].dueDate = data.overDueAccts[i].dueDate;
+      }
+      this.table.refreshTable();
+      
+    });
   }
 
   checkCode(ev){
@@ -58,11 +90,38 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     $('#cedingCompany #modalBtn').trigger('click');
   }
 
+   soaLOV(data){
+      this.hideSoa = this.passData.tableData.filter((a)=>{return a.instNo !== undefined && a.policyId !== undefined && !a.deleted}).map((a)=>{return (a.policyId.toString()+ '-'+ a.instNo).toString()});
+      $('#soaMdl #modalBtn').trigger('click');
+  }
+
   setCedingcompany(data){
-    console.log(data)
     this.jvDetails.cedingName = data.cedingName;
     this.jvDetails.ceding = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
-    console.log(this.jvDetails.ceding);
+    this.getInterestOverdue();
+  }
+
+  setSoa(data){
+    this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
+    for(var i = 0 ; i < data.length; i++){
+      this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].edited  = true;
+      this.passData.tableData[this.passData.tableData.length - 1].policyId = data[i].policyId;
+      this.passData.tableData[this.passData.tableData.length - 1].soaNo = data[i].soaNo;
+      this.passData.tableData[this.passData.tableData.length - 1].policyNo = data[i].policyNo;
+      this.passData.tableData[this.passData.tableData.length - 1].coRefNo  = data[i].coRefNo;
+      this.passData.tableData[this.passData.tableData.length - 1].instNo  = data[i].instNo;
+      this.passData.tableData[this.passData.tableData.length - 1].effDate  = data[i].effDate;
+      this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data[i].dueDate;
+      this.passData.tableData[this.passData.tableData.length - 1].daysOverdue  = new Date(data[i].dueDate).getDate() - new Date(this.ns.toDateTimeString(this.jvDate)).getDate();
+      this.passData.tableData[this.passData.tableData.length - 1].currCd  = data[i].currCd;
+      this.passData.tableData[this.passData.tableData.length - 1].currRate  = data[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].premAmt  = data[i].balPremDue;
+      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = data[i].balOverdueInt;
+    }
+    this.table.refreshTable();
+    //var test =  this.passData.tableData[0].effDate.getDate() - this.ns.toDateTimeString(0).getDate();
   }
 }

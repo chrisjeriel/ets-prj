@@ -1454,5 +1454,13 @@ export class AccountingService {
 			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPrqTrans',{params});	
 	}
+
+	getAcitJVOverdue(tranId,instNo,ceding) {
+		 const params = new HttpParams()
+             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+             .set('instNo', (instNo === null || instNo === undefined ? '' : instNo) )
+             .set('cedingId', (ceding === null || ceding === undefined ? '' : ceding) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVIntOverdueAccts",{params});
+	}
   
 }
