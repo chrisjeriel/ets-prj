@@ -270,6 +270,41 @@ export class LovComponent implements OnInit {
     }*/
   }
 
+  checkCdOthers(selector,ev){
+    if (selector == 'refNo'){
+
+          this.passData.refNo = ev.target.value;
+          if(this.passData.refNo == '') {
+            this.selectedData.emit({
+              selector: selector,
+              data: null,
+              ev: ev
+            });
+          } else {
+            this.accountingService.getRefNoLov(this.passData.params).subscribe((data: any) => {
+                let filtered:any[] = data.refNoList.filter(a=>a.tranNo==this.passData.refNo)
+                if(filtered.length > 0) {
+                  filtered[0].ev = ev;
+                  this.selectedData.emit({
+                      selector: selector,
+                      data : filtered[0],
+                      ev: ev
+                    }
+                    );
+                } else {
+                  this.selectedData.emit({
+                    selector: selector,
+                    data: null,
+                    ev: ev
+                  });
+                  this.passData.selector = 'refNo';
+                  this.modal.openNoClose();
+                }
+            });
+          }
+        }
+  }
+
   openModal(){
     this.showButton = false;
     this.passTable.tableData = [];
@@ -558,6 +593,15 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'tranClass','tranNo','tranTypeName','tranDate','particulars','amount'];
       this.accountingService.getRefNoLov(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["refNoList"];
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'payee'){
+      this.passTable.tHeader = ['Payee Name','Payee Class'];
+      this.passTable.widths =[500,500]
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'payeeName','payeeClassName'];
+      this.mtnService.getMtnPayee(this.passData.payeeNo, this.passData.payeeClassCd).subscribe(a=>{
+        this.passTable.tableData = a["payeeList"];
         this.table.refreshTable();
       })
     }
