@@ -89,30 +89,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         updateUser    : ''
       }
     ],
-    deletePrqTrans   : [
-      {
-        claimId       : '',
-        createDate    : '',
-        createUser    : '',
-        currAmt       : '',
-        currCd        : '',
-        currRate      : '',
-        histNo        : '',
-        instNo        : '',
-        investmentId  : '',
-        itemNo        : '',
-        localAmt      : '',
-        paymentFor    : '',
-        policyId      : '',
-        projId        : '',
-        quarterEnding : '',
-        refNo         : '',
-        remarks       : '',
-        reqId         : '',
-        updateDate    : '',
-        updateUser    : ''
-      }
-    ]
+    deletePrqTrans   : []
   };
 
 
@@ -146,14 +123,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                                                  e2.updateUser = e.updateUser;
                                                                  e2.createDate = e.createDate;
                                                                  e2.updateDate = e.updateDate;
+                                                                 e2.itemNo     = e.itemNo;
                                                                  return e2; 
                                                                }));
       });
       this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.flatMap(e => { return e });
       this.cedCompTbl.refreshTable();
+
       console.log(this.cedingCompanyData.tableData);
     });
-
   }
 
   showLOV(event){
@@ -208,7 +186,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           a.createUser = (a.createUser == '' || a.createUser == null)?this.ns.getCurrentUser():a.createUser;
           a.createDate = (a.createDate == '' || a.createDate == null)?this.ns.toDateTimeString(0):a.createDate;
           a.updateUser = this.ns.getCurrentUser();
-          a.createUser = this.ns.toDateTimeString(0);
+          a.updateDate = this.ns.toDateTimeString(0);
           return a;
         });
       }else if(e.edited && e.deleted){
@@ -219,6 +197,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
 
     console.log(this.cedingCompanyData.tableData);
+    console.log(this.params.savePrqTrans);
+
     if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
       $('.ng-dirty').removeClass('ng-dirty');
       this.cs.confirmModal();
@@ -235,15 +215,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveCPC(){
-    this.params.savePrqTrans.map(e => {
-      e.currCd   = e.currencyCd;
-      e.currRate = e.currencyRt;
-      e.currAmt  = e.paytAmt;
-      e.localAmt = e.paytAmt;
-      e.reqId    = this.rowData.reqId;
+    // this.params.savePrqTrans.map(e => {
+    //   e.currCd   = e.currencyCd;
+    //   e.currRate = e.currencyRt;
+    //   e.currAmt  = e.paytAmt;
+    //   e.localAmt = e.paytAmt;
+    //   e.reqId    = this.rowData.reqId;
 
-    });
-
+    // });
+    console.log(this.params);
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);
