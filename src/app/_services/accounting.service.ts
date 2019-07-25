@@ -1462,5 +1462,13 @@ export class AccountingService {
              .set('cedingId', (ceding === null || ceding === undefined ? '' : ceding) )
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVIntOverdueAccts",{params});
 	}
-  
+
+	saveAccJVInwPol(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInwPolBal',JSON.stringify(params),header);
+	}
 }

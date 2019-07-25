@@ -51,7 +51,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     editFlag: false,
     pageLength: 10,
     disableAdd: true,
-    widths: [180,180,120,1,1,1,1,1,85,120,120],
+    widths: [230,230,140,1,1,1,1,1,85,120,120],
     keys: ['soaNo','policyNo','coRefNo','instNo','effDate','dueDate','daysOverdue','currCd','currRate','premAmt','overdueInt']
   };
 

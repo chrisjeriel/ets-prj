@@ -22,7 +22,7 @@
                             <datepicker [type]="'time'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[1]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'t')" [required]="true"></datepicker>
                             </div>
                             <label class="form-control-sm col-sm-2">Status</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="entryData.jvStatus" readonly>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="entryData.jvStatusName" readonly>
                             <label class="form-control-sm col-sm-2">Auto</label> 
                             <input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px" [checked]="entryData.autoTag === 'Y'" (change)="entryData.autoTag = (entryData.autoTag === 'Y') ? 'N' : 'Y'" disabled>
                         </div>
@@ -185,7 +185,7 @@
                     <div class="col-md-12 text-center">
                         <div class="cust-btn-container" style="margin-top: 10px;">
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="newJV()"><a>New JV</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="saveJV()"><a>Save</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="onClickSave()"><a>Save</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="cancelJVBut" [class.cust-btn-disabled]="cancelJVBut" (click)="cancel()"><a>Cancel JV</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approveBut" [class.cust-btn-disabled]="approveBut" (click)="onClickApprove()"><a>Approve</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut" [class.cust-btn-disabled]="printBut" ><a>Print</a></button>
@@ -260,3 +260,6 @@
     </div>
 </app-modal>
 
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveJV()"></app-confirm-save>
+<app-cancel-button (onYes)="saveJV('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
