@@ -1,12 +1,12 @@
-
 import { Title } from '@angular/platform-browser';
-import { NotesService,AccountingService } from '@app/_services';
+import { NotesService,AccountingService,MaintenanceService } from '@app/_services';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccInvestments} from '@app/_models';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
-
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-investments',
@@ -22,95 +22,70 @@ export class InvestmentsComponent implements OnInit {
   dataTypes: any[] = [];
 
    passData: any = {
-   	 tableData: [
-        /*{
-          bank: 'BPI',
-          certificateNo: 'BPI 1',
-          investmentType: 'Time Deposit',
-          status: 'Matured',
-          maturityPeriod: 5,
-          durUnit: 'Years',
-          interestRate: 8.875,
-          datePurchased: new Date('2013-10-20'),
-          maturityDate: new Date('2018-10-20'),
-          curr: 'PHP',
-          currRate: 1,
-          investment: 14000000,
-          investmentIncome: 4112500,
-          bankCharges: 18112.50,
-          withholdingTax: 82250,
-          maturityValue: 18112500
-        },
-        {
-          bank: 'RCBC',
-          certificateNo: 'RCBC 1',
-          investmentType: 'Treatsury',
-          status: 'Outstanding',
-          maturityPeriod: 35,
-          durUnit: 'Days',
-          interestRate: 1.5,
-          datePurchased: new Date('2018-09-26'),
-          maturityDate: new Date('2018-10-31'),
-          curr: 'PHP',
-          currRate: 1,
-          investment: 10000000,
-          investmentIncome: 150000,
-          bankCharges: 10150,
-          withholdingTax: 3000,
-          maturityValue: 10150000
-        }*/
-      ],
-   	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value"],
-   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-   	 dataTypes: ['reqtext','reqtext','reqtext','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency'],
+   	 tableData: [],
+   	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Security","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value"],
+   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+   	 dataTypes: ['reqtext','reqtext','reqtext','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency'],
    	 nData: {
-          invesmentCd : null,
-          bank: null,
-          certificateNo: null,
-          investmentType: null,
-          maturityPeriod: null,
-          status:null,
-          durUnit: null,
-          interestRate: null,
-          datePurchased: null,
-          maturityDate: null,
-          curr: null,
-          currRate: null,
-          investment: null,
-          investmentIncome: null,
-          bankCharges: null,
-          withholdingTax: null,
-          maturityValue: null,
+          invtId   : null,
+          invtCd   : null,
+          bank     : null,
+          certNo   : null,
+          invtType : null,
+          invtSecCd: null,
+          invtStatus:null,
+          matPeriod: null,
+          durUnit  : null,
+          intRt    : null,
+          purDate  : null,
+          matDate  : null,
+          cucurrCd : null,
+          currRate : null,
+          invtAmt  : null,
+          incomeAmt: null,
+          bankCharge: null,
+          whtaxAmt : null,
+          matVal   : null,
           createUser: this.ns.getCurrentUser(),
           createDate: this.ns.toDateTimeString(0),
           updateUser: this.ns.getCurrentUser(),
           updateDate: this.ns.toDateTimeString(0),
         },
-   	 total:[null,null,null,null,null,null,null,null,null,null,null,'Total','investment','investmentIncome','bankCharges','withholdingTax','maturityValue'],
-     opts: [
-       { selector: "durUnit", vals: ["Years","Months","Weeks","Days"] },
+   	 total:[null,null,null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal'],
+     opts: [ {selector: 'invtType', prev: [], vals: []},
+             {selector: 'invtSecCd', prev: [], vals: []},
+             {selector: 'invtStatus', prev: [], vals: []},
+             {selector: 'durUnit', prev: [], vals: []},
+             {selector: 'currCd', prev: [], vals: []},
+       /*{ selector: "durUnit", vals: ["Years","Months","Weeks","Days"] },
        { selector: "investmentType", vals: ["Time Deposit","Treatsury"] },
        { selector: "status", vals: ["Matured","Outstanding"] },
-       { selector: "curr", vals: ["PHP","USD","EUR","YEN"] }
+       { selector: "curr", vals: ["PHP","USD","EUR","YEN"] }*/
+
      ],
      filters: [
+       {
+            key: 'invtCd',
+            title:'Investment Code',
+            dataType: 'text'
+       },
        {
             key: 'bank',
             title:'Bank',
             dataType: 'text'
        },
        {
-            key: 'investmentType',
+            key: 'invtType',
             title:'Inv. Type',
             dataType: 'text'
        },
        {
-            key: 'status',
+            key: 'invtStatus',
             title:'Status',
             dataType: 'text'
        },
        {
-            key: 'maturityPeriod',
+            key: 'matPeriod',
             title:'MaturityPeriod',
             dataType: 'text'
        },
@@ -120,12 +95,12 @@ export class InvestmentsComponent implements OnInit {
             dataType: 'text'
        },
        {
-            key: 'datePurchased',
+            key: 'purDate',
             title:'Date Purchased',
             dataType: 'date'
        },
        {
-            key: 'curr',
+            key: 'currCd',
             title:'Currency',
             dataType: 'text'
        },
@@ -137,14 +112,22 @@ export class InvestmentsComponent implements OnInit {
      pageStatus: true,
      pagination: true,
      genericBtn: 'Delete',
-     pageLength: 10,
+     pageLength: 15,
      widths: [190,190,120,120,80,85,1,1,1,85,90,120,120,120,120,120,120],
+     keys: ['invtCd','bank','certNo','invtType',
+            'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
+            'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
+            'whtaxAmt','matVal'],
    };
 
-  constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService) { }
+   searchParams: any[] = [];
+   subscription: Subscription = new Subscription();
+
+  constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Investments");
+    this.retrieveInvestmentsList();
   	//this.passData.tableData = this.accountingService.getAccInvestments();
     //this.passData.opts.push({ selector: "bank", vals: ["BPI", "RCBC", "BDO"] });
     //this.passData.opts.push({ selector: "durUnit", vals: ["Years","Months","Weeks","Days"] });
@@ -158,5 +141,45 @@ export class InvestmentsComponent implements OnInit {
   
   }
 
+  retrieveInvestmentsList(){
+      var sub$ = forkJoin(this.accountingService.getAccInvestments(this.searchParams),
+                this.mtnService.getRefCode('ACIT_INVESTMENTS.INVT_TYPE'),
+                this.mtnService.getRefCode('ACIT_INVESTMENTS.INVT_STATUS'),
+                this.mtnService.getRefCode('ACIT_INVESTMENTS.DURATION_UNIT'),
+                this.mtnService.getMtnCurrency('','Y')).pipe(map(([investments, type, status, duration, currency ]) => { return { investments, type, status, duration, currency  }; }));
 
+      this.subscription = sub$.subscribe(data => {
+        console.log(data);
+
+      });
+    /*this.accountingService.getAccInvestments(this.searchParams)
+        .subscribe((val:any) =>
+        {
+            this.passData.tableData = val['invtList']
+              .map(i => {
+
+                   i.createDate = this.ns.toDateTimeString(i.createDate);
+                   i.updateDate = this.ns.toDateTimeString(i.updateDate);
+                   return i;
+            }); 
+            this.table.refreshTable();
+
+            if(this.passData.opts[0].vals.length === 0 && this.passData.opts[0].prev.length === 0){
+            this.mtnService.getRefCode('ACIT_INVESTMENTS.INVT_TYPE').subscribe((data: any) =>{
+                for(var ref of data.refCodeList){
+                  this.passData.opts[0].vals.push(ref.code);
+                  this.passData.opts[0].prev.push(ref.description);
+                }
+                this.table.refreshTable();
+            });
+          }
+
+        } 
+    );  */
+  }
+
+  formatDate(date){
+       var dt = new Date(date);
+       return (dt.getMonth()+1) + '-' + dt.getDate() + '-' + dt.getFullYear(); 
+  }
 }
