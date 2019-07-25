@@ -82,7 +82,16 @@ export class ArDetailsComponent implements OnInit {
     this.passDataTaxDetailsCreditableWtax.tableData = data;
   }
 
-  
-  
+  pad(str, field) {
+    if(str === '' || str == null){
+      return '';
+    }else{
+      if(field === 'arNo'){
+        return String(str).padStart(6, '0');
+      }else if(field === 'dcbSeqNo'){
+        return String(str).padStart(3, '0');
+      }
+    }
+  }
 }
 

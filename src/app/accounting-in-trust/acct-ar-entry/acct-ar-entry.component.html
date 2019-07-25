@@ -31,7 +31,7 @@
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="arInfo.tranTypeCd" appRequired [disabled]="isCancelled">
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm" [(ngModel)]="arInfo.tranTypeCd" appRequired [disabled]="isCancelled">
 					<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
 				</select>
 				<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled" [ngModel]="arInfo.tranTypeName"> -->

@@ -4,44 +4,44 @@
 		<div class="col-sm-6">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
-				<input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
-				style="z-index: 1 !important;">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
+				style="z-index: 1 !important;" readonly [ngModel]="pad(record.arNo, 'arNo')">
 				<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
 				<input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm"
-				style="z-index: 1 !important;">
+				style="z-index: 1 !important;" readonly [ngModel]="record.arDate">
 				<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
-				<input type="text" value="2018-001-55" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
-				style="z-index: 1 !important;">
+				<input type="text" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
+				style="z-index: 1 !important;" readonly [ngModel]="record.dcbNo">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
-				<input type="text" value="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm col-sm"
-				placeholder=""  >
+				<input type="text" class="form-control form-control-sm cust-sm col-sm"
+				placeholder=""   readonly [ngModel]="record.payor">
 			</div>
 		</div>
 		<div class="col-sm-3">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment Type</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="paymentType">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" readonly [ngModel]="record.tranTypeName">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Status</label>
-				<input type="text" value="New" class="form-control form-control-sm cust-sm col-sm" placeholder="">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly [ngModel]="record.arStatDesc">
 			</div>
 		</div>
 
 		<div class="col-sm-3">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
-				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-				<input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-				placeholder="">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" [ngModel]="record.currCd" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+				placeholder="" [ngModel]="record.arAmt | number: '1.2-2'" readonly>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-				<input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-				placeholder="">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+				placeholder="" [ngModel]="record.arAmt * record.currRate | number: '1.2-2'" readonly>
 			</div>
 		</div>
 	</div>
@@ -93,7 +93,7 @@
 						</ng-container> -->
 						<ng-container [ngSwitch]="paymentType">
 							<ng-container *ngSwitchCase="'1'">
-								<app-inward-policy-balances></app-inward-policy-balances>
+								<app-inward-policy-balances [record]="record"></app-inward-policy-balances>
 							</ng-container>
 							<ng-container *ngSwitchCase="'2'">
 								<app-claim-recovery></app-claim-recovery>
