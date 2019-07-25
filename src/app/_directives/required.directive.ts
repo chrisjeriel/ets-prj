@@ -9,15 +9,7 @@ export class RequiredDirective implements OnInit{
     constructor(private er: ElementRef) { 
 
     }
-
-
-
-
-
-
-
-
-
+    
     ngOnInit(){
       this.er.nativeElement.style.backgroundColor = "#fffacd85";
     }

@@ -278,7 +278,7 @@ const appRoutes: Routes = [
     { path: 'acc-s-change-tran-stat-new', component: AccSChangeTranStatNewComponent },
     { path: 'acc-s-edit-acct-entries', component: AccSEditAccountingEntriesComponent },
     { path: 'acc-s-edited-acct-entries', component: AccSEditedAccountingEntriesComponent },
-    { path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent },
+    { path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'accounting-service-inquiry', component: AccSrvInquiryComponent },
     { path: 'cancel-transaction-service', component: CancelTransactionsServiceComponent },
     { path: 'print-registers-service', component: RegistersServiceComponent },

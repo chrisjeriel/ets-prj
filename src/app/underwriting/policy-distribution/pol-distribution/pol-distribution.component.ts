@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { DistributionByRiskInfo } from '@app/_models';
-import { UnderwritingService } from '@app/_services';
+import { UnderwritingService, NotesService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -132,7 +132,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   };
 
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) { }
+  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Distribution");
@@ -319,7 +319,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     let postData:any = {
       riskDistId: this.riskDistId,
       distId    : this.polDistributionData.distNo,
-      policyId  : this.params.policyId
+      policyId  : this.params.policyId,
+      user      : this.ns.getCurrentUser()
     }
     this.polService.postDistribution(postData).subscribe(a=>{
       if(a['returnCode'] == -1){

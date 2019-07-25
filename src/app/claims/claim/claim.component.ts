@@ -7,6 +7,7 @@ import { ClaimsService, MaintenanceService, NotesService, UserService } from '@a
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { map } from 'rxjs/operators';
+import { ClmClaimHistoryComponent } from '@app/claims/claim/clm-claim-processing/clm-claim-history/clm-claim-history.component';
 
 @Component({
   selector: 'app-claim',
@@ -18,6 +19,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   @ViewChild('conModal') conModal      : ModalComponent; 
   @ViewChild('overMdl') overMdl        : ModalComponent;
   @ViewChild(SucessDialogComponent) success  : SucessDialogComponent;
+  @ViewChild('clmHist') clmHist: ClmClaimHistoryComponent;
 
   passDataHistory: any = {
         tHeader: ["History No", "Amount Type", "History Type", "Currency","mount","Remarks","Accounting Tran ID","Accounting Date"],
@@ -60,6 +62,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   dialogIcon : string ='';
   dialogMessage : string ='';
   from : any ;
+  proceed : any;
 
   constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal, 
                private ns: NotesService, private clmService : ClaimsService, private mtnService: MaintenanceService, private userService: UserService) { }
@@ -134,14 +137,21 @@ export class ClaimComponent implements OnInit, OnDestroy {
   
   showWarnMdl(event) {
     this.msg = event.msg;
+    this.proceed = event.val;
+
+    if(!event.show) {
+      this.clmHist.histFunction(this.proceed);
+      return;
+    }
+
     if(event.val == 1){
       this.warnModal.openNoClose();
     }else{
       this.conModal.openNoClose();
       this.from = event.apvlCd;
     }
-
   }
+
   onClickYes(){
     this.getApprovalFn();
     this.conModal.closeModal();
@@ -164,6 +174,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
       this.usersList = data['user']['usersList'];
 
       if(recAppFn.some(e => e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase())){
+        this.claimInfo['upUserGi'] = this.ns.getCurrentUser();
       }else{
         this.overMdl.openNoClose();
       }
@@ -179,10 +190,12 @@ export class ClaimComponent implements OnInit, OnDestroy {
         this.overMdl.closeModal();
         this.dialogIcon = 'success-message';
         this.dialogMessage = 'Login Successfully';
+        this.claimInfo['upUserGi'] = this.userId;
+        this.clmHist.histFunction(this.proceed+1); 
       } else{
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Invalid Password';
-      } 
+      }
     }else{
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Invalid Username';
