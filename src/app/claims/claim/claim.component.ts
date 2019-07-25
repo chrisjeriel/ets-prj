@@ -164,6 +164,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
       this.usersList = data['user']['usersList'];
 
       if(recAppFn.some(e => e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase())){
+        this.claimInfo['upUserGi'] = this.ns.getCurrentUser();
       }else{
         this.overMdl.openNoClose();
       }
