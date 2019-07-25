@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { highlight,unHighlight } from '@app/_directives/highlight';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-pol-alop',
@@ -25,6 +26,7 @@ export class PolAlopComponent implements OnInit {
   @ViewChild("indemFrom") indemFrom:any;
   @ViewChild('alopSuccess') successDiag: SucessDialogComponent;
   @ViewChild('alopItemSuccess') successItemDiag: SucessDialogComponent;
+  @ViewChild('itemInfoModal') itmInfoMdl: ModalComponent;
 
   aLOPInfo: ALOPInfo = new ALOPInfo();
   
@@ -101,6 +103,8 @@ export class PolAlopComponent implements OnInit {
   newAlt: boolean = false;
   prevPolicyId: string;
   prevPolNo: string;
+  promptClickItem:boolean = false;
+  savedData: any = {};
 
   @Input() policyInfo:any = {};
   @Input() alterFlag: boolean;
@@ -128,13 +132,11 @@ export class PolAlopComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Pol | ALOP");
     this.sub = this.route.params.subscribe(params => {
-      console.log(params)
       this.policyNo = params['policyNo']
       this.line = params['line'];
       //this.prevPolicyId = params['prevPolicyId'] == undefined ? '' : params['prevPolicyId'];;
       this.prevPolicyId = this.policyInfo.prevPolicyId
     });
-    console.log(this.policyInfo)
 
     if(this.line == 'EAR'){
       this.passDataCar.tHeader = ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Minimization"];
@@ -165,8 +167,7 @@ export class PolAlopComponent implements OnInit {
 
   getPolAlop() {
     this.underwritingService.getPolAlop(this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
-      console.log(data)
-
+      
       if (data.policy != null) {
 
         this.policyId = data.policy.policyId;
@@ -197,12 +198,8 @@ export class PolAlopComponent implements OnInit {
         });
 
         this.underwritingService.getPolGenInfo(this.policyInfo.policyId, null).subscribe((data:any) => {
-          console.log(data)
           if (data.policy != null) {
             this.policyId = data.policy.policyId;
-            console.log(data.policy.expiryDate);
-            console.log(this.ns.toDateTimeString(data.policy.expiryDate));
-            console.log(new Date(data.policy.expiryDate).getDate()+1);
             this.polAlopData.issueDate = data.policy.inceptDate == null? null:this.ns.toDateTimeString(data.policy.inceptDate);
             this.polAlopData.expiryDate = data.policy.expiryDate == null? null:this.ns.toDateTimeString(data.policy.expiryDate);
             this.polAlopData.indemFromDate = data.policy.alop.indemFromDate == null? null:this.ns.toDateTimeString(data.policy.alop.indemFromDate);
@@ -229,7 +226,6 @@ export class PolAlopComponent implements OnInit {
      });
    }else{
      this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
-       console.log(data)
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i <sectionCovers.length;i++){
@@ -253,25 +249,10 @@ export class PolAlopComponent implements OnInit {
         for(var i=0;i<dataInfos.length;i++){
           this.passDataCar.tableData.push(dataInfos[i]);
         }
-      } else {
-         // this.underwritingService.getPolGenInfo(this.prevPolicyId, null).subscribe((data:any) => {
-         //   if (data != null) {
-         //     this.underwritingService.getPolAlopItem(this.policyNo, this.prevPolicyId, data.policy.policyNo).subscribe((data: any) => {
-         //         if (data.policy != null) {
-         //             var dataInfos = data.policy.alop.alopItem;
 
-         //            for(var i=0;i<dataInfos.length;i++){
-         //              this.passDataCar.tableData.push(dataInfos[i]);
-         //            }
-
-         //            this.table.refreshTable();
-         //         }
-         //     });
-         //   }
-         // });
       }
-
       this.table.refreshTable();
+      this.table.loadingFlag = false;
 
     });
   }
@@ -314,31 +295,9 @@ export class PolAlopComponent implements OnInit {
 
   savePolAlopItem(cancelFlag?){
      this.cancelFlag = cancelFlag != undefined;
-     let savedData: any = {};
-
-     savedData.policyId = this.policyInfo.policyId;
-     savedData.savePolAlopItemList=[];
-     savedData.deletePolAlopItemList=[];
-
-     for( var i =0; i< this.passDataCar.tableData.length;i++){
-         if (this.passDataCar.tableData[i].edited && !this.passDataCar.tableData[i].deleted) {
-            savedData.savePolAlopItemList.push(this.passDataCar.tableData[i]);
-            savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
-            savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].createDate);
-            savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
-            savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate);
-         } else if (this.passDataCar.tableData[i].deleted) {
-            savedData.deletePolAlopItemList.push(this.passDataCar.tableData[i]);
-            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].policyId = this.policyInfo.policyId;
-            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate);
-            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateDate);
-         }
-     }
-     
-     if (this.validateALOPItemFields(savedData)) {
-       this.underwritingService.savePolAlopItem(savedData).subscribe((data: any) => {
+     this.prepareDataItem();
+     if (this.validateALOPItemFields(this.savedData)) {
+       this.underwritingService.savePolAlopItem(this.savedData).subscribe((data: any) => {
           if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
             this.dialogIcon = "error";
@@ -366,23 +325,63 @@ export class PolAlopComponent implements OnInit {
 
   }
 
+  prepareDataItem(){
+    this.savedData.policyId = this.policyInfo.policyId;
+    this.savedData.savePolAlopItemList=[];
+    this.savedData.deletePolAlopItemList=[];
+
+    for( var i =0; i< this.passDataCar.tableData.length;i++){
+        if (this.passDataCar.tableData[i].edited && !this.passDataCar.tableData[i].deleted) {
+           this.savedData.savePolAlopItemList.push(this.passDataCar.tableData[i]);
+           this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
+           this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].createDate);
+           this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
+           this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].updateDate);
+        } else if (this.passDataCar.tableData[i].deleted) {
+           this.savedData.deletePolAlopItemList.push(this.passDataCar.tableData[i]);
+           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].policyId = this.policyInfo.policyId;
+           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
+           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createDate);
+           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
+           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateDate);
+        }
+    }
+  }
+
   openAlopItem(){
-      this.showAlopItem = true;
-      this.getPolAlopItem();
+      
+      /*this.getPolAlopItem();
       setTimeout(()=>{
         $('#alopItemModal #modalBtn').trigger('click');
       },0)
+*/
+      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+        this.promptClickItem = true;
+        this.onClickSavePolAlop();
+      }else{
+        this.promptClickItem = false;
+        this.showAlopItem = true;
+        this.passDataCar.tableData = [];
+        this.table.loadingFlag = true;
+        this.getPolAlopItem();
+        setTimeout(()=>{
+          this.itmInfoMdl.openNoClose();
+        },0);
+      }
   }
 
 
   cancelButton() {
-    //this.alopFlag = 'alop';
     this.cancelBtn.clickCancel();
   }
 
   cancelModal() {
-    //this.alopFlag = 'alopitem';
-    this.cancelModalBtn.clickCancel();
+    this.prepareDataItem();
+    if(this.savedData.savePolAlopItemList.length == 0 && this.savedData.deletePolAlopItemList.length == 0){
+      this.modalService.dismissAll();
+    }else{
+      this.cancelModalBtn.clickCancel();
+    }
   }
 
 
@@ -400,13 +399,12 @@ export class PolAlopComponent implements OnInit {
   }
 
   onClickSavePolAlop(){
-    console.log(this.dateErFlag)
     if(!this.dateErFlag)
       $('#polAlop #confirm-save #modalBtn2').trigger('click');
     else{
       this.dialogMessage = "Please check date fields";
       this.dialogIcon = "error";
-      $('#successModalBtn').trigger('click');
+      this.successDiag.open();
     }
   }
 

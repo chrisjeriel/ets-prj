@@ -12,6 +12,10 @@
     .pad-c {
         padding-bottom: 3px !important;
     }
+
+    .pad-x {
+        padding-bottom: 10px !important;
+    }
 </style>
 <div>
     <input id="hiddenInpClm" type="text" class="d-none t" [ngModel]="claimData.claimId" (ngModelChange)="checkClmIdF($event)">
@@ -61,16 +65,18 @@
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.adjNames" readonly>
-                    <!-- <div class="text-search-ico" style="margin-right: 8px !important; margin-left: -6px !important;"><a><i
-                                class="fa fa-search"></i></a></div> -->
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" [(ngModel)]="claimData.adjId" [readonly]="isInquiry" (change)="checkCode($event, 'mainAdj')">
+                    <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
+                        <a><i class="fa fa-search" (click)="showAdjLOVMain()"></i></a>
+                    </div>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.adjName" readonly>
                 </div>
                 <div class="input-group">
-                    <label class="form-control-sm col-sm-2">Adjuster Ref No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.adjRefNos" readonly>
+                    <label class="form-control-sm col-sm-2">Adjuster File No</label>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.adjFileNo" [readonly]="claimData?.adjName == null || claimData?.adjName == ''">
                     <button type="button" class="cust-btn" (click)="openAdjustersModal();" style="margin-left: 2px; max-height: 21px; padding: 0 10px; margin-right: 0; z-index: 1 !important;" [disabled]="disableAdjusterBtn"><a>Adjusters</a></button>
                 </div>
-                <div class="input-group" [class.d-none]="hideUnpaidMsg">
+                <div class="input-group" [class.d-none]="!showUnpaidMsg">
                     <label class="form-control-sm col-sm-2" style="margin-bottom: 0;"></label>
                     <i style="font-size: 13px; color: red;">The policy has unpaid premium.</i>
                 </div>
@@ -81,10 +87,10 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">Loss Date</label>
                             <div class="col-sm-5 dp-cont">
-                                <datepicker [type]="'date'" [required]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();" [disabled]="isInquiry" [tabindex]="2"></datepicker>
+                                <datepicker [type]="'date'" [required]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();" [disabled]="isInquiry" [tabindex]="2" [maxDate]="maxDate"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'time'" [required]="true" [value]="claimData.lossDate?.split('T')[1]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'t'); validateLossDate();" [textAlign]="'center'" [disabled]="isInquiry" [tabindex]="3"></datepicker>
+                                <datepicker [type]="'time'" [required]="false" [value]="claimData.lossDate?.split('T')[1]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'t'); validateLossDate();" [textAlign]="'center'" [disabled]="isInquiry" [tabindex]="3"></datepicker>
                             </div>
                         </div>
                         <div class="input-group">
@@ -114,7 +120,7 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4">&nbsp;Event Type</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc" tabindex="10" [readonly]="isInquiry">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventTypeDesc" tabindex="10" [readonly]="isInquiry" (change)="checkCode($event, 'eventType')">
                             <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showClmEventTypeLOV()"></i></a>
                             </div>
@@ -135,14 +141,15 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Loss Period</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.lossPdAbbr" (change)="checkCode($event, 'lp')" appRequired tabindex="9" [readonly]="isInquiry">
+                            <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="claimData.lossPeriod" (change)="checkCode($event, 'lp')" tabindex="9" [readonly]="isInquiry" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showLossCdLOV('P')"></i></a>
                             </div>
+                            <input type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.lossPdAbbr" readonly>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Event</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc" [readonly]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry">
+                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc" [readonly]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" (change)="checkCode($event, 'event')" appRequired>
                             <div [class.d-none]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" class="text-search-ico" style="margin-right: 5px !important;">
                                 <a><i class="fa fa-search" (click)="showClmEventLOV()"></i></a>
                             </div>
@@ -152,8 +159,23 @@
                     <div class="col-sm-12">
                         <div class="input-group">
                             <label class="form-control-sm col-sm-2">Loss Details</label>
-                            <textarea class="form-control form-control-sm col-sm" style="margin-bottom: 17px !important; min-height: 72px !important; font-size: 0.7rem !important"
-                                [(ngModel)]="claimData.lossDtl" appRequired [readonly]="isInquiry"></textarea>
+                            <!-- <textarea class="form-control form-control-sm col-sm" style="margin-bottom: 17px !important; min-height: 72px !important; font-size: 0.7rem !important"
+                                [(ngModel)]="claimData.lossDtl" appRequired [readonly]="isInquiry"></textarea> -->
+
+                            <div class="form-control-sm col-sm edtr-cont" style="height: 35px;">
+                                <text-editor [editorContent]="claimData.lossDtl" (fetchContent)="claimData.lossDtl = $event" [readonly]="isInquiry" [required]="!isInquiry">
+                                </text-editor>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Remarks</label>
+                            <div class="form-control-sm col-sm edtr-cont" style="height: 34px;">
+                                <text-editor [editorContent]="claimData.remarks" (fetchContent)="claimData.remarks = $event" [readonly]="isInquiry">
+                                </text-editor>
+                            </div>
                         </div>
                     </div>
 
@@ -168,8 +190,8 @@
                 <div class="custLoader" style="position: absolute;top:7px;left:0;width: 100%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
                 </div>
             </ng-container>
-            <fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 21px !important;
-				padding-top: 17px !important; margin-right: -7px !important">
+            <fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 29px !important;
+				padding-top: 25px !important; margin-right: -7px !important">
                 <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
                 <div class="col-sm-1">
                 </div>
@@ -255,8 +277,8 @@
                 </div>
             </fieldset>
 
-            <fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 10px !important;
-				padding-top: 4px !important; margin-right: -7px !important">
+            <fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 18px !important;
+				padding-top: 12px !important; margin-right: -7px !important">
                 <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Detail</legend>
                 <div class="col-sm-1">
                 </div>
@@ -347,7 +369,7 @@
                 </div>
             </fieldset>
 
-            <fieldset *ngIf="line === 'EEI' || line === 'CEC'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important; margin-right: -7px !important">
+            <fieldset *ngIf="line === 'EEI' || line === 'CEC'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 6px !important; padding-top: 5px !important; margin-right: -7px !important">
                 <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
                 <div class="col-sm-1">
                 </div>
@@ -426,7 +448,7 @@
             </fieldset>
 
             <fieldset *ngIf="line === 'MBI' || line === 'BPV' || line === 'DOS'" class="scheduler-border cust-fs-padlr-offset"
-                style="padding-bottom: 16px !important; padding-top: 17px !important; margin-right: -7px !important ">
+                style="padding-bottom: 6px !important; padding-top: 5px !important; margin-right: -7px !important ">
                 <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
                 <div class="col-sm-1">
                 </div>
@@ -500,7 +522,7 @@
                 </div>
             </fieldset>
 
-            <fieldset *ngIf="line === 'MLP'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important;  margin-right: -7px !important">
+            <fieldset *ngIf="line === 'MLP'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 6px !important; padding-top: 5px !important;  margin-right: -7px !important">
                 <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
                 <div class="col-sm-1">
                 </div>
@@ -580,48 +602,67 @@
 
         </div>
         <div class="col-sm-4">
-            <fieldset class="scheduler-border" style="margin-left: -7px !important;" [class.pad-a]="line != 'CAR' && line != 'EAR'">
+            <!-- <ng-container *ngIf="showCustLoader">
+                <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="custLoader" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999;">
+                <div class="custLoader" style="position: absolute;top:7px;left:-7px;width: 102%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
+                </div>
+            </ng-container> -->
+            <fieldset class="scheduler-border" style="margin-left: -7px !important;" [class.pad-x]="line != 'CAR' && line != 'EAR'">
                 <legend class="scheduler-border">Period of Insurance</legend>
                 <div class="custom-row-inline-inset" style="margin-top: 16px !important; margin-bottom: 22px !important;">
-                    <div class="form-row" style="margin-top: -11px !important;">
+                    <div class="form-row" style="margin-top: -18px !important;">
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Inception Date</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.inceptDate?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.inceptDate"></datepicker>
                             </div>
                         </div>
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Expiry Date</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.expiryDate?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.expiryDate"></datepicker>
                             </div>
                         </div>
                     </div>
-                    <div class="form-row" style="margin-top: 18px !important;">
+                    <div class="form-row" style="margin-top: 15px !important;">
+                        <div class="form-group col-sm-6" style="margin-bottom: 0px;">
+                            <label class="form-control-sm top-label">&nbsp;Issue Date</label>
+                            <div class="col-sm dp-cont">
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.issueDate"></datepicker>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6" style="margin-bottom: 0px;">
+                            <label class="form-control-sm top-label">&nbsp;Effective Date</label>
+                            <div class="col-sm dp-cont">
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.effDate"></datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top: 15px !important;">
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Lapse From</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.lapseFrom?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.lapseFrom"></datepicker>
                             </div>
                         </div>
                         <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Lapse To</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.lapseTo?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.lapseTo"></datepicker>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="line === 'CAR' || line === 'EAR'" class="form-row" style="margin-bottom: 19px !important; margin-top: 18px !important;">
+                    <div *ngIf="line === 'CAR' || line === 'EAR'" class="form-row" style="margin-bottom: -8px !important; margin-top: 15px !important;">
                         <div class="form-group col-sm-6">
                             <label class="form-control-sm top-label">&nbsp;Maintenance From</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.maintenanceFrom?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.maintenanceFrom"></datepicker>
                             </div>
                         </div>
                         <div class="form-group col-sm-6">
                             <label class="form-control-sm top-label">&nbsp;Maintenance To</label>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" [disabled]="true" [showIcon]="true" [value]="claimData.maintenanceTo?.split('T')[0]"></datepicker> <!-- valueChange -->
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="claimData.maintenanceTo"></datepicker>
                             </div>
                         </div>
                     </div>
@@ -633,7 +674,7 @@
                     <div class="custLoader" style="position: absolute;top:7px;left:-7px;width: 102%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
                     </div>
                 </ng-container>
-                <fieldset class="scheduler-border" style="margin-left: -7px !important;" [ngClass]="(line != 'CAR' && line != 'EAR') ? 'pad-b' : 'pad-c'">
+                <fieldset class="scheduler-border" style="margin-left: -7px !important;"> <!-- [ngClass]="(line != 'CAR' && line != 'EAR') ? 'pad-b' : 'pad-c'" -->
                     <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
                     <div class="custom-row-inline-inset" style="margin-left: -30px !important;">
                         <div class="input-group">
@@ -754,11 +795,12 @@
 <app-mtn-clm-event #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)" [filters]="clmEventFilter"></app-mtn-clm-event>
 <app-mtn-clm-event-type #clmEventTypeLOV id="clmEventTypeLOV" (selectedData)="setClmEventType($event)" [filters]="clmEventTypeFilter"></app-mtn-clm-event-type>
 <app-mtn-adjuster #adjusterLOV (selectedData)="setSelectedAdjuster($event)" [exclude]="hiddenAdj" [lovCheckBox]="true"></app-mtn-adjuster>
+<app-mtn-adjuster #adjusterLOVMain (selectedData)="setSelectedMainAdjuster($event)" ></app-mtn-adjuster>
 <app-mtn-users id="usersLOV" (selectedData)="setProcessedBy($event)"></app-mtn-users>
 
 <app-confirm-save #adjConfirmSave (onYes)="adjSave()"></app-confirm-save>
 <app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? adjCancelBtn.onNo() : null"></app-sucess-dialog>
-<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="modalService.dismissAll()"></app-cancel-button>
+<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="modalService.dismissAll(); onCancelNo()"></app-cancel-button>
 
 <app-confirm-save #confirmSave (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog #successDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
@@ -768,7 +810,7 @@
 <app-modal class="d-none" id="clmGenInfoConfirmationModal">
     <div header>
         <ng-container *ngIf="mdlType == 'conf' || mdlType == 'ref'">Confirmation</ng-container>
-        <ng-container *ngIf="mdlType == 'warn' || mdlType == 'warn2'">Warning Message</ng-container>
+        <ng-container *ngIf="mdlType.substr(0,4) == 'warn'">Warning Message</ng-container>
     </div>
     <div body style="min-width: 300px !important;">
         <fieldset class="scheduler-border" style="padding-top: 5px !important;">
@@ -785,6 +827,22 @@
                     <p>Unable to exchange the Loss Date. Claim Reserve setup<br />
                     already exists.</p>
                 </ng-container>
+                <ng-container *ngIf="mdlType == 'warn3'">
+                    <p>Unable to change the status of the claim. Please zero out the<br />
+                    reserve amount first.</p>
+                </ng-container>
+                <ng-container *ngIf="mdlType == 'warn4'">
+                    <p>Unable to change the status of the claim. Payment must be fully<br />
+                    settled.</p>
+                </ng-container>
+                <ng-container *ngIf="mdlType == 'warn5'">
+                    <p>Loss Date is within the lapse period (Inception to Effective<br />
+                    Date) of the policy.</p>
+                </ng-container>
+                <ng-container *ngIf="mdlType == 'warn6'">
+                    <p>Loss Date is not within the period of insurance (Inception<br />
+                    to Expiry Date) of the policy.</p>
+                </ng-container>
                 <ng-container *ngIf="mdlType == 'ref'">
                     <p>Are you sure you want to apply the latest changes<br />
                     of the policy?</p>
@@ -792,13 +850,13 @@
             </div>
         </fieldset>
     </div>
-    <div footer class="w-100 text-right" [class.text-center]="mdlType == 'warn' || mdlType == 'warn2'">
+    <div footer class="w-100 text-right" [class.text-center]="mdlType.substr(0,4) == 'warn'">
         <button *ngIf="mdlType == 'conf'" class="cust-btn" type="button" (click)="modalService.dismissAll(); onClickConfYes()"><a>Yes</a></button>
         <button *ngIf="mdlType == 'ref'" class="cust-btn" type="button" (click)="modalService.dismissAll(); onClickConfRefYes()"><a>Yes</a></button>
         <button *ngIf="mdlType == 'conf' || mdlType == 'warn'" class="cust-btn" type="button" (click)="modalService.dismissAll(); claimData.lossDate = ''">
             <a>{{ mdlType == 'conf' ? 'No' : 'Ok' }}</a>
         </button>
-        <button *ngIf="mdlType == 'warn2'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="mdlType == 'warn2' || mdlType == 'warn3' || mdlType == 'warn4' || mdlType == 'warn5' || mdlType == 'warn6'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
         <button *ngIf="mdlType == 'ref'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>

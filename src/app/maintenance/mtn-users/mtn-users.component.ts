@@ -41,7 +41,7 @@ selected: any = null;
   };
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
-  @ViewChild(ModalComponent) modal: ModalComponent;
+  @ViewChild('userModal') modal: ModalComponent;
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   modalOpen: boolean = false;
 
@@ -148,7 +148,8 @@ selected: any = null;
             ev: ev,
             singleSearchLov: true
           });
-          $('#usersMdl > #modalBtn').trigger('click');
+          // $('#usersMdl > #modalBtn').trigger('click');
+          this.modal.openNoClose();
           //this.table.refreshTable('');
         }
         

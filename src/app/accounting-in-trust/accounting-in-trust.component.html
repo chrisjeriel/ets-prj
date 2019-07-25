@@ -3,15 +3,15 @@
 	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="AR Entry">
 			<ng-template ngbTabContent>
-				<app-acct-ar-entry [record]="record" (onChange)="checkTabs($event);"></app-acct-ar-entry>
+				<app-acct-ar-entry [record]="record" (onChange)="checkTabs($event);" (disableTab)="disableTab = $event" (emitArInfo)="arDetailsParam = $event" [emittedValue]="arDetailsParam"></app-acct-ar-entry>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="AR Details">
+		<ngb-tab class="ngb-tab" title="AR Details" [disabled]="disableTab">
 			<ng-template ngbTabContent>
-				<app-ar-details [paymentType]="paymentType"></app-ar-details>
+				<app-ar-details [record]="record" [paymentType]="paymentType"></app-ar-details>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="AR Preview">
+		<ngb-tab class="ngb-tab" title="AR Preview" [disabled]="disableTab">
 			<ng-template ngbTabContent>
 				<app-ar-preview></app-ar-preview>
 			</ng-template>

@@ -5,37 +5,35 @@
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV No</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                placeholder="2015" style="text-align: right;text-align: right;" readonly>
+                 style="text-align: right;text-align: right;" readonly [(ngModel)]="jvDetails.jvYear">
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                placeholder="00000001" style="text-align: right; margin-left: 2px;text-align: right;" readonly>
+                 style="text-align: right; margin-left: 2px;text-align: right;" readonly [(ngModel)]="jvDetails.jvNo">
                 <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
-                <label class="form-control-sm col-sm-4">Status</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" readonly>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.jvDate" readonly>
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.jvStatus" readonly>
+                <label class="form-control-sm col-sm-1 text-right">Ref No</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoTranId" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV Type</label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="jvDetails.jvType"
                 readonly>
-                <label class="form-control-sm col-sm-1 text-right">Ref No</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="
-2017 - 00023974
-" readonly>
-                <label class="form-control-sm col-sm-1">Date</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
+                <label class="form-control-sm col-sm-1">Ref No Date</label>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoDate" readonly>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="input-group">
                 <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly placeholder="PHP">
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 2px !important;" placeholder="27,153.30" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.currCd" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.jvAmt | number:'1.2-2'" (ngModelChange)="jvDetails.jvAmt = $event" style="margin-left: 2px !important;" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly placeholder="PHP">
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 2px !important;"
-                placeholder="27,153.30" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly [(ngModel)]="jvDetails.currCd">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.localAmt | number:'1.2-2'" (ngModelChange)="jvDetails.localAmt = $event" style="margin-left: 2px !important;"
+                readonly>
             </div>
         </div>
     </div>
@@ -46,23 +44,49 @@
         <div class="col-sm-12" style="margin-top: 14px">
             <app-cust-editable-non-datatable [passData]="accEntriesData">
                 <ng-container controls-r>
-                    <button class="cust-btn" style="margin-right: 0px !important;">Print AE</button>
+                    <div class="align" style="position: absolute;left: 130px">
+                        <label class="form-control-sm">For Approval</label> 
+                        <input type="checkbox" style="margin-right: 0px !important;">
+                    </div>
                 </ng-container>
             </app-cust-editable-non-datatable>
         </div>
      </div>
+     <div class="form-row custom-row-inline-inset">
+         <div class="col-sm-12">
+             <div class="input-group">
+                <label class="form-control-sm col-sm">Total Debit and Credit</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly style="margin-right: 4px !important">
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly>
+            </div>
+            <div class="input-group">
+                <div class="col-sm-10"></div>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly>
+            </div>
+        </div>
+     </div>
+     <div class="form-row" style="margin-top: 13px !important;">
+         <div class="form-group col-sm">
+             <div class="col-md-12 text-center">
+                 <div class="cust-btn-container">
+                     <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                     <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                 </div>
+             </div>
+         </div>
+     </div> 
 </fieldset>
 <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important; ">
     <div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+            <input type="text" class="form-control form-control-sm col-sm-2" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+            <input type="datetime-local" class="form-control form-control-sm col-sm-2" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+            <input type="text" class="form-control form-control-sm col-sm-2" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+            <input type="datetime-local" class="form-control form-control-sm col-sm-2" disabled>
         </div>
     </div>
 </fieldset>

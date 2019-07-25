@@ -90,7 +90,7 @@ export class MaintenanceService{
 			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
 			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
 			.set('blockCd',blockCd ===undefined || blockCd===null ? '' : blockCd)
-			.set('activeTag',activeTag === undefined ? 'Y' : activeTag)
+			.set('activeTag',activeTag === undefined ? 'Y' : activeTag==null ? '' : activeTag)
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceBlock',{params});
   }
 
@@ -737,9 +737,10 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveApprover',{params});
 	}
 
-	getMtnParameters(paramType){
+	getMtnParameters(paramType,paramName?){
 		const params = new HttpParams()
 		     .set('paramType', (paramType === null || paramType === undefined ? '' : paramType))
+		     .set('paramName', (paramName === null || paramName === undefined ? '' : paramName))
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnParameters',{params});
 	}
 
@@ -1085,6 +1086,35 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnLossCdLov",{params});
 	}
 
+	getAcitTranType(tranClass, tranTypeCd, typePrefix, autoTag, baeTag, activeTag){
+		const params = new HttpParams()
+			.set('tranClass', tranClass === undefined || tranClass === null ? '' : tranClass)
+			.set('tranTypeCd', tranTypeCd === undefined || tranTypeCd === null ? '' : tranTypeCd)
+			.set('typePrefix', typePrefix === undefined || typePrefix === null ? '' : typePrefix)
+			.set('autoTag', autoTag === undefined || autoTag === null ? '' : autoTag)
+			.set('baeTag', baeTag === undefined || baeTag === null ? '' : baeTag)
+			.set('activeTag', activeTag === undefined || activeTag === null ? '' : activeTag)
+			
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitTranType",{params});
+		
+	}
+
+	getMtnClmEventTypeLov(searchStr){
+		const params = new HttpParams()
+			.set('searchStr', searchStr === undefined || searchStr === null ? '' : searchStr);
+			
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClmEventTypeLov",{params});
+	}
+
+	getMtnClmEventLov(lineCd, eventTypeCd, searchStr){
+		const params = new HttpParams()
+			.set('lineCd', lineCd === undefined || lineCd === null ? '' : lineCd)
+			.set('eventTypeCd', eventTypeCd === undefined || eventTypeCd === null ? '' : eventTypeCd)
+			.set('searchStr', searchStr === undefined || searchStr === null ? '' : searchStr);
+			
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClmEventLov",{params});
+	}
+
     getMtnClmCashCall(treatyCd, treatyCompCd, currencyCd){
 		const params = new HttpParams()
 		     		.set('treatyId', (treatyCd === null || treatyCd === undefined ? '' : treatyCd))
@@ -1111,5 +1141,74 @@ export class MaintenanceService{
         }
         return this.http.post(environment.prodApiUrl + '/maintenance-service/copyMtnClmCashCall', params, header);
     }
+    
+    getMtnAcitTranType(tranClass?, tranTypeCd?, typePrefix?, autoTag?, baeTag?, activeTag?){
+    	const params = new HttpParams()
+    				.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+    	     		.set('tranTypeCd', (tranTypeCd === null || tranTypeCd === undefined ? '' : tranTypeCd))
+    	     		.set('typePrefix', (typePrefix === null || typePrefix === undefined ? '' : typePrefix))
+    	     		.set('autoTag', (autoTag === null || autoTag === undefined ? '' : autoTag))
+    	     		.set('baeTag', (baeTag === null || baeTag === undefined ? '' : baeTag))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitTranType", {params});
+    }
 
+    getMtnBookingMonth(bookingMm?, bookingYear?){
+    	const params = new HttpParams()
+    				.set('bookingMm', (bookingMm === null || bookingMm === undefined ? '' : bookingMm))
+    	     		.set('bookingYear', (bookingYear === null || bookingYear === undefined ? '' : bookingYear));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBookingMonth", {params});
+    }
+
+    getMtnBank(bankCd?, officialName?, activeTag?){
+    	const params = new HttpParams()
+    				.set('bankCd', (bankCd === null || bankCd === undefined ? '' : bankCd))
+    				.set('officialName', (officialName === null || officialName === undefined ? '' : officialName))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBank", {params});
+    }
+
+    getMtnBankAcct(bankCd?, bankAcctCd?, accountNo?){
+    	const params = new HttpParams()
+    				.set('bankCd', (bankCd === null || bankCd === undefined ? '' : bankCd))
+    				.set('bankAcctCd', (bankAcctCd === null || bankAcctCd === undefined ? '' : bankAcctCd))
+    	     		.set('accountNo', (accountNo === null || accountNo === undefined ? '' : accountNo))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBankAcct", {params});
+    }
+
+    getMtnAcitDCBNo(dcbYear?, dcbNo?, dcbDate?, dcbStatus?){
+    	const params = new HttpParams()
+    				.set('dcbYear', (dcbYear === null || dcbYear === undefined ? '' : dcbYear))
+    	     		.set('dcbNo', (dcbNo === null || dcbNo === undefined ? '' : dcbNo))
+    	     		.set('dcbDate', (dcbDate === null || dcbDate === undefined ? '' : dcbDate))
+    	     		.set('dcbStatus', (dcbStatus === null || dcbStatus === undefined ? '' : dcbStatus))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitDCBNo", {params});
+    }
+
+    saveMtnAcitDCBNo(delDCBNo, saveDCBNo){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         let params : any = {
+         	delDCBNo: delDCBNo,
+         	saveDCBNo: saveDCBNo
+         }
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcitDCBNo', JSON.stringify(params), header);
+
+	}
+
+	getMtnDCBUser(userId?){
+    	const params = new HttpParams()
+    				.set('userid', (userId === null || userId === undefined ? '' : userId))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnDCBUser", {params});
+    }
+
+    getMtnPayee(payeeNo?,payeeClassCd?){
+    	const params = new HttpParams()
+    				.set('payeeNo', (payeeNo === null || payeeNo === undefined ? '' : payeeNo))
+    	     		.set('payeeClassCd', (payeeClassCd === null || payeeClassCd === undefined ? '' : payeeClassCd))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPayee", {params});
+    }
 }

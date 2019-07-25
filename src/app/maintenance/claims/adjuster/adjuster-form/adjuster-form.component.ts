@@ -35,6 +35,7 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
 
 	loading: boolean = false;
 	cancelFlag: boolean = false;
+	ifEdit: boolean = false;
 
 	dialogIcon: string = '';
 	dialogMessage: string = '';
@@ -45,7 +46,6 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
 	adjData: any = {
 		adjId: '',
 		adjName: '',
-		adjRefNo: '',
 		addrLine1: '',
 		addrLine2: '',
 		addrLine3: '',
@@ -97,15 +97,21 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   		//if edit
   		if(params.info === undefined){
   			this.loading = true;
-  			this.retrieveMtnAdjuster(params.adjId);
-  		}
+			this.retrieveMtnAdjuster(params.adjId);
+			  
+			this.ifEdit = true;
+  		}else{
+			this.adjData.activeTag = "Y";
+		}
   	});
-    this.repData.disableGeneric = true;
+	this.repData.disableGeneric = true;
   }
 
   retrieveMtnAdjuster(adjId: string){
   		this.mtnService.getMtnAdjRepresentative(adjId).subscribe((data: any)=>{
-  			this.adjData = data.adjuster;
+			this.adjData = data.adjuster;
+			this.adjData.createDate = this.ns.toDateTimeString(this.adjData.createDate);
+			this.adjData.updateDate = this.ns.toDateTimeString(this.adjData.updateDate);
   			console.log(this.adjData);
   			this.repData.tableData = this.adjData.adjRepresentative;
   			this.table.refreshTable();
@@ -118,9 +124,32 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-  	if(!this.checkParams()){
-  		this.dialogIcon = 'info';
-  		this.dialogMessage = 'Please fill all required fields.';
+	//deza was here
+	if(!this.form.dirty){
+		for (var i = 0 ; this.repData.tableData.length > i; i++) {
+			if(this.repData.tableData[i].edited){
+				if(!this.checkParams()){
+					this.dialogIcon = 'error';
+					//this.dialogMessage = 'Please fill all required fields.';
+					this.successDiag.open();
+					return;
+				}else if(!this.checkDefaultTag()){
+					this.dialogIcon = 'info';
+					this.dialogMessage = 'Please enter one default company representative.';
+					this.successDiag.open();
+					return;
+				}else{
+					$('#confirm-save #modalBtn2').trigger('click');
+					return;
+				}
+			}
+		}
+		this.dialogIcon = 'info';
+		this.dialogMessage = 'Nothing to save.';
+		this.successDiag.open();
+	}else if(!this.checkParams()){
+  		this.dialogIcon = 'error';
+  		//this.dialogMessage = 'Please fill all required fields.';
   		this.successDiag.open();
   	}else if(!this.checkDefaultTag()){
   		this.dialogIcon = 'info';
@@ -135,6 +164,7 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   	//check if mandatory fields are filled on table
   	this.defaultTagCounter = 0;
   	for(var i of this.repData.tableData){
+		console.log(i);
   		if(i.firstName === '' || i.lastName === ''){
   			return false;
   		}
@@ -147,7 +177,7 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   	//check if mandatory fields are filled on form
   	if(this.adjData.adjName.length === 0 || this.adjData.addrLine1.length === 0 ){
   		return false;
-  	}
+	}
 
   	return true;
 
@@ -208,39 +238,41 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   	//seting up adj updates
   	this.adjData.activeTag = this.adjData.activeTag === '' || this.adjData.activeTag === 'N' ? 'N' : 'Y';
   	this.adjData.createUser = this.currentUser;
-  	this.adjData.createDate = this.ns.toDateTimeString(0);
+  	//this.adjData.createDate = this.ns.toDateTimeString(0);
   	this.adjData.updateUser = this.currentUser;
-  	this.adjData.updateDate = this.ns.toDateTimeString(0);
+  	//this.adjData.updateDate = this.ns.toDateTimeString(0);
 
   	//setting up params for web service request
   	let params: any = this.adjData;
   	params.delAdjRepList = this.deletedData;
   	params.saveAdjRepList = this.savedData;
 
-  	console.log(params);
   	//saving updates
   	this.mtnService.saveMtnAdjuster(JSON.stringify(params)).subscribe((data: any)=>{
-  		console.log(data);
   		if(data.returnCode === 0){
-        if(this.cancelFlag){
-          this.cancelFlag = false;
-        }
-  			this.dialogIcon = 'error';
-  			this.successDiag.open();
-  		}else{
-  			this.adjData.adjId = data.outAdjId;
-  			this.retrieveMtnAdjuster(data.outAdjId);
-  			this.form.control.markAsPristine();
-  			this.table.markAsPristine();
-  			this.dialogIcon = '';
-  			this.successDiag.open();
-  		}
+			if(this.cancelFlag){
+				this.cancelFlag = false;
+			}
+			if(!this.ifEdit){
+				this.adjData.createUser = "";
+				this.adjData.updateUser = "";
+			}
+			this.dialogIcon = 'error';
+			this.successDiag.open();
+		}else{
+			this.ifEdit = true;
+			this.adjData.adjId = data.outAdjId;
+			this.retrieveMtnAdjuster(data.outAdjId);
+			this.form.control.markAsPristine();
+			this.table.markAsPristine();
+			this.dialogIcon = '';
+			this.successDiag.open();
+		}
   	});
 
   	//upload
   	for(let files of this.filesList){
   	  if (files.length == 0) {
-  	    console.log("No file selected!");
   	    return
 
   	  }
@@ -265,7 +297,7 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
   	  }
   	  //clear filelist array after upload
   	  this.table.filesToUpload = [];
-  	  this.table.refreshTable();
+		this.table.refreshTable();
 
   }
 

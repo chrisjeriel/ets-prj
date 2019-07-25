@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { ClaimsService, NotesService } from '@app/_services'
+import { ClaimsService, NotesService, MaintenanceService } from '@app/_services'
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -47,6 +47,10 @@ export class ClmSectionCoversComponent implements OnInit {
   dialogMessage:string;
   cancelFlag:boolean;
   claimId:any;
+  projId:any;
+  clmHistrory: boolean = false;
+  secTag: any;
+  parameters:boolean = false;
 
   @Input() claimInfo = {
     claimId: '',
@@ -60,7 +64,7 @@ export class ClmSectionCoversComponent implements OnInit {
   @Output() disableClmHistory = new EventEmitter<any>();
   @Input() isInquiry: boolean = false;
 
-  constructor(private claimService: ClaimsService, private ns: NotesService, private route: ActivatedRoute) { }
+  constructor(private claimService: ClaimsService, private ns: NotesService, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
     this.route.params.subscribe((data:any)=>{
@@ -69,12 +73,14 @@ export class ClmSectionCoversComponent implements OnInit {
     });
     
     this.getClmSec();
+    this.check();
   }
 
   getClmSec(){
     this.claimService.getClaimSecCover(this.claimInfo.claimId, this.claimInfo.claimNo).subscribe((data:any)=>{
       console.log(data)
       this.coverageData = data.claims.project.clmCoverage;
+      this.projId = data.claims.project.projId;
       var deductibles = data.claims.clmDeductibles;
       this.passData.tableData = [];
       for(var i = 0 ; i < deductibles.length;i++){
@@ -109,6 +115,9 @@ export class ClmSectionCoversComponent implements OnInit {
     this.coverageData.createDate = this.ns.toDateTimeString(this.coverageData.createDate);
     this.coverageData.updateDate = this.ns.toDateTimeString(this.coverageData.updateDate);
     this.coverageData.updateUser = this.ns.getCurrentUser();
+    this.coverageData.secISiTag = this.coverageData.secISiTag=='Y' ? 'Y':'N';
+    this.coverageData.secIISiTag = this.coverageData.secIISiTag=='Y' ? 'Y':'N';
+    this.coverageData.secIIISiTag = this.coverageData.secIIISiTag=='Y' ? 'Y':'N';
     this.claimService.saveClaimSecCover(this.coverageData).subscribe((data: any) => {
       if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -128,5 +137,44 @@ export class ClmSectionCoversComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  validate(){
+    console.log(this.coverageData.secIISiTag)
+    if(this.clmHistrory && this.parameters){
+      if(this.secTag == 'secISiTag'){
+        this.coverageData.secISiTag = (this.coverageData.secISiTag === 'Y') ? 'N' : 'Y';
+        this.dialogMessage = 'Unable to change the tag. Allowable Maximum Claim will be less than the current reserve setup.';
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else if(this.secTag == 'secIISiTag'){
+        this.coverageData.secIISiTag = (this.coverageData.secIISiTag === 'Y') ? 'N' : 'Y';
+        this.dialogMessage = 'Unable to change the tag. Allowable Maximum Claim will be less than the current reserve setup.';
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else{
+        this.coverageData.secIIISiTag = (this.coverageData.secIIISiTag === 'Y') ? 'N' : 'Y';
+        this.dialogMessage = 'Unable to change the tag. Allowable Maximum Claim will be less than the current reserve setup.';
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }
+    }
+  }
+
+  check(){
+    this.claimService.getClaimHistory(this.claimId,'',this.projId,'').subscribe((data:any) => {
+      console.log(data)
+      if(data.claimReserveList.length !== 0){
+        this.clmHistrory = true;
+      }
+    });
+    this.maintenanceService.getMtnParameters('V').subscribe((data:any) => {
+      console.log(data)
+      for(var i = 0; i < data.parameters.length;i++){
+        if(data.parameters[i].paramName == 'ALLOW_MAX_SI' && data.parameters[i].paramValueV == 'Y'){
+          this.parameters = true;
+        }
+      }
+    });
   }
 }

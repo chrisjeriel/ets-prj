@@ -20,8 +20,8 @@ export class AdjusterComponent implements OnInit {
 
   mtnAdjusterListData: any = {
       tableData: [],
-      tHeader: ['Adj No.', 'Name', 'Adj Ref No', 'Address', 'Active', 'Company Contact No', 'Company Email Address'],
-      dataTypes: ['sequence-3', 'text', 'text', 'text', 'checkbox', 'text', 'text'],
+      tHeader: ['Adj No.', 'Name', 'Address', 'Active', 'Company Contact No', 'Company Email Address'],
+      dataTypes: ['sequence-3', 'text', 'text', 'checkbox', 'text', 'text'],
       tableOnly: false,
       addFlag: true,
       editFlag: true,
@@ -29,16 +29,11 @@ export class AdjusterComponent implements OnInit {
       pageStatus: true,
       pagination: true,
       pageLength: 15,
-      keys: ['adjId','adjName','adjRefNo','fullAddress','activeTag','contactNo', 'emailAdd'],
+      keys: ['adjId','adjName','fullAddress','activeTag','contactNo', 'emailAdd'],
       filters: [
           {
               key: 'adjName',
               title: 'Name',
-              dataType: 'text'
-          },
-          {
-              key: 'adjRefNo',
-              title: 'Adj. Ref. No.',
               dataType: 'text'
           },
           {
@@ -94,7 +89,7 @@ export class AdjusterComponent implements OnInit {
                 private maintenanceService: MaintenanceService, private router: Router, private ns: NotesService) { }
 
   ngOnInit() {
-  	this.titleService.setTitle('Mtn | Ceding Company List');
+  	this.titleService.setTitle('Mtn | Claims | Adjuster');
   	this.retrieveMtnAdjustList();
   }
 
@@ -180,7 +175,7 @@ export class AdjusterComponent implements OnInit {
         importData.push(i);
     }
 
-    alasql('SELECT adjId AS AdjNo, adjName AS Name, adjRefNo AS ReferenceNo, fullAddress AS Address, activeTag AS Active, '+
+    alasql('SELECT adjId AS AdjNo, adjName AS Name, fullAddress AS Address, activeTag AS Active, '+
            'contactNo AS CompanyContactNo, emailAdd AS CompanyEmailAddress '+
            'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,importData]);
   }

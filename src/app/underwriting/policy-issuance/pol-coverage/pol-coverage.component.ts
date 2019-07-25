@@ -35,6 +35,8 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('info') mdl : ModalComponent;
   @ViewChild('infoCov') modal : ModalComponent;
   @ViewChild('secDetails') form : any;
+  @ViewChild('catPerilMdl') catPerilMdl: ModalComponent;
+  @ViewChild('catPerilMdlAlt') catPerilMdlAlt: ModalComponent;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -212,6 +214,7 @@ export class PolCoverageComponent implements OnInit {
   dialogMessage:string;
   cancelFlag:boolean;
   currentCoverCd:'';
+  promptClickCat:boolean = false;
 
 
   passData: any = {
@@ -900,6 +903,32 @@ export class PolCoverageComponent implements OnInit {
     this.deductiblesModal.openNoClose();
   }
 
+  onClickCat(){
+    if(!this.alteration){
+      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+        this.promptClickCat = true;
+        this.onClickSave();
+      }else{
+        this.promptClickCat = false;
+        this.getCATPerils();
+        setTimeout(()=>{
+          this.catPerilMdl.openNoClose();
+        },0);
+      }
+    }else{
+      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+        this.promptClickCat = true;
+        this.onClickSaveAlt();
+      }else{
+        this.promptClickCat = false;
+        this.getCATPerils();
+        setTimeout(()=>{
+          this.catPerilMdlAlt.openNoClose();
+        },0);
+      }
+    }
+  }
+
   CATPerils() {
         //$('#modalBtn').trigger('click');
         this.editedData = [];
@@ -1410,15 +1439,20 @@ export class PolCoverageComponent implements OnInit {
   }
 
   onCancelCat(){
-    this.cancelCatBtn.clickCancel();
+    this.prepareSaveCat();
+    if(this.catPerilData.saveCATPerilList.length == 0){
+      this.modalService.dismissAll();
+    }else{
+      this.cancelCatBtn.clickCancel();
+    }
   }
 
   onClickSaveCat(){
     $('#saveCat #confirm-save #modalBtn2').trigger('click');
   }
 
-  saveCatPeril(cancelFlag?){
-    this.cancelFlag = cancelFlag !== undefined;
+  prepareSaveCat(){
+    this.catPerilData.saveCATPerilList = [];
     if(!this.alteration){
       this.catPerilData.policyId = this.policyId;
     }else{
@@ -1432,6 +1466,10 @@ export class PolCoverageComponent implements OnInit {
         this.catPerilData.saveCATPerilList[this.catPerilData.saveCATPerilList.length - 1].updateDate = this.ns.toDateTimeString(0);
       }
     }  
+  }
+  saveCatPeril(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    this.prepareSaveCat();
     this.underwritingservice.saveCatPeril(this.catPerilData).subscribe((data:any) => {
       if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -1915,15 +1953,24 @@ export class PolCoverageComponent implements OnInit {
   }
 
    onClickSaveAlt(){
+     console.log('pasol')
+     for( var i= 0; i< this.passData.tableData.length;i++){
+      if(this.passData.tableData[i].cumSi == 0 && this.passData.tableData[i].addSi == 'Y'){
+        this.errorFlag = true;
+      }
+     }
+
      if(this.errorFlag){
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Invalid amount. Cumulative Sum Insured must be greater than or equal to zero.';
         this.successAlt.open();
         this.errorFlag = true;
      }else{
-      this.confirmSave.confirmModal();
+      $('#confirmSave #confirm-save #modalBtn2').trigger('click');
+      //this.confirmSave.confirmModal();
+      //this.catPerilMdlAlt.openNoClose();
      }
-    //$('#confirm-save #confirmSave ').trigger('click');
+    //
   }
 
   sectionCoversLOV(data){

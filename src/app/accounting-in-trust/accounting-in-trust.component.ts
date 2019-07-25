@@ -7,6 +7,8 @@ import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./accounting-in-trust.component.css']
 })
 export class AccountingInTrustComponent implements OnInit {
+
+  disableTab: boolean = true;
   
   ipbTab: boolean = true;
   crTab: boolean = true;
@@ -28,10 +30,13 @@ export class AccountingInTrustComponent implements OnInit {
   exitTab: string;
   paymentType: string = "";
 
+  arDetailsParam: any;
+
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
+      console.log(params);
       this.exitLink = params['link'] !== undefined ? params['link'] : 'acct-ar-listings';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
 
@@ -41,7 +46,6 @@ export class AccountingInTrustComponent implements OnInit {
         this.record = JSON.parse(params['slctd']);
       }
     });
-
   }
 
   ngOnDestroy() {

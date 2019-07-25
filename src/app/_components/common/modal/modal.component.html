@@ -46,6 +46,6 @@
     </div>
 </ng-template>
 
-<button id="modalBtn" class="cust-btn" (click)="open(content)"><a>{{ btnTitle }}</a></button>
+<button id="modalBtn" class="cust-btn" (click)="open(content)" [disabled]="disabled"><a>{{ btnTitle }}</a></button>
 <button id="modalBtn2" class="d-none" (click)="openNoClose(content)"><a>{{ btnTitle }}</a></button>
 

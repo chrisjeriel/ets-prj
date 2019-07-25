@@ -7,7 +7,8 @@
 					<div>Request Entry</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-payment-request-entry [data]="paymentData" (onChange)="tabController($event)"></app-payment-request-entry>
+					<!-- <app-payment-request-entry [data]="paymentData" (onChange)="tabController($event)"></app-payment-request-entry> -->
+					<app-payment-request-entry></app-payment-request-entry>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab>
@@ -15,7 +16,7 @@
 					<div>Request Details</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-payment-request-details [paymentType]="paymentType"></app-payment-request-details>
+					<app-payment-request-details [rowData]="rowData"></app-payment-request-details>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab id="Exit">

@@ -8,6 +8,8 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnClmEventTypeLovComponent } from '@app/maintenance/mtn-clm-event-type-lov/mtn-clm-event-type-lov.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-claim-event',
@@ -21,11 +23,13 @@ export class ClaimEventComponent implements OnInit {
     @ViewChild(MtnClmEventTypeLovComponent) clmEventTypeLov : MtnLineComponent;
 	@ViewChild(LovComponent) lov							: LovComponent;
 	@ViewChild(ModalComponent) modal						: ModalComponent;
+	@ViewChild(ConfirmSaveComponent) cs 					: ConfirmSaveComponent;
+	@ViewChild(SucessDialogComponent) success   			: SucessDialogComponent;
 
 
     passData: any = {
         tableData            : [],
-        tHeader              : ['Event Code', 'Description', 'Line','Eventy Type','Loss Date From','Loss Date To','Active','Remarks'],
+        tHeader              : ['Event Code', 'Description', 'Line','Event Type','Loss Date From','Loss Date To','Active','Remarks'],
         dataTypes            : ['number','text','lovInput','lovInput','date','date','checkbox','text'],
         magnifyingGlass	 	 : ['lineCd','eventTypeCd'],
         nData:
@@ -66,7 +70,6 @@ export class ClaimEventComponent implements OnInit {
     cancelFlag      : boolean;
     warnMsg			: string = '';
     rowData			: any;
-    fromCancel		: boolean;
 
     params : any =	{
 		saveEvent 	: [],
@@ -81,6 +84,7 @@ export class ClaimEventComponent implements OnInit {
 	}
 
 	getMtnClmEvent(){
+		this.passData.tableData = [];
 		this.mtnService.getMtnClmEvent('')
 		.subscribe(data => {
 			console.log(data);
@@ -91,7 +95,18 @@ export class ClaimEventComponent implements OnInit {
 		});
 	}
 
-	onSaveMtnClmEvent(cancelFlag?){
+	onSaveMtnClmEvent(){
+	   	this.mtnService.saveMtnClmEvent(JSON.stringify(this.params))
+		.subscribe(data => {
+			console.log(data);
+			this.getMtnClmEvent();
+			this.success.open();
+			this.params.saveEvent = [];
+			this.passData.disableGeneric = true;
+		});
+	}
+
+	onClickSave(cancelFlag?){
 		this.cancelFlag = cancelFlag !== undefined;
 		this.dialogIcon = '';
 		this.dialogMessage = '';
@@ -104,10 +119,12 @@ export class ClaimEventComponent implements OnInit {
 			if(record.eventDesc == '' || record.eventTypeCd == ''){
 				if(!record.deleted){
 					isEmpty = 1;
-					this.fromCancel = false;
+					record.fromCancel = false;
+				}else{
+					this.params.deleteEvent.push(record);
 				}
 			}else{
-				this.fromCancel = true;
+				record.fromCancel = true;
 				if(record.edited && !record.deleted){
 					record.lossDateFrom		= (record.lossDateFrom == '' || record.lossDateFrom == null)? '' : this.ns.toDateTimeString(record.lossDateFrom);
 					record.lossDateTo		= (record.lossDateTo == '' || record.lossDateTo == null)? '' : this.ns.toDateTimeString(record.lossDateTo);
@@ -135,40 +152,28 @@ export class ClaimEventComponent implements OnInit {
 		});
 
 
-		if(isNotUnique == true){
-			setTimeout(()=>{
-                $('.globalLoading').css('display','none');
+		if(isEmpty == 1){
+	        this.dialogIcon = 'error';
+            this.success.open();
+	        this.params.saveEvent 	= [];
+		}else{
+			if(isNotUnique == true){
                 this.warnMsg = 'Unable to save the record. Claim Event must be unique.';
 				this.showWarnLov();
 				this.params.saveEvent 	= [];
-            },500);
-		}else{
-			if(isEmpty == 1){
-				setTimeout(()=>{
-	                $('.globalLoading').css('display','none');
-	                this.dialogIcon = 'error';
-	                $('app-sucess-dialog #modalBtn').trigger('click');
-	                this.params.saveEvent 	= [];
-	            },500);
 			}else{
 				if(this.params.saveEvent.length == 0 && this.params.deleteEvent.length == 0){
-					setTimeout(()=>{
-						$('.globalLoading').css('display','none');
-						this.dialogIcon = 'info';
-						this.dialogMessage = 'Nothing to save.';
-						$('app-sucess-dialog #modalBtn').trigger('click');
-						this.params.saveEvent 	= [];
-						this.passData.tableData = this.passData.tableData.filter(a => a.eventDesc != '');
-					},500);
+					$('.ng-dirty').removeClass('ng-dirty');
+					this.cs.confirmModal();
+					this.params.saveEvent 	= [];
+					this.passData.tableData = this.passData.tableData.filter(a => a.eventDesc != '');
 				}else{
-					this.mtnService.saveMtnClmEvent(JSON.stringify(this.params))
-					.subscribe(data => {
-						console.log(data);
-						this.getMtnClmEvent();
-						$('app-sucess-dialog #modalBtn').trigger('click');
-						this.params.saveEvent = [];
-						this.passData.disableGeneric = true;
-					});
+					if(this.cancelFlag == true){
+                        this.cs.showLoading(true);
+                        setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+                    }else{
+                        this.cs.confirmModal();
+                    }
 				}	
 			}
 		}
@@ -245,10 +250,6 @@ export class ClaimEventComponent implements OnInit {
   	  	this.cancelBtn.clickCancel();
 	}
 
-	onClickSave(){
-	    $('#confirm-save #modalBtn2').trigger('click');
-	}
-
 	showWarnLov(){
 		$('#warnMdl > #modalBtn').trigger('click');
 	}
@@ -259,11 +260,11 @@ export class ClaimEventComponent implements OnInit {
 
 	checkCancel(){
 		if(this.cancelFlag == true){
-			if(this.fromCancel){
-				this.cancelBtn.onNo();
-			}else{
-				return;
-			}
+			if(this.passData.tableData.some(i => i.fromCancel == false)){
+                return;
+            }else{
+                this.cancelBtn.onNo();
+            }
 		}
 	}
 }

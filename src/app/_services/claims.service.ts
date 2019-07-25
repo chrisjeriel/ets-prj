@@ -70,6 +70,11 @@ export class ClaimsService {
                      .set('riskName','')
                      .set('lossDateFrom','')
                      .set('lossDateTo','')
+                     .set('totalResFrom','')
+                     .set('totalResTo','')
+                     .set('totalPaytFrom','')
+                     .set('totalPaytTo','')
+                     .set('adjName','')
                      .set('currencyCd','')
                      .set('processedBy','')
                      // .set('paginationRequest.position',null)
@@ -213,5 +218,31 @@ export class ClaimsService {
             .set('paytReqNo', (paytReqNo == null || paytReqNo == undefined ? '' : paytReqNo));
 
         return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmPaytReq',{params});    
+    }
+
+
+    getClaimDist(claimId,projId){
+        const params = new HttpParams()
+            .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+            .set('projId', (projId == null || projId == undefined ? '' : projId))
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmDist',{params});    
+    }
+
+    getClaimDistPool(claimId,projId,histNo,clmDistNo){
+        const params = new HttpParams()
+            .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+            .set('projId', (projId == null || projId == undefined ? '' : projId))
+            .set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
+            .set('clmDistNo', (clmDistNo == null || clmDistNo == undefined ? '' : clmDistNo))
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmDistPool',{params});    
+    }
+
+    redistributeClaimDist(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/claims-service/redistributeClaimDist',JSON.stringify(params),header);    
     }
 }

@@ -17,12 +17,11 @@ export class JvPreniumReserveComponent implements OnInit {
 		total:[null,null,'Total','intPremium','withHTax','fundsHRel'],
 		addFlag:true,
 		deleteFlag:true,
-		genericBtn: "Save",
 		infoFlag:true,
 		paginateFlag:true,	
 		nData: new QSOABalances(null, null, null, null, null,null),
 		checkFlag: true,
-		widths:['auto','auto','auto','auto','auto','auto']
+		widths:[150,195,195,195,195,195]
 	}
 
 	constructor(private accService: AccountingService, private titleService: Title) { }

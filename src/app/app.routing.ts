@@ -175,7 +175,6 @@ import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-re
 import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 
 
-
 const appRoutes: Routes = [
 
 
@@ -211,9 +210,9 @@ const appRoutes: Routes = [
     { path: 'update-info', component: UpdateInformationComponent },
     { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
     { path: 'open-cover', component: OpenCoverComponent },
-    { path: 'clm-claim-processing', component: ClmClaimProcessingComponent },
-    { path: 'clm-gen-info-claim', component: ClmGenInfoClaimComponent },
-    { path: 'claims-claim', component: ClaimComponent },
+    { path: 'clm-claim-processing', component: ClmClaimProcessingComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'clm-gen-info-claim', component: ClmGenInfoClaimComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'claims-claim', component: ClaimComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
     { path: 'update-info', component: UpdateInformationComponent },
@@ -238,7 +237,7 @@ const appRoutes: Routes = [
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
     { path: 'payt-req', component: RequestForPaymentComponent },
-    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent },
+    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
     { path: 'journal-voucher', component: JournalVoucherComponent },
     { path: 'generate-jv', component: GenerateJvComponent },
@@ -281,7 +280,7 @@ const appRoutes: Routes = [
     { path: 'acc-s-change-tran-stat-new', component: AccSChangeTranStatNewComponent },
     { path: 'acc-s-edit-acct-entries', component: AccSEditAccountingEntriesComponent },
     { path: 'acc-s-edited-acct-entries', component: AccSEditedAccountingEntriesComponent },
-    { path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent },
+    { path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'accounting-service-inquiry', component: AccSrvInquiryComponent },
     { path: 'cancel-transaction-service', component: CancelTransactionsServiceComponent },
     { path: 'print-registers-service', component: RegistersServiceComponent },
@@ -314,7 +313,7 @@ const appRoutes: Routes = [
     { path: 'ceding-co-form', component: CedingCompanyFormComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-endt', component: EndorsementComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-object', component: ObjectComponent },
-    { path: 'maintenance-sec-cov', component: SectionCoverComponent },
+    { path: 'maintenance-sec-cov', component: SectionCoverComponent, canDeactivate: [UnsavedChangesGuard] }, //deza was here added unsavedChangesGaurd #8221 MTN112
     { path: 'total-val-pol-print', component: HundredValPolPrintComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-qu-pol', component: QuotationAndPolicyComponent},
     { path: 'maintenance-quote-wording', component: QuoteWordingComponent, canDeactivate: [UnsavedChangesGuard] },
@@ -343,14 +342,14 @@ const appRoutes: Routes = [
     { path: 'mtn-approver', component: ApproverComponent },
     { path: 'mtn-approval-function', component: MtnApprovalFunctionComponent ,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'mtn-system', component: SystemComponent },
-    { path: 'mtn-program-parameter', component: ProgramParameterComponent },
+    { path: 'mtn-program-parameter', component: ProgramParameterComponent ,  canDeactivate: [UnsavedChangesGuard]},
     { path: 'mtn-rounding-error', component: RoundingErrorComponent,  canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-report', component: ReportComponent },
     { path: 'mtn-report-param', component: ReportParamComponent },
     { path: 'maintenance-loss-code', component: LossCodeComponent },
     { path: 'mtn-adjuster-list', component: AdjusterComponent },
     { path: 'adjuster-form', component: AdjusterFormComponent },
-    { path: 'claim-status', component: ClaimStatusComponent },
+    { path: 'claim-status', component: ClaimStatusComponent, canDeactivate: [UnsavedChangesGuard]  },
     { path: 'maintenance-clm', component: MtnClaimsComponent },
     { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },

@@ -1,11 +1,11 @@
 <div class="cust-tabs-container">
-    <h4>Maintenance / Quotation & Policy</h4>
+    <h4>Maintenance / System</h4>
     <ngb-tabset>
         <ngb-tab title="Program Parameter">
             <ng-template ngbTabContent>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important">
                     <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-                        <app-cust-editable-non-datatable #programParam [passData]="passData" (newClick)="onRowClick($event)" (onDelete)="programParam.onClickDelete('force');" (tableDataChange)="passData.tableData = $event" (genericBtn)="deleteCurr()">
+                        <app-cust-editable-non-datatable #programParam [passData]="passData" (newClick)="onRowClick($event)" (onDelete)="programParam.onClickDelete('force');" (tableDataChange)="dataChange($event)" (genericBtn)="deleteCurr()">
                         </app-cust-editable-non-datatable>
 
                             <div class="form-row" style="margin-top: 40px !important;">

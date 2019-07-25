@@ -70,6 +70,27 @@ export class ClmClaimProcessingComponent implements OnInit {
               dataType: 'datespan'
         },
         {
+             keys: {
+                  from: 'totalResFrom',
+                  to: 'totalResTo'
+              },
+              title: 'Total Reserve',
+              dataType: 'textspan'
+        },
+        {
+             keys: {
+                  from: 'totalPaytFrom',
+                  to: 'totalPaytTo'
+              },
+              title: 'Total Payment',
+              dataType: 'textspan'
+        },
+        {
+            key: 'adjName',
+            title:'Adjuster',
+            dataType: 'text'
+        },
+        {
             key: 'currencyCd',
             title:'Currency',
             dataType: 'text'
@@ -104,6 +125,7 @@ export class ClmClaimProcessingComponent implements OnInit {
   isIncomplete: boolean = true;
   loading: boolean = false;
   isFromRisk: boolean = false;
+  disableRisk: boolean = false;
 
   policyDetails: any = {
     policyId: '',
@@ -134,6 +156,7 @@ export class ClmClaimProcessingComponent implements OnInit {
   retrieveClaimsList(){
     this.cs.getClaimsListing(this.searchParams).subscribe((data : any)=>{
       if(data != null){
+        data.claimsList = data.claimsList.filter(a=>{return a.clmStatCd !== 'TC' && a.clmStatCd !== 'CD' && (a.lossStatCd !== 'CD')});
         for(var i of data.claimsList){
           for(var j of i.clmAdjusterList){
             if(i.adjName === undefined){
@@ -152,9 +175,9 @@ export class ClmClaimProcessingComponent implements OnInit {
     });
   }
 
-  openPolLOV(){
+  openPolLOV(lovBtn?){
     this.isType = false;
-    this.retrievePolList();
+    this.retrievePolList(lovBtn);
     this.polListModal.openNoClose();
   }
 
@@ -163,42 +186,69 @@ export class ClmClaimProcessingComponent implements OnInit {
     this.riskLOV.modal.openNoClose();
   }
 
-  retrievePolList(){
+  retrievePolList(lovBtn?){
+    console.log(this.noDataFound);
+    console.log(this.tempPolNo);
+    console.log(this.policyDetails.riskName);
     this.polListTbl.overlayLoader = true;
     this.policyListingData.tableData = [];
-    this.us.getParListing([{key: 'statusDesc', search: 'IN FORCE'}, 
-                           {key: 'policyNo', search: this.noDataFound || this.isFromRisk ? '' : this.tempPolNo.join('%-%')},
+    this.us.getParListing([/*{key: 'statusDesc', search: 'IN FORCE'},*/ 
+                           {key: 'policyNo', search: (this.noDataFound || this.isFromRisk) && lovBtn === undefined ? '' : this.tempPolNo.join('%-%')},
                            {key: 'riskName', search: !this.isFromRisk ? '' : String(this.policyDetails.riskName).toUpperCase()}]).subscribe((data: any)=>{
       //this.clearAddFields();
+      console.log(data.policyList.length);
       if(data.policyList.length !== 0){
         this.noDataFound = false;
         for(var i of data.policyList){
           i.riskName = i.project.riskName;
           this.policyListingData.tableData.push(i);        
         }
-        this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return a.distStatDesc === 'P'}); //retrieve pol no with dist status of P (posted)
+        //this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return a.distStatDesc === 'P'}); //retrieve pol no with dist status of P (posted)
+        this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return 'IN FORCE' === a.statusDesc.toUpperCase() || 'EXPIRED' === a.statusDesc.toUpperCase() }); //retrieve pol no with status of In Force and Expired
         this.polListTbl.refreshTable();
         this.polListTbl.overlayLoader = false;
         this.loading = false;
         if(this.isType && this.policyListingData.tableData.length === 0){
           this.noDataFound = true;
           this.openPolLOV();
+          console.log(1);
           //this.polListTbl.overlayLoader = false;
         }else if(this.isType && this.policyListingData.tableData.length > 0){
           if(this.isFromRisk && this.policyListingData.tableData.length > 1){
             this.openPolLOV();
+            console.log(2);
           }else if(this.isFromRisk && this.policyListingData.tableData.length === 1){
             this.setPolicyDetails(this.policyListingData.tableData[0].policyId, this.policyListingData.tableData[0].policyNo);
             this.isFromRisk = false;
+            console.log(3);
           }else{
             this.setPolicyDetails(this.policyListingData.tableData[0].policyId, this.policyListingData.tableData[0].policyNo);
+            console.log(4);
           }
         }
       }else{
         this.noDataFound = true;
-        this.isFromRisk = false;
-        this.openPolLOV();
-        //this.polListTbl.overlayLoader = false;
+        //this.isFromRisk = false;
+        console.log(5);
+
+        if(this.isFromRisk){
+          setTimeout(()=>{
+            if(this.polListModal.modalRef !== undefined){
+              this.polListModal.closeModal();
+            }
+            this.polListModal.openNoClose();
+          },0);
+          this.polListTbl.refreshTable();
+          this.polListTbl.overlayLoader = false;
+          console.log(6);
+        }else{
+          if(lovBtn === undefined || this.isType ){
+            setTimeout(()=>{this.openPolLOV();},0)
+          }else{
+            this.polListTbl.refreshTable();
+            this.polListTbl.overlayLoader = false;
+          }
+        }
       }
     },
     (error)=>{
@@ -227,6 +277,7 @@ export class ClmClaimProcessingComponent implements OnInit {
       this.policyDetails.districtDesc = data.policy.project.districtDesc;
       this.policyDetails.blockDesc = data.policy.project.blockDesc;
       this.loading = false;
+      this.disableRisk = true;
     },
     (error)=>{
       this.loading = false;
@@ -292,6 +343,7 @@ export class ClmClaimProcessingComponent implements OnInit {
      this.isType = true;
      if(event.target.value.length === 0){
          this.isIncomplete = true;
+         this.disableRisk = false;
          this.clearAddFields();
      }else{
          if(key === 'seqNo'){
@@ -308,6 +360,7 @@ export class ClmClaimProcessingComponent implements OnInit {
          for(var i of this.tempPolNo){
              if(i.length === 0){
                  this.isIncomplete = true;
+                 this.disableRisk = false;
                  break;
              }else{
                  this.isIncomplete = false;
@@ -317,7 +370,7 @@ export class ClmClaimProcessingComponent implements OnInit {
      console.log(this.isIncomplete);
      if(!this.isIncomplete){
          //this.getQuoteListing();
-         this.retrievePolList();
+         this.retrievePolList('lovBtn');
      }
    }
 
@@ -336,6 +389,9 @@ export class ClmClaimProcessingComponent implements OnInit {
        districtDesc: '',
        blockDesc: ''
      }
+     this.isType = false;
+     this.isFromRisk = false;
+     this.disableRisk = false;
    }
 
    setRisks(data){

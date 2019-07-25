@@ -11,14 +11,18 @@ import { ActivatedRoute,Router } from '@angular/router';
 export class GenerateCMDMComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router) { }
-
+  passData:any;
   ngOnInit() {
+    this.route.params.subscribe(a=>{
+      this.passData = a;
+      console.log(this.passData)
+    })
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-	if ($event.nextId === 'Exit') {
-	  this.router.navigateByUrl('');
-	}
+	  if ($event.nextId === 'Exit') {
+      this.router.navigateByUrl('/acc-s-credit-debit-memo');
+	  }
   }
 
 }

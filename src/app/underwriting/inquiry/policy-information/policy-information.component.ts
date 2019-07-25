@@ -56,19 +56,28 @@ export class PolicyInformationComponent implements OnInit {
   constructor(private UwService : UnderwritingService, private ns : NotesService, private route: ActivatedRoute, private router: Router) { }
   selectedPol:any = null;
   policyNo:string;
+  fromClm: boolean = false;
+  clmInfo: any = null;
 
   ngOnInit() {
     this.route.params.subscribe(data=>{
-      this.fetchInfo(data.policyId);
+      console.log(data);
+      this.fetchInfo(data.policyId, data.policyNo);
       this.policyId = data.policyId;
+      this.policyNo = data.policyNo;
+
+      if(data['clmInfo']) {
+        this.fromClm = true;
+        this.clmInfo = JSON.parse(data['clmInfo']);
+      }
     })
 
   	
   }
 
 
-  fetchInfo(policyId){
-    this.UwService.getPolicyInformation(policyId).subscribe((data:any)=>{
+  fetchInfo(policyId, policyNo?){
+    this.UwService.getPolicyInformation(policyId, policyNo).subscribe((data:any)=>{
       console.log(data);
       this.policyInfo = data.policy;
       this.policyInfo.inceptDate = this.ns.toDateTimeString(data.policy.inceptDate);
@@ -125,12 +134,29 @@ export class PolicyInformationComponent implements OnInit {
   onTabChange($event:NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
-        this.router.navigateByUrl('/policy-inquiry');
+
+        if(!this.fromClm) {
+          this.router.navigateByUrl('/policy-inquiry');  
+        } else {
+          this.router.navigate(
+                    ['/claims-claim', {
+                        from: this.clmInfo.claimId == '' ? 'add' : 'edit',
+                        claimId: this.clmInfo.claimId,
+                        claimNo: this.clmInfo.claimNo,
+                        policyId: this.policyInfo.policyId,
+                        policyNo: this.policyInfo.policyNo,
+                        cessionId: this.policyInfo.cessionId,
+                        cessionDesc: this.policyInfo.cessionDesc,
+                        line: this.policyInfo.policyNo.split('-')[0]
+                    }],
+                    { skipLocationChange: true }
+          );
+        }
    }
  }
 
  gotoSum(){
-   this.router.navigate(['/pol-summarized-inq', {policyId:this.policyInfo.policyId,
+   /*this.router.navigate(['/pol-summarized-inq', {policyId:this.policyInfo.policyId,
                                              fromInq:true,
                                              showPolicyNo: this.policyInfo.policyNo,
                                              line: this.policyInfo.lineCd,
@@ -139,7 +165,25 @@ export class PolicyInformationComponent implements OnInit {
                                              insured: this.policyInfo.insuredDesc,
                                              editPol: true,
                                              status: this.policyInfo.status,
-                                             }], { skipLocationChange: true });
+                                             }], { skipLocationChange: true });*/
+
+   var routeParam = {
+     policyId:this.policyInfo.policyId,
+     fromInq:true,
+     showPolicyNo: this.policyInfo.policyNo,
+     line: this.policyInfo.lineCd,
+     statusDesc:this.policyInfo.statusDesc,
+     riskName: this.policyInfo.project.riskName,
+     insured: this.policyInfo.insuredDesc,
+     editPol: true,
+     status: this.policyInfo.status,
+    }
+
+    if(this.fromClm) {
+      routeParam['clmInfo'] = JSON.stringify(this.clmInfo);
+    }
+
+    this.router.navigate(['/pol-summarized-inq', routeParam], { skipLocationChange: true });
  }
 
  setSec(d) {

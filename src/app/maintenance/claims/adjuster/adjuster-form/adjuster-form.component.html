@@ -16,9 +16,9 @@
 										<label class="form-control-sm col-sm-2">Adjuster No</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="adjData.adjId" readonly name="adjId">
 										<div class="cust-div col-sm" style="margin-left: 15px;"><input type="checkbox" [ngModel]="adjData.activeTag === 'Y'" (ngModelChange)="$event ? adjData.activeTag = 'Y' : adjData.activeTag = 'N';" name="activeTag">&nbsp;<span class="cust-span">Active</span>
-										</div>
+										</div><!-- 
 										<label class="form-control-sm col-sm">Adjuster Reference No</label>
-										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="adjData.adjRefNo" name="cedingId">
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="adjData.adjRefNo" name="cedingId"> -->
 									</div>
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">Name</label>
@@ -75,13 +75,13 @@
 										<label class="form-control-sm col-sm-2">Created By</label>
 										<input type="text" class="form-control form-control-sm col-sm" [ngModel]="adjData.createUser" name="createUser" readonly>
 										<label class="form-control-sm col-sm-2">Date Created</label>
-										<input type="datetime-local" class="form-control form-control-sm col-sm"  [ngModel]="adjData.createDate === '' ? '' : ns.toDateTimeString(adjData.createDate)" readonly name="createDate">
+										<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="adjData.createDate === '' ? '' : adjData.createDate" readonly name="createDate">
 									</div>
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">Last Update By</label>
 										<input type="text" class="form-control form-control-sm col-sm" value="QUECOH" [ngModel]="adjData.updateUser" name="updateUser" readonly>
 										<label class="form-control-sm col-sm-2">Last Update</label>
-										<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="adjData.updateDate === '' ? '' : ns.toDateTimeString(adjData.updateDate)" name="updateDate" readonly>
+										<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="adjData.updateDate === '' ? '' : adjData.createDate" name="updateDate" readonly>
 									</div>
 								</div>
 							</fieldset>

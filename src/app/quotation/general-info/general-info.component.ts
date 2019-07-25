@@ -260,8 +260,10 @@ export class GeneralInfoComponent implements OnInit {
 									}
 								}
 							}
+						});
 
-							console.log(this.genInfoData.altWordings);
+						this.maintenanceService.getRefCode('QUOTE_GEN_INFO.STATUS').subscribe(data => {
+							this.genInfoData.status = data['refCodeList'].filter(a => a.description.toUpperCase() === 'IN PROGRESS')[0].code;
 						});
 					}
 
@@ -628,7 +630,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	prepareParam() {
 		var saveQuoteGeneralInfoParam = {
-			"savingType"    : this.savingType,
+			"savingType"    : this.quotationService.savingType,
 			"altWordings"	: this.genInfoData.quoteRevNo != 0 ? this.genInfoData.altWordings.trim() : '',
 			"approvedBy"	: this.genInfoData.approvedBy,
 			"cedingId"		: this.genInfoData.cedingId,
@@ -942,7 +944,6 @@ export class GeneralInfoComponent implements OnInit {
 	//paul
 	checkQuoteOption(){
 		this.quotationService.getQuoteOptions(this.genInfoData.quoteId).subscribe((data)=>{
-			console.log(data)
 			if(data['quotation'] != null && data['quotation'].optionsList.length!=0){
 				this.enblEndtTab.emit(true);
 				let alopFlag = false;
