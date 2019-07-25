@@ -681,7 +681,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if(key === 'lossDate' && String(val).split('T').includes('')) {
+      if(key === 'lossDate' && String(val).split('T')[0]) {
         this.dialogIcon = 'error';
         this.successDialog.open();
         this.cancel = false;
@@ -810,9 +810,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
           this.mdlType = 'warn';
           $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
         }
-      }*/
+      }/*/
 
       if(this.claimData.lossDate.split('T')[0] != '') {
+        console.log(this.claimData.lossDate);
         var inceptD = new Date(this.claimData.inceptDate);
         var expiryD = new Date(this.claimData.expiryDate);
         var effD = new Date(this.claimData.effDate);
@@ -843,9 +844,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     pNo[pNo.length-1] = '%';
     this.showCustLoader = true;
 
+    var inceptD = new Date(this.claimData.inceptDate).setSeconds(0);
     var effD = new Date(this.claimData.effDate).setSeconds(0);
     var lossD = new Date(this.claimData.lossDate).setSeconds(0);
-    var dCheck = this.claimData.polTermTag == 'Y' && effD <= lossD ? lossD : new Date();
+    var dCheck = this.claimData.polTermTag == 'Y' && effD <= lossD ? lossD : lossD >= inceptD && lossD <= effD ? effD : new Date();
 
     var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
                       .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => new Date(a.effDate).setSeconds(0) <= dCheck && a.statusDesc == 'In Force')
