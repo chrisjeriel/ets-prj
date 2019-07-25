@@ -669,6 +669,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   onClickSave() {
+    console.log(this.claimData);
     var req = ['processedBy', 'lossCd', 'lossPeriod', 'lossDtl', 'clmStatCd'];
 
     var entries = Object.entries(this.claimData);
@@ -681,7 +682,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if(key === 'lossDate' && String(val).split('T')[0]) {
+      if(key === 'lossDate' && String(val).split('T')[0] == '') {
         this.dialogIcon = 'error';
         this.successDialog.open();
         this.cancel = false;
@@ -761,6 +762,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.successDialog.open();
       } else if(data['returnCode'] == 1) {
         this.mdlType = 'warn3';
+        console.log(this.claimData);
+        console.log(this.claimData.clmReserve);
         $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
       } else if(data['returnCode'] == 2) {
         this.mdlType = 'warn4';
@@ -813,11 +816,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       }/*/
 
       if(this.claimData.lossDate.split('T')[0] != '') {
-        console.log(this.claimData.lossDate);
         var inceptD = new Date(this.claimData.inceptDate);
         var expiryD = new Date(this.claimData.expiryDate);
         var effD = new Date(this.claimData.effDate);
-        var lossD = new Date(this.claimData.lossDate);
+        var lossD = this.claimData.lossDate.split('T')[1] == '' ? new Date(this.claimData.lossDate + '00:00') : new Date(this.claimData.lossDate);
 
         if(lossD >= inceptD && lossD <= effD) {
           this.claimData.lapsePdTag = 'Y';
