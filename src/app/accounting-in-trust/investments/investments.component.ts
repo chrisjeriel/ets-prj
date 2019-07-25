@@ -106,12 +106,14 @@ export class InvestmentsComponent implements OnInit {
        },
      ],
    	 addFlag: true,
+     disableAdd : true,
      searchFlag: true,
      infoFlag: true,
      paginateFlag: true,
      pageStatus: true,
      pagination: true,
      genericBtn: 'Delete',
+     disableGeneric : true,
      pageLength: 15,
      widths: [190,190,120,120,80,85,1,1,1,85,90,120,120,120,120,120,120],
      keys: ['invtCd','bank','certNo','invtType',
@@ -134,7 +136,7 @@ export class InvestmentsComponent implements OnInit {
 
   }
 
-  onTabChange($event: NgbTabChangeEvent) {
+  onTabChange($event: NgbTabChangeEvent) {return ;
   		if ($event.nextId === 'Exit') {
     		this.router.navigateByUrl('');
   		} 
@@ -150,8 +152,34 @@ export class InvestmentsComponent implements OnInit {
 
       this.subscription = sub$.subscribe(data => {
         console.log(data);
+        
+        var td = data['investments']['invtList'].sort((a, b) => b.createDate - a.createDate).map(a => { 
+                                      a.createDate = this.ns.toDateTimeString(a.createDate);
+                                      a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                                   return a; });
+
+        this.passData.tableData = td;
+        this.passData.disableAdd = false;
+        this.passData.disableGeneric = false;
+
+        this.passData.opts[0].vals = data['type']['refCodeList'].map(a => a.code);
+        this.passData.opts[0].prev = data['type']['refCodeList'].map(a => a.description);
+
+        this.passData.opts[2].vals = data['status']['refCodeList'].map(a => a.code);
+        this.passData.opts[2].prev = data['status']['refCodeList'].map(a => a.description);
+
+        this.passData.opts[3].vals = data['duration']['refCodeList'].map(a => a.code);
+        this.passData.opts[3].prev = data['duration']['refCodeList'].map(a => a.description);
+
+        this.passData.opts[4].vals = data['currency']['currency'].map(a => a.currencyCd);
+        this.passData.opts[4].prev = data['currency']['currency'].map(a => a.currencyCd);
+
+        this.table.refreshTable();
 
       });
+
+     
+
     /*this.accountingService.getAccInvestments(this.searchParams)
         .subscribe((val:any) =>
         {
