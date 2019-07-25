@@ -1497,7 +1497,7 @@ export class PolCoverageComponent implements OnInit {
 
   onClickSave(){
     for( var i= 0; i< this.passDataSectionCover.tableData.length;i++){
-      if(this.passDataSectionCover.tableData[i].cumSi == 0 && this.passDataSectionCover.tableData[i].addSi == 'Y'){
+      if(this.passDataSectionCover.tableData[i].cumSi < 0 && this.passDataSectionCover.tableData[i].addSi == 'Y'){
         this.errorFlag = true;
       }
     }
@@ -1569,7 +1569,8 @@ export class PolCoverageComponent implements OnInit {
         this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].premAmt) ? this.passData.tableData[j].prevPremAmt : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt + (isNaN(this.passData.tableData[j].exPremAmt) ? 0:this.passData.tableData[j].exPremAmt);
       }
 
-        this.passData.tableData[j].premAmt     = this.passData.tableData[j].discountTag == 'Y' ? this.passData.tableData[j].premAmt:this.passData.tableData[j].sumInsured * (this.passData.tableData[j].premRt / 100);
+        //this.passData.tableData[j].premAmt     = this.passData.tableData[j].discountTag == 'Y' ? this.passData.tableData[j].premAmt:this.passData.tableData[j].sumInsured * (this.passData.tableData[j].premRt / 100);
+        this.passData.tableData[j].premAmt     = this.policyInfo.extensionTag == 'Y' ? this.passData.tableData[j].sumInsured < 0 ? 0:this.passData.tableData[j].discountTag == 'Y' ? this.passData.tableData[j].premAmt:this.passData.tableData[j].sumInsured * (this.passData.tableData[j].premRt / 100) : this.passData.tableData[j].discountTag == 'Y' ? this.passData.tableData[j].premAmt:this.passData.tableData[j].sumInsured * (this.passData.tableData[j].premRt / 100);
         this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].prevSumInsured) ? this.passData.tableData[j].sumInsured+0:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
         this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].prevPremRt) || this.passData.tableData[j].prevPremRt == null ? this.passData.tableData[j].premRt :this.passData.tableData[j].premRt 
         this.passData.tableData[j].cumPrem     = isNaN(this.passData.tableData[j].prevPremAmt) ? this.passData.tableData[j].premAmt+0 : this.passData.tableData[j].prevPremAmt + this.passData.tableData[j].premAmt + (isNaN(this.passData.tableData[j].exPremAmt) ? 0:this.passData.tableData[j].exPremAmt);
@@ -1953,9 +1954,9 @@ export class PolCoverageComponent implements OnInit {
   }
 
    onClickSaveAlt(){
-     console.log('pasol')
+     console.log('pasok')
      for( var i= 0; i< this.passData.tableData.length;i++){
-      if(this.passData.tableData[i].cumSi == 0 && this.passData.tableData[i].addSi == 'Y'){
+      if(this.passData.tableData[i].cumSi < 0 && this.passData.tableData[i].addSi == 'Y'){
         this.errorFlag = true;
       }
      }
