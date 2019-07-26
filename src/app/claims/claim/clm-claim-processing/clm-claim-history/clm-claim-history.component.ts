@@ -539,29 +539,35 @@ export class ClmClaimHistoryComponent implements OnInit {
               this.passDataHistory.disableAdd = false;
               this.initFetch = false;
 
-              var chck = 0;
-              if(this.clmHistoryData.lossResAmt == 0 && (this.clmHistoryData.lossPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && (e.histType == 4 || e.histType == 5))))){
-                chck = 1;
-              }else if(this.clmHistoryData.expResAmt == 0 && (this.clmHistoryData.expPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory != 'L' && (e.histType == 4 || e.histType == 5))))){
-                chck = 2;
-              }
+              // var chck = 0;
+              // console.log(this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && (e.histType == 4 || e.histType == 5))).);
+              // console.log(this.arrSum(this.passDataHistory.tableData.filter(e => (e.histCategory == 'A' || e.histCategory == 'O') && (e.histType == 4 || e.histType == 5))));
+              // if(this.clmHistoryData.lossResAmt == 0 && (this.clmHistoryData.lossPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && (e.histType == 4 || e.histType == 5)).map(e => e.reserveAmt)))){
+              //   chck = 1;
+              // }else if(this.clmHistoryData.expResAmt == 0 && (this.clmHistoryData.expPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => (e.histCategory == 'A' || e.histCategory == 'O') && (e.histType == 4 || e.histType == 5))))){
+              //   chck = 2;
+              // }
 
-              if(chck != 0){
-                this.clmHistoryData.expStatCd  = (chck == 1)?'CD':this.clmHistoryData.expStatCd;
-                this.clmHistoryData.lossStatCd = (chck == 2)?'CD':this.clmHistoryData.lossStatCd;
-                var resStatParams = { 
-                  claimId     : this.clmHistoryData.claimId,
-                  expStatCd   : this.clmHistoryData.expStatCd,
-                  lossStatCd  : this.clmHistoryData.lossStatCd,
-                  projId      : this.clmHistoryData.projId,
-                  updateUser  : this.ns.getCurrentUser()
-                };
+              // console.log(chck);
+              // console.log(this.clmHistoryData.expStatCd);
+              // console.log(this.clmHistoryData.lossStatCd);
 
-                this.clmService.saveClaimResStat(JSON.stringify(resStatParams))
-                  .subscribe(data => {
-                  console.log(data);
-                });
-              }
+              // if(chck != 0){
+              //   this.clmHistoryData.expStatCd  = (chck == 2)?'CD':this.clmHistoryData.expStatCd;
+              //   this.clmHistoryData.lossStatCd = (chck == 1)?'CD':this.clmHistoryData.lossStatCd;
+              //   var resStatParams = { 
+              //     claimId     : this.clmHistoryData.claimId,
+              //     expStatCd   : this.clmHistoryData.expStatCd,
+              //     lossStatCd  : this.clmHistoryData.lossStatCd,
+              //     projId      : this.clmHistoryData.projId,
+              //     updateUser  : this.ns.getCurrentUser()
+              //   };
+
+              //   this.clmService.saveClaimResStat(JSON.stringify(resStatParams))
+              //     .subscribe(data => {
+              //     console.log(data);
+              //   });
+              // }
 
               setTimeout(() => {
                 if(data['returnCode'] == -1) {
@@ -769,19 +775,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     
       this.clmHistoryData.lossPdAmt  = Number(sumLossPd) - Number(difLossPd);
       this.clmHistoryData.expPdAmt   = Number(sumExpPd)  - Number(difExpPd);
-
-      console.log(sumLossRes);
-      console.log(difLossRes);
-
-      console.log(sumExpRes);
-      console.log(difExpRes);
-
-      console.log(sumLossPd);
-      console.log(difLossPd);
-
-      console.log(sumExpPd);
-      console.log(difExpPd);
-    
+   
       this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
       this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
    // },0);
