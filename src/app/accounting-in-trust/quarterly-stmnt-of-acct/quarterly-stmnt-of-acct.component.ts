@@ -24,60 +24,11 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	totalDebit: any = 1510787.46;
 	totalCredit: any = 1510787.46;
 
-	passDataListOfQsoaAperCompany: any ={
-		tableData:[
-			{
-				company: 'Charter Ping An',
-				quarterEnding: new Date('2018-03-31'),
-				status: 'Paid',
-				referenceNo: '2018-00001',
-				debit: 710716.12,
-				credit: 1510787.46
-			},
-			{
-				company: 'Charter Ping An',
-				quarterEnding: new Date('2018-06-30'),
-				status: 'Paid',
-				referenceNo: '2018-00045',
-				debit: 500000,
-				credit: 700000
-			},
-			{
-				company: 'Charter Ping An',
-				quarterEnding: new Date('2018-09-30'),
-				status: 'Unpaid',
-				referenceNo: '',
-				debit: 500000,
-				credit: 100000
-			},
-			{
-				company: 'Malayan',
-				quarterEnding: new Date('2018-03-31'),
-				status: 'Paid',
-				referenceNo: '2018-00002',
-				debit: 500000,
-				credit: 700000
-			},
-			{
-				company: 'Malayan',
-				quarterEnding: new Date('2018-06-30'),
-				status: 'Paid',
-				referenceNo: '2018-00046',
-				debit: 500000,
-				credit: 100000
-			},
-			{
-				company: 'Malayan',
-				quarterEnding: new Date('2018-06-30'),
-				status: 'Unpaid',
-				referenceNo: '',
-				debit: 500000,
-				credit: 700000
-			}
-		],
+	QSOAList: any ={
+		tableData: [],
 		tHeader: ["Company","Quarter Ending","Status","Reference No.","Debit","Credit"],
 		dataTypes: ["text","date","text","text","currency","currency"],
-		widths:["200"],
+		widths: ["200"],
 		infoFlag: true,
 		paginateFlag: true,
 		genericBtn: 'View Details',
