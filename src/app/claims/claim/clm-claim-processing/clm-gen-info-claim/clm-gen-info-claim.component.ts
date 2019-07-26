@@ -411,19 +411,20 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   openAdjustersModal() {
-    console.log(this.claimData.clmAdjusterList);
-    this.adjData.tableData = this.claimData.clmAdjusterList.slice();
+    // this.tempAdjCont = JSON.parse(JSON.stringify(this.claimData.clmAdjusterList));
+    this.adjData.tableData = JSON.parse(JSON.stringify(this.claimData.clmAdjusterList));
     this.adjTable.refreshTable();
     this.adjTable.onRowClick(null, this.adjData.tableData[0]);
     $('#adjustersModal #modalBtn').trigger('click');
   }
 
   onCancelNo() {
+    // this.claimData.clmAdjusterList = this.tempAdjCont.slice();
     this.adjTable.markAsPristine();
   }
 
   showLossCdLOV(type) {
-    this.lossCdType = type;
+    this.claimData.clmAdjusterList = this.lossCdType = type;
     this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == type };
 
     this.lossCdLOV.modal.openNoClose();
@@ -551,8 +552,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.claimData.adjId = data.adjId;
     this.claimData.adjName = data.adjName;
 
-    console.log(this.claimData.clmAdjusterList);
-
     for(var i of this.claimData.clmAdjusterList) {
       if(i.adjId == data.adjId) {
         this.claimData.adjFileNo = i.adjRefNo;
@@ -658,7 +657,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       if(data['returnCode'] == -1) {
         this.dialogIcon = "success";
         this.adjSuccessDialog.open();
-        this.adjNameAndRefs();
 
         this.claimData.clmAdjusterList = this.adjData.tableData.filter(a => !a.deleted).slice();
 
