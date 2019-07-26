@@ -65,30 +65,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   dialogMessage   : string;
 
   params : any =  {
-    savePrqTrans     : [
-      {
-        claimId       : '',
-        createDate    : '',
-        createUser    : '',
-        currAmt       : '',
-        currCd        : '',
-        currRate      : '',
-        histNo        : '',
-        instNo        : '',
-        investmentId  : '',
-        itemNo        : '',
-        localAmt      : '',
-        paymentFor    : '',
-        policyId      : '',
-        projId        : '',
-        quarterEnding : '',
-        refNo         : '',
-        remarks       : '',
-        reqId         : '',
-        updateDate    : '',
-        updateUser    : ''
-      }
-    ],
+    savePrqTrans     : [],
     deletePrqTrans   : []
   };
 
@@ -103,7 +80,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getPrqTrans(){
-
+    this.cedingCompanyData.tableData = [];
     var subRes = forkJoin(this.acctService.getAcitPrqTrans(this.rowData.reqId,''), this.clmService.getClaimHistory())
                  .pipe(map(([prqTrans,clmHist]) => { return { prqTrans,clmHist }}));
 
@@ -117,15 +94,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
       recPrqTrans.forEach(e => {
         this.cedingCompanyData.tableData.push(recClmHist.filter(e2 => e2.claimId == e.claimId && e2.histNo == e.histNo && e2.projId == e.projId )
-                                                               .map(e2 => { 
-                                                                 e2.paymentFor = e.paymentFor; 
-                                                                 e2.createUser = e.createUser;
-                                                                 e2.updateUser = e.updateUser;
-                                                                 e2.createDate = e.createDate;
-                                                                 e2.updateDate = e.updateDate;
-                                                                 e2.itemNo     = e.itemNo;
-                                                                 return e2; 
-                                                               }));
+                                                              .map(e2 => { 
+                                                                e2.paymentFor = e.paymentFor; 
+                                                                e2.createUser = e.createUser;
+                                                                e2.updateUser = e.updateUser;
+                                                                e2.createDate = e.createDate;
+                                                                e2.updateDate = e.updateDate;
+                                                                e2.itemNo     = e.itemNo;
+                                                                return e2; 
+                                                              }));
       });
       this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.flatMap(e => { return e });
       this.cedCompTbl.refreshTable();
@@ -159,38 +136,35 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.dialogIcon = '';
     this.dialogMessage = '';
 
-    // for(let record of this.cedingCompanyData.tableData){
-    //   if(record.edited && !record.deleted){
-    //     console.log('Should be successful in saving');
-    //       record.createUser    = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
-    //       record.createDate    = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(record.createDate);
-    //       record.updateUser    = this.ns.getCurrentUser();
-    //       record.updateDate    = this.ns.toDateTimeString(0);
-    //       this.params.savePrqTrans.push(record);
-    //   }else if(record.edited && record.deleted){
-    //       this.params.deletePrqTrans.push(record);
-    //   }
-    // }
-
     this.cedingCompanyData.tableData.forEach(e => {
+      var rec = {
+            claimId         : e.claimId,
+            createUser      : (this.params.savePrqTrans.createUser == '' || this.params.savePrqTrans.createUser == null)?this.ns.getCurrentUser():this.params.savePrqTrans.createUser,
+            createDate      : (this.params.savePrqTrans.createDate == '' || this.params.savePrqTrans.createDate == null)?this.ns.toDateTimeString(0):this.params.savePrqTrans.createDate,
+            currAmt         : e.paytAmt,
+            currCd          : e.currencyCd,
+            currRate        : e.currencyRt,
+            histNo          : e.histNo,
+            instNo          : '',
+            investmentId    : '',
+            itemNo          : e.itemNo,
+            localAmt        : e.paytAmt,
+            paymentFor      : e.paymentFor,
+            policyId        : '',
+            projId          : e.projId,
+            quarterEnding   : '',
+            refNo           : '',
+            remarks         : '',
+            reqId           : this.rowData.reqId,
+            updateUser      : this.ns.getCurrentUser(),
+            updateDate      : this.ns.toDateTimeString(0)
+          };
+
       if(e.edited && !e.deleted){
-        this.params.savePrqTrans.map(a => {
-          a.reqId = this.rowData.reqId;
-          a.claimId = e.claimId;
-          a.projId = e.projId;
-          a.histNo = e.histNo;
-          a.currCd = e.currencyCd;
-          a.currRate = e.currencyRt;
-          a.currAmt =  e.paytAmt;
-          a.localAmt = e.paytAmt;
-          a.createUser = (a.createUser == '' || a.createUser == null)?this.ns.getCurrentUser():a.createUser;
-          a.createDate = (a.createDate == '' || a.createDate == null)?this.ns.toDateTimeString(0):a.createDate;
-          a.updateUser = this.ns.getCurrentUser();
-          a.updateDate = this.ns.toDateTimeString(0);
-          return a;
-        });
+        this.params.savePrqTrans.push(rec);
       }else if(e.edited && e.deleted){
         console.log('RECORD DELETED');
+        this.params.deletePrqTrans.push(rec);
       }else{
         console.log('ELSE IN SAVE');
       }
@@ -203,6 +177,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       $('.ng-dirty').removeClass('ng-dirty');
       this.cs.confirmModal();
       this.params.savePrqTrans   = [];
+      this.params.deletePrqTrans   = [];
       this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '');
     }else{
       if(this.cancelFlag == true){
@@ -215,14 +190,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveCPC(){
-    // this.params.savePrqTrans.map(e => {
-    //   e.currCd   = e.currencyCd;
-    //   e.currRate = e.currencyRt;
-    //   e.currAmt  = e.paytAmt;
-    //   e.localAmt = e.paytAmt;
-    //   e.reqId    = this.rowData.reqId;
-
-    // });
     console.log(this.params);
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
@@ -230,11 +197,24 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.getPrqTrans();
       this.success.open();
       this.params.savePrqTrans  = [];
+      this.params.deletePrqTrans  = [];
     });
   }
 
   checkCancel(){
-    this.cancelBtn.onNo();
+    if(this.cancelFlag){
+      this.cancelBtn.onNo();
+    }else{
+      this.success.modal.closeModal();
+    }
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
+  }
+  
+  addDirty(){
+    $('#cedTbl').addClass('ng-dirty');
   }
 
 }
