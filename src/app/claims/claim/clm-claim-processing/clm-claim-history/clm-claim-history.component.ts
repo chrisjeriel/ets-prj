@@ -993,6 +993,8 @@ export class ClmClaimHistoryComponent implements OnInit {
         if(this.test[0].hasUnpaidPrem != 'Y'){
           msg = 'The policy has unpaid premiums. Do you want to proceed?';
           this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C', show: true});
+        }else{
+          return;
         }
         
         break;
