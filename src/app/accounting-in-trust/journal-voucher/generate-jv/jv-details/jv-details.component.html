@@ -9,7 +9,9 @@
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
                  style="text-align: right; margin-left: 2px;text-align: right;" [(ngModel)]="jvDetails.jvNo" readonly>
                 <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.jvDate" readonly>
+                <div class="col-sm-2 dp-cont">
+                    <datepicker [type]="'date'" [value]="jvDetails.jvDate?.split('T')[0]" [required]="true" disabled></datepicker>
+                </div>
                 <label class="form-control-sm col-sm-1">Status</label>
                 <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.jvStatus" readonly>
                 <label class="form-control-sm col-sm-1 text-right">Ref No</label>
@@ -133,7 +135,7 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="'INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP'">
-                                <app-jv-interest-on-overdue-accounts></app-jv-interest-on-overdue-accounts>
+                                <app-jv-interest-on-overdue-accounts [tranId]="jvDetails.tranId" [jvDate]="jvDetails.jvDate"></app-jv-interest-on-overdue-accounts>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="'LOSS RESERVE DEPOSIT'">

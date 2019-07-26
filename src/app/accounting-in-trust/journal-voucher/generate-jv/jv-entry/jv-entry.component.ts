@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AccountingService, NotesService } from '@app/_services' 
 import { DecimalPipe } from '@angular/common';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-jv-entry',
@@ -21,6 +22,7 @@ export class JvEntryComponent implements OnInit {
   @Output() emitData = new EventEmitter<any>();
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
   entryData:any = {
     jvYear:'',
@@ -64,6 +66,9 @@ export class JvEntryComponent implements OnInit {
   UploadBut: boolean = false;
   allocBut: boolean = false;
   dcBut: boolean = false;
+  cancelFlag: boolean = false;
+  dialogIcon : any;
+  dialogMessage : any;
 
   constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe) { }
 
@@ -174,6 +179,7 @@ export class JvEntryComponent implements OnInit {
     this.entryData.jvYear = '';
     this.entryData.jvNo =  '';
     this.entryData.jvStatus =  'New';
+    this.entryData.jvStatusName =  'N';
     this.entryData.tranTypeName = '';
     this.entryData.jvDate = this.ns.toDateTimeString(0);
     this.entryData.autoTag = 'N';
@@ -207,7 +213,7 @@ export class JvEntryComponent implements OnInit {
                          jvNo: ev.jvNo, 
                          jvYear: ev.jvYear, 
                          jvDate: ev.jvDate, 
-                         jvStatus: ev.jvStatus,
+                         jvStatus: ev.jvStatusName,
                          refnoDate: ev.refnoDate,
                          refnoTranId: ev.refnoTranId,
                          currCd: ev.currCd,
@@ -257,14 +263,19 @@ export class JvEntryComponent implements OnInit {
     this.jvDatas.updateDateJv = this.ns.toDateTimeString(0);
   }
 
-  saveJV(){
+  saveJV(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     console.log(JSON.stringify(this.jvDatas))
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
-        console.log('fail')
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
       }else{
-        console.log('successs')
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
         this.tranId = data.tranIdOut;
         this.retrieveJVEntry();
       }
@@ -285,6 +296,10 @@ export class JvEntryComponent implements OnInit {
 
   onClickApprove(){
     this.approveJV.openNoClose();
+  }
+
+  onClickSave(){
+     $('#confirm-save #modalBtn2').trigger('click');
   }
 
 }

@@ -13,6 +13,8 @@ export class JvSoaLovComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @Input() cedingId: any;
   @Input() tranId:any;
+  @Input() lovCheckBox: boolean = false;
+  @Input() hide: any;
 
   passData: any = {
     tableData: [],
@@ -30,19 +32,24 @@ export class JvSoaLovComponent implements OnInit {
 
   modalOpen: boolean = false;
   selected: any;
+  selects: any[] = [];
 
   constructor(private ns: NotesService, private maintenanceService: MaintenanceService, private modalService: NgbModal,private accountingService: AccountingService) { }
 
   ngOnInit() {
+    if(this.lovCheckBox){
+      this.passData.checkFlag = true;
+    }
   }
 
   openModal(){
 	  setTimeout(()=>{  
 	  		this.accountingService.getJVSOA(this.tranId,'','',this.cedingId).subscribe((data:any) => {
-	  			console.log(data)
-	  			for(var i=0; i < data.soaDetails.length;i++){
+          var test = data.soaDetails.filter((a)=>{return this.hide.indexOf((a.policyId.toString()+ '-'+ a.instNo))==-1})
+          this.passData.tableData = data.soaDetails.filter((a)=>{return this.hide.indexOf((a.policyId.toString()+ '-'+ a.instNo))==-1})
+	  			/*for(var i=0; i < data.soaDetails.length;i++){
 	  				this.passData.tableData.push(data.soaDetails[i]);
-	  			}
+	  			}*/
 	  			this.table.refreshTable();
 	  		});
 	            this.modalOpen = true;
@@ -50,6 +57,7 @@ export class JvSoaLovComponent implements OnInit {
   }
 
   onRowClick(data){
+    console.log(data)
   	if(data!=null){
   		this.selected = data;
   	}else{
@@ -63,7 +71,17 @@ export class JvSoaLovComponent implements OnInit {
   }
 
   confirm(){
-  	this.selectedData.emit(this.selected);
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+    }else {
+      for(var i = 0 ; i < this.passData.tableData.length; i++){
+        if(this.passData.tableData[i].checked){
+          this.selects.push(this.passData.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   	this.passData.tableData = [];
   	this.table.refreshTable();
   }
