@@ -348,6 +348,13 @@ export class ClmClaimHistoryComponent implements OnInit {
           this.histTbl.refreshTable();
           this.histTbl.onRowClick(null, this.passDataHistory.tableData[0]);
           this.compResPayt();
+
+          this.clmHistoryData.lossResAmt = res.lossResAmt;
+          this.clmHistoryData.lossPdAmt  = res.lossPdAmt;
+          this.clmHistoryData.expResAmt  = res.expResAmt;
+          this.clmHistoryData.expPdAmt   = res.expPdAmt;
+          this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
+          this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
       }catch(e){''}
         
       });
@@ -704,12 +711,9 @@ export class ClmClaimHistoryComponent implements OnInit {
           e.reserveAmt = '';
         }
 
-        if(e.reserveAmt > 0){
-          e.reserveAmt = (e.histType == 3 || e.histType == 6)?Number(-e.reserveAmt):e.reserveAmt;
-        }
-
         if(this.passDataHistory.tableData.some(el => el.histCategory == 'L' && el.histType == 1 && el.newRec != 1) &&  e.histCategory == 'A' && e.histType == 1 && (e.reserveAmt == 0 || e.reserveAmt == '' || isNaN(e.reserveAmt)) ){
           e.reserveAmt = adjAmt;
+          this.clmHistoryData.expResAmt = adjAmt;
         }
       }
     });
@@ -747,26 +751,51 @@ export class ClmClaimHistoryComponent implements OnInit {
       return record;
     });
 
-    var sumLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;}));
-    var difLossRes = this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L'  && (i.histType == 3 || i.histType == 6)).map(i => { return i.reserveAmt;});
+    //setTimeout(() => {
+      var sumLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;}));
+      var difLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L'  && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.reserveAmt);}));
 
-    var sumExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;})); 
-    var difExpRes  = this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && i.newRec == 1 && (i.histType == 3 || i.histType == 6)).map(i => { return i.reserveAmt;}); 
+      var sumExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;})); 
+      var difExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.reserveAmt);})); 
 
-    var sumLossPd = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType != 3)).map(i => { return i.paytAmt;}));
-    var difLossPd = this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && i.newRec == 1 &&(i.histType == 3)).map(i => { return i.paytAmt;});
+      var sumLossPd = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType != 3)).map(i => { return i.paytAmt;}));
+      var difLossPd = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.paytAmt);}));
+      
+      var sumExpPd  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.paytAmt;})); 
+      var difExpPd  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.paytAmt);})); 
+
+      this.clmHistoryData.lossResAmt = Number(sumLossRes) - Number(difLossRes);
+      this.clmHistoryData.expResAmt  = Number(sumExpRes)  - Number(difExpRes);
     
-    var sumExpPd  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.paytAmt;})); 
-    var difExpPd  = this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && i.newRec == 1 && (i.histType == 3 || i.histType == 6)).map(i => { return i.paytAmt;}); 
+      this.clmHistoryData.lossPdAmt  = Number(sumLossPd) - Number(difLossPd);
+      this.clmHistoryData.expPdAmt   = Number(sumExpPd)  - Number(difExpPd);
 
-    this.clmHistoryData.lossResAmt = Number(sumLossRes) - Number(difLossRes);
-    this.clmHistoryData.expResAmt  = Number(sumExpRes)  - Number(difExpRes);
-  
-    this.clmHistoryData.lossPdAmt  = Number(sumLossPd) - Number(difLossPd);
-    this.clmHistoryData.expPdAmt   = Number(sumExpPd)  - Number(difExpPd);
-  
-    this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
-    this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
+      console.log(sumLossRes);
+      console.log(difLossRes);
+
+      console.log(sumExpRes);
+      console.log(difExpRes);
+
+      console.log(sumLossPd);
+      console.log(difLossPd);
+
+      console.log(sumExpPd);
+      console.log(difExpPd);
+    
+      this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
+      this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
+   // },0);
+    
+
+    
+   // setTimeout(() => {
+      this.passDataHistory.tableData.forEach(e => {
+        if(e.reserveAmt > 0){
+           e.reserveAmt = (e.histType == 3 || e.histType == 6)?Number(-e.reserveAmt):e.reserveAmt;
+           console.log(e.reserveAmt);
+        }
+      });
+    //},100);
 
   }
 

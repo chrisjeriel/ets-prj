@@ -24,6 +24,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(ConfirmSaveComponent) cs         : ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
+  @ViewChild('warnMdl') warnMdl               : ModalComponent;
 
   cedingCompanyData: any = {
   	tableData     : [],
@@ -63,6 +64,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   cancelFlag      : boolean;
   dialogIcon      : string;
   dialogMessage   : string;
+  warnMsg         : string = '';
 
   params : any =  {
     savePrqTrans     : [],
@@ -106,7 +108,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       });
       this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.flatMap(e => { return e });
       this.cedCompTbl.refreshTable();
-
       console.log(this.cedingCompanyData.tableData);
     });
   }
@@ -135,12 +136,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
-
     this.cedingCompanyData.tableData.forEach(e => {
       var rec = {
             claimId         : e.claimId,
-            createUser      : (this.params.savePrqTrans.createUser == '' || this.params.savePrqTrans.createUser == null)?this.ns.getCurrentUser():this.params.savePrqTrans.createUser,
-            createDate      : (this.params.savePrqTrans.createDate == '' || this.params.savePrqTrans.createDate == null)?this.ns.toDateTimeString(0):this.params.savePrqTrans.createDate,
+            createUser      : (e.createUser == '' || e.createUser == null)?this.ns.getCurrentUser():e.createUser,
+            createDate      : (e.createDate == '' || e.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate),
             currAmt         : e.paytAmt,
             currCd          : e.currencyCd,
             currRate        : e.currencyRt,
@@ -173,18 +173,28 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.cedingCompanyData.tableData);
     console.log(this.params.savePrqTrans);
 
-    if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-      $('.ng-dirty').removeClass('ng-dirty');
-      this.cs.confirmModal();
-      this.params.savePrqTrans   = [];
-      this.params.deletePrqTrans   = [];
-      this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '');
+    //var paytAmt = this.cedingCompanyData.tableData.reduce((a,b)=>a+(b.paytAmt != null ?parseFloat(b.paytAmt):0),0);
+    var paytAmt = 6000000;
+    console.log(paytAmt);
+
+    if(Number(this.rowData.reqAmt) > Number(paytAmt)){
+      console.log('The Total Payment Amount of Claim Histories must not exceed the Requested Amount.');
+      this.warnMsg = 'The Total Payment Amount of Claim Histories must not exceed the Requested Amount.';
+      this.warnMdl.openNoClose();
     }else{
-      if(this.cancelFlag == true){
-        this.cs.showLoading(true);
-        setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
-      }else{
+      if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
+        $('.ng-dirty').removeClass('ng-dirty');
         this.cs.confirmModal();
+        this.params.savePrqTrans   = [];
+        this.params.deletePrqTrans   = [];
+        this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '');
+      }else{
+        if(this.cancelFlag == true){
+          this.cs.showLoading(true);
+          setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+        }else{
+          this.cs.confirmModal();
+        }
       }
     }
   }
@@ -212,7 +222,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   cancel(){
     this.cancelBtn.clickCancel();
   }
-  
+
   addDirty(){
     $('#cedTbl').addClass('ng-dirty');
   }
