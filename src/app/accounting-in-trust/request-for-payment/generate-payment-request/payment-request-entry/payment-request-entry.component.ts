@@ -131,6 +131,13 @@ export class PaymentRequestEntryComponent implements OnInit {
     (this.saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED')?this.cancelledStats():'';
   }
 
+  getAcitPaytReq(){
+    this.acctService.getPaytReq()
+    .subscribe(data => {
+      console.log(data);
+    });
+  }
+
   onSaveAcitPaytReq(){
     this.acitPaytReq = {
       approvedBy      : this.saveAcitPaytReq.approvedBy,
