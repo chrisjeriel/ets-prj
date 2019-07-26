@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { AccountingService } from '@app/_services/accounting.service';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 @Component({
   selector: 'app-quarterly-stmnt-of-acct',
@@ -13,6 +16,8 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 export class QuarterlyStmntOfAcctComponent implements OnInit {
 	@ViewChild('confModal') confModal: ModalComponent;
 	@ViewChild('generateModal') generateModal: ModalComponent;
+	@ViewChild('qsoaListTbl') qsoaListTbl: CustEditableNonDatatableComponent;
+	@ViewChild('filtCedingCoLOV') filtCedingCoLOV: CedingCompanyComponent;
 
 	comStmt:boolean = false;
 	receivables:boolean = false;
@@ -26,13 +31,14 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 
 	QSOAList: any ={
 		tableData: [],
-		tHeader: ["Company","Quarter Ending","Status","Reference No.","Debit","Credit"],
-		dataTypes: ["text","date","text","text","currency","currency"],
+		tHeader: ['Company','Quarter Ending','Status','Reference No.','Debit','Credit'],
+		dataTypes: ['text','date','text','text','currency','currency'],
+		keys: ['cedingName','quarterEnding','qsoaStatusDesc','refNoTranId','totalDebitAmt','totalCreditAmt'],
 		widths: ["200"],
 		infoFlag: true,
 		paginateFlag: true,
 		genericBtn: 'View Details',
-		total: [null,null,null,"TOTAL","debit","credit"],
+		total: [null,null,null,'TOTAL','totalDebitAmt','totalCreditAmt'],
 		searchFlag:true,
 		uneditable: [true,true,true,true,true,true],
 		pageLength: 15,
@@ -177,66 +183,101 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		widths:[1,150,1,'auto','auto',200,200]
 	}
 
-  confMsg: number = 1;
-  gnrtCedingId: string = '';
-  gnrtCedingName: string = '';
-  gnrtQtr: number = 1;
-  gnrtYear: number = 1;
+	confMsg: number = 1;
+	filtCedingId: string = '';
+	filtCedingName: String = '';
+	filtFromQtr: number = null;
+	filtFromYear: number = null;
+	filtToQtr: number = null;
+	filtToYear: number = null;
+	gnrtCedingId: string = '';
+	gnrtCedingName: string = '';
+	gnrtQtr: number = 1;
+	gnrtYear: number = 1;
 
+	constructor(private titleService: Title, private modalService: NgbModal, private route: Router, private as: AccountingService) { }
 
-  constructor(private titleService: Title, private modalService: NgbModal, private route: Router) { }
+	ngOnInit() {
+		this.titleService.setTitle("Acct-IT | QSOA Inquiry");
 
-  ngOnInit() {
-  	this.titleService.setTitle("Acct-IT | QSOA Inquiry");
+		this.showGenerateModal();
+	}
 
-  	this.showGenerateModal();
-  }
+	getQSOAList(param) {
+		this.qsoaListTbl.overlayLoader = true;
+		this.as.getQSOAList(param).subscribe(data => {
+			this.qsoaListTbl.overlayLoader = false;
+			console.log(data);
+			this.QSOAList.tableData = data['qsoaList'];
+			this.qsoaListTbl.refreshTable();
+		});
+	}
 
-  showGenerateModal() {
-  	setTimeout(() => { $('#generateQSOAModal #modalBtn').trigger('click'); }, 0);
-  }
+	showGenerateModal() {
+		setTimeout(() => { $('#generateQSOAModal #modalBtn').trigger('click'); }, 0);
+	}
 
-  showModal(content) {
-  	this.comStmt = true;
-    this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
-  }
+	showModal(content) {
+		this.comStmt = true;
+		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+	}
 
-  viewRemittances(){
-  	this.comStmt = false;
-  	this.receivables = false;
-  	this.summary	= false;
-  	this.remittances = true;
-  }
+	viewRemittances(){
+		this.comStmt = false;
+		this.receivables = false;
+		this.summary	= false;
+		this.remittances = true;
+	}
 
-  viewComStmt(){
-  	this.comStmt = true;
-  	this.receivables = false;
-  	this.summary	= false;
-  	this.remittances = false;
-  }
+	viewComStmt(){
+		this.comStmt = true;
+		this.receivables = false;
+		this.summary	= false;
+		this.remittances = false;
+	}
 
-  viewSummary(){
-  	this.comStmt = false;
-  	this.receivables = false;
-  	this.summary	= true;	
-  	this.remittances = false;
-  }
+	viewSummary(){
+		this.comStmt = false;
+		this.receivables = false;
+		this.summary	= true;	
+		this.remittances = false;
+	}
 
-   viewReceivables(){
-  	this.comStmt = false;
-  	this.receivables = true;
-  	this.summary	= false;
-  	this.remittances = false;
-  }
+	viewReceivables(){
+		this.comStmt = false;
+		this.receivables = true;
+		this.summary	= false;
+		this.remittances = false;
+	}
 
-  onTabChange($event: NgbTabChangeEvent) {
-      if ($event.nextId === 'Exit') {
-        this.route.navigateByUrl('');
-      }
-  }
+	onTabChange($event: NgbTabChangeEvent) {
+		if ($event.nextId === 'Exit') {
+			this.route.navigateByUrl('');
+		}
+	}
 
-  showConfModal() {
-  	this.confModal.openNoClose();
-  }
+	showConfModal() {
+		this.confModal.openNoClose();
+	}
 
+	onClickSearch() {
+		var param = [
+			{ key: 'cedingId', search: this.filtCedingId },
+			{ key: 'fromQtr', search: this.filtFromQtr },
+			{ key: 'fromYear', search: this.filtFromYear },
+			{ key: 'toQtr', search: this.filtToQtr },
+			{ key: 'toYear', search: this.filtToYear }
+		];
+		
+		this.getQSOAList(param);
+	}
+
+	showFiltCedingCoLOV() {
+		this.filtCedingCoLOV.modal.openNoClose();
+	}
+
+	setFiltCedingCo(ev) {
+		this.filtCedingId = ev.cedingId;
+		this.filtCedingName = ev.cedingName;
+	}
 }

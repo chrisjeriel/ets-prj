@@ -411,6 +411,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   openAdjustersModal() {
+    console.log(this.claimData.clmAdjusterList);
     this.adjData.tableData = this.claimData.clmAdjusterList.slice();
     this.adjTable.refreshTable();
     this.adjTable.onRowClick(null, this.adjData.tableData[0]);
@@ -647,6 +648,11 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
                                                                    return a;
                                                                  });
     params.deleteAdjuster = td.filter(a => a.deleted);
+    params.deleteAdjuster.forEach(a => {
+      if(a.claimId == undefined) {
+        a['claimId'] = this.claimData.claimId;
+      }
+    });
 
     this.cs.saveClmAdjuster(params).subscribe(data => {
       if(data['returnCode'] == -1) {
