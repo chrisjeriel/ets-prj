@@ -13,11 +13,11 @@ import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/con
 export class GenerateCMDMComponent implements OnInit {
   @ViewChild('tabset') tabset: any;
   constructor(private route: ActivatedRoute, private router: Router,private modalService: NgbModal,) { }
-  passData:any;
+  passData:any = {};
   ngOnInit() {
     this.route.params.subscribe(a=>{
-      this.passData = a;
-      console.log(this.passData)
+      this.passData.tranId = a.tranId;
+      this.passData.memoType = a.memoType;
     })
   }
 

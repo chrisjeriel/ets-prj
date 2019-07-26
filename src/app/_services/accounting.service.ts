@@ -1446,5 +1446,26 @@ export class AccountingService {
 			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPrqTrans',{params});	
 	}
-  
+
+	getAcitAcctEntries(tranId,entryId?,glAcctId?,slTypeCd?,slCd?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('entryId', (entryId == null || entryId == undefined ? '' : entryId))
+			.set('glAcctId', (glAcctId == null || glAcctId == undefined ? '' : glAcctId))
+			.set('slTypeCd', (slTypeCd == null || slTypeCd == undefined ? '' : slTypeCd))
+			.set('slCd', (slCd == null || slCd == undefined ? '' : slCd));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAcctEntries',{params});	
+	}
+
+
+  	saveAcitAcctEntries(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitAcctEntries',JSON.stringify(params),header);
+ 
+    }
 }

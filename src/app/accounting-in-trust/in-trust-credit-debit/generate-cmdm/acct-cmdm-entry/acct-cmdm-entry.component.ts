@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
 import { CMDM } from '@app/_models';
 import { Title } from '@angular/platform-browser';
@@ -19,6 +19,7 @@ export class AcctCmdmEntryComponent implements OnInit {
   @ViewChild('confirmPrintMdl')confirmPrintMdl: ModalComponent;
   @ViewChild('myForm') form:any;
   @Input()passData;
+  @Output() updateData: EventEmitter<any> = new EventEmitter();
   memoInfo:any = {
   	tranId:null,
   	memoType:'',
@@ -97,8 +98,6 @@ export class AcctCmdmEntryComponent implements OnInit {
 
 constructor(private accountingService: AccountingService, private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService) { }
 
-seqDigits:number = 1;
-
   ngOnInit() {
 
   	if(this.passData.tranId != undefined){
@@ -110,7 +109,7 @@ seqDigits:number = 1;
 
   getSeqDigits(){
     this.mtnService.getMtnParameters('N','CMDM_NO_DIGITS').subscribe(a=>{
-      this.seqDigits = a['parameters'][0].paramValueN;
+      this.passData.seqDigits = a['parameters'][0].paramValueN;
   	  this.getListing();
     })
   }
@@ -124,13 +123,14 @@ seqDigits:number = 1;
       this.memoInfo.createDate = this.ns.toDateTimeString(this.memoInfo.createDate);
       this.memoInfo.updateDate = this.ns.toDateTimeString(this.memoInfo.updateDate);
       this.memoInfo.refNoDate = this.ns.toDateTimeString(this.memoInfo.refNoDate);
-      this.memoInfo.memoSeqNo = String(this.memoInfo.memoSeqNo).padStart(this.seqDigits,'0');
+      this.memoInfo.memoSeqNo = String(this.memoInfo.memoSeqNo).padStart(this.passData.seqDigits,'0');
       this.memoInfo.localCurrCd = 'PHP';
       this.passLov.params.groupTag = this.memoInfo.groupTag;
 
       if(this.memoInfo.autoTag == 'Y'){
         $('input,textarea').prop('readonly','readonly');
       }
+      this.updateData.emit(this.memoInfo);
     });
   }
 
@@ -165,10 +165,11 @@ seqDigits:number = 1;
 		    this.memoInfo.createDate = this.ns.toDateTimeString(this.memoInfo.createDate);
 		    this.memoInfo.updateDate = this.ns.toDateTimeString(this.memoInfo.updateDate);
 		    this.memoInfo.refNoDate = this.ns.toDateTimeString(this.memoInfo.refNoDate);
-		    this.memoInfo.memoSeqNo = String(this.memoInfo.memoSeqNo).padStart(this.seqDigits,'0');
+		    this.memoInfo.memoSeqNo = String(this.memoInfo.memoSeqNo).padStart(this.passData.seqDigits,'0');
 		    this.memoInfo.localCurrCd = 'PHP';
 		    this.passLov.params.groupTag = this.memoInfo.groupTag;
-        this.passData.tranId = this.memoInfo.tranId;
+        // this.passData.tranId = this.memoInfo.tranId;
+        this.updateData.emit(this.memoInfo);
   		}else{
   			this.dialogIcon = 'error';
   			this.successDiag.open();

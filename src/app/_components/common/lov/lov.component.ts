@@ -604,6 +604,33 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a["payeeList"];
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acitChartAcct'){
+      this.passTable.tHeader = ['Account Code','Account Name'];
+      this.passTable.widths =[250,500]
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'shortCode','shortDesc'];
+      this.mtnService.getMtnAcitChartAcct(this.passData.params).subscribe(a=>{
+        this.passTable.tableData = a["list"];
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'slType'){
+      this.passTable.tHeader = ['SL Type Code','SL Type Name'];
+      this.passTable.widths =[250,500]
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'slTypeCd','slTypeName'];
+      this.mtnService.getMtnSlType(this.passData.params).subscribe(a=>{
+        this.passTable.tableData = a["list"];
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'sl'){
+      this.passTable.tHeader = ['SL Nanme'];
+      this.passTable.widths =['auto']
+      this.passTable.dataTypes = [ 'text'];
+      this.passTable.keys = [ 'slName'];
+      this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
+        this.passTable.tableData = a["list"];
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;

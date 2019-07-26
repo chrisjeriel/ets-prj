@@ -50,6 +50,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() genericBtn : EventEmitter<any> = new EventEmitter();
     @Output() uploadedFiles : EventEmitter<any> = new EventEmitter();
     @Output() export: EventEmitter<any> = new EventEmitter();
+    @Output() tickChckbx: EventEmitter<any> = new EventEmitter();
 
     acceptedImageFormats: string[] = [
         'image/jpeg', 'image/png', 'image/jpg', 'image/gif'
@@ -625,7 +626,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }else{
             this.selected.push(data);
         }
-
+        this.tickChckbx.emit(data);
     }
 
     assignChckbox(event,data,key){
