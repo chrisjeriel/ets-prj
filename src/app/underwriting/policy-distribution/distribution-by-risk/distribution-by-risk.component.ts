@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
-import { UnderwritingService, NotesService } from '@app/_services';
+import { UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -240,15 +240,17 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   undistAlt:any[]=[];
   distAlt:any[]=[];
 
+  secIILimit:any;
+
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
-              private ns: NotesService) { }
+              private ns: NotesService, private ms: MaintenanceService) { }
 
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Risk Distribution");
 
     this.sub = this.route.params.subscribe((data: any)=>{
-
+                  let polNo:string = '';
                   this.params = data;
                   if(this.params.fromInq == 'true'){
                     this.controlHidden.saveBtn = true;
@@ -271,8 +273,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
                       this.controlDisabled.seciiPremTag = true;
                     }
                   }
-                  
-                  if(this.params.policyNo.split('-')[0]!='CAR' && this.params.policyNo.split('-')[0]!='EAR'){
+                  polNo = this.params.policyNo.split('-')[0];
+                  if(polNo!='CAR' && polNo!='EAR'){
                       this.controlHidden.seciitrtyLimit = true;
                       this.controlHidden.seciiPremTag = true;
                   }
@@ -668,4 +670,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //poolDistributionData
   //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
 
+  checkLimit(){
+    if(this.riskDistributionData.retLineAmt > this.riskDistributionData.secIIInputLimit && this.riskDistributionData.secIIInputLimit!= null){
+      this.riskDistributionData.retLineAmt = this.riskDistributionData.secIIInputLimit;
+    }
+  }
 }
