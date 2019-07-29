@@ -82,14 +82,10 @@ export class ClmSectionCoversComponent implements OnInit {
 
   getClmSec(){
     this.claimService.getClaimSecCover(this.claimInfo.claimId, this.claimInfo.claimNo).subscribe((data:any)=>{
-      console.log(data)
       this.coverageData = data.claims.project.clmCoverage;
       this.orgSecI = this.coverageData.secISiTag;
       this.orgSecII = this.coverageData.secIISiTag;
       this.orgSecIII = this.coverageData.secIIISiTag;
-      console.log(this. orgSecI)
-      console.log(this. orgSecII)
-      console.log(this. orgSecIII)
       this.projId = data.claims.project.projId;
       var deductibles = data.claims.clmDeductibles;
       this.passData.tableData = [];
@@ -113,7 +109,6 @@ export class ClmSectionCoversComponent implements OnInit {
       totalClaim += this.coverageData.sectionIIISi;
     }
     this.coverageData.allowMaxSi = totalClaim;
-    this.form.control.markAsDirty();
   }
 
   onClickSave(){
