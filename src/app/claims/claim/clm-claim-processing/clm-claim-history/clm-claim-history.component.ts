@@ -64,8 +64,8 @@ export class ClmClaimHistoryComponent implements OnInit {
       remarks      : ''
     },
     opts: [
-      {selector   : 'histCatDesc', prev : [], vals: []},
-      {selector   : 'histTypeDesc',prev : [], vals: []},
+      {selector   : 'histCatDesc',  prev : [], vals: []},
+      {selector   : 'histTypeDesc', prev : [], vals: []},
       {selector   : 'bookingMthYr', prev : [], vals: []},
     ],
     keys          : ['histNo','histDate','bookingMthYr','histCatDesc','histTypeDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','refNo','refDate','remarks'],
@@ -189,8 +189,12 @@ export class ClmClaimHistoryComponent implements OnInit {
     insuredDesc : '',
     policyNo    : '',
     clmStatus   : '',
-    policyId    : ''
+    policyId    : '',
+    upUserGi    : '',
+    proceed     : 0
   };
+
+  test: any;
 
   @Output() disableNextTabs = new EventEmitter<any>();
   @Output() preventHistory = new EventEmitter<any>();
@@ -285,35 +289,39 @@ export class ClmClaimHistoryComponent implements OnInit {
 
       try{
 
-        if(this.initFetch){
-          var msg = '';
-          var rec2 = data['clmHist']['polDistStat'];
-          var record = data['clmHist']['claimReserveList'].length == 0 ? [] : data['clmHist']['claimReserveList'][0]['clmHistory'];
-          console.log(record.some(e => e.val1 == 'Y'));
-          if(record.some(e => e.val1 == 'Y') || rec2 == 1){
-            if(record.some(e => e.val2 == 'Y')){
-              if(record.some(e => e.val3 == 'Y')){
-                if(record.some(e => e.val4 == 'Y')){
-                }else{
-                  msg = 'The policy has unpaid premiums. Do you want to proceed?';
-                  this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C'});
-                }
-              }else{
-                msg = 'Loss Date is not within the period of insurance(Inception Date and Expiry Date) of policy. Do you want to proceed?';
-                this.preventHistory.emit({val:3,msg:msg,apvlCd:'CLM004B'});
-              }
-            }else {
-              msg = 'Loss Date is within the lapse period (Inception to Effective Date) of policy. Do you want to proceed?';
-              this.preventHistory.emit({val:2,msg:msg,apvlCd:'CLM004A'});
-            }
-          }else{
-            msg = 'The status of the policy distribution must be Posted before creating reserve';
-            this.preventHistory.emit({val:1,msg:msg});
-          }
-        }
-
           if(data['clmHist']['claimReserveList'].length == 0){
             var recClmHist = data['clmHist']['claimReserveList'];
+
+            if(this.initFetch){
+              var recCheckHist   = data['clmHist']['checkHistList'];
+              this.test = recCheckHist;
+              var msg = '';
+
+              console.log(recCheckHist);
+              this.histFunction(1);
+
+              /*if(recCheckHist[0].distPolStat != 'Y'){
+                msg = 'The status of the policy distribution must be Posted before creating reserve';
+                this.preventHistory.emit({val:1,msg:msg,show:true});
+              }else{
+                this.preventHistory.emit({val:2,msg:msg,show:false});
+              }*/
+
+              // if(recCheckHist.withinLapse != 'Y'){
+              //   msg = 'Loss Date is within the lapse period (Inception to Effective Date) of policy. Do you want to proceed?';
+              //   this.preventHistory.emit({val:2,msg:msg,apvlCd:'CLM004A'});
+              // }
+
+              // if(recCheckHist.withinPolTerm != 'Y'){
+              //   msg = 'Loss Date is not within the period of insurance(Inception Date and Expiry Date) of policy. Do you want to proceed?';
+              //   this.preventHistory.emit({val:3,msg:msg,apvlCd:'CLM004B'});
+              // }
+
+              // if(recCheckHist.hasUnpaidPrem != 'Y'){
+              //   msg = 'The policy has unpaid premiums. Do you want to proceed?';
+              //   this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C'});
+              // }
+            }
           }else{
             var res = data['clmHist']['claimReserveList'][0];
             this.clmHistoryData.lossStatCd    = res.lossStatus; 
@@ -340,6 +348,13 @@ export class ClmClaimHistoryComponent implements OnInit {
           this.histTbl.refreshTable();
           this.histTbl.onRowClick(null, this.passDataHistory.tableData[0]);
           this.compResPayt();
+
+          this.clmHistoryData.lossResAmt = res.lossResAmt;
+          this.clmHistoryData.lossPdAmt  = res.lossPdAmt;
+          this.clmHistoryData.expResAmt  = res.expResAmt;
+          this.clmHistoryData.expPdAmt   = res.expPdAmt;
+          this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
+          this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
       }catch(e){''}
         
       });
@@ -506,7 +521,8 @@ export class ClmClaimHistoryComponent implements OnInit {
       lossStatCd  : (this.clmHistoryData.lossStatCd == '' || this.clmHistoryData.lossStatCd == null)?'OP':this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase()).map(el => {return el.code})[0],
       projId      : this.clmHistoryData.projId,
       updateDate  : this.ns.toDateTimeString(0),
-      updateUser  : this.ns.getCurrentUser()
+      updateUser  : this.ns.getCurrentUser(),
+      upUserGi    : this.claimInfo.upUserGi
     };
 
       this.clmService.saveClaimReserve(JSON.stringify(saveReserve))
@@ -695,12 +711,9 @@ export class ClmClaimHistoryComponent implements OnInit {
           e.reserveAmt = '';
         }
 
-        if(e.reserveAmt > 0){
-          e.reserveAmt = (e.histType == 3 || e.histType == 6)?Number(-e.reserveAmt):e.reserveAmt;
-        }
-
         if(this.passDataHistory.tableData.some(el => el.histCategory == 'L' && el.histType == 1 && el.newRec != 1) &&  e.histCategory == 'A' && e.histType == 1 && (e.reserveAmt == 0 || e.reserveAmt == '' || isNaN(e.reserveAmt)) ){
           e.reserveAmt = adjAmt;
+          this.clmHistoryData.expResAmt = adjAmt;
         }
       }
     });
@@ -738,26 +751,51 @@ export class ClmClaimHistoryComponent implements OnInit {
       return record;
     });
 
-    var sumLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;}));
-    var difLossRes = this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L'  && (i.histType == 3 || i.histType == 6)).map(i => { return i.reserveAmt;});
+    //setTimeout(() => {
+      var sumLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;}));
+      var difLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L'  && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.reserveAmt);}));
 
-    var sumExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;})); 
-    var difExpRes  = this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && i.newRec == 1 && (i.histType == 3 || i.histType == 6)).map(i => { return i.reserveAmt;}); 
+      var sumExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;})); 
+      var difExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.reserveAmt);})); 
 
-    var sumLossPd = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType != 3)).map(i => { return i.paytAmt;}));
-    var difLossPd = this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && i.newRec == 1 &&(i.histType == 3)).map(i => { return i.paytAmt;});
+      var sumLossPd = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType != 3)).map(i => { return i.paytAmt;}));
+      var difLossPd = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.paytAmt);}));
+      
+      var sumExpPd  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.paytAmt;})); 
+      var difExpPd  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.paytAmt);})); 
+
+      this.clmHistoryData.lossResAmt = Number(sumLossRes) - Number(difLossRes);
+      this.clmHistoryData.expResAmt  = Number(sumExpRes)  - Number(difExpRes);
     
-    var sumExpPd  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.paytAmt;})); 
-    var difExpPd  = this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && i.newRec == 1 && (i.histType == 3 || i.histType == 6)).map(i => { return i.paytAmt;}); 
+      this.clmHistoryData.lossPdAmt  = Number(sumLossPd) - Number(difLossPd);
+      this.clmHistoryData.expPdAmt   = Number(sumExpPd)  - Number(difExpPd);
 
-    this.clmHistoryData.lossResAmt = Number(sumLossRes) - Number(difLossRes);
-    this.clmHistoryData.expResAmt  = Number(sumExpRes)  - Number(difExpRes);
-  
-    this.clmHistoryData.lossPdAmt  = Number(sumLossPd) - Number(difLossPd);
-    this.clmHistoryData.expPdAmt   = Number(sumExpPd)  - Number(difExpPd);
-  
-    this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
-    this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
+      console.log(sumLossRes);
+      console.log(difLossRes);
+
+      console.log(sumExpRes);
+      console.log(difExpRes);
+
+      console.log(sumLossPd);
+      console.log(difLossPd);
+
+      console.log(sumExpPd);
+      console.log(difExpPd);
+    
+      this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
+      this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
+   // },0);
+    
+
+    
+   // setTimeout(() => {
+      this.passDataHistory.tableData.forEach(e => {
+        if(e.reserveAmt > 0){
+           e.reserveAmt = (e.histType == 3 || e.histType == 6)?Number(-e.reserveAmt):e.reserveAmt;
+           console.log(e.reserveAmt);
+        }
+      });
+    //},100);
 
   }
 
@@ -939,5 +977,60 @@ export class ClmClaimHistoryComponent implements OnInit {
   showWarnMsg(){
     //$('#warnMdl #modalBtn').trigger('click');
     this.clmHistWarnMdl.openNoClose();
+  }
+
+  histFunction(str) {
+    var msg;
+
+    switch (str) {
+      case 1:
+      console.log('here 1');
+      console.log(this.test);
+        if(this.test[0].distPolStat != 'Y'){
+          msg = 'The status of the policy distribution must be Posted before creating reserve';
+          this.preventHistory.emit({val:1,msg:msg,show: true});
+        } else {
+          this.preventHistory.emit({val:2,show: false});
+        }
+
+        break;
+
+      case 2:
+      console.log('here 2');
+        if(this.test[0].withinLapse != 'Y'){
+          msg = 'Loss Date is within the lapse period (Inception to Effective Date) of policy. Do you want to proceed?';
+          this.preventHistory.emit({val:2,msg:msg,apvlCd:'CLM004A', show: true});
+        } else {
+          this.preventHistory.emit({val:3,show: false});
+        }
+        
+        break;
+
+      case 3:
+      console.log('here 3');
+        if(this.test[0].withinPolTerm != 'Y'){
+          msg = 'Loss Date is not within the period of insurance(Inception Date and Expiry Date) of policy. Do you want to proceed?';
+          this.preventHistory.emit({val:3,msg:msg,apvlCd:'CLM004B', show: true});
+        } else {
+          this.preventHistory.emit({val:4,show: false});
+        }
+        
+        break;
+      
+      case 4:
+      console.log('here 4');
+        if(this.test[0].hasUnpaidPrem != 'Y'){
+          msg = 'The policy has unpaid premiums. Do you want to proceed?';
+          this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C', show: true});
+        }else{
+          return;
+        }
+        
+        break;
+
+      default:
+        // code...
+        break;
+    }
   }
 }

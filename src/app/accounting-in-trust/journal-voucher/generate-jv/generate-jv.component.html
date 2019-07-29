@@ -4,7 +4,7 @@
 		<ngb-tabset (tabChange)="onTabChange($event)">
 			<ngb-tab class="ngb-tab" title="JV Entry">
 				<ng-template ngbTabContent>
-					<app-jv-entry [record]="record" (onChange)="checkTabs($event);" (emitData)="jvInfo($event)"></app-jv-entry>	
+					<app-jv-entry [record]="record" (onChange)="checkTabs($event);" (emitData)="jvInfo($event)" [jvData]="jvData"></app-jv-entry>	
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab [disabled]="jvTypeFlag">
