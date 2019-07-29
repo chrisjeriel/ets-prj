@@ -428,6 +428,8 @@ import { MtnCedingCompanyMemberComponent } from './maintenance/mtn-ceding-compan
 import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-app-payments-zero/jv-app-payments-zero.component';
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
+import { MtnBankComponent } from './maintenance/mtn-bank/mtn-bank.component';
+import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration/mtn-acct-int-duration.component';
 
 
 @NgModule({
@@ -863,6 +865,8 @@ import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/genera
         AllocateInvestmentIncomeComponent,
         JvAppPaymentsZeroComponent,
         JvTypeLovComponent,
+        MtnBankComponent,
+        MtnAcctIntDurationComponent,
     ],
 
   	providers: [

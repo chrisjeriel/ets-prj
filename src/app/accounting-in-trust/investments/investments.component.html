@@ -9,11 +9,12 @@
             						<div class="form-row custom-row-inline-inset">
             							<div class="input-group" style="margin-bottom: -15px ! important">
             								   <label class="form-control-sm" for="xx" style="margin-left: 5px ! important">Bank</label>
-            								   <input type="text" placeholder="ALL" class="form-control form-control-sm cust-sm col-sm-2">
-            								   <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+            								   <input type="text" placeholder="ALL" class="form-control form-control-sm cust-sm col-sm-2" (change)="checkCode($event,'Bank')" [(ngModel)]="bankName">
+            								   <div class="text-search-ico" (click)="showBankLOV()"><a><i class="fa fa-search"></i></a></div>
             								   <label class="form-control-sm col-sm-1" for="xx"  >Duration Unit</label>
-            								   <input type="text" placeholder="ALL" class="form-control form-control-sm cust-sm col-sm-1">
-            								   <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+            								   <input type="text" placeholder="ALL" class="form-control form-control-sm cust-sm col-sm-1" (change)="checkCode($event,'Duration')" [(ngModel)]="duration">
+            								   <div class="text-search-ico" (click)="showDurationLOV()"><a><i class="fa fa-search"></i></a></div>
+
             								   <label class="form-control-sm col-sm-1" for="xx"  >Maturity Date:</label>
             								   <label class="form-control-sm" for="xx" style="margin-left: 5px ! important">From</label>
             								   <input placeholder = "10/01/2018" class = "textbox-n form-control form-control-sm cust-sm col-sm" type = "text" onfocus = "(this.type = 'date')"  id = "date">
@@ -36,7 +37,7 @@
 						 	  	<div class="row">
 					                <div class="col-sm-12" style="margin-top: 14px; margin-bottom: -20px" >
 					                   <!--  <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button> -->
-					                    <app-cust-editable-non-datatable [passData]="passData" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true;"></app-cust-editable-non-datatable>
+					                    <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true;"  (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
 					                </div>
             					</div>
 	            				<div class="row">
@@ -46,25 +47,25 @@
 					                            <div class="col-sm-3" style="padding: 0">
 					                                <div class="input-group">
 					                                    <label class="form-control-sm">Created By</label>
-					                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+					                                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="invtRecord.createUser" readonly>
 					                                </div>
 					                            </div>
 					                            <div class="col-sm-3" style="padding: 0">
 					                                <div class="input-group">
 					                                    <label class="form-control-sm">Date Created</label>
-					                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/24/2018 09:00 AM" readonly>
+					                                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="invtRecord.createDate" readonly>
 					                                </div>
 					                            </div>
 					                            <div class="col-sm-3" style="padding: 0">
 					                                <div class="input-group">
 					                                    <label class="form-control-sm">Last Update By</label>
-					                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+					                                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="invtRecord.updateUser" readonly>
 					                                </div>
 					                            </div>
 					                            <div class="col-sm-3" style="padding: 0">
 					                                <div class="input-group">
 					                                    <label class="form-control-sm">Last Update</label>
-					                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/24/2018 10:00 AM" readonly>
+					                                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="invtRecord.updateDate" readonly>
 					                                </div>
 					                            </div>
 					                        </div>
@@ -83,3 +84,7 @@
 			</ngb-tab>
 		</ngb-tabset>
 </div>
+
+<app-mtn-bank (selectedData)="setSelectedBank($event)" ></app-mtn-bank>
+<app-mtn-acct-int-duration (selectedData)="setSelectedDuration($event)"></app-mtn-acct-int-duration>
+ <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>

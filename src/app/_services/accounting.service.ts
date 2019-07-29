@@ -1314,7 +1314,6 @@ export class AccountingService {
 		return this.batchOR2;
 	}
 
-<<<<<<< HEAD
 	getProfitCommSumm(profcommId?,cedingId?,month?,year?){
 		const params = new HttpParams()
 			.set('profcommId',profcommId ===undefined || profcommId===null ? '' : profcommId)
@@ -1330,11 +1329,6 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitProfCommDtl",{params});
 	}
 
-
-
-
-}
-=======
 	getCMDMListing(params){
 		// const params = new HttpParams()
   //           .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
@@ -1506,4 +1500,4 @@ export class AccountingService {
 	}
   
 }
->>>>>>> 910c0b89181cdcfa1276b7708ead6d64923bada9
+

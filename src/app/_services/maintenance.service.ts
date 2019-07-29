@@ -1211,4 +1211,13 @@ export class MaintenanceService{
     	     		.set('payeeClassCd', (payeeClassCd === null || payeeClassCd === undefined ? '' : payeeClassCd))
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPayee", {params});
     }
+
+    getMtnInvtSecType(invtSecCd?,activeTag?){
+    	const params = new HttpParams()
+    				.set('invtSecCd', (invtSecCd === null || invtSecCd === undefined ? '' : invtSecCd))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInvtSecType", {params});
+    }
+
+   
 }
