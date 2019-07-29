@@ -214,6 +214,7 @@ constructor(private accountingService: AccountingService, private titleService: 
   clickNew(){
   	this.memoInfo = JSON.parse(JSON.stringify(this.newMemoInfo));
   	this.passLov.params.groupTag = '';
+    this.updateData.emit(this.memoInfo);
   }
 
   setCurrency(data){

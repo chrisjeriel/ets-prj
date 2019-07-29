@@ -429,6 +429,7 @@ import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-vouche
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
 import { MtnClmHistoryLovComponent } from './maintenance/mtn-clm-history-lov/mtn-clm-history-lov.component';
 import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-soa-lov/jv-soa-lov.component';
+import { BankComponent } from './maintenance/accounting/bank/bank.component';
 
 
 @NgModule({
@@ -865,6 +866,7 @@ import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generat
         JvTypeLovComponent,
         MtnClmHistoryLovComponent,
         JvSoaLovComponent,
+        BankComponent,
     ],
 
   	providers: [
