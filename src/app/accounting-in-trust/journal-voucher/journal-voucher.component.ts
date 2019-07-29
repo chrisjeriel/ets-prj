@@ -67,7 +67,7 @@ export class JournalVoucherComponent implements OnInit {
       pageLength: 10,
       pageStatus: true,
       pagination: true,
-      keys:['jvNo','jvDate','particulars','tranTypeName','jvRefNo','preparedBy','jvStatusName','jvAmt'],
+      keys:['jvNo','jvDate','particulars','tranTypeName','refNo','preparedBy','jvStatusName','jvAmt'],
       uneditable:[true,true,true,true,true,true,true,true]
     };
 

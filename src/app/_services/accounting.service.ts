@@ -1471,4 +1471,14 @@ export class AccountingService {
 		}
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInwPolBal',JSON.stringify(params),header);
 	}
+
+	saveAccJVOverdueAcct(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVOverdueAccts',JSON.stringify(params),header);
+	}
+	
 }

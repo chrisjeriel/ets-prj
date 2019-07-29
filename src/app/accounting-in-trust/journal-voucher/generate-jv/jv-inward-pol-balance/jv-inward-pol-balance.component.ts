@@ -80,7 +80,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
   ngOnInit() {
-  	 
+  	 this.getMtnRate();
   }
 
   retrieveInwPol(){
@@ -120,6 +120,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   }
 
   setSoa(data){
+    console.log(data)
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -140,10 +141,10 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].riComm  = data[i].balRiComm;
       this.passData.tableData[this.passData.tableData.length - 1].riCommVat  = data[i].balRiCommVat;
       this.passData.tableData[this.passData.tableData.length - 1].charges  = data[i].balChargesDue;
-      this.passData.tableData[this.passData.tableData.length - 1].netDue  = data[i].balPremDue - data[i].balRiComm + data[i].balChargesDue;
+      this.passData.tableData[this.passData.tableData.length - 1].netDue  = data[i].balPremDue - data[i].balRiCommVat - data[i].balRiComm + data[i].balChargesDue;
       this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = data[i].totalPayments;
       this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = this.passData.tableData[this.passData.tableData.length - 1].netDue - data[i].totalPayments;
-      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = (data[i].balPremDue)(this.interestRate)(1);
+      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = (data[i].balPremDue)*(this.interestRate)*(1);
     }
     this.table.refreshTable();
   }
