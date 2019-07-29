@@ -222,3 +222,13 @@
     <button type="button" class="cust-btn" (click)="confirmAltMdl.closeModal()" ><a>No</a></button>
   </div>
 </app-modal>
+
+<app-modal #retLimitReached class="d-none">
+  <div header>Warning</div>
+  <div body>
+    Maximum Retention Line Amount is {{riskDistributionData?.secIIInputLimit | number:'1.2-2'}} {{riskDistributionData?.cuurCd}}
+  </div>
+  <div footer class="w-100 text-right">
+    <button type="button" class="cust-btn" (click)="retLimitReached.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>

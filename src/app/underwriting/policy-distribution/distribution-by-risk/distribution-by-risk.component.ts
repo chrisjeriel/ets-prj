@@ -32,7 +32,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('warningUndistAlt') warningUndistAltMdl: ModalComponent;
   @ViewChild('warningInvShare') warningInvShareMdl: ModalComponent;
   @ViewChild('confirmAlt') confirmAltMdl: ModalComponent;
-
+  @ViewChild('retLimitReached') retLimitReached: ModalComponent;
+  
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
 
@@ -673,6 +674,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   checkLimit(){
     if(this.riskDistributionData.retLineAmt > this.riskDistributionData.secIIInputLimit && this.riskDistributionData.secIIInputLimit!= null){
       this.riskDistributionData.retLineAmt = this.riskDistributionData.secIIInputLimit;
+      this.retLimitReached.openNoClose();
     }
   }
+
+
 }
