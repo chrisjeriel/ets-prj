@@ -147,17 +147,17 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   getSums(){
     this.treatyDistData.tableData.forEach(a=>{
       if(a.section == 'I'){
-        this.ts1.si   += a.siAmt;
-        this.ts1.prem += a.premAmt;
-        this.ts1.comm += a.commAmt;
-        this.ts1.vat  += a.vatRiComm;
-        this.ts1.net  += a.netDue;
+        this.ts1.si   +=a.siAmt;
+        this.ts1.prem +=a.premAmt;
+        this.ts1.comm +=a.commAmt;
+        this.ts1.vat  +=a.vatRiComm;
+        this.ts1.net  +=a.netDue;
       }else{
-        this.ts2.si   += a.siAmt;
-        this.ts2.prem += a.premAmt;
-        this.ts2.comm += a.commAmt;
-        this.ts2.vat  += a.vatRiComm;
-        this.ts2.net  += a.netDue;
+        this.ts2.si   +=a.siAmt;
+        this.ts2.prem +=a.premAmt;
+        this.ts2.comm +=a.commAmt;
+        this.ts2.vat  +=a.vatRiComm;
+        this.ts2.net  +=a.netDue;
       }
     });
       this.total.si   +=  this.ts1.si +  this.ts2.si;
@@ -165,6 +165,22 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.total.comm += this.ts1.comm +  this.ts2.comm;
       this.total.vat  += this.ts1.vat +  this.ts2.vat;
       this.total.net  += this.ts1.net +  this.ts2.net;
+
+      this.ts1.si = Number(this.ts1.si).toFixed(2);
+      this.ts1.prem = Number(this.ts1.prem).toFixed(2);
+      this.ts1.comm = Number(this.ts1.comm).toFixed(2);
+      this.ts1.vat = Number(this.ts1.vat).toFixed(2);
+      this.ts1.net = Number(this.ts1.net).toFixed(2);
+      this.ts2.si = Number(this.ts2.si).toFixed(2);
+      this.ts2.prem = Number(this.ts2.prem).toFixed(2);
+      this.ts2.comm = Number(this.ts2.comm).toFixed(2);
+      this.ts2.vat = Number(this.ts2.vat).toFixed(2);
+      this.ts2.net = Number(this.ts2.net).toFixed(2);
+      this.total.si = Number(this.total.si).toFixed(2);
+      this.total.prem = Number(this.total.prem).toFixed(2);
+      this.total.comm = Number(this.total.comm).toFixed(2);
+      this.total.vat = Number(this.total.vat).toFixed(2);
+      this.total.net = Number(this.total.net).toFixed(2);
   }
 
   getSumsPool(){

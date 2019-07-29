@@ -51,28 +51,32 @@
         <div class="row">
             <div class="col-sm-12 table-cust">
                 <div style="position: relative;">
-                    <button class="cust-btn" style="position:absolute; right: 0px;top: -4px; max-width: 200px !important;">Print AE</button>
-                    <app-cust-editable-non-datatable [passData]="passTable" (clickLOV)="clickLov($event)" (newClick)="selected=$event" (tickChckbx)="tickChckbx($event)"></app-cust-editable-non-datatable>
+                    
+                    <app-cust-editable-non-datatable [passData]="passTable" (clickLOV)="clickLov($event)" (newClick)="selected=$event" (tickChckbx)="tickChckbx($event)" (tableDataChange)="computeTotals()">
+                        <ng-container controls-r>
+                            <button class="cust-btn">Print AE</button>
+                        </ng-container>
+                    </app-cust-editable-non-datatable>
                 </div>
             </div>
         </div>
         <div class="w-100">
             <div class="input-group">
-                <label class="form-control form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
+                <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
                 <label class="form-control-sm col-sm-2" >Total Debit and Credit</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.debit | number:'1.2-2'">
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.credit | number:'1.2-2'">
             </div>
             <div class="input-group">
-                <label class="form-control form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
-                <label class="form-control-sm col-sm-2" >Total Debit and Credit</label>
-                <label class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"></label>
+                <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
+                <label class="form-control-sm col-sm-2" >Variance</label>
+                <label class="form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"></label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.variance | number:'1.2-2'">
             </div>
         </div>
         <div class="w-100 text-center">
             <button class="cust-btn">Cancel</button>
-            <button class="cust-btn" (click)="onClickSave()">Save</button>
+            <button class="cust-btn" (click)="onClickSave()" [disabled]="passData.status != 'New'">Save</button>
         </div>
     </div>
 </fieldset>

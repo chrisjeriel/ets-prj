@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angul
 import { NgbModalConfig, NgbModal, NgbProgressbarConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService, NotesService } from '@app/_services';
 import { Router } from '@angular/router'
+import { ModalComponent } from '@app/_components/common/modal/modal.component'
 
 @Component({
   selector: 'app-pol-post',
@@ -19,6 +20,7 @@ export class PolPostComponent implements OnInit {
   @ViewChild('alterationFlag') alteration;
   @ViewChild('content') content;
   @ViewChild('successinfo') successinfo;
+  @ViewChild('failMsg') failMsg: ModalComponent;
   @Input() alterationFlag ;
   @Input() policyInfo;
   lineCd :string;
@@ -194,13 +196,21 @@ export class PolPostComponent implements OnInit {
         updateUser : this.ns.getCurrentUser()
       }
       this.uwService.post(params).subscribe(a=>{
-        this.showSuccess()
+        if(a['returnCode']==-1)
+          this.showSuccess()
+        else
+          this.showError();
       });
     }
 
     showSuccess(){
       this.loadModal.dismiss();
       this.modalService.open(this.successinfo,  { centered: true , windowClass : 'modal-size'});
+    }
+
+    showError(){
+      this.loadModal.dismiss();
+      this.failMsg.openNoClose()
     }
 
     close(){

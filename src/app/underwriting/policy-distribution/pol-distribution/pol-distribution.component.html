@@ -10,7 +10,7 @@
 					<label class="form-control-sm col-sm-1">Risk Dist No</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="pad(riskDistId, 'distNo')">
 					<label class="form-control-sm col-sm-1">Total SI</label>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.sumInsured" appCurrency>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.sumInsured  | number:'1.2-2'">
 					<label class="form-control-sm col-sm-1">Risk</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="polDistributionData?.riskName">
 				</div>
@@ -26,7 +26,7 @@
 					<label class="form-control-sm col-sm-1">Policy No</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.policyNo">
 					<label class="form-control-sm col-sm-1">Total Premium</label>
-					<input readonly type="text" class="form-control txt-content-rght form-control-sm col-sm-2" [ngModel]="polDistributionData?.premium" appCurrency>
+					<input readonly type="text" class="form-control txt-content-rght form-control-sm col-sm-2" [ngModel]="polDistributionData?.premium | number:'1.2-2'" >
 					<label class="form-control-sm col-sm-1">Insured</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="polDistributionData?.insured">
 					
@@ -65,27 +65,27 @@
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Section I</label>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="ts1?.si" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.prem" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.comm" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.vat" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.net" appCurrency>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="ts1?.si  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.prem  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.comm  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.vat  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.net  | number:'1.2-2'">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Section II</label>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="ts2?.si" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.prem" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.comm" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.vat" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.net" appCurrency>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="ts2?.si  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.prem  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.comm  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.vat  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.net  | number:'1.2-2'">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Total</label>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="total?.si" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.prem" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.comm" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.vat" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.net" appCurrency>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="total?.si  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.prem  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.comm  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.vat  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.net  | number:'1.2-2'">
 				</div>
 			</div>
 			<div class="col-sm-1">

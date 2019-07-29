@@ -84,6 +84,13 @@ export class CmdmAccntEntriesComponent implements OnInit {
     this.passTable.nData.tranId = this.passData.tranId;
     this.passData.cmdmNo = this.passData.memoType + '-' + this.passData.memoTranType+ '-' + this.passData.memoYear+ '-' + this.passData.memoMm + '-' + String(this.passData.memoSeqNo).padStart(this.passData.seqDigits,'0');
     this.getAcctEntries();
+    if(this.passData.status != 'New'){
+      this.passTable.uneditable= [true,true,true,true,true,true];
+      this.passTable.magnifyingGlass= [];
+      this.passTable.addFlag = false;
+      this.passTable.deleteFlag = false;
+      this.passTable.checkFlag = false;
+    }
   }
 
   getAcctEntries(){
@@ -96,8 +103,8 @@ export class CmdmAccntEntriesComponent implements OnInit {
           if(a.autoTag == 'Y'){
             a.uneditable = ['glShortCd','debitAmt','creditAmt']
           }
-
         })
+        this.computeTotals();
         this.table.refreshTable();
         
       })
@@ -193,4 +200,10 @@ export class CmdmAccntEntriesComponent implements OnInit {
     this.confirmSave.confirmModal();
   }
 
+
+ computeTotals(){   
+   this.totals.credit = this.passTable.tableData.reduce((a,b)=>a+(b.creditAmt != null && b.creditAmt.length != 0?parseFloat(b.creditAmt):0),0,0);
+   this.totals.debit  = this.passTable.tableData.reduce((a,b)=>a+(b.debitAmt  != null && b.debitAmt.length != 0 ?parseFloat( b.debitAmt):0),0,0);
+   this.totals.variance = this.totals.debit - this.totals.credit;
+ }
 }
