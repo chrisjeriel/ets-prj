@@ -61,6 +61,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   tranTypeList    : any;
   tabTitle        : string = '';
   limitClmHistTbl : any[] = [];
+  limitHistCat    : string = '';
   cancelFlag      : boolean;
   dialogIcon      : string;
   dialogMessage   : string;
@@ -71,14 +72,28 @@ export class PaymentRequestDetailsComponent implements OnInit {
     deletePrqTrans   : []
   };
 
+  requestData : any;
+  selectedTblData : any;
+
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, private clmService: ClaimsService) {
   }
 
   ngOnInit() {
-    console.log(this.rowData);
-    this.rowData.reqDate = this.ns.toDateTimeString(this.rowData.reqDate);
+    this.getAcitPaytReq();
     this.getPrqTrans();
+  }
+
+  getAcitPaytReq(){
+    this.acctService.getPaytReq(this.rowData.reqId)
+    .subscribe(data => {
+      console.log(data);
+      var rec = data['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
+                                               e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
+                                               e.approvedDate = this.ns.toDateTimeString(e.approvedDate); return e; });
+      this.requestData = rec[0];
+      console.log(this.requestData);
+    });
   }
 
   getPrqTrans(){
@@ -117,6 +132,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.cedingCompanyData.tableData.forEach(e => {
       this.limitClmHistTbl.push(e);
     });
+    this.limitHistCat = 'L';
     this.clmHistLov.modal.openNoClose();
   }
 
@@ -161,9 +177,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
           };
 
       if(e.edited && !e.deleted){
+        this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.claimId != e.claimId);
         this.params.savePrqTrans.push(rec);
       }else if(e.edited && e.deleted){
-        console.log('RECORD DELETED');
         this.params.deletePrqTrans.push(rec);
       }else{
         console.log('ELSE IN SAVE');
@@ -173,20 +189,21 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.cedingCompanyData.tableData);
     console.log(this.params.savePrqTrans);
 
-    //var paytAmt = this.cedingCompanyData.tableData.reduce((a,b)=>a+(b.paytAmt != null ?parseFloat(b.paytAmt):0),0);
-    var paytAmt = 6000000;
+    var paytAmt = this.cedingCompanyData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.paytAmt != null ?parseFloat(b.paytAmt):0),0);
     console.log(paytAmt);
 
-    if(Number(this.rowData.reqAmt) > Number(paytAmt)){
+    if(Number(this.requestData.reqAmt) < Number(paytAmt)){
       console.log('The Total Payment Amount of Claim Histories must not exceed the Requested Amount.');
       this.warnMsg = 'The Total Payment Amount of Claim Histories must not exceed the Requested Amount.';
       this.warnMdl.openNoClose();
+      this.params.savePrqTrans   = [];
+      this.params.deletePrqTrans = [];
     }else{
       if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
         $('.ng-dirty').removeClass('ng-dirty');
         this.cs.confirmModal();
         this.params.savePrqTrans   = [];
-        this.params.deletePrqTrans   = [];
+        this.params.deletePrqTrans = [];
         this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '');
       }else{
         if(this.cancelFlag == true){
@@ -205,10 +222,20 @@ export class PaymentRequestDetailsComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       this.getPrqTrans();
+      this.getAcitPaytReq();
       this.success.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
     });
+  }
+
+  onRowClick(event){
+    console.log(event);
+    this.selectedTblData = event;
+    if(event != null){
+      this.selectedTblData.createDate = this.ns.toDateTimeString(event.createDate);
+      this.selectedTblData.updateDate = this.ns.toDateTimeString(event.updateDate);  
+    }
   }
 
   checkCancel(){

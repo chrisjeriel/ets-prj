@@ -76,45 +76,13 @@ export class PaymentRequestEntryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle('Acct-IT | Request Entry');
     this.getTranType();
-    
 
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0){
         var rec = JSON.parse(params['tableInfo']);
-        this.saveAcitPaytReq = {
-          paytReqNo       : rec.paytReqNo,
-          approvedBy      : rec.approvedBy,
-          approvedDate    : this.ns.toDateTimeString(rec.approvedDate),
-          createDate      : this.ns.toDateTimeString(rec.createDate),
-          createUser      : rec.createUser,
-          currCd          : rec.currCd,
-          currRate        : rec.currRate,
-          localAmt        : rec.localAmt,
-          particulars     : rec.particulars,
-          payee           : rec.payee,
-          payeeNo         : rec.payeeNo,
-          preparedBy      : rec.preparedBy,
-          preparedDate    : this.ns.toDateTimeString(rec.preparedDate),
-          reqAmt          : rec.reqAmt,
-          reqDate         : this.ns.toDateTimeString(rec.reqDate),
-          reqId           : rec.reqId,
-          reqMm           : rec.reqMm,
-          reqPrefix       : rec.reqPrefix,
-          reqSeqNo        : rec.reqSeqNo,
-          reqStatus       : rec.reqStatus,
-          reqStatusDesc   : rec.reqStatusDesc,
-          reqYear         : rec.reqYear,
-          requestedBy     : rec.requestedBy,
-          tranTypeCd      : rec.tranTypeCd,
-          updateDate      : this.ns.toDateTimeString(rec.updateDate),
-          updateUser      : rec.updateUser
-        };
-
-        this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
-        this.saveAcitPaytReq.reqMm = this.saveAcitPaytReq.reqMm;
-        this.saveAcitPaytReq.reqSeqNo = this.saveAcitPaytReq.reqSeqNo;
-        this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
-        this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
+        this.saveAcitPaytReq.reqId     = rec.reqId;
+        this.saveAcitPaytReq.paytReqNo = rec.paytReqNo;
+        this.getAcitPaytReq();
         this.initDisabled = false;
       }else{
         this.initDisabled = true;
@@ -133,9 +101,17 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   getAcitPaytReq(){
-    this.acctService.getPaytReq()
+    this.acctService.getPaytReq(this.saveAcitPaytReq.reqId)
     .subscribe(data => {
       console.log(data);
+      var rec = data['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
+                                               e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
+                                               e.approvedDate = this.ns.toDateTimeString(e.approvedDate); return e; });
+      this.saveAcitPaytReq = rec[0];
+      this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
+      this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
+      this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
+      console.log(this.saveAcitPaytReq);
     });
   }
 
@@ -174,6 +150,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.dialogIcon = '';
       this.dialogMessage = '';
       this.success.open();
+      this.saveAcitPaytReq.reqId =  data['reqIdOut'];
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
       this.initDisabled = false;
@@ -226,8 +203,8 @@ export class PaymentRequestEntryComponent implements OnInit {
     var prNoArr = paytReqNo.split('-');
     this.saveAcitPaytReq.reqPrefix = prNoArr[0];
     this.saveAcitPaytReq.reqYear   = prNoArr[1];
-    this.saveAcitPaytReq.reqMm     = prNoArr[2];
-    this.saveAcitPaytReq.reqSeqNo  = prNoArr[3];
+    this.saveAcitPaytReq.reqMm     = prNoArr[2].padStart(2,'0');
+    this.saveAcitPaytReq.reqSeqNo  = prNoArr[3].padStart(4,'0');
   }
 
   setLocalAmt(){

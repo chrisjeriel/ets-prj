@@ -48,7 +48,7 @@
                              <div class="input-group col-sm-3" style="padding: 0px;">
                               <input type="text" class="form-control form-control-sm cust-sm col-sm-3 warn cap-input" maxlength="3" [ngModel]="saveAcitPaytReq.currCd" (ngModelChange)="saveAcitPaytReq.currCd=$event" (change)="checkCode($event,'curr')" appRequired>
                               <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;" class="magni-icon"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
-                              <input *ngIf="saveAcitPaytReq.reqStatusDesc.toUpperCase() != 'CANCELLED'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;"  [(ngModel)]="saveAcitPaytReq.reqAmt" appRequired (change)="setLocalAmt();" numbers-only maxlength="26">
+                              <input *ngIf="saveAcitPaytReq.reqStatusDesc.toUpperCase() != 'CANCELLED'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;" [ngModel]="saveAcitPaytReq.reqAmt" (ngModelChange)="saveAcitPaytReq.reqAmt=$event" appRequired (change)="setLocalAmt();" numbers-only maxlength="26">
                               <input *ngIf="saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 2px ! important;"  [(ngModel)]="saveAcitPaytReq.reqAmt"  numbers-only maxlength="26" readonly>
                              </div>
                              <label class="form-control-sm col-sm-1 labels">Currency Rate</label>
@@ -61,7 +61,7 @@
                                       <option value="USD">USD</option>
                               </select> -->
                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="saveAcitPaytReq.currCd" readonly>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="saveAcitPaytReq.localAmt" style="text-align: right; margin-left: 2px;" readonly>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="saveAcitPaytReq.localAmt | number:'1.2-2'" (ngModelChange)="saveAcitPaytReq.localAmt=$event" style="text-align: right; margin-left: 2px;" readonly>
                              </div>
    		                </div>
    		                <div class="input-group">

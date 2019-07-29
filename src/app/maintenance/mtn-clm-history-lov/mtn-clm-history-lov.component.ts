@@ -33,6 +33,7 @@ export class MtnClmHistoryLovComponent implements OnInit {
 
 	@Input() lovCheckBox: boolean = false;
 	@Input() limitClmHistTbl : any[] = [];
+	@Input() limitHistCat : string = '';
   	selects: any[] = [];
 
  	constructor(private clmService: ClaimsService, private modalService: NgbModal) { }
@@ -72,7 +73,7 @@ export class MtnClmHistoryLovComponent implements OnInit {
 		    this.table.overlayLoader = true;
 		    this.clmService.getClaimHistory()
 		    .subscribe(data => {
-	     		var rec = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => e.histCategory == 'L').map(e => { return e });
+	     		var rec = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => e.histCategory.toUpperCase() == this.limitHistCat.toUpperCase()).map(e => { return e });
 	     		if(this.limitClmHistTbl.length != 0){
 	     			this.limitClmHistTbl.forEach(e => {
 	     				rec = rec.filter(e2 => e2.claimId != e.claimId && e2.histNo != e.histNo);
