@@ -445,6 +445,10 @@ export class PolCoverageComponent implements OnInit {
       this.passDataDeductibles.checkFlag = false;
       this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       this.passDataCATPerils.uneditable = [true,true,true]
+
+      this.passData.tHeaderWithColspan.shift();
+      this.passData2.tHeaderWithColspan.shift();
+
     }
   }
 
