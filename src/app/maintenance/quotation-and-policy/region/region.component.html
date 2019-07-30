@@ -7,7 +7,7 @@
 				<div class="row">
 					<div class="col-sm">
 						<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-							<app-cust-editable-non-datatable #regionTable [passData]="passData" (genericBtn)="deleteRegion()" (onDelete)="regionTable.onClickDelete('force');onClickDelRegion(this.deleteBool);" (tableDataChange)="this.selectedData = $event;change($event);" (add)="addRegion()" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+							<app-cust-editable-non-datatable #regionTable [passData]="passData" (genericBtn)="deleteRegion()" (onDelete)="regionTable.onClickDelete('force');onClickDelRegion(this.deleteBool);" (tableDataChange)="this.selectedData = $event;change($event);" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 						</div>
 					</div>
 				</div>
@@ -33,8 +33,8 @@
               </fieldset>
 
               <app-confirm-save (onYes)="onClickSaveRegion()"></app-confirm-save>
-			  <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-			  <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+			  <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" ></app-sucess-dialog>
+			  <app-cancel-button (onYes)="onClickSaveRegion('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Province"  id="province">
