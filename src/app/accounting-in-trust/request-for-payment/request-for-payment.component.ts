@@ -117,7 +117,6 @@ export class RequestForPaymentComponent implements OnInit {
   }
 
   onRowClick(event){
-    console.log(event);
     if(event != null){
       this.reqPaytData.createUser = event.createUser;
       this.reqPaytData.createDate = event.createDate;

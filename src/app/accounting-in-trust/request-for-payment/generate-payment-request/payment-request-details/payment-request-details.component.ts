@@ -60,6 +60,38 @@ export class PaymentRequestDetailsComponent implements OnInit {
     keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','localAmt']
   };
 
+  inwardPolBalData: any = {
+    tableData     : [],
+    tHeader       : ['Policy No.','Inst No.','Due Date','Curr','Curr Rate','Balance','Payment','Premium', 'RI Commission', 'Charges', 'Net Return'],
+    dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','currency', 'currency'],
+    magnifyingGlass : ['policyNo'],
+    nData: {
+      claimNo        : '',
+      histNo         : '',
+      histCatDesc    : '',
+      histTypeDesc   : '',
+      paymentFor     : '',
+      insuredDesc    : '',
+      exGratia       : '',
+      currCd         : '',
+      currRate       : '',
+      reserveAmt     : '',
+      reqAmt         : '',
+      localAmt       : '',
+      showMG         : 1
+    },
+    paginateFlag  : true,
+    infoFlag      : true,
+    pageID        : 'inwardPolBalData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
+    checkFlag     : true,
+    addFlag       : true,
+    deleteFlag    : true,
+    uneditable    : [true,true,true,true,true,true,true,true,true,true,false],
+    total         : [ null, null, null,null, 'Total', null,null, 'Total', 'reserveAmt', 'paytAmt', 'localAmt'],
+    widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
+    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','localAmt']
+  };
+
   tranTypeList    : any;
   tabTitle        : string = '';
   limitClmHistTbl : any[] = [];

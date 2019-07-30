@@ -9,6 +9,7 @@ import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -24,7 +25,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild('reqUserLov') reqUserLov         : MtnUsersComponent;
   @ViewChild('appUserLov') appUserLov         : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent;
-
+  @ViewChild('mainLov') mainLov               : LovComponent;
   // @Input() data: any = {};
   // @Output() onChange: EventEmitter<any> = new EventEmitter();
 
@@ -74,8 +75,12 @@ export class PaymentRequestEntryComponent implements OnInit {
     reqId : ''
   };
 
-  paymentData: any = {};
-  paymentType: any;
+  paymentData  : any = {};
+  paymentType  : any;
+  passDataLov  : any = {
+    selector     :'',
+    payeeClassCd : 1
+  };
 
   constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router) { }
 
@@ -217,6 +222,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   setData(data,from){
+    $('input').addClass('ng-dirty');
     this.ns.lovLoader(data.ev, 0);
     if(from.toLowerCase() == 'curr'){
       this.saveAcitPaytReq.currCd = data.currencyCd;
@@ -227,6 +233,9 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.saveAcitPaytReq.requestedBy = data.userId;
     }else if(from.toLowerCase() == 'app-user'){
       this.saveAcitPaytReq.approvedBy = data.userId;
+    }else if(from.toLowerCase() == 'payee'){
+      this.saveAcitPaytReq.payee   = data.data.payeeName;
+      this.saveAcitPaytReq.payeeNo = data.data.payeeNo;
     }
   }
 
@@ -254,6 +263,9 @@ export class PaymentRequestEntryComponent implements OnInit {
     }else if(fromUser.toLowerCase() == 'app-user'){
       this.appUserLov.modal.openNoClose();
       this.saveAcitPaytReq.approvedBy = this.ns.getCurrentUser();
+    }else if(fromUser.toLowerCase() == 'payee'){
+      this.passDataLov.selector = 'payee';
+      this.mainLov.openLOV();
     }
   }
 

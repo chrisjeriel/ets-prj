@@ -52,7 +52,7 @@
                     <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event)" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty();" #cedCompTbl></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="4">
-                    <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable [passData]="inwardPolBalData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
