@@ -799,7 +799,7 @@
 <app-mtn-users id="usersLOV" (selectedData)="setProcessedBy($event)"></app-mtn-users>
 
 <app-confirm-save #adjConfirmSave (onYes)="adjSave()"></app-confirm-save>
-<app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? adjCancelBtn.onNo() : null"></app-sucess-dialog>
+<app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? modalService.dismissAll() : null"></app-sucess-dialog>
 <app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="modalService.dismissAll(); onCancelNo()"></app-cancel-button>
 
 <app-confirm-save #confirmSave (onYes)="save()"></app-confirm-save>

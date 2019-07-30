@@ -9,30 +9,30 @@
             			<div class="form-row custom-row-inline-inset">
             				<div class="input-group" style="margin-bottom: -14px ! important">
             					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="filtCedingName">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showFiltCedingCoLOV()"></i></a></div>
             					<label class="form-control-sm" style="padding-left:20px">Period:</label>
-            					<label class="form-control-sm" style="margin-left: 5px ! important">From</label>
-            					<select class="form-control form-control-sm cust-sm col-sm-1">
-									<option value="1st Quarter">1st Quarter</option>
-									<option value="2nd Quarter">2nd Quarter</option>
-									<option value="3rd Quarter">3rd Quarter</option>
-									<option value="4th Quarter">4th Quarter</option>
+            					<label class="form-control-sm" style="margin-left: 5px !important">From</label>
+            					<select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="filtFromQtr">
+									<option value="1">1st Quarter</option>
+									<option value="2">2nd Quarter</option>
+									<option value="3">3rd Quarter</option>
+									<option value="4">4th Quarter</option>
 								</select>
-								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
+								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important" [(ngModel)]="filtFromYear">
 									<option value="2018">2018</option>
 								</select>
 								<label class="form-control-sm" style="margin-left: 5px ! important">To</label>
-						   		<select class="form-control form-control-sm cust-sm col-sm-1">
-									<option value="1st Quarter">1st Quarter</option>
-									<option value="2nd Quarter">2nd Quarter</option>
-									<option value="3rd Quarter">3rd Quarter</option>
-									<option value="4th Quarter">4th Quarter</option>
+						   		<select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="filtToQtr">
+									<option value="1">1st Quarter</option>
+									<option value="2">2nd Quarter</option>
+									<option value="3">3rd Quarter</option>
+									<option value="4">4th Quarter</option>
 								</select>
-								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
+								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important" [(ngModel)]="filtToYear">
 									<option value="2018">2018</option>
 								</select>
-								<button type="button" class="cust col-sm-1" style="margin-left: 20px ! important;">Search</button>
+								<button type="button" class="cust col-sm-1" style="margin-left: 20px !important;" (click)="onClickSearch()">Search</button>
 	    					</div>
 	    				</div>
 					 </fieldset> 
@@ -41,7 +41,7 @@
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">List of QSOA per Company</legend>
 					<div class="custom-row-inline-inset">
-						<app-cust-editable-non-datatable [passData]="passDataListOfQsoaAperCompany" (genericBtn)="showModal(content)">
+						<app-cust-editable-non-datatable #qsoaListTbl [passData]="QSOAList" (genericBtn)="showModal(content)">
 						</app-cust-editable-non-datatable>
 						<div class="input-group">
 							<div class="w-100 text-center" style="margin-bottom: 15px">
@@ -229,3 +229,5 @@
     	<button class="cust-btn" type="button" (click)="confModal.closeModal()"><a>No</a></button>
     </div>
 </app-modal>
+
+<app-ceding-company #filtCedingCoLOV (selectedData)="setFiltCedingCo($event)"></app-ceding-company>
