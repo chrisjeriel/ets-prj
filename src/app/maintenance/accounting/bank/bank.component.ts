@@ -75,7 +75,7 @@ export class BankComponent implements OnInit {
   delete(){
   	if(this.table.indvSelect.okDelete == 'N'){
   		this.dialogIcon = 'info';
-  		this.dialogMessage =  'You are not allowed to delete a Reason Code that is already used in Spoil Policy/Alteration Screen.';
+  		this.dialogMessage =  'Deleting this record is not allowed. This was already used in some accounting records.';
   		this.successDialog.open();
   	}else{
   		this.table.indvSelect.deleted = true;
