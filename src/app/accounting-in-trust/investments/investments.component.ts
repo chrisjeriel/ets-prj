@@ -39,7 +39,7 @@ export class InvestmentsComponent implements OnInit {
           invtCd   : null,
           bank     : null,
           certNo   : null,
-          invtType : null,
+          invtType : '2',
           invtSecCd: null,
           invtStatus:'F',
           matPeriod: null,
@@ -58,7 +58,7 @@ export class InvestmentsComponent implements OnInit {
           createDate: this.ns.toDateTimeString(0),
           updateUser: this.ns.getCurrentUser(),
           updateDate: this.ns.toDateTimeString(0),
-          uneditable : ['invtStatus']
+          uneditable : ['invtStatus','currRate']
         },
    	 total:[null,null,null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal'],
      opts: [ {selector: 'invtType', prev: [], vals: []},
@@ -161,6 +161,7 @@ export class InvestmentsComponent implements OnInit {
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Investments");
     this.retrieveInvestmentsList();
+    this.oldData = this.passData.tableData;
   	//this.passData.tableData = this.accountingService.getAccInvestments();
     //this.passData.opts.push({ selector: "bank", vals: ["BPI", "RCBC", "BDO"] });
     //this.passData.opts.push({ selector: "durUnit", vals: ["Years","Months","Weeks","Days"] });
@@ -278,37 +279,48 @@ export class InvestmentsComponent implements OnInit {
 
          if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted || this.passData.tableData[i].add){
 
-             if(this.passData.tableData[i].matDate.length > 0 || this.passData.tableData[i].purDate.length > 0 || 
-                this.passData.tableData[i].matPeriod.length > 0 ){
-
-                 if(this.passData.tableData[i].matDate.length > 0 || this.passData.tableData[i].purDate.length > 0 && 
-                    this.passData.tableData[i].matPeriod.length > 0) {
-
-                     if(this.passData.tableData[i].matDate < this.passData.tableData[i].purDate){
-                       this.dialogMessage="Maturity Date must be greater than Data Purchased";
+      
+                 if(this.passData.tableData[i].matDate !== null && this.passData.tableData[i].purDate !== null){
+                     if(this.passData.tableData[i].matDate <= this.passData.tableData[i].purDate){
+                       this.dialogMessage="Maturity Date must be greater than Date Purchased";
                        this.dialogIcon = "error-message";
                        this.successDialog.open();
                        this.passData.tableData[i].matDate = null;
                        this.passData.tableData[i].matPeriod = null;
-                      }else if(this.passData.tableData[i].durUnit === 'Days'){
-                                 this.passData.tableData[i].matPeriod = this.computeMatPeriod(
-                                                                        this.passData.tableData[i].matDate,
-                                                                        this.passData.tableData[i].purDate,
-                                                                        'Days');
-                      } else if (this.passData.tableData[i].durUnit === 'Months'){
-                                 this.passData.tableData[i].matPeriod = this.computeMatPeriod(
-                                                                        this.passData.tableData[i].matDate,
-                                                                        this.passData.tableData[i].purDate,
-                                                                        'Months');
-                      } else if (this.passData.tableData[i].durUnit === 'Years'){
-                                 this.passData.tableData[i].matPeriod = this.computeMatPeriod(
-                                                                        this.passData.tableData[i].matDate,
-                                                                        this.passData.tableData[i].purDate,
-                                                                        'Years');
-                      } 
+                      }
+                 }else if(this.passData.tableData[i].matDate !== null || this.passData.tableData[i].purDate !== null || this.passData.tableData[i].matPeriod  !== null )
+                    if (this.passData.tableData[i].durUnit === 'Days'
+                                   && this.passData.tableData[i].matPeriod.length > 0 
+                                   && this.passData.tableData[i].purDate.length > 0
+                                   && this.passData.tableData[i].matDate.length === 0){
+                          var newdate = this.computeMatDate(this.passData.tableData[i].purDate, this.passData.tableData[i].matPeriod)
+                          this.passData.tableData[i].matDate = this.ns.toDateTimeString(newdate); 
+                    }
+                   else if(this.passData.tableData[i].durUnit === 'Days'
+                                   && this.passData.tableData[i].matDate.length > 0 
+                                   && this.passData.tableData[i].purDate.length > 0 
+                                   && this.passData.tableData[i].matPeriod.length === 0){
+                                   this.passData.tableData[i].matPeriod = this.computeMatPeriod(
+                                                                          this.passData.tableData[i].matDate,
+                                                                          this.passData.tableData[i].purDate,
+                                                                          'Days');
+                    } else if (this.passData.tableData[i].durUnit === 'Months'
+                                   && this.passData.tableData[i].matDate.length > 0 
+                                   && this.passData.tableData[i].purDate.length > 0 ){
+                                   this.passData.tableData[i].matPeriod = this.computeMatPeriod(
+                                                                          this.passData.tableData[i].matDate,
+                                                                          this.passData.tableData[i].purDate,
+                                                                          'Months');
+                    } else if (this.passData.tableData[i].durUnit === 'Years' 
+                                   && this.passData.tableData[i].matDate.length > 0 
+                                   && this.passData.tableData[i].purDate.length > 0 ){
+                                   this.passData.tableData[i].matPeriod = this.computeMatPeriod(
+                                                                          this.passData.tableData[i].matDate,
+                                                                          this.passData.tableData[i].purDate,
+                                                                          'Years');
+                    }
+                  
                 }
-          }  
-      }
     }
      this.table.refreshTable();
   }
