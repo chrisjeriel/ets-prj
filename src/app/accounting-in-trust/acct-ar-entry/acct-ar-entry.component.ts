@@ -421,7 +421,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             currRate: this.arInfo.currRate,
             arAmt: this.arInfo.arAmt,
             payeeNo: this.arInfo.payeeNo,
-            payor: this.arInfo.payor
+            payor: this.arInfo.payor,
+            createUser: this.arInfo.createUser,
+            createDate: this.arInfo.createDate,
+            updateUser: this.arInfo.updateUser,
+            updateDate: this.arInfo.updateDate
           }
           this.emitArInfo.emit(arDetailParams);
 
@@ -712,6 +716,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           data[i].bankAcct = '';
         }
         if(data[i].paytMode !== 'CK'){
+          //data[i].uneditable = []
           data[i].uneditable.push('checkNo');
           data[i].uneditable.push('checkDate');
           data[i].uneditable.push('checkClass');

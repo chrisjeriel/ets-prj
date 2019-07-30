@@ -1503,5 +1503,36 @@ export class AccountingService {
 			.set('payeeNo', (payeeNo == null || payeeNo == undefined ? '' : payeeNo));
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAgingSoaDtl',{params});	
 	}
-  
+
+	saveAcitArInwPolBal(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArInwPolBal',JSON.stringify(params),header);
+	}
+
+	getAcitArInwPolBal(tranId, billId){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('billId', billId);
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArInwPolBal',{params});
+	}
+
+  	getAcitArTransDtl(tranId, billId){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('billId', billId);
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArTransDtl',{params});
+	}
+
+	saveAcitArTransDtl(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArTransDtl',JSON.stringify(params),header);
+	}
 }
