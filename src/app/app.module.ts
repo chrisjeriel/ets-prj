@@ -12,6 +12,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { QuillModule } from 'ngx-quill';
 import { DecimalPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarModule } from 'primeng/calendar';
+import { AccordionModule } from 'primeng/accordion';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -357,7 +359,6 @@ import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-
 import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
-import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
@@ -429,8 +430,9 @@ import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-vouche
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
 import { MtnClmHistoryLovComponent } from './maintenance/mtn-clm-history-lov/mtn-clm-history-lov.component';
 import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-soa-lov/jv-soa-lov.component';
-import { BankComponent } from './maintenance/accounting/bank/bank.component';
-import { BankAccountComponent } from './maintenance/accounting/bank-account/bank-account.component';
+import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component';
+import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
+import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
 
 
 @NgModule({
@@ -451,6 +453,7 @@ import { BankAccountComponent } from './maintenance/accounting/bank-account/bank
         NgxMaskModule.forRoot(),
         CalendarModule,
         BrowserAnimationsModule,
+        AccordionModule,
     ],
     declarations: [
         AppComponent,
@@ -869,6 +872,7 @@ import { BankAccountComponent } from './maintenance/accounting/bank-account/bank
         JvSoaLovComponent,
         BankComponent,
         BankAccountComponent,
+        AccountingMtnComponent,
     ],
 
   	providers: [

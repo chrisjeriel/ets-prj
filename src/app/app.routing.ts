@@ -172,7 +172,8 @@ import { SectionIiTreatyLimitComponent } from './maintenance/quotation-and-polic
 import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-policy/retention-per-pool-member/retention-per-pool-member.component';
 import { ClaimCashCallComponent } from './maintenance/claims/claim-cash-call/claim-cash-call.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
-import { BankComponent } from './maintenance/accounting/bank/bank.component';
+import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component';
+import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
 
 const appRoutes: Routes = [
 
@@ -357,6 +358,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-clm-cash-call', component: ClaimCashCallComponent },
     { path: 'mtn-clm-stat-reason', component: ClaimStatusReasonComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-bank', component: BankComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'maintenance-acct', component: AccountingMtnComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

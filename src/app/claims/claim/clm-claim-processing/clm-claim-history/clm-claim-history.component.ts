@@ -57,7 +57,7 @@ export class ClmClaimHistoryComponent implements OnInit {
       exGratia     : '',
       currencyCd   : '',
       currencyRt   : '',
-      reserveAmt   : '',
+      reserveAmt   : 0,
       paytAmt      : 0,
       refNo        : '',
       refDate      : '',
@@ -190,8 +190,8 @@ export class ClmClaimHistoryComponent implements OnInit {
     policyNo    : '',
     clmStatus   : '',
     policyId    : '',
-    upUserGi    : '',
-    proceed     : 0
+    upUserGi    : ''
+    //proceed     : 0
   };
 
   test: any;
@@ -271,7 +271,9 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.adjRate = (data['clmHist']['adjRate'] == null)?0:data['clmHist']['adjRate'];
       this.clmHistoryData.mtnParam = String(recParam[0].paramValueV);
       this.clmHistoryData.allowMaxSi = data['cov']['claims']['project']['clmCoverage'].allowMaxSi;
+
       console.log(this.clmHistoryData.allowMaxSi + ' >>>> allowMaxSi');
+
       this.passDataHistory.opts[0].vals = recHistCat.map(i => i.code);
       this.passDataHistory.opts[0].prev = recHistCat.map(i => i.description);
 
@@ -299,33 +301,9 @@ export class ClmClaimHistoryComponent implements OnInit {
 
               console.log(recCheckHist);
               this.histFunction(1);
-
-              /*if(recCheckHist[0].distPolStat != 'Y'){
-                msg = 'The status of the policy distribution must be Posted before creating reserve';
-                this.preventHistory.emit({val:1,msg:msg,show:true});
-              }else{
-                this.preventHistory.emit({val:2,msg:msg,show:false});
-              }*/
-
-              // if(recCheckHist.withinLapse != 'Y'){
-              //   msg = 'Loss Date is within the lapse period (Inception to Effective Date) of policy. Do you want to proceed?';
-              //   this.preventHistory.emit({val:2,msg:msg,apvlCd:'CLM004A'});
-              // }
-
-              // if(recCheckHist.withinPolTerm != 'Y'){
-              //   msg = 'Loss Date is not within the period of insurance(Inception Date and Expiry Date) of policy. Do you want to proceed?';
-              //   this.preventHistory.emit({val:3,msg:msg,apvlCd:'CLM004B'});
-              // }
-
-              // if(recCheckHist.hasUnpaidPrem != 'Y'){
-              //   msg = 'The policy has unpaid premiums. Do you want to proceed?';
-              //   this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C'});
-              // }
             }
           }else{
             var res = data['clmHist']['claimReserveList'][0];
-            this.clmHistoryData.lossStatCd    = res.lossStatus; 
-            this.clmHistoryData.expStatCd     = res.expStatus;
             this.clmHistoryData.createUserRes = (res.createUser == '' || res.createUser == null)?this.ns.getCurrentUser():res.createUser;
             this.clmHistoryData.createDateRes = (res.createDate == '' || res.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(res.createDate);
             var recClmHist = data['clmHist']['claimReserveList'][0]['clmHistory']
@@ -341,20 +319,23 @@ export class ClmClaimHistoryComponent implements OnInit {
                                 recHistType.forEach(a => (a.description == i.histTypeDesc)?i.histType=a.code:i.histType);
                                 return i;
                               });
+
+            console.log(res);
+            this.clmHistoryData.lossStatCd = res.lossStatus; 
+            this.clmHistoryData.expStatCd  = res.expStatus;
+            this.clmHistoryData.lossResAmt = res.lossResAmt;
+            this.clmHistoryData.lossPdAmt  = res.lossPdAmt;
+            this.clmHistoryData.expResAmt  = res.expResAmt;
+            this.clmHistoryData.expPdAmt   = res.expPdAmt;
+            this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
+            this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
           }
 
           this.passDataHistory.tableData = recClmHist;
-          console.log(this.passDataHistory.tableData);
           this.histTbl.refreshTable();
           this.histTbl.onRowClick(null, this.passDataHistory.tableData[0]);
           this.compResPayt();
 
-          this.clmHistoryData.lossResAmt = res.lossResAmt;
-          this.clmHistoryData.lossPdAmt  = res.lossPdAmt;
-          this.clmHistoryData.expResAmt  = res.expResAmt;
-          this.clmHistoryData.expPdAmt   = res.expPdAmt;
-          this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
-          this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
       }catch(e){''}
         
       });
@@ -489,8 +470,6 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.successAppAmt.open();
       this.paramsApvAmt.saveClaimApprovedAmt   = [];
     }else{
-      console.log(this.cancelFlagAppAmt + ' >> onClickSaveAppAmt this.cancelFlagAppAmt');
-      console.log(this.paramsApvAmt.saveClaimApprovedAmt.length + " >> onClickSaveAppAmt  this.paramsApvAmt.saveClaimApprovedAmt.length");
       if(this.paramsApvAmt.saveClaimApprovedAmt.length == 0){
         this.removeDirtyAppTbl();
         this.removeDirtyHistTbl();
@@ -515,16 +494,17 @@ export class ClmClaimHistoryComponent implements OnInit {
       createUser  : (this.clmHistoryData.createUserRes == '' || this.clmHistoryData.createUserRes == null)?this.ns.getCurrentUser():this.clmHistoryData.createUserRes,
       expPdAmt    : this.clmHistoryData.expPdAmt,
       expResAmt   : this.clmHistoryData.expResAmt,
-      expStatCd   : (this.clmHistoryData.expStatCd == '' || this.clmHistoryData.expStatCd == null)?'OP':this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.expStatCd.toUpperCase()).map(el => {return el.code})[0],
+      expStatCd   : (this.clmHistoryData.expStatCd == '' || this.clmHistoryData.expStatCd == null)?'OP':this.arrExpStats.filter(el => el.description.toUpperCase() == this.clmHistoryData.expStatCd.toUpperCase()).map(el => {return el.code})[0],
       lossPdAmt   : this.clmHistoryData.lossPdAmt,
       lossResAmt  : this.clmHistoryData.lossResAmt,
-      lossStatCd  : (this.clmHistoryData.lossStatCd == '' || this.clmHistoryData.lossStatCd == null)?'OP':this.passDataResStat.tableData.filter(el => el.description.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase()).map(el => {return el.code})[0],
+      lossStatCd  : (this.clmHistoryData.lossStatCd == '' || this.clmHistoryData.lossStatCd == null)?'OP':this.arrlossStats.filter(el => el.description.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase()).map(el => {return el.code})[0],
       projId      : this.clmHistoryData.projId,
       updateDate  : this.ns.toDateTimeString(0),
       updateUser  : this.ns.getCurrentUser(),
-      upUserGi    : this.claimInfo.upUserGi
+      upUserGi    : (this.claimInfo.upUserGi == '' || this.claimInfo.upUserGi == undefined || this.claimInfo.upUserGi == null)?'':this.claimInfo.upUserGi
     };
-
+    
+    console.log(saveReserve);
       this.clmService.saveClaimReserve(JSON.stringify(saveReserve))
       .subscribe(data => {
         console.log(data);
@@ -539,16 +519,26 @@ export class ClmClaimHistoryComponent implements OnInit {
               this.passDataHistory.disableAdd = false;
               this.initFetch = false;
 
-              var chck = 0;
-              if(this.clmHistoryData.lossResAmt == 0 && (this.clmHistoryData.lossPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && (e.histType == 4 || e.histType == 5))))){
-                chck = 1;
-              }else if(this.clmHistoryData.expResAmt == 0 && (this.clmHistoryData.expPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory != 'L' && (e.histType == 4 || e.histType == 5))))){
-                chck = 2;
+              var chk1 = 0;
+              var chk2 = 0;
+
+              if(this.clmHistoryData.lossResAmt == 0  && this.passDataHistory.tableData.some(e => (e.histCategory == 'L') && e.histType == 4 || e.histType == 5) && 
+                this.clmHistoryData.lossPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && (e.histType == 4 || e.histType == 5)).map(e => e.reserveAmt))){
+                this.clmHistoryData.lossStatCd = 'CD';
+                chk1 = 1;
+              }else{
+                this.clmHistoryData.lossStatCd = this.arrlossStats.filter(el => el.description.toUpperCase() == this.clmHistoryData.lossStatCd.toUpperCase()).map(el => {return el.code})[0];
               }
 
-              if(chck != 0){
-                this.clmHistoryData.expStatCd  = (chck == 1)?'CD':this.clmHistoryData.expStatCd;
-                this.clmHistoryData.lossStatCd = (chck == 2)?'CD':this.clmHistoryData.lossStatCd;
+              if(this.clmHistoryData.expResAmt == 0 && this.passDataHistory.tableData.some(e => (e.histCategory == 'A' || e.histCategory == 'O') && (e.histType == 4 || e.histType == 5)) &&
+                this.clmHistoryData.expPdAmt == this.arrSum(this.passDataHistory.tableData.filter(e => (e.histCategory == 'A' || e.histCategory == 'O') && (e.histType == 4 || e.histType == 5)).map(e => e.reserveAmt))){
+                this.clmHistoryData.expStatCd = 'CD';
+                chk2 = 1;
+              }else{
+                this.clmHistoryData.expStatCd = this.arrExpStats.filter(el => el.description.toUpperCase() == this.clmHistoryData.expStatCd.toUpperCase()).map(el => {return el.code})[0];
+              }
+             
+              if(chk1 != 0 || chk2 != 0){
                 var resStatParams = { 
                   claimId     : this.clmHistoryData.claimId,
                   expStatCd   : this.clmHistoryData.expStatCd,
@@ -561,8 +551,8 @@ export class ClmClaimHistoryComponent implements OnInit {
                   .subscribe(data => {
                   console.log(data);
                 });
-              }
-
+              } 
+                
               setTimeout(() => {
                 if(data['returnCode'] == -1) {
                   var disableNextTabs = false;
@@ -614,7 +604,6 @@ export class ClmClaimHistoryComponent implements OnInit {
 
     console.log(this.passDataHistory.tableData);
 
-    // const arrSum = arr => arr.reduce((a,b) => a + b, 0);
     var catArr  = this.passDataHistory.tableData.filter(e => e.newRec != 1).map(e => e.histCategory);
     var totResAmt = this.arrSum(this.passDataHistory.tableData.filter(e => e.histType == 4 || e.histType == 5).map(e => e.reserveAmt));
     var sumLossPayt = this.arrSum(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && (e.histType == 4 || e.histType == 5)).map(e => e.reserveAmt));
@@ -645,23 +634,11 @@ export class ClmClaimHistoryComponent implements OnInit {
               this.params.saveClaimHistory   = [];
             }
           }else{
-            // if((Number(totResAmt) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
-            //   console.log('Entered here 4');
-            //   this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
-            //   this.showWarnMsg();
-            //   this.params.saveClaimHistory   = [];
-            // }
             if((Number(sumLossPayt) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
               this.warnMsg = 'Unable to save. The total payment for loss must be less than or equal to the approved amount.';
               this.showWarnMsg();
               this.params.saveClaimHistory   = [];
             }
-            // else if((Number(this.clmHistoryData.totalRes) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
-            //   console.log('Entered here 5');
-            //   this.warnMsg = 'Invalid reserve amount. Total reserve amount must be less than or equal to the approved amount.';
-            //   this.showWarnMsg();
-            //   this.params.saveClaimHistory   = [];
-            // }
             else{
               if(this.cancelFlag == true){
                 this.cs.showLoading(true);
@@ -682,7 +659,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   limitHistType(){
     var catArr  = this.passDataHistory.tableData.filter(e => e.newRec != 1).map(e => e.histCategory);
     var ths = this;
-    var adjAmt =  Number(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && e.histType == 1).map(e => e.reserveAmt).toString()) * Number(this.adjRate);
+    var adjAmt =  Number(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && e.histType == 1).map(e => e.reserveAmt).toString()) * (Number(this.adjRate)/100);
 
     this.passDataHistory.tableData.forEach(e => {
       if(e.newRec == 1){ 
@@ -751,52 +728,32 @@ export class ClmClaimHistoryComponent implements OnInit {
       return record;
     });
 
-    //setTimeout(() => {
-      var sumLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;}));
-      var difLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L'  && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.reserveAmt);}));
+    this.passDataHistory.tableData.forEach(i => {
+      if(i.newRec == 1){
+        i.reserveAmt = (i.reserveAmt > 0 )?i.reserveAmt:0;
+        if((i.histCategory != '' || i.histCategory != null) && (i.histType != '' || i.histType != null) && (i.reserveAmt != '' || i.reserveAmt != null)){
+          var sumLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt; }));
+          var difLossRes = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L'  && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.reserveAmt); }));
 
-      var sumExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt;})); 
-      var difExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.reserveAmt);})); 
+          var sumExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.reserveAmt; })); 
+          var difExpRes  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.reserveAmt); })); 
 
-      var sumLossPd = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType != 3)).map(i => { return i.paytAmt;}));
-      var difLossPd = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L' && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.paytAmt);}));
-      
-      var sumExpPd  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 1 || i.histType == 2)).map(i => { return i.paytAmt;})); 
-      var difExpPd  = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O') && (i.histType == 3 || i.histType == 6)).map(i => { return Math.abs(i.paytAmt);})); 
+          this.clmHistoryData.lossResAmt = Number(sumLossRes) - Number(difLossRes);
+          this.clmHistoryData.expResAmt  = Number(sumExpRes)  - Number(difExpRes);
+        
 
-      this.clmHistoryData.lossResAmt = Number(sumLossRes) - Number(difLossRes);
-      this.clmHistoryData.expResAmt  = Number(sumExpRes)  - Number(difExpRes);
+          this.clmHistoryData.lossPdAmt  = this.arrSum(this.passDataHistory.tableData.filter(i => i.histCategory.toUpperCase() == 'L').map(i => { return i.paytAmt; }));
+          this.clmHistoryData.expPdAmt   = this.arrSum(this.passDataHistory.tableData.filter(i => (i.histCategory.toUpperCase() == 'A' || i.histCategory.toUpperCase() == 'O')).map(i => { return i.paytAmt; })); 
+       
+          this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
+          this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
     
-      this.clmHistoryData.lossPdAmt  = Number(sumLossPd) - Number(difLossPd);
-      this.clmHistoryData.expPdAmt   = Number(sumExpPd)  - Number(difExpPd);
-
-      console.log(sumLossRes);
-      console.log(difLossRes);
-
-      console.log(sumExpRes);
-      console.log(difExpRes);
-
-      console.log(sumLossPd);
-      console.log(difLossPd);
-
-      console.log(sumExpPd);
-      console.log(difExpPd);
-    
-      this.clmHistoryData.totalRes   = Number(this.clmHistoryData.lossResAmt) + Number(this.clmHistoryData.expResAmt);
-      this.clmHistoryData.totalPayt  = Number(this.clmHistoryData.lossPdAmt) + Number(this.clmHistoryData.expPdAmt);
-   // },0);
-    
-
-    
-   // setTimeout(() => {
-      this.passDataHistory.tableData.forEach(e => {
-        if(e.reserveAmt > 0){
-           e.reserveAmt = (e.histType == 3 || e.histType == 6)?Number(-e.reserveAmt):e.reserveAmt;
-           console.log(e.reserveAmt);
+            if(i.reserveAmt > 0){
+               i.reserveAmt = ((i.histType == 3 || i.histType == 6) && i.newRec == 1)?Number(-i.reserveAmt):i.reserveAmt;
+            }
         }
-      });
-    //},100);
-
+      }
+    });
   }
 
   clickRow(event){

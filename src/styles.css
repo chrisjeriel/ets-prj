@@ -716,3 +716,22 @@ body .ui-datepicker .ui-datepicker-month, body .ui-datepicker .ui-datepicker-yea
 .tbl-dp {
     border: none !important;
 }
+
+body .ui-accordion .ui-accordion-header a {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #c8c8c8 !important;
+}
+
+body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active:hover a {
+    color: #333333 !important;
+    text-decoration: none !important; 
+}
+
+body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a .ui-accordion-toggle-icon {
+    color: #848484 !important;
+}
+
+body .ui-accordion .ui-accordion-header {
+    line-height: 1 !important;
+}

@@ -76,6 +76,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle('Acct-IT | Request Entry');
     this.getTranType();
+    
 
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0){

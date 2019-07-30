@@ -453,9 +453,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   showClmEventLOV() {
     var eventTypeCd = this.claimData.eventTypeCd;
-    var line = this.line;
+    var ld = this.claimData.lossDate.split('T');
+    var d = ld[0] == '' ? new Date() : ld[1] == '' ? new Date(ld[1]) : new Date(ld.join('T'));
 
-    this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lineCd == line };
+    this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lossDateFrom >= d && d <= a.lossDateTo };
     this.clmEventLOV.modal.openNoClose();
   }
 
@@ -952,7 +953,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         var line = this.line;
 
         this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lineCd == line };
-        this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev);
+        var ld = this.claimData.lossDate.split('T');
+        var d = ld[0] == '' ? new Date() : ld[1] == '' ? new Date(ld[1]) : new Date(ld.join('T'));
+
+        this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev, d);
       } else if(str === 'mainAdj') {
         this.adjusterLOVMain.checkCode(this.claimData.adjId, ev);
       }
