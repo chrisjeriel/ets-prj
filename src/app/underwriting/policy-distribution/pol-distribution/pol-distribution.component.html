@@ -48,7 +48,7 @@
 		<legend class="scheduler-border">Treaty Distribution Per Section</legend>
 		<div class="row" style="padding-top: 5px;">
 			<div class="col-sm">
-				<app-cust-editable-non-datatable [passData]="treatyDistData" #mainTable></app-cust-editable-non-datatable>
+				<app-cust-editable-non-datatable [passData]="treatyDistData" #mainTable (export)="exportTreatyDist();"></app-cust-editable-non-datatable>
 			</div>
 		</div>
 		<div class="row">

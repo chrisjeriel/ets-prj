@@ -1262,4 +1262,13 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInvtSecType", {params});
     }
 
+    saveMtnBankAcct(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };	
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBankAcct', JSON.stringify(params), header);
+    }
+
 }

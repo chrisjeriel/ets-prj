@@ -7,8 +7,8 @@
             		<div class="input-group" style="margin-top: 10px !important;">
             			<label class="form-control-sm col-sm-2"></label>
                         <label class="form-control-sm col-sm-1">Bank</label>
-                        <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="bank?.bankCd" >
-                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
+                        <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="bank.bankCd" (change)="checkCode($event,'Bank')" >
+                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="bankLov.modal.openNoClose()"></i></a></div>
                         <input type="text" class="form-control form-control-sm col-sm-3 ml-2" [ngModel]="bank?.shortName" readonly>
                         <input type="text" class="form-control form-control-sm col-sm ml-1" [ngModel]="bank?.officialName" readonly>
             			<label class="form-control-sm col-sm-2"></label>
@@ -20,7 +20,7 @@
 
 	                <div class="w-100 d-flex" style="margin-top: 30px !important">
                     	<label class="form-control-sm col-sm-1">Remarks</label>
-                    	<input type="text" class="form-control form-control-sm col-sm" [ngModel]="bank?.bankCd" >
+                    	<input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.remarks" (ngModelChange)="info.remarks = $event" [disabled]="info == null || info == undefined">
                     </div>
 	                <div class="w-100 text-center my-2" style="margin-top: 30px !important">
                     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
@@ -49,3 +49,5 @@
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
+
+<app-mtn-bank (selectedData)="setSelectedBank($event)" ></app-mtn-bank>
