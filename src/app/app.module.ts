@@ -12,7 +12,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { QuillModule } from 'ngx-quill';
 import { DecimalPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+//import {DropdownModule} from 'primeng/dropdown';
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
 
@@ -429,6 +429,7 @@ import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-vouche
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
 import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-soa-lov/jv-soa-lov.component';
 import { QuarterEndingLovComponent } from './maintenance/quarter-ending-lov/quarter-ending-lov.component';
+import { MtnPrintableNamesComponent } from './maintenance/mtn-printable-names/mtn-printable-names.component';
 
 
 @NgModule({
@@ -448,7 +449,8 @@ import { QuarterEndingLovComponent } from './maintenance/quarter-ending-lov/quar
         QuillModule,
         NgxMaskModule.forRoot(),
         CalendarModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+
     ],
     declarations: [
         AppComponent,
@@ -865,6 +867,7 @@ import { QuarterEndingLovComponent } from './maintenance/quarter-ending-lov/quar
         JvTypeLovComponent,
         JvSoaLovComponent,
         QuarterEndingLovComponent,
+        MtnPrintableNamesComponent,
     ],
 
   	providers: [
