@@ -8,9 +8,9 @@
                 	<option *ngFor="let quarter of quarters" [value]="quarter">{{slicer(quarter)}}</option>
                 </select>
                 <label class="form-control-sm col-sm-2 text-right labels">Year</label>
-                <select class="form-control form-control-sm cust-sm col-sm-2" (change)="tabController($event);" [(ngModel)]="year">
-                	<!-- <p-dropdown [options]="cities" [(ngModel)]="selectedCity1"></p-dropdown> -->
-                </select>
+                <p-dropdown [options]="cities" [(ngModel)]="selectedCar1" editable="true" placeholder="Select a Brand"></p-dropdown>
+                     
+                
 
                 <button class="cust-btn" style="height: 24px !important;margin-left: 6px;" (click)="modal.closeModal()">OK
                 </button>
