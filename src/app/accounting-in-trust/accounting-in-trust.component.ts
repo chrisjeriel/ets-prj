@@ -30,6 +30,8 @@ export class AccountingInTrustComponent implements OnInit {
   exitTab: string;
   paymentType: string = "";
 
+  arDetailsParam: any;
+
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
