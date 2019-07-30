@@ -25,10 +25,8 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild('appUserLov') appUserLov         : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent;
 
-  @Input() data: any = {};
-  @Output() onChange: EventEmitter<any> = new EventEmitter();
-  paymentData: any = {};
-  paymentType: any;
+  // @Input() data: any = {};
+  // @Output() onChange: EventEmitter<any> = new EventEmitter();
 
   saveAcitPaytReq : any = {
     paytReqNo       : '',
@@ -71,6 +69,14 @@ export class PaymentRequestEntryComponent implements OnInit {
   initDisabled    : boolean;
   fromBtn         : string = '';
 
+  @Output() paytData : EventEmitter<any> = new EventEmitter();
+  @Input() rowData: any = {
+    reqId : ''
+  };
+
+  paymentData: any = {};
+  paymentType: any;
+
   constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
@@ -78,10 +84,8 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.getTranType();
 
     this.sub = this.activatedRoute.params.subscribe(params => {
-      if(Object.keys(params).length != 0){
-        var rec = JSON.parse(params['tableInfo']);
-        this.saveAcitPaytReq.reqId     = rec.reqId;
-        this.saveAcitPaytReq.paytReqNo = rec.paytReqNo;
+      if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
+        this.saveAcitPaytReq.reqId = params['reqId'];
         this.getAcitPaytReq();
         this.initDisabled = false;
       }else{
@@ -151,6 +155,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.dialogMessage = '';
       this.success.open();
       this.saveAcitPaytReq.reqId =  data['reqIdOut'];
+      this.paytData.emit({reqId:data['reqIdOut']});
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
       this.initDisabled = false;

@@ -18,7 +18,9 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./payment-request-details.component.css']
 })
 export class PaymentRequestDetailsComponent implements OnInit {
-  @Input() rowData : any;
+  @Input() rowData : any = {
+    reqId : ''
+  };
   @ViewChild('mtnClmHistLov') clmHistLov      : MtnClmHistoryLovComponent;
   @ViewChild('cedCompTbl') cedCompTbl         : CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -105,7 +107,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       console.log(data);
 
       var recPrqTrans = data['prqTrans']['acitPrqTrans'];
-      var recClmHist  = data['clmHist']['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => e.histCategory == 'L').map(e => { return e });
+      var recClmHist  = data['clmHist']['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.requestData.tranTypeCd == 3)?e.histCategory == 'L':e.histCategory != 'L').map(e => { return e });
       console.log(recPrqTrans);
       console.log(recClmHist);
 
@@ -132,7 +134,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.cedingCompanyData.tableData.forEach(e => {
       this.limitClmHistTbl.push(e);
     });
-    this.limitHistCat = 'L';
+    this.limitHistCat = (this.requestData.tranTypeCd == 3)?'L':'AO';
     this.clmHistLov.modal.openNoClose();
   }
 
