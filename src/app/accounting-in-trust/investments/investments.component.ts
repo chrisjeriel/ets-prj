@@ -269,18 +269,32 @@ export class InvestmentsComponent implements OnInit {
   }
 
   setSelectedDuration(data){
-    console.log(data);
     this.duration = data.code;
     this.ns.lovLoader(data.ev, 0);
   }
 
-    update(data){
+  update(data){
+
       for(var i= 0; i< this.passData.tableData.length; i++){
 
          if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted || this.passData.tableData[i].add){
 
-      
-                 if(this.passData.tableData[i].matDate !== null && this.passData.tableData[i].purDate !== null){
+                 if(data.key === 'matPeriod'){
+                   if(this.isEmptyObject(this.passData.tableData[i].matPeriod)){
+                     this.passData.tableData[i].matDate = null;
+                   }else {
+                     if(this.passData.tableData[i].durUnit === 'Days'){
+                       var array = this.getDate(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Days')
+                       console.log(array);
+                     }else if (this.passData.tableData[i].durUnit === 'Months'){
+
+                     }
+                   }
+                   
+                 }
+          
+
+                 /*if(this.passData.tableData[i].matDate !== null && this.passData.tableData[i].purDate !== null){
                      if(this.passData.tableData[i].matDate <= this.passData.tableData[i].purDate){
                        this.dialogMessage="Maturity Date must be greater than Date Purchased";
                        this.dialogIcon = "error-message";
@@ -318,7 +332,7 @@ export class InvestmentsComponent implements OnInit {
                                                                           this.passData.tableData[i].matDate,
                                                                           this.passData.tableData[i].purDate,
                                                                           'Years');
-                    }
+                    }*/
                   
                 }
     }
@@ -355,18 +369,46 @@ export class InvestmentsComponent implements OnInit {
 
   } 
   
-  computeMatDate(date1,period){
+  computeDate(date1,period,unit){
     var today = new Date(date1);
     var newdate = new Date();
     var addDate = parseInt(period);
 
-
-
-    return newdate.setDate(today.getDate()+ addDate);
+    if(unit === 'Days'){
+      return newdate.setDate(today.getDate() + addDate);
+   } else if (unit === 'Months'){
+      return newdate.setDate(today.getMonth() + addDate);
+   } else if (unit === 'Years'){
+      return newdate.setDate(today.getFullYear() + addDate);
+   }
+    
   }
 
+  getDate(tblpurDate,tblmatDate,tblPeriod,unit){
+    var purDate;
+    var matDate;
+    var array = []
+    if (this.isEmptyObject(purDate)){ 
+      purDate = this.ns.toDateTimeString(this.computeDate(tblmatDate, -(tblPeriod), unit));  
+    } else {
+      matDate = this.ns.toDateTimeString(this.computeDate(tblpurDate, tblPeriod, unit));
+    }
+    array = [purDate,matDate]
+    return array; 
+  }
 
+  addDays (date, daysToAdd) {
+    var _24HoursInMilliseconds = 86400000;
+    return new Date(date.getTime() + daysToAdd * _24HoursInMilliseconds);
+  };
 
-
+   isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+    }
 
 }
