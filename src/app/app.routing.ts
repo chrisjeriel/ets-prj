@@ -356,7 +356,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-retention-per-pool-member', component: RetentionPerPoolMemberComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-clm-cash-call', component: ClaimCashCallComponent },
     { path: 'mtn-clm-stat-reason', component: ClaimStatusReasonComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'maintenance-accounting', component: AccountingMtnComponent},
+    { path: 'maintenance-acct', component: AccountingMtnComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

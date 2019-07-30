@@ -731,3 +731,7 @@ body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active:
 body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a .ui-accordion-toggle-icon {
     color: #848484 !important;
 }
+
+body .ui-accordion .ui-accordion-header {
+    line-height: 1 !important;
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-accounting-mtn',
@@ -7,13 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountingMtnComponent implements OnInit {
 
-  constructor() { }
+  constructor(private titleService: Title) { }
 
   ngOnInit() {
-  	setTimeout(() => {
-  		console.log($('div.col-sm-3'));
-  		$('div.col-sm-3').find('p-accordion').click();
-  	}, 0);
+  	this.titleService.setTitle("Mtn | Accounting");
   }
 
 }
