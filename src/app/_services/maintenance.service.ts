@@ -1173,4 +1173,11 @@ export class MaintenanceService{
     	     		.set('accountNo', (accountNo === null || accountNo === undefined ? '' : accountNo))
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBankAcct", {params});
     }
+
+    getMtnPrintableName(employeeId){
+    	const params = new HttpParams()
+    		.set('employeeId', (employeeId === null || employeeId === undefined ? '' : employeeId))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPrintableName", {params});
+    }
+   
 }

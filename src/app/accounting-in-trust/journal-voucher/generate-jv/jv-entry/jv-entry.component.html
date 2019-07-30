@@ -128,7 +128,7 @@
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedBy" appRequired name="entryData.preparedBy">
-                            <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                            <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPrintable()"></i></a></div>
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
@@ -186,10 +186,10 @@
                     <div class="col-md-12 text-center">
                         <div class="cust-btn-container" style="margin-top: 10px;">
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="newJV()"><a>New JV</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="onClickSave()"><a>Save</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="cancelJVBut" [class.cust-btn-disabled]="cancelJVBut" (click)="cancel()"><a>Cancel JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="saveJVBut" [class.cust-btn-disabled]="saveJVBut" (click)="onClickSave()"><a>Save</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="cancelJVBut" [class.cust-btn-disabled]="cancelJVBut" (click)="onClickCancelJV()"><a>Cancel JV</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approveBut" [class.cust-btn-disabled]="approveBut" (click)="onClickApprove()"><a>Approve</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut" [class.cust-btn-disabled]="printBut" ><a>Print</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut" [class.cust-btn-disabled]="printBut" (click)="onClickPrint()"><a>Print</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut" [class.cust-btn-disabled]="UploadBut" (click)="upload()"><a>Upload Acct. Ent</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut" [class.cust-btn-disabled]="allocBut" ><a>Alloc. Trans.</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut" [class.cust-btn-disabled]="dcBut" ><a>DebitCredit Memo</a></button>
@@ -218,8 +218,6 @@
 </div>
 </form>
 
-<app-jv-type-lov id="jvTypeModal" (selectedData)="setTranType($event)"></app-jv-type-lov>
-
 <app-modal class="d-none" id="uploadAcct" #AcctEntries>
     <div header>Uploading Accounting Entries</div>  
     <div body>
@@ -238,12 +236,40 @@
     </div>
 </app-modal>
 
+<app-modal class="d-none" id="cancelAcct" #CancelEntries>
+    <div header>Confirmartion</div>  
+    <div body>
+        <div class="form-row custom-row-inline-inset">
+            <span class="col-sm-2"></span>
+            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 12px !important">Are you sure you want to cancel this Journal Voucher?</label>
+        </div>
+    </div>
+    <div footer class="text-center">
+        <button type="button" class="cust-btn" (click)="cancelEntries.closeModal();cancelJournalVoucher()"><a>Yes</a></button>
+        <button type="button" class="cust-btn" (click)="cancelEntries.closeModal();"><a>No</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="printAcct" #PrintEntries>
+    <div header>Confirmartion</div>  
+    <div body>
+        <div class="form-row custom-row-inline-inset">
+            <span class="col-sm-2"></span>
+            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Was the printing of the Journal Voucher successful?</label>
+        </div>
+    </div>
+    <div footer class="text-center">
+        <button type="button" class="cust-btn" (click)="printEntries.closeModal();printJV()"><a>Yes</a></button>
+        <button type="button" class="cust-btn" (click)="printEntries.closeModal();"><a>No</a></button>
+    </div>
+</app-modal>
+
 <app-modal class="d-none" id="approve" #ApproveJV>
     <div header>Confirmation</div>  
     <div body style=" max-width: 450px;">
         <div class="form-row custom-row-inline-inset">
             <span class="col-sm-2"></span>
-            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 12px !important">Are you sure you want to approve this Journal Voucher?</label>
+            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Are you sure you want to approve this Journal Voucher?</label>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4 text-right labels">Approved By</label>
                 <input type="text" class="form-control form-control-sm col-sm-7" readonly [(ngModel)]="entryData.createUser">
@@ -262,7 +288,9 @@
     </div>
 </app-modal>
 
+<app-jv-type-lov id="jvTypeModal" (selectedData)="setTranType($event)"></app-jv-type-lov>
+<app-mtn-printable-names id="printableNames" (selectedData)="setPrintable($event)"></app-mtn-printable-names>
 <app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="saveJV()"></app-confirm-save>
+<app-confirm-save id="JVEntry" (onYes)="saveJV()"></app-confirm-save>
 <app-cancel-button (onYes)="saveJV('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

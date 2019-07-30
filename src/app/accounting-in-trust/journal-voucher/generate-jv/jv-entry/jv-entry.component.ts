@@ -23,6 +23,9 @@ export class JvEntryComponent implements OnInit {
   @Output() emitData = new EventEmitter<any>();
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
+  @ViewChild('CancelEntries') cancelEntries: ModalComponent;
+  @ViewChild('PrintEntries') printEntries: ModalComponent;
+  
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(LovComponent)lov: LovComponent;
   @ViewChild('myForm') form:any;
@@ -66,8 +69,17 @@ export class JvEntryComponent implements OnInit {
     params:{}
   };
 
+  sendData:any = {
+    tranId:null,
+    jvNo: null,
+    jvYear: null,
+    updateUser: null,
+    updateDate: null
+  }
+
   tranId:any;
   jvDate: any;
+  saveJVBut: boolean = false;
   cancelJVBut: boolean = false;
   approveBut: boolean = false;
   printBut: boolean = false;
@@ -109,7 +121,6 @@ export class JvEntryComponent implements OnInit {
         this.jvDatas.updateUser = params.updateUserTran;
       }
     });
-
     this.cancelJVBut = true;
     this.approveBut = true;
     this.printBut = true;
@@ -143,10 +154,15 @@ export class JvEntryComponent implements OnInit {
 
         this.cancelJVBut = false;
         this.approveBut = false;
-        this.printBut = false;
         this.UploadBut = false;
         this.allocBut = false;
         this.dcBut = false;
+        if(this.entryData.jvStatus == 'N' || this.entryData.jvStatus == 'F' || this.entryData.jvStatus == 'A'){
+          this.printBut = false;
+        }else{
+          this.printBut = true;
+        }
+        
         console.log(this.entryData.jvYear)
         this.check(this.entryData)
         this.tabController(this.entryData.tranTypeName);
@@ -302,7 +318,7 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickSave(){
-     $('#confirm-save #modalBtn2').trigger('click');
+     $('#JVEntry #confirm-save #modalBtn2').trigger('click');
   }
 
   openLov(selector){
@@ -323,6 +339,70 @@ export class JvEntryComponent implements OnInit {
       this.entryData.refNo = data.data.tranNo;
       this.form.control.markAsDirty();
     }
+  }
+
+  cancelJournalVoucher(){
+    this.sendData.tranId = this.tranId;
+    this.sendData.jvNo = parseInt(this.entryData.jvNo);
+    this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.updateUser = this.ns.getCurrentUser();
+    this.sendData.updateDate = this.ns.toDateTimeString(0);
+
+    this.accService.cancelJournalVoucher(this.sendData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.cancelJVBut = true;
+        this.approveBut = true;
+        this.printBut = true;
+        this.saveJVBut = true;
+        this.retrieveJVEntry();
+      }
+    });
+  }
+
+  onClickCancelJV(){
+    this.cancelEntries.openNoClose();
+  }
+
+  printJV(){
+    this.sendData.tranId = this.tranId;
+    this.sendData.jvNo = parseInt(this.entryData.jvNo);
+    this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.updateUser = this.ns.getCurrentUser();
+    this.sendData.updateDate = this.ns.toDateTimeString(0);
+
+    this.accService.printJournalVoucher(this.sendData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveJVEntry();
+      }
+    });
+  }
+
+  onClickPrint(){
+    this.printEntries.openNoClose();
+  }
+
+  onClickPrintable(){
+    $('#printableNames #modalBtn').trigger('click');
+  }
+  
+  setPrintable(data){
+    console.log(data)
+    this.entryData.preparedBy = data.
+    this.entryData.preparedPos = data.designation;
   }
 
 }

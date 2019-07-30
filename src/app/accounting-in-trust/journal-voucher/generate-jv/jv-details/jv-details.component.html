@@ -131,7 +131,7 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="'PREMIUM RESERVE RELEASED (FUNDS HELD RELEASED)'">
-                                <app-jv-prenium-reserve [tranId]="jvDetails.tranId"></app-jv-prenium-reserve>
+                                <app-jv-prenium-reserve [tranId]="jvDetails.tranId" [jvAmount]="jvDetails.jvAmt"></app-jv-prenium-reserve>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="'INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP'">
@@ -165,7 +165,7 @@
     </ngb-tabset>
 </div>
 
-<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 27px !important; ">
+<!-- <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 27px !important; ">
 	<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
@@ -178,4 +178,4 @@
             <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
         </div>
     </div>
-</fieldset>
+</fieldset> -->
