@@ -1,3 +1,4 @@
+<form #myForm="ngForm">
 <div class="row">
     <div class="col-sm-12">
         <fieldset class="scheduler-border">
@@ -7,11 +8,11 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV No</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 2px !important" style="text-align: right;" [(ngModel)]="entryData.jvYear" readonly>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="text-align: right; margin-left:2px" [(ngModel)]="entryData.jvNo" readonly>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 2px !important" style="text-align: right;" [(ngModel)]="entryData.jvYear" readonly name="entryData.jvYear">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="text-align: right; margin-left:2px" [(ngModel)]="entryData.jvNo" readonly name="entryData.jvNo">
                             <label class="form-control-sm col-sm">Date</label>
                             <div class="col-sm-4 dp-cont">
-                                <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[0]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'d')" [required]="true"></datepicker>
+                                <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[0]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'d')" [required]="true" name="entryData.jvDate"></datepicker>
                             </div>
                              <!-- <input type="date" class="form-control form-control-sm cust-sm col-sm-4" style="margin-right: 2px !important;text-align: right;" > -->
                         </div>
@@ -22,17 +23,17 @@
                             <datepicker [type]="'time'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[1]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'t')" [required]="true"></datepicker>
                             </div>
                             <label class="form-control-sm col-sm-2">Status</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="entryData.jvStatusName" readonly>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="entryData.jvStatusName" readonly name="entryData.jvStatusName">
                             <label class="form-control-sm col-sm-2">Auto</label> 
-                            <input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px" [checked]="entryData.autoTag === 'Y'" (change)="entryData.autoTag = (entryData.autoTag === 'Y') ? 'N' : 'Y'" disabled>
+                            <input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px" [checked]="entryData.autoTag === 'Y'" (change)="entryData.autoTag = (entryData.autoTag === 'Y') ? 'N' : 'Y'" disabled name="entryData.autoTag">
                         </div>
                     </div>
                     <!-- <label class="form-control-sm col-sm-1"></label>
                     <label class="form-control-sm col-sm-2"style="text-align: right;"></label> -->
                     
                     <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" [(ngModel)]="entryData.refnoTranId">
-                    <div style="margin-left: -19px !important;margin-right: 13px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" [(ngModel)]="entryData.refNo" name="entryData.refNo">
+                    <div style="margin-left: -19px !important;margin-right: 13px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="openLov('refNo')"></i></a></div>
                     <!-- <label class="form-control-sm col-sm-1"></label>
                     <label class="form-control-sm col-sm-2"style="text-align: right;"></label> -->
                 </div>
@@ -40,7 +41,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-8">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;"  (change)="tabController($event);" [(ngModel)]="entryData.tranTypeName" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;"  (change)="tabController($event);" [(ngModel)]="entryData.tranTypeName" appRequired name="entryData.tranTypeName">
                          <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a (click)="openJVType()"><i class="fa fa-search"></i></a></div> 
 
                       <!--   <select class="form-control form-control-sm cust-sm col-sm">
@@ -81,14 +82,14 @@
                     </div>
                     <label class="form-control-sm col-sm-1" >Ref No Date</label>
                     <div class="col-sm dp-cont" style="margin-left: 6px !important;margin-right: 11px !important">
-                    <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.refnoDate?.split('T')[0]" (valueChange)="entryData.refnoDate = $event"></datepicker>
+                    <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.refnoDate?.split('T')[0]" (valueChange)="entryData.refnoDate = $event" name="entryData.refnoDate"></datepicker>
                     </div>
                 </div>
                 <div class="input-group" style="margin-bottom: -15px !important;">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
                     <div class="col-sm">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="entryData.particulars" appRequired></textarea>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="entryData.particulars" appRequired name="entryData.particulars"></textarea>
                         </div>
                     </div>
                 </div>
@@ -96,29 +97,29 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd" appRequired>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd" appRequired name="entryData.currCd">
                             <!-- <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;">
                                 <option>PHP</option>
                                 <option>USD</option>
                                 <option>EUR</option>
                             </select> -->
                             <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;    margin-left: 3px;" [(ngModel)]="entryData.jvAmt" appCurrency>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;    margin-left: 3px;" [(ngModel)]="entryData.jvAmt" appCurrency name="entryData.jvAmt">
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
                         </div>
                     </div>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; text-align: right;" [(ngModel)]="entryData.currRate" appCurrencyRate appRequired>
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; text-align: right;" [(ngModel)]="entryData.currRate" appCurrencyRate appRequired name="entryData.currRate">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Local Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;" value="PHP" readonly>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;" value="PHP" readonly name="entryData.localCurr">
                             <!-- <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;">
                                 <option>PHP</option>
                                 <option>USD</option>
                                 <option>EUR</option>
                             </select> -->
                           <!--   <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="text-align: right;" [(ngModel)]="entryData.localAmt" appCurrency>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="text-align: right;" [(ngModel)]="entryData.localAmt" appCurrency name="entryData.localAmt">
                         </div>
                     </div>
                 </div>
@@ -126,7 +127,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Prepared By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedBy" appRequired>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedBy" appRequired name="entryData.preparedBy">
                             <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                         </div>
                     </div>
@@ -134,7 +135,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Approved By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                             <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="entryData.approvedBy" readonly>
+                             <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="entryData.approvedBy" readonly name="entryData.approvedBy">
                             <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                         </div>
                     </div>
@@ -143,13 +144,13 @@
                     <div class="col-sm-1"></div>
                     <div class="col-sm-4"> 
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" appRequired>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" appRequired name="entryData.prepared">
                         </div>
                     </div>
                     <div class="col-sm-3"></div>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                             <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly>
+                             <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly name="entryData.approved">
                         </div>
                     </div>
                 </div>
@@ -158,11 +159,11 @@
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <div class="col-sm-5 dp-cont">
-                            <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired></datepicker>
+                            <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"></datepicker>
                             </div>
 
                             <div class="col-sm-4 dp-cont">
-                            <datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[1]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'t')" appRequired></datepicker>
+                            <datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[1]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'t')" appRequired name="entryData.time"></datepicker>
                             </div>
                         </div>
                     </div>
@@ -171,10 +172,10 @@
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[0]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'d')" disabled></datepicker>
+                                <datepicker [type]="'date'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[0]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'d')" disabled name="entryData.approvedDate1"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'time'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[1]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'t')" disabled></datepicker>
+                                <datepicker [type]="'time'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[1]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'t')" disabled name="entryData.approvedDate2"></datepicker>
                             </div>
                         </div>
                     </div>
@@ -203,18 +204,19 @@
             <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
                 <div class="input-group" style="margin-bottom: -15px !important;">
                     <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createUser">
+                    <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createUser" name="entryData.createUser">
                     <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createDate">
+                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createDate" name="entryData.createDate">
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateUser">
+                    <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateUser" name="entryData.updateUser">
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateDate">
+                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateDate" name="entryData.updateDate">
                 </div>
             </div>
         </fieldset>
     </div>
 </div>
+</form>
 
 <app-jv-type-lov id="jvTypeModal" (selectedData)="setTranType($event)"></app-jv-type-lov>
 
@@ -260,6 +262,7 @@
     </div>
 </app-modal>
 
+<app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveJV()"></app-confirm-save>
 <app-cancel-button (onYes)="saveJV('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

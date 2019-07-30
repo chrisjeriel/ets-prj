@@ -428,6 +428,8 @@ import { MtnCedingCompanyMemberComponent } from './maintenance/mtn-ceding-compan
 import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-app-payments-zero/jv-app-payments-zero.component';
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
 import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-soa-lov/jv-soa-lov.component';
+import { QuarterEndingLovComponent } from './maintenance/quarter-ending-lov/quarter-ending-lov.component';
+
 
 @NgModule({
     imports: [
@@ -446,7 +448,7 @@ import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generat
         QuillModule,
         NgxMaskModule.forRoot(),
         CalendarModule,
-        BrowserAnimationsModule,
+        BrowserAnimationsModule
     ],
     declarations: [
         AppComponent,
@@ -862,6 +864,7 @@ import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generat
         JvAppPaymentsZeroComponent,
         JvTypeLovComponent,
         JvSoaLovComponent,
+        QuarterEndingLovComponent,
     ],
 
   	providers: [

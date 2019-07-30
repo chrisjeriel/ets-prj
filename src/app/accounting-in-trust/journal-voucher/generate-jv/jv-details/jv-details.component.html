@@ -113,7 +113,7 @@
             <ng-template ngbTabTitle>
                <ng-container [ngSwitch]="jvType.toUpperCase()">
                     <div *ngSwitchCase="'ADJUSTMENTS OF INWARD POLICY BALANCES'">Inward Policy Balances</div>
-                    <div *ngSwitchCase="'PREMIUM RESERVE RELEASED'">Premium Reserve Released (Funds Held Released)</div>
+                    <div *ngSwitchCase="'PREMIUM RESERVE RELEASED (FUNDS HELD RELEASED)'">Premium Reserve Released (Funds Held Released)</div>
                     <div *ngSwitchCase="'INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP'">Interest on Overdue Accounts - Monthly Setup</div>
                     <div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
                     <div *ngSwitchCase="'OFFSETTING OF RECEIVABLES IN-TRUST AGAINST LOSSES'">Offsetting of Receivables In-Trust Against Losses</div>
@@ -130,8 +130,8 @@
                                 <app-jv-inward-pol-balance [tranId]="jvDetails.tranId"></app-jv-inward-pol-balance>                                    
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="'PREMIUM RESERVE RELEASED'">
-                                <app-jv-prenium-reserve></app-jv-prenium-reserve>
+                            <ng-container *ngSwitchCase="'PREMIUM RESERVE RELEASED (FUNDS HELD RELEASED)'">
+                                <app-jv-prenium-reserve [tranId]="jvDetails.tranId"></app-jv-prenium-reserve>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="'INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP'">

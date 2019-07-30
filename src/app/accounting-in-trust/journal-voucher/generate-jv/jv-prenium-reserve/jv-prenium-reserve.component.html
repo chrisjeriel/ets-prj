@@ -1,7 +1,7 @@
 <div>
 	<div class="row">
 	    <div class="col-sm-12" style="margin-top: 15px" >
-		  <app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+		  <app-cust-editable-non-datatable [passData]="passData" style="width: 100%" (clickLOV)="quarterEndModal($event)"></app-cust-editable-non-datatable>
 	   </div>
 	</div>
 	<div class="form-row" style="margin-top: 13px !important;">
@@ -15,4 +15,7 @@
 	    </div>
 	</div>	
 </div>
-
+<app-quarter-ending-lov id="quarterEnd"></app-quarter-ending-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveOverdueAcct()"></app-confirm-save>
+<app-cancel-button (onYes)="saveOverdueAcct('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
