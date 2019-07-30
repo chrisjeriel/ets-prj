@@ -9,8 +9,10 @@
                   	            <p-accordionTab header="A">
                   	            </p-accordionTab>
                               </p-accordion>
-                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
                                     <p-accordionTab header="B">
+                                          <button [routerLink]="['/mtn-bank']" class="button btn btn-link">Bank</button>
+                                          <br />
                                     </p-accordionTab>
                               </p-accordion>
                               <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">

@@ -202,8 +202,9 @@ export class CmdmAccntEntriesComponent implements OnInit {
 
 
  computeTotals(){   
-   this.totals.credit = this.passTable.tableData.reduce((a,b)=>a+(b.creditAmt != null && b.creditAmt.length != 0?parseFloat(b.creditAmt):0),0,0);
-   this.totals.debit  = this.passTable.tableData.reduce((a,b)=>a+(b.debitAmt  != null && b.debitAmt.length != 0 ?parseFloat( b.debitAmt):0),0,0);
+   console.log(this.passTable.tableData)
+   this.totals.credit = this.passTable.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
+   this.totals.debit  = this.passTable.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat( b.debitAmt)),0);
    this.totals.variance = this.totals.debit - this.totals.credit;
  }
 }

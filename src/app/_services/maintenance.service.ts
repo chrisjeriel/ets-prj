@@ -1214,4 +1214,13 @@ export class MaintenanceService{
     				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag));
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnSL", {params});
     }
+
+    saveMtnBank(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBank', JSON.stringify(params), header);
+    }
 }

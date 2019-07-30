@@ -430,6 +430,8 @@ import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-vouche
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
 import { MtnClmHistoryLovComponent } from './maintenance/mtn-clm-history-lov/mtn-clm-history-lov.component';
 import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-soa-lov/jv-soa-lov.component';
+import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component';
+import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
 
 
@@ -868,6 +870,8 @@ import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-
         JvTypeLovComponent,
         MtnClmHistoryLovComponent,
         JvSoaLovComponent,
+        BankComponent,
+        BankAccountComponent,
         AccountingMtnComponent,
     ],
 

@@ -64,14 +64,14 @@
             <div class="input-group">
                 <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
                 <label class="form-control-sm col-sm-2" >Total Debit and Credit</label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.debit | number:'1.2-2'">
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.credit | number:'1.2-2'">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.debit | number:'1.2-2'" disabled="disabled">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.credit | number:'1.2-2'" disabled="disabled">
             </div>
             <div class="input-group">
                 <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
                 <label class="form-control-sm col-sm-2" >Variance</label>
                 <label class="form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"></label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.variance | number:'1.2-2'">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.variance | number:'1.2-2'" disabled="disabled">
             </div>
         </div>
         <div class="w-100 text-center">
