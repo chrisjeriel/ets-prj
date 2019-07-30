@@ -1,3 +1,51 @@
-<p>
-  bank-account works!
-</p>
+<div class="cust-tabs-container">
+    <h4>Maintenance / Accounting / Bank Account</h4>
+    <ngb-tabset>
+        <ngb-tab title="Bank Account Maintenance">
+            <ng-template ngbTabContent>
+            	<fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+            		<div class="input-group" style="margin-top: 10px !important;">
+            			<label class="form-control-sm col-sm-2"></label>
+                        <label class="form-control-sm col-sm-1">Bank</label>
+                        <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="bank?.bankCd" >
+                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
+                        <input type="text" class="form-control form-control-sm col-sm-3 ml-2" [ngModel]="bank?.shortName" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm ml-1" [ngModel]="bank?.officialName" readonly>
+            			<label class="form-control-sm col-sm-2"></label>
+                    </div>
+            	</fieldset>
+
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+	                	<app-cust-editable-non-datatable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"></app-cust-editable-non-datatable>
+
+	                <div class="w-100 d-flex" style="margin-top: 30px !important">
+                    	<label class="form-control-sm col-sm-1">Remarks</label>
+                    	<input type="text" class="form-control form-control-sm col-sm" [ngModel]="bank?.bankCd" >
+                    </div>
+	                <div class="w-100 text-center my-2" style="margin-top: 30px !important">
+                    	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
+                    	<button class="cust-btn" (click)="onClickSave()">Save</button>
+                        <button class="cust-btn">Print</button>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                    </div>
+
+                </fieldset>           
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>

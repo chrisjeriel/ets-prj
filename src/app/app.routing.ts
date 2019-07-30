@@ -174,6 +174,7 @@ import { ClaimCashCallComponent } from './maintenance/claims/claim-cash-call/cla
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
+import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 
 const appRoutes: Routes = [
 
@@ -359,6 +360,7 @@ const appRoutes: Routes = [
     { path: 'mtn-clm-stat-reason', component: ClaimStatusReasonComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-bank', component: BankComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-acct', component: AccountingMtnComponent},
+    { path: 'mtn-bank-acct', component: BankAccountComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
