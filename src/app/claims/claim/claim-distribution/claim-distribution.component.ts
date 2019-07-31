@@ -100,8 +100,11 @@ export class ClaimDistributionComponent implements OnInit {
    diagIcon:string;
 
    resTableData:any[];
+   payTableData:any[];
 
    histTypeFilter:any = 'L';
+
+   currTab:string = 'reserve';
 
   constructor(private modalService: NgbModal, private clmService : ClaimsService, private titleService: Title, private ns: NotesService, private router: Router) { }
 
@@ -134,11 +137,13 @@ export class ClaimDistributionComponent implements OnInit {
   }
 
   onTabChange(data){
+    console.log(data)
     this.selected = null;
     this.paymentDistTable.indvSelect = null;
     this.reserveDistTable.indvSelect = null;
     this.treatyDistPassData.tableData = [];
     this.treatyTable.refreshTable();
+    this.currTab = data.nextId;
   }
 
   getPoolDist(){
@@ -190,15 +195,27 @@ export class ClaimDistributionComponent implements OnInit {
 
   filterTable(histCd){
     this.histTypeFilter = histCd;
-    this.reserveDistPassData.tableData = this.resTableData.filter(a=>a.histCategory == histCd);
-    if(this.reserveDistPassData.tableData.length > 0){
-      this.reserveDistTable.onRowClick(null, this.reserveDistPassData.tableData[0])
+    if(this.currTab == 'reserve'){
+        this.reserveDistPassData.tableData = this.resTableData.filter(a=>a.histCategory == histCd);
+        if(this.reserveDistPassData.tableData.length > 0){
+          this.reserveDistTable.onRowClick(null, this.reserveDistPassData.tableData[0])
+        }else{
+          this.treatyDistPassData.tableData = [];
+        }
+  
+        this.treatyTable.refreshTable();
+        this.reserveDistTable.refreshTable();
     }else{
-      this.treatyDistPassData.tableData = [];
+        this.paymentDistPassData.tableData = this.payTableData.filter(a=>a.histCategory == histCd);
+        if(this.paymentDistPassData.tableData.length > 0){
+          this.paymentDistTable.onRowClick(null, this.paymentDistPassData.tableData[0])
+        }else{
+          this.treatyDistPassData.tableData = [];
+        }
+  
+        this.treatyTable.refreshTable();
+        this.paymentDistTable.refreshTable();
     }
-
-    this.treatyTable.refreshTable();
-    this.reserveDistTable.refreshTable();
   }
 
 }
