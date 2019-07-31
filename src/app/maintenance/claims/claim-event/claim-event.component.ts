@@ -29,9 +29,9 @@ export class ClaimEventComponent implements OnInit {
 
     passData: any = {
         tableData            : [],
-        tHeader              : ['Event Code', 'Description', 'Line','Event Type','Loss Date From','Loss Date To','Active','Remarks'],
-        dataTypes            : ['number','text','lovInput','lovInput','date','date','checkbox','text'],
-        magnifyingGlass	 	 : ['lineCd','eventTypeCd'],
+        tHeader              : ['Event Code', 'Description', 'Event Type','Event Date From','Event Date To','Active','Remarks'],
+        dataTypes            : ['sequence-5','text','lovInput','date','date','checkbox','text'],
+        magnifyingGlass	 	 : ['eventTypeCd'],
         nData:
         {
             eventCd		  : '',
@@ -52,10 +52,10 @@ export class ClaimEventComponent implements OnInit {
         addFlag             : true,
         genericBtn			: 'Delete',
 		disableGeneric 		: true,
-        keys                : ['eventCd','eventDesc','lineCd','eventTypeCd','lossDateFrom','lossDateTo','activeTag','remarks'],
-        uneditable          : [true,false,false,false,false,false,false,false],
+        keys                : ['eventCd','eventDesc','eventTypeCd','lossDateFrom','lossDateTo','activeTag','remarks'],
+        uneditable          : [true,false,false,false,false,false,false],
         pageID              : 'mtn-clm-event',
-        widths              : [1,'315','auto',1,1,1,1,'315']
+        widths              : [1,'315',1,1,1,1,'315']
     };
 
     mtnClmEventData : any = {
@@ -101,7 +101,8 @@ export class ClaimEventComponent implements OnInit {
 			console.log(data);
 			this.getMtnClmEvent();
 			this.success.open();
-			this.params.saveEvent = [];
+			this.params.saveEvent 	= [];
+			this.params.deleteEvent = [];
 			this.passData.disableGeneric = true;
 		});
 	}
@@ -116,7 +117,7 @@ export class ClaimEventComponent implements OnInit {
 
 		for(let record of this.passData.tableData){
 			console.log(record);
-			if(record.eventDesc == '' || record.eventTypeCd == ''){
+			if(record.eventDesc == '' || record.eventTypeCd == '' || record.lossDateFrom == '' || record.lossDateFrom == null || record.lossDateTo == '' || record.lossDateTo == null){
 				if(!record.deleted){
 					isEmpty = 1;
 					record.fromCancel = false;
@@ -133,11 +134,13 @@ export class ClaimEventComponent implements OnInit {
 					record.updateUser		= this.ns.getCurrentUser();
 					record.updateDate		= this.ns.toDateTimeString(0);
 					this.params.saveEvent.push(record);
-				}else if(record.edited && record.deleted){
-					this.params.deleteEvent.push(record);
+				}else if(record.edited && record.deleted){ 
+					this.params.deleteEvent.push(record);	
 				}
 			}
 		}
+
+		console.log(this.params);
 
 		this.passData.tableData.forEach(function(tblData){
 			if(tblData.isNew != true){
@@ -166,6 +169,7 @@ export class ClaimEventComponent implements OnInit {
 					$('.ng-dirty').removeClass('ng-dirty');
 					this.cs.confirmModal();
 					this.params.saveEvent 	= [];
+					this.params.deleteEvent 	= [];
 					this.passData.tableData = this.passData.tableData.filter(a => a.eventDesc != '');
 				}else{
 					if(this.cancelFlag == true){
@@ -181,7 +185,6 @@ export class ClaimEventComponent implements OnInit {
 
 	onRowClick(event){
 		if(event != null){
-			console.log(event);
 	       	this.passData.disableGeneric = false;
 	       	this.rowData = event;
 	       	this.mtnClmEventData.createUser = event.createUser;
@@ -208,14 +211,6 @@ export class ClaimEventComponent implements OnInit {
 	  	}
 	}
 
-	setLine(data){
-		this.table.onRowClick(null, this.passData.tableData[this.rowData.index]);
-		this.rowData.lineCd = data.lineCd;	        
-        this.ns.lovLoader(data.ev, 0);
-        this.rowData.index == undefined?'':this.passData.tableData[this.rowData.index].edited = true;
-        $('.lovInput').addClass('ng-dirty');
-    }
-
     setEventType(data){
     	this.table.onRowClick(null, this.passData.tableData[this.rowData.index]);
     	this.rowData.eventTypeCd = data.eventTypeCd;
@@ -227,23 +222,22 @@ export class ClaimEventComponent implements OnInit {
     checkCode(event){
     	if(event.key != undefined){
     		this.ns.lovLoader(event.ev, 1);
-	        if(event.key.toUpperCase() == 'LINECD'){
-	        	this.lineLov.checkCode(this.rowData.lineCd.toUpperCase(), event.ev);
-	        }else if(event.key.toUpperCase() == 'EVENTTYPECD'){
+	        if(event.key.toUpperCase() == 'EVENTTYPECD'){
 	        	this.clmEventTypeLov.checkCode(this.rowData.eventTypeCd.toUpperCase(), event.ev);
 	        }
     	}else{
     		
     	}
-
     }
 
     showLOV(event){
-        if(event.key.toUpperCase() == 'LINECD'){
-        	$('#lineLOV #modalBtn').trigger('click');
-        }else if(event.key.toUpperCase() == 'EVENTTYPECD'){
+        if(event.key.toUpperCase() == 'EVENTTYPECD'){
         	$('#eventTypeLov #modalBtn').trigger('click');
         }
+    }
+
+    onClickNo(){
+    	this.params.saveEvent = [];
     }
 
 	cancel(){
