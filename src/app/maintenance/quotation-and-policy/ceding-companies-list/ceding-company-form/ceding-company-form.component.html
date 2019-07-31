@@ -52,8 +52,8 @@
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">T.I.N No.</label>
 										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.tinNo" name="tinNo">
-										<label class="form-control-sm col-sm-2" style="margin-left: 12px !important;">Business Type</label>
-										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.bussTypeId" name="businessId" numbers-only maxlength="9">
+										<!-- <label class="form-control-sm col-sm-2" style="margin-left: 12px !important;">Business Type</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.bussTypeId" name="businessId" numbers-only maxlength="9"> -->
 									</div>
 								</div>
 							</fieldset>
@@ -65,39 +65,60 @@
 						<div class="col-sm-8">
 							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
 								<legend class="scheduler-border">Membership</legend>
-								<div style="margin-right: 50px;">
-									<div class="input-group cust-ig">
-										<label class="form-control-sm col-sm-2">Membership Date</label>
-										<!-- <input type="date" class="form-control form-control-sm col-sm-4" [ngModel]="companyData.membershipDate === '' ? '' : ns.toDateTimeString(companyData.membershipDate).split('T')[0]" (ngModelChange)="companyData.membershipDate = $event" name="membershipDate"> -->
-										<div class="col-sm dp-cont">
-											<datepicker [type]="'date'" [required]="true" [disabled]="companyData.membershipTag === 'N' || companyData.membershipTag === null" [value]="companyData.membershipDate === '' ? '' : ns.toDateTimeString(companyData.membershipDate).split('T')[0]" (valueChange)="companyData.membershipDate = $event" [name]="'membershipDate'"></datepicker>
-										</div>
-										<div class="col-sm-2"></div>
-										<div class="cust-div col-sm cust-checkbox-pos">
-											<input type="checkbox" [ngModel]="companyData.membershipTag === 'Y'" (ngModelChange)="$event ? companyData.membershipTag = 'Y' : companyData.membershipTag = 'N'; !$event ? companyData.membershipDate = '' : ''" name="membershipTag">&nbsp;<span class="cust-span">Member</span>
+								<div class="row">
+									<div class="col-sm-6" style="padding-left: 38px">
+										<div style="margin-right: 50px;">
+											<div class="input-group cust-ig">
+												<label class="form-control-sm col-sm-4">Membership Date</label>
+												<!-- <input type="date" class="form-control form-control-sm col-sm-4" [ngModel]="companyData.membershipDate === '' ? '' : ns.toDateTimeString(companyData.membershipDate).split('T')[0]" (ngModelChange)="companyData.membershipDate = $event" name="membershipDate"> -->
+												<div class="col-sm dp-cont">
+													<datepicker [type]="'date'" [required]="true" [disabled]="companyData.membershipTag === 'N' || companyData.membershipTag === null" [value]="companyData.membershipDate === '' ? '' : ns.toDateTimeString(companyData.membershipDate).split('T')[0]" (valueChange)="companyData.membershipDate = $event" [name]="'membershipDate'"></datepicker>
+												</div>
+												
+											</div>
+											<div class="input-group cust-ig">
+												<label class="form-control-sm col-sm-4">Inactive Date</label>
+												<!-- <input type="date" class="form-control form-control-sm col-sm" [ngModel]="companyData.inactiveDate === '' ? '' : ns.toDateTimeString(companyData.inactiveDate).split('T')[0]" (ngModelChange)="companyData.inactiveDate = $event" name="inactiveDate"> -->
+												<div class="col-sm dp-cont">
+													<datepicker [type]="'date'" [required]="true" [disabled]="companyData.activeTag === 'Y' || companyData.activeTag === null" [value]="companyData.inactiveDate === '' ? '' : ns.toDateTimeString(companyData.inactiveDate).split('T')[0]" (valueChange)="companyData.inactiveDate = $event" [name]="'inactiveDate'"></datepicker>
+												</div>
+											</div>
+											<div class="input-group cust-ig">
+												<label class="form-control-sm col-sm-4">Withdrawal Date</label>
+												<div class="col-sm dp-cont">
+													<datepicker [type]="'date'" [required]="true" [disabled]="companyData.withdrawTag === 'N' || companyData.withdrawTag === null" [value]="companyData.withdrawDate === '' ? '' : ns.toDateTimeString(companyData.withdrawDate).split('T')[0]" (valueChange)="companyData.withdrawDate = $event" [name]="'withdrawDate'"></datepicker>
+												</div>
+												<!-- <div class="cust-div col-sm cust-checkbox-pos">
+													<input type="checkbox" [ngModel]="companyData.activeTag === 'Y'" (ngModelChange)="$event ? companyData.activeTag = 'Y' : companyData.activeTag = 'N'; $event ? companyData.inactiveDate = '' : ''" name="activeTag" [disabled]="companyData.withdrawTag === 'Y'">&nbsp;<span class="cust-span">Active</span>
+													<br/>
+													<input type="checkbox" [ngModel]="companyData.withdrawTag === 'Y'" (ngModelChange)="$event ? companyData.withdrawTag = 'Y' : companyData.withdrawTag = 'N'; !$event ? companyData.withdrawDate = '' : ''; $event ? withdrawTagChecked() : ''" name="withdrawTag">&nbsp;<span class="cust-span">Withdrawal</span>
+												</div> -->
+											</div>
 										</div>
 									</div>
-									<div class="input-group cust-ig">
-										<label class="form-control-sm col-sm-2">Inactive Date</label>
-										<!-- <input type="date" class="form-control form-control-sm col-sm" [ngModel]="companyData.inactiveDate === '' ? '' : ns.toDateTimeString(companyData.inactiveDate).split('T')[0]" (ngModelChange)="companyData.inactiveDate = $event" name="inactiveDate"> -->
-										<div class="col-sm dp-cont">
-											<datepicker [type]="'date'" [required]="true" [disabled]="companyData.activeTag === 'Y' || companyData.activeTag === null" [value]="companyData.inactiveDate === '' ? '' : ns.toDateTimeString(companyData.inactiveDate).split('T')[0]" (valueChange)="companyData.inactiveDate = $event" [name]="'inactiveDate'"></datepicker>
-										</div>
-										<div class="col-sm-2"></div>
-										<div class="cust-div col-sm cust-checkbox-pos">
-											<input type="checkbox" [ngModel]="companyData.treatyTag === 'Y'" (ngModelChange)="$event ? companyData.treatyTag = 'Y' : companyData.treatyTag = 'N'" name="treatyTag">&nbsp;<span class="cust-span">Treaty</span>
-										</div>
-									</div>
-									<div class="input-group cust-ig">
-										<label class="form-control-sm col-sm-2">Withdrawal Date</label>
-										<div class="col-sm dp-cont">
-											<datepicker [type]="'date'" [required]="true" [disabled]="companyData.withdrawTag === 'N' || companyData.withdrawTag === null" [value]="companyData.withdrawDate === '' ? '' : ns.toDateTimeString(companyData.withdrawDate).split('T')[0]" (valueChange)="companyData.withdrawDate = $event" [name]="'withdrawDate'"></datepicker>
-										</div>
-										<div class="col-sm-2"></div>
-										<div class="cust-div col-sm cust-checkbox-pos">
-											<input type="checkbox" [ngModel]="companyData.activeTag === 'Y'" (ngModelChange)="$event ? companyData.activeTag = 'Y' : companyData.activeTag = 'N'; $event ? companyData.inactiveDate = '' : ''" name="activeTag">&nbsp;<span class="cust-span">Active</span>
+									<div class="col-sm-6">
+										<div style="margin-right: 50px;">
+											<div class="input-group cust-ig">
+												<div class="cust-div col-sm-3 cust-checkbox-pos">
+													<input type="checkbox" [ngModel]="companyData.membershipTag === 'Y'" (ngModelChange)="$event ? companyData.membershipTag = 'Y' : companyData.membershipTag = 'N'; !$event ? companyData.membershipDate = '' : ''" name="membershipTag" [disabled]="companyData.withdrawTag === 'Y'">&nbsp;<span class="cust-span">Member</span>
+												</div>
+												<div class="cust-div col-sm-3 cust-checkbox-pos">
+													<input type="checkbox" [ngModel]="companyData.activeTag === 'Y'" (ngModelChange)="$event ? companyData.activeTag = 'Y' : companyData.activeTag = 'N'; $event ? companyData.inactiveDate = '' : ''" name="activeTag" [disabled]="companyData.withdrawTag === 'Y'">&nbsp;<span class="cust-span">Active</span>
+												</div>
+											</div>
 											<br/>
-											<input type="checkbox" [ngModel]="companyData.withdrawTag === 'Y'" (ngModelChange)="$event ? companyData.withdrawTag = 'Y' : companyData.withdrawTag = 'N'; !$event ? companyData.withdrawDate = '' : ''" name="withdrawTag">&nbsp;<span class="cust-span">Withdrawal</span>
+											<div class="input-group cust-ig">
+												<div class="cust-div col-sm-3 cust-checkbox-pos">
+													<input type="checkbox" [ngModel]="companyData.treatyTag === 'Y'" (ngModelChange)="$event ? companyData.treatyTag = 'Y' : companyData.treatyTag = 'N'" name="treatyTag" [disabled]="companyData.withdrawTag === 'Y'">&nbsp;<span class="cust-span">Treaty R/I</span>
+												</div>
+												<div class="cust-div col-sm-3 cust-checkbox-pos">
+													<input type="checkbox" [ngModel]="companyData.withdrawTag === 'Y'" (ngModelChange)="$event ? companyData.withdrawTag = 'Y' : companyData.withdrawTag = 'N'; !$event ? companyData.withdrawDate = '' : ''; $event ? withdrawTagChecked() : ''" name="withdrawTag">&nbsp;<span class="cust-span">Withdrawal</span>
+												</div>
+											</div>
+											<br/>
+											<div class="input-group cust-ig">
+												<button class="cust-btn cust-btn-extend" (click)="modal.openNoClose();">Ceding Company History</button>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -111,7 +132,7 @@
 							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
 								<legend class="scheduler-border">Company Representative</legend>
 								<div class="contain">
-									<app-cust-editable-non-datatable [passData]="repData" (tableDataChange)="repData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')" (add)="onClickAdd($event)" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="repData" (tableDataChange)="repData.tableData = $event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('a')" (add)="onClickAdd($event)" (uploadedFiles)="uploads($event)" #compRep></app-cust-editable-non-datatable>
 								</div>
 							</fieldset>
 						</div>
@@ -160,3 +181,23 @@
 	<app-confirm-save (onYes)="save()"></app-confirm-save>
 	<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
 	<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/ceding-co-list'" ></app-cancel-button>
+
+	<app-modal class="d-none">
+		<div header>Ceding Company History</div>
+		<div body>
+			<div style="width: 100%">
+				<div class="input-group cust-ig">
+					<label class="form-control-sm col-sm-4">Ceding Company</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="companyData.cedingId + ' - ' + companyData.cedingName" readonly>
+				</div>
+				<fieldset class="scheduler-border">
+					<div class="custom-row-inline-inset">
+						<app-cust-editable-non-datatable [passData]="histData" #hist></app-cust-editable-non-datatable>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<div footer class="w-100 text-center">
+			<button class="cust-btn" (click)="modal.closeModal()">Return</button>
+		</div>
+	</app-modal>

@@ -12,6 +12,9 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { QuillModule } from 'ngx-quill';
 import { DecimalPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarModule } from 'primeng/calendar';
+import { AccordionModule } from 'primeng/accordion';
+import { DropdownModule } from 'primeng/dropdown';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -357,7 +360,6 @@ import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-
 import { SpecialLovComponent } from './_components/special-lov/special-lov.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { WfNotesFormComponent } from './home/wf-notes/wf-notes-form/wf-notes-form.component';
-import { CalendarModule } from 'primeng/calendar';
 import { DatepickerComponent } from './_components/datepicker/datepicker.component';
 import { LineClassComponent } from './maintenance/quotation-and-policy/line-class/line-class.component';
 import { AdviceWordingsComponent } from './maintenance/quotation-and-policy/advice-wordings/advice-wordings.component';
@@ -425,10 +427,16 @@ import { MtnClmEventTypeComponent } from './maintenance/mtn-clm-event-type/mtn-c
 import { MtnAdjusterComponent } from './maintenance/mtn-adjuster/mtn-adjuster.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 import { MtnCedingCompanyMemberComponent } from './maintenance/mtn-ceding-company-member/mtn-ceding-company-member.component';
+import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-app-payments-zero/jv-app-payments-zero.component';
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
 import { MtnClmHistoryLovComponent } from './maintenance/mtn-clm-history-lov/mtn-clm-history-lov.component';
 import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-soa-lov/jv-soa-lov.component';
+import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component';
+import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
+import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
+import { MtnBankComponent } from './maintenance/mtn-bank/mtn-bank.component';
+import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration/mtn-acct-int-duration.component';
 
 
 @NgModule({
@@ -449,6 +457,8 @@ import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generat
         NgxMaskModule.forRoot(),
         CalendarModule,
         BrowserAnimationsModule,
+        AccordionModule,
+        DropdownModule,
     ],
     declarations: [
         AppComponent,
@@ -861,10 +871,16 @@ import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generat
         MtnAdjusterComponent,
         ClaimStatusReasonComponent,
         MtnCedingCompanyMemberComponent,
+        AllocateInvestmentIncomeComponent,
         JvAppPaymentsZeroComponent,
         JvTypeLovComponent,
         MtnClmHistoryLovComponent,
         JvSoaLovComponent,
+        BankComponent,
+        BankAccountComponent,
+        AccountingMtnComponent,
+        MtnBankComponent,
+        MtnAcctIntDurationComponent,
     ],
 
   	providers: [

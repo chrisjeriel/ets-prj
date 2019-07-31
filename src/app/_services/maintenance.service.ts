@@ -1106,9 +1106,8 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClmEventTypeLov",{params});
 	}
 
-	getMtnClmEventLov(lineCd, eventTypeCd, searchStr){
+	getMtnClmEventLov(eventTypeCd, searchStr){
 		const params = new HttpParams()
-			.set('lineCd', lineCd === undefined || lineCd === null ? '' : lineCd)
 			.set('eventTypeCd', eventTypeCd === undefined || eventTypeCd === null ? '' : eventTypeCd)
 			.set('searchStr', searchStr === undefined || searchStr === null ? '' : searchStr);
 			
@@ -1245,4 +1244,30 @@ export class MaintenanceService{
     				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag));
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnSL", {params});
     }
+
+    saveMtnBank(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBank', JSON.stringify(params), header);
+    }
+
+    getMtnInvtSecType(invtSecCd?,activeTag?){
+    	const params = new HttpParams()
+    				.set('invtSecCd', (invtSecCd === null || invtSecCd === undefined ? '' : invtSecCd))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInvtSecType", {params});
+    }
+
+    saveMtnBankAcct(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };	
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBankAcct', JSON.stringify(params), header);
+    }
+
 }

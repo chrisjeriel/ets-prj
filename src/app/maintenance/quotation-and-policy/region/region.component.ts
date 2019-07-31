@@ -110,7 +110,8 @@ export class RegionComponent implements OnInit {
  											createDate  : this.ns.toDateTimeString(rec.createDate),
  											updateUser  : rec.updateUser,
  											updateDate  : this.ns.toDateTimeString(rec.updateDate),
- 											uneditable  : ['regionCd']
+ 											uneditable  : ['regionCd'],
+                      okDelete    : rec.okDelete
 											});
 		    }
 			this.regionTable.refreshTable();
@@ -146,16 +147,17 @@ export class RegionComponent implements OnInit {
   }
 
   onClickSave(cancelFlag?){
-  	this.cancelFlag = cancelFlag !== undefined;
-  	
+
       if(this.checkFields()){
-		    if(this.hasDuplicates(this.regionCdArray)){
-		      this.dialogMessage="Unable to save the record. Region Code must be unique.";
-			  this.dialogIcon = "warning-message";
-			  this.successDialog.open();
-		    } else {
-		      $('#confirm-save #modalBtn2').trigger('click');
-		    }
+        let regionCds:string[] = this.regionTable.passData.tableData.map(a=>a.regionCd);
+          if(regionCds.some((a,i)=>regionCds.indexOf(a)!=i)){
+            this.dialogMessage = 'Unable to save the record. Region Code must be unique.';
+            this.dialogIcon = 'error-message';
+            this.successDialog.open();
+            return;
+          } else {
+                this.confirmDialog.confirmModal();
+          }
       }else{
         this.dialogMessage="Please check field values.";
         this.dialogIcon = "error";
@@ -174,97 +176,103 @@ export class RegionComponent implements OnInit {
       return true;
   }
 
-  hasDuplicates(array) {
-    return (new Set(array)).size !== array.length;
+  onClickSaveRegion(cancelFlag?){
+    
+    this.cancelFlag = cancelFlag !== undefined;
+     if(this.cancelFlag){
+        if(this.checkFields()){
+          let regionCds:string[] = this.regionTable.passData.tableData.map(a=>a.regionCd);
+          if(regionCds.some((a,i)=>regionCds.indexOf(a)!=i)){
+            this.dialogMessage = 'Unable to save the record. Region Code must be unique.';
+            this.dialogIcon = 'error-message';
+            this.successDialog.open();
+            return;
+          } else {
+            this.saveDataRegion();
+          }
+        }else{
+          this.dialogMessage="Please fill up required fields.";
+          this.dialogIcon = "error";
+          this.successDialog.open();
+        }
+     } else {
+       this.saveDataRegion();
+     }
+
   }
 
-  onClickSaveRegion(cancelFlag?){
+  saveDataRegion(){
+    this.mtnRegionReq.saveRegion = [];
+    this.mtnRegionReq.deleteRegion = [];
+    this.mtnRegionReq.saveRegion = this.passData.tableData.filter(a=>a.edited && !a.deleted);
+    this.mtnRegionReq.saveRegion.forEach(a=>a.updateUser = this.ns.getCurrentUser()); 
+    this.mtnRegionReq.saveRegion.forEach(a=>a.updateDate = this.ns.toDateTimeString(0));
+    this.mtnRegionReq.saveRegion.forEach(a=>a.activeTag = this.cbFunc2(a.activeTag));
+    this.mtnRegionReq.saveRegion.forEach(a=>a.regionCd = this.regionCd);
+    this.mtnRegionReq.deleteRegion = this.deletedData; 
 
-  	this.mtnRegionReq.saveRegion = [];
-  	this.mtnRegionReq.deleteRegion = [];
-  	this.editedData = [];
-  	this.deletedData = [];
-    
-  	for(var i=0;i<this.passData.tableData.length;i++){
-  		 if(this.passData.tableData[i].edited){
-  		 	  this.editedData.push(this.passData.tableData[i]);
-  		 	  this.editedData[this.editedData.length - 1].activeTag  = this.cbFunc2(this.passData.tableData[i].activeTag);
-              this.editedData[this.editedData.length - 1].updateUser = this.ns.getCurrentUser();
-              this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);             
-         }     
-  	}
-  	        this.mtnRegionReq.saveRegion = this.editedData;
-            this.mtnRegionReq.deleteRegion = this.deletedData;     
 
-             if(this.mtnRegionReq.saveRegion.length > 0){
+     if(this.mtnRegionReq.saveRegion.length === 0 && this.mtnRegionReq.deleteRegion.length === 0  ){     
+              this.confirmDialog.showBool = false;
+              this.dialogIcon = "success";
+              this.successDialog.open();
+            } else {
               this.confirmDialog.showBool = true;
               this.passData.disableGeneric = true;
-              this.saveRegion();
-            } else {
-              this.confirmDialog.showBool = false;
-              this.dialogIcon = 'info';
-              this.dialogMessage = 'Nothing to save';
-              this.successDialog.open();
-            }
-
+              this.saveRegion(this.mtnRegionReq);     
+      }
   }
 
-  saveRegion(){
-  	this.mtnService.saveMtnRegion(JSON.stringify(this.mtnRegionReq))
+  saveRegion(obj){
+    this.deletedData = [];
+    console.log(JSON.stringify(obj));
+    this.mtnService.saveMtnRegion(JSON.stringify(obj))
                 .subscribe(data => {
-                	console.log(data);
+                  console.log(data);
                     if(data['returnCode'] == -1){
-			            this.dialogIcon = "success";
-			            this.successDialog.open();
-			            this.getMtnRegion();
-			        }else{
-			            this.dialogIcon = "error";
-			            this.successDialog.open();
-			            this.getMtnRegion();
-			        }
+                  this.dialogIcon = "success";
+                  this.successDialog.open();
+                  this.getMtnRegion();
+              }else{
+                  this.dialogIcon = "error";
+                  this.successDialog.open();
+                  this.getMtnRegion();
+              }
     });
   }
 
   onClickDelRegion(obj : boolean){
-  	  this.mtnRegionReq.saveRegion = [];
-  	  this.mtnRegionReq.deleteRegion = [];
-  		this.deletedData = [];
-  		this.editedData = [];
-      this.passData.disableGeneric = true;
-  		
+    this.mtnRegionReq.saveRegion = [];
+    this.mtnRegionReq.deleteRegion = [];
+    this.passData.disableGeneric = true;
+      
       if(obj){
-  			this.mtnService.getMtnProvince(this.regionCd,null).subscribe(data => {
-  				console.log(data['region'].length);
-  				if(data['region'].length > 0){
-  				   this.getMtnRegion();
-  				   this.dialogMessage="You are not allowed to delete a Region that is used by Province, City, District or Block.";
-			       this.dialogIcon = "warning-message";
-			       this.successDialog.open();
-  				} else {
-  				  this.deletedData.push({
-								    "regionCd": this.regionCd
-								     });
-		  		  this.mtnRegionReq.saveRegion = this.editedData;
-		          this.mtnRegionReq.deleteRegion = this.deletedData;     
-		  		  this.saveRegion();
-  				}
-  			});
-  		} 
+            this.deletedData.push({
+                    "regionCd": this.regionCd
+                     });
+            this.mtnRegionReq.deleteRegion = this.deletedData;     
+      } 
   }
-
+  
   deleteRegion(){
-  	    if (this.selectedData.add){
-  	    	this.deleteBool = false;
-  	    }else {
-  	    	this.deleteBool = true;	
-  	    }
-  	  this.regionTable.indvSelect.deleted = true;
-	  	this.regionTable.selected  = [this.regionTable.indvSelect]
-	  	this.regionTable.confirmDelete();
-  }
-
-  addRegion(event){
-    	
+       if (this.selectedData.add){
+          this.deleteBool = false;
+          this.regionTable.indvSelect.deleted = true;
+          this.regionTable.selected  = [this.regionTable.indvSelect];
+          this.regionTable.confirmDelete();
+       }else {
+          this.deleteBool = true;
+          console.log(this.regionTable.indvSelect.okDelete);  
+          if(this.regionTable.indvSelect.okDelete == 'N'){
+            this.dialogIcon = 'info';
+            this.dialogMessage =  'You are not allowed to delete a Region that is already used by Province, City, District or Block';
+            this.successDialog.open();
+          }else{
+            this.regionTable.indvSelect.deleted = true;
+            this.regionTable.selected  = [this.regionTable.indvSelect]
+            this.regionTable.confirmDelete();
+          }
+       }
   }
 
   cancel(){
@@ -294,9 +302,6 @@ export class RegionComponent implements OnInit {
         })
   
     }
-
-
-
   }
 
   change(event){

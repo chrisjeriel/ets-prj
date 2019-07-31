@@ -6,7 +6,7 @@
 					<app-acct-cmdm-entry [passData]="passData" (updateData)="passData = $event"></app-acct-cmdm-entry>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab class="ngb-tab" title="Accounting Entries">
+			<ngb-tab class="ngb-tab" title="Accounting Entries" [disabled]="passData.new">
 				<ng-template ngbTabContent>
 					<app-cmdm-accnt-entries [passData]="passData"></app-cmdm-accnt-entries>
 				</ng-template>

@@ -121,7 +121,7 @@
                                     <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" (click)="clickNew()"><a>New CMDM</a></button>
                                     <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" (click)="onClickSave()"><a>Save</a></button>
                                     <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new || (memoInfo.status != 'New' && memoInfo.status != 'Printed')" (click)="cancelMdl.openNoClose()"><a>Cancel CM/DM</a></button>
-                                    <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new || memoInfo.status=='Cancelled'" (click)="openConfirmPrintMdl()"><a>Print</a></button>
+                                    <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new || memoInfo.status=='Cancelled' || memoInfo.unbalAcctEntryTag == 'N'" (click)="openConfirmPrintMdl()"><a>Print</a></button>
                                 </div>
                             </div>
                         </div>

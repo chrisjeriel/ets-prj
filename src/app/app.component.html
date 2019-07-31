@@ -326,6 +326,8 @@
                                             <button [routerLink]="['cancel-transaction']" class="button btn btn-link">Cancel
                                                 Transaction</button>
                                             <br />
+                                            <button [routerLink]="['allocate-investment']" class="button btn btn-link">Allocate Investment Income</button>
+                                            <br />
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -467,9 +469,10 @@
                                 <br/>
                                 <!-- <button [routerLink]="['/mtn-claims']" class="button btn btn-link">Claims</button> -->
                                 <button [routerLink]="['/maintenance-clm']" class="button btn btn-link">Claims</button>
-                                <!--  -->
-                                <ngb-accordion #acc="ngbAccordion">
-
+                                <br/>
+                                <button [routerLink]="['/maintenance-acct']" class="button btn btn-link">Accounting</button>
+                                <br/>
+                                <!-- <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Accounting In-Trust
@@ -482,7 +485,8 @@
                                                 Series</button>
                                         </ng-template>
                                     </ngb-panel>
-                                </ngb-accordion>
+                                </ngb-accordion> -->
+
                                 <button [routerLink]="['/mtn-system']" class="button btn btn-link">System</button>
                             </ng-template>
                         </ngb-panel>

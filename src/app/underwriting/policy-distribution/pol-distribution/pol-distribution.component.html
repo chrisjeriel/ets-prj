@@ -107,7 +107,7 @@
 						<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
 							<div class="row" style="padding-top: 5px;">
 								<div class="col-sm" style="margin-top: -28px;">
-									<app-cust-editable-non-datatable [passData]="poolDistributionData" #poolTable></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="poolDistributionData" #poolTable (export)="exportPoolDist();"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="row">
