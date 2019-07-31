@@ -35,13 +35,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         nData: {
           paytMode: '',
           currCd: 'PHP',
-          currRt: 1,
+          currRt: 0,
           paytAmt: 0,
-          bank: '1',
+          bank: '',
           bankAcct: '',
           checkNo: '',
           checkDate: '',
-          checkClass: ''
+          checkClass: '',
+          uneditable: ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass']
         },
         disableGeneric: true,
         opts:[
@@ -188,41 +189,24 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     );
     //NECO PLEASE OPTIMIZE THIS, THIS IS NOT OPTIMIZED -neco also
     if(!this.isAdd){
-      if(this.emittedValue !== undefined && this.emittedValue.arStatus === 'X'){
-        this.isCancelled = true;
-        this.passData.addFlag = false;
-        this.passData.genericBtn = undefined;
-        this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
-        this.paytDtlTbl.refreshTable();
-        console.log('wat')
-      }
       this.retrieveArEntry(tranId, arNo);
     }else{
       if(this.emittedValue !== undefined){
-        if(this.emittedValue.arStatus === 'X'){
-          this.isCancelled = true;
-          this.passData.addFlag = false;
-          this.passData.genericBtn = undefined;
-          this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
-          this.paytDtlTbl.refreshTable();
-          console.log('wat')
-        }
         this.retrieveArEntry(this.emittedValue.tranId, this.emittedValue.arNo);
       }else{
-
-        if(this.emittedValue.arStatus === 'X'){
-          this.isCancelled = true;
-          this.passData.addFlag = false;
-          this.passData.genericBtn = undefined;
-          this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
-          this.paytDtlTbl.refreshTable();
-          console.log('wat')
-        }
+        console.log('wat you never played tuber simulator?')
         this.retrieveMtnAcitDCBNo();
         this.retrieveMtnDCBUser();
         this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
         this.arDate.time = this.ns.toDateTimeString(0).split('T')[1];
       }
+    }
+    if(this.emittedValue !== undefined && this.emittedValue.arStatus === 'X'){
+      this.isCancelled = true;
+      this.passData.addFlag = false;
+      this.passData.genericBtn = undefined;
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+      this.paytDtlTbl.refreshTable();
     }
     this.retrievePaymentType();
     this.retrieveCurrency();
@@ -427,7 +411,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           let arDetailParams = {
             tranId: this.arInfo.tranId,
             arNo: this.arInfo.arNo,
-            arStatus: this.arInfo.arStatus
+            arStatus: this.arInfo.arStatus,
+            arStatDesc: this.arInfo.arStatDesc,
+            arDate: this.arInfo.arDate,
+            dcbNo: this.arInfo.dcbYear+'-'+this.arInfo.dcbUserCd+'-'+this.pad(this.arInfo.dcbNo, 'dcbSeqNo'),
+            tranTypeCd: this.arInfo.tranTypeCd,
+            tranTypeName: this.arInfo.tranTypeName,
+            currCd: this.arInfo.currCd,
+            currRate: this.arInfo.currRate,
+            arAmt: this.arInfo.arAmt,
+            payeeNo: this.arInfo.payeeNo,
+            payor: this.arInfo.payor,
+            createUser: this.arInfo.createUser,
+            createDate: this.arInfo.createDate,
+            updateUser: this.arInfo.updateUser,
+            updateDate: this.arInfo.updateDate
           }
           this.emitArInfo.emit(arDetailParams);
 
@@ -491,8 +489,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.as.saveAcitArTrans(params).subscribe(
       (data:any)=>{
         if(data.returnCode === 0){
-          this.dialogIcon = 'error-message';
-          this.dialogMessage = data.errorList[0].errorMessage;
+          if(data.errorList !== null || (data.errorList !== null && data.errorList.length !== 0)){
+            this.dialogMessage = data.errorList[0].errorMessage;
+            this.dialogIcon = 'error-message';
+          }else{
+            this.dialogIcon = 'error';
+          }
           this.successDiag.open();
         }
         else{
@@ -710,14 +712,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         if(data[i].paytMode !== 'BT' && data[i].paytMode !== 'CK'){
           data[i].uneditable.push('bank');
           data[i].uneditable.push('bankAcct');
-          console.log('condition1');
+          data[i].bank = '';
+          data[i].bankAcct = '';
         }
         if(data[i].paytMode !== 'CK'){
+          //data[i].uneditable = []
           data[i].uneditable.push('checkNo');
           data[i].uneditable.push('checkDate');
           data[i].uneditable.push('checkClass');
+          data[i].checkNo = '';
+          data[i].checkDate = '';
+          data[i].checkClass = '';
           console.log('condition2');
         }
+        console.log(data[i].uneditable);
+        this.paytDtlTbl.refreshTable();
       }
     }else if(data.key === 'currCd'){
       for(var j = 0; j < data.length; j++){
@@ -725,6 +734,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       }
     }
     this.passData.tableData = data;
-    this.paytDtlTbl.refreshTable();
+    //this.paytDtlTbl.refreshTable();
   }
 }

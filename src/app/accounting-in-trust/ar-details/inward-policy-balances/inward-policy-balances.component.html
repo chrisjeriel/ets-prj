@@ -1,21 +1,23 @@
 <div class="form-row custom-row-inline-inset">
     <div class="input-group" style="margin-bottom: 0px !important;">
-      <div class="col-sm-1"></div>
-      <label class="form-control-sm col-sm" style="padding-left:0px !important;">Payment Amount</label>
-      <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right"
-        numbers-only placeholder="">
-      <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Total Balance for Selected Policy
+      <label class="form-control-sm col-sm" style="padding-left:0px !important; margin:0px !important;">Total Balance for Selected Policy
         Transactions</label>
-      <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right"
-        numbers-only placeholder="">
-      <label class="form-control-sm col-sm" style="padding-left:0px !important;">Variance</label>
-      <input type="text" value="0.00" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only
-        placeholder="">
-      <div class="col-sm-1"></div>
+      <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
+        numbers-only placeholder="" readonly [ngModel]="totalBal | number: '1.2-2'">
     </div>
-    <div class="input-group">
+    <div class="input-group" style="margin-bottom: 0px !important;">
+      <label class="form-control-sm col-sm" style="padding-left:0px !important; margin:0px !important;">Variance</label>
+      <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
+        placeholder="" readonly [ngModel]="variance | number: '1.2-2'">
+    </div>
+    <div class="input-group" style="margin-top: -27px">
       <div class="col-sm-12">
-        <app-cust-editable-non-datatable [passData]="passDataBalanceDetails"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)" (genericBtn)="onClickSave();"></app-cust-editable-non-datatable>
       </div>
     </div>
 </div>
+
+
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>

@@ -613,6 +613,17 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a["payeeList"];
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acitSoaDtl'){
+      this.passTable.tHeader = ['SOA No.','Policy No.', 'Inst No.', 'Due Date', 'Balance'];
+      this.passTable.widths =[300,300,1,200,200]
+      this.passTable.dataTypes = [ 'text','text', 'sequence-2', 'date', 'currency'];
+      this.passTable.keys = [ 'soaNo','policyNo', 'instNo', 'dueDate', 'balance'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo).subscribe((a:any)=>{
+        //this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        this.table.refreshTable();
+      })
     }else if(this.passData.selector == 'acitChartAcct'){
       this.passTable.tHeader = ['Account Code','Account Name'];
       this.passTable.widths =[250,500]
