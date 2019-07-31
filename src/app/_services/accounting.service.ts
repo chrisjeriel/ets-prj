@@ -1516,6 +1516,56 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPrqTrans',{params});	
 	}
 
+	cancelAr(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/cancelAr',JSON.stringify(params),header);
+	}
+
+	getAcitSoaDtl(policyId?, instNo?, cedingId?, payeeNo?){
+		const params = new HttpParams()
+			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+			.set('instNo', (instNo == null || instNo == undefined ? '' : instNo))
+			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+			.set('payeeNo', (payeeNo == null || payeeNo == undefined ? '' : payeeNo));
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAgingSoaDtl',{params});	
+	}
+
+	saveAcitArInwPolBal(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArInwPolBal',JSON.stringify(params),header);
+	}
+
+	getAcitArInwPolBal(tranId, billId){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('billId', billId);
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArInwPolBal',{params});
+	}
+
+  	getAcitArTransDtl(tranId, billId){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('billId', billId);
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArTransDtl',{params});
+	}
+
+	saveAcitArTransDtl(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArTransDtl',JSON.stringify(params),header);
+	}
+
 	saveAcitPrqTrans(params){
 		let header : any = {
              headers: new HttpHeaders({
@@ -1549,15 +1599,6 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitAcctEntries',JSON.stringify(params),header);
  
     }
-
-	cancelAr(params){
-		let header : any = {
-		    headers: new HttpHeaders({
-		        'Content-Type': 'application/json'
-		    })
-		};
-		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/cancelAr',JSON.stringify(params),header);
-	}
   
 	getAcitJVOverdue(tranId,instNo,ceding) {
 		 const params = new HttpParams()
@@ -1593,7 +1634,7 @@ export class AccountingService {
 	            }
         	}
         	
-		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOAList',{params});	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOAList',{params});
 	}
 }
 

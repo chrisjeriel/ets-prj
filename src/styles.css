@@ -728,10 +728,16 @@ body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active:
     text-decoration: none !important; 
 }
 
+body .ui-accordion .ui-accordion-header:not(.ui-state-disabled):hover a {
+    text-decoration: none !important;
+}
+
 body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a .ui-accordion-toggle-icon {
     color: #848484 !important;
 }
 
 body .ui-accordion .ui-accordion-header {
     line-height: 1 !important;
+    margin-bottom: -1px !important;
+    margin-top: 5px !important;
 }

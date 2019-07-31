@@ -49,7 +49,9 @@ export class RequestForPaymentComponent implements OnInit {
     updateDate  : ''
   };
 
-  rowData : any;
+  rowData : any = {
+    reqId : ''
+  };
 
   searchParams: any[] = [];
 
@@ -105,19 +107,16 @@ export class RequestForPaymentComponent implements OnInit {
   onClickAdd(event){
     setTimeout(() => {
       this.router.navigate(['/generate-payt-req'], { skipLocationChange: true });
-      this.location.go('/generate-payt-req') // temporary, to display the correct url for pol-to-hold-cover
     },100);
   }
 
   onClickEdit(event){
     setTimeout(() => {
-      this.router.navigate(['/generate-payt-req', { tableInfo : JSON.stringify(this.rowData) , from: 'req-payt-list' }], { skipLocationChange: true });
-      this.location.go('/generate-payt-req') // temporary, to display the correct url for pol-to-hold-cover
+      this.router.navigate(['/generate-payt-req', { reqId : this.rowData.reqId , from: 'req-payt-list' }], { skipLocationChange: true });
     },100);
   }
 
   onRowClick(event){
-    console.log(event);
     if(event != null){
       this.reqPaytData.createUser = event.createUser;
       this.reqPaytData.createDate = event.createDate;
@@ -131,8 +130,7 @@ export class RequestForPaymentComponent implements OnInit {
     console.log(data);
     if(data !== null){
       setTimeout(() => {
-        this.router.navigate(['/generate-payt-req', { tableInfo : JSON.stringify(data) , from: 'req-payt-list' }], { skipLocationChange: true });
-        this.location.go('/generate-payt-req') // temporary, to display the correct url for pol-to-hold-cover
+        this.router.navigate(['/generate-payt-req', { reqId : data.reqId , from: 'req-payt-list' }], { skipLocationChange: true });
       },100);
     }  
   }

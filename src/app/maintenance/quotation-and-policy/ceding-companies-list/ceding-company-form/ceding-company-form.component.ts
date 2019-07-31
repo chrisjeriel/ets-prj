@@ -7,6 +7,8 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -19,7 +21,10 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 	@ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
-	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+	@ViewChild('compRep') table: CustEditableNonDatatableComponent;
+  @ViewChild('hist') histTable: CustEditableNonDatatableComponent;
+  //@ViewChild(CustNonDatatableComponent) histTable: CustNonDatatableComponent;
+  @ViewChild(ModalComponent) modal : ModalComponent;
 	@ViewChild('myForm') form : any;
 
 	private sub: any;
@@ -101,6 +106,20 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
     disableGeneric: true,
 	}
 
+  histData: any = {
+    tableData: [],
+    tHeader: ['M', 'T', 'A', 'W', 'Membership Date', 'Inactive Date', 'Withdrawal Date', 'Processed By', 'Processed Date'],
+    dataTypes: ['checkbox', 'checkbox', 'checkbox', 'checkbox', 'date', 'date',  'date', 'text', 'date'],
+    keys: ['membershipTag', 'treatyTag', 'activeTag', 'withdrawTag', 'membershipDate', 'inactiveDate', 'withdrawDate', 'processedBy', 'processedDate'],
+    tooltip: ['Membership', 'Treaty R/I', 'Active', 'Withdraw', null, null, null, null, null],
+    tableOnly: true,
+    paginateFlag: true,
+    infoFlag: true,
+    searchFlag: false,
+    uneditable: [true,true,true,true,true,true,true,true,true],
+    pageID: 'history'
+  }
+
   constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, 
   	          private titleService: Title, private router: Router,private mtnService: MaintenanceService,
   	          private modalService: NgbModal, private ns: NotesService, private upload: UploadService ) { }
@@ -125,6 +144,8 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   				data.cedingCompany[0].cedingRepresentative[i].fileName = data.cedingCompany[0].cedingRepresentative[i].eSignature;
           data.cedingCompany[0].cedingRepresentative[i].fileNameServer = this.ns.toDateTimeString(data.cedingCompany[0].cedingRepresentative[i].createDate).match(/\d+/g).join('') + data.cedingCompany[0].cedingRepresentative[i].eSignature;
   			}
+        this.histData.tableData = data.cedingCompany[0].cedingHistory;
+        this.histTable.refreshTable();
 
   			this.companyData = data.cedingCompany[0];
   			console.log(this.companyData);
@@ -361,6 +382,14 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 
   uploads(event){
     this.filesList = event;
+  }
+
+  withdrawTagChecked(){
+    this.companyData.membershipTag = 'N';
+    this.companyData.treatyTag = 'N';
+    this.companyData.activeTag = 'N';
+    this.companyData.membershipDate = '';
+    this.companyData.inactiveDate = '';
   }
 
 

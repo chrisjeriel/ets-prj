@@ -14,6 +14,7 @@ import { DecimalPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
+import { DropdownModule } from 'primeng/dropdown';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -457,6 +458,7 @@ import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration
         CalendarModule,
         BrowserAnimationsModule,
         AccordionModule,
+        DropdownModule,
     ],
     declarations: [
         AppComponent,

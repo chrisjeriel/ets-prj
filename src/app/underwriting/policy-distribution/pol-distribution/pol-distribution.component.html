@@ -48,7 +48,7 @@
 		<legend class="scheduler-border">Treaty Distribution Per Section</legend>
 		<div class="row" style="padding-top: 5px;">
 			<div class="col-sm">
-				<app-cust-editable-non-datatable [passData]="treatyDistData" #mainTable></app-cust-editable-non-datatable>
+				<app-cust-editable-non-datatable [passData]="treatyDistData" (export)="exportTreatyDistPerSection();" #mainTable></app-cust-editable-non-datatable>
 			</div>
 		</div>
 		<div class="row">
@@ -107,7 +107,7 @@
 						<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
 							<div class="row" style="padding-top: 5px;">
 								<div class="col-sm" style="margin-top: -28px;">
-									<app-cust-editable-non-datatable [passData]="poolDistributionData" #poolTable (export)="exportPoolDist();"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="poolDistributionData" (export)="exportPoolDistPerSection();" #poolTable></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="row">
@@ -168,7 +168,7 @@
 				
 				<button type="button" class="cust-btn"><a>Print</a></button>
 				<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq == 'true' || params.fromNegate == 'true'"><a>Post</a></button>
+				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq == 'true' || params.fromNegate == 'true' || inquiryFlag == true"><a>Post</a></button>
 				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Posted'" (click)="showConfirmNegMdl()" [class.d-none]="params.fromInq == 'true'|| params.fromNegate != 'true' "><a>Negate</a></button>
 			</div>
 		</div>
