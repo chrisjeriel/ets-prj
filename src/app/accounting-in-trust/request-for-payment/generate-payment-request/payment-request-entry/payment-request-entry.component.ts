@@ -76,6 +76,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle('Acct-IT | Request Entry');
     this.getTranType();
+    
 
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0){
@@ -129,6 +130,13 @@ export class PaymentRequestEntryComponent implements OnInit {
     });
 
     (this.saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED')?this.cancelledStats():'';
+  }
+
+  getAcitPaytReq(){
+    this.acctService.getPaytReq()
+    .subscribe(data => {
+      console.log(data);
+    });
   }
 
   onSaveAcitPaytReq(){

@@ -199,14 +199,52 @@ span.ui-column-resizer {
                                 [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered">
                                 <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
                                 <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)"></span>
-                                <span *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' ||passData.dataTypes[i]=='percent')" class="gridHeader number text-right" >{{tHeader}}
+
+                                <!-- <span *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' ||passData.dataTypes[i]=='percent')" class="gridHeader number text-right" >{{tHeader}}
                                     <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
                                     <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
                                 </span>
                                 <span container="body"  *ngIf="!(!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' ||passData.dataTypes[i]=='percent'))" class="gridHeader">{{tHeader}}
                                     <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
                                     <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
-                                </span>
+                                </span> -->
+
+                                <!-- TEST - FOR DOUBLE LINED HEADER - ORIGINAL CODE ABOVE -->
+                                <div *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' || passData.dataTypes[i]=='percent')">
+                                    <ng-container *ngIf="tHeader.includes('||'); else tH1">
+                                        <ng-container *ngFor="let x of tHeader.split('||'); let j = index">
+                                            <span class="gridHeader number text-right">{{ x }}
+                                                <i *ngIf="sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-down"></i>
+                                                <i *ngIf="!sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-up"></i>
+                                            </span>
+                                            <br *ngIf="j != tHeader.split('||').length-1"/>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-template #tH1>
+                                        <span class="gridHeader number text-right">{{ tHeader }}
+                                            <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
+                                            <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
+                                        </span>
+                                    </ng-template>
+                                </div>
+                                <div *ngIf="!(!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' ||passData.dataTypes[i]=='percent'))">
+                                    <ng-container *ngIf="tHeader.includes('||'); else tH2">
+                                        <ng-container *ngFor="let x of tHeader.split('||'); let j = index">
+                                            <span container="body" class="gridHeader">{{ x }}
+                                                <i *ngIf="sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-down"></i>
+                                                <i *ngIf="!sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-up"></i>
+                                            </span>
+                                            <br *ngIf="j != tHeader.split('||').length-1"/>
+                                        </ng-container>
+                                    </ng-container>
+                                    <ng-template #tH2>
+                                        <span container="body" class="gridHeader">{{ tHeader }}
+                                            <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
+                                            <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
+                                        </span>
+                                    </ng-template>
+                                </div>
+                                <!-- END TEST -->
                             </th>
                         </tr>
                     </thead>
@@ -216,7 +254,7 @@ span.ui-column-resizer {
                             <td *ngIf="passData.checkFlag" class="checkbox align-middle">
                                 
                                  <div *ngIf="passData.checkFlag" style="text-align: center;">
-                                       <input *ngIf="!(data===fillData)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" tabindex="-1" class="not-form" [ngModelOptions]="{standalone: true}">
+                                       <input *ngIf="!(data===fillData)" type="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" tabindex="-1" class="not-form" [ngModelOptions]="{standalone: true}">
                                 </div>
                             </td>
                             <ng-container *ngFor="let key of dataKeys; let i = index">
@@ -377,7 +415,7 @@ span.ui-column-resizer {
                                 </div>
 
                                 <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
-                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1  && data.showMG == 1 && data.colMG != key"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
+                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1  && data.showMG == 1 && data.colMG != key && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
                                         <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
                                     </div>

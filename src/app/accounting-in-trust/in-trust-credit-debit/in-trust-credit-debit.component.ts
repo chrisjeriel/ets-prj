@@ -21,13 +21,15 @@ export class InTrustCreditDebitComponent implements OnInit {
         filters: [],
         addFlag:true,
         editFlag:true,
-        pageLength: 20,
+        pageLength: 18,
         pageStatus: true,
         pagination: true,
         colSize: ['50px', '90px', '80px', '', '', '', '', '125px'],
     };
 
     seqDigits:number = 1;
+
+  selected:any;
     
   constructor(private accountingService: AccountingService, private router: Router, private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService) { }
 
@@ -50,6 +52,8 @@ export class InTrustCreditDebitComponent implements OnInit {
       this.passDataCMDMListing.tableData.forEach((a:any)=>{
         a.cmdmNo = a.memoType + '-' + a.memoTranType+ '-' + a.memoYear+ '-' + a.memoMm + '-' + String(a.memoSeqNo).padStart(this.seqDigits,'0');
         a.memoDate = this.ns.toDateTimeString(a.memoDate);
+        a.createDate = this.ns.toDateTimeString(a.createDate);
+        a.updateDate = this.ns.toDateTimeString(a.updateDate);
       })
       this.table.refreshTable();
 
@@ -61,11 +65,12 @@ export class InTrustCreditDebitComponent implements OnInit {
   }
 
   onClickEdit(){
-    this.router.navigate(['/acct-it-generate-cmdm',], { skipLocationChange: true }); 
+    this.router.navigate(['/acct-it-generate-cmdm',{tranId:this.selected.tranId,memoType:this.selected.memoType}], { skipLocationChange: true }); 
   }
 
   onRowClick(data){
-    
+    this.selected = data;
+    console.log(data)
   }
 
   onRowDblClick(data){

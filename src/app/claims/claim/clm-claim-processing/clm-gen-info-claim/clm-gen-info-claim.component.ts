@@ -411,18 +411,20 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   openAdjustersModal() {
-    this.adjData.tableData = this.claimData.clmAdjusterList.slice();
+    // this.tempAdjCont = JSON.parse(JSON.stringify(this.claimData.clmAdjusterList));
+    this.adjData.tableData = JSON.parse(JSON.stringify(this.claimData.clmAdjusterList));
     this.adjTable.refreshTable();
     this.adjTable.onRowClick(null, this.adjData.tableData[0]);
     $('#adjustersModal #modalBtn').trigger('click');
   }
 
   onCancelNo() {
+    // this.claimData.clmAdjusterList = this.tempAdjCont.slice();
     this.adjTable.markAsPristine();
   }
 
   showLossCdLOV(type) {
-    this.lossCdType = type;
+    this.claimData.clmAdjusterList = this.lossCdType = type;
     this.lossCdFilter = function(a) { return a.activeTag == 'Y' && a.lossCdType == type };
 
     this.lossCdLOV.modal.openNoClose();
@@ -451,9 +453,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   showClmEventLOV() {
     var eventTypeCd = this.claimData.eventTypeCd;
-    var line = this.line;
+    var ld = this.claimData.lossDate.split('T');
+    var d = ld[0] == '' ? new Date() : ld[1] == '' ? new Date(ld[1]) : new Date(ld.join('T'));
 
-    this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lineCd == line };
+    this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lossDateFrom >= d && d <= a.lossDateTo };
     this.clmEventLOV.modal.openNoClose();
   }
 
@@ -550,8 +553,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.claimData.adjId = data.adjId;
     this.claimData.adjName = data.adjName;
 
-    console.log(this.claimData.clmAdjusterList);
-
     for(var i of this.claimData.clmAdjusterList) {
       if(i.adjId == data.adjId) {
         this.claimData.adjFileNo = i.adjRefNo;
@@ -647,17 +648,20 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
                                                                    return a;
                                                                  });
     params.deleteAdjuster = td.filter(a => a.deleted);
+    params.deleteAdjuster.forEach(a => {
+      if(a.claimId == undefined) {
+        a['claimId'] = this.claimData.claimId;
+      }
+    });
 
     this.cs.saveClmAdjuster(params).subscribe(data => {
       if(data['returnCode'] == -1) {
         this.dialogIcon = "success";
         this.adjSuccessDialog.open();
-        this.adjNameAndRefs();
 
         this.claimData.clmAdjusterList = this.adjData.tableData.filter(a => !a.deleted).slice();
 
-        // var temp = this.claimData.clmAdjusterList.map(a => a.adjId);
-        if(!this.claimData.clmAdjusterList.map(a => a.adjId).includes(this.claimData.adjId)) {
+        if(!this.claimData.clmAdjusterList.map(a => Number(a.adjId)).includes(this.claimData.adjId)) {
           this.claimData.adjId = '';
           this.claimData.adjName = '';
           this.claimData.adjFileNo = '';
@@ -670,6 +674,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   onClickSave() {
+    console.log(this.claimData);
     var req = ['processedBy', 'lossCd', 'lossPeriod', 'lossDtl', 'clmStatCd'];
 
     var entries = Object.entries(this.claimData);
@@ -682,7 +687,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if(key === 'lossDate' && String(val).split('T').includes('')) {
+      if(key === 'lossDate' && String(val).split('T')[0] == '') {
         this.dialogIcon = 'error';
         this.successDialog.open();
         this.cancel = false;
@@ -762,6 +767,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.successDialog.open();
       } else if(data['returnCode'] == 1) {
         this.mdlType = 'warn3';
+        console.log(this.claimData);
+        console.log(this.claimData.clmReserve);
         $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
       } else if(data['returnCode'] == 2) {
         this.mdlType = 'warn4';
@@ -811,13 +818,13 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
           this.mdlType = 'warn';
           $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
         }
-      }*/
+      }/*/
 
       if(this.claimData.lossDate.split('T')[0] != '') {
         var inceptD = new Date(this.claimData.inceptDate);
         var expiryD = new Date(this.claimData.expiryDate);
         var effD = new Date(this.claimData.effDate);
-        var lossD = new Date(this.claimData.lossDate);
+        var lossD = this.claimData.lossDate.split('T')[1] == '' ? new Date(this.claimData.lossDate + '00:00') : new Date(this.claimData.lossDate);
 
         if(lossD >= inceptD && lossD <= effD) {
           this.claimData.lapsePdTag = 'Y';
@@ -844,9 +851,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     pNo[pNo.length-1] = '%';
     this.showCustLoader = true;
 
+    var inceptD = new Date(this.claimData.inceptDate).setSeconds(0);
     var effD = new Date(this.claimData.effDate).setSeconds(0);
     var lossD = new Date(this.claimData.lossDate).setSeconds(0);
-    var dCheck = this.claimData.polTermTag == 'Y' && effD <= lossD ? lossD : new Date();
+    var dCheck = this.claimData.polTermTag == 'Y' && effD <= lossD ? lossD : lossD >= inceptD && lossD <= effD ? effD : new Date();
 
     var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
                       .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => new Date(a.effDate).setSeconds(0) <= dCheck && a.statusDesc == 'In Force')
@@ -945,7 +953,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         var line = this.line;
 
         this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lineCd == line };
-        this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev);
+        var ld = this.claimData.lossDate.split('T');
+        var d = ld[0] == '' ? new Date() : ld[1] == '' ? new Date(ld[1]) : new Date(ld.join('T'));
+
+        this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev, d);
       } else if(str === 'mainAdj') {
         this.adjusterLOVMain.checkCode(this.claimData.adjId, ev);
       }

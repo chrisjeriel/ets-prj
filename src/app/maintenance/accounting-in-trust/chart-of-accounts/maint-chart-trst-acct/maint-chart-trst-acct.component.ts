@@ -8,24 +8,55 @@ import { Title } from '@angular/platform-browser';
 })
 export class MaintChartTrstAcctComponent implements OnInit {
 
-  passDataAccountsSetup: any = {
+  chartOfAccounts: any = {
     tableData: [
-      ["1", "Asset", "0", "0", "0", "0", "ASSETS", "1", "", "Dr", "Summary", ""],
+      {
+        glAcctId: 1,
+        glAcctCategoryDesc: 'Asset',
+        glAcctCategory: 1,
+        glAcctControl: 0,
+        glAcctSub1: 0,
+        glAcctSub2: 0,
+        glAcctSub3: 0,
+        shortDesc: 'ASSETS',
+        longDesc: 'ASSETS',
+        shortCode: '1',
+        slTypeDesc: '',
+        drCrTag: 'D',
+        postTag: 'S',
+        activeTag: 'Y'
+      },
     ],
-    tHeader: ["Acct ID", "Type", "Main", "Sub1", "Sub2", "Sub3", "Long Description", "Short Code", "SL Type", "Dr/Cr (Normal)", "Post Tag", "Active"],
-    dataTypes: ["number", "text", "number", "number", "number", "number", "text", "text", "text", "text", "text", "checkbox"],
+    tHeader: ['Acct ID','Type','Acct||Category','Control||Acct','Sub1','Sub2','Sub3','Short Description','Long Description','Short Code','SL Type','Dr/Cr||Normal','Post Tag','Active'],
+    dataTypes: ['number','select','number','number','number','number','number','text','text','text','text','select','select','checkbox'],
+    keys: ['glAcctId','glAcctCategory','glAcctCategory','glAcctControl','glAcctSub1','glAcctSub2','glAcctSub3','shortDesc','longDesc','shortCode','slTypeDesc','drCrTag','postTag','activeTag'],
+    widths: ['1','auto','1','1','1','1','1','auto','auto','95','1','55','95','1'],
     pageLength: 10,
-    pageStatus: true,
-    pagination: true,
+    paginateFlag: true,
+    infoFlag: true,
     addFlag: true,
-    deleteFlag: true,
-    colSize: ['100%','100%','100%','100%','100%','100%','100%','100%','100%','100%','100%','100%'],
+    searchFlag: true,
+    opts: [{
+      selector: 'glAcctCategory',
+      prev: ['Asset','Liability','Equity'],
+      vals: [1,2,3],
+    },
+    {
+      selector: 'drCrTag',
+      prev: ['Dr','Cr'],
+      vals: ['D','C'],
+    },
+    {
+      selector: 'postTag',
+      prev: ['Summary','Detail'],
+      vals: ['S','D'],
+    }],
   };
 
   constructor(private titleService: Title) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Maint | Chart of Accounts");
+    this.titleService.setTitle("Mtn | Chart of Accounts");
   }
 
 }

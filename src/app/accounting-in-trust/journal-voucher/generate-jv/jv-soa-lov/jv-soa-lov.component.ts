@@ -14,6 +14,7 @@ export class JvSoaLovComponent implements OnInit {
   @Input() cedingId: any;
   @Input() tranId:any;
   @Input() lovCheckBox: boolean = false;
+  @Input() hide: any;
 
   passData: any = {
     tableData: [],
@@ -44,10 +45,11 @@ export class JvSoaLovComponent implements OnInit {
   openModal(){
 	  setTimeout(()=>{  
 	  		this.accountingService.getJVSOA(this.tranId,'','',this.cedingId).subscribe((data:any) => {
-	  			console.log(data)
-	  			for(var i=0; i < data.soaDetails.length;i++){
+          var test = data.soaDetails.filter((a)=>{return this.hide.indexOf((a.policyId.toString()+ '-'+ a.instNo))==-1})
+          this.passData.tableData = data.soaDetails.filter((a)=>{return this.hide.indexOf((a.policyId.toString()+ '-'+ a.instNo))==-1})
+	  			/*for(var i=0; i < data.soaDetails.length;i++){
 	  				this.passData.tableData.push(data.soaDetails[i]);
-	  			}
+	  			}*/
 	  			this.table.refreshTable();
 	  		});
 	            this.modalOpen = true;
@@ -55,6 +57,7 @@ export class JvSoaLovComponent implements OnInit {
   }
 
   onRowClick(data){
+    console.log(data)
   	if(data!=null){
   		this.selected = data;
   	}else{

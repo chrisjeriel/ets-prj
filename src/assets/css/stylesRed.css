@@ -204,3 +204,8 @@ input.form-control-sm, select.form-control.form-control-sm.cust-sm, select.edita
 body .ui-datepicker table td > a.ui-state-active, body .ui-datepicker table td > span.ui-state-active {
     background-color: #ef7e7e ! important;
 }
+
+body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a {
+    color: #333333 !important;
+    background: #ffc7c7 !important;
+}
