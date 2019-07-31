@@ -245,4 +245,29 @@ export class ClaimsService {
         };
         return this.http.post(environment.prodApiUrl + '/claims-service/redistributeClaimDist',JSON.stringify(params),header);    
     }
+
+    getClaimReserveDist(claimId,projId){
+        const params = new HttpParams()
+            .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+            .set('projId', (projId == null || projId == undefined ? '' : projId))
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmReserveDist',{params});    
+    }
+
+    getClaimReserveDistPool(claimId,projId,histCategory,clmDistNo){
+        const params = new HttpParams()
+            .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+            .set('projId', (projId == null || projId == undefined ? '' : projId))
+            .set('histCategory', (histCategory == null || histCategory == undefined ? '' : histCategory))
+            .set('clmDistNo', (clmDistNo == null || clmDistNo == undefined ? '' : clmDistNo))
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmReserveDistPool',{params});    
+    }
+
+    redistributeClaimReserveDist(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/claims-service/redistributeClaimReserveDist',JSON.stringify(params),header);    
+    }
 }
