@@ -162,7 +162,7 @@
 		</app-modal>
 		<button class="cust-btn">Print</button>
 		<button class="cust-btn" (click)="cancel()">Cancel</button>
-		<button class="cust-btn " [disabled]="(reserveDistPassData.tableData.length == 0 && currTab=='reserve') || (paymentDistPassData.tableData.length == 0 && currTab=='payment')" (click)="confirmRedsitribute()" *ngIf="!isInquiry">Redistribute</button>
+		<button class="cust-btn " [disabled]="(reserveDistPassData.tableData.length == 0 && currTab=='reserve') || ((selected == null || selected == undefined) && currTab=='payment')" (click)="confirmRedsitribute()" *ngIf="!isInquiry">Redistribute</button>
 	</div>
 </div>
 
