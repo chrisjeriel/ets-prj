@@ -11,3 +11,10 @@
 	flex-shrink: 0 !important;
 	flex-basis: 33.3333% !important;
 }
+
+.checkbox{
+	margin-top: 4px !important;
+	margin-right: 5px;
+	width: 16px;
+	height: 16px;
+}

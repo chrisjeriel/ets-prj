@@ -19,12 +19,12 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	    		  "Section II", "Section III", 'Currency', 'Total Reserved', 'Total Payment'],
 
 		dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", 
-					"date", "text", "date", "text", "text", "number", "text", "text", "text", "text", "checkbox", "checkbox", "checkbox", 
+					"date", "text", "date", "text", "text", "text", "text", "text", "text", "text", "checkbox", "checkbox", "checkbox", 
 					"text", "currency", "currency"],
 
 	    keys: ['claimNo','clmStatus','policyNo', 'coClaimNo', 'cessionDesc', 'lineClassDesc', 'cedingName','insuredDesc',
 	    	   'coRefNo', 'adjName', 'adjRefNo', 'riskName', 'lossDate', 'reportDate', 'reportedBy', 'createDate', 'processedBy', 
-	    	   'lossAbbr', 'lossPeriod', 'eventTypeDesc', 'eventDesc', 'lossDtl', 'remarks', 'secISiTag', 'secIISiTag', 'secIIISiTag', 
+	    	   'lossAbbr', 'lossPdAbbr', 'eventTypeDesc', 'eventDesc', 'lossDtl', 'remarks', 'secISiTag', 'secIISiTag', 'secIIISiTag', 
 	    	   'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
 	    infoFlag: true,
 	    searchFlag: true,
@@ -184,12 +184,12 @@ export class ClmClaimsInquiryComponent implements OnInit {
        	 if(data != null){
 	         for(var i of data.claimsList){
 	           for(var j of i.clmAdjusterList){
-	             if(i.adjName === undefined){
+	             if(i.adjName === null){
 	               i.adjName = j.adjName;
-	               i.adjRefNo = j.adjRefNo;
+	               j.adjRefNo !== null ? i.adjRefNo = j.adjRefNo : null;
 	             }else{
 	               i.adjName = i.adjName + '/' + j.adjName;
-	               i.adjRefNo = i.adjRefNo + '/' + j.adjRefNo;
+	               j.adjRefNo !== null ? i.adjRefNo = i.adjRefNo + '/' + j.adjRefNo : null;
 	             }
 	           }
 	           this.passData.tableData.push(i);
@@ -239,7 +239,11 @@ export class ClmClaimsInquiryComponent implements OnInit {
 				remarks: '',
 		  		secISiTag: 'N',
 		  		secIISiTag: 'N',
-		  		secIIISiTag: 'N'
+		  		secIIISiTag: 'N',
+		  		sectionIPrem: '',
+		  		sectionIIPrem: '',
+		  		sectionIIIPrem: '',
+		  		allowMaxSi: ''
 			};
 			this.create = {
 				date: null,
