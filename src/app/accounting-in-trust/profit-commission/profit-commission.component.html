@@ -1,127 +1,47 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Profit Commission</h4>
 	<ngb-tabset (tabChange)="onTabChange($event)">
-		<ngb-tab class="ngb-tab" title="Profit Commission Statement">
+		<ngb-tab class="ngb-tab" title="Profit Commission Inquiry">
 			<ng-template ngbTabContent>	
 				<fieldset class="scheduler-border">
-					<legend class="scheduler-border">Parameters</legend>
+					<legend class="scheduler-border">Filter Options</legend>
 					<div class="custom-row-inline-inset">
 						<div class="input-group">
-							<div class="col-sm-1"></div>
-							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm"
-							placeholder="National Reinsurance Corporation of the Philippines">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Month</label>
-							<select class="form-control form-control-sm cust-sm col-sm-1">
-								<option value="January">January</option>
-								<option value="February">February</option>
-								<option value="March">March</option>
-								<option value="April">April</option>
-								<option value="May">May</option>
-								<option value="June">June</option>
-								<option value="July">July</option>
-								<option value="August">August</option>
-								<option value="September">September</option>
-								<option value="October">October</option>
-								<option value="November">November</option>
-								<option value="December">December</option>
+							<label class="form-control-sm col-sm-1 text-right">Company</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCode($event)" [(ngModel)]="cedingDesc">
+							<div class="text-search-ico" (click)="showCedCompLOV()"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm text-right" style="margin-left: 10px">Period</label>
+							<label class="form-control-sm" style="padding-left:10px !important;">From</label>
+							<select id="m-list" [(ngModel)]="fromMonthCd" class="form-control form-control-sm cust-sm col-sm-1">
+								<option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option>
 							</select>
-							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Year</label>
-							<select class="form-control form-control-sm cust-sm col-sm-1">
-								<option value="2018">2018</option>
+							<select id="y-list" [(ngModel)]="fromYearCd" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 2px">
+								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
+							</select>
+							<label class="form-control-sm text-right" style="margin-left: 10px">To</label>
+							<select id="m-list" [(ngModel)]="toMonthCd" class="form-control form-control-sm cust-sm col-sm-1" style="padding-left:10px !important;">
+								<option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option>
+							</select>
+							<select id="y-list" [(ngModel)]="toYearCd" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 2px">
+								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
 							</select>
 							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
-								<button type="button" class="cust-btn"><a>Compute</a></button>
+								<button type="button" class="cust-btn" [disabled]="cedingDesc == '' || fromMonthCd == undefined || fromYearCd == undefined || toMonthCd == undefined || toYearCd == undefined" (click)="searchProfitComm()"><a>Search</a></button>
 							</div>
-							<div class="col-sm-1"></div>
 						</div>
 					</div>
 				</fieldset>
 
 				<fieldset class="scheduler-border" style="margin-top: 5px !important;">
+				  <legend class="scheduler-border">List of Profit Commission Companies</legend>
 					<div class="custom-row-inline-inset">
-						<app-cust-editable-non-datatable [passData]="passDataProfitCommissionStatement"></app-cust-editable-non-datatable>
-						<div class="input-group" style="margin-bottom: -25px !important;">
-							<label class="form-control-sm col-sm" style="padding-left:8.5px !important;text-align: left !important;">PROFIT / (LOSS)</label>
-							<div class="input-group col-sm-4" style="padding: 0px">
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-6 text-right" numbers-only style="min-width: 194px; font-weight: bold;" [ngModel]="income1 | number: '1.2-2'" (onModelChange)="income1=$event">
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-6 text-right" numbers-only style="margin-left: 5px !important; margin-right: 5px !important; font-weight: bold;" [ngModel]="outgo1 | number: '1.2-2'" (onModelChange)="outgo1=$event">
-							</div>
-						</div>
-						<div class="input-group" style="margin-bottom: -3px !important;">
-							<div class="col-sm-8"></div>
-							<div class="col-sm" style="padding-left: 0px !important;padding-right: 0px !important">-----------------------------------------------------------</div>
-						</div>
-						<div class="input-group" style="margin-bottom: -25px !important;">
-							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-							<div class="input-group col-sm-4" style="padding: 0px">
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-6 text-right" numbers-only [ngModel]="income2 | number: '1.2-2'" (onModelChange)="income2=$event"style="min-width: 194px; font-weight: bold;">
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-6 text-right" numbers-only style="margin-left: 5px !important; margin-right: 5px !important; font-weight: bold;" [ngModel]="outgo2 | number: '1.2-2'" (onModelChange)="outgo2=$event">
-							</div>
-						</div>
-						<div class="input-group" style="margin-bottom: -3px !important;">
-							<div class="col-sm-8"></div>
-							<div class="col-sm" style="padding-left: 0px !important;padding-right: 0px !important">===================================</div>
-						</div>
-					</div>
-					<!-- <div class="container-fluid"> -->
-						<div class="row">
-							<div class="col-sm-6" style="padding-bottom: 9px;">
-								<fieldset class="scheduler-border">
-									<legend class="scheduler-border">Summary</legend>
-									<div class="custom-row-inline-inset">
-										<div class="input-group" style="margin-bottom: -25px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT-Year 2018</label>
-											<label class="form-control-sm col-sm-3">404,777.58</label>
-										</div>
-										<div class="input-group" style="margin-bottom: -25px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">LESS: LOSS CARRIED FORWARD - Year 2016(3rd Year)</label>
-											<label class="form-control-sm col-sm-3">(393,269.40)</label>
-										</div>
-										<div class="input-group" style="margin-bottom: -30px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOSS CARRIED FORWARD - Year 2017(1st Year)</label>
-											<label class="form-control-sm col-sm-3">(223,604.64)</label>
-										</div>
-										<div class="input-group" style="margin-bottom: -25px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-											<label class="form-control-sm col-sm-3">--------------------------</label>
-										</div>
-										<div class="input-group" style="margin-bottom: -30px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year 2018</label>
-											<label class="form-control-sm col-sm-3">(212,096.46)</label>
-										</div>
-										<div class="input-group" style="margin-bottom: -25px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-											<label class="form-control-sm col-sm-3">--------------------------</label>
-										</div>
-									</div>
-								</fieldset>
-							</div>
-							<div class="col-sm-6">
-								<fieldset class="scheduler-border">
-									<legend class="scheduler-border">Note</legend>
-									<div class="custom-row-inline-inset" style="margin-bottom: 26px !important;">
-										<div class="input-group" style="margin-bottom: -25px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">***Net of 40% for Nat Cat</label>
-										</div>
-										<div class="input-group" style="margin-bottom: -25px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Management Expenses = 15%</label>
-										</div>
-										<div class="input-group" style="margin-bottom: -25px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Profit Commission = 20%</label>
-										</div>
-										<div class="input-group" style="margin-bottom: -25px !important;">
-											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Loss, if any, to be carried forward for 5 years </label>
-										</div>
-									</div>
-								</fieldset>
-							</div>
-						</div>
-					<!-- </div> -->
+						<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="onClickShowDetails($event)" (newClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-editable-non-datatable>	
+					</div> 
+					<div class="text-center" style="width: 100% !important;margin-top: 30px ! important">
+		                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="disableBtn"><a>Regenerate</a></button>
+		                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="disableBtn"><a>Print</a></button>
+          			</div>
 				</fieldset>
-
-				
 			</ng-template>
 		</ngb-tab>
 
@@ -131,3 +51,144 @@
 		</ngb-tab>
 	</ngb-tabset>
 </div>
+
+<app-modal [btnTitle]="'Profit Commisison Statement'" hidden id="modalProfCommStatement" #profitCommMdl>
+    <div header>Profit Commission Statement</div>
+	<div body>
+		<div class="input-group alignment" style="margin-bottom: -13px !important;width: 1000px">
+			<div class="col-sm-1"></div>
+		    <label class="form-control-sm col-sm-1 text-right">Company</label>
+		    <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="cedingCompDesc" readonly>
+		    <label class="form-control-sm col-sm-1 text-right">Month</label>
+		    <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="month" readonly>
+		    <label class="form-control-sm col-sm-1 text-right">Year</label>
+		    <input type="text" class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="year" readonly>
+		    <div class="col-sm-1"></div>
+		</div> 
+		<div class="custom-row-inline-inset">
+			<app-cust-editable-non-datatable #profitComm [passData]="passDataProfitComm"></app-cust-editable-non-datatable>	
+		</div> 
+        
+        <div class="input-group" style="margin-bottom: -25px !important;">
+			<label class="form-control-sm col-sm-9" style="padding-left:8.5px !important;text-align: left !important;">PROFIT / (LOSS)</label>
+			<div class="input-group col-sm-3" style="padding: 0px">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="font-weight: bold;" [ngModel]="income1 | number: '1.2-2'" (onModelChange)="income1=$event" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="margin-left: 2px !important; font-weight: bold;" [ngModel]="outgo1 | number: '1.2-2'" (onModelChange)="outgo1=$event" readonly>
+			</div>
+		</div>
+		<div class="input-group" style="margin-bottom: -3px !important;">
+			<div class="col-sm-9"></div>
+			<div class="col-sm-3" style="padding-left: 0px !important;padding-right: 0px !important">-----------------------------------------</div>
+		</div>
+		<div class="input-group" style="margin-bottom: -25px !important;">
+			<label class="form-control-sm col-sm-9" style="padding-left:0px !important;text-align: left !important;"></label>
+				<div class="input-group col-sm-3" style="padding: 0px">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="income2 | number: '1.2-2'" (onModelChange)="income2=$event"style="font-weight: bold;" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="margin-left: 2px !important;font-weight: bold;" [ngModel]="outgo2 | number: '1.2-2'" (onModelChange)="outgo2=$event" readonly>
+				</div>
+		</div>
+		<div class="input-group" style="margin-bottom: -3px !important;">
+			<div class="col-sm-9"></div>
+			<div class="col-sm-3" style="padding-left: 0px !important;padding-right: 0px !important">=======================</div>
+		</div>
+	  <div class="row">
+		<div class="col-sm-6" style="padding-bottom: 9px;">
+			<fieldset class="scheduler-border">
+				<legend class="scheduler-border">Summary</legend>
+					<div class="custom-row-inline-inset">
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT-Year 2018</label>
+							<label class="form-control-sm col-sm-3">404,777.58</label>
+						</div>
+							<div class="input-group" style="margin-bottom: -25px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">LESS: LOSS CARRIED FORWARD - Year 2016(3rd Year)</label>
+								<label class="form-control-sm col-sm-3">(393,269.40)</label>
+							</div>
+							<div class="input-group" style="margin-bottom: -30px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOSS CARRIED FORWARD - Year 2017(1st Year)</label>
+								<label class="form-control-sm col-sm-3">(223,604.64)</label>
+							</div>
+							<div class="input-group" style="margin-bottom: -25px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+								<label class="form-control-sm col-sm-3">--------------------------</label>
+							</div>
+							<div class="input-group" style="margin-bottom: -30px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year 2018</label>
+								<label class="form-control-sm col-sm-3">(212,096.46)</label>
+							</div>
+							<div class="input-group" style="margin-bottom: -25px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+								<label class="form-control-sm col-sm-3">------------------------</label>
+							</div>
+					</div>
+			</fieldset>
+		</div>
+		<div class="col-sm-6">
+			<fieldset class="scheduler-border">
+				<legend class="scheduler-border">Note</legend>
+					<div class="custom-row-inline-inset" style="margin-bottom: 26px !important;">
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">***Net of 40% for Nat Cat</label>
+						</div>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Management Expenses = 15%</label>
+						</div>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Profit Commission = 20%</label>
+						</div>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Loss, if any, to be carried forward for 5 years </label>
+						</div>
+					</div>
+			</fieldset>
+		</div>
+	  </div>
+	</div>
+	<div footer class="text-center" style="width: 100% !important;">
+		<div >
+			<button class="cust-btn" type="button" (click)="profitCommMdl.closeModal();"><a>Return</a></button>
+			<button class="cust-btn" type="button" (click)="showPrintPreview();"><a>Print</a></button>
+		</div>
+	</div>
+</app-modal>
+
+
+
+<app-modal [btnTitle]="'Compute Profit Commission'" hidden id="modalProfComm" #queryMdl>
+    <div header>Compute Profit Commission</div>
+         <div body>
+            <div>
+                <fieldset class="scheduler-border">
+                    <br />
+                    <div class="form-row custom-row-inline-inset" style="margin-top: -10px !important;margin-bottom: 12px !important;">
+                        <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                            <label class="form-control-sm col-sm-3 text-right">Company</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-10" (change)="checkCodeModal($event)" [(ngModel)]="cedingDescLov">
+							<div class="text-search-ico" (click)="showCedCompModal()"><a><i class="fa fa-search"></i></a></div>
+                        </div>
+                     </div>
+                     <div class="form-row custom-row-inline-inset" style="margin-top: -13px !important;">
+                        <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                            <label class="form-control-sm col-sm-3 text-right">Month</label>
+                            <select id="m-list" [(ngModel)]="monthCdLov" class="form-control form-control-sm cust-sm col-sm-5">
+								<option *ngFor="let m of monthList" [value]="m">{{ m }}</option>
+							</select>
+							<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Year</label>
+							<select id="y-list" [(ngModel)]="yearCdLov" class="form-control form-control-sm cust-sm col-sm-3">
+								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
+							</select>
+                        </div>
+                     </div>
+                </fieldset>
+            </div>
+          </div>
+          <div footer class="text-center" style="width: 100% !important;">
+                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="cedingDescLov == '' || monthCdLov == undefined || yearCdLov == undefined"><a>Generate</a></button>
+                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="cedingDescLov == '' || monthCdLov == undefined || yearCdLov == undefined"><a>View</a></button>
+                <button type="button" class="cust-btn" (click)="queryModal.closeModal()"><a>Cancel</a></button>
+          </div>
+</app-modal>
+
+
+<app-ceding-company #cedingComp (selectedData)="setSelectedCedComp($event);"></app-ceding-company>
+<app-ceding-company #cedingCompModal (selectedData)="setSelectedCedCompModal($event);"></app-ceding-company>

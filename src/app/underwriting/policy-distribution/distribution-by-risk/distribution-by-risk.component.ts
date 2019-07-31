@@ -500,6 +500,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           this.wparamData.uneditable.push(true);
         }
       }else if(this.riskDistributionData.autoCalc == 'Y'){
+        this.riskDistributionData.seciiPremTag = 'N';
         this.wparamData.uneditable = [];
         for(var count = 0; count < this.wparamData.tHeader.length; count++){
           this.wparamData.uneditable.push(true);

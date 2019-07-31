@@ -18,7 +18,7 @@ export class AcctArListingsComponent implements OnInit {
     tHeader: ['A.R. No.','Payor','AR Date','Payment Type','Status','Particulars','Amount'],
     dataTypes: ['sequence-6','text','date','text','text','text','currency'],
     keys: ['arNo', 'payor', 'arDate', 'tranTypeName', 'arStatDesc', 'particulars', 'arAmt'],
-    colSize:['1px', '1px', '1px', '100px', '1px', '200px', '125px'],
+    colSize:['25px', '80px', '40px', '100px', '1px', '200px', '125px'],
     filters: [
         {
           key: 'arNo',
