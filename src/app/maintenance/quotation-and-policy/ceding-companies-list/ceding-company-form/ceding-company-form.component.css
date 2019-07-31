@@ -16,3 +16,10 @@
 .cust-checkbox-pos{
 	margin-top: -13px;
 }
+
+.cust-btn-extend{
+	max-width: 100%;
+	width: 43%;
+	margin-top: -9px;
+	z-index: 99 !important;
+}
