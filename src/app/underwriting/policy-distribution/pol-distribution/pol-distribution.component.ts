@@ -63,7 +63,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       infoFlag: true,
       pageLength: 'unli',
       pageID: 'poolDistTable',
-      searchFlag : true
+      searchFlag : true,
+      exportFlag: true,
     }
 
     sub: any;
@@ -402,7 +403,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
                                                  }], { skipLocationChange: true });
   }
 
-  exportTreatyDist(){ // SIR TOTZZ
+  exportPoolDist(){ // SIR TOTZZ
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -424,7 +425,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       };
 
       //keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
-     alasql('SELECT treatyName AS TreatyName, trtyCedName AS CedingName, pctShare AS PctShare, siAmt AS SumInsured, premAmt AS PremiumAmount, commRt AS CommissionRate, commAmt as CommissionAmount, vatRiComm as VATRiCommision, netDue AS NetDue INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.treatyDistData.tableData]);
+     alasql('SELECT section AS Section ,treatyAbbr AS Treaty ,cedingName AS TreatyCompany ,retOneLines AS RetLine1 ,retOneTsiAmt AS Ret1SIAmt ,retOnePremAmt AS Ret1PremAmt ,retTwoLines AS RetLine2 ,retTwoTsiAmt AS Ret2SIAmt ,retTwoPremAmt AS Ret2PremAmt ,commRt AS CommRate ,totalCommAmt AS CommAmt ,totalVatRiComm AS VATonRIComm ,totalNetDue AS NetDue INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
   }
 }
 
