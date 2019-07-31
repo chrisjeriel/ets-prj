@@ -34,19 +34,19 @@
 							<div class="col-sm-2">
 		                    	<div class="input-group mt-4">
 		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
-				                    <input class="form-control-sm" type="radio" [value]="'L'"
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'L'"
 				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
 				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Loss</label>
 			                    </div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
-				                    <input class="form-control-sm" type="radio" [value]="'A'"
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'A'"
 				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
 				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Adjuster's Expenses</label>
 		                    	</div>	
 		                    	<div class="input-group">
 		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
-				                    <input class="form-control-sm" type="radio" [value]="'O'"
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'O'"
 				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
 				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Other Expenses</label>
 						        </div>
@@ -74,19 +74,19 @@
 							<div class="col-sm-2">
 		                    	<div class="input-group mt-4">
 		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
-				                    <input class="form-control-sm" type="radio" [value]="'L'"
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'L'"
 				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
 				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Loss</label>
 			                    </div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
-				                    <input class="form-control-sm" type="radio" [value]="'A'"
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'A'"
 				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
 				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Adjuster's Expenses</label>
 		                    	</div>	
 		                    	<div class="input-group">
 		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
-				                    <input class="form-control-sm" type="radio" [value]="'O'"
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'O'"
 				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
 				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Other Expenses</label>
 						        </div>
