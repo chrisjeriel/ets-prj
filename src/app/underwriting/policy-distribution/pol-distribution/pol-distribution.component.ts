@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import * as alasql from 'alasql';
 
 @Component({
   selector: 'app-pol-distribution',
@@ -63,7 +64,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       infoFlag: true,
       pageLength: 'unli',
       pageID: 'poolDistTable',
-      searchFlag : true
+      searchFlag : true,
+      exportFlag: true,
     }
 
     sub: any;
@@ -131,6 +133,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     net:0.00
   };
 
+  @Input() inquiryFlag: boolean = false;
 
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private ns: NotesService) { }
 
@@ -400,6 +403,61 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
                                                  exitLink: '/pol-dist-list',
                                                  fromNegate : false
                                                  }], { skipLocationChange: true });
+  }
+
+  exportTreatyDistPerSection(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'TreatyDistPerSection_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+      //keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
+     alasql('SELECT section as Section, treatyAbbr as TreatyName, trtyCedName as CedingName, siAmt as SiAmt, premAmt as PremAmt, commRt as CommRt, commAmt as CommAmt, vatRiComm as VatRiComm, netDue as NetDue INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.treatyDistData.tableData]);
+  }
+
+  exportPoolDistPerSection(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'PoolDistPerSection_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+      //tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
+      //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+     
+     //['section', 'treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue',];
+
+
+     alasql('SELECT section AS Section, treatyAbbr AS TreatyName, cedingName AS CedingName, retOneLines AS RetentionOneLines, retOneTsiAmt AS RetentionOneTsiAmt, retOnePremAmt AS RetentionOnePremAmt, retTwoLines AS RetentionTwoLines, retTwoTsiAmt AS RetentionTwoTsiAmt, retTwoPremAmt AS RetentionTwoPremAmt, commRt AS CommRt, totalCommAmt AS TotalCommAmt, totalVatRiComm AS TotalVatRiComm, totalNetDue AS TotalNetDue ' +
+            'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
   }
 }
 

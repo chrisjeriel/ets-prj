@@ -1154,6 +1154,13 @@ export class UnderwritingService {
         }
         return this.http.post(environment.prodApiUrl + '/underwriting-service/negateDistribution',JSON.stringify(params),header);
     }
+
+    getPolDistWarning(riskDistId, altNo){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+            .set('altNo', altNo)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDistWarning', {params});
+    }
 }            
 
             
