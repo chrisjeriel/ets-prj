@@ -350,15 +350,33 @@ export class AccountingService {
 		return this.accountingEntriesCVData;
 	}
 
-	getAccInvestments() {
-		this.accInvestments = [
-			new AccInvestments("BPI", "BPI 1", 5, "Years", 8.875000, new Date("10/20/2013"), new Date("10/20/2018"), 14000000, 1812500),
-			new AccInvestments("RCBC", "RCBC 1", 35, "Days", 1.500000, new Date("09/26/2018"), new Date("10/31/2018"), 10000000, 10150000)
-		]
-		return this.accInvestments;
+	getAccInvestments(searchParams : any[]) {
+		var params;
+
+		if(searchParams.length < 1){
+			params = new HttpParams()
+				.set('invtId','')
+				.set('invtCd','')
+				.set('bank','')
+				.set('invtType','')
+				.set('invtSecCd','')
+				.set('invtStatus','')
+				.set('matPeriod','')
+				.set('durUnit','')
+				.set('purDate','')
+				.set('matDate','')
+				.set('currCd','')
+		}else{
+			params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+		}
+
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitInvestmentsList", {params});
 	}
 
-
+	
 	getAccItEditedTransactions() {
 		this.accItEditedTransactions = [
 			new AccItEditedTransactions("CV", "2018-00372881", new Date('2018-10-01'), "INVOICE COMMUNICATIONS INC.", "Billing for the period April 16 to March 16, 2019", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 2999),
@@ -1296,7 +1314,6 @@ export class AccountingService {
 		return this.batchOR2;
 	}
 
-
 	saveAccJVEntry(params){
 		let header: any = {
 		    headers: new HttpHeaders({
@@ -1323,7 +1340,20 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSOAAging",{params});
 	}
 
+	getProfitCommSumm(profcommId?,cedingId?,month?,year?){
+		const params = new HttpParams()
+			.set('profcommId',profcommId ===undefined || profcommId===null ? '' : profcommId)
+			.set('cedingId',cedingId ===undefined || cedingId===null ? '' : cedingId)
+			.set('month',month ===undefined || month===null ? '' : month)
+			.set('month',year ===undefined || year===null ? '' : year)
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitProfCommSumm",{params});
+	}
 
+	getProfitCommDtl(profcommId?){
+		const params = new HttpParams()
+			.set('profcommId',profcommId ===undefined || profcommId===null ? '' : profcommId)
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitProfCommDtl",{params});
+	}
 
 	getCMDMListing(params){
 		// const params = new HttpParams()
@@ -1410,6 +1440,17 @@ export class AccountingService {
  
     }
 
+
+    saveAcitArTrans(params){
+    	 let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArTrans',params,header);
+ 
+    }
+
     saveAcitCMDM(params){
     	let header : any = {
              headers: new HttpHeaders({
@@ -1427,7 +1468,6 @@ export class AccountingService {
                  'Content-Type': 'application/json'
              })
          };
-
    		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitPaytReqStat',params,header);
  
     }         
@@ -1474,6 +1514,56 @@ export class AccountingService {
 			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
 			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPrqTrans',{params});	
+	}
+
+	cancelAr(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/cancelAr',JSON.stringify(params),header);
+	}
+
+	getAcitSoaDtl(policyId?, instNo?, cedingId?, payeeNo?){
+		const params = new HttpParams()
+			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+			.set('instNo', (instNo == null || instNo == undefined ? '' : instNo))
+			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+			.set('payeeNo', (payeeNo == null || payeeNo == undefined ? '' : payeeNo));
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAgingSoaDtl',{params});	
+	}
+
+	saveAcitArInwPolBal(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArInwPolBal',JSON.stringify(params),header);
+	}
+
+	getAcitArInwPolBal(tranId, billId){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('billId', billId);
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArInwPolBal',{params});
+	}
+
+  	getAcitArTransDtl(tranId, billId){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('billId', billId);
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArTransDtl',{params});
+	}
+
+	saveAcitArTransDtl(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArTransDtl',JSON.stringify(params),header);
 	}
 
 	saveAcitPrqTrans(params){
@@ -1587,6 +1677,7 @@ export class AccountingService {
 	            }
         	}
         	
-		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOAList',{params});	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOAList',{params});
 	}
 }
+

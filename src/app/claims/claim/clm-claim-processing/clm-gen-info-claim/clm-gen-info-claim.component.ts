@@ -135,6 +135,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     totalLossExpPd: null,
     lapsePdTag: null,
     polTermTag: null,
+    premTag: null,
     remarks: null,
     approvedBy: null,
     approvedDate: null,
@@ -280,6 +281,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
                                                                                                                                     a.approvedDate = this.ns.toDateTimeString(a.approvedDate);
                                                                                                                                     return a;
                                                                                                                                   })[0];
+      this.showUnpaidMsg = this.claimData.premTag == 'N';
       this.claimData.inceptDate = this.ns.toDateTimeString(this.claimData.inceptDate);
       this.claimData.expiryDate = this.ns.toDateTimeString(this.claimData.expiryDate);
       this.claimData.lossDate = this.ns.toDateTimeString(this.claimData.lossDate);
@@ -323,7 +325,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
     var sub$ = forkJoin(this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
                              .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.statusDesc == 'In Force')
-                                                                                       .sort((a, b) => b.altNo - a.altNo)),
+                                                                                      .sort((a, b) => b.altNo - a.altNo)),
                                    mergeMap(data => this.us.getPolGenInfo(data['policyList'][0].policyId, data['policyList'][0].policyNo))),
                       this.us.getPolGenInfo(this.policyId, this.policyNo)).pipe(map(([alt, base]) => { return { alt, base }; }));
 
@@ -333,6 +335,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       var base = data['base']['policy'];
 
       this.disableAdjusterBtn = true;
+      this.showUnpaidMsg = base['premTag'] == 'N';
+      this.claimData.premTag = base['premTag'];
       this.claimData['statusChanged'] = 0;
       this.claimData.lineCd = base['lineCd'];
       this.claimData.polYear = base['polYear'];
@@ -950,13 +954,12 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.clmEventTypeLOV.checkCode(this.claimData.eventTypeDesc, ev);
       } else if(str === 'event') {
         var eventTypeCd = this.claimData.eventTypeCd;
-        var line = this.line;
 
-        this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lineCd == line };
+        this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd };
         var ld = this.claimData.lossDate.split('T');
         var d = ld[0] == '' ? new Date() : ld[1] == '' ? new Date(ld[1]) : new Date(ld.join('T'));
 
-        this.clmEventLOV.checkCode(line, eventTypeCd, this.claimData.eventDesc, ev, d);
+        this.clmEventLOV.checkCode(eventTypeCd, this.claimData.eventDesc, ev, d);
       } else if(str === 'mainAdj') {
         this.adjusterLOVMain.checkCode(this.claimData.adjId, ev);
       }

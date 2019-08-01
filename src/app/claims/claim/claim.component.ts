@@ -89,6 +89,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   onTabChange($event: NgbTabChangeEvent) {
 
       if ($event.nextId === 'Exit' && this.isInquiry) {
+        $event.preventDefault();
         this.router.navigateByUrl('/claims-inquiry');
       } else if($event.nextId === 'Exit' && !this.isInquiry){
         this.router.navigateByUrl('/clm-claim-processing');
@@ -100,7 +101,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         this.prevTab = $event.activeId;
       }
 
-      if($('.ng-dirty').length != 0 ){
+      if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0 ){
         $event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{

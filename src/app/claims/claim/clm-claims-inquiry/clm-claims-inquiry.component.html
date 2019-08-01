@@ -60,9 +60,9 @@
 						</fieldset>
 					</div>
 					<div class="col-sm-6">
-						<fieldset class="scheduler-border" style="padding-bottom: 1px !important; margin-left: -5px !important;">
+						<fieldset class="scheduler-border" style="padding-bottom: 18px !important; margin-right: -5px !important;">
 							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-							<div style="margin-right: 20px;">
+							<div style="margin: 31px 20px 27px 0px;">
 								<div class="input-group" style="margin-top: 10px !important;">
 									<label class="form-control-sm col-sm-2">Loss Date</label>
 									<!-- <input readonly [value]="ns.toDateTimeString(selected?.lossDate)" type="datetime-local" class="form-control form-control-sm cust-sm col-sm-4"> -->
@@ -110,25 +110,46 @@
 								</div>
 								<div class="input-group cust-ig" style="margin-bottom: 1px !important;">
 									<label class="form-control-sm col-sm-2">Loss Details</label>
-									<textarea  readonly class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;">{{ selected?.lossDtl }}</textarea>
+									<textarea  readonly class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 45px; margin-bottom: 17px !important;">{{ selected?.lossDtl }}</textarea>
 								</div>
 								<div class="input-group cust-ig" style="margin-bottom: 1px !important;">
 									<label class="form-control-sm col-sm-2">Remarks</label>
-									<textarea  readonly class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;">{{ selected?.remarks }}</textarea>
+									<textarea  readonly class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 45px; margin-bottom: 17px !important;">{{ selected?.remarks }}</textarea>
 								</div>
-								<div class="input-group cust-ig" style="margin-bottom: 1px !important;">
-									<label class="form-control-sm col-sm-4">Section I</label>
-									<input type="checkbox" disabled [checked]="selected?.secISiTag === 'Y'" style="margin-top: 7px !important;">
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border" style="padding-bottom: 18px !important; margin-right: -5px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div style="margin: 25px 18px -20px 0px !important">
+								<div class="input-group" style="margin-bottom: 1px !important;">
+									<label class="form-control-sm col-sm-1" style="padding-right:3px">Section I</label>
+									<input type="checkbox" [checked]="selected?.secISiTag === 'Y'" class="checkbox" style="pointer-events: none;" tabindex="-1">
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.sectionIPrem | number: '1.2-2'" appCurrency  readonly>
 									<label class="form-control-sm col-sm-2">Section II</label>
-									<input type="checkbox" disabled [checked]="selected?.secIISiTag === 'Y'" style="margin-top: 7px !important;">
+									<input type="checkbox" style="pointer-events: none;" tabindex="-1" [checked]="selected?.secIISiTag === 'Y'" class="checkbox">
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.sectionIIPrem | number: '1.2-2'" appCurrency readonly>
 									<label class="form-control-sm col-sm-2">Section III</label>
-									<input type="checkbox" disabled [checked]="selected?.secIIISiTag === 'Y'" style="margin-top: 7px !important;">
+									<input type="checkbox" style="pointer-events: none;" tabindex="-1" [checked]="selected?.secIIISiTag === 'Y'" class="checkbox">
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.sectionIIIPrem | number: '1.2-2'" appCurrency readonly>
 								</div>
 								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-5">Allowable Maximum Claim</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.allowMaxSi | number: '1.2-2'" appCurrency readonly>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border" style="padding-bottom: 1px !important; margin-left: -5px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div style="margin: 36px 18px 18px 0px !important">
+								<div class="input-group">
 									<label class="form-control-sm col-sm-2">Currency</label>
-									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.currencyCd">
-								</div>
-								<div class="input-group cust-ig">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="selected?.currencyCd">
 									<label class="form-control-sm col-sm-2">Total Reserve</label>
 									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="selected?.totalLossExpRes | number: '1.2-2'">
 									<label class="form-control-sm col-sm-2">Total Payment</label>

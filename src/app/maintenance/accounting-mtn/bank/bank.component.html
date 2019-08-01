@@ -31,5 +31,5 @@
 </div>
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>

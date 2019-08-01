@@ -10,7 +10,9 @@ import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 export class GeneratePaymentRequestComponent implements OnInit {
 
   private sub: any;
-  rowData: any;
+  rowData: any = {
+    reqId : ''
+  };
 
   constructor(private activatedRoute: ActivatedRoute,  private router: Router) { }
 
@@ -18,8 +20,8 @@ export class GeneratePaymentRequestComponent implements OnInit {
     console.log('IM HERE AT GEN PAYT REQ');
   	this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0){
-        this.rowData = JSON.parse(params['tableInfo']);
-        console.log(this.rowData);
+        this.rowData.reqId = params['reqId'];
+        console.log(params['reqId']);
       }
     });
   }

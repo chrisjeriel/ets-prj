@@ -232,3 +232,21 @@
     <button type="button" class="cust-btn" (click)="retLimitReached.closeModal()" ><a>Ok</a></button>
   </div>
 </app-modal>
+
+<app-modal class="d-none" id="warningModal">
+    <div header>Policy Distribution</div>
+    <div body style="min-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>
+                  {{ warningModalMsg }}
+              </p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-right">
+
+        <button *ngIf="warningModalCode == 'PREV_NOT_POSTED'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="warningModalCode == 'PREV_HAS_CHANGES'" class="cust-btn" type="button" (click)="save();modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>

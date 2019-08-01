@@ -20,7 +20,7 @@ export class CedingCompaniesListComponent implements OnInit {
 
   maintenanceCedingCoListData: any = {
       tableData: [],
-      tHeader: ['Co No.', 'Name', 'Abbreviation', 'Address', 'Member', 'Treaty', 'Active.', 'Withdrawal', 'Membership Date', 'Inactive Date', 'Withdrawal Date'],
+      tHeader: ['Co No.', 'Name', 'Abbreviation', 'Address', 'Member', 'Treaty R/I', 'Active.', 'Withdrawal', 'Membership Date', 'Inactive Date', 'Withdrawal Date'],
       dataTypes: ['sequence-3', 'text', 'text', 'text', 'checkbox', 'checkbox', 'checkbox', 'checkbox', 'date', 'date', 'date'],
       tableOnly: false,
       addFlag: true,

@@ -9,6 +9,7 @@ import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -24,11 +25,9 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild('reqUserLov') reqUserLov         : MtnUsersComponent;
   @ViewChild('appUserLov') appUserLov         : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent;
-
-  @Input() data: any = {};
-  @Output() onChange: EventEmitter<any> = new EventEmitter();
-  paymentData: any = {};
-  paymentType: any;
+  @ViewChild('mainLov') mainLov               : LovComponent;
+  // @Input() data: any = {};
+  // @Output() onChange: EventEmitter<any> = new EventEmitter();
 
   saveAcitPaytReq : any = {
     paytReqNo       : '',
@@ -71,50 +70,28 @@ export class PaymentRequestEntryComponent implements OnInit {
   initDisabled    : boolean;
   fromBtn         : string = '';
 
+  @Output() paytData : EventEmitter<any> = new EventEmitter();
+  @Input() rowData: any = {
+    reqId : ''
+  };
+
+  paymentData  : any = {};
+  paymentType  : any;
+  passDataLov  : any = {
+    selector     :'',
+    payeeClassCd : 1
+  };
+
   constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
     this.titleService.setTitle('Acct-IT | Request Entry');
     this.getTranType();
-    
 
     this.sub = this.activatedRoute.params.subscribe(params => {
-      if(Object.keys(params).length != 0){
-        var rec = JSON.parse(params['tableInfo']);
-        this.saveAcitPaytReq = {
-          paytReqNo       : rec.paytReqNo,
-          approvedBy      : rec.approvedBy,
-          approvedDate    : this.ns.toDateTimeString(rec.approvedDate),
-          createDate      : this.ns.toDateTimeString(rec.createDate),
-          createUser      : rec.createUser,
-          currCd          : rec.currCd,
-          currRate        : rec.currRate,
-          localAmt        : rec.localAmt,
-          particulars     : rec.particulars,
-          payee           : rec.payee,
-          payeeNo         : rec.payeeNo,
-          preparedBy      : rec.preparedBy,
-          preparedDate    : this.ns.toDateTimeString(rec.preparedDate),
-          reqAmt          : rec.reqAmt,
-          reqDate         : this.ns.toDateTimeString(rec.reqDate),
-          reqId           : rec.reqId,
-          reqMm           : rec.reqMm,
-          reqPrefix       : rec.reqPrefix,
-          reqSeqNo        : rec.reqSeqNo,
-          reqStatus       : rec.reqStatus,
-          reqStatusDesc   : rec.reqStatusDesc,
-          reqYear         : rec.reqYear,
-          requestedBy     : rec.requestedBy,
-          tranTypeCd      : rec.tranTypeCd,
-          updateDate      : this.ns.toDateTimeString(rec.updateDate),
-          updateUser      : rec.updateUser
-        };
-
-        this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
-        this.saveAcitPaytReq.reqMm = this.saveAcitPaytReq.reqMm;
-        this.saveAcitPaytReq.reqSeqNo = this.saveAcitPaytReq.reqSeqNo;
-        this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
-        this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
+      if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
+        this.saveAcitPaytReq.reqId = params['reqId'];
+        this.getAcitPaytReq();
         this.initDisabled = false;
       }else{
         this.initDisabled = true;
@@ -133,9 +110,17 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   getAcitPaytReq(){
-    this.acctService.getPaytReq()
+    this.acctService.getPaytReq(this.saveAcitPaytReq.reqId)
     .subscribe(data => {
       console.log(data);
+      var rec = data['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
+                                               e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
+                                               e.approvedDate = this.ns.toDateTimeString(e.approvedDate); return e; });
+      this.saveAcitPaytReq = rec[0];
+      this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
+      this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
+      this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
+      console.log(this.saveAcitPaytReq);
     });
   }
 
@@ -174,6 +159,8 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.dialogIcon = '';
       this.dialogMessage = '';
       this.success.open();
+      this.saveAcitPaytReq.reqId =  data['reqIdOut'];
+      this.paytData.emit({reqId:data['reqIdOut']});
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
       this.initDisabled = false;
@@ -226,8 +213,8 @@ export class PaymentRequestEntryComponent implements OnInit {
     var prNoArr = paytReqNo.split('-');
     this.saveAcitPaytReq.reqPrefix = prNoArr[0];
     this.saveAcitPaytReq.reqYear   = prNoArr[1];
-    this.saveAcitPaytReq.reqMm     = prNoArr[2];
-    this.saveAcitPaytReq.reqSeqNo  = prNoArr[3];
+    this.saveAcitPaytReq.reqMm     = prNoArr[2].padStart(2,'0');
+    this.saveAcitPaytReq.reqSeqNo  = prNoArr[3].padStart(4,'0');
   }
 
   setLocalAmt(){
@@ -235,6 +222,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   setData(data,from){
+    $('input').addClass('ng-dirty');
     this.ns.lovLoader(data.ev, 0);
     if(from.toLowerCase() == 'curr'){
       this.saveAcitPaytReq.currCd = data.currencyCd;
@@ -245,6 +233,9 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.saveAcitPaytReq.requestedBy = data.userId;
     }else if(from.toLowerCase() == 'app-user'){
       this.saveAcitPaytReq.approvedBy = data.userId;
+    }else if(from.toLowerCase() == 'payee'){
+      this.saveAcitPaytReq.payee   = data.data.payeeName;
+      this.saveAcitPaytReq.payeeNo = data.data.payeeNo;
     }
   }
 
@@ -272,6 +263,9 @@ export class PaymentRequestEntryComponent implements OnInit {
     }else if(fromUser.toLowerCase() == 'app-user'){
       this.appUserLov.modal.openNoClose();
       this.saveAcitPaytReq.approvedBy = this.ns.getCurrentUser();
+    }else if(fromUser.toLowerCase() == 'payee'){
+      this.passDataLov.selector = 'payee';
+      this.mainLov.openLOV();
     }
   }
 

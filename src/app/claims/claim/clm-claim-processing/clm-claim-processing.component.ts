@@ -159,7 +159,7 @@ export class ClmClaimProcessingComponent implements OnInit {
         data.claimsList = data.claimsList.filter(a=>{return a.clmStatCd !== 'TC' && a.clmStatCd !== 'CD' && (a.lossStatCd !== 'CD')});
         for(var i of data.claimsList){
           for(var j of i.clmAdjusterList){
-            if(i.adjName === undefined){
+            if(i.adjName === null){
               i.adjName = j.adjName;
             }else{
               i.adjName = i.adjName + '/' + j.adjName;

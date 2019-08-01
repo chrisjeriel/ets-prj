@@ -427,6 +427,7 @@ import { MtnClmEventTypeComponent } from './maintenance/mtn-clm-event-type/mtn-c
 import { MtnAdjusterComponent } from './maintenance/mtn-adjuster/mtn-adjuster.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 import { MtnCedingCompanyMemberComponent } from './maintenance/mtn-ceding-company-member/mtn-ceding-company-member.component';
+import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-app-payments-zero/jv-app-payments-zero.component';
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
 import { MtnClmHistoryLovComponent } from './maintenance/mtn-clm-history-lov/mtn-clm-history-lov.component';
@@ -438,8 +439,8 @@ import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
 import { DropdownComponent } from './_components/dropdown/dropdown.component';
 import { MtnCedingCompanyTreatyComponent } from './maintenance/mtn-ceding-company-treaty/mtn-ceding-company-treaty.component';
-
-
+import { MtnBankComponent } from './maintenance/mtn-bank/mtn-bank.component';
+import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration/mtn-acct-int-duration.component';
 
 @NgModule({
     imports: [
@@ -873,6 +874,7 @@ import { MtnCedingCompanyTreatyComponent } from './maintenance/mtn-ceding-compan
         MtnAdjusterComponent,
         ClaimStatusReasonComponent,
         MtnCedingCompanyMemberComponent,
+        AllocateInvestmentIncomeComponent,
         JvAppPaymentsZeroComponent,
         JvTypeLovComponent,
         MtnClmHistoryLovComponent,
@@ -884,6 +886,8 @@ import { MtnCedingCompanyTreatyComponent } from './maintenance/mtn-ceding-compan
         AccountingMtnComponent,
         DropdownComponent,
         MtnCedingCompanyTreatyComponent,
+        MtnBankComponent,
+        MtnAcctIntDurationComponent,
     ],
 
   	providers: [
