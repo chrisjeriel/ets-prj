@@ -23,6 +23,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   };
   @ViewChild('mtnClmHistLov') clmHistLov      : MtnClmHistoryLovComponent;
   @ViewChild('cedCompTbl') cedCompTbl         : CustEditableNonDatatableComponent;
+  @ViewChild('inwardTbl') inwardTbl           : CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(ConfirmSaveComponent) cs         : ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
@@ -62,8 +63,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   inwardPolBalData: any = {
     tableData     : [],
-    tHeader       : ['Policy No.','Inst No.','Due Date','Curr','Curr Rate','Balance','Payment','Premium', 'RI Commission', 'Charges', 'Net Return'],
-    dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','currency', 'currency'],
+    tHeader       : ['Policy No.','Inst No.','Due Date','Curr','Curr Rate','Balance','Payment','Premium', 'RI Commission','RI Comm. VAT', 'Charges', 'Net Return'],
+    dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','percent','currency', 'currency'],
     magnifyingGlass : ['policyNo'],
     nData: {
       claimNo        : '',
@@ -86,10 +87,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [true,true,true,true,true,true,true,true,true,true,false],
-    total         : [ null, null, null,null, 'Total', null,null, 'Total', 'reserveAmt', 'paytAmt', 'localAmt'],
-    widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
-    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','localAmt']
+    uneditable    : [true,true,true,true,true,true,true,true,true,true,true,false],
+    total         : [ null, null, null,null, 'Total', 'netDue','prevPaytAmt','premAmt','riComm',null,'charges', 'returnAmt'],
+    widths        : [130,1, 110,1,110,120,120,120,120,120,120,120,120],
+    keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
   };
 
   tranTypeList    : any;

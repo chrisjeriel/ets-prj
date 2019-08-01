@@ -42,17 +42,11 @@
           <div class="input-group cust-border" style="padding-top: 0.6em">
             <div class="col-sm-12">
               <ng-container [ngSwitch]="true">
-               <!--  <ng-container *ngSwitchCase ="1">
-                    <app-cust-editable-non-datatable [passData]="AdjustersData"></app-cust-editable-non-datatable>
-                </ng-container>
-                <ng-container *ngSwitchCase ="2">
-                    <app-cust-editable-non-datatable [passData]="OtherPartyData"></app-cust-editable-non-datatable>
-                </ng-container>   -->
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 2 || requestData?.tranTypeCd == 3">
                     <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event)" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty();" #cedCompTbl></app-cust-editable-non-datatable>
                 </ng-container>
-                <ng-container *ngSwitchCase ="4">
-                    <app-cust-editable-non-datatable [passData]="inwardPolBalData"></app-cust-editable-non-datatable>
+                <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 4">
+                    <app-cust-editable-non-datatable [passData]="inwardPolBalData" #inwardTbl></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
