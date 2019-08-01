@@ -71,8 +71,19 @@
 					                        </div>
 					                    </div>
 					                </div>
-					            </div>
+					            </div>     
 						 </fieldset>
+						 <br>
+						 <div class="form-row">
+									<div class="form-group col-sm">
+										<div class="col-md-13 text-center">
+											<div class="cust-btn-container">
+											<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+								            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+											</div>
+										</div>
+									</div>
+						</div>
 					</div>
 				</ng-template>
 			</ngb-tab>
@@ -87,4 +98,6 @@
 
 <app-mtn-bank (selectedData)="setSelectedBank($event)" ></app-mtn-bank>
 <app-mtn-acct-int-duration (selectedData)="setSelectedDuration($event)"></app-mtn-acct-int-duration>
- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save #confirmSave (onYes)="onClickSaveInvt()"></app-confirm-save>
+<app-cancel-button (onYes)="onClickSaveInvt('cancel')" [url]="''" ></app-cancel-button>

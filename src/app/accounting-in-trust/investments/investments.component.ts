@@ -11,6 +11,9 @@ import { MtnBankComponent } from '@app/maintenance/mtn-bank/mtn-bank.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnAcctIntDurationComponent } from '@app/maintenance/mtn-acct-int-duration/mtn-acct-int-duration.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { finalize } from 'rxjs/operators';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 
 @Component({
   selector: 'app-investments',
@@ -24,6 +27,7 @@ export class InvestmentsComponent implements OnInit {
   @ViewChild(MtnAcctIntDurationComponent) durationLOV: MtnAcctIntDurationComponent;
   @ViewChild(ModalComponent) modal : ModalComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+    @ViewChild("confirmSave") confirmSave: ConfirmSaveComponent;
 
   tableData: any[] = [];	
   tHeader: any[] = [];
@@ -125,7 +129,7 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
-     widths: [150,130,150,150,150,130,1,1,100,85,90,80,100,120,100,120,120],
+     widths: [130,130,150,150,150,130,1,1,100,85,90,80,100,120,100,120,130],
      keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -155,12 +159,15 @@ export class InvestmentsComponent implements OnInit {
     dialogIcon: string = '';
     dialogMessage: string = '';
     oldData:any[] =[];
+    currencyData: any[] = [];
+    wtaxRate: any;
 
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Investments");
     this.retrieveInvestmentsList();
+    this.getWTaxRate();
     this.oldData = this.passData.tableData;
   	//this.passData.tableData = this.accountingService.getAccInvestments();
     //this.passData.opts.push({ selector: "bank", vals: ["BPI", "RCBC", "BDO"] });
@@ -188,13 +195,26 @@ export class InvestmentsComponent implements OnInit {
         console.log(data);
         
         var td = data['investments']['invtList'].sort((a, b) => b.createDate - a.createDate).map(a => { 
+                                      a.matDate = this.ns.toDateTimeString(a.matDate).split('T')[0] + ' ' + this.ns.toDateTimeString(a.matDate).split('T')[1];
+                                      a.purDate = this.ns.toDateTimeString(a.purDate).split('T')[0] + ' ' + this.ns.toDateTimeString(a.purDate).split('T')[1];
                                       a.createDate = this.ns.toDateTimeString(a.createDate).split('T')[0] + ' ' + this.ns.toDateTimeString(a.createDate).split('T')[1];
                                       a.updateDate = this.ns.toDateTimeString(a.updateDate).split('T')[0] + ' ' + this.ns.toDateTimeString(a.updateDate).split('T')[1];
-                                      a.uneditable = ['invtStatus','matVal'];
+                                      if (a.invtStatus === 'F'){
+                                        a.uneditable = ['invtStatus','matVal','currRate'];
+                                      } else if(a.invtStatus === 'M' || a.invtStatus === 'O'){
+                                        a.uneditable = ['invtStatus','matVal','currRate','invtAmt'];
+                                      } else {
+                                        a.uneditable = ['invtCd','bank','certNo','invtType',
+                                                        'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
+                                                        'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
+                                                        'whtaxAmt','matVal'];
+                                      }
+                                      
                                    return a; });
 
         this.passData.tableData = td;
         this.passData.disableAdd = false;
+        this.currencyData = data['currency']['currency'];
 
         this.passData.opts[0].vals = data['type']['refCodeList'].map(a => a.code);
         this.passData.opts[0].prev = data['type']['refCodeList'].map(a => a.description);
@@ -273,72 +293,232 @@ export class InvestmentsComponent implements OnInit {
     this.ns.lovLoader(data.ev, 0);
   }
 
-  update(data){
 
+  update(data){
       for(var i= 0; i< this.passData.tableData.length; i++){
 
-         if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted || this.passData.tableData[i].add){
+         if(this.passData.tableData[i].edited || this.passData.tableData[i].add){
 
-                 if(data.key === 'matPeriod'){
-                   if(this.isEmptyObject(this.passData.tableData[i].matPeriod)){
-                     this.passData.tableData[i].matDate = null;
-                   }else {
-                     if(this.passData.tableData[i].durUnit === 'Days'){
-                       var array = this.getDate(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Days')
-                       console.log(array);
-                     }else if (this.passData.tableData[i].durUnit === 'Months'){
+           //LOGIC-COMPUTATION
+               if (this.passData.tableData[i].durUnit !== null || this.passData.tableData[i].durUnit !== ''   && 
+                   this.passData.tableData[i].intRt !== null || this.passData.tableData[i].intRt !== '' &&
+                   this.passData.tableData[i].matPeriod !== null || this.passData.tableData[i].matPeriod !== ''  && 
+                   this.passData.tableData[i].invtAmt !== null &&  this.passData.tableData[i].invtAmt !== '' 
+                   ){
 
-                     }
-                   }
-                   
+
+                  var principal = parseFloat(this.passData.tableData[i].invtAmt),
+                     rate = parseFloat(this.passData.tableData[i].intRt)/100,
+                     time,
+                     matPeriod;
+
+                       if(this.passData.tableData[i].durUnit === 'Days'){
+                         if(data.key === 'matPeriod'){
+                           matPeriod = this.passData.tableData[i].matPeriod
+                         }else {
+                           matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);                     
+                         }  
+                          time = parseFloat(matPeriod)/360;
+                       } else if (this.passData.tableData[i].durUnit === 'Months'){
+                         if(data.key === 'matPeriod'){
+                           matPeriod = this.passData.tableData[i].matPeriod
+                         }else {
+                           matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);                     
+                         }
+                         time = parseFloat(matPeriod)/12;
+                       } else if (this.passData.tableData[i].durUnit === 'Years'){
+                         if(data.key === 'matPeriod'){
+                           matPeriod = this.passData.tableData[i].matPeriod
+                         }else {
+                           matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);                     
+                         }
+                         time = parseFloat(matPeriod);
+                       }
+
+
+                 var invtIncome = principal * rate * time;
+                 this.passData.tableData[i].incomeAmt = invtIncome;
+
+                 if(invtIncome === null){
+                 }else {
+                   var taxRate = parseFloat(this.wtaxRate) / 100,
+                       withHTaxAmt = invtIncome * taxRate,
+                       bankCharges = (this.passData.tableData[i].bankCharge === null || this.passData.tableData[i].bankCharge === '' ) ? null : this.passData.tableData[i].bankCharge,
+                       matVal;
+
+                       if(Number.isNaN(bankCharges)){
+                         matVal = principal + invtIncome - withHTaxAmt;
+                       } else {
+                         matVal = principal + invtIncome - bankCharges - withHTaxAmt;
+                       }
+
+                       this.passData.tableData[i].whtaxAmt = withHTaxAmt;
+                       this.passData.tableData[i].matVal = matVal;
                  }
-          
+               } 
 
-                 /*if(this.passData.tableData[i].matDate !== null && this.passData.tableData[i].purDate !== null){
-                     if(this.passData.tableData[i].matDate <= this.passData.tableData[i].purDate){
+
+               
+           //LOGIC - DATES
+                 if(data.key === 'matPeriod'){
+                       if(this.passData.tableData[i].durUnit === 'Days'){
+                         var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Days');
+                         this.passData.tableData[i].purDate = array[0];
+                         this.passData.tableData[i].matDate = array[1];
+                       } else if (this.passData.tableData[i].durUnit === 'Months'){
+                         var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Months');
+                         this.passData.tableData[i].purDate = array[0];
+                         this.passData.tableData[i].matDate = array[1];
+                       } else if (this.passData.tableData[i].durUnit === 'Years'){
+                         var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Years');
+                         this.passData.tableData[i].purDate = array[0];
+                         this.passData.tableData[i].matDate = array[1];
+                       }
+                 }else if(data.key === 'currCd'){
+                     if (this.passData.tableData[i].currCd === 'PHP'){
+                       var currRt = this.getCurrencyRt('PHP');
+                       this.passData.tableData[i].currRate = currRt;
+                     } else if (this.passData.tableData[i].currCd === 'UKP'){
+                       var currRt = this.getCurrencyRt('UKP');
+                       this.passData.tableData[i].currRate = currRt;
+                     } else if (this.passData.tableData[i].currCd === 'USD'){
+                       var currRt = this.getCurrencyRt('USD');
+                       this.passData.tableData[i].currRate = currRt;
+                     }
+                 }else if(data.key === 'purDate'){
+                     if(this.isEmptyObject(this.passData.tableData[i].purDate) && this.passData.tableData[i].matDate !== null && this.passData.tableData[i].matDate !== ''){
+                       this.passData.tableData[i].matPeriod = null;
+                     }else if(this.passData.tableData[i].matDate <= this.passData.tableData[i].purDate && 
+                              !this.isEmptyObject(this.passData.tableData[i].matDate) &&
+                              !this.isEmptyObject(this.passData.tableData[i].purDate)) { 
                        this.dialogMessage="Maturity Date must be greater than Date Purchased";
                        this.dialogIcon = "error-message";
                        this.successDialog.open();
-                       this.passData.tableData[i].matDate = null;
                        this.passData.tableData[i].matPeriod = null;
-                      }
-                 }else if(this.passData.tableData[i].matDate !== null || this.passData.tableData[i].purDate !== null || this.passData.tableData[i].matPeriod  !== null )
-                    if (this.passData.tableData[i].durUnit === 'Days'
-                                   && this.passData.tableData[i].matPeriod.length > 0 
-                                   && this.passData.tableData[i].purDate.length > 0
-                                   && this.passData.tableData[i].matDate.length === 0){
-                          var newdate = this.computeMatDate(this.passData.tableData[i].purDate, this.passData.tableData[i].matPeriod)
-                          this.passData.tableData[i].matDate = this.ns.toDateTimeString(newdate); 
-                    }
-                   else if(this.passData.tableData[i].durUnit === 'Days'
-                                   && this.passData.tableData[i].matDate.length > 0 
-                                   && this.passData.tableData[i].purDate.length > 0 
-                                   && this.passData.tableData[i].matPeriod.length === 0){
-                                   this.passData.tableData[i].matPeriod = this.computeMatPeriod(
-                                                                          this.passData.tableData[i].matDate,
-                                                                          this.passData.tableData[i].purDate,
-                                                                          'Days');
-                    } else if (this.passData.tableData[i].durUnit === 'Months'
-                                   && this.passData.tableData[i].matDate.length > 0 
-                                   && this.passData.tableData[i].purDate.length > 0 ){
-                                   this.passData.tableData[i].matPeriod = this.computeMatPeriod(
-                                                                          this.passData.tableData[i].matDate,
-                                                                          this.passData.tableData[i].purDate,
-                                                                          'Months');
-                    } else if (this.passData.tableData[i].durUnit === 'Years' 
-                                   && this.passData.tableData[i].matDate.length > 0 
-                                   && this.passData.tableData[i].purDate.length > 0 ){
-                                   this.passData.tableData[i].matPeriod = this.computeMatPeriod(
-                                                                          this.passData.tableData[i].matDate,
-                                                                          this.passData.tableData[i].purDate,
-                                                                          'Years');
-                    }*/
-                  
-                }
+                       this.passData.tableData[i].purDate = null;
+                     }else if (this.isEmptyObject(this.passData.tableData[i].matPeriod) && this.passData.tableData[i].matDate !== null){
+                       if(this.passData.tableData[i].durUnit === 'Days'){
+                         var matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                         this.passData.tableData[i].matPeriod = matPeriod;
+                       } else if (this.passData.tableData[i].durUnit === 'Months'){
+                         var matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                         this.passData.tableData[i].matPeriod = matPeriod;
+                       } else if (this.passData.tableData[i].durUnit === 'Years'){
+                         var matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                             if(matPeriod === 0){
+                               this.passData.tableData[i].durUnit = 'Days';
+                               var newmatPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                               this.passData.tableData[i].matPeriod = newmatPeriod;
+                             } else {
+                                this.passData.tableData[i].matPeriod = matPeriod;
+                             }
+                       }
+                     }else if(this.isEmptyObject(this.passData.tableData[i].matDate) && this.passData.tableData[i].matPeriod !== null){
+                         if(this.passData.tableData[i].durUnit === 'Days'){
+                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Days');
+                           this.passData.tableData[i].purDate = array[0];
+                           this.passData.tableData[i].matDate = array[1];
+                         } else if (this.passData.tableData[i].durUnit === 'Months'){
+                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Months');
+                           this.passData.tableData[i].purDate = array[0];
+                           this.passData.tableData[i].matDate = array[1];
+                         } else if (this.passData.tableData[i].durUnit === 'Years'){
+                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Years');
+                           this.passData.tableData[i].purDate = array[0];
+                           this.passData.tableData[i].matDate = array[1];
+                         }
+                     }else if (this.passData.tableData[i].matPeriod !== null && this.passData.tableData[i].matDate !== null) {
+                         if(this.passData.tableData[i].durUnit === 'Days'){
+                         var matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                         this.passData.tableData[i].matPeriod = matPeriod;
+                         } else if (this.passData.tableData[i].durUnit === 'Months'){
+                           var matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                           this.passData.tableData[i].matPeriod = matPeriod;
+                         } else if (this.passData.tableData[i].durUnit === 'Years'){
+                           var matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                             if(matPeriod === 0){
+                               this.passData.tableData[i].durUnit = 'Days';
+                               var newmatPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                               this.passData.tableData[i].matPeriod = newmatPeriod;
+                             } else {
+                                this.passData.tableData[i].matPeriod = matPeriod;
+                             }
+                         }
+                     } 
+                 }else if(data.key === 'matDate'){
+                       if(this.isEmptyObject(this.passData.tableData[i].matDate) && this.passData.tableData[i].purDate !== null && this.passData.tableData[i].purDate !== ''){
+                         this.passData.tableData[i].matPeriod = null;
+                       }else if(this.passData.tableData[i].matDate <= this.passData.tableData[i].purDate && 
+                            !this.isEmptyObject(this.passData.tableData[i].matDate) &&
+                            !this.isEmptyObject(this.passData.tableData[i].purDate)) {
+                            this.dialogMessage="Maturity Date must be greater than Date Purchased";
+                            this.dialogIcon = "error-message";
+                            this.successDialog.open();
+                            this.passData.tableData[i].matPeriod = null;
+                            this.passData.tableData[i].matDate = null;
+                      } else if (this.isEmptyObject(this.passData.tableData[i].matPeriod) && this.passData.tableData[i].purDate !== null && this.passData.tableData[i].purDate !== ''){
+                         if(this.passData.tableData[i].durUnit === 'Days'){
+                           var matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                           this.passData.tableData[i].matPeriod = matPeriod;
+                         } else if (this.passData.tableData[i].durUnit === 'Months'){
+                           var matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                           this.passData.tableData[i].matPeriod = matPeriod;
+                         } else if (this.passData.tableData[i].durUnit === 'Years'){
+                           var matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                             if(matPeriod === 0){
+                               this.passData.tableData[i].durUnit = 'Days';
+                               var newmatPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                               this.passData.tableData[i].matPeriod = newmatPeriod;
+                             } else {
+                                this.passData.tableData[i].matPeriod = matPeriod;
+                             }
+                         }
+                     } else if(this.isEmptyObject(this.passData.tableData[i].purDate) && this.passData.tableData[i].matPeriod !== null && this.passData.tableData[i].matPeriod !== ''){
+                         if(this.passData.tableData[i].durUnit === 'Days'){
+                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Days');
+                           this.passData.tableData[i].purDate = array[0];
+                           this.passData.tableData[i].matDate = array[1];
+                         } else if (this.passData.tableData[i].durUnit === 'Months'){
+                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Months');
+                           this.passData.tableData[i].purDate = array[0];
+                           this.passData.tableData[i].matDate = array[1];
+                         } else if (this.passData.tableData[i].durUnit === 'Years'){
+                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Years');
+                           this.passData.tableData[i].purDate = array[0];
+                           this.passData.tableData[i].matDate = array[1];
+                         }
+                     } else if (this.passData.tableData[i].matPeriod !== null && this.passData.tableData[i].purDate !== null && this.passData.tableData[i].matDate !== null ) {
+                         if(this.passData.tableData[i].durUnit === 'Days'){
+                         var matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                         this.passData.tableData[i].matPeriod = matPeriod;
+                         } else if (this.passData.tableData[i].durUnit === 'Months'){
+                           var matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                           this.passData.tableData[i].matPeriod = matPeriod;
+                         } else if (this.passData.tableData[i].durUnit === 'Years'){ 
+                           var matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                           if(matPeriod === 0){
+                             this.passData.tableData[i].durUnit = 'Days';
+                             var newmatPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
+                             this.passData.tableData[i].matPeriod = newmatPeriod;
+                           } else {
+                              this.passData.tableData[i].matPeriod = matPeriod;
+                           }
+                         }
+                     } 
+                }         
+      }
     }
-     this.table.refreshTable();
   }
 
+  getWTaxRate(){
+    var wtaxRt;
+    this.mtnService.getMtnParameters('N','INVT_WHTAX_RT').pipe(
+           finalize(() => this.wtaxRate = wtaxRt)
+           ).subscribe(data => {
+      wtaxRt = data['parameters'][0].paramValueN;
+    });
+
+  }
 
  
   computeMatPeriod(date1,date2,unit){
@@ -347,55 +527,84 @@ export class InvestmentsComponent implements OnInit {
 
    var diffDays = Math.floor(Math.abs(<any>from_date - <any>to_date) / (1000*60*60*24));
    var diffMonths = (to_date.getFullYear()*12 + to_date.getMonth()) - (from_date.getFullYear()*12 + from_date.getMonth());
-   
-/*   var diff = Math.floor(date1.getTime() - date2.getTime());
-   var day = 1000 * 60 * 60 * 24;
-   var days = Math.floor(diff/day);
-   var months = Math.floor(days/31);
-   var years = Math.floor(months/12);
-
-   console.log(days);
-   console.log(differenceMonths)
- 
-  console.log(years);*/
+   var diffYears = (to_date.getFullYear()) - (from_date.getFullYear());
 
    if(unit === 'Days'){
       return diffDays;
    } else if (unit === 'Months'){
       return diffMonths;
    } else if (unit === 'Years'){
-     return null;
+     return diffYears;
    }
 
   } 
   
   computeDate(date1,period,unit){
-    var today = new Date(date1);
-    var newdate = new Date();
+    var today = new Date(date1),
+     d = today.getDate(),
+     m = today.getMonth(),
+     y = today.getFullYear();
     var addDate = parseInt(period);
 
-    if(unit === 'Days'){
-      return newdate.setDate(today.getDate() + addDate);
+   if(unit === 'Days'){
+      return today.setDate(today.getDate()+ addDate);
    } else if (unit === 'Months'){
-      return newdate.setDate(today.getMonth() + addDate);
+     return today.setMonth(today.getMonth() + addDate);
    } else if (unit === 'Years'){
-      return newdate.setDate(today.getFullYear() + addDate);
+      return today.setFullYear(today.getFullYear() + addDate);
    }
     
   }
 
-  getDate(tblpurDate,tblmatDate,tblPeriod,unit){
-    var purDate;
-    var matDate;
-    var array = []
-    if (this.isEmptyObject(purDate)){ 
-      purDate = this.ns.toDateTimeString(this.computeDate(tblmatDate, -(tblPeriod), unit));  
-    } else {
-      matDate = this.ns.toDateTimeString(this.computeDate(tblpurDate, tblPeriod, unit));
-    }
-    array = [purDate,matDate]
-    return array; 
+  getMaturationPeriod(unit,tblpurDate,tblmatDate){
+    var matPeriod;
+    matPeriod = this.computeMatPeriod(tblmatDate,
+                                      tblpurDate,
+                                      unit);
+    return matPeriod;
   }
+
+  getDuration(tblpurDate,tblmatDate,tblPeriod,unit){
+    var array;
+    if (this.isEmptyObject(tblpurDate) && !this.isEmptyObject(tblmatDate)){ 
+        var date = this.getDate(tblpurDate,tblmatDate,tblPeriod,unit);
+        tblpurDate = date; 
+        tblmatDate = tblmatDate;
+    } else if(this.isEmptyObject(tblmatDate) && !this.isEmptyObject(tblpurDate)) {
+        var date = this.getDate(tblpurDate,tblmatDate,tblPeriod,unit);
+        tblmatDate = date;
+        tblpurDate = tblpurDate;
+    } else if (!this.isEmptyObject(tblmatDate) && !this.isEmptyObject(tblpurDate)){
+        var date = this.getDate(tblpurDate,tblmatDate,tblPeriod,unit);
+        tblmatDate = date;
+        tblpurDate = tblpurDate;
+    } else {
+        tblmatDate = null;
+        tblpurDate = null;
+    }
+    return array = [tblpurDate,tblmatDate];
+  }
+
+  getDate(tblpurDate,tblmatDate,tblPeriod,unit){
+    var date;
+    if (this.isEmptyObject(tblpurDate)){ 
+      date = this.ns.toDateTimeString(this.computeDate(tblmatDate, -(tblPeriod), unit));  
+    } else {
+      date = this.ns.toDateTimeString(this.computeDate(tblpurDate, tblPeriod, unit));
+    }
+    return date; 
+  }
+
+  getCurrencyRt(currUnit){
+    var currRt;
+    for (var i = 0; i < this.currencyData.length; i++) {
+        if( this.currencyData[i].currencyCd === currUnit){
+              currRt = this.currencyData[i].currencyRt;
+         } 
+    }
+    return currRt;
+  }
+
 
   addDays (date, daysToAdd) {
     var _24HoursInMilliseconds = 86400000;
@@ -411,4 +620,45 @@ export class InvestmentsComponent implements OnInit {
       return true;
     }
 
+  onClickSave(){
+    console.log(this.checkFields());
+      if(this.checkFields()){
+        let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
+          if(invtCds.some((a,i)=>invtCds.indexOf(a)!=i)){
+            this.dialogMessage = 'Unable to save the record. Investment Code must be unique.';
+            this.dialogIcon = 'error-message';
+            this.successDialog.open();
+            return;
+          } else {
+                this.confirmSave.confirmModal();
+          }
+      }else{
+        this.dialogMessage="Please check field values.";
+        this.dialogIcon = "error";
+        this.successDialog.open();
+      }
+  }
+
+  checkFields(){
+    for(let check of this.passData.tableData){
+        if( check.invtCd === null || check.invtCd === '' ||
+            check.bank === null || check.bank === '' ||
+            check.invtType === null || check.invtType === '' ||
+            check.invtSecCd === null || check.invtSecCd === '' ||
+            check.matPeriod === null || check.matPeriod === '' ||
+            check.intRt === null || check.intRt === '' ||
+            check.purDate === null || check.purDate === '' ||
+            check.matDate === null || check.matDate === '' ||
+            check.currCd === null || check.currCd === '' ||
+            check.invtAmt === null || check.invtAmt === '' ||
+            check.incomeAmt === null || check.incomeAmt === '' ||
+            check.bankCharge === null || check.bankCharge === '' ||
+            check.whtaxAmt === null || check.whtaxAmt === '' ||
+            check.matVal === null || check.matVal === '' 
+          ) {   
+            return false;
+          } 
+    }
+      return true;
+  }
 }
