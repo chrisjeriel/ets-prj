@@ -8,8 +8,8 @@
                 	<option *ngFor="let quarter of quarters" [value]="quarter">{{slicer(quarter)}}</option>
                 </select>
                 <label class="form-control-sm col-sm-2 text-right labels">Year</label>
-                <dropdown [(ngModel)]="selectedCar1" [options]="cities" [editable]="true"></dropdown> 
-                <!-- <p-dropdown [options]="cities" [(ngModel)]="selectedCar1" editable="true" scrollHeight="100" panelStyleClass="form-control form-control-sm cust-sm col-sm-1" styleClass="form-control form-control-sm cust-sm col-sm-1" dropdownIcon="fa fa-caret-down"></p-dropdown>  -->
+                <!-- <dropdown [(ngModel)]="selectedCar1" [options]="cities" [editable]="true"></dropdown> --> 
+                <p-dropdown [options]="cities" [(ngModel)]="selectedCar1" editable="true" scrollHeight="100" panelStyleClass="form-control form-control-sm cust-sm col-sm-1" styleClass="form-control form-control-sm cust-sm col-sm-1" dropdownIcon="fa fa-caret-down"></p-dropdown> 
                      
                 
 

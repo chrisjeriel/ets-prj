@@ -162,15 +162,13 @@ export class JvEntryComponent implements OnInit {
         }else{
           this.printBut = true;
         }
-        
-        console.log(this.entryData.jvYear)
         this.check(this.entryData)
-        this.tabController(this.entryData.tranTypeName);
+        this.tabController(this.entryData.tranTypeCd);
       }else{
         this.entryData.jvDate = this.ns.toDateTimeString(0);
         this.entryData.jvStatus = 'New';
-        this.tabController(this.entryData.tranTypeName);
-        this.onChange.emit({ type: '' });
+        this.tabController(0);
+        this.onChange.emit({ type: ''});
       }
       
     });
@@ -235,6 +233,7 @@ export class JvEntryComponent implements OnInit {
                          jvYear: ev.jvYear, 
                          jvDate: ev.jvDate, 
                          jvStatus: ev.jvStatusName,
+                         statusType: ev.jvStatus,
                          refnoDate: ev.refnoDate,
                          refnoTranId: ev.refNo,
                          currCd: ev.currCd,
@@ -247,7 +246,7 @@ export class JvEntryComponent implements OnInit {
   setTranType(data){
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
-    this.tabController(this.entryData.tranTypeName);
+    this.tabController(this.entryData.tranTypeCd);
     this.form.control.markAsDirty();
 
   }
@@ -400,10 +399,18 @@ export class JvEntryComponent implements OnInit {
   }
   
   setPrintable(data){
-    console.log(data)
     this.entryData.preparedBy = data.userId;
     this.entryData.preparedName = data.printableName
-    this.entryData.preparedPos = data.designation;
+    this.entryData.preparedPosition = data.designation;
+  }
+
+  validateCurr(){
+    if(this.entryData.jvAmt !== '' && this.entryData.currRate !== ''){
+      this.entryData.localAmt = this.entryData.jvAmt * this.entryData.currRate;
+      this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+    }else{
+      this.entryData.localAmt = null;
+    }
   }
 
 }

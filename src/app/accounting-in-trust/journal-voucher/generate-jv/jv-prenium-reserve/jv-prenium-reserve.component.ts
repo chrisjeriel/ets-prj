@@ -61,6 +61,8 @@ export class JvPreniumReserveComponent implements OnInit {
 	dialogIcon : any;
 	dialogMessage : any;
 	fundsHeld: number = 0;
+	totalInterestAmt: number = 0;
+	totalWhtaxAmt: number = 0;
 
 	constructor(private accService: AccountingService, private titleService: Title, private ns: NotesService) { }
 
@@ -71,9 +73,13 @@ export class JvPreniumReserveComponent implements OnInit {
 	retrievePremRes(){
 		this.accService.getAcitJVPremRes(this.tranId,this.premResData.cedingId).subscribe((data:any) => {
 			this.passData.tableData = [];
+			this.totalInterestAmt = 0;
+			this.totalWhtaxAmt = 0;
 			for( var i = 0 ; i < data.premResRel.length;i++){
 				this.passData.tableData.push(data.premResRel[i]);
 				this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.premResRel[i].quarterEnding);
+				this.totalInterestAmt += this.passData.tableData[this.passData.tableData.length - 1].interestAmt;
+				this.totalWhtaxAmt 	  += this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt;
 			}
 			this.table.refreshTable();
 		});
@@ -100,11 +106,13 @@ export class JvPreniumReserveComponent implements OnInit {
 		for(var i = 0 ;i < this.passData.tableData.length; i++){
 			if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
 				edited.push(this.passData.tableData[i]);
-				edited[edited.length - 1].quarterEnding = this.ns.toDateTimeString(edited[edited.length - 1].quarterEnding);
-				edited[edited.length - 1].tranId	 = this.tranId;
-				edited[edited.length - 1].cedingId   = this.premResData.cedingId;
-				edited[edited.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
-				edited[edited.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
+				edited[edited.length - 1].quarterEnding 	 = this.ns.toDateTimeString(edited[edited.length - 1].quarterEnding);
+				edited[edited.length - 1].tranId	 		 = this.tranId;
+				edited[edited.length - 1].cedingId   		 = this.premResData.cedingId;
+				edited[edited.length - 1].totalInterestAmt   = this.totalInterestAmt;
+				edited[edited.length - 1].totalWhtaxAmt      = this.totalWhtaxAmt;
+				edited[edited.length - 1].createDate 		 = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
+				edited[edited.length - 1].updateDate 		 = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
 			}
 
 			if(this.passData.tableData[i].deleted){
@@ -155,5 +163,16 @@ export class JvPreniumReserveComponent implements OnInit {
   	checkCode(ev){
      this.ns.lovLoader(ev, 1);
      this.cedingCoLov.checkCode(this.premResData.ceding, ev);
-  }
+    }
+
+    update(data){
+    	this.totalWhtaxAmt = 0;
+    	this.totalInterestAmt = 0;
+    	for(var i = 0 ; i < this.passData.tableData.length; i++){
+    		if(!this.passData.tableData[i].deleted){
+    			this.totalInterestAmt += isNaN(this.passData.tableData[i].interestAmt) ? 0 : parseInt(this.passData.tableData[i].interestAmt);
+				this.totalWhtaxAmt 	  += isNaN(this.passData.tableData[i].whtaxAmt) ? 0 : parseInt(this.passData.tableData[i].whtaxAmt);
+    		}
+    	}
+    }
 }

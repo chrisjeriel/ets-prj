@@ -7,6 +7,8 @@ import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 @Component({
   selector: 'app-jv-inward-pol-balance',
@@ -19,7 +21,11 @@ export class JvInwardPolBalanceComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+
   @Input() tranId:any;
+  @Input() jvDetail:any;
 
   passData: any = {
     tableData: [],
@@ -69,6 +75,12 @@ export class JvInwardPolBalanceComponent implements OnInit {
     saveInwPol:[]
   }
 
+  passLov: any = {
+    selector: 'acitSoaDtl',
+    cedingId: '',
+    hide: []
+  }
+
 
   tableRow: any;
   hideSoa: any = [];
@@ -76,22 +88,35 @@ export class JvInwardPolBalanceComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   interestRate: any;
-  
+  soaIndex: number;
+  disable: boolean = true;
+  totalBalance: number = 0;
+
   constructor(private accountingService: AccountingService,private titleService: Title, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
   ngOnInit() {
   	 this.getMtnRate();
+     console.log(this.jvDetail)
+     if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+       this.disable = false;
+       this.passData.disableAdd = false;
+     }else {
+       this.passData.disableAdd = true;
+       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+       this.disable = true;
+     }
   }
 
   retrieveInwPol(){
     this.accountingService.getJVInwPolBal(this.tranId,'',this.jvDetails.ceding).subscribe((data:any) => {
       var datas = data.inwPolBal;
       this.passData.tableData = [];
-      this.passData.disableAdd = false;
+      this.totalBalance = 0;
       for(var i = 0; i < datas.length; i++){
         this.passData.tableData.push(datas[i]);
         this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(datas[i].effDate);
         this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(datas[i].dueDate)
+        this.totalBalance += this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt;
       }
         this.table.refreshTable();
     });
@@ -110,8 +135,14 @@ export class JvInwardPolBalanceComponent implements OnInit {
   setCedingcompany(data){
     this.jvDetails.cedingName = data.cedingName;
     this.jvDetails.ceding = data.cedingId;
+    this.passLov.cedingId = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveInwPol()
+  }
+
+  openSoaLOV(data){
+    this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
+    this.lovMdl.openLOV();
   }
 
   soaLOV(data){
@@ -121,36 +152,66 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   setSoa(data){
     console.log(data)
+
+    var overdue = null;
+
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
-    for(var i = 0 ; i < data.length; i++){
+    for(var i = 0 ; i < data.data.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       this.passData.tableData[this.passData.tableData.length - 1].edited  = true;
       this.passData.tableData[this.passData.tableData.length - 1].itemNo = null;
-      this.passData.tableData[this.passData.tableData.length - 1].policyId = data[i].policyId;
+      this.passData.tableData[this.passData.tableData.length - 1].policyId = data.data[i].policyId;
       this.passData.tableData[this.passData.tableData.length - 1].tranId = this.tranId;
-      this.passData.tableData[this.passData.tableData.length - 1].soaNo = data[i].soaNo;
-      this.passData.tableData[this.passData.tableData.length - 1].policyNo = data[i].policyNo;
-      this.passData.tableData[this.passData.tableData.length - 1].coRefNo  = data[i].coRefNo;
-      this.passData.tableData[this.passData.tableData.length - 1].instNo  = data[i].instNo;
-      this.passData.tableData[this.passData.tableData.length - 1].effDate  = data[i].effDate;
-      this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data[i].dueDate;
-      this.passData.tableData[this.passData.tableData.length - 1].currCd  = data[i].currCd;
-      this.passData.tableData[this.passData.tableData.length - 1].currRate  = data[i].currRate;
-      this.passData.tableData[this.passData.tableData.length - 1].premAmt  = data[i].balPremDue;
-      this.passData.tableData[this.passData.tableData.length - 1].riComm  = data[i].balRiComm;
-      this.passData.tableData[this.passData.tableData.length - 1].riCommVat  = data[i].balRiCommVat;
-      this.passData.tableData[this.passData.tableData.length - 1].charges  = data[i].balChargesDue;
-      this.passData.tableData[this.passData.tableData.length - 1].netDue  = data[i].balPremDue - data[i].balRiCommVat - data[i].balRiComm + data[i].balChargesDue;
-      this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = data[i].totalPayments;
-      this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = this.passData.tableData[this.passData.tableData.length - 1].netDue - data[i].totalPayments;
-      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = (data[i].balPremDue)*(this.interestRate)*(1);
+      this.passData.tableData[this.passData.tableData.length - 1].soaNo = data.data[i].soaNo;
+      this.passData.tableData[this.passData.tableData.length - 1].policyNo = data.data[i].policyNo;
+      this.passData.tableData[this.passData.tableData.length - 1].coRefNo  = data.data[i].coRefNo;
+      this.passData.tableData[this.passData.tableData.length - 1].instNo  = data.data[i].instNo;
+      this.passData.tableData[this.passData.tableData.length - 1].effDate  = data.data[i].effDate;
+      this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
+      this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
+      this.passData.tableData[this.passData.tableData.length - 1].currRate  = data.data[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].premAmt  = data.data[i].balPremDue;
+      this.passData.tableData[this.passData.tableData.length - 1].riComm  = data.data[i].balRiComm;
+      this.passData.tableData[this.passData.tableData.length - 1].riCommVat  = data.data[i].balRiCommVat;
+      this.passData.tableData[this.passData.tableData.length - 1].charges  = data.data[i].balChargesDue;
+      this.passData.tableData[this.passData.tableData.length - 1].netDue  = data.data[i].balPremDue - data.data[i].balRiCommVat - data.data[i].balRiComm + data.data[i].balChargesDue;
+      this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = data.data[i].totalPayments;
+      this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = this.passData.tableData[this.passData.tableData.length - 1].netDue - data.data[i].totalPayments;
+      overdue =  new Date(data.data[i].dueDate).getDate() - new Date(this.ns.toDateTimeString(this.jvDetail.jvDate)).getDate();
+      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = (data.data[i].balPremDue)*(this.interestRate)*(overdue/365);
     }
     this.table.refreshTable();
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    var errorFlag = false;
+    for(var i = 0 ; i < this.passData.tableData.length; i++){
+      if(!this.passData.tableData[i].deleted && this.passData.tableData[i].netDue < this.passData.tableData[i].adjBalAmt){
+        errorFlag = true;
+      }
+    }
+
+    if(errorFlag){
+      this.dialogMessage = 'Balance cannot be greater than Net Due.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.totalBalance > this.jvDetail.jvAmt){
+      this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the JV Amount.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
+  }
+
+  update(data){
+    this.totalBalance = 0;
+    for(var i = 0 ; i < this.passData.tableData.length; i++){
+      if(!this.passData.tableData[i].deleted){
+        this.totalBalance += isNaN(this.passData.tableData[i].adjBalAmt)? 0:this.passData.tableData[i].adjBalAmt;
+      }
+    }
   }
 
   prepareData(){

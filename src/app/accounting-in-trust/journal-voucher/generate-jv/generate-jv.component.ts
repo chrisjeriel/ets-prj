@@ -37,21 +37,8 @@ export class GenerateJvComponent implements OnInit {
 
   jvTypeFlag: boolean = true;
 
-  disabledTypes: string[] = [
-      "GAIN FOREIGN EXCHANGE",
-      "LOSS FOREIGN EXCHANGE",
-      "INTEREST INCOME ON SAVINGS",
-      "INTEREST ON PREMIUM RESERVE RELEASED",
-      "WITHHOLDING TAX - INTEREST ON PREMIUM RESERVE RELEASED",
-      "PAYMENT OF WHTAX BY SERVICE",
-      "XOL MINDEP",
-      "XOL PREMIUM ADJUSTMENT",
-      "UNCOLLECTED CREDITABLE WITHHOLDING TAX",
-      "BAD DEBTS SET UP",
-      "BAD DEBTS WRITE-OFF",
-      "PAYMENT OF RISK MANAGEMENT FEE TO EMPLOYEES",
-      "MISCELLANEOUS INCOME ALLOCATION",
-      ""
+  disabledTypes: any = [
+      9,10,12,13,16,17,18,19,20,21,22,23,25,26,0
   ];
 
   ngOnInit() {
@@ -85,6 +72,7 @@ export class GenerateJvComponent implements OnInit {
      this.jvData.jvYear =  data.jvYear;
      this.jvData.jvDate =  data.jvDate;
      this.jvData.jvStatus =  data.jvStatus;
+     this.jvData.statusType = data.statusType;
      this.jvData.refnoDate =  data.refnoDate;
      this.jvData.refnoTranId =  data.refnoTranId;
      this.jvData.currCd =  data.currCd;
