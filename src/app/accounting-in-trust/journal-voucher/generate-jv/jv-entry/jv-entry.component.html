@@ -127,7 +127,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Prepared By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedBy" appRequired name="entryData.preparedBy">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedName" appRequired name="entryData.preparedName">
                             <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPrintable()"></i></a></div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Approved By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                             <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="entryData.approvedBy" readonly name="entryData.approvedBy">
+                             <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="entryData.approvedName" readonly name="entryData.approvedBy">
                             <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                         </div>
                     </div>
@@ -144,13 +144,13 @@
                     <div class="col-sm-1"></div>
                     <div class="col-sm-4"> 
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" appRequired [(ngModel)]="entryData.preparedPos" name="entryData.prepared">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" appRequired [(ngModel)]="entryData.preparedPosition" name="entryData.prepared">
                         </div>
                     </div>
                     <div class="col-sm-3"></div>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                             <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly [(ngModel)]="entryData.approvedPos" name="entryData.approved">
+                             <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly [(ngModel)]="entryData.approvedPosition" name="entryData.approved">
                         </div>
                     </div>
                 </div>

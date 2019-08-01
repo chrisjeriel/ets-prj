@@ -401,7 +401,8 @@ export class JvEntryComponent implements OnInit {
   
   setPrintable(data){
     console.log(data)
-    this.entryData.preparedBy = data.printableName;
+    this.entryData.preparedBy = data.userId;
+    this.entryData.preparedName = data.printableName
     this.entryData.preparedPos = data.designation;
   }
 
