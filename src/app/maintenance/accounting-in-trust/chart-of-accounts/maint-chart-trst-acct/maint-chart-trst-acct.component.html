@@ -38,16 +38,13 @@
 <fieldset class="scheduler-border">
   <legend class="scheduler-border">Accounts Setup</legend>
   <div class="custom-row-inline-inset">
-    <!-- <app-cust-non-datatable [passData]="passDataAccountsSetup"></app-cust-non-datatable> -->
-    <app-cust-editable-non-datatable [passData]="chartOfAccounts"></app-cust-editable-non-datatable>
-    <!-- <app-cust-editable-non-datatable [passData]="chartOfAccounts" (tableDataChange)="retAmtData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); retAmtData.disableGeneric=true;">
-    </app-cust-editable-non-datatable> -->
+    <app-cust-editable-non-datatable [passData]="chartOfAccounts" (tableDataChange)="chartOfAccounts.tableData=$event; updateShortCode($event)" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); chartOfAccounts.disableGeneric=true;" (clickLOV)="showSLTypeLOV($event)"></app-cust-editable-non-datatable>
     <br><br>
     <div class="form-row">
       <div class="col-sm-12 text-center">
           <div class="cust-btn-container">
-              <button type="button" class="cust-btn"><a>Save</a></button>
-              <button type="button" class="cust-btn"><a>Cancel</a></button>
+              <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+              <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
               <button type="button" class="cust-btn"><a>Print</a></button>
             </div>
       </div>
@@ -63,16 +60,21 @@
             <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" readonly>
             <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
             <div class="col-sm-2 dp-cont">
-              <datepicker [value]="selected?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+              <datepicker [value]="selected?.createDate" [showSeconds]="true" [disabled]="true"></datepicker>
             </div>
             <label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
             <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" readonly>
             <label class="form-control-sm col-sm-1 no-margin">Last Update</label>                 
             <div class="col-sm-2 dp-cont">
-              <datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+              <datepicker [value]="selected?.updateDate" [showSeconds]="true" [disabled]="true"></datepicker>
             </div>
           </div>
         </div>
       </fieldset>
     </div>
   </div>
+
+  <app-lov [passData]="passLov" (selectedData)="setSLType($event)"></app-lov>
+  <app-confirm-save (onYes)="save()"></app-confirm-save>
+  <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
+  <app-cancel-button (onYes)="save(true)" [url]="'/maintenance-acct'" ></app-cancel-button>
