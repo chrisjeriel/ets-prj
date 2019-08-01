@@ -43,10 +43,10 @@
             <div class="col-sm-12">
               <ng-container [ngSwitch]="true">
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 2 || requestData?.tranTypeCd == 3">
-                    <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event)" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty();" #cedCompTbl></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event,'lovCedTbl')" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty('cedTbl');" #cedCompTbl></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 4">
-                    <app-cust-editable-non-datatable [passData]="inwardPolBalData" #inwardTbl></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
@@ -92,7 +92,7 @@
                   <div class="text-center">
                     <div class="cust-btn-container">
                       <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                      <button type="button" class="cust-btn" (click)="onClickSaveCPC()"><a>Save</a></button>
+                      <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                     </div>
                   </div>
                 </div>
@@ -138,11 +138,17 @@
   </div>
 
 
-<app-mtn-clm-history-lov #mtnClmHistLov (selectedData)="selectedDataLov($event)" [limitHistCat]="limitHistCat" [limitClmHistTbl]="limitClmHistTbl" [lovCheckBox]="true"></app-mtn-clm-history-lov>
+<app-mtn-clm-history-lov #mtnClmHistLov (selectedData)="setData($event,'lovCedTbl')" [limitHistCat]="limitHistCat" [limitClmHistTbl]="limitClmHistTbl" [lovCheckBox]="true"></app-mtn-clm-history-lov>
 
-<app-confirm-save (onYes)="onSaveCPC()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSaveCPC('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+<app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')"></app-lov>
+
+<app-confirm-save  #conClm (onYes)="onSaveCPC()"></app-confirm-save>
+<app-sucess-dialog #sucClm [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button #canClm (onYes)="onClickSaveCPC('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conInw (onYes)="onSaveInw()"></app-confirm-save>
+<app-sucess-dialog #sucInw [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelInw();"></app-sucess-dialog>
+<app-cancel-button #canInw (onYes)="onClickSaveInw('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 
 <app-modal class="d-none" id="warnMdl" #warnMdl>

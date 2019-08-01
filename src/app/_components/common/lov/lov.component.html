@@ -2,7 +2,7 @@
 	<div header>List of Values</div>
 	<div body *ngIf="modalOpen" style="position: relative;">
 		<button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="maintainDeductibles()" *ngIf="passData.selector == 'deductibles' && showButton">Maintain Deductibles</button>
-		<app-cust-non-datatable class="d-block" [passData]="passTable" (rowClick)="select($event)" style="min-width: 500px">
+		<app-cust-non-datatable class="d-block" [passData]="passTable" #lovTbl (rowClick)="select($event)" style="min-width: 500px">
 		</app-cust-non-datatable>
 	</div>
 	<div footer>

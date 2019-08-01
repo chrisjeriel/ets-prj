@@ -15,8 +15,9 @@ import { Router } from '@angular/router';
 export class LovComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
-  @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @ViewChild('lovTbl') table : CustNonDatatableComponent;
   @ViewChild(ModalComponent) modal : ModalComponent;
+  
   passTable: any = {
         tableData: [],
         pageLength: 10,
@@ -32,6 +33,10 @@ export class LovComponent implements OnInit {
   	selector:'',
   	data:{}
   }
+
+  //yele
+  @Input() limitContent : any[] = [];
+  //end
 
   modalOpen: boolean = false;
 
@@ -650,6 +655,23 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'acitSoaDtlPrq'){
+      this.passTable.tHeader    = ['Policy No.', 'Inst No.', 'Due Date', 'Balance', 'Payment', 'Premium', 'RI Comm', 'Charges'];
+      this.passTable.widths     = [120,1,110,120,120,120,120,120];
+      this.passTable.dataTypes  = ['text', 'sequence-2', 'date', 'currency', 'currency', 'currency', 'currency', 'currency'];
+      this.passTable.keys       = ['policyNo', 'instNo', 'dueDate', 'netDue', 'prevPaytAmt', 'balPremDue', 'balRiComm', 'balChargesDue'];
+      this.passTable.checkFlag  = true;
+      this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo)
+      .subscribe((a:any)=>{
+        this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = this.passTable.tableData.map(e => { e.prevPaytAmt = (Number(e.totalPayments) + Number(e.tempPayments)); return e; });
+        // if(this.limitContent.length != 0){
+        //   this.limitContent.forEach(e => {
+        //     this.passTable.tableData = this.passTable.tableData.filter(e2 => e2.policyId != e.policyId && e2.instNo != e.instNo);    
+        //   });
+        // }
         this.table.refreshTable();
       })
     }
