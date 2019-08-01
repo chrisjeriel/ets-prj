@@ -436,6 +436,8 @@ import { MtnPrintableNamesComponent } from './maintenance/mtn-printable-names/mt
 import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component';
 import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
+import { DropdownComponent } from './_components/dropdown/dropdown.component';
+import { MtnCedingCompanyTreatyComponent } from './maintenance/mtn-ceding-company-treaty/mtn-ceding-company-treaty.component';
 
 
 
@@ -880,6 +882,8 @@ import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-
         BankComponent,
         BankAccountComponent,
         AccountingMtnComponent,
+        DropdownComponent,
+        MtnCedingCompanyTreatyComponent,
     ],
 
   	providers: [

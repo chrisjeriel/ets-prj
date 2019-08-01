@@ -1230,4 +1230,12 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBank', JSON.stringify(params), header);
     }
+
+    getMtnCedingTreaty(treatyTag,cedingName){
+    	const params = new HttpParams()
+    				.set('treatyTag', (treatyTag === null || treatyTag === undefined ? '' : treatyTag))
+    				.set('cedingName', (cedingName === null || cedingName === undefined ? '' : cedingName));
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCedingTreaty", {params});
+    }
+    
 }

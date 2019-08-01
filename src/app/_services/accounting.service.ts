@@ -1536,9 +1536,10 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVOverdueAccts',JSON.stringify(params),header);
 	}
 	
-	getAcitJVPremRes(tranId) {
+	getAcitJVPremRes(tranId, cedingId) {
 		 const params = new HttpParams()
-             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId))
+             .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVPremResRel",{params});
 	}
 

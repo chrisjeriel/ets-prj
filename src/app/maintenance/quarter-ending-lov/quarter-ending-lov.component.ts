@@ -36,7 +36,7 @@ export class QuarterEndingLovComponent implements OnInit {
   		this.quarters = this.quarters.sort();
 
   		this.year = new Date().getFullYear();
-      this.cities = ['QC','MNL','ALB']
+      this.cities = [{label:'2019', value:'2019'},{label:'2020',value:'2020'},{label:'2021',value:'2021'}]
   	});
   }
 

@@ -6,6 +6,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { MtnCedingCompanyTreatyComponent } from '@app/maintenance/mtn-ceding-company-treaty/mtn-ceding-company-treaty.component';
 
 @Component({
   selector: 'app-jv-prenium-reserve',
@@ -16,6 +17,7 @@ export class JvPreniumReserveComponent implements OnInit {
 	@Input() tranId:any;
 	@Input() jvAmount:number;
 	@ViewChild('modal') modal: ModalComponent; 
+	@ViewChild(MtnCedingCompanyTreatyComponent) cedingCoLov: MtnCedingCompanyTreatyComponent;
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
@@ -50,6 +52,7 @@ export class JvPreniumReserveComponent implements OnInit {
 	}
 
 	premResData: any  = {
+		cedingName: '',
 		deletePremResRel : [],
 		savePremResRel : []
 	}
@@ -63,11 +66,10 @@ export class JvPreniumReserveComponent implements OnInit {
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | JV QSOA");
-		this.retrievePremRes();
 	}
 
 	retrievePremRes(){
-		this.accService.getAcitJVPremRes(this.tranId).subscribe((data:any) => {
+		this.accService.getAcitJVPremRes(this.tranId,this.premResData.cedingId).subscribe((data:any) => {
 			this.passData.tableData = [];
 			for( var i = 0 ; i < data.premResRel.length;i++){
 				this.passData.tableData.push(data.premResRel[i]);
@@ -100,6 +102,7 @@ export class JvPreniumReserveComponent implements OnInit {
 				edited.push(this.passData.tableData[i]);
 				edited[edited.length - 1].quarterEnding = this.ns.toDateTimeString(edited[edited.length - 1].quarterEnding);
 				edited[edited.length - 1].tranId	 = this.tranId;
+				edited[edited.length - 1].cedingId   = this.premResData.cedingId;
 				edited[edited.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
 				edited[edited.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
 			}
@@ -136,4 +139,21 @@ export class JvPreniumReserveComponent implements OnInit {
 	cancel(){
 		this.cancelBtn.clickCancel();
 	}
+
+	showCedingCompanyLOV() {
+    	$('#cedingCompany #modalBtn').trigger('click');
+  	}
+
+  	setCedingcompany(data){
+  		console.log(data)
+  		this.premResData.cedingName = data.cedingName;
+  		this.premResData.cedingId	= data.cedingId;
+  		this.ns.lovLoader(data.ev, 0);
+  		this.retrievePremRes();
+  	}
+
+  	checkCode(ev){
+     this.ns.lovLoader(ev, 1);
+     this.cedingCoLov.checkCode(this.premResData.ceding, ev);
+  }
 }
