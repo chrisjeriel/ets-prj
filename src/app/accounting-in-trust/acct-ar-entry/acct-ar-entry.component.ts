@@ -258,6 +258,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       createDate: '',
       updateUser: '',
       updateDate: '',
+      cedingId: '',
+      bussTypeName: ''
     }
     this.prDate = {
       date: '',
@@ -340,6 +342,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.arInfo.tin = data.data.tin;
     this.arInfo.bussTypeCd = data.data.bussTypeCd;
     this.arInfo.mailAddress = data.data.mailAddress;
+    this.arInfo.cedingId = data.data.cedingId;
+    this.arInfo.bussTypeName = data.data.bussTypeName;
   }
 
   retrieveArEntry(tranId, arNo){
@@ -381,6 +385,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.createDate     = this.ns.toDateTimeString(data.ar.createDate);
           this.arInfo.updateUser     = data.ar.updateUser;
           this.arInfo.updateDate     = this.ns.toDateTimeString(data.ar.updateDate);
+          this.arInfo.cedingId       = data.ar.cedingId;
+          this.arInfo.bussTypeName   = data.ar.bussTypeName;
 
           //this.passData.tableData          = data.ar.paytDtl;
           this.passData.tableData = [];
@@ -425,7 +431,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             createUser: this.arInfo.createUser,
             createDate: this.arInfo.createDate,
             updateUser: this.arInfo.updateUser,
-            updateDate: this.arInfo.updateDate
+            updateDate: this.arInfo.updateDate,
+            cedingId: this.arInfo.cedingId,
+            bussTypeName: this.arInfo.bussTypeName
           }
           this.emitArInfo.emit(arDetailParams);
 

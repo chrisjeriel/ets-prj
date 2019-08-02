@@ -1270,4 +1270,10 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBankAcct', JSON.stringify(params), header);
     }
 
+    getMtnCompany(companyId?){
+    	const params = new HttpParams()
+    		.set('companyId', (companyId === null || companyId === undefined ? '' : companyId));
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnCompany', {params});
+    }
+
 }

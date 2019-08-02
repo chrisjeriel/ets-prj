@@ -652,6 +652,17 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acitArClmRecover'){
+      this.passTable.tHeader = ['Claim No.','Co. Claim No.', 'Policy No.', 'Loss Date'];
+      this.passTable.widths =[300,300,300,150]
+      this.passTable.dataTypes = [ 'text','text', 'text', 'date'];
+      this.passTable.keys = [ 'claimNo','coClmNo', 'policyNo', 'lossDate'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getAcitArClmRecoverLov(this.passData.payeeNo).subscribe((a:any)=>{
+        //this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = a.claimList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;

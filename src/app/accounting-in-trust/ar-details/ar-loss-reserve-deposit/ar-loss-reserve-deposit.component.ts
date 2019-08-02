@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AccountingItLossReserveDepositAr } from '@app/_models';
-import { AccountingService } from '@app/_services';
+import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
 
 @Component({
   selector: 'app-ar-loss-reserve-deposit',
@@ -8,6 +8,8 @@ import { AccountingService } from '@app/_services';
   styleUrls: ['./ar-loss-reserve-deposit.component.css']
 })
 export class ArLossReserveDepositComponent implements OnInit {
+
+  @Input() record: any;
 
   lossReserveDepositData: any = {
     tableData: this.accountingService.getAccountingItLossReserveDepositAR(),
@@ -25,9 +27,20 @@ export class ArLossReserveDepositComponent implements OnInit {
     total: [null, null,  null, 'Total', 'amount', 'amountPhp'],
     widths: ['auto',1,1,2,150,150],
   }
-  constructor(private accountingService: AccountingService) { }
+
+  payorData: any;
+
+
+  constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
+    this.ms.getCedingCompany(this.record.cedingId).subscribe(
+      (data:any)=>{
+        data.cedingCompany[0].cedingRepresentative = data.cedingCompany[0].cedingRepresentative.filter(a=>{return a.defaultTag === 'Y'});
+        this.payorData = data.cedingCompany[0];
+        this.payorData.business = this.record.bussTypeName;
+      }
+    );
   }
 
 }

@@ -1636,5 +1636,27 @@ export class AccountingService {
         	
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOAList',{params});
 	}
+
+	getAcitArClmRecover(tranId, billId){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('billId', billId);
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArClmRecover', {params});
+	}
+
+	getAcitArClmRecoverLov(payeeNo){
+		const params = new HttpParams()
+			.set('payeeNo', payeeNo);
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArClmRecoverLov', {params});
+	}
+
+	saveAcitArClmRecover(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArClmRecover',JSON.stringify(params),header);
+	}
 }
 
