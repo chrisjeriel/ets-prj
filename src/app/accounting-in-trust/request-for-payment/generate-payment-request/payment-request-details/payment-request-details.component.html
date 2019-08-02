@@ -59,13 +59,11 @@
                             <button class="cust-btn" style="z-index: 99">Distribute</button>
                           </div>
                         </div>
-                      <app-cust-non-datatable [passData]="MainCompanyServiceAccountingData" class="w-100 px-5" style="margin-top: -36px ! important">
-                      </app-cust-non-datatable>
-                      
                     </div>
-                    <div class="row" style="margin-top: 10px">
-                      <app-cust-editable-non-datatable [passData]="SubServiceAccountingData" class="w-100 px-5"></app-cust-editable-non-datatable>
-                    </div>
+                    <app-cust-editable-non-datatable [passData]="serviceFeeMainData"></app-cust-editable-non-datatable>
+                    <!-- <div class="row" style="margin-top: 10px">
+                      <app-cust-editable-non-datatable [passData]="serviceFeeSubData" class="w-100 px-5"></app-cust-editable-non-datatable>
+                    </div> -->
 
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 6">

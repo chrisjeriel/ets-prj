@@ -123,6 +123,22 @@ export class PaymentRequestDetailsComponent implements OnInit {
   selectedTblData : any;
   limitContent    : any[] = [];
 
+  serviceFeeMainData: any = {
+    tableData     : [],
+    tHeader       : ['Main Company Distribution','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
+    dataTypes     : ['text','percent','text','percent','currency','currency'],
+    keys          : ['groupName','grpShrPct','currCd','currRate','grpShrAmt','localAmt'],
+    paginateFlag  : true,
+    infoFlag      : true,
+    checkFlag     : false,
+    addFlag       : false,
+    deleteFlag    : false,
+    uneditable    : [true,true,true,true,true,true],
+    total         : [null,null,null,'Total','grpShrAmt','localAmt'],
+    // widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
+    pageID        : 'serviceFeeMainData',
+  };
+
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, private clmService: ClaimsService) {
   }
