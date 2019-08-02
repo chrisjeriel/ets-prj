@@ -22,7 +22,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   passData: any = {
         tableData: [],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class'],
-        dataTypes: ['select','select','percent','currency','select','text','number','date','select'],
+        dataTypes: ['select','select','percent','currency','select','number','number','date','select'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
