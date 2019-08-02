@@ -1636,5 +1636,22 @@ export class AccountingService {
         	
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOAList',{params});
 	}
+
+	getAcitPrqInwPol(reqId?,itemNo?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPrqInwPol',{params});	
+	}
+
+	saveAcitPrqInwPol(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
+    } 
 }
 
