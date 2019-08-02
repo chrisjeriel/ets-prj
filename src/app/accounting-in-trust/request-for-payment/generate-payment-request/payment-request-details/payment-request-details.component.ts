@@ -73,6 +73,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','percent','currency', 'currency'],
     magnifyingGlass : ['policyNo'],
     nData: {
+      newRec         : 1,
       policyNo       : '',
       instNo         : '',
       dueDate        : '',
@@ -95,7 +96,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     deleteFlag    : true,
     uneditable    : [true,true,true,true,true,true,true,true,true,true,true,false],
     total         : [null, null, null, null, 'Total', 'netDue', 'prevPaytAmt', 'premAmt', 'riComm', null, 'charges', 'returnAmt'],
-    widths        : [150,1,110,1,110,120,120,120,120,120,120,120,120],
+    widths        : [200,1,110,1,110,120,120,120,120,120,120,120,120],
     keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
   };
 
@@ -161,10 +162,26 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getAcitPrqInwPol(){
-    this.acctService.getAcitPrqInwPol()
-    .subscribe(data => {
+    var subRec = forkJoin(this.acctService.getAcitPrqInwPol(this.rowData.reqId,''), this.acctService.getAcitSoaDtl())
+                         .pipe(map(([inwPol,soaDtl]) => { return { inwPol,soaDtl }; }));
+
+    subRec.subscribe(data  => {
       console.log(data);
-      var recAcitPrqInwPol = data['acitPrqInwPolList'];
+      var recAcitPrqInwPol = data['inwPol']['acitPrqInwPolList'];
+      var recAcitSoaDtl    = data['soaDtl']['soaDtlList'];
+      var soaArr = [];
+      var inwArr = [];
+
+      this.recPrqTrans.forEach(e => {
+        this.inwardPolBalData.tableData.push(recAcitPrqInwPol.filter(e2 => e2.reqId == e.reqId && e2.itemNo == e.itemNo).map(e2 => { e2.policyId = e.policyId; e2.instNo = e.instNo; return e2; }));
+      });
+      
+      this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.flatMap(e => { return e });
+      recAcitSoaDtl.forEach(e => {
+        this.inwardPolBalData.tableData.filter(e2 => e.policyId == e2.policyId && e.instNo == e2.instNo).map(e2 => Object.assign(e2,e));
+      });
+      console.log(this.inwardPolBalData.tableData);
+      this.inwardTbl.refreshTable();
     });
   }
 
@@ -231,9 +248,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
           //this.limitContent.push(e);
         }
       });
+      console.log(this.inwardPolBalData.tableData);
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '')
-                                            .map(e => { e.edited = true; e.checked = false;e.createDate = ''; e.createUser = '';e.premAmt = e.balPremDue;e.riComm  = e.balRiComm;
-                                                        e.riCommVat = e.balRiCommVat;e.charges = e.balChargesDue;e.returnAmt = e.netDue; return e;});
+                                            .map(e => { 
+                                                e.edited = true; e.checked = false;e.createDate = ''; e.createUser = '';e.premAmt = e.balPremDue;e.riComm  = e.balRiComm;
+                                                e.riCommVat = e.balRiCommVat; e.charges = e.balChargesDue; 
+                                                e.returnAmt = (e.newRec==1)?(Number(e.prevPaytAmt) - Number(e.balChargesDue)):e.returnAmt;; 
+                                                return e;
+                                            });
 
       console.log(this.inwardPolBalData.tableData);
       this.inwardTbl.refreshTable();
@@ -418,15 +440,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(prqInwPol);
     var saveSubs = forkJoin(this.acctService.saveAcitPrqTrans(JSON.stringify(this.params)),this.acctService.saveAcitPrqInwPol(JSON.stringify(prqInwPol)))
                            .pipe(map(([trans,inw]) => { return { trans,inw }; }));
-    // this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
-    // .subscribe(data => {
-    //   console.log(data);
-    //   this.getPrqTrans();
-    //   this.getAcitPaytReq();
-    //   this.sucInw.open();
-    //   this.params.savePrqTrans  = [];
-    //   this.params.deletePrqTrans  = [];
-    // });
+
+    saveSubs.subscribe(data =>{
+      console.log(data);
+      this.getPrqTrans();
+      this.getAcitPaytReq();
+      this.sucInw.open();
+      this.params.savePrqTrans  = [];
+      this.params.deletePrqTrans  = [];
+    });
   }
 
   onSaveCPC(){
