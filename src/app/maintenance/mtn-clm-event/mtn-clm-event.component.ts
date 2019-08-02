@@ -95,7 +95,7 @@ export class MtnClmEventComponent implements OnInit {
 		this.cancelBtn.next();
 	}
 
-	checkCode(lineCd, eventTypeCd, str, ev) {
+	checkCode(lineCd, eventTypeCd, str, ev, date?) {
 		var obj = {
 			eventCd: '',
 		  	eventDesc: ''
@@ -107,7 +107,9 @@ export class MtnClmEventComponent implements OnInit {
 
 			this.selectedData.emit(obj);
 		} else {
-			this.maintenanceService.getMtnClmEventLov(lineCd, eventTypeCd, str).subscribe(data => {
+			this.maintenanceService.getMtnClmEventLov('', eventTypeCd, str).subscribe(data => {
+				data['clmEventList'] = data['clmEventList'].filter(a => date != undefined && a.lossDateFrom >= date && date <= a.lossDateTo);
+
 				if(data['clmEventList'].length == 1) {
 					obj = data['clmEventList'][0];
 					obj['ev'] = ev;

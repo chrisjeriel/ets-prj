@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
-import { UnderwritingService, NotesService } from '@app/_services';
+import { UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,7 +32,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('warningUndistAlt') warningUndistAltMdl: ModalComponent;
   @ViewChild('warningInvShare') warningInvShareMdl: ModalComponent;
   @ViewChild('confirmAlt') confirmAltMdl: ModalComponent;
-
+  @ViewChild('retLimitReached') retLimitReached: ModalComponent;
+  
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
 
@@ -42,6 +43,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
   savedData: any[] = [];
   deletedData: any[] = [];
+
+  @Output() inquiryFlag = new EventEmitter<any>();
 
   private polDistributionByRisk: DistributionByRiskInfo;
   // tableData: any[] = [];
@@ -240,30 +243,22 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   undistAlt:any[]=[];
   distAlt:any[]=[];
 
+  secIILimit:any;
+  warningModalMsg:string = '';
+  warningModalCode:string = '';
+
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
-              private ns: NotesService) { }
+              private ns: NotesService, private ms: MaintenanceService) { }
 
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Risk Distribution");
 
     this.sub = this.route.params.subscribe((data: any)=>{
-
+                  let polNo:string = '';
                   this.params = data;
                   if(this.params.fromInq == 'true'){
-                    this.controlHidden.saveBtn = true;
-                    this.controlHidden.distributeBtn = true;
-
-                    this.controlDisabled.oneRetLine = true;
-                    this.controlDisabled.autoCalc = true;
-                    this.controlDisabled.saveBtn = true;
-                    this.controlDisabled.distributeBtn = true;
-
-                    this.wparamData.genericBtn = undefined;
-                    this.wparamData.addFlag = false;
-                    this.wparamData.uneditable=[true,true,true,true,true,];
-                    this.controlDisabled.seciitrtyLimit = true;
-                    this.controlDisabled.seciiPremTag = true;
+                    this.inquiryMode();
                   }else{
                     if(parseInt(data.policyNo.substr(-3))>0){
                       this.controlDisabled.oneRetLine = true;
@@ -271,8 +266,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
                       this.controlDisabled.seciiPremTag = true;
                     }
                   }
-                  
-                  if(this.params.policyNo.split('-')[0]!='CAR' && this.params.policyNo.split('-')[0]!='EAR'){
+                  polNo = this.params.policyNo.split('-')[0];
+                  if(polNo!='CAR' && polNo!='EAR'){
                       this.controlHidden.seciitrtyLimit = true;
                       this.controlHidden.seciiPremTag = true;
                   }
@@ -296,6 +291,36 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         var counter: number = 0;
         //var treatyLimitAmt: any;
         this.treatyDistData.tableData = data.distWrisk.distRiskWtreaty;
+
+
+        //Check for warnings
+        console.log("Params used in Dist Risk Warnings:");
+        console.log("riskDistId : " + this.riskDistributionData.riskDistId);
+        console.log("altNo :" + this.riskDistributionData.altNo);
+
+        if (this.riskDistributionData.altNo != 0) {
+          this.polService.getPolDistWarning(this.riskDistributionData.riskDistId, this.riskDistributionData.altNo).subscribe((data2: any)=> {
+              if (data2.warningList.length > 0) {
+                for (var i = 0; i < data2.warningList.length; i++) {
+
+                  if (data2.warningList[i].warningCode == 'PREV_NOT_POSTED') {
+                    this.inquiryFlag.emit(true);
+                    this.inquiryMode();
+                  } else if (data2.warningList[i].warningCode == 'PREV_HAS_CHANGES') {
+                    this.inquiryFlag.emit(false);
+                  }
+                  this.warningModalCode = data2.warningList[i].warningCode;
+                  this.warningModalMsg = data2.warningList[i].warningMessage;
+                  $('#warningModal > #modalBtn').trigger('click');
+                }
+                
+              }
+          });
+        }
+        
+
+
+        //
 
         this.wparamData.nData = {
                                  riskDistId: this.riskDistributionData.riskDistId,
@@ -366,6 +391,22 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           $('input[type=text]').blur();
         },0);
       });
+    }
+
+    inquiryMode() {
+      this.controlHidden.saveBtn = true;
+      this.controlHidden.distributeBtn = true;
+
+      this.controlDisabled.oneRetLine = true;
+      this.controlDisabled.autoCalc = true;
+      this.controlDisabled.saveBtn = true;
+      this.controlDisabled.distributeBtn = true;
+
+      this.wparamData.genericBtn = undefined;
+      this.wparamData.addFlag = false;
+      this.wparamData.uneditable=[true,true,true,true,true,];
+      this.controlDisabled.seciitrtyLimit = true;
+      this.controlDisabled.seciiPremTag = true;
     }
 
     openPoolDistribution(){
@@ -664,8 +705,16 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
             'commRt AS CommRate, totalCommAmt AS CommAmount, totalVatRiComm AS VATonRICOMM, totalNetDue AS NetDue ' +
             'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
   }
-6
+
   //poolDistributionData
   //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+
+  checkLimit(){
+    if(this.riskDistributionData.retLineAmt > this.riskDistributionData.secIIInputLimit && this.riskDistributionData.secIIInputLimit!= null){
+      this.riskDistributionData.retLineAmt = this.riskDistributionData.secIIInputLimit;
+      this.retLimitReached.openNoClose();
+    }
+  }
+
 
 }

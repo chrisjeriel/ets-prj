@@ -3,6 +3,14 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AccountingService, MaintenanceService, NotesService, ClaimsService } from '../../../../_services';
 import { Title } from '@angular/platform-browser';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { MtnClmHistoryLovComponent } from '@app/maintenance/mtn-clm-history-lov/mtn-clm-history-lov.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-payment-request-details',
@@ -11,7 +19,12 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 })
 export class PaymentRequestDetailsComponent implements OnInit {
   @Input() rowData : any;
-  @ViewChild('clmLov') clmLov : ModalComponent;
+  @ViewChild('mtnClmHistLov') clmHistLov      : MtnClmHistoryLovComponent;
+  @ViewChild('cedCompTbl') cedCompTbl         : CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(ConfirmSaveComponent) cs         : ConfirmSaveComponent;
+  @ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
+  @ViewChild('warnMdl') warnMdl               : ModalComponent;
 
   cedingCompanyData: any = {
   	tableData     : [],
@@ -35,41 +48,29 @@ export class PaymentRequestDetailsComponent implements OnInit {
     },
   	paginateFlag  : true,
   	infoFlag      : true,
-  	pageID        : 1,
+  	pageID        : 'cedingCompanyData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
   	checkFlag     : true,
   	addFlag       : true,
   	deleteFlag    : true,
-    uneditable    : [false,true,true,true,false,true,true,true,true,true,false,false],
-  	total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt', 'reqAmt', 'localAmt'],
+    uneditable    : [true,true,true,true,false,true,true,true,true,true,true,true],
+  	total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt', 'paytAmt', 'localAmt'],
     widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
-    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currCd','currRate','reserveAmt','reqAmt','localAmt']
+    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','localAmt']
   };
 
-  passDataClmHistoryLov  : any = {
-    tableData     : [],
-    tHeader       : ['Claim No.','Hist No.','Hist Category','Hist Type','Reserve','Paid Amount'],
-    dataTypes     : ['text', 'sequence-2', 'text', 'text', 'currency', 'currency'],
-    nData: {
-      claimNo        : '',
-      histNo         : '',
-      histCatDesc    : '',
-      histTypeDesc   : '',
-      reserveAmt     : '',
-      reqAmt         : ''
-    },
-    paginateFlag  : true,
-    infoFlag      : true,
-    pageID        : 1,
-    checkFlag     : true,
-    addFlag       : true,
-    deleteFlag    : true,
-    uneditable    : [true,true,true,true,true,true],
-    widths        : ['auto','auto','auto','auto','auto','auto'],
-    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','reserveAmt','paytAmt']
+  tranTypeList    : any;
+  tabTitle        : string = '';
+  limitClmHistTbl : any[] = [];
+  cancelFlag      : boolean;
+  dialogIcon      : string;
+  dialogMessage   : string;
+  warnMsg         : string = '';
+
+  params : any =  {
+    savePrqTrans     : [],
+    deletePrqTrans   : []
   };
 
-  tranTypeList : any;
-  tabTitle     : string = '';
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, private clmService: ClaimsService) {
   }
@@ -78,34 +79,152 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.rowData);
     this.rowData.reqDate = this.ns.toDateTimeString(this.rowData.reqDate);
     this.getPrqTrans();
-    this.getClmHistory();
   }
 
   getPrqTrans(){
-    this.acctService.getAcitPrqTrans(this.rowData.reqId,'')
-    .subscribe(data => {
+    this.cedingCompanyData.tableData = [];
+    var subRes = forkJoin(this.acctService.getAcitPrqTrans(this.rowData.reqId,''), this.clmService.getClaimHistory())
+                 .pipe(map(([prqTrans,clmHist]) => { return { prqTrans,clmHist }}));
+
+    subRes.subscribe(data => {
       console.log(data);
+
+      var recPrqTrans = data['prqTrans']['acitPrqTrans'];
+      var recClmHist  = data['clmHist']['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => e.histCategory == 'L').map(e => { return e });
+      console.log(recPrqTrans);
+      console.log(recClmHist);
+
+      recPrqTrans.forEach(e => {
+        this.cedingCompanyData.tableData.push(recClmHist.filter(e2 => e2.claimId == e.claimId && e2.histNo == e.histNo && e2.projId == e.projId )
+                                                              .map(e2 => { 
+                                                                e2.paymentFor = e.paymentFor; 
+                                                                e2.createUser = e.createUser;
+                                                                e2.updateUser = e.updateUser;
+                                                                e2.createDate = e.createDate;
+                                                                e2.updateDate = e.updateDate;
+                                                                e2.itemNo     = e.itemNo;
+                                                                return e2; 
+                                                              }));
+      });
+      this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.flatMap(e => { return e });
+      this.cedCompTbl.refreshTable();
+      console.log(this.cedingCompanyData.tableData);
     });
   }
 
   showLOV(event){
     console.log(event);
-    console.log('LOV');
-    this.clmLov.openNoClose();  
+    this.cedingCompanyData.tableData.forEach(e => {
+      this.limitClmHistTbl.push(e);
+    });
+    this.clmHistLov.modal.openNoClose();
   }
 
-  getClmHistory(){
-    this.clmService.getClaimHistory()
+  selectedDataLov(data){
+    data.forEach(e => {
+      if(this.cedingCompanyData.tableData.some(e2 => e2.claimId != e.claimId && e2.histNo != e.histNo)){
+        this.cedingCompanyData.tableData.push(e);
+        this.limitClmHistTbl.push(e);
+      }
+    });
+    
+    this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '').map(e => { e.edited = true; e.checked = false; e.createDate = ''; e.createUser = ''; return e});
+    this.cedCompTbl.refreshTable();
+  }
+
+  onClickSaveCPC(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    this.dialogIcon = '';
+    this.dialogMessage = '';
+    this.cedingCompanyData.tableData.forEach(e => {
+      var rec = {
+            claimId         : e.claimId,
+            createUser      : (e.createUser == '' || e.createUser == null)?this.ns.getCurrentUser():e.createUser,
+            createDate      : (e.createDate == '' || e.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate),
+            currAmt         : e.paytAmt,
+            currCd          : e.currencyCd,
+            currRate        : e.currencyRt,
+            histNo          : e.histNo,
+            instNo          : '',
+            investmentId    : '',
+            itemNo          : e.itemNo,
+            localAmt        : e.paytAmt,
+            paymentFor      : e.paymentFor,
+            policyId        : '',
+            projId          : e.projId,
+            quarterEnding   : '',
+            refNo           : '',
+            remarks         : '',
+            reqId           : this.rowData.reqId,
+            updateUser      : this.ns.getCurrentUser(),
+            updateDate      : this.ns.toDateTimeString(0)
+          };
+
+      if(e.edited && !e.deleted){
+        this.params.savePrqTrans.push(rec);
+      }else if(e.edited && e.deleted){
+        console.log('RECORD DELETED');
+        this.params.deletePrqTrans.push(rec);
+      }else{
+        console.log('ELSE IN SAVE');
+      }
+    });
+
+    console.log(this.cedingCompanyData.tableData);
+    console.log(this.params.savePrqTrans);
+
+    //var paytAmt = this.cedingCompanyData.tableData.reduce((a,b)=>a+(b.paytAmt != null ?parseFloat(b.paytAmt):0),0);
+    var paytAmt = 6000000;
+    console.log(paytAmt);
+
+    if(Number(this.rowData.reqAmt) > Number(paytAmt)){
+      console.log('The Total Payment Amount of Claim Histories must not exceed the Requested Amount.');
+      this.warnMsg = 'The Total Payment Amount of Claim Histories must not exceed the Requested Amount.';
+      this.warnMdl.openNoClose();
+    }else{
+      if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
+        $('.ng-dirty').removeClass('ng-dirty');
+        this.cs.confirmModal();
+        this.params.savePrqTrans   = [];
+        this.params.deletePrqTrans   = [];
+        this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '');
+      }else{
+        if(this.cancelFlag == true){
+          this.cs.showLoading(true);
+          setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+        }else{
+          this.cs.confirmModal();
+        }
+      }
+    }
+  }
+
+  onSaveCPC(){
+    console.log(this.params);
+    this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);
-      var rec = data['claimReserveList'].map(e => e.clmHistory);
-      var list = [];
-      //this.passDataClmHistoryLov.tableData = this.passDataClmHistoryLov.tableData.map(e => e.filter(e2 => e2.histCategory == 'L'));
-      rec.forEach(e => {
-        list.push(e.filter(el => el.histCategory == 'L').map(el => { return el }));
-      });
-      console.log(list);
-      //console.log(this.passDataClmHistoryLov.tableData);
+      this.getPrqTrans();
+      this.success.open();
+      this.params.savePrqTrans  = [];
+      this.params.deletePrqTrans  = [];
     });
   }
+
+  checkCancel(){
+    if(this.cancelFlag){
+      this.cancelBtn.onNo();
+    }else{
+      this.success.modal.closeModal();
+    }
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
+  }
+
+  addDirty(){
+    $('#cedTbl').addClass('ng-dirty');
+  }
+
 }

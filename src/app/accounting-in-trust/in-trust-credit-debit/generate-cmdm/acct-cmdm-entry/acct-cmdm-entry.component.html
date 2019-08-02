@@ -54,7 +54,7 @@
                                     <div class="col-sm-3 dp-cont">
                                         <datepicker [type]="'time'" [required]="true" [value]="memoInfo.memoDate?.split('T')[1]" (valueChange)="memoInfo.memoDate=memoInfo.memoDate.split('T')[0]+'T'+$event" [textAlign]="'center'" [disabled]="memoInfo.status != 'New'"></datepicker> 
                                     </div>  
-                                    <label class="form-control-sm col-sm-2">JV Ref No</label>
+                                    <label class="form-control-sm col-sm-2">Ref No</label>
                                     <input type="text" class="form-control form-control-sm cust-sm col-sm" name="refNo" [ngModel]="memoInfo.refNo" [readonly]="memoInfo.status != 'New'" appRequired (change)="checkCode($event,'refNo')" >
                                     <div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;" [class.d-none]="memoInfo.status != 'New'"><a (click)="openLov('refNo')"><i class="fa fa-search"></i></a></div>
                                 </div>
@@ -121,7 +121,7 @@
                                     <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" (click)="clickNew()"><a>New CMDM</a></button>
                                     <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" (click)="onClickSave()"><a>Save</a></button>
                                     <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new || (memoInfo.status != 'New' && memoInfo.status != 'Printed')" (click)="cancelMdl.openNoClose()"><a>Cancel CM/DM</a></button>
-                                    <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new || memoInfo.status=='Cancelled'" (click)="openConfirmPrintMdl()"><a>Print</a></button>
+                                    <button type="button" class="cust cust-btn" style="margin-right: 10px !important;" [disabled]="memoInfo.new || memoInfo.status=='Cancelled' || memoInfo.unbalAcctEntryTag == 'N'" (click)="openConfirmPrintMdl()"><a>Print</a></button>
                                 </div>
                             </div>
                         </div>

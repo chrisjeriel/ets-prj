@@ -10,7 +10,7 @@
 					<label class="form-control-sm col-sm-1">Risk Dist No</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="pad(riskDistId, 'distNo')">
 					<label class="form-control-sm col-sm-1">Total SI</label>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.sumInsured" appCurrency>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.sumInsured  | number:'1.2-2'">
 					<label class="form-control-sm col-sm-1">Risk</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="polDistributionData?.riskName">
 				</div>
@@ -26,7 +26,7 @@
 					<label class="form-control-sm col-sm-1">Policy No</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.policyNo">
 					<label class="form-control-sm col-sm-1">Total Premium</label>
-					<input readonly type="text" class="form-control txt-content-rght form-control-sm col-sm-2" [ngModel]="polDistributionData?.premium" appCurrency>
+					<input readonly type="text" class="form-control txt-content-rght form-control-sm col-sm-2" [ngModel]="polDistributionData?.premium | number:'1.2-2'" >
 					<label class="form-control-sm col-sm-1">Insured</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm" [ngModel]="polDistributionData?.insured">
 					
@@ -48,7 +48,7 @@
 		<legend class="scheduler-border">Treaty Distribution Per Section</legend>
 		<div class="row" style="padding-top: 5px;">
 			<div class="col-sm">
-				<app-cust-editable-non-datatable [passData]="treatyDistData" #mainTable></app-cust-editable-non-datatable>
+				<app-cust-editable-non-datatable [passData]="treatyDistData" (export)="exportTreatyDistPerSection();" #mainTable></app-cust-editable-non-datatable>
 			</div>
 		</div>
 		<div class="row">
@@ -65,27 +65,27 @@
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Section I</label>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="ts1?.si" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.prem" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.comm" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.vat" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.net" appCurrency>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="ts1?.si  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.prem  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.comm  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.vat  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.net  | number:'1.2-2'">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Section II</label>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="ts2?.si" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.prem" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.comm" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.vat" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.net" appCurrency>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="ts2?.si  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.prem  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.comm  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.vat  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.net  | number:'1.2-2'">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Total</label>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="total?.si" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.prem" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.comm" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.vat" appCurrency>
-					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.net" appCurrency>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm" [ngModel]="total?.si  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.prem  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.comm  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.vat  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.net  | number:'1.2-2'">
 				</div>
 			</div>
 			<div class="col-sm-1">
@@ -107,7 +107,7 @@
 						<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
 							<div class="row" style="padding-top: 5px;">
 								<div class="col-sm" style="margin-top: -28px;">
-									<app-cust-editable-non-datatable [passData]="poolDistributionData" #poolTable></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="poolDistributionData" (export)="exportPoolDistPerSection();" #poolTable></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="row">
@@ -168,7 +168,7 @@
 				
 				<button type="button" class="cust-btn"><a>Print</a></button>
 				<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq == 'true' || params.fromNegate == 'true'"><a>Post</a></button>
+				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq == 'true' || params.fromNegate == 'true' || inquiryFlag == true"><a>Post</a></button>
 				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Posted'" (click)="showConfirmNegMdl()" [class.d-none]="params.fromInq == 'true'|| params.fromNegate != 'true' "><a>Negate</a></button>
 			</div>
 		</div>

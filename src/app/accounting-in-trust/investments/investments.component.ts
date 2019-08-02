@@ -14,6 +14,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { finalize } from 'rxjs/operators';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-investments',
@@ -27,7 +28,8 @@ export class InvestmentsComponent implements OnInit {
   @ViewChild(MtnAcctIntDurationComponent) durationLOV: MtnAcctIntDurationComponent;
   @ViewChild(ModalComponent) modal : ModalComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
-    @ViewChild("confirmSave") confirmSave: ConfirmSaveComponent;
+  @ViewChild("confirmSave") confirmSave: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   tableData: any[] = [];	
   tHeader: any[] = [];
@@ -62,6 +64,7 @@ export class InvestmentsComponent implements OnInit {
           createDate: this.ns.toDateTimeString(0),
           updateUser: this.ns.getCurrentUser(),
           updateDate: this.ns.toDateTimeString(0),
+          slCd      :'',
           uneditable : ['invtStatus','currRate']
         },
    	 total:[null,null,null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal'],
@@ -161,6 +164,13 @@ export class InvestmentsComponent implements OnInit {
     oldData:any[] =[];
     currencyData: any[] = [];
     wtaxRate: any;
+    cancelFlag: boolean;
+    acitInvtReq  : any = { 
+                "delAcitInvestments": [],
+                "saveAcitInvestments"  : []}
+    deleteBool : boolean;
+    deletedData:any[] =[];
+    resultCancel : boolean;
 
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
@@ -195,10 +205,10 @@ export class InvestmentsComponent implements OnInit {
         console.log(data);
         
         var td = data['investments']['invtList'].sort((a, b) => b.createDate - a.createDate).map(a => { 
-                                      a.matDate = this.ns.toDateTimeString(a.matDate).split('T')[0] + ' ' + this.ns.toDateTimeString(a.matDate).split('T')[1];
-                                      a.purDate = this.ns.toDateTimeString(a.purDate).split('T')[0] + ' ' + this.ns.toDateTimeString(a.purDate).split('T')[1];
-                                      a.createDate = this.ns.toDateTimeString(a.createDate).split('T')[0] + ' ' + this.ns.toDateTimeString(a.createDate).split('T')[1];
-                                      a.updateDate = this.ns.toDateTimeString(a.updateDate).split('T')[0] + ' ' + this.ns.toDateTimeString(a.updateDate).split('T')[1];
+                                      a.matDate = this.ns.toDateTimeString(a.matDate);
+                                      a.purDate = this.ns.toDateTimeString(a.purDate);
+                                      a.createDate = this.ns.toDateTimeString(a.createDate);
+                                      a.updateDate = this.ns.toDateTimeString(a.updateDate);
                                       if (a.invtStatus === 'F'){
                                         a.uneditable = ['invtStatus','matVal','currRate'];
                                       } else if(a.invtStatus === 'M' || a.invtStatus === 'O'){
@@ -239,14 +249,13 @@ export class InvestmentsComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
-
     if(data !== null){
       this.selectedData = data;
+      console.log(this.selectedData);
       this.invtRecord.createUser  = data.createUser;
-      this.invtRecord.createDate  = data.createDate;
+      this.invtRecord.createDate  = this.ns.toDateTimeString(data.createDate).split('T')[0] + ' ' + this.ns.toDateTimeString(data.createDate).split('T')[1];
       this.invtRecord.updateUser  = data.updateUser;
-      this.invtRecord.updateDate  = data.updateDate;
+      this.invtRecord.updateDate  = this.ns.toDateTimeString(data.updateDate).split('T')[0] + ' ' + this.ns.toDateTimeString(data.updateDate).split('T')[1];
 
        if(this.selectedData.okDelete == 'N'){
            this.passData.disableGeneric = true;     
@@ -268,7 +277,6 @@ export class InvestmentsComponent implements OnInit {
   }
 
   setSelectedBank(data){
-    console.log(data);
     this.bankCd = data.bankCd;
     this.bankName = data.shortName;
     this.ns.lovLoader(data.ev, 0);
@@ -588,9 +596,9 @@ export class InvestmentsComponent implements OnInit {
   getDate(tblpurDate,tblmatDate,tblPeriod,unit){
     var date;
     if (this.isEmptyObject(tblpurDate)){ 
-      date = this.ns.toDateTimeString(this.computeDate(tblmatDate, -(tblPeriod), unit));  
+      date =  this.ns.toDateTimeString(this.computeDate(tblmatDate, -(tblPeriod), unit));  
     } else {
-      date = this.ns.toDateTimeString(this.computeDate(tblpurDate, tblPeriod, unit));
+      date =  this.ns.toDateTimeString(this.computeDate(tblpurDate, tblPeriod, unit));
     }
     return date; 
   }
@@ -621,7 +629,6 @@ export class InvestmentsComponent implements OnInit {
     }
 
   onClickSave(){
-    console.log(this.checkFields());
       if(this.checkFields()){
         let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
           if(invtCds.some((a,i)=>invtCds.indexOf(a)!=i)){
@@ -661,4 +668,132 @@ export class InvestmentsComponent implements OnInit {
     }
       return true;
   }
+
+  /*onClickSaveInvt(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;   
+    console.log(this.cancelFlag);
+
+     if(this.cancelFlag){
+        if(this.checkFields()){
+          let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
+          if(invtCds.some((a,i)=>invtCds.indexOf(a)!=i)){
+            this.dialogMessage = 'Unable to save the record. Investment Code must be unique.';
+            this.dialogIcon = 'error-message';
+            this.cancelDialog.open();
+            return;
+          } else {
+                this.saveDataInvt();
+          }
+        }else{
+          this.dialogMessage="Please fill up required fields.";
+          this.dialogIcon = "error";
+          this.cancelDialog.open();
+        }
+     } else {
+       this.saveDataInvt();
+     }
+  }*/
+
+  saveDataInvt(cancelFlag?){
+     this.cancelFlag = cancelFlag !== undefined;   
+     console.log(this.cancelFlag);
+
+    this.acitInvtReq.delAcitInvestments = [];
+    this.acitInvtReq.saveAcitInvestments = [];
+    this.acitInvtReq.saveAcitInvestments = this.passData.tableData.filter(a=>a.edited && !a.deleted);
+    this.acitInvtReq.saveAcitInvestments.forEach(a=> { var currentTime = new Date();
+                                                       if (new Date(a.matDate) <= currentTime){
+                                                         console.log("mat reached");
+                                                         if(a.invtStatus === 'O'){
+                                                           a.invtStatus = 'M';
+                                                         }
+                                                       
+                                                       } else {
+                                                          console.log("mat not reached");
+                                                         if(a.invtStatus === 'M'){
+                                                           a.invtStatus = 'O';
+                                                         }
+                                                       }
+
+
+                                                      }
+                                                  );
+   this.acitInvtReq.delAcitInvestments = this.deletedData; 
+    
+     if(this.acitInvtReq.saveAcitInvestments.length === 0 && this.acitInvtReq.delAcitInvestments.length === 0  ){     
+              this.confirmSave.showBool = false;
+              this.dialogIcon = "success";
+              this.successDialog.open();
+            } else {
+              this.confirmSave.showBool = true;
+              this.passData.disableGeneric = true;
+              this.saveAcitInvt(this.acitInvtReq,cancelFlag);     
+      }  
+
+  }
+
+  saveAcitInvt(obj,cancelFlag?){
+    this.deletedData = [];
+      this.accountingService.saveAcitInvt(obj).pipe(
+           finalize(() => this.cancel(this.resultCancel))
+           )
+        .subscribe(data => {
+              console.log(data);
+              if(data['returnCode'] == -1){
+                  this.dialogIcon = "success";
+                  this.successDialog.open();
+                  this.retrieveInvestmentsList();
+                  this.resultCancel = true;
+              }else{
+                  this.dialogIcon = "error";
+                  this.successDialog.open();
+                  this.retrieveInvestmentsList();
+                  this.resultCancel = false;
+              }       
+    });
+
+  }
+
+  cancel(obj?){
+   console.log(obj);
+   if (this.cancelFlag === true && obj === false){
+     this.cancelFlag = false;
+   }
+  }
+
+  clear(){
+      this.passData.disableGeneric    = true;
+      this.invtRecord.createUser  = null;
+      this.invtRecord.createDate  = null;
+      this.invtRecord.updateUser  = null;
+      this.invtRecord.updateDate  = null;
+  }
+
+  onClickDelete(){
+    if (this.selectedData.add){
+          this.deleteBool = false;
+          this.table.indvSelect.deleted = true;
+          this.table.selected  = [this.table.indvSelect];
+          this.table.confirmDelete();
+     }else {
+        this.deleteBool = true;
+        this.table.indvSelect.deleted = true;
+        this.table.selected  = [this.table.indvSelect]
+        this.table.confirmDelete();
+     }
+  }
+
+  onClickDelInvt(obj : boolean){
+    this.acitInvtReq.saveAcitInvestments = [];
+    this.acitInvtReq.delAcitInvestments = [];
+    this.passData.disableGeneric = true;
+      
+      if(obj){
+            this.deletedData.push({
+                    "invtId": this.selectedData.invtId
+                     });
+            this.acitInvtReq.delAcitInvestments = this.deletedData;     
+      } 
+  }
+
 }

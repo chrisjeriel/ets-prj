@@ -7,7 +7,7 @@
           <label class="form-control-sm col-sm-1">Risk Dist No</label>
           <input type="text" class="form-control form-control-sm col-sm-3" readonly [ngModel]="pad(riskDistributionData?.riskDistId, 'riskDistId')">
           <label class="form-control-sm col-sm-1">Total SI</label>
-          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-3" readonly [ngModel]="riskDistributionData?.tsiAmt" appCurrency>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-3" readonly [ngModel]="riskDistributionData?.tsiAmt  | number:'1.2-2'">
           <label class="form-control-sm col-sm-1">Risk</label>
           <input type="text" class="form-control form-control-sm col-sm-3" readonly [ngModel]="params.riskName">
         </div>
@@ -23,7 +23,7 @@
           <label class="form-control-sm col-sm-1">Policy No</label>
           <input type="text" class="form-control form-control-sm col-sm-3" readonly [ngModel]="params.policyNo">
           <label class="form-control-sm col-sm-1">Total Premium</label>
-          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-3" readonly [ngModel]="riskDistributionData?.premAmt" appCurrency>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-3" readonly [ngModel]="riskDistributionData?.premAmt | number:'1.2-2'">
           <label class="form-control-sm col-sm-1">Insured</label>
           <input type="text" class="form-control form-control-sm col-sm-3" readonly [ngModel]="params.insured">
         </div>
@@ -39,7 +39,7 @@
       <div style="margin-top: 53px !important;margin-bottom: 53px !important;">
         <div class="input-group">
           <label class="form-control-sm col-sm-5">One Retention Line</label>
-          <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.retLineAmt" (ngModelChange)="riskDistributionData.retLineAmt = $event" appCurrency [readonly]="controlDisabled.oneRetLine">
+          <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.retLineAmt" (ngModelChange)="riskDistributionData.retLineAmt = $event ; treatyTable.markAsDirty();" appCurrency [readonly]="controlDisabled.oneRetLine" (change)="checkLimit()">
         </div>
         <div class="input-group">
           <label class="form-control-sm col-sm-5">1st Retention Line</label>
@@ -60,12 +60,12 @@
         <div class="input-group">
           <div class="input-group" [class.d-none]="controlHidden.seciitrtyLimit">
             <label class="form-control-sm col-sm-5">Section II Treaty Limit</label>
-            <input type="text" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.trtyLimitSec2" [readonly]="controlDisabled.seciitrtyLimit" appCurrency (ngModelChange)="riskDistributionData.trtyLimitSec2 = $event">
+            <input type="text" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.trtyLimitSec2" [readonly]="controlDisabled.seciitrtyLimit" appCurrency (ngModelChange)="riskDistributionData.trtyLimitSec2 = $event ; treatyTable.markAsDirty();">
           </div>
           <div class="input-group" [class.d-none]="controlHidden.seciiPremTag">
             <div class="col-sm-5">
             </div>
-            <input type="checkbox" [ngModel]="riskDistributionData?.seciiPremTag === 'Y'" (ngModelChange)="$event ? riskDistributionData.seciiPremTag = 'Y' : riskDistributionData.seciiPremTag = 'N';readOnlyAll()" [disabled]="controlDisabled.seciiPremTag">
+            <input type="checkbox" [ngModel]="riskDistributionData?.seciiPremTag === 'Y'" (ngModelChange)="$event ? riskDistributionData.seciiPremTag = 'Y' : riskDistributionData.seciiPremTag = 'N';readOnlyAll() ; treatyTable.markAsDirty();" [disabled]="controlDisabled.seciiPremTag">
             <label class="form-control-sm col-sm-4 text-left pt-0" style="text-align: left !important;">Consider Sec II Limit tag</label>
           </div>
           <div class="input-group">
@@ -83,7 +83,7 @@
       <div style="margin-top: 10px; margin-bottom: 8px;">
             <app-cust-editable-non-datatable #wparam [passData]="wparamData" (genericBtn)="onClickDelete($event)" (onDelete)="wparam.onClickDelete('a')"  (clickLOV)="openCedingCoLOV($event)">
               <ng-container controls-r>
-                <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc = 'Y' : riskDistributionData.autoCalc = 'N';readOnlyAll()" [disabled]="controlDisabled.autoCalc">
+                <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc = 'Y' : riskDistributionData.autoCalc = 'N';readOnlyAll() ; treatyTable.markAsDirty();" [disabled]="controlDisabled.autoCalc">
                 <label class="form-control-sm">Auto Calculation</label>
               </ng-container>
             </app-cust-editable-non-datatable>
@@ -221,4 +221,32 @@
     <button type="button" class="cust-btn" (click)="save();confirmAltMdl.closeModal()" ><a>Yes</a></button>
     <button type="button" class="cust-btn" (click)="confirmAltMdl.closeModal()" ><a>No</a></button>
   </div>
+</app-modal>
+
+<app-modal #retLimitReached class="d-none">
+  <div header>Warning</div>
+  <div body>
+    Maximum Retention Line Amount is {{riskDistributionData?.secIIInputLimit | number:'1.2-2'}} {{riskDistributionData?.cuurCd}}
+  </div>
+  <div footer class="w-100 text-right">
+    <button type="button" class="cust-btn" (click)="retLimitReached.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-modal class="d-none" id="warningModal">
+    <div header>Policy Distribution</div>
+    <div body style="min-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>
+                  {{ warningModalMsg }}
+              </p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-right">
+
+        <button *ngIf="warningModalCode == 'PREV_NOT_POSTED'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="warningModalCode == 'PREV_HAS_CHANGES'" class="cust-btn" type="button" (click)="save();modalService.dismissAll();"><a>Ok</a></button>
+    </div>
 </app-modal>

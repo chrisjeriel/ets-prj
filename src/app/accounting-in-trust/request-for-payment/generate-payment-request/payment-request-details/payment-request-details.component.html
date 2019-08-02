@@ -4,9 +4,7 @@
         <div class="col-sm-8">
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Request No</label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="rowData.paytReqNo" readonly>
-                <!-- <label class="form-control-sm col-sm-2">Request Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="date" readonly> -->
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-3 dirty" [ngModel]="rowData.paytReqNo" readonly>
                 <label class="form-control-sm col-sm-2 no-margin">Request Date</label>
                 <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
                   <datepicker type="datetime" [showIcon]="false" [disabled]="true" [value]="rowData.reqDate"></datepicker>
@@ -51,7 +49,7 @@
                     <app-cust-editable-non-datatable [passData]="OtherPartyData"></app-cust-editable-non-datatable>
                 </ng-container>  
                 <ng-container *ngSwitchCase ="3">
-                    <app-cust-editable-non-datatable (clickLOV)="showLOV($event)" [passData]="cedingCompanyData"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty();" #cedCompTbl></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="4">
                     <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
@@ -95,6 +93,16 @@
                     
                 </ng-container>
               </ng-container>
+              <div class="form-row" style="margin-top: 40px !important;">
+                <div class="form-group col-sm">
+                  <div class="text-center">
+                    <div class="cust-btn-container">
+                      <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                      <button type="button" class="cust-btn" (click)="onClickSaveCPC()"><a>Save</a></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </ng-template>
@@ -136,13 +144,22 @@
     </fieldset>
   </div>
 
-<app-modal class="d-none" id="clmLovId" #clmLov>
-    <div header style="width: 550px !important;">List of Values</div>
-    <div body class="container-flex text-center">
-      <app-cust-editable-non-datatable [passData]="passDataClmHistoryLov"></app-cust-editable-non-datatable>
+
+<app-mtn-clm-history-lov #mtnClmHistLov (selectedData)="selectedDataLov($event)" [limitClmHistTbl]="limitClmHistTbl" [lovCheckBox]="true"></app-mtn-clm-history-lov>
+
+<app-confirm-save (onYes)="onSaveCPC()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveCPC('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+
+<app-modal class="d-none" id="warnMdl" #warnMdl>
+    <div header>Warning Message</div>
+    <div body class="container-flex text-center" style="max-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding: 15px !important;min-height: 100px !important"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">{{ warnMsg }}</p>
+        </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-      <button class="cust-btn" type="button" (click)="clmLov.closeModal()">Cancel</button>
-      <button class="cust-btn" type="button" (click)="clmLov.closeModal()">OK</button>
+        <button class="cust-btn" type="button" (click)="warnMdl.closeModal()"><a>Ok</a></button>
     </div>
 </app-modal>

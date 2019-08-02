@@ -12,14 +12,15 @@
     </div>
     <div class="col-sm-4">
       <div class="input-group">
-        <label class="form-control-sm col-sm-2">Main</label>
-        <input type="text" class="form-control form-control-sm col-sm">
-        <label class="form-control-sm col-sm-2">Sub1</label>
-        <input type="text" class="form-control form-control-sm col-sm">
-        <label class="form-control-sm col-sm-2">Sub2</label>
-        <input type="text" class="form-control form-control-sm col-sm">
-        <label class="form-control-sm col-sm-2">Sub3</label>
-        <input type="text" class="form-control form-control-sm col-sm">
+        <label class="form-control-sm col-sm-4">Account Code</label>
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
+        <div class="text-search-ico">
+          <a><i class="fa fa-search"></i></a>
+        </div>
       </div>
     </div>
     <div class="col-sm-5">
@@ -37,7 +38,10 @@
 <fieldset class="scheduler-border">
   <legend class="scheduler-border">Accounts Setup</legend>
   <div class="custom-row-inline-inset">
-    <app-cust-non-datatable [passData]="passDataAccountsSetup"></app-cust-non-datatable>
+    <!-- <app-cust-non-datatable [passData]="passDataAccountsSetup"></app-cust-non-datatable> -->
+    <app-cust-editable-non-datatable [passData]="chartOfAccounts"></app-cust-editable-non-datatable>
+    <!-- <app-cust-editable-non-datatable [passData]="chartOfAccounts" (tableDataChange)="retAmtData.tableData=$event" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); retAmtData.disableGeneric=true;">
+    </app-cust-editable-non-datatable> -->
     <br><br>
     <div class="form-row">
       <div class="col-sm-12 text-center">
@@ -50,22 +54,25 @@
     </div>
   </div>
 </fieldset>
-<div class="col-sm-12" style="margin-top: 15px !important;padding-left: 0px !important;
-padding-right: 0px !important;">
-	<fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
-		<div class="custom-row-inline-inset">
-			<div class="form-row" style="margin-bottom: -10px;">
-				<div class="input-group">
-					<label class="form-control-sm col-sm-1">Created By</label>
-					<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
-					<label class="form-control-sm col-sm-1">Date Created</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
-					<label class="form-control-sm col-sm-1">Last Update By</label>
-					<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
-					<label class="form-control-sm col-sm-1">Last Update</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
-				</div>
-			</div>
-		</div>
-	</fieldset>
-</div>
+<div class="row" style="margin-top: 12px">
+    <div class="col-sm-12">
+      <fieldset class="scheduler-border" style="padding-top: 4px !important;">
+        <div class="custom-row-inline-inset">
+          <div class="input-group" style="margin-bottom: -14px !important;">
+            <label class="form-control-sm col-sm-1 no-margin">Created By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" readonly>
+            <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+            <div class="col-sm-2 dp-cont">
+              <datepicker [value]="selected?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+            </div>
+            <label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" readonly>
+            <label class="form-control-sm col-sm-1 no-margin">Last Update</label>                 
+            <div class="col-sm-2 dp-cont">
+              <datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>

@@ -37,7 +37,7 @@
 						 	  	<div class="row">
 					                <div class="col-sm-12" style="margin-top: 14px; margin-bottom: -20px" >
 					                   <!--  <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button> -->
-					                    <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); passData.disableGeneric=true;"  (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
+					                    <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;onClickDelInvt(this.deleteBool);"  (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
 					                </div>
             					</div>
 	            				<div class="row">
@@ -98,6 +98,6 @@
 
 <app-mtn-bank (selectedData)="setSelectedBank($event)" ></app-mtn-bank>
 <app-mtn-acct-int-duration (selectedData)="setSelectedDuration($event)"></app-mtn-acct-int-duration>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save #confirmSave (onYes)="onClickSaveInvt()"></app-confirm-save>
-<app-cancel-button (onYes)="onClickSaveInvt('cancel')" [url]="''" ></app-cancel-button>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cancelBtn.onNo():null" ></app-sucess-dialog>
+<app-confirm-save #confirmSave (onYes)="saveDataInvt()"></app-confirm-save>
+<app-cancel-button (onYes)="saveDataInvt('cancel')" [url]="''" ></app-cancel-button>

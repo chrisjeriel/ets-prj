@@ -59,3 +59,10 @@
     </div>
 </ng-template>
 
+<app-modal #failMsg class="d-none">
+    <div header>&nbsp;</div>
+    <div body>Please check maintenance tables relevant to distribution.</div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" (click)="failMsg.closeModal();showPost.emit(false)">Ok</button>
+    </div>
+</app-modal>

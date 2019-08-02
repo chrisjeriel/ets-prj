@@ -134,7 +134,7 @@ export class PolItemComponent implements OnInit {
     dosGoodsPassData: any = {
         tableData: [],
         tHeader: ["Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
-        dataTypes: [ "text", "text", "text", "currency"],
+        dataTypes: [ "text", "text", "number", "currency"],
         nData: {
             "itemNo":null,
             "chamberNo": null,
