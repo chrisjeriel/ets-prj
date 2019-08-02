@@ -95,7 +95,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     deleteFlag    : true,
     uneditable    : [true,true,true,true,true,true,true,true,true,true,true,false],
     total         : [null, null, null, null, 'Total', 'netDue', 'prevPaytAmt', 'premAmt', 'riComm', null, 'charges', 'returnAmt'],
-    widths        : [130,1,110,1,110,120,120,120,120,120,120,120,120],
+    widths        : [150,1,110,1,110,120,120,120,120,120,120,120,120],
     keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
   };
 
@@ -392,8 +392,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.inwardPolBalData.tableData.forEach(e => {
       var rec = {
         charges     : e.charges,
-        createDate  : e.createDate,
-        createUser  : e.createUser,
+        createUser  : (e.createUser == '' || e.createUser == null)?this.ns.getCurrentUser():e.createUser,
+        createDate  : (e.createDate == '' || e.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate),
         itemNo      : e.itemNo,
         netDue      : e.netDue,
         premAmt     : e.premAmt,
@@ -407,7 +407,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       };
 
       if(e.edited && !e.deleted){
-        //this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.policyId != e.policyId);
         prqInwPol.saveAcitPrqInwPol.push(rec);
       }else if(e.edited && e.deleted){
         prqInwPol.deleteAcitPrqInwPol.push(rec);
@@ -417,6 +416,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
 
     console.log(prqInwPol);
+    var saveSubs = forkJoin(this.acctService.saveAcitPrqTrans(JSON.stringify(this.params)),this.acctService.saveAcitPrqInwPol(JSON.stringify(prqInwPol)))
+                           .pipe(map(([trans,inw]) => { return { trans,inw }; }));
     // this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     // .subscribe(data => {
     //   console.log(data);
