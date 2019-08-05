@@ -123,6 +123,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   selectedTblData : any;
   limitContent    : any[] = [];
 
+  gnrtType: string = 'periodAsOf';
+  periodAsOfParam: string = null;
+  yearParam: number = null;
+  yearParamOpts: any[] = [];
   serviceFeeMainData: any = {
     tableData     : [],
     tHeader       : ['Main Company Distribution','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
@@ -137,6 +141,24 @@ export class PaymentRequestDetailsComponent implements OnInit {
     total         : [null,null,null,'Total','grpShrAmt','localAmt'],
     // widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
     pageID        : 'serviceFeeMainData',
+    pageLength    : 3,
+  };
+
+  serviceFeeSubData: any = {
+    tableData     : [],
+    tHeader       : ['Sub-Distribution of Pool & Munich Re','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
+    dataTypes     : ['text','percent','text','percent','currency','currency'],
+    keys          : ['cedingName','baseShrPct','currCd','currRate','baseShrAmt','localAmt'],
+    paginateFlag  : true,
+    infoFlag      : true,
+    checkFlag     : false,
+    addFlag       : false,
+    deleteFlag    : false,
+    uneditable    : [true,true,true,true,true,true],
+    total         : [null,null,null,'Total','baseShrAmt','localAmt'],
+    // widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
+    pageID        : 'serviceFeeSubData',
+    pageLength    : 10,
   };
 
 
@@ -144,6 +166,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    var currYear = new Date().getFullYear() + 1;
+    for(let x = currYear; x >= 2018; x--) {
+      this.yearParamOpts.push(x);
+    }
+
     this.getAcitPaytReq();
     this.getPrqTrans();
   }
