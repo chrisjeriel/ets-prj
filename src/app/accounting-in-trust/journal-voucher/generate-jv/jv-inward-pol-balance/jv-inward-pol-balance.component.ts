@@ -24,7 +24,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
 
-  @Input() tranId:any;
   @Input() jvDetail:any;
 
   passData: any = {
@@ -47,8 +46,8 @@ export class JvInwardPolBalanceComponent implements OnInit {
        riCommVat : '',
        charges : '',
        netDue : '',
-       payment : '',
-       balance : '',
+       prevPaytAmt : '',
+       adjBalAmt : '',
        overdueInt : ''
     },
     total:[null,null,null,null,null,null,null,'Total','premAmt', 'riComm','riCommVat', 'charges', 'netDue', 'prevPaytAmt', 'adjBalAmt', 'overdueInt'],
@@ -63,6 +62,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
     pageStatus: true,
     selectFlag: false,
     disableAdd: true,
+    btnDisabled: false,
     pageLength: 10,
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true],
     widths: [215,200,160,50,115,115,40,155,130,130,120,130,130,130,130,85],
@@ -102,13 +102,14 @@ export class JvInwardPolBalanceComponent implements OnInit {
        this.passData.disableAdd = false;
      }else {
        this.passData.disableAdd = true;
+       this.passData.btnDisabled = true;
        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
   }
 
   retrieveInwPol(){
-    this.accountingService.getJVInwPolBal(this.tranId,'',this.jvDetails.ceding).subscribe((data:any) => {
+    this.accountingService.getJVInwPolBal(this.jvDetail.tranId,'',this.jvDetails.ceding).subscribe((data:any) => {
       var datas = data.inwPolBal;
       this.passData.tableData = [];
       this.totalBalance = 0;
@@ -135,7 +136,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
   setCedingcompany(data){
     this.jvDetails.cedingName = data.cedingName;
     this.jvDetails.ceding = data.cedingId;
-    this.passLov.cedingId = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveInwPol()
   }
@@ -162,7 +162,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].edited  = true;
       this.passData.tableData[this.passData.tableData.length - 1].itemNo = null;
       this.passData.tableData[this.passData.tableData.length - 1].policyId = data.data[i].policyId;
-      this.passData.tableData[this.passData.tableData.length - 1].tranId = this.tranId;
+      this.passData.tableData[this.passData.tableData.length - 1].tranId = this.jvDetail.tranId;
       this.passData.tableData[this.passData.tableData.length - 1].soaNo = data.data[i].soaNo;
       this.passData.tableData[this.passData.tableData.length - 1].policyNo = data.data[i].policyNo;
       this.passData.tableData[this.passData.tableData.length - 1].coRefNo  = data.data[i].coRefNo;
