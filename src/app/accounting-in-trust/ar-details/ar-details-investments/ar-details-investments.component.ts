@@ -2,6 +2,10 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AccARInvestments } from '@app/_models';
 import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
  
 @Component({
   selector: 'app-ar-details-investments',
@@ -13,6 +17,10 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   @Input() record: any;
 
   @ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
+  @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   
   passDataInvestment: any = {
     tableData:[],
@@ -59,6 +67,19 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     pageID: 6,
     widths:[220, 150, 1, 150, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
   }
+
+  passLov: any = {
+    selector: 'acitArClmRecover',
+    payeeNo: '',
+    hide: []
+  }
+  cancelFlag: boolean;
+  totalLocalAmt: number = 0;
+  dialogIcon: string = '';
+  dialogMessage: string = '';
+
+  savedData: any[] = [];
+  deletedData: any[] = [];
 
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
