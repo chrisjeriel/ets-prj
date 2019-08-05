@@ -1617,6 +1617,49 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInwPolBal',JSON.stringify(params),header);
 	}
 
+	saveAccJVOverdueAcct(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVOverdueAccts',JSON.stringify(params),header);
+	}
+	
+	getAcitJVPremRes(tranId, cedingId) {
+		 const params = new HttpParams()
+             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId))
+             .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVPremResRel",{params});
+	}
+
+	saveAcitJVPremRes(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVPremResRel',JSON.stringify(params),header);
+	}
+
+	cancelJournalVoucher(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/cancelJournalVoucher',JSON.stringify(params),header);
+	}
+
+	printJournalVoucher(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/printJournalVoucher',JSON.stringify(params),header);
+	}
+	
 	getQSOAList(searchParams: any[]){
 		var params;
 			if(searchParams.length < 1){
