@@ -93,15 +93,15 @@
    		                <div class="input-group" style="margin-bottom: -5px !important;">
    		                   	<label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" readonly>
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.preparedDes" readonly>
    		                    </div>
    		                    <label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" readonly>
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.requestedDes" readonly>
    		                    </div>
    	                    	<label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" readonly>
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.approvedDes" readonly>
    		                    </div>
    		                </div>
    		                <div class="input-group" style="margin-bottom: -5px !important;">
@@ -198,9 +198,10 @@
 
 <app-lov #mainLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>
-<app-mtn-users #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-users>
-<app-mtn-users #reqUserLov (selectedData)="setData($event,'req-user')"></app-mtn-users>
-<app-mtn-users #appUserLov (selectedData)="setData($event,'app-user')"></app-mtn-users>
+<app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
+<app-mtn-printable-names #reqUserLov (selectedData)="setData($event,'req-user')"></app-mtn-printable-names>
+<app-mtn-printable-names #appUserLov (selectedData)="setData($event,'app-user')"></app-mtn-printable-names>
 
+<!-- <app-mtn-printable-names id="printableNames" (selectedData)="setPrintable($event)"></app-mtn-printable-names> -->
 
 

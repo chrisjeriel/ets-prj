@@ -72,7 +72,7 @@
                     <div class="d-flex p-0">
                       <div class="col-sm-2"></div>
                       <div class="col-sm">
-                        <app-cust-editable-non-datatable [passData]="TreatyBalanceData"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr();"></app-cust-editable-non-datatable>
                       </div>
                       <div class="col-sm-2"></div>
                     </div>
@@ -140,7 +140,7 @@
 
 <app-mtn-clm-history-lov #mtnClmHistLov (selectedData)="setData($event,'lovCedTbl')" [limitHistCat]="limitHistCat" [limitClmHistTbl]="limitClmHistTbl" [lovCheckBox]="true"></app-mtn-clm-history-lov>
 
-<app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')"></app-lov>
+<app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov>
 
 <app-confirm-save  #conClm (onYes)="onSaveCPC()"></app-confirm-save>
 <app-sucess-dialog #sucClm [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
@@ -149,6 +149,10 @@
 <app-confirm-save  #conInw (onYes)="onSaveInw()"></app-confirm-save>
 <app-sucess-dialog #sucInw [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelInw();"></app-sucess-dialog>
 <app-cancel-button #canInw (onYes)="onClickSaveInw('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conTrty (onYes)="onSaveTrty()"></app-confirm-save>
+<app-sucess-dialog #sucTrty [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelTrty();"></app-sucess-dialog>
+<app-cancel-button #canTrty (onYes)="onClickSaveTrty('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 
 <app-modal class="d-none" id="warnMdl" #warnMdl>
@@ -162,3 +166,22 @@
         <button class="cust-btn" type="button" (click)="warnMdl.closeModal()"><a>Ok</a></button>
     </div>
 </app-modal>
+
+<!-- <app-modal class="d-none" id="quarEndLovId" #quarEndLov>
+    <div header>Quarter Ending</div>
+    <div body class="container-flex text-center">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Month End</label>
+          <select class="form-control form-control-sm cust-sm col-sm-12 warn" appRequired> 
+            <option *ngFor="let i of monthEndList" value="{{ i.paramValueV }}">{{ i.paramValueV }}</option>
+          </select>
+          <label class="form-control-sm col-sm-1">Year</label>
+          <select class="form-control form-control-sm cust-sm col-sm-12 warn" appRequired> 
+            <option *ngFor="let i of yearList" value="{{ i.yearList }}">{{ i.yearList }}</option>
+          </select>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="quarEndLov.closeModal()"><a>Ok</a></button>
+    </div>
+</app-modal> -->

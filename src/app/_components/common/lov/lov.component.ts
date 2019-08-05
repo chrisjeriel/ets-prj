@@ -665,13 +665,15 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag  = true;
       this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo)
       .subscribe((a:any)=>{
-        this.passTable.tableData = a["soaDtlList"];
-        this.passTable.tableData = this.passTable.tableData.map(e => { e.newRec = 1; e.prevPaytAmt = (Number(e.totalPayments) + Number(e.tempPayments)); return e; });
-        // if(this.limitContent.length != 0){
-        //   this.limitContent.forEach(e => {
-        //     this.passTable.tableData = this.passTable.tableData.filter(e2 => e2.policyId != e.policyId && e2.instNo != e.instNo);    
-        //   });
-        // }
+        var rec = a["soaDtlList"].filter(e =>  (Number(e.totalPayments) + Number(e.tempPayments)) > 0 ).map(e => { e.newRec = 1; e.prevPaytAmt = (Number(e.totalPayments) + Number(e.tempPayments)); return e; });
+        if(this.limitContent.length != 0){
+          this.limitContent.forEach(e => {
+            rec = rec.filter(e2 => e2.policyId != e.policyId);    
+          });
+        }
+        console.log(this.limitContent);
+        this.passTable.tableData = rec;
+        console.log(this.passTable.tableData);
         this.table.refreshTable();
       })
     }
