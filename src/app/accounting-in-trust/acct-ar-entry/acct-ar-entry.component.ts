@@ -250,6 +250,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       mailAddress: '',
       bussTypeCd: '',
       tin: '',
+      refCd: '',
       currCd: '',
       arAmt: '',
       currRate: '',
@@ -382,6 +383,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.mailAddress    = data.ar.mailAddress;
           this.arInfo.bussTypeCd     = data.ar.bussTypeCd;
           this.arInfo.tin            = data.ar.tin;
+          this.arInfo.refCd            = data.ar.refCd;
           this.arInfo.currCd         = data.ar.currCd;
           this.arInfo.arAmt          = data.ar.arAmt;
           this.arInfo.currRate       = data.ar.currRate;
@@ -438,7 +440,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             updateUser: this.arInfo.updateUser,
             updateDate: this.arInfo.updateDate,
             cedingId: this.arInfo.cedingId,
-            bussTypeName: this.arInfo.bussTypeName
+            bussTypeName: this.arInfo.bussTypeName,
+            refCd: this.arInfo.refCd
           }
           this.emitArInfo.emit(arDetailParams);
 

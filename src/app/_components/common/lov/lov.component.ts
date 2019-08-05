@@ -663,6 +663,17 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.claimList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acitArInvPullout'){
+      this.passTable.tHeader = ['Investment Code','Certificate No.', 'Investment', 'Investment Income', 'Bank Charge', 'Withholding Tax'];
+      this.passTable.widths =[300,300,300,300,300,300]
+      this.passTable.dataTypes = [ 'text','text', 'currency', 'currency', 'currency', 'currency',];
+      this.passTable.keys = [ 'invtCd','certNo', 'invtAmt', 'incomeAmt', 'bankCharge', 'whtaxAmt'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getAccInvestments(this.passData.searchParams).subscribe((a:any)=>{
+        //this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = a.invtList.filter((data)=>{return  this.passData.hide.indexOf(data.invtCd)==-1});
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;
