@@ -217,7 +217,7 @@ export class PolAlopComponent implements OnInit {
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i < sectionCovers.length;i++){
-           if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
+           if(sectionCovers[i].coverCd == 16){
              this.polAlopData.annSi = sectionCovers[i].sumInsured;
            }
          }
@@ -229,7 +229,7 @@ export class PolAlopComponent implements OnInit {
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i <sectionCovers.length;i++){
-           if(sectionCovers[i].coverName == 'Advance Loss of Profit'){
+           if(sectionCovers[i].coverName == 16){
              this.polAlopData.annSi = sectionCovers[i].cumSi;
            }
          }
