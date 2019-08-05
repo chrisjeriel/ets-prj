@@ -171,18 +171,18 @@ export class InvestmentsComponent implements OnInit {
     deleteBool : boolean;
     deletedData:any[] =[];
     resultCancel : boolean;
+    statusList: any[] =[]; 
+    statusCd: any = '';
+    matDateTo: any;
+    matDateFrom: any;
 
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Investments");
-    this.retrieveInvestmentsList();
+    this.retrieveInvestmentsList(this.searchParams);
     this.getWTaxRate();
     this.oldData = this.passData.tableData;
-  	//this.passData.tableData = this.accountingService.getAccInvestments();
-    //this.passData.opts.push({ selector: "bank", vals: ["BPI", "RCBC", "BDO"] });
-    //this.passData.opts.push({ selector: "durUnit", vals: ["Years","Months","Weeks","Days"] });
-
   }
 
   onTabChange($event: NgbTabChangeEvent) {return ;
@@ -192,8 +192,9 @@ export class InvestmentsComponent implements OnInit {
   
   }
 
-  retrieveInvestmentsList(){
-      var sub$ = forkJoin(this.accountingService.getAccInvestments(this.searchParams),
+  retrieveInvestmentsList(search?){
+     console.log(search);
+      var sub$ = forkJoin(this.accountingService.getAccInvestments(search),
                 this.mtnService.getRefCode('ACIT_INVESTMENTS.INVT_TYPE'),
                 this.mtnService.getRefCode('ACIT_INVESTMENTS.INVT_STATUS'),
                 this.mtnService.getRefCode('ACIT_INVESTMENTS.DURATION_UNIT'),
@@ -244,8 +245,47 @@ export class InvestmentsComponent implements OnInit {
         this.passData.opts[5].vals = data['bank']['bankList'].map(a => a.bankCd);
         this.passData.opts[5].prev = data['bank']['bankList'].map(a => a.shortName);
 
+        this.statusList = data['status']['refCodeList'];
+        this.statusList.push({code: "", description: "All"});
+
         this.table.refreshTable();
       });
+  }
+
+  onClickSearch(){
+
+     if(this.matDateTo < this.matDateFrom){
+        this.dialogMessage="To Date must be greater than From Date";
+        this.dialogIcon = "error-message";
+        this.successDialog.open();
+     }else {
+        this.bankName === null   || this.bankName === undefined ?'':this.bankName;
+        this.duration === null || this.duration === undefined?'':this.duration;
+        this.statusCd === null || this.statusCd === undefined ?'':this.statusCd;
+        this.matDateFrom === null || this.matDateFrom === undefined ?'':this.matDateFrom;
+        this.matDateTo === null || this.matDateTo === undefined ?'':this.matDateTo;
+        this.passData.tableData = [];
+        this.table.overlayLoader = true;
+
+        console.log(this.matDateTo);
+       this.searchParams = [ {key: "bank", search: this.bankName },
+                             {key: "durUnit", search: this.duration },
+                             {key: "invtStatus", search: this.statusCd + '%'},
+                             {key: "matDateFrom", search: this.matDateFrom },
+                             {key: "matDateTo", search: this.matDateTo },
+                             ]; 
+       console.log(this.searchParams);
+       this.retrieveInvestmentsList(this.searchParams);
+     }
+
+  }
+
+  searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        this.retrieveInvestmentsList();
+        this.selectedData = {};
+        this.passData.btnDisabled = true;
   }
 
   onRowClick(data){
@@ -269,7 +309,6 @@ export class InvestmentsComponent implements OnInit {
       this.invtRecord.updateUser  = null;
       this.invtRecord.updateDate  = null;
     }
-
   }
 
   showBankLOV(ev){
@@ -669,31 +708,6 @@ export class InvestmentsComponent implements OnInit {
       return true;
   }
 
-  /*onClickSaveInvt(cancelFlag?){
-    this.cancelFlag = cancelFlag !== undefined;   
-    console.log(this.cancelFlag);
-
-     if(this.cancelFlag){
-        if(this.checkFields()){
-          let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
-          if(invtCds.some((a,i)=>invtCds.indexOf(a)!=i)){
-            this.dialogMessage = 'Unable to save the record. Investment Code must be unique.';
-            this.dialogIcon = 'error-message';
-            this.cancelDialog.open();
-            return;
-          } else {
-                this.saveDataInvt();
-          }
-        }else{
-          this.dialogMessage="Please fill up required fields.";
-          this.dialogIcon = "error";
-          this.cancelDialog.open();
-        }
-     } else {
-       this.saveDataInvt();
-     }
-  }*/
-
   saveDataInvt(cancelFlag?){
      this.cancelFlag = cancelFlag !== undefined;   
      console.log(this.cancelFlag);
@@ -738,7 +752,6 @@ export class InvestmentsComponent implements OnInit {
            finalize(() => this.cancel(this.resultCancel))
            )
         .subscribe(data => {
-              console.log(data);
               if(data['returnCode'] == -1){
                   this.dialogIcon = "success";
                   this.successDialog.open();
@@ -747,7 +760,6 @@ export class InvestmentsComponent implements OnInit {
               }else{
                   this.dialogIcon = "error";
                   this.successDialog.open();
-                  this.retrieveInvestmentsList();
                   this.resultCancel = false;
               }       
     });
@@ -755,7 +767,6 @@ export class InvestmentsComponent implements OnInit {
   }
 
   cancel(obj?){
-   console.log(obj);
    if (this.cancelFlag === true && obj === false){
      this.cancelFlag = false;
    }

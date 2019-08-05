@@ -337,6 +337,7 @@ export class AccountingService {
 		]
 		return this.accCvPayReqList;
 	}
+				
 
 
 	getAccountingEntriesUtil() {
@@ -352,12 +353,13 @@ export class AccountingService {
 
 	getAccInvestments(searchParams : any[]) {
 		var params;
-
+		console.log(searchParams);
 		if(searchParams.length < 1){
 			params = new HttpParams()
 				.set('invtId','')
 				.set('invtCd','')
 				.set('bank','')
+				.set('bankCd','')
 				.set('invtType','')
 				.set('invtSecCd','')
 				.set('invtStatus','')

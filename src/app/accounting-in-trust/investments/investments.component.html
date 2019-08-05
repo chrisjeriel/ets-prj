@@ -17,16 +17,14 @@
 
             								   <label class="form-control-sm col-sm-1" for="xx"  >Maturity Date:</label>
             								   <label class="form-control-sm" for="xx" style="margin-left: 5px ! important">From</label>
-            								   <input placeholder = "10/01/2018" class = "textbox-n form-control form-control-sm cust-sm col-sm" type = "text" onfocus = "(this.type = 'date')"  id = "date">
+            								   <input [(ngModel)]="matDateFrom" class = "textbox-n form-control form-control-sm cust-sm col-sm" type = "text" onfocus = "(this.type = 'date')"  id = "date">
             								   <label class="form-control-sm" for="xx" style="margin-left: 5px ! important">To</label>
-            								  <input placeholder = "10/31/2018" class = "textbox-n form-control form-control-sm cust-sm col-sm" type = "text" onfocus = "(this.type = 'date')"  id = "date">
+            								  <input [(ngModel)]="matDateTo" class = "textbox-n form-control form-control-sm cust-sm col-sm" type = "text" onfocus = "(this.type = 'date')"  id = "date">
             								  <label class="form-control-sm" for="xx" style="margin-left: 5px ! important">Status</label>
-            								  <select class="form-control form-control-sm cust-sm col-sm">
-            								  	<option value="all">ALL</option>
-            								  	<option value="Matured">Matured</option>
-            								  	<option value="Outstanding">Outstanding</option>
-            								  </select>
-            								   <button type="button" class="cust col-sm-1" style="margin-left: 20px ! important;">Search</button>
+            								  <select id="s-list" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="statusCd">
+							            		<option *ngFor="let s of statusList" [value]="s.code">{{ s.description }}</option>
+							            	  </select>
+            								   <button type="button" class="cust col-sm-1" style="margin-left: 20px ! important;" (click)="onClickSearch()">Search</button>
             							</div>
             						</div>
 						 </fieldset> 
@@ -37,7 +35,7 @@
 						 	  	<div class="row">
 					                <div class="col-sm-12" style="margin-top: 14px; margin-bottom: -20px" >
 					                   <!--  <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button> -->
-					                    <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;onClickDelInvt(this.deleteBool);"  (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
+					                    <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;onClickDelInvt(this.deleteBool);"  (tableDataChange)="update($event);" (searchToDb)="searchQuery($event)"></app-cust-editable-non-datatable>
 					                </div>
             					</div>
 	            				<div class="row">
