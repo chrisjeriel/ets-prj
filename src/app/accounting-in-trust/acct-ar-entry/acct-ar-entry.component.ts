@@ -279,6 +279,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   openPayorLOV(){
     this.passLov.selector = 'payee';
+    if(this.arInfo.tranTypeCd == '5'){
+      this.passLov.payeeClassCd = 3;
+    }else{
+      this.passLov.payeeClassCd = 1;
+    }
     this.lov.openLOV();
   }
 

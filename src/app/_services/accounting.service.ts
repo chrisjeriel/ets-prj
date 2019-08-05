@@ -1658,5 +1658,13 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArClmRecover',JSON.stringify(params),header);
 	}
+
+	getAcitArInvPullout(tranId, billId, pulloutType?){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('billId', billId)
+			.set('pulloutType', pulloutType === undefined || pulloutType === null ? '' : pulloutType);
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArInvPullout', {params});
+	}
 }
 

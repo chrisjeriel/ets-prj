@@ -105,7 +105,7 @@
 								<app-ar-claim-cash-call></app-ar-claim-cash-call>
 							</ng-container>
 							<ng-container *ngSwitchCase="'5'">
-								<app-ar-details-investments></app-ar-details-investments>
+								<app-ar-details-investments [record]="record"></app-ar-details-investments>
 							</ng-container>
 							<ng-container *ngSwitchCase="'6'">
 								<app-ar-loss-reserve-deposit [record]="record"></app-ar-loss-reserve-deposit>
