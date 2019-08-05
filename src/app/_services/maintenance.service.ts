@@ -1175,6 +1175,12 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBankAcct", {params});
     }
 
+    getMtnPrintableName(employeeId){
+    	const params = new HttpParams()
+    		.set('employeeId', (employeeId === null || employeeId === undefined ? '' : employeeId))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPrintableName", {params});
+    }
+   
     getMtnAcitDCBNo(dcbYear?, dcbNo?, dcbDate?, dcbStatus?){
     	const params = new HttpParams()
     				.set('dcbYear', (dcbYear === null || dcbYear === undefined ? '' : dcbYear))
@@ -1254,6 +1260,13 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBank', JSON.stringify(params), header);
     }
 
+    getMtnCedingTreaty(treatyTag,cedingName){
+    	const params = new HttpParams()
+    				.set('treatyTag', (treatyTag === null || treatyTag === undefined ? '' : treatyTag))
+    				.set('cedingName', (cedingName === null || cedingName === undefined ? '' : cedingName));
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCedingTreaty", {params});
+    }
+    
     getMtnInvtSecType(invtSecCd?,activeTag?){
     	const params = new HttpParams()
     				.set('invtSecCd', (invtSecCd === null || invtSecCd === undefined ? '' : invtSecCd))

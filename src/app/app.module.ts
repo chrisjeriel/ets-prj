@@ -432,12 +432,15 @@ import { JvAppPaymentsZeroComponent } from './accounting-in-trust/journal-vouche
 import { JvTypeLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
 import { MtnClmHistoryLovComponent } from './maintenance/mtn-clm-history-lov/mtn-clm-history-lov.component';
 import { JvSoaLovComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-soa-lov/jv-soa-lov.component';
+import { QuarterEndingLovComponent } from './maintenance/quarter-ending-lov/quarter-ending-lov.component';
+import { MtnPrintableNamesComponent } from './maintenance/mtn-printable-names/mtn-printable-names.component';
 import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component';
 import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
+import { DropdownComponent } from './_components/dropdown/dropdown.component';
+import { MtnCedingCompanyTreatyComponent } from './maintenance/mtn-ceding-company-treaty/mtn-ceding-company-treaty.component';
 import { MtnBankComponent } from './maintenance/mtn-bank/mtn-bank.component';
 import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration/mtn-acct-int-duration.component';
-
 
 @NgModule({
     imports: [
@@ -876,9 +879,13 @@ import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration
         JvTypeLovComponent,
         MtnClmHistoryLovComponent,
         JvSoaLovComponent,
+        QuarterEndingLovComponent,
+        MtnPrintableNamesComponent,
         BankComponent,
         BankAccountComponent,
         AccountingMtnComponent,
+        DropdownComponent,
+        MtnCedingCompanyTreatyComponent,
         MtnBankComponent,
         MtnAcctIntDurationComponent,
     ],
