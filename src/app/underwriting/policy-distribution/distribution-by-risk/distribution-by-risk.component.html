@@ -66,7 +66,7 @@
             <div class="col-sm-5">
             </div>
             <input type="checkbox" [ngModel]="riskDistributionData?.seciiPremTag === 'Y'" (ngModelChange)="$event ? riskDistributionData.seciiPremTag = 'Y' : riskDistributionData.seciiPremTag = 'N';readOnlyAll() ; treatyTable.markAsDirty();" [disabled]="controlDisabled.seciiPremTag">
-            <label class="form-control-sm col-sm-4 text-left pt-0" style="text-align: left !important;">Consider Sec II Limit tag</label>
+            <label class="form-control-sm col-sm-4 text-left pt-0" style="text-align: left !important;">Consider Sec II Treaty Limit</label>
           </div>
           <div class="input-group">
             <label class="form-control-sm col-sm-5">VAT on R/I Rate (%)</label>
