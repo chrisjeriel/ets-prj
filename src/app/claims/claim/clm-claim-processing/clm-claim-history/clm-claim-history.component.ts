@@ -454,6 +454,7 @@ export class ClmClaimHistoryComponent implements OnInit {
       }else{
         record.fromCancel = true;
         if(record.edited && !record.deleted){
+          this.paramsApvAmt.saveClaimApprovedAmt =  this.paramsApvAmt.saveClaimApprovedAmt.filter(e => e.claimId != record.claimId);
           record.claimId       = this.clmHistoryData.claimId;
           record.projId        = this.clmHistoryData.projId;
           record.approvedDate  = (record.approvedDate == '' || record.approvedDate == undefined)?this.ns.toDateTimeString(0):record.approvedDate;
