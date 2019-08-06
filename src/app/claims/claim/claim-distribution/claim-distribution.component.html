@@ -138,7 +138,7 @@
 							<app-cust-editable-non-datatable #poolTable [passData]="poolDistPassData" class="d-block mb-4"></app-cust-editable-non-datatable>
 						</div>
 					</div>
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-sm" style="margin-top: -15px; margin-left: -14px;">
 							<div class="input-group" style="margin-bottom: -18px !important;">
 								<label class="form-control-sm col-sm-2"></label>
@@ -153,7 +153,7 @@
 								<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.total | number:'1.2-2'" style="margin-left: 3px;">
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</fieldset>
 			</div>
 			<div footer class="d-flex justify-content-center" style="width: 100% !important;">
@@ -162,7 +162,7 @@
 		</app-modal>
 		<button class="cust-btn">Print</button>
 		<button class="cust-btn" (click)="cancel()">Cancel</button>
-		<button class="cust-btn " [disabled]="(reserveDistPassData.tableData.length == 0 && currTab=='reserve') || (paymentDistPassData.tableData.length == 0 && currTab=='payment')" (click)="confirmRedsitribute()" *ngIf="!isInquiry">Redistribute</button>
+		<button class="cust-btn " [disabled]="(reserveDistPassData.tableData.length == 0 && currTab=='reserve') || ((selected == null || selected == undefined) && currTab=='payment')" (click)="confirmRedsitribute()" *ngIf="!isInquiry">Redistribute</button>
 	</div>
 </div>
 

@@ -22,7 +22,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   passData: any = {
         tableData: [],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class'],
-        dataTypes: ['select','select','percent','currency','select','text','number','date','select'],
+        dataTypes: ['select','select','percent','currency','select','number','number','date','select'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
@@ -250,6 +250,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       mailAddress: '',
       bussTypeCd: '',
       tin: '',
+      refCd: '',
       currCd: '',
       arAmt: '',
       currRate: '',
@@ -258,6 +259,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       createDate: '',
       updateUser: '',
       updateDate: '',
+      cedingId: '',
+      bussTypeName: ''
     }
     this.prDate = {
       date: '',
@@ -277,6 +280,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   openPayorLOV(){
     this.passLov.selector = 'payee';
+    if(this.arInfo.tranTypeCd == '5'){
+      this.passLov.payeeClassCd = 3;
+    }else{
+      this.passLov.payeeClassCd = 1;
+    }
     this.lov.openLOV();
   }
 
@@ -340,6 +348,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.arInfo.tin = data.data.tin;
     this.arInfo.bussTypeCd = data.data.bussTypeCd;
     this.arInfo.mailAddress = data.data.mailAddress;
+    this.arInfo.cedingId = data.data.cedingId;
+    this.arInfo.bussTypeName = data.data.bussTypeName;
   }
 
   retrieveArEntry(tranId, arNo){
@@ -373,6 +383,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.mailAddress    = data.ar.mailAddress;
           this.arInfo.bussTypeCd     = data.ar.bussTypeCd;
           this.arInfo.tin            = data.ar.tin;
+          this.arInfo.refCd            = data.ar.refCd;
           this.arInfo.currCd         = data.ar.currCd;
           this.arInfo.arAmt          = data.ar.arAmt;
           this.arInfo.currRate       = data.ar.currRate;
@@ -381,6 +392,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.createDate     = this.ns.toDateTimeString(data.ar.createDate);
           this.arInfo.updateUser     = data.ar.updateUser;
           this.arInfo.updateDate     = this.ns.toDateTimeString(data.ar.updateDate);
+          this.arInfo.cedingId       = data.ar.cedingId;
+          this.arInfo.bussTypeName   = data.ar.bussTypeName;
 
           //this.passData.tableData          = data.ar.paytDtl;
           this.passData.tableData = [];
@@ -425,7 +438,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             createUser: this.arInfo.createUser,
             createDate: this.arInfo.createDate,
             updateUser: this.arInfo.updateUser,
-            updateDate: this.arInfo.updateDate
+            updateDate: this.arInfo.updateDate,
+            cedingId: this.arInfo.cedingId,
+            bussTypeName: this.arInfo.bussTypeName,
+            refCd: this.arInfo.refCd
           }
           this.emitArInfo.emit(arDetailParams);
 

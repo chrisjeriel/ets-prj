@@ -319,7 +319,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onRowClick(event,data) {
         /*if(event !== null && event.target.tagName!=="INPUT"){*/ //extra conditions for clicking lov icon and datepicker icon
-        if(event !== null && event.target.tagName!=="INPUT" && event.target.tagName!=="I" && !$(event.target).hasClass('ui-clickable') && !$(event.target).hasClass('fa-search')){
+        if(event !== null && event.target.tagName!=="INPUT" && event.target.tagName!=="I" && event.target.tagName!=="SELECT" && !$(event.target).hasClass('ui-clickable') && !$(event.target).hasClass('fa-search')){
             if(data != this.fillData && data != this.indvSelect){
                 this.indvSelect = data;
                 $(event.target.closest('tr')).find("input:not([tabindex='-1']):not([type='checkbox']):not(.tbl-dp)").first().focus(); //changed from .click() to .focus() to avoid triggering click twice

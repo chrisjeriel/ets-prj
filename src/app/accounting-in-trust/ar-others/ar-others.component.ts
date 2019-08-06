@@ -171,7 +171,7 @@ export class ArOthersComponent implements OnInit {
   }
 
   onTableDataChange(data){
-    if(data.key === 'currAmt'){
+    if(data.key === 'currAmt' || data.key === 'currRate'){
       for(var i = 0; i < data.length; i++){
         data[i].localAmt = data[i].currAmt * data[i].currRate;
       }

@@ -29,6 +29,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
         fromInq:'',
         prevPolicyId: '',
         cedingName:'',
+        principalId: '',
         extensionTag:''
     }
 
@@ -143,6 +144,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
       this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
       this.policyInfo.cedingName = event.cedingName;
       this.policyInfo.extensionTag = event.extensionTag;
+      this.policyInfo.principalId = event.principalId;
 
       console.log(this.us.fromCreateAlt);
       if(this.us.fromCreateAlt) {
