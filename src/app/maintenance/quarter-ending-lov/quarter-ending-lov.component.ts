@@ -17,9 +17,17 @@ export class QuarterEndingLovComponent implements OnInit {
 
   quarters: any[] = [];
   year:any;
-  cities:any;
+
+  yearObj:any = {
+    label:'',
+    value:''
+  };
+  cities:any=[];
+  quarter:any;
+  selectedCar1:any;
 
   ngOnInit() {
+
   }
 
   openModal(){
@@ -34,9 +42,13 @@ export class QuarterEndingLovComponent implements OnInit {
   			}
   		}
   		this.quarters = this.quarters.sort();
-
-  		this.year = new Date().getFullYear();
-      this.cities = [{label:'2019', value:'2019'},{label:'2020',value:'2020'},{label:'2021',value:'2021'}]
+  		this.year = new Date().getFullYear() - 5;
+      console.log(this.year - 10)
+      this.cities = [];
+      for (var i = 1; i <= 7; i++) {
+        this.cities.push({label: this.year + i, value: this.year + i});
+      }
+      //this.cities = [{label:'2019', value:'2019'},{label:'2020',value:'2020'},{label:'2021',value:'2021'}]
   	});
   }
 
@@ -49,4 +61,13 @@ export class QuarterEndingLovComponent implements OnInit {
     this.selectedData.emit();
   }
 
+  yearData(data){
+    console.log(data)         
+  }
+
+  onClickOk(){
+    console.log(this.quarter);
+    console.log(this.selectedCar1);
+    console.log(new Date(this.selectedCar1,2,31))
+  }
 }

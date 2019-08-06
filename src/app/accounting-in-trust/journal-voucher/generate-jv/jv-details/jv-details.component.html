@@ -52,7 +52,7 @@
                     <div *ngSwitchCase="7">Offsetting of Receivables In-Trust Against Losses</div>
                     <div *ngSwitchCase="5">Offsetting of Claims Against Negative Treaty Balance</div>
                     <div *ngSwitchCase="6">Offsetting of Outstanding Accounts Against Treaty Balance</div>
-                    <div *ngSwitchCase="2">APPLICATION OF PAYMENTS TO POLICIES WITH ZERO BALANCE</div>
+                    <div *ngSwitchCase="2">Application of Payments to Policies with Zero Balance</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
@@ -60,7 +60,7 @@
                     <div class="col-sm-12">
                         <ng-container [ngSwitch]="jvType">
                             <ng-container *ngSwitchCase="1">
-                                <app-jv-inward-pol-balance [tranId]="jvDetails.tranId" [jvDetail]="jvDetails"></app-jv-inward-pol-balance>                                    
+                                <app-jv-inward-pol-balance [jvDetail]="jvDetails"></app-jv-inward-pol-balance>                   
                             </ng-container>
 
                             <ng-container *ngSwitchCase="3">
@@ -88,7 +88,7 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="2">
-                                <app-jv-app-payments-zero></app-jv-app-payments-zero>
+                                <app-jv-app-payments-zero [jvDetail]="jvDetails"></app-jv-app-payments-zero>
                             </ng-container>
                         </ng-container>
                     </div>
