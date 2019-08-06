@@ -1652,6 +1652,14 @@ export class AccountingService {
          };
 
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
-    } 
+    }
+
+    getAcctPrqServFeeMainGnrt(prdAsOf?, year?){
+		const params = new HttpParams()
+			.set('prdAsOf', (prdAsOf == null || prdAsOf == undefined ? '' : prdAsOf))
+			.set('year', (year == null || year == undefined ? '' : year));
+			
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitServFeeMainGnrt',{params});	
+	}
 }
 

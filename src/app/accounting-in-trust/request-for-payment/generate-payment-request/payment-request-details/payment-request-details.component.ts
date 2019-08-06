@@ -527,4 +527,18 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
   }
 
+  gnrtTypeChanged() {
+    if(this.gnrtType == 'periodAsOf') {
+      this.yearParam = null;
+    } else {
+      this.periodAsOfParam = null;
+    }
+  }
+
+  getAcctPrqServFeeMainGnrt() {
+    this.acctService.getAcctPrqServFeeMainGnrt(this.periodAsOfParam, this.yearParam).subscribe(data => {
+      console.log(data);
+    });
+  }
+
 }

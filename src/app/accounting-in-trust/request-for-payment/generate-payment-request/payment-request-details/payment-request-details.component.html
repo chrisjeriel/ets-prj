@@ -53,10 +53,10 @@
                         <div controls-l class="input-group">
                           <div class="col-sm-1" style="margin-right: 20px"></div>
                           <label class="form-control-sm col-sm-1">Service Fee</label>
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-right: 18px !important;" readonly>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-right: 18px !important;" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>
                           <div class="col-sm-3">
                             <div class="input-group">
-                              <input type="radio" [(ngModel)]="gnrtType" name="gnrtType" value="periodAsOf" style="height: calc(1.3rem + 1px) !important; margin-right: -15px; z-index: 3;">
+                              <input type="radio" (change)="gnrtTypeChanged()" [(ngModel)]="gnrtType" name="gnrtType" value="periodAsOf" style="height: calc(1.3rem + 1px) !important; margin-right: -15px; z-index: 3;">
                               <label class="form-control-sm col-sm-4">Period As Of</label>
                               <div class="dp-cont col-sm" style="margin-left: 0 !important;">
                                 <datepicker [type]="'date'" [disabled]="gnrtType != 'periodAsOf'" [(value)]="periodAsOfParam"></datepicker>
@@ -65,7 +65,7 @@
                           </div>
                           <div class="col-sm-2" style="padding-right: 0 !important;">
                             <div class="input-group">
-                              <input type="radio" [(ngModel)]="gnrtType" name="gnrtType" value="year" style="height: calc(1.3rem + 1px) !important; margin-right: -20px; z-index: 3;">
+                              <input type="radio" (change)="gnrtTypeChanged()" [(ngModel)]="gnrtType" name="gnrtType" value="year" style="height: calc(1.3rem + 1px) !important; margin-right: -20px; z-index: 3;">
                               <label class="form-control-sm col-sm-4">Year</label>
                               <select class="form-control form-control-sm cust-sm col-sm-5" [disabled]="gnrtType != 'year'" [(ngModel)]="yearParam">
                                 <ng-container *ngFor="let y of yearParamOpts">
@@ -74,7 +74,7 @@
                               </select>
                             </div>
                           </div>
-                          <button class="cust-btn" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; margin-left: 5px;">Distribute</button>
+                          <button class="cust-btn" (click)="getAcctPrqServFeeMainGnrt()" [disabled]="(gnrtType == 'periodAsOf' && (periodAsOfParam == '' || periodAsOfParam == null)) || (gnrtType == 'year' && yearParam == null)" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; margin-left: 5px; z-index: 1 !important;">Distribute</button>
                           <div class="col-sm-2"></div>
                         </div>
                     </div>

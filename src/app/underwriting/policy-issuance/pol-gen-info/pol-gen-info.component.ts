@@ -768,8 +768,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.cancelFlag = cancelFlag !== undefined;
     this.saveBtnClicked = true;
 
-
-
     var savePolGenInfoParam = {
       "savingType"      : this.alteration && this.forceExt == 1 ? 'alteration_ext' : this.alteration ? 'alteration' : 'normal',
       "refPolicyId"     : this.refPolicyId,
@@ -890,9 +888,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
    if(this.validate(savePolGenInfoParam)){
      if(this.alteration && new Date(this.prevExpiryDate) <= new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate) {
        savePolGenInfoParam['extensionTag'] = 'Y';
-       if(this.newAlt) {
-         savePolGenInfoParam['savingType'] = 'alteration_ext';
-       }
+       savePolGenInfoParam['savingType'] = 'alteration_ext';
      } else {
        savePolGenInfoParam['extensionTag'] = 'N';
        if(!this.newAlt) {
@@ -920,6 +916,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          $('#polGenInfo > #successModalBtn').trigger('click');
          /*this.form.control.markAsPristine();*/
          this.forceExt = 0;
+         this.ext = false;
          this.getPolGenInfo('noLoading');
        }
      });
@@ -934,7 +931,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   onClickSave(){
     if((this.withCovDtls && this.policyInfo.extensionTag == 'N' && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate)
-      || (this.withCovDtls && this.policyInfo.extensionTag == 'Y' && (this.prevInceptExt != this.policyInfo.inceptDate || this.prevEffExt != this.policyInfo.effDate))) { //if extension or ginalaw yung incept date, eff date
+      || (this.withCovDtls && this.policyInfo.extensionTag == 'Y' && (this.prevInceptExt != this.policyInfo.inceptDate || this.prevEffExt != this.policyInfo.effDate))) {
       $('#polGenInfoConfirmationModal #modalBtn').trigger('click');  
     } else {
       $('#confirm-save #modalBtn2').trigger('click');
