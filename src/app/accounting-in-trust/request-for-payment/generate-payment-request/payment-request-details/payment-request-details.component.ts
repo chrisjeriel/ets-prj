@@ -215,7 +215,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.currCd = (e.currCd == '' || e.currCd == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd)):e.currCd;
       return e; 
     });
-    this.treatyTbl.refreshTable();
+    this.treatyTbl.refreshTable(); $('').change()
   }
 
   onChangeCurr(){
