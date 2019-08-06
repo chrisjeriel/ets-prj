@@ -59,13 +59,8 @@
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd" appRequired name="entryData.currCd">
-                            <!-- <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;">
-                                <option>PHP</option>
-                                <option>USD</option>
-                                <option>EUR</option>
-                            </select> -->
                             <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;    margin-left: 3px;" [(ngModel)]="entryData.jvAmt" (change)="validateCurr()" appCurrency name="entryData.jvAmt">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired [(ngModel)]="entryData.jvAmt" (change)="validateCurr()" appCurrency name="entryData.jvAmt">
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
                         </div>
                     </div>

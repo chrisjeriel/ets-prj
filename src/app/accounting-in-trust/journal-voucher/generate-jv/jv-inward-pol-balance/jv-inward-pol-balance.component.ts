@@ -99,7 +99,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
      console.log(this.jvDetail)
      if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
        this.disable = false;
-       this.passData.disableAdd = false;
      }else {
        this.passData.disableAdd = true;
        this.passData.btnDisabled = true;
@@ -111,6 +110,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   retrieveInwPol(){
     this.accountingService.getJVInwPolBal(this.jvDetail.tranId,'',this.jvDetails.ceding).subscribe((data:any) => {
       var datas = data.inwPolBal;
+      this.passData.disableAdd = false;
       this.passData.tableData = [];
       this.totalBalance = 0;
       for(var i = 0; i < datas.length; i++){

@@ -53,7 +53,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     disableAdd: true,
     btnDisabled: false,
     pageLength: 10,
-    uneditable: [true,true,true,true,true,true,true,true,false,true,true,true,true,false,false,true],
+    uneditable: [true,true,true,true,true,true,true,true,false,true,true,true,false,false,false,true],
     widths: [215,200,160,50,115,115,40,155,130,130,120,130,130,130,130,85],
     keys:['soaNo','policyNo','coRefNo','instNo','effDate','dueDate','currCd', 'currRate', 'premAmt', 'riComm','riCommVat', 'charges', 'netDue', 'prevPaytAmt', 'balance', 'adjBalAmt' ],
     pageID: 2,
@@ -81,7 +81,8 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   ngOnInit() {
     if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
       this.disable = false;
-      this.passData.disableAdd = false;
+    }else {
+       this.passData.disableAdd = true;
     }
     
   }
@@ -138,11 +139,11 @@ export class JvAppPaymentsZeroComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
       this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate  = data.data[i].currRate;
-      this.passData.tableData[this.passData.tableData.length - 1].premAmt  = data.data[i].balPremDue;
+      this.passData.tableData[this.passData.tableData.length - 1].premAmt  = data.data[i].treatyBalPrem;
       this.passData.tableData[this.passData.tableData.length - 1].riComm  = data.data[i].balRiComm;
       this.passData.tableData[this.passData.tableData.length - 1].riCommVat  = data.data[i].balRiCommVat;
       this.passData.tableData[this.passData.tableData.length - 1].charges  = data.data[i].balChargesDue;
-      this.passData.tableData[this.passData.tableData.length - 1].netDue  = data.data[i].balPremDue - data.data[i].balRiCommVat - data.data[i].balRiComm + data.data[i].balChargesDue;
+      this.passData.tableData[this.passData.tableData.length - 1].netDue  = this.passData.tableData[this.passData.tableData.length - 1].premAmt - data.data[i].balRiCommVat - data.data[i].balRiComm + data.data[i].balChargesDue;
       this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = data.data[i].netDuePayments;
       this.passData.tableData[this.passData.tableData.length - 1].balance  = this.passData.tableData[this.passData.tableData.length - 1].netDue - this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt;
       this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = this.passData.tableData[this.passData.tableData.length - 1].netDue - data.data[i].totalPayments;
