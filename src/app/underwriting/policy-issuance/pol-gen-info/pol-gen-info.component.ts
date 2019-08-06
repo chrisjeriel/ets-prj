@@ -916,7 +916,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          $('#polGenInfo > #successModalBtn').trigger('click');
          /*this.form.control.markAsPristine();*/
          this.forceExt = 0;
-         this.ext = false;
          this.getPolGenInfo('noLoading');
        }
      });
