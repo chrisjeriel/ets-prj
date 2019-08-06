@@ -668,7 +668,7 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
         this.table.refreshTable();
       })
-    }else if(this.passData.selector == 'acitSoaDtlPrq'){
+    }else if(this.passData.selector == 'acitSoaDtlPrq'){ //temporary
       this.passTable.tHeader    = ['Policy No.', 'Inst No.', 'Due Date', 'Balance', 'Payment', 'Premium', 'RI Comm', 'Charges'];
       this.passTable.widths     = [120,1,110,120,120,120,120,120];
       this.passTable.dataTypes  = ['text', 'sequence-2', 'date', 'currency', 'currency', 'currency', 'currency', 'currency'];
@@ -677,7 +677,7 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo)
       .subscribe((a:any)=>{
         this.passTable.tableData = a["soaDtlList"];
-        this.passTable.tableData = this.passTable.tableData.map(e => { e.prevPaytAmt = (Number(e.totalPayments) + Number(e.tempPayments)); return e; });
+        this.passTable.tableData = this.passTable.tableData.map(e => { e.newRec = 1; e.prevPaytAmt = (Number(e.totalPayments) + Number(e.tempPayments)); return e; });
         // if(this.limitContent.length != 0){
         //   this.limitContent.forEach(e => {
         //     this.passTable.tableData = this.passTable.tableData.filter(e2 => e2.policyId != e.policyId && e2.instNo != e.instNo);    
