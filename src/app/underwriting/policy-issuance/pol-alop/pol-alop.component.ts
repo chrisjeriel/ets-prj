@@ -163,6 +163,7 @@ export class PolAlopComponent implements OnInit {
       this.passDataCar.deleteFlag = false;
       this.passDataEar.deleteFlag = false;
     }
+    console.log(this.policyInfo)
   }
 
   getPolAlop() {
@@ -180,6 +181,7 @@ export class PolAlopComponent implements OnInit {
         
         if(data.policy.policyId != this.policyInfo.policyId && this.policyInfo.fromInq!='true'){
           this.form.control.markAsDirty()
+          this.polAlopData.annSi = '';
         }
         this.getSumInsured();
 
@@ -226,13 +228,15 @@ export class PolAlopComponent implements OnInit {
      });
    }else{
      this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+       console.log(data)
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i <sectionCovers.length;i++){
-           if(sectionCovers[i].coverName == 16){
+           if(sectionCovers[i].coverCd == 16){
              this.polAlopData.annSi = sectionCovers[i].cumSi;
            }
          }
+         console.log(this.polAlopData.annSi)
          this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
        } 
      });
