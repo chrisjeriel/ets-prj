@@ -10,6 +10,8 @@ import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.componen
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -26,12 +28,11 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild('appUserLov') appUserLov         : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent;
   @ViewChild('mainLov') mainLov               : LovComponent;
-  // @Input() data: any = {};
-  // @Output() onChange: EventEmitter<any> = new EventEmitter();
 
   saveAcitPaytReq : any = {
     paytReqNo       : '',
     approvedBy      : '',
+    approvedDes     : '',
     approvedDate    : '',
     createDate      : '',
     createUser      : '',
@@ -42,6 +43,7 @@ export class PaymentRequestEntryComponent implements OnInit {
     payee           : '',
     payeeNo         : '',
     preparedBy      : '',
+    preparedDes     : '',
     preparedDate    : '',
     reqAmt          : '',
     reqDate         : '',
@@ -53,6 +55,7 @@ export class PaymentRequestEntryComponent implements OnInit {
     reqStatusDesc   : '',
     reqYear         : '',
     requestedBy     : '',
+    requestedDes    : '',
     tranTypeCd      : '',
     updateDate      : '',
     updateUser      : ''
@@ -82,6 +85,12 @@ export class PaymentRequestEntryComponent implements OnInit {
     payeeClassCd : 1
   };
 
+  savePrintables : any = {
+    preparedBy  : '',
+    requestedBy : '',
+    approvedBy  : ''
+  };
+
   constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
@@ -91,42 +100,125 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
         this.saveAcitPaytReq.reqId = params['reqId'];
-        this.getAcitPaytReq();
         this.initDisabled = false;
       }else{
         this.initDisabled = true;
-        this.reqDateDate = this.ns.toDateTimeString(0).split('T')[0];
-        this.reqDateTime = this.ns.toDateTimeString(0).split('T')[1];
-        this.saveAcitPaytReq.reqStatusDesc = 'New';
-        this.saveAcitPaytReq.reqStatus = 'N';
-        this.saveAcitPaytReq.currCd  = 'PHP';
-        this.saveAcitPaytReq.currRate = 1;
-        this.saveAcitPaytReq.preparedBy = this.ns.getCurrentUser();
-        this.saveAcitPaytReq.preparedDate = this.ns.toDateTimeString(0);
       }
+
+      this.getAcitPaytReq();
     });
 
     (this.saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED')?this.cancelledStats():'';
   }
 
   getAcitPaytReq(){
-    this.acctService.getPaytReq(this.saveAcitPaytReq.reqId)
-    .subscribe(data => {
+    var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),this.mtnService.getMtnPrintableName(''))
+                         .pipe(map(([pr,pn]) => { return { pr,pn }; }));
+
+    subRes.subscribe(data => {
       console.log(data);
-      var rec = data['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
+      var recPn = data['pn']['printableNames'];
+      $('.globalLoading').css('display','none');
+
+      if(!this.initDisabled){
+         var recPr =  data['pr']['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
-                                               e.approvedDate = this.ns.toDateTimeString(e.approvedDate); return e; });
-      this.saveAcitPaytReq = rec[0];
-      this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
-      this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
-      this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
-      console.log(this.saveAcitPaytReq);
+                                               e.approvedDate = this.ns.toDateTimeString(e.approvedDate);
+                                               recPn.forEach(e2 => {
+                                                if(e.requestedBy.toUpperCase() == e2.userId.toUpperCase()){
+                                                  e.requestedBy = e2.printableName;
+                                                  this.savePrintables.requestedBy = e2.userId;
+                                                  e.requestedDes = e2.designation;
+                                                }
+                                                if(e.preparedBy.toUpperCase() == e2.userId.toUpperCase()){
+                                                  e.preparedBy = e2.printableName;
+                                                  this.savePrintables.preparedBy = e2.userId;
+                                                  e.preparedDes = e2.designation;
+                                                }
+                                                if(e.approvedBy == '' || e.approvedBy == null){
+                                                  e.approvedBy = ''
+                                                }else{
+                                                  if(e.approvedBy.toUpperCase() == e2.userId.toUpperCase()){
+                                                    e.approvedBy = e2.printableName;
+                                                    this.savePrintables.approvedBy = e2.userId;
+                                                    e.approvedDes = e2.designation;
+                                                  }
+                                                }
+                                               });
+                                               return e; 
+                                             });
+        this.saveAcitPaytReq = recPr[0];
+        this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
+        this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
+        this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
+        (this.saveAcitPaytReq.reqStatus == 'X')?this.disableFlds(true):this.disableFlds(false);
+        console.log(this.saveAcitPaytReq);
+      }else{
+        this.reqDateDate = this.ns.toDateTimeString(0).split('T')[0];
+        this.reqDateTime = this.ns.toDateTimeString(0).split('T')[1];
+        this.saveAcitPaytReq.reqStatusDesc = 'New';
+        this.saveAcitPaytReq.reqStatus = 'N';
+        this.saveAcitPaytReq.currCd  = 'PHP';
+        this.saveAcitPaytReq.currRate = 1;
+        recPn.forEach(e => {
+          if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
+            this.saveAcitPaytReq.preparedBy  = e.printableName;
+            this.savePrintables.preparedBy   = e.userId;
+            this.saveAcitPaytReq.preparedDes = e.designation;
+          }
+        });
+        this.saveAcitPaytReq.preparedDate = this.ns.toDateTimeString(0);
+      }
+
     });
+  }
+
+  disableFlds(con:boolean){
+    $('.warn').prop('readonly',con);
+    (con)?$('.magni-icon').remove():'';
+  }
+
+  onClickNewReq(){
+    $('.globalLoading').css('display','block');
+    this.saveAcitPaytReq  = {
+      paytReqNo       : '',
+      approvedBy      : '',
+      approvedDes     : '',
+      approvedDate    : '',
+      createDate      : '',
+      createUser      : '',
+      currCd          : '',
+      currRate        : '',
+      localAmt        : '',
+      particulars     : '',
+      payee           : '',
+      payeeNo         : '',
+      preparedBy      : '',
+      preparedDes     : '',
+      preparedDate    : '',
+      reqAmt          : '',
+      reqDate         : '',
+      reqId           : '',
+      reqMm           : '',
+      reqPrefix       : '',
+      reqSeqNo        : '',
+      reqStatus       : '',
+      reqStatusDesc   : '',
+      reqYear         : '',
+      requestedBy     : '',
+      requestedDes    : '',
+      tranTypeCd      : '',
+      updateDate      : '',
+      updateUser      : ''
+    };
+    this.initDisabled = true;
+    this.getAcitPaytReq();
+    this.disableFlds(false);
   }
 
   onSaveAcitPaytReq(){
     this.acitPaytReq = {
-      approvedBy      : this.saveAcitPaytReq.approvedBy,
+      approvedBy      : this.savePrintables.approvedBy,
       approvedDate    : this.saveAcitPaytReq.approvedDate,
       createDate      : (this.saveAcitPaytReq.createDate == '' || this.saveAcitPaytReq.createDate == null)?this.ns.toDateTimeString(0):this.saveAcitPaytReq.createDate,
       createUser      : (this.saveAcitPaytReq.createUser == '' || this.saveAcitPaytReq.createUser == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.createUser,
@@ -136,7 +228,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       particulars     : this.saveAcitPaytReq.particulars,
       payee           : this.saveAcitPaytReq.payee,
       payeeNo         : this.saveAcitPaytReq.payeeNo,
-      preparedBy      : this.saveAcitPaytReq.preparedBy,
+      preparedBy      : this.savePrintables.preparedBy,
       preparedDate    : (this.saveAcitPaytReq.preparedDate == '' || this.saveAcitPaytReq.preparedDate == null)?this.ns.toDateTimeString(0):this.saveAcitPaytReq.preparedDate,
       reqAmt          : this.saveAcitPaytReq.reqAmt,
       reqDate         : this.reqDateDate+'T'+this.reqDateTime,
@@ -146,7 +238,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       reqSeqNo        : this.saveAcitPaytReq.reqSeqNo,
       reqStatus       : this.saveAcitPaytReq.reqStatus,
       reqYear         : (this.saveAcitPaytReq.reqYear == '' || this.saveAcitPaytReq.reqYear == null)?this.reqDateDate.split('-')[0]:this.saveAcitPaytReq.reqYear,
-      requestedBy     : this.saveAcitPaytReq.requestedBy,
+      requestedBy     : this.savePrintables.requestedBy,
       tranTypeCd      : this.saveAcitPaytReq.tranTypeCd,
       updateDate      : this.ns.toDateTimeString(0),
       updateUser      : this.ns.getCurrentUser()
@@ -164,6 +256,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
       this.initDisabled = false;
+      this.getAcitPaytReq();
     });
   }
 
@@ -200,8 +293,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   cancelledStats(){
-    $('.warn').prop('readonly',true);
-    $('.magni-icon').remove();
+    this.disableFlds(true);
     this.initDisabled = true;
   }
 
@@ -218,7 +310,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   setLocalAmt(){
-    this.saveAcitPaytReq.localAmt = (this.saveAcitPaytReq.localAmt == '' || this.saveAcitPaytReq.localAmt == null)?this.saveAcitPaytReq.reqAmt:this.saveAcitPaytReq.localAmt;
+    this.saveAcitPaytReq.localAmt = this.saveAcitPaytReq.reqAmt;
   }
 
   setData(data,from){
@@ -228,11 +320,17 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.saveAcitPaytReq.currCd = data.currencyCd;
       this.saveAcitPaytReq.currRate =  data.currencyRt;
     }else if(from.toLowerCase() == 'prep-user'){
-      this.saveAcitPaytReq.preparedBy = data.userId;
+      this.saveAcitPaytReq.preparedBy = data.printableName;
+      this.savePrintables.preparedBy  = data.userId;
+      this.saveAcitPaytReq.preparedDes  = data.designation;
     }else if(from.toLowerCase() == 'req-user'){
-      this.saveAcitPaytReq.requestedBy = data.userId;
+      this.saveAcitPaytReq.requestedBy = data.printableName;
+      this.savePrintables.requestedBy  = data.userId;
+      this.saveAcitPaytReq.requestedDes  = data.designation;
     }else if(from.toLowerCase() == 'app-user'){
-      this.saveAcitPaytReq.approvedBy = data.userId;
+      this.saveAcitPaytReq.approvedBy = data.printableName;
+      this.savePrintables.approvedBy  = data.userId;
+      this.saveAcitPaytReq.approvedDes  = data.designation;
     }else if(from.toLowerCase() == 'payee'){
       this.saveAcitPaytReq.payee   = data.data.payeeName;
       this.saveAcitPaytReq.payeeNo = data.data.payeeNo;
@@ -313,8 +411,11 @@ export class PaymentRequestEntryComponent implements OnInit {
   onNoAppby(){
     this.saveAcitPaytReq.approvedBy = '';
     this.saveAcitPaytReq.approvedDate = '';
+    this.savePrintables.approvedBy = '';
+    this.saveAcitPaytReq.approvedDes = '';
     this.confirmMdl.closeModal();
   }
+
 
   onTabChange($event: NgbTabChangeEvent) {
 

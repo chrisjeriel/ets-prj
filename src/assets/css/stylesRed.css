@@ -156,6 +156,10 @@ legend.scheduler-border {
     color: black; 
 }
 
+#no-black-border{
+    background-color: #ffa4a4 !important;
+}
+
 div.span-div {
         float: right; 
         width: 70px; 

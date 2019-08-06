@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PaymentForAdvances } from '@app/_models';
-import { AccountingService } from '@app/_services';
+import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
 
 @Component({
   selector: 'app-ar-paymentfor-advances',
@@ -8,26 +8,19 @@ import { AccountingService } from '@app/_services';
   styleUrls: ['./ar-paymentfor-advances.component.css']
 })
 export class ArPaymentforAdvancesComponent implements OnInit {
-  
-  /*PaymentForAdvancesData: any = {
-    tableData: this.accountingService.getPaymentForAdvances(),
-    tHeader: ['Ceding Company', 'Remarks', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
-    dataTypes: ['text', 'text', 'text', 'percent', 'currency', 'currency'],
-    nData: new PaymentForAdvances(null, null, null, null, null, null),
-    magnifyingGlass: ['cedingCompany'],
-    paginateFlag: true,
-    infoFlag: true,
-    addFlag: true,
-    deleteFlag: true,
-    checkFlag: true,
-    genericBtn: 'Save',
-    total: [null, null, null, 'Total', 'amount', 'amountPhp'],
-    widths: ['auto','auto',1,1,2,100,100],
-  }*/
 
-  constructor(private accountingService: AccountingService) { }
+  @Input() record: any;
+
+  pmmscData: any;
+
+  constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
+    this.ms.getMtnCompany(101).subscribe( //101 is company Id of PMMSC (may need to be changed into dynamic)
+       (data:any)=>{
+         this.pmmscData = data.companyListing[0];
+       }
+    );
   }
 
 }

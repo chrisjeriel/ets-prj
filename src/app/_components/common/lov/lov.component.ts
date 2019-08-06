@@ -15,8 +15,9 @@ import { Router } from '@angular/router';
 export class LovComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
-  @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @ViewChild('lovTbl') table : CustNonDatatableComponent;
   @ViewChild(ModalComponent) modal : ModalComponent;
+  
   passTable: any = {
         tableData: [],
         pageLength: 10,
@@ -32,6 +33,10 @@ export class LovComponent implements OnInit {
   	selector:'',
   	data:{}
   }
+
+  //yele
+  @Input() limitContent : any[] = [];
+  //end
 
   modalOpen: boolean = false;
 
@@ -673,6 +678,47 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'acitSoaDtlPrq'){ //temporary
+      this.passTable.tHeader    = ['Policy No.', 'Inst No.', 'Due Date', 'Balance', 'Payment', 'Premium', 'RI Comm', 'Charges'];
+      this.passTable.widths     = [120,1,110,120,120,120,120,120];
+      this.passTable.dataTypes  = ['text', 'sequence-2', 'date', 'currency', 'currency', 'currency', 'currency', 'currency'];
+      this.passTable.keys       = ['policyNo', 'instNo', 'dueDate', 'netDue', 'prevPaytAmt', 'balPremDue', 'balRiComm', 'balChargesDue'];
+      this.passTable.checkFlag  = true;
+      this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo)
+      .subscribe((a:any)=>{
+        var rec = a["soaDtlList"].filter(e =>  (Number(e.totalPayments) + Number(e.tempPayments)) > 0 ).map(e => { e.newRec = 1; e.prevPaytAmt = (Number(e.totalPayments) + Number(e.tempPayments)); return e; });
+        if(this.limitContent.length != 0){
+          this.limitContent.forEach(e => {
+            rec = rec.filter(e2 => e2.policyId != e.policyId);    
+          });
+        }
+        console.log(this.limitContent);
+        this.passTable.tableData = rec;
+        console.log(this.passTable.tableData);
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'acitArClmRecover'){
+      this.passTable.tHeader = ['Claim No.','Co. Claim No.', 'Policy No.', 'Loss Date'];
+      this.passTable.widths =[300,300,300,150]
+      this.passTable.dataTypes = [ 'text','text', 'text', 'date'];
+      this.passTable.keys = [ 'claimNo','coClmNo', 'policyNo', 'lossDate'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getAcitArClmRecoverLov(this.passData.payeeNo).subscribe((a:any)=>{
+        //this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = a.claimList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'acitArInvPullout'){
+      this.passTable.tHeader = ['Investment Code','Certificate No.', 'Investment', 'Investment Income', 'Bank Charge', 'Withholding Tax'];
+      this.passTable.widths =[300,300,300,300,300,300]
+      this.passTable.dataTypes = [ 'text','text', 'currency', 'currency', 'currency', 'currency',];
+      this.passTable.keys = [ 'invtCd','certNo', 'invtAmt', 'incomeAmt', 'bankCharge', 'whtaxAmt'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getAccInvestments(this.passData.searchParams).subscribe((a:any)=>{
+        //this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = a.invtList.filter((data)=>{return  this.passData.hide.indexOf(data.invtCd)==-1});
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;
