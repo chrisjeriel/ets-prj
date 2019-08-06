@@ -173,9 +173,9 @@ import { RetentionPerPoolMemberComponent } from './maintenance/quotation-and-pol
 import { ClaimCashCallComponent } from './maintenance/claims/claim-cash-call/claim-cash-call.component';
 import { ClaimStatusReasonComponent } from './maintenance/claims/claim-status-reason/claim-status-reason.component';
 import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component';
-import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
 import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
+import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
 
 const appRoutes: Routes = [
 
@@ -246,7 +246,7 @@ const appRoutes: Routes = [
     { path: 'accounting-entries', component: AccountingEntriesComponent },
     { path: 'trial-balance', component: TrialBalanceComponent },
     { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
-    { path: 'investments', component: InvestmentsComponent },
+    { path: 'investments', component: InvestmentsComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'print-registers', component: RegistersComponent },
     { path: 'change-trans-stat-to-new', component: ChangeTransStatToNewComponent },
     { path: 'edit-acct-entries', component: EditAccountingEntriesComponent },

@@ -49,7 +49,7 @@
 
 <div class="cust-tabs-container" style="margin-top:10px !important">
 	<ngb-tabset>
-		<ngb-tab *ngIf="paymentType !== 'Others'">
+		<ngb-tab *ngIf="paymentType != '8'">
 			<ng-template ngbTabTitle>
 				<ng-container [ngSwitch]="paymentType">
 					<div *ngSwitchCase="'1'">Inward Policy Balances</div>
@@ -96,19 +96,19 @@
 								<app-inward-policy-balances [record]="record"></app-inward-policy-balances>
 							</ng-container>
 							<ng-container *ngSwitchCase="'2'">
-								<app-claim-recovery></app-claim-recovery>
+								<app-claim-recovery [record]="record"></app-claim-recovery>
 							</ng-container>
 							<ng-container *ngSwitchCase="'3'">
-								<app-ar-details-qsoa></app-ar-details-qsoa>
+								<app-ar-details-qsoa [record]="record"></app-ar-details-qsoa>
 							</ng-container>
 							<ng-container *ngSwitchCase="'4'">
 								<app-ar-claim-cash-call></app-ar-claim-cash-call>
 							</ng-container>
 							<ng-container *ngSwitchCase="'5'">
-								<app-ar-details-investments></app-ar-details-investments>
+								<app-ar-details-investments [record]="record" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investments>
 							</ng-container>
 							<ng-container *ngSwitchCase="'6'">
-								<app-ar-loss-reserve-deposit></app-ar-loss-reserve-deposit>
+								<app-ar-loss-reserve-deposit [record]="record"></app-ar-loss-reserve-deposit>
 							</ng-container>
 							<!-- <ng-container *ngSwitchCase="'7'">
 								<app-ar-claim-over-payment></app-ar-claim-over-payment>
@@ -125,12 +125,12 @@
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-ar-details-investment-income></app-ar-details-investment-income>
+						<app-ar-details-investment-income [record]="record" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investment-income>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Unapplied Collection" *ngIf="paymentType != '8'">
+		<ngb-tab class="ngb-tab" title="Unapplied Collection" *ngIf="paymentType != '8' && paymentType != '6' && paymentType != '7'">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
@@ -139,7 +139,7 @@
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Others">
+		<ngb-tab class="ngb-tab" title="Others"  *ngIf="paymentType != '6' && paymentType != '7'">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
@@ -153,7 +153,7 @@
 <div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
 padding-right: 0px !important;">
 	<fieldset class="scheduler-border" style="margin-top: -12px !important; margin-bottom: 10px !important;">
-		<div class="custom-row-inline-inset">
+		<div style="margin-top: 8px !important; margin-bottom: 17px !important;">
 			<div class="form-row" style="margin-bottom: -10px;">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Created By</label>

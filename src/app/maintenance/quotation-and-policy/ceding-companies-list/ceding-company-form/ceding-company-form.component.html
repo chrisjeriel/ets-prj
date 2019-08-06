@@ -27,7 +27,7 @@
 										<label class="form-control-sm col-sm-2">Abbreviation</label>
 										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.cedingAbbr" name="cedingAbbr" appRequired>
 										<label class="form-control-sm col-sm-2">Old Company No</label>
-										<input type="text" class="form-control form-control-sm col-sm" [ngModel]="companyData.oldCedingId" name="oldCedingId" readonly>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.oldCedingId" name="oldCedingId">
 									</div>
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">Address</label>
@@ -54,6 +54,32 @@
 										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.tinNo" name="tinNo">
 										<!-- <label class="form-control-sm col-sm-2" style="margin-left: 12px !important;">Business Type</label>
 										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.bussTypeId" name="businessId" numbers-only maxlength="9"> -->
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm">
+							<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                            <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border">VAT Type</legend>
+								<div style="margin-right: 25px;">
+									<div class="input-group cust-ig">
+										<div class="input-group col-sm-2"></div>
+										<div class="input-group col-sm-3">
+											<input type="radio" name="vatType" [(ngModel)]="companyData.vatTag" value="3" class="col-sm-1"><label class="form-control-sm col-sm" style="text-align: left !important; margin-top: -5px">VAT Rate</label>
+										</div>
+										<div class="input-group col-sm-3">
+											<input type="radio" name="vatType" [(ngModel)]="companyData.vatTag" value="1" class="col-sm-1"><label class="form-control-sm col-sm" style="text-align: left !important; margin-top: -5px">VAT Exempt</label>
+										</div>
+										<div class="input-group col-sm-3">
+											<input type="radio" name="vatType" [(ngModel)]="companyData.vatTag" value="2" class="col-sm-1"><label class="form-control-sm col-sm" style="text-align: left !important; margin-top: -5px">Zero VAT</label>
+										</div>
+										<div class="input-group col-sm-1"></div>
 									</div>
 								</div>
 							</fieldset>

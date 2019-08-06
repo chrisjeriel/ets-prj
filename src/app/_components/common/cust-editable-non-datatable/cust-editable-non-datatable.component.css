@@ -11,6 +11,11 @@ th, td{
     overflow: hidden;
 }
 
+#override-header-color tbody tr td{
+    background-color: white;
+    opacity: 0.8;
+}
+
 #non-datatable {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
@@ -21,10 +26,20 @@ th, td{
     border: 1px solid #ddd;
 }
 
-.black-border{
+/*#non-datatable thead tr th[colSpan]:nth-child(odd){
+    background-color: #efefef !important;
+}*/
+
+#black-border{
    /* border: 2px solid #b5b5b5 !important;*/
     background-color: #efefef !important;
 }
+
+#no-black-border{
+    background-color: #c9d9d9;
+}
+
+
 /*#non-datatable tr:nth-child(even){background-color: #f2f2f2;}*/
 
 #non-datatable tr:hover {background-color: #ffffb3;}
@@ -35,6 +50,36 @@ th, td{
     text-align: left;
     background-color: #c9d9d9;
     color: black;
+}
+
+
+#override-header-color{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table#override-header-color tr.selected{
+    background-color: #0056a6 !important;
+}
+
+#override-header-color td, #override-header-color th {
+    border: 1px solid #ddd;
+}
+
+#override-header-color tbody tr:hover {background-color: #fcfc00;}
+
+#override-header-color th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: inherit !important;
+    color: black;
+}
+
+.black-border > th{
+   /* border: 2px solid #b5b5b5 !important;*/
+    background-color: #efefef !important;
 }
 
 .table-scroll{
