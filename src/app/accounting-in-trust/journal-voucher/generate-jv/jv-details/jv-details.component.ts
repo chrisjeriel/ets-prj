@@ -31,7 +31,7 @@ export class JvDetailsComponent implements OnInit {
     if(this.jvType == null){
       this.jvType = "";
     }
-
+    console.log(this.jvData)
     this.retrieveJVDetails();
   }
 

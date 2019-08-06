@@ -1,7 +1,22 @@
 <div>
+	 <div class="form-row custom-row-inline-inset">
+ 		 <div class="col-sm-12 text-align">
+ 		 	<div class="input-group" style="padding-right: 0px">
+ 		 		<div class="col-sm-2"></div>
+ 		 		<div class="col-sm-8">
+ 		 			<div class="input-group">
+    	 		 		<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+    	 		 		<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" (change)="checkCode($event)" [ngModel]="premResData.cedingName" (ngModelChange)="premResData.ceding = $event.toUpperCase()">
+                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
+            		</div>
+            	</div>
+            	<div class="col-sm-2"></div>
+ 		 	</div>
+ 		 </div>
+ 	</div>
 	<div class="row">
 	    <div class="col-sm-12" style="margin-top: 15px" >
-		  <app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+		  <app-cust-editable-non-datatable [passData]="passData" style="width: 100%" (clickLOV)="quarterEndModal($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
 	   </div>
 	</div>
 	<div class="form-row" style="margin-top: 13px !important;">
@@ -15,4 +30,8 @@
 	    </div>
 	</div>	
 </div>
-
+<app-mtn-ceding-company-treaty id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company-treaty>
+<app-quarter-ending-lov id="quarterEnd"></app-quarter-ending-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="savePremResRel()"></app-confirm-save>
+<app-cancel-button (onYes)="savePremResRel('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

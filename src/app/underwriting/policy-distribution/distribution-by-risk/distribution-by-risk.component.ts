@@ -247,6 +247,12 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   warningModalMsg:string = '';
   warningModalCode:string = '';
 
+  coverage:any = {
+    sectionI :0,
+    sectionII :0,
+    sectionIII :0,
+  };
+
   constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
               private ns: NotesService, private ms: MaintenanceService) { }
 
@@ -272,11 +278,18 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
                       this.controlHidden.seciiPremTag = true;
                   }
                 this.retrieveRiskDistribution();
-
+                this.retrieveCoverage();
               });
 
   }
 
+  retrieveCoverage(){
+    this.polService.getUWCoverageInfos(null,this.params.policyId).subscribe((a:any)=>{
+      this.coverage.sectionI = a.policy.project.coverage.cumSecISi;
+      this.coverage.sectionII = a.policy.project.coverage.cumSecIISi;
+      this.coverage.sectionIII = a.policy.project.coverage.cumSecIIISi;
+    })
+  }
   //NECO 05/31/2019
     retrieveRiskDistribution(){
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
@@ -298,7 +311,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         console.log("riskDistId : " + this.riskDistributionData.riskDistId);
         console.log("altNo :" + this.riskDistributionData.altNo);
 
-        if (this.riskDistributionData.altNo != 0) {
+        if (this.riskDistributionData.altNo != 0 && this.params.fromInq != 'true') {
           this.polService.getPolDistWarning(this.riskDistributionData.riskDistId, this.riskDistributionData.altNo).subscribe((data2: any)=> {
               if (data2.warningList.length > 0) {
                 for (var i = 0; i < data2.warningList.length; i++) {
@@ -538,7 +551,6 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           this.wparamData.uneditable.push(true);
         }
       }else if(this.riskDistributionData.autoCalc == 'Y'){
-        this.riskDistributionData.seciiPremTag = 'N';
         this.wparamData.uneditable = [];
         for(var count = 0; count < this.wparamData.tHeader.length; count++){
           this.wparamData.uneditable.push(true);

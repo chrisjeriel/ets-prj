@@ -32,7 +32,7 @@
 				<div class="input-group cust-ig">
 					<div class="col-sm-2 text-right pr-0">
 						<!-- <input type="checkbox" [ngModel]="coverageData.secISiTag === 'Y'" (change)="coverageData.secISiTag = (coverageData.secISiTag === 'Y') ? 'N' : 'Y';validate();getSum();" name="secISiTag" [class.unclickable]="isInquiry" > -->
-						<input type="checkbox" [checked]="coverageData.secISiTag === 'Y'" (change)="coverageData.secISiTag = (coverageData.secISiTag === 'Y') ? 'N' : 'Y';getSum()" (click)="secTag = 'secISiTag'; (orgSecI === 'Y') ? validate() : form.control.markAsDirty(); " name="secISiTag" [class.unclickable]="isInquiry" >
+						<input type="checkbox" [checked]="coverageData.secISiTag === 'Y'" (change)="coverageData.secISiTag = (coverageData.secISiTag === 'Y') ? 'N' : 'Y';getSum()" (click)="secTag = 'secISiTag'; (orgSecI === 'Y') ? validate() : form.control.markAsDirty();form.control.markAsDirty(); " name="secISiTag" [class.unclickable]="isInquiry" >
 					</div>
 					<label class="form-control-sm col-sm-2">Section I</label>
 					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionISi = $event;" readonly name="sectionISi">
@@ -40,7 +40,7 @@
 				</div>
 				<div class="input-group cust-ig">
 					<div class="col-sm-2 text-right pr-0">
-						<input type="checkbox" [checked]="coverageData.secIISiTag === 'Y'" (change)="coverageData.secIISiTag = (coverageData.secIISiTag === 'Y') ? 'N' : 'Y';getSum()" (click)="secTag='secIISiTag';(orgSecII === 'Y') ? validate() : form.control.markAsDirty();"  name="secIISiTag" [class.unclickable]="isInquiry" >
+						<input type="checkbox" [checked]="coverageData.secIISiTag === 'Y'" (change)="coverageData.secIISiTag = (coverageData.secIISiTag === 'Y') ? 'N' : 'Y';getSum()" (click)="secTag='secIISiTag';(orgSecII === 'Y') ? validate() : form.control.markAsDirty();form.control.markAsDirty();"  name="secIISiTag" [class.unclickable]="isInquiry" >
 					</div>
 					<label class="form-control-sm col-sm-2">Section II</label>
 					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIISi = $event;" readonly name="sectionIISi">
@@ -48,7 +48,7 @@
 				</div>
 				<div class="input-group cust-ig">
 					<div class="col-sm-2 text-right pr-0">
-						<input type="checkbox" [checked]="coverageData.secIIISiTag === 'Y'" (change)="coverageData.secIIISiTag = (coverageData.secIIISiTag === 'Y') ? 'N' : 'Y';getSum()" (click)="secTag = 'secIIISiTag'; (orgSecIII === 'Y') ? validate() : form.control.markAsDirty(); " name="secIIISiTag" [class.unclickable]="isInquiry" >
+						<input type="checkbox" [checked]="coverageData.secIIISiTag === 'Y'" (change)="coverageData.secIIISiTag = (coverageData.secIIISiTag === 'Y') ? 'N' : 'Y';getSum()" (click)="secTag = 'secIIISiTag'; (orgSecIII === 'Y') ? validate() : form.control.markAsDirty();form.control.markAsDirty(); " name="secIIISiTag" [class.unclickable]="isInquiry" >
 					</div>
 					<label class="form-control-sm col-sm-2">Section III</label>
 					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionIIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIIISi = $event;" readonly name="sectionIIISi">
