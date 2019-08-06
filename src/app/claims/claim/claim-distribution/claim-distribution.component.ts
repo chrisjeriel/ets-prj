@@ -55,6 +55,7 @@ export class ClaimDistributionComponent implements OnInit {
   	uneditable: [true,true,true,true,true,true],
   	pageID: 3,
     searchFlag: true,
+    total:[null,'Total','ret1Lines','ret1Amt','ret2Lines','ret2Amt']
   }	
 
   reserveDistPassData: any = {

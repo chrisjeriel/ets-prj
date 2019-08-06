@@ -5,27 +5,33 @@
       <div class="custom-row-inline-inset">
         <div class="input-group">
           <label class="form-control-sm col-sm-1">Risk Dist No</label>
-          <input type="text" class="form-control form-control-sm col-sm-3" readonly [ngModel]="pad(riskDistributionData?.riskDistId, 'riskDistId')">
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="pad(riskDistributionData?.riskDistId, 'riskDistId')">
           <label class="form-control-sm col-sm-1">Total SI</label>
-          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-3" readonly [ngModel]="riskDistributionData?.tsiAmt  | number:'1.2-2'">
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="riskDistributionData?.tsiAmt  | number:'1.2-2'">
           <label class="form-control-sm col-sm-1">Risk</label>
-          <input type="text" class="form-control form-control-sm col-sm-3" readonly [ngModel]="params.riskName">
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="params.riskName">
+          <label class="form-control-sm col-sm-1">Section I SI </label>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="coverage?.sectionI  | number:'1.2-2'">
         </div>
         <div class="input-group">
           <label class="form-control-sm col-sm-1">Risk Dist Status</label>
-          <input type="text"class="form-control form-control-sm col-sm-3" readonly [ngModel]="riskDistributionData?.status">
+          <input type="text"class="form-control form-control-sm col-sm-2" readonly [ngModel]="riskDistributionData?.status">
           <label class="form-control-sm col-sm-1">Rate (%)</label>
-          <input type="text" class="form-control form-control-sm txt-content-rght col-sm" readonly [ngModel]="round((riskDistributionData?.premAmt / riskDistributionData?.tsiAmt) * 100) | number: '1.10-10'">
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="round((riskDistributionData?.premAmt / riskDistributionData?.tsiAmt) * 100) | number: '1.10-10'">
           <label class="form-control-sm col-sm-1">Ceding Co</label>
-          <input type="text" class="form-control form-control-sm col-sm-3" readonly [ngModel]="params.cedingName">
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="params.cedingName">
+          <label class="form-control-sm col-sm-1">Section II SI </label>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="coverage?.sectionII  | number:'1.2-2'">
         </div>
         <div class="input-group">
           <label class="form-control-sm col-sm-1">Policy No</label>
-          <input type="text" class="form-control form-control-sm col-sm-3" readonly [ngModel]="params.policyNo">
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="params.policyNo">
           <label class="form-control-sm col-sm-1">Total Premium</label>
-          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-3" readonly [ngModel]="riskDistributionData?.premAmt | number:'1.2-2'">
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="riskDistributionData?.premAmt | number:'1.2-2'">
           <label class="form-control-sm col-sm-1">Insured</label>
-          <input type="text" class="form-control form-control-sm col-sm-3" readonly [ngModel]="params.insured">
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="params.insured">
+          <label class="form-control-sm col-sm-1">Section III SI </label>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="coverage?.sectionIII  | number:'1.2-2'">
         </div>
       </div>
     </fieldset>
@@ -65,7 +71,7 @@
           <div class="input-group" [class.d-none]="controlHidden.seciiPremTag">
             <div class="col-sm-5">
             </div>
-            <input type="checkbox" [ngModel]="riskDistributionData?.seciiPremTag === 'Y'" (ngModelChange)="$event ? riskDistributionData.seciiPremTag = 'Y' : riskDistributionData.seciiPremTag = 'N';readOnlyAll() ; treatyTable.markAsDirty();" [disabled]="controlDisabled.seciiPremTag">
+            <input type="checkbox" [ngModel]="riskDistributionData?.seciiPremTag == 'Y'" (ngModelChange)="$event ? riskDistributionData.seciiPremTag = 'Y' : riskDistributionData.seciiPremTag = 'N';readOnlyAll() ; treatyTable.markAsDirty();" [disabled]="controlDisabled.seciiPremTag">
             <label class="form-control-sm col-sm-4 text-left pt-0" style="text-align: left !important;">Consider Sec II Treaty Limit</label>
           </div>
           <div class="input-group">
@@ -83,7 +89,7 @@
       <div style="margin-top: 10px; margin-bottom: 8px;">
             <app-cust-editable-non-datatable #wparam [passData]="wparamData" (genericBtn)="onClickDelete($event)" (onDelete)="wparam.onClickDelete('a')"  (clickLOV)="openCedingCoLOV($event)">
               <ng-container controls-r>
-                <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc = 'Y' : riskDistributionData.autoCalc = 'N';readOnlyAll() ; treatyTable.markAsDirty();" [disabled]="controlDisabled.autoCalc">
+                <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc = 'Y' : riskDistributionData.autoCalc = 'N';readOnlyAll() ; treatyTable.markAsDirty();$event? this.riskDistributionData.seciiPremTag = 'N':null;" [disabled]="controlDisabled.autoCalc">
                 <label class="form-control-sm">Auto Calculation</label>
               </ng-container>
             </app-cust-editable-non-datatable>
@@ -153,6 +159,7 @@
       </app-modal>
       <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()" ><a>Cancel</a></button>
       <button type="button" class="cust-btn" (click)="onClickSave()" [class.d-none]="controlHidden.saveBtn"><a>Save</a></button>
+<!--       <button type="button" class="cust-btn" (click)="save()" ><a>Test Save</a></button> -->
       <button type="button" class="cust-btn" (click)="distribute()" [class.d-none]="controlHidden.distributeBtn" ><a>Distribute</a></button>
     </div>
   </div>
