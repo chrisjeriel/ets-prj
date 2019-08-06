@@ -14,158 +14,91 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 })
 export class ArDetailsQsoaComponent implements OnInit {
 
-    @Input() record: any = {};
-  @Input() invData: any[] = [];
+  @Input() record: any = {};
 
   @ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-
-  @Output() investment: EventEmitter<any> = new EventEmitter();
   
   passData: any = {
     tableData:[],
-    tHeader:['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value'],
-    dataTypes:['text','text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
-    total:[null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','maturityValue'],
+    tHeader:['Quarter Ending','Currency','Currency Rate','Amount', 'Amount (PHP)'],
+    dataTypes:['date','select','percent','currency','currency'],
+    total:[null,null,'Total','balPaytAmt','localAmt'],
     addFlag:true,
     deleteFlag:true,
     infoFlag:true,
     paginateFlag:true,
-    magnifyingGlass: ['invtCode'],
     nData: {
       tranId: '',
       billId: 1,
       itemNo: '',
-      invtId: '',
-      invtCode: '',
-      certNo: '',
-      invtType: '',
-      invtTypeDesc: '',
-      invtSecCd: '',
-      securityDesc: '',
-      maturityPeriod: '',
-      durationUnit: '',
-      interestRate: '',
-      purchasedDate: '',
-      maturityDate: '',
-      pulloutType: '',
+      quarterEnding: '',
       currCd: '',
       currRate: '',
-      invtAmt: '',
-      incomeAmt: '',
-      bankCharge: '',
-      whtaxAmt: '',
-      maturityValue: '',
+      balPaytAmt: '',
+      localAmt: '',
       createUser: '',
       createDate: '',
       updateUser: '',
-      updateDate: '',
-      showMG: 1
+      updateDate: ''
     },
-    keys: ['invtCode', 'certNo', 'invtTypeDesc', 'securityDesc', 'maturityPeriod', 'durationUnit', 'interestRate', 'purchasedDate', 'maturityDate', 'currCd', 'currRate', 
-           'invtAmt' , 'incomeAmt', 'bankCharge', 'whtaxAmt', 'maturityValue'],
-    uneditable: [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
+    keys: ['quarterEnding', 'currCd', 'currRate', 'balPaytAmt', 'localAmt'],
     checkFlag: true,
-    pageID: 6,
-    widths:[220, 150, 1, 150, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
+    pageID: 'negtrty',
+    widths:[150, 1, 150, 'auto', 'auto'],
+    opts: [
+      {
+        selector: 'currCd',
+        vals: [],
+        prev: []
+      }
+    ]
   }
 
-  passLov: any = {
-    selector: 'acitArInvPullout',
-    searchParams: [],
-    hide: []
-  }
   cancelFlag: boolean;
   totalLocalAmt: number = 0;
   dialogIcon: string = '';
   dialogMessage: string = '';
-  invtPulloutIndex: number = 0;
 
   savedData: any[] = [];
   deletedData: any[] = [];
 
+  currencyArray: any[] = [];
+
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    console.log(this.record.tranId);
-    console.log(this.invData);
     this.passData.nData.tranId = this.record.tranId;
-    this.passLov.searchParams = [{key: 'bankCd', search: this.record.refCd}, {key:'invtStatus', search: 'MATURED'}];
-    if(this.invData !== undefined){
-      for(var i of this.invData){
-        this.passLov.hide.push(i);
-      }
-    }
-    this.retrieveFullPullout();
+    this.getMtnCurrency();
+    this.retrieveNegTrtyBal();
   }
 
-  retrieveFullPullout(){
+  retrieveNegTrtyBal(){
     this.passData.tableData = [];
 
-    this.accountingService.getAcitArInvPullout(this.record.tranId, 1, 'F').subscribe(  //F is pullout type for this screen. Bill Id is always 1 for Investment Pullout
+    this.accountingService.getAcitArNegTrtyBal(this.record.tranId, 1).subscribe(  //Bill Id is always 1 for Negative Treaty balance
       (data: any)=>{
-        for(var i of data.invPulloutList){
-          i.uneditable = ['invtCode'];
+        /*for(var i of data.negTrtyBalList){
+          i.currCd = {currCd: i.currCd, currRate: i.currRate};
           this.passData.tableData.push(i);
-          this.passLov.hide.push(i.invtCode);
-        }
-        console.log(this.passLov.hide);
-        this.investment.emit(this.passLov.hide);
+        }*/
+        this.passData.tableData = data.negTrtyBalList;
         this.table.refreshTable();
       }
     );
   }
 
-  openInvPulloutLOV(data){
-    console.log(this.invData);
-    this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
-    for(var i of this.invData){
-      this.passLov.hide.push(i);
-    }
-    console.log(this.passLov.hide);
-    this.invtPulloutIndex = data.index;
-    this.lovMdl.openLOV();
-  }
-
-  setSelectedData(data){
-    let selected = data.data;
-    this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
-    for(var i = 0; i < selected.length; i++){
-      this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-      this.passData.tableData[this.passData.tableData.length - 1].tranId = this.record.tranId; 
-      this.passData.tableData[this.passData.tableData.length - 1].billId = 1;
-      this.passData.tableData[this.passData.tableData.length - 1].invtId = selected[i].invtId; 
-      this.passData.tableData[this.passData.tableData.length - 1].invtCode = selected[i].invtCd; 
-      this.passData.tableData[this.passData.tableData.length - 1].certNo = selected[i].certNo;
-      this.passData.tableData[this.passData.tableData.length - 1].invtType = selected[i].invtType;
-      this.passData.tableData[this.passData.tableData.length - 1].invtTypeDesc = selected[i].invtTypeDesc;
-      this.passData.tableData[this.passData.tableData.length - 1].invtSecCd = selected[i].invtSecCd;
-      this.passData.tableData[this.passData.tableData.length - 1].securityDesc = selected[i].securityDesc;
-      this.passData.tableData[this.passData.tableData.length - 1].maturityPeriod = selected[i].matPeriod;
-      this.passData.tableData[this.passData.tableData.length - 1].durationUnit = selected[i].durUnit;
-      this.passData.tableData[this.passData.tableData.length - 1].purchasedDate = selected[i].purDate;
-      this.passData.tableData[this.passData.tableData.length - 1].maturityDate = selected[i].matDate;
-      this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currCd;
-      this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currRate;
-      this.passData.tableData[this.passData.tableData.length - 1].interestRate = selected[i].intRt;
-      this.passData.tableData[this.passData.tableData.length - 1].invtAmt = selected[i].invtAmt;
-      this.passData.tableData[this.passData.tableData.length - 1].incomeAmt = selected[i].incomeAmt;
-      this.passData.tableData[this.passData.tableData.length - 1].bankCharge = selected[i].bankCharge;
-      this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt = selected[i].whtaxAmt;
-      this.passData.tableData[this.passData.tableData.length - 1].maturityValue = selected[i].matVal;
-      this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'F';
-      this.passData.tableData[this.passData.tableData.length - 1].edited = true;
-      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-      this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['invtCode'];
-    }
-    this.table.refreshTable();
-  }
-
   onClickSave(){
+    if(!this.checkIfNegativeTotal()){
+      this.dialogIcon = 'info';
+      this.dialogMessage = 'Total Amount must be negative.';
+      this.successDiag.open();
+    }else{
       this.confirm.confirmModal();
+    }
   }
 
   save(cancelFlag?){
@@ -176,12 +109,13 @@ export class ArDetailsQsoaComponent implements OnInit {
     this.totalLocalAmt = 0;
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(!this.passData.tableData[i].deleted){
-        this.totalLocalAmt += this.passData.tableData[i].maturityValue;
+        this.totalLocalAmt += this.passData.tableData[i].localAmt;
       }
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
           this.savedData[this.savedData.length-1].tranId = this.record.tranId;
-          this.savedData[this.savedData.length-1].billId = 1; //1 for Investment Pull out Transaction Type
+          this.savedData[this.savedData.length-1].billId = 1; //1 for for Negative Treaty Balance
+          this.savedData[this.savedData.length-1].quarterEnding = this.ns.toDateTimeString(this.savedData[this.savedData.length-1].quarterEnding);
           this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
           this.savedData[this.savedData.length-1].createUser = this.ns.getCurrentUser();
           this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
@@ -190,33 +124,32 @@ export class ArDetailsQsoaComponent implements OnInit {
       else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
          this.deletedData.push(this.passData.tableData[i]);
          this.deletedData[this.deletedData.length-1].tranId = this.record.tranId;
-         this.deletedData[this.deletedData.length-1].billId = 1; //1 for Claim Recovery / Overpayment Transaction Type
+         this.deletedData[this.deletedData.length-1].billId = 1; //1 for Negative Treaty Balance
+         this.deletedData[this.deletedData.length-1].quarterEnding = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].quarterEnding);
          this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
          this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
       }
     }
     let params: any = {
       tranId: this.record.tranId,
-      billId: 1, //1 for Claim Recovery / Overpayment Transaction Type
+      billId: 1, //1 for Negative Treaty Balance
       billType: this.record.tranTypeCd,
       totalLocalAmt: this.totalLocalAmt,
       createUser: this.ns.getCurrentUser(),
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-      saveInvPullout: this.savedData,
-      delInvPullout: this.deletedData
+      saveNegTrtyBal: this.savedData,
+      delNegTrtyBal: this.deletedData
     }
     console.log(params);
 
-    this.accountingService.saveAcitArInvPullout(params).subscribe(
+    this.accountingService.saveAcitArNegTrtyBal(params).subscribe(
       (data:any)=>{
        if(data.returnCode === -1){
           this.dialogIcon = '';
           this.successDiag.open();
-          this.retrieveFullPullout();
-          this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
-          this.investment.emit(this.passLov.hide);
+          this.retrieveNegTrtyBal();
         }else if(data.returnCode === 0 && data.custReturnCode !== 2){
           this.dialogIcon = 'error';
           this.successDiag.open();
@@ -245,8 +178,56 @@ export class ArDetailsQsoaComponent implements OnInit {
   onRowClick(data){
     console.log(data);
   }
+
   onTableDataChange(data){
-    console.log(data);
+    if(data.key === 'currCd'){
+      for(var i = 0; i < this.passData.tableData.length; i++){
+        for(var j = 0; j < this.currencyArray.length; j++){
+          if(data[i].currCd == this.currencyArray[j].currCd){
+            data[i].currRate = this.currencyArray[j].currRate;
+            break;
+          }
+        }
+      }
+    }
+
+    if(data.key === 'balPaytAmt' || data.key === 'currCd' || data.key === 'currRate'){
+      for(var i = 0; i < this.passData.tableData.length; i++){
+        data[i].localAmt = data[i].balPaytAmt * data[i].currRate;
+      }
+    }else if(data.key === 'quarterEnding'){
+      //validation about non duplicate quarter ending here
+    }
+  }
+
+  //All maintenance retrievals here
+  getMtnCurrency(){
+    this.currencyArray = [];
+    this.ms.getMtnCurrency('','Y').subscribe(
+      (data: any)=>{
+        for(var i of data.currency){
+          this.passData.opts[0].vals.push(i.currencyCd);
+          this.passData.opts[0].prev.push(i.currencyCd);
+          this.currencyArray.push({currCd: i.currencyCd, currRate: i.currencyRt});
+        }
+      }
+    );
+  }
+
+  //ALL VALIDATIONS HERE
+
+  checkIfNegativeTotal(): boolean{
+    var amt:number = 0;
+    var localAmt:number = 0;
+    for(var i of this.passData.tableData){
+      amt += i.balPaytAmt;
+      localAmt += i.localAmt;
+    }
+    if(amt < 0 && localAmt < 0){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 }
