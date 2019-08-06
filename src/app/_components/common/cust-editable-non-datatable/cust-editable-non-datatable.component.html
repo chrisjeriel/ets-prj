@@ -179,10 +179,10 @@ span.ui-column-resizer {
                 <div class="table-scroll" id="cust-scroll">
                     <!-- <input  (keydown)="traverse($event,key,ti)" (focus)="focusFirst()" type="text" name="" style="opacity: 0;position: absolute;"> -->
                     <form #myForm="ngForm">
-                    <table #table id="non-datatable" [class]="'non-datatable' + passData.pageID">
+                    <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'non-datatable' + passData.pageID">
                         <colgroup *ngIf="passData.tHeaderWithColspan != null">
                             <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
-                                <col [span]="header.span" [class.black-border]="header.header.length !== 0 && i%2 === 0" style="text-align: center;">
+                                <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
                             </ng-container>
                         </colgroup>
                         <thead>
@@ -195,7 +195,7 @@ span.ui-column-resizer {
                             </tr>
                             <tr style="min-width: 96px">
                                 <th *ngIf="passData.checkFlag" class="checkbox not-form"><input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)"  [checked]="selectAllFlag" tabindex="-1"></th>
-                                <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
+                                <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index;" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
                                 [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered">
                                 <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
                                 <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)"></span>

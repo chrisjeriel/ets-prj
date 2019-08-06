@@ -1,8 +1,10 @@
 <p-dropdown 
 [ngModel]="dropdownVal"
-(ngModelChange)="dropdownVal=$event"
+(ngModelChange)="dropdownVal=$event;updateValue($event)"
 [options]="values" 
-[scrollHeight] = "1000"
-[editable]="true" 
->	
+[scrollHeight] = "'10000px'"
+[editable]="true"
+[dropdownIcon]="'fa fa-caret-down'"
+(onBlur)="blur($event)"
+(onFocus)="focus($event)">	
 </p-dropdown>

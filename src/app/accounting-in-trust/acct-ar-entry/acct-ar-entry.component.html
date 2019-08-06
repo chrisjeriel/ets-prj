@@ -60,7 +60,7 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Business</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="arInfo.bussTypeCd" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="arInfo.bussTypeName" readonly>
 				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="arInfo.tin" readonly>
 			</div>
@@ -104,7 +104,7 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd" (click)="openCancelModal()" [disabled]="isCancelled" [class.cust-btn-disabled]="isCancelled">Cancel AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled" [class.cust-btn-disabled]="isAdd || isCancelled" (click)="openCancelModal()">Cancel AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
@@ -117,12 +117,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd" [disabled]="isCancelled" [class.cust-btn-disabled]="isCancelled">Print AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled" [class.cust-btn-disabled]="isAdd || isCancelled">Print AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd" [class.cust-btn-disabled]="isAdd" [disabled]="isCancelled" [class.cust-btn-disabled]="isCancelled">Reprint AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled" [class.cust-btn-disabled]="isAdd || isCancelled">Reprint AR</button>
 				</div>					
 			</div>
 		</fieldset>
