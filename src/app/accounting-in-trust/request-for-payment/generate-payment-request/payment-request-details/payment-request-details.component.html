@@ -95,7 +95,7 @@
                     </div>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 7">
-                    <app-payt-req-investment></app-payt-req-investment>
+                    <app-cust-editable-non-datatable id="invtTbl" [passData]="investmentData" #invtTbl (tableDataChange)="investmentData.tableData=$event;addDirty('invtTbl');" (clickLOV)="showLOV($event,'lovInvtTbl')" ></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase="'QSOA BALANCES'">
                     <app-pr-qsoa></app-pr-qsoa>
@@ -158,6 +158,8 @@
 <app-mtn-clm-history-lov #mtnClmHistLov (selectedData)="setData($event,'lovCedTbl')" [limitHistCat]="limitHistCat" [limitClmHistTbl]="limitClmHistTbl" [lovCheckBox]="true"></app-mtn-clm-history-lov>
 
 <app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov>
+<app-lov #invtLov    [passData]="passData" (selectedData)="setData($event,'lovInvtTbl')"></app-lov>
+
 
 <app-confirm-save  #conClm (onYes)="onSaveCPC()"></app-confirm-save>
 <app-sucess-dialog #sucClm [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
@@ -170,6 +172,10 @@
 <app-confirm-save  #conTrty (onYes)="onSaveTrty()"></app-confirm-save>
 <app-sucess-dialog #sucTrty [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelTrty();"></app-sucess-dialog>
 <app-cancel-button #canTrty (onYes)="onClickSaveTrty('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conInvt (onYes)="onSaveInvt()"></app-confirm-save>
+<app-sucess-dialog #sucInvt [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelInvt();"></app-sucess-dialog>
+<app-cancel-button #canInvt (onYes)="onClickSaveInvt('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 
 <app-modal class="d-none" id="warnMdl" #warnMdl>

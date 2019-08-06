@@ -682,11 +682,21 @@ export class LovComponent implements OnInit {
             rec = rec.filter(e2 => e2.policyId != e.policyId);    
           });
         }
-        console.log(this.limitContent);
         this.passTable.tableData = rec;
-        console.log(this.passTable.tableData);
         this.table.refreshTable();
-      })
+      });
+    }else if(this.passData.selector == 'acitInvt'){
+      this.passTable.tHeader    = ['Investment Code', 'Investment Type', 'Security', 'Maturity Period', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate', 'Investment'];
+      this.passTable.widths     = [150,200,150,1,1,120,1,1,1,120,150];
+      this.passTable.dataTypes  = ['text','text','text','number','text','percent','date','date','text','percent','currency'];
+      this.passTable.keys       = ['invtCd','invtTypeDesc','securityDesc','matPeriod','durUnit','intRt','purDate','matDate','currCd','currRate','invtAmt'];
+      this.passTable.checkFlag  = true;
+      this.accountingService.getAccInvestments([])
+      .subscribe((data:any)=>{
+        var rec = data["invtList"];
+        this.passTable.tableData = rec;
+        this.table.refreshTable();
+      });
     }else if(this.passData.selector == 'acitArClmRecover'){
       this.passTable.tHeader = ['Claim No.','Co. Claim No.', 'Policy No.', 'Loss Date'];
       this.passTable.widths =[300,300,300,150]
