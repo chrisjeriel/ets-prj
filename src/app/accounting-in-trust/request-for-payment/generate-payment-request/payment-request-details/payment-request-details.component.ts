@@ -467,7 +467,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onClickSaveInvt(cancelFlag?){
-    this.cancelFlagInw = cancelFlag !== undefined;
+    this.cancelFlagInvt = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
     this.investmentData.tableData.forEach(e => {
@@ -477,6 +477,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
         e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
         e.updateUser    = this.ns.getCurrentUser();
         e.updateDate    = this.ns.toDateTimeString(0);
+        e.quarterEnding = '';
+        e.currAmt       = e.invtAmt;
+        e.itemNo        = e.itemNo,
+        e.localAmt      = e.invtAmt;
         this.params.savePrqTrans.push(e);
       }else if(e.edited && e.deleted){ 
         this.params.deletePrqTrans.push(e);  
@@ -498,7 +502,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.params.deletePrqTrans = [];
           this.investmentData.tableData = this.investmentData.tableData.filter(e => e.invtCd != '');
         }else{
-          console.log(this.cancelFlagTrty);
+          console.log(this.cancelFlagInvt);
           if(this.cancelFlagInvt == true){
             this.conInvt.showLoading(true);
             setTimeout(() => { try{this.conInvt.onClickYes();}catch(e){}},500);
@@ -828,6 +832,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
   }
 
+  checkCancelInvt(){
+    if(this.cancelFlagInvt){
+      this.canInvt.onNo();
+    }else{
+      this.sucInvt.modal.closeModal();
+    }
+  }
+
   cancel(){
     if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
       this.canClm.clickCancel();  
@@ -835,6 +847,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.canInw.clickCancel();
     }else if(this.requestData.tranTypeCd == 6){
       this.canTrty.clickCancel();
+    }else if(this.requestData.tranTypeCd == 7){
+      this.canInvt.clickCancel();
     }
     
   }
