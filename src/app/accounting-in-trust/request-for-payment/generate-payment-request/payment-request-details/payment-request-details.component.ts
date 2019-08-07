@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AccountingService, MaintenanceService, NotesService, ClaimsService } from '../../../../_services';
 import { Title } from '@angular/platform-browser';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { MtnClmHistoryLovComponent } from '@app/maintenance/mtn-clm-history-lov/mtn-clm-history-lov.component';
@@ -23,6 +24,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('inwardTbl') inwardTbl           : CustEditableNonDatatableComponent;
   @ViewChild('treatyTbl') treatyTbl           : CustEditableNonDatatableComponent;
   @ViewChild('invtTbl') invtTbl               : CustEditableNonDatatableComponent;
+  @ViewChild('othersTbl') othTbl              : CustEditableNonDatatableComponent;
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('quarEndLov') quarEndLov         : ModalComponent;
   @ViewChild('aginSoaLov') aginSoaLov         : LovComponent; 
@@ -40,6 +42,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('canInvt') canInvt           : CancelButtonComponent;
   @ViewChild('conInvt') conInvt           : ConfirmSaveComponent;
   @ViewChild('sucInvt') sucInvt           : SucessDialogComponent;
+  @ViewChild('canOth') canOth             : CancelButtonComponent;
+  @ViewChild('conOth') conOth             : ConfirmSaveComponent;
+  @ViewChild('sucOth') sucOth             : SucessDialogComponent;
 
   @Input() rowData : any = {
     reqId : ''
@@ -168,6 +173,35 @@ export class PaymentRequestDetailsComponent implements OnInit {
     keys          : ['invtCd','invtTypeDesc','securityDesc','matPeriod','durUnit','intRt','purDate','matDate','currCd','currRate','invtAmt']
   };
 
+  othersData: any = {
+    tableData     : [],
+    tHeader       : ['Item', 'Reference No.', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
+    dataTypes     : ['text', 'text', 'text', 'select', 'percent', 'currency', 'currency'],
+    nData: {
+      itemName  : '',
+      refNo     : '',
+      remarks   : '',
+      currCd    : '',
+      currRate  : '',
+      currAmt   : 0,
+      localAmt  : 0,
+      newRec    : 1
+    },
+    opts: [
+      {selector   : 'currCd',  prev : [], vals: []},
+    ],
+    paginateFlag  : true,
+    infoFlag      : true,
+    pageID        : 'othersData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
+    checkFlag     : true,
+    addFlag       : true,
+    deleteFlag    : true,
+    uneditable    : [false,false,false,false,true,false,true],
+    total         : [null, null, null, null,'Total', 'currAmt', 'localAmt'],
+    widths        : ['auto','auto','auto','auto','auto','auto','auto'],
+    keys          : ['itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+  };
+
   passData : any = {
     selector      :'',
   };
@@ -180,10 +214,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
   cancelFlagInw   : boolean;
   cancelFlagTrty  : boolean;
   cancelFlagInvt  : boolean;
+  cancelFlagOth   : boolean;
   dialogIcon      : string;
   dialogMessage   : string;
   warnMsg         : string = '';
   recPrqTrans     : any;
+  activeOthTab    : boolean = false;
 
   params : any =  {
     savePrqTrans     : [],
@@ -240,6 +276,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      $('.globalLoading').removeClass('globalLoading');  
+    },0);
+    
     var currYear = new Date().getFullYear() + 1;
     for(let x = currYear; x >= 2018; x--) {
       this.yearParamOpts.push(x);
@@ -267,19 +307,50 @@ export class PaymentRequestDetailsComponent implements OnInit {
       console.log(data);
       this.recPrqTrans = data['acitPrqTrans'];
 
-      if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
-        this.cedingCompanyData.tableData = [];
-        this.getClmHist();
-      }else if(this.requestData.tranTypeCd == 4){
-        this.inwardPolBalData.tableData = [];
-        this.getAcitPrqInwPol();
-      }else if(this.requestData.tranTypeCd == 6){
-        this.treatyBalanceData.tabledata = [];
-        this.getTreaty();
-      }else if(this.requestData.tranTypeCd == 7){
-        this.investmentData.tabledata = [];
+      if(!this.activeOthTab){
+        if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
+          this.cedingCompanyData.tableData = [];
+          this.getClmHist();
+        }else if(this.requestData.tranTypeCd == 4){
+          this.inwardPolBalData.tableData = [];
+          this.getAcitPrqInwPol();
+        }else if(this.requestData.tranTypeCd == 5){
+          //service fee
+        }else if(this.requestData.tranTypeCd == 6){
+          this.treatyBalanceData.tableData = [];
+          this.getTreaty();
+        }else if(this.requestData.tranTypeCd == 7){
+          this.investmentData.tableData = [];
+          this.geAcitInvt();
+        }else if(this.requestData.tranTypeCd == 8){
+          this.othersData.tableData = [];
+          this.getOthers();
+        }
+      }else{
+        this.othersData.tableData = [];
+        this.getOthers();
       }
     });
+  }
+
+  getOthers(){
+    this.mtnService.getMtnCurrency('','Y')
+    .subscribe(data => {
+      console.log(data);
+      var rec = data['currency'];
+      this.currData = rec;
+      this.othersData.opts[0].vals = rec.map(i => i.currencyCd);
+      this.othersData.opts[0].prev = rec.map(i => i.currencyCd);
+    });
+
+    console.log(this.othersData.tableData);
+    this.othersData.tableData = this.recPrqTrans.filter(e => e.itemName != null).map(e => {
+      e.reqId  = this.rowData.reqId; 
+      e.currCd = (e.currCd == '' || e.currCd == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd)):e.currCd;
+      return e;
+    });
+    console.log(this.othersData.tableData);
+    this.othTbl.refreshTable();
   }
 
   geAcitInvt(){
@@ -289,9 +360,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       var recACitInvt = data['invtList'];
 
       this.recPrqTrans.forEach(e => {
-        this.investmentData.tableData.push(recACitInvt.filter(e2 => e2.invtId == e.invtId).map(e2 => { return e2; }));
+        this.investmentData.tableData.push(recACitInvt.filter(e2 => e2.invtId == e.invtId).map(e2 => { e2.itemNo = e.itemNo; return e2; }));
       });
+
+      this.investmentData.tableData = this.investmentData.tableData.flatMap(e => { return e; });
       this.invtTbl.refreshTable();
+      console.log(this.investmentData.tableData);
     });
   }
 
@@ -305,7 +379,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.treatyBalanceData.opts[0].prev = rec.map(i => i.currencyCd);
     });
 
-    this.treatyBalanceData.tableData = this.recPrqTrans.map(e => { 
+    this.treatyBalanceData.tableData = this.recPrqTrans.filter(e => e.itemName == null).map(e => { 
       e.reqId  = this.rowData.reqId; 
       e.currCd = (e.currCd == '' || e.currCd == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd)):e.currCd;
       return e; 
@@ -314,10 +388,19 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onChangeCurr(){
-    this.treatyBalanceData.tableData.forEach(e => {
-      e.currRate = (e.currCd != '' || e.currCd != null && e.currRate == '' || e.currRate == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd).map(e2 => e2.currencyRt)):e.currRate;
-      e.localAmt = (e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt))?0:e.currAmt;
-    });
+    if(this.requestData.tranTypeCd == 8 || this.activeOthTab){
+      this.othersData.tableData.forEach(e => {
+        e.currRate = (e.currCd != '' || e.currCd != null && e.currRate == '' || e.currRate == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd).map(e2 => e2.currencyRt)):e.currRate;
+        e.localAmt = (e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt))?0:e.currAmt;
+      });
+    }else{
+      if(this.requestData.tranTypeCd == 6){
+        this.treatyBalanceData.tableData.forEach(e => {
+          e.currRate = (e.currCd != '' || e.currCd != null && e.currRate == '' || e.currRate == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd).map(e2 => e2.currencyRt)):e.currRate;
+          e.localAmt = (e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt))?0:e.currAmt;
+        });
+      }
+    }
   }
 
   // getMtnParams(){
@@ -387,6 +470,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   showLOV(event, from){
     console.log(this.limitContent);
     console.log(event + ' - ' + from);
+    this.limitContent = [];
     if(from.toUpperCase() == 'LOVCEDTBL'){
       this.cedingCompanyData.tableData.forEach(e => {
         this.limitClmHistTbl.push(e);
@@ -400,6 +484,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.passData.selector = 'acitSoaDtlPrq';
       this.aginSoaLov.openLOV();
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
+      this.investmentData.tableData.forEach(e =>{
+        this.limitContent.push(e);
+      });
       this.passData.selector = 'acitInvt';
       this.invtLov.openLOV();
     }
@@ -455,14 +542,88 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onClickSave(){
-    if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
-      this.onClickSaveCPC();
-    }else if(this.requestData.tranTypeCd == 4){
-      this.onClickSaveInw();
-    }else if(this.requestData.tranTypeCd == 6){
-      this.onClickSaveTrty();
-    }else if(this.requestData.tranTypeCd == 7){
-      this.onClickSaveInvt();
+    if(!this.activeOthTab){
+      if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
+        this.onClickSaveCPC();
+      }else if(this.requestData.tranTypeCd == 4){
+        this.onClickSaveInw();
+      }else if(this.requestData.tranTypeCd == 5){
+        //service fee
+      }else if(this.requestData.tranTypeCd == 6){
+        this.onClickSaveTrty();
+      }else if(this.requestData.tranTypeCd == 7){
+        this.onClickSaveInvt();
+      }else if(this.requestData.tranTypeCd == 8){
+        this.onClickSaveOth();
+      }
+    }else{
+      this.onClickSaveOth();
+    }
+  }
+
+  onClickSaveOth(cancelFlag?){
+    this.cancelFlagOth = cancelFlag !== undefined;
+    this.dialogIcon = '';
+    this.dialogMessage = '';
+    var isEmpty = 0;
+
+    this.othersData.tableData.forEach(e => {
+      e.reqId    = this.rowData.reqId;
+      if(e.itemName == '' || e.itemName == null || e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null || 
+         e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0){
+        if(!e.deleted){
+          isEmpty = 1;
+          e.fromCancel = false;
+        }else{
+          this.params.deletePrqTrans.push(e);
+        }
+      }else{
+        e.fromCancel = true;
+        if(e.edited && !e.deleted){
+          e.localAmt      = e.currAmt;
+          e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
+          e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
+          e.quarterEnding = '';
+          e.updateUser    = this.ns.getCurrentUser();
+          e.updateDate    = this.ns.toDateTimeString(0);
+          this.params.savePrqTrans.push(e);
+        }else if(e.edited && e.deleted){ 
+          this.params.deletePrqTrans.push(e);  
+        }
+      }
+    });
+
+    var currAmt = this.othersData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    console.log(currAmt);
+    console.log(this.othersData.tableData);
+
+    if(isEmpty == 1){
+      this.dialogIcon = 'error';
+      this.sucOth.open();
+      this.params.savePrqTrans   = [];
+    }else{
+      if(Number(this.requestData.reqAmt) < Number(currAmt)){
+        this.warnMsg = 'The Total Amount for the Other Payments must not exceed the Requested Amount.';
+        this.warnMdl.openNoClose();
+        this.params.savePrqTrans   = [];
+        this.params.deletePrqTrans = [];
+      }else{
+        if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
+          $('.ng-dirty').removeClass('ng-dirty');
+          this.conOth.confirmModal();
+          this.params.savePrqTrans   = [];
+          this.params.deletePrqTrans = [];
+          this.othersData.tableData = this.othersData.tableData.filter(e => e.itemName != '');
+        }else{
+          console.log(this.cancelFlagOth);
+          if(this.cancelFlagOth == true){
+            this.conOth.showLoading(true);
+            setTimeout(() => { try{this.conOth.onClickYes();}catch(e){}},500);
+          }else{
+            this.conOth.confirmModal();
+          }
+        }
+      }
     }
   }
 
@@ -473,6 +634,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.investmentData.tableData.forEach(e => {
       e.reqId    = this.rowData.reqId;
       if(e.edited && !e.deleted){
+        this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.invtId != e.invtId);
         e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
         e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
         e.updateUser    = this.ns.getCurrentUser();
@@ -486,6 +648,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.params.deletePrqTrans.push(e);  
       }
     });
+
+    console.log(this.params);
 
     var invtAmt = this.investmentData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.invtAmt != null ?parseFloat(b.invtAmt):0),0);
 
@@ -514,7 +678,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onClickSaveTrty(cancelFlag?){
-    console.log('onClickSaveInw');
     this.cancelFlagTrty = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
@@ -581,7 +744,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onClickSaveInw(cancelFlag?){
-    console.log('onClickSaveInw');
     this.cancelFlagInw = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
@@ -715,7 +877,22 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
   }
 
+  onSaveOth(){
+    this.othTbl.overlayLoader = true;
+    console.log(this.params);
+    this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
+    .subscribe(data => {
+      console.log(data);
+      this.getPrqTrans();
+      this.getAcitPaytReq();
+      this.sucOth.open();
+      this.params.savePrqTrans  = [];
+      this.params.deletePrqTrans  = [];
+    });
+  }
+
   onSaveTrty(){
+    this.treatyTbl.overlayLoader = true;
     console.log(this.params);
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
@@ -729,6 +906,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveInvt(){
+    this.invtTbl.overlayLoader = true;
     console.log(this.params);
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
@@ -742,6 +920,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveInw(){
+    this.inwardTbl.overlayLoader = true;
     var prqInwPol = {
       deleteAcitPrqInwPol : [],
       saveAcitPrqInwPol   : []
@@ -788,6 +967,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveCPC(){
+    this.cedCompTbl.overlayLoader = true
     console.log(this.params);
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
@@ -840,15 +1020,27 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
   }
 
+  checkCancelOth(){
+    if(this.cancelFlagOth){
+      this.canOth.onNo();
+    }else{
+      this.sucOth.modal.closeModal();
+    }
+  }
+
   cancel(){
     if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
       this.canClm.clickCancel();  
     }else if(this.requestData.tranTypeCd == 4){
       this.canInw.clickCancel();
+    }else if(this.requestData.tranTypeCd == 5){
+      //service fee
     }else if(this.requestData.tranTypeCd == 6){
       this.canTrty.clickCancel();
     }else if(this.requestData.tranTypeCd == 7){
       this.canInvt.clickCancel();
+    }else if(this.requestData.tranTypeCd == 7){
+      this.canOth.clickCancel();
     }
     
   }
@@ -859,8 +1051,24 @@ export class PaymentRequestDetailsComponent implements OnInit {
       $('#cedTbl').addClass('ng-dirty');
     }else if(from == 'inwTbl'){
       $('#inwTbl').addClass('ng-dirty'); 
+    }else if(from == 'invtTbl'){
+      $('#invtTbl').addClass('ng-dirty');
     }else if(from == 'trtyTbl'){
       $('#trtyTbl').addClass('ng-dirty');
+    }else if(from == 'othTbl'){
+      $('#othTbl').addClass('ng-dirty');
+    }
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+    if($event.nextId.toUpperCase() == 'OTHTABID') {
+      this.activeOthTab = true;
+      this.getAcitPaytReq();
+      this.getPrqTrans();
+    }else{
+      this.activeOthTab = false;
+      this.getAcitPaytReq();
+      this.getPrqTrans();
     }
   }
 

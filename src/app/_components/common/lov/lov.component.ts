@@ -678,11 +678,12 @@ export class LovComponent implements OnInit {
       .subscribe((a:any)=>{
         var rec = a["soaDtlList"].filter(e =>  (Number(e.totalPayments) + Number(e.tempPayments)) > 0 ).map(e => { e.newRec = 1; e.prevPaytAmt = (Number(e.totalPayments) + Number(e.tempPayments)); return e; });
         if(this.limitContent.length != 0){
-          this.limitContent.forEach(e => {
-            rec = rec.filter(e2 => e2.policyId != e.policyId);    
-          });
+          var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({policyId: a.policyId, instNo: a.instNo}));
+          this.passTable.tableData =    rec.filter(a => {
+                             var mdl = JSON.stringify({policyId: a.policyId, instNo: a.instNo});
+                             return !limit.includes(mdl);
+                           });
         }
-        this.passTable.tableData = rec;
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitInvt'){
@@ -694,7 +695,14 @@ export class LovComponent implements OnInit {
       this.accountingService.getAccInvestments([])
       .subscribe((data:any)=>{
         var rec = data["invtList"];
-        this.passTable.tableData = rec;
+        console.log(this.limitContent);
+        if(this.limitContent.length != 0){
+          var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({invtId: a.invtId}));
+          this.passTable.tableData =    rec.filter(a => {
+                             var mdl = JSON.stringify({invtId: a.invtId});
+                             return !limit.includes(mdl);
+                           });
+        }
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmRecover'){

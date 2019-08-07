@@ -25,7 +25,7 @@
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="requestData?.currCd" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" value="PHP" readonly>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="requestData?.localAmt | number:'1.2-2'" readonly>
             </div>
         </div>
@@ -33,8 +33,8 @@
 </fieldset>
 
 <div class="cust-tabs-container" style="margin-top:10px !important">
-    <ngb-tabset>
-      <ngb-tab *ngIf="requestData?.tranTypeCd != 8">
+    <ngb-tabset #tabset (tabChange)="onTabChange($event)">
+      <ngb-tab>
         <ng-template ngbTabTitle>
           <div>{{ requestData?.tranTypeDesc }}</div>
         </ng-template>
@@ -46,7 +46,7 @@
                     <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event,'lovCedTbl')" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty('cedTbl');" #cedCompTbl></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 4">
-                    <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (newClick)="onRowClick($event)" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
@@ -89,19 +89,16 @@
                     <div class="d-flex p-0">
                       <div class="col-sm-2"></div>
                       <div class="col-sm">
-                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr();"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr();"></app-cust-editable-non-datatable>
                       </div>
                       <div class="col-sm-2"></div>
                     </div>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 7">
-                    <app-cust-editable-non-datatable id="invtTbl" [passData]="investmentData" #invtTbl (tableDataChange)="investmentData.tableData=$event;addDirty('invtTbl');" (clickLOV)="showLOV($event,'lovInvtTbl')" ></app-cust-editable-non-datatable>
-                </ng-container>
-                <ng-container *ngSwitchCase="'QSOA BALANCES'">
-                    <app-pr-qsoa></app-pr-qsoa>
+                    <app-cust-editable-non-datatable id="invtTbl" [passData]="investmentData" #invtTbl (newClick)="onRowClick($event)" (tableDataChange)="investmentData.tableData=$event;addDirty('invtTbl');" (clickLOV)="showLOV($event,'lovInvtTbl')" ></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 8">
-                    
+                    <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr();"></app-cust-editable-non-datatable>
                 </ng-container>
               </ng-container>
               <div class="form-row" style="margin-top: 40px !important;">
@@ -118,20 +115,28 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <!-- <ngb-tab *ngIf="paymentType.toUpperCase() === 'INWARD POLICY BALANCES'" class="ngb-tab" title="Unapplied Collection">
+      <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="othTabId">
+        <ng-template ngbTabTitle>
+          <div>Others</div>
+        </ng-template>
         <ng-template ngbTabContent>
           <div class="input-group cust-border" style="padding-top: 0.6em">
             <div class="col-sm-12">
-              <app-unapplied-collection></app-unapplied-collection>
+              <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr();"></app-cust-editable-non-datatable>
+            </div>
+            <div class="form-row col-sm-12" style="margin-top: 40px !important;">
+                <div class="form-group col-sm-12">
+                  <div class="text-center">
+                    <div class="cust-btn-container">
+                      <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                      <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab class="ngb-tab" title="Others">
-        <ng-template ngbTabContent>
-          <app-ar-others></app-ar-others>
-        </ng-template>
-      </ngb-tab> -->
     </ngb-tabset>
   </div>
 
@@ -158,7 +163,7 @@
 <app-mtn-clm-history-lov #mtnClmHistLov (selectedData)="setData($event,'lovCedTbl')" [limitHistCat]="limitHistCat" [limitClmHistTbl]="limitClmHistTbl" [lovCheckBox]="true"></app-mtn-clm-history-lov>
 
 <app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov>
-<app-lov #invtLov    [passData]="passData" (selectedData)="setData($event,'lovInvtTbl')"></app-lov>
+<app-lov #invtLov    [passData]="passData" (selectedData)="setData($event,'lovInvtTbl')" [limitContent]="limitContent"></app-lov>
 
 
 <app-confirm-save  #conClm (onYes)="onSaveCPC()"></app-confirm-save>
@@ -176,6 +181,10 @@
 <app-confirm-save  #conInvt (onYes)="onSaveInvt()"></app-confirm-save>
 <app-sucess-dialog #sucInvt [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelInvt();"></app-sucess-dialog>
 <app-cancel-button #canInvt (onYes)="onClickSaveInvt('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conOth (onYes)="onSaveOth()"></app-confirm-save>
+<app-sucess-dialog #sucOth [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
+<app-cancel-button #canOth (onYes)="onClickSaveOth('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 
 <app-modal class="d-none" id="warnMdl" #warnMdl>
