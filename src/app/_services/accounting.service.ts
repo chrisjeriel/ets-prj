@@ -1782,4 +1782,11 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArInvPullout',JSON.stringify(params),header);
 	}
+
+	getAcitJVClmOffset(cedingId) {
+		 const params = new HttpParams()
+             .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvClmOff",{params});
+	}
+	
 }

@@ -675,7 +675,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'soaNo','policyNo', 'instNo', 'dueDate', 'balance'];
       this.passTable.checkFlag = true;
       this.accountingService.getAcitSoaTrtyDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any) => {
-        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        this.passTable.tableData = a.soaDetails.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitSoaDtlPrq'){ //temporary

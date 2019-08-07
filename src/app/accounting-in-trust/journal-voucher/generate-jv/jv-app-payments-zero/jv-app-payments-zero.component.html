@@ -17,7 +17,7 @@
 	<div class="row">
 		<div class="col-sm-12">
 		 	<div class="col-sm-12" style="margin-top: 15px" >
-		 	 	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)"></app-cust-editable-non-datatable>
+		 	 	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
 		 	</div>
 		</div>
 	</div>
@@ -34,3 +34,6 @@
 </div>
 <app-mtn-ceding-company-treaty id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company-treaty>
 <app-lov [passData]="passLov" (selectedData)="setSoa($event)">
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveAppPaytZero()"></app-confirm-save>
+<app-cancel-button (onYes)="saveAppPaytZero('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
