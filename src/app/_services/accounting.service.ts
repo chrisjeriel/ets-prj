@@ -1700,10 +1700,13 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFeeMainGnrt(prdAsOf?, year?){
+    getAcctPrqServFeeMainGnrt(prdAsOf?, year?, servFeeAmt?, currCd?, currRt?){
 		const params = new HttpParams()
 			.set('prdAsOf', (prdAsOf == null || prdAsOf == undefined ? '' : prdAsOf))
-			.set('year', (year == null || year == undefined ? '' : year));
+			.set('year', (year == null || year == undefined ? '' : year))
+			.set('servFeeAmt', (servFeeAmt == null || servFeeAmt == undefined ? '' : servFeeAmt))
+			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
+			.set('currRt', (currRt == null || currRt == undefined ? '' : currRt));
 			
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitServFeeMainGnrt',{params});
 	}

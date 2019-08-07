@@ -36,6 +36,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('conTrty') conTrty           : ConfirmSaveComponent;
   @ViewChild('sucTrty') sucTrty           : SucessDialogComponent;
 
+  @ViewChild('servFeeMainTbl') servFeeMainTbl: CustEditableNonDatatableComponent;
+  @ViewChild('servFeeSubTbl') servFeeSubTbl: CustEditableNonDatatableComponent;
+
   @Input() rowData : any = {
     reqId : ''
   };
@@ -168,15 +171,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
     tableData     : [],
     tHeader       : ['Main Company Distribution','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
     dataTypes     : ['text','percent','text','percent','currency','currency'],
-    keys          : ['groupName','grpShrPct','currCd','currRate','grpShrAmt','localAmt'],
+    keys          : ['groupName','groupShrPct','currCd','currRt','groupShrAmt','localAmt'],
     paginateFlag  : true,
     infoFlag      : true,
     checkFlag     : false,
     addFlag       : false,
     deleteFlag    : false,
     uneditable    : [true,true,true,true,true,true],
-    total         : [null,null,null,'Total','grpShrAmt','localAmt'],
-    // widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
+    total         : [null,null,null,'Total','groupShrAmt','localAmt'],
+    widths        : ['400','100','1','100','auto','auto'],
     pageID        : 'serviceFeeMainData',
     pageLength    : 3,
   };
@@ -185,7 +188,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     tableData     : [],
     tHeader       : ['Sub-Distribution of Pool & Munich Re','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
     dataTypes     : ['text','percent','text','percent','currency','currency'],
-    keys          : ['cedingName','baseShrPct','currCd','currRate','baseShrAmt','localAmt'],
+    keys          : ['cedingName','baseShrPct','currCd','currRt','baseShrAmt','localAmt'],
     paginateFlag  : true,
     infoFlag      : true,
     checkFlag     : false,
@@ -193,7 +196,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     deleteFlag    : false,
     uneditable    : [true,true,true,true,true,true],
     total         : [null,null,null,'Total','baseShrAmt','localAmt'],
-    // widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
+    widths        : ['400','100','1','100','auto','auto'],
     pageID        : 'serviceFeeSubData',
     pageLength    : 10,
   };
@@ -739,8 +742,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getAcctPrqServFeeMainGnrt() {
-    this.acctService.getAcctPrqServFeeMainGnrt(this.periodAsOfParam, this.yearParam).subscribe(data => {
-      console.log(data);
+    this.servFeeMainTbl.overlayLoader = true;
+    this.servFeeSubTbl.overlayLoader = true;
+    this.acctService.getAcctPrqServFeeMainGnrt(this.periodAsOfParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+      this.serviceFeeMainData.tableData = data['mainDistList'];
+      this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+
+      this.servFeeMainTbl.refreshTable();
+      this.servFeeSubTbl.refreshTable();
     });
   }
 
