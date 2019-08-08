@@ -268,8 +268,8 @@ export class ArPreviewComponent implements OnInit {
         }
       );
     }else if(this.currentTab === 'acctEntries'){
-      this.savedData = this.passTable.tableData.filter(a=>a.edited && !a.deleted);
-      this.deletedData = this.passTable.tableData.filter(a=>a.deleted);
+      this.savedData = this.accEntriesData.tableData.filter(a=>a.edited && !a.deleted);
+      this.deletedData = this.accEntriesData.tableData.filter(a=>a.deleted);
 
       this.savedData.forEach(a=>{
         if(!a.add){
