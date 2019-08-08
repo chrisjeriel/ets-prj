@@ -157,6 +157,8 @@ export class ArPreviewComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
+    this.accEntriesData.nData.tranId = this.record.tranId;
+    this.accEntriesData.nData.autoTag = 'N';
     this.getMtnCurrency();
     this.retrieveAmtDtl();
   }

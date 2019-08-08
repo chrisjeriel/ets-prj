@@ -6,6 +6,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-acct-ar-entry',
@@ -84,6 +86,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @Output() emitArInfo: EventEmitter<any> = new EventEmitter();
 
   sub: any;
+  forkSub: any;
   isAdd: boolean = false;
   cancelFlag: boolean = false;
   isCancelled: boolean = false;
@@ -167,6 +170,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
+    this.retrievePaymentType();
+    this.retrieveCurrency();
+    
     var tranId;
     var arNo;
     this.onChange.emit({ type: this.arInfo.tranTypeCd });
@@ -190,11 +196,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     //NECO PLEASE OPTIMIZE THIS, THIS IS NOT OPTIMIZED -neco also
     if(!this.isAdd){
       this.retrieveArEntry(tranId, arNo);
-    }else{
+    }else{  //edit
       if(this.emittedValue !== undefined){
         this.retrieveArEntry(this.emittedValue.tranId, this.emittedValue.arNo);
-      }else{
+      }else{ //add
         console.log('wat you never played tuber simulator?')
+        this.retrieveMtnBank();
         this.retrieveMtnAcitDCBNo();
         this.retrieveMtnDCBUser();
         this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
@@ -208,9 +215,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
       this.paytDtlTbl.refreshTable();
     }
-    this.retrievePaymentType();
-    this.retrieveCurrency();
-    this.retrieveMtnBank();
   }
 
   newAr(){
@@ -276,6 +280,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.sub.unsubscribe();
+    if(this.forkSub !== undefined){
+      this.forkSub.unsubscribe();
+    }
   }
 
   openPayorLOV(){
@@ -353,8 +360,15 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   retrieveArEntry(tranId, arNo){
-    this.as.getArEntry(tranId, arNo).subscribe(
-      (data:any)=>{
+    var sub$ = forkJoin(this.as.getArEntry(tranId, arNo),
+                        this.ms.getMtnBank(),
+                        this.ms.getMtnBankAcct()).pipe(map(([ar, bank, bankAcct]) => { return { ar, bank, bankAcct }; }));
+    this.forkSub = sub$.subscribe(
+      (forkData:any)=>{
+        let data = forkData.ar;
+        let bankData = forkData.bank;
+        let bankAcctData = forkData.bankAcct;
+        //ar
         if(data.ar !== null){
           this.arInfo.tranId         = data.ar.tranId;
           this.arInfo.arNo           = data.ar.arNo;
@@ -416,8 +430,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.selectedCurrency.currencyRt = data.ar.currRate;
           this.selectedBank.bankCd         = data.ar.dcbBank;
           this.selectedBankAcct.bankAcctCd = data.ar.dcbBankAcct;
-          this.retrieveMtnBankAcct();
-          
           this.paytDtlTbl.refreshTable();
           this.onChange.emit({ type: this.arInfo.tranTypeCd });
           this.disableTab.emit(false);
@@ -453,9 +465,22 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           },0);
 
         }
+        //bank
+        if(bankData.bankList.length !== 0){
+          for(var i of bankData.bankList){
+            this.banks.push(i);
+            this.passData.opts[2].vals.push(i.bankCd);
+            this.passData.opts[2].prev.push(i.officialName);
+          }
+          this.banks = bankData.bankList;
+        }
+        //bankAcct
+        if(bankAcctData.bankAcctList.length !== 0){
+            this.bankAccts = bankAcctData.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd});
+        }
       },
-      (error)=>{
-
+      (error: any)=>{
+        console.log('error');
       }
     );
   }
@@ -559,6 +584,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   retrieveMtnBank(){
+    
     this.banks = [];
     this.passData.opts[2].vals = [];
     this.passData.opts[2].prev = [];
@@ -604,6 +630,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   retrieveMtnDCBUser(){
+    
     this.ms.getMtnDCBUser(this.ns.getCurrentUser()).subscribe(
        (data:any)=>{
          if(data.dcbUserList.length === 1){
@@ -688,7 +715,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   compareBankFn(c1: any, c2: any): boolean {
-      return c1 && c2 ? c1.bankCd === c2.bankCd : c1 === c2;
+      console.log(c1.bankCd === c2.bankCd);
+      return c1.bankCd === c2.bankCd;
   }
 
   compareBankAcctFn(c1: any, c2: any): boolean {
