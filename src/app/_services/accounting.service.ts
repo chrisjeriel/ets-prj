@@ -1609,5 +1609,29 @@ export class AccountingService {
 		}
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitInvestments',JSON.stringify(params),header);
 	}
+
+	getAcitAllInvtIncome(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('tranDateFrom','')
+				.set('tranDateTo','')
+				.set('tranMonth','')
+				.set('tranYear','')
+				.set('tranDate','');
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAllInvestmentIncome', {params});
+	}
+
+	getAcitAllInvtIncomeInvtId(tranId?) {
+		 const params = new HttpParams()
+             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAllInvestmentIncomeInvtId",{params});
+	}
 }
 

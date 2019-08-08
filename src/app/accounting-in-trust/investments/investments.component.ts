@@ -173,8 +173,8 @@ export class InvestmentsComponent implements OnInit {
     resultCancel : boolean;
     statusList: any[] =[]; 
     statusCd: any = '';
-    matDateTo: any;
-    matDateFrom: any;
+    matDateTo: any = '';
+    matDateFrom: any = '';
 
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
