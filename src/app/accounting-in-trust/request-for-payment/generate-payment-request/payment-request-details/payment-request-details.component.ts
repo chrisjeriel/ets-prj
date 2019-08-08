@@ -406,7 +406,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
 
   getAcitPrqInwPol(){
-    console.log('here inward');
     var subRec = forkJoin(this.acctService.getAcitPrqInwPol(this.rowData.reqId,''), this.acctService.getAcitSoaDtl())
                          .pipe(map(([inwPol,soaDtl]) => { return { inwPol,soaDtl }; }));
 
@@ -414,13 +413,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       console.log(data);
       var recAcitPrqInwPol = data['inwPol']['acitPrqInwPolList'];
       var recAcitSoaDtl    = data['soaDtl']['soaDtlList'];
-
-      // var limit = this.recPrqTrans.filter(e => e.itemName == null).map(e => JSON.stringify({itemNo: e.itemNo}));
-      // console.log(limit);
-      // this.inwardPolBalData.tableData = recAcitPrqInwPol.filter(e => {
-      //                                     var content = JSON.stringify({itemNo: e.itemNo});
-      //                                     return limit.includes(content);
-      //                                  });
 
       this.recPrqTrans.forEach(e => {
           this.inwardPolBalData.tableData.push(recAcitPrqInwPol.filter(e2 => e2.itemNo == e.itemNo)
@@ -432,7 +424,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                                                       }));
       });
       console.log(this.inwardPolBalData.tableData);
-      console.log(this.othersData.tableData);
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.flatMap(e => { return e });
       console.log(this.inwardPolBalData.tableData);
       recAcitSoaDtl.forEach(e => {
@@ -948,6 +939,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         charges     : e.charges,
         createUser  : (e.createUser == '' || e.createUser == null)?this.ns.getCurrentUser():e.createUser,
         createDate  : (e.createDate == '' || e.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate),
+        // itemNo      : (e.itemNo == '' || e.itemNo == null)?(this.recPrqTrans.reduce((a,b) => Math.max(a,b),0))+1:e.itemNo,
         itemNo      : e.itemNo,
         netDue      : e.netDue,
         premAmt     : e.premAmt,
@@ -982,6 +974,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.params.deletePrqTrans  = [];
     });
   }
+
 
   onSaveCPC(){
     this.cedCompTbl.overlayLoader = true
