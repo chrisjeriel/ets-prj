@@ -636,7 +636,7 @@ export class ClmClaimHistoryComponent implements OnInit {
               this.params.saveClaimHistory   = [];
             }
           }else{
-            if((Number(sumLossPayt) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
+            if((Number(sumLossPayt) > Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
               this.warnMsg = 'Unable to save. The total payment for loss must be less than or equal to the approved amount.';
               this.showWarnMsg();
               this.params.saveClaimHistory   = [];

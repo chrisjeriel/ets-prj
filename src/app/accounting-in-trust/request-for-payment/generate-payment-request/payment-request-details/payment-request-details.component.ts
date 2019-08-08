@@ -308,6 +308,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.recPrqTrans = data['acitPrqTrans'];
 
       if(!this.activeOthTab){
+        console.log(this.requestData.tranTypeCd + ' >>>> this.requestData.tranTypeCd');
         if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
           this.cedingCompanyData.tableData = [];
           this.getClmHist();
@@ -387,21 +388,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.treatyTbl.refreshTable();
   }
 
-  onChangeCurr(){
-    if(this.requestData.tranTypeCd == 8 || this.activeOthTab){
-      this.othersData.tableData.forEach(e => {
-        e.currRate = (e.currCd != '' || e.currCd != null && e.currRate == '' || e.currRate == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd).map(e2 => e2.currencyRt)):e.currRate;
-        e.localAmt = (e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt))?0:e.currAmt;
-      });
-    }else{
-      if(this.requestData.tranTypeCd == 6){
-        this.treatyBalanceData.tableData.forEach(e => {
-          e.currRate = (e.currCd != '' || e.currCd != null && e.currRate == '' || e.currRate == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd).map(e2 => e2.currencyRt)):e.currRate;
-          e.localAmt = (e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt))?0:e.currAmt;
-        });
-      }
-    }
-  }
+
 
   // getMtnParams(){
   //   this.mtnService.getMtnParameters('V')
@@ -419,6 +406,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
 
   getAcitPrqInwPol(){
+    console.log('here inward');
     var subRec = forkJoin(this.acctService.getAcitPrqInwPol(this.rowData.reqId,''), this.acctService.getAcitSoaDtl())
                          .pipe(map(([inwPol,soaDtl]) => { return { inwPol,soaDtl }; }));
 
@@ -426,14 +414,27 @@ export class PaymentRequestDetailsComponent implements OnInit {
       console.log(data);
       var recAcitPrqInwPol = data['inwPol']['acitPrqInwPolList'];
       var recAcitSoaDtl    = data['soaDtl']['soaDtlList'];
-      var soaArr = [];
-      var inwArr = [];
+
+      // var limit = this.recPrqTrans.filter(e => e.itemName == null).map(e => JSON.stringify({itemNo: e.itemNo}));
+      // console.log(limit);
+      // this.inwardPolBalData.tableData = recAcitPrqInwPol.filter(e => {
+      //                                     var content = JSON.stringify({itemNo: e.itemNo});
+      //                                     return limit.includes(content);
+      //                                  });
 
       this.recPrqTrans.forEach(e => {
-        this.inwardPolBalData.tableData.push(recAcitPrqInwPol.filter(e2 => e2.reqId == e.reqId && e2.itemNo == e.itemNo).map(e2 => { e2.policyId = e.policyId; e2.instNo = e.instNo; return e2; }));
+          this.inwardPolBalData.tableData.push(recAcitPrqInwPol.filter(e2 => e2.itemNo == e.itemNo)
+                                                                      .map(e2 => {
+                                                                        e2.policyId = e.policyId;
+                                                                        e2.instNo   = e.instNo;
+                                                                        e2.itemNo   = e.itemNo;
+                                                                        return e2;
+                                                                      }));
       });
-      
+      console.log(this.inwardPolBalData.tableData);
+      console.log(this.othersData.tableData);
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.flatMap(e => { return e });
+      console.log(this.inwardPolBalData.tableData);
       recAcitSoaDtl.forEach(e => {
         this.inwardPolBalData.tableData.filter(e2 => e.policyId == e2.policyId && e.instNo == e2.instNo).map(e2 => Object.assign(e2,e));
       });
@@ -465,6 +466,22 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.cedCompTbl.refreshTable();
       console.log(this.cedingCompanyData.tableData);
     });
+  }
+
+  onChangeCurr(){
+    if(this.requestData.tranTypeCd == 8 || this.activeOthTab){
+      this.othersData.tableData.forEach(e => {
+        e.currRate = (e.currCd != '' || e.currCd != null && e.currRate == '' || e.currRate == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd).map(e2 => e2.currencyRt)):e.currRate;
+        e.localAmt = (e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt))?0:e.currAmt;
+      });
+    }else{
+      if(this.requestData.tranTypeCd == 6){
+        this.treatyBalanceData.tableData.forEach(e => {
+          e.currRate = (e.currCd != '' || e.currCd != null && e.currRate == '' || e.currRate == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd).map(e2 => e2.currencyRt)):e.currRate;
+          e.localAmt = (e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt))?0:e.currAmt;
+        });
+      }
+    }
   }
 
   showLOV(event, from){
