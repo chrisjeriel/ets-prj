@@ -678,15 +678,33 @@ export class LovComponent implements OnInit {
       .subscribe((a:any)=>{
         var rec = a["soaDtlList"].filter(e =>  (Number(e.totalPayments) + Number(e.tempPayments)) > 0 ).map(e => { e.newRec = 1; e.prevPaytAmt = (Number(e.totalPayments) + Number(e.tempPayments)); return e; });
         if(this.limitContent.length != 0){
-          this.limitContent.forEach(e => {
-            rec = rec.filter(e2 => e2.policyId != e.policyId);    
-          });
+          var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({policyId: a.policyId, instNo: a.instNo}));
+          this.passTable.tableData =    rec.filter(a => {
+                             var mdl = JSON.stringify({policyId: a.policyId, instNo: a.instNo});
+                             return !limit.includes(mdl);
+                           });
         }
-        console.log(this.limitContent);
-        this.passTable.tableData = rec;
-        console.log(this.passTable.tableData);
         this.table.refreshTable();
-      })
+      });
+    }else if(this.passData.selector == 'acitInvt'){
+      this.passTable.tHeader    = ['Investment Code', 'Investment Type', 'Security', 'Maturity Period', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate', 'Investment'];
+      this.passTable.widths     = [150,200,150,1,1,120,1,1,1,120,150];
+      this.passTable.dataTypes  = ['text','text','text','number','text','percent','date','date','text','percent','currency'];
+      this.passTable.keys       = ['invtCd','invtTypeDesc','securityDesc','matPeriod','durUnit','intRt','purDate','matDate','currCd','currRate','invtAmt'];
+      this.passTable.checkFlag  = true;
+      this.accountingService.getAccInvestments([])
+      .subscribe((data:any)=>{
+        var rec = data["invtList"];
+        console.log(this.limitContent);
+        if(this.limitContent.length != 0){
+          var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({invtId: a.invtId}));
+          this.passTable.tableData =    rec.filter(a => {
+                             var mdl = JSON.stringify({invtId: a.invtId});
+                             return !limit.includes(mdl);
+                           });
+        }
+        this.table.refreshTable();
+      });
     }else if(this.passData.selector == 'acitArClmRecover'){
       this.passTable.tHeader = ['Claim No.','Co. Claim No.', 'Policy No.', 'Loss Date'];
       this.passTable.widths =[300,300,300,150]
