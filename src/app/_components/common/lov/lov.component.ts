@@ -709,6 +709,17 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.invtList.filter((data)=>{return  this.passData.hide.indexOf(data.invtCd)==-1});
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acitArClmCashCall'){
+      this.passTable.tHeader = ['Claim No.','Hist. No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Paid Amount'];
+      this.passTable.widths =[250,100,200,250,300,300]
+      this.passTable.dataTypes = [ 'text','sequence-2', 'text', 'text', 'currency', 'currency',];
+      this.passTable.keys = [ 'claimNo','histNo', 'histCatDesc', 'histTypeDesc', 'reserveAmt', 'paytAmt'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getAcitArClmCashCallLov(this.passData.payeeNo).subscribe((a:any)=>{
+        //this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = a.clmCashCallLovList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;
