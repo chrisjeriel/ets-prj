@@ -6,8 +6,8 @@
                 <div class="col-sm-8">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" placeholder="BPI/MS INSURANCE CORPORATION">
-                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" (change)="checkCode($event)" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()">
+                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
                     </div>
                 </div>
                 <div class="col-sm-2"></div>
@@ -18,9 +18,9 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
-                <legend class="scheduler-border">Claims for Offset</legend>
+                <legend class="scheduler-border">Negative Treaty Balance</legend>
                     <div style="position: relative;margin-top: 10px" >
-                        <app-cust-editable-non-datatable [passData]="passDataNegative"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable #quarterTable [passData]="passData"(newClick)="onrowClick($event)" ></app-cust-editable-non-datatable>
                     </div>
             </fieldset>
         </div>
@@ -31,23 +31,22 @@
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
             <legend class="scheduler-border">Claims for Offset</legend>
                 <div style="position: relative;margin-top: 10px" >
-                    <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #trytytrans [passData]="claimsOffset" (clickLOV)="openLOV($event)"></app-cust-editable-non-datatable>
                 </div>
             </fieldset>
             
         </div>
+    </div>
+    <div class="form-row" style="margin-top: 13px !important;">
+        <div class="form-group col-sm">
+            <div class="col-md-12 text-center">
+                <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="onClickSave()"><a>Save</a></button>
+                </div>
+            </div>
+        </div>
     </div>	
 </div>
-
-<app-modal class="d-none" id="ViewClaims">
-	<div header>List of Claims for Offset</div>	
-	<div body>
-		 <div style="margin-bottom: -90px !important">
-                <app-cust-editable-non-datatable [passData]="ClaimsOffset"></app-cust-editable-non-datatable>
-         </div>  
-	</div>
-	<div footer class="text-center w-100">
-		<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
-	</div>
-</app-modal>
-
+<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-lov [passData]="passLov" (selectedData)="setClaimOffset($event)">

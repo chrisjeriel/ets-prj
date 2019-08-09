@@ -1783,10 +1783,25 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArInvPullout',JSON.stringify(params),header);
 	}
 
-	getAcitJVClmOffset(cedingId) {
+	getAcitJVClmOffsetLOV(cedingId) {
 		 const params = new HttpParams()
              .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
-        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvClmOff",{params});
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvClmOffLOV",{params});
+	}
+	
+	getAcitJVClmOffset(tranId,cedingId,quarterNo) {
+		 const params = new HttpParams()
+		 	 .set('tranId', (tranId === null || tranId === undefined ? '' : tranId))
+             .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
+             .set('quarterNo', (quarterNo === null || quarterNo === undefined ? '': quarterNo))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvClaimOffset",{params});
+	}
+
+	getNegativeTreaty(tranId,cedingId){
+		const params = new HttpParams()
+		 	 .set('tranId', (tranId === null || tranId === undefined ? '' : tranId))
+             .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvNegativeTreaty",{params});
 	}
 	
 }

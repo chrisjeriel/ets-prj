@@ -183,6 +183,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   setCedingcompany(data){
     this.jvDetails.cedingName = data.cedingName;
     this.jvDetails.ceding = data.cedingId;
+    this.passLov.cedingId = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveInwPol()
   }
