@@ -229,6 +229,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
     deletePrqTrans   : []
   };
 
+  limitData : any = {
+    histCategory : [],
+    histType     : []
+  };
+
   requestData     : any;
   selectedTblData : any;
   limitContent    : any[] = [];
@@ -311,7 +316,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.recPrqTrans = data['acitPrqTrans'];
 
       if(!this.activeOthTab){
-        console.log(this.requestData.tranTypeCd + ' >>>> this.requestData.tranTypeCd');
         if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
           this.cedingCompanyData.tableData = [];
           this.getClmHist();
@@ -452,6 +456,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                                                 e2.updateUser = e.updateUser;
                                                                 e2.createDate = e.createDate;
                                                                 e2.updateDate = e.updateDate;
+                                                                e2.paytAmt    = (e2.paytAmt == '' || e2.paytAmt == null)?0:e2.paytAmt;
+                                                                e2.localAmt   = (e2.localAmt == '' || e2.localAmt == null)?e2.paytAmt:e2.localAmt; 
                                                                 e2.itemNo     = e.itemNo;
                                                                 return e2; 
                                                               }));
@@ -479,14 +485,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   showLOV(event, from){
-    console.log(this.limitContent);
-    console.log(event + ' - ' + from);
     this.limitContent = [];
+
     if(from.toUpperCase() == 'LOVCEDTBL'){
       this.cedingCompanyData.tableData.forEach(e => {
         this.limitClmHistTbl.push(e);
       });
-      this.limitHistCat = (this.requestData.tranTypeCd == 3)?'L':'AO';
+      (this.requestData.tranTypeCd == 3)?this.limitData.histCategory = ['L']:this.limitData.histCategory = ['A','O'];
+      this.limitData.histType = [4,5];
       this.clmHistLov.modal.openNoClose();
     }else if(from.toUpperCase() == 'LOVINWARDTBL'){
       this.inwardPolBalData.tableData.forEach(e =>{
@@ -517,7 +523,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.limitClmHistTbl.push(e);
         }
       });
-      this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '').map(e => { e.edited = true; e.checked = false; e.createDate = ''; e.createUser = ''; return e});
+      this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '')
+                                        .map(e => { 
+                                          e.paytAmt = (e.paytAmt == '' || e.paytAmt == null)?0:e.paytAmt;
+                                          e.localAmt = (e.localAmt == '' || e.localAmt == null)?e.paytAmt:e.localAmt; 
+                                          e.edited = true; e.checked = false; e.createDate = ''; e.createUser = ''; return e; });
       this.cedCompTbl.refreshTable();
     }else if(from.toUpperCase() == 'LOVINWARDTBL'){
       var recAgingSoaDtl = data['data'];
@@ -862,10 +872,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.cedingCompanyData.tableData);
     console.log(this.params.savePrqTrans);
 
-    var paytAmt = this.cedingCompanyData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.paytAmt != null ?parseFloat(b.paytAmt):0),0);
-    console.log(paytAmt);
+    var reserveAmt = this.cedingCompanyData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reserveAmt != null ?parseFloat(b.reserveAmt):0),0);
+    console.log(reserveAmt);
 
-    if(Number(this.requestData.reqAmt) < Number(paytAmt)){
+    if(Number(this.requestData.reqAmt) < Number(reserveAmt)){
       this.warnMsg = 'The Total Payment Amount of Claim Histories must not exceed the Requested Amount.';
       this.warnMdl.openNoClose();
       this.params.savePrqTrans   = [];

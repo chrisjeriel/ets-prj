@@ -316,6 +316,7 @@ export class ClmClaimHistoryComponent implements OnInit {
                                 i.histDate     = this.ns.toDateTimeString(i.createDate);
                                 i.createDate   = this.ns.toDateTimeString(i.createDate);
                                 i.updateDate   = this.ns.toDateTimeString(i.updateDate);
+                                i.paytAmt      = (i.paytAmt == '' || i.paytAmt == null)?0:i.paytAmt;
                                 recHistCat.forEach(a => (a.description == i.histCatDesc)?i.histCategory=a.code:i.histCategory);
                                 recHistType.forEach(a => (a.description == i.histTypeDesc)?i.histType=a.code:i.histType);
                                 return i;
