@@ -64,7 +64,7 @@
 						 	<legend class="scheduler-border">List of Transactions for Allocation</legend>
 						 		<div class="row">
 						 			 <div class="col-sm-12" style="margin-bottom: -20px; margin-top: 10px" >
-						 			 	  <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-editable-non-datatable>
+						 			 	  <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
 						 			 </div>
 						 		</div>
 						 		<div class="form-row custom-row-inline-inset">

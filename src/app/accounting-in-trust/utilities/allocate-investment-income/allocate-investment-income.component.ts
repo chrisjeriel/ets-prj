@@ -68,7 +68,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
     searchParams: any[] = [];
     searchParamsInvt: any[] = [];
     boolView: boolean = true;
-    boolAllocate: boolean = true;
+    boolAllocate: boolean = false;
     selectedData : any;
     dialogIcon: string = '';
     dialogMessage: string = '';
@@ -92,25 +92,25 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
      pagination: true,
      pageLength: 10,
      widths: [1,1,1,1,1,1,1,1,100,85,90,80,100,120,100,120,130],
-     keys: ['invtCd','certNo','invtType',
-            'invtSecCd','matPeriod','durUnit','intRt','purDate',
+     keys: ['invtCd','certNo','invtTypeDesc',
+            'invtSecDesc','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
             'whtaxAmt','matVal'],
-     uneditable : ['invtCd','certNo','invtType',
-            'invtSecCd','matPeriod','durUnit','intRt','purDate',
+     uneditable : ['invtCd','certNo','invtTypeDesc',
+            'invtSecDesc','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
             'whtaxAmt','matVal'],
      total:[null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal'],
    };
 
    dataAll:any[] = [];
+   selectedTranId: any[] = [];
 
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Profit Commission Statement");
   	this.getYearList();
-  	this.retrieveAllInvtIncome(this.searchParams);
   }
 
   clearDates() {
@@ -142,43 +142,79 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   	if(this.isEmptyObject(this.radioVal)){
     }else {
 
-    	if(this.toDate < this.fromDate){
-        	this.dialogMessage="To Date must be greater than From Date";
-        	this.dialogIcon = "error-message";
-        	this.successDialog.open();
-    	}
     	if(this.radioVal === 'bydate'){
     		this.fromMonth = '';
     		this.fromYear = '';
     		this.asOfYear = '';
+    		
+    		if(this.toDate < this.fromDate){
+	        	this.dialogMessage="To Date must be greater than From Date";
+	        	this.dialogIcon = "error-message";
+	        	this.successDialog.open();
+	        	this.passData.tableData = [];
+    			this.table.refreshTable();
+    		} else if ( this.isEmptyObject(this.fromDate) && this.isEmptyObject(this.toDate) ){
+    			this.dialogMessage="To Date and From Date must have a value";
+	        	this.dialogIcon = "error-message";
+	        	this.successDialog.open();
+	        	this.passData.tableData = [];
+    			this.table.refreshTable();
+    		} else {
+    			this.searchTransactions();    		
+    		}
+
     	}else if (this.radioVal === 'bymoyo'){
     		this.fromDate = '';
     		this.toDate = '';
     		this.asOfYear = '';
-    	}else if (this.radioVal === 'byYear'){
+			
+			if ( this.isEmptyObject(this.fromMonth) && this.isEmptyObject(this.fromYear) ){
+    			this.dialogMessage="From Month and From Year must have a value";
+	        	this.dialogIcon = "error-message";
+	        	this.successDialog.open();
+	        	this.passData.tableData = [];
+    			this.table.refreshTable();
+    		} else {
+    			this.searchTransactions();    		
+    		}
+
+    	}else if (this.radioVal === 'byyear'){
+    		
     		this.fromDate = '';
     		this.toDate = '';
     		this.fromMonth = '';
     		this.fromYear = '';
+    		
+    		if ( this.isEmptyObject(this.asOfYear) ){
+    			this.dialogMessage="Date must have a value";
+	        	this.dialogIcon = "error-message";
+	        	this.successDialog.open();
+	        	this.passData.tableData = [];
+    			this.table.refreshTable();
+    		} else {
+    			this.searchTransactions();    		
+    		}	
     	}
-
-    	this.fromDate === null   || this.fromDate === undefined ?'':this.fromDate;
-        this.toDate === null || this.toDate === undefined?'':this.toDate;
-        this.fromMonth === null || this.fromMonth === undefined ?'':this.fromMonth;
-        this.fromYear === null || this.fromYear === undefined ?'':this.fromYear;
-        this.asOfYear === null || this.asOfYear === undefined ?'':this.asOfYear;
-        this.passData.tableData = [];
-        this.table.overlayLoader = true;
-
-        this.searchParams = [ {key: "tranDateFrom", search: this.fromDate },
-                             {key: "tranDateTo", search: this.toDate },
-                             {key: "tranMonth", search: this.fromMonth},
-                             {key: "tranYear", search: this.fromYear },
-                             {key: "tranDate", search: this.asOfYear },
-                             ]; 
-       console.log(this.searchParams);
-       this.retrieveAllInvtIncome(this.searchParams);
     }
+ }
+
+ searchTransactions(){
+ 			this.fromDate === null   || this.fromDate === undefined ?'':this.fromDate;
+	        this.toDate === null || this.toDate === undefined?'':this.toDate;
+	        this.fromMonth === null || this.fromMonth === undefined ?'':this.fromMonth;
+	        this.fromYear === null || this.fromYear === undefined ?'':this.fromYear;
+	        this.asOfYear === null || this.asOfYear === undefined ?'':this.asOfYear;
+	        this.passData.tableData = [];
+	        this.table.overlayLoader = true;
+
+	        this.searchParams = [ {key: "tranDateFrom", search: this.fromDate },
+	                             {key: "tranDateTo", search: this.toDate },
+	                             {key: "tranMonth", search: this.fromMonth},
+	                             {key: "tranYear", search: this.fromYear },
+	                             {key: "tranDate", search: this.asOfYear },
+	                             ]; 
+	       console.log(this.searchParams);
+	       this.retrieveAllInvtIncome(this.searchParams);
  }
 
   isEmptyObject(obj) {
@@ -201,7 +237,6 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	    } else {
 	     this.boolView = true;
 	    }
-
   }
 
    retrieveAllInvtIncomeInvtId(tranId?){
@@ -215,15 +250,16 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   }
 
   onClickView(){
-  	  this.passDataInvt.tableData = [];
-  	  this.retrieveAllInvtIncomeInvtId(this.selectedData.tranId);
+  	this.dataAll = [];
+  	this.invtId = [];
+  	this.retrieveAllInvtIncomeInvtId(this.selectedData.tranId);
   }
 
   showModalViewDetails(obj){
- 
   	obj.map(a => {
   		this.searchParamsInvt = [ {key: "invtId", search: a},
                              ]; 
+
   		this.as.getAccInvestments(this.searchParamsInvt).pipe(
   			finalize(() => this.showModDetailsFinal(this.dataAll,obj.length) )
   			).subscribe( data => {
@@ -232,8 +268,8 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 		  	 		this.dataAll.push( {
 		  	 										  invtCd: rec.invtCd,
 								                      certNo: rec.certNo,
-								                      invtType: rec.invtType,
-								       				  invtSecCd: rec.invtSecCd,
+								                      invtTypeDesc: rec.invtTypeDesc,
+								       				  invtSecDesc: rec.invtSecDesc,
 								                      matPeriod: rec.matPeriod,
 								                      durUnit: rec.durUnit,
 								                      intRt: rec.intRt,
@@ -256,12 +292,13 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 
   showModDetailsFinal(obj, counter){
   	if (counter === obj.length ){
+  		this.passDataInvt.tableData = [];
   		for(let rec of obj){
 		  	 		this.passDataInvt.tableData.push( {
 		  	 										  invtCd: rec.invtCd,
 								                      certNo: rec.certNo,
-								                      invtType: rec.invtType,
-								                      invtSecCd: rec.invtSecCd,
+								                      invtTypeDesc: rec.invtTypeDesc,
+								                      invtSecDesc: rec.invtSecDesc,
 								                      matPeriod: rec.matPeriod,
 								                      durUnit: rec.durUnit,
 								                      intRt: rec.intRt,
@@ -281,6 +318,32 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   	}  	 
   }
 
+  onRowDblClick(){
+	  if (this.isEmptyObject(this.selectedData)){
+	  }	else {
+	  	this.onClickView();
+	  }
+  }
 
+ update(data){
+ 	console.log(data);
+ }
+
+ onClickAllocate(){
+ 	 this.selectedTranId = [];
+	  for(var i= 0; i< this.passData.tableData.length; i++){
+	  		if(this.passData.tableData[i].checked){
+	  			this.selectedTranId.push(this.passData.tableData[i].tranId);
+	  		}
+	  }
+
+	  if(this.isEmptyObject(this.selectedTranId)){
+	  	this.dialogMessage="Please choose transactions to allocate";
+        this.dialogIcon = "error-message";
+        this.successDialog.open();
+	  } else {
+	  	console.log(this.selectedTranId);
+	  }
+ }
 
 }
