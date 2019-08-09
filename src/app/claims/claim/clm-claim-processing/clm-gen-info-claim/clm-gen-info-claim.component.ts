@@ -872,6 +872,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       var prj = pol['project'];
 
       this.claimData['refPolId'] = pol['policyId'];
+      this.claimData.policyId = pol['policyId'];
       this.claimData.coRefNo = pol['coRefNo'];
       this.claimData.currencyCd = pol['currencyCd'];
       this.claimData.issueDate = this.ns.toDateTimeString(pol['issueDate']);
