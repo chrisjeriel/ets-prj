@@ -68,4 +68,8 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       $('#ViewOverdue > #modalBtn').trigger('click');
   }
 
+  showCedingCompanyLOV() {
+    $('#cedingCompany #modalBtn').trigger('click');
+  }
+
 }

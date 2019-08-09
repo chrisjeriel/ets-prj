@@ -1846,7 +1846,7 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.sectionIPrem   = this.passData2.tableData[0].altAmt;
     this.altCoverageData.sectionIIPrem  = this.passData2.tableData[1].altAmt;
     this.altCoverageData.sectionIIIPrem = this.passData2.tableData[2].altAmt;
-    this.altCoverageData.totalPrem      = this.altCoverageData.alttotalPrem;
+    this.altCoverageData.totalPrem      = this.policyInfo.extensionTag === 'Y' ? this.altCoverageData.alttotalPrem + this.altCoverageData.extotalPrem : this.altCoverageData.alttotalPrem;
     this.altCoverageData.exSecIPrem     = this.policyInfo.extensionTag === 'Y' ? this.passData2.tableData[0].exAmt : null;
     this.altCoverageData.exSecIIPrem    = this.policyInfo.extensionTag === 'Y' ? this.passData2.tableData[1].exAmt : null;
     this.altCoverageData.exSecIIIPrem   = this.policyInfo.extensionTag === 'Y' ? this.passData2.tableData[2].exAmt : null;
