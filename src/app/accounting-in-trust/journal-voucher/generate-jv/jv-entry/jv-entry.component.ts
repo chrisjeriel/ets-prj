@@ -240,7 +240,9 @@ export class JvEntryComponent implements OnInit {
                          currRate: ev.currRate,
                          jvAmt: parseFloat(ev.jvAmt.toString().split(',').join('')),
                          localAmt: parseFloat(ev.localAmt.toString().split(',').join('')),
-                         jvType: ev.tranTypeName});
+                         jvType: ev.tranTypeName,
+                         tranType: ev.tranTypeCd
+                       });
   }
 
   setTranType(data){

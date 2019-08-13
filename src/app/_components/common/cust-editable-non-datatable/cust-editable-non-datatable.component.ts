@@ -66,6 +66,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         magnifyingGlass:[],
         options:[],
         dataTypes:[],
+        highlight:[],
         opts:[],
         nData:{},
         checkFlag:false,

@@ -64,7 +64,7 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="3">
-                                <app-jv-prenium-reserve [tranId]="jvDetails.tranId" [jvAmount]="jvDetails.jvAmt"></app-jv-prenium-reserve>
+                                <app-jv-prenium-reserve [jvDetail]="jvDetails"></app-jv-prenium-reserve>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="4">
@@ -80,7 +80,7 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="5">
-                                <app-jv-offsetting-against-negative-treaty></app-jv-offsetting-against-negative-treaty>
+                                <app-jv-offsetting-against-negative-treaty [jvDetail]="jvDetails"></app-jv-offsetting-against-negative-treaty>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="6">

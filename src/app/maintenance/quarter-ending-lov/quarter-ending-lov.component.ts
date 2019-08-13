@@ -22,9 +22,11 @@ export class QuarterEndingLovComponent implements OnInit {
     label:'',
     value:''
   };
-  cities:any=[];
+  quarterOptions : any = [];
+  yearOptions:any=[];
   quarter:any;
-  selectedCar1:any;
+  quarterYear:any;
+  quarterval:any;
 
   ngOnInit() {
 
@@ -33,6 +35,7 @@ export class QuarterEndingLovComponent implements OnInit {
   openModal(){
   	this.maintenanceService.getMtnParameters('V').subscribe((data : any) => {
   		console.log(data);
+      this.quarters = [];
   		for( var i = 0; i < data.parameters.length; i++){
   			if(data.parameters[i].paramName == 'FIRST_QTR_ENDING' ||
   			  data.parameters[i].paramName == 'SECOND_QTR_ENDING' ||
@@ -42,13 +45,17 @@ export class QuarterEndingLovComponent implements OnInit {
   			}
   		}
   		this.quarters = this.quarters.sort();
-  		this.year = new Date().getFullYear() - 5;
-      console.log(this.year - 10)
-      this.cities = [];
-      for (var i = 1; i <= 7; i++) {
-        this.cities.push({label: this.year + i, value: this.year + i});
+      // for(var i = 0 ; i <  this.quarters.length; i++){
+      //   this.quarterOptions.push({label: String(this.quarters[i]).slice(0,2) + '/' + String(this.quarters[i]).slice(2,4) , value:this.quarters[i]})
+      // }
+  		this.year = new Date().getFullYear() - 10;
+      this.yearOptions = [];
+      for (var i = 1; i <= 10; i++) {
+        this.yearOptions.push(this.year+i);
       }
-      //this.cities = [{label:'2019', value:'2019'},{label:'2020',value:'2020'},{label:'2021',value:'2021'}]
+      /*for (var i = 1; i <= 7; i++) {
+        this.yearOptions.push({label: this.year + i, value: this.year + i});
+      }*/
   	});
   }
 
@@ -61,13 +68,29 @@ export class QuarterEndingLovComponent implements OnInit {
     this.selectedData.emit();
   }
 
+  quarterData(data){
+    console.log('pasok')
+    console.log(data);
+    this.quarter = data;
+  }
+
   yearData(data){
-    console.log(data)         
+    console.log(data)
+    this.quarterYear = data;         
   }
 
   onClickOk(){
     console.log(this.quarter);
-    console.log(this.selectedCar1);
-    console.log(new Date(this.selectedCar1,2,31))
+    console.log(this.quarterYear);
+    var date = new Date(this.quarterYear,parseInt(this.quarter.substring(0,2))-1,parseInt(this.quarter.substring(2,4)));
+
+    function pad(num) {
+      return (num < 10) ? '0' + num : num;
+    }
+
+    this.quarterval = date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()) + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
+    this.selectedData.emit(this.quarterval);
+    this.quarterYear = '';
+    this.quarter = '';
   }
 }
