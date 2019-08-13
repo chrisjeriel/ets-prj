@@ -71,6 +71,8 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   passData: any = {
     tableData: [],
+    pinKeysLeft: ['policyNo','instNo','adjBalAmt'],
+    pinKeysRight:['overdueInt'],
     tHeader: ['Policy No.','Inst No.','Balance','Curr','Curr Rate','Local Amt','Payments','Net Due','Premium','RI Comm','RI Comm Vat','Charges','SOA No','Co Ref No','Eff Date','Due Date',"Overdue Interest"],
     resizable: [true, true, true, true, true,true, true, true, true,true,true,true,true,true,true,true,true],
     dataTypes: ['text','sequence-2','currency','text','percent','currency','currency','currency','currency','currency','currency','currency','text','text','date','date','currency'],
