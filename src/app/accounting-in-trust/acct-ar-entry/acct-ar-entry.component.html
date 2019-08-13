@@ -1,44 +1,45 @@
 <div class="row">
 	<div class="col-sm-10">
+		<form #myForm="ngForm">
 		<fieldset class="scheduler-border" style="margin-right: -10px !important; padding-top: 10px !important; padding-bottom: 10px !important;">
 			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
-				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" mask="999999" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled">
+				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" mask="999999" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled" name="arNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event;" [disabled]="isCancelled"></datepicker>
+					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date);" [disabled]="isCancelled"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="isCancelled"></datepicker>
+					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="isCancelled" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED'"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">Status</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="arInfo.arStatDesc" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="arInfo.arStatDesc" readonly name="arStat">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">DCB No.</label>
 				<div class="form-control-sm cust-sm col-sm-2" style="padding: 0;">
 					<div class="input-group">
-						<input type="text" class="form-control form-control-sm text-right cust-sm col-sm-4" [ngModel]="arInfo.dcbYear" readonly>
-						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="arInfo.dcbUserCd" readonly>
-						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="pad(arInfo.dcbNo, 'dcbSeqNo')" readonly>
+						<input type="text" class="form-control form-control-sm text-right cust-sm col-sm-4" [ngModel]="arInfo.dcbYear" name="dcbYear" readonly>
+						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="arInfo.dcbUserCd" readonly name="dcbUserCd">
+						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="pad(arInfo.dcbNo, 'dcbSeqNo')" name="dcbNo" readonly>
 					</div>
 				</div>
 				<div class="col-sm-4" style="padding: 0px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-3" style="margin-right: -2px !important;padding-left: 0px !important;">Reference No.</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.refNo" [readonly]="isCancelled">
+						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.refNo" name="refNo" [readonly]="isCancelled">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm" [(ngModel)]="arInfo.tranTypeCd" appRequired [disabled]="isCancelled">
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="arInfo.tranTypeCd" appRequired [disabled]="isCancelled || arInfo.rstrctTranUp === 1" name="tranType">
 					<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
 				</select>
 				<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled" [ngModel]="arInfo.tranTypeName"> -->
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
-				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.prNo" [readonly]="isCancelled">
+				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.prNo" [readonly]="isCancelled" name="prNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
 					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;" [disabled]="isCancelled"></datepicker>
@@ -47,22 +48,22 @@
 					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.prPreparedBy" [readonly]="isCancelled">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.prPreparedBy" [readonly]="isCancelled" name="preparedBy">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled">
+				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled" name="payor">
 				<div class="text-search-ico" (click)="openPayorLOV()" *ngIf="!isCancelled"><a><i class="fa fa-search"></i></a></div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
-				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" readonly [ngModel]="arInfo.mailAddress"></textarea>
+				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" readonly [ngModel]="arInfo.mailAddress" name="address"></textarea>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Business</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="arInfo.bussTypeName" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="arInfo.bussTypeName" readonly name="business">
 				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="arInfo.tin" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="arInfo.tin" readonly name="tin">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Amount</label>
@@ -70,24 +71,26 @@
 					<div class="input-group">
 						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.currCd" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-						<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareCurrencyFn" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled">
-							<option *ngFor="let curr of currencies" [ngValue]="curr">{{curr.currencyCd}}</option>
+						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled" name="amt">
+							<option *ngFor="let curr of passData.opts[1].prev" [ngValue]="curr">{{curr}}</option>
 						</select>
-						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled">
+						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
-						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3" [ngModel]="arInfo.currRate | number: '1.10-10'" readonly >
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3" [ngModel]="arInfo.currRate | number: '1.10-10'" readonly  name="rate">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-1" value="PHP" readonly>
-				<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-2" [ngModel]="(arInfo.arAmt*arInfo.currRate) | number:'1.2-2'" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-1" value="PHP" name="localAmt" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-2" [ngModel]="(arInfo.arAmt*arInfo.currRate) | number:'1.2-2'" name="localamt2" readonly>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
-				<textarea class="form-control form-control-sm col-sm" [(ngModel)]="arInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired [readonly]="isCancelled"></textarea>
+				<textarea class="form-control form-control-sm col-sm required" [(ngModel)]="arInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired [readonly]="isCancelled" name="particulars"></textarea>
 			</div>
 		</fieldset>
+		</form>
 	</div>
+
 	<div class="col-sm-2">
 		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 14px !important; padding-bottom: 13px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
@@ -139,13 +142,13 @@
 							<label class="form-control-sm col-sm-1">DCB Bank</label>
 							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="arInfo.dcbBankName" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-							<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired [disabled]="isCancelled">
+							<select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired [disabled]="isCancelled">
 								<option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
 							</select>
 							<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
 							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.dcbBankAcctNo" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-							<select class="form-control form-control-sm cust-sm col-sm-2" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired [disabled]="isCancelled">
+							<select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired [disabled]="isCancelled">
 								<option *ngFor="let bankAcct of bankAccts" [ngValue]="bankAcct">{{bankAcct.accountNo}}</option>
 							</select>
 							<div class="col-sm-1"></div>

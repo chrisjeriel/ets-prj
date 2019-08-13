@@ -6,6 +6,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-inward-policy-balances',
@@ -17,6 +18,7 @@ export class InwardPolicyBalancesComponent implements OnInit {
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   @Input() record: any = {};
 
@@ -54,7 +56,6 @@ export class InwardPolicyBalancesComponent implements OnInit {
         showMG: 1
     },
     total: [null,null,null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
-    genericBtn: 'Save',
 /*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
     widths: [200, 200, 120, 50,120, 120, 30, 85, 120, 120,120,120,120,120,120],
     keys: ['soaNo', 'policyNo', 'coRefNo', 'instNo', 'effDate', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm',/* 'balRiCommVat',*/ 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
@@ -62,7 +63,7 @@ export class InwardPolicyBalancesComponent implements OnInit {
   };
 
   passLov: any = {
-    selector: 'acitSoaDtl',
+    selector: 'acitSoaDtlAr',
     payeeNo: '',
     hide: []
   }
@@ -70,6 +71,8 @@ export class InwardPolicyBalancesComponent implements OnInit {
   soaIndex: number;
   totalBal: number = 0;
   variance: number = 0;
+
+  cancelFlag: boolean;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -147,7 +150,7 @@ export class InwardPolicyBalancesComponent implements OnInit {
   }
 
   computeTotalBalAndVariance(){
-    let tableData = this.passData.tableData.filter((a:any)=>{return String(a.soaNo).length !== 0});
+    let tableData = this.passData.tableData.filter((a:any)=>{return String(a.soaNo).length !== 0 && !a.deleted});
     this.totalBal = 0;
     this.variance = 0;
     for(var i of tableData){
@@ -170,10 +173,12 @@ export class InwardPolicyBalancesComponent implements OnInit {
     }
   }
 
-  save(){
+  save(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     //prepare params from table
     this.savedData = [];
     this.deletedData = [];
+    this.computeTotalBalAndVariance();
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
@@ -221,6 +226,10 @@ export class InwardPolicyBalancesComponent implements OnInit {
 
       }
     );
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 
   onRowClick(data){
