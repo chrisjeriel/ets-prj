@@ -126,6 +126,8 @@ export class JvPreniumReserveComponent implements OnInit {
 				deleted.push(this.passData.tableData[i]);
 			}
 		}
+		this.premResData.tranType = this.jvDetail.tranType;
+		this.premResData.tranId = this.jvDetail.tranId;
 		this.premResData.savePremResRel = edited;
 		this.premResData.deletePremResRel = deleted;
 	}
