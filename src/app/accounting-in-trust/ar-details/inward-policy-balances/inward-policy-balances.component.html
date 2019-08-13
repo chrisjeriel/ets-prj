@@ -15,12 +15,25 @@
     </div>
     <div class="input-group" style="margin-top: -27px">
       <div class="col-sm-12">
-        <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)" (genericBtn)="onClickSave();"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)"></app-cust-editable-non-datatable>
       </div>
     </div>
+    
 </div>
 
+<div class="form-row">
+        <div class="form-group col-sm">
+          <div class="col-md-13 text-center">
+            <br>
+            <div class="cust-btn-container">
+              <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
+              <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+            </div>
+          </div>
+        </div>
+    </div>
 
 <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>

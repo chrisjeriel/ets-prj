@@ -50,7 +50,6 @@ export class ArOthersComponent implements OnInit {
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
-    genericBtn: 'Save',
     pageLength: 10,
     widths: [210,160,'auto',80,100,120,120],
     keys: ['itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'currAmt', 'localAmt'],
