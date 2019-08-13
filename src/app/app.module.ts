@@ -437,6 +437,7 @@ import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
 import { MtnBankComponent } from './maintenance/mtn-bank/mtn-bank.component';
 import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration/mtn-acct-int-duration.component';
+import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
 
 
 @NgModule({
@@ -881,6 +882,7 @@ import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration
         AccountingMtnComponent,
         MtnBankComponent,
         MtnAcctIntDurationComponent,
+        WfFormCommonComponent,
     ],
 
   	providers: [
