@@ -62,7 +62,7 @@ export class InwardPolicyBalancesComponent implements OnInit {
   };
 
   passLov: any = {
-    selector: 'acitSoaDtl',
+    selector: 'acitSoaDtlAr',
     payeeNo: '',
     hide: []
   }
@@ -147,7 +147,7 @@ export class InwardPolicyBalancesComponent implements OnInit {
   }
 
   computeTotalBalAndVariance(){
-    let tableData = this.passData.tableData.filter((a:any)=>{return String(a.soaNo).length !== 0});
+    let tableData = this.passData.tableData.filter((a:any)=>{return String(a.soaNo).length !== 0 && !a.deleted});
     this.totalBal = 0;
     this.variance = 0;
     for(var i of tableData){
@@ -174,6 +174,7 @@ export class InwardPolicyBalancesComponent implements OnInit {
     //prepare params from table
     this.savedData = [];
     this.deletedData = [];
+    this.computeTotalBalAndVariance();
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);

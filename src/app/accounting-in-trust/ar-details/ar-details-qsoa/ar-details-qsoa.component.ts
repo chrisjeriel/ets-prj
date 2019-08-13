@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angu
 import { AccARInvestments } from '@app/_models';
 import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
-import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -17,7 +17,7 @@ export class ArDetailsQsoaComponent implements OnInit {
   @Input() record: any = {};
 
   @ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
-  @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild(QuarterEndingLovComponent) lovMdl: QuarterEndingLovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -31,6 +31,7 @@ export class ArDetailsQsoaComponent implements OnInit {
     deleteFlag:true,
     infoFlag:true,
     paginateFlag:true,
+    //magnifyingGlass: ['quarterEnding'],
     nData: {
       tranId: '',
       billId: 1,
@@ -43,12 +44,13 @@ export class ArDetailsQsoaComponent implements OnInit {
       createUser: '',
       createDate: '',
       updateUser: '',
-      updateDate: ''
+      updateDate: '',
+      showMG: 1
     },
     keys: ['quarterEnding', 'currCd', 'currRate', 'balPaytAmt', 'localAmt'],
     checkFlag: true,
     pageID: 'negtrty',
-    widths:[150, 1, 150, 'auto', 'auto'],
+    widths:[150, 100, 150, 'auto', 'auto'],
     opts: [
       {
         selector: 'currCd',
@@ -81,14 +83,18 @@ export class ArDetailsQsoaComponent implements OnInit {
 
     this.accountingService.getAcitArNegTrtyBal(this.record.tranId, 1).subscribe(  //Bill Id is always 1 for Negative Treaty balance
       (data: any)=>{
-        /*for(var i of data.negTrtyBalList){
-          i.currCd = {currCd: i.currCd, currRate: i.currRate};
+        for(var i of data.negTrtyBalList){
+          i.showMG = 0;
           this.passData.tableData.push(i);
-        }*/
-        this.passData.tableData = data.negTrtyBalList;
+        }
+        //this.passData.tableData = data.negTrtyBalList;
         this.table.refreshTable();
       }
     );
+  }
+
+  setSelectedData(data){
+    console.log(data);
   }
 
   onClickSave(){

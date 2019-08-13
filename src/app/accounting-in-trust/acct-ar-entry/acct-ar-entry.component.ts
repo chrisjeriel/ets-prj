@@ -24,7 +24,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   passData: any = {
         tableData: [],
-        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class'],
+        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check/Card No.','Check Date','Check Class'],
         dataTypes: ['select','select','percent','currency','select','number','number','date','select'],
         paginateFlag: true,
         infoFlag: true,
@@ -38,7 +38,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         nData: {
           paytMode: '',
           currCd: 'PHP',
-          currRt: 0,
+          currRate: 1,
           paytAmt: 0,
           bank: '',
           bankAcct: '',
@@ -91,6 +91,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   isAdd: boolean = false;
   cancelFlag: boolean = false;
   isCancelled: boolean = false;
+  dcbBankAcctCurrCd: string = '';
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -149,10 +150,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   savedData: any[] = [];
   deletedData: any[] = [];
 
-  selectedCurrency: any = {
-    currencyCd: 'PHP',
-    currencyRt: 1
-  };
+  selectedCurrency: string = 'PHP';
 
   selectedBank: any = {
     bankCd: '',
@@ -202,10 +200,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       if(this.emittedValue !== undefined){
         this.retrieveArEntry(this.emittedValue.tranId, this.emittedValue.arNo);
       }else{ //add
-        console.log('wat you never played tuber simulator?')
         //this.retrieveMtnBank();
-        this.retrieveMtnAcitDCBNo();
+        this.retrieveMtnAcitDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
         //this.retrieveMtnDCBUser();
+        this.retrieveCurrency();
         this.setDefaultValues();
         this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
         this.arDate.time = this.ns.toDateTimeString(0).split('T')[1];
@@ -350,6 +348,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.selectedBankAcct = data;
     this.arInfo.dcbBankAcct = data.bankAcctCd;
     this.arInfo.dcbBankAcctNo = data.accountNo;
+    this.dcbBankAcctCurrCd = data.currCd;
+    console.log(data.currCd);
   }
 
   changeArAmt(data){
@@ -365,6 +365,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.arInfo.mailAddress = data.data.mailAddress;
     this.arInfo.cedingId = data.data.cedingId;
     this.arInfo.bussTypeName = data.data.bussTypeName;
+    $('.payor').focus().blur();
   }
 
   retrieveArEntry(tranId, arNo){
@@ -420,9 +421,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.cedingId       = data.ar.cedingId;
           this.arInfo.bussTypeName   = data.ar.bussTypeName;
           this.arInfo.rstrctTranUp   = data.ar.rstrctTranUp;
-          this.selectedCurrency.currencyCd = data.ar.currCd;
-          this.selectedCurrency.currencyRt = data.ar.currRate;
-          console.log(this.selectedCurrency.currencyCd);
+          this.selectedCurrency       = data.ar.currCd;
           //currencies
           this.currencies = [];
           if(curr.currency.length !== 0){
@@ -442,14 +441,19 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.passData.tableData = [];
           for(var i of data.ar.paytDtl){
             i.uneditable = [];
-            if(i.paytMode !== 'BT' && i.paytMode !== 'CK'){
+            if(i.paytMode !== 'BT' && i.paytMode !== 'CK' && i.paytMode !== 'CR'){
               i.uneditable.push('bank');
               i.uneditable.push('bankAcct');
             }
             if(i.paytMode !== 'CK'){
-              i.uneditable.push('checkNo');
+              if(i.paytMode !== 'CR'){
+                i.uneditable.push('checkNo');
+              }
               i.uneditable.push('checkDate');
               i.uneditable.push('checkClass');
+            }
+            if(i.paytMode !== 'CR'){
+              i.uneditable.push('checkNo');
             }
             this.passData.tableData.push(i);
           }
@@ -503,7 +507,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         if(bankAcctData.bankAcctList.length !== 0){
             this.bankAccts = bankAcctData.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd});
         }
-        
+        for(var i of this.bankAccts){
+          if(i.bankAcctCd == this.selectedBankAcct.bankAcctCd){
+            this.dcbBankAcctCurrCd = i.currCd;
+            break;
+          }
+        }
         this.form.control.markAsPristine();
       },
       (error: any)=>{
@@ -513,10 +522,22 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    if(this.checkArInfoFields() || this.checkPaytDtlFields() || this.passData.tableData.length === 0){
+    if(this.checkArInfoFields() || this.checkPaytDtlFields() || this.paytModeValidation() || this.passData.tableData.length === 0){ //empty required fields?
       this.dialogIcon = 'error';
       this.successDiag.open();
-    }else{
+      $('.required').focus().blur();
+    }
+    else if(this.bankVsArCurr()){  //dcb bank account is not equal to selected ar currency?
+      this.dialogIcon = 'info';
+      this.dialogMessage = 'Allowable DCB Bank Account should match the AR Currency.';
+      this.successDiag.open();
+    }
+    else if(this.arAmtEqualsPayt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Insufficient Total Payments.';
+      this.successDiag.open();
+    }
+    else{
       $('#confirm-save #modalBtn2').trigger('click');
     }
   }
@@ -528,9 +549,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
+          this.savedData[this.savedData.length-1].checkDate = this.ns.toDateTimeString(this.savedData[this.savedData.length-1].checkDate);
       }
       else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
           this.deletedData.push(this.passData.tableData[i]);
+          this.savedData[this.savedData.length-1].checkDate = this.ns.toDateTimeString(this.savedData[this.savedData.length-1].checkDate);
       }
     }
 
@@ -641,14 +664,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     );
   }
 
-  retrieveMtnAcitDCBNo(){
-    this.ms.getMtnAcitDCBNo(new Date().getFullYear(),null,this.ns.toDateTimeString(0),null).subscribe(
+  retrieveMtnAcitDCBNo(dcbYear?, dcbDate?){
+    this.ms.getMtnAcitDCBNo(dcbYear,null,dcbDate,null).subscribe(
       (data:any)=>{
         if(data.dcbNoList.length === 0){
           this.dialogIcon = 'info';
           this.dialogMessage = 'Currently, there is no DCB No. yet for today’s transaction. A DCB No. will be automatically generated.';
           this.successDiag.open();
-          this.generateDCBNo();
+          this.generateDCBNo(dcbYear,dcbDate);
         }else{
           this.arInfo.dcbYear = data.dcbNoList[0].dcbYear;
           this.arInfo.dcbNo = data.dcbNoList[0].dcbNo;
@@ -681,17 +704,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     );
   }
 
-  generateDCBNo(){
+  generateDCBNo(dcbYear, dcbDate){
     let saveDCBNo: any[] = [];
     saveDCBNo.push({
       autoTag: 'Y',
       createDate: this.ns.toDateTimeString(0),
       createUser: this.ns.getCurrentUser(),
-      dcbDate: this.ns.toDateTimeString(0),
+      dcbDate: dcbDate,
       dcbNo: '',
       dcbStatus: 'O',
-      dcbYear: new Date().getFullYear(),
-      remarks: '',
+      dcbYear: dcbYear,
+      remarks: 'created from AR Entry',
       updateDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser()
     });
@@ -701,7 +724,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         if(data.returnCode === 0){
           //when there's an error, pop something up idk
         }else{
-          this.retrieveMtnAcitDCBNo();
+          this.retrieveMtnAcitDCBNo(dcbYear,dcbDate);
         }
       },
       (error: any)=>{
@@ -734,6 +757,38 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+  bankVsArCurr(): boolean{
+    if(this.selectedCurrency != this.dcbBankAcctCurrCd){
+      return true;
+    }
+    return false;
+  }
+
+  paytModeValidation(): boolean{
+    for(var i of this.passData.tableData){
+      if(i.paytMode == 'BT' && (i.bank.length === 0 || i.bankAcct.length === 0)){
+        return true;
+      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
+        return true;
+      }else if(i.paytMode == 'CR' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  arAmtEqualsPayt(): boolean{
+    let totalPayts = 0;
+    for(var i of this.passData.tableData){
+      totalPayts += i.paytAmt;
+    }
+    if(this.arInfo.arAmt !== totalPayts){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   //UTILITIES STARTS HERE
@@ -780,7 +835,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     if(data.key === 'paytMode'){
       for(var i = 0; i < data.length; i++){
         data[i].uneditable = [];
-        if(data[i].paytMode !== 'BT' && data[i].paytMode !== 'CK'){
+        if(data[i].paytMode !== 'BT' && data[i].paytMode !== 'CK' && data[i].paytMode !== 'CR'){
           data[i].uneditable.push('bank');
           data[i].uneditable.push('bankAcct');
           data[i].bank = '';
@@ -788,7 +843,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }
         if(data[i].paytMode !== 'CK'){
           //data[i].uneditable = []
-          data[i].uneditable.push('checkNo');
+          if(data[i].paytMode !== 'CR'){
+            data[i].uneditable.push('checkNo');
+          }
           data[i].uneditable.push('checkDate');
           data[i].uneditable.push('checkClass');
           data[i].checkNo = '';
@@ -838,16 +895,19 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
            //bank
            if(data.bank.bankList.length !== 0){
+             this.passData.opts[2].vals = [];
+             this.passData.opts[2].prev = [];
              for(var i of data.bank.bankList){
                this.banks.push(i);
                this.passData.opts[2].vals.push(i.bankCd);
                this.passData.opts[2].prev.push(i.officialName);
              }
-             this.banks = data.bank.bankList;
+             //this.banks = data.bank.bankList;
            }
            //bankAcct
            if(data.bankAcct.bankAcctList.length !== 0){
                this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd});
+               
            }
       },
       (error: any)=>{
