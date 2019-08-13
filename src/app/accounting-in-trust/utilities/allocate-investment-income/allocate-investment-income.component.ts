@@ -254,10 +254,6 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   	  if(data !== null){
   	      console.log(data)
 	      this.selectedData = data;
-	      this.tranNo = data.tranNo;
-	      this.tranDate = data.tranDate;
-	      this.status = data.statusDesc;
-	      this.payor = data.payor;
 	    } else {
 	     this.boolView = true;
 	    }
@@ -281,16 +277,20 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	  for(var i= 0; i< this.passData.tableData.length; i++){
 	  		if(this.passData.tableData[i].checked){
 	  			this.selectedTranId.push(this.passData.tableData[i].tranId);
+	  			this.tranNo = this.passData.tableData[i].tranNo;
+			    this.tranDate = this.passData.tableData[i].tranDate;
+			    this.status = this.passData.tableData[i].statusDesc;
+			    this.payor = this.passData.tableData[i].payor;
 	  		}
 	  }
 
-	  if (this.selectedTranId.length > 1 || this.selectedTranId === null || this.selectedTranId === undefined){
+   	  if (this.selectedTranId.length === 1) {
+	  	this.retrieveAllInvtIncomeInvtId(this.selectedTranId);
+	  }  else {
 	  	this.dialogMessage="Please choose one transaction to view";
         this.dialogIcon = "error-message";
         this.successDialog.open();
-   	  } else if (this.selectedTranId.length === 1) {
-	  	this.retrieveAllInvtIncomeInvtId(this.selectedTranId);
-	  }
+   	  } 
   	
   }
 
@@ -369,9 +369,11 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
  	 this.sumBankCharge = 0;
  	 this.sumWhtax = 0;
  	 this.sumInvtIncome = 0;
+ 	 var currCd = null;
+ 	 var counter = 0; 
 	  for(var i= 0; i< this.passData.tableData.length; i++){
 	  		if(this.passData.tableData[i].checked){
-	  			this.selectedTranId.push({ tranId : this.passData.tableData[i].tranId});
+	  			this.selectedTranId.push({ tranId : this.passData.tableData[i].tranId, currCd : this.passData.tableData[i].currCd });
 	  			this.sumBankCharge = this.sumBankCharge + this.passData.tableData[i].bankCharge;
 	  			this.sumWhtax = this.sumWhtax + this.passData.tableData[i].whtaxAmt;
 	  			this.sumInvtIncome = this.sumInvtIncome + this.passData.tableData[i].incomeAmt;
@@ -383,33 +385,51 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
         this.dialogIcon = "error-message";
         this.successDialog.open();
 	  } else {
-	  	console.log(this.selectedTranId);
-	  	console.log(this.sumBankCharge);
-	  	console.log(this.sumWhtax);
-	  	console.log(this.sumInvtIncome);
+	  	currCd = this.selectedTranId[0].currCd;
+        counter = 0;
+	 	this.selectedTranId.forEach( a => {
+	 								if (a.currCd != currCd){
+	 									this.dialogMessage="You cannot allocate transactions with different currency.";
+								        this.dialogIcon = "error-message";
+								        this.successDialog.open();
+								        this.allocateTransaction(null,null,false);
+	 								} else {
+	 									counter = counter + 1;
+		 								this.allocateTransaction(counter,this.selectedTranId.length,true);
 
-
-
-
+		 						    }
+	 								});
 	  }
  }
 
-  prepareData(){
+ allocateTransaction(iteration?, limit?, success?){
+ 	if (success){
+ 		if (iteration === limit){
+ 			console.log(this.selectedTranId);
+		  	console.log(this.sumBankCharge);
+		  	console.log(this.sumWhtax);
+		  	console.log(this.sumInvtIncome);
+		  	this.saveJV();
+ 		}	
+ 	} 
+ }
+
+  prepareData(jvTranTypeCd?,refnoTranId?,currCd?,currRate?,jvAmt?){
     this.jvDatas.tranIdJv = null;
     this.jvDatas.jvYear = null;
     this.jvDatas.jvNo = null;
     this.jvDatas.jvDate = this.ns.toDateTimeString(0);
     this.jvDatas.jvStatus = 'N';
-    this.jvDatas.jvTranTypeCd = null;
+    this.jvDatas.jvTranTypeCd = jvTranTypeCd;
     this.jvDatas.tranTypeName = null;
     this.jvDatas.autoTag = 'Y';
-    this.jvDatas.refnoTranId = null;
+    this.jvDatas.refnoTranId = refnoTranId;
     this.jvDatas.refnoDate = null;
     this.jvDatas.particulars = null;
-    this.jvDatas.currCd = null;
-    this.jvDatas.currRate = null;
-    this.jvDatas.jvAmt = null;
-    this.jvDatas.localAmt = null;
+    this.jvDatas.currCd = currCd;
+    this.jvDatas.currRate = currRate;
+    this.jvDatas.jvAmt = jvAmt;
+    this.jvDatas.localAmt = jvAmt * currRate;
     this.jvDatas.allocTag = 'Y';
     this.jvDatas.allocTranId = null;
     this.jvDatas.preparedBy = null;
