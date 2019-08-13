@@ -5,34 +5,40 @@
     <div class="col-sm-10">
         <div class="input-group">
             <label class="form-control-sm col-sm-2">Company</label>
-            <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" value="0000001">
-            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" value="BPI/MS INSURANCE CORPORATION">
+            <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" [ngModel]="payorData?.cedingId" readonly>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" [ngModel]="payorData?.cedingName" readonly>
         </div>
         <div class="input-group">
             <label class="form-control-sm col-sm-2">Address</label>
-            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px;">16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209</textarea>
+            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px;" [ngModel]="payorData?.address" readonly></textarea>
         </div>
         <div class="input-group">
             <label class="form-control-sm col-sm-2">Membership Date</label>
-            <input type="text" class="form-control form-control-sm cust-sm col-sm" value="October 12, 2018">
+            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="ns.toDateTimeString(payorData?.membershipDate)" readonly> -->
+            <div class="dp-cont col-sm" style="margin-right: -10px; margin-left: 0px !important">
+                <datepicker [type]="'date'" [disabled]='true' [value]="ns.toDateTimeString(payorData?.membershipDate).split('T')[0]"></datepicker>
+            </div>
+            <span>&nbsp;</span>
+            <span>&nbsp;</span>
+            <span>&nbsp;</span>
             <label class="form-control-sm col-sm-2">Business Type</label>
-            <input type="text" class="form-control form-control-sm cust-sm col-sm" value="Non-Life Insurance">
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="payorData?.business" readonly>
         </div>
         <div class="input-group">
             <label class="form-control-sm col-sm-2">Tax Identification No.</label>
-            <input type="text" class="form-control form-control-sm cust-sm col-sm" value="10-93i3020-393">
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="payorData?.tin" readonly>
             <label class="form-control-sm col-sm-2">Status</label>
-            <input type="text" class="form-control form-control-sm cust-sm col-sm" value="Active">
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="payorData?.activeTag === 'Y' ? 'Active' : 'Inactive'" readonly>
         </div>
         <div class="input-group">
             <label class="form-control-sm col-sm-2">Primary Contact Person</label>
-            <input type="text" class="form-control form-control-sm cust-sm col-sm" value="Mr. Joselito M. Reyes">
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="payorData?.cedingRepresentative[0].fullName" readonly>
         </div>
         <div class="input-group">
             <label class="form-control-sm col-sm-2">Contact No.</label>
-            <input type="text" class="form-control form-control-sm cust-sm col-sm" value="(02) 738-0294">
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="payorData?.cedingRepresentative[0].contactNo" readonly>
             <label class="form-control-sm col-sm-2">Email Address</label>
-            <input type="text" class="form-control form-control-sm cust-sm col-sm" value="support_bpimsinscorp@bpims.com">
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="payorData?.cedingRepresentative[0].emailAdd" readonly>
         </div>
     </div>
     <div class="col-sm-1"></div>

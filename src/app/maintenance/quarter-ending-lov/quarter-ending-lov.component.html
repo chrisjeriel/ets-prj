@@ -1,0 +1,19 @@
+<app-modal class="d-none" (modalOpened)="openModal()" id="quarterEnd" #modal>
+	<div header>Quarter Ending</div>	
+	<div body>
+		 <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3 text-right labels">Month End</label>
+                <select class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="quarter">
+                	<option *ngFor="let quarter of quarters" [value]="quarter">{{slicer(quarter)}}</option>
+                </select>
+                <label class="form-control-sm col-sm-2 text-right labels">Year</label>
+                <dropdown [(ngModel)]="selectedCar1" [options]="cities" [editable]="true" (valueChange)="yearData($event)"></dropdown> 
+                <button class="cust-btn" style="height: 24px !important;margin-left: 6px;" (click)="modal.closeModal();onClickOk()">OK
+                </button>
+            </div>
+        </div>
+	</div>
+	<div footer class="text-center">
+	</div>
+</app-modal>

@@ -138,14 +138,14 @@ export class InwardPolBalanceComponent implements OnInit {
       }
       this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       this.instllmentTable.refreshTable();
+    });
 
-      this.underwritingservice.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
-          this.totalPrem = data.policy.project.coverage.totalPrem;
-          if(data.policy.project.coverage.holdCoverTag == 'Y'){
-            this.totalPrem = data.policy.project.coverage.holdCoverPremAmt;
-          }
-        });
-    })
+    this.underwritingservice.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+        this.totalPrem = data.policy.project.coverage.totalPrem;
+        if(data.policy.project.coverage.holdCoverTag == 'Y'){
+          this.totalPrem = data.policy.project.coverage.holdCoverPremAmt;
+        }
+    });
   }
 
   updateOtherCharges(data){

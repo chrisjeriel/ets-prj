@@ -50,6 +50,8 @@ export class ArDetailsComponent implements OnInit {
 
   @Input() paymentType: string = "";
   @Input() record: any;
+
+  investmentData: any;
    
   constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private route : ActivatedRoute) { }
 

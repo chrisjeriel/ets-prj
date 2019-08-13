@@ -5,6 +5,7 @@ import { AccountingService, NotesService } from '@app/_services'
 import { DecimalPipe } from '@angular/common';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-jv-entry',
@@ -22,7 +23,12 @@ export class JvEntryComponent implements OnInit {
   @Output() emitData = new EventEmitter<any>();
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
+  @ViewChild('CancelEntries') cancelEntries: ModalComponent;
+  @ViewChild('PrintEntries') printEntries: ModalComponent;
+  
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(LovComponent)lov: LovComponent;
+  @ViewChild('myForm') form:any;
 
   entryData:any = {
     jvYear:'',
@@ -58,8 +64,22 @@ export class JvEntryComponent implements OnInit {
     updateUser : '', 
   }
 
+  passLov:any = {
+    selector:'',
+    params:{}
+  };
+
+  sendData:any = {
+    tranId:null,
+    jvNo: null,
+    jvYear: null,
+    updateUser: null,
+    updateDate: null
+  }
+
   tranId:any;
   jvDate: any;
+  saveJVBut: boolean = false;
   cancelJVBut: boolean = false;
   approveBut: boolean = false;
   printBut: boolean = false;
@@ -76,8 +96,6 @@ export class JvEntryComponent implements OnInit {
   	this.titleService.setTitle("Acc | Journal Voucher");
 
     this.route.params.subscribe(params => {
-      console.log(params)
-      console.log(this.jvData)
       if(params.tranId != '' && params.tranId != undefined){
         this.tranId = params.tranId;
       }else{
@@ -103,7 +121,6 @@ export class JvEntryComponent implements OnInit {
         this.jvDatas.updateUser = params.updateUserTran;
       }
     });
-
     this.cancelJVBut = true;
     this.approveBut = true;
     this.printBut = true;
@@ -122,7 +139,6 @@ export class JvEntryComponent implements OnInit {
         this.jvDatas.tranId = data.transactions.tranId;
         this.jvDatas.tranYear = data.transactions.tranYear;
         this.jvDatas.tranClassNo  = data.transactions.tranClassNo;
-        console.log('TranId - '+this.jvData.tranId)
         this.entryData.jvDate = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
         this.entryData.refnoDate = this.entryData.refnoDate == null ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
         this.entryData.preparedDate = this.entryData.preparedDate == null ? '':this.ns.toDateTimeString(this.entryData.preparedDate);
@@ -131,36 +147,38 @@ export class JvEntryComponent implements OnInit {
         this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
         this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6')
 
-        this.entryData.jvNum = this.entryData.jvNo;
+        //this.entryData.jvNo = this.entryData.jvNo;
         this.entryData.jvNo = String(this.entryData.jvNo).padStart(8,'0');
         this.entryData.createDate = this.ns.toDateTimeString(this.entryData.createDate);
         this.entryData.updateDate = this.ns.toDateTimeString(this.entryData.updateDate);
 
         this.cancelJVBut = false;
         this.approveBut = false;
-        this.printBut = false;
         this.UploadBut = false;
         this.allocBut = false;
         this.dcBut = false;
+        if(this.entryData.jvStatus == 'N' || this.entryData.jvStatus == 'F' || this.entryData.jvStatus == 'A'){
+          this.printBut = false;
+        }else{
+          this.printBut = true;
+        }
         this.check(this.entryData)
-        this.tabController(this.entryData.tranTypeName);
+        this.tabController(this.entryData.tranTypeCd);
       }else{
         this.entryData.jvDate = this.ns.toDateTimeString(0);
         this.entryData.jvStatus = 'New';
-        this.tabController(this.entryData.tranTypeName);
-        this.onChange.emit({ type: '' });
+        this.tabController(0);
+        this.onChange.emit({ type: ''});
       }
       
     });
   }
 
   tabController(event) {
-    console.log(event)
   	this.onChange.emit({ type: event});
   }
 
   newJV(){
-    console.log(this.entryData.approvedDate)
     this.jvDatas.closeDate = null; 
     this.jvDatas.createDate = this.ns.toDateTimeString(0)
     this.jvDatas.createUser =  this.ns.getCurrentUser();
@@ -178,11 +196,12 @@ export class JvEntryComponent implements OnInit {
 
     this.entryData.jvYear = '';
     this.entryData.jvNo =  '';
-    this.entryData.jvStatus =  'New';
-    this.entryData.jvStatusName =  'N';
+    this.entryData.jvStatus =  'N';
+    this.entryData.jvStatusName =  'New';
     this.entryData.tranTypeName = '';
     this.entryData.jvDate = this.ns.toDateTimeString(0);
     this.entryData.autoTag = 'N';
+    this.entryData.refNo = '';
     this.entryData.refnoTranId = '';
     this.entryData.refNoDate = '';
     this.entryData.jvType =  '';
@@ -214,8 +233,9 @@ export class JvEntryComponent implements OnInit {
                          jvYear: ev.jvYear, 
                          jvDate: ev.jvDate, 
                          jvStatus: ev.jvStatusName,
+                         statusType: ev.jvStatus,
                          refnoDate: ev.refnoDate,
-                         refnoTranId: ev.refnoTranId,
+                         refnoTranId: ev.refNo,
                          currCd: ev.currCd,
                          currRate: ev.currRate,
                          jvAmt: parseFloat(ev.jvAmt.toString().split(',').join('')),
@@ -224,10 +244,10 @@ export class JvEntryComponent implements OnInit {
   }
 
   setTranType(data){
-    console.log(data)
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
-    this.tabController(this.entryData.tranTypeName);
+    this.tabController(this.entryData.tranTypeCd);
+    this.form.control.markAsDirty();
 
   }
 
@@ -244,7 +264,7 @@ export class JvEntryComponent implements OnInit {
     this.jvDatas.jvTranTypeCd = this.entryData.tranTypeCd;
     this.jvDatas.tranTypeName = this.entryData.tranTypeName;
     this.jvDatas.autoTag = this.entryData.autoTag;
-    this.jvDatas.refnoTranId = this.entryData.refnoTranId == '' ? '': this.ns.toDateTimeString(this.entryData.refnoTranId);
+    this.jvDatas.refnoTranId = this.entryData.refnoTranId == '' ? '': this.entryData.refNoTranId;
     this.jvDatas.refnoDate = this.ns.toDateTimeString(this.entryData.refnoDate);
     this.jvDatas.particulars = this.entryData.particulars;
     this.jvDatas.currCd = this.entryData.currCd;
@@ -266,7 +286,6 @@ export class JvEntryComponent implements OnInit {
   saveJV(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    console.log(JSON.stringify(this.jvDatas))
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -287,7 +306,6 @@ export class JvEntryComponent implements OnInit {
   }
 
   cancel(){
-    console.log(this.jvDatas)
   }
 
   upload(){
@@ -299,7 +317,100 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickSave(){
-     $('#confirm-save #modalBtn2').trigger('click');
+     $('#JVEntry #confirm-save #modalBtn2').trigger('click');
+  }
+
+  openLov(selector){
+    if(selector == 'refNo'){
+    this.passLov.params.arTag = 'Y';
+    this.passLov.params.cvTag = 'Y';
+    this.passLov.params.jvTag = 'Y';
+      this.passLov.selector = 'refNo';
+    }
+
+    this.lov.openLOV();
+  }
+
+  setLov(data){
+    if(data.selector == 'refNo'){
+      this.entryData.refNoTranId = parseInt(data.data.tranId);
+      this.entryData.refNoDate = this.ns.toDateTimeString(data.data.tranDate);
+      this.entryData.refNo = data.data.tranNo;
+      this.form.control.markAsDirty();
+    }
+  }
+
+  cancelJournalVoucher(){
+    this.sendData.tranId = this.tranId;
+    this.sendData.jvNo = parseInt(this.entryData.jvNo);
+    this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.updateUser = this.ns.getCurrentUser();
+    this.sendData.updateDate = this.ns.toDateTimeString(0);
+
+    this.accService.cancelJournalVoucher(this.sendData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.cancelJVBut = true;
+        this.approveBut = true;
+        this.printBut = true;
+        this.saveJVBut = true;
+        this.retrieveJVEntry();
+      }
+    });
+  }
+
+  onClickCancelJV(){
+    this.cancelEntries.openNoClose();
+  }
+
+  printJV(){
+    this.sendData.tranId = this.tranId;
+    this.sendData.jvNo = parseInt(this.entryData.jvNo);
+    this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.updateUser = this.ns.getCurrentUser();
+    this.sendData.updateDate = this.ns.toDateTimeString(0);
+
+    this.accService.printJournalVoucher(this.sendData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveJVEntry();
+      }
+    });
+  }
+
+  onClickPrint(){
+    this.printEntries.openNoClose();
+  }
+
+  onClickPrintable(){
+    $('#printableNames #modalBtn').trigger('click');
+  }
+  
+  setPrintable(data){
+    this.entryData.preparedBy = data.userId;
+    this.entryData.preparedName = data.printableName
+    this.entryData.preparedPosition = data.designation;
+  }
+
+  validateCurr(){
+    if(this.entryData.jvAmt !== '' && this.entryData.currRate !== ''){
+      this.entryData.localAmt = this.entryData.jvAmt * this.entryData.currRate;
+      this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+    }else{
+      this.entryData.localAmt = null;
+    }
   }
 
 }

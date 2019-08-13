@@ -71,7 +71,7 @@ export class PolPostComponent implements OnInit {
    //  }
 
     checkAcctDate(){
-      // this.post();
+      //this.post();
 
       // commented for testing 
       this.postBtn = true;
@@ -224,5 +224,18 @@ export class PolPostComponent implements OnInit {
         this.router.navigate(['alt-policy-listing']);
       else
         this.router.navigate(['policy-listing'])
+    }
+
+    goToDist(){
+      this.modalService.dismissAll();
+      this.router.navigate(['policy-dist', {policyId:this.policyInfo.policyId,
+                                                 policyNo: this.policyInfo.policyNo,
+                                                 lineCd:this.policyInfo.lineCd,
+                                                 lineClassCd: this.policyInfo.lineClassCd,
+                                                 cedingName: this.policyInfo.cedingName,
+                                                 insured: this.policyInfo.insuredDesc,
+                                                 riskName: this.policyInfo.riskName,
+                                                 exitLink: '/pol-dist-list'
+                                                 }], { skipLocationChange: true });
     }
 }

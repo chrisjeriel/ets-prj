@@ -55,7 +55,7 @@
                              <input class="form-control form-control-sm cust-sm col-sm-3 warn text-right" type="text"  [ngModel]="saveAcitPaytReq.currRate | number:'1.10-10'"  appRequired numbers-only>
                              <label class="form-control-sm col-sm-1 labels">Local Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="saveAcitPaytReq.currCd" readonly>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4" value="PHP" readonly>
                                 <input type="text" class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="saveAcitPaytReq.localAmt" (ngModelChange)="saveAcitPaytReq.localAmt=$event" style="text-align: right; margin-left: 2px;" readonly mask="comma_separator.2">
                              </div>
    		                </div>
@@ -87,21 +87,20 @@
    	                    	<label class="form-control-sm col-sm-1 labels">Approved By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
    		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.approvedBy" readonly>
-   		                    	<!-- <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
    		                    </div>
    		                </div>
    		                <div class="input-group" style="margin-bottom: -5px !important;">
    		                   	<label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" readonly>
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.preparedDes" readonly>
    		                    </div>
    		                    <label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" readonly>
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.requestedDes" readonly>
    		                    </div>
    	                    	<label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" readonly>
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.approvedDes" readonly>
    		                    </div>
    		                </div>
    		                <div class="input-group" style="margin-bottom: -5px !important;">
@@ -127,9 +126,9 @@
 	            	<div class="form-group col-sm" style="margin-bottom: 8px;">
 	            		<div class="col-md-13 text-center">
 	            			<div class="cust-btn-container">
-	            				<button type="button" class="cust-btn">New Request</button>
+	            				<button type="button" class="cust-btn" (click) = "onClickNewReq()">New Request</button>
 	            				<button type="button" class="cust-btn" [disabled]="(saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED')" (click)="onClickSave()">Save</button>
-	            				<button type="button" class="cust-btn" [disabled] ="initDisabled" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
+	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled">Print</button>
                       <button type="button" class="cust-btn" [disabled]="(saveAcitPaytReq.reqStatusDesc.toUpperCase() != 'FOR APPROVAL')" (click)="showConfirmMdl('approve')">Approve</button>
 	            			</div>
@@ -198,9 +197,8 @@
 
 <app-lov #mainLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>
-<app-mtn-users #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-users>
-<app-mtn-users #reqUserLov (selectedData)="setData($event,'req-user')"></app-mtn-users>
-<app-mtn-users #appUserLov (selectedData)="setData($event,'app-user')"></app-mtn-users>
-
+<app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
+<app-mtn-printable-names #reqUserLov (selectedData)="setData($event,'req-user')"></app-mtn-printable-names>
+<app-mtn-printable-names #appUserLov (selectedData)="setData($event,'app-user')"></app-mtn-printable-names>
 
 

@@ -454,6 +454,7 @@ export class ClmClaimHistoryComponent implements OnInit {
       }else{
         record.fromCancel = true;
         if(record.edited && !record.deleted){
+          this.paramsApvAmt.saveClaimApprovedAmt =  this.paramsApvAmt.saveClaimApprovedAmt.filter(e => e.claimId != record.claimId);
           record.claimId       = this.clmHistoryData.claimId;
           record.projId        = this.clmHistoryData.projId;
           record.approvedDate  = (record.approvedDate == '' || record.approvedDate == undefined)?this.ns.toDateTimeString(0):record.approvedDate;
@@ -635,7 +636,7 @@ export class ClmClaimHistoryComponent implements OnInit {
               this.params.saveClaimHistory   = [];
             }
           }else{
-            if((Number(sumLossPayt) >= Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
+            if((Number(sumLossPayt) > Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
               this.warnMsg = 'Unable to save. The total payment for loss must be less than or equal to the approved amount.';
               this.showWarnMsg();
               this.params.saveClaimHistory   = [];

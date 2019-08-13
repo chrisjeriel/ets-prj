@@ -13,26 +13,26 @@
             	<div class="col-sm-2"></div>
  		 	</div>
  		 </div>
- 		 
  	</div>
  	<div class="row">
  	 	 <div class="col-sm" style="margin-top: 20px" >
- 	 	 	 <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="soaLOV($event)"></app-cust-editable-non-datatable>
+ 	 	 	 <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
  	 	 </div>
  	</div>
     <div class="form-row" style="margin-top: 13px !important;">
         <div class="form-group col-sm">
             <div class="col-md-12 text-center">
                 <div class="cust-btn-container">
-                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                    <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-jv-soa-lov id="soaMdl" [tranId]="tranId" [cedingId]="jvDetails.ceding" (selectedData)="setSoa($event)" [lovCheckBox]="true" [hide]="hideSoa"></app-jv-soa-lov>
+<app-lov [passData]="passLov" (selectedData)="setSoa($event)">
+<!-- <app-jv-soa-lov id="soaMdl" [tranId]="tranId" [cedingId]="jvDetails.ceding" (selectedData)="setSoa($event)" [lovCheckBox]="true" [hide]="hideSoa"></app-jv-soa-lov> -->
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveInwPol()"></app-confirm-save>
 <app-cancel-button (onYes)="saveInwPol('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

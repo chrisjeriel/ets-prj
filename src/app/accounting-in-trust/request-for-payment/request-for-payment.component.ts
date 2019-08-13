@@ -18,7 +18,7 @@ export class RequestForPaymentComponent implements OnInit {
   	tableData    : [],
   	tHeader      : ['Payment Request No.', 'Payee', 'Payment Type', 'Status', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],
   	dataTypes    : ['text', 'text', 'text', 'text', 'date', 'text', 'text', 'currency', 'text'],
-  	colSize      : ['80px', '', '', '', '53px', '', '30px', '', ''],
+  	colSize      : ['120px', '', '', '', '65px', '', '30px', '', ''],
     btnDisabled  : true,
   	pagination   : true,
   	pageStatus   : true,

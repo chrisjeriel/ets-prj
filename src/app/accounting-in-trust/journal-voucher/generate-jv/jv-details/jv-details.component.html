@@ -40,122 +40,55 @@
         </div>
     </div>
 </fieldset>
-
-<!-- <div class="cust-tabs-container border-tab" style="margin-top: 10px;">
-	<ngb-tabset>
-		<ngb-tab>
-			<ng-template ngbTabTitle>
-				<div>Amount Details</div>
-			</ng-template>
-			<ng-template ngbTabContent>
-				<div class="input-group cust-border" style="padding-top: 0.6em">
-                    <div class="col-sm-12">
-                        <app-cust-editable-non-datatable [passData]="amountDetailsData" (tableDataChange)="plusMinus($event)">
-                            <ng-container controls-r>
-                                <label class="form-control-sm" style="text-align: left !important">Auto Compute</label>
-                                <input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
-                            </ng-container>
-                        </app-cust-editable-non-datatable>
-                    </div>
-				</div>
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab>
-			<ng-template ngbTabTitle>
-				<div>Accounting Entries</div>
-			</ng-template>
-			<ng-template ngbTabContent>
-				<div class="input-group cust-border" style="padding-top: 0.6em">
-                    <div class="col-sm-12">
-                        <app-cust-editable-non-datatable [passData]="accountingEntriesData">
-                            <ng-container controls-r>
-                                <button class="cust-btn" style="margin-right: 0px !important;">Print AE</button>
-                            </ng-container>
-                        </app-cust-editable-non-datatable>
-                    </div>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab>
-            <ng-template ngbTabTitle>
-                <div>Tax Details</div>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="input-group cust-border" style="padding-top: 0.6em">
-                    <div class="col-sm-12">
-                        <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">VAT Details</legend>
-                            <div class="custom-row-inline-inset">
-                                <app-cust-editable-non-datatable [passData]="accountingVATTaxDetails"></app-cust-editable-non-datatable>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div class="col-sm-12">
-                        <fieldset class="scheduler-border" style="margin-bottom:10px !important;">
-                            <legend class="scheduler-border">Creditable WTax Details</legend>
-                            <div class="custom-row-inline-inset">
-                                <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails" (tableDataChange)="computeWTax($event)">
-                                    <ng-container controls-r>
-                                        <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
-                                    </ng-container>
-                                </app-cust-editable-non-datatable>
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-            </ng-template>
-</ngb-tab>
-</ngb-tabset>
-</div> -->
 <div class="cust-tabs-container" style="margin-top: 10px ! important">
     <ngb-tabset>
         <ngb-tab>
             <ng-template ngbTabTitle>
-               <ng-container [ngSwitch]="jvType.toUpperCase()">
-                    <div *ngSwitchCase="'ADJUSTMENTS OF INWARD POLICY BALANCES'">Inward Policy Balances</div>
-                    <div *ngSwitchCase="'PREMIUM RESERVE RELEASED'">Premium Reserve Released (Funds Held Released)</div>
-                    <div *ngSwitchCase="'INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP'">Interest on Overdue Accounts - Monthly Setup</div>
-                    <div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
-                    <div *ngSwitchCase="'OFFSETTING OF RECEIVABLES IN-TRUST AGAINST LOSSES'">Offsetting of Receivables In-Trust Against Losses</div>
-                    <div *ngSwitchCase="'OFFSETTING OF CLAIMS AGAINST NEGATIVE TREATY BALANCE'">Offsetting of Claims Against Negative Treaty Balance</div>
-                    <div *ngSwitchCase="'OFFSETTING OF OUTSTANDING ACCOUNTS AGAINST TREATY BALANCE'">Offsetting of Outstanding Accounts Against Treaty Balance</div>
-                    <div *ngSwitchCase="'APPLICATION OF PAYMENTS TO POLICIES WITH ZERO BALANCE'">APPLICATION OF PAYMENTS TO POLICIES WITH ZERO BALANCE</div>
+               <ng-container [ngSwitch]="jvType">
+                    <div *ngSwitchCase="1">Inward Policy Balances</div>
+                    <div *ngSwitchCase="3">Premium Reserve Released (Funds Held Released)</div>
+                    <div *ngSwitchCase="4">Interest on Overdue Accounts - Monthly Setup</div>
+                    <div *ngSwitchCase="57">Loss Reserve Deposit</div>
+                    <div *ngSwitchCase="7">Offsetting of Receivables In-Trust Against Losses</div>
+                    <div *ngSwitchCase="5">Offsetting of Claims Against Negative Treaty Balance</div>
+                    <div *ngSwitchCase="6">Offsetting of Outstanding Accounts Against Treaty Balance</div>
+                    <div *ngSwitchCase="2">Application of Payments to Policies with Zero Balance</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
                 <div class="input-group cust-border" style="padding-top: 0.6em">
                     <div class="col-sm-12">
-                        <ng-container [ngSwitch]="jvType.toUpperCase()">
-                            <ng-container *ngSwitchCase="'ADJUSTMENTS OF INWARD POLICY BALANCES'">
-                                <app-jv-inward-pol-balance [tranId]="jvDetails.tranId"></app-jv-inward-pol-balance>                                    
+                        <ng-container [ngSwitch]="jvType">
+                            <ng-container *ngSwitchCase="1">
+                                <app-jv-inward-pol-balance [jvDetail]="jvDetails"></app-jv-inward-pol-balance>                   
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="'PREMIUM RESERVE RELEASED'">
-                                <app-jv-prenium-reserve></app-jv-prenium-reserve>
+                            <ng-container *ngSwitchCase="3">
+                                <app-jv-prenium-reserve [tranId]="jvDetails.tranId" [jvAmount]="jvDetails.jvAmt"></app-jv-prenium-reserve>
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="'INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP'">
-                                <app-jv-interest-on-overdue-accounts [tranId]="jvDetails.tranId" [jvDate]="jvDetails.jvDate"></app-jv-interest-on-overdue-accounts>
+                            <ng-container *ngSwitchCase="4">
+                                <app-jv-interest-on-overdue-accounts [jvDetail]="jvDetails"></app-jv-interest-on-overdue-accounts>
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="'LOSS RESERVE DEPOSIT'">
+                            <ng-container *ngSwitchCase="57">
                                 <app-jv-loss-reserve-deposit></app-jv-loss-reserve-deposit>
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="'OFFSETTING OF RECEIVABLES IN-TRUST AGAINST LOSSES'">
+                            <ng-container *ngSwitchCase="7">
                                 <app-jv-offsetting-against-losses></app-jv-offsetting-against-losses>
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="'OFFSETTING OF CLAIMS AGAINST NEGATIVE TREATY BALANCE'">
+                            <ng-container *ngSwitchCase="5">
                                 <app-jv-offsetting-against-negative-treaty></app-jv-offsetting-against-negative-treaty>
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="'OFFSETTING OF OUTSTANDING ACCOUNTS AGAINST TREATY BALANCE'">
+                            <ng-container *ngSwitchCase="6">
                                 <app-jv-overdue-accounts-against-treaty></app-jv-overdue-accounts-against-treaty>
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="'APPLICATION OF PAYMENTS TO POLICIES WITH ZERO BALANCE'">
-                                <app-jv-app-payments-zero></app-jv-app-payments-zero>
+                            <ng-container *ngSwitchCase="2">
+                                <app-jv-app-payments-zero [jvDetail]="jvDetails"></app-jv-app-payments-zero>
                             </ng-container>
                         </ng-container>
                     </div>
@@ -165,7 +98,7 @@
     </ngb-tabset>
 </div>
 
-<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 27px !important; ">
+<!-- <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 27px !important; ">
 	<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
@@ -178,4 +111,4 @@
             <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
         </div>
     </div>
-</fieldset>
+</fieldset> -->
