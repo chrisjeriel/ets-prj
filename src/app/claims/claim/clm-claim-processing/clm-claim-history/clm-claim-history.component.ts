@@ -69,8 +69,9 @@ export class ClmClaimHistoryComponent implements OnInit {
       {selector   : 'bookingMthYr', prev : [], vals: []},
     ],
     keys          : ['histNo','histDate','bookingMthYr','histCatDesc','histTypeDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','refNo','refDate','remarks'],
-    uneditable    : [true,true,false,false,false,false,true,true,false,true,true,true,false],
-    uneditableKeys: ['exGratia','reserveAmt'], 
+    uneditable    : [true,true,false,false,false,false,true,true,false,false,true,true,false],
+    // uneditableKeys: ['exGratia','reserveAmt'], 
+    uneditableKeys: ['exGratia'], 
     pageLength    : 10,
     paginateFlag  : true,
     infoFlag      : true,
@@ -161,6 +162,8 @@ export class ClmClaimHistoryComponent implements OnInit {
   arrExpStats       : any[] = [];
   arrlossStats      : any[] = [];
   adjRate           : any;
+  months            : any = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 
   dirtyCounter : any = {
     hist     : 0,
@@ -278,13 +281,11 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.passDataHistory.opts[0].vals = recHistCat.map(i => i.code);
       this.passDataHistory.opts[0].prev = recHistCat.map(i => i.description);
 
-      this.passDataHistory.opts[2].vals = recBookingMth.map(i =>{
-        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        return months[i.bookingMm - 1].toUpperCase() + '-' + i.bookingYear;
+      this.passDataHistory.opts[2].vals = recBookingMth.map(i => {
+        return this.months[i.bookingMm - 1].toUpperCase() + '-' + i.bookingYear;
       });
       this.passDataHistory.opts[2].prev = recBookingMth.map(i => {
-        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        return months[i.bookingMm - 1].toUpperCase() + '-' + i.bookingYear;
+        return this.months[i.bookingMm - 1].toUpperCase() + '-' + i.bookingYear;
       });
 
       this.passDataHistory.nData.currencyCd = recCurr.currencyCd;
@@ -334,6 +335,7 @@ export class ClmClaimHistoryComponent implements OnInit {
           }
 
           this.passDataHistory.tableData = recClmHist;
+          console.log(this.passDataHistory.tableData);
           this.histTbl.refreshTable();
           this.histTbl.onRowClick(null, this.passDataHistory.tableData[0]);
           this.compResPayt();
@@ -665,18 +667,22 @@ export class ClmClaimHistoryComponent implements OnInit {
     var adjAmt =  Number(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && e.histType == 1).map(e => e.reserveAmt).toString()) * (Number(this.adjRate)/100);
 
     this.passDataHistory.tableData.forEach(e => {
-      if(e.newRec == 1){ 
-        if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())){
-          this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code != 1).map(e => e.code);
-          this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code != 1).map(e => e.description);
-          this.passDataHistory.opts[1].vals.unshift(' ');
-          this.passDataHistory.opts[1].prev.unshift(' ');
-        }else{
-          this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code == 1).map(e => e.code);
-          this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code == 1).map(e => e.description);
-          this.passDataHistory.opts[1].vals.unshift(' ');
-          this.passDataHistory.opts[1].prev.unshift(' ');
-        }
+      if(e.newRec == 1){
+        e.bookingMthYr = this.passDataHistory.opts[2].prev[0];
+        this.passDataHistory.opts[1].vals = this.histTypeData.map(e => e.code);
+        this.passDataHistory.opts[1].prev = this.histTypeData.map(e => e.description);
+        // if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())){
+        //   this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code != 1).map(e => e.code);
+        //   this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code != 1).map(e => e.description);
+        //   this.passDataHistory.opts[1].vals.unshift(' ');
+        //   this.passDataHistory.opts[1].prev.unshift(' ');
+        // }else{
+        //   this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code == 1).map(e => e.code);
+        //   this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code == 1).map(e => e.description);
+        //   this.passDataHistory.opts[1].vals.unshift(' ');
+        //   this.passDataHistory.opts[1].prev.unshift(' ');
+        // }
+
 
         if((e.histType == 4 || e.histType == 5) && this.passDataApprovedAmt.tableData.length == 0){
           this.warnMsg = 'Please add Approved Amount before proceeding.';
@@ -695,6 +701,7 @@ export class ClmClaimHistoryComponent implements OnInit {
           e.reserveAmt = adjAmt;
           this.clmHistoryData.expResAmt = adjAmt;
         }
+
       }
     });
 
@@ -705,6 +712,9 @@ export class ClmClaimHistoryComponent implements OnInit {
     setTimeout(() => {   
       $('#histId').find('tbody').children().each(function(a){
         var cb = $(this).find('input[type=checkbox]');
+        var z = $(this).find('input.number');
+        var resAmt = $(z[0]);
+        var paytAmt = $(z[1])
         var histSelects = $(this).find('select');
         var histCat = $(histSelects[1]);
         var histType = $(histSelects[2]);
@@ -715,6 +725,12 @@ export class ClmClaimHistoryComponent implements OnInit {
           histType.removeClass('unclickable');
         }
 
+
+        console.log(resAmt);
+        ths.passDataHistory.tableData.forEach(e => {
+          (e.enableRes == 'N')?resAmt.addClass('unclickable'):resAmt.removeClass('unclickable');
+          (e.enablePayt == 'N')?paytAmt.addClass('unclickable'):paytAmt.removeClass('unclickable');
+        });
       });
     },0);
 

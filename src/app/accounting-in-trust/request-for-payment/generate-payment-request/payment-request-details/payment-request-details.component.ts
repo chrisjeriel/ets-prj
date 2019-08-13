@@ -457,7 +457,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                                                 e2.createDate = e.createDate;
                                                                 e2.updateDate = e.updateDate;
                                                                 e2.paytAmt    = (e2.paytAmt == '' || e2.paytAmt == null)?0:e2.paytAmt;
-                                                                e2.localAmt   = (e2.localAmt == '' || e2.localAmt == null)?e2.paytAmt:e2.localAmt; 
+                                                                e2.localAmt   = (e.localAmt == '' || e.localAmt == null)?0:e.localAmt; 
                                                                 e2.itemNo     = e.itemNo;
                                                                 return e2; 
                                                               }));
@@ -472,13 +472,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.requestData.tranTypeCd == 8 || this.activeOthTab){
       this.othersData.tableData.forEach(e => {
         e.currRate = (e.currCd != '' || e.currCd != null && e.currRate == '' || e.currRate == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd).map(e2 => e2.currencyRt)):e.currRate;
-        e.localAmt = (e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt))?0:e.currAmt;
+        e.localAmt = (!isNaN(e.currAmt))?Number(e.currAmt)*Number(e.currRate):0;
       });
     }else{
       if(this.requestData.tranTypeCd == 6){
         this.treatyBalanceData.tableData.forEach(e => {
           e.currRate = (e.currCd != '' || e.currCd != null && e.currRate == '' || e.currRate == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd).map(e2 => e2.currencyRt)):e.currRate;
-          e.localAmt = (e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt))?0:e.currAmt;
+          e.localAmt = (!isNaN(e.currAmt))?Number(e.currAmt)*Number(e.currRate):0;
         });
       }
     }
@@ -526,7 +526,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.filter(e => e.claimNo != '')
                                         .map(e => { 
                                           e.paytAmt = (e.paytAmt == '' || e.paytAmt == null)?0:e.paytAmt;
-                                          e.localAmt = (e.localAmt == '' || e.localAmt == null)?e.paytAmt:e.localAmt; 
+                                          e.localAmt = (e.localAmt == '' || e.localAmt == null)?Number(e.paytAmt)*Number(e.currencyRt):e.localAmt; 
                                           e.edited = true; e.checked = false; e.createDate = ''; e.createUser = ''; return e; });
       this.cedCompTbl.refreshTable();
     }else if(from.toUpperCase() == 'LOVINWARDTBL'){
@@ -601,7 +601,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }else{
         e.fromCancel = true;
         if(e.edited && !e.deleted){
-          e.localAmt      = e.currAmt;
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = '';
@@ -663,7 +662,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         e.quarterEnding = '';
         e.currAmt       = e.invtAmt;
         e.itemNo        = e.itemNo,
-        e.localAmt      = e.invtAmt;
+        e.localAmt      = Number(e.invtAmt) * Number(e.currRate);
         this.params.savePrqTrans.push(e);
       }else if(e.edited && e.deleted){ 
         this.params.deletePrqTrans.push(e);  
@@ -717,7 +716,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }else{
         e.fromCancel = true;
         if(e.edited && !e.deleted){
-          e.localAmt      = e.currAmt;
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = this.ns.toDateTimeString(e.quarterEnding);
@@ -780,7 +778,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
             instNo          : e.instNo,
             investmentId    : '',
             itemNo          : e.itemNo,
-            localAmt        : e.returnAmt,
+            localAmt        : Number(e.returnAmt) * Number(e.currRate),
             paymentFor      : '',
             policyId        : e.policyId,
             projId          : '',
@@ -847,7 +845,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
             instNo          : '',
             investmentId    : '',
             itemNo          : e.itemNo,
-            localAmt        : e.paytAmt,
+            localAmt        : e.localAmt,
             paymentFor      : e.paymentFor,
             policyId        : '',
             projId          : e.projId,

@@ -17,19 +17,19 @@
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 5px"> -->
                             <label class="form-control-sm col-sm-2 no-margin">Date</label>
                             <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
-                              <datepicker type="datetime" [showIcon]="false" [disabled]="false" [required]="true"></datepicker>
+                              <datepicker type="datetime" [disabled]="false" [required]="true"></datepicker>
                             </div>
                             <label class="form-control-sm col-sm-2">Status</label>
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-3">
                         </div>
                         <div class="input-group" style="margin-top: -5px">
                             <label class="form-control-sm col-sm-1">Payee</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" appRequired>
                             <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                         </div>
                         <div class="input-group" style="margin-top: -5px">
-                            <label class="form-control-sm col-sm-1">Particlars</label>
-                            <textarea class="form-control form-control-sm cust-sm col-sm text-area-font" style="min-height: 53px"></textarea>
+                            <label class="form-control-sm col-sm-1">Particulars</label>
+                            <textarea class="form-control form-control-sm cust-sm col-sm text-area-font" style="min-height: 53px" appRequired></textarea>
                         </div>
                     </div>
                     
@@ -94,32 +94,32 @@
         <fieldset class="scheduler-border" style="padding-bottom: 20px !important;">
             <legend class="scheduler-border">Check Details</legend>
             <div class="test d-flex" style="margin-top: 20px !important;">
-                <div class="col-sm-1"></div>
+                <div class="col-sm-1" style="margin-left: -15px !important;"></div>
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="San Miguel Corporation">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Amount</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20" style="margin-left: 3px;">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" appRequired style="margin-left: 3px;">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" placeholder="1.000000">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right"appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Local Amount</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP">
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20" style="margin-left: 3px;">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" readonly>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Prepared By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" >
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
@@ -129,18 +129,18 @@
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin">Date Prepared</label>
                         <div class="col-sm dp-cont" style="margin-left: 0px !important">
-                            <datepicker type="datetime" [showIcon]="false" [disabled]="false" [required]="true"></datepicker>
+                            <datepicker type="datetime" [disabled]="false" [required]="true"></datepicker>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank Account No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="PCPA-9091-7001-7389">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" placeholder="1324454234">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Date</label>
@@ -148,27 +148,37 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Class</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="Local Clearing">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Certified Correct</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" >
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" readonly>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels"></label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" >
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" readonly>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin">Date Certified</label>
                         <div class="col-sm dp-cont" style="margin-left: 0px !important">
-                            <datepicker type="datetime" [showIcon]="false" [disabled]="false" [required]="true"></datepicker>
+                            <datepicker type="datetime" [showIcon]="false" [disabled]="true" [required]="true"></datepicker>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-1"></div>
             </div>
+
+        <div class="col-sm-12">
+            <fieldset class="scheduler-border" style="padding-bottom: 20px !important;">
+            <legend class="scheduler-border">Check Details</legend>
+                <div class="test d-flex" style="margin-top: 20px !important;">
+
+                </div>
+            </fieldset>
+
+
 <!--             <div class="text-center" style="margin-top: 15px !important;">
                  <button class="cust" (click)="showCVEndtDetModal()">CV Endorsements Details</button>
             </div> -->
