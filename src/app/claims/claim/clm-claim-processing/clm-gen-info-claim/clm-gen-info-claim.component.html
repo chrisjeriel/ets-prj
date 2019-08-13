@@ -668,32 +668,36 @@
                     </div>
                 </div>
             </fieldset>
-            <div class="input-group">
-                <ng-container *ngIf="showCustLoader">
-                    <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="custLoader" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999;">
-                    <div class="custLoader" style="position: absolute;top:7px;left:-7px;width: 102%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
-                    </div>
-                </ng-container>
-                <fieldset class="scheduler-border" style="margin-left: -7px !important;"> <!-- [ngClass]="(line != 'CAR' && line != 'EAR') ? 'pad-b' : 'pad-c'" -->
-                    <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-                    <div class="custom-row-inline-inset" style="margin-left: -30px !important;">
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">Currency</label>
-                            <input type="text" [ngModel]="claimData?.currencyCd" class="form-control form-control-sm cust-sm" required readonly>
+            <div class="container">
+                <div class="row" style="margin-left: -15px;">
+                    <div class="col-sm-12" style="padding: 0;">
+                        <ng-container *ngIf="showCustLoader">
+                            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="custLoader" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999;">
+                            <div class="custLoader" style="position: absolute;top:7px;left:-7px;width: 102%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
+                            </div>
+                        </ng-container>
+                        <fieldset class="scheduler-border" style="margin-left: -7px !important;"> <!-- [ngClass]="(line != 'CAR' && line != 'EAR') ? 'pad-b' : 'pad-c'" -->
+                            <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+                            <div class="custom-row-inline-inset" style="margin-left: -30px !important;">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-3">Currency</label>
+                                    <input type="text" [ngModel]="claimData?.currencyCd" class="form-control form-control-sm cust-sm" required readonly>
 
-                            <label class="form-control-sm">% Share</label>
-                            <input type="text" [ngModel]="claimData?.pctShare | number:'1.10-10'" class="form-control form-control-sm cust-sm text-right" required readonly>
-                        </div>
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">Total SI</label>
-                            <input type="text" [ngModel]="claimData?.totalSi | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
-                        </div>
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">100% Value</label>
-                            <input type="text" [ngModel]="claimData?.totalValue | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
-                        </div>
+                                    <label class="form-control-sm">% Share</label>
+                                    <input type="text" [ngModel]="claimData?.pctShare | number:'1.10-10'" class="form-control form-control-sm cust-sm text-right" required readonly>
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-3">Total SI</label>
+                                    <input type="text" [ngModel]="claimData?.totalSi | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-3">100% Value</label>
+                                    <input type="text" [ngModel]="claimData?.totalValue | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
-                </fieldset>
+                </div>
             </div>
         </div>
     </div>

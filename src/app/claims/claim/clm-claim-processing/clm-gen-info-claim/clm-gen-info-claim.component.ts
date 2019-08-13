@@ -678,7 +678,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   onClickSave() {
-    console.log(this.claimData);
     var req = ['processedBy', 'lossCd', 'lossPeriod', 'lossDtl', 'clmStatCd'];
 
     var entries = Object.entries(this.claimData);
@@ -724,13 +723,15 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     }
 
     var entries = Object.entries(this.claimData.project);
-    for(var [key, val] of entries) {      
-      if(key === 'createDate') {
-        this.claimData['prjCreateDate'] = this.ns.toDateTimeString(val);
-      } else if(key === 'updateDate') {
-        this.claimData['prjUpdateDate'] = this.ns.toDateTimeString(val);
-      } else {
-        this.claimData[key] = val;
+    for(var [key, val] of entries) {
+      if(key !== 'clmReserve') {
+        if(key === 'createDate') {
+          this.claimData['prjCreateDate'] = this.ns.toDateTimeString(val);
+        } else if(key === 'updateDate') {
+          this.claimData['prjUpdateDate'] = this.ns.toDateTimeString(val);
+        } else {
+          this.claimData[key] = val;
+        }
       }
     }
 
@@ -743,20 +744,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.claimData.updateDate = this.ns.toDateTimeString(0);
 
     this.cs.saveClmGenInfo(this.claimData).subscribe(data => {
-      /*if(data['returnCode'] == 0) {
-        this.dialogIcon = 'error';
-        this.dialogMessage = data['errorList'][0].errorMessage;
-        this.successDialog.open();
-      } else if(data['returnCode'] == -1) {
-        this.dialogIcon = "success";
-        this.successDialog.open();
-        this.claimId = data['claimId'];
-        this.claimNo = data['claimNo'];
-        this.disableAdjusterBtn = false;
-
-        this.retrieveClmGenInfo();
-      }*/
-
       if(data['returnCode'] == -1) {
         this.dialogIcon = "success";
         this.successDialog.open();
@@ -770,9 +757,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.successDialog.open();
       } else if(data['returnCode'] == 1) {
-        this.mdlType = 'warn3';
-        console.log(this.claimData);
-        console.log(this.claimData.clmReserve);
+        this.mdlType = 'warn3';        
         $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
       } else if(data['returnCode'] == 2) {
         this.mdlType = 'warn4';
