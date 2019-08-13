@@ -34,6 +34,10 @@ export class MtnClmHistoryLovComponent implements OnInit {
 	@Input() lovCheckBox: boolean = false;
 	@Input() limitClmHistTbl : any[] = [];
 	@Input() limitHistCat : string = '';
+	@Input() limitData : any = {
+		histCategory : [], 
+		histType	 : []
+	};
   	selects: any[] = [];
 
  	constructor(private clmService: ClaimsService, private modalService: NgbModal) { }
@@ -72,7 +76,9 @@ export class MtnClmHistoryLovComponent implements OnInit {
 		    this.table.overlayLoader = true;
 		    this.clmService.getClaimHistory()
 		    .subscribe(data => {
-	     		var rec = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.limitHistCat.toUpperCase() == 'L')?e.histCategory =='L':e.histCategory != 'L').map(e => { return e });
+	     		var rec = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e })
+	     				  .filter(e => this.limitData.histCategory.includes(e.histCategory) && this.limitData.histType.includes(Number(e.histType)))
+	     				  .map(e => { e.paytAmt = (e.paytAmt == '' || e.paytAmt == null)?0:e.paytAmt; return e; });
 	     		if(this.limitClmHistTbl.length != 0){
 	     			var limit = this.limitClmHistTbl.filter(a => a.showMG != 1).map(a => JSON.stringify({claimId: a.claimId, histNo: a.histNo}));
 	     			this.passData.tableData =  	rec.filter(a => {
