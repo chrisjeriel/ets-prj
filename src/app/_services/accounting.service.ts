@@ -1782,13 +1782,11 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArInvPullout',JSON.stringify(params),header);
 	}
-	
-	getAcitJVClmOffset(tranId,cedingId,quarterNo) {
+
+	getAcitJVClmOffsetLOV(cedingId) {
 		 const params = new HttpParams()
-		 	 .set('tranId', (tranId === null || tranId === undefined ? '' : tranId))
              .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
-             .set('quarterNo', (quarterNo === null || quarterNo === undefined ? '': quarterNo))
-        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvClaimOffset",{params});
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvClmOffLOV",{params});
 	}
 
 	getNegativeTreaty(tranId,cedingId){
