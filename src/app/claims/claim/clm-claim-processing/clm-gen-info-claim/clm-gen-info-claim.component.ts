@@ -209,7 +209,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   disableNextTabs: boolean = true;
   disablePaytReq: boolean = true;
   maxDate: string = '';
-  tempAdjCont: any[] = [];
+  beforePolTerm: boolean = false;
 
   @Input() isInquiry: boolean = false;
 
@@ -415,7 +415,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   openAdjustersModal() {
-    // this.tempAdjCont = JSON.parse(JSON.stringify(this.claimData.clmAdjusterList));
     this.adjData.tableData = JSON.parse(JSON.stringify(this.claimData.clmAdjusterList));
     this.adjTable.refreshTable();
     this.adjTable.onRowClick(null, this.adjData.tableData[0]);
@@ -423,7 +422,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   onCancelNo() {
-    // this.claimData.clmAdjusterList = this.tempAdjCont.slice();
     this.adjTable.markAsPristine();
   }
 
@@ -810,25 +808,27 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       }/*/
 
       if(this.claimData.lossDate.split('T')[0] != '') {
-        var inceptD = new Date(this.claimData.inceptDate);
-        var expiryD = new Date(this.claimData.expiryDate);
-        var effD = new Date(this.claimData.effDate);
-        var lossD = this.claimData.lossDate.split('T')[1] == '' ? new Date(this.claimData.lossDate + '00:00') : new Date(this.claimData.lossDate);
+        /*var inceptD = new Date(this.claimData.inceptDate).setSeconds(0);
+        var expiryD = new Date(this.claimData.expiryDate).setSeconds(0);
+        var effD = new Date(this.claimData.effDate).setSeconds(0);
+        var lossD = this.claimData.lossDate.split('T')[1] == '' ? new Date(this.claimData.lossDate + '00:00').setSeconds(0) : new Date(this.claimData.lossDate).setSeconds(0);
+        var lapseFD = this.claimData.lapseFrom == null || this.claimData.lapseFrom == '' ? null : new Date(this.claimData.lapseFrom).setSeconds(0);
+        var lapseTD = this.claimData.lapseTo == null || this.claimData.lapseTo == '' ? null : new Date(this.claimData.lapseTo).setSeconds(0);
+        var maintFD = this.claimData.maintenanceFrom == null || this.claimData.maintenanceFrom == '' ? null : new Date(this.claimData.maintenanceFrom).setSeconds(0);
+        var maintTD = this.claimData.maintenanceTo == null || this.claimData.maintenanceTo == '' ? null : new Date(this.claimData.maintenanceTo).setSeconds(0);
+
+        this.claimData.lapsePdTag = lapseFD != null && lapseTD != null && lossD >= lapseFD && lossD <= lapseTD ? 'Y' : 'N';
+        this.claimData.polTermTag = lossD >= inceptD && lossD <= expiryD ? 'Y' : 'N';
 
         if(lossD >= inceptD && lossD <= effD) {
-          this.claimData.lapsePdTag = 'Y';
-          this.claimData.polTermTag = 'Y';
           this.mdlType = 'warn5';
-          $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+          // $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
         } else if(lossD < inceptD || lossD > expiryD) {
-          this.claimData.lapsePdTag = 'N';
-          this.claimData.polTermTag = 'N';
-          this.mdlType = 'warn6';
-          $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
-        } else if(lossD > effD && lossD <= expiryD) {
-          this.claimData.lapsePdTag = 'N';
-          this.claimData.polTermTag = 'Y';
-        }
+          this.beforePolTerm = lossD < inceptD;
+
+          this.mdlType = maintFD != null && maintTD != null && lossD >= maintFD && lossD <= maintTD ? 'warn7' : 'warn6';;
+          // $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+        }*/
 
         this.onClickConfYes();
       }
@@ -842,19 +842,34 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
     var inceptD = new Date(this.claimData.inceptDate).setSeconds(0);
     var effD = new Date(this.claimData.effDate).setSeconds(0);
-    var lossD = new Date(this.claimData.lossDate).setSeconds(0);
-    var dCheck = this.claimData.polTermTag == 'Y' && effD <= lossD ? lossD : lossD >= inceptD && lossD <= effD ? effD : this.claimData.createDate == null || this.claimData.createDate == '' ? new Date() : new Date(this.claimData.createDate);
+    // var lossD = new Date(this.claimData.lossDate).setSeconds(0);
+    var lossD = this.claimData.lossDate.split('T')[1] == '' ? new Date(this.claimData.lossDate + '00:00').setSeconds(0) : new Date(this.claimData.lossDate).setSeconds(0);
+    // var dCheck = this.claimData.polTermTag == 'Y' && effD <= lossD ? lossD : lossD >= inceptD && lossD <= effD ? effD : this.claimData.createDate == null || this.claimData.createDate == '' ? new Date() : new Date(this.claimData.createDate);
+    var dCheck = lossD;
 
     var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
-                      .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => new Date(a.effDate).setSeconds(0) <= dCheck && a.statusDesc == 'In Force')
-                                                                               .sort((a, b) => b.altNo - a.altNo)),
-                            mergeMap(data => this.us.getPolGenInfo(data['policyList'][0].policyId, data['policyList'][0].policyNo)));
+                      .pipe(tap(data => { 
+                                          data['policyList'].sort((a, b) => a.altNo - b.altNo);
+                                          data['filtPolicy'] = data['policyList'].filter(a => new Date(a.effDate).setSeconds(0) <= dCheck && a.statusDesc == 'In Force')
+                                                                                 .sort((a, b) => b.altNo - a.altNo);
+                                          this.beforePolTerm = data['filtPolicy'].length == 0;
+                                          return data;
+                                        }),
+                            mergeMap(data => this.us.getPolGenInfo(this.beforePolTerm ? data['policyList'][0].policyId : data['filtPolicy'][0].policyId, this.beforePolTerm ? data['policyList'][0].policyNo : data['filtPolicy'][0].policyNo)));
 
     this.subscription.add(sub$.subscribe(data => {
       this.showCustLoader = false;
 
       var pol = data['policy'];
       var prj = pol['project'];
+
+      this.claimData.inceptDate = this.ns.toDateTimeString(pol['inceptDate']);
+      this.claimData.expiryDate = this.ns.toDateTimeString(pol['expiryDate']);
+      this.claimData.effDate = this.ns.toDateTimeString(pol['effDate']);
+      this.claimData.lapseFrom = this.ns.toDateTimeString(pol['lapseFrom']);
+      this.claimData.lapseTo = this.ns.toDateTimeString(pol['lapseTo']);
+      this.claimData.maintenanceFrom = this.ns.toDateTimeString(pol['maintenanceFrom']);
+      this.claimData.maintenanceTo = this.ns.toDateTimeString(pol['maintenanceTo']);
 
       this.claimData['refPolId'] = pol['policyId'];
       this.claimData.policyId = pol['policyId'];
@@ -892,6 +907,36 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.claimData.project.timeExc = prj['timeExc'];
       this.claimData.project.ipl = prj['ipl'];
       this.claimData.project.noClaimPd = prj['noClaimPd'];
+
+      var inceptD = new Date(this.claimData.inceptDate).setSeconds(0);
+      var expiryD = new Date(this.claimData.expiryDate).setSeconds(0);
+      var effD = new Date(this.claimData.effDate).setSeconds(0);
+      var lossD = this.claimData.lossDate.split('T')[1] == '' ? new Date(this.claimData.lossDate + '00:00').setSeconds(0) : new Date(this.claimData.lossDate).setSeconds(0);
+      var lapseFD = this.claimData.lapseFrom == null || this.claimData.lapseFrom == '' ? null : new Date(this.claimData.lapseFrom).setSeconds(0);
+      var lapseTD = this.claimData.lapseTo == null || this.claimData.lapseTo == '' ? null : new Date(this.claimData.lapseTo).setSeconds(0);
+      var maintFD = this.claimData.maintenanceFrom == null || this.claimData.maintenanceFrom == '' ? null : new Date(this.claimData.maintenanceFrom).setSeconds(0);
+      var maintTD = this.claimData.maintenanceTo == null || this.claimData.maintenanceTo == '' ? null : new Date(this.claimData.maintenanceTo).setSeconds(0);
+
+      this.claimData.lapsePdTag = lapseFD != null && lapseTD != null && lossD >= lapseFD && lossD <= lapseTD ? 'Y' : 'N';
+      this.claimData.polTermTag = lossD >= inceptD && lossD <= expiryD ? 'Y' : 'N';
+
+      if(lapseFD != null && lapseTD != null && lossD >= lapseFD && lossD <= lapseTD) {
+        this.mdlType = 'warn5';
+        $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+      } else if(lossD < inceptD || lossD > expiryD) {
+        this.beforePolTerm = lossD < inceptD;
+
+        if(maintFD != null && maintTD != null && lossD >= maintFD && lossD <= maintTD) {
+          this.mdlType = 'warn7';
+          this.claimData.lossPeriod = 3;
+          var el = <HTMLInputElement> document.getElementById('clmGILossPeriod');
+          el.dispatchEvent(new Event('change'));
+        } else {
+          this.mdlType = 'warn6';
+        }
+
+        $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+      }
     }));
   }
 
@@ -944,8 +989,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd };
         var ld = this.claimData.lossDate.split('T');
         var d = ld[0] == '' ? new Date() : ld[1] == '' ? new Date(ld[1]) : new Date(ld.join('T'));
+        var filt = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lossDateFrom >= d && d <= a.lossDateTo }
 
-        this.clmEventLOV.checkCode(eventTypeCd, this.claimData.eventDesc, ev, d);
+        this.clmEventLOV.checkCode(eventTypeCd, this.claimData.eventDesc, ev, d, filt);
       } else if(str === 'mainAdj') {
         this.adjusterLOVMain.checkCode(this.claimData.adjId, ev);
       }
