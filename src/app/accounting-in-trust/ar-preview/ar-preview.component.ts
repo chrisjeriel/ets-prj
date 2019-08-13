@@ -46,7 +46,7 @@ export class ArPreviewComponent implements OnInit {
       updateUser: '',
       updateDate: ''
     },
-    widths: [1, 1, 500, 'auto',1,1,'auto'],
+    widths: [1, 1, 500, 'auto',100,100,'auto'],
     paginateFlag: true,
     infoFlag: true,
     pageID: 'amtDtl',
