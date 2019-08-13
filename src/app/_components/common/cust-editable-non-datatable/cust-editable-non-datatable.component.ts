@@ -136,13 +136,17 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() onDelete: EventEmitter<any> = new EventEmitter();
     overlayLoader: boolean = false;
 
+    //for science
+    pinKeysLeft:any[] = [];
+    pinKeysRight:any[] = [];
+
     refreshTable(initLoad?, selectAll?){
+
         if(initLoad === undefined){
             this.loadingFlag = false;
         }else{
             this.loadingFlag = true;
         }
-
         //NECO 05/24/2019 (for attachment purposes)
         let attachFlags: boolean[] = [];
         for(var at of this.displayData){
@@ -162,6 +166,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 this.displayData.push(this.passData.tableData[i]);
             }
         }
+        this.pinKeysLeft = this.passData.pinKeysLeft == undefined ? [] :this.passData.pinKeysLeft ;
+        this.pinKeysRight = this.passData.pinKeysRight == undefined ? [] :this.passData.pinKeysRight ;
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         //this.displayLength = this.displayData.length;
         this.unliTableLength();
@@ -462,7 +468,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
    getSum(data){
         let sum = 0.0;
         if(this.dataKeys.indexOf(data)==-1){
-            return data;
+            return data == null ? ' ' : data;
         }
         else{
             for (var i = this.displayData.length - 1; i >= 0; i--) {

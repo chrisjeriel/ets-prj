@@ -354,7 +354,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         this.wparamData.tableData = [];
         for(var h of data.distRiskWparam){
           if(this.riskDistributionData.altNo != 0 && String(h.treatyName).toUpperCase() !== 'FACULTATIVE'){
-            h.uneditable = ['treatyName', 'trtyCedName', 'pctShare', 'commRt'];
+            h.uneditable = ['treatyName', 'trtyCedName', 'pctShare'];
           }else{
            h.uneditable = ['treatyName', 'trtyCedName'];
           }

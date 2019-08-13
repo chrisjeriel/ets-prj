@@ -1798,6 +1798,15 @@ export class AccountingService {
              .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvNegativeTreaty",{params});
 	}
+
+	generateUPR(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/generateUPR',JSON.stringify(params),header);
+	}
 	
 	saveAcitJvNegTreaty(params){
 		let header : any = {
