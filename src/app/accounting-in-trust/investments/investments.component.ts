@@ -771,6 +771,7 @@ export class InvestmentsComponent implements OnInit {
    if (this.cancelFlag === true && obj === false){
      this.cancelFlag = false;
    }else if (obj === true){
+     this.passData.tableData = [];
      this.searchParams = [];
      this.retrieveInvestmentsList(this.searchParams);
    }

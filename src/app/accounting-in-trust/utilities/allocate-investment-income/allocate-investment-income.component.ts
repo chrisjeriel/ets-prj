@@ -67,7 +67,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 
     searchParams: any[] = [];
     searchParamsInvt: any[] = [];
-    boolView: boolean = true;
+    boolView: boolean = false;
     boolAllocate: boolean = false;
     selectedData : any;
     dialogIcon: string = '';
@@ -77,6 +77,10 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
     tranDate: any;
     status: any;
     payor: any;
+    sumBankCharge: number = 0;
+    sumWhtax: number = 0;
+    sumInvtIncome: number = 0;
+
 
      passDataInvt: any = {
    	 tableData: [],
@@ -106,6 +110,24 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
    dataAll:any[] = [];
    selectedTranId: any[] = [];
 
+   jvDatas: any = {
+    closeDate : null, 
+    createDate : this.ns.toDateTimeString(0), 
+    createUser : this.ns.getCurrentUser(), 
+    deleteDate : null,   
+    postDate : null, 
+    tranClass : 'JV', 
+    tranTypeCd: null,
+    tranClassNo : null, 
+    tranDate :  this.ns.toDateTimeString(0), 
+    tranId : null, 
+    tranStat : 'O', 
+    tranYear : null, 
+    updateDate : this.ns.toDateTimeString(0), 
+    updateUser : this.ns.getCurrentUser(), 
+  }
+
+
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService) { }
 
   ngOnInit() {
@@ -127,6 +149,8 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   retrieveAllInvtIncome(search?){
   	this.as.getAcitAllInvtIncome(search).subscribe( data => {
   		  var td = data['allInvtIncomeList'].map(a => { 
+  		  							  var totn_string = a.tranNo;
+  		  							  a.tranNo = totn_string.padStart(6, '0');
                                       a.tranDate = this.ns.toDateTimeString(a.tranDate);
                                       a.uneditable = ['tranClass','tranNo','tranDate','statusDesc',
                                                         'particulars','bankCharge','whtaxAmt','incomeAmt'];
@@ -179,7 +203,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
     		}
 
     	}else if (this.radioVal === 'byyear'){
-    		
+
     		this.fromDate = '';
     		this.toDate = '';
     		this.fromMonth = '';
@@ -230,7 +254,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   	  if(data !== null){
   	      console.log(data)
 	      this.selectedData = data;
-	      this.boolView = false;
+	      this.tranNo = data.tranNo;
 	      this.tranDate = data.tranDate;
 	      this.status = data.statusDesc;
 	      this.payor = data.payor;
@@ -251,8 +275,23 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 
   onClickView(){
   	this.dataAll = [];
-  	this.invtId = [];
-  	this.retrieveAllInvtIncomeInvtId(this.selectedData.tranId);
+  	this.invtId = [];     
+  	this.selectedTranId = [];
+
+	  for(var i= 0; i< this.passData.tableData.length; i++){
+	  		if(this.passData.tableData[i].checked){
+	  			this.selectedTranId.push(this.passData.tableData[i].tranId);
+	  		}
+	  }
+
+	  if (this.selectedTranId.length > 1 || this.selectedTranId === null || this.selectedTranId === undefined){
+	  	this.dialogMessage="Please choose one transaction to view";
+        this.dialogIcon = "error-message";
+        this.successDialog.open();
+   	  } else if (this.selectedTranId.length === 1) {
+	  	this.retrieveAllInvtIncomeInvtId(this.selectedTranId);
+	  }
+  	
   }
 
   showModalViewDetails(obj){
@@ -319,10 +358,6 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   }
 
   onRowDblClick(){
-	  if (this.isEmptyObject(this.selectedData)){
-	  }	else {
-	  	this.onClickView();
-	  }
   }
 
  update(data){
@@ -331,9 +366,15 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 
  onClickAllocate(){
  	 this.selectedTranId = [];
+ 	 this.sumBankCharge = 0;
+ 	 this.sumWhtax = 0;
+ 	 this.sumInvtIncome = 0;
 	  for(var i= 0; i< this.passData.tableData.length; i++){
 	  		if(this.passData.tableData[i].checked){
-	  			this.selectedTranId.push(this.passData.tableData[i].tranId);
+	  			this.selectedTranId.push({ tranId : this.passData.tableData[i].tranId});
+	  			this.sumBankCharge = this.sumBankCharge + this.passData.tableData[i].bankCharge;
+	  			this.sumWhtax = this.sumWhtax + this.passData.tableData[i].whtaxAmt;
+	  			this.sumInvtIncome = this.sumInvtIncome + this.passData.tableData[i].incomeAmt;
 	  		}
 	  }
 
@@ -343,7 +384,64 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
         this.successDialog.open();
 	  } else {
 	  	console.log(this.selectedTranId);
+	  	console.log(this.sumBankCharge);
+	  	console.log(this.sumWhtax);
+	  	console.log(this.sumInvtIncome);
+
+
+
+
 	  }
  }
+
+  prepareData(){
+    this.jvDatas.tranIdJv = null;
+    this.jvDatas.jvYear = null;
+    this.jvDatas.jvNo = null;
+    this.jvDatas.jvDate = this.ns.toDateTimeString(0);
+    this.jvDatas.jvStatus = 'N';
+    this.jvDatas.jvTranTypeCd = null;
+    this.jvDatas.tranTypeName = null;
+    this.jvDatas.autoTag = 'Y';
+    this.jvDatas.refnoTranId = null;
+    this.jvDatas.refnoDate = null;
+    this.jvDatas.particulars = null;
+    this.jvDatas.currCd = null;
+    this.jvDatas.currRate = null;
+    this.jvDatas.jvAmt = null;
+    this.jvDatas.localAmt = null;
+    this.jvDatas.allocTag = 'Y';
+    this.jvDatas.allocTranId = null;
+    this.jvDatas.preparedBy = null;
+    this.jvDatas.preparedDate = null;
+    this.jvDatas.approvedBy = null;
+    this.jvDatas.approvedDate = null;
+    this.jvDatas.createUserJv = this.ns.getCurrentUser();
+    this.jvDatas.createDateJv = this.ns.toDateTimeString(0);
+    this.jvDatas.updateUserJv = this.ns.getCurrentUser();
+    this.jvDatas.updateDateJv = this.ns.toDateTimeString(0);
+  }
+
+  saveJV(){
+    this.prepareData();
+    console.log(JSON.stringify(this.jvDatas));
+
+    /*this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.tranId = data.tranIdOut;
+        this.retrieveJVEntry();
+      }
+    });*/
+  }
+
+
+
 
 }
