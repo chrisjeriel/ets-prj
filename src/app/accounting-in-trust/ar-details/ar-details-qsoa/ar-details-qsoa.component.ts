@@ -31,7 +31,7 @@ export class ArDetailsQsoaComponent implements OnInit {
     deleteFlag:true,
     infoFlag:true,
     paginateFlag:true,
-    //magnifyingGlass: ['quarterEnding'],
+    magnifyingGlass: ['quarterEnding'],
     nData: {
       tranId: '',
       billId: 1,

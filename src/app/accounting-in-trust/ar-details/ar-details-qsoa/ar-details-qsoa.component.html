@@ -1,5 +1,5 @@
 <div class="col-sm-12" style="position: relative; padding-left: 0px; padding-right: 0px;">
-	<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="onTableDataChange($event)">
+	<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="onTableDataChange($event)" (clickLOV)="lovMdl.modal.openNoClose()">
 	</app-cust-editable-non-datatable>
 </div>
 <div class="form-row">
@@ -16,7 +16,7 @@
 
 
 <!-- <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov> -->
-<!-- <app-quarter-ending-lov (selectedData)="setSelectedData($event)"></app-quarter-ending-lov> -->
+<app-quarter-ending-lov (selectedData)="setSelectedData($event)"></app-quarter-ending-lov>
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
