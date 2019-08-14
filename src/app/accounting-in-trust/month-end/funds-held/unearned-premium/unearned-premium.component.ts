@@ -20,6 +20,7 @@ export class UnearnedPremiumComponent implements OnInit {
   	pageStatus: true,
     pagination: true,
     pageLength: 10,
+    pageID: 1
   }
 
   detailsPerPolicy: any = {
@@ -30,6 +31,7 @@ export class UnearnedPremiumComponent implements OnInit {
   	pageStatus: true,
     pagination: true,
     colSize: ['', '', '', '90px', '90px', '150px', '150px'],
+    pageID: 2
   }
 
   accountingEntries: any = {
@@ -51,6 +53,8 @@ export class UnearnedPremiumComponent implements OnInit {
 
   detailsList:any;
   companyList:any[] = [];
+  indvSelect:any = {};
+  lineDesc:any = '';
 
   constructor(private modalService: NgbModal, private as:AccountingService, private ms:MaintenanceService) { }
 
@@ -60,6 +64,7 @@ export class UnearnedPremiumComponent implements OnInit {
   }
 
   openDetailsPerPolicy() {
+    this.perPolTable.refreshTable();
   	$('#detailsPerPolicy > #modalBtn').trigger('click');
   }
 
@@ -75,17 +80,21 @@ export class UnearnedPremiumComponent implements OnInit {
 
 
   getUPR(){
+    $('.globalLoading').css('display','block');
     this.as.getUPRPerCede(this.params).subscribe(a=>{
       this.passData.tableData = a['perLine'];
       this.detailsList = a['perPol']
       this.perLineTable.refreshTable();
+      $('.globalLoading').css('display','none');
     })
   }
 
   updateDetails(data){
     if(data != null){
       this.detailsPerPolicy.tableData = this.detailsList.filter(a=>a.lineCd == data.lineCd);
-      this.perPolTable.refreshTable();
+      this.ms.getLineLOV(data.lineCd).subscribe(a=>{
+        this.lineDesc = a['line'][0].description;
+      })
     }
   }
 }

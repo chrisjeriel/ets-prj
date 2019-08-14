@@ -59,11 +59,11 @@ export class ClaimDistributionComponent implements OnInit {
   }	
 
   reserveDistPassData: any = {
-    tHeader: ['Distribution No','Total Reserve Amount','Currency','Currency Rate','Booking Date','Distribution Status'],
-    dataTypes: ['sequence-9','currency','text','currencyRate','text','text'],
-    keys:['clmDistNo','reserveAmt','currencyCd','currencyRt','bookingDate','clmDistStatName'],
-    uneditable: [true,true,true,true,true,true,true],
-    widths:[1,'auto',1,'auto',1,1],
+    tHeader: ['Distribution No','History No','Type','Amount','Curr','Curr Rt','Booking Date','Distribution Status'],
+    dataTypes: ['sequence-6','number','text','currency','text','currencyRate','date','text'],
+    keys:['clmDistNo','histNo','histTypeName','reserveAmt','currencyCd','currencyRt','bookingDate','clmDistStat'],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+    widths:[1,1,1,'auto',1,'auto',1,1,'auto',1],
     tableData: [],
     pageLength: 5,
     pageID: 5,
@@ -72,14 +72,14 @@ export class ClaimDistributionComponent implements OnInit {
   }
 
   paymentDistPassData: any = {
-    tHeader: ['History No','Type','Distribution No','Amount','Currency','Currency Rate','Booking Date','Distribution Status','Payment Amount','Ref No'],
-    dataTypes: ['number','text','sequence-9','currency','text','currencyRate','text','text','currency','text'],
-    keys:['histNo','histTypeName','clmDistNo','paytAmt','currencyCd','currencyRt','bookingDate','clmDistStatName',null,null],
+    tHeader: ['Distribution No','History No','Type','Amount','Curr','Curr Rt','Booking Date','Distribution Status'],
+    dataTypes: ['sequence-6','number','text','currency','text','currencyRate','date','text'],
+    keys:['clmDistNo','histNo','histTypeName','reserveAmt','currencyCd','currencyRt','bookingDate','clmDistStat'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
     widths:[1,1,1,'auto',1,'auto',1,1,'auto',1],
     tableData: [],
     pageLength: 5,
-    pageID: 6,
+    pageID: 5,
     paginateFlag: true,
     infoFlag: true
   }
@@ -115,8 +115,9 @@ export class ClaimDistributionComponent implements OnInit {
   }
 
   getClmHist(){
-    this.clmService.getClaimReserveDist(this.claimInfo.claimId,this.claimInfo.projId).subscribe(a=>{
-      this.resTableData = a['list'];
+    this.clmService.getClaimDist(this.claimInfo.claimId,this.claimInfo.projId).subscribe(a=>{
+      this.resTableData = a['claimDist'].filter(a=>a.histType!=4 && a.histType!=5);;
+      this.payTableData = a['claimDist'].filter(a=>a.histType==4 || a.histType==5);
       this.resTableData.forEach(a=>{
         a.bookingDate = a.bookingMth.toUpperCase()+'-'+a.bookingYear;
         a.createDate = this.ns.toDateTimeString(a.createDate);
@@ -125,14 +126,14 @@ export class ClaimDistributionComponent implements OnInit {
       this.filterTable(this.histTypeFilter);
     })
 
-    this.clmService.getClaimDist(this.claimInfo.claimId,this.claimInfo.projId).subscribe(a=>{
-      this.payTableData = a['claimDist'];
-      this.payTableData.forEach(a=>{
-        a.bookingDate = a.bookingMth.toUpperCase()+'-'+a.bookingYear;
-        a.createDate = this.ns.toDateTimeString(a.createDate);
-        a.updateDate = this.ns.toDateTimeString(a.updateDate);
-      })
-    })
+    // this.clmService.getClaimDist(this.claimInfo.claimId,this.claimInfo.projId).subscribe(a=>{
+    //   this.payTableData = a['claimDist'];
+    //   this.payTableData.forEach(a=>{
+    //     a.bookingDate = a.bookingMth.toUpperCase()+'-'+a.bookingYear;
+    //     a.createDate = this.ns.toDateTimeString(a.createDate);
+    //     a.updateDate = this.ns.toDateTimeString(a.updateDate);
+    //   })
+    // })
   }
 
   clickRow(data){
@@ -140,11 +141,7 @@ export class ClaimDistributionComponent implements OnInit {
     if(data == null){
       this.treatyDistPassData.tableData = [];
     }else{
-      if(this.currTab =='reserve')
-        this.treatyDistPassData.tableData = this.selected.treatyList;
-      else
         this.treatyDistPassData.tableData = this.selected.claimDistTreaty;
-
     }
     this.treatyTable.refreshTable();
   }
@@ -245,6 +242,8 @@ export class ClaimDistributionComponent implements OnInit {
   }
 
   filterTable(histCd){
+    console.log(histCd)
+    console.log(this.resTableData)
     this.histTypeFilter = histCd;
     if(this.currTab == 'reserve'){
         this.reserveDistPassData.tableData = this.resTableData.filter(a=>a.histCategory == histCd);

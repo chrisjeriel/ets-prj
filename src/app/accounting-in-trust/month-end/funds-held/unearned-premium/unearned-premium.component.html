@@ -1,3 +1,7 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="globalLoading" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999;display: none">
+<div class="globalLoading" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);display: none">
+</div>
+
 <div class="row">
 	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
@@ -16,6 +20,7 @@
 				<span class="form-control-sm col-sm-1"></span>
 				<label class="form-control-sm col-sm-2">Company</label>
 				<select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="params.cedingId" (ngModelChange)="getUPR()">
+					<option value="">All Companies</option>
 					<option *ngFor="let comp of companyList" [value]="comp.cedingId">{{comp.cedingName}}</option>
 				</select>			
 				<span class="form-control-sm col-sm-1"></span>
@@ -58,8 +63,8 @@
 			<div class="input-group">
 				<span class="form-control-sm col-sm-3"></span>
 				<label class="form-control-sm col-sm-1">Line</label>
-				<input type="text" class="form-control form-control-sm col-sm-1" [value]="perLineTable.indvSelect.lineCd" style="margin-right: 2px;" readonly="">
-				<input type="text" class="form-control form-control-sm col-sm-4" value="Construction All Risk" readonly="">
+				<input type="text" class="form-control form-control-sm col-sm-1" [value]="perLineTable?.indvSelect?.lineCd" style="margin-right: 2px;" readonly="">
+				<input type="text" class="form-control form-control-sm col-sm-4" [value]="lineDesc" readonly="">
 				<span class="form-control-sm col-sm-3"></span>
 			</div>
 			<app-cust-non-datatable #perPolTable [passData]="detailsPerPolicy"></app-cust-non-datatable>
