@@ -346,7 +346,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
         if(this.passData.tableData[i].clmOffset[j].deleted){
           this.jvDetails.deleteClmOffset.push(this.passData.tableData[i].clmOffset[j]);
-          this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;;
+          this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;
         }
       }
     }
