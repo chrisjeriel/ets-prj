@@ -1,6 +1,7 @@
   import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
   import { MaintenanceService, NotesService, AccountingService } from '@app/_services';
   import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+  import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-extract-record',
@@ -46,6 +47,8 @@ export class ExtractRecordComponent implements OnInit {
 
   @Output() paramOut: EventEmitter<any> = new EventEmitter<any>();
 
+  @ViewChild('overwriteMdl')overwriteMdl : ModalComponent;
+
   ngOnInit() {
   	//this.getCompanyList();
     let currYear = new Date().getFullYear();
@@ -78,6 +81,19 @@ export class ExtractRecordComponent implements OnInit {
         this.params.extractDate = this.ns.toDateTimeString(0);
       }
       this.emitParam();
+    })
+  }
+
+  checkExistingUPR(){
+    $('.globalLoading').css('display','block');
+    this.as.checkExistingUPR(this.params).subscribe(a=>{
+      $('.globalLoading').css('display','none');
+      console.log(a);
+      if(a=='N'){
+        this.extract();
+      }else{
+        this.overwriteMdl.openNoClose()
+      }
     })
   }
 

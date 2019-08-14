@@ -1815,6 +1815,7 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/generateUPR',JSON.stringify(params),header);
 	}
+
 	getUPRPerCede(param){
 		const params = new HttpParams()
 		 	 .set('extMm', (param.extMm === null || param.extMm === undefined ? '' : param.extMm))
@@ -1826,5 +1827,13 @@ export class AccountingService {
 	
 	getUPRParams(){
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitUPRParams");
+	}
+
+	checkExistingUPR(param){
+		const params = new HttpParams()
+		 	 .set('extMm', (param.extMm === null || param.extMm === undefined ? '' : param.extMm))
+		 	 .set('extYear', (param.extYear === null || param.extYear === undefined ? '' : param.extYear))
+		 	 .set('extMethod', (param.extMethod === null || param.extMethod === undefined ? '' : param.extMethod))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitExistingUPR",{params,responseType:'text'});
 	}
 }

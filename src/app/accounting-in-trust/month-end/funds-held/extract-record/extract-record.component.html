@@ -63,7 +63,7 @@
 			</div>
 
 			<div class="text-center" style="margin-top: 10px;">
-				<button class="cust-btn" (click)="extract()">Extract</button>
+				<button class="cust-btn" (click)="checkExistingUPR()">Extract</button>
 				<button class="cust-btn">Print</button>
 			</div>
 		</fieldset>
@@ -72,3 +72,12 @@
 </div>
 
 <app-sucess-dialog [message]="msg" [icon]="icon"></app-sucess-dialog>
+
+<app-modal #overwriteMdl class="d-none">
+	<div header>Confirmation</div>
+	<div body>Do you want to overwrite the existing UPR extract?</div>
+	<div footer class="w-100 text-right">
+		<button class="cust-btn" (click)="extract();overwriteMdl.closeModal()">Yes</button>
+		<button class="cust-btn" (click)="overwriteMdl.closeModal()">No</button>
+	</div>
+</app-modal>
