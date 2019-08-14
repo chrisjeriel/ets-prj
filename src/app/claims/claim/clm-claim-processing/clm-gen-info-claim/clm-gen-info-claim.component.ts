@@ -92,6 +92,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     clmSeqNo: null,
     clmStatCd: null,
     clmStatus: null,
+    insuredClm: null,
     cessionId: null,
     cessionDesc: null,
     lineClassCd: null,
@@ -146,6 +147,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     createDate: null,
     updateUser: null,
     updateDate: null,
+    preventRefresh: null,
     project: {
       projId: null,
       projDesc: null,
@@ -300,8 +302,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.claimData.contractorId = this.pad(this.claimData.contractorId, 6);
       this.claimData.project.objectId = this.pad(this.claimData.project.objectId, 3);
 
-      if(this.claimData.clmReserve && this.claimData.clmReserve.claimId != null) {
-        // this.uneditableLossDate = true;
+      if(this.claimData.preventRefresh == 'Y') {
+        this.uneditableLossDate = true;
         this.tempLossDate = this.claimData.lossDate;
       }
 
@@ -316,6 +318,11 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       }
 
       this.checkClmIdF(this.claimData.claimId);
+
+      setTimeout(() => {
+        $('input[appCurrency]').focus();
+        $('input[appCurrency]').blur();
+      }, 0);
     }));
   }
 
@@ -789,24 +796,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         return;
       }
 
-      /*if(this.claimData.lossDate.split('T')[0] != '') {
-        var inceptD = new Date(this.claimData.inceptDate);
-        var expiryD = new Date(this.claimData.expiryDate);
-        var lapseF = this.claimData.lapseFrom == null || this.claimData.lapseFrom == '' ? '' : new Date(this.claimData.lapseFrom);
-        var lapseT = this.claimData.lapseTo == null || this.claimData.lapseTo == '' ? '' : new Date(this.claimData.lapseTo);
-        var lossD = new Date(this.claimData.lossDate);
-        
-        if(lapseF != '' && lapseT != '' && (lossD < inceptD || lossD > expiryD) && lossD >= lapseF && lossD <= lapseT) {
-          this.mdlType = 'conf';
-          $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
-        } else if(lossD >= inceptD && lossD <= expiryD) {
-          this.onClickConfYes();
-        } else {
-          this.mdlType = 'warn';
-          $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
-        }
-      }/*/
-
       if(this.claimData.lossDate.split('T')[0] != '') {
         /*var inceptD = new Date(this.claimData.inceptDate).setSeconds(0);
         var expiryD = new Date(this.claimData.expiryDate).setSeconds(0);
@@ -840,9 +829,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     pNo[pNo.length-1] = '%';
     this.showCustLoader = true;
 
-    var inceptD = new Date(this.claimData.inceptDate).setSeconds(0);
-    var effD = new Date(this.claimData.effDate).setSeconds(0);
-    // var lossD = new Date(this.claimData.lossDate).setSeconds(0);
+    // var inceptD = new Date(this.claimData.inceptDate).setSeconds(0);
+    // var effD = new Date(this.claimData.effDate).setSeconds(0);
     var lossD = this.claimData.lossDate.split('T')[1] == '' ? new Date(this.claimData.lossDate + '00:00').setSeconds(0) : new Date(this.claimData.lossDate).setSeconds(0);
     // var dCheck = this.claimData.polTermTag == 'Y' && effD <= lossD ? lossD : lossD >= inceptD && lossD <= effD ? effD : this.claimData.createDate == null || this.claimData.createDate == '' ? new Date() : new Date(this.claimData.createDate);
     var dCheck = lossD;
@@ -928,6 +916,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
         if(maintFD != null && maintTD != null && lossD >= maintFD && lossD <= maintTD) {
           this.mdlType = 'warn7';
+
+          //currently hardcoded -- replace with webservice
           this.claimData.lossPeriod = 3;
           var el = <HTMLInputElement> document.getElementById('clmGILossPeriod');
           el.dispatchEvent(new Event('change'));

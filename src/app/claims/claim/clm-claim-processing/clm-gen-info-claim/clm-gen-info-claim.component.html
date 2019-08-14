@@ -130,7 +130,7 @@
                     <div class="col-sm-6">
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Insured’s Claim</label>
-                            <input type="text" class="form-control form-control-sm col-sm text-right" [readonly]="isInquiry" appCurrency>
+                            <input type="text" class="form-control form-control-sm col-sm text-right" [(ngModel)]="claimData.insuredClm" [readonly]="isInquiry" appCurrency>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Reported By</label>
@@ -777,7 +777,7 @@
     <div class="form-group col-sm">
         <div class="col-md-13 text-center">
             <div class="cust-btn-container">
-                <button type="button" class="cust-btn" [disabled]="claimData.refreshSw != 'Y'" (click)="showRefModal()"><a>Refresh</a></button>
+                <button type="button" class="cust-btn" [disabled]="claimData.refreshSw != 'Y' || claimData.preventRefresh == 'Y'" (click)="showRefModal()"><a>Refresh</a></button>
                 <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
                 <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             </div>
@@ -852,7 +852,7 @@
                     to Expiry Date) of the policy.</p>
                 </ng-container>
                 <ng-container *ngIf="mdlType == 'warn7'">
-                    <p>Loss Date is not within the Maintenance Period.</p>
+                    <p>Loss Date is within the Maintenance Period.</p>
                 </ng-container>
                 <ng-container *ngIf="mdlType == 'ref'">
                     <p>Are you sure you want to apply the latest changes<br />
