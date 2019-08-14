@@ -124,7 +124,7 @@ export class UnearnedPremiumComponent implements OnInit {
     colSize: ['100px', '200px', '150px', '250px', '120px', '120px'],
   }
 
-  constructor(private modalService: NgbModal) { }
+  constructor(public modalService: NgbModal) { }
 
   ngOnInit() {
   }

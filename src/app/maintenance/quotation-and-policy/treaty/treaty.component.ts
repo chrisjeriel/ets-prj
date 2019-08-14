@@ -64,7 +64,7 @@ export class TreatyComponent implements OnInit, OnDestroy {
  	cancel: boolean = false;
  	subscription: Subscription = new Subscription();
 
-	constructor(private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal, private titleService: Title) { }
+	constructor(private ns: NotesService, private ms: MaintenanceService, public modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Mtn | Treaty");

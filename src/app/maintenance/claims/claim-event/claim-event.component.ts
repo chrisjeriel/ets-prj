@@ -76,7 +76,7 @@ export class ClaimEventComponent implements OnInit {
 		deleteEvent : []
 	};
 
-  	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns : NotesService, private quotationService: QuotationService, private modalService : NgbModal) { }
+  	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns : NotesService, private quotationService: QuotationService, public modalService : NgbModal) { }
 
   	ngOnInit() {
 		this.titleService.setTitle('Mtn | Claim Event');

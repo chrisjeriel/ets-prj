@@ -135,7 +135,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   @Input() inquiryFlag: boolean = false;
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private ns: NotesService) { }
+  constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, private route: ActivatedRoute, private router: Router, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Distribution");

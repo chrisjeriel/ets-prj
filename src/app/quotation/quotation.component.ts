@@ -18,7 +18,7 @@ import { Subject } from 'rxjs';
 	styleUrls: ['./quotation.component.css']
 })
 export class QuotationComponent implements OnInit {
-	constructor(private route: ActivatedRoute,private modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService) { }
+	constructor(private route: ActivatedRoute, public modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService) { }
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('tabset') tabset: any;
   @ViewChild(GeneralInfoComponent) genInfoComponent: GeneralInfoComponent;

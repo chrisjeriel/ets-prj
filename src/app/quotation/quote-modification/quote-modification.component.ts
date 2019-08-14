@@ -39,7 +39,7 @@ export class QuoteModificationComponent implements OnInit {
 	insuredDesc: any = '';
 	riskName: any = '';
 
-	constructor(private modalService: NgbModal, private router: Router, private qs: QuotationService, private ns: NotesService) { }
+	constructor(public modalService: NgbModal, private router: Router, private qs: QuotationService, private ns: NotesService) { }
 
 	ngOnInit() {
 		this.getQuoteListing();

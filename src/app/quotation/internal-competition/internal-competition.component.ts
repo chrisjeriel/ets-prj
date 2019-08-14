@@ -20,7 +20,8 @@ export class InternalCompetitionComponent implements OnInit {
         quoteId: '',
         quotationNo: '',
         riskName: '',
-        insuredDesc: ''
+        insuredDesc: '',
+        statusDesc: '',
     }
     @Input() inquiryFlag: boolean = false;
     resultMessage: string = "";
@@ -72,7 +73,7 @@ export class InternalCompetitionComponent implements OnInit {
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, 
+    constructor(private quotationService: QuotationService, public modalService: NgbModal, 
                 private titleService: Title, private maintenanceService: MaintenanceService, 
                 private route: ActivatedRoute, private notes: NotesService) { }
 

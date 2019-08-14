@@ -57,7 +57,7 @@ export class MtnNonRenewalReasonComponent implements OnInit {
     genericBtn: 'Delete'
   }
 
-  constructor(private route: ActivatedRoute,private router: Router, private ms: MaintenanceService, private ns: NotesService, private modalService: NgbModal) { }
+  constructor(private route: ActivatedRoute,private router: Router, private ms: MaintenanceService, private ns: NotesService, public modalService: NgbModal) { }
 
   ngOnInit() {
   	this.retrieveMtnNonRenewalReason();

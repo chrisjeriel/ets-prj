@@ -15,7 +15,7 @@ export class MtnReasonComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   
-   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
+   constructor(public modalService: NgbModal, private mtnService : MaintenanceService) { }
 
     passDataReason: any = {
           tableData: [],

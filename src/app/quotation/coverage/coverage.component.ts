@@ -114,7 +114,7 @@ export class CoverageComponent implements OnInit {
   promptMessage: string = "";
   promptType: string = "";
 
-  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService) {}
+  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,public modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService) {}
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");

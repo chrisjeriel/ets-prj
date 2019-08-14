@@ -153,6 +153,7 @@ export class QuoAlopComponent implements OnInit {
     optionsList:any = [];
     disabledFlag:boolean = true;
     promptClickItem:boolean = false;
+    OpenCover:boolean; /*Added OpenCover. TRBT#PROD_GRADE*/
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService, private ns: NotesService) { }
 

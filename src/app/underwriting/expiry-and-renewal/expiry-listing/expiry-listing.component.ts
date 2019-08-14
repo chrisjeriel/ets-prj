@@ -307,7 +307,7 @@ export class ExpiryListingComponent implements OnInit {
   tblIndexNR: any;
   selectedData: any;
 
-  constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title, private ns: NotesService,  private decimal : DecimalPipe, private router : Router) { }
+  constructor(private underWritingService: UnderwritingService, public modalService: NgbModal, private titleService: Title, private ns: NotesService,  private decimal : DecimalPipe, private router : Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Expiry Listing");

@@ -253,7 +253,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     sectionIII :0,
   };
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
+  constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, private route: ActivatedRoute, private router: Router,
               private ns: NotesService, private ms: MaintenanceService) { }
 
 

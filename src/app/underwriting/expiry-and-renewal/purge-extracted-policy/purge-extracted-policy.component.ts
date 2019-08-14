@@ -97,7 +97,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     coSeriesNo: '',
     altNo: ''
   }
-  constructor(private modalService: NgbModal,private underwritingService: UnderwritingService,private ns: NotesService, private maintenanceService: MaintenanceService) { }
+  constructor(public modalService: NgbModal,private underwritingService: UnderwritingService,private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
     this.getPolPurging();

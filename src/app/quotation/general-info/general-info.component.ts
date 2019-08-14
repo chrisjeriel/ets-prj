@@ -496,7 +496,7 @@ export class GeneralInfoComponent implements OnInit {
 		return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + arr[4];
 	}
 
-	showCedingCompanyLOV(event) {
+	showCedingCompanyLOV(event?) {
 		$('#cedingCompany #modalBtn').trigger('click');
 	}
 

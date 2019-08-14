@@ -64,7 +64,7 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     widths: [110,225,30],
   }
 
-  constructor(private securityServices: SecurityService, private modalService: NgbModal) { }
+  constructor(private securityServices: SecurityService, public modalService: NgbModal) { }
 
   ngOnInit() {
   }

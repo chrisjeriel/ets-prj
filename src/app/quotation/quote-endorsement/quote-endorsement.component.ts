@@ -216,7 +216,7 @@ export class QuoteEndorsementComponent implements OnInit {
     hideEndt: any[];
     selectedEndt:any = null;
 
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, 
+    constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title, 
      private route: ActivatedRoute, private uwService: UnderwritingService, private mtnService : MaintenanceService) { }
 
     ngOnInit() {  

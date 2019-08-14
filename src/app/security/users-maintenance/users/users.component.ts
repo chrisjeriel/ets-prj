@@ -77,7 +77,7 @@ export class UsersComponent implements OnInit {
     widths: [77,223],
   }
 
-  constructor(private securityServices: SecurityService, private modalService: NgbModal) { }
+  constructor(private securityServices: SecurityService, public modalService: NgbModal) { }
 
   ngOnInit() {
   }

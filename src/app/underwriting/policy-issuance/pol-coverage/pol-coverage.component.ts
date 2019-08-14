@@ -338,7 +338,7 @@ export class PolCoverageComponent implements OnInit {
   negativeFlag: number = 0;
   holdCoverPrem: boolean = false;
 
-  constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
+  constructor(private underwritingservice: UnderwritingService, private titleService: Title, public modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe) { }
 
 

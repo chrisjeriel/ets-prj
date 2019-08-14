@@ -115,7 +115,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	tempHcNo		: string = '';
 	private sub		: any;
 
-  	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
+  	constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title,
 		private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute) { 
 	}
 

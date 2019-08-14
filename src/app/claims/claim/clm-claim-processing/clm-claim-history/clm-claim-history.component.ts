@@ -203,7 +203,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   @Output() preventHistory = new EventEmitter<any>();
 
   constructor(private titleService: Title, private clmService: ClaimsService,private ns : NotesService, private mtnService: MaintenanceService, 
-              private polService: UnderwritingService, private modalService: NgbModal) {
+              private polService: UnderwritingService, public modalService: NgbModal) {
   }
 
   ngOnInit() {

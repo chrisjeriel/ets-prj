@@ -155,13 +155,17 @@
 </div>
 <app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
 
-<app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
+<!-- <app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal> TRBT#PROD_GRADE-->
+
+<app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
 
 <ng-template #confirmLeave>
 	<app-confirm-leave></app-confirm-leave>
 </ng-template>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE-->
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <!-- <<<<<<< HEAD
 <ng-template #confirmLeave>
 	<app-confirm-leave></app-confirm-leave>

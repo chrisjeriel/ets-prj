@@ -87,7 +87,7 @@ export class HoldCoverComponent implements OnInit {
 	searchParams: any[] = [];
 	searchParams2: any[] = [];
 
-	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
+	constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title,
 		private decPipe: DecimalPipe, private ns : NotesService, private router: Router,  private route: ActivatedRoute) { 
 	}
 

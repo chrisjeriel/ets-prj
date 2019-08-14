@@ -107,7 +107,7 @@ export class ClaimDistributionComponent implements OnInit {
 
    currTab:string = 'reserve';
 
-  constructor(private modalService: NgbModal, private clmService : ClaimsService, private titleService: Title, private ns: NotesService, private router: Router) { }
+  constructor(public modalService: NgbModal, private clmService : ClaimsService, private titleService: Title, private ns: NotesService, private router: Router) { }
 
   ngOnInit() {
      this.titleService.setTitle("Clm | Claim Distribution");

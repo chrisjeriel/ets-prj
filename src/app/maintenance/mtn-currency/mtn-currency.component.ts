@@ -43,7 +43,7 @@ export class MtnCurrencyComponent implements OnInit {
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
   
-  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
+  constructor(private maintenanceService: MaintenanceService, public modalService: NgbModal) { }
 
   ngOnInit() {
     /*this.maintenanceService.getMtnCurrency().subscribe((data: any) =>{

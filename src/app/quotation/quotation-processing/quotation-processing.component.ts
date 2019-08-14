@@ -220,7 +220,7 @@ export class QuotationProcessingComponent implements OnInit {
     cessionDescList: any[] = [];
     first = false;
 
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router,
+    constructor(private quotationService: QuotationService, public modalService: NgbModal, private router: Router,
                 private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService) { }
     
     ngOnInit() {

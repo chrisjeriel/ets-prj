@@ -6,7 +6,8 @@
                 <div class="col-sm-8">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" (change)="checkCode($event)" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()">
+                        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" (change)="checkCode($event)" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()"> TRBT#PROD_GRADE -->
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important">
                         <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
                     </div>
                 </div>
@@ -42,11 +43,15 @@
         <div class="form-group col-sm">
             <div class="col-md-12 text-center">
                 <div class="cust-btn-container">
-                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                    <!-- <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> TRBT#PROD_GRADE -->
+                    <button type="button" class="cust-btn"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn"><a>Save</a></button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<app-mtn-ceding-company-treaty id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company-treaty>
+<!-- <app-mtn-ceding-company-treaty id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company-treaty> TRBT#PROD_GRADE -->
+<app-mtn-ceding-company-treaty id="cedingCompany"></app-mtn-ceding-company-treaty>
+

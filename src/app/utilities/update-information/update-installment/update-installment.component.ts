@@ -119,7 +119,7 @@ export class UpdateInstallmentComponent implements OnInit {
     selector: 'otherCharges',
   }
 
-  constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private ns: NotesService, private titleService: Title) { }
+  constructor(private underwritingService: UnderwritingService, public modalService: NgbModal, private ns: NotesService, private titleService: Title) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Update Installment");

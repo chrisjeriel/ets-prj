@@ -89,7 +89,7 @@ export class PolCreatePARComponent implements OnInit {
   filtSearch: any[] = [];
   noSelected: boolean = true;
 
-  constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private router: Router,
+  constructor(private underwritingService: UnderwritingService, public modalService: NgbModal, private router: Router,
               private titleService: Title, private quoteService: QuotationService, private ns: NotesService, private mtnService: MaintenanceService) {
 
   }

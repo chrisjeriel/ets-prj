@@ -64,7 +64,7 @@ export class SecurityModulesComponent implements OnInit {
       widths: [],
     }
 
-    constructor(private securityServices: SecurityService,private modalService: NgbModal) { }
+    constructor(private securityServices: SecurityService,public modalService: NgbModal) { }
 
     ngOnInit() {
     }

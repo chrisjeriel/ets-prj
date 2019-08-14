@@ -14,7 +14,7 @@
 <div id="cust-tooltip" style="position: absolute;z-index: 99999;background-color: rgb(25,25,25);color: rgb(217,217,217);font-size: 9px !important; display: none ; padding: 3px 5px;">
     test
 </div>
-<ng-sidebar-container style="position: static;" (onBackdropClicked)="_onBackdropClicked()">
+<ng-sidebar-container style="position: static;">
     <ng-sidebar [(opened)]="_opened" [mode]="'push'" [keyClose]="_keyClose" [position]="'left'" [dock]="'true'"
         [dockedSize]="'0px'" [sidebarClass]="'demo-sidebar'" [closeOnClickOutside]="_closeOnClickOutside" *ngIf="currentUser">
 
