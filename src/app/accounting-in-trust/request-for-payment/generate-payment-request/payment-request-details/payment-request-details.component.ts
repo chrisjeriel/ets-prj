@@ -88,7 +88,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   inwardPolBalData: any = {
     tableData     : [],
     tHeader       : ['Policy No.','Inst No.','Due Date','Curr','Curr Rate','Balance','Payment','Premium', 'RI Commission','RI Comm. VAT', 'Charges', 'Net Return'],
-    dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','percent','currency', 'currency'],
+    dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','currency','currency', 'currency'],
     magnifyingGlass : ['policyNo'],
     nData: {
       newRec         : 1,
@@ -699,12 +699,24 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
   }
 
+  chckTrtyBal(){
+    this.treatyBalanceData.tableData.forEach(e => {
+      if(e.currAmt != '' && e.currAmt != null && e.currAmt <= 0){
+        e.currAmt = '';
+        this.warnMsg = 'Please enter amount greater than 0.';
+        this.warnMdl.openNoClose();
+      }
+    });
+  }
+
   onClickSaveTrty(cancelFlag?){
     this.cancelFlagTrty = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
+    var isNotUnique : boolean ;
+    var saveTrty = this.params.savePrqTrans;
     var isEmpty = 0;
-
+    var ts = this;
     this.treatyBalanceData.tableData.forEach(e => {
       e.reqId    = this.rowData.reqId;
       if(e.quarterEnding == '' || e.quarterEnding == null || e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null || 
@@ -734,30 +746,48 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(currAmt);
     console.log(this.treatyBalanceData.tableData);
 
+    this.treatyBalanceData.tableData.forEach(function(tblData){
+      if(tblData.newRec != 1){
+        saveTrty.forEach(function(stData){
+          if(ts.ns.toDateTimeString(tblData.quarterEnding) == ts.ns.toDateTimeString(stData.quarterEnding)){
+            if(stData.newRec == 1){
+              isNotUnique = true;  
+            }
+          }
+        });
+      }
+    });
+
     if(isEmpty == 1){
       this.dialogIcon = 'error';
       this.sucTrty.open();
       this.params.savePrqTrans   = [];
     }else{
-      if(Number(this.requestData.reqAmt) < Number(currAmt)){
-        this.warnMsg = 'The Total Amount of Treaty Balance Due to Participants must not exceed the Requested Amount.';
+      if(isNotUnique){
+        this.warnMsg = 'Unable to save the record. Quarter Ending must be unique.';
         this.warnMdl.openNoClose();
-        this.params.savePrqTrans   = [];
-        this.params.deletePrqTrans = [];
+        this.params.savePrqTrans = [];
       }else{
-        if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-          $('.ng-dirty').removeClass('ng-dirty');
-          this.conTrty.confirmModal();
+        if(Number(this.requestData.reqAmt) < Number(currAmt)){
+          this.warnMsg = 'The Total Amount of Treaty Balance Due to Participants must not exceed the Requested Amount.';
+          this.warnMdl.openNoClose();
           this.params.savePrqTrans   = [];
           this.params.deletePrqTrans = [];
-          this.treatyBalanceData.tableData = this.treatyBalanceData.tableData.filter(e => e.quarterEnding != '');
         }else{
-          console.log(this.cancelFlagTrty);
-          if(this.cancelFlagTrty == true){
-            this.conTrty.showLoading(true);
-            setTimeout(() => { try{this.conTrty.onClickYes();}catch(e){}},500);
-          }else{
+          if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
+            $('.ng-dirty').removeClass('ng-dirty');
             this.conTrty.confirmModal();
+            this.params.savePrqTrans   = [];
+            this.params.deletePrqTrans = [];
+            this.treatyBalanceData.tableData = this.treatyBalanceData.tableData.filter(e => e.quarterEnding != '');
+          }else{
+            console.log(this.cancelFlagTrty);
+            if(this.cancelFlagTrty == true){
+              this.conTrty.showLoading(true);
+              setTimeout(() => { try{this.conTrty.onClickYes();}catch(e){}},500);
+            }else{
+              this.conTrty.confirmModal();
+            }
           }
         }
       }
