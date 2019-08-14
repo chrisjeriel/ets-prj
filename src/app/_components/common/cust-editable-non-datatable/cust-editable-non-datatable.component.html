@@ -1,35 +1,33 @@
 <style>
-thead tr th {
-    position: relative;
-}
-span.ui-column-resizer {
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    width: 8px;
-    height: 100%;
-    padding: 0;
-    cursor: col-resize;
-}
-
+    thead tr th {
+        position: relative;
+    }
+    
+    span.ui-column-resizer {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        width: 8px;
+        height: 100%;
+        padding: 0;
+        cursor: col-resize;
+    }
 </style>
 
 <br id="test" *ngIf="(passData.addFlag || passData.editFlag || passData.deleteFlag || passData.searchFlag || (passData.genericBtn !== undefined) || ctrlL.innerHTML.trim() || ctrlR.innerHTML.trim()) && !loadingFlag" />
 
-<div class="row"  *ngIf="loadingFlag">       
+<div class="row" *ngIf="loadingFlag">
     <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 8px !important">
 </div>
 
 <div class="row  text-center" *ngIf="failed" style=" display: flow-root">
-    <img src="app/resources/images/network-fail.png" alt="loading.gif" id="loading" class="" style="height: 50px">
-    Network Error!
+    <img src="app/resources/images/network-fail.png" alt="loading.gif" id="loading" class="" style="height: 50px"> Network Error!
     <div class="cust-btn-container">
         <button (click)="retrieveFromSub()" class="cust-btn">Retry</button>
     </div>
 </div>
-
 
 <div id="cust-table-container" [style.display]="!loadingFlag && !failed ? 'block':'none'" style="position: relative;">
     <ng-container *ngIf="overlayLoader">
@@ -38,19 +36,24 @@ span.ui-column-resizer {
         </div>
     </ng-container>
 
-    <div class="new-btn-container" style="position: absolute; margin-top:-28px;" [style.width]="(passData.searchFlag || ctrlR.innerHTML.trim()) ? '100%' : 'auto'" >
+    <div class="new-btn-container" style="position: absolute; margin-top:-28px;" [style.width]="(passData.searchFlag || ctrlR.innerHTML.trim()) ? '100%' : 'auto'">
 
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()" [disabled]="passData.disableAdd !==undefined && passData.disableAdd" [class.cust-btn-disabled]="passData.disableAdd !==undefined && passData.disableAdd"><a>Add</a></button>
         <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()" [disabled]="passData.disableEdit !==undefined && passData.disableEdit"><a class="paginate_button previous">Edit</a></button>
         <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="confirmDelete()" [disabled]="(selected.length==0 && passData.checkFlag) || (btnDisabled || passData.btnDisabled)"><a class="paginate_button previous">Delete</a></button>
-        <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()" [disabled]="passData.disableGeneric !==undefined && passData.disableGeneric"><div class="paginate_button previous" >{{passData.genericBtn}}</div></button>
+        <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()" [disabled]="passData.disableGeneric !==undefined && passData.disableGeneric">
+            <div class="paginate_button previous">{{passData.genericBtn}}</div>
+        </button>
         <div class="search-filter" *ngIf="passData.searchFlag">
             <label [class.searchWithFilter]="passData.filters !== undefined">Search: &nbsp;
-                <input type="search" class="form-control-sm cust-search-form " [(ngModel)]="searchString"
-                (ngModelChange)="search($event)" novalidate>
+                <input type="search" class="form-control-sm cust-search-form " [(ngModel)]="searchString" (ngModelChange)="search($event)" novalidate>
             </label>
             <div ngbDropdown *ngIf="passData.filters !== undefined">
-                <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
+                <button class="cust-filter" ngbDropdownToggle>
+                    <a>
+                        <fa name="filter"></fa>
+                    </a>
+                </button>
                 <div ngbDropdownMenu aria-labelledby="dropdownConfig">
                     <div class="dropdown-item">
                         <span class="cust-tbl-label">Filter by:</span>
@@ -60,9 +63,9 @@ span.ui-column-resizer {
                                     <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
                                 </div>
                             </div>
-                            <input [disabled]="!filt.enabled" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
-                            <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
-                            <input [disabled]="!filt.enabled"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                            <input [disabled]="!filt.enabled" *ngSwitchCase="'text'" type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                            <input [disabled]="!filt.enabled" *ngSwitchCase="'date'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                            <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
                             <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>
                             <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)">
                         </div>
@@ -73,7 +76,11 @@ span.ui-column-resizer {
                 </div>
             </div>
             <div ngbDropdown #drop="ngbDropdown" *ngIf="passData.exportFlag" style="margin-left: 4px !important;">
-               <button class="cust-export" ngbDropdownToggle><a><fa name="ellipsis-v"></fa></a></button>
+                <button class="cust-export" ngbDropdownToggle>
+                    <a>
+                        <fa name="ellipsis-v"></fa>
+                    </a>
+                </button>
                 <div ngbDropdownMenu aria-labelledby="dropdownConfig">
                     <div class="dropdown-item-export">
                         <div class="container" style="padding-left: 5px; padding-right: 5px;">
@@ -90,17 +97,12 @@ span.ui-column-resizer {
             </div>
         </div>
 
-        
-
-
         <span #ctrlL>
             <ng-content select="[controls-l]"></ng-content>    
         </span>
         <div #ctrlR style="float: right;">
-            <ng-content select="[controls-r]"></ng-content>    
+            <ng-content select="[controls-r]"></ng-content>
         </div>
-
-        
 
     </div>
     <div ngbDropdown>
@@ -110,15 +112,15 @@ span.ui-column-resizer {
             <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
             <button *ngIf="passData.genericBtn !== undefined" class="cust-btn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button> -->
             <!-- <div class="search-filter" *ngIf="passData.searchFlag"> -->
-                <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
-                    <!-- <label>Search: &nbsp;
+            <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
+            <!-- <label>Search: &nbsp;
                         <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString"
                         (ngModelChange)="search($event)">
                     </label> -->
-                    <!-- </div> -->
-                    <!-- </div> -->
+            <!-- </div> -->
+            <!-- </div> -->
 
-                    <!-- <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+            <!-- <div ngbDropdownMenu aria-labelledby="dropdownConfig">
                         <div class="dropdown-item">
                             <span class="cust-tbl-label">Filter by:</span>
                             <div class="input-group">
@@ -176,40 +178,693 @@ span.ui-column-resizer {
                         </div>
                     </div>
                 </div> -->
-                <div class="table-scroll" id="cust-scroll">
-                    <!-- <input  (keydown)="traverse($event,key,ti)" (focus)="focusFirst()" type="text" name="" style="opacity: 0;position: absolute;"> -->
-                    <form #myForm="ngForm">
-                    <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'non-datatable' + passData.pageID">
-                        <colgroup *ngIf="passData.tHeaderWithColspan != null">
-                            <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
-                                <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
+            <div class="d-flex w-100">
+                <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'left non-datatable' + passData.pageID" style="width:auto" *ngIf="pinKeysLeft != undefined && pinKeysLeft.length != 0">
+                    <colgroup *ngIf="passData.tHeaderWithColspan != null">
+                        <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
+                            <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
+                        </ng-container>
+                    </colgroup>
+                    <thead>
+                        <tr *ngIf="passData.tHeaderWithColspan != null">
+                            <ng-container *ngFor="let header of passData.tHeaderWithColspan">
+                                <th [colSpan]="header.span" style="text-align: center;">
+                                    <span class="gridHeader">{{ header.header }}</span>
+                                </th>
                             </ng-container>
-                        </colgroup>
-                        <thead>
-                            <tr *ngIf="passData.tHeaderWithColspan != null">
-                                <ng-container *ngFor="let header of passData.tHeaderWithColspan">
-                                    <th [colSpan]="header.span" style="text-align: center;">
-                                        <span class="gridHeader">{{ header.header }}</span>
-                                    </th>   
+                        </tr>
+                        <tr style="min-width: 96px">
+                            <th *ngIf="passData.checkFlag" class="checkbox not-form">
+                                <input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)" [checked]="selectAllFlag" tabindex="-1">
+                            </th>
+                            <ng-container *ngFor="let tHeader of passData.tHeader; let i = index;">
+                                <th container="body" *ngIf="pinKeysLeft.indexOf(dataKeys[i])!= -1" (click)="sort(dataKeys[i],sortBy);sortIndex=i;" [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered">
+                                    <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
+                                    <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
+                                    <div *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' || passData.dataTypes[i]=='percent')">
+                                        <ng-container *ngIf="tHeader.includes('||'); else tH1">
+                                            <ng-container *ngFor="let x of tHeader.split('||'); let j = index">
+                                                <span class="gridHeader number text-right">{{ x }}
+                                                    <i *ngIf="sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-down"></i>
+                                                    <i *ngIf="!sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-up"></i>
+                                                </span>
+                                                <br *ngIf="j != tHeader.split('||').length-1" />
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-template #tH1>
+                                            <span class="gridHeader number text-right">{{ tHeader }}
+                                                <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
+                                                <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
+                                            </span>
+                                        </ng-template>
+                                    </div>
+                                    <div *ngIf="!(!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' ||passData.dataTypes[i]=='percent'))">
+                                        <ng-container *ngIf="tHeader.includes('||'); else tH2">
+                                            <ng-container *ngFor="let x of tHeader.split('||'); let j = index">
+                                                <span container="body" class="gridHeader">{{ x }}
+                                                    <i *ngIf="sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-down"></i>
+                                                    <i *ngIf="!sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-up"></i>
+                                                </span>
+                                                <br *ngIf="j != tHeader.split('||').length-1" />
+                                            </ng-container>
+                                        </ng-container>
+                                        <ng-template #tH2>
+                                            <span container="body" class="gridHeader">{{ tHeader }}
+                                                <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
+                                                <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
+                                            </span>
+                                        </ng-template>
+                                    </div>
+                                    <!-- END TEST -->
+                                </th>
+                            </ng-container>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)" id="{{ ti }}">
+                            <td *ngIf="passData.checkFlag" class="checkbox align-middle">
+                                <div *ngIf="passData.checkFlag" style="text-align: center;">
+                                    <input *ngIf="!(data===fillData)" type="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" tabindex="-1" class="not-form" [ngModelOptions]="{standalone: true}">
+                                </div>
+                            </td>
+                            <ng-container *ngFor="let key of dataKeys; let i = index">
+                                <td *ngIf="passData.dataTypes[i].toUpperCase() != 'TIME-STRING' && pinKeysLeft.indexOf(key) != -1" [ngSwitch]="passData.dataTypes[i]" [attr.tabindex]="passData.tabIndex === undefined" class="align-middle" [class.text-center]="passData.centered" >
+                                    <div *ngIf="!(data===fillData) && ( passData.uneditable === undefined || !passData.uneditable[i] ) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)" class="align-middle" style="position: relative;">
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
+
+
+                                        <ng-container *ngSwitchCase="'number'">
+                                            <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else number" class="unclickable text-right">{{ data[key] | number: '1.0-0'}}</span>
+                                            <ng-template #number>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text text-right number form-control-sm" (blur)="format($event , data, 'number')" type="text" [(ngModel)]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" numbers-only [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1">
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <ng-container *ngSwitchCase="'currency'">
+                                            <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else currency" class="text-right">{{ data[key] | number:'1.2-2' | negativeAmount }}</span>
+                                            <ng-template #currency>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" appCurrency class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}">
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <!-- <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data,key)" ngModel>
+                                </div> -->
+
+                                        <ng-container *ngSwitchCase="'checkbox'">
+                                            <div style="text-align: center;">
+                                                <input type="checkbox" disabled *ngIf="(data.enCb == 1 || data.newRec != 1) && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'">
+                                                <ng-template #checkbox>
+                                                    <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data,key)" ngModel>
+                                                </ng-template>
+                                            </div>
+                                        </ng-container>
+
+                                        <div *ngSwitchCase="'radio'" style="text-align: center;">
+                                            <input (focus)="focus(data)" id="checkbox" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [checked]="data[key] === undefined || data[key] === 'N' ? false : true" type="checkbox" (click)="assignRadio($event,data,key);onDataChange($event,data,key)" [ngModel]="data[key] == 'Y'" (ngModelChange)="$event ? data[key] = 'Y' : data[key]= 'N'">
+                                        </div>
+                                        <div *ngSwitchCase="'file'" style="text-align: center;">
+                                            <button class="fa fa-paperclip btn-file" title="Attach Image">
+                                                <input type="file" accept="image/*" (change)="upload(data,$event)">
+                                            </button>
+                                            <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
+                                        <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
+                                    </button> -->
+                                            <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
+                                            </button>
+                                        </div>
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
+                                        <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                            <ng-container *ngFor="let data of passData.opts">
+                                                <ng-container *ngIf="key == data.selector">
+                                                    <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                </ng-container>
+                                            </ng-container>
+                                        </select>
+
+                                        <!-- TEST NEW DATEPICKER -->
+
+                                        <!-- OLD -->
+                                        <!-- Pag may nangyaring masama, pakiuncomment po ito at pakicomment yung NEW hahaha -->
+                                        <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'" (ngModelChange)="data[key]=$event; data.edited=true" [ngModelOptions]="{updateOn:'blur'}"> -->
+
+                                        <!-- NEW -->
+
+                                        <ng-container *ngSwitchCase="'date'">
+                                            <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else date" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
+                                            <ng-template #date>
+                                                <div class="dp-cont">
+                                                    <datepicker [type]="'date'" [value]="data[key] | date:'yyyy-MM-dd'" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <!-- OLD -->
+                                        <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key]" (ngModelChange)="data[key]=$event"> -->
+
+                                        <!-- NEW -->
+                                        <div *ngSwitchCase="'time'" class="dp-cont">
+                                            <datepicker [type]="'time'" [showIcon]="false" [value]="data[key]" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
+                                        </div>
+
+                                        <!-- END TEST NEW DATEPICKER -->
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
+                                        <ng-container *ngSwitchCase="'text-editor'">
+                                            <div style="max-height: 21px; max-width: 91%">
+                                                <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);">
+                                                    <!-- <ng-container icon-1> -->
+                                                    } }
+                                                    <!--                                             <a ><i class="fa fa-search"></i></a> -->
+                                                    <!--                                         </ng-container> -->
+                                                </text-editor>
+                                            </div>
+                                        </ng-container>
+
+                                        <!-- pk-cap -->
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'pk' && passData.dataTypes[i].split('-')[1] === 'cap' ? passData.dataTypes[i] : ''" class="editable-text form-control-sm" type="text" [ngModel]="data[key]" (ngModelChange)="data[key]=$event.toUpperCase()" (change)="onDataChange($event,data,key)" [disabled]="data.newRec != 1" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered">
+
+                                        <!-- pk -->
+                                        <ng-container *ngSwitchCase="'pk'">
+                                            <span *ngIf="data.newRec != 1 && !data.others; else pk" class="unclickable">{{ data[key] }}</span>
+                                            <ng-template #pk>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered" [ngStyle]="{'width': passData.centered ? '20%' : 'auto'}">
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <div *ngSwitchCase="'req-select'">
+                                            <span *ngIf="data.newRec != 1 && !data.others; else reqSelect" class="unclickable">{{ data[key] }}</span>
+                                            <ng-template #reqSelect>
+                                                <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                    <ng-container *ngFor="let data of passData.opts">
+                                                        <ng-container *ngIf="key == data.selector">
+                                                            <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </select>
+                                            </ng-template>
+                                        </div>
+
+                                        <div *ngSwitchCase="'req-select2'">
+                                            <ng-container *ngIf="data.newRec != 1 && !data.others; else reqSelect2">
+                                                <ng-container *ngFor="let opt of passData.opts">
+                                                    <ng-container *ngIf="key == opt.selector">
+                                                        <ng-container *ngFor="let prev of opt.prev; let i = index">
+                                                            <span *ngIf="opt.vals[i] == data[key]" class="unclickable">{{ prev }}</span>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                            <ng-template #reqSelect2>
+                                                <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                    <ng-container *ngFor="let data of passData.opts">
+                                                        <ng-container *ngIf="key == data.selector">
+                                                            <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </select>
+                                            </ng-template>
+                                        </div>
+
+                                        <ng-container *ngSwitchCase="'lovInput'">
+                                            <span *ngIf="data.showMG != 1 && !data.others; else lovInp">{{ data[key] }}</span>
+                                            <ng-template #lovInp>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <ng-container *ngSwitchCase="'lovInput-r'">
+                                            <span *ngIf="data.showMG != 1 && !data.others; else lovInpR" style="text-align: right !important;">{{ data[key] }}</span>
+                                            <ng-template #lovInpR>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <!-- <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'lovInput-r'" class="editable-text form-control-sm lovInput text-right" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.unclickable]="data.showMG != 1 && !data.others"> -->
+
+                                        <!-- <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'lovInput'" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.no-click]="data.showMG != 1 && !data.others">  -->
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'reqText'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key);this.markAsDirty();" appRequiredTable>
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'reqNumber'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)" type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key);" appRequiredTable numbers-only>
+
+                                        <!--  <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'limitedText'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1"> -->
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1">
+
+                                        <div><a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1 && data.showMG == 1 && data.colMG != key"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a></div>
+
+                                        <!--  -->
+                                    </div>
+
+                                    <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
+                                        <a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1  && data.showMG == 1 && data.colMG != key && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a>
+                                        <div *ngSwitchCase="'percent'" style="text-align: right">
+                                            <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="'currencyRate'" style="text-align: right">
+                                            <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.6-6'}}</span>
+                                        </div>
+                                        <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
+                                    <span class="unclickable">{{ data[key] | number: '1.2-2'}}</span>
+                                </div>
+                                <div  *ngSwitchCase="'number'" style="text-align: right">
+                                    <span class="unclickable">{{ data[key] | number: '1.0-0'}}</span>
+                                </div> -->
+                                        <div *ngSwitchCase="'select'">
+                                            <select disabled (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                <ng-container *ngFor="let data of passData.opts">
+                                                    <ng-container *ngIf="key == data.selector">
+                                                        <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                        <div *ngSwitchCase="'currency'" style="text-align: right">
+                                            <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="'number'" style="text-align: right">
+                                            <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.0-0'}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="'reqNumber'" style="text-align: right">
+                                            <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
+                                        </div>
+                                        <span *ngSwitchCase="'date'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
+                                        <span *ngSwitchCase="'time'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'HH:mm'}}</span>
+                                        <span *ngSwitchCase="'datetime'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy hh:mm aa'}}</span>
+                                        <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                            <input type="checkbox" [checked]="data[key] && data[key]!= 'N'" onclick="return false;">
+                                        </div>
+                                        <div *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
+                                            <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                        </div>
+                                        <span *ngSwitchDefault class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
+
+                                    </div>
+
+                                    <div *ngIf="data===fillData" class="filler">
+
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <!-- <td *ngIf="passData.tHeader.indexOf('Edit Flag')!= -1">
+                                <input type="checkbox" name="" *ngIf="!(data===fillData)">
+                            </td>
+                            <td *ngIf="passData.selectFlag">
+                                <select class="editable-select" *ngIf="!(data===fillData)">
+                                    <option *ngFor="let options of options">{{options}}</option>
+                                </select>
+                            </td> -->
+                            <!-- <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
+                                <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData) && (passData.uneditable===undefined || !passData.uneditable[passData.uneditable.length-1]) && data.attach">
+                                    <input type="file" *ngIf="!(data===fillData)" (change)="upload(data,$event)">
+                                </button>
+                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileNameServer)">
+                                </button>
+                            </td> -->
+                        </tr>
+
+                        <tr *ngIf="passData.total !== undefined" style="height: 29px !important">
+                            <th *ngIf="passData.checkFlag" >
+                                <div style="text-align: right">
+                                    <span class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">&nbsp;</span>
+                                    <span class="unclickable">&nbsp;</span>
+                                </div>
+                            </th>
+                            <ng-container *ngFor="let data of passData.total; let i = index">
+                                <th  [ngSwitch]="passData.dataTypes[i]" *ngIf="pinKeysLeft.indexOf(dataKeys[i])!= -1">
+                                    <div *ngSwitchCase="'currency'" style="text-align: right">
+                                        <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
+                                        <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                    </div>
+                                    <div *ngSwitchCase="'percent'" style="text-align: right">
+                                        <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.10-10' | negativeAmount}}</span>
+                                        <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                    </div>
+                                    <div *ngSwitchCase="'number'" style="text-align: right">
+                                        <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
+                                        <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                    </div>
+                                    <div *ngSwitchDefault style="text-align: right">
+                                        <span class="unclickable">{{ getSum(data)}}</span>
+                                    </div>
+                                </th>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+                <div [class]="'table-scroll table-scroll'+ passData.pageID" id="cust-scroll">
+                    <!-- <input  (keydown)="traverse($event,key,ti)" (focus)="focusFirst()" type="text" name="" style="opacity: 0;position: absolute;"> -->
+                    <form #myForm="ngForm" class="w-100">
+                        <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'non-datatable' + passData.pageID">
+                            <colgroup *ngIf="passData.tHeaderWithColspan != null">
+                                <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
+                                    <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
                                 </ng-container>
-                            </tr>
-                            <tr style="min-width: 96px">
-                                <th *ngIf="passData.checkFlag" class="checkbox not-form"><input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)"  [checked]="selectAllFlag" tabindex="-1"></th>
-                                <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index;" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
-                                [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered">
+                            </colgroup>
+                            <thead>
+                                <tr *ngIf="passData.tHeaderWithColspan != null ">
+                                    <ng-container *ngFor="let header of passData.tHeaderWithColspan">
+                                        <th [colSpan]="header.span" style="text-align: center;">
+                                            <span class="gridHeader">{{ header.header }}</span>
+                                        </th>
+                                    </ng-container>
+                                </tr>
+                                <tr style="min-width: 96px">
+                                    <th *ngIf="passData.checkFlag && (pinKeysLeft == undefined || pinKeysLeft.length == 0)" class="checkbox not-form">
+                                        <input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)" [checked]="selectAllFlag" tabindex="-1">
+                                    </th>
+                                    <ng-container *ngFor="let tHeader of passData.tHeader; let i = index;">
+                                        <th container="body" *ngIf="pinKeysLeft.indexOf(dataKeys[i]) == -1 && pinKeysRight.indexOf(dataKeys[i]) == -1" (click)="sort(dataKeys[i],sortBy);sortIndex=i;" [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered">
+                                            <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
+                                            <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
+                                            <div *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' || passData.dataTypes[i]=='percent')">
+                                                <ng-container *ngIf="tHeader.includes('||'); else tH1">
+                                                    <ng-container *ngFor="let x of tHeader.split('||'); let j = index">
+                                                        <span class="gridHeader number text-right">{{ x }}
+                                                            <i *ngIf="sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-down"></i>
+                                                            <i *ngIf="!sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-up"></i>
+                                                        </span>
+                                                        <br *ngIf="j != tHeader.split('||').length-1" />
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-template #tH1>
+                                                    <span class="gridHeader number text-right">{{ tHeader }}
+                                                        <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
+                                                        <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
+                                                    </span>
+                                                </ng-template>
+                                            </div>
+                                            <div *ngIf="!(!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' ||passData.dataTypes[i]=='percent'))">
+                                                <ng-container *ngIf="tHeader.includes('||'); else tH2">
+                                                    <ng-container *ngFor="let x of tHeader.split('||'); let j = index">
+                                                        <span container="body" class="gridHeader">{{ x }}
+                                                            <i *ngIf="sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-down"></i>
+                                                            <i *ngIf="!sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-up"></i>
+                                                        </span>
+                                                        <br *ngIf="j != tHeader.split('||').length-1" />
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-template #tH2>
+                                                    <span container="body" class="gridHeader">{{ tHeader }}
+                                                        <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
+                                                        <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
+                                                    </span>
+                                                </ng-template>
+                                            </div>
+                                            <!-- END TEST -->
+                                        </th>
+                                    </ng-container>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)" id="{{ ti }}">
+                                    <td *ngIf="passData.checkFlag && (pinKeysLeft == undefined || pinKeysLeft.length == 0)" class="checkbox align-middle">
+
+                                        <div *ngIf="passData.checkFlag" style="text-align: center;">
+                                            <input *ngIf="!(data===fillData)" type="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" tabindex="-1" class="not-form" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </td>
+                                    <ng-container *ngFor="let key of dataKeys; let i = index">
+                                        <td *ngIf="passData.dataTypes[i].toUpperCase() != 'TIME-STRING' && pinKeysLeft.indexOf(key) == -1 && pinKeysRight.indexOf(key) == -1" [ngSwitch]="passData.dataTypes[i]" [attr.tabindex]="passData.tabIndex === undefined" class="align-middle" [class.text-center]="passData.centered">
+                                            <div *ngIf="!(data===fillData) && ( passData.uneditable === undefined || !passData.uneditable[i] ) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)" class="align-middle" style="position: relative;">
+
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
+
+                                                <ng-container *ngSwitchCase="'number'">
+                                                    <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else number" class="unclickable text-right">{{ data[key] | number: '1.0-0'}}</span>
+                                                    <ng-template #number>
+                                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text text-right number form-control-sm" (blur)="format($event , data, 'number')" type="text" [(ngModel)]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" numbers-only [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1">
+                                                    </ng-template>
+                                                </ng-container>
+
+                                                <ng-container *ngSwitchCase="'currency'">
+                                                    <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else currency" class="text-right">{{ data[key] | number:'1.2-2' | negativeAmount }}</span>
+                                                    <ng-template #currency>
+                                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" appCurrency class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}">
+                                                    </ng-template>
+                                                </ng-container>
+
+                                                <ng-container *ngSwitchCase="'checkbox'">
+                                                    <div style="text-align: center;">
+                                                        <input type="checkbox" disabled *ngIf="(data.enCb == 1 || data.newRec != 1) && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'">
+                                                        <ng-template #checkbox>
+                                                            <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data,key)" ngModel>
+                                                        </ng-template>
+                                                    </div>
+                                                </ng-container>
+
+                                                <div *ngSwitchCase="'radio'" style="text-align: center;">
+                                                    <input (focus)="focus(data)" id="checkbox" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [checked]="data[key] === undefined || data[key] === 'N' ? false : true" type="checkbox" (click)="assignRadio($event,data,key);onDataChange($event,data,key)" [ngModel]="data[key] == 'Y'" (ngModelChange)="$event ? data[key] = 'Y' : data[key]= 'N'">
+                                                </div>
+                                                <div *ngSwitchCase="'file'" style="text-align: center;">
+                                                    <button class="fa fa-paperclip btn-file" title="Attach Image">
+                                                        <input type="file" accept="image/*" (change)="upload(data,$event)">
+                                                    </button>
+                                                    <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
+                                                <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
+                                            </button> -->
+                                                    <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
+                                                    </button>
+                                                </div>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
+                                                <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                    <ng-container *ngFor="let data of passData.opts">
+                                                        <ng-container *ngIf="key == data.selector">
+                                                            <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </select>
+
+                                                <!-- TEST NEW DATEPICKER -->
+
+                                                <!-- OLD -->
+                                                <!-- Pag may nangyaring masama, pakiuncomment po ito at pakicomment yung NEW hahaha -->
+                                                <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'" (ngModelChange)="data[key]=$event; data.edited=true" [ngModelOptions]="{updateOn:'blur'}"> -->
+
+                                                <!-- NEW -->
+
+                                                <ng-container *ngSwitchCase="'date'">
+                                                    <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else date" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
+                                                    <ng-template #date>
+                                                        <div class="dp-cont">
+                                                            <datepicker [type]="'date'" [value]="data[key] | date:'yyyy-MM-dd'" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-container>
+
+                                                <!-- OLD -->
+                                                <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key]" (ngModelChange)="data[key]=$event"> -->
+
+                                                <!-- NEW -->
+                                                <div *ngSwitchCase="'time'" class="dp-cont">
+                                                    <datepicker [type]="'time'" [showIcon]="false" [value]="data[key]" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
+                                                </div>
+
+                                                <!-- END TEST NEW DATEPICKER -->
+
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
+                                                <ng-container *ngSwitchCase="'text-editor'">
+                                                    <div style="max-height: 21px; max-width: 91%">
+                                                        <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);">
+                                                            <!-- <ng-container icon-1> -->
+                                                            } }
+                                                            <!--                                             <a ><i class="fa fa-search"></i></a> -->
+                                                            <!--                                         </ng-container> -->
+                                                        </text-editor>
+                                                    </div>
+                                                </ng-container>
+
+                                                <!-- pk-cap -->
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'pk' && passData.dataTypes[i].split('-')[1] === 'cap' ? passData.dataTypes[i] : ''" class="editable-text form-control-sm" type="text" [ngModel]="data[key]" (ngModelChange)="data[key]=$event.toUpperCase()" (change)="onDataChange($event,data,key)" [disabled]="data.newRec != 1" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered">
+
+                                                <!-- pk -->
+                                                <ng-container *ngSwitchCase="'pk'">
+                                                    <span *ngIf="data.newRec != 1 && !data.others; else pk" class="unclickable">{{ data[key] }}</span>
+                                                    <ng-template #pk>
+                                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered" [ngStyle]="{'width': passData.centered ? '20%' : 'auto'}">
+                                                    </ng-template>
+                                                </ng-container>
+
+                                                <div *ngSwitchCase="'req-select'">
+                                                    <span *ngIf="data.newRec != 1 && !data.others; else reqSelect" class="unclickable">{{ data[key] }}</span>
+                                                    <ng-template #reqSelect>
+                                                        <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                            <ng-container *ngFor="let data of passData.opts">
+                                                                <ng-container *ngIf="key == data.selector">
+                                                                    <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </select>
+                                                    </ng-template>
+                                                </div>
+
+                                                <div *ngSwitchCase="'req-select2'">
+                                                    <ng-container *ngIf="data.newRec != 1 && !data.others; else reqSelect2">
+                                                        <ng-container *ngFor="let opt of passData.opts">
+                                                            <ng-container *ngIf="key == opt.selector">
+                                                                <ng-container *ngFor="let prev of opt.prev; let i = index">
+                                                                    <span *ngIf="opt.vals[i] == data[key]" class="unclickable">{{ prev }}</span>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <ng-template #reqSelect2>
+                                                        <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                            <ng-container *ngFor="let data of passData.opts">
+                                                                <ng-container *ngIf="key == data.selector">
+                                                                    <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </select>
+                                                    </ng-template>
+                                                </div>
+
+                                                <ng-container *ngSwitchCase="'lovInput'">
+                                                    <span *ngIf="data.showMG != 1 && !data.others; else lovInp">{{ data[key] }}</span>
+                                                    <ng-template #lovInp>
+                                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">
+                                                    </ng-template>
+                                                </ng-container>
+
+                                                <ng-container *ngSwitchCase="'lovInput-r'">
+                                                    <span *ngIf="data.showMG != 1 && !data.others; else lovInpR" style="text-align: right !important;">{{ data[key] }}</span>
+                                                    <ng-template #lovInpR>
+                                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">
+                                                    </ng-template>
+                                                </ng-container>
+
+                                                <!-- <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'lovInput-r'" class="editable-text form-control-sm lovInput text-right" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.unclickable]="data.showMG != 1 && !data.others"> -->
+
+                                                <!-- <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'lovInput'" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.no-click]="data.showMG != 1 && !data.others">  -->
+
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'reqText'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key);this.markAsDirty();" appRequiredTable>
+
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'reqNumber'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)" type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key);" appRequiredTable numbers-only>
+
+                                                <!--  <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'limitedText'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1"> -->
+
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1">
+
+                                                <div><a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1 && data.showMG == 1 && data.colMG != key"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a></div>
+
+                                                <!--  -->
+                                            </div>
+
+                                            <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
+                                                <a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1  && data.showMG == 1 && data.colMG != key && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a>
+                                                <div *ngSwitchCase="'percent'" style="text-align: right">
+                                                    <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
+                                                </div>
+                                                <div *ngSwitchCase="'currencyRate'" style="text-align: right">
+                                                    <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.6-6'}}</span>
+                                                </div>
+
+                                                <div *ngSwitchCase="'select'">
+                                                    <select disabled (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                        <ng-container *ngFor="let data of passData.opts">
+                                                            <ng-container *ngIf="key == data.selector">
+                                                                <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </select>
+                                                </div>
+                                                <div *ngSwitchCase="'currency'" style="text-align: right">
+                                                    <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
+                                                </div>
+                                                <div *ngSwitchCase="'number'" style="text-align: right">
+                                                    <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.0-0'}}</span>
+                                                </div>
+                                                <div *ngSwitchCase="'reqNumber'" style="text-align: right">
+                                                    <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
+                                                </div>
+                                                <span *ngSwitchCase="'date'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
+                                                <span *ngSwitchCase="'time'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'HH:mm'}}</span>
+                                                <span *ngSwitchCase="'datetime'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy hh:mm aa'}}</span>
+                                                <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                                    <input type="checkbox" [checked]="data[key] && data[key]!= 'N'" onclick="return false;">
+                                                </div>
+                                                <div *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
+                                                    <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                                </div>
+                                                <span *ngSwitchDefault class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
+
+                                            </div>
+
+                                            <div *ngIf="data===fillData" class="filler">
+
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <td *ngIf="passData.tHeader.indexOf('Edit Flag')!= -1">
+                                        <input type="checkbox" name="" *ngIf="!(data===fillData)">
+                                    </td>
+                                    <td *ngIf="passData.selectFlag">
+                                        <select class="editable-select" *ngIf="!(data===fillData)">
+                                            <option *ngFor="let options of options">{{options}}</option>
+                                        </select>
+                                    </td>
+                                    <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
+                                        <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData) && (passData.uneditable===undefined || !passData.uneditable[passData.uneditable.length-1]) && data.attach">
+                                            <input type="file" *ngIf="!(data===fillData)" (change)="upload(data,$event)">
+                                        </button>
+                                        <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
+                                        <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
+                                    </button> -->
+                                        <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileNameServer)">
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="passData.total !== undefined">
+                                    <th *ngIf="passData.checkFlag && (pinKeysLeft == undefined || pinKeysLeft.length == 0)"> </th>
+                                    <ng-container *ngFor="let data of passData.total; let i = index">
+                                        <th [ngSwitch]="passData.dataTypes[i]" *ngIf="pinKeysLeft.indexOf(dataKeys[i]) == -1 && pinKeysRight.indexOf(dataKeys[i]) == -1">
+                                            <div *ngSwitchCase="'currency'" style="text-align: right">
+                                                <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
+                                                <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                            </div>
+                                            <div *ngSwitchCase="'percent'" style="text-align: right">
+                                                <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.10-10' | negativeAmount}}</span>
+                                                <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                            </div>
+                                            <div *ngSwitchCase="'number'" style="text-align: right">
+                                                <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
+                                                <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                            </div>
+                                            <div *ngSwitchDefault style="text-align: right">
+                                                <span class="unclickable" [innerHTML]='getSum(data)'></span>
+                                            </div>
+                                        </th>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'left non-datatable' + passData.pageID" style="width:auto" *ngIf="pinKeysRight != undefined && pinKeysRight.length != 0">
+                    <colgroup *ngIf="passData.tHeaderWithColspan != null">
+                        <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
+                            <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
+                        </ng-container>
+                    </colgroup>
+                    <thead>
+                        <tr *ngIf="passData.tHeaderWithColspan != null">
+                            <ng-container *ngFor="let header of passData.tHeaderWithColspan">
+                                <th [colSpan]="header.span" style="text-align: center;">
+                                    <span class="gridHeader">{{ header.header }}</span>
+                                </th>
+                            </ng-container>
+                        </tr>
+                        <tr style="min-width: 96px">
+                            <th container="body" *ngFor="let tHeader of passData.tHeader; let i = index;" (click)="sort(dataKeys[i],sortBy);sortIndex=i;" [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered" [ngClass]="{'d-none':pinKeysRight.indexOf(dataKeys[i])== -1}">
                                 <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
-                                <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)"></span>
-
-                                <!-- <span *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' ||passData.dataTypes[i]=='percent')" class="gridHeader number text-right" >{{tHeader}}
-                                    <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
-                                    <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
-                                </span>
-                                <span container="body"  *ngIf="!(!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' ||passData.dataTypes[i]=='percent'))" class="gridHeader">{{tHeader}}
-                                    <i *ngIf="sortBy && i==this.sortIndex" class="fa fa-caret-down"></i>
-                                    <i *ngIf="!sortBy && i==this.sortIndex" class="fa fa-caret-up"></i>
-                                </span> -->
-
-                                <!-- TEST - FOR DOUBLE LINED HEADER - ORIGINAL CODE ABOVE -->
+                                <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
                                 <div *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' || passData.dataTypes[i]=='percent')">
                                     <ng-container *ngIf="tHeader.includes('||'); else tH1">
                                         <ng-container *ngFor="let x of tHeader.split('||'); let j = index">
@@ -217,7 +872,7 @@ span.ui-column-resizer {
                                                 <i *ngIf="sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-down"></i>
                                                 <i *ngIf="!sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-up"></i>
                                             </span>
-                                            <br *ngIf="j != tHeader.split('||').length-1"/>
+                                            <br *ngIf="j != tHeader.split('||').length-1" />
                                         </ng-container>
                                     </ng-container>
                                     <ng-template #tH1>
@@ -234,7 +889,7 @@ span.ui-column-resizer {
                                                 <i *ngIf="sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-down"></i>
                                                 <i *ngIf="!sortBy && i==this.sortIndex && j == tHeader.split('||').length-1" class="fa fa-caret-up"></i>
                                             </span>
-                                            <br *ngIf="j != tHeader.split('||').length-1"/>
+                                            <br *ngIf="j != tHeader.split('||').length-1" />
                                         </ng-container>
                                     </ng-container>
                                     <ng-template #tH2>
@@ -251,17 +906,10 @@ span.ui-column-resizer {
 
                     <tbody>
                         <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)" id="{{ ti }}">
-                            <td *ngIf="passData.checkFlag" class="checkbox align-middle">
-                                
-                                 <div *ngIf="passData.checkFlag" style="text-align: center;">
-                                       <input *ngIf="!(data===fillData)" type="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" tabindex="-1" class="not-form" [ngModelOptions]="{standalone: true}">
-                                </div>
-                            </td>
-                            <ng-container *ngFor="let key of dataKeys; let i = index">
-                                
+                            <ng-container *ngFor="let key of dataKeys; let i = index">   
                              
-                            <td *ngIf="passData.dataTypes[i].toUpperCase() != 'TIME-STRING'" [ngSwitch]="passData.dataTypes[i]" [attr.tabindex]="passData.tabIndex === undefined"   class="align-middle" [class.text-center]="passData.centered">
-                                <div *ngIf="!(data===fillData) && ( passData.uneditable === undefined || !passData.uneditable[i] ) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)" class="align-middle" style="position: relative;">
+                            <td *ngIf="passData.dataTypes[i].toUpperCase() != 'TIME-STRING' && pinKeysRight.indexOf(key) != -1" [ngSwitch]="passData.dataTypes[i]" [attr.tabindex]="passData.tabIndex === undefined" class="align-middle" [class.text-center]="passData.centered" >
+                                    <div *ngIf="!(data===fillData) && ( passData.uneditable === undefined || !passData.uneditable[i] ) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)" class="align-middle" style="position: relative;">
 
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
@@ -360,251 +1008,229 @@ span.ui-column-resizer {
                                             type="text" [(ngModel)]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
                                             [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" numbers-only [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1">
                                         </ng-template>
-                                    </ng-container>                                    
+                                    </ng-container>         
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
 
-                                    <ng-container *ngSwitchCase="'currency'">
-                                        <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else currency" class="text-right">{{ data[key] | number:'1.2-2' | negativeAmount }}</span>
-                                        <ng-template #currency>
-                                            <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" appCurrency class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}">
-                                        </ng-template>
-                                    </ng-container>
 
-                                    <!-- <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                        <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data,key)" ngModel>
-                                    </div> -->
-
-                                    <ng-container *ngSwitchCase="'checkbox'">
-                                        <div style="text-align: center;">
-                                            <input type="checkbox" disabled *ngIf="(data.enCb == 1 || data.newRec != 1) && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'">
-                                            <ng-template #checkbox>
-                                                <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data,key)" ngModel>
+                                        <ng-container *ngSwitchCase="'number'">
+                                            <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else number" class="unclickable text-right">{{ data[key] | number: '1.0-0'}}</span>
+                                            <ng-template #number>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text text-right number form-control-sm" (blur)="format($event , data, 'number')" type="text" [(ngModel)]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" numbers-only [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1">
                                             </ng-template>
-                                        </div>
-                                    </ng-container>
-
-
-                                    <div *ngSwitchCase="'radio'" style="text-align: center;">
-                                        <input (focus)="focus(data)" id="checkbox" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [checked]="data[key] === undefined || data[key] === 'N' ? false : true" type="checkbox" (click)="assignRadio($event,data,key);onDataChange($event,data,key)" [ngModel]="data[key] == 'Y'" (ngModelChange)="$event ? data[key] = 'Y' : data[key]= 'N'">
-                                    </div>
-                                    <div *ngSwitchCase="'file'" style="text-align: center;">
-                                        <button class="fa fa-paperclip btn-file" title="Attach Image">
-                                            <input type="file" accept="image/*" (change)="upload(data,$event)">
-                                        </button>
-                                       <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
-                                            <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
-                                        </button> -->
-                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
-                                        </button>
-                                    </div>
-                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
-                                    <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
-                                        <ng-container *ngFor="let data of passData.opts">
-                                            <ng-container *ngIf="key == data.selector">
-                                                <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
-                                            </ng-container>
                                         </ng-container>
-                                    </select>
 
-                                    <!-- TEST NEW DATEPICKER -->
-                                    
-                                    <!-- OLD -->
-                                    <!-- Pag may nangyaring masama, pakiuncomment po ito at pakicomment yung NEW hahaha -->
-                                    <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'" (ngModelChange)="data[key]=$event; data.edited=true" [ngModelOptions]="{updateOn:'blur'}"> -->
+                                        <ng-container *ngSwitchCase="'currency'">
+                                            <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else currency" class="text-right">{{ data[key] | number:'1.2-2' | negativeAmount }}</span>
+                                            <ng-template #currency>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" appCurrency class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}">
+                                            </ng-template>
+                                        </ng-container>
 
-                                    <!-- NEW -->
+                                        <!-- <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data,key)" ngModel>
+                                </div> -->
 
-                                    <ng-container *ngSwitchCase="'date'">
-                                        <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else date" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
-                                        <ng-template #date>
-                                            <div class="dp-cont">
-                                                <datepicker [type]="'date'" [value]="data[key] | date:'yyyy-MM-dd'" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
+                                        <ng-container *ngSwitchCase="'checkbox'">
+                                            <div style="text-align: center;">
+                                                <input type="checkbox" disabled *ngIf="(data.enCb == 1 || data.newRec != 1) && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'">
+                                                <ng-template #checkbox>
+                                                    <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data,key)" ngModel>
+                                                </ng-template>
                                             </div>
-                                        </ng-template>
-                                    </ng-container>
-
-                                    <!-- OLD -->
-                                    <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key]" (ngModelChange)="data[key]=$event"> -->
-
-                                    <!-- NEW -->
-                                    <div *ngSwitchCase="'time'" class="dp-cont">
-                                        <datepicker [type]="'time'" [showIcon]="false" [value]="data[key]" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
-                                    </div>
-
-                                    <!-- END TEST NEW DATEPICKER -->
-
-                                    
-                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
-                                    <ng-container *ngSwitchCase="'text-editor'">
-                                        <div style="max-height: 21px; max-width: 91%">
-                                            <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);">
-                                                <!-- <ng-container icon-1> -->
-                            }
-                            }
-        <!--                                             <a ><i class="fa fa-search"></i></a> -->
-        <!--                                         </ng-container> -->
-                                            </text-editor>
-                                        </div>
-                                    </ng-container>
-
-                                    <!-- pk-cap -->
-                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'pk' && passData.dataTypes[i].split('-')[1] === 'cap' ? passData.dataTypes[i] : ''" class="editable-text form-control-sm" type="text" [ngModel]="data[key]" (ngModelChange)="data[key]=$event.toUpperCase()" (change)="onDataChange($event,data,key)" [disabled]="data.newRec != 1" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered">
-
-                                    <!-- pk -->
-                                    <ng-container *ngSwitchCase="'pk'">
-                                        <span *ngIf="data.newRec != 1 && !data.others; else pk" class="unclickable">{{ data[key] }}</span>
-                                        <ng-template #pk>
-                                            <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered" [ngStyle]="{'width': passData.centered ? '20%' : 'auto'}">
-                                        </ng-template>
-                                    </ng-container>
-
-                                    <div *ngSwitchCase="'req-select'">
-                                        <span *ngIf="data.newRec != 1 && !data.others; else reqSelect" class="unclickable">{{ data[key] }}</span>
-                                        <ng-template #reqSelect>
-                                            <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
-                                                <ng-container *ngFor="let data of passData.opts">
-                                                    <ng-container *ngIf="key == data.selector">
-                                                        <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
-                                                    </ng-container>
-                                                </ng-container>
-                                            </select>
-                                        </ng-template>
-                                    </div>
-
-                                    <div *ngSwitchCase="'req-select2'">
-                                        <ng-container *ngIf="data.newRec != 1 && !data.others; else reqSelect2">
-                                            <ng-container *ngFor="let opt of passData.opts">
-                                                <ng-container *ngIf="key == opt.selector">
-                                                    <ng-container *ngFor="let prev of opt.prev; let i = index">
-                                                        <span *ngIf="opt.vals[i] == data[key]" class="unclickable">{{ prev }}</span>
-                                                    </ng-container>
-                                                </ng-container>
-                                            </ng-container>
                                         </ng-container>
-                                        <ng-template #reqSelect2>
-                                            <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
-                                                <ng-container *ngFor="let data of passData.opts">
-                                                    <ng-container *ngIf="key == data.selector">
-                                                        <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
-                                                    </ng-container>
-                                                </ng-container>
-                                            </select>
-                                        </ng-template>
-                                    </div>
 
-                                    <ng-container *ngSwitchCase="'lovInput'">
-                                        <span *ngIf="data.showMG != 1 && !data.others; else lovInp">{{ data[key] }}</span>
-                                        <ng-template #lovInp>
-                                            <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">
-                                        </ng-template>
-                                    </ng-container>
-
-                                    <ng-container *ngSwitchCase="'lovInput-r'">
-                                        <span *ngIf="data.showMG != 1 && !data.others; else lovInpR" style="text-align: right !important;">{{ data[key] }}</span>
-                                        <ng-template #lovInpR>
-                                            <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">
-                                        </ng-template>
-                                    </ng-container>
-
-                                    <!-- <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'lovInput-r'" class="editable-text form-control-sm lovInput text-right" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.unclickable]="data.showMG != 1 && !data.others"> -->
-
-                                    <!-- <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'lovInput'" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.no-click]="data.showMG != 1 && !data.others">  -->
-
-                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'reqText'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key);this.markAsDirty();" appRequiredTable>  
-
-                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'reqNumber'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)"
-                                    type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
-                                    [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key);" appRequiredTable numbers-only>
-
-                                   <!--  <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'limitedText'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1"> -->
-
-                                    <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1">
-
-                                    <div><a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1 && data.showMG == 1 && data.colMG != key"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a></div>
-
-                                    <!--  -->
-                                </div>
-
-                                <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
-                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1  && data.showMG == 1 && data.colMG != key && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
-                                    <div *ngSwitchCase="'percent'" style="text-align: right">
-                                        <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
-                                    </div>
-                                    <div *ngSwitchCase="'currencyRate'" style="text-align: right">
-                                        <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.6-6'}}</span>
-                                    </div>                                    <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
-                                        <span class="unclickable">{{ data[key] | number: '1.2-2'}}</span>
-                                    </div>
-                                    <div  *ngSwitchCase="'number'" style="text-align: right">
-                                        <span class="unclickable">{{ data[key] | number: '1.0-0'}}</span>
-                                    </div> -->
-                                    <div *ngSwitchCase="'select'">
-                                        <select disabled (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                        <div *ngSwitchCase="'radio'" style="text-align: center;">
+                                            <input (focus)="focus(data)" id="checkbox" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" [checked]="data[key] === undefined || data[key] === 'N' ? false : true" type="checkbox" (click)="assignRadio($event,data,key);onDataChange($event,data,key)" [ngModel]="data[key] == 'Y'" (ngModelChange)="$event ? data[key] = 'Y' : data[key]= 'N'">
+                                        </div>
+                                        <div *ngSwitchCase="'file'" style="text-align: center;">
+                                            <button class="fa fa-paperclip btn-file" title="Attach Image">
+                                                <input type="file" accept="image/*" (change)="upload(data,$event)">
+                                            </button>
+                                            <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
+                                        <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
+                                    </button> -->
+                                            <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
+                                            </button>
+                                        </div>
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
+                                        <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
                                             <ng-container *ngFor="let data of passData.opts">
                                                 <ng-container *ngIf="key == data.selector">
                                                     <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
                                                 </ng-container>
                                             </ng-container>
                                         </select>
-                                    </div>
-                                    <div *ngSwitchCase="'currency'" style="text-align: right" >
-                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
-                                    </div>
-                                    <div  *ngSwitchCase="'number'" style="text-align: right">
-                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.0-0'}}</span>
-                                    </div>
-                                    <div  *ngSwitchCase="'reqNumber'" style="text-align: right">
-                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
-                                    </div>
-                                    <span *ngSwitchCase="'date'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
-                                    <span *ngSwitchCase="'time'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'HH:mm'}}</span>
-                                    <span *ngSwitchCase="'datetime'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy hh:mm aa'}}</span>
-                                    <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                        <input  type="checkbox" [checked]="data[key] && data[key]!= 'N'" onclick="return false;">
-                                    </div>
-                                    <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
-                                        <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
-                                    </div>
-                                    <span *ngSwitchDefault class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
 
+                                        <!-- TEST NEW DATEPICKER -->
+
+                                        <!-- OLD -->
+                                        <!-- Pag may nangyaring masama, pakiuncomment po ito at pakicomment yung NEW hahaha -->
+                                        <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'" (ngModelChange)="data[key]=$event; data.edited=true" [ngModelOptions]="{updateOn:'blur'}"> -->
+
+                                        <!-- NEW -->
+
+                                        <ng-container *ngSwitchCase="'date'">
+                                            <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else date" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
+                                            <ng-template #date>
+                                                <div class="dp-cont">
+                                                    <datepicker [type]="'date'" [value]="data[key] | date:'yyyy-MM-dd'" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <!-- OLD -->
+                                        <!-- <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key]" (ngModelChange)="data[key]=$event"> -->
+
+                                        <!-- NEW -->
+                                        <div *ngSwitchCase="'time'" class="dp-cont">
+                                            <datepicker [type]="'time'" [showIcon]="false" [value]="data[key]" (valueChange)="data[key]=$event; onDataChange($event,data,key)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" (onFocus)="focus(data)" [table]="true"></datepicker>
+                                        </div>
+
+                                        <!-- END TEST NEW DATEPICKER -->
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
+                                        <ng-container *ngSwitchCase="'text-editor'">
+                                            <div style="max-height: 21px; max-width: 91%">
+                                                <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);">
+                                                    <!-- <ng-container icon-1> -->
+                                                    } }
+                                                    <!--                                             <a ><i class="fa fa-search"></i></a> -->
+                                                    <!--                                         </ng-container> -->
+                                                </text-editor>
+                                            </div>
+                                        </ng-container>
+
+                                        <!-- pk-cap -->
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'pk' && passData.dataTypes[i].split('-')[1] === 'cap' ? passData.dataTypes[i] : ''" class="editable-text form-control-sm" type="text" [ngModel]="data[key]" (ngModelChange)="data[key]=$event.toUpperCase()" (change)="onDataChange($event,data,key)" [disabled]="data.newRec != 1" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered">
+
+                                        <!-- pk -->
+                                        <ng-container *ngSwitchCase="'pk'">
+                                            <span *ngIf="data.newRec != 1 && !data.others; else pk" class="unclickable">{{ data[key] }}</span>
+                                            <ng-template #pk>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [mask]="passData.mask && passData.mask[key] != undefined ? passData.mask[key] : ''" [class.text-center]="passData.centered" [ngStyle]="{'width': passData.centered ? '20%' : 'auto'}">
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <div *ngSwitchCase="'req-select'">
+                                            <span *ngIf="data.newRec != 1 && !data.others; else reqSelect" class="unclickable">{{ data[key] }}</span>
+                                            <ng-template #reqSelect>
+                                                <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                    <ng-container *ngFor="let data of passData.opts">
+                                                        <ng-container *ngIf="key == data.selector">
+                                                            <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </select>
+                                            </ng-template>
+                                        </div>
+
+                                        <div *ngSwitchCase="'req-select2'">
+                                            <ng-container *ngIf="data.newRec != 1 && !data.others; else reqSelect2">
+                                                <ng-container *ngFor="let opt of passData.opts">
+                                                    <ng-container *ngIf="key == opt.selector">
+                                                        <ng-container *ngFor="let prev of opt.prev; let i = index">
+                                                            <span *ngIf="opt.vals[i] == data[key]" class="unclickable">{{ prev }}</span>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </ng-container>
+                                            <ng-template #reqSelect2>
+                                                <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                    <ng-container *ngFor="let data of passData.opts">
+                                                        <ng-container *ngIf="key == data.selector">
+                                                            <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </select>
+                                            </ng-template>
+                                        </div>
+
+                                        <ng-container *ngSwitchCase="'lovInput'">
+                                            <span *ngIf="data.showMG != 1 && !data.others; else lovInp">{{ data[key] }}</span>
+                                            <ng-template #lovInp>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <ng-container *ngSwitchCase="'lovInput-r'">
+                                            <span *ngIf="data.showMG != 1 && !data.others; else lovInpR" style="text-align: right !important;">{{ data[key] }}</span>
+                                            <ng-template #lovInpR>
+                                                <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)">
+                                            </ng-template>
+                                        </ng-container>
+
+                                        <!-- <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'lovInput-r'" class="editable-text form-control-sm lovInput text-right" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.unclickable]="data.showMG != 1 && !data.others"> -->
+
+                                        <!-- <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'lovInput'" class="editable-text form-control-sm lovInput" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [class.no-click]="data.showMG != 1 && !data.others">  -->
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'reqText'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key);this.markAsDirty();" appRequiredTable>
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'reqNumber'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)" type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key);" appRequiredTable numbers-only>
+
+                                        <!--  <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'limitedText'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1"> -->
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1">
+
+                                        <div><a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1 && data.showMG == 1 && data.colMG != key"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a></div>
+
+                                        <!--  -->
+                                    </div>
+
+                                    <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
+                                        <a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1  && data.showMG == 1 && data.colMG != key && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a>
+                                        <div *ngSwitchCase="'percent'" style="text-align: right">
+                                            <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="'currencyRate'" style="text-align: right">
+                                            <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.6-6'}}</span>
+                                        </div>
+                                        <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
+                                    <span class="unclickable">{{ data[key] | number: '1.2-2'}}</span>
                                 </div>
+                                <div  *ngSwitchCase="'number'" style="text-align: right">
+                                    <span class="unclickable">{{ data[key] | number: '1.0-0'}}</span>
+                                </div> -->
+                                        <div *ngSwitchCase="'select'">
+                                            <select disabled (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                <ng-container *ngFor="let data of passData.opts">
+                                                    <ng-container *ngIf="key == data.selector">
+                                                        <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                        <div *ngSwitchCase="'currency'" style="text-align: right">
+                                            <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="'number'" style="text-align: right">
+                                            <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.0-0'}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="'reqNumber'" style="text-align: right">
+                                            <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
+                                        </div>
+                                        <span *ngSwitchCase="'date'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
+                                        <span *ngSwitchCase="'time'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'HH:mm'}}</span>
+                                        <span *ngSwitchCase="'datetime'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy hh:mm aa'}}</span>
+                                        <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                            <input type="checkbox" [checked]="data[key] && data[key]!= 'N'" onclick="return false;">
+                                        </div>
+                                        <div *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
+                                            <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                        </div>
+                                        <span *ngSwitchDefault class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
 
-                                <div *ngIf="data===fillData" class="filler">
+                                    </div>
 
-                                </div>
-                            </td>
+                                    <div *ngIf="data===fillData" class="filler">
+
+                                    </div>
+                                </td>
                             </ng-container>
-                            <td *ngIf="passData.tHeader.indexOf('Edit Flag')!= -1">
-                                <input type="checkbox" name="" *ngIf="!(data===fillData)">
-                            </td>
-                            <td *ngIf="passData.selectFlag">
-                                <select class="editable-select" *ngIf="!(data===fillData)">
-                                    <option *ngFor="let options of options">{{options}}</option>
-                                </select>
-                            </td>
-                            <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
-                                <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData) && (passData.uneditable===undefined || !passData.uneditable[passData.uneditable.length-1]) && data.attach">
-                                    <input type="file" *ngIf="!(data===fillData)" (change)="upload(data,$event)">
-                                </button>
-                               <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
-                                    <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
-                                </button> -->
-                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileNameServer)">
-                                </button>
-                            </td>
                         </tr>
 
-                        <tr *ngIf="passData.totalFlag" class="total-tr">
-                            <td *ngIf="passData.checkFlag"></td>
-                            <td [attr.colspan]="dataKeys.length-1"></td>
-                            <td class="total">
-                                <span class="editable-text form-control-sm label">Total Sum Insured</span>
-                                <span class="editable-text text-right number form-control-sm">20,000.00</span>
-                            </td>
-                        </tr>
-                        <tr *ngIf="passData.total !== undefined">
-                            <th *ngIf="passData.checkFlag"> </th>
-                            <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]">
+                        <tr *ngIf="passData.total !== undefined" style="height: 29px !important">
+                            <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeysRight.indexOf(dataKeys[i])== -1">
                                 <div *ngSwitchCase="'currency'" style="text-align: right">
                                     <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
                                     <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
@@ -613,54 +1239,52 @@ span.ui-column-resizer {
                                     <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.10-10' | negativeAmount}}</span>
                                     <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
                                 </div>
-                                <div  *ngSwitchCase="'number'" style="text-align: right">
+                                <div *ngSwitchCase="'number'" style="text-align: right">
                                     <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
                                     <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
                                 </div>
-                                <div  *ngSwitchDefault style="text-align: right">
+                                <div *ngSwitchDefault style="text-align: right">
                                     <span class="unclickable">{{ getSum(data)}}</span>
                                 </div>
                             </th>
                         </tr>
                     </tbody>
                 </table>
-            </form>
             </div>
             <div class="pagingStatus" *ngIf="passData.infoFlag">
                 <!--<div class="pagingStatus" *ngIf="passData.hasPageInfo">-->
-        <!-- <pagination-template #api="paginationApi" (pageChange)="p = $event">
+                <!-- <pagination-template #api="paginationApi" (pageChange)="p = $event">
 <label *ngIf="!api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayData.length}} entries</label>
 <label *ngIf="api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayData.length}} of {{displayData.length}} entries</label>
 </pagination-template>-->
-<pagination-template #api="paginationApi"  [id]="'editable'+passData.pageID" (pageChange)="p2 = $event">
-            <!--  <label *ngIf="!api.isLastPage() && ndisplayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
+                <pagination-template #api="paginationApi" [id]="'editable'+passData.pageID" (pageChange)="p2 = $event">
+                    <!--  <label *ngIf="!api.isLastPage() && ndisplayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
 <label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
 <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>-->
-<label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) *
-passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries</label>
-<label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
-<label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
-</pagination-template>
-</div>
-<div class="pagination" *ngIf="passData.paginateFlag">
-    <!--<div class="pagination" *ngIf="passData.hasPagination">-->
-        <!-- <pagination-template class="" #api="paginationApi" (pageChange)="p = $event"><a (click)="api.setCurrent(1)">&laquo;</a></pagination-template>-->
-        <pagination-controls [id]="'editable'+passData.pageID" class="my-pagination" (pageChange)="p2 = $event" previousLabel="" nextLabel="">
-        </pagination-controls>
-        <!--<pagination-template class="" #api="paginationApi" (pageChange)="p = $event"> <a (click)="api.setCurrent(api.getLastPage())">&raquo;</a></pagination-template>-->
-    </div>
-    <div *ngIf="passData.paginateFlag" style="height: 42px;float: right;">
-        <label></label>
-    </div>
-</div>
+                    <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries</label>
+                    <label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
+                    <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
+                </pagination-template>
+            </div>
+            <div class="pagination" *ngIf="passData.paginateFlag">
+                <!--<div class="pagination" *ngIf="passData.hasPagination">-->
+                <!-- <pagination-template class="" #api="paginationApi" (pageChange)="p = $event"><a (click)="api.setCurrent(1)">&laquo;</a></pagination-template>-->
+                <pagination-controls [id]="'editable'+passData.pageID" class="my-pagination" (pageChange)="p2 = $event" previousLabel="" nextLabel="">
+                </pagination-controls>
+                <!--<pagination-template class="" #api="paginationApi" (pageChange)="p = $event"> <a (click)="api.setCurrent(api.getLastPage())">&raquo;</a></pagination-template>-->
+            </div>
+            <div *ngIf="passData.paginateFlag" style="height: 42px;float: right;">
+                <label></label>
+            </div>
+        </div>
 
-<app-modal class="d-none" [id]="'confirm-delete'+passData.pageID" #deleteModal>
-    <div header>Delete</div>
-    <div body>Are you sure you want to delete these item(s)?</div>
-    <div footer class="cust-btn-container">
-        <button class="cust-btn" (click)="onClickDelete();deleteModal.closeModal()">Yes</button>
-        <button class="cust-btn" (click)="deleteModal.closeModal()">No</button>
-    </div>
-</app-modal>
+        <app-modal class="d-none" [id]="'confirm-delete'+passData.pageID" #deleteModal>
+            <div header>Delete</div>
+            <div body>Are you sure you want to delete these item(s)?</div>
+            <div footer class="cust-btn-container">
+                <button class="cust-btn" (click)="onClickDelete();deleteModal.closeModal()">Yes</button>
+                <button class="cust-btn" (click)="deleteModal.closeModal()">No</button>
+            </div>
+        </app-modal>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+        <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>

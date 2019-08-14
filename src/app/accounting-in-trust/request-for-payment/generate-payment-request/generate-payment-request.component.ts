@@ -29,6 +29,7 @@ export class GeneratePaymentRequestComponent implements OnInit {
   
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
+        $event.preventDefault();
         this.router.navigateByUrl('/payt-req');
       } 
   

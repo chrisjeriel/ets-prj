@@ -1700,10 +1700,13 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFeeMainGnrt(prdAsOf?, year?){
+    getAcctPrqServFeeMainGnrt(prdAsOf?, year?, servFeeAmt?, currCd?, currRt?){
 		const params = new HttpParams()
 			.set('prdAsOf', (prdAsOf == null || prdAsOf == undefined ? '' : prdAsOf))
-			.set('year', (year == null || year == undefined ? '' : year));
+			.set('year', (year == null || year == undefined ? '' : year))
+			.set('servFeeAmt', (servFeeAmt == null || servFeeAmt == undefined ? '' : servFeeAmt))
+			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
+			.set('currRt', (currRt == null || currRt == undefined ? '' : currRt));
 			
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitServFeeMainGnrt',{params});
 	}
@@ -1763,6 +1766,16 @@ export class AccountingService {
 		}
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVAppPaytZeroBal',JSON.stringify(params),header);
 	}
+
+	getAcitSoaTrtyDtl(policyId?, instNo?, cedingId?, payeeNo?, zeroBal?){
+		const params = new HttpParams()
+			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+			.set('instNo', (instNo == null || instNo == undefined ? '' : instNo))
+			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+			.set('payeeNo', (payeeNo == null || payeeNo == undefined ? '' : payeeNo))
+			.set('zeroBal', (zeroBal == null || zeroBal == undefined ? '' : zeroBal));
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitSoaTrtyList',{params});
+	}	
 	
 	saveAcitArInvPullout(params){
 		let header : any = {
@@ -1771,6 +1784,37 @@ export class AccountingService {
 		    })
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArInvPullout',JSON.stringify(params),header);
+	}
+
+	getAcitJVClmOffsetLOV(cedingId) {
+		 const params = new HttpParams()
+             .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvClmOffLOV",{params});
+	}
+
+	getNegativeTreaty(tranId,cedingId){
+		const params = new HttpParams()
+		 	 .set('tranId', (tranId === null || tranId === undefined ? '' : tranId))
+             .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvNegativeTreaty",{params});
+	}
+
+	generateUPR(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/generateUPR',JSON.stringify(params),header);
+	}
+	
+	saveAcitJvNegTreaty(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVNegativeTreaty',JSON.stringify(params),header);
 	}
 
 	getAcitArNegTrtyBal(tranId, billId){
@@ -1825,6 +1869,5 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArAmtDtl',JSON.stringify(params),header);
 	}
-
 
 }

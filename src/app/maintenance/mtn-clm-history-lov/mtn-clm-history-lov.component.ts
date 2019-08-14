@@ -34,6 +34,10 @@ export class MtnClmHistoryLovComponent implements OnInit {
 	@Input() lovCheckBox: boolean = false;
 	@Input() limitClmHistTbl : any[] = [];
 	@Input() limitHistCat : string = '';
+	@Input() limitData : any = {
+		histCategory : [], 
+		histType	 : []
+	};
   	selects: any[] = [];
 
  	constructor(private clmService: ClaimsService, private modalService: NgbModal) { }
@@ -68,20 +72,20 @@ export class MtnClmHistoryLovComponent implements OnInit {
 
 	openModal(){
 	    if(!this.fromInput) {
-		    // this.table.refreshTable();
 		    this.passData.tableData = [];
 		    this.table.overlayLoader = true;
 		    this.clmService.getClaimHistory()
 		    .subscribe(data => {
-	     		// var rec = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => e.histCategory.toUpperCase() == this.limitHistCat.toUpperCase()).map(e => { return e });
-	     		console.log(this.limitHistCat + ' >> this.limitHistCat');
-	     		var rec = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.limitHistCat.toUpperCase() == 'L')?e.histCategory =='L':e.histCategory != 'L').map(e => { return e });
+	     		var rec = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e })
+	     				  .filter(e => this.limitData.histCategory.includes(e.histCategory) && this.limitData.histType.includes(Number(e.histType)))
+	     				  .map(e => { e.paytAmt = (e.paytAmt == '' || e.paytAmt == null)?0:e.paytAmt; return e; });
 	     		if(this.limitClmHistTbl.length != 0){
-	     			this.limitClmHistTbl.forEach(e => {
-	     				rec = rec.filter(e2 => e2.claimId != e.claimId && e2.histNo != e.histNo);
-	     			});
+	     			var limit = this.limitClmHistTbl.filter(a => a.showMG != 1).map(a => JSON.stringify({claimId: a.claimId, histNo: a.histNo}));
+	     			this.passData.tableData =  	rec.filter(a => {
+								     				var mdl = JSON.stringify({claimId: a.claimId, histNo: a.histNo});
+								     				return !limit.includes(mdl);
+								     			});
 	     		}
-      			this.passData.tableData = rec;
       			this.table.refreshTable();
 	      	});
 	    }else {

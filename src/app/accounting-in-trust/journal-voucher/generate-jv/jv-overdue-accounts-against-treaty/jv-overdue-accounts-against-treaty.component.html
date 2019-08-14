@@ -6,8 +6,8 @@
                 <div class="col-sm-8">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" placeholder="BPI/MS INSURANCE CORPORATION">
-                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" (change)="checkCode($event)" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()">
+                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
                     </div>
                 </div>
                 <div class="col-sm-2"></div>
@@ -49,18 +49,4 @@
         </div>
     </div>
 </div>
-
-
-<app-modal class="d-none" id="ViewOverdue">
-	<div header>List of Outstanding Accounts for Offset</div>	
-	<div body>
-                
-         
-	</div>
-	<div footer class="text-center w-100">
-		<div class="d-flex justify-content-center">
-			<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
-		</div>
-	</div>
-</app-modal>
-
+<app-mtn-ceding-company-treaty id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company-treaty>
