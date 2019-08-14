@@ -232,7 +232,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].prevPaytAmt  = data.data[i].totalPayments;
       this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].balPaytAmt = data.data[i].balAmtDue;
       this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].localAmt = data.data[i].balAmtDue * data.data[i].currRate;
-      overdue =  new Date(this.ns.toDateTimeString(this.jvDetail.jvDate)).getDate() - new Date(data.data[i].dueDate).getDate() ;
+      overdue =  new Date(this.ns.toDateTimeString(this.jvDetail.jvDate)).getDate() - new Date(data.data[i].dueDate).getDate();
       this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].overdueInt = (data.data[i].balPremDue)*(this.interestRate)*(overdue/365);
     }
     this.trytytrans.refreshTable();
