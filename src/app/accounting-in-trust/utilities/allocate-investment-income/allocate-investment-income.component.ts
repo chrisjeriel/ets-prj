@@ -128,11 +128,10 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   }
 
   	jvDatasList : any = {
+  				"saveAcitAllocInvtIncome" : [],
   				"saveAcitJVEntryList" : []
   	}
-  acitAllocInvtIncReq  : any = { 
-                "allocTranId": null,
-                "delAcitAllocInvtIncome" : [],
+  	acitAllocInvtIncReq  : any = { 
                 "saveAcitAllocInvtIncome"  : []}
     refnoTranId: any;
     currCode: any;
@@ -436,7 +435,9 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 		    this.table.overlayLoader = true;
 		    this.boolAllocate = true;
 		    var result : boolean;
-		  	this.as.saveAcitAllInvtIncome(this.acitAllocInvtIncReq).pipe(finalize(() => this.allocateTransactionFinal(result))
+		    console.log(this.acitAllocInvtIncReq);
+		    this.allocateTransactionFinal();
+		  	/*this.as.saveAcitAllInvtIncome(this.acitAllocInvtIncReq).pipe(finalize(() => this.allocateTransactionFinal(result))
             ).subscribe((data:any) => {
 		      if(data['returnCode'] != -1) {
 		        this.dialogMessage = data['errorList'][0].errorMessage;
@@ -447,14 +448,13 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 		      	this.refnoTranId = data.tranIdOut;
 		        result = true;
 		      }
-		    });
+		    });*/
 
  		}	
  	} 
  }
 
  allocateTransactionFinal(obj?){
- 	if (obj){	
  		this.selectedTranTypeCd = [];
 	    this.ms.getAcitTranType('JV','','','','','Y').pipe(finalize(() => this.createJV())
 	    	).subscribe((data:any) => {	
@@ -469,16 +469,11 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 		  	 		}
 	  	 	   }
 	    });
-
- 	}else{
- 		this.boolAllocate = false;
- 		this.table.overlayLoader = false;
-
- 	}
  }
 
  createJV(){
  	console.log(this.sumInvtIncome + ' ' + this.sumWhtax + ' ' + this.sumBankCharge );
+ 	this.jvDatasList.saveAcitAllocInvtIncome = this.acitAllocInvtIncReq.saveAcitAllocInvtIncome;
  	this.jvDatasList.saveAcitJVEntryList = [];
 
  	for(let rec of this.selectedTranTypeCd){
@@ -494,6 +489,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
  		}
  	}
  	
+ 	console.log(this.jvDatasList);
  	this.saveJV(this.jvDatasList);
 
  }
@@ -522,7 +518,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	    jvTranTypeCd : jvTranTypeCd,
 	    tranTypeName : null,
 	    autoTag : 'Y',
-	    refnoTranId : refnoTranId,
+	    refnoTranId : null,
 	    refnoDate : null,
 	    particulars :'Investment Allocation',
 	    currCd : currCd,
@@ -552,6 +548,9 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
         this.successDialog.open();
       }else{
       	console.log("JV CREATED!");
+      	this.dialogMessage = "Allocation Successful!"
+        this.dialogIcon = "success";
+        this.successDialog.open();
       }
     });
   }
