@@ -115,7 +115,7 @@ export class ClmClaimProcessingComponent implements OnInit {
   }
 
   searchParams: any[] = [];
-  tempPolNo: string[] = ['','','','','',''];
+  tempPolNo: string[] = ['','','','','','000'];
 
   selected: any;
   selectedPolicyRow: any;
