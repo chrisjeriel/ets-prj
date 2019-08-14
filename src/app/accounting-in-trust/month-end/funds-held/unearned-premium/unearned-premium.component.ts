@@ -53,7 +53,7 @@ export class UnearnedPremiumComponent implements OnInit {
 
   detailsList:any;
   companyList:any[] = [];
-  indvSelect:any = {};
+  indvSelect:any = null;
   lineDesc:any = '';
 
   yearList:any[] = [];
@@ -105,11 +105,14 @@ export class UnearnedPremiumComponent implements OnInit {
   }
 
   updateDetails(data){
-    if(data != null){
+    if(Object.keys(data).length != 0){
       this.detailsPerPolicy.tableData = this.detailsList.filter(a=>a.lineCd == data.lineCd);
       this.ms.getLineLOV(data.lineCd).subscribe(a=>{
         this.lineDesc = a['line'][0].description;
       })
+      this.indvSelect = data;
+    }else{
+      this.indvSelect = null;
     }
   }
 }
