@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { DatePipe } from '@angular/common'
 import { AccARInvestments } from '@app/_models';
 import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -10,7 +11,8 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 @Component({
   selector: 'app-ar-details-qsoa',
   templateUrl: './ar-details-qsoa.component.html',
-  styleUrls: ['./ar-details-qsoa.component.css']
+  styleUrls: ['./ar-details-qsoa.component.css'],
+  providers: [DatePipe]
 })
 export class ArDetailsQsoaComponent implements OnInit {
 
@@ -25,13 +27,13 @@ export class ArDetailsQsoaComponent implements OnInit {
   passData: any = {
     tableData:[],
     tHeader:['Quarter Ending','Currency','Currency Rate','Amount', 'Amount (PHP)'],
-    dataTypes:['date','select','percent','currency','currency'],
+    dataTypes:['text','select','percent','currency','currency'],
     total:[null,null,'Total','balPaytAmt','localAmt'],
     addFlag:true,
     deleteFlag:true,
     infoFlag:true,
     paginateFlag:true,
-    //magnifyingGlass: ['quarterEnding'],
+    magnifyingGlass: ['quarterEnding'],
     nData: {
       tranId: '',
       billId: 1,
@@ -62,6 +64,7 @@ export class ArDetailsQsoaComponent implements OnInit {
 
   cancelFlag: boolean;
   totalLocalAmt: number = 0;
+  quarterEndingIndex: number = 0;
   dialogIcon: string = '';
   dialogMessage: string = '';
 
@@ -70,7 +73,7 @@ export class ArDetailsQsoaComponent implements OnInit {
 
   currencyArray: any[] = [];
 
-  constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
+  constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe) { }
 
   ngOnInit() {
     this.passData.nData.tranId = this.record.tranId;
@@ -85,6 +88,8 @@ export class ArDetailsQsoaComponent implements OnInit {
       (data: any)=>{
         for(var i of data.negTrtyBalList){
           i.showMG = 0;
+          i.uneditable = ['quarterEnding'];
+          i.quarterEnding = this.dp.transform(this.ns.toDateTimeString(i.quarterEnding).split('T')[0], 'MM/dd/yyyy');
           this.passData.tableData.push(i);
         }
         //this.passData.tableData = data.negTrtyBalList;
@@ -93,8 +98,17 @@ export class ArDetailsQsoaComponent implements OnInit {
     );
   }
 
+  openLOV(event){
+    console.log(event);
+    this.quarterEndingIndex = event.index;
+    this.lovMdl.modal.openNoClose();
+  }
+
   setSelectedData(data){
     console.log(data);
+    this.passData.tableData[this.quarterEndingIndex].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+    this.passData.tableData[this.quarterEndingIndex].showMG = 0;
+    //this.passData.tableData[this.quarterEndingIndex].uneditable = ['quarterEnding'];
   }
 
   onClickSave(){

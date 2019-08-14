@@ -195,7 +195,8 @@ export class ArPreviewComponent implements OnInit {
           a.createDate = this.ns.toDateTimeString(a.createDate);
           a.updateDate = this.ns.toDateTimeString(a.updateDate);
           a.showMG = 1;
-          if(a.autoTag == 'Y'){
+          //F is full, L is limited, N is restricted
+          if(a.updateLevel == 'N'){
             a.uneditable = ['glShortCd','debitAmt','creditAmt']
           }
         })
