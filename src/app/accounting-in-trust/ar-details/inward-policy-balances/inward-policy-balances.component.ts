@@ -24,8 +24,8 @@ export class InwardPolicyBalancesComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ["SOA No.","Policy No","Co. Ref. No.", "Inst No.","Eff Date", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", /*'Ri Comm Vat',*/ "Charges", "Net Due", "Payments", "Balance", "Overdue Interest"],
-    dataTypes: ["text","text","text", "text", "date", "date", "text", "percent", "currency", "currency", "currency", "currency", /*"currency",*/ "currency", "currency", "currency"],
+    tHeader: ["SOA No.","Policy No","Co. Ref. No.", "Inst No.","Eff Date", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Payments", "Balance", "Overdue Interest"],
+    dataTypes: ["text","text","text", "text", "date", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
@@ -55,11 +55,11 @@ export class InwardPolicyBalancesComponent implements OnInit {
         balOverdueInt: '',
         showMG: 1
     },
-    total: [null,null,null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
+    total: [null,null,null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
 /*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
-    widths: [200, 200, 120, 50,120, 120, 30, 85, 120, 120,120,120,120,120,120],
-    keys: ['soaNo', 'policyNo', 'coRefNo', 'instNo', 'effDate', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm',/* 'balRiCommVat',*/ 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
-    uneditable: [false,true,true,true,true,true,true,true,true,true,true,true,true,false,true]
+    widths: [200, 200, 120, 50,120, 120, 30, 85,120, 120, 120,120,120,120,120,120],
+    keys: ['soaNo', 'policyNo', 'coRefNo', 'instNo', 'effDate', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
+    uneditable: [false,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true]
   };
 
   passLov: any = {
@@ -119,6 +119,7 @@ export class InwardPolicyBalancesComponent implements OnInit {
 
   setSelectedData(data){
     let selected = data.data;
+    console.log(selected);
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i < selected.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
