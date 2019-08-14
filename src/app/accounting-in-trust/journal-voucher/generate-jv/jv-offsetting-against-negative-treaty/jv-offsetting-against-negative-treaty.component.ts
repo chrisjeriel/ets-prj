@@ -185,6 +185,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   setCedingcompany(data){
+    console.log(data)
     this.jvDetails.cedingName = data.cedingName;
     this.jvDetails.ceding = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
@@ -345,10 +346,13 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
         if(this.passData.tableData[i].clmOffset[j].deleted){
           this.jvDetails.deleteClmOffset.push(this.passData.tableData[i].clmOffset[j]);
-          this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;;
+          this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;
         }
       }
     }
+
+    this.jvDetails.tranId = this.jvDetail.tranId;
+    this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
   saveNegativeTreatyBal(){

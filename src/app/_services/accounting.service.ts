@@ -1839,7 +1839,24 @@ export class AccountingService {
 		        'Content-Type': 'application/json'
 		    })
 		};
+
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArNegTrtyBal',JSON.stringify(params),header);
+	}
+
+	getAcctTrtyBal(tranId,cedingId){
+		const params = new HttpParams()
+		 	 .set('tranId', (tranId === null || tranId === undefined ? '' : tranId))
+             .set('cedingId', (cedingId === null || cedingId === undefined ? '' : cedingId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvAcctTrtyBal",{params});
+	}
+
+	saveAcitJvAcctTrty(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVActTrtyBal',JSON.stringify(params),header);
 	}
 
 	getAcitArClmCashCallLov(payeeNo){
@@ -1889,6 +1906,12 @@ export class AccountingService {
 		 	 .set('extYear', (param.extYear === null || param.extYear === undefined ? '' : param.extYear))
 		 	 .set('extMethod', (param.extMethod === null || param.extMethod === undefined ? '' : param.extMethod))
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitExistingUPR",{params,responseType:'text'});
+	}
+
+	getAcctDefName(userId){
+		const params = new HttpParams()
+		 	 .set('userId', (userId === null || userId === undefined ? '' : userId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvDefName",{params});
 	}
 
 }
