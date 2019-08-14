@@ -111,14 +111,14 @@
     <div body style="min-width: 500px !important;">
         <fieldset class="scheduler-border">
             <div class="custom-row-inline-inset" style="text-align: center">
-                <p style="margin-bottom: 0px;">Selected Policy No. has existing Claim No/s</p>
-                <p style="margin-bottom: 5px;"><strong>{{ refPolNo }}</strong></p>
+                <p style="margin-bottom: 0px;">Selected Policy No. <strong>{{ refPolNo }}</strong></p>
+                <p style="margin-bottom: 5px;">has existing Claim No/s</p>
             </div>
             <app-cust-non-datatable [passData]="passDataLOVTbl" (rowClick)="onRowClickLOVTbl($event)" (newRowDblClick)="selected=$event; onClickViewLOVTbl($event)" (searchToDb)="searchQueryLOVTbl($event)" #LOVTbl></app-cust-non-datatable>
         </fieldset>
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="clmProcessingMdl.closeModal()"><a>Return</a></button>
-        <button class="cust-btn" type="button" (click)="onClickViewLOVTbl($event)"><a>View</a></button>
+        <button class="cust-btn" type="button" (click)="onClickViewLOVTbl($event)" [disabled]="selectedLOVTbl == null"><a>View</a></button>
     </div>
 </app-modal>

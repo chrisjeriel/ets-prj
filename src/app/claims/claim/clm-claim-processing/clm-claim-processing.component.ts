@@ -198,7 +198,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     blockDesc: ''
   }
 
-  selectedLOVTbl: any;
+  selectedLOVTbl: any = null;
   searchParamsLOVTbl: any[] = [];
   refPolNo: string = null;
   subscription: Subscription = new Subscription();
@@ -521,6 +521,8 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     onRowClickLOVTbl(data){
       if(data === null || (data !== null && Object.keys(data).length !== 0)){
         this.selectedLOVTbl = data
+      } else {
+        this.selectedLOVTbl = null;
       }
     }
 
