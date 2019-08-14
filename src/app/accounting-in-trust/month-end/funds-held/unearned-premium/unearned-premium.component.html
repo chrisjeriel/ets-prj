@@ -10,16 +10,35 @@
 			<div class="input-group">
 				<span class="form-control-sm col-sm-1"></span>
 				<label class="form-control-sm col-sm-2">Period</label>
-				<input type="text" class="form-control form-control-sm col-sm-2" [value]="params.monthName" style="margin-right: 2px;" readonly>
-				<input type="text" class="form-control form-control-sm col-sm-1" [value]="params.extYear" readonly>
+				<select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="params.extMm">
+					<option value="1">January</option>
+					<option value="2">February</option>
+					<option value="3">March</option>
+					<option value="4">April</option>
+					<option value="5">May</option>
+					<option value="6">June</option>
+					<option value="7">July</option>
+					<option value="8">August</option>
+					<option value="9">September</option>
+					<option value="10">October</option>
+					<option value="11">November</option>
+					<option value="12">December</option>
+				</select>
+				<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 2px;"  [(ngModel)]="params.extYear">
+					<option *ngFor="let year of yearList" [value]="year">{{year}}</option>		
+				</select>
 				<label class="form-control-sm col-sm-2">Method</label>
-				<input type="text" class="form-control form-control-sm col-sm-3" [value]="params.methodName" readonly>				
-				<span class="form-control-sm col-sm-1"></span>
+				<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="params.extMethod">
+					<option *ngFor="let m of methodList"   [value]="m.code">{{m.description}}</option>				
+				</select>	
+				<div class="col-sm-1 pl-1" >
+					<button class="cust-btn" (click)="getUPR()">Populate</button>
+				</div>	
 			</div>
 			<div class="input-group">
 				<span class="form-control-sm col-sm-1"></span>
 				<label class="form-control-sm col-sm-2">Company</label>
-				<select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="params.cedingId" (ngModelChange)="getUPR()">
+				<select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="params.cedingId">
 					<option value="">All Companies</option>
 					<option *ngFor="let comp of companyList" [value]="comp.cedingId">{{comp.cedingName}}</option>
 				</select>			

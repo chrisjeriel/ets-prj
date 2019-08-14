@@ -1,5 +1,6 @@
-  import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-  import { MaintenanceService, NotesService, AccountingService } from '@app/_services'
+  import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+  import { MaintenanceService, NotesService, AccountingService } from '@app/_services';
+  import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-extract-record',
@@ -36,10 +37,21 @@ export class ExtractRecordComponent implements OnInit {
   	extractDate:'',
   }
 
+  yearList:any[] = [];
+
+  @ViewChild(SucessDialogComponent) dlg:SucessDialogComponent;
+  icon:string = 'success-message';
+  msg:string = 'Extraction of Unearned Premium Reserve was successful.'
+
+
   @Output() paramOut: EventEmitter<any> = new EventEmitter<any>();
 
   ngOnInit() {
   	//this.getCompanyList();
+    let currYear = new Date().getFullYear();
+    for (var i = 2015; i<= currYear+3; i++) {
+      this.yearList.push(i);
+    }
   	this.getUPRMethods();
     this.getUPRParams();
   }
@@ -70,10 +82,11 @@ export class ExtractRecordComponent implements OnInit {
   }
 
   extract(){
+    $('.globalLoading').css('display','block');
     this.params.extractUser = this.ns.getCurrentUser();
     this.params.extractDate = this.ns.toDateTimeString(0);
   	this.as.generateUPR(this.params).subscribe(a=>{
-  		console.log(a);
+  		this.dlg.open();
   	})
   }
 

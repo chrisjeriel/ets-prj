@@ -48,7 +48,7 @@ export class UnearnedPremiumComponent implements OnInit {
     extMm :'8',
     extYear :'2019',
     extMethod :'1',
-    cedingId :'033'
+    cedingId :''
   };
 
   detailsList:any;
@@ -56,10 +56,20 @@ export class UnearnedPremiumComponent implements OnInit {
   indvSelect:any = {};
   lineDesc:any = '';
 
+  yearList:any[] = [];
+  methodList:any[] = [];
+
   constructor(private modalService: NgbModal, private as:AccountingService, private ms:MaintenanceService) { }
 
   ngOnInit() {
+    let currYear = new Date().getFullYear();
+    for (var i = 2015; i<= currYear+3; i++) {
+      this.yearList.push(i);
+    }
+    this.params.cedingId = '';
+    this.getUPRMethods();
     this.getCompanyList();
+    this.getUPR();
     setTimeout(a=>this.perLineTable.refreshTable())
   }
 
@@ -78,6 +88,11 @@ export class UnearnedPremiumComponent implements OnInit {
     })
   }
 
+  getUPRMethods(){
+    this.ms.getRefCode('UPR_METHOD').subscribe(a=>{
+      this.methodList = a['refCodeList'];
+    })
+  }
 
   getUPR(){
     $('.globalLoading').css('display','block');
