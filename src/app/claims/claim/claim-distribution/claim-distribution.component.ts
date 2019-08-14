@@ -123,6 +123,11 @@ export class ClaimDistributionComponent implements OnInit {
         a.createDate = this.ns.toDateTimeString(a.createDate);
         a.updateDate = this.ns.toDateTimeString(a.updateDate);
       })
+      this.payTableData.forEach(a=>{
+        a.bookingDate = a.bookingMth.toUpperCase()+'-'+a.bookingYear;
+        a.createDate = this.ns.toDateTimeString(a.createDate);
+        a.updateDate = this.ns.toDateTimeString(a.updateDate);
+      })
       this.filterTable(this.histTypeFilter);
     })
 
@@ -159,18 +164,7 @@ export class ClaimDistributionComponent implements OnInit {
   }
 
   getPoolDist(){
-    if(this.currTab =='reserve')
-      this.clmService.getClaimReserveDistPool(this.claimInfo.claimId,this.claimInfo.projId,this.selected.histCategory,this.selected.clmDistNo).subscribe(a=>{
-        this.poolDistPassData.tableData = a['claimsDistCeding'];
-        this.poolSum.ret1 = this.poolDistPassData.tableData.reduce((a,b)=>a+parseFloat(b.ret1Amt),0);
-        this.poolSum.ret2 = this.poolDistPassData.tableData.reduce((a,b)=>a+parseFloat(b.ret2Amt),0);
-        this.poolSum.total = this.poolSum.ret1 + this.poolSum.ret2;
-        this.poolSum.ret1 = this.poolSum.ret1.toFixed(2);
-        this.poolSum.ret2 = this.poolSum.ret2.toFixed(2);
-        this.poolSum.total = this.poolSum.total.toFixed(2);
-        this.poolTable.refreshTable();
-      });
-    else
+    
       this.clmService.getClaimDistPool(this.claimInfo.claimId,this.claimInfo.projId,this.selected.histNo,this.selected.clmDistNo).subscribe(a=>{
         this.poolDistPassData.tableData = a['claimsDistCeding'];
         this.poolSum.ret1 = this.poolDistPassData.tableData.reduce((a,b)=>a+parseFloat(b.ret1Amt),0);
@@ -185,48 +179,26 @@ export class ClaimDistributionComponent implements OnInit {
 
   redistribute(){
    this.confirmRedist.closeModal();
-     if(this.currTab =='reserve'){
-         let params:any = {
-             claimId:this.claimInfo.claimId,
-             projId:this.claimInfo.projId,
-             histCategory:this.histTypeFilter,
-             createUser:this.ns.getCurrentUser(),
-             createDate:this.ns.toDateTimeString(0),
-             updateUser:this.ns.getCurrentUser(),
-             updateDate:this.ns.toDateTimeString(0),
-         }
-        this.clmService.redistributeClaimReserveDist(params).subscribe(a=>{
-          if(a['returnCode']==-1){
-            this.diagIcon = 'nice';
-            this.getClmHist();
-          }else{
-            this.diagIcon = 'error'
-          }
-          this.successDiag.open()
-        })
+     
+    let params:any = {
+         claimId:this.claimInfo.claimId,
+         projId:this.claimInfo.projId,
+         histNo:this.selected.histNo,
+         clmDistNo: this.selected.clmDistNo,
+         createUser:this.ns.getCurrentUser(),
+         createDate:this.ns.toDateTimeString(0),
+         updateUser:this.ns.getCurrentUser(),
+         updateDate:this.ns.toDateTimeString(0),
+     }
+    this.clmService.redistributeClaimDist(params).subscribe(a=>{
+      if(a['returnCode']==-1){
+        this.diagIcon = 'nice';
+        this.getClmHist();
       }else{
-        let params:any = {
-             claimId:this.claimInfo.claimId,
-             projId:this.claimInfo.projId,
-             histNo:this.selected.histNo,
-             clmDistNo: this.selected.clmDistNo,
-             createUser:this.ns.getCurrentUser(),
-             createDate:this.ns.toDateTimeString(0),
-             updateUser:this.ns.getCurrentUser(),
-             updateDate:this.ns.toDateTimeString(0),
-         }
-        this.clmService.redistributeClaimDist(params).subscribe(a=>{
-          if(a['returnCode']==-1){
-            this.diagIcon = 'nice';
-            this.getClmHist();
-          }else{
-            this.diagIcon = 'error'
-          }
-          this.successDiag.open()
-        })
-
-
+        this.diagIcon = 'error'
       }
+      this.successDiag.open()
+    })
   }
 
   confirmRedsitribute(){

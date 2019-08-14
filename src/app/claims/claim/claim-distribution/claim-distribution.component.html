@@ -73,6 +73,8 @@
 				<ngb-tab title="Payment Distribution" id="payment">
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border">
+							<div class="col-sm-1">
+							</div>
 							<div class="col-sm-2">
 		                    	<div class="input-group mt-4">
 		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
@@ -93,7 +95,7 @@
 				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Other Expenses</label>
 						        </div>
 							</div>
-							<div class="col-sm-9">
+							<div class="col-sm-7">
 								<app-cust-editable-non-datatable #paymentDistTable [passData]="paymentDistPassData" class="d-block my-2" (newClick)="clickRow($event)"></app-cust-editable-non-datatable>
 							</div>
 							<div class="input-group" style="margin-left: -13px !important;">
