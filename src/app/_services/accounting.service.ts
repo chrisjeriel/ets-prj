@@ -1341,6 +1341,15 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVEntry',JSON.stringify(params),header);
 	}
 
+	saveAccJVEntryList(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVEntryList',JSON.stringify(params),header);
+	}
+
 	getJVInwPolBal(tranId,instNo,ceding) {
 		 const params = new HttpParams()
              .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
@@ -1632,6 +1641,15 @@ export class AccountingService {
 		 const params = new HttpParams()
              .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAllInvestmentIncomeInvtId",{params});
+	}
+
+	saveAcitAllInvtIncome(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitAllocInvtIncome',JSON.stringify(params),header);
 	}
 }
 
