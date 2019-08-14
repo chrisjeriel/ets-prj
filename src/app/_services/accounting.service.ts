@@ -1820,5 +1820,11 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVActTrtyBal',JSON.stringify(params),header);
 	}
+
+	getAcctDefName(userId){
+		const params = new HttpParams()
+		 	 .set('userId', (userId === null || userId === undefined ? '' : userId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvDefName",{params});
+	}
 	
 }

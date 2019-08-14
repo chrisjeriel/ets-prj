@@ -284,6 +284,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
         }
       }
     }
+
+    this.jvDetails.tranId = this.jvDetail.tranId;
+    this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
   saveAcctTrty(){
