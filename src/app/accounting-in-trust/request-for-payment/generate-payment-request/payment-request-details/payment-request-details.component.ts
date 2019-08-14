@@ -55,8 +55,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   cedingCompanyData: any = {
   	tableData     : [],
-  	tHeader       : ['Claim No.','Hist No.','Hist Category','Hist Type','Payment For', 'Insured', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Payment Amount','Payment Amount (PHP)'],
-    dataTypes     : ['lov-input', 'sequence-2', 'text', 'text', 'text', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
+  	tHeader       : ['Claim No.','Hist No.','Hist Category','Hist Type','Payment For', 'Insured', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Approved Amount','Payment Amount','Payment Amount (PHP)'],
+    dataTypes     : ['lov-input', 'sequence-2', 'text', 'text', 'text', 'text', 'checkbox','text', 'percent','currency','currency','currency','currency'],
     magnifyingGlass : ['claimNo'],
   	nData: {
       claimNo        : '',
@@ -79,10 +79,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	checkFlag     : true,
   	addFlag       : true,
   	deleteFlag    : true,
-    uneditable    : [true,true,true,true,false,true,true,true,true,true,true,true],
-  	total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt', 'paytAmt', 'localAmt'],
-    widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
-    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','localAmt']
+    uneditable    : [true,true,true,true,false,true,true,true,true,true,true,false,true],
+  	total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt','approvedAmt','paytAmt', 'localAmt'],
+    widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120,120],
+    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','approvedAmt','paytAmt','localAmt']
   };
 
   inwardPolBalData: any = {
@@ -422,17 +422,19 @@ export class PaymentRequestDetailsComponent implements OnInit {
       var recAcitSoaDtl    = data['soaDtl']['soaDtlList'];
 
       this.recPrqTrans.forEach(e => {
-          this.inwardPolBalData.tableData.push(recAcitPrqInwPol.filter(e2 => e2.itemNo == e.itemNo)
+          this.inwardPolBalData.tableData.push(recAcitPrqInwPol.filter(e2 => e2.itemNo == e.itemNo && e2.reqId == e.reqId)
                                                                       .map(e2 => {
                                                                         e2.policyId = e.policyId;
                                                                         e2.instNo   = e.instNo;
                                                                         e2.itemNo   = e.itemNo;
+                                                                        e2.reqId    = e.reqId;
                                                                         return e2;
                                                                       }));
       });
       console.log(this.inwardPolBalData.tableData);
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.flatMap(e => { return e });
       console.log(this.inwardPolBalData.tableData);
+
       recAcitSoaDtl.forEach(e => {
         this.inwardPolBalData.tableData.filter(e2 => e.policyId == e2.policyId && e.instNo == e2.instNo).map(e2 => Object.assign(e2,e));
       });
@@ -456,7 +458,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                                                 e2.updateUser = e.updateUser;
                                                                 e2.createDate = e.createDate;
                                                                 e2.updateDate = e.updateDate;
-                                                                e2.paytAmt    = (e2.paytAmt == '' || e2.paytAmt == null)?0:e2.paytAmt;
+                                                                e2.paytAmt    = (e.currAmt == '' || e.currAmt == null)?0:e.currAmt;
                                                                 e2.localAmt   = (e.localAmt == '' || e.localAmt == null)?0:e.localAmt; 
                                                                 e2.itemNo     = e.itemNo;
                                                                 return e2; 
@@ -829,10 +831,20 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
   }
 
+  conLocAmt(){
+    this.cedingCompanyData.tableData.forEach(e => {
+      if(e.paytAmt != '' || e.paytAmt != null){
+        e.localAmt = Number(e.currencyRt) * Number(e.paytAmt);
+      }
+    });
+  }
+
   onClickSaveCPC(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
+   // ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','localAmt']
+
     this.cedingCompanyData.tableData.forEach(e => {
       var rec = {
             claimId         : e.claimId,
@@ -845,7 +857,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
             instNo          : '',
             investmentId    : '',
             itemNo          : e.itemNo,
-            localAmt        : e.localAmt,
+            localAmt        : Number(e.currencyRt) * Number(e.paytAmt),
             paymentFor      : e.paymentFor,
             policyId        : '',
             projId          : e.projId,

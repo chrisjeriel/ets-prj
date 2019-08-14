@@ -27,6 +27,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild('reqUserLov') reqUserLov         : MtnUsersComponent;
   @ViewChild('appUserLov') appUserLov         : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent;
+  @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('mainLov') mainLov               : LovComponent;
 
   saveAcitPaytReq : any = {
@@ -82,7 +83,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   paymentType  : any;
   passDataLov  : any = {
     selector     :'',
-    payeeClassCd : 1
+    payeeClassCd : ''
   };
 
   savePrintables : any = {
@@ -415,6 +416,17 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.savePrintables.approvedBy = '';
     this.saveAcitPaytReq.approvedDes = '';
     this.confirmMdl.closeModal();
+  }
+
+  onYesAppby(){
+    if(this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null || this.saveAcitPaytReq.approvedDate == '' || this.saveAcitPaytReq.approvedDate == null){
+      this.dialogIcon = 'error';
+      this.success.open();
+      $('.warn').focus();
+      $('.warn').blur();
+    }else{
+      this.confirmMdl.closeModal();
+    }
   }
 
 

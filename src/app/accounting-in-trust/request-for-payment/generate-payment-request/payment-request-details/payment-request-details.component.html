@@ -43,7 +43,7 @@
             <div class="col-sm-12">
               <ng-container [ngSwitch]="true">
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 2 || requestData?.tranTypeCd == 3">
-                    <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event,'lovCedTbl')" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty('cedTbl');" #cedCompTbl></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event,'lovCedTbl')" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty('cedTbl');conLocAmt();" #cedCompTbl></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 4">
                     <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (newClick)="onRowClick($event)" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');"></app-cust-editable-non-datatable>
@@ -124,7 +124,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="othTabId">
+      <ngb-tab *ngIf="requestData?.tranTypeCd != 8 && requestData?.tranTypeCd != 4" id="othTabId">
         <ng-template ngbTabTitle>
           <div>Others</div>
         </ng-template>
@@ -134,17 +134,17 @@
               <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr();"></app-cust-editable-non-datatable>
             </div>
             <div class="form-row col-sm-12" style="margin-top: 40px !important;">
-                <div class="form-group col-sm-12">
-                  <div class="text-center">
-                    <div class="cust-btn-container">
-                      <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                      <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-                    </div>
+              <div class="form-group col-sm-12">
+                <div class="text-center">
+                  <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                   </div>
                 </div>
+              </div>
             </div>
           </div>
-        </ng-template>
+            </ng-template>
       </ngb-tab>
     </ngb-tabset>
   </div>

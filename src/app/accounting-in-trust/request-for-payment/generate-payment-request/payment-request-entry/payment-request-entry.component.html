@@ -168,14 +168,14 @@
         <div class="input-group">
           <label class="form-control-sm col-sm-3 labels">Approved By</label>
           <div class="input-group col-sm" style="padding: 0px; margin-right: 36px !important;">
-            <input type="text" class="form-control form-control-sm cust-sm col-sm-12 cap-input" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedBy">
+            <input type="text" class="form-control form-control-sm cust-sm col-sm-12 cap-input warn" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedBy" appRequired>
             <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('app-user')"><i class="fa fa-search"></i></a></div>
           </div>
         </div>
         <div class="input-group">
           <label class="form-control-sm col-sm-3 no-margin">Date Approved</label>
           <div class="col-sm-8 dp-cont" style="margin-left: 0px !important">
-            <datepicker type="datetime" [(value)]="saveAcitPaytReq.approvedDate"></datepicker>
+            <datepicker type="datetime" [required]="true" [(value)]="saveAcitPaytReq.approvedDate"></datepicker>
           </div>
         </div>
       </div>
@@ -186,10 +186,20 @@
       </div>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?onYesCancelReq():confirmMdl.closeModal();">Yes</button>
+        <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?onYesCancelReq():onYesAppby();">Yes</button>
         <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?confirmMdl.closeModal():onNoAppby();">No</button>
     </div>
 </app-modal>
+
+<!-- <app-modal class="d-none" #warnMdl >
+    <div header style="min-width:460px !important;">Warning</div>
+    <div body class="container-flex text-center">
+      <p>Please check field values</p>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="warnMdl.closeModal()">Ok</button>
+    </div>
+</app-modal> -->
 
 <app-confirm-save (onYes)="onSaveAcitPaytReq()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
