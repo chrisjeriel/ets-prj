@@ -1340,6 +1340,15 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVEntry',JSON.stringify(params),header);
 	}
 
+	saveAccJVEntryList(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVEntryList',JSON.stringify(params),header);
+	}
+
 	getJVInwPolBal(tranId,instNo,ceding) {
 		 const params = new HttpParams()
              .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
@@ -1732,6 +1741,40 @@ export class AccountingService {
 		}
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitInvestments',JSON.stringify(params),header);
 	}
+
+	getAcitAllInvtIncome(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('tranDateFrom','')
+				.set('tranDateTo','')
+				.set('tranMonth','')
+				.set('tranYear','')
+				.set('tranDate','');
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAllInvestmentIncome', {params});
+	}
+
+	getAcitAllInvtIncomeInvtId(tranId?) {
+		 const params = new HttpParams()
+             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAllInvestmentIncomeInvtId",{params});
+	}
+
+	saveAcitAllInvtIncome(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitAllocInvtIncome',JSON.stringify(params),header);
+	}
+
 
 	saveAcitArClmRecover(params){
 		let header : any = {
