@@ -1,3 +1,7 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="globalLoading" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999;display: none">
+<div class="globalLoading" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);display: none">
+</div>
+
 <div class="row">
 	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
@@ -6,36 +10,60 @@
 			<div class="input-group">
 				<span class="form-control-sm col-sm-1"></span>
 				<label class="form-control-sm col-sm-2">Period</label>
-				<input type="text" class="form-control form-control-sm col-sm-2" value="January" style="margin-right: 2px;" readonly>
-				<input type="text" class="form-control form-control-sm col-sm-1" value="2019" readonly>
+				<select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="params.extMm">
+					<option value="1">January</option>
+					<option value="2">February</option>
+					<option value="3">March</option>
+					<option value="4">April</option>
+					<option value="5">May</option>
+					<option value="6">June</option>
+					<option value="7">July</option>
+					<option value="8">August</option>
+					<option value="9">September</option>
+					<option value="10">October</option>
+					<option value="11">November</option>
+					<option value="12">December</option>
+				</select>
+				<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 2px;"  [(ngModel)]="params.extYear">
+					<option *ngFor="let year of yearList" [value]="year">{{year}}</option>		
+				</select>
 				<label class="form-control-sm col-sm-2">Method</label>
-				<input type="text" class="form-control form-control-sm col-sm-3" value="24th Method" readonly>				
-				<span class="form-control-sm col-sm-1"></span>
+				<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="params.extMethod">
+					<option *ngFor="let m of methodList"   [value]="m.code">{{m.description}}</option>				
+				</select>	
+				<div class="col-sm-1 pl-1" >
+					<button class="cust-btn" (click)="getUPR()">Populate</button>
+				</div>	
 			</div>
 			<div class="input-group">
 				<span class="form-control-sm col-sm-1"></span>
 				<label class="form-control-sm col-sm-2">Company</label>
-				<input type="text" class="form-control form-control-sm col-sm" value="Munich Re" readonly>				
+				<select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="params.cedingId">
+					<option value="">All Companies</option>
+					<option *ngFor="let comp of companyList" [value]="comp.cedingId">{{comp.cedingName}}</option>
+				</select>			
 				<span class="form-control-sm col-sm-1"></span>
 			</div>					
 			<div class="input-group">
 				<span class="form-control-sm col-sm-1"></span>
 				<label class="form-control-sm col-sm-2">Extracted By</label>
-				<input type="text" class="form-control form-control-sm col-sm-3" value="cuaresma" readonly>
+				<input type="text" class="form-control form-control-sm col-sm-3" [value]="params.extractUser" readonly>
 				<label class="form-control-sm col-sm-2">Extracted By</label>
-				<input type="datetime-local" class="form-control form-control-sm col-sm-3" value="2013-10-24T09:00">
+				<div class="col-sm dp-cont">
+                    <datepicker [value]="params.extractDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker> 
+                </div>  
 				<span class="form-control-sm col-sm-1"></span>
 			</div>
 
 			<div class="row">
 				<div class="col-sm">
-					<app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+					<app-cust-non-datatable #perLineTable (rowClick)="updateDetails($event)" [passData]="passData"></app-cust-non-datatable>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-sm text-center">
-					<button class="cust-btn" (click)="openDetailsPerPolicy()">View Details</button>
+					<button class="cust-btn" (click)="openDetailsPerPolicy()" [disabled]="indvSelect==null">View Details</button>
 					<button class="cust-btn" style="max-width: 130px;">Generate Acct Entries</button>
 					<button class="cust-btn" (click)="openAccountingEntries()">View Acct Entries</button>					
 					<button class="cust-btn">Print</button>					
@@ -54,18 +82,18 @@
 			<div class="input-group">
 				<span class="form-control-sm col-sm-3"></span>
 				<label class="form-control-sm col-sm-1">Line</label>
-				<input type="text" class="form-control form-control-sm col-sm-1" value="CAR" style="margin-right: 2px;" readonly="">
-				<input type="text" class="form-control form-control-sm col-sm-4" value="Construction All Risk" readonly="">
+				<input type="text" class="form-control form-control-sm col-sm-1" [value]="perLineTable?.indvSelect?.lineCd" style="margin-right: 2px;" readonly="">
+				<input type="text" class="form-control form-control-sm col-sm-4" [value]="lineDesc" readonly="">
 				<span class="form-control-sm col-sm-3"></span>
 			</div>
-			<app-cust-non-datatable [passData]="detailsPerPolicy"></app-cust-non-datatable>
+			<app-cust-non-datatable #perPolTable [passData]="detailsPerPolicy"></app-cust-non-datatable>
 		</fieldset>
 	</div>
 	<div footer class="w-100 text-center">
 		<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Return</a></button>            
 	</div>
 </app-modal>
-
+<!-- 
 <app-modal class="d-none" id="accountingEntries">
 	<div header>Accounting Entries</div>
 	<div body>
@@ -84,4 +112,4 @@
 	<div footer class="w-100 text-center">
 		<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Return</a></button>            
 	</div>
-</app-modal>
+</app-modal> -->

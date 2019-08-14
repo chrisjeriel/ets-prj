@@ -1807,6 +1807,15 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/generateUPR',JSON.stringify(params),header);
 	}
+
+	getUPRPerCede(param){
+		const params = new HttpParams()
+		 	 .set('extMm', (param.extMm === null || param.extMm === undefined ? '' : param.extMm))
+		 	 .set('extYear', (param.extYear === null || param.extYear === undefined ? '' : param.extYear))
+		 	 .set('extMethod', (param.extMethod === null || param.extMethod === undefined ? '' : param.extMethod))
+		 	 .set('cedingId', (param.cedingId === null || param.cedingId === undefined ? '' : param.cedingId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitUPRPerCede",{params});
+	}
 	
 	saveAcitJvNegTreaty(params){
 		let header : any = {
@@ -1868,6 +1877,18 @@ export class AccountingService {
 		    })
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitArAmtDtl',JSON.stringify(params),header);
+	}
+
+	getUPRParams(){
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitUPRParams");
+	}
+
+	checkExistingUPR(param){
+		const params = new HttpParams()
+		 	 .set('extMm', (param.extMm === null || param.extMm === undefined ? '' : param.extMm))
+		 	 .set('extYear', (param.extYear === null || param.extYear === undefined ? '' : param.extYear))
+		 	 .set('extMethod', (param.extMethod === null || param.extMethod === undefined ? '' : param.extMethod))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitExistingUPR",{params,responseType:'text'});
 	}
 
 }
