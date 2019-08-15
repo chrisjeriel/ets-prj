@@ -19,21 +19,25 @@ export class MtnClmHistoryLovComponent implements OnInit {
 
   	passData: any = {
 	    tableData	: [],
-	    tHeader		: ['Claim No.','Hist No.','Hist Category','Hist Type','Reserve','Paid Amount'],
-	    dataTypes	: ['text', 'sequence-2', 'text', 'text', 'currency', 'currency'],
+	    tHeader		: ['Claim No.','Hist No.','Hist Category','Hist Type','Reserve','Approved Amount','Paid Amount'],
+	    dataTypes	: ['text', 'sequence-2', 'text', 'text', 'currency', 'currency', 'currency'],
 	    pageLength	: 10,
 	    searchFlag	: true,
 	    pageStatus	: true,
 	    pagination	: true,
 	    fixedCol	: false,
 	    pageID		: 'passDataClmHistoryLov'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
-	    widths      : ['auto','auto','auto','auto','auto','auto'],
-    	keys        : ['claimNo','histNo','histCatDesc','histTypeDesc','reserveAmt','paytAmt']
+	    widths      : ['auto','auto','auto','auto','auto','auto','auto'],
+    	keys        : ['claimNo','histNo','histCatDesc','histTypeDesc','reserveAmt','approvedAmt','paytAmt']
 	};
 
 	@Input() lovCheckBox: boolean = false;
 	@Input() limitClmHistTbl : any[] = [];
 	@Input() limitHistCat : string = '';
+	@Input() limitData : any = {
+		histCategory : [], 
+		histType	 : []
+	};
   	selects: any[] = [];
 
  	constructor(private clmService: ClaimsService, private modalService: NgbModal) { }
@@ -72,7 +76,12 @@ export class MtnClmHistoryLovComponent implements OnInit {
 		    this.table.overlayLoader = true;
 		    this.clmService.getClaimHistory()
 		    .subscribe(data => {
-	     		var rec = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.limitHistCat.toUpperCase() == 'L')?e.histCategory =='L':e.histCategory != 'L').map(e => { return e });
+	     		var rec = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e })
+	     				  .filter(e => this.limitData.histCategory.includes(e.histCategory) && this.limitData.histType.includes(Number(e.histType)))
+	     				  .map(e => { 
+	     				  	e.paytAmt = (e.paytAmt == '' || e.paytAmt == null)?0:e.paytAmt; 
+	     				  	e.approvedAmt = (e.approvedAmt == '' || e.approvedAmt == null)?0:e.approvedAmt; 
+	     				  	return e; });
 	     		if(this.limitClmHistTbl.length != 0){
 	     			var limit = this.limitClmHistTbl.filter(a => a.showMG != 1).map(a => JSON.stringify({claimId: a.claimId, histNo: a.histNo}));
 	     			this.passData.tableData =  	rec.filter(a => {

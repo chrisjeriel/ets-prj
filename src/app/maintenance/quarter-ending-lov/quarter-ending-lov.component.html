@@ -7,8 +7,12 @@
                 <select class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="quarter">
                 	<option *ngFor="let quarter of quarters" [value]="quarter">{{slicer(quarter)}}</option>
                 </select>
+                <!-- <dropdown [(ngModel)]="quarter" [options]="quarterOptions" [editable]="true" (valueChange)="quarterData($event)"></dropdown> -->
                 <label class="form-control-sm col-sm-2 text-right labels">Year</label>
-                <dropdown [(ngModel)]="selectedCar1" [options]="cities" [editable]="true" (valueChange)="yearData($event)"></dropdown> 
+                <!-- <dropdown [(ngModel)]="quarterYear" [options]="yearOptions" [editable]="true" (valueChange)="yearData($event)"></dropdown>  -->
+                <select class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="quarterYear">
+                    <option *ngFor="let year of yearOptions" [value]="year">{{year}}</option>
+                </select>
                 <button class="cust-btn" style="height: 24px !important;margin-left: 6px;" (click)="modal.closeModal();onClickOk()">OK
                 </button>
             </div>

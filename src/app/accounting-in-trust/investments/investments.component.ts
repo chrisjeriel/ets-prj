@@ -173,8 +173,8 @@ export class InvestmentsComponent implements OnInit {
     resultCancel : boolean;
     statusList: any[] =[]; 
     statusCd: any = '';
-    matDateTo: any;
-    matDateFrom: any;
+    matDateTo: any = '';
+    matDateFrom: any = '';
 
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
@@ -210,6 +210,7 @@ export class InvestmentsComponent implements OnInit {
                                       a.purDate = this.ns.toDateTimeString(a.purDate);
                                       a.createDate = this.ns.toDateTimeString(a.createDate);
                                       a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                                      a.edited = false;
                                       if (a.invtStatus === 'F'){
                                         a.uneditable = ['invtStatus','matVal','currRate'];
                                       } else if(a.invtStatus === 'M' || a.invtStatus === 'O'){
@@ -748,6 +749,7 @@ export class InvestmentsComponent implements OnInit {
 
   saveAcitInvt(obj,cancelFlag?){
     this.deletedData = [];
+    console.log(obj);
       this.accountingService.saveAcitInvt(obj).pipe(
            finalize(() => this.cancel(this.resultCancel))
            )
@@ -755,7 +757,6 @@ export class InvestmentsComponent implements OnInit {
               if(data['returnCode'] == -1){
                   this.dialogIcon = "success";
                   this.successDialog.open();
-                  this.retrieveInvestmentsList();
                   this.resultCancel = true;
               }else{
                   this.dialogIcon = "error";
@@ -769,6 +770,10 @@ export class InvestmentsComponent implements OnInit {
   cancel(obj?){
    if (this.cancelFlag === true && obj === false){
      this.cancelFlag = false;
+   }else if (obj === true){
+     this.passData.tableData = [];
+     this.searchParams = [];
+     this.retrieveInvestmentsList(this.searchParams);
    }
   }
 

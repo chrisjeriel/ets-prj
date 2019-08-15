@@ -31,7 +31,7 @@
 	</div>	
 </div>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-quarter-ending-lov id="quarterEnd"></app-quarter-ending-lov>
+<app-quarter-ending-lov id="quarterEnd" (selectedData)="setQuarter($event)"></app-quarter-ending-lov>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="savePremResRel()"></app-confirm-save>
 <app-cancel-button (onYes)="savePremResRel('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./funds-held.component.css']
 })
 export class FundsHeldComponent implements OnInit {
+  params:any = {}
 
   constructor(private router: Router) { }
 
@@ -18,5 +19,10 @@ export class FundsHeldComponent implements OnInit {
     if ($event.nextId === 'Exit') {
       this.router.navigateByUrl('/');
     }
+  }
+
+  getParam(data){
+    console.log(data)
+    this.params = data;
   }
 }
