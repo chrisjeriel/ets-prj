@@ -319,6 +319,7 @@ export class PaymentRequestEntryComponent implements OnInit {
     if(from.toLowerCase() == 'curr'){
       this.saveAcitPaytReq.currCd = data.currencyCd;
       this.saveAcitPaytReq.currRate =  data.currencyRt;
+      this.saveAcitPaytReq.localAmt = Number(this.saveAcitPaytReq.reqAmt) * Number(data.currencyRt);
     }else if(from.toLowerCase() == 'prep-user'){
       this.saveAcitPaytReq.preparedBy = data.printableName;
       this.savePrintables.preparedBy  = data.userId;

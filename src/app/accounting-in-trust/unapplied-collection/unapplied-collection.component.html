@@ -1,6 +1,18 @@
 
-<app-cust-editable-non-datatable (tableDataChange)="unappliedCollection($event)" [passData]="passData" (genericBtn)="onClickSave();"> </app-cust-editable-non-datatable>
+<app-cust-editable-non-datatable (tableDataChange)="unappliedCollection($event)" [passData]="passData"> </app-cust-editable-non-datatable>
+
+<div class="form-row">
+    <div class="form-group col-sm">
+      <div class="col-md-13 text-center">
+        <br>
+        <div class="cust-btn-container">
+          <button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+          <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+        </div>
+      </div>
+    </div>
+</div>
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancel.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>
