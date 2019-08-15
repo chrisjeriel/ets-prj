@@ -6,45 +6,44 @@
 				<div class="col-sm-6">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
-						<input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
-						style="z-index: 1 !important;">
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
+						style="z-index: 1 !important;" readonly [ngModel]="pad(record.arNo, 'arNo')">
 						<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
 						<input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm"
-						style="z-index: 1 !important;">
+						style="z-index: 1 !important;" readonly [ngModel]="record.arDate">
 						<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
-						<input type="text" value="2018-001-55" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="z-index: 1 !important;">
+						<input type="text" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
+						style="z-index: 1 !important;" readonly [ngModel]="record.dcbNo">
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
-						<input type="text" value="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm col-sm"
-						placeholder=""  >
+						<input type="text" class="form-control form-control-sm cust-sm col-sm"
+						placeholder=""   readonly [ngModel]="record.payor">
 					</div>
 				</div>
 				<div class="col-sm-3">
 					<div class="input-group">
-						<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment
-						Type</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="">
+						<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment Type</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm" readonly [ngModel]="record.tranTypeName">
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Status</label>
-						<input type="text" value="New" class="form-control form-control-sm cust-sm col-sm" placeholder="">
+						<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly [ngModel]="record.arStatDesc">
 					</div>
 				</div>
 
 				<div class="col-sm-3">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
-						<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-						<input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-						placeholder="">
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" [ngModel]="record.currCd" readonly>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+						placeholder="" [ngModel]="record.arAmt | number: '1.2-2'" readonly>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-						<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-						<input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-						placeholder="">
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+						placeholder="" [ngModel]="record.arAmt * record.currRate | number: '1.2-2'" readonly>
 					</div>
 				</div>
 			</div>
@@ -54,12 +53,12 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div class="cust-tabs-container" style="margin-top:10px !important">
-			<ngb-tabset>
-				<ngb-tab class="ngb-tab" title="Amount Details">
+			<ngb-tabset (tabChange)="onTabChange($event)">
+				<ngb-tab class="ngb-tab" title="Amount Details" id="amtDtl">
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border" style="padding-top: 0.6em">
 							<div class="col-sm-12">
-								<app-cust-editable-non-datatable (tableDataChange)="amtDetails($event)" [passData]="amountDetailsData">
+								<app-cust-editable-non-datatable #amtDtlTbl (tableDataChange)="onTableDataChange($event)" [passData]="amountDetailsData">
 									<!-- <ng-container controls-r>
 										<label class="form-control-sm labels" style="text-align: left !important">Auto Compute</label>
 										<input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
@@ -67,41 +66,90 @@
 								</app-cust-editable-non-datatable>
 							</div>
 						</div>
+						<div class="form-row">
+						    <div class="form-group col-sm">
+						      <div class="col-md-13 text-center">
+						        <br>
+						        <div class="cust-btn-container">
+						          <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
+						          <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+						        </div>
+						      </div>
+						    </div>
+						</div>
 					</ng-template>
 				</ngb-tab>
-				<ngb-tab class="ngb-tab" title="Accounting Entries">
+				<ngb-tab class="ngb-tab" title="Accounting Entries" id="acctEntries">
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border" style="padding-top: 0.6em">
 							<div class="col-sm-12">
-								<app-cust-editable-non-datatable [passData]="accEntriesData">
-									<!-- <ng-container controls-r>
+								<!-- <app-cust-editable-non-datatable #acctEntryTbl [passData]="accEntriesData">
+									<ng-container controls-r>
 										<button class="cust-btn" style="margin-right: 0px !important;">Print AE</button>
-									</ng-container> -->
+									</ng-container>
+								</app-cust-editable-non-datatable> -->
+								<app-cust-editable-non-datatable #acctEntryTbl [passData]="accEntriesData" (clickLOV)="clickLov($event)" (newClick)="selected=$event" (tickChckbx)="tickChckbx($event)" (tableDataChange)="computeTotals()">
 								</app-cust-editable-non-datatable>
+								<!-- <app-cmdm-accnt-entries [passData]="record"></app-cmdm-accnt-entries> -->
+							</div>
+							<div class="col-sm-12">
+							    <div class="input-group">
+							        <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
+							        <label class="form-control-sm col-sm-2" >Total Debit and Credit</label>
+							        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.debit | number:'1.2-2'" disabled="disabled">
+							        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.credit | number:'1.2-2'" disabled="disabled">
+							    </div>
+							    <div class="input-group">
+							        <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
+							        <label class="form-control-sm col-sm-2" >Variance</label>
+							        <label class="form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"></label>
+							        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.variance | number:'1.2-2'" disabled="disabled">
+							    </div>
+							</div>
+							<div class="text-center col-sm-12" style="margin-bottom: 7px;">
+							    <button class="cust-btn">Cancel</button>
+							    <button class="cust-btn" (click)="onClickSave()">Save</button>
 							</div>
 						</div>
+						
 					</ng-template>
 				</ngb-tab>
 			</ngb-tabset>
 		</div>
 	</div>
 </div>
-<div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
+<div class="col-sm-12" style="margin-top: 35px !important;padding-left: 0px !important;
 padding-right: 0px !important;">
-<fieldset class="scheduler-border" style="margin-top: 0px !important; margin-bottom: 10px !important; padding-bottom: 7px !important;">
-	<div class="custom-row-inline-inset">
-		<div class="form-row" style="margin-bottom: -10px;">
-			<div class="input-group">
-				<label class="form-control-sm col-sm-1">Created By</label>
-				<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-				<label class="form-control-sm col-sm-1">Date Created</label>
-				<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45" disabled>
-				<label class="form-control-sm col-sm-1">Last Update By</label>
-				<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-				<label class="form-control-sm col-sm-1">Last Update</label>
-				<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00" disabled>
+	<fieldset class="scheduler-border" style="margin-top: -12px !important; margin-bottom: 10px !important;">
+		<div style="margin-top: 8px !important; margin-bottom: 17px !important;">
+			<div class="form-row" style="margin-bottom: -10px;">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-1">Created By</label>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.createUser" disabled>
+					<label class="form-control-sm col-sm-1">Date Created</label>
+					<div class="col-sm" style="padding: 0px">
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.createDate"></datepicker>
+					</div>
+					<label class="form-control-sm col-sm-1">Last Update By</label>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.updateUser" disabled>
+					<label class="form-control-sm col-sm-1">Last Update</label>
+					<div class="col-sm" style="padding: 0px">
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.updateDate"></datepicker>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-</fieldset>
+	</fieldset>
 </div>
+
+<app-lov [passData]="passLov" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>
+<app-modal class="d-none" #warnDeleteAuto>
+    <div header>Warning</div>
+    <div body>Deleting of automatically generated accounting entries are not allowed.</div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" (click)="warnDeleteAuto.closeModal()">Ok</button>
+    </div>
+</app-modal>

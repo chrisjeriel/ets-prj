@@ -6,8 +6,8 @@
                 <div class="col-sm-8">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" placeholder="BPI/MS INSURANCE CORPORATION">
-                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" (change)="checkCode($event)" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()">
+                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
                     </div>
                 </div>
                 <div class="col-sm-2"></div>
@@ -18,11 +18,13 @@
         <div class="col-sm-12" style="margin-top: 3px" >
                 <div class="input-group">
                 <div class="col-sm-1"></div>
-                <div style="position: relative; padding: 0" class="col-sm-10">
+                <div class="col-sm-10">
                     <fieldset class="scheduler-border">
-                        <legend></legend>
+                        <legend class="scheduler-border">Treaty Balance</legend>
+                            <div style="position: relative;margin-top: 10px" >
+                                <app-cust-editable-non-datatable #quarterTable [passData]="passData" (newClick)="onRowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event)"></app-cust-editable-non-datatable>
+                            </div>
                     </fieldset>
-                    <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
                 </div>
                  <div class="col-sm-1"></div>
              </div>
@@ -33,7 +35,7 @@
             <fieldset class="scheduler-border">
                 <legend class="scheduler-border">Inward Policy Balances</legend>
                  <div class="col-sm-12" style="margin-top: 15px" >
-                    <app-cust-editable-non-datatable [passData]="passDataOffsetting"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #trytytrans [passData]="passDataOffsetting" (clickLOV)="openLOV($event)" (tableDataChange)="passDataOffsetting.tableData = $event; quarterTable.indvSelect.acctOffset=$event;"></app-cust-editable-non-datatable>
                  </div>
             </fieldset>
         </div>
@@ -49,18 +51,9 @@
         </div>
     </div>
 </div>
-
-
-<app-modal class="d-none" id="ViewOverdue">
-	<div header>List of Outstanding Accounts for Offset</div>	
-	<div body>
-                
-         
-	</div>
-	<div footer class="text-center w-100">
-		<div class="d-flex justify-content-center">
-			<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
-		</div>
-	</div>
-</app-modal>
-
+<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-quarter-ending-lov id="quarterEnd" (selectedData)="setQuarter($event)"></app-quarter-ending-lov>
+<app-lov [passData]="passLov" (selectedData)="setSoa($event)">
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveAcctTrty()"></app-confirm-save>
+<app-cancel-button (onYes)="saveAcctTrty('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
