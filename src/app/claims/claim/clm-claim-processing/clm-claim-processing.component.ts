@@ -1,23 +1,27 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ClaimsService, UnderwritingService, MaintenanceService, NotesService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-clm-claim-processing',
   templateUrl: './clm-claim-processing.component.html',
   styleUrls: ['./clm-claim-processing.component.css']
 })
-export class ClmClaimProcessingComponent implements OnInit {
+export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   @ViewChild('mainTable') table : CustNonDatatableComponent;
   @ViewChild('polListTbl') polListTbl : CustNonDatatableComponent;
   @ViewChild('add') addModal : ModalComponent;
   @ViewChild('polList') polListModal : ModalComponent;
   @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
+  @ViewChild('clmProcessingMdl') clmProcessingMdl: ModalComponent;
+  @ViewChild('LOVTbl') LOVTbl : CustNonDatatableComponent;
 
   passData: any = {
     tableData: [],
@@ -103,6 +107,56 @@ export class ClmClaimProcessingComponent implements OnInit {
     ],
   };
 
+  passDataLOVTbl: any = {
+    tableData: [],
+    tHeader: ['Claim No', 'Loss Date', 'Currency', 'Total Reserve', 'Total Payments'],
+    dataTypes: ['text', 'date', 'text', 'currency', 'currency'],
+    keys: ['claimNo', 'lossDate', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
+    addFlag: false,
+    editFlag: false,
+    pagination: true,
+    pageStatus: true,
+    searchFlag: true,
+    pageLength: 10,
+    pageID: 'passDataLOVTbl',
+    filters: [
+       {
+            key: 'claimNo',
+            title:'Claim No.',
+            dataType: 'text'
+        },
+        {
+             keys: {
+                  from: 'lossDateFrom',
+                  to: 'lossDateTo'
+              },
+              title: 'Loss Date',
+              dataType: 'datespan'
+        },
+        {
+            key: 'currencyCd',
+            title:'Currency',
+            dataType: 'text'
+        },
+        {
+             keys: {
+                  from: 'totalResFrom',
+                  to: 'totalResTo'
+              },
+              title: 'Total Reserve',
+              dataType: 'textspan'
+        },
+        {
+             keys: {
+                  from: 'totalPaytFrom',
+                  to: 'totalPaytTo'
+              },
+              title: 'Total Payment',
+              dataType: 'textspan'
+        }
+    ],
+  };
+
   policyListingData: any = {
     tableData: [],
     tHeader: ['Policy No', 'Ceding Company', 'Insured', 'Risk'],
@@ -144,6 +198,11 @@ export class ClmClaimProcessingComponent implements OnInit {
     blockDesc: ''
   }
 
+  selectedLOVTbl: any = null;
+  searchParamsLOVTbl: any[] = [];
+  refPolNo: string = null;
+  subscription: Subscription = new Subscription();
+
   constructor(private titleService: Title, private modalService: NgbModal, private router: Router, 
               private cs : ClaimsService, private us : UnderwritingService, private ms : MaintenanceService,
               private ns : NotesService) { }
@@ -151,6 +210,10 @@ export class ClmClaimProcessingComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim Processing");
     this.retrieveClaimsList();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   retrieveClaimsList(){
@@ -260,7 +323,11 @@ export class ClmClaimProcessingComponent implements OnInit {
     this.loading = true;
     this.isType = false;
     this.isFromRisk = false;
-    this.us.getPolGenInfo(policyId, policyNo).subscribe((data: any)=>{
+
+    var sub$ = forkJoin(this.us.getPolGenInfo(policyId, policyNo),
+                        this.cs.getClaimsListing([{ key: 'policyNo', search: policyNo }])).pipe(map(([polGI, clmList]) => { return { polGI, clmList }; }));
+
+    /*this.us.getPolGenInfo(policyId, policyNo).subscribe((data: any)=>{
       this.policyDetails.policyId = data.policy.policyId;
       this.policyDetails.policyNo = data.policy.policyNo;
       this.tempPolNo = this.policyDetails.policyNo.split('-');
@@ -278,6 +345,43 @@ export class ClmClaimProcessingComponent implements OnInit {
       this.policyDetails.blockDesc = data.policy.project.blockDesc;
       this.loading = false;
       this.disableRisk = true;
+    },
+    (error)=>{
+      this.loading = false;
+    });*/
+
+    this.subscription = sub$.subscribe(data => {
+      var pol = data['polGI']['policy'];
+      var clmList = data['clmList']['claimsList'];
+
+      this.refPolNo = pol.policyNo;
+      this.policyDetails.policyId = pol.policyId;
+      this.policyDetails.policyNo = pol.policyNo;
+      this.tempPolNo = this.policyDetails.policyNo.split('-');
+      this.policyDetails.cessionId = pol.cessionId;
+      this.policyDetails.cessionDesc = pol.cessionDesc;
+      this.policyDetails.cedingId = pol.cedingId;
+      this.policyDetails.cedingName = pol.cedingName;
+      this.policyDetails.insuredDesc = pol.insuredDesc;
+      this.policyDetails.riskId = pol.project.riskId;
+      this.policyDetails.riskName = pol.project.riskName;
+      this.policyDetails.regionDesc = pol.project.regionDesc;
+      this.policyDetails.provinceDesc = pol.project.provinceDesc;
+      this.policyDetails.cityDesc = pol.project.cityDesc;
+      this.policyDetails.districtDesc = pol.project.districtDesc;
+      this.policyDetails.blockDesc = pol.project.blockDesc;
+      this.loading = false;
+      this.disableRisk = true;
+
+      if(clmList.length > 0) {
+        this.passDataLOVTbl.tableData = clmList.map(a => {
+                                                           a.createDate = this.ns.toDateTimeString(a.createDate);
+                                                           a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                                                           return a;
+                                                         });
+        this.clmProcessingMdl.openNoClose();
+        setTimeout(() => { this.LOVTbl.refreshTable(); });
+      }
     },
     (error)=>{
       this.loading = false;
@@ -413,4 +517,49 @@ export class ClmClaimProcessingComponent implements OnInit {
             this.riskLOV.checkCode(this.policyDetails.riskId, '#riskLOV', ev);
         }
     }
+
+    onRowClickLOVTbl(data){
+      if(data === null || (data !== null && Object.keys(data).length !== 0)){
+        this.selectedLOVTbl = data
+      } else {
+        this.selectedLOVTbl = null;
+      }
+    }
+
+    onClickViewLOVTbl(event) {
+      // this.clmProcessingMdl.closeModal();
+      this.modalService.dismissAll();
+      let line = this.selectedLOVTbl.policyNo.split('-')[0];
+      this.router.navigate(
+                      ['/claims-claim', {
+                          from: 'edit',
+                          claimId: this.selectedLOVTbl.claimId,
+                          claimNo: this.selectedLOVTbl.claimNo,
+                          line: line,
+                          exitLink: 'clm-claim-processing'
+                      }],
+                      { skipLocationChange: true }
+        );
+    }
+
+    searchQueryLOVTbl(searchParams){
+        this.searchParamsLOVTbl = searchParams;
+        this.searchParamsLOVTbl.push({ key: 'policyNo', search: this.refPolNo });
+        /*this.searchParamsLOVTbl.forEach(a => {
+          if(a.key == 'policyNo') {
+            a.search = this.refPolNo;
+          }
+        });*/
+        this.passDataLOVTbl.tableData = [];
+        // this.retrieveClaimsList();
+        console.log(this.searchParamsLOVTbl);
+        this.cs.getClaimsListing(this.searchParamsLOVTbl).subscribe(data => {
+          this.passDataLOVTbl.tableData = data['claimsList'].map(a => {
+                                                                        a.createDate = this.ns.toDateTimeString(a.createDate);
+                                                                        a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                                                                        return a;
+                                                                      });
+          this.LOVTbl.refreshTable();
+        });
+   }
 }

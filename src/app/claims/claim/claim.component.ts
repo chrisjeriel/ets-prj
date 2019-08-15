@@ -91,7 +91,8 @@ export class ClaimComponent implements OnInit, OnDestroy {
       if ($event.nextId === 'Exit' && this.isInquiry) {
         $event.preventDefault();
         this.router.navigateByUrl('/claims-inquiry');
-      } else if($event.nextId === 'Exit' && !this.isInquiry){
+      } else if($event.nextId === 'Exit' && !this.isInquiry && $('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length == 0){
+        $event.preventDefault();
         this.router.navigateByUrl('/clm-claim-processing');
       } else if($event.nextId === 'view-pol-info' && $('.ng-dirty').length == 0) {
         this.router.navigate(['/policy-information', { policyId: this.claimInfo.policyId, policyNo: this.claimInfo.policyNo, clmInfo: JSON.stringify(this.claimInfo) }], { skipLocationChange: true });
@@ -101,7 +102,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         this.prevTab = $event.activeId;
       }
 
-      if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0 ){
+      if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0){
         $event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -114,7 +115,12 @@ export class ClaimComponent implements OnInit, OnDestroy {
         subject.subscribe(a=>{
           if(a){
             $('.ng-dirty').removeClass('ng-dirty');
-            this.tabset.select($event.nextId)
+
+            if($event.nextId === 'Exit' && !this.isInquiry) {
+              this.router.navigateByUrl('/clm-claim-processing');
+            } else {
+              this.tabset.select($event.nextId);
+            }
           }
         })
   
@@ -168,7 +174,6 @@ export class ClaimComponent implements OnInit, OnDestroy {
                   .pipe(map(([appFn, app, user]) => { return { appFn, app, user };}));
 
     subs.subscribe(data => {
-      console.log(data);
       $('.globalLoading').css('display','none');
       var recAppFn = data['appFn']['approverFn'];
       this.approversList = data['app']['approverList'];

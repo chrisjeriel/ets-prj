@@ -17,6 +17,7 @@ export class ClaimDistributionComponent implements OnInit {
 
    @ViewChild('reserveDistTable') reserveDistTable: CustEditableNonDatatableComponent;
    @ViewChild('paymentDistTable') paymentDistTable: CustEditableNonDatatableComponent;
+   @ViewChild('cummResDistTable') cummResDistTable: CustEditableNonDatatableComponent;
    @ViewChild('treatyTable') treatyTable: CustEditableNonDatatableComponent;
    @ViewChild('poolTable') poolTable: CustEditableNonDatatableComponent;
    @ViewChild('confirmRedist') confirmRedist: ModalComponent;
@@ -84,6 +85,19 @@ export class ClaimDistributionComponent implements OnInit {
     infoFlag: true
   }
 
+  cummDistPassData:any = {
+    tHeader: ['Distribution No','Amount','Curr','Curr Rt','Distribution Status'],
+    dataTypes: ['sequence-6','currency','text','currencyRate','text'],
+    keys:['clmDistNo','reserveAmt','currencyCd','currencyRt','clmDistStatName'],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+    widths:[1,'auto',1,150,150],
+    tableData: [],
+    pageLength: 5,
+    pageID: 5,
+    paginateFlag: true,
+    infoFlag: true
+  }
+
    @Input() claimInfo = {
     claimId     : '',
     claimNo     : '',
@@ -102,6 +116,8 @@ export class ClaimDistributionComponent implements OnInit {
 
    resTableData:any[];
    payTableData:any[];
+   cummResTableData:any[];
+
 
    histTypeFilter:any = 'L';
 
@@ -131,14 +147,14 @@ export class ClaimDistributionComponent implements OnInit {
       this.filterTable(this.histTypeFilter);
     })
 
-    // this.clmService.getClaimDist(this.claimInfo.claimId,this.claimInfo.projId).subscribe(a=>{
-    //   this.payTableData = a['claimDist'];
-    //   this.payTableData.forEach(a=>{
-    //     a.bookingDate = a.bookingMth.toUpperCase()+'-'+a.bookingYear;
-    //     a.createDate = this.ns.toDateTimeString(a.createDate);
-    //     a.updateDate = this.ns.toDateTimeString(a.updateDate);
-    //   })
-    // })
+    this.clmService.getClaimReserveDist(this.claimInfo.claimId,this.claimInfo.projId).subscribe(a=>{
+      this.cummResTableData = a['list'];
+      this.cummResTableData.forEach(a=>{
+        // a.bookingDate = a.bookingMth.toUpperCase()+'-'+a.bookingYear;
+        a.createDate = this.ns.toDateTimeString(a.createDate);
+        a.updateDate = this.ns.toDateTimeString(a.updateDate);
+      })
+    })
   }
 
   clickRow(data){
@@ -147,6 +163,16 @@ export class ClaimDistributionComponent implements OnInit {
       this.treatyDistPassData.tableData = [];
     }else{
         this.treatyDistPassData.tableData = this.selected.claimDistTreaty;
+    }
+    this.treatyTable.refreshTable();
+  }
+
+  clickRowCumm(data){
+    this.selected = data;
+    if(data == null){
+      this.treatyDistPassData.tableData = [];
+    }else{
+      this.treatyDistPassData.tableData = this.selected.treatyList;
     }
     this.treatyTable.refreshTable();
   }
@@ -164,41 +190,73 @@ export class ClaimDistributionComponent implements OnInit {
   }
 
   getPoolDist(){
-    
-      this.clmService.getClaimDistPool(this.claimInfo.claimId,this.claimInfo.projId,this.selected.histNo,this.selected.clmDistNo).subscribe(a=>{
-        this.poolDistPassData.tableData = a['claimsDistCeding'];
-        this.poolSum.ret1 = this.poolDistPassData.tableData.reduce((a,b)=>a+parseFloat(b.ret1Amt),0);
-        this.poolSum.ret2 = this.poolDistPassData.tableData.reduce((a,b)=>a+parseFloat(b.ret2Amt),0);
-        this.poolSum.total = this.poolSum.ret1 + this.poolSum.ret2;
-        this.poolSum.ret1 = this.poolSum.ret1.toFixed(2);
-        this.poolSum.ret2 = this.poolSum.ret2.toFixed(2);
-        this.poolSum.total = this.poolSum.total.toFixed(2);
-        this.poolTable.refreshTable();
-      });
+      if(this.currTab =='cummReserve')
+        this.clmService.getClaimReserveDistPool(this.claimInfo.claimId,this.claimInfo.projId,this.selected.histCategory,this.selected.clmDistNo).subscribe(a=>{
+          this.poolDistPassData.tableData = a['claimsDistCeding'];
+          this.poolSum.ret1 = this.poolDistPassData.tableData.reduce((a,b)=>a+parseFloat(b.ret1Amt),0);
+          this.poolSum.ret2 = this.poolDistPassData.tableData.reduce((a,b)=>a+parseFloat(b.ret2Amt),0);
+          this.poolSum.total = this.poolSum.ret1 + this.poolSum.ret2;
+          this.poolSum.ret1 = this.poolSum.ret1.toFixed(2);
+          this.poolSum.ret2 = this.poolSum.ret2.toFixed(2);
+          this.poolSum.total = this.poolSum.total.toFixed(2);
+          this.poolTable.refreshTable();
+        });
+      else
+        this.clmService.getClaimDistPool(this.claimInfo.claimId,this.claimInfo.projId,this.selected.histNo,this.selected.clmDistNo).subscribe(a=>{
+          this.poolDistPassData.tableData = a['claimsDistCeding'];
+          this.poolSum.ret1 = this.poolDistPassData.tableData.reduce((a,b)=>a+parseFloat(b.ret1Amt),0);
+          this.poolSum.ret2 = this.poolDistPassData.tableData.reduce((a,b)=>a+parseFloat(b.ret2Amt),0);
+          this.poolSum.total = this.poolSum.ret1 + this.poolSum.ret2;
+          this.poolSum.ret1 = this.poolSum.ret1.toFixed(2);
+          this.poolSum.ret2 = this.poolSum.ret2.toFixed(2);
+          this.poolSum.total = this.poolSum.total.toFixed(2);
+          this.poolTable.refreshTable();
+        });
   }
 
   redistribute(){
    this.confirmRedist.closeModal();
-     
-    let params:any = {
-         claimId:this.claimInfo.claimId,
-         projId:this.claimInfo.projId,
-         histNo:this.selected.histNo,
-         clmDistNo: this.selected.clmDistNo,
-         createUser:this.ns.getCurrentUser(),
-         createDate:this.ns.toDateTimeString(0),
-         updateUser:this.ns.getCurrentUser(),
-         updateDate:this.ns.toDateTimeString(0),
-     }
-    this.clmService.redistributeClaimDist(params).subscribe(a=>{
-      if(a['returnCode']==-1){
-        this.diagIcon = 'nice';
-        this.getClmHist();
-      }else{
-        this.diagIcon = 'error'
-      }
-      this.successDiag.open()
-    })
+    if(this.currTab =='cummReserve'){
+       let params:any = {
+           claimId:this.claimInfo.claimId,
+           projId:this.claimInfo.projId,
+           histCategory:this.histTypeFilter,
+           createUser:this.ns.getCurrentUser(),
+           createDate:this.ns.toDateTimeString(0),
+           updateUser:this.ns.getCurrentUser(),
+           updateDate:this.ns.toDateTimeString(0),
+       }
+      this.clmService.redistributeClaimReserveDist(params).subscribe(a=>{
+        if(a['returnCode']==-1){
+          this.diagIcon = 'nice';
+          this.getClmHist();
+        }else{
+          this.diagIcon = 'error'
+        }
+        this.successDiag.open()
+      })
+    }else{
+      let params:any = {
+           claimId:this.claimInfo.claimId,
+           projId:this.claimInfo.projId,
+           histNo:this.selected.histNo,
+           clmDistNo: this.selected.clmDistNo,
+           createUser:this.ns.getCurrentUser(),
+           createDate:this.ns.toDateTimeString(0),
+           updateUser:this.ns.getCurrentUser(),
+           updateDate:this.ns.toDateTimeString(0),
+       }
+      this.clmService.redistributeClaimDist(params).subscribe(a=>{
+        if(a['returnCode']==-1){
+          this.diagIcon = 'nice';
+          this.getClmHist();
+        }else{
+          this.diagIcon = 'error'
+        }
+        this.successDiag.open()
+      })
+    }
+
   }
 
   confirmRedsitribute(){
@@ -216,28 +274,36 @@ export class ClaimDistributionComponent implements OnInit {
   filterTable(histCd){
     console.log(histCd)
     console.log(this.resTableData)
+    this.selected = null;
     this.histTypeFilter = histCd;
     if(this.currTab == 'reserve'){
-        this.reserveDistPassData.tableData = this.resTableData.filter(a=>a.histCategory == histCd);
-        if(this.reserveDistPassData.tableData.length > 0){
-          this.reserveDistTable.onRowClick(null, this.reserveDistPassData.tableData[0])
-        }else{
-          this.treatyDistPassData.tableData = [];
-        }
-  
-        this.treatyTable.refreshTable();
-        this.reserveDistTable.refreshTable();
-    }else{
-        this.paymentDistPassData.tableData = this.payTableData.filter(a=>a.histCategory == histCd);
-        if(this.paymentDistPassData.tableData.length > 0){
-          this.paymentDistTable.onRowClick(null, this.paymentDistPassData.tableData[0])
-        }else{
-          this.treatyDistPassData.tableData = [];
-        }
-  
-        this.treatyTable.refreshTable();
-        this.paymentDistTable.refreshTable();
+      this.reserveDistPassData.tableData = this.resTableData.filter(a=>a.histCategory == histCd);
+      if(this.reserveDistPassData.tableData.length > 0){
+        this.reserveDistTable.onRowClick(null, this.reserveDistPassData.tableData[0])
+      }else{
+        this.treatyDistPassData.tableData = [];
+      }
+      this.reserveDistTable.refreshTable();
     }
+    else if(this.currTab == 'payment'){
+      this.paymentDistPassData.tableData = this.payTableData.filter(a=>a.histCategory == histCd);
+      if(this.paymentDistPassData.tableData.length > 0){
+        this.paymentDistTable.onRowClick(null, this.paymentDistPassData.tableData[0])
+      }else{
+        this.treatyDistPassData.tableData = [];
+      }
+      this.paymentDistTable.refreshTable();
+    }else{
+      this.cummDistPassData.tableData = this.cummResTableData.filter(a=>a.histCategory == histCd);
+      if(this.cummDistPassData.tableData.length > 0){
+        this.cummResDistTable.onRowClick(null, this.cummDistPassData.tableData[0])
+      }else{
+        this.treatyDistPassData.tableData = [];
+      }
+      this.cummResDistTable.refreshTable();
+    }
+
+    this.treatyTable.refreshTable();
   }
 
 }
