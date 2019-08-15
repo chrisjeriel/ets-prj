@@ -45,8 +45,8 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   passDataHistory: any = {
     tableData     : [],
-    tHeader       : ['Hist. No.', 'Hist. Date','Booking Mth-Yr','Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Curr Rt', 'Amount', 'Payment Amount', 'Remarks'],
-    dataTypes     : ['sequence-3','date','select', 'req-select', 'req-select', 'checkbox', 'text', 'percent', 'currency', 'currency', 'text-editor'],
+    tHeader       : ['Hist. No.', 'Hist. Date','Booking Mth-Yr','Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Curr Rt', 'Amount', 'Ref. No','Ref. Date', 'Payment Amount', 'Remarks'],
+    dataTypes     : ['sequence-3','date','select', 'req-select', 'req-select', 'checkbox', 'text', 'percent', 'currency', 'text', 'text', 'currency', 'text-editor'],
     nData: {
       newRec       : 1,
       claimId      : '',
@@ -68,15 +68,15 @@ export class ClmClaimHistoryComponent implements OnInit {
       {selector   : 'histTypeDesc', prev : [], vals: []},
       {selector   : 'bookingMthYr', prev : [], vals: []},
     ],
-    keys          : ['histNo','histDate','bookingMthYr','histCatDesc','histTypeDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','remarks'],
-    uneditable    : [true,true,false,false,false,false,true,true,false,true,false],
+    keys          : ['histNo','histDate','bookingMthYr','histCatDesc','histTypeDesc','exGratia','currencyCd','currencyRt','reserveAmt','refNo','refDate','paytAmt','remarks'],
+    uneditable    : [true,true,false,false,false,false,true,true,false,true,true,true,false],
     uneditableKeys: ['exGratia'], 
     pageLength    : 10,
     paginateFlag  : true,
     infoFlag      : true,
     addFlag       : true,
     disableAdd    : false,
-    widths        : [1,1,140,145,200,1,1,140,120,120,'auto'],
+    widths        : [1,1,140,145,200,1,1,140,120,1,1,120,200],
     pageID        : 'clm-history',
   };
 
