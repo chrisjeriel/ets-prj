@@ -665,6 +665,7 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   limitHistType(){
     var ths = this;
+    var trigWarn1 = false;
     var catArr  = this.passDataHistory.tableData.filter(e => e.newRec != 1).map(e => e.histCategory);
     var adjAmt =  Number(this.passDataHistory.tableData.filter(e => e.histCategory == 'L' && e.histType == 1).map(e => e.reserveAmt).toString()) * (Number(this.adjRate)/100);
     var totOthExpRes = this.arrSum(this.passDataHistory.tableData.filter(e => e.newRec != 1 && e.histCategory == 'O' && (e.histType != 4 || e.histType != 5)).map(e => e.reserveAmt));
@@ -674,8 +675,6 @@ export class ClmClaimHistoryComponent implements OnInit {
 
     this.passDataHistory.tableData.forEach((e,i) => {
       if(e.newRec == 1){
-        e.bookingMthYr = this.passDataHistory.opts[2].prev[0];
-
         if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())){
           this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code != 1).map(e => e.code);
           this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code != 1).map(e => e.description);
@@ -702,12 +701,14 @@ export class ClmClaimHistoryComponent implements OnInit {
                 this.showWarnMsg();
             }
           }
-        }else if(e.histType == 3 || e.histType == 6){
-          if((e.histCategory == 'L' && e.reserveAmt != 0 && this.clmHistoryData.lossPdAmt == 0) || 
-             (e.histCategory == 'A' && e.reserveAmt != 0 && totAdjExpPd == 0) || 
-             (e.histCategory == 'O' && e.reserveAmt != 0 && totOthExpPd == 0)){
-                this.warnMsg = 'Request for payment is not yet fully paid.';
-                this.showWarnMsg();
+        }else if(e.histType == 6){
+          if(this.passDataHistory.tableData.filter(e => e.newRec != 1).some(e => e.histType == 4 || e.histType == 5)){
+            if((e.histCategory == 'L' && e.reserveAmt != 0 && this.clmHistoryData.lossPdAmt == 0) || 
+               (e.histCategory == 'A' && e.reserveAmt != 0 && totAdjExpPd == 0) || 
+               (e.histCategory == 'O' && e.reserveAmt != 0 && totOthExpPd == 0)){
+               this.warnMsg = 'Request for payment is not yet fully paid.';
+               this.showWarnMsg();
+            }
           }
         }
 
@@ -729,21 +730,30 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.passDataHistory.tableData.forEach(e => {(e.newRec == 1)?e.exGratia='Y':'';});
     }
 
-    setTimeout(() => {   
+    setTimeout(() => {
       $('#histId').find('tbody').children().each(function(indx){
         var cb = $(this).find('input[type=checkbox]');
         var histSelects = $(this).find('select');
         var histCat = $(histSelects[1]);  
         var histType = $(histSelects[2]);
+        var resAmt = $($(this).find('input.number')[0]).val();
+
         (ths.passDataHistory.tableData.some(e => e.exGratia == 'Y' && e.newRec != 1))?cb.prop('disabled',true):'';
         if(histCat.val() == '' || histCat.val() == null || histCat.val() == undefined){
           histType.addClass('unclickable');
         }else{
           histType.removeClass('unclickable');
         }
+
+        // histType.change(e => {
+        //   if(histType.val() == 6 && resAmt != 0 && trigWarn1){
+        //     ths.modalService.dismissAll();
+        //     ths.warnMsg = 'Request for payment is not yet fully paid.';
+        //     ths.showWarnMsg();
+        //   }
+        // });     
       });
     },0);
-
   }
 
   compResPayt(){
@@ -993,6 +1003,9 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   onClickAddHistTbl(){
     this.passDataHistory.disableAdd = true;
+    this.passDataHistory.tableData.forEach(e => {
+      (e.newRec == 1)?e.bookingMthYr = this.passDataHistory.opts[2].prev[0]:'';
+    });
   }
 
   showWarnMsg(){
