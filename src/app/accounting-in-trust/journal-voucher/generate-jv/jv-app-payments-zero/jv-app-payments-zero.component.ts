@@ -221,7 +221,8 @@ export class JvAppPaymentsZeroComponent implements OnInit {
         deleted.push(this.passData.tableData[i]);
       }
     }
-
+    this.jvDetails.tranId = this.jvDetail.tranId;
+    this.jvDetails.tranType = this.jvDetail.tranType;
     this.jvDetails.deleteZeroBal = deleted;
     this.jvDetails.saveZeroBal = edited;
   }

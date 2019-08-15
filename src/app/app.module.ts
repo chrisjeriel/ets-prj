@@ -441,6 +441,7 @@ import { DropdownComponent } from './_components/dropdown/dropdown.component';
 import { MtnCedingCompanyTreatyComponent } from './maintenance/mtn-ceding-company-treaty/mtn-ceding-company-treaty.component';
 import { MtnBankComponent } from './maintenance/mtn-bank/mtn-bank.component';
 import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration/mtn-acct-int-duration.component';
+import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
 
 @NgModule({
     imports: [
@@ -888,6 +889,7 @@ import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration
         MtnCedingCompanyTreatyComponent,
         MtnBankComponent,
         MtnAcctIntDurationComponent,
+        WfFormCommonComponent,
     ],
 
   	providers: [

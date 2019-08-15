@@ -20,7 +20,7 @@
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
                 <legend class="scheduler-border">Negative Treaty Balance</legend>
                     <div style="position: relative;margin-top: 10px" >
-                        <app-cust-editable-non-datatable #quarterTable [passData]="passData"(newClick)="onrowClick($event)" ></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable #quarterTable [passData]="passData"(newClick)="onrowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event);calculateTotal($event)"></app-cust-editable-non-datatable>
                     </div>
             </fieldset>
         </div>
@@ -31,10 +31,9 @@
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
             <legend class="scheduler-border">Claims for Offset</legend>
                 <div style="position: relative;margin-top: 10px" >
-                    <app-cust-editable-non-datatable #trytytrans [passData]="claimsOffset" (clickLOV)="openLOV($event)"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #trytytrans [passData]="claimsOffset" (clickLOV)="openLOV($event)" (tableDataChange)="claimsOffset.tableData = $event; quarterTable.indvSelect.clmOffset=$event;"></app-cust-editable-non-datatable>
                 </div>
             </fieldset>
-            
         </div>
     </div>
     <div class="form-row" style="margin-top: 13px !important;">
@@ -50,3 +49,7 @@
 </div>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-lov [passData]="passLov" (selectedData)="setClaimOffset($event)">
+<app-quarter-ending-lov id="quarterEnd" (selectedData)="setQuarter($event)"></app-quarter-ending-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveNegativeTreatyBal()"></app-confirm-save>
+<app-cancel-button (onYes)="saveNegativeTreatyBal('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

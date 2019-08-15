@@ -76,7 +76,7 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="7">
-                                <app-jv-offsetting-against-losses></app-jv-offsetting-against-losses>
+                                <app-jv-offsetting-against-losses [jvDetail]="jvDetails"></app-jv-offsetting-against-losses>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="5">
@@ -84,7 +84,7 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="6">
-                                <app-jv-overdue-accounts-against-treaty></app-jv-overdue-accounts-against-treaty>
+                                <app-jv-overdue-accounts-against-treaty [jvDetail]="jvDetails"></app-jv-overdue-accounts-against-treaty>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="2">

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountingService } from '@app/_services';
+import { Component, OnInit, Input } from '@angular/core';
+import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccJvInPolBalAgainstLoss, AgainstLoss } from '@app/_models';
@@ -10,6 +10,8 @@ import { AccJvInPolBalAgainstLoss, AgainstLoss } from '@app/_models';
   styleUrls: ['./jv-offsetting-against-losses.component.css']
 })
 export class JvOffsettingAgainstLossesComponent implements OnInit {
+
+  @Input() jvDetail:any;
 
   passData: any = {
     tableData: [], //this.accountingService.getAccJvInPolBalAgainstLoss(),
@@ -49,9 +51,23 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     pageLength: 5,
   }
 
-  constructor(private accountingService: AccountingService,private titleService: Title) { }
+  jvDetails: any = {
+    cedingName: '',
+  }
+
+
+  constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
   }
 
+  showCedingCompanyLOV() {
+    $('#cedingCompany #modalBtn').trigger('click');
+  }
+
+  setCedingcompany(data){
+    this.jvDetails.cedingName = data.cedingName;
+    this.jvDetails.ceding = data.cedingId;
+    this.ns.lovLoader(data.ev, 0);
+  }
 }
