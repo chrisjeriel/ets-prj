@@ -225,7 +225,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].charges  = data.data[i].balChargesDue;
       this.passData.tableData[this.passData.tableData.length - 1].netDue  = data.data[i].balPremDue - data.data[i].balRiCommVat - data.data[i].balRiComm + data.data[i].balChargesDue;
       this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = data.data[i].totalPayments;
-      this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = this.passData.tableData[this.passData.tableData.length - 1].netDue - data.data[i].totalPayments;
+      this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = null; /*this.passData.tableData[this.passData.tableData.length - 1].netDue - data.data[i].totalPayments*/;
       overdue =  new Date(data.data[i].dueDate).getDate() - new Date(this.ns.toDateTimeString(this.jvDetail.jvDate)).getDate();
       this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = (data.data[i].balPremDue)*(this.interestRate)*(overdue/365);
       this.passData.tableData[this.passData.tableData.length - 1].localAmt = this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt * 1;
