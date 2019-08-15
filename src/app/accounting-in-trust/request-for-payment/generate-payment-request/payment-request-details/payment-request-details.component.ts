@@ -701,7 +701,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   chckTrtyBal(){
     this.treatyBalanceData.tableData.forEach(e => {
-      if(e.currAmt != '' && e.currAmt != null && e.currAmt <= 0){
+      if(e.currAmt <= 0){
         e.currAmt = '';
         this.warnMsg = 'Please enter amount greater than 0.';
         this.warnMdl.openNoClose();
