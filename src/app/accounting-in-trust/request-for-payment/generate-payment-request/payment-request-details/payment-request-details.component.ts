@@ -516,6 +516,18 @@ export class PaymentRequestDetailsComponent implements OnInit {
   //   this.quarEndLov.openNoClose();
   // }
 
+  reCompInw(){
+    this.inwardPolBalData.tableData.forEach(e => {
+      if(e.newRec == 1 && e.returnAmt != 0){
+        console.log(this.inwardPolBalData.tableData);
+        e.premAmt    = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
+        e.riComm     = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
+        e.riCommVat  = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
+        e.charges    = Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
+      }
+    });
+  }
+
   setData(data, from){
     console.log(this.limitContent);
     if(from.toUpperCase() == 'LOVCEDTBL'){
@@ -541,9 +553,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       });
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '')
                                             .map(e => { 
-                                                e.edited = true; e.checked = false;e.createDate = ''; e.createUser = '';e.premAmt = e.balPremDue;e.riComm  = e.balRiComm;
-                                                e.riCommVat = e.balRiCommVat; e.charges = e.balChargesDue; 
-                                                e.returnAmt = (e.newRec==1)?(Number(e.prevPaytAmt) - Number(e.balChargesDue)):e.returnAmt;; 
+                                                e.edited = true; e.checked = false;e.createDate = ''; e.createUser = '';
+                                                e.premAmt   = e.balPremDue;
+                                                e.riComm    = e.balRiComm;
+                                                e.riCommVat = e.balRiCommVat; 
+                                                e.charges   = e.balChargesDue; 
+                                                e.returnAmt = (e.newRec==1)?0:e.returnAmt;; 
                                                 return e;
                                             });
       this.inwardTbl.refreshTable();
