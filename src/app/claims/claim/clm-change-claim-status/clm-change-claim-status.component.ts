@@ -603,7 +603,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   process(){
     console.log(this.batchOption);
-    switch(this.batchOption.statusCode){
+    /*switch(this.batchOption.statusCode){
       case 'IP':
         this.dialogIcon = 'info';
         this.dialogMessage = 'Are you sure you want to re-open this claim?';
@@ -638,7 +638,11 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         this.dialogIcon = 'info';
         this.dialogMessage = 'Are you sure you want to '+ this.batchOption.description + ' this claim?';
         this.processModal.openNoClose();
-    }
+    }*/
+
+    this.dialogIcon = 'info';
+    this.dialogMessage = 'Are you sure you want to change the status of the claim?';
+    this.processModal.openNoClose();
   }
 
   updateClaimStatus(){

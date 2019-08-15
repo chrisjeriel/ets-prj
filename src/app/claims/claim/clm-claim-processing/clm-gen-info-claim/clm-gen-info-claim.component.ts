@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy } 
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { ClaimsService, NotesService, UnderwritingService } from '@app/_services';
+import { ClaimsService, NotesService, UnderwritingService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { MtnLossCdComponent } from '@app/maintenance/mtn-loss-cd/mtn-loss-cd.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
@@ -220,7 +220,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
 
   constructor(private actRoute: ActivatedRoute, private modalService: NgbModal, private titleService: Title,
-    private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService, private router: Router) { }
+    private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService, private router: Router, private ms: MaintenanceService) { }
 
   ngOnInit() {
     this.maxDate = this.ns.toDateTimeString(0).split('T')[0];
@@ -908,6 +908,13 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.claimData.lapsePdTag = lapseFD != null && lapseTD != null && lossD >= lapseFD && lossD <= lapseTD ? 'Y' : 'N';
       this.claimData.polTermTag = lossD >= inceptD && lossD <= expiryD ? 'Y' : 'N';
 
+      this.ms.getMtnLossCodeLov('P', 'Basic Period').subscribe(data => {
+        if(data['lossCdList'].length > 0) {
+          this.claimData.lossPeriod = data['lossCdList'][0].lossCd;  
+          this.claimData.lossPdAbbr = data['lossCdList'][0].lossAbbr;
+        }
+      });
+
       if(lapseFD != null && lapseTD != null && lossD >= lapseFD && lossD <= lapseTD) {
         this.mdlType = 'warn5';
         $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
@@ -916,11 +923,12 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
         if(maintFD != null && maintTD != null && lossD >= maintFD && lossD <= maintTD) {
           this.mdlType = 'warn7';
-
-          //currently hardcoded -- replace with webservice
-          this.claimData.lossPeriod = 3;
-          var el = <HTMLInputElement> document.getElementById('clmGILossPeriod');
-          el.dispatchEvent(new Event('change'));
+          this.ms.getMtnLossCodeLov('P', 'Maintenance').subscribe(data => {
+            if(data['lossCdList'].length > 0) {
+              this.claimData.lossPeriod = data['lossCdList'][0].lossCd;  
+              this.claimData.lossPdAbbr = data['lossCdList'][0].lossAbbr;
+            }
+          });
         } else {
           this.mdlType = 'warn6';
         }
