@@ -36,7 +36,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         addFlag: true,
         genericBtn: 'Delete',
         nData: {
-          paytMode: '',
+          paytMode: 'CK',
           currCd: 'PHP',
           currRate: 1,
           paytAmt: 0,
@@ -45,7 +45,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           checkNo: '',
           checkDate: '',
           checkClass: '',
-          uneditable: ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass']
+          //uneditable: ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass']
         },
         disableGeneric: true,
         opts:[
@@ -222,7 +222,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   newAr(){
     this.isAdd = true;
     this.disableTab.emit(true);
-    this.retrieveMtnAcitDCBNo();
+    this.retrieveMtnAcitDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
     this.setDefaultValues();
     //this.retrieveMtnDCBUser();
     this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
