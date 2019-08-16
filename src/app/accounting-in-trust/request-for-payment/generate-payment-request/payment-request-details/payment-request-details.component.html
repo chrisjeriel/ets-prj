@@ -98,7 +98,8 @@
                     <div class="d-flex p-0">
                       <div class="col-sm-2"></div>
                       <div class="col-sm">
-                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr();chckTrtyBal();"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr();"
+                        (clickLOV)="showLOV($event,'lovTrtyTbl')"></app-cust-editable-non-datatable>
                       </div>
                       <div class="col-sm-2"></div>
                     </div>
@@ -171,6 +172,8 @@
 
 <app-mtn-clm-history-lov #mtnClmHistLov (selectedData)="setData($event,'lovCedTbl')" [limitClmHistTbl]="limitClmHistTbl" [limitData]="limitData" [lovCheckBox]="true"></app-mtn-clm-history-lov>
 
+<app-quarter-ending-lov #trtyLov (selectedData)="setData($event,'lovTrtyTbl')"></app-quarter-ending-lov>
+
 <app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov>
 <app-lov #invtLov    [passData]="passData" (selectedData)="setData($event,'lovInvtTbl')" [limitContent]="limitContent"></app-lov>
 
@@ -204,7 +207,7 @@
         </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="warnMdl.closeModal()"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
     </div>
 </app-modal>
 

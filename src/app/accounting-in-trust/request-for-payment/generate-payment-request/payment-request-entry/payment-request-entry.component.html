@@ -68,10 +68,10 @@
    		                    </div>
    	                    	<div class="input-group col-sm-4" style="padding: 0px;">
    		                    </div>
-   	                    	<div class="input-group col-sm-4 labels" style="padding: 0px;">
+   	                    	<!-- <div class="input-group col-sm-4 labels" style="padding: 0px;">
    	                    		<label class="form-control-sm col-sm-11 text-right">For Board Approval</label>
    		                        <input type="checkbox" class="col-sm-1 warn" style="margin-top: 6px;" checked>
-   		                    </div>
+   		                    </div> -->
    		                </div>
    		                <div class="input-group" style="margin-bottom: -5px !important;">
    		                   	<label class="form-control-sm col-sm-1 labels">Prepared By</label>
@@ -84,7 +84,7 @@
    		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn cap-input" (change)="checkCode($event,'req-user')" [(ngModel)]="saveAcitPaytReq.requestedBy" maxlength="10" appRequired>
    		                    	<div class="magni-icon" style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('req-user')"><i class="fa fa-search"></i></a></div>
    		                    </div>
-   	                    	<label class="form-control-sm col-sm-1 labels">Approved By</label>
+   	                    	<label class="form-control-sm col-sm-1 labels">Okayed By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
    		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.approvedBy" readonly>
    		                    </div>
@@ -115,7 +115,7 @@
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
    		                    	<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-12" readonly>
    		                    </div> -->
-                          <label class="form-control-sm col-sm-1 no-margin">Date Approved</label>
+                          <label class="form-control-sm col-sm-1 no-margin" style="margin-top: -6px !important;">Date of Disbursement</label>
                           <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
                             <datepicker type="datetime" [showIcon]="false" [disabled]="true" [value]="saveAcitPaytReq.approvedDate"></datepicker>
                           </div>
@@ -130,7 +130,7 @@
 	            				<button type="button" class="cust-btn" [disabled]="(saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED')" (click)="onClickSave()">Save</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled">Print</button>
-                      <button type="button" class="cust-btn" [disabled]="(saveAcitPaytReq.reqStatusDesc.toUpperCase() != 'FOR APPROVAL')" (click)="showConfirmMdl('approve')">Approve</button>
+                      <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="(saveAcitPaytReq.reqStatusDesc.toUpperCase() != 'FOR APPROVAL')" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
 	            			</div>
 	            		</div>
 	            	</div>
@@ -159,22 +159,22 @@
 </div>
 
 <app-modal class="d-none" #confirmMdl >
-    <div header style="min-width:460px !important;">Confirmation</div>
+    <div header>Confirmation</div>
     <div body class="container-flex text-center">
       <div *ngIf="fromBtn == 'approve'">
         <div class="input-group">
           <p class="col-sm-12">Are you sure you want to approve this Payment Request?</p>
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-3 labels">Approved By</label>
+          <label class="form-control-sm col-sm-4 labels">Okayed By</label>
           <div class="input-group col-sm" style="padding: 0px; margin-right: 36px !important;">
             <input type="text" class="form-control form-control-sm cust-sm col-sm-12 cap-input warn" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedBy" appRequired>
             <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('app-user')"><i class="fa fa-search"></i></a></div>
           </div>
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-3 no-margin">Date Approved</label>
-          <div class="col-sm-8 dp-cont" style="margin-left: 0px !important">
+          <label class="form-control-sm col-sm-4 no-margin">Date of Disbursement</label>
+          <div class="col-sm-7 dp-cont" style="margin-left: 0px !important">
             <datepicker type="datetime" [required]="true" [(value)]="saveAcitPaytReq.approvedDate"></datepicker>
           </div>
         </div>

@@ -691,10 +691,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitSoaDtlPrq'){ //temporary
-      this.passTable.tHeader    = ['Policy No.', 'Inst No.', 'Due Date', 'Balance', 'Payment', 'Premium', 'RI Comm', 'Charges'];
-      this.passTable.widths     = [120,1,110,120,120,120,120,120];
-      this.passTable.dataTypes  = ['text', 'sequence-2', 'date', 'currency', 'currency', 'currency', 'currency', 'currency'];
-      this.passTable.keys       = ['policyNo', 'instNo', 'dueDate', 'netDue', 'prevPaytAmt', 'balPremDue', 'balRiComm', 'balChargesDue'];
+      this.passTable.tHeader    = ['Policy No.', 'Inst No.', 'Co Ref. No.', 'Due Date', 'Cumulative Payment', 'Balance'];
+      this.passTable.widths     = [120,1,1,110,110,120];
+      this.passTable.dataTypes  = ['text', 'sequence-2','text','date', 'currency', 'currency'];
+      this.passTable.keys       = ['policyNo', 'instNo', 'coRefNo', 'dueDate', 'prevPaytAmt','balChargesDue'];
       this.passTable.checkFlag  = true;
       this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo)
       .subscribe((a:any)=>{
