@@ -51,8 +51,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         opts:[
           {
             selector: 'paytMode',
-            vals: ['BT', 'CA', 'CK', 'CR'],
-            prev: ['Bank Transfer', 'Cash', 'Check', 'Credit Card']
+            vals: ['BT', 'CA', 'CK'],
+            prev: ['Bank Transfer', 'Cash', 'Check']
           },
           {
             selector: 'currCd',
