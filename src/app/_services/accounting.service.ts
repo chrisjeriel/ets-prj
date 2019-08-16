@@ -1709,7 +1709,7 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFeeMainGnrt(prdAsOf?, year?, servFeeAmt?, currCd?, currRt?){
+    getAcctPrqServFee(prdAsOf?, year?, servFeeAmt?, currCd?, currRt?){
 		const params = new HttpParams()
 			.set('prdAsOf', (prdAsOf == null || prdAsOf == undefined ? '' : prdAsOf))
 			.set('year', (year == null || year == undefined ? '' : year))
@@ -1717,7 +1717,7 @@ export class AccountingService {
 			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
 			.set('currRt', (currRt == null || currRt == undefined ? '' : currRt));
 			
-		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitServFeeMainGnrt',{params});
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcctPrqServFee',{params});
 	}
 
 	getAcitArClmRecover(tranId, billId){
@@ -1957,4 +1957,12 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvDefName",{params});
 	}
 
+	saveAcctPrqServFee(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcctPrqServFee',JSON.stringify(params),header);
+	}
 }

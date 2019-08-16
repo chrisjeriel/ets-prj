@@ -45,6 +45,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('canOth') canOth             : CancelButtonComponent;
   @ViewChild('conOth') conOth             : ConfirmSaveComponent;
   @ViewChild('sucOth') sucOth             : SucessDialogComponent;
+  @ViewChild('canServFee') canServFee     : CancelButtonComponent;
+  @ViewChild('conServFee') conServFee     : ConfirmSaveComponent;
+  @ViewChild('sucServFee') sucServFee     : SucessDialogComponent;
 
   @ViewChild('servFeeMainTbl') servFeeMainTbl: CustEditableNonDatatableComponent;
   @ViewChild('servFeeSubTbl') servFeeSubTbl: CustEditableNonDatatableComponent;
@@ -218,6 +221,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   cancelFlagTrty  : boolean;
   cancelFlagInvt  : boolean;
   cancelFlagOth   : boolean;
+  cancelFlagServFee: boolean;
   dialogIcon      : string;
   dialogMessage   : string;
   warnMsg         : string = '';
@@ -586,7 +590,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }else if(this.requestData.tranTypeCd == 4){
         this.onClickSaveInw();
       }else if(this.requestData.tranTypeCd == 5){
-        //service fee
+        this.onClickSaveServFee();
       }else if(this.requestData.tranTypeCd == 6){
         this.onClickSaveTrty();
       }else if(this.requestData.tranTypeCd == 7){
@@ -1112,7 +1116,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }else if(this.requestData.tranTypeCd == 4){
       this.canInw.clickCancel();
     }else if(this.requestData.tranTypeCd == 5){
-      //service fee
+      this.canServFee.clickCancel();
     }else if(this.requestData.tranTypeCd == 6){
       this.canTrty.clickCancel();
     }else if(this.requestData.tranTypeCd == 7){
@@ -1158,16 +1162,55 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
   }
 
-  getAcctPrqServFeeMainGnrt() {
+  getAcctPrqServFee() {
     this.servFeeMainTbl.overlayLoader = true;
     this.servFeeSubTbl.overlayLoader = true;
-    this.acctService.getAcctPrqServFeeMainGnrt(this.periodAsOfParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+    this.acctService.getAcctPrqServFee(this.periodAsOfParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
       this.serviceFeeMainData.tableData = data['mainDistList'];
       this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
       this.servFeeMainTbl.refreshTable();
       this.servFeeSubTbl.refreshTable();
     });
+  }
+
+  onSaveServFee() {
+    var param = {
+      reqId: this.requestData.reqId,
+      prdAsOf: this.periodAsOfParam,
+      year: this.yearParam,
+      servFeeAmt: this.requestData.reqAmt,
+      currCd: this.requestData.currCd,
+      currRt: this.requestData.currRate,
+      createUser: this.ns.getCurrentUser(),
+      createDate: this.ns.toDateTimeString(0),
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0)
+    }
+
+    this.acctService.saveAcctPrqServFee(param).subscribe(data => {
+      console.log(data);
+      if(data['returnCode'] == -1) {
+        this.dialogIcon = "success";
+        this.sucServFee.open();
+      } else {
+        this.dialogIcon = "error";
+        this.sucServFee.open();
+      }
+    });
+  }
+
+  onClickSaveServFee(cancelFlag?) {
+    this.cancelFlagServFee = cancelFlag !== undefined;
+    this.conServFee.confirmModal();
+  }
+
+  checkCancelServFee(){
+    if(this.cancelFlagServFee){
+      this.canServFee.onNo();
+    }else{
+      this.sucServFee.modal.closeModal();
+    }
   }
 
 }

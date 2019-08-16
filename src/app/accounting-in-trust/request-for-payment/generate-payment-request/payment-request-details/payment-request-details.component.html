@@ -75,7 +75,7 @@
                               </select>
                             </div>
                           </div>
-                          <button class="cust-btn" (click)="getAcctPrqServFeeMainGnrt()" [disabled]="(gnrtType == 'periodAsOf' && (periodAsOfParam == '' || periodAsOfParam == null)) || (gnrtType == 'year' && yearParam == null)" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; margin-left: 5px; z-index: 1 !important;">Distribute</button>
+                          <button class="cust-btn" (click)="getAcctPrqServFee()" [disabled]="(gnrtType == 'periodAsOf' && (periodAsOfParam == '' || periodAsOfParam == null)) || (gnrtType == 'year' && yearParam == null)" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; margin-left: 5px; z-index: 1 !important;">Distribute</button>
                           <div class="col-sm-2"></div>
                         </div>
                     </div>
@@ -194,6 +194,10 @@
 <app-confirm-save  #conOth (onYes)="onSaveOth()"></app-confirm-save>
 <app-sucess-dialog #sucOth [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
 <app-cancel-button #canOth (onYes)="onClickSaveOth('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conServFee (onYes)="onSaveServFee()"></app-confirm-save>
+<app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
+<app-cancel-button #canServFee (onYes)="onClickSaveServFee('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 
 <app-modal class="d-none" id="warnMdl" #warnMdl>
