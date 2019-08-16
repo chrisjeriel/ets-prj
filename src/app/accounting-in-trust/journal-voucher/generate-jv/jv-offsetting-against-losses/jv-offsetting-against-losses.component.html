@@ -20,7 +20,7 @@
 			<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
 				<legend class="scheduler-border">Claims Losses</legend>
 			 	 <div class="col-sm-12" style="margin-top: 15px" >
-			 	 	 <app-cust-editable-non-datatable [passData]="AgainstLossData"></app-cust-editable-non-datatable>
+			 	 	 <app-cust-editable-non-datatable #clmTable [passData]="passData" (newClick)="onrowClick($event)" (tableDataChange)="passData.tableData = $event" (clickLOV)="openLOV($event)"></app-cust-editable-non-datatable>
 			 	 </div>
 			</fieldset>
 		</div>
@@ -31,7 +31,7 @@
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Inward Policy Balances</legend>
 			 	 <div class="col-sm-12" style="margin-top: 15px" >
-			 	 	 <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+			 	 	 <app-cust-editable-non-datatable #inwTable [passData]="InwPolBal" (tableDataChange)="InwPolBal.tableData = $event;clmTable.indvSelect.inwPolBal=$event" (clickLOV)="openLOVInw($event)"></app-cust-editable-non-datatable>
 			 	 </div>
 			</fieldset>
 		</div>
@@ -48,3 +48,5 @@
 	</div>	
 </div>	
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-lov #clmlovMdl [passData]="passLov" (selectedData)="setClaimOffset($event)">
+<app-lov #inwlovMdl [passData]="passLovInw" (selectedData)="setSoa($event)">

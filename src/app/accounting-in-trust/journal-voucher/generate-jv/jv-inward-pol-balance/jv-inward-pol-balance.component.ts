@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -25,6 +25,8 @@ export class JvInwardPolBalanceComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
 
   @Input() jvDetail:any;
+  @Output() emitData = new EventEmitter<any>();
+  @Input() cedingParams:any;
 
   /*passData: any = {
     tableData: [],
@@ -145,7 +147,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   ngOnInit() {
   	 this.getMtnRate();
-     console.log(this.jvDetail)
+     console.log(this.cedingParams)
      if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
        this.disable = false;
      }else {
@@ -153,6 +155,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
        this.passData.btnDisabled = true;
        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
+     }
+
+     if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
+       console.log(this.cedingParams)
+       this.jvDetails.ceding = this.cedingParams.cedingId;
+       this.jvDetails.cedingName = this.cedingParams.cedingName;
+       this.retrieveInwPol();
      }
   }
 
@@ -188,6 +197,14 @@ export class JvInwardPolBalanceComponent implements OnInit {
     this.passLov.cedingId = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveInwPol()
+    this.check(this.jvDetails);
+  }
+
+  check(data){
+    console.log(data)
+    this.emitData.emit({ cedingId: data.ceding,
+                         cedingName: data.cedingName
+                       });
   }
 
   openSoaLOV(data){

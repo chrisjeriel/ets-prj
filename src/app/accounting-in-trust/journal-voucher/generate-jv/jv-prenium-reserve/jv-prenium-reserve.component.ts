@@ -48,6 +48,7 @@ export class JvPreniumReserveComponent implements OnInit {
 			updateDate : this.ns.toDateTimeString(0)
 		},
 		checkFlag: true,
+		uneditable: [true,false,false,false,false,false],
 		keys:['quarterEnding', 'currCd', 'currRate', 'interestAmt', 'whtaxAmt', 'releaseAmt'],
 		widths:[150,195,195,195,195,195]
 	}

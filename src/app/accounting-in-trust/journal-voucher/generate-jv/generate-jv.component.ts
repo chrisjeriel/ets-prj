@@ -35,6 +35,11 @@ export class GenerateJvComponent implements OnInit {
      localAmt: ''
   };
 
+  cedingParams : any = {
+    cedingId : '',
+    cedingName : '',
+  };
+
   jvTypeFlag: boolean = true;
 
   disabledTypes: any = [
@@ -83,4 +88,9 @@ export class GenerateJvComponent implements OnInit {
      this.jvData.tranType = data.tranType;
   }
 
+  cedingOutput(data){
+    console.log(data)
+    this.cedingParams.cedingId = data.cedingId;
+    this.cedingParams.cedingName = data.cedingName;
+  }
 }
