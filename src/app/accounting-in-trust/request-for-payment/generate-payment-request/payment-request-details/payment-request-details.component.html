@@ -50,7 +50,7 @@
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
-                        <div controls-l class="input-group">
+                        <div class="input-group">
                           <div class="col-sm-2" style="margin-right: -35px"></div>
                           <label class="form-control-sm col-sm-1">Service Fee</label>
                           <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-right: 18px !important;" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>

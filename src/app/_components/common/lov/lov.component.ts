@@ -637,7 +637,7 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'sl'){
-      this.passTable.tHeader = ['SL Nanme'];
+      this.passTable.tHeader = ['SL Name'];
       this.passTable.widths =['auto']
       this.passTable.dataTypes = [ 'text'];
       this.passTable.keys = [ 'slName'];
