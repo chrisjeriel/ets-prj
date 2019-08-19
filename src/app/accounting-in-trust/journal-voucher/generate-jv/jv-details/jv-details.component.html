@@ -46,13 +46,14 @@
             <ng-template ngbTabTitle>
                <ng-container [ngSwitch]="jvType">
                     <div *ngSwitchCase="1">Inward Policy Balances</div>
+                    <div *ngSwitchCase="2">Application of Payments to Policies with Zero Balance</div>
                     <div *ngSwitchCase="3">Premium Reserve Released (Funds Held Released)</div>
                     <div *ngSwitchCase="4">Interest on Overdue Accounts - Monthly Setup</div>
-                    <div *ngSwitchCase="57">Loss Reserve Deposit</div>
-                    <div *ngSwitchCase="7">Offsetting of Receivables In-Trust Against Losses</div>
                     <div *ngSwitchCase="5">Offsetting of Claims Against Negative Treaty Balance</div>
                     <div *ngSwitchCase="6">Offsetting of Outstanding Accounts Against Treaty Balance</div>
-                    <div *ngSwitchCase="2">Application of Payments to Policies with Zero Balance</div>
+                    <div *ngSwitchCase="7">Offsetting of Receivables In-Trust Against Losses</div>
+                    <div *ngSwitchCase="57">Loss Reserve Deposit</div>
+                    <div *ngSwitchCase="62">Investment Pull Out</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
@@ -60,36 +61,41 @@
                     <div class="col-sm-12">
                         <ng-container [ngSwitch]="jvType">
                             <ng-container *ngSwitchCase="1">
-                                <app-jv-inward-pol-balance [jvDetail]="jvDetails"></app-jv-inward-pol-balance>                   
+                                <app-jv-inward-pol-balance [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-inward-pol-balance>                   
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="2">
+                                <app-jv-app-payments-zero [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-app-payments-zero>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="3">
-                                <app-jv-prenium-reserve [jvDetail]="jvDetails"></app-jv-prenium-reserve>
+                                <app-jv-prenium-reserve [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-prenium-reserve>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="4">
-                                <app-jv-interest-on-overdue-accounts [jvDetail]="jvDetails"></app-jv-interest-on-overdue-accounts>
+                                <app-jv-interest-on-overdue-accounts [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-interest-on-overdue-accounts>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="5">
+                                <app-jv-offsetting-against-negative-treaty [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-offsetting-against-negative-treaty>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="6">
+                                <app-jv-overdue-accounts-against-treaty [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-overdue-accounts-against-treaty>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="7">
+                                <app-jv-offsetting-against-losses [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-offsetting-against-losses>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="57">
                                 <app-jv-loss-reserve-deposit></app-jv-loss-reserve-deposit>
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="7">
-                                <app-jv-offsetting-against-losses [jvDetail]="jvDetails"></app-jv-offsetting-against-losses>
+                            <ng-container *ngSwitchCase="62">
+                                <!-- <app-jv-investment-pull-over></app-jv-investment-pull-over> -->
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="5">
-                                <app-jv-offsetting-against-negative-treaty [jvDetail]="jvDetails"></app-jv-offsetting-against-negative-treaty>
-                            </ng-container>
-
-                            <ng-container *ngSwitchCase="6">
-                                <app-jv-overdue-accounts-against-treaty [jvDetail]="jvDetails"></app-jv-overdue-accounts-against-treaty>
-                            </ng-container>
-
-                            <ng-container *ngSwitchCase="2">
-                                <app-jv-app-payments-zero [jvDetail]="jvDetails"></app-jv-app-payments-zero>
-                            </ng-container>
                         </ng-container>
                     </div>
                 </div>

@@ -89,9 +89,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
   };
 
   inwardPolBalData: any = {
+    tHeaderWithColspan : [{ header: "", span: 1 },
+                          { header: "Policy Information", span: 14 },
+                          { header: "Payment Details", span: 5 },
+                          { header: "", span: 2 }],
     tableData     : [],
-    tHeader       : ['Policy No.','Inst No.','Due Date','Curr','Curr Rate','Balance','Payment','Premium', 'RI Commission','RI Comm. VAT', 'Charges', 'Net Return'],
-    dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','currency','currency', 'currency'],
+    // tHeader       : ['Policy No.','Inst No.','Due Date','Curr','Curr Rate','Balance','Payment','Premium', 'RI Commission','RI Comm. VAT', 'Charges', 'Net Return'],
+    // dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','currency','currency', 'currency'],
+    tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments','Remaining Balance'],
+    dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
     magnifyingGlass : ['policyNo'],
     nData: {
       newRec         : 1,
@@ -115,10 +121,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [true,true,true,true,true,true,true,true,true,true,true,false],
-    total         : [null, null, null, null, 'Total', 'netDue', 'prevPaytAmt', 'premAmt', 'riComm', null, 'charges', 'returnAmt'],
-    widths        : [200,1,110,1,110,120,120,120,120,120,120,120,120],
-    keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
+    // uneditable    : [true,true,true,true,true,true,true,true,true,true,true,false],
+    // total         : [null, null, null, null, 'Total', 'netDue', 'prevPaytAmt', 'premAmt', 'riComm', null, 'charges', 'returnAmt'],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
+    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    // widths        : [200,1,110,1,110,120,120,120,120,120,120,120,120],
+    // keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
+    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
   };
 
   treatyBalanceData: any = {

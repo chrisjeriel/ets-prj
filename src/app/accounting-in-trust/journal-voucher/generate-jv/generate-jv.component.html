@@ -12,7 +12,7 @@
 					<div>JV Details</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-jv-details [jvType]="jvType" [jvData]="jvData"></app-jv-details>
+					<app-jv-details [jvType]="jvType" [jvData]="jvData" (cedingData)="cedingOutput($event)" [cedingInput]="cedingParams"></app-jv-details>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab class="ngb-tab" title="Accounting Entries">

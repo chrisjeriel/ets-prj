@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -16,7 +16,6 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
   styleUrls: ['./jv-interest-on-overdue-accounts.component.css']
 })
 
-
 export class JvInterestOnOverdueAccountsComponent implements OnInit {
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
@@ -25,7 +24,9 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
 
+  @Input() cedingParams:any;
   @Input() jvDetail:any;
+  @Output() emitData = new EventEmitter<any>();
 
   passData: any = {
     tableData: [],
@@ -95,6 +96,12 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.btnDisabled = true;
       this.passData.disableAdd = true;
     }
+
+    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
+      this.jvDetails.ceding = this.cedingParams.cedingId;
+      this.jvDetails.cedingName = this.cedingParams.cedingName;
+      this.getInterestOverdue();
+    }
   }
 
   getInterestOverdue(){
@@ -134,6 +141,14 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     this.passLov.cedingId = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.getInterestOverdue();
+    this.check(this.jvDetails);
+  }
+
+  check(data){
+    console.log(data)
+    this.emitData.emit({ cedingId: data.ceding,
+                         cedingName: data.cedingName
+                       });
   }
 
   setSoa(data){
