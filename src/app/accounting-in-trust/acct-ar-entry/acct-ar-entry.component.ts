@@ -24,7 +24,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   passData: any = {
         tableData: [],
-        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check/Card No.','Check Date','Check Class'],
+        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class'],
         dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect'],
         paginateFlag: true,
         infoFlag: true,
@@ -435,7 +435,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.rstrctTranUp   = data.ar.rstrctTranUp;
           this.selectedCurrency       = data.ar.currCd;
           if(this.arInfo.arStatDesc.toUpperCase() === 'DELETED' || this.arInfo.arStatDesc.toUpperCase() === 'CANCELED'){
+          //if(this.arInfo.arStatDesc.toUpperCase() !== 'NEW'){
             this.passData.dataTypes = ['select','select','percent','currency','select','text','text','date','select'];
+            this.passData.addFlag = false;
+            this.passData.genericBtn = undefined;
+            this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+            this.isCancelled = true;
           }
           //currencies
           this.currencies = [];
@@ -618,6 +623,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.successDiag.open();
         }
         else{
+          this.isAdd = false;
           this.retrieveArEntry(data.outTranId, '');
           this.paytDtlTbl.refreshTable();
           this.dialogIcon = 'success';

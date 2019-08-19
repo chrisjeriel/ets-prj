@@ -8,10 +8,10 @@
 				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" mask="999999" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled" name="arNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date);" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED'"></datepicker>
+					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date);" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED' || arInfo.arStatDesc.toUpperCase() === 'DELETED' || arInfo.arStatDesc.toUpperCase() === 'PRINTED'"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED'"></datepicker>
+					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED' || arInfo.arStatDesc.toUpperCase() === 'DELETED' || arInfo.arStatDesc.toUpperCase() === 'PRINTED'"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">Status</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="arInfo.arStatDesc" readonly name="arStat">
@@ -57,13 +57,13 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
-				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" readonly [ngModel]="arInfo.mailAddress" name="address"></textarea>
+				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" [(ngModel)]="arInfo.mailAddress" name="address"></textarea>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Business</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="arInfo.bussTypeName" readonly name="business">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="arInfo.bussTypeName" name="business">
 				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="arInfo.tin" readonly name="tin">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="arInfo.tin" name="tin">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Amount</label>
@@ -76,7 +76,7 @@
 						</select>
 						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
-						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" appOtherRates  name="rate">
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" appOtherRates [readonly]="isCancelled" name="rate">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>

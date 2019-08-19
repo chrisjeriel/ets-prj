@@ -27,8 +27,9 @@ export class ArDetailsQsoaComponent implements OnInit {
   passData: any = {
     tableData:[],
     tHeader:['Quarter Ending','Currency','Currency Rate','Amount', 'Amount (PHP)'],
-    dataTypes:['text','select','percent','currency','currency'],
+    dataTypes:['text','text','percent','currency','currency'],
     total:[null,null,'Total','balPaytAmt','localAmt'],
+    uneditable: [false,true,true,false,true],
     addFlag:true,
     deleteFlag:true,
     infoFlag:true,
@@ -53,13 +54,13 @@ export class ArDetailsQsoaComponent implements OnInit {
     checkFlag: true,
     pageID: 'negtrty',
     widths:[150, 100, 150, 'auto', 'auto'],
-    opts: [
+    /*opts: [
       {
         selector: 'currCd',
         vals: [],
         prev: []
       }
-    ]
+    ]*/
   }
 
   cancelFlag: boolean;
@@ -77,7 +78,9 @@ export class ArDetailsQsoaComponent implements OnInit {
 
   ngOnInit() {
     this.passData.nData.tranId = this.record.tranId;
-    this.getMtnCurrency();
+    this.passData.nData.currCd = this.record.currCd;
+    this.passData.nData.currRate = this.record.currRate;
+    //this.getMtnCurrency();
     this.retrieveNegTrtyBal();
   }
 

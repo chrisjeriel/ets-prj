@@ -26,25 +26,26 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   passData: any = {
     tableData: [],
-    tHeader: ["SOA No.","Policy No","Co. Ref. No.", "Inst No.","Eff Date", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Payments", "Balance", "Overdue Interest"],
-    dataTypes: ["text","text","text", "text", "date", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency", "currency"],
+    tHeaderWithColspan: [{header:'', span:1},{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+    //pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt'],
+    tHeader: ["Policy No","Co. Ref. No.", "Inst No.", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Cumulative Payments", "Balance",
+              'Payment Amount', "Premium", "RI Comm", 'Ri Comm Vat', "Charges", 'Total Payments', 'Remaining Balance'],
+    dataTypes: ["text","text", "text", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency","currency","currency","currency","currency","currency","currency","currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
     paginateFlag: true,
     checkFlag: true,
-    magnifyingGlass: ['soaNo'],
+    magnifyingGlass: ['policyNo'],
     pageLength: 10,
     nData: {
         tranId: '',
         billId: '',
         itemNo: '',
         policyId: '',
-        soaNo: '',
         policyNo: '',
         coRefNo: '',
         instNo: '',
-        effDate: '',
         dueDate: '',
         currCd: '',
         currRate: '',
@@ -57,16 +58,17 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
         balOverdueInt: '',
         showMG: 1
     },
-    total: [null,null,null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
+    //total: [null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt'],
 /*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
-    widths: [200, 200, 120, 50,120, 120, 30, 85,120, 120, 120,120,120,120,120,120],
-    keys: ['soaNo', 'policyNo', 'coRefNo', 'instNo', 'effDate', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
-    uneditable: [false,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true]
+    widths: [180, 120, 50, 1, 30, 85,110, 110, 110,110,110,110,110,110,110,110,110,110,110,110,],
+    keys: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt','ctotalPayments','cpremAmt', 'criComm', 'criCommVat', 'ccharges','ctotalPayments', 'cbalPaytAmt'],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true]
   };
 
   passLov: any = {
     selector: 'acitSoaDtlAr',
     payeeNo: '',
+    currCd: '',
     hide: []
   }
 
@@ -92,6 +94,12 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Inward Policy Balances");
     this.passLov.payeeNo = this.record.payeeNo;
+    if(this.record.arStatDesc.toUpperCase() !== 'NEW'){
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag = false;
+    }
     this.retrieveInwPolBal();
   }
 
@@ -102,6 +110,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   openSoaLOV(data){
+    this.passLov.currCd = this.record.currCd;
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
     console.log(this.passLov.hide);
     this.soaIndex = data.index;

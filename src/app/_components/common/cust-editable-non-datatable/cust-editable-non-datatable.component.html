@@ -182,7 +182,7 @@
                 <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'left non-datatable' + passData.pageID" style="width:auto" *ngIf="pinKeysLeft != undefined && pinKeysLeft.length != 0">
                     <colgroup *ngIf="passData.tHeaderWithColspan != null">
                         <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
-                            <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
+                            <col [span]="header.span" [id]="(i%2 === 1  && !passData.checkFlag) || (passData.checkFlag && i !== 0 && i%2===0) ? 'black-border' : 'no-black-border'" style="text-align: center;">
                         </ng-container>
                     </colgroup>
                     <thead>
@@ -603,7 +603,7 @@
                         <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'non-datatable' + passData.pageID">
                             <colgroup *ngIf="passData.tHeaderWithColspan != null">
                                 <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
-                                    <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
+                                    <col [span]="header.span" [id]="(i%2 === 1  && !passData.checkFlag) || (passData.checkFlag && i !== 0 && i%2===0) ? 'black-border' : 'no-black-border'" style="text-align: center;">
                                 </ng-container>
                             </colgroup>
                             <thead>
@@ -1013,7 +1013,7 @@
                 <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'left non-datatable' + passData.pageID" style="width:auto" *ngIf="pinKeysRight != undefined && pinKeysRight.length != 0">
                     <colgroup *ngIf="passData.tHeaderWithColspan != null">
                         <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
-                            <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
+                            <col [span]="header.span" [id]="(i%2 === 1  && !passData.checkFlag) || (passData.checkFlag && i !== 0 && i%2===0) ? 'black-border' : 'no-black-border'" style="text-align: center;">
                         </ng-container>
                     </colgroup>
                     <thead>
