@@ -24,14 +24,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   passData: any = {
         tableData: [],
-        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class'],
-        dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect'],
+        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
+        dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
-        widths: [130,70,100,150,"auto",1,210,100,180],
-        keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass'],
-        uneditable: [false,false,false,false,false,false,false,false,false],
+        widths: [130,70,100,150,"auto",1,210,100,180, 'auto'],
+        keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass', 'remarks'],
+        uneditable: [false,false,false,false,false,false,false,false,false, false],
         pageID: 1,
         addFlag: true,
         genericBtn: 'Delete',
@@ -44,7 +44,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           bankAcct: '',
           checkNo: '',
           checkDate: '',
-          checkClass: '',
+          checkClass: 'LC',
+          remarks: ''
           //uneditable: ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass']
         },
         disableGeneric: true,
@@ -530,7 +531,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }
         //bankAcct
         if(bankAcctData.bankAcctList.length !== 0){
-            this.bankAccts = bankAcctData.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency});
+            this.bankAccts = bankAcctData.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null});
             if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.arInfo.dcbBankAcctNo) == -1){
               this.arInfo.dcbBankAcct = '';
               this.arInfo.dcbBankAcctNo = '';
@@ -698,7 +699,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         (data:any)=>{
           if(data.bankAcctList.length !== 0){
             this.bankAccts = data.bankAcctList;
-            this.bankAccts = this.bankAccts.filter(a=>{return a.currCd == this.selectedCurrency});
+            this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null });
           }
           if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
             this.arInfo.dcbBankAcct = '';
@@ -923,6 +924,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   setDefaultValues(){
+    this.banks = [];
+    this.bankAccts = [];
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
                         this.ms.getMtnBank(),
                         this.ms.getMtnBankAcct()).pipe(map(([dcb, bank, bankAcct]) => { return { dcb, bank, bankAcct }; }));
@@ -954,7 +957,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
            }
            //bankAcct
            if(data.bankAcct.bankAcctList.length !== 0){
-               this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency});
+               this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null});
                if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
                  this.arInfo.dcbBankAcct = '';
                  this.arInfo.dcbBankAcctNo = '';
