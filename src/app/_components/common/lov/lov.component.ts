@@ -770,6 +770,26 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.clmCashCallLovList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'mtnBank'){
+      this.passTable.tHeader = ['Bank', 'Official Name'];
+      this.passTable.widths =['100','auto']
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'shortName','officialName'];
+      this.passTable.checkFlag = true;
+      this.mtnService.getMtnBank(this.passData.bankCd).subscribe((a:any)=>{
+        this.passTable.tableData = a.bankList;
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'checkClass'){
+      this.passTable.tHeader = ['Code', 'Description'];
+      this.passTable.widths =['100','auto']
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'code','description'];
+      this.passTable.checkFlag = true;
+      this.mtnService.getRefCode('CHECK_CLASS').subscribe((a:any)=>{
+        this.passTable.tableData = a.refCodeList;
+        this.table.refreshTable();
+      });
     }
 
     this.modalOpen = true;

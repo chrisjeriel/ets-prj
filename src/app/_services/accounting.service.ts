@@ -1957,4 +1957,20 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvDefName",{params});
 	}
 
+	getAcitCv(tranId?){
+		const params = new HttpParams()
+			.set('reqId', (tranId == null || tranId == undefined ? '' : tranId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCv',{params});	
+	}
+
+	saveAcitCv(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCv',params,header);
+ 
+    }
 }
