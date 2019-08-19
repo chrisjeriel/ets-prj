@@ -26,8 +26,8 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   passData: any = {
     tableData: [],
-    tHeaderWithColspan: [{header:'', span:1},{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
-    //pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt'],
+    tHeaderWithColspan: [{header:'', span:1, pinLeft: true},{header: 'Inward Policy Info', span: 13, pinLeft: true}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+    pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt'],
     tHeader: ["Policy No","Co. Ref. No.", "Inst No.", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Cumulative Payments", "Balance",
               'Payment Amount', "Premium", "RI Comm", 'Ri Comm Vat', "Charges", 'Total Payments', 'Remaining Balance'],
     dataTypes: ["text","text", "text", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency","currency","currency","currency","currency","currency","currency","currency"],
@@ -60,7 +60,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     },
     //total: [null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt'],
 /*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
-    widths: [180, 120, 50, 1, 30, 85,110, 110, 110,110,110,110,110,110,110,110,110,110,110,110,],
+    widths: [170, 100, 50, 1, 30, 85,110, 110, 110,110,110,110,110,110,110,110,110,110,110,110,],
     keys: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt','ctotalPayments','cpremAmt', 'criComm', 'criCommVat', 'ccharges','ctotalPayments', 'cbalPaytAmt'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true]
   };
