@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -18,6 +18,8 @@ import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/q
 })
 export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   
+  @Output() emitData = new EventEmitter<any>();
+  @Input() cedingParams:any;
   @Input() jvDetail:any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
   @ViewChild('trytytrans') trytytransTable: CustEditableNonDatatableComponent;
@@ -147,6 +149,14 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService) { }
 
   ngOnInit() {
+
+    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
+      console.log(this.cedingParams)
+      this.jvDetails.ceding = this.cedingParams.cedingId;
+      this.jvDetails.cedingName = this.cedingParams.cedingName;
+      this.retrieveNegativeTreaty();
+    }
+
   }
 
   retrieveNegativeTreaty(){
@@ -190,6 +200,13 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.jvDetails.ceding = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveNegativeTreaty();
+    this.check(this.jvDetails);
+  }
+
+  check(data){
+    this.emitData.emit({ cedingId: data.ceding,
+                         cedingName: data.cedingName
+                       });
   }
 
   openLOV(data){

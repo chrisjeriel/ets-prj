@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -17,6 +17,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   
+  @Output() emitData = new EventEmitter<any>();
+  @Input() cedingParams:any;
   @Input() jvDetail: any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
   @ViewChild('trytytrans') trytytrans: CustEditableNonDatatableComponent;
@@ -134,6 +136,13 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
 
   ngOnInit() {
     this.getMtnRate();
+
+    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
+      console.log(this.cedingParams)
+      this.jvDetails.ceding = this.cedingParams.cedingId;
+      this.jvDetails.cedingName = this.cedingParams.cedingName;
+      this.retrieveAcctBal();
+    }
   }
 
   showCedingCompanyLOV() {
@@ -160,6 +169,14 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.passLov.cedingId = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveAcctBal();
+    this.check(this.jvDetails);
+  }
+
+  check(data){
+    console.log(data)
+    this.emitData.emit({ cedingId: data.ceding,
+                         cedingName: data.cedingName
+                       });
   }
 
   onRowClick(data){

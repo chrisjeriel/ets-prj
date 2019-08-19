@@ -50,3 +50,6 @@
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-lov #clmlovMdl [passData]="passLov" (selectedData)="setClaimOffset($event)">
 <app-lov #inwlovMdl [passData]="passLovInw" (selectedData)="setSoa($event)">
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

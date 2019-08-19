@@ -64,11 +64,11 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="3">
-                                <app-jv-prenium-reserve [jvDetail]="jvDetails"></app-jv-prenium-reserve>
+                                <app-jv-prenium-reserve [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-prenium-reserve>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="4">
-                                <app-jv-interest-on-overdue-accounts [jvDetail]="jvDetails"></app-jv-interest-on-overdue-accounts>
+                                <app-jv-interest-on-overdue-accounts [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-interest-on-overdue-accounts>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="57">
@@ -76,15 +76,15 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="7">
-                                <app-jv-offsetting-against-losses [jvDetail]="jvDetails"></app-jv-offsetting-against-losses>
+                                <app-jv-offsetting-against-losses [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-offsetting-against-losses>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="5">
-                                <app-jv-offsetting-against-negative-treaty [jvDetail]="jvDetails"></app-jv-offsetting-against-negative-treaty>
+                                <app-jv-offsetting-against-negative-treaty [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-offsetting-against-negative-treaty>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="6">
-                                <app-jv-overdue-accounts-against-treaty [jvDetail]="jvDetails"></app-jv-overdue-accounts-against-treaty>
+                                <app-jv-overdue-accounts-against-treaty [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-overdue-accounts-against-treaty>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="2">
