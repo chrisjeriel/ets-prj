@@ -779,7 +779,7 @@ export class LovComponent implements OnInit {
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'shortName','officialName'];
-      this.passTable.checkFlag = false;
+      this.passTable.checkFlag = true;
       this.mtnService.getMtnBank(this.passData.bankCd).subscribe((a:any)=>{
         this.passTable.tableData = a.bankList;
         this.table.refreshTable();
@@ -789,7 +789,7 @@ export class LovComponent implements OnInit {
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'code','description'];
-      this.passTable.checkFlag = false;
+      this.passTable.checkFlag = true;
       this.mtnService.getRefCode('CHECK_CLASS').subscribe((a:any)=>{
         this.passTable.tableData = a.refCodeList;
         this.table.refreshTable();
