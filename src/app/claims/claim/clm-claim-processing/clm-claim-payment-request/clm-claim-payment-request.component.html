@@ -28,11 +28,11 @@
     <div class="custom-row-inline-inset">
       <div class="row">
         <div class="col-sm-12">
-          <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)">
-          </app-cust-non-datatable>
+          <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (clickLOV)="openPayee($event)">
+          </app-cust-editable-non-datatable>
         </div>
       </div>
-      <div class="form-row" style="margin-top: -10px;">
+      <div class="form-row" style="margin-top: 10px;">
         <div class="input-group" style="margin-right: 5px !important;">
           <label class="form-control-sm col-sm-1">Processed By</label>
           <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" readonly>
@@ -56,6 +56,7 @@
     <div class="col-md-13 text-center">
       <div class="cust-btn-container">
         <button type="button" class="cust-btn" (click)="generateRequest()" [disabled]="disableGenerateBtn"><a>Generate Request</a></button>
+        <button type="button" class="cust-btn" (click)="cancelRequest()" [disabled]="disableCancelBtn"><a>Cancel Request</a></button>
         <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
       </div>
     </div>

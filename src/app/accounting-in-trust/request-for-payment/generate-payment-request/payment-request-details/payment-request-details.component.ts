@@ -55,8 +55,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   cedingCompanyData: any = {
   	tableData     : [],
-  	tHeader       : ['Claim No.','Hist No.','Hist Category','Hist Type','Payment For', 'Insured', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Payment Amount','Payment Amount (PHP)'],
-    dataTypes     : ['lov-input', 'sequence-2', 'text', 'text', 'text', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
+  	tHeader       : ['Claim No.','Hist No.','Hist Category','Hist Type','Payment For', 'Insured', 'Ex-Gratia','Curr','Curr Rate','Amount','Amount (PHP)'],
+    dataTypes     : ['lov-input', 'sequence-2', 'text', 'text', 'text', 'text', 'checkbox','text', 'percent','currency', 'currency'],
     magnifyingGlass : ['claimNo'],
   	nData: {
       claimNo        : '',
@@ -76,13 +76,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	paginateFlag  : true,
   	infoFlag      : true,
   	pageID        : 'cedingCompanyData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
-  	checkFlag     : true,
-  	addFlag       : true,
-  	deleteFlag    : true,
-    uneditable    : [true,true,true,true,false,true,true,true,true,true,true,true],
-  	total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt', 'paytAmt', 'localAmt'],
+  	checkFlag     : false,
+  	addFlag       : false,
+  	deleteFlag    : false,
+    uneditable    : [true,true,true,true,true,true,true,true,true,true,true,true],
+  	total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt', 'localAmt'],
     widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120],
-    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','paytAmt','localAmt']
+    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','localAmt']
   };
 
   inwardPolBalData: any = {
