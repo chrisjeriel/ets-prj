@@ -35,10 +35,6 @@ export class GeneratePaymentRequestComponent implements OnInit {
   
   }
 
-  test() {
-    console.log(this.rowData);
-  }
-
   // tabController(paymentType){
   //   console.log(this.paymentType);
   //   this.paymentType = paymentType;

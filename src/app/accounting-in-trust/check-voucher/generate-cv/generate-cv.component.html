@@ -7,7 +7,7 @@
 					<div>CV Entry</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-entry></app-cv-entry>
+					<app-cv-entry (cvData)="passData=$event" [passData]="passData"></app-cv-entry>
 				</ng-template>
 			</ngb-tab>
 
@@ -20,7 +20,7 @@
 				</ng-template>
 			</ngb-tab> -->
 
-			<ngb-tab>
+			<ngb-tab [disabled]="passData?.tranId == ''">
 				<ng-template ngbTabTitle>
 					<div>Payment Requests List</div>
 				</ng-template>
@@ -29,16 +29,16 @@
 				</ng-template>
 			</ngb-tab>
 
-			<ngb-tab>
+			<ngb-tab [disabled]="passData?.tranId == ''">
 				<ng-template ngbTabTitle>
 					<div>Accounting Entries</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-acc-entries></app-cv-acc-entries>
+					<app-cv-acc-entries [passData]="passData"></app-cv-acc-entries>
 				</ng-template>
 			</ngb-tab>
 
-			<ngb-tab>
+			<ngb-tab [disabled]="passData?.tranId == ''">
 				<ng-template ngbTabTitle>
 					<div>Attachments</div>
 				</ng-template>

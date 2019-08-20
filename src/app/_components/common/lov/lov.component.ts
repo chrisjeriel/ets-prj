@@ -691,10 +691,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitSoaDtlPrq'){ //temporary
-      this.passTable.tHeader    = ['Policy No.', 'Inst No.', 'Due Date', 'Balance', 'Payment', 'Premium', 'RI Comm', 'Charges'];
-      this.passTable.widths     = [120,1,110,120,120,120,120,120];
-      this.passTable.dataTypes  = ['text', 'sequence-2', 'date', 'currency', 'currency', 'currency', 'currency', 'currency'];
-      this.passTable.keys       = ['policyNo', 'instNo', 'dueDate', 'netDue', 'prevPaytAmt', 'balPremDue', 'balRiComm', 'balChargesDue'];
+      this.passTable.tHeader    = ['Policy No.', 'Inst No.', 'Co Ref. No.', 'Due Date', 'Cumulative Payment', 'Balance'];
+      this.passTable.widths     = [120,1,1,110,110,120];
+      this.passTable.dataTypes  = ['text', 'sequence-2','text','date', 'currency', 'currency'];
+      this.passTable.keys       = ['policyNo', 'instNo', 'coRefNo', 'dueDate', 'prevPaytAmt','balChargesDue'];
       this.passTable.checkFlag  = true;
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo)
       .subscribe((a:any)=>{
@@ -772,6 +772,26 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitArClmCashCallLov(this.passData.payeeNo).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.clmCashCallLovList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'mtnBank'){
+      this.passTable.tHeader = ['Bank', 'Official Name'];
+      this.passTable.widths =['100','auto']
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'shortName','officialName'];
+      this.passTable.checkFlag = true;
+      this.mtnService.getMtnBank(this.passData.bankCd).subscribe((a:any)=>{
+        this.passTable.tableData = a.bankList;
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'checkClass'){
+      this.passTable.tHeader = ['Code', 'Description'];
+      this.passTable.widths =['100','auto']
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'code','description'];
+      this.passTable.checkFlag = true;
+      this.mtnService.getRefCode('CHECK_CLASS').subscribe((a:any)=>{
+        this.passTable.tableData = a.refCodeList;
         this.table.refreshTable();
       });
     }
