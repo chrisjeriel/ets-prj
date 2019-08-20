@@ -99,7 +99,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.btnDisabled = true;
       this.passData.disableAdd = true;
     }
-
+    this.getInterestOverdue();
     if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
       this.jvDetails.ceding = this.cedingParams.cedingId;
       this.jvDetails.cedingName = this.cedingParams.cedingName;
@@ -112,13 +112,18 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.totalOverdue = 0;
       this.passData.disableAdd = false;
       this.passData.tableData = [];
-      for(var i = 0; i < data.overDueAccts.length; i++){
-        this.passData.tableData.push(data.overDueAccts[i]);
-        this.totalOverdue += this.passData.tableData[this.passData.tableData.length - 1].overdueInt;
-        this.passData.tableData[this.passData.tableData.length - 1].effDate = data.overDueAccts[i].effDate;
-        this.passData.tableData[this.passData.tableData.length - 1].dueDate = data.overDueAccts[i].dueDate;
-        this.passData.tableData[this.passData.tableData.length - 1].orgOverdue = data.overDueAccts[i].overdueInt;
+      if(data.overDueAccts.length != 0){
+        for(var i = 0; i < data.overDueAccts.length; i++){
+          this.passData.tableData.push(data.overDueAccts[i]);
+          this.totalOverdue += this.passData.tableData[this.passData.tableData.length - 1].overdueInt;
+          this.passData.tableData[this.passData.tableData.length - 1].effDate = data.overDueAccts[i].effDate;
+          this.passData.tableData[this.passData.tableData.length - 1].dueDate = data.overDueAccts[i].dueDate;
+          this.passData.tableData[this.passData.tableData.length - 1].orgOverdue = data.overDueAccts[i].overdueInt;
+        }
+        this.jvDetails.cedingName = data.overDueAccts[0].cedingName;
+        this.jvDetails.cedingId = data.overDueAccts[0].cedingId;
       }
+      
       this.table.refreshTable(); 
     });
   }

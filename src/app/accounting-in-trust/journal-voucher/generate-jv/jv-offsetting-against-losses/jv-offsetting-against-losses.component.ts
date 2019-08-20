@@ -153,6 +153,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.passLovInw.currCd = this.jvDetail.currCd;  
     this.passData.nData.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
+    this.retrieveClmLosses();
     if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
       console.log(this.cedingParams)
       this.jvDetails.ceding = this.cedingParams.cedingId;
@@ -166,10 +167,15 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       console.log(data)
       this.passData.tableData = [];
       this.passData.disableAdd = false;
-      for(var i = 0 ; i < data.receivables.length; i++){
-        this.passData.tableData.push(data.receivables[i]);
-        this.clmTable.onRowClick(null, this.passData.tableData[0]);
+      if(data.receivables.length!=0){
+        for(var i = 0 ; i < data.receivables.length; i++){
+          this.passData.tableData.push(data.receivables[i]);
+          this.clmTable.onRowClick(null, this.passData.tableData[0]);
+        }
+        this.jvDetails.cedingName = data.receivables[0].cedingName;
+        this.jvDetails.cedingId = data.receivables[0].cedingId;
       }
+     
       this.clmTable.refreshTable();
     });
   }
