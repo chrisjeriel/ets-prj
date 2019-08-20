@@ -1,139 +1,161 @@
-
 <div>
-	<!-- <fieldset class="scheduler-border" style="padding-left: 25px ! important; padding-right: 25px ! important"> 
-		<legend class="scheduler-border">C.V Info</legend>  
-			  <div class="form-row custom-row-inline-inset" style="margin-top: 8px !important;">
-			  	 <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important;">
-                    <div class="col-sm-8" style="padding: 0px">
-                    	<div class="input-group" style="padding-right : 5px ! important;">
-                            <label class="form-control-sm" for="xx">CV No.</label>
-                            <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-1 text-right" placeholder="2015" readonly>
-                            <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2 text-right" placeholder="00000001" readonly style="margin-left: 3px">
-                            <label class="form-control-sm" for="xx" style="margin-left: 8px">Date</label>
-                             <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2" placeholder="DD/MM/YYYY HH:MM" readonly>
-                             <label class="form-control-sm" for="xx" style="margin-left: 8px">Tran ID</label>
-                             <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2 text-right" placeholder="000372921" readonly>
-                             <label class="form-control-sm" for="xx" style="margin-left: 8px">Status</label>
-                             <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" readonly>
-                        </div>
-                        <div class="input-group" style="padding-right : 5px ! important; margin-top : -14px ! important; margin-bottom : -8px ! important; ">
-                            <label class="form-control-sm" for="xx">Payee</label>
-                            <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm" placeholder="San Miguel Corporation" readonly style="margin-left: 7px">
-                        </div>
-                    </div>
-                    <div class="col-sm-4" style="padding: 0px">
-                        <div class="input-group" style="padding: 0px">
-                            <label class="form-control-sm col-sm-3" for="xx">Amount</label>
-                            <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" readonly>
-                            <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20" readonly style="margin-left: 3px">
-                        </div>
-                         <div class="input-group" style="padding: 0px; margin-top : -14px ! important; margin-bottom : -8px ! important; ">
-                            <label class="form-control-sm col-sm-3" for="xx">Local Amount</label>
-                            <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" readonly>
-                            <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20" readonly style="margin-left: 3px">
-                        </div>
-                    </div>
-                 </div>
-			  </div>
-           </fieldset> -->
-          <fieldset class="scheduler-border">
-              <legend class="scheduler-border">CV Info</legend>
-              <div class="form-row custom-row-inline-inset">
-                  <div class="col-sm-8">
-                      <div class="input-group">
-                          <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">CV No</label>
-                          <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1"
-                          placeholder="2015" style="text-align: right" readonly>
-                          <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2"
-                          placeholder="00000001" style="text-align: right; margin-left: 2px;" readonly>
-                          <label class="form-control-sm col-sm-1" for="xx">Date</label>
-                          <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
-                         <!--  <label class="form-control-sm col-sm-1 text-right" for="xx">Tran ID</label>
-                          <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="000284723" style="text-align: right" readonly> -->
-                          <label class="form-control-sm col-sm-1" for="xx">Status</label>
-                          <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" placeholder="New" readonly>
-                      </div>
-                      <div class="input-group">
-                          <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Payee</label>
-                          <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
-                          readonly>
-                      </div>
-                  </div>
-                  <div class="col-sm-4">
-                      <div class="input-group">
-                          <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
-                          <!-- <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-                                  <option value="PHP">PHP</option>
-                                  <option value="EUR">EUR</option>
-                                  <option value="USD">USD</option>
-                          </select> -->
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"
-                          placeholder="PHP" readonly>
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-                          placeholder="27,153.30" readonly>
-                      </div>
-                      <div class="input-group">
-                          <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-                          <!-- <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-                                  <option value="PHP">PHP</option>
-                                  <option value="EUR">EUR</option>
-                                  <option value="USD">USD</option>
-                          </select> -->
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"
-                          placeholder="PHP" readonly>
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-                          placeholder="27,153.30" readonly>
-                      </div>
-                  </div>
-              </div>
-          </fieldset>
-        <fieldset class="scheduler-border" style="padding:0"> 
-            <legend class="scheduler-border">Payment Requests</legend>  
-                <!-- <div class="col-sm-12" style="margin-top: 10px" >
-                    <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button>
-                    <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
-                </div> -->
-                  <div class="form-row custom-row-inline-inset" style="margin-top: 15px !important; margin-bottom: -3px !important;">
-                    <app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
-                  </div>
-        </fieldset>
-        <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 22px">
-                        <div class="input-group">
-                            <div class="col-sm-3" style="padding: 0">
-                                <div class="input-group">
-                                    <label class="form-control-sm">Created By</label>
-                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
-                                </div>
-                            </div>
-                            <div class="col-sm-3" style="padding: 0">
-                                <div class="input-group">
-                                    <label class="form-control-sm">Date Created</label>
-                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
-                                </div>
-                            </div>
-                            <div class="col-sm-3" style="padding: 0">
-                                <div class="input-group">
-                                    <label class="form-control-sm">Last Update By</label>
-                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
-                                </div>
-                            </div>
-                            <div class="col-sm-3" style="padding: 0">
-                                <div class="input-group">
-                                    <label class="form-control-sm">Last Update</label>
-                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">CV Info</legend>
+    <div class="form-row custom-row-inline-inset">
+      <div class="col-sm-8">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">CV No</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="cvInfo?.cvGenNo.split('-')[0]" style="text-align: right" readonly>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="cvInfo?.cvGenNo.split('-')[1]" style="text-align: right; margin-left: 2px;" readonly>
+          <label class="form-control-sm col-sm-1">Date</label>
+          <div class="dp-cont col-sm">
+            <datepicker [type]="'datetime'" [disabled]="true" [showSeconds]="false" [value]="cvInfo?.cvDate"></datepicker>
+          </div>
+                <!-- <label class="form-control-sm col-sm-1 text-right" for="xx">Tran ID</label>
+                  <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="000284723" style="text-align: right" readonly> -->
+                  <label class="form-control-sm col-sm-1">Status</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="cvInfo?.cvStatusDesc" readonly>
                 </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-1" style="padding-left: 0px !important;">Payee</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="cvInfo?.payee" readonly>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" [ngModel]="cvInfo?.currCd" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.cvAmt" readonly>
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.localAmt" readonly>
+                </div>
+              </div>
             </div>
-        </fieldset>
-    </div>
+          </fieldset>
+          <fieldset class="scheduler-border" style="padding:0"> 
+            <legend class="scheduler-border">Payment Requests</legend>  
+            <div class="form-row custom-row-inline-inset" style="margin-top: 15px !important; margin-bottom: -3px !important;">
+              <div class="input-group">
+                <div class="col-sm"></div>
+                <div class="col-sm-12">
+                  <app-cust-editable-non-datatable #paytReqTbl [passData]="passDataPaytReqList" (clickLOV)="showLov()" (newClick)="onRowClick($event)"  (tableDataChange)="passDataPaytReqList.tableData=$event;"></app-cust-editable-non-datatable>
+                </div>
+                <div class="col-sm"></div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm">
+                <div class="text-center">
+                  <div class="cust-btn-container">
+                    <button type="button" class="cust-btn"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                    <button type="button" class="cust-btn"><a>View Details</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <div class="col-sm-12">
+           
+            <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 22px">
+                    <div class="input-group">
+                      <div class="col-sm-3" style="padding: 0">
+                        <div class="input-group">
+                          <label class="form-control-sm">Created By</label>
+                          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="paytData?.createUser" readonly>
+                        </div>
+                      </div>
+                      <div class="col-sm-3" style="padding: 0">
+                        <div class="input-group">
+                          <label class="form-control-sm">Date Created</label>
+                          <div class="dp-cont col-sm">
+                            <datepicker [type]="'datetime'" [disabled]="true" [value]="paytData?.createDate"></datepicker>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-3" style="padding: 0">
+                        <div class="input-group">
+                          <label class="form-control-sm">Last Update By</label>
+                          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="paytData?.updateUser" readonly>
+                        </div>
+                      </div>
+                      <div class="col-sm-3" style="padding: 0">
+                        <div class="input-group">
+                          <label class="form-control-sm">Last Update</label>
+                          <div class="dp-cont col-sm">
+                            <datepicker [type]="'datetime'" [disabled]="true" [value]="paytData?.updateDate"></datepicker>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
 
-    
-    
-    
+<!--   <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 22px">
+          <div class="input-group">
+            <div class="col-sm-3" style="padding: 0">
+              <div class="input-group">
+                <label class="form-control-sm">Created By</label>
+                <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+              </div>
+            </div>
+            <div class="col-sm-3" style="padding: 0">
+              <div class="input-group">
+                <label class="form-control-sm">Date Created</label>
+                <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+              </div>
+            </div>
+            <div class="col-sm-3" style="padding: 0">
+              <div class="input-group">
+                <label class="form-control-sm">Last Update By</label>
+                <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+              </div>
+            </div>
+            <div class="col-sm-3" style="padding: 0">
+              <div class="input-group">
+                <label class="form-control-sm">Last Update</label>
+                <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset> -->
+</div>
+
+
+<app-lov #paytReqLov [passData]="passDataLov" (selectedData)="setData($event)"></app-lov>
+<app-confirm-save  #con (onYes)="onSavePaytReqList()"></app-confirm-save>
+<app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/check-voucher'" ></app-cancel-button>
+
+<app-modal class="d-none" id="warnMdl" #warnMdl>
+  <div header>Warning Message</div>
+  <div body class="container-flex text-center">
+    <fieldset class="scheduler-border" style="padding: 30px !important;"> 
+      <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">{{ warnMsg }}</p>
+    </fieldset>
+  </div>
+  <div footer class="d-flex justify-content-center w-100">                    
+    <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+  </div>
+</app-modal>
+
+
+
+
+
 

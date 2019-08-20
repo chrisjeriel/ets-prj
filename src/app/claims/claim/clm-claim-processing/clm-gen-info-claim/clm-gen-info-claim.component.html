@@ -24,10 +24,6 @@
         <div class="form-row custom-row-inline-inset">
             <div class="col-sm-6">
                 <div class="input-group">
-                    <label class="form-control-sm col-sm-2">Policy No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.policyNo" readonly>
-                </div>
-                <div class="input-group">
                     <label class="form-control-sm col-sm-2">Claim No</label>
                     <input type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.claimNo" readonly>
                 </div>
@@ -36,15 +32,13 @@
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.coClaimNo" [readonly]="isInquiry" tabindex="1">
                 </div>
                 <div class="input-group">
-                    <label class="form-control-sm col-sm-2">Type of Cession</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;" [ngModel]="claimData.cessionDesc" readonly>
-                    <label class="form-control-sm col-sm-2">Line Class</label>
-                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 1px !important;" [ngModel]="claimData.lineClassDesc" readonly>
-                </div>
-                <div class="input-group">
                     <label class="form-control-sm col-sm-2" style="font-size: 9.5px !important;">Ceding Company</label>
                     <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;" [ngModel]="claimData.cedingId" readonly>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [ngModel]="claimData.cedingName" readonly>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-2">Policy No</label>
+                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.policyNo" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Ref No</label>
@@ -62,6 +56,12 @@
                 <div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
                     <label class="form-control-sm col-sm-2">MBI Ref No</label>
                     <input type="text" class="form-control form-control-sm" [ngModel]="claimData.mbiRefNo">
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-2">Type of Cession</label>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;" [ngModel]="claimData.cessionDesc" readonly>
+                    <label class="form-control-sm col-sm-2">Line Class</label>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 1px !important;" [ngModel]="claimData.lineClassDesc" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster</label>
@@ -127,7 +127,11 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6" style="padding-top: 25px !important;">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Insured&apos;s Claim</label>
+                            <input type="text" class="form-control form-control-sm col-sm text-right" [(ngModel)]="claimData.insuredClm" [readonly]="isInquiry" appCurrency>
+                        </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Reported By</label>
                             <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.reportedBy" tabindex="6" [readonly]="isInquiry">
@@ -141,7 +145,7 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Loss Period</label>
-                            <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="claimData.lossPeriod" (change)="checkCode($event, 'lp')" tabindex="9" [readonly]="isInquiry" appRequired>
+                            <input type="text" id="clmGILossPeriod" class="form-control form-control-sm col-sm-2" [(ngModel)]="claimData.lossPeriod" (change)="checkCode($event, 'lp')" tabindex="9" [readonly]="isInquiry" appRequired>
                             <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showLossCdLOV('P')"></i></a>
                             </div>
@@ -668,32 +672,36 @@
                     </div>
                 </div>
             </fieldset>
-            <div class="input-group">
-                <ng-container *ngIf="showCustLoader">
-                    <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="custLoader" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999;">
-                    <div class="custLoader" style="position: absolute;top:7px;left:-7px;width: 102%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
-                    </div>
-                </ng-container>
-                <fieldset class="scheduler-border" style="margin-left: -7px !important;"> <!-- [ngClass]="(line != 'CAR' && line != 'EAR') ? 'pad-b' : 'pad-c'" -->
-                    <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-                    <div class="custom-row-inline-inset" style="margin-left: -30px !important;">
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">Currency</label>
-                            <input type="text" [ngModel]="claimData?.currencyCd" class="form-control form-control-sm cust-sm" required readonly>
+            <div class="container">
+                <div class="row" style="margin-left: -15px;">
+                    <div class="col-sm-12" style="padding: 0;">
+                        <ng-container *ngIf="showCustLoader">
+                            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="custLoader" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999;">
+                            <div class="custLoader" style="position: absolute;top:7px;left:-7px;width: 102%;height: 100% !important;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
+                            </div>
+                        </ng-container>
+                        <fieldset class="scheduler-border" style="margin-left: -7px !important;"> <!-- [ngClass]="(line != 'CAR' && line != 'EAR') ? 'pad-b' : 'pad-c'" -->
+                            <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+                            <div class="custom-row-inline-inset" style="margin-left: -30px !important;">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-3">Currency</label>
+                                    <input type="text" [ngModel]="claimData?.currencyCd" class="form-control form-control-sm cust-sm" required readonly>
 
-                            <label class="form-control-sm">% Share</label>
-                            <input type="text" [ngModel]="claimData?.pctShare | number:'1.10-10'" class="form-control form-control-sm cust-sm text-right" required readonly>
-                        </div>
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">Total SI</label>
-                            <input type="text" [ngModel]="claimData?.totalSi | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
-                        </div>
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">100% Value</label>
-                            <input type="text" [ngModel]="claimData?.totalValue | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
-                        </div>
+                                    <label class="form-control-sm">% Share</label>
+                                    <input type="text" [ngModel]="claimData?.pctShare | number:'1.10-10'" class="form-control form-control-sm cust-sm text-right" required readonly>
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-3">Total SI</label>
+                                    <input type="text" [ngModel]="claimData?.totalSi | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-3">100% Value</label>
+                                    <input type="text" [ngModel]="claimData?.totalValue | number:'1.2-2'" class="form-control form-control-sm cust-sm text-right" readonly>
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
-                </fieldset>
+                </div>
             </div>
         </div>
     </div>
@@ -769,7 +777,7 @@
     <div class="form-group col-sm">
         <div class="col-md-13 text-center">
             <div class="cust-btn-container">
-                <button type="button" class="cust-btn" [disabled]="claimData.refreshSw != 'Y'" (click)="showRefModal()"><a>Refresh</a></button>
+                <button type="button" class="cust-btn" [disabled]="claimData.refreshSw != 'Y' || claimData.preventRefresh == 'Y'" (click)="showRefModal()"><a>Refresh</a></button>
                 <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
                 <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             </div>
@@ -825,8 +833,8 @@
                     Insurance of the policy.</p>
                 </ng-container>
                 <ng-container *ngIf="mdlType == 'warn2'">
-                    <p>Unable to exchange the Loss Date. Claim Reserve setup<br />
-                    already exists.</p>
+                    <p>Unable to change the Loss Date. Claim History is already<br />
+                    taken up in Accounting.</p>
                 </ng-container>
                 <ng-container *ngIf="mdlType == 'warn3'">
                     <p>Unable to change the status of the claim. Please zero out the<br />
@@ -844,6 +852,9 @@
                     <p>Loss Date is not within the period of insurance (Inception<br />
                     to Expiry Date) of the policy.</p>
                 </ng-container>
+                <ng-container *ngIf="mdlType == 'warn7'">
+                    <p>Loss Date is within the Maintenance Period.</p>
+                </ng-container>
                 <ng-container *ngIf="mdlType == 'ref'">
                     <p>Are you sure you want to apply the latest changes<br />
                     of the policy?</p>
@@ -857,7 +868,7 @@
         <button *ngIf="mdlType == 'conf' || mdlType == 'warn'" class="cust-btn" type="button" (click)="modalService.dismissAll(); claimData.lossDate = ''">
             <a>{{ mdlType == 'conf' ? 'No' : 'Ok' }}</a>
         </button>
-        <button *ngIf="mdlType == 'warn2' || mdlType == 'warn3' || mdlType == 'warn4' || mdlType == 'warn5' || mdlType == 'warn6'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="mdlType.substr(0,4) == 'warn' && mdlType.length > 4" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
         <button *ngIf="mdlType == 'ref'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>

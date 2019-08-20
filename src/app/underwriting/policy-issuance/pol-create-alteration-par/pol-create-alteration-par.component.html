@@ -74,15 +74,15 @@
                         </div>                    
                         <div class="input-group ig-row" style="margin-top: -6px !important;">
                             <label class="form-control-sm col-sm-2">Ceding Company</label>
-                            <input type="text" class="form-control form-control-sm" [(ngModel)]="cedingName" readonly>
+                            <input type="text" class="form-control form-control-sm" [ngModel]="cedingName" readonly tabindex="-1">
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Insured</label>
-                            <input type="text" class="form-control form-control-sm" [(ngModel)]="insuredDesc" readonly>
+                            <input type="text" class="form-control form-control-sm" [ngModel]="insuredDesc" readonly tabindex="-1">
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Risk</label>
-                            <input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
+                            <input type="text" class="form-control form-control-sm" [ngModel]="riskName" readonly tabindex="-1">
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
         <div class="col-md-12 text-center">
             <div class="cust-btn-container" style="margin-top:10px">
                 <button type="button" class="cust-btn" [routerLink]="['']"><a>Cancel</a></button>
-                <button type="button" (click)="checkPolicyAlteration()" class="cust-btn" [disabled]="selected == null || cedingName == '' || insuredDesc == '' || riskName == ''"><a>Next</a></button>
+                <button type="button" (click)="checkPolicyAlteration()" class="cust-btn" [disabled]="selected == null || cedingName == '' || insuredDesc == '' || riskName == '' || !doneCheck"><a>Next</a></button>
             </div>
         </div>
     </div>
@@ -117,7 +117,7 @@
 </app-modal>
 
 <app-modal class="d-none" id="altWarningModal">
-    <div header>Warning Message</div>
+    <div header>{{ warningMsg == 3 ? 'Information Message' : 'Warning Message' }}</div>
     <div body style="min-width: 420px !important;">
         <fieldset class="scheduler-border" style="padding: 17px 20px 12px 20px !important;">
             <div class="custom-row-inline-inset" style="text-align: center">                
@@ -129,10 +129,12 @@
                 <p *ngIf="warningMsg == 2">The Policy No. cannot be altered. Policy No. has co-insurance/s.<br />
                 Creation of <strong>policy</strong> connected to one of the policies under this<br />
                 co-insurance is ongoing.</p>
+                <p *ngIf="warningMsg == 3">The policy has pending claim/s.</p>
             </div>
         </fieldset>
     </div>
     <div footer class="w-100 text-center">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearFields();"><a>Ok</a></button>
+        <button *ngIf="warningMsg != 3" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearFields();"><a>Ok</a></button>
+        <button *ngIf="warningMsg == 3" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>

@@ -10,7 +10,7 @@
 					<app-payment-request-entry (paytData)="rowData=$event" [rowData]="rowData"></app-payment-request-entry>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab>
+			<ngb-tab [disabled]="rowData?.reqId == ''">
 				<ng-template ngbTabTitle>
 					<div>Request Details</div>
 				</ng-template>

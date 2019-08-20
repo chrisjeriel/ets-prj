@@ -59,11 +59,11 @@
                  </div>
                  <div class="input-group" style="margin-bottom: -13px !important">
                   <label class="form-control-sm col-sm-4">Total Sum Insured</label>
-                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalSi  | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event;" readonly appOtherRates tabindex="-1" name="coverageData.totalSi">
+                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTSi  | number:'1.2-2'" (ngModelChange)="coverageData.cumTSi = $event;" readonly appOtherRates tabindex="-1" name="coverageData.cumTSi">
                 </div>
                 <div class="input-group" style="margin-bottom: 2px !important">
                   <label class="form-control-sm col-sm-4">Total Premium</label>
-                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalPrem  | number:'1.2-2'" (ngModelChange)="coverageData.totalPrem = $event" readonly appCurrency tabindex="-1" name="coverageData.totalPrem">
+                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTPrem  | number:'1.2-2'" (ngModelChange)="coverageData.cumTPrem = $event" readonly appCurrency tabindex="-1" name="coverageData.cumTPrem">
                 </div>
               </div>
             </fieldset>

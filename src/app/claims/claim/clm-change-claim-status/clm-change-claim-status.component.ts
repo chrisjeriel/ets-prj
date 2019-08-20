@@ -606,6 +606,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     this.dialogIcon = 'info';
     this.dialogMessage = 'Are you sure you want to change the status of the claim?';
     this.processModal.openNoClose();
+
     /*switch(this.batchOption.statusCode){
       case 'IP':
         this.dialogIcon = 'info';
