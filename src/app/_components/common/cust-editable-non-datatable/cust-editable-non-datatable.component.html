@@ -164,13 +164,13 @@
         <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'left non-datatable' + passData.pageID" style="width:auto" *ngIf="pinKeysLeft != undefined && pinKeysLeft.length != 0">
             <colgroup *ngIf="passData.tHeaderWithColspan != null">
                 <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
-                    <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
+                    <col [span]="header.span" [id]="(i%2 === 1  && !passData.checkFlag) || (passData.checkFlag && i !== 0 && i%2===0) ? 'black-border' : 'no-black-border'" style="text-align: center;">
                 </ng-container>
             </colgroup>
             <thead>
                 <tr *ngIf="passData.tHeaderWithColspan != null">
                     <ng-container *ngFor="let header of passData.tHeaderWithColspan">
-                        <th [colSpan]="header.span" style="text-align: center;">
+                        <th *ngIf="header.pinLeft !== undefined && header.pinLeft" [colSpan]="header.span" style="text-align: center;">
                             <span class="gridHeader">{{ header.header }}</span>
                         </th>
                     </ng-container>
@@ -584,13 +584,13 @@
                 <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'non-datatable' + passData.pageID">
                     <colgroup *ngIf="passData.tHeaderWithColspan != null">
                         <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
-                            <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
+                            <col *ngIf="header.pinLeft == undefined || header.pinLeft.length == 0" [span]="header.span" [id]="(i%2 === 1  && !passData.checkFlag) || (passData.checkFlag && i !== 0 && i%2===0) ? 'black-border' : 'no-black-border'" style="text-align: center;">
                         </ng-container>
                     </colgroup>
                     <thead>
                         <tr *ngIf="passData.tHeaderWithColspan != null ">
                             <ng-container *ngFor="let header of passData.tHeaderWithColspan">
-                                <th [colSpan]="header.span" style="text-align: center;">
+                                <th *ngIf="header.pinLeft == undefined || header.pinLeft.length == 0" [colSpan]="header.span" style="text-align: center;">
                                     <span class="gridHeader">{{ header.header }}</span>
                                 </th>
                             </ng-container>
@@ -661,7 +661,6 @@
 
                                         <!-- appRequired Test -->
                                         <ng-container *ngIf="data.required !== undefined && data.required.indexOf(key) != -1">
-                                            {{yike}}
                                             <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
                                              type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" appRequired>
 
@@ -994,7 +993,7 @@
         <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'left non-datatable' + passData.pageID" style="width:auto" *ngIf="pinKeysRight != undefined && pinKeysRight.length != 0">
             <colgroup *ngIf="passData.tHeaderWithColspan != null">
                 <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">
-                    <col [span]="header.span" [id]="((i%2 === 0) && (i !== 0 && passData.checkFlag)) || (!passData.checkFlag && i%2===1) ? 'black-border' : 'no-black-border'" style="text-align: center;">
+                    <col [span]="header.span" [id]="(i%2 === 1  && !passData.checkFlag) || (passData.checkFlag && i !== 0 && i%2===0) ? 'black-border' : 'no-black-border'" style="text-align: center;">
                 </ng-container>
             </colgroup>
             <thead>
