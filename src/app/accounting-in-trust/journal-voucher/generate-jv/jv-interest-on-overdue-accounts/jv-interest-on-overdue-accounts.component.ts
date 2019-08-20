@@ -121,6 +121,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
           this.passData.tableData[this.passData.tableData.length - 1].orgOverdue = data.overDueAccts[i].overdueInt;
         }
         this.jvDetails.cedingName = data.overDueAccts[0].cedingName;
+        this.jvDetails.cedingId = data.overDueAccts[0].cedingId;
       }
       
       this.table.refreshTable(); 

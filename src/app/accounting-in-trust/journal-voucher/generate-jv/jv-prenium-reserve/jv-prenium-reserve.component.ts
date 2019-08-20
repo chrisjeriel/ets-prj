@@ -102,6 +102,7 @@ export class JvPreniumReserveComponent implements OnInit {
 					this.totalWhtaxAmt 	  += this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt;
 				}
 				this.premResData.cedingName = data.premResRel[0].cedingName;
+				this.premResData.cedingId = data.premResRel[0].cedingId;
 			}
 			
 			this.table.refreshTable();

@@ -209,6 +209,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.totalBalance = 0;
       if(datas.length != 0){
         this.jvDetails.cedingName = datas[0].cedingName;
+        this.jvDetails.ceding = datas[0].cedingId;
         for(var i = 0; i < datas.length; i++){
           this.passData.tableData.push(datas[i]);
           this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(datas[i].effDate);

@@ -214,6 +214,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
           this.totalOverpayment += data.zeroBal[i].adjBalAmt;
         }
         this.jvDetails.cedingName = data.zeroBal[0].cedingName;
+        this.jvDetails.ceding = data.zeroBal[0].cedingId;
       }
       
       this.table.refreshTable();
@@ -286,6 +287,12 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     for(var i = 0 ; i < this.passData.tableData.length ; i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         edited.push(this.passData.tableData[i]);
+        edited[edited.length - 1].premAmt  = this.passData.tableData[i].prevRiComm;
+        edited[edited.length - 1].riComm  = this.passData.tableData[i].prevRiCommVat;
+        edited[edited.length - 1].riCommVat  = this.passData.tableData[i].prevCharges;
+        edited[edited.length - 1].charges  = this.passData.tableData[i].prevNetDue;
+        edited[edited.length - 1].netDue  = this.passData.tableData[i].prevNetDue;
+        edited[edited.length - 1].prevPaytAmt  = this.passData.tableData[i].cumPayment;
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].updateDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();

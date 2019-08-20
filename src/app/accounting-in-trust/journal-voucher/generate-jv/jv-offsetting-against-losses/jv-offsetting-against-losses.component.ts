@@ -173,7 +173,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
           this.clmTable.onRowClick(null, this.passData.tableData[0]);
         }
         this.jvDetails.cedingName = data.receivables[0].cedingName;
-        
+        this.jvDetails.cedingId = data.receivables[0].cedingId;
       }
      
       this.clmTable.refreshTable();

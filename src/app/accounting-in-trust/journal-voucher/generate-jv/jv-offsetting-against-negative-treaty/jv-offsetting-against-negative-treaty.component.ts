@@ -174,6 +174,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
            this.totalTrtyBal += this.passData.tableData[this.passData.tableData.length - 1].balanceAmt;
         }
         this.jvDetails.cedingName = data.negativeTrty[0].cedingName;
+        this.jvDetails.cedingId = data.negativeTrty[0].cedingId;
         this.quarterTable.refreshTable();
         this.quarterTable.onRowClick(null,this.passData.tableData[0]);
       }

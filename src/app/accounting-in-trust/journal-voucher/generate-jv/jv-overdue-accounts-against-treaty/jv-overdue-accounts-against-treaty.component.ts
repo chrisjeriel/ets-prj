@@ -168,6 +168,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
           this.passData.tableData.push(data.acctTreatyBal[i]);
         }
         this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName;
+        this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
       }
       this.quarterTable.refreshTable();
       this.quarterTable.onRowClick(null,this.passData.tableData[0]);
