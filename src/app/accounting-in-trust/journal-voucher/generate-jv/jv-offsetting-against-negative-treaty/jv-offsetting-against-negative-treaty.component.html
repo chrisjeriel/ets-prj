@@ -20,7 +20,7 @@
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
                 <legend class="scheduler-border">Negative Treaty Balance</legend>
                     <div style="position: relative;margin-top: 10px" >
-                        <app-cust-editable-non-datatable #quarterTable [passData]="passData"(newClick)="onrowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event);calculateTotal($event)"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable #quarterTable [passData]="passData" (newClick)="onrowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event);calculateTotal($event)"></app-cust-editable-non-datatable>
                     </div>
             </fieldset>
         </div>
@@ -31,7 +31,7 @@
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
             <legend class="scheduler-border">Claims for Offset</legend>
                 <div style="position: relative;margin-top: 10px" >
-                    <app-cust-editable-non-datatable #trytytrans [passData]="claimsOffset" (clickLOV)="openLOV($event)" (tableDataChange)="claimsOffset.tableData = $event; quarterTable.indvSelect.clmOffset=$event;"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #trytytrans [passData]="claimsOffset" (clickLOV)="openLOV($event)" (tableDataChange)="claimsOffset.tableData = $event; quarterTable.indvSelect.clmOffset=$event;update($event)"></app-cust-editable-non-datatable>
                 </div>
             </fieldset>
         </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -17,6 +17,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   
+  @Output() emitData = new EventEmitter<any>();
+  @Input() cedingParams:any;
   @Input() jvDetail: any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
   @ViewChild('trytytrans') trytytrans: CustEditableNonDatatableComponent;
@@ -62,9 +64,10 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   passDataOffsetting: any = {
+    tHeaderWithColspan : [],
     tableData: [],
-    tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm VAT','Charges','Net Due','Payments','Balance','Balance (PHP)',"Overdue Interest"],
-    dataTypes: ['text','text','text','sequence-2','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
+    tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments', 'Remaining Balance'],
+    dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
     nData: {
       showMG:1,
       tranId : '',
@@ -93,8 +96,8 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       updateUser : this.ns.getCurrentUser(),
       updateDate : '',
     },
-    total:[null,null,null,null,null,null,null,'Total','premAmt','riComm','riCommVat', 'charges','netDue','prevPaytAmt','balPaytAmt','localAmt','overdueInt'],
-    magnifyingGlass: ['soaNo'],
+    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    magnifyingGlass: ['policyNo'],
     checkFlag: true,
     addFlag: true,
     disableAdd: true,
@@ -108,7 +111,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     pageID: 'passDataOffsetting',
     pageLength: 5,
     widths: [204,185,185,1,1,1,1,1,85,120,85,85,120,120,120,120],
-    keys: ['soaNo','policyNo','coRefNo','instNo','effDate','dueDate','currCd','currRate','premAmt','riComm','riCommVat','charges','netDue','prevPaytAmt','balPaytAmt','localAmt','overdueInt']
+    keys: ['policyNo','instNo','coRefNo','effDate','dueDate','currCd','currRate','premAmt','riComm','riCommVat','charges','netDue','prevPaytAmt','balPaytAmt','overdueInt'],
   };
 
   jvDetails: any = {
@@ -133,7 +136,15 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
   ngOnInit() {
-    this.getMtnRate();
+    this.passData.nData.currCd = this.jvDetail.currCd;
+    this.passData.nData.currRate = this.jvDetail.currRate;
+
+    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
+      console.log(this.cedingParams)
+      this.jvDetails.ceding = this.cedingParams.cedingId;
+      this.jvDetails.cedingName = this.cedingParams.cedingName;
+      this.retrieveAcctBal();
+    }
   }
 
   showCedingCompanyLOV() {
@@ -160,6 +171,14 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.passLov.cedingId = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveAcctBal();
+    this.check(this.jvDetails);
+  }
+
+  check(data){
+    console.log(data)
+    this.emitData.emit({ cedingId: data.ceding,
+                         cedingName: data.cedingName
+                       });
   }
 
   onRowClick(data){

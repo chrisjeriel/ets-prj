@@ -24,19 +24,19 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   passData: any = {
         tableData: [],
-        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check/Card No.','Check Date','Check Class'],
-        dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect'],
+        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
+        dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
-        widths: [130,70,100,150,"auto",1,210,100,180],
-        keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass'],
-        uneditable: [false,false,false,false,false,false,false,false,false],
+        widths: [130,70,100,150,"auto",1,210,100,180, 'auto'],
+        keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass', 'remarks'],
+        uneditable: [false,false,false,false,false,false,false,false,false, false],
         pageID: 1,
         addFlag: true,
         genericBtn: 'Delete',
         nData: {
-          paytMode: '',
+          paytMode: 'CK',
           currCd: 'PHP',
           currRate: 1,
           paytAmt: 0,
@@ -44,15 +44,16 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           bankAcct: '',
           checkNo: '',
           checkDate: '',
-          checkClass: '',
-          uneditable: ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass']
+          checkClass: 'LC',
+          remarks: ''
+          //uneditable: ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass']
         },
         disableGeneric: true,
         opts:[
           {
             selector: 'paytMode',
-            vals: ['BT', 'CA', 'CK', 'CR'],
-            prev: ['Bank Transfer', 'Cash', 'Check', 'Credit Card']
+            vals: ['BT', 'CA', 'CK'],
+            prev: ['Bank Transfer', 'Cash', 'Check']
           },
           {
             selector: 'currCd',
@@ -222,7 +223,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   newAr(){
     this.isAdd = true;
     this.disableTab.emit(true);
-    this.retrieveMtnAcitDCBNo();
+    this.retrieveMtnAcitDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
     this.setDefaultValues();
     //this.retrieveMtnDCBUser();
     this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
@@ -435,7 +436,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.rstrctTranUp   = data.ar.rstrctTranUp;
           this.selectedCurrency       = data.ar.currCd;
           if(this.arInfo.arStatDesc.toUpperCase() === 'DELETED' || this.arInfo.arStatDesc.toUpperCase() === 'CANCELED'){
+          //if(this.arInfo.arStatDesc.toUpperCase() !== 'NEW'){
             this.passData.dataTypes = ['select','select','percent','currency','select','text','text','date','select'];
+            this.passData.addFlag = false;
+            this.passData.genericBtn = undefined;
+            this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+            this.isCancelled = true;
           }
           //currencies
           this.currencies = [];
@@ -525,7 +531,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }
         //bankAcct
         if(bankAcctData.bankAcctList.length !== 0){
-            this.bankAccts = bankAcctData.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency});
+            this.bankAccts = bankAcctData.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null});
             if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.arInfo.dcbBankAcctNo) == -1){
               this.arInfo.dcbBankAcct = '';
               this.arInfo.dcbBankAcctNo = '';
@@ -618,6 +624,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.successDiag.open();
         }
         else{
+          this.isAdd = false;
           this.retrieveArEntry(data.outTranId, '');
           this.paytDtlTbl.refreshTable();
           this.dialogIcon = 'success';
@@ -692,7 +699,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         (data:any)=>{
           if(data.bankAcctList.length !== 0){
             this.bankAccts = data.bankAcctList;
-            this.bankAccts = this.bankAccts.filter(a=>{return a.currCd == this.selectedCurrency});
+            this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null });
           }
           if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
             this.arInfo.dcbBankAcct = '';
@@ -917,6 +924,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   setDefaultValues(){
+    this.banks = [];
+    this.bankAccts = [];
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
                         this.ms.getMtnBank(),
                         this.ms.getMtnBankAcct()).pipe(map(([dcb, bank, bankAcct]) => { return { dcb, bank, bankAcct }; }));
@@ -948,7 +957,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
            }
            //bankAcct
            if(data.bankAcct.bankAcctList.length !== 0){
-               this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency});
+               this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null});
                if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
                  this.arInfo.dcbBankAcct = '';
                  this.arInfo.dcbBankAcctNo = '';

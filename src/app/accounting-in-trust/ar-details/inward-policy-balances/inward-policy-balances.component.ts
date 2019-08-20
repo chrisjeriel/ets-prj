@@ -26,25 +26,26 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   passData: any = {
     tableData: [],
-    tHeader: ["SOA No.","Policy No","Co. Ref. No.", "Inst No.","Eff Date", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Payments", "Balance", "Overdue Interest"],
-    dataTypes: ["text","text","text", "text", "date", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency", "currency"],
+    tHeaderWithColspan: [{header:'', span:1, pinLeft: true},{header: 'Inward Policy Info', span: 13, pinLeft: true}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+    pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance'],
+    tHeader: ["Policy No","Co. Ref. No.", "Inst No.", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Cumulative Payments", "Balance",
+              'Payment Amount', "Premium", "RI Comm", 'Ri Comm Vat', "Charges", 'Total Payments', 'Remaining Balance'],
+    dataTypes: ["text","text", "text", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency","currency","currency","currency","currency","currency","currency","currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
     paginateFlag: true,
     checkFlag: true,
-    magnifyingGlass: ['soaNo'],
+    magnifyingGlass: ['policyNo'],
     pageLength: 10,
     nData: {
         tranId: '',
         billId: '',
         itemNo: '',
         policyId: '',
-        soaNo: '',
         policyNo: '',
         coRefNo: '',
         instNo: '',
-        effDate: '',
         dueDate: '',
         currCd: '',
         currRate: '',
@@ -57,16 +58,17 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
         balOverdueInt: '',
         showMG: 1
     },
-    total: [null,null,null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
+    //total: [null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt'],
 /*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
-    widths: [200, 200, 120, 50,120, 120, 30, 85,120, 120, 120,120,120,120,120,120],
-    keys: ['soaNo', 'policyNo', 'coRefNo', 'instNo', 'effDate', 'dueDate', 'currCd', 'currRate', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt', 'overdueInt'],
-    uneditable: [false,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true]
+    widths: [170, 100, 50, 1, 30, 85,110, 110, 110,110,110,110,110,110,110,110,110,110,110,110,],
+    keys: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true]
   };
 
   passLov: any = {
     selector: 'acitSoaDtlAr',
     payeeNo: '',
+    currCd: '',
     hide: []
   }
 
@@ -92,6 +94,12 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Inward Policy Balances");
     this.passLov.payeeNo = this.record.payeeNo;
+    if(this.record.arStatDesc.toUpperCase() !== 'NEW'){
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag = false;
+    }
     this.retrieveInwPolBal();
   }
 
@@ -102,6 +110,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   openSoaLOV(data){
+    this.passLov.currCd = this.record.currCd;
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
     console.log(this.passLov.hide);
     this.soaIndex = data.index;
@@ -109,6 +118,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   retrieveInwPolBal(){
+    this.passData.tableData = [];
     this.accountingService.getAcitArInwPolBal(this.record.tranId, 1).subscribe( //billId for Inward Policy Balances is always 1
       (data: any)=>{
         if(data.arInwPolBal.length !== 0){
@@ -116,7 +126,13 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           setTimeout(()=>{
             $('.alloted').focus().blur();
           }, 0);
-          this.passData.tableData = data.arInwPolBal;
+          //this.passData.tableData = data.arInwPolBal;
+          for(var i of data.arInwPolBal){
+            i.cumPayment = i.prevCumPayment;
+            i.totalPayments = i.cumPayment + i.balPaytAmt;
+            
+            this.passData.tableData.push(i);
+          }
           this.originalValues = data.arInwPolBal;
           this.table.refreshTable();
         }
@@ -151,16 +167,20 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.passData.tableData[this.passData.tableData.length - 1].dueDate = selected[i].dueDate;
       this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currRate;
-      this.passData.tableData[this.passData.tableData.length - 1].premAmt = selected[i].balPremDue;
-      this.passData.tableData[this.passData.tableData.length - 1].riComm = selected[i].balRiComm;
-      this.passData.tableData[this.passData.tableData.length - 1].riCommVat = selected[i].balRiCommVat;
-      this.passData.tableData[this.passData.tableData.length - 1].charges = selected[i].balChargesDue;
-      //this.passData.tableData[this.passData.tableData.length - 1].netDue = selected[i].netDue;
-      this.passData.tableData[this.passData.tableData.length - 1].netDue = selected[i].balPremDue - selected[i].balRiComm - selected[i].balRiCommVat + selected[i].balChargesDue;
-      this.passData.tableData[this.passData.tableData.length - 1].totalPayments = selected[i].totalPayments;
-      //this.passData.tableData[this.passData.tableData.length - 1].balance = selected[i].balance;
-      this.passData.tableData[this.passData.tableData.length - 1].balPaytAmt = this.passData.tableData[this.passData.tableData.length - 1].netDue - selected[i].totalPayments;
-      this.passData.tableData[this.passData.tableData.length - 1].overdueInt = selected[i].balOverdueInt;
+      this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt = selected[i].prevPremAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].prevRiComm = selected[i].prevRiComm;
+      this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat = selected[i].prevRiCommVat;
+      this.passData.tableData[this.passData.tableData.length - 1].prevCharges = selected[i].prevCharges;
+      this.passData.tableData[this.passData.tableData.length - 1].prevNetDue = selected[i].prevNetDue;
+      this.passData.tableData[this.passData.tableData.length - 1].cumPayment = selected[i].cumPayment;
+      this.passData.tableData[this.passData.tableData.length - 1].prevBalance = selected[i].prevBalance;
+      this.passData.tableData[this.passData.tableData.length - 1].premAmt = selected[i].prevPremAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].riComm = selected[i].prevRiComm;
+      this.passData.tableData[this.passData.tableData.length - 1].riCommVat = selected[i].prevRiCommVat;
+      this.passData.tableData[this.passData.tableData.length - 1].charges = selected[i].prevCharges;
+      this.passData.tableData[this.passData.tableData.length - 1].balPaytAmt = selected[i].prevBalance;
+      this.passData.tableData[this.passData.tableData.length - 1].totalPayments = selected[i].cumPayment + selected[i].prevBalance;
+      this.passData.tableData[this.passData.tableData.length - 1].netDue = 0;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['soaNo'];
@@ -278,7 +298,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
         }
       }
       if(this.selected.add){
-        this.accountingService.getAcitSoaDtl(data[index].policyId, data[index].instNo, null, this.record.payeeNo).subscribe(
+        this.accountingService.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo).subscribe(
           (soaDtl: any)=>{
             console.log(soaDtl.soaDtlList[0]);
             let soa = soaDtl.soaDtlList[0];
@@ -287,13 +307,15 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
               data[index].riComm =  Math.round((soa.balRiComm * (data[index].balPaytAmt / soa.balAmtDue)) * 100) / 100;
               data[index].riCommVat = Math.round((soa.balRiCommVat * (data[index].balPaytAmt / soa.balAmtDue)) * 100) / 100;
               data[index].charges = 0;
-              //data[index].netDue = soa.balAmtDue - data[index].balPaytAmt; //wrong
+              data[index].netDue = data[index].prevBalance - data[index].balPaytAmt; //wrong
+              data[index].totalPayments = data[index].cumPayment + data[index].balPaytAmt;
             }else{
               data[index].premAmt =  Math.round((soa.balPremDue * (data[index].balPaytAmt / soa.balAmtDue)) * 100) / 100;
               data[index].riComm =  Math.round((soa.balRiComm * (data[index].balPaytAmt / soa.balAmtDue)) * 100) / 100;
               data[index].riCommVat = Math.round((soa.balRiCommVat * (data[index].balPaytAmt / soa.balAmtDue)) * 100) / 100;
               data[index].charges = data[index].balPaytAmt - (data[index].premAmt - data[index].riComm - data[index].riCommVat);
-              //data[index].netDue = soa.balAmtDue - data[index].balPaytAmt; //wrong
+              data[index].netDue = data[index].prevBalance - data[index].balPaytAmt; //wrong
+              data[index].totalPayments = data[index].cumPayment + data[index].balPaytAmt;
             }
           }
         );
@@ -306,7 +328,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           }
         );*/
         var sub$ = forkJoin(this.accountingService.getAcitArInwPolBal(this.record.tranId, 1),
-                            this.accountingService.getAcitSoaDtl(data[index].policyId, data[index].instNo, null, this.record.payeeNo)).pipe(map(([inw, agingsoa]) => { return { inw, agingsoa}; }));
+                            this.accountingService.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo)).pipe(map(([inw, agingsoa]) => { return { inw, agingsoa}; }));
         this.$sub = sub$.subscribe((forked: any)=>{
           let inwPolBal = forked.inw.arInwPolBal.filter(a=>{return a.soaNo == this.selected.soaNo})[0];
           let agingSoa  = forked.agingsoa.soaDtlList[0];
@@ -320,13 +342,15 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
             data[index].riComm =  Math.round(((agingSoa.balRiComm + inwPolBal.riComm) * (data[index].balPaytAmt / (agingSoa.balAmtDue + inwPolBal.balPaytAmt))) * 100) / 100;
             data[index].riCommVat = Math.round(((agingSoa.balRiCommVat + inwPolBal.riCommVat) * (data[index].balPaytAmt / (agingSoa.balAmtDue + inwPolBal.balPaytAmt))) * 100) / 100;
             data[index].charges = 0;
-            //data[index].netDue = (agingSoa.balAmtDue + inwPolBal.balPaytAmt) - data[index].balPaytAmt; //wrong
+            data[index].netDue = data[index].prevBalance - data[index].balPaytAmt; //wrong
+            data[index].totalPayments = data[index].cumPayment + data[index].balPaytAmt;
           }else{
             data[index].premAmt =  Math.round(((agingSoa.balPremDue + inwPolBal.premAmt) * (data[index].balPaytAmt / (agingSoa.balAmtDue + inwPolBal.balPaytAmt))) * 100) / 100;
             data[index].riComm =  Math.round(((agingSoa.balRiComm + inwPolBal.riComm) * (data[index].balPaytAmt / (agingSoa.balAmtDue + inwPolBal.balPaytAmt))) * 100) / 100;
             data[index].riCommVat = Math.round(((agingSoa.balRiCommVat + inwPolBal.riCommVat) * (data[index].balPaytAmt / (agingSoa.balAmtDue + inwPolBal.balPaytAmt))) * 100) / 100;
             data[index].charges = data[index].balPaytAmt - (data[index].premAmt - data[index].riComm - data[index].riCommVat);
-            //data[index].netDue = (agingSoa.balAmtDue + inwPolBal.netDue) - data[index].balPaytAmt; //wrong
+            data[index].netDue = data[index].prevBalance - data[index].balPaytAmt; //wrong
+            data[index].totalPayments = data[index].cumPayment + data[index].balPaytAmt;
           }
         });
       }
