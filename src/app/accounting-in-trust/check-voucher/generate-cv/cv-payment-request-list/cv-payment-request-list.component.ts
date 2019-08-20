@@ -7,6 +7,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -21,6 +22,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   @ViewChild('can') can             : CancelButtonComponent;
   @ViewChild('con') con             : ConfirmSaveComponent;
   @ViewChild('suc') suc            : SucessDialogComponent;
+  @ViewChild('warnMdl') warnMdl         : ModalComponent;
 
   passDataPaytReqList: any = {
     tableData     : [],
@@ -38,6 +40,7 @@ export class CvPaymentRequestListComponent implements OnInit {
       showMG        : 1
     },
     total         : [null,null,null,null,null,'Total','reqAmt'],
+    uneditable    : [true,true,true,true,true,true,true],
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
@@ -72,34 +75,57 @@ export class CvPaymentRequestListComponent implements OnInit {
     currCd : ''
   };
 
+  paytData: any ={
+    createUser : '',
+    createDate : '',
+    updateUser : '',
+    updateDate : ''
+  };
+
   cancelFlag     : boolean;
   dialogIcon     : string;
   dialogMessage  : string;
+  warnMsg        : string = '';
 
 
   constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService) { }
 
   ngOnInit() {
     this.titleService.setTitle(" Acct | CV | Payment Request List");
-  	this.getPaytReqList();
+  	this.getCvPaytReqList();
   }
 
-  getPaytReqList(){
+  getCvPaytReqList(){
     console.log(this.passData.tranId);
-    // this.accountingService.getPaytReqList([])
-    // .subscribe(data => {
-    //   console.log(data);
-    //   var rec = data['acitPaytReq'];
-    // });
-
-    var subRes = forkJoin(this.accountingService.getAcitCv(this.passData.tranId),this.accountingService.getPaytReqList([]))
+    console.log(this.passData);
+ 
+    var subRes = forkJoin(this.accountingService.getAcitCv(this.passData.tranId),this.accountingService.getAcitCvPaytReqList(this.passData.tranId))
                        .pipe(map(([cv, pr]) => { return { cv, pr }; }));
 
     subRes.subscribe(data => {
       console.log(data);
-      var recCv = data['cv']['acitCvList'];
-      var recPr = data['pr']['acitPaytReq'];
-      
+      var recCv = data['cv']['acitCvList'][0];
+      var recPr = data['pr']['acitCvPaytReqList'];
+
+      this.cvInfo =  Object.assign(this.cvInfo, recCv);
+      console.log(this.cvInfo);
+      this.cvInfo.cvDate = this.ns.toDateTimeString(this.cvInfo.cvDate); 
+      this.passDataPaytReqList.tableData = recPr;
+      this.paytReqTbl.refreshTable();
+
+    });
+  }
+
+  onSavePaytReqList(){
+    this.paytReqTbl.overlayLoader = true;
+    console.log(this.params);
+    this.accountingService.saveAcitCvPaytReqList(JSON.stringify(this.params))
+    .subscribe(data => {
+      console.log(data);
+      this.getCvPaytReqList();
+      this.suc.open();
+      this.params.savePrqTrans  = [];
+      this.params.deletePrqTrans  = [];
     });
   }
 
@@ -110,48 +136,46 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.passDataPaytReqList.tableData.forEach(e => {
       e.tranId    = this.passData.tranId;
       if(e.edited && !e.deleted){
-        this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.invtId != e.invtId);
+        this.params.savePaytReqList = this.params.savePaytReqList.filter(i => i.reqId != e.reqId);
         e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
-        e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
+        e.createDate    = this.ns.toDateTimeString(e.createDate);
         e.updateUser    = this.ns.getCurrentUser();
         e.updateDate    = this.ns.toDateTimeString(0);
-        e.quarterEnding = '';
-        e.currAmt       = e.invtAmt;
         e.itemNo        = e.itemNo,
-        e.localAmt      = Number(e.invtAmt) * Number(e.currRate);
-        this.params.savePrqTrans.push(e);
+        this.params.savePaytReqList.push(e);
       }else if(e.edited && e.deleted){ 
-        this.params.deletePrqTrans.push(e);  
+        this.params.deletePaytReqList.push(e);  
       }
     });
  
     console.log(this.passDataPaytReqList.tableData);
     console.log(this.params);
 
-    //var invtAmt = this.passDataPaytReqList.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.invtAmt != null ?parseFloat(b.invtAmt):0),0);
+    var reqAmt = this.passDataPaytReqList.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reqAmt != null ?parseFloat(b.reqAmt):0),0);
+    console.log(reqAmt);
 
-    // if(Number(this.requestData.reqAmt) < Number(invtAmt)){
-    //     this.warnMsg = 'The Total Investment Amount for Placement must not exceed the Requested Amount.';
-    //     this.warnMdl.openNoClose();
-    //     this.params.savePrqTrans   = [];
-    //     this.params.deletePrqTrans = [];
-    // }else{
-    //     if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-    //       $('.ng-dirty').removeClass('ng-dirty');
-    //       this.conInvt.confirmModal();
-    //       this.params.savePrqTrans   = [];
-    //       this.params.deletePrqTrans = [];
-    //       this.investmentData.tableData = this.investmentData.tableData.filter(e => e.invtCd != '');
-    //     }else{
-    //       console.log(this.cancelFlagInvt);
-    //       if(this.cancelFlagInvt == true){
-    //         this.conInvt.showLoading(true);
-    //         setTimeout(() => { try{this.conInvt.onClickYes();}catch(e){}},500);
-    //       }else{
-    //         this.conInvt.confirmModal();
-    //       }
-    //     }
-    // }
+    if(Number(this.passData.cvAmt) < Number(reqAmt)){
+        this.warnMsg = 'The Total of listed Payment Requests must not exceed the CV Amount.';
+        this.warnMdl.openNoClose();
+        this.params.savePaytReqList   = [];
+        this.params.deletePaytReqList = [];
+    }else{
+        if(this.params.savePaytReqList.length == 0 && this.params.deletePaytReqList.length == 0){
+          $('.ng-dirty').removeClass('ng-dirty');
+          this.con.confirmModal();
+          this.params.savePaytReqList   = [];
+          this.params.deletePaytReqList = [];
+          this.passDataPaytReqList.tableData = this.passDataPaytReqList.tableData.filter(e => e.reqId != '');
+        }else{
+          console.log(this.cancelFlag);
+          if(this.cancelFlag == true){
+            this.con.showLoading(true);
+            setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
+          }else{
+            this.con.confirmModal();
+          }
+        }
+    }
   }
 
   showLov(){
@@ -162,7 +186,13 @@ export class CvPaymentRequestListComponent implements OnInit {
   setData(data){
     $('input').addClass('ng-dirty');
     this.ns.lovLoader(data.ev, 0);
-    var rec = data['data'].map(e => {
+    var rec = data['data'];
+
+    rec.forEach(e2 => {
+      this.passDataPaytReqList.tableData.push(e2);
+    
+    });
+    this.passDataPaytReqList.tableData = this.passDataPaytReqList.tableData.filter(e => e.paytReqNo != '').map(e => {
       e.approvedDate = this.ns.toDateTimeString(e.approvedDate);
       e.createDate   = this.ns.toDateTimeString(e.createDate);
       e.preparedDate = this.ns.toDateTimeString(e.preparedDate);
@@ -170,12 +200,27 @@ export class CvPaymentRequestListComponent implements OnInit {
       e.edited       = true; 
       e.checked      = false;
       return e;
-    });
-
-    this.passDataPaytReqList.tableData = rec;
+    });;
     console.log(this.passDataPaytReqList.tableData);
     this.paytReqTbl.refreshTable();
 
+  }
+
+   onRowClick(event){
+    if(event != null){
+      this.paytData.createUser = event.createUser;
+      this.paytData.createDate = this.ns.toDateTimeString(event.createDate);
+      this.paytData.updateUser = event.updateUser;
+      this.paytData.updateDate = this.ns.toDateTimeString(event.updateDate);
+    }
+  }
+
+  checkCancel(){
+    if(this.cancelFlag){
+      this.can.onNo();
+    }else{
+      this.suc.modal.closeModal();
+    }
   }
 
 }

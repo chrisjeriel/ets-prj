@@ -2033,4 +2033,22 @@ export class AccountingService {
         	
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCv',{params});	
 	}
+
+	saveAcitCvPaytReqList(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCvPaytReqList',params,header);
+ 
+    }
+
+    getAcitCvPaytReqList(tranId?,itemNo?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCvPaytReqList',{params});	
+	}
 }
