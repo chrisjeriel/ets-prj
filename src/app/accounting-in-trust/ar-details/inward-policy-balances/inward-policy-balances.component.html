@@ -1,27 +1,36 @@
-<div class="form-row custom-row-inline-inset">
-    <div class="input-group" style="margin-bottom: 0px !important;">
-      <label class="form-control-sm col-sm-7">Alloted Policy Balance Payments</label>
-      <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted"
-        appCurrency placeholder="" [(ngModel)]="allotedAmt">
-      <label class="form-control-sm col-sm" style="padding-left:0px !important; margin:0px !important;">Total Balance for Selected Policy
-        Transactions</label>
-      <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
-        numbers-only placeholder="" readonly [ngModel]="totalBal | number: '1.2-2'">
-    </div>
-    <div class="input-group" style="margin-bottom: 0px !important;">
-      <label class="form-control-sm col-sm" style="padding-left:0px !important; margin:0px !important;">Variance</label>
-      <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
-        placeholder="" readonly [ngModel]="variance | number: '1.2-2'">
-    </div>
-    <div class="input-group" style="margin-top: -27px">
-      <div class="col-sm-12">
-        <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)"></app-cust-editable-non-datatable>
-      </div>
-    </div>
-    
-</div>
 
-<div class="form-row">
+  <div style="margin: 30px 0px -30px 0px;">
+      <div class="input-group" style="margin-top: -27px">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="input-group" style="margin-bottom: 0px !important;">
+                <label class="form-control-sm col-sm-7 labels">Alloted Policy Balance Payments</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted"
+                  appCurrency placeholder="" [(ngModel)]="allotedAmt">
+                <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Total Balance for Selected Policy
+                  Transactions</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
+                  numbers-only placeholder="" readonly [ngModel]="totalBal | number: '1.2-2'">
+              </div>
+              <div class="input-group" style="margin-bottom: 0px !important;">
+                <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Variance</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
+                  placeholder="" readonly [ngModel]="variance | number: '1.2-2'">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)">
+              </app-cust-editable-non-datatable>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+<div class="form-row" *ngIf="passData.checkFlag">
         <div class="form-group col-sm">
           <div class="col-md-13 text-center">
             <br>
