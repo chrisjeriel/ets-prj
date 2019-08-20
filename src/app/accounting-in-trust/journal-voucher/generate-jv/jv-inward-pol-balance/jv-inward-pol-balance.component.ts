@@ -154,6 +154,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   jvDetails: any = {
     cedingName: '',
+    ceding:'',
     deleteInwPol: [],
     saveInwPol:[]
   }
@@ -190,7 +191,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
        //this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
-
+     this.retrieveInwPol();
      if(this.cedingParams.cedingId != undefined && this.cedingParams.cedingId != null && this.cedingParams.cedingId != ''){
        console.log(this.cedingParams)
        this.jvDetails.ceding = this.cedingParams.cedingId;
@@ -206,17 +207,21 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.passData.disableAdd = false;
       this.passData.tableData = [];
       this.totalBalance = 0;
-      for(var i = 0; i < datas.length; i++){
-        this.passData.tableData.push(datas[i]);
-        this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(datas[i].effDate);
-        this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(datas[i].dueDate)
-        this.totalBalance += this.passData.tableData[this.passData.tableData.length - 1].paytAmt;
+      if(datas.length != 0){
+        this.jvDetails.cedingName = datas[0].cedingName;
+        for(var i = 0; i < datas.length; i++){
+          this.passData.tableData.push(datas[i]);
+          this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(datas[i].effDate);
+          this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(datas[i].dueDate)
+          this.totalBalance += this.passData.tableData[this.passData.tableData.length - 1].paytAmt;
 
-        if(this.passData.tableData[i].okDelete == 'N'){
-          this.passData.tableData[i].uneditable = ['paytAmt'];
+          if(this.passData.tableData[i].okDelete == 'N'){
+            this.passData.tableData[i].uneditable = ['paytAmt'];
+          }
         }
+          this.table.refreshTable();
       }
-        this.table.refreshTable();
+      
     });
   }
 

@@ -79,7 +79,7 @@ export class JvPreniumReserveComponent implements OnInit {
 		}else {
 
 		}
-
+		this.retrievePremRes();
 		if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
 		       console.log(this.cedingParams)
 		       this.premResData.cedingId = this.cedingParams.cedingId;
@@ -94,12 +94,16 @@ export class JvPreniumReserveComponent implements OnInit {
 			this.passData.disableAdd = false;
 			this.totalInterestAmt = 0;
 			this.totalWhtaxAmt = 0;
-			for( var i = 0 ; i < data.premResRel.length;i++){
-				this.passData.tableData.push(data.premResRel[i]);
-				this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.premResRel[i].quarterEnding);
-				this.totalInterestAmt += this.passData.tableData[this.passData.tableData.length - 1].interestAmt;
-				this.totalWhtaxAmt 	  += this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt;
+			if(data.premResRel.length!= 0){
+				for( var i = 0 ; i < data.premResRel.length;i++){
+					this.passData.tableData.push(data.premResRel[i]);
+					this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.premResRel[i].quarterEnding);
+					this.totalInterestAmt += this.passData.tableData[this.passData.tableData.length - 1].interestAmt;
+					this.totalWhtaxAmt 	  += this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt;
+				}
+				this.premResData.cedingName = data.premResRel[0].cedingName;
 			}
+			
 			this.table.refreshTable();
 		});
 	}
