@@ -1,26 +1,27 @@
 <div>
 	<div class="form-row custom-row-inline-inset">
-	     <div class="col-sm-12 text-align">
-	        <div class="input-group" style="padding-right: 0px">
-	            <div class="col-sm-2"></div>
-	            <div class="col-sm-8">
-	                <div class="input-group">
-	                    <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
-	                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" placeholder="BPI/MS INSURANCE CORPORATION">
-	                    <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-	                </div>
-	            </div>
-	            <div class="col-sm-2"></div>
-	        </div>
-	     </div>
-	</div>
+         <div class="col-sm-12 text-align">
+            <div class="input-group" style="padding-right: 0px">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+                        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" (change)="checkCode($event)" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()"> TRBT#PROD_GRADE -->
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()">
+                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+         </div>
+    </div>
 	<div class="row">
 		<div class="col-sm-1"></div>
 		<div class="col-sm-10">
 			<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
 				<legend class="scheduler-border">Claims Losses</legend>
 			 	 <div class="col-sm-12" style="margin-top: 15px" >
-			 	 	 <app-cust-editable-non-datatable [passData]="AgainstLossData"></app-cust-editable-non-datatable>
+			 	 	 <app-cust-editable-non-datatable #clmTable [passData]="passData" (newClick)="onrowClick($event)" (tableDataChange)="passData.tableData = $event" (clickLOV)="openLOV($event)"></app-cust-editable-non-datatable>
 			 	 </div>
 			</fieldset>
 		</div>
@@ -31,7 +32,7 @@
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Inward Policy Balances</legend>
 			 	 <div class="col-sm-12" style="margin-top: 15px" >
-			 	 	 <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+			 	 	 <app-cust-editable-non-datatable #inwTable [passData]="InwPolBal" (tableDataChange)="InwPolBal.tableData = $event;clmTable.indvSelect.inwPolBal=$event" (clickLOV)="openLOVInw($event)"></app-cust-editable-non-datatable>
 			 	 </div>
 			</fieldset>
 		</div>
@@ -49,3 +50,11 @@
 	    </div>
 	</div>	
 </div>	
+<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-lov #clmlovMdl [passData]="passLov" (selectedData)="setClaimOffset($event)">
+<app-lov #inwlovMdl [passData]="passLovInw" (selectedData)="setSoa($event)">
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<!-- <app-cancel-button (onYes)="saveData('cancel')" [url]="'/journal-voucher'" ></app-cancel-button> TRBT#PROD_GRADE -->
+<app-cancel-button (onYes)="saveData()" [url]="'/journal-voucher'" ></app-cancel-button>

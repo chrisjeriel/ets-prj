@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -18,6 +18,8 @@ import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/q
 })
 export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   
+  @Output() emitData = new EventEmitter<any>();
+  @Input() cedingParams:any;
   @Input() jvDetail:any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
   @ViewChild('trytytrans') trytytransTable: CustEditableNonDatatableComponent;
@@ -147,6 +149,15 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService) { }
 
   ngOnInit() {
+    this.passData.nData.currRate = this.jvDetail.currRate;
+    this.passData.nData.currCd = this.jvDetail.currCd;
+    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
+      console.log(this.cedingParams)
+      this.jvDetails.ceding = this.cedingParams.cedingId;
+      this.jvDetails.cedingName = this.cedingParams.cedingName;
+      this.retrieveNegativeTreaty();
+    }
+
   }
 
   retrieveNegativeTreaty(){
@@ -185,10 +196,18 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   setCedingcompany(data){
+    console.log(data)
     this.jvDetails.cedingName = data.cedingName;
     this.jvDetails.ceding = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveNegativeTreaty();
+    this.check(this.jvDetails);
+  }
+
+  check(data){
+    this.emitData.emit({ cedingId: data.ceding,
+                         cedingName: data.cedingName
+                       });
   }
 
   openLOV(data){
@@ -230,7 +249,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.claimsOffset.tableData = this.claimsOffset.tableData.filter((a) => a.showMG != 1);
     for(var  i=0; i < data.data.length;i++){
       this.claimsOffset.tableData.push(JSON.parse(JSON.stringify(this.claimsOffset.nData)));
-      //this.claimsOffset.tableData.push(data)
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].showMG = 0;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].edited  = true;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].itemNo = null;
@@ -238,8 +256,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].projId = data.data[i].projId;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histNo = data.data[i].histNo;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].policyId = data.data[i].policyId;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].currCd = data.data[i].currencyCd;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].currRate = data.data[i].currencyRt;
+      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].currCd = this.jvDetail.currCd;
+      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].currRate = this.jvDetail.currRate;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].claimNo = data.data[i].claimNo;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histCategoryDesc = data.data[i].histCategoryDesc;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histCategory = data.data[i].histCategory;
@@ -248,7 +266,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].insuredDesc = data.data[i].insuredDesc;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].reserveAmt = data.data[i].reserveAmt;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].clmPaytAmt = data.data[i].paytAmt; 
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].localAmt = data.data[i].paytAmt * 1; //change to currency rt
+      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].localAmt = data.data[i].paytAmt * this.jvDetail.currRate; //change to currency rt
       //this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].quarterNo = this.quarterTable.indvSelect.quarterNo;;
     }
     this.trytytransTable.refreshTable();
@@ -306,13 +324,20 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     }
   }
 
+  update(data){
+    for (var i = 0; i < this.claimsOffset.tableData.length; i++) {
+      this.claimsOffset.tableData[i].localAmt = this.claimsOffset.tableData[i].clmPaytAmt * this.jvDetail.currRate;
+    }
+    this.trytytransTable.refreshTable();
+  }
+
   prepareData(){
     this.jvDetails.saveNegTrty = [];
     this.jvDetails.deleteNegTrty = [];
     this.jvDetails.saveClmOffset = [];
     this.jvDetails.deleteClmOffset = [];
     var quarterNo = null;
-    console.log(this.passData.tableData)
+    console.log(this.claimsOffset.tableData)
     for(var i = 0 ; i < this.passData.tableData.length; i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         this.jvDetails.saveNegTrty.push(this.passData.tableData[i]);
@@ -345,10 +370,13 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
         if(this.passData.tableData[i].clmOffset[j].deleted){
           this.jvDetails.deleteClmOffset.push(this.passData.tableData[i].clmOffset[j]);
-          this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;;
+          this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;
         }
       }
     }
+
+    this.jvDetails.tranId = this.jvDetail.tranId;
+    this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
   saveNegativeTreatyBal(){

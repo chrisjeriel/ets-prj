@@ -701,7 +701,6 @@ export class ClmClaimHistoryComponent implements OnInit {
           e.reserveAmt = adjAmt;
           this.clmHistoryData.expResAmt = adjAmt;
         }
-
       }
     });
 
@@ -711,12 +710,13 @@ export class ClmClaimHistoryComponent implements OnInit {
 
     setTimeout(() => {   
       $('#histId').find('tbody').children().each(function(a){
+        console.log(a);
         var cb = $(this).find('input[type=checkbox]');
         var z = $(this).find('input.number');
         var resAmt = $(z[0]);
-        var paytAmt = $(z[1])
+        var paytAmt = $(z[1]);
         var histSelects = $(this).find('select');
-        var histCat = $(histSelects[1]);
+        var histCat = $(histSelects[1]);  
         var histType = $(histSelects[2]);
         (ths.passDataHistory.tableData.some(e => e.exGratia == 'Y' && e.newRec != 1))?cb.prop('disabled',true):'';
         if(histCat.val() == '' || histCat.val() == null || histCat.val() == undefined){
@@ -725,12 +725,10 @@ export class ClmClaimHistoryComponent implements OnInit {
           histType.removeClass('unclickable');
         }
 
+        // if(a == 2){
+        //   resAmt.prop('readonly',true);
+        // }
 
-        console.log(resAmt);
-        ths.passDataHistory.tableData.forEach(e => {
-          (e.enableRes == 'N')?resAmt.addClass('unclickable'):resAmt.removeClass('unclickable');
-          (e.enablePayt == 'N')?paytAmt.addClass('unclickable'):paytAmt.removeClass('unclickable');
-        });
       });
     },0);
 

@@ -1,3 +1,156 @@
-<p>
-  allocate-investment-income works!
-</p>
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Utilities / Allocate Investment Income</h4>
+		<!-- <ngb-tabset (tabChange)="onTabChange($event)"> TRBT#PROD_GRADE -->
+		<ngb-tabset>
+			<ngb-tab class="ngb-tab" title="Allocate Investment Income">
+				<ng-template ngbTabContent>
+					<div>
+						 <fieldset class="scheduler-border">
+						 	<legend class="scheduler-border">Filter Options</legend>
+						 	
+						 		<div class="form-row custom-row-inline-inset">
+									<div class="input-group">
+										<div class="col-sm-3"></div>
+										<input class="form-control-sm " type="radio" name="optradio" id="byDate" value="bydate" [(ngModel)]="radioVal" (click)="clearDates()">	
+										<label class="form-control-sm" for="byDate">&nbsp;By Date</label>
+										<label class="form-control-sm cust-sm from" for="fromDate" style="margin-left : 10px">From</label>
+										<div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="fromDate.split('T')[0]" (valueChange)="fromDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
+										</div>
+										<label class="form-control-sm cust-sm" style="margin-left: 15px">To</label>
+										<div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="toDate.split('T')[0]" (valueChange)="toDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
+										</div>
+										<div class="col-sm-3"></div>
+									</div>
+								</div>
+								<div class="form-row custom-row-inline-inset">
+									<div class="input-group" style="margin-top: -11px;">
+										<div class="col-sm-3"></div>
+										<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" value="bymoyo" [(ngModel)]="radioVal" (click)="clearDates()">
+										<label class="form-control-sm text-left" for="byMonthYear">Month/Year</label>
+										<select id="m-list" [(ngModel)]="fromMonth" class="form-control form-control-sm cust-sm col-sm-3" name="fromMonth" [disabled]="radioVal != 'bymoyo'" style="margin-left: 2px">
+											<option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option>
+										</select>
+										<label class="form-control-sm cust-sm"></label>
+										<select id="y-list" [(ngModel)]="fromYear" class="form-control form-control-sm cust-sm col-sm-3" type="text" name="fromYear" [disabled]="radioVal != 'bymoyo'">
+											<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
+										</select>
+										<div class="col-sm-3"></div>
+									</div>
+								</div>
+								<div class="form-row custom-row-inline-inset">
+									<div class="input-group" style="margin-top: -11px;">
+										<div class="col-sm-3"></div>
+										<input class="form-control-sm " type="radio" name="optradio" id="byYear" value="byyear" [(ngModel)]="radioVal" (click)="clearDates()">	
+										<label class="form-control-sm" for="byYear">&nbsp;As of</label>
+										<div class="col-sm dp-cont" style="margin-left: 30px ! important">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="asOfYear" (valueChange)="asOfYear=$event" [disabled]="radioVal != 'byyear'"></datepicker>
+										</div>
+										<div class="col-sm-3"></div>
+								    </div>
+								</div>
+								<div class="form-row custom-row-inline-inset">
+									<div class="input-group" style="margin-top: -11px;">
+										<div class="w-100 text-center" style="margin-bottom: 6px">
+									        <button class="cust-btn" type="button" (click)="onClickSearch()"><a>Search</a></button>
+									    </div>
+									</div>
+								</div>
+						 </fieldset>
+
+					</div>
+					<div>
+						 <fieldset class="scheduler-border">
+						 	<legend class="scheduler-border">List of Transactions for Allocation</legend>
+						 		<div class="row">
+						 			 <div class="col-sm-12" style="margin-bottom: -20px; margin-top: 10px" >
+						 			 	  <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
+						 			 </div>
+						 		</div>
+						 		<div class="form-row custom-row-inline-inset">
+									<div class="input-group" style="margin-top: 10px;">
+										<div class="w-100 text-center" style="margin-bottom: 6px">
+									        <button class="cust-btn" type="button" (click)="onClickView()" ><a>View Details</a></button>
+									        <button class="cust-btn" type="button" (click)="onClickAllocate()" [disabled]="boolAllocate"><a>Allocate</a></button>
+									    </div>
+									</div>
+								</div>
+						 </fieldset>
+					</div>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+</div>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+
+<app-modal [btnTitle]="'Transaction Details'" hidden id="modalProfComm" #queryMdl>
+    <div header>Transaction Details</div>
+         <div body>
+            <div style="width: 1000px">
+            	<div class="input-group">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm">
+	                    <fieldset class="scheduler-border" style="padding-left: 0px ! important">
+	                    <br />
+		                    <div class="form-row custom-row-inline-inset" style="margin-top: -10px !important;margin-bottom: 12px !important;">
+		                        <div class="input-group alignment" style="margin-bottom: -13px !important;">
+		                            <label class="form-control-sm col-sm-2 text-right">Transaction No.</label>
+		                            <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly  [(ngModel)]="tranNo">
+		                            <label class="form-control-sm col-sm-1 text-right">Tran Date</label>
+		                            <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly [(ngModel)]="tranDate">
+		                            <label class="form-control-sm col-sm-1 text-right">Status</label>
+		                            <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly [(ngModel)]="status">
+		                        </div>
+		                     </div>
+		                     <div class="form-row custom-row-inline-inset" style="margin-top: -13px !important;">
+		                        <div class="input-group alignment" style="margin-bottom: -13px !important;">
+		                            <label class="form-control-sm col-sm-2 text-right">Payor</label>
+		                            <input type="text" class="form-control form-control-sm cust-sm col-sm-10" readonly [(ngModel)]="payor" >
+		                        </div>
+		                     </div>
+	               		 </fieldset>
+	               	</div>
+                    <div class="col-sm-1"></div>
+                </div>
+                <div class="row">
+					<div class="col-sm-12" style="margin-top: 14px; margin-bottom: -20px" >
+					     <app-cust-editable-non-datatable #invtTable [passData]="passDataInvt"> </app-cust-editable-non-datatable>
+					</div>
+            	</div>
+          	</div>
+          </div>
+          	<div footer class="text-center" style="width: 100% !important;">
+                <button type="button" class="cust-btn" (click)="queryModal.closeModal()"><a>Return</a></button>
+          	</div>
+</app-modal>
+
+<app-modal [btnTitle]="'Allocation Successful!'" hidden id="modalAllocSuccess" #successMdl>
+    <div header>Allocation Successful!</div>
+         <div body>
+            <div style="width: 900px">
+            	<div class="input-group">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm">
+                    	 <div class="custom-row-inline-inset" style="text-align: center"> 
+			            	<p *ngIf="radioVal == 'bydate'" style="margin-bottom: 1px;font-size: 15px">Investment income from period of {{ fromDate | date:'MMMM dd,yyyy' }} to {{ toDate | date:'MMMM dd,yyyy' }} were successfully allocated.</p>
+			            	<p *ngIf="radioVal == 'bymoyo'" style="margin-bottom: 1px;font-size: 15px">Investment income for the period were successfully allocated.</p>
+			            	<p *ngIf="radioVal == 'byyear'" style="margin-bottom: 1px;font-size: 15px">Investment income as of {{ asOfYear | date:'MMMM dd,yyyy' }} were successfully allocated.</p>
+			            	<p style="font-size: 15px"> Please see below JV Nos. generated.</p>
+			            </div>
+	               	</div>
+                    <div class="col-sm-1"></div>
+                </div>
+                <div class="row">
+					<div class="col-sm-12" style="margin-top: 4px; margin-bottom: -5px" >
+					     <app-cust-editable-non-datatable #jvTable [passData]="passDataJv"> </app-cust-editable-non-datatable>
+					</div>
+            	</div>
+          	</div>
+          </div>
+          	<div footer class="text-center" style="width: 100% !important;">
+                <button type="button" class="cust-btn" (click)="successMdl.closeModal()"><a>OK</a></button>
+          	</div>
+</app-modal>
+
+
