@@ -151,6 +151,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   ngOnInit() {
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
+    this.retrieveNegativeTreaty();
     if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
       console.log(this.cedingParams)
       this.jvDetails.ceding = this.cedingParams.cedingId;
@@ -172,6 +173,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
            this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.negativeTrty[i].quarterEnding);
            this.totalTrtyBal += this.passData.tableData[this.passData.tableData.length - 1].balanceAmt;
         }
+        this.jvDetails.cedingName = data.negativeTrty[0].cedingName;
         this.quarterTable.refreshTable();
         this.quarterTable.onRowClick(null,this.passData.tableData[0]);
       }

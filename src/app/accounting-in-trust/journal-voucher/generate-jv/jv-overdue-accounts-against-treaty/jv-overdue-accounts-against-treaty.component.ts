@@ -145,7 +145,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passDataOffsetting.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
          { header: "Payment Details", span: 5 }, { header: "", span: 2 });
-
+    this.retrieveAcctBal();
     if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
       console.log(this.cedingParams)
       this.jvDetails.ceding = this.cedingParams.cedingId;
@@ -163,8 +163,11 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       console.log(data);
       this.passData.tableData = [];
       this.passData.disableAdd = false;
-      for(var i = 0; i < data.acctTreatyBal.length; i++){
-        this.passData.tableData.push(data.acctTreatyBal[i]);
+      if( data.acctTreatyBal.length!=0){
+        for(var i = 0; i < data.acctTreatyBal.length; i++){
+          this.passData.tableData.push(data.acctTreatyBal[i]);
+        }
+        this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName;
       }
       this.quarterTable.refreshTable();
       this.quarterTable.onRowClick(null,this.passData.tableData[0]);
