@@ -32,12 +32,13 @@ export class UnappliedCollectionComponent implements OnInit {
 
   passData: any = {
   	tableData: [],
-    tHeader: ['Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
-    dataTypes: ['text','text','text','select','percent','currency','currency'],
+    tHeader: ['Type', 'Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
+    dataTypes: ['select', 'text','text','text','text','percent','currency','currency'],
     nData: {
       tranId: '',
       billId: '',
       itemNo: '',
+      transdtlType: 'OP',
       itemName: '',
       refNo: '',
       remarks: '',
@@ -46,18 +47,18 @@ export class UnappliedCollectionComponent implements OnInit {
       currAmt: '',
       localAmt: ''
     },
-    total:[null,null,null,null,'Total','currAmt','localAmt'],
+    total:[null,null,null,null,null,'Total','currAmt','localAmt'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
     pageLength: 10,
-    widths: [210,160,'auto',80,100,120,120],
-    keys: ['itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'currAmt', 'localAmt'],
-    uneditable: [false,false,false,false,false,false,true],
+    widths: [180,210,160,'auto',80,100,120,120],
+    keys: ['transdtlType','itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'currAmt', 'localAmt'],
+    uneditable: [false,false,false,false,true,true,false,true],
     paginateFlag:true,
     infoFlag:true,
     opts:[{
-      selector: 'currCd',
+      selector: 'transdtlType',
       vals: [],
       prev: []
     }]
@@ -67,7 +68,10 @@ export class UnappliedCollectionComponent implements OnInit {
   ngOnInit() {
     this.passData.nData.tranId = this.arDetails.tranId;
     this.passData.nData.billId = 2;
-    this.getCurrency();
+    //this.getCurrency();
+    this.getTransdtlType();
+    this.passData.nData.currCd = this.arDetails.currCd;
+    this.passData.nData.currRate = this.arDetails.currRate;
     this.retrieveArUnappliedCollection();
   }
 
@@ -76,11 +80,11 @@ export class UnappliedCollectionComponent implements OnInit {
     this.accountingService.getAcitArTransDtl(this.arDetails.tranId, 2).subscribe( //Bill id = 2 for unapplied collection
       (data: any)=>{
         if(data.transDtlList.length !== 0){
-          for(var i of data.transDtlList){
+          /*for(var i of data.transDtlList){
             i.currCd = i.currCd+'T'+i.currRate;
             this.passData.tableData.push(i);
-          }
-          //this.passData.tableData = data.transDtlList;
+          }*/
+          this.passData.tableData = data.transDtlList;
           this.table.refreshTable();
         }
       },
@@ -98,6 +102,19 @@ export class UnappliedCollectionComponent implements OnInit {
            this.passData.opts[0].prev.push(i.currencyCd);
          }
        }
+    );
+  }
+
+  getTransdtlType(){
+    this.ms.getRefCode('UNAPPLIED_COLLECTION_TYPE').subscribe(
+      (data:any)=>{
+        if(data.refCodeList.length !==0){
+          for(var i of data.refCodeList){
+            this.passData.opts[0].vals.push(i.code);
+            this.passData.opts[0].prev.push(i.description);
+          }
+        }
+      }
     );
   }
 

@@ -58,7 +58,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
         balOverdueInt: '',
         showMG: 1
     },
-    //total: [null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt'],
+    total: [null,null,null, null, null, 'Total', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'],
 /*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
     widths: [170, 100, 50, 1, 30, 85,110, 110, 110,110,110,110,110,110,110,110,110,110,110,110,],
     keys: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'],
@@ -212,6 +212,10 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     }else if(this.checkAlloted()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the Alloted Policy Balance Payments.';
+      this.successDiag.open();
+    }else if(this.checkNetPayments()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
     }else{
       this.confirm.confirmModal();
@@ -381,6 +385,14 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   checkAlloted(){
     this.computeTotalBalAndVariance();
     if(this.totalBal > this.allotedAmt){
+      return true;
+    }
+    return false;
+  }
+
+  checkNetPayments(){
+    this.computeTotalBalAndVariance();
+    if(this.totalBal < 1){
       return true;
     }
     return false;

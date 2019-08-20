@@ -29,7 +29,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
-        widths: [130,70,100,150,"auto",1,210,100,180, 'auto'],
+        widths: [130,70,100,130,180,1,150,100,180,210],
         keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass', 'remarks'],
         uneditable: [false,false,false,false,false,false,false,false,false, false],
         pageID: 1,
@@ -172,6 +172,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
+    this.disableTab.emit(true);
     this.retrievePaymentType();
     //this.retrieveCurrency();
     var tranId;

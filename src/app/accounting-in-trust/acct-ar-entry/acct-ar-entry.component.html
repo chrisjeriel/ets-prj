@@ -153,7 +153,10 @@
 							</select>
 							<div class="col-sm-1"></div>
 						</div>
-					<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="paytDtlTbl.onClickDelete('a')" (tableDataChange)="onTableDataChange($event)" #paytDtl></app-cust-editable-non-datatable>
+						<div class="input-group cust-ig">
+							<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="paytDtlTbl.onClickDelete('a')" (tableDataChange)="onTableDataChange($event)" #paytDtl></app-cust-editable-non-datatable>
+						</div>
+					
 				</div>
 			</div>
 		</fieldset>

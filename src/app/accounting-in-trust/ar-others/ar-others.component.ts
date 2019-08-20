@@ -33,7 +33,7 @@ export class ArOthersComponent implements OnInit {
   passData: any = {
     tableData: [],
     tHeader: ['Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
-    dataTypes: ['text','text','text','select','percent','currency','currency'],
+    dataTypes: ['text','text','text','text','percent','currency','currency'],
     nData: {
       tranId: '',
       billId: '',
@@ -53,7 +53,7 @@ export class ArOthersComponent implements OnInit {
     pageLength: 10,
     widths: [210,160,'auto',80,100,120,120],
     keys: ['itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'currAmt', 'localAmt'],
-    uneditable: [false,false,false,false,false,false,true],
+    uneditable: [false,false,false,true,true,false,true],
     paginateFlag:true,
     infoFlag:true,
     opts:[{
@@ -67,7 +67,9 @@ export class ArOthersComponent implements OnInit {
   ngOnInit() {
     this.passData.nData.tranId = this.arDetails.tranId;
     this.passData.nData.billId = 3;
-    this.getCurrency();
+    this.passData.nData.currCd = this.arDetails.currCd;
+    this.passData.nData.currRate = this.arDetails.currRate;
+    //this.getCurrency();
     this.retrieveOthers();
   }
 
@@ -76,11 +78,11 @@ export class ArOthersComponent implements OnInit {
     this.accountingService.getAcitArTransDtl(this.arDetails.tranId, 3).subscribe( //Bill id = 3 for others
       (data: any)=>{
         if(data.transDtlList.length !== 0){
-          for(var i of data.transDtlList){
+          /*for(var i of data.transDtlList){
             i.currCd = i.currCd+'T'+i.currRate;
             this.passData.tableData.push(i);
-          }
-          //this.passData.tableData = data.transDtlList;
+          }*/
+          this.passData.tableData = data.transDtlList;
           this.table.refreshTable();
         }
       },
