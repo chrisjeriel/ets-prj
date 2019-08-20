@@ -80,6 +80,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
   }
 
   subscription: Subscription = new Subscription();
+  cvData: any = null;
 
   constructor(private as: AccountingService, private ns: NotesService) { }
 
@@ -89,18 +90,33 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
+    this.subscription.unsubscribe();
   }
 
   getAcctEntries() {
     var sub$ = forkJoin(this.as.getAcitCv(this.passData.tranId),
                         this.as.getAcitAcctEntries(this.passData.tranId)).pipe(map(([cv, en]) => { return { cv, en }; }));
 
+    this.table.overlayLoader = true;
     this.subscription = sub$.subscribe(data => {
-      var cv = data['cv'];
+      this.cvData = data['cv']['acitCvList'][0];
+      this.cvData.cvDate = this.ns.toDateTimeString(this.cvData.cvDate);
+
+      this.CVAcctEnt.tableData = data['en']['list'];
+      this.CVAcctEnt.tableData.forEach(a => {
+        a.createDate = this.ns.toDateTimeString(a.createDate);
+        a.updateDate = this.ns.toDateTimeString(a.updateDate);
+        a.showMG = 1;
+        if(a.autoTag == 'Y'){
+          a.uneditable = ['glShortCd','debitAmt','creditAmt']
+        }
+      });
+
+      this.computeTotals();
+      this.table.refreshTable();
     });
 
-    this.table.overlayLoader = true;
+    /*this.table.overlayLoader = true;
     this.as.getAcitAcctEntries(this.passData.tranId).subscribe(a => {
       this.CVAcctEnt.tableData = a['list'];
       this.CVAcctEnt.tableData.forEach(a => {
@@ -114,7 +130,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
 
       this.computeTotals();
       this.table.refreshTable();
-    });
+    });*/
   }
 
   clickLov(data) {
@@ -208,7 +224,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
         a.updateUser = this.ns.getCurrentUser();
         a.updateDate = this.ns.toDateTimeString(0);
       } else {
-        // a.tranId = 324;
+        a.tranId = this.cvData.tranId;
         a.createUser = this.ns.getCurrentUser();
         a.createDate = this.ns.toDateTimeString(0);
         a.updateUser = this.ns.getCurrentUser();
