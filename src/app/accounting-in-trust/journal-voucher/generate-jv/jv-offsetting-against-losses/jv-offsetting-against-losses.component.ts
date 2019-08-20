@@ -72,8 +72,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
   InwPolBal: any = {
     tableData: [], //this.accountingService.getAccJvInPolBalAgainstLoss(),
-    tHeader: ['SOA No', 'Policy No', 'Co Ref No', 'Inst No', 'Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm VAT', 'Charges','Net Due','Payments','Balance','Overdue Interest'],
-    dataTypes: ['text','text','text','sequence-2','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency'],
+    tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments', 'Remaining Balance'],
+    dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
     nData: {
       showMG:1,
       tranId: '',
@@ -81,7 +81,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       policyId: '',
       instNo: '',
       policyNo: '',
-      soaNo: '',
       coRefNo: '',
       effDate: '',
       dueDate: '',
@@ -101,8 +100,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       updateUser: this.ns.getCurrentUser(),
       updateDate: ''
     },
-    total:[null,null,null,null,null,null,null,'Total','premAmt','riComm','riCommVat','charges','netDue','prevPaytAmt','balPaytAmt','overdueInt'],
-    magnifyingGlass: ['soaNo'],
+    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    magnifyingGlass: ['policyNo'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
@@ -113,8 +112,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     pagination: true,
     editFlag: false,
     pageLength: 5,
-    keys: ['soaNo','policyNo','coRefNo','instNo','effDate','dueDate','currCd','currRate','premAmt','riComm','riCommVat','charges','netDue','prevPaytAmt','balPaytAmt','overdueInt'],
-    widths: [202,186,96,51,115,115,39,64,116,116,116,116,116,116,116],
+    keys: ['policyNo','instNo','coRefNo','effDate','dueDate','currCd','currRate','premAmt','riComm','riCommVat','charges','netDue','prevPaytAmt','balPaytAmt','overdueInt'],
+    //widths: [186,51,96,115,115,39,64,116,116,116,116,116,116,116],
     pageID: 2,
   };
 
@@ -146,7 +145,9 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
-    this.getMtnRate();
+    //this.getMtnRate();
+    this.passData.nData.currCd = this.jvDetail.currCd;
+    this.passData.nData.currRate = this.jvDetail.currRate;
     if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
       console.log(this.cedingParams)
       this.jvDetails.ceding = this.cedingParams.cedingId;
