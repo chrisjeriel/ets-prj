@@ -9,6 +9,9 @@ import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.componen
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cv-entry',
@@ -62,24 +65,88 @@ export class CvEntryComponent implements OnInit {
   dialogIcon      : string = '';
   cancelFlag      : boolean;
   fromCancel      : boolean;
+  private sub     : any;
 
   passDataLov  : any = {
     selector     : '',
     payeeClassCd : ''
   };
 
-  constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService) { }
+  constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | CV Entry");
+    this.getAcitCv();
+
+    this.sub = this.activatedRoute.params.subscribe(params => {
+      if(Object.keys(params).length != 0 ){
+      //|| (this.rowData.reqId != null && this.rowData.reqId != '')){
+        this.saveAcitCv.tranId = params['tranId'];
+        //this.initDisabled = false;
+      }else{
+        //this.initDisabled = true;
+      }
+
+      this.getAcitCv();
+    });
   }
 
   getAcitCv(){
-    this.accountingService.getAcitCv(this.saveAcitCv.tranId)
-    .subscribe(data => {
+    console.log(this.saveAcitCv.tranId);
+    var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''))
+                          .pipe(map(([cv,pn]) => { return { cv, pn }; }));
+
+    subRes.subscribe(data => {
       console.log(data);
+      var recPn = data['pn']['printableNames'];
+
+      if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
+        this.saveAcitCv.cvStatus = 'N';
+        this.saveAcitCv.cvStatusDesc = 'New';
+        this.saveAcitCv.cvDate = this.ns.toDateTimeString(0);
+        this.saveAcitCv.currCd = 'PHP';
+        recPn.forEach(e => {
+          if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
+            this.saveAcitCv.preparedByName  = e.printableName;
+            this.saveAcitCv.preparedBy   = e.userId;
+            this.saveAcitCv.preparedByDes = e.designation;
+          }
+        });
+      }else{
+        var recCv = data['cv']['acitCvList'].map(e => {
+          e.createDate = this.ns.toDateTimeString(e.createDate);
+          e.updateDate = this.ns.toDateTimeString(e.updateDate);
+          e.cvDate     = this.ns.toDateTimeString(e.cvDate);
+          e.checkDate  = this.ns.toDateTimeString(e.checkDate);
+          e.preparedDate = this.ns.toDateTimeString(e.preparedDate);
+          e.certifiedDate = this.ns.toDateTimeString(e.certifiedDate);
+          e.cvNo = e.cvNo.toString().padStart(6,'0');
+          recPn.forEach(e2 => {
+            if(e.preparedBy.toUpperCase() == e2.userId.toUpperCase()){
+              e.preparedByName = e2.printableName;
+              this.saveAcitCv.preparedBy = e2.userId;
+              e.preparedByDes = e2.designation;
+            }
+          });
+          return e;
+        });
+        //this.saveAcitCv = recCv[0];
+        this.saveAcitCv = Object.assign(this.saveAcitCv,recCv[0]);
+        console.log(recCv);
+        console.log(this.saveAcitCv);
+      }
 
     });
+
+    if(this.saveAcitCv.cvNo == '' || this.saveAcitCv.cvNo == null){
+      this.saveAcitCv.cvStatus = 'N';
+      this.saveAcitCv.cvStatusDesc = 'New';
+      this.saveAcitCv.cvDate = this.ns.toDateTimeString(0);
+      this.saveAcitCv.currCd = 'PHP';
+      this.saveAcitCv.preparedBy = this.ns.getCurrentUser();
+    }else{
+      
+    }
   }
 
   onClickSave(cancelFlag?){
@@ -116,15 +183,15 @@ export class CvEntryComponent implements OnInit {
       certifiedBy      : this.saveAcitCv.certifiedBy,
       certifiedDate    : this.saveAcitCv.certifiedDate,
       checkClass       : this.saveAcitCv.checkClass,
-      checkDate        : this.saveAcitCv.checkDate,
+      checkDate        : (this.saveAcitCv.checkDate == '' || this.saveAcitCv.checkDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.checkDate,
       checkNo          : this.saveAcitCv.checkNo,
       closeDate        : this.saveAcitCv.closeDate,
-      createDate       : this.saveAcitCv.createDate,
-      createUser       : this.saveAcitCv.createUser,
+      createDate       : (this.saveAcitCv.createDate == '' || this.saveAcitCv.createDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.createDate,
+      createUser       : (this.saveAcitCv.createUser == '' || this.saveAcitCv.createUser == null)?this.ns.getCurrentUser():this.saveAcitCv.createUser,
       currCd           : this.saveAcitCv.currCd,
       currRate         : this.saveAcitCv.currRate,
       cvAmt            : this.saveAcitCv.cvAmt,
-      cvDate           : this.saveAcitCv.cvDate,
+      cvDate           : (this.saveAcitCv.cvDate == '' || this.saveAcitCv.cvDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.cvDate,
       cvNo             : this.saveAcitCv.cvNo,
       cvStatus         : this.saveAcitCv.cvStatus,
       cvYear           : this.saveAcitCv.cvYear,
@@ -136,11 +203,11 @@ export class CvEntryComponent implements OnInit {
       payeeNo          : this.saveAcitCv.payeeNo,
       postDate         : this.saveAcitCv.postDate,
       preparedBy       : this.saveAcitCv.preparedBy,
-      preparedDate     : this.saveAcitCv.preparedDate,
+      preparedDate     : (this.saveAcitCv.preparedDate == '' || this.saveAcitCv.preparedDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.preparedDate,
       tranId           : this.saveAcitCv.tranId,
       tranStat         : this.saveAcitCv.tranStat,
-      updateDate       : this.saveAcitCv.updateDate,
-      updateUser       : this.saveAcitCv.updateUser
+      updateDate       : this.ns.toDateTimeString(0),
+      updateUser       : this.ns.getCurrentUser()
     };
 
     console.log(saveCv);
@@ -150,7 +217,9 @@ export class CvEntryComponent implements OnInit {
       this.dialogIcon = '';
       this.dialogMessage = '';
       this.success.open();
-      this.saveAcitCv.tranId =  data['tranIdOut'];
+      this.saveAcitCv.tranId = data['tranIdOut'];
+      this.saveAcitCv.mainTranId = data['mainTranIdOut'];
+      this.getAcitCv();
     });
   }
 
@@ -179,7 +248,7 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.payee   = data.data.payeeName;
       this.saveAcitCv.payeeNo = data.data.payeeNo;
     }else if(from.toLowerCase() == 'bank'){
-      this.saveAcitCv.bankName   = data.data[0].officialName;
+      this.saveAcitCv.bankDesc   = data.data[0].officialName;
       this.saveAcitCv.bank = data.data[0].bankCd;
     }else if(from.toLowerCase() == 'class'){
       this.saveAcitCv.checkClassDesc   = data.data[0].description;
@@ -187,7 +256,7 @@ export class CvEntryComponent implements OnInit {
     }else  if(from.toLowerCase() == 'curr'){
       this.saveAcitCv.currCd = data.currencyCd;
       this.saveAcitCv.currRate =  data.currencyRt;
-      //this.saveAcitCv.localAmt = Number(this.saveAcitCv.cvAmt) * Number(data.currencyRt);
+      this.saveAcitCv.localAmt = Number(this.saveAcitCv.cvAmt) * Number(data.currencyRt);
     }else if(from.toLowerCase() == 'prep-user'){
       this.saveAcitCv.preparedByName = data.printableName;
       this.saveAcitCv.preparedBy  = data.userId;

@@ -17,7 +17,7 @@
                               <datepicker [type]="'datetime'" [disabled]="false" [required]="true" [(value)]="saveAcitCv.cvDate"></datepicker>
                             </div>
                             <label class="form-control-sm col-sm-1">Status</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="saveAcitCv.cvStatus" readonly>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="saveAcitCv.cvStatusDesc" readonly>
                         </div>
                         <div class="input-group" style="margin-top: -5px">
                             <label class="form-control-sm col-sm-1">Payee</label>
@@ -95,7 +95,7 @@
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.bankName" maxlength="100" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.bankDesc" maxlength="100" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('bank')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
@@ -110,8 +110,8 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Local Amount</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="saveAcitCv.localAmt" readonly>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" [(ngModel)]="saveAcitCv.localAmt" readonly>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
@@ -138,7 +138,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" [(ngModel)]="saveAcitCv.checkNo" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.checkNo" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
@@ -163,7 +163,7 @@
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin">Date Certified</label>
                         <div class="col-sm dp-cont" style="margin-left: 0px !important">
-                            <datepicker type="datetime" [showIcon]="false" [disabled]="true" [required]="true" [value]="saveAcitCv?.certifiedDate"></datepicker>
+                            <datepicker [type]="'datetime'" [showIcon]="false" [disabled]="true" [required]="true" [(value)]="saveAcitCv.certifiedDate"></datepicker>
                         </div>
                     </div>
                 </div>

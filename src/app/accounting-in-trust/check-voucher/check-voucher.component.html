@@ -6,21 +6,25 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-non-datatable [passData]="passDataCVListing" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowDblClick)="toGenerateAREdit($event);" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+						<app-cust-non-datatable [passData]="passData" (add)="onClickAdd($event)" (edit)="onClickEdit()" (rowClick)="onRowClick($event)" (newRowDblClick)="onRowDblClick($event)" (searchToDb)="searchQuery($event)" (export)="export()"></app-cust-non-datatable>
 					</div>
 					<div class="col-sm-12">
-						<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
-			        		<div class="input-group" style="margin-top: -10px !important;">
-			            		<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-			            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
-			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-			            		<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-			            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
-			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-			        		</div>
-			    		</div>
+			    		<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+		                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+		                        <label class="form-control-sm col-sm-1">Created By</label>
+		                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="cvData?.createUser" readonly>
+		                        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+		                        <div class="col-sm dp-cont">
+		                            <datepicker [value]="cvData?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+		                        </div>
+		                        <label class="form-control-sm col-sm-1">Last Update By</label>
+		                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="cvData?.updateUser" readonly>
+		                        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+		                        <div class="col-sm dp-cont">
+		                            <datepicker [value]="cvData?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+		                        </div>
+		                    </div>
+		                </fieldset>
 					</div>
 				</div>
 			</ng-template>
