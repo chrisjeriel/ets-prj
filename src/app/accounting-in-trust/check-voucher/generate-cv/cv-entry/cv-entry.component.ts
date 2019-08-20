@@ -181,11 +181,11 @@ export class CvEntryComponent implements OnInit {
       bank             : this.saveAcitCv.bank,
       bankAcct         : this.saveAcitCv.bankAcct,
       certifiedBy      : this.saveAcitCv.certifiedBy,
-      certifiedDate    : this.saveAcitCv.certifiedDate,
+      certifiedDate    : this.ns.toDateTimeString(this.saveAcitCv.certifiedDate),
       checkClass       : this.saveAcitCv.checkClass,
       checkDate        : (this.saveAcitCv.checkDate == '' || this.saveAcitCv.checkDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.checkDate,
       checkNo          : this.saveAcitCv.checkNo,
-      closeDate        : this.saveAcitCv.closeDate,
+      closeDate        : this.ns.toDateTimeString(this.saveAcitCv.mainCloseDate),
       createDate       : (this.saveAcitCv.createDate == '' || this.saveAcitCv.createDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.createDate,
       createUser       : (this.saveAcitCv.createUser == '' || this.saveAcitCv.createUser == null)?this.ns.getCurrentUser():this.saveAcitCv.createUser,
       currCd           : this.saveAcitCv.currCd,
@@ -195,17 +195,17 @@ export class CvEntryComponent implements OnInit {
       cvNo             : this.saveAcitCv.cvNo,
       cvStatus         : this.saveAcitCv.cvStatus,
       cvYear           : this.saveAcitCv.cvYear,
-      deleteDate       : this.saveAcitCv.deleteDate,
+      deleteDate       : this.ns.toDateTimeString(this.saveAcitCv.mainDeleteDate),
       localAmt         : this.saveAcitCv.localAmt,
       mainTranId       : this.saveAcitCv.mainTranId,
       particulars      : this.saveAcitCv.particulars,
       payee            : this.saveAcitCv.payee,
       payeeNo          : this.saveAcitCv.payeeNo,
-      postDate         : this.saveAcitCv.postDate,
+      postDate         : this.ns.toDateTimeString(this.saveAcitCv.mainPostDate),
       preparedBy       : this.saveAcitCv.preparedBy,
       preparedDate     : (this.saveAcitCv.preparedDate == '' || this.saveAcitCv.preparedDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.preparedDate,
       tranId           : this.saveAcitCv.tranId,
-      tranStat         : this.saveAcitCv.tranStat,
+      tranStat         : this.saveAcitCv.mainTranStat,
       updateDate       : this.ns.toDateTimeString(0),
       updateUser       : this.ns.getCurrentUser()
     };
@@ -262,6 +262,10 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.preparedBy  = data.userId;
       this.saveAcitCv.preparedDes  = data.designation;
     }
+  }
+
+  reCompAmt(){
+    this.saveAcitCv.localAmt = Number(this.saveAcitCv.cvAmt) * Number(this.saveAcitCv.currRate);
   }
 
   checkCode(event,from){
