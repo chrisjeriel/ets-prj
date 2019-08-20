@@ -1963,5 +1963,14 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
 	}
 
+	updateAcitStatus(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitStatus',JSON.stringify(params),header);
+	}
+
 
 }
