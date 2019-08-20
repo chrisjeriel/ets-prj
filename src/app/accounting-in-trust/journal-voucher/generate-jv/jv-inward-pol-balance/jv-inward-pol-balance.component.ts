@@ -289,11 +289,11 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   onClickSave(){
     var errorFlag = false;
-    for(var i = 0 ; i < this.passData.tableData.length; i++){
+    /*for(var i = 0 ; i < this.passData.tableData.length; i++){
       if(!this.passData.tableData[i].deleted && this.passData.tableData[i].prevNetDue < this.passData.tableData[i].paytAmt){
         errorFlag = true;
       }
-    }
+    }*/
 
     if(errorFlag){
       this.dialogMessage = 'Payment amount cannot be greater than Net Due.';

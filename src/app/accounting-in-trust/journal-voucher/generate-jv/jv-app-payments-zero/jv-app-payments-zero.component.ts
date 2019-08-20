@@ -122,6 +122,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   passLov: any = {
     selector: 'acitSoaDtl',
     cedingId: '',
+    zeroBal: 0,
     hide: []
   }
 

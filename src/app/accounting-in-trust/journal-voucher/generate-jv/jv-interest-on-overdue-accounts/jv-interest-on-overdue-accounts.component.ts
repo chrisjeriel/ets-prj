@@ -169,14 +169,14 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].instNo  = data.data[i].instNo;
       this.passData.tableData[this.passData.tableData.length - 1].effDate  = data.data[i].effDate;
       this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
-      this.passData.tableData[this.passData.tableData.length - 1].daysOverdue  = new Date(this.ns.toDateTimeString(this.jvDetail.jvDate)).getDate() - new Date(data.data[i].dueDate).getDate() ;
+      this.passData.tableData[this.passData.tableData.length - 1].daysOverdue  = new Date(this.ns.toDateTimeString(0)).getDate() - new Date(data.data[i].dueDate).getDate() ;
       this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate  = data.data[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].premAmt  = data.data[i].balPremDue;
       this.passData.tableData[this.passData.tableData.length - 1].autoTag  = 'Y'
       this.passData.tableData[this.passData.tableData.length - 1].interestRate = this.interestRate;
-      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = (data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
-      this.passData.tableData[this.passData.tableData.length - 1].orgOverdue  = (data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
+      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:(data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
+      this.passData.tableData[this.passData.tableData.length - 1].orgOverdue  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:(data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
     }
     this.table.refreshTable();
     //var test =  this.passData.tableData[0].effDate.getDate() - this.ns.toDateTimeString(0).getDate();

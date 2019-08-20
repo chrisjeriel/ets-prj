@@ -37,7 +37,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-8">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" [(ngModel)]="entryData.tranTypeName" appRequired name="entryData.tranTypeName">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm required tranTypeName" style="margin-right: 1px !important;" [(ngModel)]="entryData.tranTypeName" appRequired name="entryData.tranTypeName">
                          <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a (click)="openJVType()"><i class="fa fa-search"></i></a></div> 
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
                     <div class="col-sm">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="entryData.particulars" appRequired name="entryData.particulars"></textarea>
+                            <textarea class="form-control form-control-sm required" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="entryData.particulars" appRequired name="entryData.particulars"></textarea>
                         </div>
                     </div>
                 </div>
@@ -58,13 +58,13 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd" appRequired name="entryData.currCd">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2 required currCd" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd" appRequired name="entryData.currCd">
                             <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="currLov.modal.openNoClose()"></i></a></div>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired [(ngModel)]="entryData.jvAmt" (change)="validateCurr()" appCurrency name="entryData.jvAmt">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired [(ngModel)]="entryData.jvAmt" (change)="validateCurr()" appCurrency name="entryData.jvAmt">
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
                         </div>
                     </div>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; text-align: right;" [(ngModel)]="entryData.currRate" appCurrencyRate appRequired name="entryData.currRate" (change)="validateCurr()">
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-right: 2px !important; text-align: right;" [(ngModel)]="entryData.currRate" appCurrencyRate appRequired name="entryData.currRate" (change)="validateCurr()">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Local Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
@@ -77,7 +77,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Prepared By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedName" appRequired name="entryData.preparedName">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedName" appRequired name="entryData.preparedName">
                             <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPrintable()"></i></a></div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                     <div class="col-sm-1"></div>
                     <div class="col-sm-4"> 
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" appRequired [(ngModel)]="entryData.preparedPosition" name="entryData.prepared">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required" style="margin-right: 2px !important" appRequired [(ngModel)]="entryData.preparedPosition" name="entryData.prepared">
                         </div>
                     </div>
                     <div class="col-sm-3"></div>

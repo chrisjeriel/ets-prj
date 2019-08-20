@@ -38,7 +38,7 @@ export class JvTypeLovComponent implements OnInit {
 
   openModal(){
 	  setTimeout(()=>{  
-	       this.maintenanceService.getAcitTranType('JV','','','','','').subscribe((data: any) =>{
+	       this.maintenanceService.getAcitTranType('JV','','','N','N','Y').subscribe((data: any) =>{
 	            console.log(data)
 	            for(var i = 0 ; i < data.tranTypeList.length; i++){
 	            	this.passData.tableData.push(data.tranTypeList[i])
