@@ -61,7 +61,7 @@ export class ClaimDistributionComponent implements OnInit {
 
   reserveDistPassData: any = {
     tHeader: ['Distribution No','History No','Type','Amount','Curr','Curr Rt','Booking Date','Distribution Status'],
-    dataTypes: ['sequence-6','number','text','currency','text','currencyRate','date','text'],
+    dataTypes: ['sequence-6','number','text','currency','text','currencyRate','text','text'],
     keys:['clmDistNo','histNo','histTypeName','reserveAmt','currencyCd','currencyRt','bookingDate','clmDistStat'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
     widths:[1,1,1,'auto',1,'auto',1,1,'auto',1],

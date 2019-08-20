@@ -113,7 +113,7 @@
               <div class="form-row" style="margin-top: 40px !important;">
                 <div class="form-group col-sm">
                   <div class="text-center">
-                    <div class="cust-btn-container">
+                    <div class="cust-btn-container" *ngIf="requestData?.tranTypeCd > 3">
                       <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
                       <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                     </div>
