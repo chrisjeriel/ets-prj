@@ -77,6 +77,8 @@ export class CvEntryComponent implements OnInit {
     payeeClassCd : ''
   };
 
+  lovCheckBox:boolean = false;
+
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {

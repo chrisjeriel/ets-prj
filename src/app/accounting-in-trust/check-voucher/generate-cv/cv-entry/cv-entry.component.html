@@ -295,9 +295,9 @@
     </div>
 </div>
 
-<app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
-<app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')"></app-lov>
-<app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')"></app-lov>
+<app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')" [lovCheckBox]="lovCheckBox"></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>
 <app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
 
