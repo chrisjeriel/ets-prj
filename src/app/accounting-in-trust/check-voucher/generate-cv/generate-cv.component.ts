@@ -36,4 +36,8 @@ export class GenerateCvComponent implements OnInit {
   
   }
 
+  test() {
+    console.log(this.passData);
+  }
+
 }

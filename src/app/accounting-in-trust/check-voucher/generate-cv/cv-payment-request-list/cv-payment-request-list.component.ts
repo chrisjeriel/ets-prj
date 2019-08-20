@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { AccCVPayReqList} from '@app/_models';
@@ -15,7 +15,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   dataTypes: any[] = [];
 
 
-  passData: any = {
+  passDataPaytReqList: any = {
     tableData: [],
     tHeader       : ['Payment Request No.','Payment Type','Request Date','Particulars','Requested By','Curr','Amount'],
     resizable     : [true, true, true, true, true, true, true],
@@ -44,6 +44,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     pageID        : 'passDataCvPaytReq',
   };
 
+  @Input() passData: any;
 
 
   constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService) { }

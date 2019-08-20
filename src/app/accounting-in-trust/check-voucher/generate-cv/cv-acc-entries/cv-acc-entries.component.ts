@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { AccountingService, NotesService } from '@app/_services';
 import { AccountingEntriesCV } from '@app/_models';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -8,13 +8,15 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cv-acc-entries',
   templateUrl: './cv-acc-entries.component.html',
   styleUrls: ['./cv-acc-entries.component.css']
 })
-export class CvAccEntriesComponent implements OnInit {
+export class CvAccEntriesComponent implements OnInit, OnDestroy {
 
   @Input() passData: any;
   @ViewChild('warningModal') warningModal: ModalComponent;
@@ -77,16 +79,29 @@ export class CvAccEntriesComponent implements OnInit {
     variance: 0
   }
 
-  constructor(private accountingService : AccountingService, private ns: NotesService) { }
+  subscription: Subscription = new Subscription();
+
+  constructor(private as: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
     setTimeout(() => { this.table.refreshTable(); }, 0);
     this.getAcctEntries();
   }
 
+  ngOnDestroy() {
+
+  }
+
   getAcctEntries() {
+    var sub$ = forkJoin(this.as.getAcitCv(this.passData.tranId),
+                        this.as.getAcitAcctEntries(this.passData.tranId)).pipe(map(([cv, en]) => { return { cv, en }; }));
+
+    this.subscription = sub$.subscribe(data => {
+      var cv = data['cv'];
+    });
+
     this.table.overlayLoader = true;
-    this.accountingService.getAcitAcctEntries(319).subscribe(a => {
+    this.as.getAcitAcctEntries(this.passData.tranId).subscribe(a => {
       this.CVAcctEnt.tableData = a['list'];
       this.CVAcctEnt.tableData.forEach(a => {
         a.createDate = this.ns.toDateTimeString(a.createDate);
@@ -201,7 +216,7 @@ export class CvAccEntriesComponent implements OnInit {
       }
     });
 
-    this.accountingService.saveAcitAcctEntries(params).subscribe(a => {
+    this.as.saveAcitAcctEntries(params).subscribe(a => {
       if(a['returnCode']==-1) {
         this.dialogIcon = 'success';
         this.successDialog.open();

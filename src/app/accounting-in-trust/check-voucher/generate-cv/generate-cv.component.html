@@ -7,7 +7,7 @@
 					<div>CV Entry</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-entry (cvData)="passData=$event" [passData]="passData"></app-cv-entry>
+					<app-cv-entry (cvData)="passData=$event; test();" [passData]="passData"></app-cv-entry>
 				</ng-template>
 			</ngb-tab>
 
@@ -25,7 +25,7 @@
 					<div>Payment Requests List</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-payment-request-list></app-cv-payment-request-list>
+					<app-cv-payment-request-list [passData]="passData"></app-cv-payment-request-list>
 				</ng-template>
 			</ngb-tab>
 

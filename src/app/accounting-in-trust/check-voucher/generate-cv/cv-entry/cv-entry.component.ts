@@ -81,15 +81,27 @@ export class CvEntryComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | CV Entry");
-    this.getAcitCv();
+    // this.getAcitCv();
 
     this.sub = this.activatedRoute.params.subscribe(params => {
-      if(Object.keys(params).length != 0 ){
-      //|| (this.rowData.reqId != null && this.rowData.reqId != '')){
-        this.saveAcitCv.tranId = this.passData.tranId == '' ? params['tranId'] : this.passData.tranId;
-        //this.initDisabled = false;
-      }else{
-        //this.initDisabled = true;
+      // if(Object.keys(params).length != 0 ){
+      //   console.log('here 1');
+      // //|| (this.rowData.reqId != null && this.rowData.reqId != '')){
+      //   this.saveAcitCv.tranId = this.passData.tranId == '' ? params['tranId'] : this.passData.tranId;
+      //   //this.initDisabled = false;
+      // }else{
+      //   //this.initDisabled = true;
+      //   console.log('here 2');
+      // }
+
+      if(this.passData.tranId == '') {
+        if(Object.keys(params).length != 0 ){
+          this.saveAcitCv.tranId = params['tranId'];
+        } else {
+          //else
+        }
+      } else {
+        this.saveAcitCv.tranId = this.passData.tranId;
       }
 
       this.getAcitCv();
