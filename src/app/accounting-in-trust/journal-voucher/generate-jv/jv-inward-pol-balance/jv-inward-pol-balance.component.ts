@@ -127,7 +127,11 @@ export class JvInwardPolBalanceComponent implements OnInit {
     tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments', 'Remaining Balance'],
     dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
     nData:{
-      showMG:1
+      showMG:1,
+      createUser: this.ns.getCurrentUser(),
+      createDate: '',
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: ''
     },
     magnifyingGlass: ['policyNo'],
     checkFlag: true,
@@ -174,6 +178,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
   ngOnInit() {
+     this.passLov.currCd = this.jvDetail.currCd;
      this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
           { header: "Payment Details", span: 5 }, { header: "", span: 2 });
 
@@ -206,6 +211,10 @@ export class JvInwardPolBalanceComponent implements OnInit {
         this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(datas[i].effDate);
         this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(datas[i].dueDate)
         this.totalBalance += this.passData.tableData[this.passData.tableData.length - 1].paytAmt;
+
+        if(this.passData.tableData[i].okDelete == 'N'){
+          this.passData.tableData[i].uneditable = ['paytAmt'];
+        }
       }
         this.table.refreshTable();
     });
@@ -252,7 +261,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
     var overdue = null;
 
-    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -274,8 +282,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].prevCharges  = data.data[i].prevCharges;
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue  = data.data[i].prevNetDue;
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment  = data.data[i].cumPayment;
-      this.passData.tableData[this.passData.tableData.length - 1].balance  = data.data[i].
-      prevBalance;
+      this.passData.tableData[this.passData.tableData.length - 1].balance  = data.data[i].prevBalance;
     }
     this.table.refreshTable();
   }

@@ -80,7 +80,7 @@ export class JvPreniumReserveComponent implements OnInit {
 
 		if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
 		       console.log(this.cedingParams)
-		       this.premResData.ceding = this.cedingParams.cedingId;
+		       this.premResData.cedingId = this.cedingParams.cedingId;
 		       this.premResData.cedingName = this.cedingParams.cedingName;
 		       this.retrievePremRes();
 		}
@@ -181,7 +181,7 @@ export class JvPreniumReserveComponent implements OnInit {
   	}
 
   	check(data){
-    this.emitData.emit({ cedingId: data.ceding,
+    this.emitData.emit({ cedingId: data.cedingId,
                          cedingName: data.cedingName
                        });
   	}
