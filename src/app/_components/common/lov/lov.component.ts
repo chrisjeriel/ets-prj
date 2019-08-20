@@ -794,6 +794,16 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.refCodeList;
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'paytReqList'){
+      this.passTable.tHeader = ['Payment Request No.','Payment Type','Request Date','Particulars','Requested By','Curr','Amount'];
+      this.passTable.widths = [120,150,1,120,100,1,120];
+      this.passTable.dataTypes = [ 'text','text','date','text','text','text','currency'];
+      this.passTable.keys = ['paytReqNo','tranTypeDesc','reqDate','particulars','requestedBy','currCd','reqAmt'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
+        this.passTable.tableData = a.acitPaytReq;
+        this.table.refreshTable();
+      });
     }
 
     this.modalOpen = true;
