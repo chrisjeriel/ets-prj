@@ -46,7 +46,7 @@
 	<legend class="scheduler-border">CV Accounting Entries</legend>
     <div class="input-group" style="margin-bottom: 0 !important;">
         <div class="col-sm" style="padding: 0">
-            <app-cust-editable-non-datatable [passData]="CVAcctEnt" (clickLOV)="clickLov($event)" (tableDataChange)="computeTotals()"></app-cust-editable-non-datatable>
+            <app-cust-editable-non-datatable [passData]="CVAcctEnt" (newClick)="selected=$event" (clickLOV)="clickLov($event)" (tableDataChange)="computeTotals()" (tickChckbx)="tickChckbx($event)"></app-cust-editable-non-datatable>
         </div>
     </div>
 

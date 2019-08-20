@@ -160,7 +160,8 @@ export class ArPreviewComponent implements OnInit {
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
     this.getMtnCurrency();
-    this.retrieveAmtDtl();
+    //this.retrieveAmtDtl();
+    this.retrieveAcctEntry();
   }
 
   onTabChange(event){

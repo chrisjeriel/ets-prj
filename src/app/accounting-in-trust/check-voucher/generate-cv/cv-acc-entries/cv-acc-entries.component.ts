@@ -61,8 +61,8 @@ export class CvAccEntriesComponent implements OnInit {
   };
 
   passLov:any = {
-    selector:'',
-    params:{}
+    selector: '',
+    params: {}
   }
 
   lovRow: any;
@@ -105,15 +105,15 @@ export class CvAccEntriesComponent implements OnInit {
   }
 
   setLov(data) {
-    if(data.selector == 'slType'){
+    if(data.selector == 'slType') {
       this.lovRow.slTypeName = data.data.slTypeName;
       this.lovRow.slTypeCd = data.data.slTypeCd;
-    }else if(data.selector == 'sl'){
+    }else if(data.selector == 'sl') {
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
-    }else if(data.selector == 'acitChartAcct'){
+    } else if(data.selector == 'acitChartAcct') {
 
       let firstRow = data.data.pop();
       this.lovRow.glAcctId = firstRow.glAcctId;
@@ -135,5 +135,12 @@ export class CvAccEntriesComponent implements OnInit {
     this.totals.credit = this.CVAcctEnt.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
     this.totals.debit  = this.CVAcctEnt.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat(b.debitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;
+  }
+
+  tickChckbx(data) {
+    if(data.checked && data.autoTag == 'Y'){
+      this.warningModal.openNoClose();
+    }
+    this.CVAcctEnt.btnDisabled = this.table.selected.filter(a=>a.checked && a.autoTag == 'Y').length > 0;
   }
 }

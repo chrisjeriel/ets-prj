@@ -124,10 +124,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     // uneditable    : [true,true,true,true,true,true,true,true,true,true,true,false],
     // total         : [null, null, null, null, 'Total', 'netDue', 'prevPaytAmt', 'premAmt', 'riComm', null, 'charges', 'returnAmt'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
-    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
     // widths        : [200,1,110,1,110,120,120,120,120,120,120,120,120],
     // keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
-    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
   };
 
   treatyBalanceData: any = {
@@ -426,7 +426,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
 
   getAcitPrqInwPol(){
-    var subRec = forkJoin(this.acctService.getAcitPrqInwPol(this.rowData.reqId,''), this.acctService.getAcitSoaDtl())
+    var subRec = forkJoin(this.acctService.getAcitPrqInwPol(this.rowData.reqId,''), this.acctService.getAcitSoaDtlNew(this.requestData.currCd))
                          .pipe(map(([inwPol,soaDtl]) => { return { inwPol,soaDtl }; }));
 
     subRec.subscribe(data => {
@@ -513,7 +513,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.inwardPolBalData.tableData.forEach(e =>{
         this.limitContent.push(e);
       });
+      this.passData.currCd = this.requestData.currCd;
       this.passData.selector = 'acitSoaDtlPrq';
+      this.passData.payeeNo = this.requestData.payeeNo;
       this.aginSoaLov.openLOV();
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
       this.investmentData.tableData.forEach(e =>{
@@ -530,9 +532,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
   // }
 
   reCompInw(){
+    console.log(this.inwardPolBalData.tableData);
     this.inwardPolBalData.tableData.forEach(e => {
-      if(e.newRec == 1 && e.returnAmt != 0){
-        console.log(this.inwardPolBalData.tableData);
+      console.log(e);
+      if(e.returnAmt != '' && e.returnAmt != null){
+        console.log('here');
         e.premAmt    = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
         e.riComm     = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
         e.riCommVat  = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
@@ -566,11 +570,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
       });
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '')
                                             .map(e => { 
-                                                e.edited = true; e.checked = false;e.createDate = ''; e.createUser = '';
-                                                e.premAmt   = e.balPremDue;
-                                                e.riComm    = e.balRiComm;
-                                                e.riCommVat = e.balRiCommVat; 
-                                                e.charges   = e.balChargesDue; 
+                                                e.edited = true; e.checked = false; e.createDate = ''; e.createUser = '';
+                                                e.premAmt   = ''; //e.balPremDue;
+                                                e.riComm    = ''; //e.balRiComm;
+                                                e.riCommVat = ''; //e.balRiCommVat; 
+                                                e.charges   = ''; //e.balChargesDue; 
                                                 e.returnAmt = (e.newRec==1)?0:e.returnAmt;; 
                                                 return e;
                                             });
@@ -1024,7 +1028,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         itemNo      : e.itemNo,
         netDue      : e.netDue,
         premAmt     : e.premAmt,
-        prevPaytAmt : e.prevPaytAmt,
+        prevPaytAmt : Number(e.tempPayments) + Number(e.totalPayments),
         reqId       : this.requestData.reqId,
         returnAmt   : e.returnAmt,
         riComm      : e.riComm,
