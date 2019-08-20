@@ -72,6 +72,8 @@ export class JvPreniumReserveComponent implements OnInit {
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | JV QSOA");
+		this.passData.nData.currCd = this.jvDetail.currCd;
+		this.passData.nData.currRate = this.jvDetail.currRate;
 		if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
 		  
 		}else {

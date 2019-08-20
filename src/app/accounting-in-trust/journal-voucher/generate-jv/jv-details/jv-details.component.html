@@ -52,8 +52,8 @@
                     <div *ngSwitchCase="5">Offsetting of Claims Against Negative Treaty Balance</div>
                     <div *ngSwitchCase="6">Offsetting of Outstanding Accounts Against Treaty Balance</div>
                     <div *ngSwitchCase="7">Offsetting of Receivables In-Trust Against Losses</div>
-                    <div *ngSwitchCase="57">Loss Reserve Deposit</div>
-                    <div *ngSwitchCase="62">Investment Pull Out</div>
+                    <div *ngSwitchCase="8">Loss Reserve Deposit</div>
+                    <div *ngSwitchCase="9">Investment Pull Out</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
@@ -88,11 +88,11 @@
                                 <app-jv-offsetting-against-losses [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-offsetting-against-losses>
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="57">
+                            <ng-container *ngSwitchCase="8">
                                 <app-jv-loss-reserve-deposit></app-jv-loss-reserve-deposit>
                             </ng-container>
 
-                            <ng-container *ngSwitchCase="62">
+                            <ng-container *ngSwitchCase="9">
                                 <app-jv-investment-pull-over></app-jv-investment-pull-over>
                             </ng-container>
 
