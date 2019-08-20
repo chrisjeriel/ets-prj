@@ -171,6 +171,7 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.saveAcitPaytReq.preparedDate = this.ns.toDateTimeString(0);
       }
 
+      this.checkReqId(this.saveAcitPaytReq.reqId);
     });
   }
 
@@ -253,7 +254,8 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.dialogMessage = '';
       this.success.open();
       this.saveAcitPaytReq.reqId =  data['reqIdOut'];
-      this.paytData.emit({reqId:data['reqIdOut']});
+      // this.paytData.emit({reqId:data['reqIdOut']});
+      this.checkReqId(data['reqIdOut']);
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
       this.initDisabled = false;
@@ -437,6 +439,10 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.router.navigateByUrl('/maintenance-qu-pol');
       }
 
+   }
+
+   checkReqId(reqIdP) {
+     this.paytData.emit({reqId: reqIdP});
    }
 }
 

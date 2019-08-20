@@ -80,7 +80,26 @@ export class CvAccEntriesComponent implements OnInit {
   constructor(private accountingService : AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
-    setTimeout(() => { this.table.refreshTable(); },0);
+    setTimeout(() => { this.table.refreshTable(); }, 0);
+    this.getAcctEntries();
+  }
+
+  getAcctEntries() {
+    this.table.overlayLoader = true;
+    this.accountingService.getAcitAcctEntries(319).subscribe(a => {
+      this.CVAcctEnt.tableData = a['list'];
+      this.CVAcctEnt.tableData.forEach(a => {
+        a.createDate = this.ns.toDateTimeString(a.createDate);
+        a.updateDate = this.ns.toDateTimeString(a.updateDate);
+        a.showMG = 1;
+        if(a.autoTag == 'Y'){
+          a.uneditable = ['glShortCd','debitAmt','creditAmt']
+        }
+      });
+
+      this.computeTotals();
+      this.table.refreshTable();
+    });
   }
 
   clickLov(data) {
@@ -138,9 +157,61 @@ export class CvAccEntriesComponent implements OnInit {
   }
 
   tickChckbx(data) {
-    if(data.checked && data.autoTag == 'Y'){
+    if(data.checked && data.autoTag == 'Y') {
       this.warningModal.openNoClose();
     }
-    this.CVAcctEnt.btnDisabled = this.table.selected.filter(a=>a.checked && a.autoTag == 'Y').length > 0;
+
+    setTimeout(() => {
+      this.CVAcctEnt.btnDisabled = this.table.selected.filter(a=>a.checked && a.autoTag == 'Y').length > 0;
+    }, 0);
+  }
+
+  onClickSave(){
+    for(let a of this.CVAcctEnt.tableData) {
+      if(a.edited && !a.deleted &&(a.glAcctId == null || a.glAcctId == '' || a.creditAmt == '' || a.creditAmt == null || isNaN(a.creditAmt)
+        || a.debitAmt == '' || a.debitAmt == null || isNaN(a.debitAmt))) {
+        this.dialogIcon = 'error';
+        this.successDialog.open();
+        return;
+      }
+    }
+
+    this.confirmSave.confirmModal();
+  }
+
+  save() {
+    let params: any = {
+      saveList: [],
+      delList: []
+    }
+
+    params.saveList = this.CVAcctEnt.tableData.filter(a => a.edited && !a.deleted);
+    params.delList = this.CVAcctEnt.tableData.filter(a => a.deleted);
+
+    params.saveList.forEach(a => {
+      if(!a.add){
+        a.updateUser = this.ns.getCurrentUser();
+        a.updateDate = this.ns.toDateTimeString(0);
+      } else {
+        // a.tranId = 324;
+        a.createUser = this.ns.getCurrentUser();
+        a.createDate = this.ns.toDateTimeString(0);
+        a.updateUser = this.ns.getCurrentUser();
+        a.updateDate = this.ns.toDateTimeString(0);
+      }
+    });
+
+    this.accountingService.saveAcitAcctEntries(params).subscribe(a => {
+      if(a['returnCode']==-1) {
+        this.dialogIcon = 'success';
+        this.successDialog.open();
+        this.table.markAsPristine();
+        this.getAcctEntries();
+      } else {
+        this.dialogIcon = 'error';
+        this.successDialog.open();
+      }
+    });
+
   }
 }
