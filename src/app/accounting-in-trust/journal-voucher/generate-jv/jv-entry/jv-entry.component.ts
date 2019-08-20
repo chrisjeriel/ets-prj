@@ -321,6 +321,7 @@ export class JvEntryComponent implements OnInit {
         this.successDiag.open();
         this.tranId = data.tranIdOut;
         this.retrieveJVEntry();
+        this.form.control.markAsPristine();
       }
     });
   }

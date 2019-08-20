@@ -55,7 +55,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   		this.inputStyle['backgroundColor'] = '#fffacd85';
   	}
 
-  	if(this.showIcon && this.type != 'time') {
+  	if(this.type != 'time') {
   		this.spanStyle['position'] = 'relative';
   		this.spanStyle['display'] = 'block';
   		this.inputStyle['position'] = 'absolute';

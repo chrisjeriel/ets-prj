@@ -171,6 +171,7 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.saveAcitPaytReq.preparedDate = this.ns.toDateTimeString(0);
       }
 
+      this.paytData.emit({reqId: this.saveAcitPaytReq.reqId});
     });
   }
 
@@ -253,7 +254,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.dialogMessage = '';
       this.success.open();
       this.saveAcitPaytReq.reqId =  data['reqIdOut'];
-      this.paytData.emit({reqId:data['reqIdOut']});
+      // this.paytData.emit({reqId:data['reqIdOut']});
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
       this.initDisabled = false;
@@ -439,4 +440,3 @@ export class PaymentRequestEntryComponent implements OnInit {
 
    }
 }
-

@@ -50,7 +50,7 @@
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
-                        <div controls-l class="input-group">
+                        <div class="input-group">
                           <div class="col-sm-2" style="margin-right: -35px"></div>
                           <label class="form-control-sm col-sm-1">Service Fee</label>
                           <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-right: 18px !important;" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>
@@ -75,7 +75,7 @@
                               </select>
                             </div>
                           </div>
-                          <button class="cust-btn" (click)="getAcctPrqServFeeMainGnrt()" [disabled]="(gnrtType == 'periodAsOf' && (periodAsOfParam == '' || periodAsOfParam == null)) || (gnrtType == 'year' && yearParam == null)" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; margin-left: 5px; z-index: 1 !important;">Distribute</button>
+                          <button class="cust-btn" (click)="getAcctPrqServFee()" [disabled]="(gnrtType == 'periodAsOf' && (periodAsOfParam == '' || periodAsOfParam == null)) || (gnrtType == 'year' && yearParam == null)" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; margin-left: 5px; z-index: 1 !important;">Distribute</button>
                           <div class="col-sm-2"></div>
                         </div>
                     </div>
@@ -197,6 +197,10 @@
 <app-confirm-save  #conOth (onYes)="onSaveOth()"></app-confirm-save>
 <app-sucess-dialog #sucOth [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
 <app-cancel-button #canOth (onYes)="onClickSaveOth('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conServFee (onYes)="onSaveServFee()"></app-confirm-save>
+<app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
+<app-cancel-button #canServFee (onYes)="onClickSaveServFee('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 
 <app-modal class="d-none" id="warnMdl" #warnMdl>

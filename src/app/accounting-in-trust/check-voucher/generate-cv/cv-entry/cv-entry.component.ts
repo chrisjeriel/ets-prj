@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { CVListing } from '@app/_models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -27,6 +27,11 @@ export class CvEntryComponent implements OnInit {
   @ViewChild('classLov') classLov  : LovComponent;
   @ViewChild('currLov') currLov    : MtnCurrencyComponent;
   @ViewChild('prepUserLov') prepUserLov       : MtnUsersComponent;
+
+  @Output() cvData : EventEmitter<any> = new EventEmitter();
+  @Input() passData: any = {
+    tranId : ''
+  };
 
   saveAcitCv : any = {
     bank          : '',
@@ -76,15 +81,27 @@ export class CvEntryComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | CV Entry");
-    this.getAcitCv();
+    // this.getAcitCv();
 
     this.sub = this.activatedRoute.params.subscribe(params => {
-      if(Object.keys(params).length != 0 ){
-      //|| (this.rowData.reqId != null && this.rowData.reqId != '')){
-        this.saveAcitCv.tranId = params['tranId'];
-        //this.initDisabled = false;
-      }else{
-        //this.initDisabled = true;
+      // if(Object.keys(params).length != 0 ){
+      //   console.log('here 1');
+      // //|| (this.rowData.reqId != null && this.rowData.reqId != '')){
+      //   this.saveAcitCv.tranId = this.passData.tranId == '' ? params['tranId'] : this.passData.tranId;
+      //   //this.initDisabled = false;
+      // }else{
+      //   //this.initDisabled = true;
+      //   console.log('here 2');
+      // }
+
+      if(this.passData.tranId == '') {
+        if(Object.keys(params).length != 0 ){
+          this.saveAcitCv.tranId = params['tranId'];
+        } else {
+          //else
+        }
+      } else {
+        this.saveAcitCv.tranId = this.passData.tranId;
       }
 
       this.getAcitCv();
@@ -135,6 +152,8 @@ export class CvEntryComponent implements OnInit {
         console.log(recCv);
         console.log(this.saveAcitCv);
       }
+
+      this.cvData.emit({tranId: this.saveAcitCv.tranId});
 
     });
 
@@ -286,5 +305,4 @@ export class CvEntryComponent implements OnInit {
       }
     }
   }
-
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { AccCVPayReqList } from '@app/_models';
@@ -10,7 +10,7 @@ import { AccCVPayReqList } from '@app/_models';
 })
 export class CvPaymentRequestListComponent implements OnInit {
 
-  passData : any = {
+  passDataPaytReqList: any = {
     tableData     : [],
     tHeader       : ['Payment Request No.','Payment Type','Request Date','Particulars','Requested By','Curr','Amount'],
     dataTypes     : ['lov-input','text','date','text','text','text','currency'],
@@ -37,6 +37,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     keys          : ['paytReqNo','tranTypeDesc','reqDate','particulars','requestedBy','currCd','reqAmt']
   };
 
+  @Input() passData: any;
 
 
   constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService) { }

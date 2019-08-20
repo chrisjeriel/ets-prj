@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax } from '@app/_models';
 import { AccountingService, NotesService } from '../../../../_services';
 
@@ -11,6 +11,8 @@ export class JvDetailsComponent implements OnInit {
   
   @Input() jvType: any;
   @Input() jvData:any;
+  @Input() cedingInput:any;
+  @Output() cedingData = new EventEmitter<any>();
 
   jvDetails : any = {
      jvNo: '', 
@@ -24,14 +26,15 @@ export class JvDetailsComponent implements OnInit {
      currRate: '',
      jvAmt: '',
      localAmt: ''
-  }
+  };
+
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
     if(this.jvType == null){
       this.jvType = "";
     }
-    console.log(this.jvData)
+    console.log(this.cedingInput)
     this.retrieveJVDetails();
   }
 
@@ -39,6 +42,13 @@ export class JvDetailsComponent implements OnInit {
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
     this.jvDetails.refnoDate = this.ns.toDateTimeString(this.jvDetails.refnoDate);
+  }
+
+  ceding(data){
+    console.log('emit on jvDetails')
+    this.cedingData.emit({ cedingId: data.cedingId,
+                           cedingName: data.cedingName
+                       });
   }
 
 }

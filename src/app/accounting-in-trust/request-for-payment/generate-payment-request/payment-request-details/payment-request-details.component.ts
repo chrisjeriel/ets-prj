@@ -49,6 +49,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('canOth') canOth             : CancelButtonComponent;
   @ViewChild('conOth') conOth             : ConfirmSaveComponent;
   @ViewChild('sucOth') sucOth             : SucessDialogComponent;
+  @ViewChild('canServFee') canServFee     : CancelButtonComponent;
+  @ViewChild('conServFee') conServFee     : ConfirmSaveComponent;
+  @ViewChild('sucServFee') sucServFee     : SucessDialogComponent;
 
   @ViewChild('servFeeMainTbl') servFeeMainTbl: CustEditableNonDatatableComponent;
   @ViewChild('servFeeSubTbl') servFeeSubTbl: CustEditableNonDatatableComponent;
@@ -90,9 +93,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
   };
 
   inwardPolBalData: any = {
+    tHeaderWithColspan : [{ header: "", span: 1 },
+                          { header: "Policy Information", span: 14 },
+                          { header: "Payment Details", span: 5 },
+                          { header: "", span: 2 }],
     tableData     : [],
-    tHeader       : ['Policy No.','Inst No.','Due Date','Curr','Curr Rate','Balance','Payment','Premium', 'RI Commission','RI Comm. VAT', 'Charges', 'Net Return'],
-    dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','currency','currency', 'currency'],
+    // tHeader       : ['Policy No.','Inst No.','Due Date','Curr','Curr Rate','Balance','Payment','Premium', 'RI Commission','RI Comm. VAT', 'Charges', 'Net Return'],
+    // dataTypes     : ['lov-input', 'sequence-2', 'date', 'text', 'percent', 'currency', 'currency','currency', 'currency','currency','currency', 'currency'],
+    tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments','Remaining Balance'],
+    dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
     magnifyingGlass : ['policyNo'],
     nData: {
       newRec         : 1,
@@ -116,10 +125,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [true,true,true,true,true,true,true,true,true,true,true,false],
-    total         : [null, null, null, null, 'Total', 'netDue', 'prevPaytAmt', 'premAmt', 'riComm', null, 'charges', 'returnAmt'],
-    widths        : [200,1,110,1,110,120,120,120,120,120,120,120,120],
-    keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
+    // uneditable    : [true,true,true,true,true,true,true,true,true,true,true,false],
+    // total         : [null, null, null, null, 'Total', 'netDue', 'prevPaytAmt', 'premAmt', 'riComm', null, 'charges', 'returnAmt'],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
+    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    // widths        : [200,1,110,1,110,120,120,120,120,120,120,120,120],
+    // keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
+    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
   };
 
   treatyBalanceData: any = {
@@ -259,6 +271,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   cancelFlagTrty  : boolean;
   cancelFlagInvt  : boolean;
   cancelFlagOth   : boolean;
+  cancelFlagServFee: boolean;
   dialogIcon      : string;
   dialogMessage   : string;
   warnMsg         : string = '';
@@ -409,7 +422,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getAcitPrqInwPol(){
-    var subRec = forkJoin(this.acctService.getAcitPrqInwPol(this.rowData.reqId,''), this.acctService.getAcitSoaDtl())
+    var subRec = forkJoin(this.acctService.getAcitPrqInwPol(this.rowData.reqId,''), this.acctService.getAcitSoaDtlNew(this.requestData.currCd))
                          .pipe(map(([inwPol,soaDtl]) => { return { inwPol,soaDtl }; }));
 
     subRec.subscribe(data => {
@@ -496,6 +509,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.inwardPolBalData.tableData.forEach(e =>{
         this.limitContent.push(e);
       });
+      this.passData.currCd = this.requestData.currCd;
       this.passData.selector = 'acitSoaDtlPrq';
       this.passData.payeeNo = this.requestData.payeeNo;
       this.aginSoaLov.openLOV();
@@ -514,9 +528,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   reCompInw(){
+    console.log(this.inwardPolBalData.tableData);
     this.inwardPolBalData.tableData.forEach(e => {
-      if(e.newRec == 1 && e.returnAmt != 0){
-        console.log(this.inwardPolBalData.tableData);
+      console.log(e);
+      if(e.returnAmt != '' && e.returnAmt != null){
+        console.log('here');
         e.premAmt    = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
         e.riComm     = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
         e.riCommVat  = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
@@ -550,11 +566,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
       });
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '')
                                             .map(e => { 
-                                                e.edited = true; e.checked = false;e.createDate = ''; e.createUser = '';
-                                                e.premAmt   = e.balPremDue;
-                                                e.riComm    = e.balRiComm;
-                                                e.riCommVat = e.balRiCommVat; 
-                                                e.charges   = e.balChargesDue; 
+                                                e.edited = true; e.checked = false; e.createDate = ''; e.createUser = '';
+                                                e.premAmt   = ''; //e.balPremDue;
+                                                e.riComm    = ''; //e.balRiComm;
+                                                e.riCommVat = ''; //e.balRiCommVat; 
+                                                e.charges   = ''; //e.balChargesDue; 
                                                 e.returnAmt = (e.newRec==1)?0:e.returnAmt;; 
                                                 return e;
                                             });
@@ -587,7 +603,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }else if(this.requestData.tranTypeCd == 4){
         this.onClickSaveInw();
       }else if(this.requestData.tranTypeCd == 5){
-        //service fee
+        this.onClickSaveServFee();
       }else if(this.requestData.tranTypeCd == 6){
         this.onClickSaveTrty();
       }else if(this.requestData.tranTypeCd == 7){
@@ -1013,7 +1029,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         itemNo      : e.itemNo,
         netDue      : e.netDue,
         premAmt     : e.premAmt,
-        prevPaytAmt : e.prevPaytAmt,
+        prevPaytAmt : Number(e.tempPayments) + Number(e.totalPayments),
         reqId       : this.requestData.reqId,
         returnAmt   : e.returnAmt,
         riComm      : e.riComm,
@@ -1114,7 +1130,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }else if(this.requestData.tranTypeCd == 4){
       this.canInw.clickCancel();
     }else if(this.requestData.tranTypeCd == 5){
-      //service fee
+      this.canServFee.clickCancel();
     }else if(this.requestData.tranTypeCd == 6){
       this.canTrty.clickCancel();
     }else if(this.requestData.tranTypeCd == 7){
@@ -1160,16 +1176,55 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
   }
 
-  getAcctPrqServFeeMainGnrt() {
+  getAcctPrqServFee() {
     this.servFeeMainTbl.overlayLoader = true;
     this.servFeeSubTbl.overlayLoader = true;
-    this.acctService.getAcctPrqServFeeMainGnrt(this.periodAsOfParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+    this.acctService.getAcctPrqServFee(this.periodAsOfParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
       this.serviceFeeMainData.tableData = data['mainDistList'];
       this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
       this.servFeeMainTbl.refreshTable();
       this.servFeeSubTbl.refreshTable();
     });
+  }
+
+  onSaveServFee() {
+    var param = {
+      reqId: this.requestData.reqId,
+      prdAsOf: this.periodAsOfParam,
+      year: this.yearParam,
+      servFeeAmt: this.requestData.reqAmt,
+      currCd: this.requestData.currCd,
+      currRt: this.requestData.currRate,
+      createUser: this.ns.getCurrentUser(),
+      createDate: this.ns.toDateTimeString(0),
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0)
+    }
+
+    this.acctService.saveAcctPrqServFee(param).subscribe(data => {
+      console.log(data);
+      if(data['returnCode'] == -1) {
+        this.dialogIcon = "success";
+        this.sucServFee.open();
+      } else {
+        this.dialogIcon = "error";
+        this.sucServFee.open();
+      }
+    });
+  }
+
+  onClickSaveServFee(cancelFlag?) {
+    this.cancelFlagServFee = cancelFlag !== undefined;
+    this.conServFee.confirmModal();
+  }
+
+  checkCancelServFee(){
+    if(this.cancelFlagServFee){
+      this.canServFee.onNo();
+    }else{
+      this.sucServFee.modal.closeModal();
+    }
   }
 
 }

@@ -212,7 +212,7 @@ const appRoutes: Routes = [
     { path: 'update-info', component: UpdateInformationComponent },
     { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
     { path: 'open-cover', component: OpenCoverComponent },
-    { path: 'clm-claim-processing', component: ClmClaimProcessingComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'clm-claim-processing', component: ClmClaimProcessingComponent },//, canDeactivate: [UnsavedChangesGuard] },
     { path: 'clm-gen-info-claim', component: ClmGenInfoClaimComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'claims-claim', component: ClaimComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'negate-distribution', component: NegateDistributionComponent },
