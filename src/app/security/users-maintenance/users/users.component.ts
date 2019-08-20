@@ -23,6 +23,7 @@ export class UsersComponent implements OnInit {
     magnifyingGlass:['userGroup'],
     searchFlag: true,
     widths: [],
+    paginateFlag: true,
   }
 
   PassDataModuleTrans: any = {
