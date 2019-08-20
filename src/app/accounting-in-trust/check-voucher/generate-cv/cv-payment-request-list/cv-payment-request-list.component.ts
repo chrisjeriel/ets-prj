@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { AccountingService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { AccCVPayReqList} from '@app/_models';
 
 @Component({
@@ -17,34 +17,48 @@ export class CvPaymentRequestListComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Payment Request No.','Payee','Payment Type','Status','Request Date','Particulars','Requested By','Curr','Amount'],
-    resizable: [true, true, true, true, true, true, true, true, true],
-    dataTypes: ['text','text','text','text','date','text','text','text','currency'],
-    nData: new AccCVPayReqList(null,null,null,null,new Date(),null,null,null,null),
-    total:[null,null,null,null,null,null,null,'Total','amount'],
-    checkFlag: true,
-    addFlag: true,
-    deleteFlag: true,
-    infoFlag: true,
-    paginateFlag: true,
-    searchFlag: true,
-    saveBtn: false,
-    pagination: true,
-    pageStatus: true,
-    selectFlag: false,
-    editFlag: false,
-    pageLength: 10,
-    widths: [100,250,90,70,1,250,150,1,120],
-    genericBtn: 'Save'
+    tHeader       : ['Payment Request No.','Payment Type','Request Date','Particulars','Requested By','Curr','Amount'],
+    resizable     : [true, true, true, true, true, true, true],
+    dataTypes     : ['lov-input','text','date','text','text','text','currency'],
+    magnifyingGlass : ['paytReqNo'],
+    nData : {
+      paytReqNo     : '',
+      tranTypeDesc  : '',
+      reqDate       : '',
+      particulars   : '',
+      requestedBy   : '',
+      currCd        : '',
+      reqAmt        : '',
+      showMG        : 1
+    },
+    total         : [null,null,null,null,null,'Total','amount'],
+    checkFlag     : true,
+    addFlag       : true,
+    deleteFlag    : true,
+    infoFlag      : true,
+    paginateFlag  : true,
+    searchFlag    : true,
+    pageLength    : 10,
+    widths        : [120,250,100,250,150,1,150],
+    genericBtn    : 'Save',
+    pageID        : 'passDataCvPaytReq',
   };
 
 
 
-  constructor(private accountingService: AccountingService,private titleService: Title) { }
+  constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService) { }
 
   ngOnInit() {
     this.titleService.setTitle(" Acct | CV | Payment Request List");
   	this.passData.tableData = this.accountingService.getAccCVPayReqList();
+  }
+
+  getPaytReqList(){
+    this.accountingService.getPaytReqList([])
+    .subscribe(data => {
+      console.log(data);
+      var rec = data['acitPaytReq']
+    });
   }
 
 }

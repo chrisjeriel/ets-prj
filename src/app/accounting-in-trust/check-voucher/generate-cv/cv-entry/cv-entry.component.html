@@ -102,16 +102,16 @@
                         <label class="form-control-sm col-sm-3 labels">Check Amount</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="saveAcitCv.currCd" maxlength="3" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)]="saveAcitCv.cvAmt" appRequired style="margin-left: 3px;">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)]="saveAcitCv.cvAmt" (change)="reCompAmt();" appRequired style="margin-left: 3px;" mask="comma_separator.2">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" [(ngModel)]="saveAcitCv.currRate" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" [(ngModel)]="saveAcitCv.currRate" (change)="reCompAmt();" mask="comma_separator.9" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Local Amount</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" [(ngModel)]="saveAcitCv.localAmt" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" [(ngModel)]="saveAcitCv.localAmt" mask="comma_separator.2" readonly>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
