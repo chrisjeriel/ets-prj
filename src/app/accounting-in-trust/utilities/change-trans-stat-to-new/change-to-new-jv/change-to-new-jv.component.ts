@@ -43,27 +43,27 @@ export class ChangeToNewJvComponent implements OnInit {
 	          dataType: 'text'
 	      },
 	      {
-	          key: 'jvType',
+	          key: 'tranTypeName',
 	          title:'JV Type',
 	          dataType: 'text'
 	      },
 	      {
-	          key: 'jvRefNo',
+	          key: 'refNo',
 	          title:'JV Ref. No',
 	          dataType: 'text'
 	      },
 	      {
-	          key: 'preparedBy',
+	          key: 'preparedName',
 	          title:'Prepared By',
 	          dataType: 'text'
 	      },
 	      {
-	          key: 'jvStatus',
+	          key: 'jvStatusName',
 	          title:'JV Status',
 	          dataType: 'text'
 	      },
 	      {
-	          key: 'amount',
+	          key: 'jvAmt',
 	          title:'Amount',
 	          dataType: 'text'
 	      },

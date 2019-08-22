@@ -1316,12 +1316,24 @@ export class AccountingService {
 		return this.batchOR2;
 	}
 
-	getProfitCommSumm(profcommId?,cedingId?,month?,year?){
-		const params = new HttpParams()
-			.set('profcommId',profcommId ===undefined || profcommId===null ? '' : profcommId)
-			.set('cedingId',cedingId ===undefined || cedingId===null ? '' : cedingId)
-			.set('month',month ===undefined || month===null ? '' : month)
-			.set('month',year ===undefined || year===null ? '' : year)
+	getProfitCommSumm(searchParams : any[]){
+		var params;
+		console.log(searchParams);
+		if(searchParams.length < 1){
+			params = new HttpParams()
+				.set('profcommId','')
+				.set('cedingId','')
+				.set('monthTo','')
+				.set('monthFrom','')
+				.set('yearTo','')
+				.set('yearFrom','')
+		}else{
+			params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+		}
+
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitProfCommSumm",{params});
 	}
 

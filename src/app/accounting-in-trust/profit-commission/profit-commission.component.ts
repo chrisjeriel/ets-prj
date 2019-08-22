@@ -54,6 +54,11 @@ export class ProfitCommissionComponent implements OnInit {
   	cedingAbbr : any = '';
   	quotaIncome : any;
   	dataAll :any;
+  	diff: any;
+  	income: any;
+  	searchParams: any[] = [];
+    profCommDateTo: any = '';
+    profCommDateFrom: any = '';
 
 	passData:any = {
 		tableData: [],
@@ -141,7 +146,7 @@ export class ProfitCommissionComponent implements OnInit {
 		uneditable: [true,true,true,true,true],
 		widths:['auto','auto','auto',120,120],
 	}
-
+    
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService) { }
 
   ngOnInit() {
@@ -149,7 +154,7 @@ export class ProfitCommissionComponent implements OnInit {
   	this.queryModal.mdlOptions = { centered: true, backdrop: 'static', windowClass: "modal-size" };
   	/*this.queryModal.openNoClose();*/
   	this.getYearList();
-  	this.getProfCommList();
+  	this.getProfCommList(this.searchParams);
   	this.dataAll = this.passData.tableData;
   }
 
@@ -200,14 +205,19 @@ export class ProfitCommissionComponent implements OnInit {
   	}
 
   	onRowClick(event){
+  		console.log(event);
 	  	if(event !== null){
 	  		this.selectedData 	= event;
 	  		this.cedingCompDesc = event.company;
 	  		this.month 			= event.month;
 	  		this.year 			= event.year;
 	  	    this.passData.disableGeneric = false;
+	  	    this.diff = event.income - event.outgo;
+	  	    this.income = event.income;
+	  	    this.disableBtn = false;
 	  	} else {
 	  	    this.passData.disableGeneric = true;
+	  	    this.disableBtn = true;
 	  	}
   }
 
@@ -220,8 +230,8 @@ export class ProfitCommissionComponent implements OnInit {
   	this.profitCommtable.refreshTable(); 
   }
 
-  	getProfCommList(){
-  		this.as.getProfitCommSumm().subscribe(data => {
+  	getProfCommList(search?){
+  		this.as.getProfitCommSumm(search).subscribe(data => {
       		var records = data['acitProfCommSummList'];
 			for(let rec of records){
 				this.passData.tableData.push({
@@ -286,11 +296,31 @@ export class ProfitCommissionComponent implements OnInit {
   	}
 
   	searchProfitComm(){
-  		this.passData.tableData = [];
-  		this.table.overlayLoader = true;
-  		this.passData.tableData = this.dataAll.filter(a=>a.cedingId === this.cedingId && 
-  														 a.month >= this.fromMonthCd && a.month <= this.toMonthCd &&
-  														 a.year >= this.fromYearCd && a.year <= this.toYearCd );
-  		this.table.refreshTable();
+       if (this.toMonthCd !== null && this.fromMonthCd !== null 
+       	  && this.toYearCd !== null && this.fromYearCd !== null){
+         this.search();
+
+       } else {
+		 this.search();  
+       }
+  	}
+
+  	search(){
+  			this.cedingId === null   || this.cedingId === undefined ?'':this.cedingId;
+	        this.toMonthCd === null || this.toMonthCd === undefined?'':this.toMonthCd;
+	        this.fromMonthCd === null || this.fromMonthCd === undefined ?'':this.fromMonthCd;
+	        this.toYearCd === null || this.toYearCd === undefined ?'':this.toYearCd;
+	        this.fromYearCd === null || this.fromYearCd === undefined ?'':this.fromYearCd;
+	        this.passData.tableData = [];
+	        this.table.overlayLoader = true;
+
+  		this.searchParams = [{key: "cedingId", search: this.cedingId },
+                             {key: "monthTo", search: null },
+                             {key: "monthFrom", search: null },
+                             {key: "yearTo", search: null},
+                             {key: "yearFrom", search: null},
+                             ]; 
+        console.log(this.searchParams);
+        this.getProfCommList(this.searchParams)
   	}
 }

@@ -42,12 +42,12 @@ export class ChangeToNewArComponent implements OnInit {
           dataType: 'datespan'
       },
       {
-          key: 'paymentType',
+          key: 'tranTypeName',
           title:'Payment Type',
           dataType: 'text'
       },
       {
-          key: 'status',
+          key: 'arStatDesc',
           title:'Status',
           dataType: 'text'
       },
@@ -57,7 +57,7 @@ export class ChangeToNewArComponent implements OnInit {
           dataType: 'text'
       },
       {
-          key: 'amount',
+          key: 'arAmt',
           title:'Amount',
           dataType: 'text'
       },
