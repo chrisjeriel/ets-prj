@@ -1582,6 +1582,19 @@ export class PolCoverageComponent implements OnInit {
     this.getEditableAlt();
     console.log(this.passData.tableData)
     for(var j=0;j<this.passData.tableData.length;j++){
+      // PAUL COMPUTE EXTENSION
+        if(this.policyInfo.extensionTag == 'Y' && this.passData.tableData[j].prevSumInsured > this.passData.tableData[j].sumInsured && this.passData.tableData[j].sumInsured != 0 && this.passData.tableData[j].exDiscTag != 'Y'){
+          this.passData.tableData[j].exPremAmt = this.passData.tableData[j].sumInsured * 
+                                                 (this.passData.tableData[j].exPremRt/100) *
+                                                 this.altCoverageData.exDays/this.altCoverageData.totalDays;
+        }else if(this.policyInfo.extensionTag == 'Y' && this.passData.tableData[j].prevSumInsured <= this.passData.tableData[j].sumInsured && this.passData.tableData[j].sumInsured != 0 && this.passData.tableData[j].exDiscTag != 'Y'){
+          this.passData.tableData[j].exPremAmt = this.passData.tableData[j].prevSumInsured *
+                                                 (this.passData.tableData[j].exPremRt/100) * 
+                                                 this.altCoverageData.exDays/this.altCoverageData.totalDays;
+        }
+
+      // END
+
       if(!this.passData.tableData[j].edited){
         this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
         this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].premRt) ? this.passData.tableData[j].prevPremRt:this.passData.tableData[j].prevPremRt
