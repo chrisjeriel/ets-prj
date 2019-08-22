@@ -733,7 +733,7 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text','text', 'text', 'date'];
       this.passTable.keys = [ 'claimNo','coClmNo', 'policyNo', 'lossDate'];
       this.passTable.checkFlag = true;
-      this.accountingService.getAcitArClmRecoverLov(this.passData.payeeNo).subscribe((a:any)=>{
+      this.accountingService.getAcitArClmRecoverLov(this.passData.payeeNo, this.passData.currCd).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.claimList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
         this.table.refreshTable();
@@ -765,7 +765,7 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text','sequence-2', 'text', 'text', 'currency', 'currency',];
       this.passTable.keys = [ 'claimNo','histNo', 'histCatDesc', 'histTypeDesc', 'reserveAmt', 'paytAmt'];
       this.passTable.checkFlag = true;
-      this.accountingService.getAcitArClmCashCallLov(this.passData.payeeNo).subscribe((a:any)=>{
+      this.accountingService.getAcitArClmCashCallLov(this.passData.payeeNo, this.passData.currCd).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.clmCashCallLovList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
         this.table.refreshTable();

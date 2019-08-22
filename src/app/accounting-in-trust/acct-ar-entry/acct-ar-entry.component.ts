@@ -620,7 +620,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.as.saveAcitArTrans(params).subscribe(
       (data:any)=>{
         if(data.returnCode === 0){
-          if(data.errorList !== null || (data.errorList !== null && data.errorList.length !== 0)){
+          if(data.errorList !== undefined || (data.errorList !== undefined && data.errorList.length !== 0)){
             this.dialogMessage = data.errorList[0].errorMessage;
             this.dialogIcon = 'error-message';
           }else{

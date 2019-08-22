@@ -1739,9 +1739,10 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArClmRecover', {params});
 	}
 
-	getAcitArClmRecoverLov(payeeNo){
+	getAcitArClmRecoverLov(payeeNo, currCd){
 		const params = new HttpParams()
-			.set('payeeNo', payeeNo);
+			.set('payeeNo', payeeNo)
+			.set('currCd', currCd);
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArClmRecoverLov', {params});
 	}
 
@@ -1914,9 +1915,10 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVActTrtyBal',JSON.stringify(params),header);
 	}
 
-	getAcitArClmCashCallLov(payeeNo){
+	getAcitArClmCashCallLov(payeeNo, currCd){
 		const params = new HttpParams()
-			.set('payeeNo', payeeNo);
+			.set('payeeNo', payeeNo)
+			.set('currCd', currCd);
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitArClmCashCallLov', {params});
 	}
 

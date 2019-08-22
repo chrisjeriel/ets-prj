@@ -64,6 +64,7 @@ export class ArClaimCashCallComponent implements OnInit {
   passLov: any = {
     selector: 'acitArClmCashCall',
     payeeNo: '',
+    currCd: '',
     hide: []
   }
 
@@ -88,6 +89,7 @@ export class ArClaimCashCallComponent implements OnInit {
 
   openClmCashCallLov(data){
     this.passLov.payeeNo = this.record.payeeNo;
+    this.passLov.currCd = this.record.currCd;
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimId});
     console.log(this.passLov.hide);
     this.clmCashCallIndex = data.index;

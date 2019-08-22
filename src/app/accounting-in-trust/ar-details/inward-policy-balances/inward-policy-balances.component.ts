@@ -135,6 +135,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           }
           this.originalValues = data.arInwPolBal;
           this.table.refreshTable();
+        }else{
+          this.allotedAmt = this.record.arAmt;
+          setTimeout(()=>{
+            $('.alloted').focus().blur();
+          }, 0);
         }
         this.computeTotalBalAndVariance();
         console.log(this.originalValues);
@@ -174,13 +179,13 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue = selected[i].prevNetDue;
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment = selected[i].cumPayment;
       this.passData.tableData[this.passData.tableData.length - 1].prevBalance = selected[i].prevBalance;
-      this.passData.tableData[this.passData.tableData.length - 1].premAmt = selected[i].prevPremAmt;
+      /*this.passData.tableData[this.passData.tableData.length - 1].premAmt = selected[i].prevPremAmt;
       this.passData.tableData[this.passData.tableData.length - 1].riComm = selected[i].prevRiComm;
       this.passData.tableData[this.passData.tableData.length - 1].riCommVat = selected[i].prevRiCommVat;
       this.passData.tableData[this.passData.tableData.length - 1].charges = selected[i].prevCharges;
       this.passData.tableData[this.passData.tableData.length - 1].balPaytAmt = selected[i].prevBalance;
       this.passData.tableData[this.passData.tableData.length - 1].totalPayments = selected[i].cumPayment + selected[i].prevBalance;
-      this.passData.tableData[this.passData.tableData.length - 1].netDue = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].netDue = 0;*/
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['soaNo'];
@@ -197,7 +202,8 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     for(var i of tableData){
       this.totalBal += i.balPaytAmt;
     }
-    this.variance = this.record.arAmt - this.totalBal;
+    //this.variance = this.record.arAmt - this.totalBal;
+    this.variance = this.allotedAmt - this.totalBal;
   }
 
   onClickSave(){
