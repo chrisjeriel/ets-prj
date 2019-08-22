@@ -21,6 +21,8 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild('queryMdl') queryModal : ModalComponent;
   @ViewChild('invtTable') tableInvt : CustEditableNonDatatableComponent;
+  @ViewChild('successMdl') successMdl : ModalComponent;
+  @ViewChild('jvTable') jvTable : CustEditableNonDatatableComponent;
   
   byDate: any = '';
   radioVal: any = '';
@@ -82,7 +84,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
     sumInvtIncome: number = 0;
 
 
-     passDataInvt: any = {
+   passDataInvt: any = {
    	 tableData: [],
    	 tHeader: ["Investment Code","Certificate No.","Investment Type","Security","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value"],
    	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
@@ -142,6 +144,29 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
     tranTypeCdWhtax : any;
     tranTypeCdBankCharge: any;
 
+    passDataJv: any = {
+   	 tableData: [],
+   	 tHeader: ["JV No.","Type","JV Date","Amount"],
+   	 resizable: [true,true,true,true],
+   	 dataTypes: ['text','text','text','currency'],
+   	 addFlag: false,
+     disableAdd : false,
+     searchFlag: false,
+     infoFlag: false,
+     paginateFlag: false,
+     pageStatus: false,
+     pagination: false,
+     pageLength: 3,
+     widths: [1,1,1,1],
+     keys: ['jvNo','type','jvDate',
+            'amount'],
+     uneditable : ['jvNo','type','jvDate',
+            'amount']
+   };
+
+   tranIdOut: any;
+   result : boolean;
+
 
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private ms: MaintenanceService) { }
 
@@ -170,7 +195,6 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
                                       a.uneditable = ['tranClass','tranNo','tranDate','statusDesc',
                                                         'particulars','bankCharge','whtaxAmt','incomeAmt'];
                                    	  return a; });
-  		  console.log(td);
   		  this.passData.tableData = td;
 
   		  this.table.refreshTable();
@@ -253,7 +277,6 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	                             {key: "tranYear", search: this.fromYear },
 	                             {key: "tranDate", search: this.asOfYear },
 	                             ]; 
-	       console.log(this.searchParams);
 	       this.retrieveAllInvtIncome(this.searchParams);
  }
 
@@ -268,7 +291,6 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 
   onRowClick(data){
   	  if(data !== null){
-  	      console.log(data)
 	      this.selectedData = data;
 	    } else {
 	     this.boolView = true;
@@ -318,7 +340,6 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   		this.as.getAccInvestments(this.searchParamsInvt).pipe(
   			finalize(() => this.showModDetailsFinal(this.dataAll,obj.length) )
   			).subscribe( data => {
-  				console.log(data['invtList']);
 	            for(let rec of data['invtList']){
 		  	 		this.dataAll.push( {
 		  	 										  invtCd: rec.invtCd,
@@ -435,21 +456,8 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 		    this.table.overlayLoader = true;
 		    this.boolAllocate = true;
 		    var result : boolean;
-		    console.log(this.acitAllocInvtIncReq);
 		    this.allocateTransactionFinal();
-		  	/*this.as.saveAcitAllInvtIncome(this.acitAllocInvtIncReq).pipe(finalize(() => this.allocateTransactionFinal(result))
-            ).subscribe((data:any) => {
-		      if(data['returnCode'] != -1) {
-		        this.dialogMessage = data['errorList'][0].errorMessage;
-		        this.dialogIcon = "error";
-		        this.successDialog.open();
-		        result = false;
-		      }else{
-		      	this.refnoTranId = data.tranIdOut;
-		        result = true;
-		      }
-		    });*/
-
+		
  		}	
  	} 
  }
@@ -489,7 +497,6 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
  		}
  	}
  	
- 	console.log(this.jvDatasList);
  	this.saveJV(this.jvDatasList);
 
  }
@@ -540,24 +547,44 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   }
 
   saveJV(obj){
-  	console.log(JSON.stringify(obj));
-    this.as.saveAccJVEntryList(obj).subscribe((data:any) => {
+    this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result))
+    	).subscribe((data:any) => {
+      this.tranIdOut = data['tranIdOut'];
+    
       if(data['returnCode'] != -1) {
  		this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
         this.successDialog.open();
+        this.result= false;
       }else{
-      	console.log("JV CREATED!");
-      	this.dialogMessage = "Allocation Successful!"
-        this.dialogIcon = "success";
-        this.successDialog.open();
+        this.result= true;
       }
     });
   }
 
+  resultJVAllocation(tranIdout,res){
 
-
-
+  	if (res){
+  		this.as.getJVAllocInvtIncListing(tranIdout).pipe(finalize(() => this.successMdl.openNoClose()))
+  			.subscribe(( data:any) => {
+  			this.passDataJv.tableData = [];
+		  		for(let rec of data.allInvtIncomeList){
+				  	 		this.passDataJv.tableData.push( {
+				  	 										  jvNo: rec.jvYear + '-' + rec.jvNo.padStart(6, '0'),
+										                      type: rec.tranTypeName,
+										                      jvDate: this.ns.toDateTimeString(rec.jvDate).split('T')[0],
+										                      amount: rec.jvAmt
+				  	 										});
+			  	}
+			  	this.jvTable.refreshTable();
+			  	this.boolAllocate = false;
+			  	this.onClickSearch();
+  		});
+  	}else {
+  		this.boolAllocate = false;
+  	}
+  	
+  }
 
 
 }
