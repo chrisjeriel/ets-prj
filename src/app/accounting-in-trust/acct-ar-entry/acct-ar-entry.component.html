@@ -5,7 +5,7 @@
 			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
-				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" mask="999999" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled" name="arNo">
+				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="arInfo.arNo" (change)="arInfo.arNo = pad($event.target.value, 'arNo')" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled" name="arNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
 					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date);" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED' || arInfo.arStatDesc.toUpperCase() === 'DELETED' || arInfo.arStatDesc.toUpperCase() === 'PRINTED'"></datepicker>
@@ -153,10 +153,7 @@
 							</select>
 							<div class="col-sm-1"></div>
 						</div>
-						<div class="input-group cust-ig">
-							<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="paytDtlTbl.onClickDelete('a')" (tableDataChange)="onTableDataChange($event)" #paytDtl></app-cust-editable-non-datatable>
-						</div>
-					
+					<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="paytDtlTbl.onClickDelete('a')" (tableDataChange)="onTableDataChange($event)" #paytDtl></app-cust-editable-non-datatable>
 				</div>
 			</div>
 		</fieldset>

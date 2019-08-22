@@ -101,6 +101,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     tranId: '',
     tranClass: 'AR',
     arNo: '',
+    formattedArNo: '',
+    arNoDigits: '',
     arDate: '',
     arStatus: '',
     tranStat: '',
@@ -172,7 +174,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    this.disableTab.emit(true);
+    setTimeout(()=>{this.disableTab.emit(true);},0);
     this.retrievePaymentType();
     //this.retrieveCurrency();
     var tranId;
@@ -396,7 +398,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         //ar
         if(data.ar !== null){
           this.arInfo.tranId         = data.ar.tranId;
-          this.arInfo.arNo           = data.ar.arNo;
+          this.arInfo.arNo           = this.pad(data.ar.arNo, 'arNo');
+          this.arInfo.formattedArNo  = data.ar.formattedArNo;
+          this.arInfo.arNoDigits     = data.ar.arNoDigits;
           this.arInfo.arDate         = this.ns.toDateTimeString(data.ar.arDate);
           this.arDate.date           = this.arInfo.arDate.split('T')[0];
           this.arDate.time           = this.arInfo.arDate.split('T')[1];
@@ -858,7 +862,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       return '';
     }else{
       if(field === 'arNo'){
-        return String(str).padStart(6, '0');
+        return String(str).padStart(this.arInfo.arNoDigits, '0');
       }else if(field === 'dcbSeqNo'){
         return String(str).padStart(3, '0');
       }

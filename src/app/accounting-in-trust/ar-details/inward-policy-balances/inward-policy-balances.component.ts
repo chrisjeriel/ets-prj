@@ -130,7 +130,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           for(var i of data.arInwPolBal){
             i.cumPayment = i.prevCumPayment;
             i.totalPayments = i.cumPayment + i.balPaytAmt;
-            
+            i.uneditable = ['balPaytAmt'];
             this.passData.tableData.push(i);
           }
           this.originalValues = data.arInwPolBal;
@@ -392,7 +392,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   checkNetPayments(){
     this.computeTotalBalAndVariance();
-    if(this.totalBal < 1){
+    if(this.totalBal < 0){
       return true;
     }
     return false;

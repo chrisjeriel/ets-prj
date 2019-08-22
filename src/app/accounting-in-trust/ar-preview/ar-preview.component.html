@@ -85,6 +85,9 @@
 									</ng-container>
 								</app-cust-editable-non-datatable> -->
 								<app-cust-editable-non-datatable #acctEntryTbl [passData]="accEntriesData" (clickLOV)="clickLov($event)" (newClick)="selected=$event" (tickChckbx)="tickChckbx($event)" (tableDataChange)="computeTotals()">
+									<ng-container controls-r>
+										<button class="cust-btn" style="margin-right: 0px !important;" (click)="export()">Print AE</button>
+									</ng-container>
 								</app-cust-editable-non-datatable>
 								<!-- <app-cmdm-accnt-entries [passData]="record"></app-cmdm-accnt-entries> -->
 							</div>
