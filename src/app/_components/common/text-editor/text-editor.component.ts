@@ -14,6 +14,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   @Input() readonly: boolean = false;
   @Input() required: boolean = false;
   @Input() table: boolean = false;
+  @Input() editablePrev: boolean = false;
  
   @Output() fetchContent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -31,7 +32,6 @@ export class TextEditorComponent implements OnInit, OnChanges {
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
-
     if(this.table){
       this.style['border'] = '0';
     }
@@ -60,7 +60,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   }
 
   closeTextEditorModal(event) {
-  	this.fetchContent.next(this.editorContent);
+  	this.emitValue();
   	this.modalService.dismissAll();
     $('#quill-editor').addClass('ng-dirty');
   }
@@ -92,5 +92,9 @@ export class TextEditorComponent implements OnInit, OnChanges {
 
   onClickNo() {
     this.modalRef.close();
+  }
+
+  emitValue() {
+    this.fetchContent.next(this.editorContent);
   }
 }

@@ -112,6 +112,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     tHeader: ['Claim No', 'Loss Date', 'Currency', 'Total Reserve', 'Total Payments'],
     dataTypes: ['text', 'date', 'text', 'currency', 'currency'],
     keys: ['claimNo', 'lossDate', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
+    colSize: ['90px','70px','49px','110px','110px'],
     addFlag: false,
     editFlag: false,
     pagination: true,
@@ -373,6 +374,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.disableRisk = true;
 
+      this.LOVTbl.overlayLoader = true;
       if(clmList.length > 0) {
         this.passDataLOVTbl.tableData = clmList.map(a => {
                                                            a.createDate = this.ns.toDateTimeString(a.createDate);

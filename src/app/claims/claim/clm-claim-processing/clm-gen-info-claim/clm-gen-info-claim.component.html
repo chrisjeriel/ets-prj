@@ -29,7 +29,7 @@
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Claim No</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.coClaimNo" [readonly]="isInquiry" tabindex="1">
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.coClmNo" [readonly]="isInquiry" tabindex="1">
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2" style="font-size: 9.5px !important;">Ceding Company</label>
@@ -163,9 +163,6 @@
                     <div class="col-sm-12">
                         <div class="input-group">
                             <label class="form-control-sm col-sm-2">Loss Details</label>
-                            <!-- <textarea class="form-control form-control-sm col-sm" style="margin-bottom: 17px !important; min-height: 72px !important; font-size: 0.7rem !important"
-                                [(ngModel)]="claimData.lossDtl" appRequired [readonly]="isInquiry"></textarea> -->
-
                             <div class="form-control-sm col-sm edtr-cont" style="height: 35px;">
                                 <text-editor [editorContent]="claimData.lossDtl" (fetchContent)="claimData.lossDtl = $event" [readonly]="isInquiry" [required]="!isInquiry">
                                 </text-editor>
