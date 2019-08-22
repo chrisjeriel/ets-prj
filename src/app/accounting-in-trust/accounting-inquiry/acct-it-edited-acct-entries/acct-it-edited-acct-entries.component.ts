@@ -80,9 +80,10 @@ export class AcctItEditedAcctEntriesComponent implements OnInit {
 
   passDataOldAcctEntries: any = {
     tableData: this.accountingService.getAccItEditedOldAcctEntries(),
-    tHeader: ["Code", "Account", "SL Type", "SL Name", "Debit", "Credit"],
+    tHeader: ["Account Code", "Account Name", "SL Type", "SL Name", "Debit", "Credit"],
     dataTypes: ["text", "text", "text", "text", "currency", "currency"],
-    total: [null, null, null, 'Total', "debit", "credit"],
+    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt'],
+    total: [null, null, null, 'Total', "debitAmt", "creditAmt"],
     tableOnly: true,
     pageID: 2,
     pageLength: 5,
@@ -90,9 +91,10 @@ export class AcctItEditedAcctEntriesComponent implements OnInit {
 
   passDataLatestAcctEntries: any = {
     tableData: this.accountingService.getAccItEditedLatestAcctEntries(),
-    tHeader: ["Code", "Account", "SL Type", "SL Name", "Debit", "Credit"],
+    tHeader: ["Account Code", "Account Name", "SL Type", "SL Name", "Debit", "Credit"],
     dataTypes: ["text", "text", "text", "text", "currency", "currency"],
-    total: [null, null, null, 'Total', "debit", "credit"],
+    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt'],
+    total: [null, null, null, 'Total', "debitAmt", "creditAmt"],
     tableOnly: true,
     pageID: 3,
     pageLength: 5,
