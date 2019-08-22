@@ -32,7 +32,7 @@
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="arInfo.tranTypeCd" appRequired [disabled]="isCancelled || arInfo.rstrctTranUp === 1" name="tranType">
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="arInfo.tranTypeCd" (ngModelChange)="changeTranType($event);" appRequired [disabled]="isCancelled || arInfo.rstrctTranUp === 1" name="tranType">
 					<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
 				</select>
 				<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled" [ngModel]="arInfo.tranTypeName"> -->
@@ -52,8 +52,8 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled" name="payor">
-				<div class="text-search-ico" (click)="openPayorLOV()" *ngIf="!isCancelled"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled || disablePayor" name="payor">
+				<div class="text-search-ico" (click)="openLOV('payor')" *ngIf="!isCancelled && !disablePayor"><a><i class="fa fa-search"></i></a></div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
@@ -61,7 +61,8 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Business</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="arInfo.bussTypeName" name="business">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-6 business" [(ngModel)]="arInfo.bussTypeName" name="business">
+				<div class="text-search-ico" (click)="openLOV('business')" *ngIf="!isCancelled"><a><i class="fa fa-search"></i></a></div>
 				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="arInfo.tin" name="tin">
 			</div>

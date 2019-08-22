@@ -93,6 +93,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   cancelFlag: boolean = false;
   isCancelled: boolean = false;
   dcbBankAcctCurrCd: string = '';
+  disablePayor: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -168,7 +169,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   passLov:any = {
     selector:'',
-    payeeClassCd: 1
+    payeeClassCd: 1,
+    activeTag: ''
   };
 
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
@@ -204,6 +206,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }else{  //edit
       if(this.emittedValue !== undefined){
         this.retrieveArEntry(this.emittedValue.tranId, this.emittedValue.arNo);
+        this.isAdd = false;
       }else{ //add
         //this.retrieveMtnBank();
         this.retrieveMtnAcitDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
@@ -293,12 +296,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }
   }
 
-  openPayorLOV(){
-    this.passLov.selector = 'payee';
-    if(this.arInfo.tranTypeCd == '5'){
-      this.passLov.payeeClassCd = 3;
-    }else{
-      this.passLov.payeeClassCd = 1;
+  openLOV(type){
+    if(type === 'payor'){
+      this.passLov.selector = 'payee';
+      if(this.arInfo.tranTypeCd == '5'){
+        this.passLov.payeeClassCd = 3;
+      }else{
+        this.passLov.payeeClassCd = 1;
+      }
+    }else if(type === 'business'){
+      this.passLov.selector = 'mtnBussType';
+      this.passLov.activeTag = 'Y';
     }
     this.lov.openLOV();
   }
@@ -369,17 +377,26 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   setLov(data){
     console.log(data);
-    this.arInfo.payeeNo = data.data.payeeNo;
-    this.arInfo.payor = data.data.payeeName;
-    this.arInfo.tin = data.data.tin;
-    this.arInfo.bussTypeCd = data.data.bussTypeCd;
-    this.arInfo.mailAddress = data.data.mailAddress;
-    this.arInfo.cedingId = data.data.cedingId;
-    this.arInfo.bussTypeName = data.data.bussTypeName;
-    this.form.control.markAsDirty();
-    setTimeout(()=>{
-      $('.payor').focus().blur();
-    }, 0);
+    if(data.selector === 'payee'){
+      this.arInfo.payeeNo = data.data.payeeNo;
+      this.arInfo.payor = data.data.payeeName;
+      this.arInfo.tin = data.data.tin;
+      this.arInfo.bussTypeCd = data.data.bussTypeCd;
+      this.arInfo.mailAddress = data.data.mailAddress;
+      this.arInfo.cedingId = data.data.cedingId;
+      this.arInfo.bussTypeName = data.data.bussTypeName;
+      this.form.control.markAsDirty();
+      setTimeout(()=>{
+        $('.payor').focus().blur();
+      }, 0);
+    }else if(data.selector === 'mtnBussType'){
+      this.arInfo.bussTypeCd = data.data.bussTypeCd;
+      this.arInfo.bussTypeName = data.data.bussTypeName;
+      this.form.control.markAsDirty();
+      setTimeout(()=>{
+        $('.business').focus().blur();
+      }, 0);
+    }
     
   }
 
@@ -448,6 +465,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
             this.isCancelled = true;
           }
+
+          if(this.arInfo.tranTypeCd == 7){
+            this.disablePayor = true;
+          }else{
+            this.disablePayor = false;
+          }
+
           //currencies
           this.currencies = [];
           if(curr.currency.length !== 0){
@@ -844,6 +868,32 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   //UTILITIES STARTS HERE
+
+  changeTranType(data){
+    this.arInfo.tranTypeCd = data;
+    if(data == 7){
+      this.disablePayor = true;
+      this.ms.getMtnPayee().subscribe(
+        (data:any)=>{
+          data.payeeList = data.payeeList.filter(a=>{return a.payeeName == 'Philippine Machinery Management Services Corporation'});
+          this.arInfo.payeeNo = data.payeeList[0].payeeNo;
+          this.arInfo.payor = data.payeeList[0].payeeName;
+          this.arInfo.mailAddress = data.payeeList[0].mailAddress;
+          this.arInfo.bussTypeCd = data.payeeList[0].bussTypeCd;
+          this.arInfo.bussTypeName = data.payeeList[0].bussTypeName;
+          this.arInfo.tin = data.payeeList[0].tin;
+        }
+      );
+    }else{
+      this.disablePayor = false;
+      this.arInfo.payeeNo = '';
+      this.arInfo.payor = '';
+      this.arInfo.mailAddress = '';
+      this.arInfo.bussTypeCd = '';
+      this.arInfo.bussTypeName = '';
+      this.arInfo.tin = '';
+    }
+  }
 
   compareCurrencyFn(c1: any, c2: any): boolean {
       return c1 && c2 ? c1.currencyCd === c2.currencyCd : c1 === c2;
