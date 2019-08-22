@@ -102,16 +102,16 @@
                         <label class="form-control-sm col-sm-3 labels">Check Amount</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-2 warn" [(ngModel)]="saveAcitCv.currCd" maxlength="3" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right warn" [(ngModel)]="saveAcitCv.cvAmt" (change)="reCompAmt();" appRequired style="margin-left: 3px;" mask="comma_separator.2">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right warn" maxlength="24" [(ngModel)]="saveAcitCv.cvAmt" (change)="setLocalAmt();" numbers-only appRequired style="margin-left: 3px;">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right warn" [(ngModel)]="saveAcitCv.currRate" (change)="reCompAmt();" mask="comma_separator.9" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right warn" maxlength="32" [(ngModel)]="saveAcitCv.currRate" (change)="setLocalAmt();" numbers-only appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Local Amount</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" [(ngModel)]="saveAcitCv.localAmt" mask="comma_separator.2" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" [(ngModel)]="saveAcitCv.localAmt" readonly>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
@@ -295,9 +295,9 @@
     </div>
 </div>
 
-<app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')" [lovCheckBox]="lovCheckBox"></app-lov>
-<app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')" [lovCheckBox]="lovCheckBox"></app-lov>
-<app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
+<app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')" ></app-lov>
+<app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')" ></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>
 <app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
 

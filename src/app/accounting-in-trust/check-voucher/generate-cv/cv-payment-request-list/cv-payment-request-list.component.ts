@@ -56,8 +56,8 @@ export class CvPaymentRequestListComponent implements OnInit {
     tranId : ''
   };
   passDataLov  : any = {
-    selector     : '',
-    payeeClassCd : ''
+    selector  : '',
+    payeeNo   : ''
   };
 
   params : any =  {
@@ -66,13 +66,13 @@ export class CvPaymentRequestListComponent implements OnInit {
   };
 
   cvInfo : any = {
-    cvNo : '',
-    cvDate : '',
+    cvNo     : '',
+    cvDate   : '',
     cvStatus : '',
-    payee : '',
-    cvAmt : '',
+    payee    : '',
+    cvAmt    : '',
     localAmt : '',
-    currCd : ''
+    currCd   : ''
   };
 
   paytData: any ={
@@ -110,6 +110,8 @@ export class CvPaymentRequestListComponent implements OnInit {
       this.cvInfo =  Object.assign(this.cvInfo, recCv);
       console.log(this.cvInfo);
       this.cvInfo.cvDate = this.ns.toDateTimeString(this.cvInfo.cvDate); 
+      this.passDataLov.payeeNo = this.cvInfo.payeeNo;
+      console.log(this.passDataLov.payeeNo);
       this.passDataPaytReqList.tableData = recPr;
       this.paytReqTbl.refreshTable();
 
@@ -124,8 +126,8 @@ export class CvPaymentRequestListComponent implements OnInit {
       console.log(data);
       this.getCvPaytReqList();
       this.suc.open();
-      this.params.savePrqTrans  = [];
-      this.params.deletePrqTrans  = [];
+      this.params.savePaytReqList  = [];
+      this.params.deletePaytReqList  = [];
     });
   }
 
@@ -135,6 +137,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.dialogMessage = '';
     this.passDataPaytReqList.tableData.forEach(e => {
       e.tranId    = this.passData.tranId;
+      e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':this.cvInfo.cvStatus;
       if(e.edited && !e.deleted){
         this.params.savePaytReqList = this.params.savePaytReqList.filter(i => i.reqId != e.reqId);
         e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
@@ -161,11 +164,18 @@ export class CvPaymentRequestListComponent implements OnInit {
         this.params.deletePaytReqList = [];
     }else{
         if(this.params.savePaytReqList.length == 0 && this.params.deletePaytReqList.length == 0){
-          $('.ng-dirty').removeClass('ng-dirty');
-          this.con.confirmModal();
-          this.params.savePaytReqList   = [];
-          this.params.deletePaytReqList = [];
-          this.passDataPaytReqList.tableData = this.passDataPaytReqList.tableData.filter(e => e.reqId != '');
+            if(this.cvInfo.cvStatusUp){
+              $('input').addClass('ng-dirty');
+              this.chkCerti();
+            }else{
+              console.log('entered here at else');
+              $('.ng-dirty').removeClass('ng-dirty');
+              this.params.savePaytReqList   = [];
+              this.params.deletePaytReqList = [];
+              this.passDataPaytReqList.tableData = this.passDataPaytReqList.tableData.filter(e => e.reqId != '');
+            }
+            
+            this.con.confirmModal();
         }else{
           console.log(this.cancelFlag);
           if(this.cancelFlag == true){
@@ -176,6 +186,17 @@ export class CvPaymentRequestListComponent implements OnInit {
           }
         }
     }
+  }
+
+  chkCerti(){
+    console.log('Im dirty');
+    this.params.savePaytReqList = this.passDataPaytReqList.tableData.map(e => {
+      e.updateDate = this.ns.toDateTimeString(e.updateDate);
+      e.createDate = this.ns.toDateTimeString(e.createDate);
+      e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':this.cvInfo.cvStatus;
+      return e;
+    });
+    console.log(this.params.savePaytReqList);
   }
 
   showLov(){

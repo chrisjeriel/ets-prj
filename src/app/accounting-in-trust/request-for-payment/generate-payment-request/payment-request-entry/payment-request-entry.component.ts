@@ -12,6 +12,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -92,12 +93,12 @@ export class PaymentRequestEntryComponent implements OnInit {
     approvedBy  : ''
   };
 
-  constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router) { }
+  constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,
+              private activatedRoute: ActivatedRoute,  private router: Router,private decPipe: DecimalPipe) { }
 
   ngOnInit() {
     this.titleService.setTitle('Acct-IT | Request Entry');
-    this.getTranType();
-
+  
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
         this.saveAcitPaytReq.reqId = params['reqId'];
@@ -110,6 +111,7 @@ export class PaymentRequestEntryComponent implements OnInit {
     });
 
     (this.saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED')?this.cancelledStats():'';
+    this.getTranType();
   }
 
   getAcitPaytReq(){
@@ -153,7 +155,6 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
         this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
         (this.saveAcitPaytReq.reqStatus == 'X')?this.disableFlds(true):this.disableFlds(false);
-        console.log(this.saveAcitPaytReq);
       }else{
         this.reqDateDate = this.ns.toDateTimeString(0).split('T')[0];
         this.reqDateTime = this.ns.toDateTimeString(0).split('T')[1];
@@ -172,6 +173,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       }
 
       this.paytData.emit({reqId: this.saveAcitPaytReq.reqId});
+      this.setLocalAmt();
     });
   }
 
@@ -290,7 +292,9 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.mtnService.getMtnAcitTranType('PRQ')
     .subscribe(data => {
       console.log(data);
-      this.tranTypeList = (data['tranTypeList']).sort((a,b) => a.tranTypeCd-b.tranTypeCd);
+      this.tranTypeList = (this.initDisabled)
+                             ?(data['tranTypeList']).filter(e => e.tranTypeCd != 1 && e.tranTypeCd != 2 && e.tranTypeCd != 3).sort((a,b) => a.tranTypeCd-b.tranTypeCd)
+                             :(data['tranTypeList']).sort((a,b) => a.tranTypeCd-b.tranTypeCd);
     });
   }
 
@@ -312,7 +316,10 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   setLocalAmt(){
-    this.saveAcitPaytReq.localAmt = this.saveAcitPaytReq.reqAmt;
+    this.saveAcitPaytReq.localAmt = Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) * Number(String(this.saveAcitPaytReq.currRate).replace(/\,/g,''));
+    this.saveAcitPaytReq.reqAmt = this.decPipe.transform(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')),'0.2-2');
+    this.saveAcitPaytReq.localAmt = this.decPipe.transform(Number(String(this.saveAcitPaytReq.localAmt).replace(/\,/g,'')),'0.2-2');
+    this.saveAcitPaytReq.currRate = this.decPipe.transform(Number(String(this.saveAcitPaytReq.currRate).replace(/\,/g,'')),'0.9-9');
   }
 
   setData(data,from){
@@ -321,7 +328,7 @@ export class PaymentRequestEntryComponent implements OnInit {
     if(from.toLowerCase() == 'curr'){
       this.saveAcitPaytReq.currCd = data.currencyCd;
       this.saveAcitPaytReq.currRate =  data.currencyRt;
-      this.saveAcitPaytReq.localAmt = Number(this.saveAcitPaytReq.reqAmt) * Number(data.currencyRt);
+      this.setLocalAmt();
     }else if(from.toLowerCase() == 'prep-user'){
       this.saveAcitPaytReq.preparedBy = data.printableName;
       this.savePrintables.preparedBy  = data.userId;
