@@ -16,10 +16,10 @@
    		                    <label class="form-control-sm col-sm-1">Request Date</label>
                           <div class="input-group col-sm-3" style="padding: 0px;">
                             <div class="col-sm-8 dp-cont">
-                              <datepicker  [type]="'date'" [disabled]="saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED'" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
+                              <datepicker  [type]="'date'" [disabled]="saveAcitPaytReq.reqStatus == 'X'" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                              <datepicker  [type]="'time'" [disabled]="saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED'" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
+                              <datepicker  [type]="'time'" [disabled]="saveAcitPaytReq.reqStatus == 'X'" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
                             </div>
                           </div>
    		                    <label class="form-control-sm col-sm-1">Status</label>
@@ -36,7 +36,7 @@
                               </div>
    		                    <label class="form-control-sm col-sm-1">Payment Type</label>
       	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-                                 <select class="form-control form-control-sm cust-sm col-sm-12 warn" [disabled]="saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED' || saveAcitPaytReq.reqSeqNo != ''" appRequired [ngModel]="saveAcitPaytReq.tranTypeCd" (ngModelChange)="saveAcitPaytReq.tranTypeCd=$event;">
+                                 <select class="form-control form-control-sm cust-sm col-sm-12 warn" [disabled]="saveAcitPaytReq.reqStatus == 'X' || saveAcitPaytReq.reqSeqNo != ''" appRequired [ngModel]="saveAcitPaytReq.tranTypeCd" (ngModelChange)="saveAcitPaytReq.tranTypeCd=$event;setDefPar();">
                                    <option *ngFor="let i of tranTypeList" value="{{ i.tranTypeCd }}">{{ i.tranTypeName }}</option>
                                  </select>
       		                    </div>
@@ -48,8 +48,8 @@
                              <div class="input-group col-sm-3" style="padding: 0px;">
                               <input type="text" class="form-control form-control-sm cust-sm col-sm-3 warn cap-input" maxlength="3" [ngModel]="saveAcitPaytReq.currCd" (ngModelChange)="saveAcitPaytReq.currCd=$event" (change)="checkCode($event,'curr')" appRequired>
                               <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;" class="magni-icon"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
-                              <input *ngIf="saveAcitPaytReq.reqStatusDesc.toUpperCase() != 'CANCELLED'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;" [ngModel]="saveAcitPaytReq.reqAmt" (ngModelChange)="saveAcitPaytReq.reqAmt=$event" appRequired (change)="setLocalAmt();" numbers-only maxlength="24">
-                              <input *ngIf="saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 2px ! important;"  [(ngModel)]="saveAcitPaytReq.reqAmt"  numbers-only maxlength="26" readonly>
+                              <input *ngIf="saveAcitPaytReq.reqStatus != 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;" [ngModel]="saveAcitPaytReq.reqAmt" (ngModelChange)="saveAcitPaytReq.reqAmt=$event" appRequired (change)="setLocalAmt();" numbers-only maxlength="24">
+                              <input *ngIf="saveAcitPaytReq.reqStatus == 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 2px ! important;"  [(ngModel)]="saveAcitPaytReq.reqAmt"  numbers-only maxlength="26" readonly>
                              </div>
                              <label class="form-control-sm col-sm-1 labels">Currency Rate</label>
                              <!-- [ngModel]="saveAcitPaytReq.currRate | number:'1.10-10'" -->
@@ -130,10 +130,10 @@
 	            		<div class="col-md-13 text-center">
 	            			<div class="cust-btn-container">
 	            				<button type="button" class="cust-btn" (click) = "onClickNewReq()">New Request</button>
-	            				<button type="button" class="cust-btn" [disabled]="(saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED')" (click)="onClickSave()">Save</button>
+	            				<button type="button" class="cust-btn" [disabled]="(saveAcitPaytReq.reqStatus == 'X')" (click)="onClickSave()">Save</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
-	            				<button type="button" class="cust-btn" [disabled] ="initDisabled">Print</button>
-                      <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="(saveAcitPaytReq.reqStatus.toUpperCase() != 'A')" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
+	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'">Print</button>
+                      <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="(saveAcitPaytReq.reqStatus.toUpperCase() != 'F' && saveAcitPaytReq.reqStatus.toUpperCase() != 'A' )" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
 	            			</div>
 	            		</div>
 	            	</div>

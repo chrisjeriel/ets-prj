@@ -799,7 +799,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['paytReqNo','tranTypeDesc','reqDate','particulars','requestedBy','currCd','reqAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
-        this.passTable.tableData = a.acitPaytReq.filter(e => e.payeeNo == this.passData.payeeNo);
+        this.passTable.tableData = a.acitPaytReq.filter(e => e.payeeNo == this.passData.payeeNo && e.currCd == this.passData.currCd && e.reqStatus == 'A');
         this.table.refreshTable();
       });
     }

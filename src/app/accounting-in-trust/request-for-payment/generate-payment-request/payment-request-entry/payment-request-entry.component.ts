@@ -98,7 +98,8 @@ export class PaymentRequestEntryComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle('Acct-IT | Request Entry');
-  
+    this.getTranType();
+
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
         this.saveAcitPaytReq.reqId = params['reqId'];
@@ -110,8 +111,8 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.getAcitPaytReq();
     });
 
-    (this.saveAcitPaytReq.reqStatusDesc.toUpperCase() == 'CANCELLED')?this.cancelledStats():'';
-    this.getTranType();
+    (this.saveAcitPaytReq.reqStatus == 'X')?this.cancelledStats():'';
+    
   }
 
   getAcitPaytReq(){
@@ -154,7 +155,9 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
         this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
         this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
-        (this.saveAcitPaytReq.reqStatus == 'X')?this.disableFlds(true):this.disableFlds(false);
+        // (this.saveAcitPaytReq.reqStatus == 'X')?this.disableFlds(true):this.disableFlds(false);
+        console.log(this.saveAcitPaytReq.reqStatus);
+        (this.saveAcitPaytReq.reqStatus == 'N' || this.saveAcitPaytReq.reqStatus == 'F')?this.disableFlds(false):this.disableFlds(true);
       }else{
         this.reqDateDate = this.ns.toDateTimeString(0).split('T')[0];
         this.reqDateTime = this.ns.toDateTimeString(0).split('T')[1];
@@ -218,6 +221,7 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.initDisabled = true;
     this.getAcitPaytReq();
     this.disableFlds(false);
+    this.getTranType();
   }
 
   onSaveAcitPaytReq(){
@@ -227,20 +231,20 @@ export class PaymentRequestEntryComponent implements OnInit {
       createDate      : (this.saveAcitPaytReq.createDate == '' || this.saveAcitPaytReq.createDate == null)?this.ns.toDateTimeString(0):this.saveAcitPaytReq.createDate,
       createUser      : (this.saveAcitPaytReq.createUser == '' || this.saveAcitPaytReq.createUser == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.createUser,
       currCd          : this.saveAcitPaytReq.currCd,
-      currRate        : this.saveAcitPaytReq.currRate,
-      localAmt        : this.saveAcitPaytReq.localAmt,
+      currRate        : Number(String(this.saveAcitPaytReq.currRate).replace(/\,/g,'')),
+      localAmt        : Number(String(this.saveAcitPaytReq.localAmt).replace(/\,/g,'')),
       particulars     : this.saveAcitPaytReq.particulars,
       payee           : this.saveAcitPaytReq.payee,
       payeeNo         : this.saveAcitPaytReq.payeeNo,
       preparedBy      : this.savePrintables.preparedBy,
       preparedDate    : (this.saveAcitPaytReq.preparedDate == '' || this.saveAcitPaytReq.preparedDate == null)?this.ns.toDateTimeString(0):this.saveAcitPaytReq.preparedDate,
-      reqAmt          : this.saveAcitPaytReq.reqAmt,
+      reqAmt          : Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')),
       reqDate         : this.reqDateDate+'T'+this.reqDateTime,
       reqId           : this.saveAcitPaytReq.reqId,
       reqMm           : (this.saveAcitPaytReq.reqMm == '' || this.saveAcitPaytReq.reqMm == null)?Number(this.reqDateDate.split('-')[1]):Number(this.saveAcitPaytReq.reqMm),
       reqPrefix       : this.tranTypeList.filter(i => i.tranTypeCd == this.saveAcitPaytReq.tranTypeCd).map(i => i.typePrefix).toString(),
       reqSeqNo        : this.saveAcitPaytReq.reqSeqNo,
-      reqStatus       : this.saveAcitPaytReq.reqStatus,
+      reqStatus       : (this.saveAcitPaytReq.reqStatusNew == 'A')?this.saveAcitPaytReq.reqStatusNew:this.saveAcitPaytReq.reqStatus,
       reqYear         : (this.saveAcitPaytReq.reqYear == '' || this.saveAcitPaytReq.reqYear == null)?this.reqDateDate.split('-')[0]:this.saveAcitPaytReq.reqYear,
       requestedBy     : this.savePrintables.requestedBy,
       tranTypeCd      : this.saveAcitPaytReq.tranTypeCd,
@@ -266,7 +270,6 @@ export class PaymentRequestEntryComponent implements OnInit {
 
   onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
-    // no payment type validation yet
     if(this.reqDateDate == '' || this.reqDateDate == null || this.reqDateTime == '' || this.reqDateTime == null || this.saveAcitPaytReq.payee == '' || 
       this.saveAcitPaytReq.payee == null || this.saveAcitPaytReq.currCd == '' || this.saveAcitPaytReq.currCd == null || this.saveAcitPaytReq.particulars == '' ||
       this.saveAcitPaytReq.particulars == null || this.saveAcitPaytReq.preparedBy == '' || this.saveAcitPaytReq.preparedBy == null || 
@@ -289,13 +292,18 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   getTranType(){
-    this.mtnService.getMtnAcitTranType('PRQ')
+    this.mtnService.getMtnAcitTranType('PRQ','','','','', 'Y')
     .subscribe(data => {
       console.log(data);
       this.tranTypeList = (this.initDisabled)
                              ?(data['tranTypeList']).filter(e => e.tranTypeCd != 1 && e.tranTypeCd != 2 && e.tranTypeCd != 3).sort((a,b) => a.tranTypeCd-b.tranTypeCd)
                              :(data['tranTypeList']).sort((a,b) => a.tranTypeCd-b.tranTypeCd);
+      this.tranTypeList.unshift(' ');
     });
+  }
+
+  setDefPar(){
+    this.saveAcitPaytReq.particulars = String(this.tranTypeList.filter(e => e.tranTypeCd == this.saveAcitPaytReq.tranTypeCd).map(e => e.defaultParticulars));
   }
 
   cancelledStats(){
@@ -317,9 +325,13 @@ export class PaymentRequestEntryComponent implements OnInit {
 
   setLocalAmt(){
     this.saveAcitPaytReq.localAmt = Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) * Number(String(this.saveAcitPaytReq.currRate).replace(/\,/g,''));
-    this.saveAcitPaytReq.reqAmt = this.decPipe.transform(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')),'0.2-2');
+    var reqAmt = this.decPipe.transform(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')),'0.2-2');
+    var currRate = this.decPipe.transform(Number(String(this.saveAcitPaytReq.currRate).replace(/\,/g,'')),'0.9-9');
     this.saveAcitPaytReq.localAmt = this.decPipe.transform(Number(String(this.saveAcitPaytReq.localAmt).replace(/\,/g,'')),'0.2-2');
-    this.saveAcitPaytReq.currRate = this.decPipe.transform(Number(String(this.saveAcitPaytReq.currRate).replace(/\,/g,'')),'0.9-9');
+
+    this.saveAcitPaytReq.reqAmt = (Number(reqAmt) == 0)? '' : reqAmt;
+    this.saveAcitPaytReq.currRate = (Number(currRate) == 0)? '' : currRate;
+
   }
 
   setData(data,from){
@@ -396,6 +408,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       console.log(data);
       $('.globalLoading').css('display','none');
       this.saveAcitPaytReq.reqStatusDesc = 'Cancelled';
+      this.saveAcitPaytReq.reqStatus = 'X';
       this.dialogIcon = '';
       this.dialogMessage = '';
       this.success.open();
@@ -416,6 +429,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   showConfirmMdl(from){
     this.confirmMdl.openNoClose();
     this.fromBtn = from;
+    (from.toLowerCase() == 'approve')?this.saveAcitPaytReq.reqStatusNew = '':'';
   }
 
   onNoAppby(){
@@ -434,6 +448,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       $('.warn').blur();
     }else{
       this.confirmMdl.closeModal();
+      this.saveAcitPaytReq.reqStatusNew = 'A';
     }
   }
 
