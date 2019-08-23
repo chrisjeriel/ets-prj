@@ -240,7 +240,7 @@
 
                                 <!-- appRequired Test -->
                                 <ng-container *ngIf="data.required !== undefined && data.required.indexOf(key) != -1">
-                                    {{yike}}
+
                                     <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
                                      type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" appRequired>
 
@@ -904,6 +904,9 @@
                                         <div *ngSwitchCase="'percent'" style="text-align: right">
                                             <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
                                         </div>
+                                        <div *ngSwitchCase="'reqPercent'" style="text-align: right">
+                                            <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
+                                        </div>
                                         <div *ngSwitchCase="'currencyRate'" style="text-align: right">
                                             <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.6-6'}}</span>
                                         </div>
@@ -917,7 +920,19 @@
                                                 </ng-container>
                                             </select>
                                         </div>
+                                        <div *ngSwitchCase="'reqSelect'">
+                                            <select disabled (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'reqSelect'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                <ng-container *ngFor="let data of passData.opts">
+                                                    <ng-container *ngIf="key == data.selector">
+                                                        <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </select>
+                                        </div>
                                         <div *ngSwitchCase="'currency'" style="text-align: right">
+                                            <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="'reqCurrency'" style="text-align: right">
                                             <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
                                         </div>
                                         <div *ngSwitchCase="'number'" style="text-align: right">
@@ -926,7 +941,11 @@
                                         <div *ngSwitchCase="'reqNumber'" style="text-align: right">
                                             <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
                                         </div>
+                                        <div *ngSwitchCase="'reqNum'" style="text-align: right">
+                                            <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
+                                        </div>
                                         <span *ngSwitchCase="'date'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
+                                        <span *ngSwitchCase="'reqDate'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
                                         <span *ngSwitchCase="'time'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'HH:mm'}}</span>
                                         <span *ngSwitchCase="'datetime'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'MM/dd/yyyy hh:mm aa'}}</span>
                                         <div *ngSwitchCase="'checkbox'" style="text-align: center;">
@@ -1061,7 +1080,6 @@
 
                             <!-- appRequired Test -->
                             <ng-container *ngIf="data.required !== undefined && data.required.indexOf(key) != -1">
-                                {{yike}}
                                 <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
                                  type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" appRequired>
 

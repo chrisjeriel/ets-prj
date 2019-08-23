@@ -452,7 +452,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.mailAddress    = data.ar.mailAddress;
           this.arInfo.bussTypeCd     = data.ar.bussTypeCd;
           this.arInfo.tin            = data.ar.tin;
-          this.arInfo.refCd            = data.ar.refCd;
+          this.arInfo.refCd          = data.ar.refCd;
           this.arInfo.currCd         = data.ar.currCd;
           this.arInfo.arAmt          = data.ar.arAmt;
           this.arInfo.currRate       = data.ar.currRate;
@@ -472,12 +472,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             //this.passData.dataTypes = ['select','select','percent','currency','select','text','text','date','select'];
             this.passData.addFlag = false;
             this.passData.genericBtn = undefined;
-            this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+            this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
             this.isCancelled = true;
           }else if(this.arInfo.arStatDesc.toUpperCase() === 'PRINTED'){
             this.passData.addFlag = false;
             this.passData.genericBtn = undefined;
-            this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+            this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
             this.isPrinted = true;
           }
 
