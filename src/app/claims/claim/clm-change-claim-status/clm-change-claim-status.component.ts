@@ -344,8 +344,8 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   onRowClickQuery(data){
     if(data !== null){
       this.claimDetails = data;
-      this.reasonCd = data.reasonCd;
-      this.reasonDesc = data.reasonDesc;
+      // this.reasonCd = data.reasonCd;
+      // this.reasonDesc = data.reasonDesc;
     }else{
       this.clearDetails();
     }
@@ -450,6 +450,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     }else{
       this.processTbl.indvSelect.reasonCd = this.selectedReason.reasonCd;
       this.processTbl.indvSelect.description = this.selectedReason.description;
+      this.processTbl.indvSelect.manual = true;
     }
   }
 
@@ -629,7 +630,11 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     this.dialogIcon = 'info';
     this.dialogMessage = 'Are you sure you want to change the status of the ff. claim(s)?';
     this.selectedData.tableData = this.queryTable.selected;
-    this.selectedData.tableData.forEach(a=>{a.showMG = 1;a.reasonCd = this.reasonCd; a.description = this.reasonDesc});
+    this.selectedData.tableData.forEach(a=>{
+      if(a.manual != true){
+        a.showMG = 1;a.reasonCd = this.reasonCd; a.description = this.reasonDesc
+      }
+    });
     console.log(this.selectedData.tableData);
     this.processTbl.refreshTable();
     this.processModal.openNoClose();
@@ -726,23 +731,24 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   clearDetails(){
-    this.claimDetails = {
-      claimNo: '',
-      clmStatus: '',
-      policyNo: '',
-      cedingName: '',
-      insuredDesc: '',
-      riskName: '',
-      lossDate: '',
-      currencyCd: '',
-      lossDtl: '',
-      totalLossExpRes: '',
-      totalLossExpPd: '',
-      adjName: '',
-      processedBy: '',
-    }
-    this.reasonCd = '';
-    this.reasonDesc = '';
+    this.claimDetails = null;
+    // {
+    //   claimNo: '',
+    //   clmStatus: '',
+    //   policyNo: '',
+    //   cedingName: '',
+    //   insuredDesc: '',
+    //   riskName: '',
+    //   lossDate: '',
+    //   currencyCd: '',
+    //   lossDtl: '',
+    //   totalLossExpRes: '',
+    //   totalLossExpPd: '',
+    //   adjName: '',
+    //   processedBy: '',
+    // }
+    // this.reasonCd = '';
+    // this.reasonDesc = '';
   }
 
   compareFn(c1:any, c2: any): boolean {
