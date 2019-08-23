@@ -79,8 +79,8 @@ export class ArPreviewComponent implements OnInit {
         slTypeName: '',
         slCd: '',
         slName: '',
-        creditAmt: '',
-        debitAmt: '',
+        creditAmt: 0,
+        debitAmt: 0,
         autoTag: '',
         createUser: this.ns.getCurrentUser(),
         createDate: this.ns.toDateTimeString(0),
@@ -95,7 +95,8 @@ export class ArPreviewComponent implements OnInit {
     pageLength: 10,
     widths: [205,305,163,176,122,154],
     checkFlag:true,
-    magnifyingGlass: ['glShortCd','slTypeName','slName']
+    magnifyingGlass: ['glShortCd','slTypeName','slName'],
+    total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt']
   };
 
   /*accEntriesData: any = {
@@ -159,6 +160,19 @@ export class ArPreviewComponent implements OnInit {
   ngOnInit() {
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
+    if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+      this.accEntriesData.uneditable = [true, true, true, true, true, true ];
+      this.accEntriesData.addFlag = false;
+      this.accEntriesData.deleteFlag =  false;
+      this.accEntriesData.checkFlag = false;
+      this.accEntriesData.magnifyingGlass = [];
+
+      this.amountDetailsData.uneditable = [true, true, true, true, true, true ];
+      this.amountDetailsData.addFlag = false;
+      this.amountDetailsData.deleteFlag =  false;
+      this.amountDetailsData.checkFlag = false;
+      this.amountDetailsData.magnifyingGlass = [];
+    }
     this.getMtnCurrency();
     //this.retrieveAmtDtl();
     this.retrieveAcctEntry();
@@ -216,7 +230,7 @@ export class ArPreviewComponent implements OnInit {
     this.savedData = [];
     this.deletedData = [];
     this.totalLocalAmt = 0;
-    if(this.currentTab === 'amtDtl' || this.currentTab.length === 0){
+    /*if(this.currentTab === 'amtDtl' || this.currentTab.length === 0){
       for (var i = 0 ; this.amountDetailsData.tableData.length > i; i++) {
         if(!this.amountDetailsData.tableData[i].deleted){
           this.totalLocalAmt += this.amountDetailsData.tableData[i].localAmt;
@@ -270,8 +284,8 @@ export class ArPreviewComponent implements OnInit {
         (error: any)=>{
 
         }
-      );
-    }else if(this.currentTab === 'acctEntries'){
+      );*/
+   // }else if(this.currentTab === 'acctEntries'){
       this.savedData = this.accEntriesData.tableData.filter(a=>a.edited && !a.deleted);
       this.deletedData = this.accEntriesData.tableData.filter(a=>a.deleted);
 
@@ -298,7 +312,7 @@ export class ArPreviewComponent implements OnInit {
           this.successDiag.open();
         }
       });
-    }
+    //}
   }
 
   cancel(){
@@ -455,7 +469,7 @@ export class ArPreviewComponent implements OnInit {
       };
     alasql('CREATE TABLE sample(row1 VARCHAR2, row2 VARCHAR2, row3 VARCHAR2, row4 VARCHAR2, row5 VARCHAR2, row6 VARCHAR2)');
     alasql('INSERT INTO sample VALUES(?,?,?,?,?,?)', ['AR No', 'AR Date', 'DCB No.', 'Payment Type', 'Amount', '']);
-    alasql('INSERT INTO sample VALUES (?,datetime(?),?,?,?,currency(?))', [this.record.arNo, this.record.arDate, this.record.dcbNo, this.record.tranTypeName, this.record.currCd, this.record.arAmt]);
+    alasql('INSERT INTO sample VALUES (?,datetime(?),?,?,?,currency(?))', [this.record.formattedArNo, this.record.arDate, this.record.dcbNo, this.record.tranTypeName, this.record.currCd, this.record.arAmt]);
     alasql('INSERT INTO sample VALUES(?,?,?,?,?,?)', ['Payor', '', '', 'Status', 'Local Amount', '']);
     alasql('INSERT INTO sample VALUES (?,?,?,?,?,currency(?))', [this.record.payor, '','', this.record.arStatDesc, 'PHP', this.record.currRate * this.record.arAmt]);
     alasql('INSERT INTO sample VALUES (?,?,?,?,?,?)', ['', '', '', '', '', '']);

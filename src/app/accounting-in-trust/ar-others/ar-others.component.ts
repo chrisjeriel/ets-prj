@@ -69,6 +69,12 @@ export class ArOthersComponent implements OnInit {
     this.passData.nData.billId = 3;
     this.passData.nData.currCd = this.arDetails.currCd;
     this.passData.nData.currRate = this.arDetails.currRate;
+    if(this.arDetails.arStatDesc.toUpperCase() != 'NEW'){
+      this.passData.uneditable = [true, true, true, true, true, true,true ];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag =  false;
+      this.passData.checkFlag = false;
+    }
     //this.getCurrency();
     this.retrieveOthers();
   }

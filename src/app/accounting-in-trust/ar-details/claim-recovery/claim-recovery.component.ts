@@ -93,6 +93,12 @@ export class ClaimRecoveryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Claim Recovery / Overpayment");
     this.passLov.payeeNo = this.record.payeeNo;
+    if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+      this.passData.uneditable = [true, true, true, true, true, true,true, true, true, true ];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag =  false;
+      this.passData.checkFlag = false;
+    }
     this.retrievePaytType();
     this.retrieveClmRecover();
     this.getCurrency();

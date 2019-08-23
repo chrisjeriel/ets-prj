@@ -84,7 +84,14 @@ export class ArClaimCashCallComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Claim Cash Call");
     this.passLov.payeeNo = this.record.payeeNo;
+    if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+      this.passData.uneditable = [true,true,true,true,true,true,true,true, true, true,true,true, true];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag =  false;
+      this.passData.checkFlag = false;
+    }
     this.retrieveClmCashCall();
+
   }
 
   openClmCashCallLov(data){

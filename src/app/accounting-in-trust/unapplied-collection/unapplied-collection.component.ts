@@ -69,6 +69,12 @@ export class UnappliedCollectionComponent implements OnInit {
     this.passData.nData.tranId = this.arDetails.tranId;
     this.passData.nData.billId = 2;
     //this.getCurrency();
+    if(this.arDetails.arStatDesc.toUpperCase() != 'NEW'){
+      this.passData.uneditable = [true, true, true, true, true, true,true, true];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag =  false;
+      this.passData.checkFlag = false;
+    }
     this.getTransdtlType();
     this.passData.nData.currCd = this.arDetails.currCd;
     this.passData.nData.currRate = this.arDetails.currRate;

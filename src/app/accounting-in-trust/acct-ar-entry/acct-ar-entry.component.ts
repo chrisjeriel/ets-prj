@@ -19,7 +19,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lov: LovComponent;
-  @ViewChild(ModalComponent) cancelMdl: ModalComponent;
+  @ViewChild('cancelMdl') cancelMdl: ModalComponent;
+  @ViewChild('printModal') printMdl: ModalComponent;
   @ViewChild("myForm") form: any;
 
   passData: any = {
@@ -94,6 +95,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   isCancelled: boolean = false;
   dcbBankAcctCurrCd: string = '';
   disablePayor: boolean = false;
+  isPrinted: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -121,7 +123,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     prNo: '',
     prDate: '',
     prPreparedBy: '',
-    payeeNo: '1',
+    payeeNo: '',
     payor: '',
     mailAddress: '',
     bussTypeCd: '',
@@ -135,6 +137,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     updateUser: '',
     updateDate: '',
     rstrctTranUp: '',
+    arDtlSum: '',
+    acctEntriesSum: '',
   }
 
   arDate: any = {
@@ -260,7 +264,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       prNo: '',
       prDate: '',
       prPreparedBy: '',
-      payeeNo: '1',
+      payeeNo: '',
       payor: '',
       mailAddress: '',
       bussTypeCd: '',
@@ -275,7 +279,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       updateUser: '',
       updateDate: '',
       cedingId: '',
-      bussTypeName: ''
+      bussTypeName: '',
+      rstrctTranUp: '',
+      arDtlSum: '',
+      acctEntriesSum: '',
     }
     this.prDate = {
       date: '',
@@ -412,6 +419,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         let bankData = forkData.bank;
         let bankAcctData = forkData.bankAcct;
         let curr = forkData.curr;
+        console.log(data);
         //ar
         if(data.ar !== null){
           this.arInfo.tranId         = data.ar.tranId;
@@ -456,14 +464,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.cedingId       = data.ar.cedingId;
           this.arInfo.bussTypeName   = data.ar.bussTypeName;
           this.arInfo.rstrctTranUp   = data.ar.rstrctTranUp;
+          this.arInfo.arDtlSum       = data.ar.arDtlSum;
+          this.arInfo.acctEntriesSum = data.ar.acctEntriesSum;
           this.selectedCurrency       = data.ar.currCd;
           if(this.arInfo.arStatDesc.toUpperCase() === 'DELETED' || this.arInfo.arStatDesc.toUpperCase() === 'CANCELED'){
           //if(this.arInfo.arStatDesc.toUpperCase() !== 'NEW'){
-            this.passData.dataTypes = ['select','select','percent','currency','select','text','text','date','select'];
+            //this.passData.dataTypes = ['select','select','percent','currency','select','text','text','date','select'];
             this.passData.addFlag = false;
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
             this.isCancelled = true;
+          }else if(this.arInfo.arStatDesc.toUpperCase() === 'PRINTED'){
+            this.passData.addFlag = false;
+            this.passData.genericBtn = undefined;
+            this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+            this.isPrinted = true;
           }
 
           if(this.arInfo.tranTypeCd == 7){
@@ -518,6 +533,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.disableTab.emit(false);
           let arDetailParams = {
             tranId: this.arInfo.tranId,
+            formattedArNo: this.arInfo.formattedArNo,
             arNo: this.arInfo.arNo,
             arStatus: this.arInfo.arStatus,
             arStatDesc: this.arInfo.arStatDesc,
@@ -662,6 +678,43 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  print(){
+    if(this.arAmtEqualsArDtlPayt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'AR cannot be printed. Total Payments in AR Details must be equal to AR Amount';
+      this.successDiag.open();
+    }else if(this.balanceAcctEntries()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'AR cannot be printed. Accounting Entries must have zero variance.';
+      this.successDiag.open();
+    }else{
+      this.printMdl.openNoClose();
+    }
+  }
+
+  updateArStatus(){
+    if(!this.isPrinted){
+      let params: any = {
+        tranId: this.arInfo.tranId,
+        arNo: this.arInfo.arNo,
+        updateUser: this.ns.getCurrentUser(),
+        updateDate: this.ns.toDateTimeString(0)
+      }
+      this.as.printAr(params).subscribe(
+        (data:any)=>{
+          if(data.returnCode == 0){
+            this.dialogIcon = 'error-message';
+            this.dialogIcon = 'An error has occured when updating AR status';
+          }else{
+            this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+          }
+        }
+      );
+    }else{
+      //print like normal
+    }
   }
 
   //ALL RETRIEVALS FROM MAINTENANCE IS HERE
@@ -865,6 +918,20 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }else{
       return false;
     }
+  }
+
+  arAmtEqualsArDtlPayt(): boolean{
+    if(this.arInfo.arDtlSum != this.arInfo.arAmt){
+      return true;
+    }
+    return false;
+  }
+
+  balanceAcctEntries(): boolean{
+    if(this.arInfo.acctEntriesSum != 0){
+      return true;
+    }
+    return false;
   }
 
   //UTILITIES STARTS HERE
