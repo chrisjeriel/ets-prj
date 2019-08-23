@@ -160,7 +160,7 @@
 
 
     </div>
-    <div class="d-flex w-100">
+    <div class="d-flex w-100" [class.small]="passData.small !== undefined && passData.small">
         <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'left non-datatable' + passData.pageID" style="width:auto" *ngIf="pinKeysLeft != undefined && pinKeysLeft.length != 0">
             <colgroup *ngIf="passData.tHeaderWithColspan != null">
                 <ng-container *ngFor="let header of passData.tHeaderWithColspan; let i = index;">

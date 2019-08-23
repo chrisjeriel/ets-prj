@@ -11,6 +11,10 @@ th, td{
     overflow: hidden;
 }
 
+.small{
+   zoom: 0.78;
+}
+
 #override-header-color tbody tr td{
     background-color: white;
     opacity: 0.8;

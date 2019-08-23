@@ -24,8 +24,9 @@ export class ArClaimCashCallComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Claim No.', 'Policy No', 'Insured', 'Loss Date', 'Loss Cause', 'Hist No', 'Hist Category', 'Reserve', 'Paid Amount', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
-    dataTypes: ["text", "text", "text", "date","text","sequence-2", "text", "currency", "currency", "text", "percent", "currency", "currency"],
+    tHeaderWithColspan: [{header:'', span:1, pinLeft: true},{header: 'Claim Information', span: 11, pinLeft: true}, {header: '', span: 1}, {header: '', span: 1}],
+    tHeader: ['Claim No', 'Hist No', 'Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex Gratia', 'Curr', 'Curr Rate', 'Reserve', 'Cumulative Payment', 'Payment Amount', 'Payment Amount Local'],
+    dataTypes: ["text", "number", "text", "text","text","text", "checkbox", "text", "percent", "currency", "currency", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
@@ -56,9 +57,11 @@ export class ArClaimCashCallComponent implements OnInit {
         showMG: 1
     },
     total: [null,null,null,null,null,null,null,null, null, null, 'Total', 'cashcallAmt', 'localAmt'],
-    widths: [120,180,300,100, 100, 1, 1,120, 120, 1, 100, 120, 120],
-    keys: ['claimNo', 'policyNo', 'insuredDesc', 'lossDate', 'lossAbbr', 'histNo', 'histCatDesc', 'reserveAmt', 'paytAmt', 'currCd', 'currRate', 'cashcallAmt', 'localAmt'],
-    uneditable: [false,true,true,true,true,true,true,true, true, true,true,false, true],
+    widths: [120,1,130,120, 150, 250, 1,1, 120, 120, 120, 120, 120, 120],
+    keys: ['claimNo', 'histNo', 'histCatDesc', 'histTypeDesc', 'paytFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt', 'cashcallAmt', 'localAmt'],
+    pinKeysLeft: ['claimNo', 'histNo', 'histCatDesc', 'histTypeDesc', 'paytFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt'],
+    uneditable: [false,true,true,true,false,true,true,true, true, true,true,false, true],
+    small: true
   };
 
   passLov: any = {
@@ -86,6 +89,7 @@ export class ArClaimCashCallComponent implements OnInit {
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true,true,true,true,true,true,true,true, true, true,true,true, true];
+      this.passData.tHeaderWithColspan= [{header: 'Claim Information', span: 11, pinLeft: true}, {header: '', span: 1}, {header: '', span: 1}];
       this.passData.addFlag = false;
       this.passData.deleteFlag =  false;
       this.passData.checkFlag = false;
