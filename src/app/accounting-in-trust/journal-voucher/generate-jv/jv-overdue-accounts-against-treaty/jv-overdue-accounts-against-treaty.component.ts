@@ -146,12 +146,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.passDataOffsetting.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
          { header: "Payment Details", span: 5 }, { header: "", span: 2 });
     this.retrieveAcctBal();
-    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
-      console.log(this.cedingParams)
-      this.jvDetails.ceding = this.cedingParams.cedingId;
-      this.jvDetails.cedingName = this.cedingParams.cedingName;
-      this.retrieveAcctBal();
-    }
   }
 
   showCedingCompanyLOV() {
@@ -159,16 +153,17 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   retrieveAcctBal(){
-    this.accountingService.getAcctTrtyBal(this.jvDetail.tranId,this.jvDetails.ceding).subscribe((data:any) => {
+    this.accountingService.getAcctTrtyBal(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data);
       this.passData.tableData = [];
       this.passData.disableAdd = false;
       if( data.acctTreatyBal.length!=0){
+        this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName;
+        this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
+        this.check(this.jvDetails);
         for(var i = 0; i < data.acctTreatyBal.length; i++){
           this.passData.tableData.push(data.acctTreatyBal[i]);
         }
-        this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName;
-        this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
       }
       this.quarterTable.refreshTable();
       this.quarterTable.onRowClick(null,this.passData.tableData[0]);
@@ -329,7 +324,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.jvDetails.delAcctTrty = [];
     this.jvDetails.saveInwPolOffset = [];
     this.jvDetails.delInwPolOffset = [];
-
+    var actualBalPaid = 0;
     for( var i = 0 ; i < this.passData.tableData.length; i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         this.jvDetails.saveAcctTrty.push(this.passData.tableData[i]);
@@ -353,6 +348,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
         if(this.passData.tableData[i].acctOffset[j].edited && !this.passData.tableData[i].acctOffset[j].deleted){
           this.jvDetails.saveInwPolOffset.push(this.passData.tableData[i].acctOffset[j]);
+          actualBalPaid += this.passData.tableData[i].acctOffset[j].paytAmt;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].balPaytAmt = this.passData.tableData[i].acctOffset[j].remainingBal;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].tranId = this.jvDetail.tranId;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].quarterNo = this.passData.tableData[i].quarterNo;
@@ -365,6 +361,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
           this.jvDetails.delInwPolOffset[this.jvDetails.delInwPolOffset.length - 1].tranId = this.jvDetail.tranId;
         }
       }
+      this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].actualBalPaid = actualBalPaid;
     }
 
     this.jvDetails.tranId = this.jvDetail.tranId;

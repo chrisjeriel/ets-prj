@@ -154,26 +154,22 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.passData.nData.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.retrieveClmLosses();
-    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
-      console.log(this.cedingParams)
-      this.jvDetails.ceding = this.cedingParams.cedingId;
-      this.jvDetails.cedingName = this.cedingParams.cedingName;
-      this.retrieveClmLosses();
-    }
   }
 
   retrieveClmLosses(){
-    this.accountingService.getRecievableLosses(this.jvDetail.tranId,this.jvDetails.ceding).subscribe((data:any) => {
+    this.accountingService.getRecievableLosses(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
       this.passData.disableAdd = false;
       if(data.receivables.length!=0){
+        this.jvDetails.cedingName = data.receivables[0].cedingName;
+        this.jvDetails.cedingId = data.receivables[0].cedingId;
+        this.passLovInw.cedingId = this.jvDetails.cedingId;
         for(var i = 0 ; i < data.receivables.length; i++){
           this.passData.tableData.push(data.receivables[i]);
           this.clmTable.onRowClick(null, this.passData.tableData[0]);
         }
-        this.jvDetails.cedingName = data.receivables[0].cedingName;
-        this.jvDetails.cedingId = data.receivables[0].cedingId;
+        
       }
      
       this.clmTable.refreshTable();
@@ -187,6 +183,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   setCedingcompany(data){
     this.jvDetails.cedingName = data.cedingName;
     this.jvDetails.ceding = data.cedingId;
+    this.passLovInw.cedingId = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveClmLosses();
     this.check(this.jvDetails);

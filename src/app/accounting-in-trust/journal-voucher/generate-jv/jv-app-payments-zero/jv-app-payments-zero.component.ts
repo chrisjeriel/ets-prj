@@ -191,21 +191,26 @@ export class JvAppPaymentsZeroComponent implements OnInit {
        this.passData.disableAdd = true;
     }
     this.retrieveInwPolZeroBal();
-    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
+    /*if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
       console.log(this.cedingParams)
       this.jvDetails.ceding = this.cedingParams.cedingId;
       this.jvDetails.cedingName = this.cedingParams.cedingName;
       this.retrieveInwPolZeroBal();
-    }
+    }*/
   }
 
   retrieveInwPolZeroBal(){
-    this.accService.getAcitJVZeroBal(this.jvDetail.tranId,'',this.jvDetails.ceding).subscribe((data:any) => {
+    this.accService.getAcitJVZeroBal(this.jvDetail.tranId,'').subscribe((data:any) => {
       console.log(data)
       this.passData.tableData= [];
       this.passData.disableAdd = false;
       this.totalOverpayment = 0;
+
       if(data.zeroBal.length!=0){
+        this.jvDetails.cedingName = data.zeroBal[0].cedingName;
+        this.jvDetails.ceding = data.zeroBal[0].cedingId;
+        this.passLov.cedingId = data.zeroBal[0].cedingId;
+        this.check(this.jvDetails);
         for(var i = 0 ; i < data.zeroBal.length;i++){
           this.passData.tableData.push(data.zeroBal[i]);
           this.passData.tableData[this.passData.tableData.length - 1].balance = this.passData.tableData[this.passData.tableData.length - 1].netDue - this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt;  
@@ -213,12 +218,12 @@ export class JvAppPaymentsZeroComponent implements OnInit {
           this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(data.zeroBal[i].dueDate);
           this.totalOverpayment += data.zeroBal[i].adjBalAmt;
         }
-        this.jvDetails.cedingName = data.zeroBal[0].cedingName;
-        this.jvDetails.ceding = data.zeroBal[0].cedingId;
+        
+        /*if(this.passData.tableData[this.passData.tableData.length - 1].okDelete = 'N'){
+           this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['adjBalAmt'];
+        }*/
       }
-      
       this.table.refreshTable();
-
     });
   }
 

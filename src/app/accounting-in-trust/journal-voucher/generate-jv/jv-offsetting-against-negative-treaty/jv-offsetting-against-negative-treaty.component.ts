@@ -81,7 +81,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       paginateFlag: true,
       pageLength: 3,
       pageID: 'passDataNegative',
-      uneditable: [true, false],
+      uneditable: [true,true,true,false,true],
       total: [null, null, 'Total', 'balanceAmt', 'localAmt'],
       keys: ['quarterEnding', 'currCd', 'currRate', 'balanceAmt', 'localAmt'],
       widths: [203,50,130,130,130],
@@ -101,7 +101,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       histTypeDesc: '',
       paymentFor: '',
       insuredDesc: '',
-      exGratia: 'N',
+      exGratia: null,
       currCd: '',
       currRate: '',
       reserveAmt: '',
@@ -151,30 +151,25 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   ngOnInit() {
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
+    
     this.retrieveNegativeTreaty();
-    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
-      console.log(this.cedingParams)
-      this.jvDetails.ceding = this.cedingParams.cedingId;
-      this.jvDetails.cedingName = this.cedingParams.cedingName;
-      this.retrieveNegativeTreaty();
-    }
-
   }
 
   retrieveNegativeTreaty(){
-    this.accountingService.getNegativeTreaty(this.jvDetail.tranId,this.jvDetails.ceding).subscribe((data:any) => {
+    this.accountingService.getNegativeTreaty(this.jvDetail.tranId).subscribe((data:any) => {
       this.passData.tableData = [];
       this.totalTrtyBal = 0;
       this.passData.disableAdd = false;
       this.disable = false;
       if(data.negativeTrty.length != 0){
+        this.jvDetails.cedingName = data.negativeTrty[0].cedingName;
+        this.jvDetails.cedingId = data.negativeTrty[0].cedingId;
+        this.check(this.jvDetails);
         for (var i = 0; i < data.negativeTrty.length; i++) {
            this.passData.tableData.push(data.negativeTrty[i]);
            this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.negativeTrty[i].quarterEnding);
            this.totalTrtyBal += this.passData.tableData[this.passData.tableData.length - 1].balanceAmt;
         }
-        this.jvDetails.cedingName = data.negativeTrty[0].cedingName;
-        this.jvDetails.cedingId = data.negativeTrty[0].cedingId;
         this.quarterTable.refreshTable();
         this.quarterTable.onRowClick(null,this.passData.tableData[0]);
       }
@@ -340,6 +335,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.jvDetails.saveClmOffset = [];
     this.jvDetails.deleteClmOffset = [];
     var quarterNo = null;
+    var actualBalPaid = 0;
     console.log(this.claimsOffset.tableData)
     for(var i = 0 ; i < this.passData.tableData.length; i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
@@ -363,6 +359,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
       for(var j = 0 ; j < this.passData.tableData[i].clmOffset.length; j++){
         if(this.passData.tableData[i].clmOffset[j].edited && !this.passData.tableData[i].clmOffset[j].deleted){
+          actualBalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
           this.jvDetails.saveClmOffset.push(this.passData.tableData[i].clmOffset[j]);
           this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].tranId = this.jvDetail.tranId;
           this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].quarterNo = this.passData.tableData[i].quarterNo;
@@ -376,6 +373,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
           this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;
         }
       }
+      this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].actualBalPaid = actualBalPaid;
     }
 
     this.jvDetails.tranId = this.jvDetail.tranId;
