@@ -352,6 +352,7 @@ export class CustNonDatatableComponent implements OnInit {
             if(listener) {
                 listener();
                 listener2();
+                
             }
         });
     }
@@ -704,15 +705,5 @@ export class CustNonDatatableComponent implements OnInit {
     onClickGeneric2(ev){
         
         this.gnrc2.emit(ev);
-    }
-
-    pinnedCols: any = [];
-
-    testPin(ev) {
-        console.log($(ev.target).closest('div').siblings('.loadDiv').find('tbody').children('#tableRow').children());
-        $(ev.target).closest('div').siblings('.loadDiv').find('tbody').children('#tableRow').each(function() {
-            console.log($(this).children());
-            $(this).children(":first").addClass('pinned').css({ left: 0 });
-        });
     }
 }

@@ -378,6 +378,6 @@ padding: 0;
 
 .pinned {
     position: sticky !important;
-    box-shadow: 1px 0 0 0 #ddd !important;
+    box-shadow: 1px 0 #ddd !important;
     background: inherit;
 }
