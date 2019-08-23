@@ -160,6 +160,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       if( data.acctTreatyBal.length!=0){
         this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName;
         this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
+        this.passLov.cedingId = this.jvDetails.cedingId;
         this.check(this.jvDetails);
         for(var i = 0; i < data.acctTreatyBal.length; i++){
           this.passData.tableData.push(data.acctTreatyBal[i]);

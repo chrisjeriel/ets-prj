@@ -89,8 +89,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   claimsOffset: any = {
     tableData: [],
-    tHeader: ['Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Paid Amount',' Paid Amount (Php)'],
-    dataTypes: ['text', 'sequence-2', 'text', 'text', 'text', 'text','checkbox', 'text', 'percent', 'currency', 'currency', 'currency'],
+    tHeader: ['Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Cummulative Payment','Paid Amount',' Paid Amount (Php)'],
+    dataTypes: ['text', 'sequence-2', 'text', 'text', 'text', 'text','checkbox', 'text', 'percent', 'currency','currency', 'currency', 'currency'],
     nData: {
       showMG:1,
       claimNo:'',
@@ -120,9 +120,10 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
-    total: [null, null,null, null, null,null, null, null, 'Total', 'reserveAmt', 'clmPaytAmt', 'localAmt'],
-    widths: [110,47,98,125,78,354,62,50,64,110,110,110],
-    keys:['claimNo','histNo','histCategoryDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currCd','currRate','reserveAmt','clmPaytAmt','localAmt']
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,false,true],
+    total: [null, null,null, null, null,null, null, null, 'Total', 'reserveAmt', 'paytAmt', 'clmPaytAmt', 'localAmt'],
+    widths: [110,47,98,125,78,354,62,50,64,110,110,110,110],
+    keys:['claimNo','histNo','histCategoryDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currCd','currRate','reserveAmt','paytAmt','clmPaytAmt','localAmt']
   }
 
   jvDetails: any = {
@@ -263,6 +264,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histTypeDesc = data.data[i].histTypeDesc;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].insuredDesc = data.data[i].insuredDesc;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].reserveAmt = data.data[i].reserveAmt;
+      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].paytAmt = data.data[i].paytAmt;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].clmPaytAmt = null; 
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].localAmt = null; //change to currency rt
       //this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].quarterNo = this.quarterTable.indvSelect.quarterNo;;

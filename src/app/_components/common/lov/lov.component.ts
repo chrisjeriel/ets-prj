@@ -749,14 +749,14 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.invtList.filter((data)=>{return  this.passData.hide.indexOf(data.invtCd)==-1});
         this.table.refreshTable();
       })
-    }else if(this.passData.selector == 'acitJVNegativeTreaty'){
-      this.passTable.tHeader = ['Claim No','Hist No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Paid Amount'];
+    }else if(this.passData.selector == 'clmResHistPayts'){
+      this.passTable.tHeader = ['Claim No','Hist No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Cummulative Payment'];
       this.passTable.widths =[300,300,300,300,300,300]
       this.passTable.dataTypes = [ 'text','sequence-2', 'text', 'text', 'currency', 'currency',];
-      this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'paytAmt'];
+      this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
       this.passTable.checkFlag = true;
-      this.accountingService.getAcitJVClmOffsetLOV(this.passData.cedingId).subscribe((data:any) => {
-        this.passTable.tableData = data.claimOffset.filter((data)=> {return this.passData.hide.indexOf(data.claimNo)==-1});
+      this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimNo)==-1});
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmCashCall'){
