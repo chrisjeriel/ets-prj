@@ -937,7 +937,15 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   //UTILITIES STARTS HERE
 
   changeTranType(data){
+    //console.log(this.paymentTypes.map(a=>{return a.defaultParticulars}));
     this.arInfo.tranTypeCd = data;
+    //this.arInfo.particulars = this.paymentTypes.map(a=>{return a.defaultParticulars}).indexOf(data)
+    for(var i of this.paymentTypes){
+      if(i.tranTypeCd == data){
+        this.arInfo.particulars = i.defaultParticulars;
+        break;
+      }
+    }
     if(data == 7){
       this.disablePayor = true;
       this.ms.getMtnPayee().subscribe(
