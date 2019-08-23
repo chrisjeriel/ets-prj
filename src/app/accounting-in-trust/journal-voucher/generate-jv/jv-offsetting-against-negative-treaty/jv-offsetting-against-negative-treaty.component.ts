@@ -135,7 +135,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   passLov: any = {
-    selector: 'acitJVNegativeTreaty',
+    selector: 'clmResHistPayts',
     cedingId: '',
     hide: []
   }
@@ -152,6 +152,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   ngOnInit() {
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
+    this.passLov.currCd = this.jvDetail.currCd;
     
     this.retrieveNegativeTreaty();
   }
@@ -264,7 +265,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histTypeDesc = data.data[i].histTypeDesc;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].insuredDesc = data.data[i].insuredDesc;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].reserveAmt = data.data[i].reserveAmt;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].paytAmt = data.data[i].paytAmt;
+      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].paytAmt = data.data[i].cumulativeAmt;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].clmPaytAmt = null; 
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].localAmt = null; //change to currency rt
       //this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].quarterNo = this.quarterTable.indvSelect.quarterNo;;

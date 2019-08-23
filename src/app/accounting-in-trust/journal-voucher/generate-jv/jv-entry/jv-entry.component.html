@@ -222,7 +222,7 @@
             <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Are you sure you want to approve this Journal Voucher?</label>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4 text-right labels">Approved By</label>
-                <input type="text" class="form-control form-control-sm col-sm-7" readonly [(ngModel)]="entryData.createUser">
+                <input type="text" class="form-control form-control-sm col-sm-7" readonly [(ngModel)]="entryData.approvedBy">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4 text-right labels">Date Approved</label>
@@ -233,7 +233,7 @@
         </div>
     </div>
     <div footer class="text-center">
-        <button type="button" class="cust-btn" (click)="approveJV.closeModal();"><a>Upload</a></button>
+        <button type="button" class="cust-btn" (click)="ApproveJVStatus();approveJV.closeModal();"><a>Approve</a></button>
         <button type="button" class="cust-btn" (click)="approveJV.closeModal();"><a>Cancel</a></button>
     </div>
 </app-modal>
