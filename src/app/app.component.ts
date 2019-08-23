@@ -32,7 +32,8 @@ export class AppComponent  {
     datetime: number;
     currentUser: User;
     public style: object = {};
-    accessibleModules: string[] = ["MTN001", "QUOTE001", "QUOTE002", "QUOTE003", "QUOTE004", "QUOTE005", "QUOTE006", "QUOTE007", "QUOTE008", "QUOTE009", "QUOTE010", "QUOTE012", "QUOTE013", "QUOTE014", "QUOTE015", "QUOTE016", "QUOTE018", "QUOTE011", "QUOTE017", "QUOTE001", "QUOTE002", "QUOTE003", "QUOTE004", "QUOTE005", "QUOTE006", "QUOTE007", "QUOTE008", "QUOTE009", "QUOTE010", "QUOTE012", "QUOTE013", "QUOTE014", "QUOTE015", "QUOTE016", "QUOTE018", "QUOTE011", "QUOTE017"];
+    accessibleModules: string[] = [];
+    moduleId:string = 'MAIN';
 
 
     private _opened: boolean = true; /*must be added*/
@@ -55,7 +56,6 @@ export class AppComponent  {
      private modalService: NgbModal,
      private eRef: ElementRef,
      @Inject(DOCUMENT) private document
-
     ) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
         setInterval(() => {
@@ -63,17 +63,27 @@ export class AppComponent  {
         }, 1);
         config.backdrop = 'static';
         config.keyboard = false;
-        console.log("accessibleModules : " + this.accessibleModules);
+
+
 
 
         if (this.currentUser != null) {
           this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {        
-          
-            this.accessibleModules = data['modulesList'];
-            console.log("accessibleModules : " + this.accessibleModules);
+        
+            this.userService.emitAccessModules(data['modulesList']);
+            
           });
         }        
 
+        this.userService.moduleIdObs.subscribe(value => {
+            this.moduleId = value;
+        })
+
+        this.userService.accessibleModules.subscribe(value => {
+            this.accessibleModules = value;
+        })
+
+        console.log("accessibleModules Retrieved : " + this.accessibleModules);
     }
 
     logout() {

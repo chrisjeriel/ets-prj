@@ -1,6 +1,6 @@
 import { Component, OnInit , ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService,NotesService } from '../../../_services';
+import { QuotationService,NotesService, UserService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { HoldCoverMonitoringList } from '@app/_models/quotation-list';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -43,7 +43,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     status: any;
 
 
-    constructor(private quotationService: QuotationService, private router: Router, private titleService: Title, private modalService: NgbModal,private ns: NotesService) {
+    constructor(private quotationService: QuotationService, private router: Router, private titleService: Title, private modalService: NgbModal,private ns: NotesService, private userService: UserService) {
         this.pageLength = 10;
     }
 
@@ -135,7 +135,8 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     searchParams: any[] = [];
 
     ngOnInit() {
-        // this.titleService.setTitle("Quo | Hold Cover Monitoring");
+        this.titleService.setTitle("Quo | Hold Cover Monitoring");
+        this.userService.emitModuleId("QUOTE014");
         // this.tHeader.push("Hold Cover No.");
         // this.tHeader.push("Status");
         // this.tHeader.push("Ceding Company");

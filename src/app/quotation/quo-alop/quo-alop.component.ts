@@ -1,5 +1,5 @@
 import { Component, OnInit, Input,  ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { QuotationService, MaintenanceService, NotesService } from '../../_services';
+import { QuotationService, MaintenanceService, NotesService, UserService } from '../../_services';
 import { QuoteALOPItemInformation, QuoteALOPInfo, QuotationOption } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -155,10 +155,11 @@ export class QuoAlopComponent implements OnInit {
     promptClickItem:boolean = false;
     OpenCover:boolean; /*Added OpenCover. TRBT#PROD_GRADE*/
 
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService, private ns: NotesService) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService, private ns: NotesService, private userService: UserService) { }
 
     ngOnInit() {
       this.titleService.setTitle("Quo | ALOP");
+      this.userService.emitModuleId("QUOTE006");
       
       //neco
       if(this.inquiryFlag){

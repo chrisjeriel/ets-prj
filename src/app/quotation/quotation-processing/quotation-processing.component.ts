@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
+import { QuotationService, NotesService, MaintenanceService, UserService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -219,14 +219,27 @@ export class QuotationProcessingComponent implements OnInit {
     validationList: any[] = [];
     cessionDescList: any[] = [];
     first = false;
+    accessibleModules:any = [];
 
     constructor(private quotationService: QuotationService, public modalService: NgbModal, private router: Router,
-                private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService) { }
+                private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService, private userService: UserService) {
+        
+    }
     
     ngOnInit() {
         this.first = true;
         this.titleService.setTitle("Quo | List Of Quotations");
+        this.userService.emitModuleId("QUOTE001");
         this.retrieveQuoteListingMethod();
+
+        this.userService.accessibleModules.subscribe(value => {
+            this.accessibleModules = value;
+            console.log("Quo | List Of Quotations");
+            console.log(value);
+            console.log("---------");
+            console.log(this.accessibleModules);
+            console.log("---------");
+        })
     }
 
     retrieveQuoteListingMethod(){

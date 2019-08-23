@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { QuotationService, MaintenanceService, NotesService } from '../../_services';
+import { QuotationService, MaintenanceService, NotesService, UserService } from '../../_services';
 import { IntCompAdvInfo } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -75,10 +75,11 @@ export class InternalCompetitionComponent implements OnInit {
     
     constructor(private quotationService: QuotationService, public modalService: NgbModal, 
                 private titleService: Title, private maintenanceService: MaintenanceService, 
-                private route: ActivatedRoute, private notes: NotesService) { }
+                private route: ActivatedRoute, private notes: NotesService, private userService: UserService) { }
 
     ngOnInit() {
         this.titleService.setTitle("Quo | Internal Competition");
+        this.userService.emitModuleId("QUOTE007");
 
         //neco
         if(this.inquiryFlag){

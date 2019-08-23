@@ -12,12 +12,12 @@
                 </div>
             </ng-template>
         </ngb-tab>
-        <ngb-tab class="ngb-tab" title="Ready for Printing">
+        <ngb-tab class="ngb-tab" title="Ready for Printing" [disabled]="accessibleModules.indexOf('QUOTE010') == -1">
             <ng-template ngbTabContent>
                 <app-ready-for-printing></app-ready-for-printing>
             </ng-template>
         </ngb-tab>
-        <ngb-tab class="ngb-tab" title="Quote Modification">
+        <ngb-tab class="ngb-tab" title="Quote Modification" [disabled]="accessibleModules.indexOf('QUOTE011') == -1">
             <ng-template ngbTabContent>
                 <app-quote-modification></app-quote-modification>
             </ng-template>

@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { HoldCoverInfo } from '../../_models/HoldCover';
-import { QuotationService,NotesService } from '../../_services';
+import { QuotationService,NotesService, UserService } from '../../_services';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -88,7 +88,7 @@ export class HoldCoverComponent implements OnInit {
 	searchParams2: any[] = [];
 
 	constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title,
-		private decPipe: DecimalPipe, private ns : NotesService, private router: Router,  private route: ActivatedRoute) { 
+		private decPipe: DecimalPipe, private ns : NotesService, private router: Router,  private route: ActivatedRoute, private userService: UserService) { 
 	}
 
 	qLine: string;
@@ -190,6 +190,7 @@ export class HoldCoverComponent implements OnInit {
 
 	ngOnInit() {
 		this.titleService.setTitle("Quo | Quotation to Hold Cover");
+		this.userService.emitModuleId("QUOTE013");
 		this.holdCoverInfo = new HoldCoverInfo();
 		this.btnApprovalEnabled = false;
 		this.passDataQuoteLOV.filters[0].enabled = false;

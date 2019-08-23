@@ -1,6 +1,6 @@
 import { Component, OnInit , ViewChild, Input, ViewChildren, QueryList} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuoteEndorsement , QuoteEndorsementOC} from '../../_models';
-import { QuotationService, UnderwritingService, MaintenanceService } from '../../_services';
+import { QuotationService, UnderwritingService, MaintenanceService, UserService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -217,7 +217,7 @@ export class QuoteEndorsementComponent implements OnInit {
     selectedEndt:any = null;
 
     constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title, 
-     private route: ActivatedRoute, private uwService: UnderwritingService, private mtnService : MaintenanceService) { }
+     private route: ActivatedRoute, private uwService: UnderwritingService, private mtnService : MaintenanceService, private userService: UserService) { }
 
     ngOnInit() {  
         if(this.OpenCover){
@@ -233,6 +233,7 @@ export class QuoteEndorsementComponent implements OnInit {
           },0)
 
         this.titleService.setTitle("Quo | Endorsements");
+        this.userService.emitModuleId("QUOTE005");
         //neco
         if(this.inquiryFlag && this.endorsementType !== 'OC'){
           this.endorsementData.opts = [];
