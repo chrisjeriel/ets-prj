@@ -1349,11 +1349,10 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVEntryList',JSON.stringify(params),header);
 	}
 
-	getJVInwPolBal(tranId,instNo,ceding) {
+	getJVInwPolBal(tranId,instNo) {
 		 const params = new HttpParams()
              .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
              .set('instNo', (instNo === null || instNo === undefined ? '' : instNo) )
-             .set('cedingCo', (ceding === null || ceding === undefined ? '' : ceding) )
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInwPolBal",{params});
 	}
 
