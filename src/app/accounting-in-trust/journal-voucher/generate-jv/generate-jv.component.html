@@ -4,10 +4,10 @@
 		<ngb-tabset (tabChange)="onTabChange($event)">
 			<ngb-tab class="ngb-tab" title="JV Entry">
 				<ng-template ngbTabContent>
-					<app-jv-entry [record]="record" (onChange)="checkTabs($event);" (emitData)="jvInfo($event)" [jvData]="jvData"></app-jv-entry>	
+					<app-jv-entry [record]="record" (onChange)="checkTabs($event);" (emitData)="jvInfo($event)" [jvData]="jvData" (disableTab)= "disableTab = $event"></app-jv-entry>	
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab [disabled]="jvTypeFlag">
+			<ngb-tab [disabled]="jvTypeFlag || disableTab">
 				<ng-template ngbTabTitle>
 					<div>JV Details</div>
 				</ng-template>
@@ -15,12 +15,12 @@
 					<app-jv-details [jvType]="jvType" [jvData]="jvData" (cedingData)="cedingOutput($event)" [cedingInput]="cedingParams"></app-jv-details>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab class="ngb-tab" title="Accounting Entries">
+			<ngb-tab class="ngb-tab" title="Accounting Entries" [disabled]="disableTab">
 				<ng-template ngbTabContent>
 					<app-jv-accounting-entries [jvData]="jvData"></app-jv-accounting-entries>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab>
+			<ngb-tab [disabled]=" disableTab">
 				<ng-template ngbTabTitle>
 					<div>Attachments</div>
 				</ng-template>

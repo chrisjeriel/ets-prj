@@ -28,7 +28,7 @@
 	<div class="col-sm-12">
 		<div class="cust-tabs-container">
 			<ngb-tabset #tabset  (tabChange)="onTabChange($event)" [destroyOnHide]="false">
-				<ngb-tab title="Reserve Distribution" id="reserve" >
+				<ngb-tab title="Distribution" id="reserve" >
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border">
 							<div class="col-sm-1">
@@ -70,7 +70,7 @@
 						</div>
 					</ng-template>
 				</ngb-tab>
-				<ngb-tab title="Payment Distribution" id="payment">
+				<!-- <ngb-tab title="Payment Distribution" id="payment">
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border">
 							<div class="col-sm-1">
@@ -97,6 +97,47 @@
 							</div>
 							<div class="col-sm-7">
 								<app-cust-editable-non-datatable #paymentDistTable [passData]="paymentDistPassData" class="d-block my-2" (newClick)="clickRow($event)"></app-cust-editable-non-datatable>
+							</div>
+							<div class="input-group" style="margin-left: -13px !important;">
+								<label class="form-control-sm col-sm-1">Processed By</label>
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Processed Date</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.createDate" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Last Update By</label>
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Last Update</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateDate" disabled="disabled">
+							</div>
+						</div>
+					</ng-template>
+				</ngb-tab> -->
+				<ngb-tab title="Cumulative Reserve Distribution" id="cummReserve">
+					<ng-template ngbTabContent>
+						<div class="input-group cust-border">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm-2">
+		                    	<div class="input-group mt-4">
+		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'L'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Loss</label>
+			                    </div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'A'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Adjuster's Expenses</label>
+		                    	</div>	
+		                    	<div class="input-group">
+		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'O'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Other Expenses</label>
+						        </div>
+							</div>
+							<div class="col-sm-7">
+								<app-cust-editable-non-datatable #cummResDistTable [passData]="cummDistPassData" class="d-block my-2" (newClick)="clickRowCumm($event)"></app-cust-editable-non-datatable>
 							</div>
 							<div class="input-group" style="margin-left: -13px !important;">
 								<label class="form-control-sm col-sm-1">Processed By</label>
