@@ -44,6 +44,7 @@ export class ClaimDistributionComponent implements OnInit {
     uneditable:[true,true,true,true,],
   	pageLength:'unli',
   	pageID:2,
+    disableSort:true
 
   }
 
@@ -74,10 +75,36 @@ export class ClaimDistributionComponent implements OnInit {
     searchFlag:true,
     filters: [
         {
-            key: 'quotationNo',
-            title: 'Quotation No.',
+            key: 'histNo',
+            title: 'History No.',
             dataType: 'text'
         },
+        {
+            key: 'histType',
+            title: 'History Type',
+            dataType: 'text'
+        },
+        {
+            key: 'bookingMonth',
+            title: 'Booking Month',
+            dataType: 'text'
+        },
+        {
+            key: 'bookingYear',
+            title: 'Booking Year',
+            dataType: 'text'
+        },
+        {
+            key: 'distStatus',
+            title: 'Dist. Status',
+            dataType: 'text'
+        },
+        {
+            key: 'histCategory',
+            title: 'Type',
+            dataType: 'text'
+        },
+        
     ]
   }
 
@@ -139,8 +166,15 @@ export class ClaimDistributionComponent implements OnInit {
      this.getClmHist();
   }
 
-  getClmHist(){
-    this.clmService.getClaimDist(this.claimInfo.claimId,this.claimInfo.projId).subscribe(a=>{
+  getClmHist(data?){
+    let params: any = {
+      claimId : this.claimInfo.claimId,
+      projId  : this.claimInfo.projId
+    }
+    if(data != undefined){
+      data.forEach(a=>params[a.key] = a.search)
+    }
+    this.clmService.getClaimDist(params).subscribe(a=>{
       this.resTableData = a['claimDist'];
       // this.payTableData = a['claimDist'].filter(a=>a.histType==4 || a.histType==5);
       this.resTableData.forEach(a=>{

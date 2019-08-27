@@ -333,7 +333,7 @@ legend.scheduler-border {
     font-size: 12px !important;
     padding: 0 !important;
     line-height: 12px;
-    background: white;
+    /*background: white;*/
 }
 
 #cust-table-container tr.odd {

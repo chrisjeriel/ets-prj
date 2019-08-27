@@ -66,9 +66,9 @@
                                                 <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
                                             </div>
                                         </div>
-                                        <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'text'"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();">
-                                         <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'expire'"  type="hidden" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();">
-                                        <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'seq'"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();">
+                                        <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'text'"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter(drop);">
+                                         <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'expire'"  type="hidden" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter(drop);">
+                                        <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'seq'"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter(drop);">
                                         <div class="dp-cont col-sm" style="margin-left: 0 !important;" *ngSwitchCase="'date'">
                                             <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.search" (valueChange)="filt.search=$event;"></datepicker>
                                         </div>
@@ -83,9 +83,9 @@
                                              </div>
                                         </ng-container>
                                          <ng-container *ngSwitchCase="'textspan'">
-                                                     <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter() ;" placement="bottom" ngbTooltip="Min Value" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>                
+                                                     <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter(drop) ;" placement="bottom" ngbTooltip="Min Value" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>                
                                                 <span style="line-height: 1;">&ndash;</span>
-                                                     <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="Max Value"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>
+                                                     <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter(drop);" placement="bottom" ngbTooltip="Max Value"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>
                                         </ng-container>
 
                                     </div>
@@ -180,7 +180,7 @@
                         <input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)" [checked]="selectAllFlag" tabindex="-1">
                     </th>
                     <ng-container *ngFor="let tHeader of passData.tHeader; let i = index;">
-                        <th container="body" *ngIf="pinKeysLeft.indexOf(dataKeys[i])!= -1" (click)="sort(dataKeys[i],sortBy);sortIndex=i;" [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered">
+                        <th container="body" *ngIf="pinKeysLeft.indexOf(dataKeys[i])!= -1" (click)="sort(dataKeys[i],sortBy);sortIndex=!passData.disableSort?i:null;" [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered">
                             <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
                             <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
                             <div *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' || passData.dataTypes[i]=='percent')">
@@ -613,7 +613,7 @@
                                 <input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)" [checked]="selectAllFlag" tabindex="-1">
                             </th>
                             <ng-container *ngFor="let tHeader of passData.tHeader; let i = index;">
-                                <th container="body" *ngIf="pinKeysLeft.indexOf(dataKeys[i]) == -1 && pinKeysRight.indexOf(dataKeys[i]) == -1" (click)="sort(dataKeys[i],sortBy);sortIndex=i;" [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered">
+                                <th container="body" *ngIf="pinKeysLeft.indexOf(dataKeys[i]) == -1 && pinKeysRight.indexOf(dataKeys[i]) == -1" (click)="sort(dataKeys[i],sortBy);sortIndex=!passData.disableSort?i:null;" [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered">
                                     <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
                                     <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
                                     <div *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' || passData.dataTypes[i]=='percent')">
@@ -1051,7 +1051,7 @@
                     </ng-container>
                 </tr>
                 <tr style="min-width: 96px">
-                    <th container="body" *ngFor="let tHeader of passData.tHeader; let i = index;" (click)="sort(dataKeys[i],sortBy);sortIndex=i;" [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered" [ngClass]="{'d-none':pinKeysRight.indexOf(dataKeys[i])== -1}">
+                    <th container="body" *ngFor="let tHeader of passData.tHeader; let i = index;" (click)="sort(dataKeys[i],sortBy);sortIndex=!passData.disableSort?i:null;" [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null" [class.text-center]="passData.centered" [ngClass]="{'d-none':pinKeysRight.indexOf(dataKeys[i])== -1}">
                         <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
                         <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
                         <div *ngIf="!(passData.dataTypes === undefined || i>=passData.dataTypes.length) && (passData.dataTypes[i]=='currency' || passData.dataTypes[i]=='number' || passData.dataTypes[i]=='percent')">

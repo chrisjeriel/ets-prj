@@ -419,7 +419,7 @@ table td div span{
 }
 
 .searchWithFilter{
-    margin-right: 26px;
+    margin-right: 22px;
 }
 
 .selected{
@@ -563,4 +563,10 @@ body {
 select:disabled{
     background-color: rgba(0, 0, 0, 0) !important;
     color: black !important;
+}
+
+.cust-ig-text {
+    font-size: 9px !important;
+    font-weight: bold;
+    height: calc(1.3rem + 1px) !important;
 }
