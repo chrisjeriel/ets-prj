@@ -16,10 +16,10 @@
    		                    <label class="form-control-sm col-sm-1">Request Date</label>
                           <div class="input-group col-sm-3" style="padding: 0px;">
                             <div class="col-sm-8 dp-cont">
-                              <datepicker  [type]="'date'" [disabled]="saveAcitPaytReq.reqStatus == 'X'" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
+                              <datepicker  [type]="'date'" [disabled]="saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F'" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                              <datepicker  [type]="'time'" [disabled]="saveAcitPaytReq.reqStatus == 'X'" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
+                              <datepicker  [type]="'time'" [disabled]="saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F'" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
                             </div>
                           </div>
    		                    <label class="form-control-sm col-sm-1">Status</label>
@@ -130,10 +130,10 @@
 	            		<div class="col-md-13 text-center">
 	            			<div class="cust-btn-container">
 	            				<button type="button" class="cust-btn" (click) = "onClickNewReq()">New Request</button>
-	            				<button type="button" class="cust-btn" [disabled]="(saveAcitPaytReq.reqStatus == 'X')" (click)="onClickSave()">Save</button>
+	            				<button type="button" class="cust-btn" [disabled]="(saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" (click)="onClickSave()">Save</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
-	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'">Print</button>
-                      <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="(saveAcitPaytReq.reqStatus.toUpperCase() != 'F' && saveAcitPaytReq.reqStatus.toUpperCase() != 'A' )" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
+	            				<button type="button" class="cust-btn" [disabled] ="initDisabled">Print</button>
+                      <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="(saveAcitPaytReq.reqStatus.toUpperCase() != 'F' && saveAcitPaytReq.reqStatus.toUpperCase() != 'N')" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
 	            			</div>
 	            		</div>
 	            	</div>
