@@ -1988,8 +1988,22 @@ export class AccountingService {
 		        'Content-Type': 'application/json'
 		    })
 		};
-		
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJvReceivablesAgainstLoss',JSON.stringify(params),header);
+	}
+
+	getJVAllocInvtIncListing(allocTranId) {
+		 const params = new HttpParams()
+             .set('allocTranId', (allocTranId === null || allocTranId === undefined ? '' : allocTranId) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
+	}
+
+	updateAcitStatus(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitStatus',JSON.stringify(params),header);
 	}
 
 	getClmResHistPayts(cedingId,payeeNo,currCd){
