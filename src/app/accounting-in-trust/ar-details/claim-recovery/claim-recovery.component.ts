@@ -25,8 +25,8 @@ export class ClaimRecoveryComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Payment Type', 'Claim No', 'Co. Claim No.', 'Policy No.', 'Loss Date', 'Remarks', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
-    dataTypes: ["select","text","text", "text", "date", "text", "select", "percent", "currency", "currency"],
+    tHeader: ['Claim No', 'Co. Claim No.', 'Policy No.', 'Loss Date', 'Remarks', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
+    dataTypes: ["text","text", "text", "date", "text", "text", "percent", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
@@ -38,7 +38,6 @@ export class ClaimRecoveryComponent implements OnInit {
         tranId: '',
         billId: '',
         itemNo: '',
-        paytType: '',
         claimId: '',
         claimNo: '',
         policyId: '',
@@ -52,10 +51,10 @@ export class ClaimRecoveryComponent implements OnInit {
         localAmt: '',
         showMG: 1
     },
-    total: [null,null,null,null,null, null, null, 'Total', 'recOverAmt', 'localAmt'],
-    widths: [150, 200, 200, 200,120, 250, 85, 100, 120, 120],
-    keys: ['paytType', 'claimNo', 'coClmNo', 'policyNo', 'lossDate', 'remarks', 'currCd', 'currRate', 'recOverAmt', 'localAmt'],
-    uneditable: [false,false,true,true,true,false,false,false,false,false],
+    total: [null,null,null,null, null, null, 'Total', 'recOverAmt', 'localAmt'],
+    widths: [ 200, 200, 200,120, 250, 85, 100, 120, 120],
+    keys: ['claimNo', 'coClmNo', 'policyNo', 'lossDate', 'remarks', 'currCd', 'currRate', 'recOverAmt', 'localAmt'],
+    uneditable: [false,true,true,true,false,false,false,false,false],
     opts:[
       {
         selector: 'paytType',
@@ -99,9 +98,9 @@ export class ClaimRecoveryComponent implements OnInit {
       this.passData.deleteFlag =  false;
       this.passData.checkFlag = false;
     }
-    this.retrievePaytType();
+    //this.retrievePaytType();
     this.retrieveClmRecover();
-    this.getCurrency();
+    //this.getCurrency();
   }
 
   retrievePaytType(){
@@ -141,8 +140,7 @@ export class ClaimRecoveryComponent implements OnInit {
       (data: any)=>{
         if(data.arClmRecover.length !== 0){
           for(var i of data.arClmRecover){
-            i.currCd = i.currCd+'T'+i.currRate;
-            i.uneditable = ['paytType', 'claimNo'];
+            i.uneditable = ['claimNo'];
             this.passData.tableData.push(i);
           }
           this.table.refreshTable();
@@ -162,7 +160,7 @@ export class ClaimRecoveryComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].claimId = selected[i].claimId;
       this.passData.tableData[this.passData.tableData.length - 1].coClmNo = selected[i].coClmNo;
       this.passData.tableData[this.passData.tableData.length - 1].lossDate = selected[i].lossDate;
-      this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currCd+'T'+selected[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
@@ -212,12 +210,12 @@ export class ClaimRecoveryComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-      saveClmRecover: this.savedData,
-      delClmRecover: this.deletedData
+      saveClmCashCall: this.savedData,
+      delClmCashCall: this.deletedData
     }
     console.log(params);
 
-    this.accountingService.saveAcitArClmRecover(params).subscribe(
+    this.accountingService.saveAcitArClmCashCall(params).subscribe(
       (data:any)=>{
        if(data.returnCode === -1){
           this.dialogIcon = '';
@@ -231,7 +229,8 @@ export class ClaimRecoveryComponent implements OnInit {
           }
         }else if(data.returnCode === 0 && data.custReturnCode === 2){
           this.dialogIcon = 'error-message';
-          this.dialogMessage = 'Total Amount of Recoveries/Overpayment must not exceed the AR Amount.';
+          //this.dialogMessage = 'Total Amount of Recoveries/Overpayment must not exceed the AR Amount.';
+          this.dialogMessage = 'Total Amount of Claim Cash Call Payments must not exceed the AR Amount.';
           this.successDiag.open();
           if(this.cancelFlag){
             this.cancelFlag = false;

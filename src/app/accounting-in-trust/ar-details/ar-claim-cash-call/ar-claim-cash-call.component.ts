@@ -219,7 +219,8 @@ export class ArClaimCashCallComponent implements OnInit {
           }
         }else if(data.returnCode === 0 && data.custReturnCode === 2){
           this.dialogIcon = 'error-message';
-          this.dialogMessage = 'Total Amount of Claim Cash Call Payments must not exceed the AR Amount.';
+          //this.dialogMessage = 'Total Amount of Claim Cash Call Payments must not exceed the AR Amount.';
+          this.dialogMessage = 'Total Amount of Recoveries/Overpayment must not exceed the AR Amount.';
           this.successDiag.open();
           if(this.cancelFlag){
             this.cancelFlag = false;
