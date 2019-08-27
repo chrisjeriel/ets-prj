@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ClaimsService, NotesService, UnderwritingService, AccountingService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-clm-claim-payment-request',
@@ -14,6 +15,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class ClmClaimPaymentRequestComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
+  @ViewChild(LovComponent) lov: LovComponent;
 
   passData: any = {
     tableData: [],
@@ -21,9 +23,9 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     dataTypes: ["text", "text", "number", "text", "text", "text","currencyRate", "currency", "text",'text' ,"text-editor"],
     keys: ['paytReqNo','paytReqStatDesc','histNo','histCategoryDesc','histTypeDesc','currencyCd','currencyRt','reserveAmt','tranTypeName','payee','particulars'],
     uneditable:[true,true,true,true,true,true,true,true,true,false,false],
-    magnifyingGlass:[],
-    pagination: true,
-    pageStatus: true,
+    magnifyingGlass:['payee'],
+    paginateFlag: true,
+    pageInfo: true,
     pageLength: 10,
     widths: [1,1,1,1,1,1,1,1,'auto','auto','auto'],
 
@@ -32,6 +34,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
   claimId: any = null;
   selected: any = null;
   disableGenerateBtn: boolean = true;
+  disableCancelBtn: boolean = true;
+
 
   @Input() claimInfo = {
     claimId: '',
@@ -41,6 +45,10 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     riskName:'',
     insuredDesc:'',
     policyId:''
+  }
+
+  passLOV:any = {
+    selector: 'payee'
   }
 
   constructor(private titleService: Title, private router: Router, private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService,
@@ -62,7 +70,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
                                                                a.refDate = this.ns.toDateTimeString(a.refDate);
                                                                a.createDate = this.ns.toDateTimeString(a.createDate);
                                                                a.updateDate = this.ns.toDateTimeString(a.updateDate);
-                                                               a.showMG = a.reqSeqNo == null ? 1 : 0;
+                                                               a.showMG = a.paytReqNo == null ? 1 : 0;
+                                                               a.uneditable = a.paytReqNo == null ? [] : ['payee','particulars']
                                                                return a;
                                                              });
       this.table.refreshTable();
@@ -73,6 +82,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
   onRowClick(ev) {
     this.selected = ev == null || (Object.entries(ev).length === 0 && ev.constructor === Object) ? null : ev;
     this.disableGenerateBtn = this.selected == null || this.selected.paytReqNo != null;
+    this.disableCancelBtn = this.selected == null || this.selected.paytReqNo == null;
   }
 
   generateRequest(){
@@ -169,11 +179,17 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
 
   }
 
-  openPayee(){
+  openPayee(data){
+    this.lov.openLOV();
+  }
 
+  setPayee(data){
+    this.table.indvSelect.payeeNo = data.data.payeeNo;
+    this.table.indvSelect.payee = data.data.payeeName;
   }
 
   cancelRequest(){
+      this.selected.reqId = this.selected.paytReqId;
       var updatePaytReqStats = {
         reqId       : this.selected.reqId,
         reqStatus   : 'X',
@@ -183,5 +199,9 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
       .subscribe(data => {
         this.getClmPaytReq();
       });
-    }
+      this.selected.paytReqStat = 'X';
+      let params2:any = {saveClmPaytReq:[this.selected]};
+      this.cs.saveClaimPaytReq(JSON.stringify(params2)).subscribe(a=>{
+      })
+  }
 }

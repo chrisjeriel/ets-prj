@@ -20,17 +20,17 @@
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">Policy No</label>
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[0]" (change)="policyNoChecker($event, 'line')"
-                      style="margin-left: 3px;" ngbTooltip="Line">
+                      style="margin-left: 3px;" ngbTooltip="Line" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[1]" (change)="policyNoChecker($event, 'year')" style="margin-left: 3px;"
-                      ngbTooltip="Year">
+                      ngbTooltip="Year" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-3 cap-input" [(ngModel)]="tempPolNo[2]" (change)="policyNoChecker($event, 'seqNo')" style="margin-left: 3px;"
-                      ngbTooltip="Sequence No">
+                      ngbTooltip="Sequence No" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[3]" (change)="policyNoChecker($event, 'cedingId')" style="margin-left: 3px;"
-                      ngbTooltip="Co Code">
+                      ngbTooltip="Co Code" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-2 cap-input" [(ngModel)]="tempPolNo[4]" (change)="policyNoChecker($event, 'coSeriesNo')" style="margin-left: 3px;"
-                      ngbTooltip="Co Series No">
+                      ngbTooltip="Co Series No" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[5]" (change)="policyNoChecker($event, 'altNo')" style="margin-left: 3px;"
-                      ngbTooltip="Alt No" readonly>
+                      ngbTooltip="Alt No" readonly container="body">
                     <span>&nbsp;</span>
                     <div class="text-search-ico" style=" margin-right: 19px !important;"><a (click)="openPolLOV('lovBtn')"><i class="fa fa-search"></i></a></div>
                   </div>

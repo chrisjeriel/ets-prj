@@ -100,28 +100,24 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.disableAdd = true;
     }
     this.getInterestOverdue();
-    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
-      this.jvDetails.ceding = this.cedingParams.cedingId;
-      this.jvDetails.cedingName = this.cedingParams.cedingName;
-      this.getInterestOverdue();
-    }
   }
 
   getInterestOverdue(){
-    this.accountingService.getAcitJVOverdue(this.jvDetail.tranId,'',this.jvDetails.ceding).subscribe((data:any) => {
+    this.accountingService.getAcitJVOverdue(this.jvDetail.tranId,'').subscribe((data:any) => {
       this.totalOverdue = 0;
       this.passData.disableAdd = false;
       this.passData.tableData = [];
       if(data.overDueAccts.length != 0){
+        this.jvDetails.cedingName = data.overDueAccts[0].cedingName;
+        this.jvDetails.cedingId = data.overDueAccts[0].cedingId;
+        this.check(this.jvDetails);
         for(var i = 0; i < data.overDueAccts.length; i++){
           this.passData.tableData.push(data.overDueAccts[i]);
           this.totalOverdue += this.passData.tableData[this.passData.tableData.length - 1].overdueInt;
           this.passData.tableData[this.passData.tableData.length - 1].effDate = data.overDueAccts[i].effDate;
           this.passData.tableData[this.passData.tableData.length - 1].dueDate = data.overDueAccts[i].dueDate;
           this.passData.tableData[this.passData.tableData.length - 1].orgOverdue = data.overDueAccts[i].overdueInt;
-        }
-        this.jvDetails.cedingName = data.overDueAccts[0].cedingName;
-        this.jvDetails.cedingId = data.overDueAccts[0].cedingId;
+        };
       }
       
       this.table.refreshTable(); 
@@ -241,7 +237,12 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   }
 
   cancel(){
-    this.cancelBtn.clickCancel();
+    //this.cancelBtn.clickCancel();
+    console.log(new Date(this.ns.toDateTimeString(0)).getTime());
+    console.log(new Date(this.ns.toDateTimeString(this.passData.tableData[0].dueDate)).getTime());
+    console.log(new Date(this.ns.toDateTimeString(0)).getTime() - new Date(this.ns.toDateTimeString(this.passData.tableData[0].dueDate)).getTime());
+    console.log(this.ns.toDateTimeString(new Date(this.ns.toDateTimeString(0)).getTime() - new Date(this.ns.toDateTimeString(this.passData.tableData[0].dueDate)).getTime()));
+    //console.log(this.ns.toDateTimeString(new Date(this.ns.toDateTimeString(0)).getTime() - new Date(this.ns.toDateTimeString(this.passData.tableData[0].dueDate)).getTime()));
   }
 
   update(data){

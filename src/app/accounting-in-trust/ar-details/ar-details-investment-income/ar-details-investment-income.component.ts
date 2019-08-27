@@ -96,6 +96,12 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
           this.passLov.hide.push(i);
         }
     }
+    if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+      this.passData.uneditable = [true, true, true, true, true, true,true, true, true, true, true, true, true, true, true ];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag =  false;
+      this.passData.checkFlag = false;
+    }
     this.retrieveIncomePullout();
   }
 

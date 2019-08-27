@@ -25,9 +25,9 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Claim No', 'Status', 'Policy No', 'Ceding Company', 'Insured', 'Risk', 'Loss Date', 'Loss Details', 'Currency', 'Total Reserve', 'Total Payments', 'Adjusters', 'Processed By'],
-    dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'date', 'text','text', 'currency', 'currency', 'text', 'text'],
-    keys: ['claimNo', 'clmStatus', 'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'lossDate', 'lossDtl', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd', 'adjName', 'processedBy'],
+    tHeader: ['Claim No', 'Status', 'Policy No', 'Ceding Company', 'Insured', 'Risk', 'Loss Date','Loss Cause' ,'Loss Details', 'Currency', 'Total Reserve', 'Total Payments', 'Adjusters', 'Processed By','Report Date'],
+    dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'date','text', 'text','text', 'currency', 'currency', 'text', 'text','date'],
+    keys: ['claimNo', 'clmStatus', 'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'lossDate','lossAbbr', 'lossDtl', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd', 'adjName', 'processedBy','reportDate'],
     addFlag: true,
     editFlag: true,
     pagination: true,
@@ -112,6 +112,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     tHeader: ['Claim No', 'Loss Date', 'Currency', 'Total Reserve', 'Total Payments'],
     dataTypes: ['text', 'date', 'text', 'currency', 'currency'],
     keys: ['claimNo', 'lossDate', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
+    colSize: ['90px','70px','49px','110px','110px'],
     addFlag: false,
     editFlag: false,
     pagination: true,
@@ -373,6 +374,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.disableRisk = true;
 
+      this.LOVTbl.overlayLoader = true;
       if(clmList.length > 0) {
         this.passDataLOVTbl.tableData = clmList.map(a => {
                                                            a.createDate = this.ns.toDateTimeString(a.createDate);

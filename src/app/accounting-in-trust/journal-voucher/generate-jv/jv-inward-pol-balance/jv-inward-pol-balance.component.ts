@@ -192,34 +192,32 @@ export class JvInwardPolBalanceComponent implements OnInit {
        this.disable = true;
      }
      this.retrieveInwPol();
-     if(this.cedingParams.cedingId != undefined && this.cedingParams.cedingId != null && this.cedingParams.cedingId != ''){
-       console.log(this.cedingParams)
-       this.jvDetails.ceding = this.cedingParams.cedingId;
-       this.jvDetails.cedingName = this.cedingParams.cedingName;
-       this.retrieveInwPol();
-     }
   }
 
   retrieveInwPol(){
-    this.accountingService.getJVInwPolBal(this.jvDetail.tranId,'',this.jvDetails.ceding).subscribe((data:any) => {
+    this.accountingService.getJVInwPolBal(this.jvDetail.tranId,'').subscribe((data:any) => {
       console.log(data)
       var datas = data.inwPolBal;
       this.passData.disableAdd = false;
       this.passData.tableData = [];
       this.totalBalance = 0;
+
       if(datas.length != 0){
         this.jvDetails.cedingName = datas[0].cedingName;
         this.jvDetails.ceding = datas[0].cedingId;
+        this.passLov.cedingId = datas[0].cedingId;
+        this.check(this.jvDetails);
         for(var i = 0; i < datas.length; i++){
           this.passData.tableData.push(datas[i]);
           this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(datas[i].effDate);
           this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(datas[i].dueDate)
           this.totalBalance += this.passData.tableData[this.passData.tableData.length - 1].paytAmt;
 
-          if(this.passData.tableData[i].okDelete == 'N'){
-            this.passData.tableData[i].uneditable = ['paytAmt'];
+          if(this.passData.tableData[this.passData.tableData.length - 1].okDelete == 'N'){
+             this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paytAmt'];
           }
         }
+
           this.table.refreshTable();
       }
       

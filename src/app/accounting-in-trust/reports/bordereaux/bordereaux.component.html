@@ -136,13 +136,13 @@
 									<label class="form-control-sm col-sm-2">Line</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="lineCd" (ngModelChange)="lineCd = $event.toUpperCase()" (change)="checkCode($event, 'line')" mask="SSS">
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
-									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="lineDesc" readonly>
+									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="lineDesc" readonly placeholder="ALL LINES">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Type of Cession</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cessionId" (change)="checkCode($event, 'cession')" mask="9">
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCessionLOV()"></i></a></div>
-									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="cessionDesc" readonly>
+									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="cessionDesc" readonly placeholder="ALL TYPES OF CESSION">
 								</div>
 							</div>
 							<div class="row">

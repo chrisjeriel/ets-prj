@@ -11,11 +11,22 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class SecurityModulesComponent implements OnInit {
 
   PassData: any = {
-      tableData: this.securityServices.getModuleInfo(),
+      tableData: [],
       tHeader: ['Module ID', 'Description', 'Module Group','Remarks'],
       dataTypes: ['text', 'text', 'select','text'],
-      nData: new ModuleInfo(null,null,null,null),
+      nData: {
+            moduleId: '',
+            moduleDesc: '',
+            moduleGrp: '',
+            description: '',
+            remarks: '',
+            createUser: '',
+            createDate: 1546304400000,
+            updateUser: '',
+            updateDate: 1546304400000
+        },
       pageID: 4,
+      keys: ['moduleId','moduleDesc','moduleGrp','remarks'],
       addFlag: true,
       deleteFlag: true,
       pageLength:10,
@@ -26,10 +37,11 @@ export class SecurityModulesComponent implements OnInit {
           vals: ['Quotation', 'Testing'],
       }],
       widths: [],
+      paginateFlag: true,
     }
 
     PassDataModuleTrans: any = {
-      tableData: [['001','Security'],['002','Quotation Processing'],['003','Quotation Inquiry']],
+      tableData: [],
       tHeader: ['Tran Code', 'Description'],
       dataTypes: ['text', 'text'],
       pageID: 3,
@@ -67,6 +79,9 @@ export class SecurityModulesComponent implements OnInit {
     constructor(private securityServices: SecurityService,public modalService: NgbModal) { }
 
     ngOnInit() {
+      this.securityServices.getMtnModules(null, null).subscribe((data: any) => {
+        this.PassData.tableData = data['modules'];
+      });
     }
 
     transactions(){

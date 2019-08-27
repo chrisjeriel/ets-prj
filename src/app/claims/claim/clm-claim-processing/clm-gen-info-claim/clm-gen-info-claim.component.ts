@@ -101,7 +101,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     coRefNo: null,
     inceptDate: null,
     expiryDate: null,
-    coClaimNo: null,
+    coClmNo: null,
     lossDate: null,
     lossCd: null,
     lossAbbr: null,
