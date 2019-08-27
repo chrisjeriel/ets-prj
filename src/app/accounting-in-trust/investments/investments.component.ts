@@ -37,9 +37,9 @@ export class InvestmentsComponent implements OnInit {
 
    passData: any = {
    	 tableData: [],
-   	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Security","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value"],
-   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-   	 dataTypes: ['reqtext','select','reqtext','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency'],
+   	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Security","Amortized","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value"],
+   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+   	 dataTypes: ['reqtext','select','reqtext','select','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency'],
    	 nData: {
           invtId   : null,
           invtCd   : null,
@@ -47,6 +47,7 @@ export class InvestmentsComponent implements OnInit {
           certNo   : null,
           invtType : '2',
           invtSecCd: null,
+          amortized: null,
           invtStatus:'F',
           matPeriod: null,
           durUnit  : 'Days',
@@ -67,13 +68,14 @@ export class InvestmentsComponent implements OnInit {
           slCd      :'',
           uneditable : ['invtStatus','currRate']
         },
-   	 total:[null,null,null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal'],
+   	 total:[null,null,null,null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal'],
      opts: [ {selector: 'invtType', prev: [], vals: []},
              {selector: 'invtSecCd', prev: [], vals: []},
              {selector: 'invtStatus', prev: [], vals: []},
              {selector: 'durUnit', prev: [], vals: []},
              {selector: 'currCd', prev: [], vals: []},
              {selector: 'bank', prev: [], vals: []},
+             {selector : 'amortized', prev: [], vals: []},
        /*{ selector: "durUnit", vals: ["Years","Months","Weeks","Days"] },
        { selector: "investmentType", vals: ["Time Deposit","Treatsury"] },
        { selector: "status", vals: ["Matured","Outstanding"] },
@@ -132,9 +134,9 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
-     widths: [130,130,150,150,150,130,1,1,100,85,90,80,100,120,100,120,130],
+     widths: [130,130,150,150,150,130,130,130,1,100,85,90,80,100,120,100,120,130],
      keys: ['invtCd','bank','certNo','invtType',
-            'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
+            'invtSecCd','amortized','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
             'whtaxAmt','matVal'],
    };
@@ -175,6 +177,7 @@ export class InvestmentsComponent implements OnInit {
     statusCd: any = '';
     matDateTo: any = '';
     matDateFrom: any = '';
+    disableBtn: boolean = true;
 
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
@@ -198,9 +201,10 @@ export class InvestmentsComponent implements OnInit {
                 this.mtnService.getRefCode('ACIT_INVESTMENTS.INVT_TYPE'),
                 this.mtnService.getRefCode('ACIT_INVESTMENTS.INVT_STATUS'),
                 this.mtnService.getRefCode('ACIT_INVESTMENTS.DURATION_UNIT'),
+                this.mtnService.getRefCode('ACIT_INVESTMENTS.AMORTIZED'),
                 this.mtnService.getMtnBank('','','Y'),
                 this.mtnService.getMtnInvtSecType('','Y'),
-                this.mtnService.getMtnCurrency('','Y')).pipe(map(([investments, type, status, duration, bank,invtSecType, currency ]) => { return { investments, type, status, duration, bank, invtSecType, currency  }; }));
+                this.mtnService.getMtnCurrency('','Y')).pipe(map(([investments, type, status, duration,amortized,bank,invtSecType,currency ]) => { return { investments, type, status, duration,amortized,bank, invtSecType, currency  }; }));
 
       this.subscription = sub$.subscribe(data => {
         console.log(data);
@@ -217,7 +221,7 @@ export class InvestmentsComponent implements OnInit {
                                         a.uneditable = ['invtStatus','matVal','currRate','invtAmt'];
                                       } else {
                                         a.uneditable = ['invtCd','bank','certNo','invtType',
-                                                        'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
+                                                        'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
                                                         'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
                                                         'whtaxAmt','matVal'];
                                       }
@@ -245,6 +249,10 @@ export class InvestmentsComponent implements OnInit {
 
         this.passData.opts[5].vals = data['bank']['bankList'].map(a => a.bankCd);
         this.passData.opts[5].prev = data['bank']['bankList'].map(a => a.shortName);
+
+        this.passData.opts[6].vals = data['amortized']['refCodeList'].map(a => a.code);
+        this.passData.opts[6].prev = data['amortized']['refCodeList'].map(a => a.description);
+
 
         this.statusList = data['status']['refCodeList'];
         this.statusList.push({code: "", description: "All"});
@@ -302,9 +310,17 @@ export class InvestmentsComponent implements OnInit {
            this.passData.disableGeneric = true;     
        }else{
            this.passData.disableGeneric = false;
+       }   
+    
+       if (this.selectedData.amortized !== null){
+           this.disableBtn = false;
+       }else {
+           this.disableBtn = true;
        }
+       
     } else {
       this.passData.disableGeneric    = true;
+      this.disableBtn = true;
       this.invtRecord.createUser  = null;
       this.invtRecord.createDate  = null;
       this.invtRecord.updateUser  = null;

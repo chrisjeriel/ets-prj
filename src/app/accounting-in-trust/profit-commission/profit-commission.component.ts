@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 
 
@@ -21,24 +22,11 @@ export class ProfitCommissionComponent implements OnInit {
     @ViewChild('profitCommMdl') profitCommMdl : ModalComponent;
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     @ViewChild('profitComm') profitCommtable: CustEditableNonDatatableComponent;
+    @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
-    yearList: any[] = [];
-    monthList: any[] = [ {key: 1, value: 'January'},
-    					 {key: 2, value: 'February'},
-    					 {key: 3, value: 'March'},
-    					 {key: 4, value: 'April'},
-    					 {key: 5, value: 'May'},
-    					 {key: 6, value: 'June'},
-    					 {key: 7, value: 'July'},
-    					 {key: 8, value: 'August'},
-    					 {key: 9, value: 'September'},
-    					 {key: 10,value: 'October'},
-    					 {key: 11, value: 'November'},
-    					 {key: 12, value: 'December'},]
-    fromYearCd: any;
-    fromMonthCd: any;
-    toMonthCd: any;
-    toYearCd: any;
+
+	dateFrom : any = '';
+	dateTo: any = '';   
     yearCdLov: any;
     monthCdLov: any;
     cedingDesc: any = '';
@@ -59,6 +47,8 @@ export class ProfitCommissionComponent implements OnInit {
   	searchParams: any[] = [];
     profCommDateTo: any = '';
     profCommDateFrom: any = '';
+    dialogIcon: string = '';
+    dialogMessage: string = '';
 
 	passData:any = {
 		tableData: [],
@@ -153,7 +143,6 @@ export class ProfitCommissionComponent implements OnInit {
   	this.titleService.setTitle("Acct-IT | Profit Commission Statement");
   	this.queryModal.mdlOptions = { centered: true, backdrop: 'static', windowClass: "modal-size" };
   	/*this.queryModal.openNoClose();*/
-  	this.getYearList();
   	this.getProfCommList(this.searchParams);
   	this.dataAll = this.passData.tableData;
   }
@@ -164,11 +153,6 @@ export class ProfitCommissionComponent implements OnInit {
       } 
   	}
 
-  	getYearList(){
-  		for (let i = 0; i<100; i++){
-  			this.yearList.push(2000 + i);
-  		}
-  	}
 
   	showCedCompLOV(){
   	  this.cedingCoLOV.modal.openNoClose();
@@ -296,31 +280,25 @@ export class ProfitCommissionComponent implements OnInit {
   	}
 
   	searchProfitComm(){
-       if (this.toMonthCd !== null && this.fromMonthCd !== null 
-       	  && this.toYearCd !== null && this.fromYearCd !== null){
-         this.search();
+       if(this.dateTo < this.dateFrom){
+        this.dialogMessage="To Date must be greater than From Date";
+        this.dialogIcon = "error-message";
+        this.successDialog.open();
+     }else {
+        this.cedingId === null   || this.cedingId === undefined ?'':this.cedingId;
+        this.dateFrom === null || this.dateFrom === undefined ?'':this.dateFrom;
+        this.dateTo === null || this.dateTo === undefined ?'':this.dateTo;
+        this.passData.tableData = [];
+        this.table.overlayLoader = true;
 
-       } else {
-		 this.search();  
-       }
-  	}
-
-  	search(){
-  			this.cedingId === null   || this.cedingId === undefined ?'':this.cedingId;
-	        this.toMonthCd === null || this.toMonthCd === undefined?'':this.toMonthCd;
-	        this.fromMonthCd === null || this.fromMonthCd === undefined ?'':this.fromMonthCd;
-	        this.toYearCd === null || this.toYearCd === undefined ?'':this.toYearCd;
-	        this.fromYearCd === null || this.fromYearCd === undefined ?'':this.fromYearCd;
-	        this.passData.tableData = [];
-	        this.table.overlayLoader = true;
-
-  		this.searchParams = [{key: "cedingId", search: this.cedingId },
-                             {key: "monthTo", search: null },
-                             {key: "monthFrom", search: null },
-                             {key: "yearTo", search: null},
-                             {key: "yearFrom", search: null},
+        this.searchParams = [{key: "cedingId", search: this.cedingId },
+                             {key: "dateTo", search: this.dateTo },
+                             {key: "dateFrom", search: this.dateFrom },
                              ]; 
         console.log(this.searchParams);
         this.getProfCommList(this.searchParams)
+                    
   	}
+
+  }
 }
