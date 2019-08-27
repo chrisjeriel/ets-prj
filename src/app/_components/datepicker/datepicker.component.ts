@@ -20,7 +20,8 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   private spanStyle: any = {
   	width: '100%',
   	position: 'absolute',
-  	display: 'contents'
+  	display: 'contents',
+    'background-color': 'red'
   }
 
   private inputStyle: any = {

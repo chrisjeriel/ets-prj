@@ -1583,11 +1583,11 @@ export class PolCoverageComponent implements OnInit {
     console.log(this.passData.tableData)
     for(var j=0;j<this.passData.tableData.length;j++){
       // PAUL COMPUTE EXTENSION
-        if(this.policyInfo.extensionTag == 'Y' && this.passData.tableData[j].prevSumInsured > this.passData.tableData[j].sumInsured && this.passData.tableData[j].sumInsured != 0 && this.passData.tableData[j].exDiscTag != 'Y'){
-          this.passData.tableData[j].exPremAmt = this.passData.tableData[j].sumInsured * 
+        if(this.policyInfo.extensionTag == 'Y' && 0 > this.passData.tableData[j].sumInsured  && this.passData.tableData[j].exDiscTag != 'Y'){
+          this.passData.tableData[j].exPremAmt = (this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured) * 
                                                  (this.passData.tableData[j].exPremRt/100) *
                                                  this.altCoverageData.exDays/this.altCoverageData.totalDays;
-        }else if(this.policyInfo.extensionTag == 'Y' && this.passData.tableData[j].prevSumInsured <= this.passData.tableData[j].sumInsured && this.passData.tableData[j].sumInsured != 0 && this.passData.tableData[j].exDiscTag != 'Y'){
+        }else if(this.policyInfo.extensionTag == 'Y'  && this.passData.tableData[j].exDiscTag != 'Y'){
           this.passData.tableData[j].exPremAmt = this.passData.tableData[j].prevSumInsured *
                                                  (this.passData.tableData[j].exPremRt/100) * 
                                                  this.altCoverageData.exDays/this.altCoverageData.totalDays;
