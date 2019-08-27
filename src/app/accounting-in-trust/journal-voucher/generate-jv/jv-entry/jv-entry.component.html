@@ -142,7 +142,7 @@
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut || approvedStat" [class.cust-btn-disabled]="printBut || approvedStat" (click)="onClickPrint()"><a>Print</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut || approvedStat" [class.cust-btn-disabled]="UploadBut || approvedStat" (click)="upload()"><a>Upload Acct. Ent</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut || approvedStat" [class.cust-btn-disabled]="allocBut || approvedStat" ><a>Alloc. Trans.</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut || approvedStat" [class.cust-btn-disabled]="dcBut || approvedStat" ><a>DebitCredit Memo</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut || approvedStat" [class.cust-btn-disabled]="dcBut || approvedStat" (click)="onClickCMDM()"><a>DebitCredit Memo</a></button>
                         </div>
                     </div>
                 </div>

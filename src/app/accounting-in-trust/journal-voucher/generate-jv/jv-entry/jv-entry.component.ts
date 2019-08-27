@@ -8,6 +8,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-jv-entry',
@@ -95,7 +96,7 @@ export class JvEntryComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
 
-  constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe) { }
+  constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe, private router: Router) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acc | Journal Voucher");
@@ -521,6 +522,10 @@ export class JvEntryComponent implements OnInit {
     }else{
       this.entryData.localAmt = null;
     }
+  }
+
+  onClickCMDM(){
+    this.router.navigate(['/acc-s-credit-debit-memo', {exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
   }
 
 }
