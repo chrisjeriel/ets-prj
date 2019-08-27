@@ -5,6 +5,40 @@
 		<ngb-tab class="ngb-tab" title="CV Listings">
 			<ng-template ngbTabContent>
 				<div class="row">
+					<div class="input-group text-center" style="margin-bottom: -14px !important;">
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statNw" value="new" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+							<label for="statNw" class="text-left">&nbsp;New</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statOk" value="ok for printing" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+							<label for="statOk" class="text-left">&nbsp;OK for Printing</label>
+						</div>
+						<div class="col-sm-2">
+							<input type="radio" name="tranStat" id="statFc" value="for finance checking" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+							<label for="statFc" class="text-left">&nbsp;For Finance Checking</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statPr" value="printed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+							<label for="statPr" class="text-left">&nbsp;Printed</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statCn" value="cancelled" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+							<label for="statCn" class="text-left">&nbsp;Cancelled</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statCl" value="closed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+							<label for="statCl" class="text-left">&nbsp;Closed</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+							<label for="statDl" class="text-left">&nbsp;Deleted</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+							<label for="statPs" class="text-left">&nbsp;Posted</label>
+						</div>
+					</div>
 					<div class="col-sm-12">
 						<app-cust-non-datatable [passData]="passData" (add)="onClickAdd($event)" (edit)="onClickEdit()" (rowClick)="onRowClick($event)" (newRowDblClick)="onRowDblClick($event)" (searchToDb)="searchQuery($event)" (export)="export()"></app-cust-non-datatable>
 					</div>

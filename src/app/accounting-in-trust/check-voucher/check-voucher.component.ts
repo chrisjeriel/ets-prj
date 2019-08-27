@@ -74,14 +74,21 @@ export class CheckVoucherComponent implements OnInit {
     tranId : ''
   };
 
+  tranStat: string = 'new';
+
   constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Check Voucher");
-    this.getAcitCv();
+
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.getAcitCv();
+    }, 0);
   }
 
   getAcitCv(){
+    this.table.overlayLoader = true;
     this.acctService.getAcitCvList(this.searchParams)
     .subscribe(data => {
       console.log(data);
@@ -91,9 +98,16 @@ export class CheckVoucherComponent implements OnInit {
         i.checkDate      = this.ns.toDateTimeString(i.checkDate);
         i.preparedDate   = this.ns.toDateTimeString(i.preparedDate);
         i.certifiedDate  = this.ns.toDateTimeString(i.certifiedDate);
+
+        if(i.mainTranStat != 'O') {
+          i.cvStatus = i.mainTranStat;
+          i.cvStatusDesc = i.mainTranStatDesc;
+        }
+
         return i; 
       });
-      this.passData.tableData = rec;
+
+      this.passData.tableData = rec.filter(a => String(a.cvStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
     });
   }

@@ -90,18 +90,26 @@ export class AcctArListingsComponent implements OnInit {
     updateDate: ''
   }
 
+  tranStat: string = 'new';
+
   constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Acknowledgement Receipt");
-    this.retrieveArList();
+
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.retrieveArList();
+    }, 0);
   }
 
   retrieveArList(){
+    this.table.overlayLoader = true;
     this.as.getArList(this.searchParams).subscribe(
       (data: any)=>{
         if(data.ar.length !== 0){
-          this.passData.tableData = data.ar;
+          // this.passData.tableData = data.ar;
+          this.passData.tableData = data.ar.filter(a => String(a.arStatDesc).toUpperCase() == this.tranStat.toUpperCase());
           this.table.refreshTable();
         }
       },

@@ -5,27 +5,33 @@
 			<ngb-tab class="ngb-tab" title="AR Listings">
 				<ng-template ngbTabContent>
 					<div class="row">
-						<div class="col-sm-12 text-center">
-							<div class="input-group">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-2">
-									<input type="radio" name="tranStat" value="O" style="vertical-align: middle;"><!--  [(ngModel)]="tranStat" (change)="setExtnSubType()"> -->
-									<label class="text-left">&nbsp;Open</label>
-								</div>
-								<div class="col-sm-2">
-									<input type="radio" name="tranStat" value="C" style="vertical-align: middle;"><!--  [(ngModel)]="tranStat" (change)="setExtnSubType()"> -->
-									<label class="text-left">&nbsp;Closed</label>
-								</div>
-								<div class="col-sm-2">
-									<input type="radio" name="tranStat" value="D" style="vertical-align: middle;"><!--  [(ngModel)]="tranStat" (change)="setExtnSubType()"> -->
-									<label class="text-left">&nbsp;Deleted</label>
-								</div>
-								<div class="col-sm-2">
-									<input type="radio" name="tranStat" value="P" style="vertical-align: middle;"><!--  [(ngModel)]="tranStat" (change)="setExtnSubType()"> -->
-									<label class="text-left">&nbsp;Posted</label>
-								</div>
-								<div class="col-sm-2"></div>
+						<div class="input-group" style="margin-bottom: -14px !important;">
+							<div class="col-sm-2"></div>
+							<div class="col-sm">
+								<input type="radio" name="tranStat" id="statNw" value="new" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
+								<label for="statNw" class="text-left">&nbsp;New</label>
 							</div>
+							<div class="col-sm">
+								<input type="radio" name="tranStat" id="statPr" value="printed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
+								<label for="statPr" class="text-left">&nbsp;Printed</label>
+							</div>
+							<div class="col-sm">
+								<input type="radio" name="tranStat" id="statCn" value="cancelled" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
+								<label for="statCn" class="text-left">&nbsp;Cancelled</label>
+							</div>
+							<div class="col-sm">
+								<input type="radio" name="tranStat" id="statCl" value="closed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
+								<label for="statCl" class="text-left">&nbsp;Closed</label>
+							</div>
+							<div class="col-sm">
+								<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
+								<label for="statDl" class="text-left">&nbsp;Deleted</label>
+							</div>
+							<div class="col-sm">
+								<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
+								<label for="statPs" class="text-left">&nbsp;Posted</label>
+							</div>
+							<div class="col-sm-2"></div>
 						</div>
 						<div class="col-sm-12">
 							<app-cust-non-datatable (add)="toGenerateARAdd();" (edit)="toGenerateARAdd();" (rowClick)="onRowClick($event)" (newRowDblClick)="toGenerateAREdit($event);" [passData]="passData" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
