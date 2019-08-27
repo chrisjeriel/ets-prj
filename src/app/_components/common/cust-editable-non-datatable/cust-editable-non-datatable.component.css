@@ -11,6 +11,10 @@ th, td{
     overflow: hidden;
 }
 
+.small{
+   zoom: 0.78;
+}
+
 #override-header-color tbody tr td{
     background-color: white;
     opacity: 0.8;
@@ -392,7 +396,7 @@ table td div span{
 .cust-filter {
     height: calc(1.3rem + 1px) !important;
     position: absolute !important;
-    right: 3px;
+    right: 0;
     top: 2.9px;
     font-size: 0.7rem !important;
     color: white !important;

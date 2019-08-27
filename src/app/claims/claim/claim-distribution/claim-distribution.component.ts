@@ -61,15 +61,24 @@ export class ClaimDistributionComponent implements OnInit {
 
   reserveDistPassData: any = {
     tHeader: ['Distribution No','History No','Type','Amount','Curr','Curr Rt','Booking Date','Distribution Status'],
-    dataTypes: ['sequence-6','number','text','currency','text','currencyRate','date','text'],
+    dataTypes: ['sequence-6','number','text','currency','text','currencyRate','text','text'],
     keys:['clmDistNo','histNo','histTypeName','reserveAmt','currencyCd','currencyRt','bookingDate','clmDistStat'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
     widths:[1,1,1,'auto',1,'auto',1,1,'auto',1],
     tableData: [],
     pageLength: 5,
-    pageID: 5,
+    pageID: 4,
     paginateFlag: true,
-    infoFlag: true
+    infoFlag: true,
+    filterFlag:true,
+    searchFlag:true,
+    filters: [
+        {
+            key: 'quotationNo',
+            title: 'Quotation No.',
+            dataType: 'text'
+        },
+    ]
   }
 
   paymentDistPassData: any = {
@@ -93,7 +102,7 @@ export class ClaimDistributionComponent implements OnInit {
     widths:[1,'auto',1,150,150],
     tableData: [],
     pageLength: 5,
-    pageID: 5,
+    pageID: 6,
     paginateFlag: true,
     infoFlag: true
   }
@@ -132,18 +141,18 @@ export class ClaimDistributionComponent implements OnInit {
 
   getClmHist(){
     this.clmService.getClaimDist(this.claimInfo.claimId,this.claimInfo.projId).subscribe(a=>{
-      this.resTableData = a['claimDist'].filter(a=>a.histType!=4 && a.histType!=5);;
-      this.payTableData = a['claimDist'].filter(a=>a.histType==4 || a.histType==5);
+      this.resTableData = a['claimDist'];
+      // this.payTableData = a['claimDist'].filter(a=>a.histType==4 || a.histType==5);
       this.resTableData.forEach(a=>{
         a.bookingDate = a.bookingMth.toUpperCase()+'-'+a.bookingYear;
         a.createDate = this.ns.toDateTimeString(a.createDate);
         a.updateDate = this.ns.toDateTimeString(a.updateDate);
       })
-      this.payTableData.forEach(a=>{
-        a.bookingDate = a.bookingMth.toUpperCase()+'-'+a.bookingYear;
-        a.createDate = this.ns.toDateTimeString(a.createDate);
-        a.updateDate = this.ns.toDateTimeString(a.updateDate);
-      })
+      // this.payTableData.forEach(a=>{
+      //   a.bookingDate = a.bookingMth.toUpperCase()+'-'+a.bookingYear;
+      //   a.createDate = this.ns.toDateTimeString(a.createDate);
+      //   a.updateDate = this.ns.toDateTimeString(a.updateDate);
+      // })
       this.filterTable(this.histTypeFilter);
     })
 
@@ -180,7 +189,7 @@ export class ClaimDistributionComponent implements OnInit {
   onTabChange(data){
     console.log(data)
     this.selected = null;
-    this.paymentDistTable.indvSelect = null;
+    //this.paymentDistTable.indvSelect = null;
     this.reserveDistTable.indvSelect = null;
     this.treatyDistPassData.tableData = [];
     this.treatyTable.refreshTable();
@@ -272,8 +281,6 @@ export class ClaimDistributionComponent implements OnInit {
   }
 
   filterTable(histCd){
-    console.log(histCd)
-    console.log(this.resTableData)
     this.selected = null;
     this.histTypeFilter = histCd;
     if(this.currTab == 'reserve'){

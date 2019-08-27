@@ -57,16 +57,17 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       paginateFlag: true,
       pageLength: 3,
       pageID: 'passDataNegative',
-      uneditable: [true, false],
+      uneditable: [true, true,true,false,true],
       total: [null, null, 'Total', 'balanceAmt', 'localAmt'],
       keys: ['quarterEnding', 'currCd', 'currRate', 'balanceAmt', 'localAmt'],
       widths: [203,50,130,130,130],
   }
 
   passDataOffsetting: any = {
+    tHeaderWithColspan : [],
     tableData: [],
-    tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm VAT','Charges','Net Due','Payments','Balance','Balance (PHP)',"Overdue Interest"],
-    dataTypes: ['text','text','text','sequence-2','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
+    tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments', 'Remaining Balance'],
+    dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
     nData: {
       showMG:1,
       tranId : '',
@@ -95,8 +96,8 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       updateUser : this.ns.getCurrentUser(),
       updateDate : '',
     },
-    total:[null,null,null,null,null,null,null,'Total','premAmt','riComm','riCommVat', 'charges','netDue','prevPaytAmt','balPaytAmt','localAmt','overdueInt'],
-    magnifyingGlass: ['soaNo'],
+    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    magnifyingGlass: ['policyNo'],
     checkFlag: true,
     addFlag: true,
     disableAdd: true,
@@ -109,8 +110,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     editFlag: false,
     pageID: 'passDataOffsetting',
     pageLength: 5,
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
     widths: [204,185,185,1,1,1,1,1,85,120,85,85,120,120,120,120],
-    keys: ['soaNo','policyNo','coRefNo','instNo','effDate','dueDate','currCd','currRate','premAmt','riComm','riCommVat','charges','netDue','prevPaytAmt','balPaytAmt','localAmt','overdueInt']
+    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
   };
 
   jvDetails: any = {
@@ -128,21 +130,22 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   };
 
   quarterNo:any;
-  interestRate: number =0;
+  interestRate: number = 0;
   dialogIcon : any;
   dialogMessage : any;
+  treatyBal: number = 0;
+  totalTratyBal: number = 0;
+  totalBal: number = 0;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
   ngOnInit() {
-    this.getMtnRate();
-
-    if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
-      console.log(this.cedingParams)
-      this.jvDetails.ceding = this.cedingParams.cedingId;
-      this.jvDetails.cedingName = this.cedingParams.cedingName;
-      this.retrieveAcctBal();
-    }
+    this.passLov.currCd = this.jvDetail.currCd;
+    this.passData.nData.currCd = this.jvDetail.currCd;
+    this.passData.nData.currRate = this.jvDetail.currRate;
+    this.passDataOffsetting.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
+         { header: "Payment Details", span: 5 }, { header: "", span: 2 });
+    this.retrieveAcctBal();
   }
 
   showCedingCompanyLOV() {
@@ -150,12 +153,18 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   retrieveAcctBal(){
-    this.accountingService.getAcctTrtyBal(this.jvDetail.tranId,this.jvDetails.ceding).subscribe((data:any) => {
+    this.accountingService.getAcctTrtyBal(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data);
       this.passData.tableData = [];
       this.passData.disableAdd = false;
-      for(var i = 0; i < data.acctTreatyBal.length; i++){
-        this.passData.tableData.push(data.acctTreatyBal[i]);
+      if( data.acctTreatyBal.length!=0){
+        this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName;
+        this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
+        this.passLov.cedingId = this.jvDetails.cedingId;
+        this.check(this.jvDetails);
+        for(var i = 0; i < data.acctTreatyBal.length; i++){
+          this.passData.tableData.push(data.acctTreatyBal[i]);
+        }
       }
       this.quarterTable.refreshTable();
       this.quarterTable.onRowClick(null,this.passData.tableData[0]);
@@ -218,45 +227,96 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
   
   openLOV(data){
-    this.passLov.hide = this.passDataOffsetting.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
+    //this.passLov.hide = this.passDataOffsetting.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(!this.passData.tableData[i].deleted){
+        for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
+          this.passLov.hide.push(this.passData.tableData[i].acctOffset[j].soaNo);
+        }
+      }
+    }
+    console.log(this.passLov.hide)
     this.lovMdl.openLOV();
   }
 
   setSoa(data){
     console.log(data)
-    var overdue: number = 0;
-    this.passDataOffsetting.tableData = this.passDataOffsetting.tableData.filter(a=>a.showMG!=1);
+    console.log(this.quarterTable.indvSelect);
+    this.quarterTable.indvSelect.acctOffset = this.quarterTable.indvSelect.acctOffset.filter(a=>a.showMG!=1);
     for (var i = 0; i < data.data.length; i++) {
-      this.passDataOffsetting.tableData.push(JSON.parse(JSON.stringify(this.passDataOffsetting.nData)));
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].showMG = 0;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].edited  = true;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].itemNo = null;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].policyId = data.data[i].policyId;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].tranId = this.jvDetail.tranId;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].soaNo = data.data[i].soaNo;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].policyNo = data.data[i].policyNo;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].coRefNo  = data.data[i].coRefNo;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].instNo  = data.data[i].instNo;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].effDate  = data.data[i].effDate;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].dueDate  = data.data[i].dueDate;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].currCd  = data.data[i].currCd;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].currRate  = data.data[i].currRate;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].premAmt  = data.data[i].balPremDue;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].riComm  = data.data[i].balRiComm;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].riCommVat  = data.data[i].balRiCommVat;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].charges  = data.data[i].balChargesDue;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].netDue  = data.data[i].balPremDue - data.data[i].balRiCommVat - data.data[i].balRiComm + data.data[i].balChargesDue;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].prevPaytAmt  = data.data[i].totalPayments;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].balPaytAmt = data.data[i].balAmtDue;
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].localAmt = data.data[i].balAmtDue * data.data[i].currRate;
-      overdue =  new Date(this.ns.toDateTimeString(this.jvDetail.jvDate)).getDate() - new Date(data.data[i].dueDate).getDate();
-      this.passDataOffsetting.tableData[this.passDataOffsetting.tableData.length - 1].overdueInt = (data.data[i].balPremDue)*(this.interestRate)*(overdue/365);
+      this.quarterTable.indvSelect.acctOffset.push(JSON.parse(JSON.stringify(this.passDataOffsetting.nData)));
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].showMG = 0;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].edited  = true;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].itemNo = null;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].policyId = data.data[i].policyId;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].tranId = this.jvDetail.tranId;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].soaNo = data.data[i].soaNo;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].policyNo = data.data[i].policyNo;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].coRefNo  = data.data[i].coRefNo;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].instNo  = data.data[i].instNo;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].effDate  = data.data[i].effDate;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].dueDate  = data.data[i].dueDate;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].currCd  = data.data[i].currCd;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].currRate  = data.data[i].currRate;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].prevPremAmt = data.data[i].prevPremAmt;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].prevRiComm  = data.data[i].prevRiComm;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].prevRiCommVat  = data.data[i].prevRiCommVat;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].prevCharges  = data.data[i].prevCharges;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].prevNetDue  = data.data[i].prevNetDue;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].prevPaytAmt  = data.data[i].totalPayments;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].cumPayment = data.data[i].cumPayment;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].balance = data.data[i].prevBalance;
+    }
+    this.trytytrans.refreshTable();
+    this.quarterTable.onRowClick(null,this.quarterTable.indvSelect);
+  }
+
+  update(data){
+    
+    for (var i = 0; i < this.passDataOffsetting.tableData.length; i++) {
+      this.passDataOffsetting.tableData[i].premAmt = (this.passDataOffsetting.tableData[i].paytAmt / this.passDataOffsetting.tableData[i].prevNetDue) * this.passDataOffsetting.tableData[i].prevPremAmt;
+      this.passDataOffsetting.tableData[i].riComm = (this.passDataOffsetting.tableData[i].paytAmt / this.passDataOffsetting.tableData[i].prevNetDue) * this.passDataOffsetting.tableData[i].prevRiComm;
+      this.passDataOffsetting.tableData[i].riCommVat = (this.passDataOffsetting.tableData[i].paytAmt / this.passDataOffsetting.tableData[i].prevNetDue) * this.passDataOffsetting.tableData[i].prevRiCommVat;
+      this.passDataOffsetting.tableData[i].charges = (this.passDataOffsetting.tableData[i].paytAmt / this.passDataOffsetting.tableData[i].prevNetDue) * this.passDataOffsetting.tableData[i].prevCharges;
+      this.passDataOffsetting.tableData[i].netDue = this.passDataOffsetting.tableData[i].premAmt - this.passDataOffsetting.tableData[i].riComm - this.passDataOffsetting.tableData[i].riCommVat + this.passDataOffsetting.tableData[i].charges;
+
+      this.passDataOffsetting.tableData[i].totalPayt = this.passDataOffsetting.tableData[i].paytAmt + this.passDataOffsetting.tableData[i].cumPayment;
+      this.passDataOffsetting.tableData[i].remainingBal = this.passDataOffsetting.tableData[i].prevNetDue - this.passDataOffsetting.tableData[i].totalPayt;
+      this.passDataOffsetting.tableData[i].localAmt = this.passDataOffsetting.tableData[i].paytAmt * 1;
     }
     this.trytytrans.refreshTable();
   }
 
+
   onClickSave(){
-    this.confirm.confirmModal();
+    var errorFlag = false;
+    var quarterDate :any;
+    this.totalBal = 0;
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      this.treatyBal = 0;
+      for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
+        this.treatyBal += this.passData.tableData[i].acctOffset[j].paytAmt;
+        this.totalBal += this.passData.tableData[i].acctOffset[j].paytAmt;
+      }
+      if(this.passData.tableData[i].balanceAmt < this.treatyBal){
+        errorFlag = true;
+        quarterDate = this.passData.tableData[i].quarterEnding;
+      }
+    }
+
+    if(errorFlag){
+      quarterDate = this.ns.toDateTimeString(quarterDate);
+      quarterDate = quarterDate.split('T');
+      this.dialogMessage = "The total Balance of outstanding accounts for offset on Quarter Ending " + quarterDate[0] + " must not exceed its Treaty Balance Amount.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.totalBal > this.jvDetail.jvAmt){
+      this.dialogMessage = "The total Balance of all outstanding accounts for offset must not exceed the JV Amount.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
   }
 
   prepareData(){
@@ -265,7 +325,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.jvDetails.delAcctTrty = [];
     this.jvDetails.saveInwPolOffset = [];
     this.jvDetails.delInwPolOffset = [];
-
+    var actualBalPaid = 0;
     for( var i = 0 ; i < this.passData.tableData.length; i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         this.jvDetails.saveAcctTrty.push(this.passData.tableData[i]);
@@ -289,6 +349,8 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
         if(this.passData.tableData[i].acctOffset[j].edited && !this.passData.tableData[i].acctOffset[j].deleted){
           this.jvDetails.saveInwPolOffset.push(this.passData.tableData[i].acctOffset[j]);
+          actualBalPaid += this.passData.tableData[i].acctOffset[j].paytAmt;
+          this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].balPaytAmt = this.passData.tableData[i].acctOffset[j].remainingBal;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].tranId = this.jvDetail.tranId;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].quarterNo = this.passData.tableData[i].quarterNo;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].createDate =  this.ns.toDateTimeString(this.passData.tableData[i].acctOffset[j].createDate);
@@ -300,6 +362,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
           this.jvDetails.delInwPolOffset[this.jvDetails.delInwPolOffset.length - 1].tranId = this.jvDetail.tranId;
         }
       }
+      this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].actualBalPaid = actualBalPaid;
     }
 
     this.jvDetails.tranId = this.jvDetail.tranId;

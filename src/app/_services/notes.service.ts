@@ -36,6 +36,19 @@ export class NotesService {
     return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
   }
 
+  toDate(s:string):Date{
+    let dateString = s.split('T')[0];
+    let timeString = s.split('T')[1];
+    return new Date(
+                    parseInt(dateString.split('-')[0]),
+                    parseInt(dateString.split('-')[1])-1,
+                    parseInt(dateString.split('-')[2]),
+                    parseInt(timeString.split(':')[0]),
+                    parseInt(timeString.split(':')[1]),
+                    parseInt(timeString.split(':')[2]),
+                  );
+  }
+
   lovLoader(ev, num){
     if(ev != null) {
       var ic = $(ev.target).next().find('i');

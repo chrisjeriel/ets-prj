@@ -68,6 +68,7 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
 
     closeModal(){
         this.modalRef.dismiss();
+        this.modalRef = undefined;
     }
 
 

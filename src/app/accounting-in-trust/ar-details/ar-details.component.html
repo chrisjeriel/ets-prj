@@ -96,13 +96,15 @@
 								<app-inward-policy-balances [record]="record"></app-inward-policy-balances>
 							</ng-container>
 							<ng-container *ngSwitchCase="'2'">
-								<app-claim-recovery [record]="record"></app-claim-recovery>
+								<!-- <app-claim-recovery [record]="record"></app-claim-recovery> -->
+								<app-ar-claim-cash-call [record]="record"></app-ar-claim-cash-call>
 							</ng-container>
 							<ng-container *ngSwitchCase="'3'">
 								<app-ar-details-qsoa [record]="record"></app-ar-details-qsoa>
 							</ng-container>
 							<ng-container *ngSwitchCase="'4'">
-								<app-ar-claim-cash-call [record]="record"></app-ar-claim-cash-call>
+								<!-- <app-ar-claim-cash-call [record]="record"></app-ar-claim-cash-call> -->
+								<app-claim-recovery [record]="record"></app-claim-recovery>
 							</ng-container>
 							<ng-container *ngSwitchCase="'5'">
 								<app-ar-details-investments [record]="record" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investments>

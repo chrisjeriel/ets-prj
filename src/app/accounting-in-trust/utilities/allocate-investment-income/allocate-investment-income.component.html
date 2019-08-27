@@ -124,3 +124,32 @@
           	</div>
 </app-modal>
 
+<app-modal [btnTitle]="'Allocation Successful!'" hidden id="modalAllocSuccess" #successMdl>
+    <div header>Allocation Successful!</div>
+         <div body>
+            <div style="width: 900px">
+            	<div class="input-group">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm">
+                    	 <div class="custom-row-inline-inset" style="text-align: center"> 
+			            	<p *ngIf="radioVal == 'bydate'" style="margin-bottom: 1px;font-size: 15px">Investment income from period of {{ fromDate | date:'MMMM dd,yyyy' }} to {{ toDate | date:'MMMM dd,yyyy' }} were successfully allocated.</p>
+			            	<p *ngIf="radioVal == 'bymoyo'" style="margin-bottom: 1px;font-size: 15px">Investment income for the period were successfully allocated.</p>
+			            	<p *ngIf="radioVal == 'byyear'" style="margin-bottom: 1px;font-size: 15px">Investment income as of {{ asOfYear | date:'MMMM dd,yyyy' }} were successfully allocated.</p>
+			            	<p style="font-size: 15px"> Please see below JV Nos. generated.</p>
+			            </div>
+	               	</div>
+                    <div class="col-sm-1"></div>
+                </div>
+                <div class="row">
+					<div class="col-sm-12" style="margin-top: 4px; margin-bottom: -5px" >
+					     <app-cust-editable-non-datatable #jvTable [passData]="passDataJv"> </app-cust-editable-non-datatable>
+					</div>
+            	</div>
+          	</div>
+          </div>
+          	<div footer class="text-center" style="width: 100% !important;">
+                <button type="button" class="cust-btn" (click)="successMdl.closeModal()"><a>OK</a></button>
+          	</div>
+</app-modal>
+
+

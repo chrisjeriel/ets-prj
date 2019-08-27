@@ -7,7 +7,7 @@
               <div class="input-group" style="margin-bottom: 0px !important;">
                 <label class="form-control-sm col-sm-7 labels">Alloted Policy Balance Payments</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted"
-                  appCurrency placeholder="" [(ngModel)]="allotedAmt">
+                  appCurrency placeholder="" [(ngModel)]="allotedAmt" [readonly]="!passData.checkFlag">
                 <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Total Balance for Selected Policy
                   Transactions</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
@@ -30,13 +30,13 @@
       </div>
   </div>
 
-<div class="form-row" *ngIf="passData.checkFlag">
+<div class="form-row" >
         <div class="form-group col-sm">
           <div class="col-md-13 text-center">
             <br>
             <div class="cust-btn-container">
-              <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
-              <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+              <button *ngIf="passData.checkFlag" type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
+              <button *ngIf="passData.checkFlag" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
             </div>
           </div>
         </div>

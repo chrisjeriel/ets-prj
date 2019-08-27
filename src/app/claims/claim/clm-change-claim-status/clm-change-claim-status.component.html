@@ -142,30 +142,30 @@
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Claim No</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly [ngModel]="claimDetails.claimNo">
+                          readonly [ngModel]="claimDetails?.claimNo">
                         <label class="form-control-sm col-sm-2">Status</label>
                         <input type="text" class="form-control form-control-sm cust-sm" 
-                          readonly [ngModel]="claimDetails.clmStatus">
+                          readonly [ngModel]="claimDetails?.clmStatus">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Policy No</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly [ngModel]="claimDetails.policyNo">
+                          readonly [ngModel]="claimDetails?.policyNo">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Ceding Co</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly [ngModel]="claimDetails.cedingName">
+                          readonly [ngModel]="claimDetails?.cedingName">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Insured</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly [ngModel]="claimDetails.insuredDesc">
+                          readonly [ngModel]="claimDetails?.insuredDesc">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Risk</label>
                         <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"
-                          readonly [ngModel]="claimDetails.riskName"></textarea>
+                          readonly [ngModel]="claimDetails?.riskName"></textarea>
                       </div>
                     </div>
 
@@ -173,32 +173,32 @@
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Date</label>
                         <input type="text" class="form-control form-control-sm cust-sm" 
-                          readonly [ngModel]="claimDetails.lossDate">
+                          readonly [ngModel]="claimDetails?.lossDate">
                         <label class="form-control-sm col-sm-2">Currency</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails.currencyCd">
+                        <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails?.currencyCd">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Details</label>
                         <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"
-                          readonly [ngModel]="claimDetails.lossDtl"></textarea>
+                          readonly [ngModel]="claimDetails?.lossDtl"></textarea>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Total Reserve</label>
                         <input type="text" class="form-control form-control-sm cust-sm text-right" 
-                          readonly [ngModel]="claimDetails.totalLossExpRes | number: '1.2-2'">
+                          readonly [ngModel]="claimDetails?.totalLossExpRes | number: '1.2-2'">
                         <label class="form-control-sm col-sm-2" style="padding-right: 3px !important;">Total
                           Payment</label>
                         <input type="text" class="form-control form-control-sm cust-sm text-right" 
-                          readonly [ngModel]="claimDetails.totalLossExpPd | number: '1.2-2'">
+                          readonly [ngModel]="claimDetails?.totalLossExpPd | number: '1.2-2'">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Adjusters</label>
                         <input type="text" class="form-control form-control-sm cust-sm"
-                          readonly [ngModel]="claimDetails.adjName">
+                          readonly [ngModel]="claimDetails?.adjName">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Processed By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails.processedBy">
+                        <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails?.processedBy">
                       </div>
                     </div>
                   </div>
@@ -208,11 +208,11 @@
                       <div class="input-group">
                         <label class="form-control-sm col-sm-1" style="margin-left:-3px !important;">Reason</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                           required [readonly]="batchOption.openTag === 'Y'" [ngModel]="reasonCd" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
+                           required [readonly]="batchOption.openTag === 'Y'" [ngModel]="claimDetails != null && claimDetails.manual ? claimDetails.reasonCd : claimDetails!=null? reasonCd: ''" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
                         <div class="text-search-ico" *ngIf="batchOption.openTag !== 'Y'">
                           <a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm"
-                           readonly style="margin-left: 2px !important" [ngModel]="reasonDesc">
+                           readonly style="margin-left: 2px !important" [ngModel]="claimDetails != null && claimDetails.manual ? claimDetails.description :claimDetails!=null?reasonDesc:''">
                       </div>
                     </div>
 
@@ -269,10 +269,26 @@
     </div>
 </app-modal>
 
+<!-- <app-modal class="d-none" #processPrompt>
+  <div header>Confirmation</div>
+  <div body>
+    <span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{dialogMessage}}</span>
+  </div>
+  <div footer>
+        <div class="d-flex justify-content-center text-center">
+          <div class="col-sm-12 text-center">
+            <button class="cust-btn" type="button" (click)="processModal.closeModal(); updateClaimStatus();"><a>Yes</a></button>
+            <button class="cust-btn" type="button" (click)="processModal.closeModal();"><a>No</a></button>
+          </div>
+        </div>
+    </div>
+</app-modal> -->
+
 <app-modal class="d-none" #processPrompt>
   <div header>Confirmation</div>
   <div body>
     <span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{dialogMessage}}</span>
+    <app-cust-editable-non-datatable [passData]="selectedData" (clickLOV)="openReasonLOV()" (tableDataChange)="onProcessTblChange($event)" #processTbl></app-cust-editable-non-datatable>
   </div>
   <div footer>
         <div class="d-flex justify-content-center text-center">

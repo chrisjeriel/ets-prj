@@ -28,7 +28,7 @@
 	<div class="col-sm-12">
 		<div class="cust-tabs-container">
 			<ngb-tabset #tabset  (tabChange)="onTabChange($event)" [destroyOnHide]="false">
-				<ngb-tab title="Reserve Distribution" id="reserve" >
+				<ngb-tab title="Distribution" id="reserve" >
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border">
 							<div class="col-sm-1">
@@ -70,7 +70,7 @@
 						</div>
 					</ng-template>
 				</ngb-tab>
-				<ngb-tab title="Payment Distribution" id="payment">
+				<!-- <ngb-tab title="Payment Distribution" id="payment">
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border">
 							<div class="col-sm-1">
@@ -110,7 +110,7 @@
 							</div>
 						</div>
 					</ng-template>
-				</ngb-tab>
+				</ngb-tab> -->
 				<ngb-tab title="Cumulative Reserve Distribution" id="cummReserve">
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border">

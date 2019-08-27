@@ -25,9 +25,9 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Claim No', 'Status', 'Policy No', 'Ceding Company', 'Insured', 'Risk', 'Loss Date', 'Loss Details', 'Currency', 'Total Reserve', 'Total Payments', 'Adjusters', 'Processed By'],
-    dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'date', 'text','text', 'currency', 'currency', 'text', 'text'],
-    keys: ['claimNo', 'clmStatus', 'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'lossDate', 'lossDtl', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd', 'adjName', 'processedBy'],
+    tHeader: ['Claim No', 'Status', 'Policy No', 'Ceding Company', 'Insured', 'Risk', 'Loss Date','Loss Cause' ,'Loss Details', 'Currency', 'Total Reserve', 'Total Payments', 'Adjusters', 'Processed By','Report Date'],
+    dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'date','text', 'text','text', 'currency', 'currency', 'text', 'text','date'],
+    keys: ['claimNo', 'clmStatus', 'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'lossDate','lossAbbr', 'lossDtl', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd', 'adjName', 'processedBy','reportDate'],
     addFlag: true,
     editFlag: true,
     pagination: true,

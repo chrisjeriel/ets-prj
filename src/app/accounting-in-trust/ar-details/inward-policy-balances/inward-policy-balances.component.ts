@@ -58,11 +58,12 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
         balOverdueInt: '',
         showMG: 1
     },
-    //total: [null,null,null, null, null, 'Total', 'premAmt', 'riComm', 'riCommVat', 'charges', 'netDue', 'totalPayments', 'balPaytAmt'],
+    total: [null,null,null, null, null, 'Total', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'],
 /*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
     widths: [170, 100, 50, 1, 30, 85,110, 110, 110,110,110,110,110,110,110,110,110,110,110,110,],
     keys: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'],
-    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true]
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
+    small: true,
   };
 
   passLov: any = {
@@ -94,8 +95,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Inward Policy Balances");
     this.passLov.payeeNo = this.record.payeeNo;
-    if(this.record.arStatDesc.toUpperCase() !== 'NEW'){
-      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+    if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.passData.tHeaderWithColspan= [{header: 'Inward Policy Info', span: 13, pinLeft: true}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}];
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;
@@ -130,11 +132,16 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           for(var i of data.arInwPolBal){
             i.cumPayment = i.prevCumPayment;
             i.totalPayments = i.cumPayment + i.balPaytAmt;
-            
+            i.uneditable = ['balPaytAmt'];
             this.passData.tableData.push(i);
           }
           this.originalValues = data.arInwPolBal;
           this.table.refreshTable();
+        }else{
+          this.allotedAmt = this.record.arAmt;
+          setTimeout(()=>{
+            $('.alloted').focus().blur();
+          }, 0);
         }
         this.computeTotalBalAndVariance();
         console.log(this.originalValues);
@@ -174,13 +181,13 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue = selected[i].prevNetDue;
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment = selected[i].cumPayment;
       this.passData.tableData[this.passData.tableData.length - 1].prevBalance = selected[i].prevBalance;
-      this.passData.tableData[this.passData.tableData.length - 1].premAmt = selected[i].prevPremAmt;
+      /*this.passData.tableData[this.passData.tableData.length - 1].premAmt = selected[i].prevPremAmt;
       this.passData.tableData[this.passData.tableData.length - 1].riComm = selected[i].prevRiComm;
       this.passData.tableData[this.passData.tableData.length - 1].riCommVat = selected[i].prevRiCommVat;
       this.passData.tableData[this.passData.tableData.length - 1].charges = selected[i].prevCharges;
       this.passData.tableData[this.passData.tableData.length - 1].balPaytAmt = selected[i].prevBalance;
       this.passData.tableData[this.passData.tableData.length - 1].totalPayments = selected[i].cumPayment + selected[i].prevBalance;
-      this.passData.tableData[this.passData.tableData.length - 1].netDue = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].netDue = 0;*/
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['soaNo'];
@@ -197,7 +204,8 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     for(var i of tableData){
       this.totalBal += i.balPaytAmt;
     }
-    this.variance = this.record.arAmt - this.totalBal;
+    //this.variance = this.record.arAmt - this.totalBal;
+    this.variance = this.allotedAmt - this.totalBal;
   }
 
   onClickSave(){
@@ -212,6 +220,10 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     }else if(this.checkAlloted()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the Alloted Policy Balance Payments.';
+      this.successDiag.open();
+    }else if(this.checkNetPayments()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
     }else{
       this.confirm.confirmModal();
@@ -381,6 +393,14 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   checkAlloted(){
     this.computeTotalBalAndVariance();
     if(this.totalBal > this.allotedAmt){
+      return true;
+    }
+    return false;
+  }
+
+  checkNetPayments(){
+    this.computeTotalBalAndVariance();
+    if(this.totalBal < 0){
       return true;
     }
     return false;

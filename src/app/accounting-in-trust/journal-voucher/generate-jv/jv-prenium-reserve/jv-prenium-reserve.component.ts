@@ -72,32 +72,34 @@ export class JvPreniumReserveComponent implements OnInit {
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | JV QSOA");
+		this.passData.nData.currCd = this.jvDetail.currCd;
+		this.passData.nData.currRate = this.jvDetail.currRate;
 		if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
 		  
 		}else {
 
 		}
-
-		if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
-		       console.log(this.cedingParams)
-		       this.premResData.cedingId = this.cedingParams.cedingId;
-		       this.premResData.cedingName = this.cedingParams.cedingName;
-		       this.retrievePremRes();
-		}
+		this.retrievePremRes();
 	}
 
 	retrievePremRes(){
-		this.accService.getAcitJVPremRes(this.jvDetail.tranId,this.premResData.cedingId).subscribe((data:any) => {
+		this.accService.getAcitJVPremRes(this.jvDetail.tranId).subscribe((data:any) => {
 			this.passData.tableData = [];
 			this.passData.disableAdd = false;
 			this.totalInterestAmt = 0;
 			this.totalWhtaxAmt = 0;
-			for( var i = 0 ; i < data.premResRel.length;i++){
-				this.passData.tableData.push(data.premResRel[i]);
-				this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.premResRel[i].quarterEnding);
-				this.totalInterestAmt += this.passData.tableData[this.passData.tableData.length - 1].interestAmt;
-				this.totalWhtaxAmt 	  += this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt;
+			if(data.premResRel.length!= 0){
+				this.premResData.cedingName = data.premResRel[0].cedingName;
+				this.premResData.cedingId = data.premResRel[0].cedingId;
+				this.check(this.premResData);
+				for( var i = 0 ; i < data.premResRel.length;i++){
+					this.passData.tableData.push(data.premResRel[i]);
+					this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.premResRel[i].quarterEnding);
+					this.totalInterestAmt += this.passData.tableData[this.passData.tableData.length - 1].interestAmt;
+					this.totalWhtaxAmt 	  += this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt;
+				}
 			}
+			
 			this.table.refreshTable();
 		});
 	}
