@@ -5,6 +5,28 @@
 			<ngb-tab class="ngb-tab" title="AR Listings">
 				<ng-template ngbTabContent>
 					<div class="row">
+						<div class="col-sm-12 text-center">
+							<div class="input-group">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2">
+									<input type="radio" name="tranStat" value="O" style="vertical-align: middle;"><!--  [(ngModel)]="tranStat" (change)="setExtnSubType()"> -->
+									<label class="text-left">&nbsp;Open</label>
+								</div>
+								<div class="col-sm-2">
+									<input type="radio" name="tranStat" value="C" style="vertical-align: middle;"><!--  [(ngModel)]="tranStat" (change)="setExtnSubType()"> -->
+									<label class="text-left">&nbsp;Closed</label>
+								</div>
+								<div class="col-sm-2">
+									<input type="radio" name="tranStat" value="D" style="vertical-align: middle;"><!--  [(ngModel)]="tranStat" (change)="setExtnSubType()"> -->
+									<label class="text-left">&nbsp;Deleted</label>
+								</div>
+								<div class="col-sm-2">
+									<input type="radio" name="tranStat" value="P" style="vertical-align: middle;"><!--  [(ngModel)]="tranStat" (change)="setExtnSubType()"> -->
+									<label class="text-left">&nbsp;Posted</label>
+								</div>
+								<div class="col-sm-2"></div>
+							</div>
+						</div>
 						<div class="col-sm-12">
 							<app-cust-non-datatable (add)="toGenerateARAdd();" (edit)="toGenerateARAdd();" (rowClick)="onRowClick($event)" (newRowDblClick)="toGenerateAREdit($event);" [passData]="passData" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
 						</div>
