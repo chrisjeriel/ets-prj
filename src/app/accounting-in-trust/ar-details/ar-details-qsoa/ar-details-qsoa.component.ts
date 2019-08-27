@@ -81,6 +81,12 @@ export class ArDetailsQsoaComponent implements OnInit {
     this.passData.nData.currCd = this.record.currCd;
     this.passData.nData.currRate = this.record.currRate;
     //this.getMtnCurrency();
+    if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+      this.passData.uneditable = [true, true, true, true, true ];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag =  false;
+      this.passData.checkFlag = false;
+    }
     this.retrieveNegTrtyBal();
   }
 

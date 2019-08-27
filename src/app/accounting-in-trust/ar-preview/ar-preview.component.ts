@@ -79,8 +79,8 @@ export class ArPreviewComponent implements OnInit {
         slTypeName: '',
         slCd: '',
         slName: '',
-        creditAmt: '',
-        debitAmt: '',
+        creditAmt: 0,
+        debitAmt: 0,
         autoTag: '',
         createUser: this.ns.getCurrentUser(),
         createDate: this.ns.toDateTimeString(0),
@@ -95,7 +95,8 @@ export class ArPreviewComponent implements OnInit {
     pageLength: 10,
     widths: [205,305,163,176,122,154],
     checkFlag:true,
-    magnifyingGlass: ['glShortCd','slTypeName','slName']
+    magnifyingGlass: ['glShortCd','slTypeName','slName'],
+    total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt']
   };
 
   /*accEntriesData: any = {
@@ -159,8 +160,22 @@ export class ArPreviewComponent implements OnInit {
   ngOnInit() {
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
+    if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+      this.accEntriesData.uneditable = [true, true, true, true, true, true ];
+      this.accEntriesData.addFlag = false;
+      this.accEntriesData.deleteFlag =  false;
+      this.accEntriesData.checkFlag = false;
+      this.accEntriesData.magnifyingGlass = [];
+
+      this.amountDetailsData.uneditable = [true, true, true, true, true, true ];
+      this.amountDetailsData.addFlag = false;
+      this.amountDetailsData.deleteFlag =  false;
+      this.amountDetailsData.checkFlag = false;
+      this.amountDetailsData.magnifyingGlass = [];
+    }
     this.getMtnCurrency();
-    this.retrieveAmtDtl();
+    //this.retrieveAmtDtl();
+    this.retrieveAcctEntry();
   }
 
   onTabChange(event){
@@ -215,7 +230,7 @@ export class ArPreviewComponent implements OnInit {
     this.savedData = [];
     this.deletedData = [];
     this.totalLocalAmt = 0;
-    if(this.currentTab === 'amtDtl' || this.currentTab.length === 0){
+    /*if(this.currentTab === 'amtDtl' || this.currentTab.length === 0){
       for (var i = 0 ; this.amountDetailsData.tableData.length > i; i++) {
         if(!this.amountDetailsData.tableData[i].deleted){
           this.totalLocalAmt += this.amountDetailsData.tableData[i].localAmt;
@@ -269,8 +284,8 @@ export class ArPreviewComponent implements OnInit {
         (error: any)=>{
 
         }
-      );
-    }else if(this.currentTab === 'acctEntries'){
+      );*/
+   // }else if(this.currentTab === 'acctEntries'){
       this.savedData = this.accEntriesData.tableData.filter(a=>a.edited && !a.deleted);
       this.deletedData = this.accEntriesData.tableData.filter(a=>a.deleted);
 
@@ -297,7 +312,7 @@ export class ArPreviewComponent implements OnInit {
           this.successDiag.open();
         }
       });
-    }
+    //}
   }
 
   cancel(){
@@ -421,4 +436,48 @@ export class ArPreviewComponent implements OnInit {
     this.totals.variance = this.totals.debit - this.totals.credit;
   }
 
+   export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'AccountingEntries'+currDate+'.xlsx'
+    var mystyle = {
+        headers:false, 
+        column: {style:{Font:{Bold:"1"}}},
+        rows: {0:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               2:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               5:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+    alasql('CREATE TABLE sample(row1 VARCHAR2, row2 VARCHAR2, row3 VARCHAR2, row4 VARCHAR2, row5 VARCHAR2, row6 VARCHAR2)');
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?)', ['AR No', 'AR Date', 'DCB No.', 'Payment Type', 'Amount', '']);
+    alasql('INSERT INTO sample VALUES (?,datetime(?),?,?,?,currency(?))', [this.record.formattedArNo, this.record.arDate, this.record.dcbNo, this.record.tranTypeName, this.record.currCd, this.record.arAmt]);
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?)', ['Payor', '', '', 'Status', 'Local Amount', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,currency(?))', [this.record.payor, '','', this.record.arStatDesc, 'PHP', this.record.currRate * this.record.arAmt]);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?)', ['', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?)', ['Account Code', 'Account Name', 'SL Type', 'SL Name', 'Debit', 'Credit']);
+    for(var i of this.accEntriesData.tableData){
+      alasql('INSERT INTO sample VALUES(?,?,?,?,currency(?),currency(?))', [i.glShortCd, i.glShortDesc, i.slTypeName == null ? '' : i.slTypeName, i.slName == null ? '' : i.slName, i.debitAmt, i.creditAmt]);
+    }
+    alasql('SELECT row1, row2, row3, row4, row5, row6 INTO XLSXML("'+filename+'",?) FROM sample', [mystyle]);
+    alasql('DROP TABLE sample');  
+  }
 }

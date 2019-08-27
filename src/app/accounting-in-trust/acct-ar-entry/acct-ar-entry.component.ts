@@ -19,7 +19,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lov: LovComponent;
-  @ViewChild(ModalComponent) cancelMdl: ModalComponent;
+  @ViewChild('cancelMdl') cancelMdl: ModalComponent;
+  @ViewChild('printModal') printMdl: ModalComponent;
   @ViewChild("myForm") form: any;
 
   passData: any = {
@@ -29,7 +30,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
-        widths: [130,70,100,150,"auto",1,210,100,180, 'auto'],
+        widths: [130,70,100,130,180,1,150,100,180,210],
         keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass', 'remarks'],
         uneditable: [false,false,false,false,false,false,false,false,false, false],
         pageID: 1,
@@ -93,6 +94,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   cancelFlag: boolean = false;
   isCancelled: boolean = false;
   dcbBankAcctCurrCd: string = '';
+  disablePayor: boolean = false;
+  isPrinted: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -101,6 +104,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     tranId: '',
     tranClass: 'AR',
     arNo: '',
+    formattedArNo: '',
+    arNoDigits: '',
     arDate: '',
     arStatus: '',
     tranStat: '',
@@ -118,7 +123,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     prNo: '',
     prDate: '',
     prPreparedBy: '',
-    payeeNo: '1',
+    payeeNo: '',
     payor: '',
     mailAddress: '',
     bussTypeCd: '',
@@ -132,6 +137,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     updateUser: '',
     updateDate: '',
     rstrctTranUp: '',
+    arDtlSum: '',
+    acctEntriesSum: '',
   }
 
   arDate: any = {
@@ -166,12 +173,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   passLov:any = {
     selector:'',
-    payeeClassCd: 1
+    payeeClassCd: 1,
+    activeTag: ''
   };
 
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
+    setTimeout(()=>{this.disableTab.emit(true);},0);
     this.retrievePaymentType();
     //this.retrieveCurrency();
     var tranId;
@@ -201,6 +210,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }else{  //edit
       if(this.emittedValue !== undefined){
         this.retrieveArEntry(this.emittedValue.tranId, this.emittedValue.arNo);
+        this.isAdd = false;
       }else{ //add
         //this.retrieveMtnBank();
         this.retrieveMtnAcitDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
@@ -254,7 +264,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       prNo: '',
       prDate: '',
       prPreparedBy: '',
-      payeeNo: '1',
+      payeeNo: '',
       payor: '',
       mailAddress: '',
       bussTypeCd: '',
@@ -269,7 +279,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       updateUser: '',
       updateDate: '',
       cedingId: '',
-      bussTypeName: ''
+      bussTypeName: '',
+      rstrctTranUp: '',
+      arDtlSum: '',
+      acctEntriesSum: '',
     }
     this.prDate = {
       date: '',
@@ -290,12 +303,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }
   }
 
-  openPayorLOV(){
-    this.passLov.selector = 'payee';
-    if(this.arInfo.tranTypeCd == '5'){
-      this.passLov.payeeClassCd = 3;
-    }else{
-      this.passLov.payeeClassCd = 1;
+  openLOV(type){
+    if(type === 'payor'){
+      this.passLov.selector = 'payee';
+      if(this.arInfo.tranTypeCd == '5'){
+        this.passLov.payeeClassCd = 3;
+      }else{
+        this.passLov.payeeClassCd = 1;
+      }
+    }else if(type === 'business'){
+      this.passLov.selector = 'mtnBussType';
+      this.passLov.activeTag = 'Y';
     }
     this.lov.openLOV();
   }
@@ -366,17 +384,26 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   setLov(data){
     console.log(data);
-    this.arInfo.payeeNo = data.data.payeeNo;
-    this.arInfo.payor = data.data.payeeName;
-    this.arInfo.tin = data.data.tin;
-    this.arInfo.bussTypeCd = data.data.bussTypeCd;
-    this.arInfo.mailAddress = data.data.mailAddress;
-    this.arInfo.cedingId = data.data.cedingId;
-    this.arInfo.bussTypeName = data.data.bussTypeName;
-    this.form.control.markAsDirty();
-    setTimeout(()=>{
-      $('.payor').focus().blur();
-    }, 0);
+    if(data.selector === 'payee'){
+      this.arInfo.payeeNo = data.data.payeeNo;
+      this.arInfo.payor = data.data.payeeName;
+      this.arInfo.tin = data.data.tin;
+      this.arInfo.bussTypeCd = data.data.bussTypeCd;
+      this.arInfo.mailAddress = data.data.mailAddress;
+      this.arInfo.cedingId = data.data.cedingId;
+      this.arInfo.bussTypeName = data.data.bussTypeName;
+      this.form.control.markAsDirty();
+      setTimeout(()=>{
+        $('.payor').focus().blur();
+      }, 0);
+    }else if(data.selector === 'mtnBussType'){
+      this.arInfo.bussTypeCd = data.data.bussTypeCd;
+      this.arInfo.bussTypeName = data.data.bussTypeName;
+      this.form.control.markAsDirty();
+      setTimeout(()=>{
+        $('.business').focus().blur();
+      }, 0);
+    }
     
   }
 
@@ -392,10 +419,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         let bankData = forkData.bank;
         let bankAcctData = forkData.bankAcct;
         let curr = forkData.curr;
+        console.log(data);
         //ar
         if(data.ar !== null){
           this.arInfo.tranId         = data.ar.tranId;
-          this.arInfo.arNo           = data.ar.arNo;
+          this.arInfo.arNo           = this.pad(data.ar.arNo, 'arNo');
+          this.arInfo.formattedArNo  = data.ar.formattedArNo;
+          this.arInfo.arNoDigits     = data.ar.arNoDigits;
           this.arInfo.arDate         = this.ns.toDateTimeString(data.ar.arDate);
           this.arDate.date           = this.arInfo.arDate.split('T')[0];
           this.arDate.time           = this.arInfo.arDate.split('T')[1];
@@ -422,7 +452,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.mailAddress    = data.ar.mailAddress;
           this.arInfo.bussTypeCd     = data.ar.bussTypeCd;
           this.arInfo.tin            = data.ar.tin;
-          this.arInfo.refCd            = data.ar.refCd;
+          this.arInfo.refCd          = data.ar.refCd;
           this.arInfo.currCd         = data.ar.currCd;
           this.arInfo.arAmt          = data.ar.arAmt;
           this.arInfo.currRate       = data.ar.currRate;
@@ -434,15 +464,29 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.cedingId       = data.ar.cedingId;
           this.arInfo.bussTypeName   = data.ar.bussTypeName;
           this.arInfo.rstrctTranUp   = data.ar.rstrctTranUp;
+          this.arInfo.arDtlSum       = data.ar.arDtlSum;
+          this.arInfo.acctEntriesSum = data.ar.acctEntriesSum;
           this.selectedCurrency       = data.ar.currCd;
           if(this.arInfo.arStatDesc.toUpperCase() === 'DELETED' || this.arInfo.arStatDesc.toUpperCase() === 'CANCELED'){
           //if(this.arInfo.arStatDesc.toUpperCase() !== 'NEW'){
-            this.passData.dataTypes = ['select','select','percent','currency','select','text','text','date','select'];
+            //this.passData.dataTypes = ['select','select','percent','currency','select','text','text','date','select'];
             this.passData.addFlag = false;
             this.passData.genericBtn = undefined;
-            this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+            this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
             this.isCancelled = true;
+          }else if(this.arInfo.arStatDesc.toUpperCase() === 'PRINTED'){
+            this.passData.addFlag = false;
+            this.passData.genericBtn = undefined;
+            this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
+            this.isPrinted = true;
           }
+
+          if(this.arInfo.tranTypeCd == 7){
+            this.disablePayor = true;
+          }else{
+            this.disablePayor = false;
+          }
+
           //currencies
           this.currencies = [];
           if(curr.currency.length !== 0){
@@ -489,6 +533,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.disableTab.emit(false);
           let arDetailParams = {
             tranId: this.arInfo.tranId,
+            formattedArNo: this.arInfo.formattedArNo,
             arNo: this.arInfo.arNo,
             arStatus: this.arInfo.arStatus,
             arStatDesc: this.arInfo.arStatDesc,
@@ -615,7 +660,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.as.saveAcitArTrans(params).subscribe(
       (data:any)=>{
         if(data.returnCode === 0){
-          if(data.errorList !== null || (data.errorList !== null && data.errorList.length !== 0)){
+          if(data.errorList !== undefined || (data.errorList !== undefined && data.errorList.length !== 0)){
             this.dialogMessage = data.errorList[0].errorMessage;
             this.dialogIcon = 'error-message';
           }else{
@@ -633,6 +678,43 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  print(){
+    if(this.arAmtEqualsArDtlPayt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'AR cannot be printed. Total Payments in AR Details must be equal to AR Amount';
+      this.successDiag.open();
+    }else if(this.balanceAcctEntries()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'AR cannot be printed. Accounting Entries must have zero variance.';
+      this.successDiag.open();
+    }else{
+      this.printMdl.openNoClose();
+    }
+  }
+
+  updateArStatus(){
+    if(!this.isPrinted){
+      let params: any = {
+        tranId: this.arInfo.tranId,
+        arNo: this.arInfo.arNo,
+        updateUser: this.ns.getCurrentUser(),
+        updateDate: this.ns.toDateTimeString(0)
+      }
+      this.as.printAr(params).subscribe(
+        (data:any)=>{
+          if(data.returnCode == 0){
+            this.dialogIcon = 'error-message';
+            this.dialogIcon = 'An error has occured when updating AR status';
+          }else{
+            this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+          }
+        }
+      );
+    }else{
+      //print like normal
+    }
   }
 
   //ALL RETRIEVALS FROM MAINTENANCE IS HERE
@@ -838,7 +920,47 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }
   }
 
+  arAmtEqualsArDtlPayt(): boolean{
+    if(this.arInfo.arDtlSum != this.arInfo.arAmt){
+      return true;
+    }
+    return false;
+  }
+
+  balanceAcctEntries(): boolean{
+    if(this.arInfo.acctEntriesSum != 0){
+      return true;
+    }
+    return false;
+  }
+
   //UTILITIES STARTS HERE
+
+  changeTranType(data){
+    this.arInfo.tranTypeCd = data;
+    if(data == 7){
+      this.disablePayor = true;
+      this.ms.getMtnPayee().subscribe(
+        (data:any)=>{
+          data.payeeList = data.payeeList.filter(a=>{return a.payeeName == 'Philippine Machinery Management Services Corporation'});
+          this.arInfo.payeeNo = data.payeeList[0].payeeNo;
+          this.arInfo.payor = data.payeeList[0].payeeName;
+          this.arInfo.mailAddress = data.payeeList[0].mailAddress;
+          this.arInfo.bussTypeCd = data.payeeList[0].bussTypeCd;
+          this.arInfo.bussTypeName = data.payeeList[0].bussTypeName;
+          this.arInfo.tin = data.payeeList[0].tin;
+        }
+      );
+    }else{
+      this.disablePayor = false;
+      this.arInfo.payeeNo = '';
+      this.arInfo.payor = '';
+      this.arInfo.mailAddress = '';
+      this.arInfo.bussTypeCd = '';
+      this.arInfo.bussTypeName = '';
+      this.arInfo.tin = '';
+    }
+  }
 
   compareCurrencyFn(c1: any, c2: any): boolean {
       return c1 && c2 ? c1.currencyCd === c2.currencyCd : c1 === c2;
@@ -857,7 +979,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       return '';
     }else{
       if(field === 'arNo'){
-        return String(str).padStart(6, '0');
+        return String(str).padStart(this.arInfo.arNoDigits, '0');
       }else if(field === 'dcbSeqNo'){
         return String(str).padStart(3, '0');
       }

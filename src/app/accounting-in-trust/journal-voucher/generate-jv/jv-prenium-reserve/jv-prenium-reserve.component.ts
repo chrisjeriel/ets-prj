@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { QSOABalances } from '@app/_models/';
 import { AccountingService, NotesService } from '@app/_services'
 import { Title } from '@angular/platform-browser';
@@ -15,6 +15,8 @@ import { MtnCedingCompanyTreatyComponent } from '@app/maintenance/mtn-ceding-com
 })
 export class JvPreniumReserveComponent implements OnInit {
 	@Input() jvDetail:any;
+	@Input() cedingParams:any;
+	@Output() emitData = new EventEmitter<any>();
 	@ViewChild('modal') modal: ModalComponent; 
 	@ViewChild(MtnCedingCompanyTreatyComponent) cedingCoLov: MtnCedingCompanyTreatyComponent;
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
@@ -48,6 +50,7 @@ export class JvPreniumReserveComponent implements OnInit {
 			updateDate : this.ns.toDateTimeString(0)
 		},
 		checkFlag: true,
+		uneditable: [true,false,false,false,false,false],
 		keys:['quarterEnding', 'currCd', 'currRate', 'interestAmt', 'whtaxAmt', 'releaseAmt'],
 		widths:[150,195,195,195,195,195]
 	}
@@ -69,25 +72,34 @@ export class JvPreniumReserveComponent implements OnInit {
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | JV QSOA");
+		this.passData.nData.currCd = this.jvDetail.currCd;
+		this.passData.nData.currRate = this.jvDetail.currRate;
 		if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
 		  
 		}else {
 
 		}
+		this.retrievePremRes();
 	}
 
 	retrievePremRes(){
-		this.accService.getAcitJVPremRes(this.jvDetail.tranId,this.premResData.cedingId).subscribe((data:any) => {
+		this.accService.getAcitJVPremRes(this.jvDetail.tranId).subscribe((data:any) => {
 			this.passData.tableData = [];
 			this.passData.disableAdd = false;
 			this.totalInterestAmt = 0;
 			this.totalWhtaxAmt = 0;
-			for( var i = 0 ; i < data.premResRel.length;i++){
-				this.passData.tableData.push(data.premResRel[i]);
-				this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.premResRel[i].quarterEnding);
-				this.totalInterestAmt += this.passData.tableData[this.passData.tableData.length - 1].interestAmt;
-				this.totalWhtaxAmt 	  += this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt;
+			if(data.premResRel.length!= 0){
+				this.premResData.cedingName = data.premResRel[0].cedingName;
+				this.premResData.cedingId = data.premResRel[0].cedingId;
+				this.check(this.premResData);
+				for( var i = 0 ; i < data.premResRel.length;i++){
+					this.passData.tableData.push(data.premResRel[i]);
+					this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.premResRel[i].quarterEnding);
+					this.totalInterestAmt += this.passData.tableData[this.passData.tableData.length - 1].interestAmt;
+					this.totalWhtaxAmt 	  += this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt;
+				}
 			}
+			
 			this.table.refreshTable();
 		});
 	}
@@ -167,6 +179,13 @@ export class JvPreniumReserveComponent implements OnInit {
   		this.premResData.cedingId	= data.cedingId;
   		this.ns.lovLoader(data.ev, 0);
   		this.retrievePremRes();
+  		this.check(this.premResData);
+  	}
+
+  	check(data){
+    this.emitData.emit({ cedingId: data.cedingId,
+                         cedingName: data.cedingName
+                       });
   	}
 
   	checkCode(ev){

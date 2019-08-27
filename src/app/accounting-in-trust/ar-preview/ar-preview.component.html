@@ -54,15 +54,11 @@
 	<div class="col-sm-12">
 		<div class="cust-tabs-container" style="margin-top:10px !important">
 			<ngb-tabset (tabChange)="onTabChange($event)">
-				<ngb-tab class="ngb-tab" title="Amount Details" id="amtDtl">
+				<!-- <ngb-tab class="ngb-tab" title="Amount Details" id="amtDtl">
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border" style="padding-top: 0.6em">
 							<div class="col-sm-12">
 								<app-cust-editable-non-datatable #amtDtlTbl (tableDataChange)="onTableDataChange($event)" [passData]="amountDetailsData">
-									<!-- <ng-container controls-r>
-										<label class="form-control-sm labels" style="text-align: left !important">Auto Compute</label>
-										<input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
-									</ng-container> -->
 								</app-cust-editable-non-datatable>
 							</div>
 						</div>
@@ -78,7 +74,7 @@
 						    </div>
 						</div>
 					</ng-template>
-				</ngb-tab>
+				</ngb-tab> -->
 				<ngb-tab class="ngb-tab" title="Accounting Entries" id="acctEntries">
 					<ng-template ngbTabContent>
 						<div class="input-group cust-border" style="padding-top: 0.6em">
@@ -89,24 +85,27 @@
 									</ng-container>
 								</app-cust-editable-non-datatable> -->
 								<app-cust-editable-non-datatable #acctEntryTbl [passData]="accEntriesData" (clickLOV)="clickLov($event)" (newClick)="selected=$event" (tickChckbx)="tickChckbx($event)" (tableDataChange)="computeTotals()">
+									<ng-container controls-r>
+										<button class="cust-btn" style="margin-right: 0px !important;" (click)="export()">Print AE</button>
+									</ng-container>
 								</app-cust-editable-non-datatable>
 								<!-- <app-cmdm-accnt-entries [passData]="record"></app-cmdm-accnt-entries> -->
 							</div>
 							<div class="col-sm-12">
-							    <div class="input-group">
+							    <!-- <div class="input-group">
 							        <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
 							        <label class="form-control-sm col-sm-2" >Total Debit and Credit</label>
 							        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.debit | number:'1.2-2'" disabled="disabled">
 							        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.credit | number:'1.2-2'" disabled="disabled">
-							    </div>
-							    <div class="input-group">
-							        <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
+							    </div> -->
+							    <div class="input-group" style="margin-top: 7px;">
+							        <label class="form-control-sm cust-sm col-sm-8" style="margin-left: 3px !important;"></label>
 							        <label class="form-control-sm col-sm-2" >Variance</label>
-							        <label class="form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"></label>
+							        <!-- <label class="form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"></label> -->
 							        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.variance | number:'1.2-2'" disabled="disabled">
 							    </div>
 							</div>
-							<div class="text-center col-sm-12" style="margin-bottom: 7px;">
+							<div class="text-center col-sm-12" style="margin-bottom: 7px;" *ngIf="record.arStatDesc.toUpperCase() == 'NEW'">
 							    <button class="cust-btn">Cancel</button>
 							    <button class="cust-btn" (click)="onClickSave()">Save</button>
 							</div>

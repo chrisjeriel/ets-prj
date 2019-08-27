@@ -22,6 +22,7 @@ export class JvEntryComponent implements OnInit {
   @Input() jvData: any;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() emitData = new EventEmitter<any>();
+  @Output() disableTab : EventEmitter<any> = new EventEmitter();  
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
@@ -165,6 +166,7 @@ export class JvEntryComponent implements OnInit {
         }
         this.check(this.entryData)
         this.tabController(this.entryData.tranTypeCd);
+        this.disableTab.emit(false);
       }else{
         this.entryData.jvDate = this.ns.toDateTimeString(0);
         this.entryData.jvStatus = 'New';
@@ -229,6 +231,7 @@ export class JvEntryComponent implements OnInit {
         this.allocBut = true;
         this.dcBut = true;
         this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+        this.disableTab.emit(true);
     },0);
   }
   
@@ -263,7 +266,9 @@ export class JvEntryComponent implements OnInit {
     this.entryData.tranTypeCd = data.tranTypeCd;
     this.tabController(this.entryData.tranTypeCd);
     this.form.control.markAsDirty();
-
+    setTimeout(()=>{
+      $('.tranTypeName').focus().blur();
+    }, 0);
   }
 
   openJVType(){
@@ -277,6 +282,10 @@ export class JvEntryComponent implements OnInit {
     this.entryData.localAmt = isNaN(this.entryData.jvAmt) ? 0:this.entryData.jvAmt * data.currencyRt;
     this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     this.ns.lovLoader(data.ev, 0);
+    this.form.control.markAsDirty();
+    setTimeout(()=>{
+      $('.currCd').focus().blur();
+    }, 0);
   }
 
   prepareData(){
@@ -321,6 +330,7 @@ export class JvEntryComponent implements OnInit {
         this.successDiag.open();
         this.tranId = data.tranIdOut;
         this.retrieveJVEntry();
+        this.form.control.markAsPristine();
       }
     });
   }
@@ -341,7 +351,26 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickSave(){
+    if(this.checkEntryFields()){
+      this.dialogIcon = "error";
+      this.successDiag.open();
+      $('.required').focus().blur();
+    }else{ 
      $('#JVEntry #confirm-save #modalBtn2').trigger('click');
+    }
+  }
+
+  checkEntryFields(){
+    if(this.entryData.tranTypeName.length === 0 || 
+       this.entryData.particulars.length === 0 ||
+       this.entryData.currCd.length === 0 || 
+       this.entryData.jvAmt.length === 0 || 
+       this.entryData.currRate.length === 0 || 
+       this.entryData.jvDate.length === 0  ){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   openLov(selector){
@@ -427,6 +456,10 @@ export class JvEntryComponent implements OnInit {
     this.entryData.preparedBy = data.userId;
     this.entryData.preparedName = data.printableName
     this.entryData.preparedPosition = data.designation;
+    this.form.control.markAsDirty();
+    setTimeout(()=>{
+      $('.preparedName').focus().blur();
+    }, 0);
   }
 
   validateCurr(){

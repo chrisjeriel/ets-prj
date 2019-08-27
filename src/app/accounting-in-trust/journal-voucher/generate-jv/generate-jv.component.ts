@@ -14,12 +14,12 @@ export class GenerateJvComponent implements OnInit {
   exitLink: string;
   exitTab: string;
   sub: any;
-
+  disableTab: boolean = true;
+  jvType: string = '';
+  jvTypeFlag: boolean = true;
   record: any = {
                    jvType: null
                  };
-
-  jvType: string = '';
 
   jvData: any = {
      type: '', 
@@ -35,10 +35,13 @@ export class GenerateJvComponent implements OnInit {
      localAmt: ''
   };
 
-  jvTypeFlag: boolean = true;
+  cedingParams : any = {
+    cedingId : '',
+    cedingName : '',
+  };
 
   disabledTypes: any = [
-      9,10,12,13,16,17,18,19,20,21,22,23,25,26,0
+      1,2,3,4,5,6,7,8,9
   ];
 
   ngOnInit() {
@@ -57,7 +60,7 @@ export class GenerateJvComponent implements OnInit {
 
   checkTabs(event) {
     var type = event.type === null ? "" : event.type;
-    if(this.disabledTypes.includes(type)){
+    if(!this.disabledTypes.includes(type)){
       this.jvTypeFlag = true;
     }else{
       this.jvTypeFlag = false;
@@ -83,4 +86,9 @@ export class GenerateJvComponent implements OnInit {
      this.jvData.tranType = data.tranType;
   }
 
+  cedingOutput(data){
+    console.log(data)
+    this.cedingParams.cedingId = data.cedingId;
+    this.cedingParams.cedingName = data.cedingName;
+  }
 }
