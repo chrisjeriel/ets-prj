@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 
 @Component({
   selector: 'app-jv-investment-pull-out',
@@ -11,6 +12,7 @@ import { map } from 'rxjs/operators';
 export class JvInvestmentPullOutComponent implements OnInit {
   
   @Input() jvDetail;
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 
   passData: any = {
     tableData:[],
@@ -69,6 +71,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
 
   ngOnInit() {
     this.getBank();
+    this.getInvPullout();
   }
 
   getBank(){
@@ -88,16 +91,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
       }
 
     });
-
-
-    /*this.ms.getMtnBank().subscribe((data:any) => {
-      console.log(data);
-      for (var i = 0; i < data.bankList.length; i++) {
-        console.log(data.bankList[i]);
-        this.banks.push(data.bankList[i]);
-      }
-      console.log(this.banks)
-    });*/
   }
 
   changeBank(data){
@@ -114,5 +107,14 @@ export class JvInvestmentPullOutComponent implements OnInit {
         this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.jvDetail.currCd && a.acSeGlDepNo === null && a.acItGlDepNo !== null });
       }
     });
+  }
+
+  getInvPullout(){
+    this.accService.getJvInvPullout(this.jvDetail.tranId).subscribe((data:any) => {
+      for (var i = 0; i < data.pullOut.length; i++) {
+        this.passData.tableData.push(data.pullOut[i]);
+      }
+    });
+    this.table.refreshTable();
   }
 }

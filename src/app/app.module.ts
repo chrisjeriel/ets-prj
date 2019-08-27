@@ -443,6 +443,7 @@ import { MtnBankComponent } from './maintenance/mtn-bank/mtn-bank.component';
 import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration/mtn-acct-int-duration.component';
 import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
 import { JvInvestmentPullOutComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-investment-pull-out/jv-investment-pull-out.component';
+import { JvInvestmentRollOverComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-investment-roll-over/jv-investment-roll-over.component';
 
 @NgModule({
     imports: [
@@ -891,7 +892,8 @@ import { JvInvestmentPullOutComponent } from './accounting-in-trust/journal-vouc
         MtnBankComponent,
         MtnAcctIntDurationComponent,
         WfFormCommonComponent,
-        JvInvestmentPullOutComponent
+        JvInvestmentPullOutComponent,
+        JvInvestmentRollOverComponent
     ],
 
   	providers: [

@@ -2008,4 +2008,11 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/approveJV',JSON.stringify(params),header);
 	}
+
+	getJvInvPullout(tranId){
+		const params = new HttpParams()
+		 	.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInvPullOut",{params});
+	}
+	
 }

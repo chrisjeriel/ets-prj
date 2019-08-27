@@ -27,6 +27,7 @@ export class JvEntryComponent implements OnInit {
   @Output() disableTab : EventEmitter<any> = new EventEmitter();  
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
+  @ViewChild('Alloc') allocJV: ModalComponent;
   @ViewChild('ApproverNames') approverName: MtnPrintableNamesComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
   @ViewChild('PrintEntries') printEntries: ModalComponent;
@@ -34,6 +35,21 @@ export class JvEntryComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(LovComponent)lov: LovComponent;
   @ViewChild('myForm') form:any;
+
+  passData: any = {
+    tableData: [],
+    tHeader: ['Tran Type','Tran No','Tran Date','Payee/Payor', 'Particulars', 'Amount'],
+    dataTypes: ['text','sequence-8','date','text','text','currency'],
+    nData:{
+    },
+    infoFlag: true,
+    paginateFlag: true,
+    pagination: true,
+    pageStatus: true,
+    pageLength: 10,
+    uneditable: [true,true,true,true,true,true],
+    keys:['tranType','tranNo','tranDate','payee','particulars','allocAmt']
+  };
 
   entryData:any = {
     jvYear:'',
@@ -528,4 +544,7 @@ export class JvEntryComponent implements OnInit {
     this.router.navigate(['/acc-s-credit-debit-memo', {exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
   }
 
+  onClickAlloc(){
+    this.allocJV.openNoClose();
+  }
 }
