@@ -75,15 +75,7 @@ export class AppComponent  {
           });
         }        
 
-        this.userService.moduleIdObs.subscribe(value => {
-            this.moduleId = value;
-        })
-
-        this.userService.accessibleModules.subscribe(value => {
-            this.accessibleModules = value;
-        })
-
-        console.log("accessibleModules Retrieved : " + this.accessibleModules);
+        
     }
 
     logout() {
@@ -157,6 +149,16 @@ export class AppComponent  {
     ngOnInit(){
       this.theme = window.localStorage.getItem("selectedTheme");
       this.changeTheme(this.theme);
+
+      this.userService.moduleIdObs.subscribe(value => {
+            this.moduleId = value;
+        })
+
+        this.userService.accessibleModules.subscribe(value => {
+            this.accessibleModules = value;
+        })
+
+        console.log("accessibleModules Retrieved : " + this.accessibleModules);
     }
 
      /*@HostListener('document:click', ['$event'])
