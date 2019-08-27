@@ -940,7 +940,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     if((this.withCovDtls && this.policyInfo.extensionTag == 'N' && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate)
       || (this.withCovDtls && this.policyInfo.extensionTag == 'Y' && (this.prevInceptExt != this.policyInfo.inceptDate || this.prevEffExt != this.policyInfo.effDate))) {
       $('#polGenInfoConfirmationModal #modalBtn').trigger('click');  
-    } if(this.policyInfo.expiryDate.toString() != this.lastExpiryDate.toString() && this.checkNewExpiry ){
+    } if(this.policyInfo.expiryDate.toString() != this.lastExpiryDate.toString() && this.policyInfo.maintenanceFrom != null && this.policyInfo.maintenanceFrom.length != 0 && this.checkNewExpiry ){
       this.onExpiryChange();
     } else  {
       $('#confirm-save #modalBtn2').trigger('click');

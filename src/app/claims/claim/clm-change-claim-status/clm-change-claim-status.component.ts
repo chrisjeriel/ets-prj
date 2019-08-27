@@ -140,8 +140,8 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   batchOption: any = {
-    statusCode: 'IP',
-    description: 'In Progress',
+    statusCode: '',
+    description: '',
     openTag: ''
   };
 
@@ -222,7 +222,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
               /*this.batchOption.statusCode = i.statusCode;
               this.batchOption.description = i.description;
               this.batchOption.openTag = i.openTag;*/
-              this.batchOption = i;
+              //this.batchOption = i;
             }
           }
           this.batchOptionLoading = false;

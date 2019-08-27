@@ -381,20 +381,22 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     sort(str,sortBy){
-        this.passData.tableData = this.passData.tableData.sort(function(a, b) {
-            if(sortBy){
-                if(a[str] < b[str]) { return -1; }
-                if(a[str] > b[str]) { return 1; }
-            }else{
-                if(a[str] < b[str]) { return 1; }
-                if(a[str] > b[str]) { return -1; }
-            }
-        });
-        // if($('.ng-dirty').length != 0){
-        //     $('#cust-table-container').addClass('ng-dirty');
-        // }
-        this.sortBy = !this.sortBy;
-        this.search(this.searchString);
+        if(!this.passData.disableSort){
+            this.passData.tableData = this.passData.tableData.sort(function(a, b) {
+                if(sortBy){
+                    if(a[str] < b[str]) { return -1; }
+                    if(a[str] > b[str]) { return 1; }
+                }else{
+                    if(a[str] < b[str]) { return 1; }
+                    if(a[str] > b[str]) { return -1; }
+                }
+            });
+            // if($('.ng-dirty').length != 0){
+            //     $('#cust-table-container').addClass('ng-dirty');
+            // }
+            this.sortBy = !this.sortBy;
+            this.search(this.searchString);
+        }
 
     }
 
@@ -916,6 +918,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
             }
         }
         this.searchToDb.emit(this.searchQuery);
-        this.loadingFlag = true;
+        this.overlayLoader = true;
+    }
+
+    pressEnterFilter(drop:any){
+        this.dbQuery(this.passData.filters);
+        drop.close();
     }
 }
