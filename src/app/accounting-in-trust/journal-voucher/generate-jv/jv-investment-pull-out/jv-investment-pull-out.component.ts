@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 
 @Component({
-  selector: 'app-jv-investment-pull-over',
-  templateUrl: './jv-investment-pull-over.component.html',
-  styleUrls: ['./jv-investment-pull-over.component.css']
+  selector: 'app-jv-investment-pull-out',
+  templateUrl: './jv-investment-pull-out.component.html',
+  styleUrls: ['./jv-investment-pull-out.component.css']
 })
-export class JvInvestmentPullOverComponent implements OnInit {
+export class JvInvestmentPullOutComponent implements OnInit {
   
   passData: any = {
     tableData:[],
@@ -56,26 +56,9 @@ export class JvInvestmentPullOverComponent implements OnInit {
     widths:[220, 150, 1, 150, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
   };
 
-  banks: any[] = [];
-  bankAccts: any[] = [];
-  
-  selectedBank: any = {
-    bankCd: '',
-    officialName: ''
-  }
-
-  selectedBankAcct: any = {
-    bankAcctCd: '',
-    accountNo: ''
-  }
-
-  jvDetails: any = {
-
-  };
-
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
   ngOnInit() {
-  	
   }
+
 }

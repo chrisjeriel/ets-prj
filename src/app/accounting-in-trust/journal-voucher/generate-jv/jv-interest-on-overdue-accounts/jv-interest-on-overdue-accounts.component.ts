@@ -93,8 +93,9 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     this.passData.nData.currCd = this.jvDetail.currCd;
     if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
       this.disable = false;
+      this.passData.disableAdd = false;
     }else {
-      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,false];
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true];
       this.disable = true;
       this.passData.btnDisabled = true;
       this.passData.disableAdd = true;
@@ -105,7 +106,6 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   getInterestOverdue(){
     this.accountingService.getAcitJVOverdue(this.jvDetail.tranId,'').subscribe((data:any) => {
       this.totalOverdue = 0;
-      this.passData.disableAdd = false;
       this.passData.tableData = [];
       if(data.overDueAccts.length != 0){
         this.jvDetails.cedingName = data.overDueAccts[0].cedingName;

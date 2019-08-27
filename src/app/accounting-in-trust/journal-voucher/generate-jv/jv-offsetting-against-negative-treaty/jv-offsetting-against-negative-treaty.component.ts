@@ -146,6 +146,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   totalTrtyBal: number = 0;
   errorFlag: boolean = false;
   disable: boolean = true;
+  readOnly :boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService) { }
 
@@ -154,6 +155,18 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.passData.nData.currCd = this.jvDetail.currCd;
     this.passLov.currCd = this.jvDetail.currCd;
     
+    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+      this.readOnly = false;
+      this.claimsOffset.disableAdd = false;
+      this.passData.disableAdd = false;
+    }else {
+      this.readOnly = true;
+      this.passData.uneditable = [true,true,true,true,true];
+      this.passData.disableAdd = true;
+      this.claimsOffset.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.claimsOffset.disableAdd = true;
+    }
+
     this.retrieveNegativeTreaty();
   }
 
@@ -161,8 +174,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.accountingService.getNegativeTreaty(this.jvDetail.tranId).subscribe((data:any) => {
       this.passData.tableData = [];
       this.totalTrtyBal = 0;
-      this.passData.disableAdd = false;
-      this.disable = false;
       if(data.negativeTrty.length != 0){
         this.jvDetails.cedingName = data.negativeTrty[0].cedingName;
         this.jvDetails.cedingId = data.negativeTrty[0].cedingId;

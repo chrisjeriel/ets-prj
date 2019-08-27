@@ -17,6 +17,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
   @Input() jvDetail:any;
   @Input() cedingParams:any;
+  @Input() readOnlyFlag:any;
+
   @ViewChild('clmTable') clmTable: CustEditableNonDatatableComponent;
   @ViewChild('inwTable') inwTable: CustEditableNonDatatableComponent;
   @ViewChild('clmlovMdl') clmlovMdl: LovComponent;
@@ -145,11 +147,22 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   interestRate: any;
   dialogIcon : any;
   dialogMessage : any;
+  readOnly:boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
-    //this.getMtnRate();
+    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+      this.readOnly = false;
+      this.InwPolBal.disableAdd = false;
+      this.passData.disableAdd = false;
+    }else {
+      this.readOnly = true;
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.InwPolBal.uneditable =  [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.InwPolBal.disableAdd = true;
+    }
+
     this.passLovInw.currCd = this.jvDetail.currCd;  
     this.passData.nData.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
@@ -161,7 +174,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.accountingService.getRecievableLosses(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
-      this.passData.disableAdd = false;
       if(data.receivables.length!=0){
         this.jvDetails.cedingName = data.receivables[0].cedingName;
         this.jvDetails.cedingId = data.receivables[0].cedingId;
@@ -170,7 +182,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
           this.passData.tableData.push(data.receivables[i]);
           this.clmTable.onRowClick(null, this.passData.tableData[0]);
         }
-        
       }
      
       this.clmTable.refreshTable();
@@ -201,7 +212,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     if(data != null && data.itemNo != ''){
       this.itemNo = data.itemNo;
       this.InwPolBal.nData.itemNo = this.itemNo;
-      this.InwPolBal.disableAdd = false;
       this.InwPolBal.tableData = data.inwPolBal;
     }
     this.inwTable.refreshTable();

@@ -7,6 +7,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
+import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
 
 @Component({
   selector: 'app-jv-entry',
@@ -25,6 +26,7 @@ export class JvEntryComponent implements OnInit {
   @Output() disableTab : EventEmitter<any> = new EventEmitter();  
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
+  @ViewChild('ApproverNames') approverName: MtnPrintableNamesComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
   @ViewChild('PrintEntries') printEntries: ModalComponent;
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
@@ -88,6 +90,7 @@ export class JvEntryComponent implements OnInit {
   UploadBut: boolean = false;
   allocBut: boolean = false;
   dcBut: boolean = false;
+  approvedStat: boolean = false;
   cancelFlag: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
@@ -144,7 +147,7 @@ export class JvEntryComponent implements OnInit {
         this.entryData.jvDate = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
         this.entryData.refnoDate = this.entryData.refnoDate == null ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
         this.entryData.preparedDate = this.entryData.preparedDate == null ? '':this.ns.toDateTimeString(this.entryData.preparedDate);
-        this.entryData.approvedDate = this.entryData.approvedDate == null ? this.ns.toDateTimeString(0):this.ns.toDateTimeString(this.entryData.approvedDate);
+        this.entryData.approvedDate = this.entryData.approvedDate == null ? '':this.ns.toDateTimeString(this.entryData.approvedDate);
         this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
         this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
         this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
@@ -160,6 +163,10 @@ export class JvEntryComponent implements OnInit {
         this.dcBut = false;
         if(this.entryData.approveJV === 'Y'){
           this.approveBut = false;
+        }
+
+        if(this.entryData.jvStatus == 'A'){
+          this.approvedStat = true;
         }
 
         if(this.entryData.jvStatus == 'N' || this.entryData.jvStatus == 'F' || this.entryData.jvStatus == 'A'){
@@ -220,7 +227,9 @@ export class JvEntryComponent implements OnInit {
         this.entryData.localAmt = '';
         this.entryData.preparedBy = this.ns.getCurrentUser();
         this.entryData.preparedDate = this.ns.toDateTimeString(0);
-        this.entryData.approvedBy = this.ns.getCurrentUser();
+        this.entryData.approvedBy = '';
+        this.entryData.approvedName ='';
+        this.entryData.approvedPosition = '';
         this.entryData.approvedDate = '';
         this.entryData.createUser = '';
         this.entryData.createDate = '';
@@ -233,6 +242,7 @@ export class JvEntryComponent implements OnInit {
         this.UploadBut = true;
         this.allocBut = true;
         this.dcBut = true;
+        this.approvedStat = false;
         this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
         this.disableTab.emit(true);
     },0);
@@ -350,6 +360,10 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickApprove(){
+    this.accService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
+      console.log(data);
+      this.entryData.approver = data.employee.employeeName;
+    });
     this.approveJV.openNoClose();
   }
 
@@ -451,8 +465,8 @@ export class JvEntryComponent implements OnInit {
     this.sendData.tranId = this.tranId;
     this.sendData.jvNo = parseInt(this.entryData.jvNo);
     this.sendData.jvYear = this.entryData.jvYear;
-    this.sendData.approvedBy  = this.ns.getCurrentUser();
-    this.sendData.approvedDate = this.ns.toDateTimeString(this.entryData.approvedDate);
+    this.sendData.approvedBy  = this.entryData.approvedBy;
+    this.sendData.approvedDate = this.entryData.approverDate === '' ? '':this.ns.toDateTimeString(this.entryData.approvedDate);
     this.sendData.updateUser = this.ns.getCurrentUser();
     this.sendData.updateDate = this.ns.toDateTimeString(0);
     this.accService.approveJV(this.sendData).subscribe((data:any) => {
@@ -475,6 +489,19 @@ export class JvEntryComponent implements OnInit {
 
   onClickPrintable(){
     $('#printableNames #modalBtn').trigger('click');
+  }
+
+  onClickApproval(){
+    this.approverName.modal.openNoClose();
+  }
+
+  getApproveame(){
+    
+  }
+
+  setApproval(data){
+    this.entryData.approvedBy = data.userId;
+    this.entryData.approver = data.printableName;
   }
   
   setPrintable(data){

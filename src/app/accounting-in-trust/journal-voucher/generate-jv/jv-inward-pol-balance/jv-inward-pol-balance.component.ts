@@ -182,13 +182,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
      this.passLov.currCd = this.jvDetail.currCd;
      this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
           { header: "Payment Details", span: 5 }, { header: "", span: 2 });
-
+     
      if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
        this.disable = false;
+       this.passData.disableAdd = false;
      }else {
        this.passData.disableAdd = true;
        this.passData.btnDisabled = true;
-       //this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
      this.retrieveInwPol();
@@ -198,7 +198,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
     this.accountingService.getJVInwPolBal(this.jvDetail.tranId,'').subscribe((data:any) => {
       console.log(data)
       var datas = data.inwPolBal;
-      this.passData.disableAdd = false;
       this.passData.tableData = [];
       this.totalBalance = 0;
 

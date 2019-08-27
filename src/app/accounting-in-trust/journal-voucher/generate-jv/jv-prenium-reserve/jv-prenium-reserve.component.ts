@@ -67,6 +67,7 @@ export class JvPreniumReserveComponent implements OnInit {
 	fundsHeld: number = 0;
 	totalInterestAmt: number = 0;
 	totalWhtaxAmt: number = 0;
+	readOnly: boolean = false;
 
 	constructor(private accService: AccountingService, private titleService: Title, private ns: NotesService) { }
 
@@ -75,9 +76,11 @@ export class JvPreniumReserveComponent implements OnInit {
 		this.passData.nData.currCd = this.jvDetail.currCd;
 		this.passData.nData.currRate = this.jvDetail.currRate;
 		if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
-		  
+		  	this.passData.disableAdd = false;
 		}else {
-
+			this.readOnly = true;
+			this.passData.disableAdd = true;
+			this.passData.uneditable = [true,true,true,true,true,true];
 		}
 		this.retrievePremRes();
 	}
@@ -85,7 +88,6 @@ export class JvPreniumReserveComponent implements OnInit {
 	retrievePremRes(){
 		this.accService.getAcitJVPremRes(this.jvDetail.tranId).subscribe((data:any) => {
 			this.passData.tableData = [];
-			this.passData.disableAdd = false;
 			this.totalInterestAmt = 0;
 			this.totalWhtaxAmt = 0;
 			if(data.premResRel.length!= 0){
