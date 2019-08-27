@@ -745,7 +745,7 @@ export class LovComponent implements OnInit {
       })*/
       this.accountingService.getClmResHistPayts(null,this.passData.payeeNo, this.passData.currCd).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
-        this.passTable.tableData = a.clmpayments.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
+        this.passTable.tableData = a.clmpayments.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1 && (data.histType === 7 || data.histType === 8)});
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'acitArInvPullout'){
@@ -782,7 +782,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;*/
       this.accountingService.getAcitArClmCashCallLov(this.passData.payeeNo, this.passData.currCd).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
-        this.passTable.tableData = a.clmCashCallLovList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
+        this.passTable.tableData = a.clmCashCallLovList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1 });
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'mtnBussType'){
