@@ -352,7 +352,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       if(data.policy != null) {
         this.checkNewExpiry = true;
         this.policyInfo = data.policy;
-        this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
+        //this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
         this.lastExpiryDate = new String(this.policyInfo.expiryDate); //edit by paul for maintenance adjustment
@@ -513,7 +513,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                        });
 
         this.policyInfo.issueDate = this.ns.toDateTimeString(new Date());
-        this.policyInfo.effDate = this.ns.toDateTimeString(new Date());
+        this.policyInfo.effDate = this.policyInfo.inceptDate;
 
       }
     });
