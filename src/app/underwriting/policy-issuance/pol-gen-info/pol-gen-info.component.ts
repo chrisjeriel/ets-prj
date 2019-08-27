@@ -350,10 +350,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
       $('.globalLoading').css('display','none');
       if(data.policy != null) {
+        this.checkNewExpiry = true;
         this.policyInfo = data.policy;
         this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
+        this.lastExpiryDate = new String(this.policyInfo.expiryDate); //edit by paul for maintenance adjustment
         this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
         this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseTo));
         this.policyInfo.maintenanceFrom = this.policyInfo.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.maintenanceFrom));
@@ -765,6 +767,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   prepareParam(cancelFlag?) {
+    //edit by paul
+    //check if expiry changed and prompt to change maintenance date if not null
+
     this.cancelFlag = cancelFlag !== undefined;
     this.saveBtnClicked = true;
 
@@ -916,6 +921,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          $('#polGenInfo > #successModalBtn').trigger('click');
          /*this.form.control.markAsPristine();*/
          this.forceExt = 0;
+
+
+
          this.getPolGenInfo('noLoading');
        }
      });
@@ -932,7 +940,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     if((this.withCovDtls && this.policyInfo.extensionTag == 'N' && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate)
       || (this.withCovDtls && this.policyInfo.extensionTag == 'Y' && (this.prevInceptExt != this.policyInfo.inceptDate || this.prevEffExt != this.policyInfo.effDate))) {
       $('#polGenInfoConfirmationModal #modalBtn').trigger('click');  
-    } else {
+    } if(this.policyInfo.expiryDate.toString() != this.lastExpiryDate.toString() && this.policyInfo.maintenanceFrom != null && this.policyInfo.maintenanceFrom.length != 0 && this.checkNewExpiry ){
+      this.onExpiryChange();
+    } else  {
       $('#confirm-save #modalBtn2').trigger('click');
     }
   }
@@ -1417,5 +1427,48 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }else{
         this.deductiblesModal.closeModal();
       }
+    }
+
+    //PAUL adjust maintenance on expiry change
+    @ViewChild('changeMainteMdl')changeMainteMdl:ModalComponent;
+    tempMaintenanceFrom:Date;
+    tempMaintenanceTo:Date;
+    currMaintenanceFrom:Date;
+    currMaintenanceTo:Date;
+    lastExpiryDate: String;
+    checkNewExpiry: Boolean = true;
+    onExpiryChange(){
+      this.currMaintenanceFrom = this.ns.toDate(this.policyInfo.maintenanceFrom)
+      this.currMaintenanceTo = this.ns.toDate(this.policyInfo.maintenanceTo);
+
+      this.tempMaintenanceFrom = this.ns.toDate(this.policyInfo.expiryDate);
+      this.tempMaintenanceTo =  new Date(this.tempMaintenanceFrom.getTime() + this.currMaintenanceTo.getTime() - this.currMaintenanceFrom.getTime());
+      if(this.tempMaintenanceFrom.getTime() != this.currMaintenanceFrom.getTime()){
+        this.changeMainteMdl.openNoClose();
+      }else{
+        this.checkNewExpiry = false;
+        this.onClickSave();
+      }
+    }
+
+    updateMaintenance(){
+      this.checkNewExpiry = false;
+      this.policyInfo.maintenanceFrom = this.ns.toDateTimeString(this.tempMaintenanceFrom);
+      this.policyInfo.maintenanceTo = this.ns.toDateTimeString(this.tempMaintenanceTo);
+      this.prepareParam(this.cancelFlag);
+    }
+
+    formatDate(d:Date){
+      if(d==undefined){
+        return null;
+      }
+      let hours = d.getHours();
+      let minutes:any = d.getMinutes();
+      let ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      let strTime = hours + ':' + minutes + ' ' + ampm;
+      return this.pad(d.getMonth()+1,2) + '/' + this.pad(d.getDate(),2) + '/' + d.getFullYear()+ ' ' +strTime;
     }
 }

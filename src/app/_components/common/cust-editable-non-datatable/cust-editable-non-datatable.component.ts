@@ -381,20 +381,22 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     sort(str,sortBy){
-        this.passData.tableData = this.passData.tableData.sort(function(a, b) {
-            if(sortBy){
-                if(a[str] < b[str]) { return -1; }
-                if(a[str] > b[str]) { return 1; }
-            }else{
-                if(a[str] < b[str]) { return 1; }
-                if(a[str] > b[str]) { return -1; }
-            }
-        });
-        // if($('.ng-dirty').length != 0){
-        //     $('#cust-table-container').addClass('ng-dirty');
-        // }
-        this.sortBy = !this.sortBy;
-        this.search(this.searchString);
+        if(!this.passData.disableSort){
+            this.passData.tableData = this.passData.tableData.sort(function(a, b) {
+                if(sortBy){
+                    if(a[str] < b[str]) { return -1; }
+                    if(a[str] > b[str]) { return 1; }
+                }else{
+                    if(a[str] < b[str]) { return 1; }
+                    if(a[str] > b[str]) { return -1; }
+                }
+            });
+            // if($('.ng-dirty').length != 0){
+            //     $('#cust-table-container').addClass('ng-dirty');
+            // }
+            this.sortBy = !this.sortBy;
+            this.search(this.searchString);
+        }
 
     }
 
@@ -801,5 +803,126 @@ export class CustEditableNonDatatableComponent implements OnInit {
     onClickExport(event){
         //do some exporting
         this.export.next(event);
+    }
+
+// ------------------------filter stuff-------------------------------------------------------
+    searchQuery: any[] = [];
+    @Output() searchToDb: EventEmitter<any> = new EventEmitter();
+    
+    dbQuery(filterObj){
+        
+        for(var e of filterObj){
+            if(e.enabled){
+                //if(e.search !== undefined){
+                    if(e.dataType === 'seq'){
+                        let seqNo:string = "";
+                          seqNo = e.search.split(/[-]/g)[0]
+                          for (var i = 1; i < e.search.split(/[-]/g).length; i++) {
+                           seqNo += '-' + parseInt(e.search.split(/[-]/g)[i]);
+                         }
+                         e.search = seqNo;
+                         this.searchQuery.push(
+                                 {
+                                     key: e.key,
+                                     search: e.search,
+                                 }
+                             );
+                    }
+                    else if(e.dataType === 'datespan' ){
+                        this.searchQuery.push(
+                            {
+                                key: e.keys.from,
+                                search: (e.keys.search === undefined || !e.enabled) ? '' : e.keys.search,
+                            },
+                             {
+                                key: e.keys.to,
+                                search: (e.keys.search2 === undefined || !e.enabled) ? '' : e.keys.search2,
+                            }
+                        );
+                    }
+                     else if(e.dataType === 'textspan' ){
+                        this.searchQuery.push(
+                            {
+                                key: e.keys.from,
+                                search: (e.keys.search === undefined || !e.enabled) ? '' : (e.keys.search).replace(/[^\d\.\-]/g, "") * 1,
+                            },
+                             {
+                                key: e.keys.to,
+                                search: (e.keys.search2 === undefined || !e.enabled) ? '' : (e.keys.search2).replace(/[^\d\.\-]/g, "") * 1,
+                            }
+                        );
+                    }
+                    else{
+                        this.searchQuery.push(
+                            {
+                                key: e.key,
+                                search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                            }
+                        );
+                    }
+                    
+                //}
+                /*else{
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                        }
+                    );
+                }*/
+            }
+            else if(!e.enabled && e.dataType === 'datespan'){
+                   this.searchQuery.push(
+                       {
+                           key: e.keys.from,
+                           search: '',
+                       },
+                        {
+                           key: e.keys.to,
+                           search: '',
+                       }
+                   );
+            }
+            else if(!e.enabled && e.dataType === 'textspan'){
+                   this.searchQuery.push(
+                       {
+                           key: e.keys.from,
+                           search: '',
+                       },
+                        {
+                           key: e.keys.to,
+                           search: '',
+                       }
+                   );
+            }
+            else{
+                if(e.dataType === 'expire'){
+                    // e.search = (this.expireValue === undefined || 
+                    //             this.expireValue === null || 
+                    //             this.expireValue === '') ? '' : this.expireValue;
+                    // this.searchQuery.push(
+                    //     {
+                    //         key: e.key,
+                    //         search: e.search.toString(),
+                    //     }
+                    // );
+                }
+                else{
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                        }
+                    );
+                }
+            }
+        }
+        this.searchToDb.emit(this.searchQuery);
+        this.overlayLoader = true;
+    }
+
+    pressEnterFilter(drop:any){
+        this.dbQuery(this.passData.filters);
+        drop.close();
     }
 }

@@ -14,6 +14,10 @@ export class GenerateCvComponent implements OnInit {
   exitTab: string;
   sub: any;
 
+  passData: any = {
+    tranId: ''
+  };
+
   constructor(private route: ActivatedRoute ,private router: Router,private titleService: Title) { }
 
   ngOnInit() {
@@ -30,6 +34,10 @@ export class GenerateCvComponent implements OnInit {
     		this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
   		} 
   
+  }
+
+  test() {
+    console.log(this.passData);
   }
 
 }

@@ -171,15 +171,13 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
     var td = this.chartOfAccounts.tableData;
 
     function x(a) {
-      return a == null || a == '';
+      return a === null || a === '';
     }
 
     for(let d of td) {
-      if(d.edited && !d.deleted && x(d.glAcctCategory) || x(d.glAcctControl) || x(d.glAcctSub1)
+      if(d.edited && !d.deleted && (x(d.glAcctCategory) || x(d.glAcctControl) || x(d.glAcctSub1)
         || x(d.glAcctSub2) || x(d.glAcctSub3) || x(d.shortDesc) || x(d.longDesc) || x(d.drCrTag)
-          || x(d.postTag) || x(d.shortCode)) {
-        console.log('here');
-        console.log(d);
+          || x(d.postTag) || x(d.shortCode))) {
         this.dialogIcon = 'error';
         this.successDialog.open();
 

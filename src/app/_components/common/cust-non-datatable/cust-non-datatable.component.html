@@ -34,7 +34,7 @@
         <button *ngIf="passData.printBtn" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" type="button" (click)="onClickPrint($event)"><a>Print</a></button> <!-- edited by Engel 3/14/2019 -->
 
         <button *ngIf="passData.genericBtn1 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric1($event)" [disabled]="btnDisabled">{{ passData.genericBtn1 }}</button>
-        <button *ngIf="passData.genericBtn2 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric2($event)" [disabled]="btnDisabled">{{ passData.genericBtn2 }}</button> 
+        <button *ngIf="passData.genericBtn2 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric2($event)" [disabled]="btnDisabled">{{ passData.genericBtn2 }}</button>
     </div>
     <div class="expire" *ngIf="passData.expireFilter" align="right" style="margin-top: 1px !important;">
         <label>Expires in (Days): &nbsp; </label>
@@ -90,11 +90,11 @@
                                     <!-- END OLD -->
                                              
                                     <!-- NEW -->
-                                             <div class="dp-cont col-sm" style="margin-left: 0 !important;">
+                                             <div class="dp-cont col-sm" style="margin-left: 0 !important;" ngbTooltip="From Date" placement="bottom">
                                                  <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.keys?.search" (valueChange)="filt.keys.search=$event; filt.keys.search2=$event;"></datepicker>
                                              </div>
                                              <span style="line-height: 1;">&ndash;</span>
-                                             <div class="dp-cont col-sm" style="margin-left: 0 !important;">
+                                             <div class="dp-cont col-sm" style="margin-left: 0 !important;" ngbTooltip="To Date" placement="bottom">
                                                  <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.keys?.search2" (valueChange)="filt.keys.search2=$event" [minDate]="filt.keys?.search"></datepicker>
                                              </div>
                                     <!-- END NEW -->
@@ -170,7 +170,7 @@
         <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
     </div>
 
-    <div *ngIf="!loadingTableFlag"> <!-- Div of table -->
+    <div *ngIf="!loadingTableFlag" class="loadDiv"> <!-- Div of table -->
         <div style="position: absolute;left: 0px;top:0px" [id]="'pinTable'+passData.pageID">
             <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly">
                     <thead>

@@ -3,62 +3,62 @@
     <div class="form-row custom-row-inline-inset">
         <div class="col-sm-8">
             <div class="input-group">
-                <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">CV No</label>
-                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1"
-                placeholder="2015" style="text-align: right" readonly>
-                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2"
-                placeholder="00000001" style="text-align: right; margin-left: 2px;" readonly>
-                <label class="form-control-sm col-sm-1" for="xx">Date</label>
-                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">CV No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="cvData?.cvGenNo.split('-')[0]" style="text-align: right" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="cvData?.cvGenNo.split('-')[1]" style="text-align: right; margin-left: 2px;" readonly>
+                <label class="form-control-sm col-sm-1">Date</label>
+                <div class="dp-cont col-sm">
+                    <datepicker [type]="'datetime'" [disabled]="true" [showSeconds]="false" [value]="cvData?.cvDate"></datepicker>
+                </div>
                 <!-- <label class="form-control-sm col-sm-1 text-right" for="xx">Tran ID</label>
                 <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="000284723" style="text-align: right" readonly> -->
-                <label class="form-control-sm col-sm-1" for="xx">Status</label>
-                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" placeholder="New" readonly>
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="cvData?.cvStatusDesc" readonly>
             </div>
             <div class="input-group">
-                <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Payee</label>
-                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
-                readonly>
+                <label class="form-control-sm col-sm-1" style="padding-left: 0px !important;">Payee</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="cvData?.payee" readonly>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
-                <!-- <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-                        <option value="PHP">PHP</option>
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                </select> -->
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"
-                placeholder="PHP" readonly>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-                placeholder="27,153.30" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" [ngModel]="cvData?.currCd" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvData?.cvAmt" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-                <!-- <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-                        <option value="PHP">PHP</option>
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                </select> -->
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"
-                placeholder="PHP" readonly>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-                placeholder="27,153.30" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvData?.localAmt" readonly>
             </div>
         </div>
     </div>
 </fieldset>
 
-<fieldset class="scheduler-border">
+<fieldset class="scheduler-border" style="padding-top: 12px !important;">
 	<legend class="scheduler-border">CV Accounting Entries</legend>
-	<div class="form-row custom-row-inline-inset" style="margin-top: 15px !important; margin-bottom: -3px !important;">
-		<app-cust-editable-non-datatable [passData]="accountingEntriesData" style="width: 100%">
-	       <ng-container controls-r>
-                <button class="cust-btn" style="margin-right: 0px !important;">Print AE</button>
-            </ng-container>
-	    </app-cust-editable-non-datatable>
-	</div>
+    <div class="input-group" style="margin-bottom: 0 !important;">
+        <div class="col-sm" style="padding: 0">
+            <app-cust-editable-non-datatable [passData]="CVAcctEnt" (newClick)="selected=$event" (clickLOV)="clickLov($event)" (tableDataChange)="computeTotals()" (tickChckbx)="tickChckbx($event)"></app-cust-editable-non-datatable>
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label class="form-control-sm cust-sm col-sm-7" style="margin-right: -40px !important;"></label>
+        <label class="form-control-sm col-sm-2">Total Debit and Credit</label>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="totals.debit | number:'1.2-2'" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="totals.credit | number:'1.2-2'" disabled>
+    </div>
+    <div class="input-group" style="margin-bottom: 0 !important;">
+        <label class="form-control-sm cust-sm col-sm-7" style="margin-right: -40px !important;"></label>
+        <label class="form-control-sm col-sm-2" >Variance</label>
+        <label class="form-control-sm cust-sm col-sm" style="margin-left: -1px !important;"></label>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="totals.variance | number:'1.2-2'" disabled>
+    </div>
+    <div class="w-100 text-center" style="margin-bottom: 8px">
+        <button class="cust-btn"><a>Cancel</a></button>
+        <button class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+    </div>
 </fieldset>
 
 <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
@@ -69,25 +69,29 @@
                     <div class="col-sm-3" style="padding: 0">
                         <div class="input-group">
                             <label class="form-control-sm">Created By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" readonly>
                         </div>
                     </div>
                     <div class="col-sm-3" style="padding: 0">
                         <div class="input-group">
                             <label class="form-control-sm">Date Created</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+                            <div class="dp-cont col-sm">
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="selected?.createDate"></datepicker>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-3" style="padding: 0">
                         <div class="input-group">
                             <label class="form-control-sm">Last Update By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+                            <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" readonly>
                         </div>
                     </div>
                     <div class="col-sm-3" style="padding: 0">
                         <div class="input-group">
                             <label class="form-control-sm">Last Update</label>
-                            <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+                            <div class="dp-cont col-sm">
+                                <datepicker [type]="'datetime'" [disabled]="true" [value]="selected?.updateDate"></datepicker>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,3 +100,15 @@
     </div>
 </fieldset>
 
+<app-modal class="d-none" #warningModal>
+    <div header>Warning</div>
+    <div body>Deletion of automatically generated accounting<br />entries are not allowed.</div>
+    <div footer class="w-100 text-right">   
+        <button class="cust-btn" (click)="warningModal.closeModal()">Ok</button>
+    </div>
+</app-modal>
+
+<app-lov [passData]="passLov" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" (no)="onClickCancel()"></app-cancel-button>

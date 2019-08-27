@@ -1582,6 +1582,19 @@ export class PolCoverageComponent implements OnInit {
     this.getEditableAlt();
     console.log(this.passData.tableData)
     for(var j=0;j<this.passData.tableData.length;j++){
+      // PAUL COMPUTE EXTENSION
+        if(this.policyInfo.extensionTag == 'Y' && 0 > this.passData.tableData[j].sumInsured  && this.passData.tableData[j].exDiscTag != 'Y'){
+          this.passData.tableData[j].exPremAmt = (this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured) * 
+                                                 (this.passData.tableData[j].exPremRt/100) *
+                                                 this.altCoverageData.exDays/this.altCoverageData.totalDays;
+        }else if(this.policyInfo.extensionTag == 'Y'  && this.passData.tableData[j].exDiscTag != 'Y'){
+          this.passData.tableData[j].exPremAmt = this.passData.tableData[j].prevSumInsured *
+                                                 (this.passData.tableData[j].exPremRt/100) * 
+                                                 this.altCoverageData.exDays/this.altCoverageData.totalDays;
+        }
+
+      // END
+
       if(!this.passData.tableData[j].edited){
         this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
         this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].premRt) ? this.passData.tableData[j].prevPremRt:this.passData.tableData[j].prevPremRt
@@ -1865,7 +1878,7 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.updateDate     = this.ns.toDateTimeString(0);
 
     for(var i=0; i < this.passData.tableData.length;i++){
-      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+      if( !this.passData.tableData[i].deleted){
         this.editedData.push(this.passData.tableData[i]);
         this.editedData[this.editedData.length - 1].lineCd        = this.line;
         this.editedData[this.editedData.length - 1].sumInsured    = this.passData.tableData[i].sumInsured;

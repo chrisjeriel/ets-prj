@@ -1289,4 +1289,12 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnCompany', {params});
     }
 
+    getMtnBussType(bussTypeCd?, bussTypeName?, activeTag?){
+    	const params = new HttpParams()
+    		.set('bussTypeCd', (bussTypeCd === null || bussTypeCd === undefined ? '' : bussTypeCd))
+    		.set('bussTypeName', (bussTypeName === null || bussTypeName === undefined ? '' : bussTypeName))
+    		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnBussType', {params});
+    }
+
 }

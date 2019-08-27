@@ -73,6 +73,7 @@ export class ClaimRecoveryComponent implements OnInit {
   passLov: any = {
     selector: 'acitArClmRecover',
     payeeNo: '',
+    currCd: '',
     hide: []
   }
 
@@ -92,6 +93,12 @@ export class ClaimRecoveryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Claim Recovery / Overpayment");
     this.passLov.payeeNo = this.record.payeeNo;
+    if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+      this.passData.uneditable = [true, true, true, true, true, true,true, true, true, true ];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag =  false;
+      this.passData.checkFlag = false;
+    }
     this.retrievePaytType();
     this.retrieveClmRecover();
     this.getCurrency();
@@ -121,6 +128,7 @@ export class ClaimRecoveryComponent implements OnInit {
 
   openClmRecoverLov(data){
     this.passLov.payeeNo = this.record.payeeNo;
+    this.passLov.currCd = this.record.currCd;
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimId});
     console.log(this.passLov.hide);
     this.clmRecoverIndex = data.index;

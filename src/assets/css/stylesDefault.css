@@ -675,7 +675,7 @@ textarea {
 }
 
 .selected{
-    background-color: #b3d4f382 ! important; /*#67b4fc !important;*/
+    background-color: #d8e9f9 ! important; /*#b3d4f382 #67b4fc !important;*/
 }
 
 #non-datatable th {

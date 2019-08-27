@@ -5,13 +5,13 @@
 			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
-				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.arNo" mask="999999" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled" name="arNo">
+				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="arInfo.arNo" (change)="arInfo.arNo = pad($event.target.value, 'arNo')" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled || isPrinted" name="arNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date);" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED'"></datepicker>
+					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date);" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED' || arInfo.arStatDesc.toUpperCase() === 'DELETED' || arInfo.arStatDesc.toUpperCase() === 'PRINTED'"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED'"></datepicker>
+					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="arInfo.arStatDesc.toUpperCase() === 'TEMPORARY CLOSED' || arInfo.arStatDesc.toUpperCase() === 'CLOSED' || arInfo.arStatDesc.toUpperCase() === 'DELETED' || arInfo.arStatDesc.toUpperCase() === 'PRINTED'"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">Status</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="arInfo.arStatDesc" readonly name="arStat">
@@ -20,50 +20,51 @@
 				<label class="form-control-sm col-sm-1">DCB No.</label>
 				<div class="form-control-sm cust-sm col-sm-2" style="padding: 0;">
 					<div class="input-group">
-						<input type="text" class="form-control form-control-sm text-right cust-sm col-sm-4" [ngModel]="arInfo.dcbYear" name="dcbYear" readonly>
-						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="arInfo.dcbUserCd" readonly name="dcbUserCd">
-						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="pad(arInfo.dcbNo, 'dcbSeqNo')" name="dcbNo" readonly>
+						<input type="text" class="form-control form-control-sm text-right cust-sm col-sm-6" [ngModel]="arInfo.dcbYear" name="dcbYear" readonly>
+						<!-- <input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="arInfo.dcbUserCd" readonly name="dcbUserCd"> -->
+						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-6" [ngModel]="pad(arInfo.dcbNo, 'dcbSeqNo')" name="dcbNo" readonly>
 					</div>
 				</div>
 				<div class="col-sm-4" style="padding: 0px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-3" style="margin-right: -2px !important;padding-left: 0px !important;">Reference No.</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.refNo" name="refNo" [readonly]="isCancelled">
+						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.refNo" name="refNo" [readonly]="isCancelled || isPrinted">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="arInfo.tranTypeCd" appRequired [disabled]="isCancelled || arInfo.rstrctTranUp === 1" name="tranType">
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="arInfo.tranTypeCd" (ngModelChange)="changeTranType($event);" appRequired [disabled]="isCancelled || isPrinted || arInfo.rstrctTranUp === 1" name="tranType">
 					<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
 				</select>
-				<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled" [ngModel]="arInfo.tranTypeName"> -->
+				<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled || isPrinted" [ngModel]="arInfo.tranTypeName"> -->
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
-				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.prNo" [readonly]="isCancelled" name="prNo">
+				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.prNo" [readonly]="isCancelled || isPrinted" name="prNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;" [disabled]="isCancelled"></datepicker>
+					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;" [disabled]="isCancelled || isPrinted"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled"></datepicker>
+					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled || isPrinted"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.prPreparedBy" [readonly]="isCancelled" name="preparedBy">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.prPreparedBy" [readonly]="isCancelled || isPrinted" name="preparedBy">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled" name="payor">
-				<div class="text-search-ico" (click)="openPayorLOV()" *ngIf="!isCancelled"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled || isPrinted || disablePayor" name="payor">
+				<div class="text-search-ico" (click)="openLOV('payor')" *ngIf="!isCancelled && !isPrinted && !disablePayor"><a><i class="fa fa-search"></i></a></div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
-				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" readonly [ngModel]="arInfo.mailAddress" name="address"></textarea>
+				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" [(ngModel)]="arInfo.mailAddress" name="address" [readonly]="isCancelled || isPrinted"></textarea>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Business</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="arInfo.bussTypeName" readonly name="business">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-6 business" [(ngModel)]="arInfo.bussTypeName" name="business" [readonly]="isCancelled || isPrinted">
+				<div class="text-search-ico" (click)="openLOV('business')" *ngIf="!isCancelled && !isPrinted"><a><i class="fa fa-search"></i></a></div>
 				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="arInfo.tin" readonly name="tin">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="arInfo.tin" name="tin" [readonly]="isCancelled || isPrinted">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Amount</label>
@@ -71,12 +72,12 @@
 					<div class="input-group">
 						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.currCd" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled" name="amt">
+						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted" name="amt">
 							<option *ngFor="let curr of passData.opts[1].prev" [ngValue]="curr">{{curr}}</option>
 						</select>
-						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled" name="amt2">
+						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
-						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" appOtherRates  name="rate">
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" appOtherRates [readonly]="isCancelled || isPrinted" name="rate">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>
@@ -85,7 +86,7 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
-				<textarea class="form-control form-control-sm col-sm required" [(ngModel)]="arInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired [readonly]="isCancelled" name="particulars"></textarea>
+				<textarea class="form-control form-control-sm col-sm required" [(ngModel)]="arInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired [readonly]="isCancelled || isPrinted" name="particulars"></textarea>
 			</div>
 		</fieldset>
 		</form>
@@ -107,12 +108,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled" [class.cust-btn-disabled]="isAdd || isCancelled" (click)="openCancelModal()">Cancel AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || isPrinted" [class.cust-btn-disabled]="isAdd || isCancelled || isPrinted" (click)="openCancelModal()">Cancel AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();" [disabled]="isCancelled" [class.cust-btn-disabled]="isCancelled">Save</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();" [disabled]="isCancelled || isPrinted" [class.cust-btn-disabled]="isCancelled || isPrinted">Save</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -120,12 +121,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled" [class.cust-btn-disabled]="isAdd || isCancelled">Print AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'PRINTED'" (click)="print();">Print AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled" [class.cust-btn-disabled]="isAdd || isCancelled">Reprint AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'">Reprint AR</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -142,13 +143,13 @@
 							<label class="form-control-sm col-sm-1">DCB Bank</label>
 							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="arInfo.dcbBankName" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-							<select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired [disabled]="isCancelled">
+							<select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired [disabled]="isCancelled || isPrinted">
 								<option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
 							</select>
 							<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
 							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.dcbBankAcctNo" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-							<select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired [disabled]="isCancelled">
+							<select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired [disabled]="isCancelled || isPrinted">
 								<option *ngFor="let bankAcct of bankAccts" [ngValue]="bankAcct">{{bankAcct.accountNo}}</option>
 							</select>
 							<div class="col-sm-1"></div>
@@ -200,6 +201,23 @@ padding-right: 0px !important;">
         <div class="col-sm-12 text-center">
           <button class="cust-btn" type="button" (click)="cancelMdl.closeModal();cancelAr();"><a>Yes</a></button>
           <button class="cust-btn" type="button" (click)="cancelMdl.closeModal();"><a>No</a></button>
+        </div>
+      </div>
+  	</div>
+</app-modal>
+
+<app-modal class="d-none" #printModal>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Was the printing of AR successful?</p>
+	  </div>
+	</div>
+	<div footer>
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="printMdl.closeModal();updateArStatus();"><a>Yes</a></button>
+          <button class="cust-btn" type="button" (click)="printMdl.closeModal();"><a>No</a></button>
         </div>
       </div>
   	</div>
