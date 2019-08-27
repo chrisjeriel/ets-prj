@@ -71,7 +71,7 @@ export class ClaimRecoveryComponent implements OnInit {
   };
 
   passLov: any = {
-    selector: 'acitArClmRecover',
+    selector: 'acitArClmCashCall',
     payeeNo: '',
     currCd: '',
     hide: []
