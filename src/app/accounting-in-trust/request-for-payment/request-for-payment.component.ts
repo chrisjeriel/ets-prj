@@ -55,19 +55,38 @@ export class RequestForPaymentComponent implements OnInit {
 
   searchParams: any[] = [];
 
+  tranStat: string = 'new';
+
   constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Request for Payment");
-    this.getPaytReq();
+    // this.getPaytReq();
+
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.getPaytReq();
+    }, 0);
   }
 
-  getPaytReq(){
+  getPaytReq() {
+    this.table.overlayLoader = true;
     this.acctService.getPaytReqList(this.searchParams)
     .subscribe(data => {
       console.log(data);
-      var rec = data['acitPaytReq'].map(i => { i.createDate = this.ns.toDateTimeString(i.createDate); i.updateDate = this.ns.toDateTimeString(i.updateDate); return i; } );
-      this.passData.tableData = rec;
+      var rec = data['acitPaytReq'].map(i => {
+        i.createDate = this.ns.toDateTimeString(i.createDate);
+        i.updateDate = this.ns.toDateTimeString(i.updateDate);
+
+        if(i.tranStat != null && i.tranStat != 'O') {
+          i.reqStatus = i.tranStat;
+          i.reqStatusDesc = i.tranStatDesc;
+        }
+
+        return i;
+      });
+
+      this.passData.tableData = rec.filter(a => String(a.reqStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
     });
   }
