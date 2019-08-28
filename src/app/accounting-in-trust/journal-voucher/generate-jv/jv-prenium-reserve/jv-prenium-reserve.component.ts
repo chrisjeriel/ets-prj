@@ -177,7 +177,7 @@ export class JvPreniumReserveComponent implements OnInit {
 
   	setCedingcompany(data){
   		console.log(data)
-  		this.premResData.cedingName = data.cedingName;
+  		this.premResData.cedingName = data.payeeName;
   		this.premResData.cedingId	= data.cedingId;
   		this.ns.lovLoader(data.ev, 0);
   		this.retrievePremRes();

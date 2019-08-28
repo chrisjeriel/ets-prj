@@ -208,7 +208,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   setCedingcompany(data){
     console.log(data)
-    this.jvDetails.cedingName = data.cedingName;
+    this.jvDetails.cedingName = data.payeeName;
     this.jvDetails.ceding = data.cedingId;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveNegativeTreaty();

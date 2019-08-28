@@ -30,17 +30,17 @@ export class MtnPayeeCedingComponent implements OnInit {
       resizable: [false,true,false,true,false,false,false],
       filters: [
           {
-              key: 'coNo',
+              key: 'payeeCd',
               title:'Company No',
               dataType: 'text'
           },
           {
-              key: 'name',
+              key: 'payeeName',
               title:'Name',
               dataType: 'text'
           },
           {
-              key: 'address',
+              key: 'payeeAddress',
               title:'Address',
               dataType: 'text'
           },          

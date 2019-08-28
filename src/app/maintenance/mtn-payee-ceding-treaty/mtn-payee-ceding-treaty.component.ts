@@ -30,23 +30,23 @@ export class MtnPayeeCedingTreatyComponent implements OnInit {
       resizable: [false,true,false,true,false,false,false],
       filters: [
           {
-              key: 'coNo',
+              key: 'payeeCd',
               title:'Company No',
               dataType: 'text'
           },
           {
-              key: 'name',
+              key: 'payeeName',
               title:'Name',
               dataType: 'text'
           },
           {
-              key: 'address',
+              key: 'payeeAddress',
               title:'Address',
               dataType: 'text'
           },          
       ],
       pageID: '1232141',
-      keys:['cedingId','cedingName','address']
+      keys:['payeeCd','payeeName','payeeAddress']
   };
 
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private maintenanceService: MaintenanceService) { }
@@ -85,7 +85,7 @@ export class MtnPayeeCedingTreatyComponent implements OnInit {
   openModal(){
     this.passData.tableData = [];
 
-    this.maintenanceService.getMtnPayeeCeding(1,null).subscribe((data: any) => {
+    this.maintenanceService.getMtnPayeeCeding(1,'Y').subscribe((data: any) => {
          for(var i=0;i< data.payeeCeding.length;i++){
            this.passData.tableData.push(data.payeeCeding[i]);
          }
