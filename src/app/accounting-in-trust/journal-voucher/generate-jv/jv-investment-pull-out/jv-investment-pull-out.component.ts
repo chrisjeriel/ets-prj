@@ -66,55 +66,85 @@ export class JvInvestmentPullOutComponent implements OnInit {
   bankAccts : any[] =[];
   forkSub: any;
   selectedBank:any;
+  selectedBankCd:any;
+  selectedBankAcct:any;
+  accountNo:any;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
   ngOnInit() {
+    //this.getInvPullout();
     this.getBank();
-    this.getInvPullout();
+    //this.getInvPullout();
   }
 
   getBank(){
     this.banks = [];
     this.bankAccts = [];
-    var sub$ = forkJoin(this.ms.getMtnBank(),
-                        this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => { return {bank, bankAcct }; }));
 
-    this.forkSub = sub$.subscribe((data:any) =>{
-
-      for (var i = 0; i < data.bank.bankList.length; ++i) {
-        this.banks.push(data.bank.bankList[i]);
+    this.ms.getMtnBank().subscribe((data:any) => {
+      for (var i = 0; i < data.bankList.length; ++i) {
+        this.banks.push(data.bankList[i]);
       }
-
-      for (var j = 0; j < data.bankAcct.bankAcctList.length; j++) {
-        this.bankAccts.push( data.bankAcct.bankAcctList[j]);
-      }
-
+      console.log(this.banks)
     });
   }
 
+  //   var sub$ = forkJoin(this.ms.getMtnBank(),
+  //                       this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => { return {bank, bankAcct }; }));
+
+  //   this.forkSub = sub$.subscribe((data:any) =>{
+
+      
+
+  //     for (var j = 0; j < data.bankAcct.bankAcctList.length; j++) {
+  //       this.bankAccts.push( data.bankAcct.bankAcctList[j]);
+  //     }
+
+  //   });
+  // }
+
   changeBank(data){
-    console.log(data)
-    this.selectedBank = data;
+    this.passData.tableData = [];
+    this.table.refreshTable();
+    //this.selectedBank = data;
+    this.selectedBankCd = data.bankCd;
     this.getBankAcct();
   }
 
   getBankAcct(){
     this.bankAccts = [];
-    this.ms.getMtnBankAcct(this.selectedBank.bankCd).subscribe((data:any)=>{
+    this.ms.getMtnBankAcct(this.selectedBankCd).subscribe((data:any)=>{
       if(data.bankAcctList.length !== 0){
         this.bankAccts = data.bankAcctList;
-        this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.jvDetail.currCd && a.acSeGlDepNo === null && a.acItGlDepNo !== null });
+        this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBankCd && a.currCd == this.jvDetail.currCd && a.acSeGlDepNo === null && a.acItGlDepNo !== null });
       }
     });
   }
 
-  getInvPullout(){
-    this.accService.getJvInvPullout(this.jvDetail.tranId).subscribe((data:any) => {
-      for (var i = 0; i < data.pullOut.length; i++) {
-        this.passData.tableData.push(data.pullOut[i]);
-      }
-    });
-    this.table.refreshTable();
+  changeBankAcct(data){
+    this.accountNo = data.accountNo;
+    this.getInvPullout();
   }
+
+  getInvPullout(){
+    this.accService.getJvInvPullout(this.jvDetail.tranId/*,this.selectedBankCd,this.accountNo*/).subscribe((data:any) => {
+      console.log(data)
+      this.passData.tableData = [];
+      if(data.pullOut.length !== 0){
+        /*this.selectedBank = data.pullOut[0];
+        this.selectedBankAcct = data.pullOut[0];*/
+        for (var i = 0; i < data.pullOut.length; i++) {
+          this.passData.tableData.push(data.pullOut[i]);
+        }
+      }
+      this.table.refreshTable();
+      console.log(this.selectedBank)
+    });
+  }
+
+  /*compareBankFn(c1: any, c2: any): boolean {
+      return c1.bank === c2.bankCd;
+  }*/
+
 }

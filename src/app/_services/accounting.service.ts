@@ -2012,6 +2012,8 @@ export class AccountingService {
 	getJvInvPullout(tranId){
 		const params = new HttpParams()
 		 	.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		 	/*.set('bankCd', (bankCd == null || bankCd == undefined ? '' : bankCd))
+		 	.set('accountNo', (accountNo == null || accountNo == undefined ? '' : accountNo))*/
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInvPullOut",{params});
 	}
 	
