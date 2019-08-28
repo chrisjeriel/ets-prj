@@ -40,10 +40,11 @@ export class UserService {
         return this.http.get(environment.prodApiUrl + '/user-service/userLogin', {params});
     }
 
-    retMtnUsers(userId: string){
+    retMtnUsers(userId?: string, userGrp?: string){
          const params = new HttpParams()
-                .set('userId', userId);
-
+            .set('userId',userId ===undefined || userId===null ? '' : userId)
+            .set('userGrp',userGrp ===undefined || userGrp===null ? '' : userGrp);
+            
         return this.http.get(environment.prodApiUrl + '/user-service/retMtnUsers', {params});
     }
 
