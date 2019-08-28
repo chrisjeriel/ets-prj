@@ -2013,4 +2013,20 @@ export class AccountingService {
 			.set('currCd', currCd);
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitClmResHistPayts",{params});
 	}
+
+	saveAcitAttachments(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitAttachments',JSON.stringify(params),header);
+	}
+
+	getAcitAttachments(tranId){
+		const params = new HttpParams()
+		 	.set('tranId', tranId);
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAttachments",{params});
+	}
+
 }

@@ -55,7 +55,7 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Attached Files</legend>
 	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
-		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
 	</div>
 
 	<!-- <div class="input-group" style="margin-left: -20px;margin-bottom: -6px !important;">
@@ -70,8 +70,8 @@
 	</div> -->
   <div class="form-group col-sm text-center" style="margin-bottom: 5px">
       <div class="cust-btn-container">
-        <button type="button" class="cust-btn"><a>Cancel</a></button>
-        <button type="button" class="cust-btn"><a>Save</a></button>
+        <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
       </div>
   </div>
 
@@ -98,3 +98,8 @@ padding-right: 0px !important;">
   </div>
 </fieldset>
 </div>
+
+
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>
