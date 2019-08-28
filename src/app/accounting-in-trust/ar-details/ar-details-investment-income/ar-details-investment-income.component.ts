@@ -90,7 +90,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   ngOnInit() {
     console.log(this.record.tranId);
     this.passData.nData.tranId = this.record.tranId;
-    this.passLov.searchParams = [{key: 'bankCd', search: this.record.refCd}, {key:'invtStatus', search: 'MATURED'}];
+    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'MATURED'}];
     if(this.invData !== undefined){
         for(var i of this.invData){
           this.passLov.hide.push(i);

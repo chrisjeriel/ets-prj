@@ -16,7 +16,7 @@ export class ArPaymentforAdvancesComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.ms.getMtnCompany(101).subscribe( //101 is company Id of PMMSC (may need to be changed into dynamic)
+    this.ms.getMtnCompany(1).subscribe( //101 is company Id of PMMSC (may need to be changed into dynamic)
        (data:any)=>{
          this.pmmscData = data.companyListing[0];
        }
