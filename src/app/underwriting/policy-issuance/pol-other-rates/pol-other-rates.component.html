@@ -17,7 +17,8 @@
 
 <fieldset class="scheduler-border">
   <legend class="scheduler-border">Other Rates</legend>
-  <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"></app-cust-editable-table>
+  <!-- <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"></app-cust-editable-table> TRBT#PROD_GRADE -->  
+  <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"></app-cust-editable-table>
 </fieldset>
 
 <div class="form-row">
@@ -25,7 +26,8 @@
     <div class="col-md-13 text-center">
       <br>
       <div class="cust-btn-container">
-        <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
+        <!-- <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button> TRBT#PROD_GRADE -->
+        <button type="button" class="cust-btn"><a>Cancel</a></button>
         <button type="button" class="cust-btn"><a>Save</a></button>
       </div>
     </div>

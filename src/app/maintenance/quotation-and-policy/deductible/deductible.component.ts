@@ -103,7 +103,7 @@ export class DeductibleComponent implements OnInit {
         deleteDeductibles  : []
     };
 
-    constructor(config: NgbDropdownConfig,private titleService: Title, private mtnService: MaintenanceService, private ns : NotesService, private modalService: NgbModal ) { }
+    constructor(config: NgbDropdownConfig,private titleService: Title, private mtnService: MaintenanceService, private ns : NotesService, public modalService: NgbModal ) { }
 
     ngOnInit() {
         this.titleService.setTitle('Mtn | Deductibles');

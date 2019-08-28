@@ -21,12 +21,12 @@
                         </div>
                         <div class="input-group" style="margin-top: -5px">
                             <label class="form-control-sm col-sm-1">Payee</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="saveAcitCv.payee" maxlength="500" appRequired>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcitCv.payee" maxlength="500" appRequired>
                             <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                         </div>
                         <div class="input-group" style="margin-top: -5px">
                             <label class="form-control-sm col-sm-1">Particulars</label>
-                            <textarea class="form-control form-control-sm cust-sm col-sm text-area-font" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.particulars" appRequired></textarea>
+                            <textarea class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.particulars" appRequired></textarea>
                         </div>
                     </div>
                     
@@ -95,18 +95,18 @@
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.bankDesc" maxlength="100" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [(ngModel)]="saveAcitCv.bankDesc" maxlength="100" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('bank')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Amount</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="saveAcitCv.currCd" maxlength="3" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 warn" [(ngModel)]="saveAcitCv.currCd" maxlength="3" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)]="saveAcitCv.cvAmt" (change)="reCompAmt();" appRequired style="margin-left: 3px;" mask="comma_separator.2">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right warn" [(ngModel)]="saveAcitCv.cvAmt" (change)="reCompAmt();" appRequired style="margin-left: 3px;" mask="comma_separator.2">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" [(ngModel)]="saveAcitCv.currRate" (change)="reCompAmt();" mask="comma_separator.9" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right warn" [(ngModel)]="saveAcitCv.currRate" (change)="reCompAmt();" mask="comma_separator.9" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Local Amount</label>
@@ -116,7 +116,7 @@
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Prepared By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.preparedByName" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [(ngModel)]="saveAcitCv.preparedByName" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('prep-user')"><i class="fa fa-search"></i></a></div>
                     </div>
 
@@ -134,11 +134,11 @@
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank Account No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.bankAcct" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [(ngModel)]="saveAcitCv.bankAcct" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.checkNo" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [(ngModel)]="saveAcitCv.checkNo" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
@@ -148,7 +148,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Class</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.checkClassDesc" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [(ngModel)]="saveAcitCv.checkClassDesc" appRequired>
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('class')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
@@ -263,12 +263,12 @@
                 <div class="form-group col-sm" style="margin-bottom: 8px;">
                     <div class="col-md-13 text-center">
                         <div class="cust-btn-container">
-                            <button type="button" class="cust-btn">New CV</button>
+                            <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
                             <button type="button" class="cust-btn" (click)="onClickSave()">Save</button>
-                            <button type="button" class="cust-btn">Cancel CV</button>
-                            <button type="button" class="cust-btn">Certify</button>
-                            <button type="button" class="cust-btn">Approve</button>
-                            <button type="button" class="cust-btn">Print</button>
+                            <button type="button" class="cust-btn" disabled="true">Cancel CV</button>
+                            <button type="button" class="cust-btn" disabled="true">Certify</button>
+                            <button type="button" class="cust-btn" disabled="true">Approve</button>
+                            <button type="button" class="cust-btn" disabled="true">Print</button>
                         </div>
                     </div>
                 </div>
@@ -295,9 +295,9 @@
     </div>
 </div>
 
-<app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
-<app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')"></app-lov>
-<app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')"></app-lov>
+<app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')" [lovCheckBox]="lovCheckBox"></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>
 <app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
 

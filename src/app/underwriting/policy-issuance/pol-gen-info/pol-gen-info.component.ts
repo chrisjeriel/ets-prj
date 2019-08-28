@@ -285,7 +285,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
-  constructor(private route: ActivatedRoute, private modalService: NgbModal,
+  constructor(private route: ActivatedRoute, public modalService: NgbModal,
     private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService,
     private mtnService: MaintenanceService) { }
 
@@ -352,7 +352,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       if(data.policy != null) {
         this.checkNewExpiry = true;
         this.policyInfo = data.policy;
-        this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
+        //this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
         this.lastExpiryDate = new String(this.policyInfo.expiryDate); //edit by paul for maintenance adjustment
@@ -513,7 +513,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                        });
 
         this.policyInfo.issueDate = this.ns.toDateTimeString(new Date());
-        this.policyInfo.effDate = this.ns.toDateTimeString(new Date());
+        this.policyInfo.effDate = this.policyInfo.inceptDate;
 
       }
     });
@@ -940,7 +940,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     if((this.withCovDtls && this.policyInfo.extensionTag == 'N' && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate)
       || (this.withCovDtls && this.policyInfo.extensionTag == 'Y' && (this.prevInceptExt != this.policyInfo.inceptDate || this.prevEffExt != this.policyInfo.effDate))) {
       $('#polGenInfoConfirmationModal #modalBtn').trigger('click');  
-    } if(this.policyInfo.expiryDate.toString() != this.lastExpiryDate.toString() && this.checkNewExpiry ){
+    } if(this.policyInfo.expiryDate.toString() != this.lastExpiryDate.toString() && this.policyInfo.maintenanceFrom != null && this.policyInfo.maintenanceFrom.length != 0 && this.checkNewExpiry ){
       this.onExpiryChange();
     } else  {
       $('#confirm-save #modalBtn2').trigger('click');

@@ -145,7 +145,7 @@ export class ClmSectionCoversComponent implements OnInit {
     this.cancelBtn.clickCancel();
   }
 
-  validate(data){
+  validate(data?){
     if(this.clmHistrory || this.parameters){
       if(this.secTag == 'secISiTag'){
         this.coverageData.secISiTag = (this.coverageData.secISiTag === 'Y') ? 'N' : 'Y';

@@ -89,7 +89,7 @@ export class WfActionsComponent implements OnInit {
   userList: any[] = [];
 
   constructor(config: NgbModalConfig,
-     private modalService: NgbModal,
+     public modalService: NgbModal,
      private ns: NotesService,
      private userService: UserService,
      private workFlowService: WorkFlowManagerService){ }

@@ -81,6 +81,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
 
   subscription: Subscription = new Subscription();
   cvData: any = null;
+  btnCancelMainEnabled:boolean = false;
 
   constructor(private as: AccountingService, private ns: NotesService) { }
 

@@ -195,7 +195,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	gnrtQtr: number = 1;
 	gnrtYear: number = 1;
 
-	constructor(private titleService: Title, private modalService: NgbModal, private route: Router, private as: AccountingService) { }
+	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | QSOA Inquiry");

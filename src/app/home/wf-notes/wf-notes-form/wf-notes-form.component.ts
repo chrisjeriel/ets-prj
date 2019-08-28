@@ -27,7 +27,7 @@ export class WfNotesFormComponent implements OnInit {
   dialogMessage:string  = "";
 
   constructor(config: NgbModalConfig,
-     private modalService: NgbModal,private workFlowManagerService: WorkFlowManagerService, private ns: NotesService) { }
+     public modalService: NgbModal,private workFlowManagerService: WorkFlowManagerService, private ns: NotesService) { }
 
   ngOnInit() {
   }

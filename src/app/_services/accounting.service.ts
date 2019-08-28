@@ -2000,7 +2000,7 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/printAr',JSON.stringify(params),header);
 	}
 
-	getRecievableLosses(tranId,cedingId){
+	getRecievableLosses(tranId,cedingId?){
 		const params = new HttpParams()
 		 	 .set('tranId', (tranId === null || tranId === undefined ? '' : tranId))
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVRcvblsAgnstLosses",{params});
@@ -2012,9 +2012,9 @@ export class AccountingService {
 		        'Content-Type': 'application/json'
 		    })
 		};
-		
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJvReceivablesAgainstLoss',JSON.stringify(params),header);
 	}
+
 
 	getAcitCv(tranId?){
 		const params = new HttpParams()
@@ -2062,4 +2062,24 @@ export class AccountingService {
 			.set('currCd', currCd);
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitClmResHistPayts",{params});
 	}
+
+	saveAcitCvPaytReqList(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCvPaytReqList',params,header);
+ 
+    }
+
+    getAcitCvPaytReqList(tranId?,itemNo?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCvPaytReqList',{params});	
+	}
+
+
 }

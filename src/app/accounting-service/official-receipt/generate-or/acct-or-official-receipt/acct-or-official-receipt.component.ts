@@ -89,7 +89,7 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
 
   @Input() paymentType: string = "type";
 
-  constructor(private accountingService: AccountingService, private titleService: Title,private modalService: NgbModal) { }
+  constructor(private accountingService: AccountingService, private titleService: Title,public modalService: NgbModal) { }
   
   ngOnInit() {
   	this.titleService.setTitle("Acct-Srvc | OR Details");

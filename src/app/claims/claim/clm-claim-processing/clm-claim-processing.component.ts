@@ -109,10 +109,10 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
 
   passDataLOVTbl: any = {
     tableData: [],
-    tHeader: ['Claim No', 'Loss Date', 'Currency', 'Total Reserve', 'Total Payments'],
-    dataTypes: ['text', 'date', 'text', 'currency', 'currency'],
-    keys: ['claimNo', 'lossDate', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
-    colSize: ['90px','70px','49px','110px','110px'],
+    tHeader: ['Claim No', 'Loss Date','Loss Cause','Loss Details' ,'Currency', 'Total Reserve', 'Total Payments','Report Date'],
+    dataTypes: ['text', 'date', 'text', 'text', 'text', 'currency', 'currency','date'],
+    keys: ['claimNo', 'lossDate','lossAbbr','lossDtl', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd','reportDate'],
+    colSize: ['90px','70px','120px','120px','49px','110px','110px','70px'],
     addFlag: false,
     editFlag: false,
     pagination: true,

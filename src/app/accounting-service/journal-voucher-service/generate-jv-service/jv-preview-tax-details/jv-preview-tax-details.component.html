@@ -11,7 +11,8 @@
         <fieldset class="scheduler-border" style="margin-bottom:10px !important; padding-top: 5px !important;">
             <legend class="scheduler-border">Creditable WTax Details</legend>
             <div class="custom-row-inline-inset">
-                <app-cust-editable-non-datatable [passData]="passDataAccountingCreditableTaxDetails" (tableDataChange)="computeWTax($event)">
+                <!-- <app-cust-editable-non-datatable [passData]="passDataAccountingCreditableTaxDetails" (tableDataChange)="computeWTax($event)"> TRBT#PROD_GRADE -->
+                <app-cust-editable-non-datatable [passData]="passDataAccountingCreditableTaxDetails">
                     <ng-container controls-r>
                         <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
                     </ng-container>

@@ -77,6 +77,8 @@ export class CvEntryComponent implements OnInit {
     payeeClassCd : ''
   };
 
+  lovCheckBox:boolean = false;
+
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
@@ -118,6 +120,7 @@ export class CvEntryComponent implements OnInit {
       var recPn = data['pn']['printableNames'];
 
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
+        $('.globalLoading').css('display','none');
         this.saveAcitCv.cvStatus = 'N';
         this.saveAcitCv.cvStatusDesc = 'New';
         this.saveAcitCv.cvDate = this.ns.toDateTimeString(0);
@@ -154,7 +157,7 @@ export class CvEntryComponent implements OnInit {
       }
 
       this.cvData.emit({tranId: this.saveAcitCv.tranId});
-
+      (this.saveAcitCv.cvStatus == 'X')?this.disableFlds(true):this.disableFlds(false);
     });
 
     if(this.saveAcitCv.cvNo == '' || this.saveAcitCv.cvNo == null){
@@ -166,6 +169,44 @@ export class CvEntryComponent implements OnInit {
     }else{
       
     }
+  }
+
+  onClickNewCv(){
+    $('.globalLoading').css('display','block');
+    this.saveAcitCv  = {
+      bank          : '',
+      bankAcct      : '',
+      certifiedBy   : '',
+      certifiedDate : '',
+      checkClass    : '',
+      checkDate     : '',
+      checkNo       : '',
+      closeDate     : '',
+      createDate    : '',
+      createUser    : '',
+      currCd        : '',
+      currRate      : '',
+      cvAmt         : '',
+      cvDate        : '',
+      cvNo          : '',
+      cvStatus      : '',
+      cvYear        : '',
+      deleteDate    : '',
+      localAmt      : '',
+      mainTranId    : '',
+      particulars   : '',
+      payee         : '',
+      payeeNo       : '',
+      postDate      : '',
+      preparedBy    : '',
+      preparedDate  : '',
+      tranId        : '',
+      tranStat      : '',
+      updateDate    : '',
+      updateUser    : ''
+    };
+    this.getAcitCv();
+    this.disableFlds(false);
   }
 
   onClickSave(cancelFlag?){
@@ -305,4 +346,10 @@ export class CvEntryComponent implements OnInit {
       }
     }
   }
+
+  disableFlds(con:boolean){
+    $('.warn').prop('readonly',con);
+    (con)?$('.magni-icon').remove():'';
+  }
+
 }

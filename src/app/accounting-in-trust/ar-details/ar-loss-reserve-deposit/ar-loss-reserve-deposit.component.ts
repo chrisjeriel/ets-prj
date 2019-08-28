@@ -31,7 +31,7 @@ export class ArLossReserveDepositComponent implements OnInit {
   payorData: any;
 
 
-  constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService) { }
+  constructor(private accountingService: AccountingService, private ms: MaintenanceService, public ns: NotesService) { }
 
   ngOnInit() {
     this.ms.getCedingCompany(this.record.cedingId).subscribe(

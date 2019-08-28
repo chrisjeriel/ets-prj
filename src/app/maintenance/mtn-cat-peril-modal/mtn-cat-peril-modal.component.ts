@@ -40,7 +40,7 @@ export class MtnCatPerilModalComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
-  constructor(private maintenanceService: MaintenanceService, private ns: NotesService, private modalService: NgbModal) { }
+  constructor(private maintenanceService: MaintenanceService, private ns: NotesService, public modalService: NgbModal) { }
 
   ngOnInit() {
   }

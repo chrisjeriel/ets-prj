@@ -63,7 +63,8 @@
 											<label class="form-control-sm">Assign to</label>
 										</div>
 										<div class="input-group" style="margin: -10px 0 0 0;">
-											<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" (change)="checkCode($event)" appRequired>
+											<!-- <input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" (change)="checkCode($event)" appRequired> -->
+											<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" appRequired>
 											<div id=search class="text-search-ico" style="margin-top: -3px;"><a [ngClass]="{'disabled-a': disableAssignTo}" ><i id=searchicon class="fa fa-search" (click)="showUsersLOV('1');"></i></a></div>
 											<input id="inputAssignToUsername" type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" [disabled]= disableAssignTo readonly [(ngModel)]="userInfo.userName">
 										</div>
@@ -124,8 +125,10 @@
 				    </div>
 				</app-modal>
 
-				<app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)" (cancelMdl)="open(content,this.mode);"></app-mtn-users>
-				<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar,this.mode);"></app-sucess-dialog>
+				<!-- <app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)" (cancelMdl)="open(content,this.mode);"></app-mtn-users> TRBT#PROD_GRADE -->
+				<app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)"></app-mtn-users>
+				<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar,this.mode);"></app-sucess-dialog> TRBT#PROD_GRADE -->
+				<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 			</div>
 			<div class="col-sm-3" style="padding-top: 8px; padding-bottom: 10px;">
 				<app-cust-editable-non-datatable id="recipientsTable" [passData]="recipientsData" class="d-block py-2">

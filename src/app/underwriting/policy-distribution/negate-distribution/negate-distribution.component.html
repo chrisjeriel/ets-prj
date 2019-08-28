@@ -114,9 +114,12 @@
         </div>
     </app-modal>
 
-    <app-confirm-save (onYes)="onClickSave()"></app-confirm-save>
+    <!-- <app-confirm-save (onYes)="onClickSave()"></app-confirm-save>
     <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false; approveType === 'reject' ? modalService.dismissAll() : null"></app-sucess-dialog>
-    <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
+    <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button> TRBT#PROD_GRADE -->
 
+    <app-confirm-save></app-confirm-save>
+    <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null; approveType === 'reject' ? modalService.dismissAll() : null"></app-sucess-dialog>
+    <app-cancel-button [url]="'/hold-cover-monitoring'" ></app-cancel-button>
 
    

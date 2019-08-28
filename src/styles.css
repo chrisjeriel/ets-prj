@@ -333,7 +333,7 @@ legend.scheduler-border {
     font-size: 12px !important;
     padding: 0 !important;
     line-height: 12px;
-    background: white;
+    /*background: white;*/
 }
 
 #cust-table-container tr.odd {
@@ -424,7 +424,6 @@ legend.scheduler-border {
 .demo-sidebar .ng-sidebar--animate .ng-sidebar .ng-sidebar--opened .ng-sidebar--left .ng-sidebar--push {
     border: 1px solid gray !important;
     color: blue;
-    padding: 
 }
 /*ng-sidebar component custom css END*/
 

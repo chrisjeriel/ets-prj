@@ -3,10 +3,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
     constructor(private http: HttpClient) { }
+
+    public accessibleModules = new Subject<any>();
+    public moduleIdObs = new Subject<string>();
 
     getAll() {
         return this.http.get<User[]>(`${environment.apiUrl}/users`);
@@ -49,5 +53,21 @@ export class UserService {
                 .set('lineCd', lineCd)
 
         return this.http.get(environment.prodApiUrl + '/user-service/retrieveMtnUserAmountLimit', {params});
+    }
+
+    setAccessModules(data) {
+        this.accessibleModules = data;
+    }
+
+    getAccessModules() {
+        return this.accessibleModules;
+    }
+
+    emitAccessModules(val) {
+        this.accessibleModules.next(val);
+    }
+
+    emitModuleId(val) {
+        this.moduleIdObs.next(val);
     }
 }
