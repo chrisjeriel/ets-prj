@@ -125,8 +125,30 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <!-- <ngb-tab *ngIf="requestData?.tranTypeCd != 8 && requestData?.tranTypeCd != 4" id="othTabId"> -->
-      <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="othTabId">
+      <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="unColTabId">
+        <ng-template ngbTabTitle>
+          <div>Unapplied Collection</div>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div class="input-group cust-border" style="padding-top: 0.6em">
+            <div class="col-sm-12">
+              <app-cust-editable-non-datatable id="unColTbl" [passData]="unappliedColData" #unappliedTbl (newClick)="onRowClick($event)" (tableDataChange)="unappliedColData.tableData=$event;defaultData();addDirty('unColTbl');"></app-cust-editable-non-datatable>
+            </div>
+            <div class="form-row col-sm-12" style="margin-top: 40px !important;">
+              <div class="form-group col-sm-12">
+                <div class="text-center">
+                  <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab *ngIf="requestData?.tranTypeCd != 8 && requestData?.tranTypeCd != 4" id="othTabId">
+      <!-- <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="othTabId"> -->
         <ng-template ngbTabTitle>
           <div>Others</div>
         </ng-template>
@@ -146,7 +168,7 @@
               </div>
             </div>
           </div>
-            </ng-template>
+        </ng-template>
       </ngb-tab>
     </ngb-tabset>
   </div>
@@ -198,6 +220,10 @@
 <app-confirm-save  #conOth (onYes)="onSaveOth()"></app-confirm-save>
 <app-sucess-dialog #sucOth [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
 <app-cancel-button #canOth (onYes)="onClickSaveOth('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conUnCol (onYes)="onSaveUnCol()"></app-confirm-save>
+<app-sucess-dialog #sucUnCol [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelUncol();"></app-sucess-dialog>
+<app-cancel-button #canUnCol (onYes)="onClickSaveUncol('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 <app-confirm-save  #conServFee (onYes)="onSaveServFee()"></app-confirm-save>
 <app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>

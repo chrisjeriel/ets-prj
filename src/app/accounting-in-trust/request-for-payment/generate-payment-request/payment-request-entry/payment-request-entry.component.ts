@@ -155,7 +155,8 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
         this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
         this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
-        (this.saveAcitPaytReq.reqStatus == 'N' || this.saveAcitPaytReq.reqStatus == 'F')?this.disableFlds(false):this.disableFlds(true);
+        (this.saveAcitPaytReq.reqStatus == 'N' || this.saveAcitPaytReq.reqStatus == 'F' || 
+         this.saveAcitPaytReq.tranTypeCd == 1 || this.saveAcitPaytReq.tranTypeCd == 2 || this.saveAcitPaytReq.tranTypeCd == 3)?this.disableFlds(false):this.disableFlds(true);
         
       }else{
         this.reqDateDate = this.ns.toDateTimeString(0).split('T')[0];

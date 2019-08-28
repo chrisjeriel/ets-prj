@@ -130,7 +130,7 @@
 	            		<div class="col-md-13 text-center">
 	            			<div class="cust-btn-container">
 	            				<button type="button" class="cust-btn" (click) = "onClickNewReq()">New Request</button>
-	            				<button type="button" class="cust-btn" [disabled]="(saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" (click)="onClickSave()">Save</button>
+	            				<button type="button" class="cust-btn" [disabled]="((saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F') || saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3)" (click)="onClickSave()">Save</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled">Print</button>
                       <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="(saveAcitPaytReq.reqStatus.toUpperCase() != 'F' && saveAcitPaytReq.reqStatus.toUpperCase() != 'N')" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
