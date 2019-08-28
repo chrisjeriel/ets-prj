@@ -94,6 +94,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Inward Policy Balances");
+    console.log(this.record.payeeNo);
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
