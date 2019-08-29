@@ -70,7 +70,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     uneditable: [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
     checkFlag: true,
     pageID: 6,
-    widths:[220, 150, 1, 150, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
+    widths:[130, 120, 1, 130, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
   }
 
   passLov: any = {

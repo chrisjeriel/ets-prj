@@ -374,6 +374,10 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     console.log(this.originalValues);
   }
 
+  parseCurrency(data){
+    return parseFloat(data.replace(/,/g, ''));
+  }
+
   //ALL VALIDATIONS STARTS HERE
   checkVariance(): boolean{
     return this.variance < 0;
