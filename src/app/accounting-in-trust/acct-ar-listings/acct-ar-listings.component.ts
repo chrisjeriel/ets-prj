@@ -15,10 +15,10 @@ export class AcctArListingsComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['A.R. No.','Payor','AR Date','Payment Type','Status','Particulars','Amount'],
-    dataTypes: ['sequence-6','text','date','text','text','text','currency'],
-    keys: ['arNo', 'payor', 'arDate', 'tranTypeName', 'arStatDesc', 'particulars', 'arAmt'],
-    colSize:['25px', '80px', '40px', '100px', '1px', '200px', '125px'],
+    tHeader: ['A.R. No.','Payor','AR Date','Payment Type','Particulars','Amount'],
+    dataTypes: ['sequence-6','text','date','text','text','currency'],
+    keys: ['arNo', 'payor', 'arDate', 'tranTypeName', 'particulars', 'arAmt'],
+    colSize:['25px', '80px', '40px', '100px', '200px', '125px'],
     filters: [
         {
           key: 'arNo',
@@ -43,11 +43,11 @@ export class AcctArListingsComponent implements OnInit {
           title: 'Payment Type',
           dataType: 'text'
         },
-        {
+        /*{
           key: 'arStatDesc',
           title: 'Status',
           dataType: 'text'
-        },
+        },*/
         {
           key: 'particulars',
           title: 'Particulars',
