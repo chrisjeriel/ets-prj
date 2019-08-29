@@ -22,17 +22,17 @@
 							<input type="radio" name="tranStat" id="statPd" value="paid" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getPaytReq()">
 							<label for="statPd" class="text-left">&nbsp;Paid</label>
 						</div>
-						<div class="col-sm">
+						<!-- <div class="col-sm">
 							<input type="radio" name="tranStat" id="statCn" value="cancelled" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getPaytReq()">
 							<label for="statCn" class="text-left">&nbsp;Cancelled</label>
-						</div>
+						</div> -->
 						<div class="col-sm">
 							<input type="radio" name="tranStat" id="statCl" value="closed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getPaytReq()">
 							<label for="statCl" class="text-left">&nbsp;Closed</label>
 						</div>
-						<div class="col-sm">
+						<div class="col-sm-2">
 							<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getPaytReq()">
-							<label for="statDl" class="text-left">&nbsp;Deleted</label>
+							<label for="statDl" class="text-left">&nbsp;Cancelled / Deleted</label>
 						</div>
 						<div class="col-sm">
 							<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getPaytReq()">

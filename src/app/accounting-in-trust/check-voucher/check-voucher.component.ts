@@ -19,8 +19,8 @@ export class CheckVoucherComponent implements OnInit {
 
   passData: any = {
         tableData: [],
-        tHeader: ["CV No", "Payee", "CV Date", "Status","Particulars","Amount"],
-        dataTypes: ['text','text','date','text','text','currency',],
+        tHeader: ["CV No", "Payee", "Payment Request No", "CV Date", "Status","Particulars","Amount"],
+        dataTypes: ['text','text','text','date','text','text','currency',],
         filters: [
         {
           key: 'cvGenNo',
@@ -37,11 +37,11 @@ export class CheckVoucherComponent implements OnInit {
           title: 'CV Date',
           dataType: 'date'
         },
-        {
+        /*{
           key: 'cvStatusDesc',
           title: 'Status',
           dataType: 'text'
-        },
+        },*/
         {
           key: 'particulars',
           title: 'Particulars',
@@ -60,7 +60,7 @@ export class CheckVoucherComponent implements OnInit {
         editFlag     : true,
         pageLength   : 10,
         exportFlag   : true,
-        keys         : ['cvGenNo','payee','cvDate','cvStatusDesc','particulars','cvAmt']
+        keys         : ['cvGenNo','payee','refNo','cvDate','cvStatusDesc','particulars','cvAmt']
     };
 
   searchParams: any[] = [];

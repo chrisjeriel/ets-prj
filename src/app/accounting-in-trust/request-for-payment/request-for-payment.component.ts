@@ -16,9 +16,9 @@ export class RequestForPaymentComponent implements OnInit {
   
   passData: any = {
   	tableData    : [],
-  	tHeader      : ['Payment Request No.', 'Payee', 'Payment Type', 'Status', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],
+  	tHeader      : ['Payment Request No.', 'Payee', 'Payment Type', 'Reference No', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],
   	dataTypes    : ['text', 'text', 'text', 'text', 'date', 'text', 'text', 'currency', 'text'],
-  	colSize      : ['120px', '', '', '', '65px', '', '30px', '', ''],
+  	colSize      : ['120px', '', '', '', '', '', '30px', '', ''],
     btnDisabled  : true,
   	pagination   : true,
   	pageStatus   : true,
@@ -26,12 +26,12 @@ export class RequestForPaymentComponent implements OnInit {
   	editFlag     : true,
   	pageLength   : 10,
     exportFlag   : true,
-    keys         : ['paytReqNo','payee','tranTypeDesc','reqStatusDesc','reqDate','particulars','currCd','reqAmt','requestedBy'],
+    keys         : ['paytReqNo','payee','tranTypeDesc','refNo','reqDate','particulars','currCd','reqAmt','requestedBy'],
     filters: [
       { key: 'paytReqNo',    title: 'Payt Req. No.',      dataType: 'text'},
       { key: 'payee',        title: 'Payee',              dataType: 'text'},
       { key: 'tranTypeDesc', title: 'Payment Type',       dataType: 'text'},
-      { key: 'reqStatusDesc',title: 'Status',             dataType: 'text'},
+      // { key: 'reqStatusDesc',title: 'Status',             dataType: 'text'},
       { keys: {
            from : 'reqDateFrom', to: 'reqDateTo'
       },   title: 'Request Date', dataType: 'datespan'},
