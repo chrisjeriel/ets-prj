@@ -116,12 +116,14 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   getAcitPaytReq(){
-    var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),this.mtnService.getMtnPrintableName(''))
-                         .pipe(map(([pr,pn]) => { return { pr,pn }; }));
+    var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACCIT_PAYT_REQST.STATUS'))
+                         .pipe(map(([pr,pn,stat]) => { return { pr,pn,stat }; }));
 
     subRes.subscribe(data => {
       console.log(data);
       var recPn = data['pn']['printableNames'];
+      var recStat = data['stat']['refCodeList'];
+
       $('.globalLoading').css('display','none');
 
       if(!this.initDisabled){
@@ -155,14 +157,15 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
         this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
         this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
-        (this.saveAcitPaytReq.reqStatus == 'N' || this.saveAcitPaytReq.reqStatus == 'F' || 
-         this.saveAcitPaytReq.tranTypeCd == 1 || this.saveAcitPaytReq.tranTypeCd == 2 || this.saveAcitPaytReq.tranTypeCd == 3)?this.disableFlds(false):this.disableFlds(true);
+        (this.saveAcitPaytReq.tranTypeCd == 1 || this.saveAcitPaytReq.tranTypeCd == 2 || this.saveAcitPaytReq.tranTypeCd == 3)
+            ?this.disableFlds(true)
+            :((this.saveAcitPaytReq.reqStatus == 'N' || this.saveAcitPaytReq.reqStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
         
       }else{
         this.reqDateDate = this.ns.toDateTimeString(0).split('T')[0];
         this.reqDateTime = this.ns.toDateTimeString(0).split('T')[1];
-        this.saveAcitPaytReq.reqStatusDesc = 'New';
         this.saveAcitPaytReq.reqStatus = 'N';
+        this.saveAcitPaytReq.reqStatusDesc = recStat.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
         this.saveAcitPaytReq.currCd  = 'PHP';
         this.saveAcitPaytReq.currRate = 1;
         recPn.forEach(e => {

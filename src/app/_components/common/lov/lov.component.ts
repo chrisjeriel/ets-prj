@@ -779,7 +779,7 @@ export class LovComponent implements OnInit {
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'shortName','officialName']; 
-      this.mtnService.getMtnBank(this.passData.bankCd).subscribe((a:any)=>{
+      this.mtnService.getMtnBank().subscribe((a:any)=>{
         this.passTable.tableData = a.bankList;
         this.table.refreshTable();
       });
@@ -811,6 +811,15 @@ export class LovComponent implements OnInit {
       this.mtnService.getMtnBussType(this.passData.bussTypeCd, this.passData.bussTypeName, this.passData.activeTag).subscribe((a:any)=>{
         this.passTable.tableData = a["bussTypeList"];
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'bankAcct'){
+      this.passTable.tHeader = ['Account Name', 'Account No.'];
+      this.passTable.widths =['100','auto']
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'accountName','accountNo'];
+      this.mtnService.getMtnBankAcct(this.passData.bankCd).subscribe((a:any)=>{
+        this.passTable.tableData = a.bankAcctList;
         this.table.refreshTable();
       });
     }

@@ -1099,10 +1099,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.cedingCompanyData.tableData);
     console.log(this.params.savePrqTrans);
 
-    var reserveAmt = this.cedingCompanyData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reserveAmt != null ?parseFloat(b.reserveAmt):0),0);
-    console.log(reserveAmt);
+    var paytAmt = this.cedingCompanyData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.paytAmt != null ?parseFloat(b.paytAmt):0),0);
+    console.log(paytAmt);
 
-    if(Number(this.requestData.reqAmt) < Number(reserveAmt)){
+    if(Number(this.requestData.reqAmt) < Number(paytAmt)){
       this.warnMsg = 'The Total Payment Amount of Claim Histories must not exceed the Requested Amount.';
       this.warnMdl.openNoClose();
       this.params.savePrqTrans   = [];

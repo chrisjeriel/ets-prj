@@ -16,10 +16,10 @@
    		                    <label class="form-control-sm col-sm-1">Request Date</label>
                           <div class="input-group col-sm-3" style="padding: 0px;">
                             <div class="col-sm-8 dp-cont">
-                              <datepicker  [type]="'date'" [disabled]="saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F'" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
+                              <datepicker  [type]="'date'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                              <datepicker  [type]="'time'" [disabled]="saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F'" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
+                              <datepicker  [type]="'time'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
                             </div>
                           </div>
    		                    <label class="form-control-sm col-sm-1">Status</label>
@@ -169,14 +169,14 @@
           <p class="col-sm-12">Are you sure you want to approve this Payment Request?</p>
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-4 labels">Okayed By</label>
+          <label class="form-control-sm col-sm-4 labels">Approved By</label>
           <div class="input-group col-sm" style="padding: 0px; margin-right: 36px !important;">
             <input type="text" class="form-control form-control-sm cust-sm col-sm-12 cap-input warn" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedBy" appRequired>
             <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('app-user')"><i class="fa fa-search"></i></a></div>
           </div>
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-4 no-margin">Date of Disbursement</label>
+          <label class="form-control-sm col-sm-4 no-margin">Date Approved</label>
           <div class="col-sm-7 dp-cont" style="margin-left: 0px !important">
             <datepicker type="datetime" [required]="true" [(value)]="saveAcitPaytReq.approvedDate"></datepicker>
           </div>

@@ -9,6 +9,7 @@ import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.componen
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -23,11 +24,15 @@ export class CvEntryComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) cs         : ConfirmSaveComponent;
-  @ViewChild('payeeLov') payeeLov  : LovComponent;
-  @ViewChild('bankLov') bankLov    : LovComponent;
-  @ViewChild('classLov') classLov  : LovComponent;
-  @ViewChild('currLov') currLov    : MtnCurrencyComponent;
+  @ViewChild('payeeLov') payeeLov             : LovComponent;
+  @ViewChild('bankLov') bankLov               : LovComponent;
+  @ViewChild('bankAcctLov') bankAcctLov       : LovComponent;
+  @ViewChild('classLov') classLov             : LovComponent;
+  @ViewChild('currLov') currLov               : MtnCurrencyComponent;
   @ViewChild('prepUserLov') prepUserLov       : MtnUsersComponent;
+  @ViewChild('certUserLov') certUserLov       : MtnUsersComponent;
+  @ViewChild('confirmMdl') confirmMdl         : ModalComponent; 
+  @ViewChild('printmMdl') printmMdl           : ModalComponent;
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
   @Input() passData: any = {
@@ -72,6 +77,8 @@ export class CvEntryComponent implements OnInit {
   cancelFlag      : boolean;
   fromCancel      : boolean;
   private sub     : any;
+  cvStatList      : any;
+  removeIcon      : boolean;
 
   passDataLov  : any = {
     selector     : '',
@@ -114,20 +121,26 @@ export class CvEntryComponent implements OnInit {
 
   getAcitCv(){
     console.log(this.saveAcitCv.tranId);
-    var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''))
-                          .pipe(map(([cv,pn]) => { return { cv, pn }; }));
+    var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCH.CV_STATUS'))
+                          .pipe(map(([cv,pn,cl,stat]) => { return { cv, pn, cl,stat }; }));
 
     subRes.subscribe(data => {
       console.log(data);
       var recPn = data['pn']['printableNames'];
+      var recCl = data['cl']['refCodeList'];
+      var recStat = data['stat']['refCodeList'];
+      this.cvStatList = recStat;
 
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
         $('.globalLoading').css('display','none');
         this.saveAcitCv.cvStatus = 'N';
-        this.saveAcitCv.cvStatusDesc = 'New';
+        this.saveAcitCv.cvStatusDesc = recStat.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
         this.saveAcitCv.cvDate = this.ns.toDateTimeString(0);
         this.saveAcitCv.currCd = 'PHP';
         this.saveAcitCv.currRate = 1;
+        this.saveAcitCv.checkClass = 'LC';
+        this.saveAcitCv.checkClassDesc = recCl.filter(e => e.code == this.saveAcitCv.checkClass).map(e => e.description);
+
         recPn.forEach(e => {
           if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
             this.saveAcitCv.preparedByName  = e.printableName;
@@ -245,7 +258,7 @@ export class CvEntryComponent implements OnInit {
       bank             : this.saveAcitCv.bank,
       bankAcct         : this.saveAcitCv.bankAcct,
       certifiedBy      : this.saveAcitCv.certifiedBy,
-      certifiedDate    : this.ns.toDateTimeString(this.saveAcitCv.certifiedDate),
+      certifiedDate    : (this.saveAcitCv.certifiedDate == '' || this.saveAcitCv.certifiedDate == null)?'':this.ns.toDateTimeString(this.saveAcitCv.certifiedDate),
       checkClass       : this.saveAcitCv.checkClass,
       checkDate        : (this.saveAcitCv.checkDate == '' || this.saveAcitCv.checkDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.checkDate,
       checkNo          : this.saveAcitCv.checkNo,
@@ -295,6 +308,10 @@ export class CvEntryComponent implements OnInit {
     }else if(fromUser.toLowerCase() == 'bank'){
       this.passDataLov.selector = 'mtnBank';
       this.bankLov.openLOV();
+    }else if(fromUser.toLowerCase() == 'bank-acct'){
+      this.passDataLov.selector = 'bankAcct';
+      this.passDataLov.bankCd = this.saveAcitCv.bank;
+      this.bankAcctLov.openLOV();
     }else if(fromUser.toLowerCase() == 'class'){
       this.passDataLov.selector = 'checkClass';
       this.classLov.openLOV();
@@ -302,6 +319,8 @@ export class CvEntryComponent implements OnInit {
       this.currLov.modal.openNoClose();
     }else if(fromUser.toLowerCase() == 'prep-user'){
       this.prepUserLov.modal.openNoClose();
+    }else if(fromUser.toLowerCase() == 'cert-user'){
+      this.certUserLov.modal.openNoClose();
     }
   }
 
@@ -314,6 +333,11 @@ export class CvEntryComponent implements OnInit {
     }else if(from.toLowerCase() == 'bank'){
       this.saveAcitCv.bankDesc   = data.data.officialName;
       this.saveAcitCv.bank = data.data.bankCd;
+      this.saveAcitCv.bankAcctDesc = '';
+      this.saveAcitCv.bankAcct = '';
+    }else if(from.toLowerCase() == 'bank-acct'){
+      this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
+      this.saveAcitCv.bankAcct = data.data.bankAcctCd;
     }else if(from.toLowerCase() == 'class'){
       this.saveAcitCv.checkClassDesc   = data.data.description;
       this.saveAcitCv.checkClass = data.data.code;
@@ -325,6 +349,10 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.preparedByName = data.printableName;
       this.saveAcitCv.preparedBy  = data.userId;
       this.saveAcitCv.preparedDes  = data.designation;
+    }else if(from.toLowerCase() == 'cert-user'){
+      this.saveAcitCv.certifiedByName = data.printableName;
+      this.saveAcitCv.certifiedBy  = data.userId;
+      this.saveAcitCv.certifiedDes  = data.designation;
     }
   }
 
@@ -356,7 +384,39 @@ export class CvEntryComponent implements OnInit {
 
   disableFlds(con:boolean){
     $('.warn').prop('readonly',con);
-    (con)?$('.magni-icon').remove():'';
+    this.removeIcon = (con)?true:false;
+    console.log(this.removeIcon + ' >>> removeIcon');
+  }
+
+  setBankAcctData(){
+    this.saveAcitCv.bankAcctDesc = '';
+    this.saveAcitCv.bankAcct = '';
+  }
+
+  onYesCancelCv(){
+    $('.globalLoading').css('display','block');
+    this.confirmMdl.closeModal();
+    var updateAcitCvStat = {
+      tranId       : this.saveAcitCv.tranId,
+      cvStatus     : 'X',
+      updateUser  : this.ns.getCurrentUser()
+    };
+    console.log(updateAcitCvStat);
+    this.accountingService.updateAcitCvStat(JSON.stringify(updateAcitCvStat))
+    .subscribe(data => {
+      console.log(data);
+      $('.globalLoading').css('display','none');
+      this.saveAcitCv.cvStatus = 'X';
+      this.saveAcitCv.cvStatusDesc = this.cvStatList.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
+      this.dialogIcon = '';
+      this.dialogMessage = '';
+      this.success.open();
+      this.disableFlds(true);
+    });
+  }
+
+  onClickPrint(){
+    this.printmMdl.openNoClose();
   }
 
 }
