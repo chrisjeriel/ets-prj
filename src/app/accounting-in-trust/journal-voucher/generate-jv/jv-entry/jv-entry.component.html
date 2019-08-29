@@ -108,6 +108,10 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Date Prepared</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                           <!--  <div class="col-sm-9 dp-cont">
+                            <datepicker [type]="'datetime'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"  [disabled]="approvedStat"></datepicker>
+                            </div> -->
+
                             <div class="col-sm-5 dp-cont">
                             <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"  [disabled]="approvedStat"></datepicker>
                             </div>

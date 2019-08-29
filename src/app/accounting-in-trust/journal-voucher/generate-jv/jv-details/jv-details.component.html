@@ -54,6 +54,7 @@
                     <div *ngSwitchCase="7">Offsetting of Receivables In-Trust Against Losses</div>
                     <div *ngSwitchCase="8">Investment Roll Over</div>
                     <div *ngSwitchCase="9">Investment Pull Out</div>
+                    <div *ngSwitchCase="10">Investment (Placement)</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
@@ -96,6 +97,9 @@
                                 <app-jv-investment-pull-out [jvDetail]="jvDetails"></app-jv-investment-pull-out>
                             </ng-container>
 
+                            <ng-container *ngSwitchCase="10">
+                                <app-jv-investment-placement [jvDetail]="jvDetails"></app-jv-investment-placement>
+                            </ng-container>
                         </ng-container>
                     </div>
                 </div>

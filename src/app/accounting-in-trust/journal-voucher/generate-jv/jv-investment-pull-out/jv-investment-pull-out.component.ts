@@ -69,7 +69,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
     uneditable: [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
     checkFlag: true,
     pageID: 6,
-    widths:[100, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
+    widths:[140, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
   };
 
   passLov: any = {
@@ -79,7 +79,8 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   jvDetails:any = {
-    saveInvPullOut : []
+    saveInvPullOut : [],
+    delInvPullOut: []
   }
 
   banks: any[] = [];
@@ -145,7 +146,8 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   changeBankAcct(data){
-    this.accountNo = data.accountNo;
+    console.log(data)
+    this.accountNo = data.bankAcctCd;
     this.getInvPullout();
   }
 
@@ -215,6 +217,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
 
   prepareData(){
     this.jvDetails.saveInvPullOut = [];
+    this.jvDetails.delInvPullOut = [];
 
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if (this.passData.tableData[i].edited && !this.passData.tableData[i].deleted) {
@@ -223,6 +226,10 @@ export class JvInvestmentPullOutComponent implements OnInit {
         this.jvDetails.saveInvPullOut[this.jvDetails.saveInvPullOut.length - 1].bankAcct   = this.accountNo;
         this.jvDetails.saveInvPullOut[this.jvDetails.saveInvPullOut.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
         this.jvDetails.saveInvPullOut[this.jvDetails.saveInvPullOut.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
+      }
+
+      if(this.passData.tableData[i].deleted){
+        this.jvDetails.delInvPullOut.push(this.passData.tableData[i]);
       }
     }
   }

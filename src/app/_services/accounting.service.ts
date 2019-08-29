@@ -353,7 +353,6 @@ export class AccountingService {
 
 	getAccInvestments(searchParams : any[]) {
 		var params;
-		console.log(searchParams);
 		if(searchParams.length < 1){
 			params = new HttpParams()
 				.set('invtId','')
@@ -2061,4 +2060,13 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAttachments",{params});
 	}
 
+	saveInvRollOver(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvRollOver',JSON.stringify(params),header);
+	}
+	
 }
