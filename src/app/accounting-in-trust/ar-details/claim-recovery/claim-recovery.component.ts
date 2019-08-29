@@ -136,10 +136,10 @@ export class ClaimRecoveryComponent implements OnInit {
 
   retrieveClmRecover(){
     this.passData.tableData = [];
-    this.accountingService.getAcitArClmRecover(this.record.tranId, 1).subscribe( //billId for Claim Recovery / Overpayment is always 1
+    this.accountingService.getAcitArClmCashCall(this.record.tranId, 1).subscribe( //billId for Claim Recovery / Overpayment is always 1
       (data: any)=>{
-        if(data.arClmRecover.length !== 0){
-          for(var i of data.arClmRecover){
+        if(data.clmCashCallList.length !== 0){
+          for(var i of data.clmCashCallList){
             i.uneditable = ['claimNo'];
             this.passData.tableData.push(i);
           }

@@ -48,7 +48,7 @@ export class AccAttachmentsComponent implements OnInit {
 
   filesList: any [] = [];
 
-  constructor(private notes: NotesService, private upload: UploadService) {
+  constructor(private notes: NotesService, private upload: UploadService, private as: AccountingService) {
   }
 
   ngOnInit() {
@@ -59,20 +59,21 @@ export class AccAttachmentsComponent implements OnInit {
         this.passData.checkFlag = false;
         this.passData.magnifyingGlass = [];
       }
+      this.retrieveARAttachment();
   }
 
   retrieveARAttachment(){
-      /*this.underwritingService.getPolAttachment(this.policyInfo.policyId,this.policyInfo.policyNo).subscribe((data: any) =>{
+      this.as.getAcitAttachments(this.record.tranId).subscribe((data: any) =>{
           console.log(data);
           this.passData.tableData = [];
-          if(data.polAttachmentList !== null){
-              for(var i of data.polAttachmentList.attachments){
+          if(data.acitAttachmentsList !== null){
+              for(var i of data.acitAttachmentsList){
                   i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
                   this.passData.tableData.push(i);
               }
           }
           this.table.refreshTable();
-      });*/
+      });
   }
 
 
@@ -85,6 +86,7 @@ export class AccAttachmentsComponent implements OnInit {
       for (var i = 0 ; this.passData.tableData.length > i; i++) {
         if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
             this.savedData.push(this.passData.tableData[i]);
+            this.savedData[this.savedData.length-1].tranId = this.record.tranId;
             this.savedData[this.savedData.length-1].createDate = this.notes.toDateTimeString(0);
             this.savedData[this.savedData.length-1].createUser = JSON.parse(window.localStorage.currentUser).username;
             this.savedData[this.savedData.length-1].updateDate = this.notes.toDateTimeString(0);
@@ -92,31 +94,35 @@ export class AccAttachmentsComponent implements OnInit {
         }
         else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
            this.deletedData.push(this.passData.tableData[i]);
+           this.deletedData[this.deletedData.length-1].tranId = this.record.tranId;
            this.deletedData[this.deletedData.length-1].createDate = this.notes.toDateTimeString(0);
            this.deletedData[this.deletedData.length-1].updateDate = this.notes.toDateTimeString(0);
         }
 
       }
-
-     /*   this.underwritingService.savePolAttachment(this.policyInfo.policyId,this.savedData,this.deletedData).subscribe((data: any) => {
-          console.log(data);
-          if(data.returnCode === 0){
-              this.dialogMessage="The system has encountered an unspecified error.";
-              this.dialogIcon = "error";
-              $('#polAttachment > #successModalBtn').trigger('click');
-          }else{
-              this.dialogMessage="";
-              this.dialogIcon = "";
-              if(data.uploadDate != null){
-                this.uploadMethod(data.uploadDate);
-              }
-              if(this.deletedData.length !== 0){
-                this.deleteFileMethod();
-              }
-              $('#polAttachment > #successModalBtn').trigger('click');
-              this.retrieveARAttachment();
-          }
-        });*/
+      let params: any = {
+        saveAttachmentsList: this.savedData,
+        delAttachmentsList: this.deletedData
+      }
+      this.as.saveAcitAttachments(params).subscribe((data: any) => {
+        console.log(data);
+        if(data.returnCode === 0){
+            this.dialogMessage="The system has encountered an unspecified error.";
+            this.dialogIcon = "error";
+            this.successDiag.open();
+        }else{
+            this.dialogMessage="";
+            this.dialogIcon = "";
+            if(data.uploadDate != null){
+              this.uploadMethod(data.uploadDate);
+            }
+            if(this.deletedData.length !== 0){
+              this.deleteFileMethod();
+            }
+            this.successDiag.open();
+            this.retrieveARAttachment();
+        }
+      });
       
   }
 
@@ -134,6 +140,7 @@ export class AccAttachmentsComponent implements OnInit {
       this.upload.uploadFile(file, date)
         .subscribe(
           event => {
+            console.log('nandato kore');
             if (event.type == HttpEventType.UploadProgress) {
               const percentDone = Math.round(100 * event.loaded / event.total);
               console.log(`File is ${percentDone}% loaded.`);
@@ -177,11 +184,11 @@ export class AccAttachmentsComponent implements OnInit {
 
   onClickSave(){
     if(this.checkFields()){
-     $('#confirm-save #modalBtn2').trigger('click');
+      this.confirm.confirmModal();
     }else{
-      this.dialogMessage="Please fill up required fields.";
-      this.dialogIcon = "info";
-      $('#polAttachment > #successModalBtn').trigger('click');
+      this.dialogMessage="";
+      this.dialogIcon = "error";
+      this.successDiag.open();
     }
   }
 

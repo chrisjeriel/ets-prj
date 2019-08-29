@@ -2023,6 +2023,15 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/approveJV',JSON.stringify(params),header);
 	}
 
+	saveAcitAttachments(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitAttachments',JSON.stringify(params),header);
+	}
+
 	getJvInvPullout(tranId){
 		const params = new HttpParams()
 		 	.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
@@ -2044,6 +2053,12 @@ export class AccountingService {
 		const params = new HttpParams()
 		 	.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInvRollOver",{params});
+    }
+
+	getAcitAttachments(tranId){
+		const params = new HttpParams()
+		 	.set('tranId', tranId);
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAttachments",{params});
 	}
 
 }
