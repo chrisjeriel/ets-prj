@@ -12,20 +12,21 @@ export class JvAttachmentsComponent implements OnInit {
   passData:any = {
   	tableData:[],
   	tHeader: ['File Path','Description', 'Actions'],
+    dataTypes: ['string', 'string','file'],
   	checkFlag: true,
   	addFlag:true,
   	deleteFlag:true,
   	infoFlag:true,
   	paginateFlag: true,
   	widths:['auto','auto',71],
-  	nData: new AttachmentInfo(null,null),
+  	//nData: new AttachmentInfo(null,null),
 
   };
 
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
-  	this.passData.tableData = this.accountingService.getAttachmentInfo();
+  	//this.passData.tableData = this.accountingService.getAttachmentInfo();
   }
 
 }

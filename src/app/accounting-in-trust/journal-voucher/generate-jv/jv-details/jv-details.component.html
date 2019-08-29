@@ -89,11 +89,11 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="8">
-                                <app-jv-loss-reserve-deposit></app-jv-loss-reserve-deposit>
+                                <app-jv-investment-roll-over></app-jv-investment-roll-over>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="9">
-                                <app-jv-investment-pull-over></app-jv-investment-pull-over>
+                                <app-jv-investment-pull-out [jvDetail]="jvDetails"></app-jv-investment-pull-out>
                             </ng-container>
 
                         </ng-container>

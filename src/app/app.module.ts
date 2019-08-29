@@ -442,7 +442,10 @@ import { MtnCedingCompanyTreatyComponent } from './maintenance/mtn-ceding-compan
 import { MtnBankComponent } from './maintenance/mtn-bank/mtn-bank.component';
 import { MtnAcctIntDurationComponent } from './maintenance/mtn-acct-int-duration/mtn-acct-int-duration.component';
 import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
-import { JvInvestmentPullOverComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-investment-pull-over/jv-investment-pull-over.component';
+import { JvInvestmentPullOutComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-investment-pull-out/jv-investment-pull-out.component';
+import { JvInvestmentRollOverComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-investment-roll-over/jv-investment-roll-over.component';
+import { MtnPayeeCedingComponent } from './maintenance/mtn-payee-ceding/mtn-payee-ceding.component';
+import { MtnPayeeCedingTreatyComponent } from './maintenance/mtn-payee-ceding-treaty/mtn-payee-ceding-treaty.component';
 
 @NgModule({
     imports: [
@@ -891,7 +894,10 @@ import { JvInvestmentPullOverComponent } from './accounting-in-trust/journal-vou
         MtnBankComponent,
         MtnAcctIntDurationComponent,
         WfFormCommonComponent,
-        JvInvestmentPullOverComponent,
+        JvInvestmentPullOutComponent,
+        JvInvestmentRollOverComponent,
+        MtnPayeeCedingComponent,
+        MtnPayeeCedingTreatyComponent
     ],
 
   	providers: [

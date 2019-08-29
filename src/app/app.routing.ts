@@ -176,7 +176,6 @@ import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component'
 import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
-
 const appRoutes: Routes = [
 
 
