@@ -16,9 +16,9 @@
 				<app-ar-preview [record]="arDetailsParam"></app-ar-preview>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Attachments">
+		<ngb-tab class="ngb-tab" title="Attachments" [disabled]="disableTab">
 			<ng-template ngbTabContent>
-				<app-acc-attachments></app-acc-attachments>
+				<app-acc-attachments [record]="arDetailsParam"></app-acc-attachments>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="Exit" >

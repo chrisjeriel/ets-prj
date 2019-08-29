@@ -2015,11 +2015,9 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJvReceivablesAgainstLoss',JSON.stringify(params),header);
 	}
 
-
 	getAcitCv(tranId?){
 		const params = new HttpParams()
 			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
-
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCv',{params});	
 	}
 
@@ -2030,7 +2028,6 @@ export class AccountingService {
              })
          };
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCv',params,header);
- 
     }
 
     getAcitCvList(searchParams: any[]){
@@ -2081,5 +2078,19 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCvPaytReqList',{params});	
 	}
 
+	saveAcitAttachments(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitAttachments',JSON.stringify(params),header);
+	}
+
+	getAcitAttachments(tranId){
+		const params = new HttpParams()
+		 	.set('tranId', tranId);
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAttachments",{params});
+	}
 
 }

@@ -1,58 +1,61 @@
-<fieldset class="scheduler-border">
-    <legend class="scheduler-border">A.R. Info</legend>
-    <div class="form-row custom-row-inline-inset">
-      <div class="col-sm-6">
-        <div class="input-group">
-          <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
-          <input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
-           style="z-index: 1 !important;">
-          <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
-          <input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm"
-          style="z-index: 1 !important;">
-           <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
-            <input type="text" value="2018-001-55" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
-            style="z-index: 1 !important;">
+<div class="row">
+  <div class="col-sm-12">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">A.R. Info</legend>
+      <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-6">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
+            style="z-index: 1 !important;" readonly [ngModel]="pad(record.arNo, 'arNo')">
+            <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
+            <input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm"
+            style="z-index: 1 !important;" readonly [ngModel]="record.arDate">
+            <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
+            <input type="text" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
+            style="z-index: 1 !important;" readonly [ngModel]="record.dcbNo">
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm"
+            placeholder=""   readonly [ngModel]="record.payor">
+          </div>
         </div>
-        <div class="input-group">
-          <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
-          <input type="text" value="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm col-sm"
-           placeholder=""  >
+        <div class="col-sm-3">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment Type</label>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly [ngModel]="record.tranTypeName">
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Status</label>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly [ngModel]="record.arStatDesc">
+          </div>
+        </div>
+
+        <div class="col-sm-3">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" [ngModel]="record.currCd" readonly>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+            placeholder="" [ngModel]="record.arAmt | number: '1.2-2'" readonly>
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+            placeholder="" [ngModel]="record.arAmt * record.currRate | number: '1.2-2'" readonly>
+          </div>
         </div>
       </div>
-      <div class="col-sm-3">
-        <div class="input-group">
-          <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment
-            Type</label>
-          <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="" [ngModel]="paymentType">
-        </div>
-        <div class="input-group">
-          <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Status</label>
-           <input type="text" value="New" class="form-control form-control-sm cust-sm col-sm" placeholder="">
-        </div>
-      </div>
-  
-      <div class="col-sm-3">
-        <div class="input-group">
-          <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
-          <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-          <input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-           placeholder="">
-        </div>
-        <div class="input-group">
-          <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-          <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-          <input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-           placeholder="">
-        </div>
-      </div>
-    </div>
-  </fieldset>
+    </fieldset>
+  </div>
+</div>
 
 
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Attached Files</legend>
 	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
-		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
 	</div>
 
 	<!-- <div class="input-group" style="margin-left: -20px;margin-bottom: -6px !important;">
@@ -67,8 +70,8 @@
 	</div> -->
   <div class="form-group col-sm text-center" style="margin-bottom: 5px">
       <div class="cust-btn-container">
-        <button type="button" class="cust-btn"><a>Cancel</a></button>
-        <button type="button" class="cust-btn"><a>Save</a></button>
+        <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
       </div>
   </div>
 
@@ -95,3 +98,8 @@ padding-right: 0px !important;">
   </div>
 </fieldset>
 </div>
+
+
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>

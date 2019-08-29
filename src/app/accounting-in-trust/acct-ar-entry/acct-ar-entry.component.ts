@@ -550,7 +550,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             createDate: this.arInfo.createDate,
             updateUser: this.arInfo.updateUser,
             updateDate: this.arInfo.updateDate,
-            cedingId: this.arInfo.cedingId,
+            cedingId: this.arInfo.payeeNo,
             bussTypeName: this.arInfo.bussTypeName,
             refCd: this.arInfo.refCd
           }
@@ -937,7 +937,15 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   //UTILITIES STARTS HERE
 
   changeTranType(data){
+    //console.log(this.paymentTypes.map(a=>{return a.defaultParticulars}));
     this.arInfo.tranTypeCd = data;
+    //this.arInfo.particulars = this.paymentTypes.map(a=>{return a.defaultParticulars}).indexOf(data)
+    for(var i of this.paymentTypes){
+      if(i.tranTypeCd == data){
+        this.arInfo.particulars = i.defaultParticulars;
+        break;
+      }
+    }
     if(data == 7){
       this.disablePayor = true;
       this.ms.getMtnPayee().subscribe(
