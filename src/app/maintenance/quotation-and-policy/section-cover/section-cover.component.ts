@@ -157,8 +157,8 @@ export class SectionCoverComponent implements OnInit {
 	this.secTable.loadingFlag = true;
 	if(this.dedTable.form.dirty || this.secTable.form.dirty){
 		this.onClickSave();
-		this.dedTable.form.markAsPristine();
-		this.secTable.form.markAsPristine();
+		this.dedTable.markAsPristine();
+		this.secTable.markAsPristine();
 	}
   	this.ms.getMtnSectionCovers(this.line.lineCd,'').subscribe(a=>{
 		//deza was here 7/5/2019 #8221 MTN112
