@@ -2031,4 +2031,19 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInvPullOut",{params});
 	}
 	
+	saveInvPullOut(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvPullOut',JSON.stringify(params),header);
+	}
+	
+	getJvInvRollOver(tranId){
+		const params = new HttpParams()
+		 	.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInvRollOver",{params});
+	}
+
 }

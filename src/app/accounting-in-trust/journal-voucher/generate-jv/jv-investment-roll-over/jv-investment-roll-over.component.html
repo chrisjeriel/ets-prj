@@ -1,3 +1,19 @@
-<p>
-  jv-investment-roll-over works!
-</p>
+<div>
+	<div class="row">
+ 	 	 <div class="col-sm" style="margin-top: 20px" >
+ 	 	 	 <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="invstLOV($event)"></app-cust-editable-non-datatable>
+ 	 	 </div>
+ 	</div>
+    <div class="form-row" style="margin-top: 13px !important;">
+        <div class="form-group col-sm">
+            <div class="col-md-12 text-center">
+                <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="onClickSave()"><a>Save</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
+<app-lov [passData]="passLov" (selectedData)="setSelectedDataInv($event)" #newLov>

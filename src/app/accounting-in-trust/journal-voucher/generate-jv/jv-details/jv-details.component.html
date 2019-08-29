@@ -52,7 +52,7 @@
                     <div *ngSwitchCase="5">Offsetting of Claims Against Negative Treaty Balance</div>
                     <div *ngSwitchCase="6">Offsetting of Outstanding Accounts Against Treaty Balance</div>
                     <div *ngSwitchCase="7">Offsetting of Receivables In-Trust Against Losses</div>
-                    <div *ngSwitchCase="8">Loss Reserve Deposit</div>
+                    <div *ngSwitchCase="8">Investment Roll Over</div>
                     <div *ngSwitchCase="9">Investment Pull Out</div>
                 </ng-container>
             </ng-template>
@@ -89,7 +89,7 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="8">
-                                <app-jv-investment-roll-over></app-jv-investment-roll-over>
+                                <app-jv-investment-roll-over [jvDetail]="jvDetails"></app-jv-investment-roll-over>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="9">

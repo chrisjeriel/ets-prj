@@ -5,7 +5,7 @@
           <div class="col-sm-2"></div>
           <label class="form-control-sm col-sm-1">Bank</label>
           <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBank" (ngModelChange)="changeBank($event)" appRequired >
-            <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}} {{selectedBank === bankAcct}}</option>
+            <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
           </select>
           <label class="form-control-sm col-sm-2">Bank Acct. No.</label>
           <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBankAcct" (ngModelChange)="changeBankAcct($event)" appRequired>
@@ -13,7 +13,7 @@
           </select>
           <div class="col-sm-1"></div>
         </div>
-      	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvPulloutLOV($event)" (tableDataChange)="onTableDataChange($event)">
+      	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvPulloutLOV($event)">
       	</app-cust-editable-non-datatable>
     </div>
   </div>
@@ -31,6 +31,6 @@
 </div>
 
 <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
-<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-confirm-save (onYes)="saveInvPullOut()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>
+<app-cancel-button (onYes)="saveInvPullOut('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>
