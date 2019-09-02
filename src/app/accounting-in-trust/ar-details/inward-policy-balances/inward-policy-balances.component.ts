@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingService, NotesService } from '@app/_services';
 import { ARInwdPolBalDetails } from '@app/_models';
@@ -23,6 +23,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   @Input() record: any = {};
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
 
   passData: any = {
     tableData: [],
@@ -132,7 +133,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           //this.passData.tableData = data.arInwPolBal;
           for(var i of data.arInwPolBal){
             i.cumPayment = i.prevCumPayment;
-            i.totalPayments = i.cumPayment + i.balPaytAmt;
+            i.totalPayments = i.cumPayment;
             i.uneditable = ['balPaytAmt'];
             this.passData.tableData.push(i);
           }
@@ -182,6 +183,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue = selected[i].prevNetDue;
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment = selected[i].cumPayment;
       this.passData.tableData[this.passData.tableData.length - 1].prevBalance = selected[i].prevBalance;
+      
       /*this.passData.tableData[this.passData.tableData.length - 1].premAmt = selected[i].prevPremAmt;
       this.passData.tableData[this.passData.tableData.length - 1].riComm = selected[i].prevRiComm;
       this.passData.tableData[this.passData.tableData.length - 1].riCommVat = selected[i].prevRiCommVat;
@@ -296,6 +298,12 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   onRowClick(data){
     if(data !== null){
       this.selected = data;
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      this.emitCreateUpdate.emit(data);
+    }else{
+      this.selected = null;
+      this.emitCreateUpdate.emit(null);
     }
   }
 

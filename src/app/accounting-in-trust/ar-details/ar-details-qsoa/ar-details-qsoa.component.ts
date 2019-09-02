@@ -23,6 +23,8 @@ export class ArDetailsQsoaComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
   
   passData: any = {
     tableData:[],
@@ -187,7 +189,7 @@ export class ArDetailsQsoaComponent implements OnInit {
           }
         }else if(data.returnCode === 0 && data.custReturnCode === 2){
           this.dialogIcon = 'error-message';
-          this.dialogMessage = 'Total Maturity Value of the Investment Pull-outs must not exceed the AR Amount.';
+          this.dialogMessage = 'The absolute value of the Total Amount of Treaty Balances must not exceed the AR Amount.';
           this.successDiag.open();
           if(this.cancelFlag){
             this.cancelFlag = false;
@@ -205,7 +207,13 @@ export class ArDetailsQsoaComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
+    if(data !== null){
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      this.emitCreateUpdate.emit(data);
+    }else{
+      this.emitCreateUpdate.emit(null);
+    }
   }
 
   onTableDataChange(data){

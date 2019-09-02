@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -21,6 +21,8 @@ export class ArClaimCashCallComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   @Input() record: any = {};
+
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
 
   passData: any = {
     tableData: [],
@@ -239,7 +241,13 @@ export class ArClaimCashCallComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
+    if(data !== null){
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      this.emitCreateUpdate.emit(data);
+    }else{
+      this.emitCreateUpdate.emit(null);
+    }
   }
   onTableDataChange(data){
     if(data.key === 'recOverAmt'){
