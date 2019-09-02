@@ -137,7 +137,7 @@
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-unapplied-collection [arDetails]="record"></app-unapplied-collection>
+						<app-unapplied-collection [arDetails]="record" (emitCreateUpdate)="createUpdate = $event"></app-unapplied-collection>
 					</div>
 				</div>
 			</ng-template>
@@ -146,7 +146,7 @@
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-ar-others [arDetails]="record"></app-ar-others>
+						<app-ar-others [arDetails]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-others>
 					</div>
 				</div>
 			</ng-template>
