@@ -1997,7 +1997,6 @@ export class AccountingService {
 		        'Content-Type': 'application/json'
 		    })
 		};
-		
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJvReceivablesAgainstLoss',JSON.stringify(params),header);
 	}
 
@@ -2058,6 +2057,21 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCvPaytReqList',{params});	
 	}
 
+	getJVAllocInvtIncListing(allocTranId) {
+		 const params = new HttpParams()
+             .set('allocTranId', (allocTranId === null || allocTranId === undefined ? '' : allocTranId) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
+	}
+
+	updateAcitStatus(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitStatus',JSON.stringify(params),header);
+	}
+
 	getClmResHistPayts(cedingId,payeeNo,currCd){
 		const params = new HttpParams()
 		 	.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
@@ -2074,4 +2088,20 @@ export class AccountingService {
          };
    		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitCvStat',params,header);
     } 
+
+	saveAcitAttachments(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitAttachments',JSON.stringify(params),header);
+	}
+
+	getAcitAttachments(tranId){
+		const params = new HttpParams()
+		 	.set('tranId', tranId);
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAttachments",{params});
+	}
+
 }

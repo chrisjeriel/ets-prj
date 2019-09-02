@@ -70,7 +70,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     uneditable: [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
     checkFlag: true,
     pageID: 6,
-    widths:[220, 150, 1, 150, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
+    widths:[130, 120, 1, 130, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
   }
 
   passLov: any = {
@@ -93,7 +93,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     console.log(this.record.tranId);
     console.log(this.invData);
     this.passData.nData.tranId = this.record.tranId;
-    this.passLov.searchParams = [{key: 'bankCd', search: this.record.refCd}, {key:'invtStatus', search: 'MATURED'}];
+    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'MATURED'}];
     if(this.invData !== undefined){
       for(var i of this.invData){
         this.passLov.hide.push(i);

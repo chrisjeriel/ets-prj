@@ -94,6 +94,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Inward Policy Balances");
+    console.log(this.record.payeeNo);
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
@@ -371,6 +372,10 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     //this.passData.tableData = data;
     this.computeTotalBalAndVariance();
     console.log(this.originalValues);
+  }
+
+  parseCurrency(data){
+    return parseFloat(data.replace(/,/g, ''));
   }
 
   //ALL VALIDATIONS STARTS HERE
