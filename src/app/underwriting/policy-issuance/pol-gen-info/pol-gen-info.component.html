@@ -145,10 +145,10 @@
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Inception Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]; updateExpiryDate();"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1];policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]; updateExpiryDate();"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event;policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>								
 								<!-- <input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
 								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.inceptDate?.split('T')[1]" (ngModelChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" appRequired> -->
@@ -258,7 +258,7 @@
 								<input type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.effDate?.split('T')[1]" (ngModelChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" appRequired> -->
 							</div>
 							<div class="input-group col-sm-6" style="padding: 0px;">
-								<label class="form-control-sm col-sm-4">Accounting Date</label>
+								<label class="form-control-sm col-sm-4">Booking Date</label>
 								<div class="col-sm dp-cont">
 									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.acctDate?.split('T')[0]" (valueChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1];"></datepicker>
 								</div>
@@ -1408,20 +1408,20 @@
 								<div class="input-group col-sm-6">
 									<label class="form-control-sm col-sm-4">This Alteration</label>
 									<div class="col-sm dp-cont">
-										<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]; updateExpiryDate();"></datepicker>
+										<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1];policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]; updateExpiryDate();"></datepicker>
 									</div>
 									<div class="col-sm-3 dp-cont">
-										<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+										<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event;policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 									</div>
 								</div>
 								<div class="input-group col-sm-6" style="margin-right: 0px;">
 									<label class="form-control-sm col-sm-4"></label>
 
 									<div class="col-sm dp-cont">
-										<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.expiryDate?.split('T')[0]" (valueChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" [minDate]="policyInfo.inceptDate?.split('T')[0]"></datepicker>
+										<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.expiryDate?.split('T')[0]" (valueChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1];" [minDate]="policyInfo.inceptDate?.split('T')[0]" ></datepicker>
 									</div>
 									<div class="col-sm-3 dp-cont">
-										<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.expiryDate?.split('T')[1]" (valueChange)="policyInfo.expiryDate=policyInfo.expiryDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+										<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.expiryDate?.split('T')[1]" (valueChange)="policyInfo.expiryDate=policyInfo.expiryDate.split('T')[0]+'T'+$event;" [textAlign]="'center'"></datepicker>	
 									</div>
 								</div>
 							</div>
@@ -2275,14 +2275,14 @@
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.distDate?.split('T')[1]" appRequired> -->
 
 													<div class="col-sm dp-cont">
-														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.distDate?.split('T')[0]" (valueChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]"></datepicker>
+														<datepicker [disabled]="true" [type]="'date'"  [showIcon]="true" [value]="policyInfo.distDate?.split('T')[0]" (valueChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]"></datepicker>
 													</div>
 													<div class="col-sm-3 dp-cont">
-														<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.distDate?.split('T')[1]" (valueChange)="policyInfo.distDate=policyInfo.distDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
+														<datepicker [disabled]="true" [type]="'time'" [required]="true" [value]="policyInfo.distDate?.split('T')[1]" (valueChange)="policyInfo.distDate=policyInfo.distDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
 													</div>
 												</div>
 												<div class="input-group">
-													<label class="form-control-sm col-sm-4">Accounting Date</label>
+													<label class="form-control-sm col-sm-4">Booking Date</label>
 													<!-- <input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]" appRequired>
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]" appRequired> -->
 
@@ -2312,7 +2312,7 @@
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.distDate?.split('T')[1]" appRequired>
 												</div>
 												<div class="input-group">
-													<label class="form-control-sm col-sm-4">Accounting Date</label>
+													<label class="form-control-sm col-sm-4">Booking Date</label>
 													<input type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]" appRequired>
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]" appRequired>
 												</div>
@@ -2639,6 +2639,45 @@
 
         <button class="cust-btn" type="button" (click)="forceExt = 1; prepareParam(); modalService.dismissAll();"><a>Yes</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="polGenInfoConfirmationModal">
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <!-- <fieldset class="scheduler-border" style="padding-top: 5px !important;"> -->
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>Saving the changes will recreate the details of Coverage and<br />
+                Inward Policy Balance. Do you want to proceed?</p>
+            </div>
+        <!-- </fieldset> -->
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="forceExt = 1; prepareParam(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #changeMainteMdl>
+    <div header>Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <!-- <fieldset class="scheduler-border" style="padding-top: 5px !important;"> -->
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>Change Maintenance Date based on new Inception Date?</p>
+                <div class="d-flex  w-100">
+                	    <label class="col-sm-1">Previous:</label> <label class="col-sm">{{formatDate(currMaintenanceFrom)}} - {{formatDate(currMaintenanceTo)}}</label>
+            	</div>
+            	<div class="d-flex  w-100">
+                		<label class="col-sm-1">New:</label> <label class="col-sm">{{formatDate(tempMaintenanceFrom)}} - {{formatDate(tempMaintenanceTo)}}</label>
+                </div>
+                
+            </div>
+        <!-- </fieldset> -->
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="updateMaintenance(); modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="checkNewExpiry = false;prepareParam(cancelFlag);modalService.dismissAll();"><a>No</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
     </div>
 </app-modal>
 <app-cancel-button #dedCancel (onYes)="saveDeductibles('cancel')" (no)="deductiblesModal.closeModal()"></app-cancel-button>

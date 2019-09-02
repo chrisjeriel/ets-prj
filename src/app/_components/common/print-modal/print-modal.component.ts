@@ -23,7 +23,7 @@ export class PrintModalComponent implements OnInit {
      reasonCd: null
    }
 
-  constructor(private modalService: NgbModal) { }
+  constructor(public modalService: NgbModal) { }
    reportsList: any[] = [
 								{val:"QUOTER009A", desc:"Quotation Letter" },
 								{val:"QUOTER009B", desc:"RI Preparedness to Support Letter" },

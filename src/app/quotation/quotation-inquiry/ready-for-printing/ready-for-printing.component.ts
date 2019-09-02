@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { QuotationService } from '@app/_services'
+import { QuotationService, UserService } from '@app/_services'
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -25,7 +25,7 @@ export class ReadyForPrintingComponent implements OnInit {
 
   records: any[] = [];
 
-  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef, private http: HttpClient) { }
+  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef, private http: HttpClient, private userService: UserService) { }
   reportsList: any[] = [
                                 {val:"QUOTER009A", desc:"Quotation Letter" },
                                 {val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" },
@@ -177,6 +177,7 @@ export class ReadyForPrintingComponent implements OnInit {
                               search : "APPROVED"
                           });
     this.retrieveQuoteListingMethod();
+    this.userService.emitModuleId("QUOTE010");
   }
 
   retrieveQuoteListingMethod(){

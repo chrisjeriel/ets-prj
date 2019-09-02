@@ -48,7 +48,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
   doneCheck: boolean = false;
 
   constructor(private underwritingService: UnderwritingService, private router: Router,
-    private modalService: NgbModal, private titleService: Title, private cs: ClaimsService) { }
+   public modalService: NgbModal, private titleService: Title, private cs: ClaimsService) { }
+
 
   ngOnInit() {
     this.getPolListing();

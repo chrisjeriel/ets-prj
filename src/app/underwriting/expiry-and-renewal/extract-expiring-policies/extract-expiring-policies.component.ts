@@ -17,7 +17,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class ExtractExpiringPoliciesComponent implements OnInit {
 
-  constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title, private ns: NotesService, private router: Router) { }
+  constructor(private underWritingService: UnderwritingService, public modalService: NgbModal, private titleService: Title, private ns: NotesService, private router: Router) { }
 
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;

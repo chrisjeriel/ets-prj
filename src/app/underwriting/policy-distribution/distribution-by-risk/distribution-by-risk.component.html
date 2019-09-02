@@ -159,14 +159,15 @@
       </app-modal>
       <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()" ><a>Cancel</a></button>
       <button type="button" class="cust-btn" (click)="onClickSave()" [class.d-none]="controlHidden.saveBtn"><a>Save</a></button>
-      <button type="button" class="cust-btn" (click)="save()" ><a>Test Save</a></button>
+      <!-- <button type="button" class="cust-btn" (click)="save()" ><a>Test Save</a></button> -->
       <button type="button" class="cust-btn" (click)="distribute()" [class.d-none]="controlHidden.distributeBtn" ><a>Distribute</a></button>
     </div>
   </div>
 </div>
 
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()" ></app-cancel-button>
 

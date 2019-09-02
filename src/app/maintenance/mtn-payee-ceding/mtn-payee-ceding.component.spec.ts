@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MtnClaimsComponent } from './mtn-claims.component';
+import { MtnPayeeCedingComponent } from './mtn-payee-ceding.component';
 
-describe('MtnClaimsComponent', () => {
-  let component: MtnClaimsComponent;
-  let fixture: ComponentFixture<MtnClaimsComponent>;
+describe('MtnPayeeCedingComponent', () => {
+  let component: MtnPayeeCedingComponent;
+  let fixture: ComponentFixture<MtnPayeeCedingComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MtnClaimsComponent ]
+      declarations: [ MtnPayeeCedingComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MtnClaimsComponent);
+    fixture = TestBed.createComponent(MtnPayeeCedingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

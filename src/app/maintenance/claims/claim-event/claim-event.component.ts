@@ -29,8 +29,9 @@ export class ClaimEventComponent implements OnInit {
 
     passData: any = {
         tableData            : [],
-        tHeader              : ['Event Code', 'Description', 'Event Type','Event Date From','Event Date To','Active','Remarks'],
-        dataTypes            : ['sequence-5','text','lovInput','date','date','checkbox','text'],
+        tHeader              : ['Event Code', 'Description','Event Type','Event Date From','Event Date To','Active','Remarks'],
+        dataTypes            : ['sequence-5','text','lovInput','datespan','datespan','checkbox','text'],
+        datespan			 : [{ from: 'lossDateFrom', to: 'lossDateTo' }],
         magnifyingGlass	 	 : ['eventTypeCd'],
         nData:
         {
@@ -76,7 +77,7 @@ export class ClaimEventComponent implements OnInit {
 		deleteEvent : []
 	};
 
-  	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns : NotesService, private quotationService: QuotationService, private modalService : NgbModal) { }
+  	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns : NotesService, private quotationService: QuotationService, public modalService : NgbModal) { }
 
   	ngOnInit() {
 		this.titleService.setTitle('Mtn | Claim Event');

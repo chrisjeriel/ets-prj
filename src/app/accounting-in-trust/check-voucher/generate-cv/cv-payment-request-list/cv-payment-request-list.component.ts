@@ -10,6 +10,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-cv-payment-request-list',
@@ -89,7 +90,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   warnMsg        : string = '';
 
 
-  constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService) { }
+  constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, public modalService: NgbModal) { }
 
   ngOnInit() {
     this.titleService.setTitle(" Acct | CV | Payment Request List");

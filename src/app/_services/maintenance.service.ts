@@ -1297,4 +1297,11 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnBussType', {params});
     }
 
+    getMtnPayeeCeding(payeeClassCd, treatyTag){
+    	const params = new HttpParams()
+    		.set('payeeClassCd', (payeeClassCd === null || payeeClassCd === undefined ? '' : payeeClassCd))
+    		.set('treatyTag', (treatyTag === null || treatyTag === undefined ? '' : treatyTag))
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnPayeeCeding', {params});
+    }
+    
 }

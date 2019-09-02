@@ -154,7 +154,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
 
   
   constructor(private titleService: Title, private router: Router, private ns: NotesService, 
-                private us: UnderwritingService, private modalService: NgbModal) { }
+                private us: UnderwritingService, public modalService: NgbModal) { }
 
   ngOnInit() {
     this.disabledOldBool = this.disabledBool;

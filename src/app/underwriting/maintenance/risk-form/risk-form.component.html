@@ -139,7 +139,7 @@
     </ngb-tabset>
 </div>
 
-<app-mtn-district id="districtModal" (selectedData)="setDistricts($event)"></app-mtn-district>
+<app-mtn-district id="districtModal" (selectedData)="setDistrict($event)"></app-mtn-district>
 <app-mtn-city id="cityModal" (selectedData)="setCity($event)"></app-mtn-city>
 <app-mtn-cresta-zone id="crestaZoneModal" (selectedData)="setCrestaZone($event)"></app-mtn-cresta-zone>
 <app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>
@@ -156,5 +156,6 @@
 </app-modal> -->
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-risk-list'" ></app-cancel-button>

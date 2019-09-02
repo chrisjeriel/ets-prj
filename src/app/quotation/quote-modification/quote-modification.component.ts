@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { QuotationService, NotesService } from '@app/_services';
+import { QuotationService, NotesService, UserService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -39,10 +39,13 @@ export class QuoteModificationComponent implements OnInit {
 	insuredDesc: any = '';
 	riskName: any = '';
 
-	constructor(private modalService: NgbModal, private router: Router, private qs: QuotationService, private ns: NotesService) { }
+	constructor(public modalService: NgbModal, private router: Router, private qs: QuotationService, private ns: NotesService, private userService: UserService) { 
+		
+	}
 
 	ngOnInit() {
 		this.getQuoteListing();
+		this.userService.emitModuleId("QUOTE011");
 	}
 
 	getQuoteListing(param?) {

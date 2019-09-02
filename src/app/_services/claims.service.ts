@@ -221,11 +221,17 @@ export class ClaimsService {
     }
 
 
-    getClaimDist(claimId,projId){
-        const params = new HttpParams()
-            .set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
-            .set('projId', (projId == null || projId == undefined ? '' : projId))
-        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmDist',{params});    
+    getClaimDist(params){
+        // var params = new HttpParams();
+
+        // params.set('claimId', (claimId == null || claimId == undefined ? '' : claimId))
+        // params.set('projId', (projId == null || projId == undefined ? '' : projId));
+
+        // if(searchParams != undefined)
+        //     for(var i of searchParams){
+        //          params = params.set(i.key, i.search);
+        //      }
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmDist',{params:params});    
     }
 
     getClaimDistPool(claimId,projId,histNo,clmDistNo){

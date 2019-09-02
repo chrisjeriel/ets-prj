@@ -11,15 +11,25 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class ModuleTransactionsComponent implements OnInit {
 
  PassData: any = {
-    tableData: this.securityServices.getModuleTransaction(),
+    tableData: [],
     tHeader: ['Tran Code', 'Description','Remarks'],
     dataTypes: ['text', 'text', 'text'],
-    nData: new ModuleTransaction(null,null,null),
+    keys: ['tranCd','tranDesc','remarks'],
+    nData: {
+        tranCd: '',
+        tranDesc: '',
+        remarks: '',
+        createUser: '',
+        createDate: 1546304400000,
+        updateUser: '',
+        updateDate: 1546304400000
+    },
     pageID: 4,
     addFlag: true,
     deleteFlag: true,
     pageLength:10,
     searchFlag: true,
+    paginateFlag: true,
     widths: [],
   }
 
@@ -47,9 +57,12 @@ export class ModuleTransactionsComponent implements OnInit {
   widths: [110,225,30],
   }
 
-  constructor(private securityServices: SecurityService,private modalService: NgbModal) { }
+  constructor(private securityServices: SecurityService,public modalService: NgbModal) { }
 
   ngOnInit() {
+      this.securityServices.getMtnTransactions(null, null).subscribe((data: any) => {
+        this.PassData.tableData = data['transactions'];
+      });
   }
 
   modules(){

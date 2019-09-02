@@ -1,4 +1,5 @@
-<button id="printModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button>
+<!-- <button id="printModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button> -->
+<button id="printModalBtn" class="cust-btn d-none" (click)="open()"><a></a></button>
 <app-modal id="showPrintMenu" class="d-none" [modalSize]="'success-modal-size'" #modal>
 	   <div header>Print</div>
 	    <div body style="width: 300px">
@@ -53,4 +54,5 @@
         </div>
 </app-modal>
 <app-mtn-reports-params id="reportsParamLOV" (selectedData)="setReportsParams($event)" [reportId]="this.reportId" (cancel)="cancel($event)"></app-mtn-reports-params>
-<app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancel(event)"></app-sucess-dialog>
+<!-- <app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancel(event)"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancel($event)"></app-sucess-dialog>

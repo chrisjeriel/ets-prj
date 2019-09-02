@@ -1,10 +1,44 @@
 <div class="cust-tabs-container">
-	<h4>Accounting In-Trust/Journal Voucher</h4>
+	<h4>Accounting In-Trust / Journal Voucher</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
 		<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="JV Listings">
 			<ng-template ngbTabContent>
 				<div class="row">
+					<div class="input-group text-center" style="margin-bottom: -14px !important;">
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statNw" value="new" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+							<label for="statNw" class="text-left">&nbsp;New</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statAp" value="approved" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+							<label for="statAp" class="text-left">&nbsp;Approved</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statPd" value="printed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+							<label for="statPd" class="text-left">&nbsp;Printed</label>
+						</div>
+						<!-- <div class="col-sm">
+							<input type="radio" name="tranStat" id="statCn" value="cancelled" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+							<label for="statCn" class="text-left">&nbsp;Cancelled</label>
+						</div> -->
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statFa" value="for approval" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+							<label for="statFa" class="text-left">&nbsp;For Approval</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statCl" value="closed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+							<label for="statCl" class="text-left">&nbsp;Closed</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+							<label for="statDl" class="text-left">&nbsp;Cancelled / Deleted</label>
+						</div>
+						<div class="col-sm">
+							<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+							<label for="statPs" class="text-left">&nbsp;Posted</label>
+						</div>
+					</div>
 					<div class="col-sm-12">
 						<!-- <app-cust-editable-non-datatable  [passData]="passDataJVListing" (newClick)="onRowClick($event)" (rowDblClick)="onDblClick($event)">
                 		</app-cust-editable-non-datatable> -->

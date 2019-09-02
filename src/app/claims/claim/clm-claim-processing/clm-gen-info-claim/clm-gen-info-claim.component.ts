@@ -101,7 +101,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     coRefNo: null,
     inceptDate: null,
     expiryDate: null,
-    coClaimNo: null,
+    coClmNo: null,
     lossDate: null,
     lossCd: null,
     lossAbbr: null,
@@ -219,7 +219,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   subscription: Subscription = new Subscription();
 
-  constructor(private actRoute: ActivatedRoute, private modalService: NgbModal, private titleService: Title,
+  constructor(private actRoute: ActivatedRoute, public modalService: NgbModal, private titleService: Title,
     private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService, private router: Router, private ms: MaintenanceService) { }
 
   ngOnInit() {

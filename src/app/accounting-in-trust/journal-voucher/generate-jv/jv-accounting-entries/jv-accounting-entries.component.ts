@@ -42,6 +42,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     pageID: 2,
     addFlag: true,
     deleteFlag: true,
+    disableAdd: true,
     //total: [null, null, null, 'Total', null, null],
     keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt']
   }
@@ -70,6 +71,7 @@ export class JvAccountingEntriesComponent implements OnInit {
   variance : number = 0;
   dialogIcon : any;
   dialogMessage : any;
+  readOnly: boolean = true;
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
@@ -77,6 +79,14 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
     this.jvDetails.refnoDate = this.ns.toDateTimeString(this.jvDetails.refnoDate);
+
+    if(this.jvDetails.statusType == 'N' || this.jvDetails.statusType == 'F'){
+      this.passData.disableAdd = false;
+      this.readOnly = false;
+    }else {
+      this.readOnly = true;
+       this.passData.uneditable = [true,true,true,true,true,true]
+    }
     this.retrieveAcctEntries();
   }
 

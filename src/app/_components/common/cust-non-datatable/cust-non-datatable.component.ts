@@ -335,19 +335,24 @@ export class CustNonDatatableComponent implements OnInit {
 
     private initResizableColumns() {
         
-        this.renderer.listenGlobal('body', 'mousemove', (event) => {
+        var listener = this.renderer.listenGlobal('body', 'mousemove', (event) => {
             if(this.pressed) {
                 let width = this.startWidth + (event.x - this.startX);
                 $(this.start).parent().css({'min-width': width, 'max-width': width, 'width': width});
                 let index = $(this.start).parent().index() + 1;
                 $('#notPin'+this.passData.pageID+' .content-container tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width, 'width': width});
-                
             }
         });
-        this.renderer.listenGlobal('body', 'mouseup', (event) => {
+        var listener2 = this.renderer.listenGlobal('body', 'mouseup', (event) => {
             //$('#cust-datatable').DataTable().draw();
             if(this.pressed) {
                 this.pressed = false;
+            }
+
+            if(listener) {
+                listener();
+                listener2();
+                
             }
         });
     }
@@ -701,5 +706,4 @@ export class CustNonDatatableComponent implements OnInit {
         
         this.gnrc2.emit(ev);
     }
-
 }

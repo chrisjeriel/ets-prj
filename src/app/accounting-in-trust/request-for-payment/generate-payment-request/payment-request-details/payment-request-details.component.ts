@@ -341,7 +341,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
-              private clmService: ClaimsService, private modalService: NgbModal, private dp: DatePipe) {
+              private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe) {
   }
 
   ngOnInit() {

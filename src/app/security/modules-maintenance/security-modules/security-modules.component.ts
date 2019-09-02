@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { SecurityService } from '@app/_services';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { SecurityService, NotesService } from '@app/_services';
 import { ModuleInfo } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,26 +13,41 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class SecurityModulesComponent implements OnInit {
 
-  PassData: any = {
-      tableData: this.securityServices.getModuleInfo(),
+  @ViewChild("modulesList") modulesList: CustEditableNonDatatableComponent;
+
+  passDataModules: any = {
+      tableData: [],
       tHeader: ['Module ID', 'Description', 'Module Group','Remarks'],
       dataTypes: ['text', 'text', 'select','text'],
-      nData: new ModuleInfo(null,null,null,null),
-      pageID: 4,
+      nData: {
+            moduleId: '',
+            moduleDesc: '',
+            moduleGrp: '',
+            description: '',
+            remarks: '',
+            createUser: '',
+            createDate: 1546304400000,
+            updateUser: '',
+            updateDate: 1546304400000,
+        },
+      pageID: 'modules',
+      keys: ['moduleId','moduleDesc','moduleGrp','remarks'],
       addFlag: true,
-      deleteFlag: true,
+      genericBtn: 'Delete',
+      disableGeneric: true,
       pageLength:10,
-      magnifyingGlass:['userGroup'],
+      /*magnifyingGlass:['userGroup'],*/
       searchFlag: true,
       opts: [{
-          selector: 'moduleGroup',
-          vals: ['Quotation', 'Testing'],
+          selector: 'moduleGrp',
+          vals: ['A', 'B'],
       }],
       widths: [],
+      paginateFlag: true,
     }
 
     PassDataModuleTrans: any = {
-      tableData: [['001','Security'],['002','Quotation Processing'],['003','Quotation Inquiry']],
+      tableData: [],
       tHeader: ['Tran Code', 'Description'],
       dataTypes: ['text', 'text'],
       pageID: 3,
@@ -64,9 +82,59 @@ export class SecurityModulesComponent implements OnInit {
       widths: [],
     }
 
-    constructor(private securityServices: SecurityService,private modalService: NgbModal) { }
+    modulesData : any = {
+      createDate: '',
+      createUser: null,
+      updateDate: '',
+      updateUser: null
+    }
+
+    edited: any =[];
+    deleted: any = [];
+
+    constructor(private securityServices: SecurityService,public modalService: NgbModal, private ns: NotesService) { }
 
     ngOnInit() {
+      this.getMtnModules();
+    }
+
+    getMtnModules() {
+      this.passDataModules.tableData = [];
+      this.securityServices.getMtnModules(null, null).subscribe((data: any) => {
+        for(var i =0; i < data.modules.length;i++){
+          this.passDataModules.tableData.push(data.modules[i]);
+          this.passDataModules.tableData[i].uneditable = ['moduleId'];
+        }
+
+        this.modulesList.refreshTable();
+      });
+    }
+
+    onRowClick(data){
+      console.log(data)
+      if(data != null){
+        this.passDataModules.disableGeneric = false;
+        this.modulesData = data;
+        this.modulesData.createDate = this.ns.toDateTimeString(data.createDate);
+        this.modulesData.updateDate = this.ns.toDateTimeString(data.updateDate);
+      }else{
+        this.passDataModules.disableGeneric = true;
+      }
+    }
+
+    deleteModule(){
+    /*if(this.modulesData.indvSelect.okDelete == 'N'){
+      this.dialogIcon = 'info';
+      this.dialogMessage =  'You are not allowed to delete a Currency Code that is already used in Quotation Processing.';
+      this.successDialog.open();
+    }else{
+      this.modulesData.indvSelect.deleted = true;
+      this.modulesData.selected  = [this.modulesData.indvSelect]
+      this.modulesData.confirmDelete();
+    }*/
+      this.modulesList.indvSelect.deleted = true;
+      this.modulesList.selected  = [this.modulesList.indvSelect]
+      this.modulesList.confirmDelete();
     }
 
     transactions(){

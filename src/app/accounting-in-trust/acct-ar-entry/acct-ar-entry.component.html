@@ -186,7 +186,8 @@ padding-right: 0px !important;">
 
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
 
 <app-modal class="d-none" #cancelMdl>

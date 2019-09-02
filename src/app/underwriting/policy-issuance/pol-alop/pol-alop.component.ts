@@ -127,7 +127,7 @@ export class PolAlopComponent implements OnInit {
                      updateDate: null
   };
 
-  constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private route: ActivatedRoute, private titleService: Title, private ns: NotesService, private mtnService: MaintenanceService) { }
+  constructor(private underwritingService: UnderwritingService, public modalService: NgbModal, private route: ActivatedRoute, private titleService: Title, private ns: NotesService, private mtnService: MaintenanceService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | ALOP");
@@ -418,25 +418,25 @@ export class PolAlopComponent implements OnInit {
   }
 
   checkDates(){
-    if((new Date(this.polAlopData.issueDate) >= new Date(this.polAlopData.expiryDate))){
+    if((this.ns.toDate(this.polAlopData.issueDate) >= this.ns.toDate(this.polAlopData.expiryDate))){
       console.log('pasok')
-     highlight(this.to);
-     highlight(this.from);
+     // highlight(this.to);
+     // highlight(this.from);
      this.dateErFlag = true;
     }else{
-     unHighlight(this.to);
-     unHighlight(this.from);
+     // unHighlight(this.to);
+     // unHighlight(this.from);
      this.dateErFlag = false;
     }
 
     if(!this.dateErFlag){
-      if((new Date(this.polAlopData.indemFromDate) <= new Date(this.polAlopData.expiryDate))){
-        highlight(this.to);
-        highlight(this.indemFrom);
+      if((this.ns.toDate(this.polAlopData.indemFromDate) <= this.ns.toDate(this.polAlopData.expiryDate))){
+        // highlight(this.to);
+        // highlight(this.indemFrom);
         this.dateErFlag = true;
       }else{
-        unHighlight(this.to);
-        unHighlight(this.indemFrom);
+        // unHighlight(this.to);
+        // unHighlight(this.indemFrom);
         this.dateErFlag = false;
       }
     }

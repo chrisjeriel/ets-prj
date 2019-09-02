@@ -133,7 +133,8 @@
 <app-cancel-button (onYes)="save(true)" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
 <app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
 <app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="true"></app-ceding-company>
-<app-ceding-company #cedingRetention (selectedData)="setSelectedCedCoCedRet($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>
+<!-- <app-ceding-company #cedingRetention (selectedData)="setSelectedCedCoCedRet($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company> TRBT#PROD_GRADE -->
+<app-ceding-company #cedingRetention [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>
 
 <app-modal class="d-none" id="mtnTreatyShareWarningModal">
     <div header>Warning Message</div>
