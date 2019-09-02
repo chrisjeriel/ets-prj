@@ -46,6 +46,27 @@
                     <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event,'lovCedTbl')" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty('cedTbl');conLocAmt();" #cedCompTbl></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 4">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                          <label class="form-control-sm col-sm-7 labels">Alloted Policy Balance Payments</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted" [(ngModel)]="allotedAmt" (change)="reCompInw();onChangeAllotedAmt();">
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted"
+                            appCurrency [ngModel]="allotedAmt" (ngModelChange)="allotedAmt = parseCurrency($event)" [readonly]="!passData.checkFlag"> -->
+                          <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Total Balance for Selected Policy
+                            Transactions</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only [ngModel]="totalBal | number: '1.2-2'" readonly>
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
+                            numbers-only placeholder="" readonly [ngModel]="totalBal | number: '1.2-2'"> -->
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                          <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Variance</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only [ngModel]="variance | number: '1.2-2'"readonly>
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
+                            placeholder="" readonly [ngModel]="variance | number: '1.2-2'"> -->
+                        </div>
+                      </div>
+                    </div>
                     <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (newClick)="onRowClick($event)" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');reCompInw();"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
@@ -114,7 +135,7 @@
               <div class="form-row" style="margin-top: 40px !important;">
                 <div class="form-group col-sm">
                   <div class="text-center">
-                    <div class="cust-btn-container" *ngIf="requestData?.tranTypeCd > 3">
+                    <div class="cust-btn-container">
                       <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
                       <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                     </div>

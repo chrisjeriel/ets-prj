@@ -1976,12 +1976,6 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcctPrqServFee',JSON.stringify(params),header);
 	}
 
-	getJVAllocInvtIncListing(allocTranId) {
-		 const params = new HttpParams()
-             .set('allocTranId', (allocTranId === null || allocTranId === undefined ? '' : allocTranId) )
-        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
-	}
-
 	updateAcitStatus(params){
 		let header : any = {
 		    headers: new HttpHeaders({
