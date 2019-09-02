@@ -69,10 +69,13 @@
          <div class="form-group col-sm">
              <div class="col-md-12 text-center">
                  <div class="cust-btn-container">
-                     <!-- <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                     <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> TRBT#PROD_GRADE -->
-                     <button type="button" class="cust-btn" ><a>Cancel</a></button>
-                     <button type="button" class="cust-btn" ><a>Save</a></button>
+                     <!-- <button type="button" class="cust-btn" (click)="cancel()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Cancel</a></button>
+                     <button type="button" class="cust-btn" (click)="onClickSave()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Save</a></button> TRBT#PROD_GRADE -->
+
+                     <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Cancel</a></button>
+                     <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Save</a></button>
+
+                     
                  </div>
              </div>
          </div>

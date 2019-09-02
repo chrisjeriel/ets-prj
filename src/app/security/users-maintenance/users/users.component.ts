@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { SecurityService } from '@app/_services';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { SecurityService, UserService, QuotationService, NotesService } from '@app/_services';
 import { UsersInfo } from '@app/_models';
-import { QuotationService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-users',
@@ -10,19 +12,44 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
+
+  @ViewChild("usersList") usersList: CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   
-  PassData: any = {
-    tableData: this.securityServices.getUsersInfo(),
+  passDataUsers: any = {
+    tableData: [],
     tHeader: ['User ID', 'User Name', 'User Group', 'Description','Active', 'Email','Remarks'],
-    dataTypes: ['text', 'text', 'text','text', 'text', 'text','text'],
-    nData: new UsersInfo(null,null,null,null,null,null,null),
-    pageID: 4,
+    dataTypes: ['text', 'text', 'text','text', 'checkbox', 'text','text'],
+    nData: {
+      showMG: 1,
+      userId: null,
+      userGrp: null,
+      userGrpDesc: null,
+      userName: null,
+      activeTag: null,
+      password: null,
+      emailAddress: null,
+      remarks: null,
+      lastLogin: '',
+      passwordResetDate: '',
+      salt: null,
+      invalidLoginTries: null,
+      createUser: null,
+      createDate: '',
+      updateUser: null,
+      updateDate: '',
+      userTran: []
+    },
+    magnifyingGlass: ['userGrp'],
+    keys:['userId','userName','userGrp','userGrpDesc','activeTag','emailAddress','remarks'],
     addFlag: true,
-    deleteFlag: true,
-    pageLength:10,
-    magnifyingGlass:['userGroup'],
+    pageLength: 10,
+    genericBtn: 'Delete',
+    pageID: 'secUsers',
+    disableGeneric : true,
     searchFlag: true,
-    widths: [],
+    widths:[60,200,50,300,50,'auto','auto'],
     paginateFlag: true,
   }
 
@@ -78,9 +105,96 @@ export class UsersComponent implements OnInit {
     widths: [77,223],
   }
 
-  constructor(private securityServices: SecurityService, public modalService: NgbModal) { }
+  userData:any = {
+    createDate: '',
+    createUser: null,
+    updateDate: '',
+    updateUser: null
+  };
+
+  dialogMessage : string = '';
+  dialogIcon: any;
+  btnDisabled:boolean = true;
+  passLOVData: any = {
+      selector:'',
+      data:{}
+  }
+
+  constructor(private securityServices: SecurityService, private ns: NotesService, public modalService: NgbModal, private userService: UserService) { }
 
   ngOnInit() {
+    this.getMtnUsers();
+  }
+
+  getMtnUsers() {
+      this.passDataUsers.tableData = [];
+      this.userService.retMtnUsers(null).subscribe((data: any) => {
+        for(var i =0; i < data.usersList.length;i++){
+          this.passDataUsers.tableData.push(data.usersList[i]);
+          this.passDataUsers.tableData[i].showMG = 1;
+          this.passDataUsers.tableData[i].uneditable = ['userId', 'userGrpDesc'];
+        }
+
+        this.usersList.refreshTable();
+      });
+  }
+
+  onRowClickUsers(data){
+    if(data != null){
+      this.passDataUsers.disableGeneric = false;
+      this.btnDisabled = false;
+      this.userData = data;
+      this.userData.createDate = this.ns.toDateTimeString(data.createDate);
+      this.userData.updateDate = this.ns.toDateTimeString(data.updateDate);
+    }else{
+      this.btnDisabled = true;
+      this.passDataUsers.disableGeneric = true;
+      this.userData = {
+        createDate: '',
+        createUser: null,
+        updateDate: '',
+        updateUser: null
+      };
+    }
+  }
+
+  deleteUser(){
+    if(this.usersList.indvSelect.okDelete == 'N'){
+      this.dialogIcon = 'info';
+      this.dialogMessage =  'Message of already used userid in some modules.';
+      this.successDialog.open();
+    }else{
+      this.usersList.indvSelect.deleted = true;
+      this.usersList.selected  = [this.usersList.indvSelect]
+      this.usersList.confirmDelete();
+    }
+  }
+
+  clickUserGroupLOV(data,from){
+    this.passLOVData.from = from;
+    this.passLOVData.selector = 'userGrp';
+    this.usersList.tableData.filter((a)=>{return !a.deleted}).map(a=>a.userGrp);
+    
+    setTimeout(() => {
+      $('#lov #modalBtn2').trigger('click');
+    });
+  }
+
+  setSelected(data) {
+    this.passDataUsers.tableData = this.passDataUsers.tableData.filter(a => a.showMG != 1);
+    for(let i of data) {
+      this.passDataUsers.tableData.push(JSON.parse(JSON.stringify(this.passDataUsers.nData)));
+      this.passDataUsers.tableData[this.passDataUsers.tableData.length - 1].showMG = 0;
+      this.passDataUsers.tableData[this.passDataUsers.tableData.length - 1].userGrp = i.userGrp;
+      this.passDataUsers.tableData[this.passDataUsers.tableData.length - 1].userGrpDesc = i.userGrpDesc;
+      this.passDataUsers.tableData[this.passDataUsers.tableData.length - 1].edited = true;
+    }
+    $('#cust-table-container').addClass('ng-dirty');
+    this.usersList.refreshTable();
+  }
+
+  updateUsers(data) {
+    console.log("updateUsers");
   }
 
   resetPassword(){

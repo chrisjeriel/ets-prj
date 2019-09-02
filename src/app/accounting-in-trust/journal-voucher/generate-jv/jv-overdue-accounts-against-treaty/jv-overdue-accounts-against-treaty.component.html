@@ -55,8 +55,7 @@
         </div>
     </div>
 </div>
-
-<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-mtn-payee-ceding id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-payee-ceding>
 <app-quarter-ending-lov id="quarterEnd" (selectedData)="setQuarter($event)"></app-quarter-ending-lov>
 <app-lov [passData]="passLov" (selectedData)="setSoa($event)">
 <!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->

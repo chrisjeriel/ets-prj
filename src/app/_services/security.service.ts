@@ -16,7 +16,7 @@ export class SecurityService {
 
 	constructor(private http: HttpClient) { }
 
-	getUsersInfo(){
+	/*getUsersInfo(){
 		this.usersInfo = [
 			new UsersInfo('LCUARESMA','Lope Cuaresma','001','Admin','Y','lopecuaresma@pmmsc.com.ph','System Administrator'),
 			new UsersInfo('MIBANEZ','Mel Ibanez','002','Engineering',' Y','melibanez@pmmsc.com.ph',null),
@@ -25,7 +25,7 @@ export class SecurityService {
 			new UsersInfo('CREYES','Chie Reyes','003','Accounting','Y','chiereyes@pmmsc.com.ph',null)
 		]
 		return this.usersInfo
-	}
+	}*/
 
 	getUsersGroup(){
 		this.userGroups = [

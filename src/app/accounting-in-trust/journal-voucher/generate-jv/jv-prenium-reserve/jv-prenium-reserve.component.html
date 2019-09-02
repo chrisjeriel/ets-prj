@@ -24,14 +24,14 @@
 	    <div class="form-group col-sm">
 	        <div class="col-md-12 text-center">
 	            <div class="cust-btn-container">
-	                <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-	                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+	                <button type="button" class="cust-btn" (click)="cancel()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Cancel</a></button>
+	                <button type="button" class="cust-btn" (click)="onClickSave()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Save</a></button>
 	            </div>
 	        </div>
 	    </div>
 	</div>	
 </div>
-<app-mtn-ceding-company-treaty id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company-treaty>
+<app-mtn-payee-ceding-treaty id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-payee-ceding-treaty>
 <!-- <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company> -->
 <app-quarter-ending-lov id="quarterEnd" (selectedData)="setQuarter($event)"></app-quarter-ending-lov>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>

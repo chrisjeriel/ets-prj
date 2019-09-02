@@ -176,7 +176,6 @@ import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component'
 import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
-
 const appRoutes: Routes = [
 
 
@@ -301,7 +300,7 @@ const appRoutes: Routes = [
     { path: 'user-group-maintenance', component: UserGroupsMaintenanceComponent },
     { path: 'users', component: UsersComponent },
     { path: 'users-maintenance', component: UsersMaintenanceComponent },
-    { path: 'modules-maintenance', component: ModulesMaintenanceComponent },
+    { path: 'modules-maintenance', component: ModulesMaintenanceComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'policy-information', component: PolicyInformationComponent},
     { path: 'pol-oc-inquiry', component: PolOcInquiryComponent},
     { path: 'open-cover-list', component: PolOpenCovListComponent},

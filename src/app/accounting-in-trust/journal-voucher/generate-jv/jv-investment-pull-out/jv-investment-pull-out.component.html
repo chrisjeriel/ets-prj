@@ -2,15 +2,13 @@
   <div class="row">
     <div class="col-sm-12">
         <div class="input-group cust-ig">
-          <div class="col-sm-1"></div>
-          <label class="form-control-sm col-sm-1">DCB Bank</label>
-          <!-- <select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired [disabled]="isCancelled"> TRBT#PROD_GRADE -->
-          <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBank" appRequired>
-            <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
+          <div class="col-sm-2"></div>
+          <label class="form-control-sm col-sm-1">Bank</label>
+          <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBank" (ngModelChange)="changeBank($event)" appRequired >
+            <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}} {{selectedBank === bankAcct}}</option>
           </select>
-          <label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
-          <!-- <select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired [disabled]="isCancelled"> TRBT#PROD_GRADE -->
-          <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBankAcct" appRequired>
+          <label class="form-control-sm col-sm-2">Bank Acct. No.</label>
+          <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBankAcct" (ngModelChange)="changeBankAcct($event)" appRequired>
             <option *ngFor="let bankAcct of bankAccts" [ngValue]="bankAcct">{{bankAcct.accountNo}}</option>
           </select>
           <div class="col-sm-1"></div>
@@ -36,7 +34,6 @@
     </div>
 </div>
 
-
 <!-- <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov> TRBT#PROD_GRADE -->
 <app-lov #lov>
 <!-- <app-confirm-save (onYes)="save()"></app-confirm-save> TRBT#PROD_GRADE -->
@@ -46,3 +43,4 @@
 <app-sucess-dialog></app-sucess-dialog>
 <!-- <app-cancel-button (onYes)="save('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button> TRBT#PROD_GRADE -->
 <app-cancel-button [url]="'/acct-ar-listings'" ></app-cancel-button>
+

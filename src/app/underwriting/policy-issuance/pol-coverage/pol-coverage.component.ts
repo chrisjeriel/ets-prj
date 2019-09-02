@@ -1878,7 +1878,7 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.updateDate     = this.ns.toDateTimeString(0);
 
     for(var i=0; i < this.passData.tableData.length;i++){
-      if( !this.passData.tableData[i].deleted){
+      if(!this.passData.tableData[i].deleted){
         this.editedData.push(this.passData.tableData[i]);
         this.editedData[this.editedData.length - 1].lineCd        = this.line;
         this.editedData[this.editedData.length - 1].sumInsured    = this.passData.tableData[i].sumInsured;

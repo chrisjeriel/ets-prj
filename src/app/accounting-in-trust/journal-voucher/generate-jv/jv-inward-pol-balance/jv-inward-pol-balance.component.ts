@@ -3,7 +3,7 @@ import { AccountingService, NotesService, MaintenanceService } from '@app/_servi
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccJvInPolBal} from '@app/_models';
-import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { MtnPayeeCedingComponent } from '@app/maintenance/mtn-payee-ceding/mtn-payee-ceding.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -17,7 +17,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 })
 export class JvInwardPolBalanceComponent implements OnInit {
 
-  @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
+  @ViewChild(MtnPayeeCedingComponent) cedingCoLov: MtnPayeeCedingComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -182,13 +182,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
      this.passLov.currCd = this.jvDetail.currCd;
      this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
           { header: "Payment Details", span: 5 }, { header: "", span: 2 });
-
+     
      if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
        this.disable = false;
+       this.passData.disableAdd = false;
      }else {
        this.passData.disableAdd = true;
        this.passData.btnDisabled = true;
-       //this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
      this.retrieveInwPol();
@@ -198,7 +198,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
     this.accountingService.getJVInwPolBal(this.jvDetail.tranId,'').subscribe((data:any) => {
       console.log(data)
       var datas = data.inwPolBal;
-      this.passData.disableAdd = false;
       this.passData.tableData = [];
       this.totalBalance = 0;
 
@@ -230,14 +229,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   checkCode(ev){
      this.ns.lovLoader(ev, 1);
-     this.cedingCoLov.checkCedingCo(this.jvDetails.ceding, ev);
-    
+     //this.cedingCoLov.checkCedingCo(this.jvDetails.ceding, ev);
   }
 
   setCedingcompany(data){
-    this.jvDetails.cedingName = data.cedingName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLov.cedingId = data.cedingId;
+    this.jvDetails.cedingName = data.payeeName;
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLov.cedingId = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveInwPol()
     this.check(this.jvDetails);

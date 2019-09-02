@@ -15,6 +15,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   @Input() jvDetail: any;
   @Input() cedingParams:any;
   @Output() emitData = new EventEmitter<any>();
+
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
@@ -187,9 +188,13 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
     if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
       this.disable = false;
+      this.passData.disableAdd = false;
     }else {
-       this.passData.disableAdd = true;
+      this.disable = true;
+      this.passData.disableAdd = true;
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
+
     this.retrieveInwPolZeroBal();
     /*if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
       console.log(this.cedingParams)
@@ -203,7 +208,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     this.accService.getAcitJVZeroBal(this.jvDetail.tranId,'').subscribe((data:any) => {
       console.log(data)
       this.passData.tableData= [];
-      this.passData.disableAdd = false;
       this.totalOverpayment = 0;
 
       if(data.zeroBal.length!=0){
@@ -232,7 +236,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   setCedingcompany(data){
-    this.jvDetails.cedingName = data.cedingName;
+    this.jvDetails.cedingName = data.payeeName;
     this.jvDetails.ceding = data.cedingId;
     this.passLov.cedingId = data.cedingId;
     this.ns.lovLoader(data.ev, 0);

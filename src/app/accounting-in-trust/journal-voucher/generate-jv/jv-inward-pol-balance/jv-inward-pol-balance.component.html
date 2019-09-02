@@ -30,7 +30,7 @@
         </div>
     </div>
 </div>
-<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-mtn-payee-ceding id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-payee-ceding>
 <app-lov [passData]="passLov" (selectedData)="setSoa($event)">
 <!-- <app-jv-soa-lov id="soaMdl" [tranId]="tranId" [cedingId]="jvDetails.ceding" (selectedData)="setSoa($event)" [lovCheckBox]="true" [hide]="hideSoa"></app-jv-soa-lov> -->
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
