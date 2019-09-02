@@ -332,13 +332,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
   yearList        : any;
   currData        : any;
 
-  gnrtType: string = 'periodAsOf';
-  periodAsOfParam: string = null;
+  qtrParam: number = null;
   yearParam: number = null;
   yearParamOpts: any[] = [];
-
-
-
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
               private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe) {
@@ -349,8 +345,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
       $('.globalLoading').removeClass('globalLoading');  
     },0);
     
-    var currYear = new Date().getFullYear() + 1;
-    for(let x = currYear; x >= 2018; x--) {
+    var d = new Date();
+    this.qtrParam = Math.floor((d.getMonth() / 3) + 1);
+    this.yearParam = d.getFullYear();
+
+    for(let x = d.getFullYear(); x >= 2018; x--) {
       this.yearParamOpts.push(x);
     }
 
@@ -1365,30 +1364,26 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.getPrqTrans();
   }
 
-  gnrtTypeChanged() {
-    if(this.gnrtType == 'periodAsOf') {
-      this.yearParam = null;
-    } else {
-      this.periodAsOfParam = null;
-    }
-  }
-
   getAcctPrqServFee() {
     this.servFeeMainTbl.overlayLoader = true;
     this.servFeeSubTbl.overlayLoader = true;
-    this.acctService.getAcctPrqServFee(this.periodAsOfParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+
+    this.acctService.getAcctPrqServFee(this.qtrParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
       this.serviceFeeMainData.tableData = data['mainDistList'];
       this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
       this.servFeeMainTbl.refreshTable();
       this.servFeeSubTbl.refreshTable();
+
+      this.servFeeMainTbl.markAsDirty();
+      this.servFeeSubTbl.markAsDirty();
     });
   }
 
   onSaveServFee() {
     var param = {
       reqId: this.requestData.reqId,
-      prdAsOf: this.periodAsOfParam,
+      quarter: this.qtrParam,
       year: this.yearParam,
       servFeeAmt: this.requestData.reqAmt,
       currCd: this.requestData.currCd,
