@@ -47,14 +47,14 @@ export class ClaimRecoveryComponent implements OnInit {
         currCd: '',
         currRate: '',
         remarks: '',
-        recOverAmt: '',
+        cashcallAmt: '',
         localAmt: '',
         showMG: 1
     },
-    total: [null,null,null,null, null, null, 'Total', 'recOverAmt', 'localAmt'],
-    widths: [ 200, 200, 200,120, 250, 85, 100, 120, 120],
-    keys: ['claimNo', 'coClmNo', 'policyNo', 'lossDate', 'remarks', 'currCd', 'currRate', 'recOverAmt', 'localAmt'],
-    uneditable: [false,true,true,true,false,false,false,false,false],
+    total: [null,null,null,null, null, null, 'Total', 'cashcallAmt', 'localAmt'],
+    widths: [ 130, 130, 180,1, 250, 1, 100, 120, 120],
+    keys: ['claimNo', 'coClmNo', 'policyNo', 'lossDate', 'remarks', 'currCd', 'currRate', 'cashcallAmt', 'localAmt'],
+    uneditable: [false,true,true,true,false,false,false,false,true],
     opts:[
       {
         selector: 'paytType',
@@ -251,14 +251,14 @@ export class ClaimRecoveryComponent implements OnInit {
     console.log(data);
   }
   onTableDataChange(data){
-    if(data.key === 'recOverAmt'){
+    if(data.key === 'cashcallAmt'){
       for(var i = 0; i < data.length; i++){
-        data[i].localAmt = data[i].recOverAmt * data[i].currRate;
+        data[i].localAmt = data[i].cashcallAmt * data[i].currRate;
       }
     }else if(data.key === 'currCd'){
       for(var j = 0; j < data.length; j++){
         data[j].currRate = data[j].currCd.split('T')[1];
-        data[j].localAmt = data[j].recOverAmt * data[j].currRate;
+        data[j].localAmt = data[j].cashcallAmt * data[j].currRate;
       }
     }
     this.passData.tableData = data;

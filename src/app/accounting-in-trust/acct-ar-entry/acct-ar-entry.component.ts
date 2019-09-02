@@ -661,8 +661,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       (data:any)=>{
         if(data.returnCode === 0){
           if(data.errorList !== undefined || (data.errorList !== undefined && data.errorList.length !== 0)){
-            this.dialogMessage = data.errorList[0].errorMessage;
-            this.dialogIcon = 'error-message';
+            this.dialogMessage = data.errorList[0].errorMessage === undefined ? '' : data.errorList[0].errorMessage;
+            this.dialogIcon = data.errorList[0].errorMessage === undefined  ? 'error' : 'error-message';
           }else{
             this.dialogIcon = 'error';
           }
