@@ -96,6 +96,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   dcbBankAcctCurrCd: string = '';
   disablePayor: boolean = false;
   isPrinted: boolean = false;
+  loading: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -180,6 +181,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
+    this.loading = true;
     setTimeout(()=>{this.disableTab.emit(true);},0);
     this.retrievePaymentType();
     //this.retrieveCurrency();
@@ -231,6 +233,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   newAr(){
+    this.loading = true;
     this.isAdd = true;
     this.disableTab.emit(true);
     this.retrieveMtnAcitDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
@@ -591,6 +594,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           }
         }
         this.form.control.markAsPristine();
+        this.loading = false;
       },
       (error: any)=>{
         console.log('error');
@@ -1095,6 +1099,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                  this.selectedBankAcct.accountNo = '';
                }
            }
+           this.loading = false;
       },
       (error: any)=>{
         console.log('error');
