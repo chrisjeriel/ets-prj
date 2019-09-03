@@ -47,7 +47,7 @@
                 <ng-container controls-r>
                     <div class="align" style="position: absolute;left: 130px">
                         <label class="form-control-sm">For Approval</label> 
-                        <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="jvDetails.statusType === 'F'" (change)="jvDetails.forApproval = (jvDetails.statusType === 'N') ? 'Y' : 'N';onClickApproval()">
+                        <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="jvDetails.statusType === 'F'" (change)="jvDetails.forApproval = (jvDetails.statusType === 'N') ? 'Y' : 'N';onClickApproval()" [disabled]="notBalanced">
                     </div>
                 </ng-container>
             </app-cust-editable-non-datatable>

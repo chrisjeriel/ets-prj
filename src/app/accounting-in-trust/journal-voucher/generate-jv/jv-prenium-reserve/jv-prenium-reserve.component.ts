@@ -113,7 +113,7 @@ export class JvPreniumReserveComponent implements OnInit {
 	}
 
 	onClickSave(){
-		this.fundsHeld = 0;
+		/*this.fundsHeld = 0;
 		for(var i = 0; i < this.passData.tableData.length; i++){
 			this.fundsHeld += this.passData.tableData[i].releaseAmt;
 		}	
@@ -124,7 +124,8 @@ export class JvPreniumReserveComponent implements OnInit {
 			this.successDiag.open();
 		}else{
 			$('#confirm-save #modalBtn2').trigger('click');
-		}
+		}*/
+		$('#confirm-save #modalBtn2').trigger('click');
 	}
 
 	prepareData(){

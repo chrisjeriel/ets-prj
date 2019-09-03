@@ -83,6 +83,7 @@ export class JvAccountingEntriesComponent implements OnInit {
   dialogMessage : any;
   readOnly: boolean = true;
   errorFlag: boolean = false;
+  notBalanced: boolean = true;
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
@@ -114,6 +115,9 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.creditTotal += data.list[i].creditAmt;
       }
       this.variance = this.debitTotal - this.creditTotal;
+      if(this.variance === 0){
+        this.notBalanced = false;
+      }
       this.table.refreshTable();
       console.log(data)
     });
@@ -123,24 +127,28 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.debitTotal = 0;
     this.creditTotal = 0;
     this.variance = 0;
+    if(this.jvDetails.forApproval === 'Y'){
+      for (var i = 0; i < this.passData.tableData.length; i++) {
+        this.debitTotal += this.passData.tableData[i].debitAmt;
+        this.creditTotal += this.passData.tableData[i].creditAmt;
+      }
+      this.variance = this.debitTotal - this.creditTotal;
 
-    for (var i = 0; i < this.passData.tableData.length; i++) {
-      this.debitTotal += this.passData.tableData[i].debitAmt;
-      this.creditTotal += this.passData.tableData[i].creditAmt;
-    }
-    this.variance = this.debitTotal - this.creditTotal;
-
-    if(this.variance != 0){
-      this.dialogMessage = "Accounting Entries does not tally.";
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else if(this.errorFlag){
-      this.dialogMessage = 'Total Balance for Selected Policy Transactions must be equal to JV Amount.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
+      if(this.variance != 0){
+        this.dialogMessage = "Accounting Entries does not tally.";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else if(this.errorFlag){
+        this.dialogMessage = 'Total Balance for Selected Policy Transactions must be equal to JV Amount.';
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else{
+        this.confirm.confirmModal();
+      }
     }else{
       this.confirm.confirmModal();
     }
+    
   }
 
   prepareData(){
@@ -202,6 +210,17 @@ export class JvAccountingEntriesComponent implements OnInit {
 
         for(var i = 0; i < datas.length; i++){
           total += datas[i].paytAmt;
+        }
+
+        if(total != this.jvDetails.jvAmt){
+          this.errorFlag = true;
+        }
+      });
+    }if(this.jvType == 3){
+      this.accountingService.getAcitJVPremRes(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.premResRel;
+        for (var i = 0; i < datas.length; i++) {
+          total += datas[i].releaseAmt
         }
 
         if(total != this.jvDetails.jvAmt){
