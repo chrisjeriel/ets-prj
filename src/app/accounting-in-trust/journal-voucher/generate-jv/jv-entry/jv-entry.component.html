@@ -60,7 +60,7 @@
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-2 required currCd" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd" appRequired name="entryData.currCd" [readonly]="approvedStat">
                             <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="currLov.modal.openNoClose()"></i></a></div>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired [(ngModel)]="entryData.jvAmt" (change)="validateCurr()" appCurrency name="entryData.jvAmt" [readonly]="approvedStat">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired [(ngModel)]="entryData.jvAmt" (change)="validateCurr();" appCurrency name="entryData.jvAmt" [readonly]="approvedStat">
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approveBut || approvedStat" [class.cust-btn-disabled]="approveBut || approvedStat" (click)="onClickApprove()"><a>Approve</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut || approvedStat" [class.cust-btn-disabled]="printBut || approvedStat" (click)="onClickPrint()"><a>Print</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut || approvedStat" [class.cust-btn-disabled]="UploadBut || approvedStat" (click)="upload()"><a>Upload Acct. Ent</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut || approvedStat" [class.cust-btn-disabled]="allocBut || approvedStat" (click)="onClickAlloc()"><a>Alloc. Trans.</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut" [class.cust-btn-disabled]="allocBut" (click)="onClickAlloc()"><a>Alloc. Trans.</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut || approvedStat" [class.cust-btn-disabled]="dcBut || approvedStat" (click)="onClickCMDM()"><a>DebitCredit Memo</a></button>
                         </div>
                     </div>

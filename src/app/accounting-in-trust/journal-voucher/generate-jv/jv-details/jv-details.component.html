@@ -55,6 +55,7 @@
                     <div *ngSwitchCase="8">Investment Roll Over</div>
                     <div *ngSwitchCase="9">Investment Pull Out</div>
                     <div *ngSwitchCase="10">Investment (Placement)</div>
+                    <div *ngSwitchCase="11">Offsetting of Investment Pull-Out Against Treaty Balance</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
@@ -99,6 +100,10 @@
 
                             <ng-container *ngSwitchCase="10">
                                 <app-jv-investment-placement [jvDetail]="jvDetails"></app-jv-investment-placement>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="11">
+                                <app-jv-treaty-pull-out [jvDetail]="jvDetails" (emitData)="ceding($event)" [cedingParams]="cedingInput"></app-jv-treaty-pull-out>
                             </ng-container>
                         </ng-container>
                     </div>

@@ -1541,7 +1541,7 @@ export class AccountingService {
 			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
 			.set('payeeNo', (payeeNo == null || payeeNo == undefined ? '' : payeeNo))
 			.set('zeroBal', (zeroBal == null || zeroBal == undefined ? '' : zeroBal))
-			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd));
+			.set('currCd', currCd);
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAgingSoaDtl',{params});	
 	}
 
@@ -2068,5 +2068,15 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvRollOver',JSON.stringify(params),header);
 	}
-	
+
+	getSoaDtlZero(policyId,instNo,cedingId,payeeNo,currCd){
+		const params = new HttpParams()
+		.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+		.set('instNo', (instNo == null || instNo == undefined ? '' : instNo))
+		.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+		.set('payeeNo', (payeeNo == null || payeeNo == undefined ? '' : payeeNo))
+		.set('currCd', currCd);
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveSoaAgingZeroLOV",{params});
+	}
+	 
 }

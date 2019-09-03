@@ -1,3 +1,4 @@
+<form #myForm="ngForm">
 <fieldset class="scheduler-border">
     <legend class="scheduler-border">JV Info</legend>
     <div class="form-row custom-row-inline-inset">
@@ -5,35 +6,35 @@
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV No</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                 style="text-align: right;text-align: right;" readonly [(ngModel)]="jvDetails.jvYear">
+                 style="text-align: right;text-align: right;" readonly [(ngModel)]="jvDetails.jvYear" name="jvDetails.jvYear">
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                 style="text-align: right; margin-left: 2px;text-align: right;" readonly [(ngModel)]="jvDetails.jvNo">
+                 style="text-align: right; margin-left: 2px;text-align: right;" readonly [(ngModel)]="jvDetails.jvNo" name="jvDetails.jvNo">
                 <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.jvDate" readonly>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.jvDate" readonly name="jvDetails.jvDate">
                 <label class="form-control-sm col-sm-1">Status</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.jvStatus" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.jvStatus" readonly name="jvDetails.jvStatus">
                 <label class="form-control-sm col-sm-1 text-right">Ref No</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoTranId" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoTranId" readonly name="jvDetails.refnoTranId">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV Type</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="jvDetails.jvType"
-                readonly>
+                readonly name="jvDetails.jvType">
                 <label class="form-control-sm col-sm-1">Ref No Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoDate" readonly>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoDate" readonly name="jvDetails.refnoDate">
             </div>
         </div>
         <div class="col-sm-3">
             <div class="input-group">
                 <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.currCd" readonly>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.jvAmt | number:'1.2-2'" (ngModelChange)="jvDetails.jvAmt = $event" style="margin-left: 2px !important;" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.currCd" readonly name="jvDetails.currCd">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.jvAmt | number:'1.2-2'" (ngModelChange)="jvDetails.jvAmt = $event" style="margin-left: 2px !important;" readonly name="jvDetails.jvAmt">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly [(ngModel)]="jvDetails.currCd">
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly [(ngModel)]="jvDetails.currCd" name="jvDetails.currCd">
                 <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.localAmt | number:'1.2-2'" (ngModelChange)="jvDetails.localAmt = $event" style="margin-left: 2px !important;"
-                readonly>
+                readonly name="jvDetails.localAmt">
             </div>
         </div>
     </div>
@@ -46,7 +47,7 @@
                 <ng-container controls-r>
                     <div class="align" style="position: absolute;left: 130px">
                         <label class="form-control-sm">For Approval</label> 
-                        <input type="checkbox" style="margin-right: 0px !important;">
+                        <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="jvDetails.statusType === 'F'" (change)="jvDetails.forApproval = (jvDetails.statusType === 'N') ? 'Y' : 'N';onClickApproval()">
                     </div>
                 </ng-container>
             </app-cust-editable-non-datatable>
@@ -56,12 +57,12 @@
          <div class="col-sm-12">
              <div class="input-group">
                 <label class="form-control-sm col-sm">Total Debit and Credit</label>
-                <input type="text" [ngModel]="debitTotal | number:'1.2-2'" (ngModelChange)="debitTotal = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly style="margin-right: 4px !important">
-                <input type="text" [ngModel]="creditTotal | number:'1.2-2'" (ngModelChange)="creditTotal = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly>
+                <input type="text" [ngModel]="debitTotal | number:'1.2-2'" (ngModelChange)="debitTotal = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly style="margin-right: 4px !important" name="jvDetails.debitTotal">
+                <input type="text" [ngModel]="creditTotal | number:'1.2-2'" (ngModelChange)="creditTotal = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly name="jvDetails.creditTotal">
             </div>
             <div class="input-group">
                 <div class="col-sm-10"></div>
-                <input type="text" [ngModel]="variance | number:'1.2-2'" (ngModelChange)="variance = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly>
+                <input type="text" [ngModel]="variance | number:'1.2-2'" (ngModelChange)="variance = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly name="jvDetails.variance">
             </div>
         </div>
      </div>
@@ -90,3 +91,7 @@
         </div>
     </div>
 </fieldset>
+</form>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveAcctEntries()"></app-confirm-save>
+<app-cancel-button (onYes)="saveAcctEntries('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

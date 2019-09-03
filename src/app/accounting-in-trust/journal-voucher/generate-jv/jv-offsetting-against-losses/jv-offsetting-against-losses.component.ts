@@ -194,8 +194,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
   setCedingcompany(data){
     this.jvDetails.cedingName = data.payeeName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLovInw.cedingId = data.cedingId;
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLovInw.cedingId = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveClmLosses();
     this.check(this.jvDetails);

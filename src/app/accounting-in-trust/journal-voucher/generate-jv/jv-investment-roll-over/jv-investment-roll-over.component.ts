@@ -113,8 +113,8 @@ export class JvInvestmentRollOverComponent implements OnInit {
   	console.log(data)
   	let selected = data.data;
   	  this.passData.tableData[this.invIndex].colMG.push('srcInvtCode');
-	  this.passData.tableData[this.invIndex].edited				= true;
-	  this.passData.tableData[this.invIndex].srcInvtId 			= selected[0].invtId; 
+	    this.passData.tableData[this.invIndex].edited				= true;
+	    this.passData.tableData[this.invIndex].srcInvtId 			= selected[0].invtId; 
       this.passData.tableData[this.invIndex].srcInvtCode 		= selected[0].invtCd; 
       this.passData.tableData[this.invIndex].srcCertNo 			= selected[0].certNo;
       this.passData.tableData[this.invIndex].srcInvtType 		= selected[0].invtType;
@@ -142,7 +142,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
   	let selected = data.data;
   	  this.passData.tableData[this.invIndex].colMG.push('invtCode');
   	  this.passData.tableData[this.invIndex].edited				= true;
-	  this.passData.tableData[this.invIndex].invtId 			= selected[0].invtId; 
+	    this.passData.tableData[this.invIndex].invtId 			= selected[0].invtId; 
       this.passData.tableData[this.invIndex].invtCode 			= selected[0].invtCd; 
       this.passData.tableData[this.invIndex].certNo 			= selected[0].certNo;
       this.passData.tableData[this.invIndex].invtType 			= parseInt(selected[0].invtType);
