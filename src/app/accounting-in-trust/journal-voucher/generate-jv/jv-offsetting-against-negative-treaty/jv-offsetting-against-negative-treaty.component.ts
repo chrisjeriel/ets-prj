@@ -135,7 +135,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   passLov: any = {
-    selector: 'clmResHistPayts',
+    selector: 'clmResHistPaytsOffset',
     cedingId: '',
     hide: []
   }
@@ -147,6 +147,11 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   errorFlag: boolean = false;
   disable: boolean = true;
   readOnly :boolean = false;
+
+  //ADDED BY NECO 09/03/2019
+  positiveHistType: number[] = [4,5,10];
+  negativeHistType: number[] = [7,8,9];
+  //END
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService) { }
 
@@ -309,9 +314,17 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     for (var i = 0; i < this.passData.tableData.length; i++) {
       totalPaid = 0;
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
-        totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt
+        //ADDED BY NECO 09/03/2019
+        if(this.positiveHistType.includes(this.passData.tableData[i].histType)){
+          totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        }else if(this.negativeHistType.includes(this.passData.tableData[i].histType)){
+          totalPaid -= this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        }
+        //END
+        //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt
         if(this.passData.tableData[i].balanceAmt < totalPaid){
           this.errorFlag = true;
+          break;
         }
       }
     }
@@ -319,7 +332,14 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     totalPaid = 0;
     for (var i = 0; i <  this.passData.tableData.length; i++) {
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
-        totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        //ADDED BY NECO 09/03/2019
+        if(this.positiveHistType.includes(this.passData.tableData[i].histType)){
+          totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        }else if(this.negativeHistType.includes(this.passData.tableData[i].histType)){
+          totalPaid -= this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        }
+        //END
       }
     }
 
@@ -373,6 +393,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
       for(var j = 0 ; j < this.passData.tableData[i].clmOffset.length; j++){
         if(this.passData.tableData[i].clmOffset[j].edited && !this.passData.tableData[i].clmOffset[j].deleted){
+          console.log(this.passData.tableData[i].clmOffset[j].clmPaytAmt);
           actualBalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
           this.jvDetails.saveClmOffset.push(this.passData.tableData[i].clmOffset[j]);
           this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].tranId = this.jvDetail.tranId;
@@ -387,7 +408,9 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
           this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;
         }
       }
+      console.log(this.jvDetails);
       this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].actualBalPaid = actualBalPaid;
+
     }
 
     this.jvDetails.tranId = this.jvDetail.tranId;
