@@ -1719,8 +1719,10 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFee(quarter?, year?, servFeeAmt?, currCd?, currRt?){
+    getAcctPrqServFee(retType, reqId, quarter?, year?, servFeeAmt?, currCd?, currRt?){
 		const params = new HttpParams()
+			.set('retType', (retType == null || retType == undefined ? '' : retType))
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
 			.set('quarter', (quarter == null || quarter == undefined ? '' : quarter))
 			.set('year', (year == null || year == undefined ? '' : year))
 			.set('servFeeAmt', (servFeeAmt == null || servFeeAmt == undefined ? '' : servFeeAmt))

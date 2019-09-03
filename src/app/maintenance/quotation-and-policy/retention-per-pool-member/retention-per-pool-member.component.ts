@@ -167,6 +167,7 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 			if(ev != undefined) {
 				this.historyTable.confirmDelete();
 			} else {
+				this.disableCopySetup = true;
 				this.historyTable.indvSelect.edited = true;
 				this.historyTable.indvSelect.deleted = true;
 				this.historyTable.refreshTable();

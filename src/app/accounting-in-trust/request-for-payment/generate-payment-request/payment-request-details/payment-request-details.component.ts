@@ -389,7 +389,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.inwardPolBalData.tableData = [];
           this.getAcitPrqInwPol();
         }else if(this.requestData.tranTypeCd == 5){
-          //service fee
+          this.getAcctPrqServFee();
         }else if(this.requestData.tranTypeCd == 6){
           this.treatyBalanceData.tableData = [];
           this.getTreaty();
@@ -1364,20 +1364,33 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.getPrqTrans();
   }
 
-  getAcctPrqServFee() {
+  getAcctPrqServFee(gnrt?) {
     this.servFeeMainTbl.overlayLoader = true;
     this.servFeeSubTbl.overlayLoader = true;
 
-    this.acctService.getAcctPrqServFee(this.qtrParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
-      this.serviceFeeMainData.tableData = data['mainDistList'];
-      this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+    if(gnrt == undefined) {
+      this.acctService.getAcctPrqServFee('normal', this.requestData.reqId).subscribe(data => {
+        this.serviceFeeMainData.tableData = data['mainDistList'];
+        this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
-      this.servFeeMainTbl.refreshTable();
-      this.servFeeSubTbl.refreshTable();
+        this.servFeeMainTbl.refreshTable();
+        this.servFeeSubTbl.refreshTable();
 
-      this.servFeeMainTbl.markAsDirty();
-      this.servFeeSubTbl.markAsDirty();
-    });
+        this.servFeeMainTbl.markAsDirty();
+        this.servFeeSubTbl.markAsDirty();
+      });
+    } else {
+      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+        this.serviceFeeMainData.tableData = data['mainDistList'];
+        this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+
+        this.servFeeMainTbl.refreshTable();
+        this.servFeeSubTbl.refreshTable();
+
+        this.servFeeMainTbl.markAsDirty();
+        this.servFeeSubTbl.markAsDirty();
+      });
+    }
   }
 
   onSaveServFee() {
@@ -1395,10 +1408,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
 
     this.acctService.saveAcctPrqServFee(param).subscribe(data => {
-      console.log(data);
       if(data['returnCode'] == -1) {
         this.dialogIcon = "success";
         this.sucServFee.open();
+        this.getAcctPrqServFee();
       } else {
         this.dialogIcon = "error";
         this.sucServFee.open();
@@ -1411,11 +1424,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.conServFee.confirmModal();
   }
 
-  checkCancelServFee(){
-    if(this.cancelFlagServFee){
+  checkCancelServFee() {
+    if(this.cancelFlagServFee) {
       this.canServFee.onNo();
-    }else{
-      this.sucServFee.modal.closeModal();
     }
   }
 

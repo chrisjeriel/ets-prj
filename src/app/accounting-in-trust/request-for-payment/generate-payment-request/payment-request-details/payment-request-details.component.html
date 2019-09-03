@@ -67,7 +67,7 @@
                             </ng-container>
                           </select>
                           <div class="col-sm-1"></div>
-                          <button class="cust-btn" (click)="getAcctPrqServFee()" [disabled]="qtrParam == null || yearParam == null" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important;">Distribute</button>
+                          <button class="cust-btn" (click)="getAcctPrqServFee('gnrt')" [disabled]="qtrParam == null || yearParam == null" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important;">Distribute</button>
                         </div>
                         <div class="col-sm-3"></div>
                     </div>
@@ -218,7 +218,7 @@
 <app-cancel-button #canUnCol (onYes)="onClickSaveUncol('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 <app-confirm-save  #conServFee (onYes)="onSaveServFee()"></app-confirm-save>
-<app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
+<app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelServFee();"></app-sucess-dialog>
 <app-cancel-button #canServFee (onYes)="onClickSaveServFee('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 
