@@ -19,13 +19,16 @@ export class PolicyDistributionComponent implements OnInit {
   sub:any;
   distTtitle:string;
   title:string = 'Policy Dist';
+  subtitle:string = "Distribution";
 
   acctDetails:any = {
     instTag:'N',
     acctDate: ''
   }
 
-  /*inquiryFlag:boolean = false;
+  inquiryFlag:boolean = false;
+
+  /*
   previousRecordIsNotPosted:boolean = true;
   previousRecordIsNotPostedMsg:string = 'Modifications are not allowed. The previous distribution record is not yet posted.';
 
@@ -38,6 +41,7 @@ export class PolicyDistributionComponent implements OnInit {
   ngOnInit() {
   	this.sub = this.route.params.subscribe((data: any)=>{
       this.params = data;
+      console.log(this.params)
     	if(parseInt(data.policyNo.substr(-3))>0){
     		this.distTtitle = "Alteration Distribution";
     	}else{
@@ -46,9 +50,18 @@ export class PolicyDistributionComponent implements OnInit {
 
       if(data.fromNegate == 'true'){
         this.title = 'Negate Distribution'
+      }else if(this.params.fromInq=='true'){
+        this.title = 'Distribution'
       }else{
-        this.title = 'Policy Dist'
+        this.title = 'Distribution Processing'
       }
+
+      if(this.params.fromInq=='true'){
+        this.subtitle = 'Inquiry'
+      }
+
+      this.inquiryFlag = this.params.fromInq=='true';
+
      this.getInstInfo();
       setTimeout(a=>this.tabset.select("risk"),0);
     });

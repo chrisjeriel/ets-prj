@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { ARInwdPolBalDetails } from '@app/_models';
@@ -23,10 +23,12 @@ export class ClaimRecoveryComponent implements OnInit {
 
   @Input() record: any = {};
 
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
+
   passData: any = {
     tableData: [],
-    tHeader: ['Payment Type', 'Claim No', 'Co. Claim No.', 'Policy No.', 'Loss Date', 'Remarks', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
-    dataTypes: ["select","text","text", "text", "date", "text", "select", "percent", "currency", "currency"],
+    tHeader: ['Claim No', 'Co. Claim No.', 'Policy No.', 'Loss Date', 'Remarks', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
+    dataTypes: ["text","text", "text", "date", "text", "text", "percent", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
@@ -38,7 +40,6 @@ export class ClaimRecoveryComponent implements OnInit {
         tranId: '',
         billId: '',
         itemNo: '',
-        paytType: '',
         claimId: '',
         claimNo: '',
         policyId: '',
@@ -48,14 +49,14 @@ export class ClaimRecoveryComponent implements OnInit {
         currCd: '',
         currRate: '',
         remarks: '',
-        recOverAmt: '',
+        cashcallAmt: '',
         localAmt: '',
         showMG: 1
     },
-    total: [null,null,null,null,null, null, null, 'Total', 'recOverAmt', 'localAmt'],
-    widths: [150, 200, 200, 200,120, 250, 85, 100, 120, 120],
-    keys: ['paytType', 'claimNo', 'coClmNo', 'policyNo', 'lossDate', 'remarks', 'currCd', 'currRate', 'recOverAmt', 'localAmt'],
-    uneditable: [false,false,true,true,true,false,false,false,false,false],
+    total: [null,null,null,null, null, null, 'Total', 'cashcallAmt', 'localAmt'],
+    widths: [ 130, 130, 180,1, 250, 1, 100, 120, 120],
+    keys: ['claimNo', 'coClmNo', 'policyNo', 'lossDate', 'remarks', 'currCd', 'currRate', 'cashcallAmt', 'localAmt'],
+    uneditable: [false,true,true,true,false,false,false,false,true],
     opts:[
       {
         selector: 'paytType',
@@ -71,7 +72,7 @@ export class ClaimRecoveryComponent implements OnInit {
   };
 
   passLov: any = {
-    selector: 'acitArClmRecover',
+    selector: 'acitArClmCashCall',
     payeeNo: '',
     currCd: '',
     hide: []
@@ -99,9 +100,9 @@ export class ClaimRecoveryComponent implements OnInit {
       this.passData.deleteFlag =  false;
       this.passData.checkFlag = false;
     }
-    this.retrievePaytType();
+    //this.retrievePaytType();
     this.retrieveClmRecover();
-    this.getCurrency();
+    //this.getCurrency();
   }
 
   retrievePaytType(){
@@ -137,12 +138,11 @@ export class ClaimRecoveryComponent implements OnInit {
 
   retrieveClmRecover(){
     this.passData.tableData = [];
-    this.accountingService.getAcitArClmRecover(this.record.tranId, 1).subscribe( //billId for Claim Recovery / Overpayment is always 1
+    this.accountingService.getAcitArClmCashCall(this.record.tranId, 1).subscribe( //billId for Claim Recovery / Overpayment is always 1
       (data: any)=>{
-        if(data.arClmRecover.length !== 0){
-          for(var i of data.arClmRecover){
-            i.currCd = i.currCd+'T'+i.currRate;
-            i.uneditable = ['paytType', 'claimNo'];
+        if(data.clmCashCallList.length !== 0){
+          for(var i of data.clmCashCallList){
+            i.uneditable = ['claimNo'];
             this.passData.tableData.push(i);
           }
           this.table.refreshTable();
@@ -162,7 +162,7 @@ export class ClaimRecoveryComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].claimId = selected[i].claimId;
       this.passData.tableData[this.passData.tableData.length - 1].coClmNo = selected[i].coClmNo;
       this.passData.tableData[this.passData.tableData.length - 1].lossDate = selected[i].lossDate;
-      this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currCd+'T'+selected[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
@@ -212,12 +212,12 @@ export class ClaimRecoveryComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-      saveClmRecover: this.savedData,
-      delClmRecover: this.deletedData
+      saveClmCashCall: this.savedData,
+      delClmCashCall: this.deletedData
     }
     console.log(params);
 
-    this.accountingService.saveAcitArClmRecover(params).subscribe(
+    this.accountingService.saveAcitArClmCashCall(params).subscribe(
       (data:any)=>{
        if(data.returnCode === -1){
           this.dialogIcon = '';
@@ -231,7 +231,8 @@ export class ClaimRecoveryComponent implements OnInit {
           }
         }else if(data.returnCode === 0 && data.custReturnCode === 2){
           this.dialogIcon = 'error-message';
-          this.dialogMessage = 'Total Amount of Recoveries/Overpayment must not exceed the AR Amount.';
+          //this.dialogMessage = 'Total Amount of Recoveries/Overpayment must not exceed the AR Amount.';
+          this.dialogMessage = 'Total Amount of Claim Cash Call Payments must not exceed the AR Amount.';
           this.successDiag.open();
           if(this.cancelFlag){
             this.cancelFlag = false;
@@ -249,17 +250,23 @@ export class ClaimRecoveryComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
+    if(data !== null){
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      this.emitCreateUpdate.emit(data);
+    }else{
+      this.emitCreateUpdate.emit(null);
+    }
   }
   onTableDataChange(data){
-    if(data.key === 'recOverAmt'){
+    if(data.key === 'cashcallAmt'){
       for(var i = 0; i < data.length; i++){
-        data[i].localAmt = data[i].recOverAmt * data[i].currRate;
+        data[i].localAmt = data[i].cashcallAmt * data[i].currRate;
       }
     }else if(data.key === 'currCd'){
       for(var j = 0; j < data.length; j++){
         data[j].currRate = data[j].currCd.split('T')[1];
-        data[j].localAmt = data[j].recOverAmt * data[j].currRate;
+        data[j].localAmt = data[j].cashcallAmt * data[j].currRate;
       }
     }
     this.passData.tableData = data;

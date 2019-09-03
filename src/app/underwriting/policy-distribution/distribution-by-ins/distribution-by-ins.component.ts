@@ -88,13 +88,13 @@ export class DistributionByInsComponent implements OnInit {
 
   instDistData:any = {
   	  tHeader: ['Inst No', 'Due Date', 'Booking Date', 'Prem Amt', 'Comm  Rate', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
-      tableData: [],
       dataTypes: ['number', 'date', 'date', 'currency', 'percent', 'currency', 'currency', 'currency'],
       keys: ['instNo', 'dueDate', 'bookingDate', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
-      uneditable: [true,true,true,true,true,true,true,true,true],
       widths: [1,1,1,'auto','auto','auto','auto','auto'],
       total: [null,null,'Total', 'premAmt', null, 'commAmt', 'vatRiComm', 'netDue'],
+      uneditable: [true,true,true,true,true,true,true,true,true],
       infoFlag: false,
+      tableData: [],
       pageID: 'instTable',
       pageLength: 'unli-5',
 
@@ -122,13 +122,27 @@ export class DistributionByInsComponent implements OnInit {
   @ViewChild('poolTable') poolTable: CustEditableNonDatatableComponent;
   @ViewChild('instTable') instTable: CustEditableNonDatatableComponent;
 
-  constructor(private uw:UnderwritingService, private route: ActivatedRoute , private modalService: NgbModal) { }
+  selected:any = null;
+
+  constructor(private uw:UnderwritingService, private route: ActivatedRoute , private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe((data: any)=>{
                   this.params = data;
-  				  this.getDistInst();
+  				        this.getDistInst();
                 });
+
+
+    console.log(this.inquiryFlag)
+    if(this.inquiryFlag){
+      this.instDistData.tHeader = ['Inst No', 'Due Date', 'Booking Date','Acct. Entry Date', 'Prem Amt', 'Comm  Rate', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'];
+      this.instDistData.dataTypes = ['number', 'date', 'date', 'date', 'currency', 'percent', 'currency', 'currency', 'currency'];
+      this.instDistData.keys = ['instNo', 'dueDate', 'bookingDate', 'acctEntDate', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'];
+      this.instDistData.widths = [1,1,1,1,'auto','auto','auto','auto','auto'];
+      this.instDistData.total = [null,null,null,'Total', 'premAmt', null, 'commAmt', 'vatRiComm', 'netDue'];
+    }
+
+  	setTimeout(a=>{this.mainTable.refreshTable},0)
   }
 
   getDistInst(){
@@ -153,6 +167,7 @@ export class DistributionByInsComponent implements OnInit {
   }
 
   updateTrtyTbl(data){
+  	this.selected = data;
   	this.treatyDistData.tableData = data==null ? [] : data.treatyList;
   	this.getSums();
   	this.mainTable.refreshTable();
@@ -364,6 +379,10 @@ export class DistributionByInsComponent implements OnInit {
 
      alasql('SELECT section AS Section, treatyAbbr AS TreatyName, cedingName AS CedingName, retOneLines AS RetentionOneLines, retOneTsiAmt AS RetentionOneTsiAmt, retOnePremAmt AS RetentionOnePremAmt, retTwoLines AS RetentionTwoLines, retTwoTsiAmt AS RetentionTwoTsiAmt, retTwoPremAmt AS RetentionTwoPremAmt, commRt AS CommRt, totalCommAmt AS TotalCommAmt, totalVatRiComm AS TotalVatRiComm, totalNetDue AS TotalNetDue ' +
             'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
+  }
+
+  onClickCancel(){
+    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}])
   }
 
 }

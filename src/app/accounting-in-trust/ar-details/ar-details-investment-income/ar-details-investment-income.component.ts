@@ -23,6 +23,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   @Output() investment: EventEmitter<any> = new EventEmitter();
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
   
   passData: any = {
     tableData:[],
@@ -90,7 +91,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   ngOnInit() {
     console.log(this.record.tranId);
     this.passData.nData.tranId = this.record.tranId;
-    this.passLov.searchParams = [{key: 'bankCd', search: this.record.refCd}, {key:'invtStatus', search: 'MATURED'}];
+    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'MATURED'}];
     if(this.invData !== undefined){
         for(var i of this.invData){
           this.passLov.hide.push(i);
@@ -246,7 +247,13 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
+    if(data !== null){
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      this.emitCreateUpdate.emit(data);
+    }else{
+      this.emitCreateUpdate.emit(null);
+    }
   }
   onTableDataChange(data){
     console.log(data);
