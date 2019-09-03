@@ -18,7 +18,7 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
-                <legend class="scheduler-border">Negative Treaty Balance</legend>
+                <legend class="scheduler-border">Treaty Balance</legend>
                     <div style="position: relative;margin-top: 10px" >
                         <app-cust-editable-non-datatable #quarterTable [passData]="passData" (newClick)="onrowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event);calculateTotal($event)"></app-cust-editable-non-datatable>
                     </div>
@@ -29,9 +29,9 @@
     <div class="row">
         <div class="col-sm-12" style="margin-top: 3px" >
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
-            <legend class="scheduler-border">Claims for Offset</legend>
+            <legend class="scheduler-border">Investment Pull-Out</legend>
                 <div style="position: relative;margin-top: 10px" >
-                    <app-cust-editable-non-datatable #trytytrans [passData]="claimsOffset" (clickLOV)="openLOV($event)" (tableDataChange)="claimsOffset.tableData = $event; quarterTable.indvSelect.clmOffset=$event;update($event)"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #invTable [passData]="invesmentData"></app-cust-editable-non-datatable>
                 </div>
             </fieldset>
         </div>

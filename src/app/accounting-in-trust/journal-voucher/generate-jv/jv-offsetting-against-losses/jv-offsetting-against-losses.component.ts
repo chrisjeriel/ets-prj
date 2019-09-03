@@ -17,6 +17,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
   @Input() jvDetail:any;
   @Input() cedingParams:any;
+  @Input() readOnlyFlag:any;
+
   @ViewChild('clmTable') clmTable: CustEditableNonDatatableComponent;
   @ViewChild('inwTable') inwTable: CustEditableNonDatatableComponent;
   @ViewChild('clmlovMdl') clmlovMdl: LovComponent;
@@ -27,8 +29,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
   passData: any = {
     tableData: [],//this.accountingService.getClaimLosses(),
-    tHeader: ['Claim No', 'Hist No', 'Hist Category','Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Paid Amount','Paid Amount (Php)'],
-    dataTypes: ['text', 'sequence-2', 'text', 'text', 'text', 'text', 'checkbox', 'text', 'percent', 'currency', 'currency', 'currency'],
+    tHeader: ['Claim No', 'Hist No', 'Hist Category','Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Cummulative Payment','Paid Amount','Paid Amount (Php)'],
+    dataTypes: ['text', 'sequence-2', 'text', 'text', 'text', 'text', 'checkbox', 'text', 'percent', 'currency', 'currency','currency', 'currency'],
     nData: {
       showMG:1,
       tranId : '',
@@ -64,10 +66,10 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     addFlag: true,
     disableAdd: true,
     deleteFlag: true,
-    uneditable: [true,true,true,true,true,true,true,true,true,true,false,true],
-    total: [null, null,null, null, null,null, null,null,'Total',null, 'clmPaytAmt', 'localAmt'],
-    widths: [107,52,80,87,82,151,62,40,85,100,100,100],
-    keys: ['claimNo','histNo','histCategoryDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currCd','currRate','reserveAmt','clmPaytAmt','localAmt'],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,false,true],
+    total: [null, null,null, null, null,null, null,null,'Total',null, 'paytAmt','clmPaytAmt','localAmt'],
+    widths: [107,52,80,87,82,151,62,40,85,100,100,100,100],
+    keys: ['claimNo','histNo','histCategoryDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currCd','currRate','reserveAmt','paytAmt','clmPaytAmt','localAmt'],
     pageLength: 5,
   }
 
@@ -130,7 +132,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   };
 
   passLov: any = {
-    selector: 'acitJVNegativeTreaty',
+    selector: 'clmResHistPayts',
     cedingId: '',
     hide: []
   }
@@ -145,14 +147,26 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   interestRate: any;
   dialogIcon : any;
   dialogMessage : any;
+  readOnly:boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
-    //this.getMtnRate();
+    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+      this.readOnly = false;
+      this.InwPolBal.disableAdd = false;
+      this.passData.disableAdd = false;
+    }else {
+      this.readOnly = true;
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.InwPolBal.uneditable =  [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.InwPolBal.disableAdd = true;
+    }
+
     this.passLovInw.currCd = this.jvDetail.currCd;  
     this.passData.nData.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
+    this.passLov.currCd = this.jvDetail.currCd;
     this.retrieveClmLosses();
   }
 
@@ -160,7 +174,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.accountingService.getRecievableLosses(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
-      this.passData.disableAdd = false;
       if(data.receivables.length!=0){
         this.jvDetails.cedingName = data.receivables[0].cedingName;
         this.jvDetails.cedingId = data.receivables[0].cedingId;
@@ -169,7 +182,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
           this.passData.tableData.push(data.receivables[i]);
           this.clmTable.onRowClick(null, this.passData.tableData[0]);
         }
-        
       }
      
       this.clmTable.refreshTable();
@@ -181,9 +193,9 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   setCedingcompany(data){
-    this.jvDetails.cedingName = data.cedingName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLovInw.cedingId = data.cedingId;
+    this.jvDetails.cedingName = data.payeeName;
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLovInw.cedingId = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveClmLosses();
     this.check(this.jvDetails);
@@ -200,7 +212,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     if(data != null && data.itemNo != ''){
       this.itemNo = data.itemNo;
       this.InwPolBal.nData.itemNo = this.itemNo;
-      this.InwPolBal.disableAdd = false;
       this.InwPolBal.tableData = data.inwPolBal;
     }
     this.inwTable.refreshTable();
@@ -245,6 +256,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].exGratia = data.data[i].exGratia;
       this.passData.tableData[this.passData.tableData.length - 1].insuredDesc = data.data[i].insuredDesc;
       this.passData.tableData[this.passData.tableData.length - 1].reserveAmt = data.data[i].reserveAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].paytAmt = data.data[i].cumulativeAmt;
     }
     this.clmTable.refreshTable();
   }

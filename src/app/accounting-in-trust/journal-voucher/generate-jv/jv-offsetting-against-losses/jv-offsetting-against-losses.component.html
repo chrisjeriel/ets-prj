@@ -38,14 +38,14 @@
 	    <div class="form-group col-sm">
 	        <div class="col-md-12 text-center">
 	            <div class="cust-btn-container">
-	                <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-	                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+	                <button type="button" class="cust-btn" (click)="cancel()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Cancel</a></button>
+	                <button type="button" class="cust-btn" (click)="onClickSave()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Save</a></button>
 	            </div>
 	        </div>
 	    </div>
 	</div>	
 </div>	
-<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-mtn-payee-ceding id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-payee-ceding>
 <app-lov #clmlovMdl [passData]="passLov" (selectedData)="setClaimOffset($event)">
 <app-lov #inwlovMdl [passData]="passLovInw" (selectedData)="setSoa($event)">
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>

@@ -40,8 +40,8 @@ export class JvLossReserveDepositComponent implements OnInit {
 
   ngOnInit() {
   	 this.titleService.setTitle(" Acct | JV | Loss Reserve Deposit");
-  	 this.passData.tableData = this.accountingService.getLossRepDep();
-  	 this.passData.opts.push({ selector: "depType", vals: ["Initial", "Additional", "CUMI"] });
+  	 /*this.passData.tableData = this.accountingService.getLossRepDep();
+  	 this.passData.opts.push({ selector: "depType", vals: ["Initial", "Additional", "CUMI"] });*/
   }
 
 }

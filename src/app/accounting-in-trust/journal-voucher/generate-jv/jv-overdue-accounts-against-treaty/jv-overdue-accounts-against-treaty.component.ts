@@ -136,6 +136,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   treatyBal: number = 0;
   totalTratyBal: number = 0;
   totalBal: number = 0;
+  readOnly: boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
@@ -145,6 +146,19 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passDataOffsetting.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
          { header: "Payment Details", span: 5 }, { header: "", span: 2 });
+
+    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+      this.readOnly = false;
+      this.passDataOffsetting.disableAdd = false;
+      this.passData.disableAdd = false;
+    }else {
+      this.readOnly = true;
+      this.passData.uneditable = [true,true,true,true,true];
+      this.passData.disableAdd = true;
+      this.passDataOffsetting.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true];
+      this.passDataOffsetting.disableAdd = true;
+    }
+
     this.retrieveAcctBal();
   }
 
@@ -156,7 +170,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.accountingService.getAcctTrtyBal(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data);
       this.passData.tableData = [];
-      this.passData.disableAdd = false;
       if( data.acctTreatyBal.length!=0){
         this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName;
         this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
@@ -173,9 +186,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
 
   setCedingcompany(data){
     console.log(data)
-    this.jvDetails.cedingName = data.cedingName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLov.cedingId = data.cedingId;
+    this.jvDetails.cedingName = data.payeeName;
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLov.cedingId = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveAcctBal();
     this.check(this.jvDetails);

@@ -89,7 +89,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   claimsOffset: any = {
     tableData: [],
-    tHeader: ['Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Cummulative Payment','Paid Amount',' Paid Amount (Php)'],
+    tHeader: ['Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Hist Amount','Cummulative Payment','Paid Amount',' Paid Amount (Php)'],
     dataTypes: ['text', 'sequence-2', 'text', 'text', 'text', 'text','checkbox', 'text', 'percent', 'currency','currency', 'currency', 'currency'],
     nData: {
       showMG:1,
@@ -135,7 +135,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   passLov: any = {
-    selector: 'acitJVNegativeTreaty',
+    selector: 'clmResHistPayts',
     cedingId: '',
     hide: []
   }
@@ -146,13 +146,27 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   totalTrtyBal: number = 0;
   errorFlag: boolean = false;
   disable: boolean = true;
+  readOnly :boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService) { }
 
   ngOnInit() {
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
+    this.passLov.currCd = this.jvDetail.currCd;
     
+    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+      this.readOnly = false;
+      this.claimsOffset.disableAdd = false;
+      this.passData.disableAdd = false;
+    }else {
+      this.readOnly = true;
+      this.passData.uneditable = [true,true,true,true,true];
+      this.passData.disableAdd = true;
+      this.claimsOffset.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.claimsOffset.disableAdd = true;
+    }
+
     this.retrieveNegativeTreaty();
   }
 
@@ -160,8 +174,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.accountingService.getNegativeTreaty(this.jvDetail.tranId).subscribe((data:any) => {
       this.passData.tableData = [];
       this.totalTrtyBal = 0;
-      this.passData.disableAdd = false;
-      this.disable = false;
       if(data.negativeTrty.length != 0){
         this.jvDetails.cedingName = data.negativeTrty[0].cedingName;
         this.jvDetails.cedingId = data.negativeTrty[0].cedingId;
@@ -196,8 +208,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   setCedingcompany(data){
     console.log(data)
-    this.jvDetails.cedingName = data.cedingName;
-    this.jvDetails.ceding = data.cedingId;
+    this.jvDetails.cedingName = data.payeeName;
+    this.jvDetails.ceding = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveNegativeTreaty();
     this.check(this.jvDetails);
@@ -264,7 +276,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histTypeDesc = data.data[i].histTypeDesc;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].insuredDesc = data.data[i].insuredDesc;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].reserveAmt = data.data[i].reserveAmt;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].paytAmt = data.data[i].paytAmt;
+      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].paytAmt = data.data[i].cumulativeAmt;
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].clmPaytAmt = null; 
       this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].localAmt = null; //change to currency rt
       //this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].quarterNo = this.quarterTable.indvSelect.quarterNo;;
