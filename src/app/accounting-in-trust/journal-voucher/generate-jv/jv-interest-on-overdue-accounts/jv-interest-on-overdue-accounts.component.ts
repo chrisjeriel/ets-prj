@@ -141,8 +141,8 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
 
   setCedingcompany(data){
     this.jvDetails.cedingName = data.payeeName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLov.cedingId = data.cedingId;
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLov.cedingId = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.getInterestOverdue();
     this.check(this.jvDetails);

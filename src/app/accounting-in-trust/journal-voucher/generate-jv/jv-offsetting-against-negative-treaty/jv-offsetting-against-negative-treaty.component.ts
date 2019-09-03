@@ -210,6 +210,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     console.log(data)
     this.jvDetails.cedingName = data.payeeName;
     this.jvDetails.ceding = data.payeeCd;
+    this.passLov.ceding = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveNegativeTreaty();
     this.check(this.jvDetails);
@@ -310,6 +311,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       totalPaid = 0;
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
         totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt
+        console.log(this.passData.tableData[i].clmOffset[j].clmPaytAmt)
         if(this.passData.tableData[i].balanceAmt < totalPaid){
           this.errorFlag = true;
         }

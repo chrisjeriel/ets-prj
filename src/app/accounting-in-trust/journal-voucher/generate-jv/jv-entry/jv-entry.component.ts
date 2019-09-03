@@ -539,6 +539,7 @@ export class JvEntryComponent implements OnInit {
     if(this.entryData.jvAmt !== '' && this.entryData.currRate !== ''){
       this.entryData.localAmt = this.entryData.jvAmt * this.entryData.currRate;
       this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+      this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     }else{
       this.entryData.localAmt = null;
     }

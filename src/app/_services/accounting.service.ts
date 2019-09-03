@@ -2078,5 +2078,12 @@ export class AccountingService {
 		.set('currCd', currCd);
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveSoaAgingZeroLOV",{params});
 	}
+
+	getQuarterPrem(quarterEnd,cedingId){
+		const params = new HttpParams()
+			.set('quarterEnd', (quarterEnd == null || quarterEnd == undefined ? '' : quarterEnd))
+			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveQuarterPremRes",{params});
+	}
 	 
 }
