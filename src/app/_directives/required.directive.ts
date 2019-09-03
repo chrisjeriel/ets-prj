@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostListener, OnInit, Input } from '@angular/core';
 import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
 
 @Directive({
@@ -6,12 +6,16 @@ import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
 })
 export class RequiredDirective implements OnInit{
 
+    @Input() appRequired: boolean = true;
+
     constructor(private er: ElementRef) { 
 
     }
     
     ngOnInit(){
-      this.er.nativeElement.style.backgroundColor = "#fffacd85";
+      if(this.appRequired){
+        this.er.nativeElement.style.backgroundColor = "#fffacd85";
+      }
     }
 
     @HostListener('blur', ['$event.target.value']) onBlur(value){
