@@ -718,6 +718,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       );
     }else{
       //print like normal
+      this.printMdl.closeModal();
     }
   }
 

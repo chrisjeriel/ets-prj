@@ -128,7 +128,7 @@
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'">Reprint AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'" (click)="printMdl.openNoClose();">Reprint AR</button>
 				</div>					
 			</div>
 		</fieldset>
