@@ -89,7 +89,7 @@
    		                    </div>
    	                    	<label class="form-control-sm col-sm-1 labels">Approved By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedBy">
+   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedBy">
                             <div class="magni-icon" style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('app-user')"><i class="fa fa-search"></i></a></div>
    		                    </div>
    		                </div>
@@ -118,7 +118,7 @@
                           <label class="form-control-sm col-sm-1 no-margin">Date Approved</label>
                           <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
                             <!-- <datepicker type="datetime" [showIcon]="false" [disabled]="true" [value]="saveAcitPaytReq.approvedDate"></datepicker> -->
-                            <datepicker  [type]="'datetime'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="saveAcitPaytReq.approvedDate" (valueChange)="saveAcitPaytReq.approvedDate=$event;"></datepicker>
+                            <datepicker  [type]="'datetime'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="false" [value]="saveAcitPaytReq.approvedDate" (valueChange)="saveAcitPaytReq.approvedDate=$event;"></datepicker>
                           </div>
    		                </div>
    		            </div>
