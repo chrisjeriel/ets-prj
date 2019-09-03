@@ -1161,6 +1161,26 @@ export class UnderwritingService {
             .set('altNo', altNo)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDistWarning', {params});
     }
+
+    getPolDistInst(policyId){
+        const params = new HttpParams()
+            .set('policyId', policyId);
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDistInst', {params});
+    }
+
+    getPolDistInstPool(policyId,distId,instNo){
+        const params = new HttpParams()
+            .set('policyId', policyId)
+            .set('distId',distId)
+            .set('instNo', instNo);
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDistInstPool', {params});
+    }
+
+    getInstTagAcctEntDate(policyId){
+        const params = new HttpParams()
+            .set('policyId', policyId);
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolInstTagAcctDate', {params});
+    }
 }            
 
             

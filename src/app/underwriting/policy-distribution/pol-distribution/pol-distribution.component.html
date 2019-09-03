@@ -36,7 +36,8 @@
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="pad(polDistributionData?.distNo, 'distNo')">
 					<label class="form-control-sm col-sm-1">Pol Dist Status</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.status">
-
+					<label class="form-control-sm col-sm-1"></label>
+					<label class="form-control-sm col-sm-2"><input type="checkbox" [ngModel]="acctDetails?.instTag=='Y'">Installment</label>
 				</div>
 			</div>
 		</fieldset>

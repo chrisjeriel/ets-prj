@@ -1,0 +1,120 @@
+<div>
+	<fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+		<legend class="scheduler-border">Installment Info</legend>
+		<div class="d-flex">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10">
+				<app-cust-editable-non-datatable [passData]="instDistData" (newClick)="updateTrtyTbl($event)" #instTable></app-cust-editable-non-datatable>
+			</div>
+		</div>
+		
+	</fieldset>
+</div>
+
+<div>
+	<fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+		<legend class="scheduler-border">Treaty Distribution Per Section</legend>
+		<div class="row" style="padding-top: 5px;">
+			<div class="col-sm">
+				<app-cust-editable-non-datatable [passData]="treatyDistData" (export)="exportTreatyDistPerSection();" #mainTable></app-cust-editable-non-datatable>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-8" style="margin-left: -10px;">
+				<div class="input-group" style="margin-bottom: -18px !important;">
+					<label class="form-control-sm col-sm-2"></label>
+					<label class="form-control-sm col-sm label-center">Prem Amt</label>
+					<label class="form-control-sm col-sm label-center">Comm Amt</label>
+					<label class="form-control-sm col-sm label-center">VAT on R/I Comm</label>
+					<label class="form-control-sm col-sm label-center">Net Due</label>
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2">Section I</label>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.prem  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.comm  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.vat  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts1?.net  | number:'1.2-2'">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2">Section II</label>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.prem  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.comm  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.vat  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ts2?.net  | number:'1.2-2'">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2">Total</label>
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.prem  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.comm  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.vat  | number:'1.2-2'">
+					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="total?.net  | number:'1.2-2'">
+				</div>
+			</div>
+			<div class="col-sm-2">
+			</div>
+		</div>
+	</fieldset>
+
+</div>
+
+<div class="cust-btn-container text-center my-2">
+
+	<app-modal [btnTitle]="'View Pool Dist'" (modalOpened)="retrievePoolDistribution();">
+		<div header>Pool Distribution Per Section</div>
+		<div body>
+			<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
+				<div class="row" style="padding-top: 5px;">
+					<div class="col-sm" style="margin-top: -28px;">
+						<app-cust-editable-non-datatable [passData]="poolDistributionData" (export)="exportPoolDistPerSection();" #poolTable></app-cust-editable-non-datatable>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="input-group" style="margin-bottom: -18px !important;">
+							<label class="form-control-sm col-sm-1"></label>
+							<label class="form-control-sm col-sm-1 label-center">Ret Line</label>
+							<label class="form-control-sm col-sm label-center">1st Ret Prem Amt</label>
+							<label class="form-control-sm col-sm label-center">2st Ret Prem Amt</label>
+							<label class="form-control-sm col-sm label-center">Comm Amt</label>
+							<label class="form-control-sm col-sm label-center">VAT on R/I Comm</label>
+							<label class="form-control-sm col-sm label-center">Net Due</label>
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">Section I</label>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-1 input-margin-left" [ngModel]="pts1?.ret" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.ret1prem" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.ret2prem" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.comAmt" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.vat" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts1?.net" appCurrency>
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">Section II</label>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-1 input-margin-left" [ngModel]="pts2?.ret" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.ret1prem" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.ret2prem" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.comAmt" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.vat" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="pts2?.net" appCurrency>
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">Total</label>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-1 input-margin-left" [ngModel]="ptotal?.ret" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.ret1prem" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.ret2prem" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.comAmt" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.vat" appCurrency>
+							<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm input-margin-left" [ngModel]="ptotal?.net" appCurrency>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div footer class="d-flex justify-content-center" style="width: 100% !important;">
+			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
+		</div>
+	</app-modal>
+	<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+</div>

@@ -11,6 +11,11 @@
 				<app-pol-distribution [inquiryFlag]="inquiryFlag" [riskDistId]="riskDistId" [riskDistStatus]="riskDistStatus"></app-pol-distribution>
 			</ng-template>
 		</ngb-tab>
+		<ngb-tab title="Installment Distribution" *ngIf="acctDetails?.instTag == 'Y'">
+			<ng-template ngbTabContent>
+				<app-distribution-by-ins [inquiryFlag]="inquiryFlag" [riskDistId]="riskDistId"></app-distribution-by-ins>
+			</ng-template>
+		</ngb-tab>
 	</ngb-tabset>
 </div>
 
