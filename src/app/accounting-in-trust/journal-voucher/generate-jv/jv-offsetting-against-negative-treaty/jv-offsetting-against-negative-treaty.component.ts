@@ -177,6 +177,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         this.passData.disableAdd = false;
         this.jvDetails.cedingName = data.negativeTrty[0].cedingName;
         this.jvDetails.ceding = data.negativeTrty[0].cedingId;
+        this.passLov.ceding = this.jvDetails.ceding;
         this.check(this.jvDetails);
         for (var i = 0; i < data.negativeTrty.length; i++) {
            this.passData.tableData.push(data.negativeTrty[i]);
@@ -367,7 +368,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveNegTrty.push(this.passData.tableData[i]);
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].tranId = this.jvDetail.tranId;
-        console.log(this.jvDetails)
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].cedingId = this.jvDetails.ceding;
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding)
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
