@@ -183,6 +183,28 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 $('td input.ng-dirty').removeClass('ng-dirty');
             }
         }, 0);
+
+        //dahil siga ako -paul
+        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 && this.passData.keys === undefined) {
+            this.dataKeys = Object.keys(this.passData.tableData[0]);
+        } else if(this.passData.keys !== undefined){
+            this.dataKeys = this.passData.keys;
+        }else{
+            this.dataKeys = [];
+        }
+
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('edited') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('edited'),1);
+       }
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('checked') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('checked'),1);
+       }
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('deleted') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('deleted'),1);
+       }
+        for (var i = this.dataKeys.length - 1; i >= 0; i--) {
+           this.fillData[this.dataKeys[i]] = null;
+        }
     }
 
     ngOnInit() {
@@ -202,16 +224,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         if(this.passData.tableData.length != 0)
             this.loadingFlag = false;
-
-        // if(this.dataKeys.indexOf('edited') != -1){
-        //   this.dataKeys.pop();
-        // }
-        // if(this.dataKeys.indexOf('checked') != -1){
-        //   this.dataKeys.pop();
-        // }
-        // if(this.dataKeys.indexOf('deleted') != -1){
-        //   this.dataKeys.pop();
-        // }
 
        if(this.dataKeys!==undefined && this.dataKeys.indexOf('edited') != -1){
          this.dataKeys.splice(this.dataKeys.indexOf('edited'),1);

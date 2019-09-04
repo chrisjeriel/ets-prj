@@ -41,7 +41,7 @@ export class ClaimDistributionComponent implements OnInit {
   	dataTypes: ['text','text','percent','currency'],
     keys:['treatyAbbr','cedingAbbr','clmPctShare','reserveAmt'],
     total:[null,'Total','clmPctShare','reserveAmt'],
-    uneditable:[true,true,true,true,],
+    uneditable:[true,true,true,true,true,true],
   	pageLength:'unli',
   	pageID:2,
     disableSort:true
@@ -53,11 +53,11 @@ export class ClaimDistributionComponent implements OnInit {
   	tHeader: ['Treaty','Treaty Company', '1st Ret Line','1st Ret Amount','2nd Ret Line', '2nd Ret Amount'],
   	dataTypes: ['text','text','number','currency','number','currency'],
     keys:['treatyAbbr','cedingAbbr','ret1Lines','ret1Amt','ret2Lines','ret2Amt'],
+    total:[null,'Total','ret1Lines','ret1Amt','ret2Lines','ret2Amt'],
   	pageLength:'unli',
-  	uneditable: [true,true,true,true,true,true],
+  	uneditable: [true,true,true,true,true,true,true,true,true],
   	pageID: 3,
-    searchFlag: true,
-    total:[null,'Total','ret1Lines','ret1Amt','ret2Lines','ret2Amt']
+    searchFlag: true
   }	
 
   reserveDistPassData: any = {
@@ -122,11 +122,11 @@ export class ClaimDistributionComponent implements OnInit {
   }
 
   cummDistPassData:any = {
-    tHeader: ['Distribution No','Amount','Curr','Curr Rt','Distribution Status'],
-    dataTypes: ['sequence-6','currency','text','currencyRate','text'],
-    keys:['clmDistNo','reserveAmt','currencyCd','currencyRt','clmDistStatName'],
+    tHeader: ['Distribution No','Reserve Amount','Payment Amount','Curr','Curr Rt','Distribution Status'],
+    dataTypes: ['sequence-6','currency','currency','text','currencyRate','text'],
+    keys:['clmDistNo','reserveAmt','paytAmt','currencyCd','currencyRt','clmDistStatName'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-    widths:[1,'auto',1,150,150],
+    widths:[1,'auto','auto',1,150,150],
     tableData: [],
     pageLength: 5,
     pageID: 6,
@@ -222,11 +222,35 @@ export class ClaimDistributionComponent implements OnInit {
 
   onTabChange(data){
     console.log(data)
+    if(data.nextId=='cummReserve'){
+      this.treatyDistPassData.tHeader =  ['Treaty','Treaty Company', 'Treaty Share(%)','Reserve Amount','Payment Amount'];
+      this.treatyDistPassData.dataTypes =  ['text','text','percent','currency','currency'];
+      this.treatyDistPassData.keys = ['treatyAbbr','cedingAbbr','clmPctShare','reserveAmt','paytAmt'];
+      this.treatyDistPassData.total = [null,'Total','clmPctShare','reserveAmt','paytAmt'];
+
+      this.poolDistPassData.tHeader =  ['Treaty','Treaty Company', '1st Ret Line','1st Ret Reserve Amount','1st Ret Payment Amount','2nd Ret Line', '2nd Ret Reserve Amount', '2nd Ret Payment Amount'];
+      this.poolDistPassData.dataTypes =  ['text','text','number','currency','currency','number','currency','currency'];
+      this.poolDistPassData.keys = ['treatyAbbr','cedingAbbr','ret1Lines','ret1Amt','ret1PaytAmt','ret2Lines','ret2Amt','ret2PaytAmt'];
+      this.poolDistPassData.total = [null,'Total','ret1Lines','ret1Amt','ret1PaytAmt','ret2Lines','ret2Amt','ret2PaytAmt'];
+
+
+    }else{
+      this.treatyDistPassData.tHeader =  ['Treaty','Treaty Company', 'Treaty Share(%)','Reserve Amount'];
+      this.treatyDistPassData.dataTypes =  ['text','text','percent','currency'];
+      this.treatyDistPassData.keys = ['treatyAbbr','cedingAbbr','clmPctShare','reserveAmt'];
+      this.treatyDistPassData.total = [null,'Total','clmPctShare','reserveAmt'];
+
+      this.poolDistPassData.tHeader =  ['Treaty','Treaty Company', '1st Ret Line','1st Ret Amount','2nd Ret Line', '2nd Ret Amount'];
+      this.poolDistPassData.dataTypes =  ['text','text','number','currency','number','currency'];
+      this.poolDistPassData.keys = ['treatyAbbr','cedingAbbr','ret1Lines','ret1Amt','ret2Lines','ret2Amt'];
+      this.poolDistPassData.total = [null,'Total','ret1Lines','ret1Amt','ret2Lines','ret2Amt'];
+    }
     this.selected = null;
     //this.paymentDistTable.indvSelect = null;
     this.reserveDistTable.indvSelect = null;
     this.treatyDistPassData.tableData = [];
     this.treatyTable.refreshTable();
+    this.poolTable.refreshTable();
     this.currTab = data.nextId;
     setTimeout(a=>
       this.filterTable(this.histTypeFilter),0)

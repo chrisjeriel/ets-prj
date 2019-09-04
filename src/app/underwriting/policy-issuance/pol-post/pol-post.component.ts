@@ -35,7 +35,7 @@ export class PolPostComponent implements OnInit {
 
   cummSi:any;
 
-  constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, private modalService: NgbModal,
+  constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, public modalService: NgbModal,
    private uwService: UnderwritingService, private ns: NotesService, private router: Router) {
   	config.backdrop = 'static';
     config.keyboard = false;
