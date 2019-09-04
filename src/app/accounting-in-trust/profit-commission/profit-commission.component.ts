@@ -135,6 +135,7 @@ export class ProfitCommissionComponent implements OnInit {
 		pageLength: 12,
 		uneditable: [true,true,true,true,true],
 		widths:['auto','auto','auto',120,120],
+		disableSort : true
 	}
     
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService) { }
