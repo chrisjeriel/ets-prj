@@ -49,4 +49,31 @@ export class SecurityService {
 			.set('tranCd',tranCd ===undefined || tranCd===null ? '' : tranCd)
 		return this.http.get(environment.prodApiUrl + "/security-service/retrieveMtnTransactions",{params});
 	}
+
+	getTransactions(accessLevel?, userId?, userGrp?, tranCd?){
+		const params = new HttpParams()
+			.set('accessLevel',accessLevel ===undefined || accessLevel===null ? '' : accessLevel)
+			.set('userId',userId ===undefined || userId===null ? '' : userId)
+			.set('userGrp',userGrp ===undefined || userGrp===null ? '' : userGrp)
+			.set('tranCd',tranCd ===undefined || tranCd===null ? '' : tranCd)
+		return this.http.get(environment.prodApiUrl + "/security-service/retrieveTransactions",{params});
+	}
+
+	getModules(accessLevel?, userId?, userGrp?, tranCd?){
+		const params = new HttpParams()
+			.set('accessLevel',accessLevel ===undefined || accessLevel===null ? '' : accessLevel)
+			.set('userId',userId ===undefined || userId===null ? '' : userId)
+			.set('userGrp',userGrp ===undefined || userGrp===null ? '' : userGrp)
+			.set('tranCd',tranCd ===undefined || tranCd===null ? '' : tranCd)
+		return this.http.get(environment.prodApiUrl + "/security-service/retrieveModules",{params});
+	}
+
+	saveTransactions(params) {
+        let header: any = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        };
+        return this.http.post(environment.prodApiUrl + '/security-service/saveTransactions',JSON.stringify(params),header);
+    }
 }

@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SecurityService } from '@app/_services';
 import { ModuleTransaction } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 @Component({
   selector: 'app-module-transactions',
@@ -10,7 +14,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModuleTransactionsComponent implements OnInit {
 
- PassData: any = {
+ @ViewChild("modulesList") modulesList: CustEditableNonDatatableComponent;
+
+ PassDataTransactions: any = {
     tableData: [],
     tHeader: ['Tran Code', 'Description','Remarks'],
     dataTypes: ['text', 'text', 'text'],
@@ -34,9 +40,10 @@ export class ModuleTransactionsComponent implements OnInit {
   }
 
   PassDataModules: any = {
-    tableData: [['QUOTE001','Quotation Processing'],['QUOTE002','General Info (Quotation)'],['QUOTE003','Coverage (Quotation)'],['QUOTE004','Quote Option (Quotation)'],['QUOTE005','Endorsement (Quotation)']],
+    tableData: [],
     tHeader: ['Module Id', 'Description'],
     dataTypes: ['text', 'text'],
+    keys: ['moduleId','moduleDesc'],
     pageID: 1,
     pageLength:5,
     searchFlag: true,
@@ -57,11 +64,42 @@ export class ModuleTransactionsComponent implements OnInit {
   widths: [110,225,30],
   }
 
+  transactionData:any = {};
+  btnDisabled:boolean = true;
+
   constructor(private securityServices: SecurityService,public modalService: NgbModal) { }
 
   ngOnInit() {
-      this.securityServices.getMtnTransactions(null, null).subscribe((data: any) => {
-        this.PassData.tableData = data['transactions'];
+      this.getMtnTransactions();
+  }
+
+  getMtnTransactions() {
+    this.securityServices.getMtnTransactions(null, null).subscribe((data: any) => {
+      this.PassDataTransactions.tableData = data['transactions'];
+    });
+  }
+
+  onRowClickTransactions(data){
+    if(data != null){
+      this.btnDisabled = false;
+      this.transactionData = data;
+
+      this.getMtnModules();
+    }else{
+      this.btnDisabled = true;
+      this.transactionData = {};
+    }
+  }
+
+  getMtnModules() {
+      this.PassDataModules.tableData = [];
+      this.securityServices.getMtnModules(null, this.transactionData.tranCd).subscribe((data: any) => {
+        for(var i =0; i < data.modules.length;i++){
+          this.PassDataModules.tableData.push(data.modules[i]);
+          this.PassDataModules.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
+        }
+
+        this.modulesList.refreshTable();
       });
   }
 
@@ -71,6 +109,6 @@ export class ModuleTransactionsComponent implements OnInit {
 
   user(){
       $('#users #modalBtn').trigger('click');
-    }
+  }
 
 }

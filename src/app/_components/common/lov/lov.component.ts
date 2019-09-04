@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService, UnderwritingService, QuotationService, AccountingService } from '@app/_services';
+import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -47,7 +47,7 @@ export class LovComponent implements OnInit {
   theme =  window.localStorage.getItem("selectedTheme");
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService,
-    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService) { }
+    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, private securityService : SecurityService) { }
 
   ngOnInit() {
   	  // if(this.lovCheckBox){
@@ -827,6 +827,28 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = false;
       this.mtnService.getMtnBussType(this.passData.bussTypeCd, this.passData.bussTypeName, this.passData.activeTag).subscribe((a:any)=>{
         this.passTable.tableData = a["bussTypeList"];
+        //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'mtnTransactions'){
+      this.passTable.tHeader = ['Tran Code', 'Description'];
+      this.passTable.widths = [77,'auto']
+      this.passTable.dataTypes = [ 'number','text'];
+      this.passTable.keys = [ 'tranCd','tranDesc'];
+      this.passTable.checkFlag = false;
+      this.securityService.getMtnTransactions(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
+        this.passTable.tableData = a["transactions"];
+        //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'mtnModules'){
+      this.passTable.tHeader = ['Module ID', 'Description'];
+      this.passTable.widths = [77,'auto']
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'moduleId','moduleDesc'];
+      this.passTable.checkFlag = false;
+      this.securityService.getMtnModules(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
+        this.passTable.tableData = a["modules"];
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });

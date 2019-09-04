@@ -2,16 +2,16 @@
 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
 	<div class="row">
 		<div class="col-sm-12 cust-margin">
-			<app-cust-editable-non-datatable [passData]="PassData"></app-cust-editable-non-datatable>
+			<app-cust-editable-non-datatable [passData]="PassDataTransactions" (newClick)="onRowClickTransactions($event)"></app-cust-editable-non-datatable>
 		</div>
 	</div>
 	<div class="form-row">
 		<div class="form-group col-sm" style="margin-bottom: 8px;">
 			<div class="col-md-13 text-center">
 				<div class="cust-btn-container">
-					<button type="button" class="cust-btn btn" (click)="modules()"><a>Modules</a></button>
-					<button type="button" class="cust-btn btn" (click)="user()"><a>Users w/ Access</a></button>
-					<button type="button" class="cust-btn btn"><a>User Group w/ Access</a></button>
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="modules()"><a>Modules</a></button>
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="user()"><a>Users w/ Access</a></button>
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" ><a>User Group w/ Access</a></button>
 				</div>
 			</div>
 		</div>
@@ -57,13 +57,13 @@
 			<div class="col-sm-12">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4">Tran Code</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6">
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly >
 				</div>
 	        	<fieldset class="scheduler-border">
 	        		<legend class="scheduler-border">Module</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable [passData]="PassDataModules"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #modulesList [passData]="PassDataModules"> </app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
