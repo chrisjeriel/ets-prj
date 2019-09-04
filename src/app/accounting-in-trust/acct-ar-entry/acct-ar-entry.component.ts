@@ -8,6 +8,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-acct-ar-entry',
@@ -694,6 +695,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.dialogMessage = 'AR cannot be printed. Accounting Entries must have zero variance.';
       this.successDiag.open();
     }else{
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
       this.printMdl.openNoClose();
     }
   }
