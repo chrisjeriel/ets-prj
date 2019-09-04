@@ -238,6 +238,27 @@ export class JvAccountingEntriesComponent implements OnInit {
           this.errorFlag = true;
         }
       });
+    }if(this.jvType == 4){
+      this.accountingService.getAcitJVOverdue(this.jvDetail.tranId,'').subscribe((data:any) => {
+        var datas = data.overDueAccts;
+          for (var i = 0; i < datas.length; i++) {
+            total += datas[i].overdueInt
+          }
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+      });
+    }if(this.jvType == 6){
+      this.accountingService.getAcctTrtyBal(this.jvDetail.tranId).subscribe((data:any) => {
+        var datas = data.overDueAccts;
+        console.log(datas);
+          /*for (var i = 0; i < datas.length; i++) {
+            total += datas[i].overdueInt
+          }
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }*/
+      });
     }
   }
 

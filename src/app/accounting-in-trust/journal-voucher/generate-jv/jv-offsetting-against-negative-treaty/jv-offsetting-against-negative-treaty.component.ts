@@ -175,6 +175,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   retrieveNegativeTreaty(){
     this.accountingService.getNegativeTreaty(this.jvDetail.tranId).subscribe((data:any) => {
+      console.log(data)
       this.passData.tableData = [];
       this.totalTrtyBal = 0;
       if(data.negativeTrty.length != 0){

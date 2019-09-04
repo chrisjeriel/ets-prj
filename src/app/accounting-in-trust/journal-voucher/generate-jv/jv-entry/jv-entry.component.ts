@@ -109,6 +109,7 @@ export class JvEntryComponent implements OnInit {
   dcBut: boolean = false;
   approvedStat: boolean = false;
   forApprovedStat: boolean = false;
+  printStat: boolean = false;
   cancelFlag: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
@@ -194,6 +195,7 @@ export class JvEntryComponent implements OnInit {
         
         if(this.entryData.jvStatus == 'A'){
           this.printBut = false;
+          this.printStat = false; 
         }else{
           this.printBut = true;
         }
@@ -386,6 +388,7 @@ export class JvEntryComponent implements OnInit {
     this.accService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
       console.log(data);
       this.entryData.approver = data.employee.employeeName;
+      this.entryData.approvedBy = data.employee.userName;
     });
     this.approveJV.openNoClose();
   }

@@ -110,7 +110,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
         this.passData.disableAdd = false;
         this.jvDetails.cedingName = data.overDueAccts[0].cedingName;
         this.jvDetails.cedingId = data.overDueAccts[0].cedingId;
-        this.passLov.cedingId = data.payeeCd;
+        this.passLov.cedingId = data.overDueAccts[0].cedingId;
         this.check(this.jvDetails);
         for(var i = 0; i < data.overDueAccts.length; i++){
           this.passData.tableData.push(data.overDueAccts[i]);
@@ -209,6 +209,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
         edited.push(this.passData.tableData[i]);
         edited[edited.length - 1].dueDate = this.ns.toDateTimeString(this.passData.tableData[i].dueDate)
         edited[edited.length - 1].autoTag = this.passData.tableData[i].orgOverdue == this.passData.tableData[i].overdueInt ? 'Y':'N';
+        edited[edited.length - 1].interestRate = this.interestRate
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
@@ -264,6 +265,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   getMtnRate(){
     this.maintenaceService.getMtnParameters('N','OVERDUE_INT_RT').subscribe((data:any) =>{
       this.interestRate = data.parameters[0].paramValueN;
+      console.log(this.interestRate)
     });
   }
 }
