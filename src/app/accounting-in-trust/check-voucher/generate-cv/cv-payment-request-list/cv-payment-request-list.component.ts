@@ -162,8 +162,9 @@ export class CvPaymentRequestListComponent implements OnInit {
 
     var reqAmt = this.passDataPaytReqList.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reqAmt != null ?parseFloat(b.reqAmt):0),0);
     console.log(reqAmt);
-
-    if(Number(this.passData.cvAmt) < Number(reqAmt)){
+    console.log(this.passData.cvAmt);
+    console.log(this.cvInfo.cvAmt);
+    if(Number(this.cvInfo.cvAmt) < Number(reqAmt)){
         this.warnMsg = 'The Total of listed Payment Requests must not exceed the CV Amount.';
         this.warnMdl.openNoClose();
         this.params.savePaytReqList   = [];
