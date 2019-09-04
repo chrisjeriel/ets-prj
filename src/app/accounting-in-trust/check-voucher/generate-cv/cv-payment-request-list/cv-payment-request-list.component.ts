@@ -58,7 +58,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   };
   passDataLov  : any = {
     selector  : '',
-    payeeNo   : '',
+    payeeCd   : '',
     currCd    : ''
   };
 
@@ -88,6 +88,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   dialogIcon     : string;
   dialogMessage  : string;
   warnMsg        : string = '';
+  limitContent   : any[] = [];
 
 
   constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, public modalService: NgbModal) { }
@@ -110,9 +111,10 @@ export class CvPaymentRequestListComponent implements OnInit {
       var recPr = data['pr']['acitCvPaytReqList'];
 
       this.cvInfo =  Object.assign(this.cvInfo, recCv);
+      console.log(this.cvInfo);
       this.cvInfo.cvDate = this.ns.toDateTimeString(this.cvInfo.cvDate); 
       this.cvInfo.cvStatusUp = (this.cvInfo.cvStatus == 'C')?true:false;
-      this.passDataLov.payeeNo = this.cvInfo.payeeNo;
+      this.passDataLov.payeeCd = this.cvInfo.payeeCd;
       this.passDataLov.currCd  = this.cvInfo.currCd;
       this.passDataPaytReqList.tableData = recPr;
       this.paytReqTbl.refreshTable();
@@ -121,7 +123,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
   onSavePaytReqList(){
-    this.paytReqTbl.overlayLoader = true;
+    //this.paytReqTbl.overlayLoader = true;
     console.log(this.params);
     this.accountingService.saveAcitCvPaytReqList(JSON.stringify(this.params))
     .subscribe(data => {
@@ -137,8 +139,6 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
-    console.log(this.cvInfo.cvStatus);
-    console.log(this.cvInfo.cvStatusUp);
     this.passDataPaytReqList.tableData.forEach(e => {
       e.tranId    = this.passData.tranId;
       e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':((this.cvInfo.cvStatus == 'C')?'N':this.cvInfo.cvStatus);
@@ -158,7 +158,7 @@ export class CvPaymentRequestListComponent implements OnInit {
    
     console.log(this.cvInfo.cvStatus);
     console.log(this.passDataPaytReqList.tableData);
-    console.log(this.params);
+    console.log(this.params.savePaytReqList);
 
     var reqAmt = this.passDataPaytReqList.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reqAmt != null ?parseFloat(b.reqAmt):0),0);
     console.log(reqAmt);
@@ -210,6 +210,11 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
   showLov(){
+    this.limitContent = [];
+    
+    this.passDataPaytReqList.tableData.forEach(e => {
+      this.limitContent.push(e);
+    });
     this.passDataLov.selector = 'paytReqList';
     this.paytReqLov.openLOV();
   }

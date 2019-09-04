@@ -831,7 +831,15 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['paytReqNo','tranTypeDesc','reqDate','particulars','requestedBy','currCd','reqAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
-        this.passTable.tableData = a.acitPaytReq.filter(e => e.payeeNo == this.passData.payeeNo && e.currCd == this.passData.currCd && e.reqStatus == 'A');
+        var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A');
+        if(this.limitContent.length != 0){
+          var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({reqId: a.reqId}));
+          this.passTable.tableData =  rec.filter(a => {
+                             var mdl = JSON.stringify({reqId: a.reqId});
+                             console.log(mdl);
+                             return !limit.includes(mdl);
+                           });
+        }
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'mtnBussType'){

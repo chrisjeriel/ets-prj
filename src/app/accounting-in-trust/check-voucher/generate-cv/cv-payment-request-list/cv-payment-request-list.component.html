@@ -25,12 +25,12 @@
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
                   <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" [ngModel]="cvInfo?.currCd" readonly>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.cvAmt" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.cvAmt | number:'1.2-2'"readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
                   <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.localAmt" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.localAmt | number:'1.2-2'" readonly>
                 </div>
               </div>
             </div>
@@ -42,12 +42,12 @@
                 <div class="col-sm"></div>
                 <div class="col-sm-12">
                   <app-cust-editable-non-datatable id="prTbl" #paytReqTbl [passData]="passDataPaytReqList" (clickLOV)="showLov()" (newClick)="onRowClick($event)"  (tableDataChange)="passDataPaytReqList.tableData=$event;">
-                    <ng-container controls-r>
+                    <!-- <ng-container controls-r>
                       <div class="align" style="position: absolute;left: 130px">
                           <label class="form-control-sm">For Certification</label> 
                           <input type="checkbox" style="margin-right: 0px !important;" [ngModel]="cvInfo.cvStatusUp" (ngModelChange)="cvInfo.cvStatusUp=$event;" (change)="addDirty();">
                       </div>
-                    </ng-container>
+                    </ng-container> -->
                   </app-cust-editable-non-datatable>
                 </div>
                 <div class="col-sm"></div>
@@ -144,7 +144,7 @@
 </div>
 
 
-<app-lov #paytReqLov [passData]="passDataLov" (selectedData)="setData($event)"></app-lov>
+<app-lov #paytReqLov [passData]="passDataLov" (selectedData)="setData($event)" [limitContent]="limitContent"></app-lov>
 <app-confirm-save  #con (onYes)="onSavePaytReqList()"></app-confirm-save>
 <app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/check-voucher'" ></app-cancel-button>
