@@ -91,9 +91,8 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     this.passLov.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
-    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+    if(this.jvDetail.statusType == 'N'){
       this.disable = false;
-      this.passData.disableAdd = false;
     }else {
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true];
       this.disable = true;
@@ -108,8 +107,10 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.totalOverdue = 0;
       this.passData.tableData = [];
       if(data.overDueAccts.length != 0){
+        this.passData.disableAdd = false;
         this.jvDetails.cedingName = data.overDueAccts[0].cedingName;
         this.jvDetails.cedingId = data.overDueAccts[0].cedingId;
+        this.passLov.cedingId = data.payeeCd;
         this.check(this.jvDetails);
         for(var i = 0; i < data.overDueAccts.length; i++){
           this.passData.tableData.push(data.overDueAccts[i]);
@@ -143,6 +144,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     this.jvDetails.cedingName = data.payeeName;
     this.jvDetails.ceding = data.payeeCd;
     this.passLov.cedingId = data.payeeCd;
+    this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.getInterestOverdue();
     this.check(this.jvDetails);

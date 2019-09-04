@@ -108,6 +108,7 @@ export class JvEntryComponent implements OnInit {
   allocBut: boolean = false;
   dcBut: boolean = false;
   approvedStat: boolean = false;
+  forApprovedStat: boolean = false;
   cancelFlag: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
@@ -187,7 +188,8 @@ export class JvEntryComponent implements OnInit {
         }
 
         if(this.entryData.jvStatus == 'F'){
-          this.approveBut = true;
+          this.forApprovedStat = false;
+          this.approveBut = false;
         }
         
         if(this.entryData.jvStatus == 'A'){
