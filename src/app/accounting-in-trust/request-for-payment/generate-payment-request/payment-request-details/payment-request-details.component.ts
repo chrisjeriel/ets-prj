@@ -321,6 +321,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   totalBal        : any;
   variance        : any;
   allotedChanged  : boolean = false;
+  totalReqAmt     : any;
 
   params : any =  {
     savePrqTrans     : [],
@@ -382,7 +383,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       this.recPrqTrans = data['acitPrqTrans'];
-
+      this.totalReqAmt = data['acitPrqTrans'].map(e => e.currAmt).reduce((a,b) => a+b,0);
+      console.log(this.totalReqAmt + ' :  this.totalReqAmt');
       if(this.activeOthTab){
         this.othersData.tableData = [];
         this.getOthers();
@@ -729,6 +731,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
 
     var currAmt = this.unappliedColData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    var totalAmt = this.unappliedColData.tableData.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
     console.log(currAmt);
     console.log(this.unappliedColData.tableData);
 
@@ -737,7 +740,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucUnCol.open();
       this.params.savePrqTrans   = [];
     }else{
-      if(Number(this.requestData.reqAmt) < Number(currAmt)){
+      if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+        this.warnMsg = 'The Total payments for the Unapplied Collection, Unapplied Collection and Others must not exceed the Requested Amount.';
+        this.warnMdl.openNoClose();
+        this.params.savePrqTrans   = [];
+        this.params.deletePrqTrans = [];
+      }else if(Number(this.requestData.reqAmt) < Number(currAmt)){
         this.warnMsg = 'The Total Amount for the Unapplied Collection must not exceed the Requested Amount.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans   = [];
@@ -795,6 +803,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
 
     var currAmt = this.othersData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    var totalAmt = this.othersData.tableData.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
     console.log(currAmt);
     console.log(this.othersData.tableData);
 
@@ -803,7 +812,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucOth.open();
       this.params.savePrqTrans   = [];
     }else{
-      if(Number(this.requestData.reqAmt) < Number(currAmt)){
+      if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+        this.warnMsg = 'The Total payments for the Unapplied Collection, Unapplied Collection and Others must not exceed the Requested Amount.';
+        this.warnMdl.openNoClose();
+        this.params.savePrqTrans   = [];
+        this.params.deletePrqTrans = [];
+      }else if(Number(this.requestData.reqAmt) < Number(currAmt)){
         this.warnMsg = 'The Total Amount for the Other Payments must not exceed the Requested Amount.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans   = [];
@@ -854,6 +868,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.params);
 
     var invtAmt = this.investmentData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.invtAmt != null ?parseFloat(b.invtAmt):0),0);
+    var totalAmt = this.investmentData.tableData.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.invtAmt != null ?parseFloat(b.invtAmt):0),0);
 
     if(Number(this.requestData.reqAmt) < Number(invtAmt)){
         this.warnMsg = 'The Total Investment Amount for Placement must not exceed the Requested Amount.';
@@ -861,7 +876,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.params.savePrqTrans   = [];
         this.params.deletePrqTrans = [];
     }else{
-        if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
+      if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+        this.warnMsg = 'The Total payments for the Investment, Unapplied Collection and Others must not exceed the Requested Amount.';
+        this.warnMdl.openNoClose();
+        this.params.savePrqTrans   = [];
+        this.params.deletePrqTrans = [];
+      }else if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
           $('.ng-dirty').removeClass('ng-dirty');
           this.conInvt.confirmModal();
           this.params.savePrqTrans   = [];
@@ -914,11 +934,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }
     });
 
-    console.log(this.params.savePrqTrans);
-
     var currAmt = this.treatyBalanceData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-    console.log(currAmt);
-    console.log(this.treatyBalanceData.tableData);
+    var totalAmt = this.treatyBalanceData.tableData.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
 
     this.treatyBalanceData.tableData.forEach(function(tblData){
       if(tblData.newRec != 1){
@@ -946,7 +963,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
       }else{
-        if(Number(this.requestData.reqAmt) < Number(currAmt)){
+        if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+          this.warnMsg = 'The Total payments for Treaty Balance, Unapplied Collection, and Others must not exceed the Requested Amount.';
+          this.warnMdl.openNoClose();
+          this.params.savePrqTrans   = [];
+          this.params.deletePrqTrans = [];
+        }else if(Number(this.requestData.reqAmt) < Number(currAmt)){
           this.warnMsg = 'The Total Amount of Treaty Balance Due to Participants must not exceed the Requested Amount.';
           this.warnMdl.openNoClose();
           this.params.savePrqTrans   = [];
@@ -1029,11 +1051,17 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.inwardPolBalData.tableData);
     console.log(this.params.savePrqTrans);
     var returnAmt = this.inwardPolBalData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.returnAmt != null ?parseFloat(b.returnAmt):0),0);
+    var totalAmt = this.inwardPolBalData.tableData.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.returnAmt != null ?parseFloat(b.returnAmt):0),0);
     
     if(isEmpty == 1){
       this.dialogIcon = 'error';
       this.sucInw.open();
       this.params.savePrqTrans   = [];
+    }else if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+          this.warnMsg = 'The Total payments for Inward Policy Balance, Unapplied Collection, and Others must not exceed the Requested Amount.';
+          this.warnMdl.openNoClose();
+          this.params.savePrqTrans   = [];
+          this.params.deletePrqTrans = [];
     }else if(Number(this.requestData.reqAmt) < Number(returnAmt)){
       this.warnMsg = 'The Total Inward Policy Balances Returns must not exceed the Requested Amount.';
       this.warnMdl.openNoClose();

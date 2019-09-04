@@ -29,6 +29,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild('appUserLov') appUserLov         : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent;
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
+  @ViewChild('printMdl') printMdl             : ModalComponent;
   @ViewChild('mainLov') mainLov               : LovComponent;
 
   saveAcitPaytReq : any = {
