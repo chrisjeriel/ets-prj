@@ -326,6 +326,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
                   this.warningModalCode = data2.warningList[i].warningCode;
                   this.warningModalMsg = data2.warningList[i].warningMessage;
                   $('#warningModal > #modalBtn').trigger('click');
+                  break;
                 }
                 
               }
