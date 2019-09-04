@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-cv-entry',
@@ -441,6 +442,8 @@ export class CvEntryComponent implements OnInit {
       this.warnMsg = 'Total amount of attached payments must be equal to CV amount.';
       this.warnMdl.openNoClose();
     }else{
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
       this.printmMdl.openNoClose();
     }
   }
