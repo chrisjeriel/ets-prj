@@ -1718,9 +1718,11 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFee(prdAsOf?, year?, servFeeAmt?, currCd?, currRt?){
+    getAcctPrqServFee(retType, reqId, quarter?, year?, servFeeAmt?, currCd?, currRt?){
 		const params = new HttpParams()
-			.set('prdAsOf', (prdAsOf == null || prdAsOf == undefined ? '' : prdAsOf))
+			.set('retType', (retType == null || retType == undefined ? '' : retType))
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+			.set('quarter', (quarter == null || quarter == undefined ? '' : quarter))
 			.set('year', (year == null || year == undefined ? '' : year))
 			.set('servFeeAmt', (servFeeAmt == null || servFeeAmt == undefined ? '' : servFeeAmt))
 			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
@@ -1975,12 +1977,6 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcctPrqServFee',JSON.stringify(params),header);
 	}
 
-	getJVAllocInvtIncListing(allocTranId) {
-		 const params = new HttpParams()
-             .set('allocTranId', (allocTranId === null || allocTranId === undefined ? '' : allocTranId) )
-        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
-	}
-
 	updateAcitStatus(params){
 		let header : any = {
 		    headers: new HttpHeaders({
@@ -2085,6 +2081,12 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/approveJV',JSON.stringify(params),header);
 	}
 
+	getJVAllocInvtIncListing(allocTranId) {
+		 const params = new HttpParams()
+             .set('allocTranId', (allocTranId === null || allocTranId === undefined ? '' : allocTranId) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
+	}
+
 	saveAcitAttachments(params){
 		let header : any = {
 		    headers: new HttpHeaders({
@@ -2099,7 +2101,6 @@ export class AccountingService {
 		 	.set('tranId', tranId);
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAttachments",{params});
 	}
-
 
 	getJvInvPullout(tranId){
 		const params = new HttpParams()
@@ -2117,6 +2118,15 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvPullOut',JSON.stringify(params),header);
 	}
+
+	updateAcitCvStat(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+   		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitCvStat',params,header);
+    }		
 	
 	getJvInvRollOver(tranId){
 		const params = new HttpParams()

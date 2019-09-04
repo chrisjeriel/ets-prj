@@ -57,8 +57,9 @@ export class CvPaymentRequestListComponent implements OnInit {
     tranId : ''
   };
   passDataLov  : any = {
-    selector     : '',
-    payeeClassCd : ''
+    selector  : '',
+    payeeNo   : '',
+    currCd    : ''
   };
 
   params : any =  {
@@ -67,13 +68,13 @@ export class CvPaymentRequestListComponent implements OnInit {
   };
 
   cvInfo : any = {
-    cvNo : '',
-    cvDate : '',
+    cvNo     : '',
+    cvDate   : '',
     cvStatus : '',
-    payee : '',
-    cvAmt : '',
+    payee    : '',
+    cvAmt    : '',
     localAmt : '',
-    currCd : ''
+    currCd   : ''
   };
 
   paytData: any ={
@@ -109,8 +110,10 @@ export class CvPaymentRequestListComponent implements OnInit {
       var recPr = data['pr']['acitCvPaytReqList'];
 
       this.cvInfo =  Object.assign(this.cvInfo, recCv);
-      console.log(this.cvInfo);
       this.cvInfo.cvDate = this.ns.toDateTimeString(this.cvInfo.cvDate); 
+      this.cvInfo.cvStatusUp = (this.cvInfo.cvStatus == 'C')?true:false;
+      this.passDataLov.payeeNo = this.cvInfo.payeeNo;
+      this.passDataLov.currCd  = this.cvInfo.currCd;
       this.passDataPaytReqList.tableData = recPr;
       this.paytReqTbl.refreshTable();
 
@@ -125,8 +128,8 @@ export class CvPaymentRequestListComponent implements OnInit {
       console.log(data);
       this.getCvPaytReqList();
       this.suc.open();
-      this.params.savePrqTrans  = [];
-      this.params.deletePrqTrans  = [];
+      this.params.savePaytReqList  = [];
+      this.params.deletePaytReqList  = [];
     });
   }
 
@@ -134,8 +137,12 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
+    console.log(this.cvInfo.cvStatus);
+    console.log(this.cvInfo.cvStatusUp);
     this.passDataPaytReqList.tableData.forEach(e => {
       e.tranId    = this.passData.tranId;
+      e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':((this.cvInfo.cvStatus == 'C')?'N':this.cvInfo.cvStatus);
+
       if(e.edited && !e.deleted){
         this.params.savePaytReqList = this.params.savePaytReqList.filter(i => i.reqId != e.reqId);
         e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
@@ -148,7 +155,8 @@ export class CvPaymentRequestListComponent implements OnInit {
         this.params.deletePaytReqList.push(e);  
       }
     });
- 
+   
+    console.log(this.cvInfo.cvStatus);
     console.log(this.passDataPaytReqList.tableData);
     console.log(this.params);
 
@@ -162,11 +170,18 @@ export class CvPaymentRequestListComponent implements OnInit {
         this.params.deletePaytReqList = [];
     }else{
         if(this.params.savePaytReqList.length == 0 && this.params.deletePaytReqList.length == 0){
-          $('.ng-dirty').removeClass('ng-dirty');
-          this.con.confirmModal();
-          this.params.savePaytReqList   = [];
-          this.params.deletePaytReqList = [];
-          this.passDataPaytReqList.tableData = this.passDataPaytReqList.tableData.filter(e => e.reqId != '');
+          console.log($('input').hasClass('ng-dirty'));
+            if($('input').hasClass('ng-dirty')){
+              this.chkCerti();
+            }else{
+              console.log('entered here at else');
+              $('.ng-dirty').removeClass('ng-dirty');
+              this.params.savePaytReqList   = [];
+              this.params.deletePaytReqList = [];
+              this.passDataPaytReqList.tableData = this.passDataPaytReqList.tableData.filter(e => e.reqId != '');
+            }
+            
+            this.con.confirmModal();
         }else{
           console.log(this.cancelFlag);
           if(this.cancelFlag == true){
@@ -177,6 +192,21 @@ export class CvPaymentRequestListComponent implements OnInit {
           }
         }
     }
+  }
+
+  addDirty(){
+    console.log('Im dirty');
+    $('input').addClass('ng-dirty');
+  }
+
+  chkCerti(){
+    this.params.savePaytReqList = this.passDataPaytReqList.tableData.map(e => {
+      e.updateDate = this.ns.toDateTimeString(e.updateDate);
+      e.createDate = this.ns.toDateTimeString(e.createDate);
+      e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':((this.cvInfo.cvStatus == 'C')?'N':this.cvInfo.cvStatus);
+      return e;
+    });
+    console.log(this.params.savePaytReqList);
   }
 
   showLov(){

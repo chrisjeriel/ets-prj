@@ -5,8 +5,8 @@
       <div class="col-sm-8">
         <div class="input-group">
           <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">CV No</label>
-          <input type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="cvInfo?.cvGenNo.split('-')[0]" style="text-align: right" readonly>
-          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="cvInfo?.cvGenNo.split('-')[1]" style="text-align: right; margin-left: 2px;" readonly>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="cvInfo.cvGenNo?.split('-')[0]" style="text-align: right" readonly>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="cvInfo.cvGenNo?.split('-')[1]" style="text-align: right; margin-left: 2px;" readonly>
           <label class="form-control-sm col-sm-1">Date</label>
           <div class="dp-cont col-sm">
             <datepicker [type]="'datetime'" [disabled]="true" [showSeconds]="false" [value]="cvInfo?.cvDate"></datepicker>
@@ -41,7 +41,14 @@
               <div class="input-group">
                 <div class="col-sm"></div>
                 <div class="col-sm-12">
-                  <app-cust-editable-non-datatable #paytReqTbl [passData]="passDataPaytReqList" (clickLOV)="showLov()" (newClick)="onRowClick($event)"  (tableDataChange)="passDataPaytReqList.tableData=$event;"></app-cust-editable-non-datatable>
+                  <app-cust-editable-non-datatable id="prTbl" #paytReqTbl [passData]="passDataPaytReqList" (clickLOV)="showLov()" (newClick)="onRowClick($event)"  (tableDataChange)="passDataPaytReqList.tableData=$event;">
+                    <ng-container controls-r>
+                      <div class="align" style="position: absolute;left: 130px">
+                          <label class="form-control-sm">For Certification</label> 
+                          <input type="checkbox" style="margin-right: 0px !important;" [ngModel]="cvInfo.cvStatusUp" (ngModelChange)="cvInfo.cvStatusUp=$event;" (change)="addDirty();">
+                      </div>
+                    </ng-container>
+                  </app-cust-editable-non-datatable>
                 </div>
                 <div class="col-sm"></div>
               </div>
