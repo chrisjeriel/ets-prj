@@ -48,6 +48,10 @@ export class JvPreniumReserveComponent implements OnInit {
 			interestAmt : '',
 			whtaxAmt : '',
 			releaseAmt : '',
+			localAmt : '',
+			premResQuota : '',
+			premRes1surplus : '',
+			premRes2surplus : '',
 			createUser : this.ns.getCurrentUser(),
 			createDate : this.ns.toDateTimeString(0),
 			updateUser : this.ns.getCurrentUser(),
@@ -227,8 +231,12 @@ export class JvPreniumReserveComponent implements OnInit {
     	//this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
     	this.passData.tableData[this.dataIndex].colMG.push('quarterEnding');
     	this.passData.tableData[this.dataIndex].edited = true;
-    	this.passData.tableData[this.dataIndex].quarterEnding = this.ns.toDateTimeString(data.quarterVal);
-    	this.passData.tableData[this.dataIndex].releaseAmt = data.fundsHeld;
+    	this.passData.tableData[this.dataIndex].quarterEnding = this.ns.toDateTimeString(data.premRes.quarterEnding);
+    	this.passData.tableData[this.dataIndex].releaseAmt = data.premRes.fundsHeld;
+    	this.passData.tableData[this.dataIndex].localAmt = data.premRes.fundsHeld * this.jvDetail.currRate;
+		this.passData.tableData[this.dataIndex].premResQuota = data.premRes.premResQuota;
+		this.passData.tableData[this.dataIndex].premRes1surplus = data.premRes.premRes1surplus;
+		this.passData.tableData[this.dataIndex].premRes2surplus = data.premRes.premRes2surplus;
     	this.table.refreshTable();
     }
 

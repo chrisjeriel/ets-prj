@@ -200,7 +200,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
         this.check(this.jvDetails);
         for(var i = 0 ; i < data.zeroBal.length;i++){
           this.passData.tableData.push(data.zeroBal[i]);
-          this.passData.tableData[this.passData.tableData.length - 1].balance = this.passData.tableData[this.passData.tableData.length - 1].netDue - this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt;  
+          //this.passData.tableData[this.passData.tableData.length - 1].balance = this.passData.tableData[this.passData.tableData.length - 1].netDue - this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt;  
           this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(data.zeroBal[i].effDate);
           this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(data.zeroBal[i].dueDate);
           this.totalOverpayment += data.zeroBal[i].adjBalAmt;
@@ -278,7 +278,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
         this.passData.tableData[this.passData.tableData.length - 1].riComm = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevRiComm;
         this.passData.tableData[this.passData.tableData.length - 1].riCommVat = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat;
         this.passData.tableData[this.passData.tableData.length - 1].charges = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevCharges;
-
+        this.passData.tableData[this.passData.tableData.length - 1].netDue = this.passData.tableData[this.passData.tableData.length - 1].premAmt - this.passData.tableData[this.passData.tableData.length - 1].riComm - this.passData.tableData[this.passData.tableData.length - 1].riCommVat + this.passData.tableData[this.passData.tableData.length - 1].charges;
         this.passData.tableData[this.passData.tableData.length - 1].totalPayt = this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt + this.passData.tableData[this.passData.tableData.length - 1].cumPayment;
         this.passData.tableData[this.passData.tableData.length - 1].remainingBal = this.passData.tableData[this.passData.tableData.length - 1].prevNetDue - this.passData.tableData[this.passData.tableData.length - 1].totalPayt;
       }
