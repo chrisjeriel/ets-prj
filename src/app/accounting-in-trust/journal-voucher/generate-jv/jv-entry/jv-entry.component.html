@@ -263,7 +263,7 @@
     </div>
 </app-modal>
 
-<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)"></app-mtn-currency>
+<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="entryData.jvDate"></app-mtn-currency>
 <app-jv-type-lov id="jvTypeModal" (selectedData)="setTranType($event)"></app-jv-type-lov>
 <app-mtn-printable-names id="printableNames" (selectedData)="setPrintable($event)"></app-mtn-printable-names>
 <app-mtn-printable-names #ApproverNames (selectedData)="setApproval($event)"></app-mtn-printable-names>

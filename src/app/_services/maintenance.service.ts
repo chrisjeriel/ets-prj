@@ -75,10 +75,11 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCrestaZone");
 	}
 
-	getMtnCurrency(currencyCd: string, activeTag: string){
+	getMtnCurrency(currencyCd: string, activeTag: string, effDateFrom?){
 		const params = new HttpParams()
 		     .set('currencyCd', currencyCd)
-		     .set('activeTag', activeTag);
+		     .set('activeTag', activeTag)
+		     .set('effDateFrom', effDateFrom == undefined || effDateFrom == null ? '' : effDateFrom);
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCurrency", {params});
 	}
