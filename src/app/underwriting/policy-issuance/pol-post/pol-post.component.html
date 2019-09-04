@@ -67,3 +67,12 @@
         <button class="cust-btn" (click)="failMsg.closeModal();showPost.emit(false)">Ok</button>
     </div>
 </app-modal>
+
+<app-modal #confirmCancel class="d-none">
+    <div header>&nbsp;</div>
+    <div body>The resulting sum insured of this alteration is equal to zero. Do you want to proceed with the cancellation?</div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" (click)="confirmCancel.closeModal();postParams.altCancelTag='Y';cancelPol()">Yes</button>
+        <button class="cust-btn" (click)="confirmCancel.closeModal();postParams.altCancelTag='N';post()">No</button>
+    </div>
+</app-modal>

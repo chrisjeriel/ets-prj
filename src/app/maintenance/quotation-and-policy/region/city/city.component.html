@@ -26,14 +26,17 @@
                 <div class="row">
                     <div class="col-sm">
                         <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-                            <app-cust-editable-non-datatable #cityTable [passData]="passData" (genericBtn)="deleteCity()" (newClick)="onRowClick($event)" (clickLOV)="clickCrestaZone($event)"  (onDelete)="cityTable.onClickDelete('force');onClickDelCity(this.deleteBool);" (tableDataChange)="change($event);"></app-cust-editable-non-datatable>
+                            <!-- <app-cust-editable-non-datatable #cityTable [passData]="passData" (genericBtn)="deleteCity()" (newClick)="onRowClick($event)" (clickLOV)="clickCrestaZone($event)"  (onDelete)="cityTable.onClickDelete('force');onClickDelCity(this.deleteBool);" (tableDataChange)="change($event);"></app-cust-editable-non-datatable> TRBT#PROD_GRADE -->
+                            <app-cust-editable-non-datatable #cityTable [passData]="passData" (genericBtn)="deleteCity()" (newClick)="onRowClick($event)" (clickLOV)="clickCrestaZone($event)"  (onDelete)="cityTable.onClickDelete('force');onClickDelCity(this.deleteBool);" (tableDataChange)="change();"></app-cust-editable-non-datatable>
                         </div>
                     </div>
                 </div>
                 <div class="row" style="padding-bottom: 10px !important;">
                     <div class="col-sm d-flex justify-content-center">
-                        <button class="cust-btn" style="z-index: 1000 !important"  [class.d-none]="inquiryFlag" (click)="cancel()">Cancel</button>
-                        <button class="cust-btn" style="z-index: 1000 !important"  [class.d-none]="inquiryFlag" (click)="onClickSave()">Save</button>
+                        <!-- <button class="cust-btn" style="z-index: 1000 !important"  [class.d-none]="inquiryFlag" (click)="cancel()">Cancel</button>
+                        <button class="cust-btn" style="z-index: 1000 !important"  [class.d-none]="inquiryFlag" (click)="onClickSave()">Save</button> TRBT#PROD_GRADE -->
+                        <button class="cust-btn" style="z-index: 1000 !important" (click)="cancel()">Cancel</button>
+                        <button class="cust-btn" style="z-index: 1000 !important" (click)="onClickSave()">Save</button>
                     </div>
                 </div>
 </fieldset>

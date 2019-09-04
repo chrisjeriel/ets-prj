@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChildren, QueryList, Input, ViewChild, Output, EventEmitter} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuotationOtherRates, QuotationDeductibles } from '../../_models';
-import { QuotationService, UnderwritingService, MaintenanceService } from '../../_services';
+import { QuotationService, UnderwritingService, MaintenanceService, UserService } from '../../_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute } from '@angular/router';
@@ -174,7 +174,7 @@ export class QuoteOptionComponent implements OnInit {
     fromCovers: boolean = false;
 
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,
-                private modalService: NgbModal, private uwService: UnderwritingService, private mtnService: MaintenanceService) { }
+                private modalService: NgbModal, private uwService: UnderwritingService, private mtnService: MaintenanceService, private userService: UserService) { }
 
     ngOnInit() {
       //neco
@@ -230,6 +230,7 @@ export class QuoteOptionComponent implements OnInit {
       //   $('#deductibleTable button').attr("disabled","disabled");
       //         }, 0);
         this.titleService.setTitle("Quo | Quote Option");
+        this.userService.emitModuleId("QUOTE004");
         this.quotationNum = this.quotationInfo.quotationNo;
         this.riskName = this.quotationInfo.riskName;
         this.insured = this.quotationInfo.insuredDesc;

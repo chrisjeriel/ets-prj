@@ -53,7 +53,8 @@
 	</div>
 </div>
 
-<app-sucess-dialog [message]="successMessage"></app-sucess-dialog>
+<!-- <app-sucess-dialog [message]="successMessage"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog></app-sucess-dialog>
 <app-confirm-save #confirmSave (onYes)="onSaveAttachment()"></app-confirm-save>
 <app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="onSaveAttachment('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>

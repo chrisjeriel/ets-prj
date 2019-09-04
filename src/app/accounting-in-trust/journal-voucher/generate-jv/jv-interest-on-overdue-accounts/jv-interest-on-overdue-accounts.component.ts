@@ -170,24 +170,25 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].instNo  = data.data[i].instNo;
       this.passData.tableData[this.passData.tableData.length - 1].effDate  = data.data[i].effDate;
       this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
-      this.passData.tableData[this.passData.tableData.length - 1].daysOverdue  = (new Date(this.jvDetail.jvDate).getTime() - new Date(data.data[i].dueDate).getTime())/ (1000 * 3600 *24)//new Date(this.ns.toDateTimeString(0)).getDate() - new Date(data.data[i].dueDate).getDate() ;
+      this.passData.tableData[this.passData.tableData.length - 1].daysOverdue  = parseInt(((new Date(this.jvDetail.jvDate).getTime() - new Date(data.data[i].dueDate).getTime())/ (1000 * 3600 *24)).toString())//new Date(this.ns.toDateTimeString(0)).getDate() - new Date(data.data[i].dueDate).getDate() ;
       this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate  = data.data[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].premAmt  = data.data[i].balPremDue;
       this.passData.tableData[this.passData.tableData.length - 1].autoTag  = 'Y'
       this.passData.tableData[this.passData.tableData.length - 1].interestRate = this.interestRate;
-      console.log(data.data[i].balPremDue)
-      console.log(this.interestRate)
-      console.log(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365)
-      console.log(data.data[i].balPremDue*this.interestRate*(parseFloat((this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365).toFixed(2))));
-      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:(data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
-      this.passData.tableData[this.passData.tableData.length - 1].orgOverdue  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:(data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
+      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:((data.data[i].balPremDue)*(this.interestRate/100))*(Math.round(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue));
+      this.passData.tableData[this.passData.tableData.length - 1].orgOverdue  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:((data.data[i].balPremDue)*(this.interestRate))*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue);
     }
     this.table.refreshTable();
     //var test =  this.passData.tableData[0].effDate.getDate() - this.ns.toDateTimeString(0).getDate();
   }
 
   onClickSave(){
+    this.totalOverdue = 0;
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      this.totalOverdue += this.passData.tableData[i].overdueInt;
+    }
+
     if(this.totalOverdue > this.jvDetail.jvAmt){
       this.dialogMessage = 'Total Overdue Interest must not exceed the JV Amount.';
       this.dialogIcon = "error-message";

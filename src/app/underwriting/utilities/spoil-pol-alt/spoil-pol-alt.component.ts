@@ -102,7 +102,7 @@ export class SpoilPolAltComponent implements OnInit {
 	passEvent			: any;
 
 	constructor(private underwritingService: UnderwritingService, private ns: NotesService,
-		private modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService, private router:Router) { }
+		public modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService, private router:Router) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Pol | Spoil Policy/Alteration');

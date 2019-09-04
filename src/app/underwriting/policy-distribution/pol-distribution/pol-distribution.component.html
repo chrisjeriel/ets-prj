@@ -8,7 +8,7 @@
 					<!-- <label class="form-control-sm col-sm-1">Dist No</label>
 					<input readonly type="text" placeholder="00001" class="form-control form-control-sm col-sm-2" [ngModel]="pad(polDistributionData?.distNo, 'distNo')"> -->
 					<label class="form-control-sm col-sm-1">Risk Dist No</label>
-					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="pad(riskDistId, 'distNo')">
+					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="pad(riskDistId.toString(), 'distNo')">
 					<label class="form-control-sm col-sm-1">Total SI</label>
 					<input readonly type="text" class="form-control form-control-sm txt-content-rght col-sm-2" [ngModel]="polDistributionData?.sumInsured  | number:'1.2-2'">
 					<label class="form-control-sm col-sm-1">Risk</label>
@@ -38,8 +38,8 @@
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.status">
 					<label class="form-control-sm col-sm-1"></label>
 					<label class="form-control-sm col-sm-1" style="text-align: left !important;padding-left: 0;" disabled="disabled"><input type="checkbox" [ngModel]="acctDetails?.instTag=='Y'" disabled="disabled" > &nbsp;Installment</label>
-					<label class="form-control-sm col-sm-2" [class.d-none]="inquiryFlag != 'true' && acctDetails?.instTag=='Y'">Accounting Entry Date</label>
-					<div class="col-sm dp-cont" [class.d-none]="inquiryFlag != 'true' && acctDetails?.instTag=='Y'">
+					<label class="form-control-sm col-sm-2" [class.d-none]="inquiryFlag != true && acctDetails?.instTag=='Y'">Accounting Entry Date</label>
+					<div class="col-sm dp-cont" [class.d-none]="inquiryFlag != true && acctDetails?.instTag=='Y'">
 						<datepicker [disabled]="true" [type]="'date'" [required]="false" [showIcon]="false" [value]="acctDetails.acctDate?.split('T')[0]"></datepicker>
 					</div>
 				</div>

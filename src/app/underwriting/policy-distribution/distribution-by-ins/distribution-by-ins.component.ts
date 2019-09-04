@@ -124,7 +124,7 @@ export class DistributionByInsComponent implements OnInit {
 
   selected:any = null;
 
-  constructor(private uw:UnderwritingService, private route: ActivatedRoute , private modalService: NgbModal, private router: Router) { }
+  constructor(private uw:UnderwritingService, private route: ActivatedRoute , public modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe((data: any)=>{

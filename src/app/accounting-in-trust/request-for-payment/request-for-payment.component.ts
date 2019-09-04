@@ -16,9 +16,9 @@ export class RequestForPaymentComponent implements OnInit {
   
   passData: any = {
   	tableData    : [],
-  	tHeader      : ['Payment Request No.', 'Payee', 'Payment Type', 'Status', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],
+  	tHeader      : ['Payment Request No.', 'Payee', 'Payment Type', 'Reference No', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],
   	dataTypes    : ['text', 'text', 'text', 'text', 'date', 'text', 'text', 'currency', 'text'],
-  	colSize      : ['120px', '', '', '', '65px', '', '30px', '', ''],
+  	colSize      : ['120px', '', '', '', '', '', '30px', '', ''],
     btnDisabled  : true,
   	pagination   : true,
   	pageStatus   : true,
@@ -26,12 +26,12 @@ export class RequestForPaymentComponent implements OnInit {
   	editFlag     : true,
   	pageLength   : 10,
     exportFlag   : true,
-    keys         : ['paytReqNo','payee','tranTypeDesc','reqStatusDesc','reqDate','particulars','currCd','reqAmt','requestedBy'],
+    keys         : ['paytReqNo','payee','tranTypeDesc','refNo','reqDate','particulars','currCd','reqAmt','requestedBy'],
     filters: [
       { key: 'paytReqNo',    title: 'Payt Req. No.',      dataType: 'text'},
       { key: 'payee',        title: 'Payee',              dataType: 'text'},
       { key: 'tranTypeDesc', title: 'Payment Type',       dataType: 'text'},
-      { key: 'reqStatusDesc',title: 'Status',             dataType: 'text'},
+      // { key: 'reqStatusDesc',title: 'Status',             dataType: 'text'},
       { keys: {
            from : 'reqDateFrom', to: 'reqDateTo'
       },   title: 'Request Date', dataType: 'datespan'},
@@ -55,19 +55,38 @@ export class RequestForPaymentComponent implements OnInit {
 
   searchParams: any[] = [];
 
+  tranStat: string = 'new';
+
   constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Request for Payment");
-    this.getPaytReq();
+    // this.getPaytReq();
+
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.getPaytReq();
+    }, 0);
   }
 
-  getPaytReq(){
+  getPaytReq() {
+    this.table.overlayLoader = true;
     this.acctService.getPaytReqList(this.searchParams)
     .subscribe(data => {
       console.log(data);
-      var rec = data['acitPaytReq'].map(i => { i.createDate = this.ns.toDateTimeString(i.createDate); i.updateDate = this.ns.toDateTimeString(i.updateDate); return i; } );
-      this.passData.tableData = rec;
+      var rec = data['acitPaytReq'].map(i => {
+        i.createDate = this.ns.toDateTimeString(i.createDate);
+        i.updateDate = this.ns.toDateTimeString(i.updateDate);
+
+        if(i.tranStat != null && i.tranStat != 'O') {
+          i.reqStatus = i.tranStat;
+          i.reqStatusDesc = i.tranStatDesc;
+        }
+
+        return i;
+      });
+
+      this.passData.tableData = rec.filter(a => String(a.reqStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
     });
   }

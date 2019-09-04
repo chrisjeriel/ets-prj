@@ -13,7 +13,9 @@
           </select>
           <div class="col-sm-1"></div>
         </div>
-      	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvPulloutLOV($event)">
+      	<!-- <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvPulloutLOV($event)" (tableDataChange)="onTableDataChange($event)">
+      	</app-cust-editable-non-datatable> TRBT#PROD_GRADE -->
+      	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvPulloutLOV()">
       	</app-cust-editable-non-datatable>
     </div>
   </div>
@@ -23,8 +25,10 @@
       <div class="col-md-13 text-center">
         <br>
         <div class="cust-btn-container">
-          <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
-          <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+          <!-- <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button> TRBT#PROD_GRADE -->
+          <button type="button" class="cust-btn"><a>Cancel</a></button>
+          <!-- <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button> TRBT#PROD_GRADE -->
+          <button type="button" class="cust-btn"><a>Save</a></button>
         </div>
       </div>
     </div>
@@ -32,5 +36,7 @@
 
 <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
 <app-confirm-save (onYes)="saveInvPullOut()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="saveInvPullOut('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="null"></app-sucess-dialog>
+<!-- <app-cancel-button (onYes)="saveInvPullOut('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button> TRBT#PROD_GRADE -->
+<app-cancel-button (onYes)="saveInvPullOut()" [url]="'/acct-ar-listings'" ></app-cancel-button>

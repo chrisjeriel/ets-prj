@@ -246,6 +246,16 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.passLov.selector = 'acitChartAcct';
       this.lovCheckBox = true;
       this.passLov.params = {};
+    }else if(data.key == 'slTypeName'){
+      this.passLov.selector = 'slType';
+      this.lovCheckBox = false;
+      this.passLov.params = {};
+    }else if(data.key == 'slName'){
+      this.passLov.selector = 'sl';
+      this.lovCheckBox = false;
+      this.passLov.params = {
+        slTypeCd: data.data.slTypeCd
+      };
     }
     this.lov.openLOV();
   }
@@ -255,6 +265,31 @@ export class JvAccountingEntriesComponent implements OnInit {
     if(data.selector == 'slType'){
       this.lovRow.slTypeName = data.data.slTypeName;
       this.lovRow.slTypeCd = data.data.slTypeCd;
-    }
+    }else if(data.selector == 'sl'){
+      this.lovRow.slTypeName = data.data.slTypeName; 
+      this.lovRow.slTypeCd = data.data.slTypeCd;
+      this.lovRow.slName = data.data.slName;
+      this.lovRow.slCd = data.data.slCd;
+    }else if(data.selector == 'acitChartAcct'){
+
+      let firstRow = data.data.pop();
+      this.lovRow.glAcctId = firstRow.glAcctId;
+      this.lovRow.glShortCd = firstRow.shortCode;
+      this.lovRow.glShortDesc = firstRow.shortDesc;
+
+      this.passData.tableData = this.passData.tableData.filter(a=>a.glAcctId != '');
+      for(let row of data.data){
+        this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+        this.passData.tableData[this.passData.tableData.length - 1].glAcctId = row.glAcctId;
+        this.passData.tableData[this.passData.tableData.length - 1].glShortCd = row.shortCode;
+        this.passData.tableData[this.passData.tableData.length - 1].glShortDesc = row.shortDesc;
+      }
+    }  
+
+    this.table.refreshTable();
+  }
+
+  onTabChange(data){
+    console.log(data)
   }
 }

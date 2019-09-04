@@ -285,7 +285,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
-  constructor(private route: ActivatedRoute, private modalService: NgbModal,
+  constructor(private route: ActivatedRoute, public modalService: NgbModal,
     private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService,
     private mtnService: MaintenanceService) { }
 

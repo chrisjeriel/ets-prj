@@ -44,6 +44,7 @@ export class UnearnedPremiumComponent implements OnInit {
     colSize: ['100px', '200px', '150px', '250px', '120px', '120px'],
   }
 
+
   @Input()params :any = {
     extMm :'8',
     extYear :'2019',
@@ -59,7 +60,7 @@ export class UnearnedPremiumComponent implements OnInit {
   yearList:any[] = [];
   methodList:any[] = [];
 
-  constructor(private modalService: NgbModal, private as:AccountingService, private ms:MaintenanceService) { }
+  constructor(public modalService: NgbModal, private as:AccountingService, private ms:MaintenanceService) { }
 
   ngOnInit() {
     let currYear = new Date().getFullYear();

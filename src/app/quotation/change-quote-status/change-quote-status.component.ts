@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { NgbModal, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
+import { QuotationService, NotesService, MaintenanceService, UserService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -120,13 +120,14 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
     statusCd: number = 2;
     //END NECO 05/22/2019
     
-    constructor(private qs: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService) {
+    constructor(private qs: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService, private userService: UserService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
         this.titleService.setTitle("Quo | Change Quote Status");
+        this.userService.emitModuleId("QUOTE015");
         setTimeout(() => {$('#searchQuote > #modalBtn').trigger('click') }, 0);        
         this.first = true;
         

@@ -44,7 +44,8 @@ export class MtnCurrencyComponent implements OnInit {
   @Input() effDateFrom: any;
   selects: any[] = [];
   
-  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal, private ns: NotesService) { }
+
+  constructor(private maintenanceService: MaintenanceService, public modalService: NgbModal, private ns: NotesService) { }
 
   ngOnInit() {
     /*this.maintenanceService.getMtnCurrency().subscribe((data: any) =>{

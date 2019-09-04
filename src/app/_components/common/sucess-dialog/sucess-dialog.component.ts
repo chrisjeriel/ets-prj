@@ -14,6 +14,7 @@ export class SucessDialogComponent implements OnInit {
   @Input() message: string = dialogOpts.successMessage;
   @Input() icon: string = "success";
   @Output() onOk: EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Input() btnTitle: string;
 
   constructor(private modalService: NgbModal) { }
 

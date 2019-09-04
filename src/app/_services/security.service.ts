@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { UsersInfo, UserGroups, ModuleInfo, ModuleTransaction } from '@app/_models';
+import { environment } from '@environments/environment';
+
 @Injectable({
 	providedIn: 'root'
 })
@@ -14,7 +16,7 @@ export class SecurityService {
 
 	constructor(private http: HttpClient) { }
 
-	getUsersInfo(){
+	/*getUsersInfo(){
 		this.usersInfo = [
 			new UsersInfo('LCUARESMA','Lope Cuaresma','001','Admin','Y','lopecuaresma@pmmsc.com.ph','System Administrator'),
 			new UsersInfo('MIBANEZ','Mel Ibanez','002','Engineering',' Y','melibanez@pmmsc.com.ph',null),
@@ -23,7 +25,7 @@ export class SecurityService {
 			new UsersInfo('CREYES','Chie Reyes','003','Accounting','Y','chiereyes@pmmsc.com.ph',null)
 		]
 		return this.usersInfo
-	}
+	}*/
 
 	getUsersGroup(){
 		this.userGroups = [
@@ -34,25 +36,44 @@ export class SecurityService {
 		return this.userGroups;
 	}
 
-	getModuleInfo(){
-		this.moduleInfo = [
-			new ModuleInfo('QUOTE001','Quoation Processing','Quotation','This module displays the list of quotation that are valid for processing. It allows the user to add or edit'),
-			new ModuleInfo('QUOTE002','General Info(Quotation)','Quotation','This module displays the list of quotation that are valid for processing. It allows the user to add or edit'),
-			new ModuleInfo('QUOTE003','Coverage(Quotation)','Quotation','This module allows the user to add or edit section covers, sum insured and quoytation deductibles'),
-			new ModuleInfo('QUOTE004','Quote Option(Quotation)','Quotation','This module allows the user to add or edit quoatation conditions and other rates')
-		]
-		return this.moduleInfo;
+	getMtnModules(moduleId?, tranCd?){
+		const params = new HttpParams()
+			.set('moduleId',moduleId ===undefined || moduleId===null ? '' : moduleId)
+			.set('tranCd',tranCd ===undefined || tranCd===null ? '' : tranCd)
+		return this.http.get(environment.prodApiUrl + "/security-service/retrieveMtnModules",{params});
 	}
 
-	getModuleTransaction(){
-		this.moduleTransaction = [
-			new ModuleTransaction('001','Security','System Admin'),
-			new ModuleTransaction('002','Quotation Processing',null),
-			new ModuleTransaction('003','POL - Policy/Alteration Issuance',null),
-			new ModuleTransaction('004','POL - POSTING',null),
-			new ModuleTransaction('005','POL - Distribution',null),
-			new ModuleTransaction('006','POL Expiry & Renewal',null)
-		]
-		return this.moduleTransaction;
+	getMtnTransactions(moduleId?, tranCd?){
+		const params = new HttpParams()
+			.set('moduleId',moduleId ===undefined || moduleId===null ? '' : moduleId)
+			.set('tranCd',tranCd ===undefined || tranCd===null ? '' : tranCd)
+		return this.http.get(environment.prodApiUrl + "/security-service/retrieveMtnTransactions",{params});
 	}
+
+	getTransactions(accessLevel?, userId?, userGrp?, tranCd?){
+		const params = new HttpParams()
+			.set('accessLevel',accessLevel ===undefined || accessLevel===null ? '' : accessLevel)
+			.set('userId',userId ===undefined || userId===null ? '' : userId)
+			.set('userGrp',userGrp ===undefined || userGrp===null ? '' : userGrp)
+			.set('tranCd',tranCd ===undefined || tranCd===null ? '' : tranCd)
+		return this.http.get(environment.prodApiUrl + "/security-service/retrieveTransactions",{params});
+	}
+
+	getModules(accessLevel?, userId?, userGrp?, tranCd?){
+		const params = new HttpParams()
+			.set('accessLevel',accessLevel ===undefined || accessLevel===null ? '' : accessLevel)
+			.set('userId',userId ===undefined || userId===null ? '' : userId)
+			.set('userGrp',userGrp ===undefined || userGrp===null ? '' : userGrp)
+			.set('tranCd',tranCd ===undefined || tranCd===null ? '' : tranCd)
+		return this.http.get(environment.prodApiUrl + "/security-service/retrieveModules",{params});
+	}
+
+	saveTransactions(params) {
+        let header: any = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        };
+        return this.http.post(environment.prodApiUrl + '/security-service/saveTransactions',JSON.stringify(params),header);
+    }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
-import { QuotationService, MaintenanceService, NotesService } from '../../_services';
+import { QuotationService, MaintenanceService, NotesService, UserService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -181,9 +181,10 @@ export class GeneralInfoComponent implements OnInit {
 	//@Output() enblQuoteOpTab = new EventEmitter<any>(); //EJVA
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
-			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService) { }
+			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService, private userService: UserService) { }
 	ngOnInit() {
 		this.titleService.setTitle("Quo | General Info");
+		this.userService.emitModuleId("QUOTE002");
 		this.tHeader.push("Item No", "Description of Items");
 		this.dataTypes.push("text", "text");
 		this.filters.push("Item No", "Desc. of Items");
@@ -496,7 +497,7 @@ export class GeneralInfoComponent implements OnInit {
 		return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + arr[4];
 	}
 
-	showCedingCompanyLOV(event) {
+	showCedingCompanyLOV(event?) {
 		$('#cedingCompany #modalBtn').trigger('click');
 	}
 

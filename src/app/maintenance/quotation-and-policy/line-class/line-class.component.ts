@@ -81,7 +81,7 @@ export class LineClassComponent implements OnInit {
     createUser:  null,
   };
 
-  constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal) { }
+  constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,public modalService: NgbModal) { }
 
   ngOnInit() {
     this.titleService.setTitle('Mtn | Line Class');

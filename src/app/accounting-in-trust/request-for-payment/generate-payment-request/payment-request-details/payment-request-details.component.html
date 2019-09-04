@@ -46,38 +46,51 @@
                     <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event,'lovCedTbl')" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty('cedTbl');conLocAmt();" #cedCompTbl></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 4">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                          <label class="form-control-sm col-sm-7 labels">Alloted Policy Balance Payments</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted" [(ngModel)]="allotedAmt" (change)="reCompInw();onChangeAllotedAmt();">
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted"
+                            appCurrency [ngModel]="allotedAmt" (ngModelChange)="allotedAmt = parseCurrency($event)" [readonly]="!passData.checkFlag"> -->
+                          <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Total Balance for Selected Policy
+                            Transactions</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only [ngModel]="totalBal | number: '1.2-2'" readonly>
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
+                            numbers-only placeholder="" readonly [ngModel]="totalBal | number: '1.2-2'"> -->
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                          <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Variance</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only [ngModel]="variance | number: '1.2-2'"readonly>
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
+                            placeholder="" readonly [ngModel]="variance | number: '1.2-2'"> -->
+                        </div>
+                      </div>
+                    </div>
                     <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (newClick)="onRowClick($event)" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');reCompInw();"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
-                        <div class="input-group">
-                          <div class="col-sm-2" style="margin-right: -35px"></div>
-                          <label class="form-control-sm col-sm-1">Service Fee</label>
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-right: 18px !important;" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>
-                          <div class="col-sm-3">
-                            <div class="input-group">
-                              <div class="col-sm-1"></div>
-                              <input type="radio" (change)="gnrtTypeChanged()" [(ngModel)]="gnrtType" name="gnrtType" value="periodAsOf" style="height: calc(1.3rem + 1px) !important; margin-right: -15px; z-index: 3;">
-                              <label class="form-control-sm col-sm-4">Period As Of</label>
-                              <div class="dp-cont col-sm-5" style="margin-left: 0 !important;">
-                                <datepicker [type]="'date'" [disabled]="gnrtType != 'periodAsOf'" [(value)]="periodAsOfParam"></datepicker>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-2" style="padding-right: 0 !important;">
-                            <div class="input-group">
-                              <input type="radio" (change)="gnrtTypeChanged()" [(ngModel)]="gnrtType" name="gnrtType" value="year" style="height: calc(1.3rem + 1px) !important; margin-right: -20px; z-index: 3;">
-                              <label class="form-control-sm col-sm-4">Year</label>
-                              <select class="form-control form-control-sm cust-sm col-sm-5" [disabled]="gnrtType != 'year'" [(ngModel)]="yearParam">
-                                <ng-container *ngFor="let y of yearParamOpts">
-                                  <option [value]="y">{{ y }}</option>
-                                </ng-container>
-                              </select>
-                            </div>
-                          </div>
-                          <button class="cust-btn" (click)="getAcctPrqServFee()" [disabled]="(gnrtType == 'periodAsOf' && (periodAsOfParam == '' || periodAsOfParam == null)) || (gnrtType == 'year' && yearParam == null)" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; margin-left: 5px; z-index: 1 !important;">Distribute</button>
-                          <div class="col-sm-2"></div>
+                        <div class="col-sm-3" style="margin-right: -30px !important;"></div>
+                        <div class="col-sm-6 input-group">
+                          <label class="form-control-sm col-sm-2">Service Fee</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>
+                          <label class="form-control-sm col-sm-2">Period As Of</label>
+                          <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="qtrParam">
+                            <option value="1">First Quarter</option>
+                            <option value="2">Second Quarter</option>
+                            <option value="3">Third Quarter</option>
+                            <option value="4">Fourth Quarter</option>
+                          </select>
+                          <select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="yearParam" style="margin-left: 2px !important;">
+                            <ng-container *ngFor="let y of yearParamOpts">
+                              <option [value]="y">{{ y }}</option>
+                            </ng-container>
+                          </select>
+                          <div class="col-sm-1"></div>
+                          <button class="cust-btn" (click)="getAcctPrqServFee('gnrt')" [disabled]="qtrParam == null || yearParam == null" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important;">Distribute</button>
                         </div>
+                        <div class="col-sm-3"></div>
                     </div>
                     <div class="input-group" style="margin-top: 3px">
                       <div class="col-sm-1"></div>
@@ -114,7 +127,7 @@
               <div class="form-row" style="margin-top: 40px !important;">
                 <div class="form-group col-sm">
                   <div class="text-center">
-                    <div class="cust-btn-container" *ngIf="requestData?.tranTypeCd > 3">
+                    <div class="cust-btn-container">
                       <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
                       <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                     </div>
@@ -125,7 +138,30 @@
           </div>
         </ng-template>
       </ngb-tab>
+      <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="unColTabId">
+        <ng-template ngbTabTitle>
+          <div>Unapplied Collection</div>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div class="input-group cust-border" style="padding-top: 0.6em">
+            <div class="col-sm-12">
+              <app-cust-editable-non-datatable id="unColTbl" [passData]="unappliedColData" #unappliedTbl (newClick)="onRowClick($event)" (tableDataChange)="unappliedColData.tableData=$event;defaultData();addDirty('unColTbl');"></app-cust-editable-non-datatable>
+            </div>
+            <div class="form-row col-sm-12" style="margin-top: 40px !important;">
+              <div class="form-group col-sm-12">
+                <div class="text-center">
+                  <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
       <ngb-tab *ngIf="requestData?.tranTypeCd != 8 && requestData?.tranTypeCd != 4" id="othTabId">
+      <!-- <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="othTabId"> -->
         <ng-template ngbTabTitle>
           <div>Others</div>
         </ng-template>
@@ -145,7 +181,7 @@
               </div>
             </div>
           </div>
-            </ng-template>
+        </ng-template>
       </ngb-tab>
     </ngb-tabset>
   </div>
@@ -198,8 +234,12 @@
 <app-sucess-dialog #sucOth [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
 <app-cancel-button #canOth (onYes)="onClickSaveOth('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
+<app-confirm-save  #conUnCol (onYes)="onSaveUnCol()"></app-confirm-save>
+<app-sucess-dialog #sucUnCol [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelUncol();"></app-sucess-dialog>
+<app-cancel-button #canUnCol (onYes)="onClickSaveUnCol('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
 <app-confirm-save  #conServFee (onYes)="onSaveServFee()"></app-confirm-save>
-<app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
+<app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelServFee();"></app-sucess-dialog>
 <app-cancel-button #canServFee (onYes)="onClickSaveServFee('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { HoldCoverInfo } from '../../_models/HoldCover';
-import { QuotationService,NotesService,UserService } from '../../_services';
+import { QuotationService, NotesService, UserService } from '../../_services';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -115,12 +115,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	tempHcNo		: string = '';
 	private sub		: any;
 
-  	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
+  	constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title,
 		private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute) { 
 	}
 
   	ngOnInit() {
   		this.titleService.setTitle('Quo | Quotation to Hold Cover');
+  		this.userService.emitModuleId("QUOTE013");
   		this.sub = this.activatedRoute.params.subscribe(params => {
   			if(Object.keys(params).length != 0){
   				this.getQuoteList([{ key: 'quotationNo', search: this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%') }]);

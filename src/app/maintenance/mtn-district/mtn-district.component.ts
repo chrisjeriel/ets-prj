@@ -10,7 +10,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class MtnDistrictComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
-  constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
+  constructor(public modalService: NgbModal, private mtnService : MaintenanceService) { }
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {
         tableData: [],

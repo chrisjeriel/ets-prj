@@ -13,7 +13,7 @@ export class MtnEndtCodeComponent implements OnInit {
   @Input() line: string = "";
   @Input() hide: any[];
 
-  constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
+  constructor(public modalService: NgbModal, private mtnService : MaintenanceService) { }
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {
         tableData: [],

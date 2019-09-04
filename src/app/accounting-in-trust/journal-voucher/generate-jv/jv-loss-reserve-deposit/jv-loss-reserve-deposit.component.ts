@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountingService } from '@app/_services';
+import { AccountingService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccJvLossResDep} from '@app/_models';
@@ -36,7 +36,9 @@ export class JvLossReserveDepositComponent implements OnInit {
 
   };
 
-  constructor(private accountingService: AccountingService,private titleService: Title) { }
+  payorData:any = '';
+
+  constructor(private accountingService: AccountingService,private titleService: Title, public ns: NotesService) { }
 
   ngOnInit() {
   	 this.titleService.setTitle(" Acct | JV | Loss Reserve Deposit");

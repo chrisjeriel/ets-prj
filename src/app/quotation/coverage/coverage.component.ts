@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,  ViewChild, Output, EventEmitter } from '@angular/core';
 import { QuotationCoverageInfo, NotesReminders, MtnSectionCovers } from '../../_models';
-import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
+import { QuotationService, NotesService, MaintenanceService, UserService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { ActivatedRoute } from '@angular/router';
@@ -114,10 +114,11 @@ export class CoverageComponent implements OnInit {
   promptMessage: string = "";
   promptType: string = "";
 
-  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService) {}
+  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,public modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService, private userService: UserService) {}
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");
+    this.userService.emitModuleId("QUOTE003");
 
     //neco
     if(this.inquiryFlag){
