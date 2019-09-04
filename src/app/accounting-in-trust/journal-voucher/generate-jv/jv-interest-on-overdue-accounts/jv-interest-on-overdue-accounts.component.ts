@@ -179,7 +179,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       console.log(data.data[i].balPremDue)
       console.log(this.interestRate)
       console.log(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365)
-      console.log(data.data[i].balPremDue.*this.interestRate*(parseFloat((this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365).toFixed(2))));
+      console.log(data.data[i].balPremDue*this.interestRate*(parseFloat((this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365).toFixed(2))));
       this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:(data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
       this.passData.tableData[this.passData.tableData.length - 1].orgOverdue  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:(data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
     }
