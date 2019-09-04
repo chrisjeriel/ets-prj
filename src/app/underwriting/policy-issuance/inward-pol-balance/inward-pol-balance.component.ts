@@ -104,6 +104,7 @@ export class InwardPolBalanceComponent implements OnInit {
       this.passData.total.push("amtDue");
     }
     if(this.policyInfo.fromInq){
+
       this.passData.addFlag=false;
       this.passData.genericBtn = undefined;
       this.passData2.genericBtn = undefined;
@@ -113,10 +114,20 @@ export class InwardPolBalanceComponent implements OnInit {
       this.passData2.uneditable = [];
       this.passData2.checkFlag= false;
       this.passData.checkFlag= false;
+
+      this.passData.tHeader = ['Inst No','Due Date','Booking Date','Acct. Entry Date','Premium','Comm Rate(%)','Comm Amt','VAT on R/I Comm','Other Charges','Amount Due'];
+      this.passData.keys = ['instNo','dueDate','bookingDate','acctEntDate','premAmt','commRt','commAmt','vatRiComm','otherChargesInw','amtDue'];
+      this.passData.total = [null,null,null,'Total','premAmt',null,'commAmt','vatRiComm','otherChargesInw','amtDue'];
+      this.passData.dataTypes = ["number","date","date","date","currency","percent","currency","currency","currency","currency",];
+      this.passData.widths = ["1", "1", "1", "1", "auto", "auto", "auto", "auto", "auto", "auto"];
+
+
       for(let key of this.passData.keys)
         this.passData.uneditable.push(true);
       for(let key of this.passData2.keys)
         this.passData2.uneditable.push(true);
+
+
     }
 
   }

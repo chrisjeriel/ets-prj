@@ -30,6 +30,9 @@ export class PolPostComponent implements OnInit {
   postBtn: boolean = false;
   altSign: string;
 
+  status:String = '';
+  alt_cancel_tag:String = null;
+
   constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, private modalService: NgbModal,
    private uwService: UnderwritingService, private ns: NotesService, private router: Router) {
   	config.backdrop = 'static';

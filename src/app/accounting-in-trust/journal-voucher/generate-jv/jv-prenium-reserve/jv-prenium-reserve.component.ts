@@ -78,6 +78,7 @@ export class JvPreniumReserveComponent implements OnInit {
 	constructor(private accService: AccountingService, private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
 	ngOnInit() {
+		console.log(this.jvDetail)
 		this.titleService.setTitle("Acct-IT | JV QSOA");
 		this.passData.nData.currCd = this.jvDetail.currCd;
 		this.passData.nData.currRate = this.jvDetail.currRate;
@@ -112,18 +113,19 @@ export class JvPreniumReserveComponent implements OnInit {
 	}
 
 	onClickSave(){
-		this.fundsHeld = 0;
+		/*this.fundsHeld = 0;
 		for(var i = 0; i < this.passData.tableData.length; i++){
 			this.fundsHeld += this.passData.tableData[i].releaseAmt;
 		}	
 
-		if(this.fundsHeld > this.jvDetail.jvAmount){
+		if(this.fundsHeld > this.jvDetail.jvAmt){
 			this.dialogMessage = "Total Funds Held Released must not exceed the JV Amount";
 			this.dialogIcon = "error-message";
 			this.successDiag.open();
 		}else{
 			$('#confirm-save #modalBtn2').trigger('click');
-		}
+		}*/
+		$('#confirm-save #modalBtn2').trigger('click');
 	}
 
 	prepareData(){
@@ -225,7 +227,8 @@ export class JvPreniumReserveComponent implements OnInit {
     	//this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
     	this.passData.tableData[this.dataIndex].colMG.push('quarterEnding');
     	this.passData.tableData[this.dataIndex].edited = true;
-    	this.passData.tableData[this.dataIndex].quarterEnding = data;
+    	this.passData.tableData[this.dataIndex].quarterEnding = this.ns.toDateTimeString(data.quarterVal);
+    	this.passData.tableData[this.dataIndex].releaseAmt = data.fundsHeld;
     	this.table.refreshTable();
     }
 

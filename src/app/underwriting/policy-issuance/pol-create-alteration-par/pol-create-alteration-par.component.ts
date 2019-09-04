@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UnderwritingService } from '../../../_services';
+import { UnderwritingService, ClaimsService } from '../../../_services';
 import { CreateAlterationParInfo } from '../../../_models/CreateAlterationPolicy';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -44,8 +44,11 @@ export class PolCreateAlterationPARComponent implements OnInit {
     pageID: 'createAltPolLov'
   }
 
+  fromLOV: boolean = false;
+  doneCheck: boolean = false;
+
   constructor(private underwritingService: UnderwritingService, private router: Router,
-    private modalService: NgbModal, private titleService: Title) { }
+    private modalService: NgbModal, private titleService: Title, private cs: ClaimsService) { }
 
   ngOnInit() {
     this.getPolListing();
@@ -89,7 +92,23 @@ export class PolCreateAlterationPARComponent implements OnInit {
       if(param !== undefined) {
         if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  
           this.selected = polList[0];
-          this.setDetails();
+
+          var pNo = this.selected.policyNo.split('-');
+          pNo[pNo.length-1] = '%';
+          this.cs.getClaimsListing([{ key: 'policyNo', search: pNo.join('-') }]).subscribe(data => {
+            if(data['claimsList'].length > 0) {
+              this.warningMsg = 3;
+              this.showWarningMdl();
+            }
+
+            this.doneCheck = true;
+
+            if(!this.fromLOV) {
+              this.setDetails();
+            } else {
+              this.fromLOV = false;
+            }
+          });
         } else if(polList.length === 0 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {
           this.clearFields();
           this.getPolListing();
@@ -124,6 +143,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
       this.riskName = this.selected.riskName;
 
       if(fromMdl !== undefined) {
+        this.fromLOV = true;
         this.searchArr = this.polNo.map((a, i) => {
           return (i == 0) ? a + '%' : (i == this.polNo.length - 1) ? '%' + a : '%' + a + '%';
         });
@@ -134,9 +154,10 @@ export class PolCreateAlterationPARComponent implements OnInit {
   }
 
   search(key,ev) {
-    if(!this.searchArr.includes('%%')) {
-      this.selected = null;
-    }
+    this.selected = null;
+    // if(!this.searchArr.includes('%%')) {
+    //   this.selected = null;
+    // }
 
     var a = ev.target.value;
 
@@ -190,13 +211,10 @@ export class PolCreateAlterationPARComponent implements OnInit {
         this.underwritingService.toPolInfo.push("edit", line);
 
         if(doneAlt.length == 0) {
-          //to gen info using base policy
           this.underwritingService.fromCreateAlt = true;        
           this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: this.polNo.join('-'), policyId: this.selected.policyId, editPol: true }], { skipLocationChange: true });
         } else {
-          //to gen info using latest alteration from doneAlt
           doneAlt.sort((a, b) => a.altNo - b.altNo);
-          //use doneAlt[doneAlt.length-1] (max altNo)
           var x = doneAlt[doneAlt.length-1];
           this.underwritingService.fromCreateAlt = true;
           this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true }], { skipLocationChange: true });

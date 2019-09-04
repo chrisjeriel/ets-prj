@@ -5,6 +5,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-jv-accounting-entries',
@@ -20,12 +21,13 @@ export class JvAccountingEntriesComponent implements OnInit {
    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
    @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
    @ViewChild('myForm') form:any;
+   @ViewChild(LovComponent) lov: LovComponent;
 
    passData: any = {
     tableData: [],
     tHeader: ['Account Code', 'Account Name', 'SL Type', 'SL Name', 'Debit', 'Credit'],
     dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
-    magnifyingGlass: ['accountCode','slType','slName'],
+    magnifyingGlass: ['glShortCd','slTypeName','slName'],
     nData: {
         tranId: '',
         entryId: '',
@@ -44,6 +46,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         updateUser: this.ns.getCurrentUser(),
         updateDate: this.ns.toDateTimeString(0),
         showMG:1,
+        colMG: [],
         edited: true
     },
     paginateFlag: true,
@@ -76,6 +79,11 @@ export class JvAccountingEntriesComponent implements OnInit {
     delList :[]
   }
 
+  passLov:any = {
+    selector:'',
+    params:{}
+  }
+
   debitTotal: number = 0;
   creditTotal: number = 0;
   variance : number = 0;
@@ -83,6 +91,9 @@ export class JvAccountingEntriesComponent implements OnInit {
   dialogMessage : any;
   readOnly: boolean = true;
   errorFlag: boolean = false;
+  notBalanced: boolean = true;
+  lovCheckBox:boolean = true;
+  lovRow:any;
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
@@ -114,6 +125,9 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.creditTotal += data.list[i].creditAmt;
       }
       this.variance = this.debitTotal - this.creditTotal;
+      if(this.variance === 0){
+        this.notBalanced = false;
+      }
       this.table.refreshTable();
       console.log(data)
     });
@@ -123,24 +137,28 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.debitTotal = 0;
     this.creditTotal = 0;
     this.variance = 0;
+    if(this.jvDetails.forApproval === 'Y'){
+      for (var i = 0; i < this.passData.tableData.length; i++) {
+        this.debitTotal += this.passData.tableData[i].debitAmt;
+        this.creditTotal += this.passData.tableData[i].creditAmt;
+      }
+      this.variance = this.debitTotal - this.creditTotal;
 
-    for (var i = 0; i < this.passData.tableData.length; i++) {
-      this.debitTotal += this.passData.tableData[i].debitAmt;
-      this.creditTotal += this.passData.tableData[i].creditAmt;
-    }
-    this.variance = this.debitTotal - this.creditTotal;
-
-    if(this.variance != 0){
-      this.dialogMessage = "Accounting Entries does not tally.";
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else if(this.errorFlag){
-      this.dialogMessage = 'Total Balance for Selected Policy Transactions must be equal to JV Amount.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
+      if(this.variance != 0){
+        this.dialogMessage = "Accounting Entries does not tally.";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else if(this.errorFlag){
+        this.dialogMessage = 'Total Balance for Selected Policy Transactions must be equal to JV Amount.';
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else{
+        this.confirm.confirmModal();
+      }
     }else{
       this.confirm.confirmModal();
     }
+    
   }
 
   prepareData(){
@@ -208,6 +226,35 @@ export class JvAccountingEntriesComponent implements OnInit {
           this.errorFlag = true;
         }
       });
+    }if(this.jvType == 3){
+      this.accountingService.getAcitJVPremRes(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.premResRel;
+        for (var i = 0; i < datas.length; i++) {
+          total += datas[i].releaseAmt
+        }
+
+        if(total != this.jvDetails.jvAmt){
+          this.errorFlag = true;
+        }
+      });
+    }
+  }
+
+  clickLov(data){
+    this.lovRow = data.data;
+    if(data.key == 'glShortCd'){
+      this.passLov.selector = 'acitChartAcct';
+      this.lovCheckBox = true;
+      this.passLov.params = {};
+    }
+    this.lov.openLOV();
+  }
+
+  setLov(data){
+    console.log(data)
+    if(data.selector == 'slType'){
+      this.lovRow.slTypeName = data.data.slTypeName;
+      this.lovRow.slTypeCd = data.data.slTypeCd;
     }
   }
 }

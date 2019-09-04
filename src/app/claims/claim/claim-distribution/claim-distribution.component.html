@@ -54,7 +54,7 @@
 						        </div>
 							</div>
 							<div class="col-sm-7">
-								<app-cust-editable-non-datatable #reserveDistTable [passData]="reserveDistPassData" (newClick)="clickRow($event)" class="d-block my-2">
+								<app-cust-editable-non-datatable #reserveDistTable [passData]="reserveDistPassData" (newClick)="clickRow($event)" (searchToDb)="getClmHist($event)" class="d-block my-2">
 								</app-cust-editable-non-datatable>
 							</div>
 							<div class="input-group" style="margin-left: -13px !important;">

@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { UnderwritingService, ClaimsService, MaintenanceService, NotesService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
@@ -139,8 +140,8 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   batchOption: any = {
-    statusCode: 'IP',
-    description: 'In Progress',
+    statusCode: '',
+    description: '',
     openTag: ''
   };
 
@@ -197,7 +198,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   openReasonLOV(){
     this.reasonTable.overlayLoader = true;
-    this.ms.getMtnClaimReason(null,this.batchOption, 'Y').subscribe(
+    this.ms.getMtnClaimReason(null,this.batchOption.statusCode, 'Y').subscribe(
        (data:any)=>{
          this.reasonData.tableData = data.clmReasonList;
          this.reasonTable.refreshTable();
@@ -221,7 +222,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
               /*this.batchOption.statusCode = i.statusCode;
               this.batchOption.description = i.description;
               this.batchOption.openTag = i.openTag;*/
-              this.batchOption = i;
+              //this.batchOption = i;
             }
           }
           this.batchOptionLoading = false;
@@ -343,8 +344,8 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   onRowClickQuery(data){
     if(data !== null){
       this.claimDetails = data;
-      this.reasonCd = data.reasonCd;
-      this.reasonDesc = data.reasonDesc;
+      // this.reasonCd = data.reasonCd;
+      // this.reasonDesc = data.reasonDesc;
     }else{
       this.clearDetails();
     }
@@ -443,11 +444,17 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   setReason(){
-    this.reasonCd = this.selectedReason.reasonCd;
-    this.reasonDesc = this.selectedReason.description;
+    if(this.processModal.modalRef == undefined){
+      this.reasonCd = this.selectedReason.reasonCd;
+      this.reasonDesc = this.selectedReason.description;
+    }else{
+      this.processTbl.indvSelect.newReasonCd = this.selectedReason.reasonCd;
+      this.processTbl.indvSelect.description = this.selectedReason.description;
+      this.processTbl.indvSelect.manual = true;
+    }
   }
 
-  checkCode(ev, field){
+  checkCode(ev, field,row?){
       this.ns.lovLoader(ev, 1);
 
       if(field === 'typeOfCession'){
@@ -456,7 +463,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
           this.riskModal.checkCode(this.searchParams.riskId, '#riskLOV', ev);
       } else if(field === 'cedingCo') {
           this.cedCoModal.checkCode(this.searchParams.cedingId === '' ? '' : String(this.searchParams.cedingId).padStart(3, '0'), ev, '#cedingCompanyLOV');
-      } else if(field === 'reason'){
+      } else if(field === 'reason' && row == undefined){
           if(this.reasonCd.trim() === ''){
             this.reasonCd = '';
             this.reasonDesc = '';
@@ -474,7 +481,25 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
                this.ns.lovLoader(ev, 0);
             });
           }
-      }
+      }else if (field === 'reason' && row != undefined){
+          if(row.reasonCd.trim() === ''){
+            row.newReasonCd = '';
+            row.desription = '';
+            this.ns.lovLoader(ev, 0);
+          } else {
+            this.ms.getMtnClaimReason(row.reasonCd,this.batchOption.statusCode, 'Y').subscribe(data => {
+              if(data['clmReasonList'].length > 0) {
+                row.newReasonCd = data['clmReasonList'][0].reasonCd;
+                row.description = data['clmReasonList'][0].description;
+              } else {
+                row.newReasonCd = '';
+                row.description = '';
+                this.openReasonLOV();
+              }
+               this.ns.lovLoader(ev, 0);
+            });
+          }
+        }
   }
 
   checkClaim(key, event){
@@ -602,10 +627,20 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   process(){
-    console.log(this.batchOption);
     this.dialogIcon = 'info';
-    this.dialogMessage = 'Are you sure you want to change the status of the claim?';
+    this.dialogMessage = 'Are you sure you want to change the status of the ff. claim(s)?';
+    this.selectedData.tableData = this.queryTable.selected;
+    this.selectedData.tableData.forEach(a=>{
+      if(a.manual != true){
+        a.showMG = 1;
+        a.newReasonCd = this.reasonCd; 
+        a.description = this.reasonDesc
+      }
+    });
+    console.log(this.selectedData.tableData);
+    this.processTbl.refreshTable();
     this.processModal.openNoClose();
+
     /*switch(this.batchOption.statusCode){
       case 'IP':
         this.dialogIcon = 'info';
@@ -652,7 +687,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         claimNo: i.claimNo,
         clmStatCd: this.batchOption.statusCode,
         clmStatDesc: this.batchOption.description,
-        reasonCd: this.batchOption.statusCode === 'IP' ? '' : this.reasonCd,
+        reasonCd: i.newReasonCd,//this.batchOption.statusCode === 'IP' ? '' : this.reasonCd,
         updateUser: this.ns.getCurrentUser(),
         updateDate: this.ns.toDateTimeString(0)
       });
@@ -699,23 +734,27 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   clearDetails(){
-    this.claimDetails = {
-      claimNo: '',
-      clmStatus: '',
-      policyNo: '',
-      cedingName: '',
-      insuredDesc: '',
-      riskName: '',
-      lossDate: '',
-      currencyCd: '',
-      lossDtl: '',
-      totalLossExpRes: '',
-      totalLossExpPd: '',
-      adjName: '',
-      processedBy: '',
-    }
-    this.reasonCd = '';
-    this.reasonDesc = '';
+    this.claimDetails = null;
+    this.reasonCd = null;
+    this.reasonDesc = null;
+    this.queryTable.selected = [];
+    // {
+    //   claimNo: '',
+    //   clmStatus: '',
+    //   policyNo: '',
+    //   cedingName: '',
+    //   insuredDesc: '',
+    //   riskName: '',
+    //   lossDate: '',
+    //   currencyCd: '',
+    //   lossDtl: '',
+    //   totalLossExpRes: '',
+    //   totalLossExpPd: '',
+    //   adjName: '',
+    //   processedBy: '',
+    // }
+    // this.reasonCd = '';
+    // this.reasonDesc = '';
   }
 
   compareFn(c1:any, c2: any): boolean {
@@ -724,5 +763,29 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     console.log(c2);
       return c1.statusCode === c2.statusCode;
   }
+
+  // START PAUL MODS
+  @ViewChild('processTbl')processTbl:CustEditableNonDatatableComponent;
+  selectedData:any = {
+    tableData: [],
+    tHeader: ['Claim No', 'Reason Code', 'Reason Desc'],
+    dataTypes: ['text', 'lovInput', 'text'],
+    magnifyingGlass: ['newReasonCd'],
+    keys: ['claimNo', 'newReasonCd', 'description'],
+    uneditable: [true,false,true],
+    widths:[80,1,'auto'],
+    paginateFlag: true,
+    infoFlag: true,
+    searchFlag: false,
+    pageLength: 10,
+    pageID: 'processTable'
+  }
+
+  onProcessTblChange(data){
+    console.log(data);
+    this.checkCode(data.ev,'reason',this.selectedData.tableData[data.index]);
+  }
+
+  //if(data.hasOwnProperty('lovInput')) {
 }
 

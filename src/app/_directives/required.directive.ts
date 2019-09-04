@@ -13,7 +13,7 @@ export class RequiredDirective implements OnInit{
     }
     
     ngOnInit(){
-      if(this.appRequired){
+      if(this.appRequired || this.appRequired == undefined || this.appRequired.toString().length == 0){
         this.er.nativeElement.style.backgroundColor = "#fffacd85";
       }
     }

@@ -350,10 +350,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
       $('.globalLoading').css('display','none');
       if(data.policy != null) {
+        this.checkNewExpiry = true;
         this.policyInfo = data.policy;
-        this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
+        //this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
+        this.lastExpiryDate = new String(this.policyInfo.expiryDate); //edit by paul for maintenance adjustment
         this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
         this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseTo));
         this.policyInfo.maintenanceFrom = this.policyInfo.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.maintenanceFrom));
@@ -511,7 +513,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                        });
 
         this.policyInfo.issueDate = this.ns.toDateTimeString(new Date());
-        this.policyInfo.effDate = this.ns.toDateTimeString(new Date());
+        this.policyInfo.effDate = this.policyInfo.inceptDate;
 
       }
     });
@@ -765,8 +767,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   prepareParam(cancelFlag?) {
+    //edit by paul
+    //check if expiry changed and prompt to change maintenance date if not null
+
     this.cancelFlag = cancelFlag !== undefined;
     this.saveBtnClicked = true;
+    this.checkAlopFlag = true;
 
     var savePolGenInfoParam = {
       "savingType"      : this.alteration && this.forceExt == 1 ? 'alteration_ext' : this.alteration ? 'alteration' : 'normal',
@@ -916,6 +922,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          $('#polGenInfo > #successModalBtn').trigger('click');
          /*this.form.control.markAsPristine();*/
          this.forceExt = 0;
+
+
+         this.checkAlopInfo();
          this.getPolGenInfo('noLoading');
        }
      });
@@ -932,7 +941,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     if((this.withCovDtls && this.policyInfo.extensionTag == 'N' && new Date(this.prevExpiryDate) < new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate)
       || (this.withCovDtls && this.policyInfo.extensionTag == 'Y' && (this.prevInceptExt != this.policyInfo.inceptDate || this.prevEffExt != this.policyInfo.effDate))) {
       $('#polGenInfoConfirmationModal #modalBtn').trigger('click');  
-    } else {
+    }else if(this.policyInfo.expiryDate.toString() != this.lastExpiryDate.toString() && this.policyInfo.maintenanceFrom != null && this.policyInfo.maintenanceFrom.length != 0 && this.checkNewExpiry ){
+      $('.globalLoading').css('display','block');
+      this.onExpiryChange();
+    } else  {
       $('#confirm-save #modalBtn2').trigger('click');
     }
   }
@@ -1416,6 +1428,110 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.dedCancelBtn.saveModal.openNoClose();
       }else{
         this.deductiblesModal.closeModal();
+      }
+    }
+
+    //PAUL adjust maintenance on expiry change
+    @ViewChild('changeMainteMdl')changeMainteMdl:ModalComponent;
+    tempMaintenanceFrom:Date;
+    tempMaintenanceTo:Date;
+    currMaintenanceFrom:Date;
+    currMaintenanceTo:Date;
+    lastExpiryDate: String;
+    checkNewExpiry: Boolean = true;
+    onExpiryChange(){
+      this.currMaintenanceFrom = this.ns.toDate(this.policyInfo.maintenanceFrom)
+      this.currMaintenanceTo = this.ns.toDate(this.policyInfo.maintenanceTo);
+
+      this.tempMaintenanceFrom = this.ns.toDate(this.policyInfo.expiryDate);
+      this.tempMaintenanceTo =  new Date(this.tempMaintenanceFrom.getTime() + this.currMaintenanceTo.getTime() - this.currMaintenanceFrom.getTime());
+      if(this.tempMaintenanceFrom.getTime() != this.currMaintenanceFrom.getTime()){
+        this.changeMainteMdl.openNoClose();
+      }else{
+        this.checkNewExpiry = false;
+        this.onClickSave();
+      }
+    }
+
+    updateMaintenance(){
+      this.checkNewExpiry = false;
+      this.policyInfo.maintenanceFrom = this.ns.toDateTimeString(this.tempMaintenanceFrom);
+      this.policyInfo.maintenanceTo = this.ns.toDateTimeString(this.tempMaintenanceTo);
+      this.prepareParam(this.cancelFlag);
+    }
+
+    formatDate(d:Date){
+      if(d==undefined){
+        return null;
+      }
+      let hours = d.getHours();
+      let minutes:any = d.getMinutes();
+      let ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? '0'+minutes : minutes;
+      let strTime = hours + ':' + minutes + ' ' + ampm;
+      return this.pad(d.getMonth()+1,2) + '/' + this.pad(d.getDate(),2) + '/' + d.getFullYear()+ ' ' +strTime;
+    }
+
+    @ViewChild('changeAlopMdl')changeAlopMdl:ModalComponent;
+    alopInfo:any;
+    tempAlopFrom:Date;
+    tempAlopTo:Date;
+    currAlopFrom:Date;
+    currAlopTo:Date;
+    checkAlopFlag:Boolean = true;
+    checkAlopInfo(){
+      this.underwritingService.getPolAlop(this.policyId).subscribe((a:any)=>{
+        if(a.policy!=null){
+          this.alopInfo = a.policy.alop;
+          this.alopInfo.issueDate  = this.ns.toDateTimeString(this.alopInfo.issueDate);
+          this.alopInfo.expiryDate  = this.ns.toDateTimeString(this.alopInfo.expiryDate);
+          this.alopInfo.indemFromDate  = this.ns.toDateTimeString(this.alopInfo.indemFromDate);
+          this.alopInfo.createDate  = this.ns.toDateTimeString(this.alopInfo.createDate);
+          this.alopInfo.updateDate  = this.ns.toDateTimeString(this.alopInfo.updateDate);
+
+          if(this.alopInfo.issueDate != this.policyInfo.effDate || this.alopInfo.expiryDate != this.policyInfo.expiryDate){
+            this.tempAlopFrom = this.ns.toDate(this.policyInfo.effDate);
+            this.tempAlopTo = this.ns.toDate(this.policyInfo.expiryDate);
+            this.currAlopFrom = this.ns.toDate(this.alopInfo.issueDate);
+            this.currAlopTo = this.ns.toDate(this.alopInfo.expiryDate); 
+            this.checkAlopFlag = true;
+          }else{
+            this.checkAlopFlag = false;
+          }
+        }else{
+          this.checkAlopFlag = false;
+        }
+      })
+    }
+
+    updateAlopDates(){
+      $('.globalLoading').css('display','block');
+      this.alopInfo.policyId = this.policyId;
+      this.alopInfo.issueDate = this.policyInfo.effDate;
+      this.alopInfo.expiryDate = this.policyInfo.expiryDate;
+      this.alopInfo.indemFromDate = this.policyInfo.expiryDate;
+      this.alopInfo.updateUser = this.ns.getCurrentUser();
+      this.alopInfo.updateDate = this.ns.toDateTimeString(0);
+      this.underwritingService.savePolAlop(this.alopInfo).subscribe((a:any)=>{
+         if(a.returnCode != -1){
+           this.dialogMessage="The system has encountered an unspecified error.";
+           this.dialogIcon = "error";
+         }else{
+           this.dialogMessage = "";
+           this.dialogIcon = "";
+           $('#polGenInfo > #successModalBtn').trigger('click');
+         }
+         this.checkAlopFlag = false;
+      })
+    }
+
+    onClickOk(){
+      if(this.checkAlopFlag){
+        this.changeAlopMdl.openNoClose();
+      }else if(this.cancelFlag){
+       this.cancelBtn.onNo()
       }
     }
 }

@@ -43,14 +43,14 @@
             <div class="col-sm-12">
               <ng-container [ngSwitch]="true">
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 2 || requestData?.tranTypeCd == 3">
-                    <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event,'lovCedTbl')" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty('cedTbl');" #cedCompTbl></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event,'lovCedTbl')" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty('cedTbl');conLocAmt();" #cedCompTbl></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 4">
-                    <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (newClick)="onRowClick($event)" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (newClick)="onRowClick($event)" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');reCompInw();"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
-                        <div controls-l class="input-group">
+                        <div class="input-group">
                           <div class="col-sm-2" style="margin-right: -35px"></div>
                           <label class="form-control-sm col-sm-1">Service Fee</label>
                           <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-right: 18px !important;" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>
@@ -75,7 +75,7 @@
                               </select>
                             </div>
                           </div>
-                          <button class="cust-btn" (click)="getAcctPrqServFeeMainGnrt()" [disabled]="(gnrtType == 'periodAsOf' && (periodAsOfParam == '' || periodAsOfParam == null)) || (gnrtType == 'year' && yearParam == null)" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; margin-left: 5px; z-index: 1 !important;">Distribute</button>
+                          <button class="cust-btn" (click)="getAcctPrqServFee()" [disabled]="(gnrtType == 'periodAsOf' && (periodAsOfParam == '' || periodAsOfParam == null)) || (gnrtType == 'year' && yearParam == null)" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; margin-left: 5px; z-index: 1 !important;">Distribute</button>
                           <div class="col-sm-2"></div>
                         </div>
                     </div>
@@ -98,7 +98,8 @@
                     <div class="d-flex p-0">
                       <div class="col-sm-2"></div>
                       <div class="col-sm">
-                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr();"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr();"
+                        (clickLOV)="showLOV($event,'lovTrtyTbl')"></app-cust-editable-non-datatable>
                       </div>
                       <div class="col-sm-2"></div>
                     </div>
@@ -113,7 +114,7 @@
               <div class="form-row" style="margin-top: 40px !important;">
                 <div class="form-group col-sm">
                   <div class="text-center">
-                    <div class="cust-btn-container">
+                    <div class="cust-btn-container" *ngIf="requestData?.tranTypeCd > 3">
                       <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
                       <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                     </div>
@@ -124,7 +125,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="othTabId">
+      <ngb-tab *ngIf="requestData?.tranTypeCd != 8 && requestData?.tranTypeCd != 4" id="othTabId">
         <ng-template ngbTabTitle>
           <div>Others</div>
         </ng-template>
@@ -134,17 +135,17 @@
               <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr();"></app-cust-editable-non-datatable>
             </div>
             <div class="form-row col-sm-12" style="margin-top: 40px !important;">
-                <div class="form-group col-sm-12">
-                  <div class="text-center">
-                    <div class="cust-btn-container">
-                      <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                      <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-                    </div>
+              <div class="form-group col-sm-12">
+                <div class="text-center">
+                  <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                   </div>
                 </div>
+              </div>
             </div>
           </div>
-        </ng-template>
+            </ng-template>
       </ngb-tab>
     </ngb-tabset>
   </div>
@@ -171,6 +172,8 @@
 
 <app-mtn-clm-history-lov #mtnClmHistLov (selectedData)="setData($event,'lovCedTbl')" [limitClmHistTbl]="limitClmHistTbl" [limitData]="limitData" [lovCheckBox]="true"></app-mtn-clm-history-lov>
 
+<app-quarter-ending-lov #trtyLov (selectedData)="setData($event,'lovTrtyTbl')"></app-quarter-ending-lov>
+
 <app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov>
 <app-lov #invtLov    [passData]="passData" (selectedData)="setData($event,'lovInvtTbl')" [limitContent]="limitContent"></app-lov>
 
@@ -195,6 +198,10 @@
 <app-sucess-dialog #sucOth [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
 <app-cancel-button #canOth (onYes)="onClickSaveOth('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
+<app-confirm-save  #conServFee (onYes)="onSaveServFee()"></app-confirm-save>
+<app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
+<app-cancel-button #canServFee (onYes)="onClickSaveServFee('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
 
 <app-modal class="d-none" id="warnMdl" #warnMdl>
     <div header>Warning Message</div>
@@ -204,7 +211,7 @@
         </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="warnMdl.closeModal()"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
     </div>
 </app-modal>
 
