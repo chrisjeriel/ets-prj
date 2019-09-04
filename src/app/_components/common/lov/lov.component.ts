@@ -815,11 +815,8 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
         var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A');
-        console.log(rec);
-        console.log(this.limitContent);
         if(this.limitContent.length != 0){
           var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({reqId: a.reqId}));
-          console.log(limit);
           this.passTable.tableData =  rec.filter(a => {
                              var mdl = JSON.stringify({reqId: a.reqId});
                              console.log(mdl);

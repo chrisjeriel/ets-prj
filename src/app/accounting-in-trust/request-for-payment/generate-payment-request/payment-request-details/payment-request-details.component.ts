@@ -127,6 +127,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     },
     paginateFlag  : true,
     infoFlag      : true,
+    uneditableKeys: ['returnAmt'], 
     pageID        : 'inwardPolBalData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
     checkFlag     : true,
     addFlag       : true,
@@ -649,6 +650,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                                 e.riComm    = '';
                                                 e.riCommVat = '';
                                                 e.charges   = '';
+                                                (e.returnAmt == '' || e.returnAmt == null)?e.newRec=1:'';
                                                 e.returnAmt = (e.newRec==1)?0:e.returnAmt;
                                                 return e;
                                             });

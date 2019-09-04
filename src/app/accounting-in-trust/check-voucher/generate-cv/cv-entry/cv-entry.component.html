@@ -272,7 +272,7 @@
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvNo == ''" (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
                             <!-- <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X'">Spoil Check</button> -->
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()">Ok For Printing</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()">Ok For Printing</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="onClickPrint()">Print</button>
                         </div>
                     </div>

@@ -123,7 +123,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
   onSavePaytReqList(){
-    this.paytReqTbl.overlayLoader = true;
+    //this.paytReqTbl.overlayLoader = true;
     console.log(this.params);
     this.accountingService.saveAcitCvPaytReqList(JSON.stringify(this.params))
     .subscribe(data => {
@@ -139,8 +139,6 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
-    console.log(this.cvInfo.cvStatus);
-    console.log(this.cvInfo.cvStatusUp);
     this.passDataPaytReqList.tableData.forEach(e => {
       e.tranId    = this.passData.tranId;
       e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':((this.cvInfo.cvStatus == 'C')?'N':this.cvInfo.cvStatus);
