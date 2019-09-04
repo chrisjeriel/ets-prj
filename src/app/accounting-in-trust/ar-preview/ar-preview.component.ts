@@ -158,6 +158,7 @@ export class ArPreviewComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
+    console.log(this.record.tranId);
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
@@ -288,6 +289,8 @@ export class ArPreviewComponent implements OnInit {
    // }else if(this.currentTab === 'acctEntries'){
       this.savedData = this.accEntriesData.tableData.filter(a=>a.edited && !a.deleted);
       this.deletedData = this.accEntriesData.tableData.filter(a=>a.deleted);
+      console.log(this.savedData);
+      console.log(this.deletedData);
 
       this.savedData.forEach(a=>{
         if(!a.add){
@@ -297,6 +300,7 @@ export class ArPreviewComponent implements OnInit {
       })
 
       let params = {
+        tranId: this.record.tranId,
         saveList: this.savedData,
         delList: this.deletedData
       }

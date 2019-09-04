@@ -313,11 +313,19 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
           this.treatyBal += this.passData.tableData[i].acctOffset[j].paytAmt;
         }
       }
-      if(this.passData.tableData[i].balanceAmt < this.treatyBal){
+      if((this.passData.tableData[i].balanceAmt < 0 && this.passData.tableData[i].balanceAmt + this.treatyBal  > 0) ||
+         (this.passData.tableData[i].balanceAmt > 0 && this.passData.tableData[i].balanceAmt + this.treatyBal  < 0)){
         errorFlag = true;
         quarterDate = this.passData.tableData[i].quarterEnding;
       }
     }
+
+    //added by NECO 09/04/2019
+    var totalTreatyBal: number = 0;
+    for(var k = 0; k < this.passData.tableData.length; k++){
+      totalTreatyBal += this.passData.tableData[k].balanceAmt;
+    }
+    //End
 
     if(errorFlag){
       quarterDate = this.ns.toDateTimeString(quarterDate);
@@ -325,7 +333,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.dialogMessage = "The total balance of outstanding accounts for offset on Quarter Ending " + quarterDate[0] + " must not exceed its Treaty Balance Amount.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
-    }else if(this.totalBal > this.jvDetail.jvAmt){
+    }else if(totalTreatyBal > this.jvDetail.jvAmt){
       this.dialogMessage = "The total treaty balance must not exceed the JV Amount.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
