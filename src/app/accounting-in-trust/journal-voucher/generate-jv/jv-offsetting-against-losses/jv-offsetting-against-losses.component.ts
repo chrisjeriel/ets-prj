@@ -29,7 +29,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
   passData: any = {
     tableData: [],//this.accountingService.getClaimLosses(),
-    tHeader: ['Claim No', 'Hist No', 'Hist Category','Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Cummulative Payment','Paid Amount','Paid Amount (Php)'],
+    tHeader: ['Claim No', 'Hist No', 'Hist Category','Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Hist Amount','Cummulative Payment','Paid Amount','Paid Amount (Php)'],
     dataTypes: ['text', 'sequence-2', 'text', 'text', 'text', 'text', 'checkbox', 'text', 'percent', 'currency', 'currency','currency', 'currency'],
     nData: {
       showMG:1,
@@ -326,7 +326,34 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   onClickSave(){
-    this.confirm.confirmModal();
+    var clmPayment = 0;
+    var inwPayment = 0;
+    var errorFlag = false;
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      clmPayment += this.passData.tableData[i].clmPaytAmt;
+      inwPayment = 0;
+      for (var j = 0; j < this.passData.tableData[i].inwPolBal.length; j++) {
+        if(!this.passData.tableData[i].inwPolBal[j].deleted){
+          inwPayment +=  this.passData.tableData[i].inwPolBal[j].paytAmt;
+          if(inwPayment > this.passData.tableData[i].clmPaytAmt){
+            errorFlag = true;
+          }
+        }
+      }
+    }
+
+    if(clmPayment > this.jvDetail.jvAmt){
+      this.dialogMessage = 'Total claim payment amount must not exceed the JV amount.' ;
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(errorFlag){
+      this.dialogMessage = 'Sum of policy balance payment must not exceed the claim hist amount.' ;
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
+    
   }
 
   prepareData(){

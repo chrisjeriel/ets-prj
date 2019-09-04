@@ -320,14 +320,14 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
         //ADDED BY NECO 09/03/2019
         if(!this.passData.tableData[i].clmOffset[j].deleted){
-          if(this.positiveHistType.includes(this.passData.tableData[i].histType)){
+          if(this.positiveHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
             totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
-          }else if(this.negativeHistType.includes(this.passData.tableData[i].histType)){
+          }else if(this.negativeHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
             totalPaid -= this.passData.tableData[i].clmOffset[j].clmPaytAmt;
           }
           //END
           //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt
-          if(this.passData.tableData[i].balanceAmt < totalPaid){
+          if(this.passData.tableData[i].balanceAmt != totalPaid){
             this.errorFlag = true;
             break;
           }

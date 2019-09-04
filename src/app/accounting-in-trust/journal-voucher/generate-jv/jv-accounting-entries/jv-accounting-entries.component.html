@@ -43,7 +43,7 @@
     <legend class="scheduler-border">JV Accounting Entries</legend>
      <div class="row">
         <div class="col-sm-12" style="margin-top: 14px">
-            <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)">
+            <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)"  (tabChange)="onTabChange($event)">
                 <ng-container controls-r>
                     <div class="align" style="position: absolute;left: 130px">
                         <label class="form-control-sm">For Approval</label> 
