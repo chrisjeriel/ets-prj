@@ -53,6 +53,7 @@ export class LovComponent implements OnInit {
   	  // if(this.lovCheckBox){
      //    this.passTable.checkFlag = true;
      //  }
+     console.log(this.lovCheckBox)
   }
 
   select(data){
@@ -658,6 +659,18 @@ export class LovComponent implements OnInit {
         console.log(this.passTable.tableData);
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acitSoaDtlOverdue'){
+      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Balance'];
+      this.passTable.widths =[300,300,1,200,200]
+      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency'];
+      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'balance'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
+        //this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        console.log(this.passTable.tableData);
+        this.table.refreshTable();
+      })
     }else if(this.passData.selector == 'acitSoaDtlAr'){
       this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Balance'];
       this.passTable.widths =[300,300,1,200,200]
@@ -675,7 +688,7 @@ export class LovComponent implements OnInit {
       this.passTable.widths =[300,300,1,200,200]
       this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency'];
       this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'balance'];
-      this.passTable.checkFlag = true;
+      this.passTable.checkFlag = false;
       console.log(this.passData)
       this.accountingService.getSoaDtlZero(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.currCd).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
@@ -831,7 +844,15 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['paytReqNo','tranTypeDesc','reqDate','particulars','requestedBy','currCd','reqAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
-        this.passTable.tableData = a.acitPaytReq.filter(e => e.payeeNo == this.passData.payeeNo && e.currCd == this.passData.currCd && e.reqStatus == 'A');
+        var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A');
+        if(this.limitContent.length != 0){
+          var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({reqId: a.reqId}));
+          this.passTable.tableData =  rec.filter(a => {
+                             var mdl = JSON.stringify({reqId: a.reqId});
+                             console.log(mdl);
+                             return !limit.includes(mdl);
+                           });
+        }
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'mtnBussType'){

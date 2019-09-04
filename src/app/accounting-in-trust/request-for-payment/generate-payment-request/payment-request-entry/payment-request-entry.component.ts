@@ -74,6 +74,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   private sub     : any;
   initDisabled    : boolean;
   fromBtn         : string = '';
+  prqStatList     : any;
 
   @Output() paytData : EventEmitter<any> = new EventEmitter();
   @Input() rowData: any = {
@@ -123,6 +124,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       console.log(data);
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
+      this.prqStatList = recStat;
 
       $('.globalLoading').css('display','none');
 
@@ -238,7 +240,8 @@ export class PaymentRequestEntryComponent implements OnInit {
       localAmt        : Number(String(this.saveAcitPaytReq.localAmt).replace(/\,/g,'')),
       particulars     : this.saveAcitPaytReq.particulars,
       payee           : this.saveAcitPaytReq.payee,
-      payeeNo         : this.saveAcitPaytReq.payeeNo,
+      payeeCd         : this.saveAcitPaytReq.payeeCd,
+      payeeClassCd    : this.saveAcitPaytReq.payeeClassCd,
       preparedBy      : this.savePrintables.preparedBy,
       preparedDate    : (this.saveAcitPaytReq.preparedDate == '' || this.saveAcitPaytReq.preparedDate == null)?this.ns.toDateTimeString(0):this.saveAcitPaytReq.preparedDate,
       reqAmt          : Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')),
@@ -358,7 +361,8 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.saveAcitPaytReq.approvedDes  = data.designation;
     }else if(from.toLowerCase() == 'payee'){
       this.saveAcitPaytReq.payee   = data.data.payeeName;
-      this.saveAcitPaytReq.payeeNo = data.data.payeeNo;
+      this.saveAcitPaytReq.payeeCd = data.data.payeeNo;
+      this.saveAcitPaytReq.payeeClassCd = data.data.payeeClassCd;
     }
   }
 
@@ -385,7 +389,6 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.reqUserLov.modal.openNoClose();
     }else if(fromUser.toLowerCase() == 'app-user'){
       this.appUserLov.modal.openNoClose();
-      this.saveAcitPaytReq.approvedBy = this.ns.getCurrentUser();
     }else if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
       this.mainLov.openLOV();
@@ -443,16 +446,26 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.confirmMdl.closeModal();
   }
 
-  onYesAppby(){
-    // if(this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null || this.saveAcitPaytReq.approvedDate == '' || this.saveAcitPaytReq.approvedDate == null){
-    //   this.dialogIcon = 'error';
-    //   this.success.open();
-    //   $('.warn').focus();
-    //   $('.warn').blur();
-    // }else{
+  onYesAppby(){   
+      $('.globalLoading').css('display','block');
       this.confirmMdl.closeModal();
-      this.saveAcitPaytReq.reqStatusNew = 'A';
-    //}
+      var updatePaytReqStats = {
+        reqId       : this.saveAcitPaytReq.reqId,
+        reqStatus   : 'A',
+        updateUser  : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.approvedBy
+      };
+
+      console.log(JSON.stringify(updatePaytReqStats));
+      this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
+      .subscribe(data => {
+        console.log(data);
+        $('.globalLoading').css('display','none');
+        this.saveAcitPaytReq.reqStatus = 'A';
+        this.saveAcitPaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
+        this.dialogIcon = '';
+        this.dialogMessage = '';
+        this.success.open();
+      });
   }
 
 

@@ -62,7 +62,8 @@ export class CvEntryComponent implements OnInit {
     mainTranId    : '',
     particulars   : '',
     payee         : '',
-    payeeNo       : '',
+    payeeCd       : '',
+    payeeClassCd  : '',
     postDate      : '',
     preparedBy    : '',
     preparedDate  : '',
@@ -79,6 +80,7 @@ export class CvEntryComponent implements OnInit {
   private sub     : any;
   cvStatList      : any;
   removeIcon      : boolean;
+  fromBtn         : string = '';
 
   passDataLov  : any = {
     selector     : '',
@@ -173,7 +175,8 @@ export class CvEntryComponent implements OnInit {
       }
 
       this.cvData.emit({tranId: this.saveAcitCv.tranId});
-      (this.saveAcitCv.cvStatus == 'X')?this.disableFlds(true):this.disableFlds(false);
+      //(this.saveAcitCv.cvStatus == 'X')?this.disableFlds(true):this.disableFlds(false);
+      ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
       this.setLocalAmt();
     });
 
@@ -277,7 +280,8 @@ export class CvEntryComponent implements OnInit {
       mainTranId       : this.saveAcitCv.mainTranId,
       particulars      : this.saveAcitCv.particulars,
       payee            : this.saveAcitCv.payee,
-      payeeNo          : this.saveAcitCv.payeeNo,
+      payeeCd          : this.saveAcitCv.payeeCd,
+      payeeClassCd     : this.saveAcitCv.payeeClassCd,
       postDate         : this.ns.toDateTimeString(this.saveAcitCv.mainPostDate),
       preparedBy       : this.saveAcitCv.preparedBy,
       preparedDate     : (this.saveAcitCv.preparedDate == '' || this.saveAcitCv.preparedDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.preparedDate,
@@ -329,7 +333,8 @@ export class CvEntryComponent implements OnInit {
     this.ns.lovLoader(data.ev, 0);
     if(from.toLowerCase() == 'payee'){
       this.saveAcitCv.payee   = data.data.payeeName;
-      this.saveAcitCv.payeeNo = data.data.payeeNo;
+      this.saveAcitCv.payeeCd = data.data.payeeNo;
+      this.saveAcitCv.payeeClassCd = data.data.payeeClassCd;
     }else if(from.toLowerCase() == 'bank'){
       this.saveAcitCv.bankDesc   = data.data.officialName;
       this.saveAcitCv.bank = data.data.bankCd;
@@ -393,12 +398,38 @@ export class CvEntryComponent implements OnInit {
     this.saveAcitCv.bankAcct = '';
   }
 
-  onYesCancelCv(){
+  // onYesCancelCv(){
+  //   $('.globalLoading').css('display','block');
+  //   this.confirmMdl.closeModal();
+  //   var updateAcitCvStat = {
+  //     tranId       : this.saveAcitCv.tranId,
+  //     cvStatus     : 'X',
+  //     updateUser  : this.ns.getCurrentUser()
+  //   };
+  //   console.log(updateAcitCvStat);
+  //   this.accountingService.updateAcitCvStat(JSON.stringify(updateAcitCvStat))
+  //   .subscribe(data => {
+  //     console.log(data);
+  //     $('.globalLoading').css('display','none');
+  //     this.saveAcitCv.cvStatus = 'X';
+  //     this.saveAcitCv.cvStatusDesc = this.cvStatList.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
+  //     this.dialogIcon = '';
+  //     this.dialogMessage = '';
+  //     this.success.open();
+  //     this.disableFlds(true);
+  //   });
+  // }
+
+  onClickPrint(){
+    this.printmMdl.openNoClose();
+  }
+
+  onClickYesConfirmed(stat){
     $('.globalLoading').css('display','block');
     this.confirmMdl.closeModal();
     var updateAcitCvStat = {
       tranId       : this.saveAcitCv.tranId,
-      cvStatus     : 'X',
+      cvStatus     : stat,
       updateUser  : this.ns.getCurrentUser()
     };
     console.log(updateAcitCvStat);
@@ -406,17 +437,13 @@ export class CvEntryComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       $('.globalLoading').css('display','none');
-      this.saveAcitCv.cvStatus = 'X';
+      this.saveAcitCv.cvStatus = stat;
       this.saveAcitCv.cvStatusDesc = this.cvStatList.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
       this.dialogIcon = '';
       this.dialogMessage = '';
       this.success.open();
       this.disableFlds(true);
     });
-  }
-
-  onClickPrint(){
-    this.printmMdl.openNoClose();
   }
 
 }

@@ -12,7 +12,9 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
+
 
 
 @Component({
@@ -125,6 +127,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     },
     paginateFlag  : true,
     infoFlag      : true,
+    uneditableKeys: ['returnAmt'], 
     pageID        : 'inwardPolBalData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
     checkFlag     : true,
     addFlag       : true,
@@ -314,6 +317,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   activeOthTab    : boolean = false;
   activeUnColTab  : boolean = false;
   trtyIndx        : number;
+  allotedAmt      : any;
+  totalBal        : any;
+  variance        : any;
+  allotedChanged  : boolean = false;
 
   params : any =  {
     savePrqTrans     : [],
@@ -337,7 +344,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   yearParamOpts: any[] = [];
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
-              private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe) {
+              private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe,private decPipe: DecimalPipe) {
   }
 
   ngOnInit() {
@@ -472,6 +479,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.quarterEnding = this.dp.transform(this.ns.toDateTimeString(e.quarterEnding).split('T')[0], 'MM/dd/yyyy');
       return e; 
     });
+
     this.treatyTbl.refreshTable();
   }
 
@@ -494,14 +502,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                                                         return e2;
                                                                       }));
       });
-      console.log(this.inwardPolBalData.tableData);
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.flatMap(e => { return e });
-      console.log(this.inwardPolBalData.tableData);
-
       recAcitSoaDtl.forEach(e => {
         this.inwardPolBalData.tableData.filter(e2 => e.policyId == e2.policyId && e.instNo == e2.instNo).map(e2 => Object.assign(e2,e));
       });
-      console.log(this.inwardPolBalData.tableData);
       this.inwardTbl.refreshTable();
       this.reCompInw();
     });
@@ -530,7 +534,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       });
       this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.flatMap(e => { return e });
       this.cedCompTbl.refreshTable();
-      console.log(this.cedingCompanyData.tableData);
     });
   }
 
@@ -551,17 +554,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   defaultData(){
-    console.log('default data');
     this.unappliedColData.tableData.map(e => {
       if(e.newRec == 1){
         e.currCd   = this.requestData.currCd;
         e.currRate = this.requestData.currRate;
         e.localAmt = (e.currAmt != null)?Number(e.currAmt) * Number(e.currRate):'';
       }
-
-      // this.unappliedColData.opts[0].vals.forEach((e2,i) => {
-      //   (e.transdtlType == e2)?e.transdtlTypeDesc=this.unappliedColData.opts[0].prev[i]:'';
-      // });
     });
   }
 
@@ -581,7 +579,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       });
       this.passData.currCd = this.requestData.currCd;
       this.passData.selector = 'acitSoaDtlPrq';
-      this.passData.payeeNo = this.requestData.payeeNo;
+      this.passData.payeeNo = this.requestData.payeeCd;
       this.aginSoaLov.openLOV();
     }else if(from.toUpperCase() == 'LOVTRTYTBL'){
       this.trtyIndx = event.index;
@@ -598,18 +596,25 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   reCompInw(){
     this.inwardPolBalData.tableData.forEach(e => {
-      //if(e.returnAmt != '' && e.returnAmt != null && e.returnAmt > 0){
-          e.premAmt      = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
-          e.riComm       = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
-          e.riCommVat    = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
-          e.charges      = Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
-          e.totalPayt    = Math.round((e.returnAmt + e.cumPayment) * 100)/100;
-          e.remainingBal = Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
-      //}
+      e.premAmt      = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
+      e.riComm       = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
+      e.riCommVat    = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
+      e.charges      = Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
+      e.totalPayt    = Math.round((e.returnAmt + e.cumPayment) * 100)/100;
+      e.remainingBal = Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
     });
 
+    if(this.allotedAmt == 0 || this.allotedAmt == '' || this.allotedAmt == null){
+      this.allotedAmt = (this.recPrqTrans.length == 0)?this.requestData.reqAmt:this.recPrqTrans[0].allotedAmt;  
+    }
+
+    var allAmt = (Number(String(this.allotedAmt).replace(/\,/g,'')) > 0)?Number(String(this.allotedAmt).replace(/\,/g,'')) * Number(-1):Number(String(this.allotedAmt).replace(/\,/g,''));
     var returnAmtSum = Number(this.inwardPolBalData.tableData.map(e => e.returnAmt).reduce((a,b) => a+b ,0));
-    this.inwardPolBalData.total[14] = (returnAmtSum > 0)?returnAmtSum * Number(-1):returnAmtSum;    
+    this.inwardPolBalData.total[14] = (returnAmtSum > 0)?returnAmtSum * Number(-1):returnAmtSum;
+    this.totalBal = Math.abs(Number(returnAmtSum));
+    this.variance = Math.abs(Number(allAmt)) - Math.abs(Number(returnAmtSum));
+    this.allotedAmt = this.decPipe.transform(Number(allAmt), '0.2-2');
+    this.totalBal = Number(this.totalBal) * Number(-1);
   }
 
   setData(data, from){
@@ -617,6 +622,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(from.toUpperCase() == 'LOVCEDTBL'){
       data.forEach(e => {
         if(this.cedingCompanyData.tableData.some(e2 => e2.claimId != e.claimId && e2.histNo != e.histNo)){
+          e.itemNo = '';
           this.cedingCompanyData.tableData.push(e);
           this.limitClmHistTbl.push(e);
         }
@@ -625,7 +631,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                         .map(e => { 
                                           e.paytAmt = (e.paytAmt == '' || e.paytAmt == null)?0:e.paytAmt;
                                           e.localAmt = (e.localAmt == '' || e.localAmt == null)?Number(e.paytAmt)*Number(e.currencyRt):e.localAmt; 
-                                          e.edited = true; e.checked = false; e.createDate = ''; e.createUser = ''; return e; });
+                                          e.edited = true; e.checked = false; e.createDate = ''; e.createUser = ''; 
+                                          return e; });
       this.cedCompTbl.refreshTable();
     }else if(from.toUpperCase() == 'LOVINWARDTBL'){
       var recAgingSoaDtl = data['data'];
@@ -638,22 +645,20 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '')
                                             .map(e => { 
                                                 e.edited = true; e.checked = false; e.createDate = ''; e.createUser = '';
-                                                e.premAmt   = ''; //e.balPremDue;
-                                                e.riComm    = ''; //e.balRiComm;
-                                                e.riCommVat = ''; //e.balRiCommVat; 
-                                                e.charges   = ''; //e.balChargesDue; 
+                                                e.premAmt   = '';
+                                                e.riComm    = '';
+                                                e.riCommVat = '';
+                                                e.charges   = '';
+                                                (e.returnAmt == '' || e.returnAmt == null)?e.newRec=1:'';
                                                 e.returnAmt = (e.newRec==1)?0:e.returnAmt;
                                                 return e;
                                             });
       this.inwardTbl.refreshTable();
       this.reCompInw();
     }else if(from.toUpperCase() == 'LOVTRTYTBL'){
-      console.log(data);
       this.treatyBalanceData.tableData[this.trtyIndx].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
-      //this.treatyBalanceData.tableData[this.trtyIndx].showMG = 0;
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
       var recInvt = data['data'];
-      console.log(recInvt);
       recInvt.forEach(e => {
         if(this.investmentData.tableData.some(e2 => e2.invtId != e.invtId)){
           this.investmentData.tableData.push(e);
@@ -979,12 +984,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.dialogIcon = '';
     this.dialogMessage = '';
     var isEmpty = 0;
-
+    console.log(this.recPrqTrans.allotedAmt);
     this.inwardPolBalData.tableData.forEach(e => {
       if(e.returnAmt == '' || e.returnAmt == null){
         isEmpty = 1;
       }else{
         var rec = {
+            allotedAmt      : Math.abs(Number(String(this.allotedAmt).replace(/\,/g,''))),
             claimId         : '',
             createUser      : (e.createUser == '' || e.createUser == null)?this.ns.getCurrentUser():e.createUser,
             createDate      : (e.createDate == '' || e.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate),
@@ -1020,7 +1026,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
 
     console.log(this.inwardPolBalData.tableData);
-    console.log(this.params);
+    console.log(this.params.savePrqTrans);
     var returnAmt = this.inwardPolBalData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.returnAmt != null ?parseFloat(b.returnAmt):0),0);
     
     if(isEmpty == 1){
@@ -1034,7 +1040,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.params.deletePrqTrans = [];
     }else{
       if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-        $('.ng-dirty').removeClass('ng-dirty');
+        (!this.allotedChanged)?$('.ng-dirty').removeClass('ng-dirty'):'';
+        console.log('dito pumasok aw');
         this.conInw.confirmModal();
         this.params.savePrqTrans   = [];
         this.params.deletePrqTrans = [];
@@ -1307,7 +1314,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
   }
 
-
   cancel(){
     if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
       this.canClm.clickCancel();  
@@ -1346,6 +1352,18 @@ export class PaymentRequestDetailsComponent implements OnInit {
       $('#othTbl').addClass('ng-dirty');
     }else if(from == 'unColTbl'){
       $('#unColTbl').addClass('ng-dirty');
+    }
+  }
+
+  onChangeAllotedAmt(){
+    this.allotedChanged = true;
+    this.inwardPolBalData.tableData.map(e => { e.edited = true; return e; });
+    console.log(this.inwardPolBalData.tableData);
+    var allAmt = Number(String(this.allotedAmt).replace(/\,/g,''));
+    if(Number(allAmt) > Number(this.requestData.reqAmt)){
+      this.allotedAmt = '';
+      this.warnMsg = 'Alloted Policy Balance Payments must not exceed the Requested Amount';
+      this.warnMdl.openNoClose();
     }
   }
 
