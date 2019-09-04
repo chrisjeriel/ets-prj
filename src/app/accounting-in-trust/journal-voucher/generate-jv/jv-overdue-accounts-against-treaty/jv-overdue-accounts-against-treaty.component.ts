@@ -308,10 +308,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.treatyBal = 0;
       for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
-        console.log(this.passData.tableData[i].acctOffset[j].paytAmt)
+        this.totalBal += this.passData.tableData[i].balanceAmt;
         if(!this.passData.tableData[i].acctOffset[j].deleted){
           this.treatyBal += this.passData.tableData[i].acctOffset[j].paytAmt;
-          this.totalBal += this.passData.tableData[i].acctOffset[j].paytAmt;
         }
       }
       if(this.passData.tableData[i].balanceAmt < this.treatyBal){
@@ -323,11 +322,11 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     if(errorFlag){
       quarterDate = this.ns.toDateTimeString(quarterDate);
       quarterDate = quarterDate.split('T');
-      this.dialogMessage = "The total Balance of outstanding accounts for offset on Quarter Ending " + quarterDate[0] + " must not exceed its Treaty Balance Amount.";
+      this.dialogMessage = "The total balance of outstanding accounts for offset on Quarter Ending " + quarterDate[0] + " must not exceed its Treaty Balance Amount.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else if(this.totalBal > this.jvDetail.jvAmt){
-      this.dialogMessage = "The total Balance of all outstanding accounts for offset must not exceed the JV Amount.";
+      this.dialogMessage = "The total treaty balance must not exceed the JV Amount.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{

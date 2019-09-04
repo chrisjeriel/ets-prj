@@ -2136,4 +2136,9 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveQuarterPremRes",{params});
 	}
 	 
+	getZeroAlt(policyId){
+		const params = new HttpParams()
+			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveSoaAgingZeroAltLOV",{params});
+	}
 }

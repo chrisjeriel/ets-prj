@@ -186,6 +186,10 @@ export class JvEntryComponent implements OnInit {
           this.approvedStat = true;
         }
 
+        if(this.entryData.jvStatus == 'F'){
+          this.approveBut = true;
+        }
+        
         if(this.entryData.jvStatus == 'A'){
           this.printBut = false;
         }else{
