@@ -132,7 +132,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   };
 
   passLov: any = {
-    selector: 'clmResHistPayts',
+    selector: 'clmResHistPaytsOffset',
     cedingId: '',
     hide: []
   }
@@ -177,6 +177,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       if(data.receivables.length!=0){
         this.jvDetails.cedingName = data.receivables[0].cedingName;
         this.jvDetails.cedingId = data.receivables[0].cedingId;
+        this.passLov.cedingId = data.payeeCd;
         this.passLovInw.cedingId = this.jvDetails.cedingId;
         for(var i = 0 ; i < data.receivables.length; i++){
           this.passData.tableData.push(data.receivables[i]);
@@ -194,8 +195,9 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
   setCedingcompany(data){
     this.jvDetails.cedingName = data.payeeName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLovInw.cedingId = data.cedingId;
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLov.cedingId = data.payeeCd;
+    this.passLovInw.cedingId = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveClmLosses();
     this.check(this.jvDetails);
@@ -335,7 +337,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
 
     for (var i = 0; i < this.passData.tableData.length; i++) {
-      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+      if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveClmOffset.push(this.passData.tableData[i]);
         this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].tranId = this.jvDetail.tranId;
         this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].exGratia = this.passData.tableData[i].exGratia == null ? 'N':'Y';

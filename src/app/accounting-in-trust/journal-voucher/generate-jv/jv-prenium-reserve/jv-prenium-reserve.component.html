@@ -32,8 +32,8 @@
 	</div>	
 </div>
 <app-mtn-payee-ceding-treaty id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-payee-ceding-treaty>
-<!-- <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company> -->
-<app-quarter-ending-lov id="quarterEnd" (selectedData)="setQuarter($event)"></app-quarter-ending-lov>
+<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)"></app-mtn-currency>
+<app-quarter-ending-lov id="quarterEnd" (selectedData)="setQuarter($event)" [tranClass]="'JV'" [cedingId]="premResData.cedingId"></app-quarter-ending-lov>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="savePremResRel()"></app-confirm-save>
 <app-cancel-button (onYes)="savePremResRel('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

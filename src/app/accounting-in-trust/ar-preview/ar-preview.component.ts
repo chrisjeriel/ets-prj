@@ -467,6 +467,8 @@ export class ArPreviewComponent implements OnInit {
                 (parts[1] ? "." + parts[1] : "");
             return num
       };
+    var totalDebit: number = 0;
+    var totalCredit: number = 0;
     alasql('CREATE TABLE sample(row1 VARCHAR2, row2 VARCHAR2, row3 VARCHAR2, row4 VARCHAR2, row5 VARCHAR2, row6 VARCHAR2)');
     alasql('INSERT INTO sample VALUES(?,?,?,?,?,?)', ['AR No', 'AR Date', 'DCB No.', 'Payment Type', 'Amount', '']);
     alasql('INSERT INTO sample VALUES (?,datetime(?),?,?,?,currency(?))', [this.record.formattedArNo, this.record.arDate, this.record.dcbNo, this.record.tranTypeName, this.record.currCd, this.record.arAmt]);
@@ -475,8 +477,13 @@ export class ArPreviewComponent implements OnInit {
     alasql('INSERT INTO sample VALUES (?,?,?,?,?,?)', ['', '', '', '', '', '']);
     alasql('INSERT INTO sample VALUES (?,?,?,?,?,?)', ['Account Code', 'Account Name', 'SL Type', 'SL Name', 'Debit', 'Credit']);
     for(var i of this.accEntriesData.tableData){
+      totalCredit += i.creditAmt;
+      totalDebit += i.debitAmt;
       alasql('INSERT INTO sample VALUES(?,?,?,?,currency(?),currency(?))', [i.glShortCd, i.glShortDesc, i.slTypeName == null ? '' : i.slTypeName, i.slName == null ? '' : i.slName, i.debitAmt, i.creditAmt]);
     }
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?)', ['', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,currency(?),currency(?))', ['', '', '', 'TOTAL', totalDebit, totalCredit]);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,currency(?))', ['', '', '', 'VARIANCE', '', totalDebit - totalCredit]);
     alasql('SELECT row1, row2, row3, row4, row5, row6 INTO XLSXML("'+filename+'",?) FROM sample', [mystyle]);
     alasql('DROP TABLE sample');  
   }

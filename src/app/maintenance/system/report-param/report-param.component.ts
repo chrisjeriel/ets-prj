@@ -91,7 +91,7 @@ export class ReportParamComponent implements OnInit {
   		for(var rec of data.reportsParam){
   			rec.uneditable = ['reportId', 'title'];
   			rec.showMG = 1;
-  			rec.colMG = 'reportId';
+  			rec.colMG = ['reportId'];
   			this.reportParamsData.tableData.push(rec);
   		}
   		this.table.onRowClick(null, this.reportParamsData.tableData[0]);
@@ -131,8 +131,8 @@ export class ReportParamComponent implements OnInit {
 
   setReportId(noDataFound?){
   	this.reportParamsData.tableData[this.reportIdIndex].reportId = this.selectedReport.reportId;
-  	this.reportParamsData.tableData[this.reportIdIndex].colMG = noDataFound !== undefined ? undefined : 'reportId';
-  	this.reportParamsData.tableData[this.reportIdIndex].uneditable = noDataFound !== undefined ? undefined : 'reportId';
+  	this.reportParamsData.tableData[this.reportIdIndex].colMG = noDataFound !== undefined ? undefined : ['reportId'];
+  	this.reportParamsData.tableData[this.reportIdIndex].uneditable = noDataFound !== undefined ? undefined : ['reportId'];
   	this.table.refreshTable();
   }
 

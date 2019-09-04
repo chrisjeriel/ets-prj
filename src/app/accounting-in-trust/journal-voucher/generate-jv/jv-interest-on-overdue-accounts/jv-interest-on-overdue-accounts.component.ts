@@ -141,8 +141,8 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
 
   setCedingcompany(data){
     this.jvDetails.cedingName = data.payeeName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLov.cedingId = data.cedingId;
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLov.cedingId = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.getInterestOverdue();
     this.check(this.jvDetails);
@@ -170,12 +170,16 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].instNo  = data.data[i].instNo;
       this.passData.tableData[this.passData.tableData.length - 1].effDate  = data.data[i].effDate;
       this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
-      this.passData.tableData[this.passData.tableData.length - 1].daysOverdue  = new Date(this.ns.toDateTimeString(0)).getDate() - new Date(data.data[i].dueDate).getDate() ;
+      this.passData.tableData[this.passData.tableData.length - 1].daysOverdue  = (new Date(this.jvDetail.jvDate).getTime() - new Date(data.data[i].dueDate).getTime())/ (1000 * 3600 *24)//new Date(this.ns.toDateTimeString(0)).getDate() - new Date(data.data[i].dueDate).getDate() ;
       this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate  = data.data[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].premAmt  = data.data[i].balPremDue;
       this.passData.tableData[this.passData.tableData.length - 1].autoTag  = 'Y'
       this.passData.tableData[this.passData.tableData.length - 1].interestRate = this.interestRate;
+      console.log(data.data[i].balPremDue)
+      console.log(this.interestRate)
+      console.log(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365)
+      console.log(data.data[i].balPremDue*this.interestRate*(parseFloat((this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365).toFixed(2))));
       this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:(data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
       this.passData.tableData[this.passData.tableData.length - 1].orgOverdue  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:(data.data[i].balPremDue)*(this.interestRate)*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue/365);
     }

@@ -647,14 +647,15 @@ export class LovComponent implements OnInit {
        })
 
     }else if(this.passData.selector == 'acitSoaDtl'){
-      this.passTable.tHeader = ['SOA No.','Policy No.', 'Inst No.', 'Due Date', 'Balance'];
+      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Balance'];
       this.passTable.widths =[300,300,1,200,200]
-      this.passTable.dataTypes = [ 'text','text', 'sequence-2', 'date', 'currency'];
-      this.passTable.keys = [ 'soaNo','policyNo', 'instNo', 'dueDate', 'balance'];
+      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency'];
+      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'balance'];
       this.passTable.checkFlag = true;
-      this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal, this.passData.currCd).subscribe((a:any)=>{
+      this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
-        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1 });
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        console.log(this.passTable.tableData);
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'acitSoaDtlAr'){
@@ -670,12 +671,13 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'acitSoaDtlZeroBal'){
-      this.passTable.tHeader = ['SOA No.','Policy No.', 'Inst No.', 'Due Date', 'Net Due','Payments'];
-      this.passTable.widths =[300,300,1,200,200,200]
-      this.passTable.dataTypes = [ 'text','text', 'sequence-2', 'date', 'currency','currency'];
-      this.passTable.keys = [ 'soaNo','policyNo', 'instNo', 'dueDate', 'totalAmtDue','netDuePayments'];
+      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Balance'];
+      this.passTable.widths =[300,300,1,200,200]
+      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency'];
+      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'balance'];
       this.passTable.checkFlag = true;
-      this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
+      console.log(this.passData)
+      this.accountingService.getSoaDtlZero(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.currCd).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
         this.table.refreshTable();
@@ -771,6 +773,21 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
         this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimNo)==-1});
+        //this.passTable.tableData = data.clmpayments;
+        console.log(data.clmpayments);
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'clmResHistPaytsOffset'){
+      var histTypes = [4,5,7,8,9,10];
+      this.passTable.tHeader = ['Claim No','Hist No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Cummulative Payment'];
+      this.passTable.widths =[300,300,300,300,300,300]
+      this.passTable.dataTypes = [ 'text','sequence-2', 'text', 'text', 'currency', 'currency',];
+      this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimNo)==-1 && histTypes.includes(data.histType)});
+        //this.passTable.tableData = data.clmpayments;
+        console.log(data.clmpayments);
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmCashCall'){

@@ -448,7 +448,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
       this.reasonCd = this.selectedReason.reasonCd;
       this.reasonDesc = this.selectedReason.description;
     }else{
-      this.processTbl.indvSelect.reasonCd = this.selectedReason.reasonCd;
+      this.processTbl.indvSelect.newReasonCd = this.selectedReason.reasonCd;
       this.processTbl.indvSelect.description = this.selectedReason.description;
       this.processTbl.indvSelect.manual = true;
     }
@@ -483,16 +483,16 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
           }
       }else if (field === 'reason' && row != undefined){
           if(row.reasonCd.trim() === ''){
-            row.reasonCd = '';
+            row.newReasonCd = '';
             row.desription = '';
             this.ns.lovLoader(ev, 0);
           } else {
             this.ms.getMtnClaimReason(row.reasonCd,this.batchOption.statusCode, 'Y').subscribe(data => {
               if(data['clmReasonList'].length > 0) {
-                row.reasonCd = data['clmReasonList'][0].reasonCd;
+                row.newReasonCd = data['clmReasonList'][0].reasonCd;
                 row.description = data['clmReasonList'][0].description;
               } else {
-                row.reasonCd = '';
+                row.newReasonCd = '';
                 row.description = '';
                 this.openReasonLOV();
               }
@@ -632,7 +632,9 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     this.selectedData.tableData = this.queryTable.selected;
     this.selectedData.tableData.forEach(a=>{
       if(a.manual != true){
-        a.showMG = 1;a.reasonCd = this.reasonCd; a.description = this.reasonDesc
+        a.showMG = 1;
+        a.newReasonCd = this.reasonCd; 
+        a.description = this.reasonDesc
       }
     });
     console.log(this.selectedData.tableData);
@@ -685,7 +687,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         claimNo: i.claimNo,
         clmStatCd: this.batchOption.statusCode,
         clmStatDesc: this.batchOption.description,
-        reasonCd: i.reasonCd,//this.batchOption.statusCode === 'IP' ? '' : this.reasonCd,
+        reasonCd: i.newReasonCd,//this.batchOption.statusCode === 'IP' ? '' : this.reasonCd,
         updateUser: this.ns.getCurrentUser(),
         updateDate: this.ns.toDateTimeString(0)
       });
@@ -733,6 +735,9 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
 
   clearDetails(){
     this.claimDetails = null;
+    this.reasonCd = null;
+    this.reasonDesc = null;
+    this.queryTable.selected = [];
     // {
     //   claimNo: '',
     //   clmStatus: '',
@@ -765,8 +770,8 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
     tableData: [],
     tHeader: ['Claim No', 'Reason Code', 'Reason Desc'],
     dataTypes: ['text', 'lovInput', 'text'],
-    magnifyingGlass: ['reasonCd'],
-    keys: ['claimNo', 'reasonCd', 'description'],
+    magnifyingGlass: ['newReasonCd'],
+    keys: ['claimNo', 'newReasonCd', 'description'],
     uneditable: [true,false,true],
     widths:[80,1,'auto'],
     paginateFlag: true,

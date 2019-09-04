@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-import { MaintenanceService } from '@app/_services';
+import { MaintenanceService, NotesService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -41,9 +41,11 @@ export class MtnCurrencyComponent implements OnInit {
   modalOpen: boolean = false;
 
   @Input() lovCheckBox: boolean = false;
+  @Input() effDateFrom: any;
   selects: any[] = [];
   
-  constructor(private maintenanceService: MaintenanceService, public modalService: NgbModal) { }
+
+  constructor(private maintenanceService: MaintenanceService, public modalService: NgbModal, private ns: NotesService) { }
 
   ngOnInit() {
     /*this.maintenanceService.getMtnCurrency().subscribe((data: any) =>{
@@ -99,7 +101,7 @@ export class MtnCurrencyComponent implements OnInit {
         this.passDataAttention.tableData.pop();
       }*/
       setTimeout(()=>{    //<<<---    using ()=> syntax
-           this.maintenanceService.getMtnCurrency('','Y').subscribe((data: any) =>{
+           this.maintenanceService.getMtnCurrency('','Y', this.effDateFrom).subscribe((data: any) =>{
                  for(var currencyCount = 0; currencyCount < data.currency.length; currencyCount++){
                    this.currencyListing.tableData.push(
                      new Row(data.currency[currencyCount].currencyCd, 
@@ -109,6 +111,18 @@ export class MtnCurrencyComponent implements OnInit {
                          data.currency[currencyCount].currencyDesc)
                    );      
                  }
+                 /*if(this.effDateFrom !== undefined){
+                   var latest: any;
+                   this.currencyListing.tableData = data.currency.filter(a=>{
+                     latest = latest == undefined ? <any>new Date() - <any>new Date(this.ns.toDateTimeString(a.effDateFrom).split('T')[0]) : latest;
+                     if(latest > <any>new Date() - <any>new Date(this.ns.toDateTimeString(a.effDateFrom).split('T')[0])){
+                       latest = <any>new Date() - <any>new Date(this.ns.toDateTimeString(a.effDateFrom).split('T')[0]);
+                     }
+                     return new Date(this.ns.toDateTimeString(a.effDateFrom).split('T')[0]) <= new Date(this.ns.toDateTimeString(this.effDateFrom).split('T')[0])
+                                                                                    && <any>new Date() - <any>new Date(this.ns.toDateTimeString(a.effDateFrom).split('T')[0]) <= latest});
+                 }else{
+                   this.currencyListing.tableData = data.currency;
+                 }*/
                  this.table.refreshTable();
                });
                  this.modalOpen = true;

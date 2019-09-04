@@ -33,6 +33,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('warningInvShare') warningInvShareMdl: ModalComponent;
   @ViewChild('confirmAlt') confirmAltMdl: ModalComponent;
   @ViewChild('retLimitReached') retLimitReached: ModalComponent;
+  @ViewChild('warningNegVals') warningNegVals: ModalComponent;
+  
   
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
@@ -293,7 +295,6 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //NECO 05/31/2019
     retrieveRiskDistribution(){
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
-        console.log(data);
         this.distAlt = data.distAlt;
         this.undistAlt = data.undistAlt;
         this.riskDistributionData = data.distWrisk;
@@ -307,9 +308,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
 
         //Check for warnings
-        console.log("Params used in Dist Risk Warnings:");
-        console.log("riskDistId : " + this.riskDistributionData.riskDistId);
-        console.log("altNo :" + this.riskDistributionData.altNo);
+        // console.log("Params used in Dist Risk Warnings:");
+        // console.log("riskDistId : " + this.riskDistributionData.riskDistId);
+        // console.log("altNo :" + this.riskDistributionData.altNo);
 
         if (this.riskDistributionData.altNo != 0 && this.params.fromInq != 'true') {
           this.polService.getPolDistWarning(this.riskDistributionData.riskDistId, this.riskDistributionData.altNo).subscribe((data2: any)=> {
@@ -574,10 +575,15 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     }
   //END
 
-
   distribute(){
     if(this.undistAlt.length != 0){
       this.warningUndistAltMdl.openNoClose();
+      return;
+    }
+    console.log(this.treatyDistData.tableData);
+    console.log(this.treatyDistData.tableData.some(a=>{return a['pctShare'] < 0 || a['siAmt'] < 0 || a['premAmt'] < 0 || a['commRt'] < 0 || a['commAmt'] < 0 || a['vatRiComm'] < 0 || a['netDue'] < 0}))
+    if(this.treatyDistData.tableData.some(a=>{return a['pctShare'] < 0 || a['siAmt'] < 0 || a['premAmt'] < 0 || a['commRt'] < 0 || a['commAmt'] < 0 || a['vatRiComm'] < 0 || a['netDue'] < 0})){
+      this.warningNegVals.openNoClose();
       return;
     }
 
@@ -605,7 +611,6 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   }
 
   onClickCancel(){
-    console.log(this.params.exitLink)
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}]);
   }
 

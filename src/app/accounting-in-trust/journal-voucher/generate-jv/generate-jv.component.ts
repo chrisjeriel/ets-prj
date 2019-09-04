@@ -41,7 +41,7 @@ export class GenerateJvComponent implements OnInit {
   };
 
   disabledTypes: any = [
-      1,2,3,4,5,6,7,8,9
+      1,2,3,4,5,6,7,8,9,10,11
   ];
 
   ngOnInit() {
@@ -69,6 +69,7 @@ export class GenerateJvComponent implements OnInit {
   }
 
   jvInfo(data){
+    console.log(data)
      this.jvData.tranId = data.jvTranId;
      this.jvData.type =  data.jvType;
      this.jvData.jvNo =  data.jvNo;

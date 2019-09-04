@@ -254,7 +254,17 @@
     </div>
     <div footer class="w-100 text-right">
 
-        <button *ngIf="warningModalCode == 'PREV_NOT_POSTED'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="warningModalCode == 'PREV_NOT_POSTED' || warningModalCode == 'MODDED_COMM_RT'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
         <button *ngIf="warningModalCode == 'PREV_HAS_CHANGES'" class="cust-btn" type="button" (click)="save();modalService.dismissAll();"><a>Ok</a></button>
     </div>
+</app-modal>
+
+<app-modal #warningNegVals class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+     Unable to distribute record with negative amounts. Please check Treaty Share and Comm Share Parameters.
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningNegVals.closeModal()" ><a>Ok</a></button>
+  </div>
 </app-modal>

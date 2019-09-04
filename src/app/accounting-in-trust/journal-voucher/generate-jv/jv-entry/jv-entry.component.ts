@@ -182,11 +182,11 @@ export class JvEntryComponent implements OnInit {
           this.approveBut = false;
         }
 
-        if(this.entryData.jvStatus == 'A'){
+        if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'F'){
           this.approvedStat = true;
         }
 
-        if(this.entryData.jvStatus == 'N' || this.entryData.jvStatus == 'F' || this.entryData.jvStatus == 'A'){
+        if(this.entryData.jvStatus == 'A'){
           this.printBut = false;
         }else{
           this.printBut = true;
@@ -331,9 +331,9 @@ export class JvEntryComponent implements OnInit {
     this.jvDatas.refnoDate = this.entryData.refnoDate == '' ? '': this.ns.toDateTimeString(this.entryData.refnoDate);
     this.jvDatas.particulars = this.entryData.particulars;
     this.jvDatas.currCd = this.entryData.currCd;
-    this.jvDatas.currRate = parseFloat(this.entryData.currRate.toString().split(',').join('')),
-    this.jvDatas.jvAmt = parseFloat(this.entryData.jvAmt.toString().split(',').join('')),
-    this.jvDatas.localAmt = parseFloat(this.entryData.localAmt.toString().split(',').join('')),
+    this.jvDatas.currRate =(parseFloat(this.entryData.currRate.toString().split(',').join(''))),
+    this.jvDatas.jvAmt = (parseFloat(this.entryData.jvAmt.toString().split(',').join(''))),
+    this.jvDatas.localAmt = (parseFloat(this.entryData.localAmt.toString().split(',').join(''))),
     this.jvDatas.allocTag = this.entryData.allocTag;
     this.jvDatas.allocTranId = this.entryData.allocTranId;
     this.jvDatas.preparedBy = this.entryData.preparedBy;
@@ -532,12 +532,18 @@ export class JvEntryComponent implements OnInit {
   }
 
   validateCurr(){
+    console.log(this.entryData.jvAmt)
+    console.log(this.entryData.currRate)
+    this.entryData.jvAmt = (parseFloat(this.entryData.jvAmt.toString().split(',').join('')));
+    this.entryData.currRate = (parseFloat(this.entryData.currRate.toString().split(',').join('')));
     if(this.entryData.jvAmt !== '' && this.entryData.currRate !== ''){
       this.entryData.localAmt = this.entryData.jvAmt * this.entryData.currRate;
       this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+      this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     }else{
       this.entryData.localAmt = null;
     }
+    
   }
 
   onClickCMDM(){
@@ -547,4 +553,5 @@ export class JvEntryComponent implements OnInit {
   onClickAlloc(){
     this.allocJV.openNoClose();
   }
+
 }

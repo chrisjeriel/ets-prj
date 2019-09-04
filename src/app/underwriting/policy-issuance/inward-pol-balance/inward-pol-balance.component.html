@@ -35,12 +35,12 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Installment Info</legend>
 	<div class="row" style="margin-bottom: 5px;">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-8">
+		<div class="col-sm-{{policyInfo.fromInq?1:2}}"></div>
+		<div class="col-sm-{{policyInfo.fromInq?10:8}}">
 			<app-cust-editable-non-datatable #instllmentTable [passData]="passData" (newClick)="updateOtherCharges($event)" (tableDataChange)="compute()" (genericBtn)="delInst()">
 			</app-cust-editable-non-datatable>
 		</div>
-		<div class="col-sm-2"></div>
+		<div class="col-sm-1"></div>
 	</div>
 </fieldset>
 

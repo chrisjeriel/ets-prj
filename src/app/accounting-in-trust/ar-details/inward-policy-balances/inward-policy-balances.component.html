@@ -7,7 +7,7 @@
               <div class="input-group" style="margin-bottom: 0px !important;">
                 <label class="form-control-sm col-sm-7 labels">Alloted Policy Balance Payments</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted"
-                  appCurrency placeholder="" [(ngModel)]="allotedAmt" [readonly]="!passData.checkFlag">
+                  appCurrency placeholder="" [ngModel]="allotedAmt" (ngModelChange)="allotedAmt = parseCurrency($event); computeTotalBalAndVariance();" [readonly]="!passData.checkFlag">
                 <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Total Balance for Selected Policy
                   Transactions</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"

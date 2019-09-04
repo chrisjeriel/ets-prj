@@ -170,7 +170,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   passLov: any = {
-    selector: 'acitSoaDtl',
+    selector: 'acitSoaDtlZeroBal',
     cedingId: '',
     zeroBal: 0,
     hide: []
@@ -237,8 +237,9 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
   setCedingcompany(data){
     this.jvDetails.cedingName = data.payeeName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLov.cedingId = data.cedingId;
+    console.log(data)
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLov.cedingId = data.payeeCd;
     this.ns.lovLoader(data.ev, 0);
     this.check(this.jvDetails);
     this.retrieveInwPolZeroBal()
@@ -253,6 +254,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
   openSoaLOV(data){
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
+    console.log(this.passLov)
     this.lovMdl.openLOV();
   }
 

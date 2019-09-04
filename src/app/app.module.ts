@@ -446,6 +446,10 @@ import { JvInvestmentPullOutComponent } from './accounting-in-trust/journal-vouc
 import { JvInvestmentRollOverComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-investment-roll-over/jv-investment-roll-over.component';
 import { MtnPayeeCedingComponent } from './maintenance/mtn-payee-ceding/mtn-payee-ceding.component';
 import { MtnPayeeCedingTreatyComponent } from './maintenance/mtn-payee-ceding-treaty/mtn-payee-ceding-treaty.component';
+import { JvInvestmentPlacementComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-investment-placement/jv-investment-placement.component';
+import { JvTreatyPullOutComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-treaty-pull-out/jv-treaty-pull-out.component';
+import { DistributionByInsComponent } from './underwriting/policy-distribution/distribution-by-ins/distribution-by-ins.component';
+
 
 @NgModule({
     imports: [
@@ -897,7 +901,10 @@ import { MtnPayeeCedingTreatyComponent } from './maintenance/mtn-payee-ceding-tr
         JvInvestmentPullOutComponent,
         JvInvestmentRollOverComponent,
         MtnPayeeCedingComponent,
-        MtnPayeeCedingTreatyComponent
+        MtnPayeeCedingTreatyComponent,
+        JvInvestmentPlacementComponent,
+        JvTreatyPullOutComponent,
+        DistributionByInsComponent,
     ],
 
   	providers: [
