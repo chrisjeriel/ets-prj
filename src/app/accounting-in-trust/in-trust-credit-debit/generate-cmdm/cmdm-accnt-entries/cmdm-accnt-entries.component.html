@@ -107,9 +107,11 @@
 <app-lov [passData]="passLov" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox"></app-lov>
 
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()" ></app-cancel-button>
+<!-- <app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()" ></app-cancel-button> TRBT#PROD_GRADE -->
+<app-cancel-button (onYes)="save()" ></app-cancel-button>
 
 <app-modal class="d-none" #warnDeleteAuto>
     <div header>Warning</div>

@@ -89,7 +89,7 @@ export class ChangeToNewArComponent implements OnInit {
   dialogMessage: string = '';
 
 
-  constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService, private modalService: NgbModal) { }
+  constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService, public modalService: NgbModal) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Change Transaction Status to New | Acknowledgement Receipt");

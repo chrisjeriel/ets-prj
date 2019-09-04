@@ -255,7 +255,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     sectionIII :0,
   };
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
+  constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, private route: ActivatedRoute, private router: Router,
               private ns: NotesService, private ms: MaintenanceService) { }
 
 
@@ -326,6 +326,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
                   this.warningModalCode = data2.warningList[i].warningCode;
                   this.warningModalMsg = data2.warningList[i].warningMessage;
                   $('#warningModal > #modalBtn').trigger('click');
+                  break;
                 }
                 
               }

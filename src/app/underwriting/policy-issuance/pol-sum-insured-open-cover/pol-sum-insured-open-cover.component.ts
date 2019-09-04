@@ -41,7 +41,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   promptMessage: string = "";
   promptType: string = "";
 
-  constructor(private uw: UnderwritingService, private ns: NotesService, private dp: DecimalPipe, private modalService: NgbModal) { }
+  constructor(private uw: UnderwritingService, private ns: NotesService, private dp: DecimalPipe, public modalService: NgbModal) { }
 
   ngOnInit() {
   	this.policyId = this.policyInfo.policyIdOc;

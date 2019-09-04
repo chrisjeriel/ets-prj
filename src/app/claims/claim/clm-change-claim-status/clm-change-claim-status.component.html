@@ -336,4 +336,5 @@
 <app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)" #riskMdl></app-mtn-risk>
 <app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)" #cedCoMdl></app-ceding-company>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)" #cessionMdl></app-mtn-type-of-cession>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null;" #successDiagSave></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null;" #successDiagSave></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" #successDiagSave></app-sucess-dialog>

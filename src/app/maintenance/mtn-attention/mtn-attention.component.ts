@@ -12,7 +12,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 export class MtnAttentionComponent implements OnInit {
  
  @Output() selectedData: EventEmitter<any> = new EventEmitter();
-  constructor(private modalService: NgbModal, private underwritingService : UnderwritingService) { }
+  constructor(public modalService: NgbModal, private underwritingService : UnderwritingService) { }
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Input() cedingId: string = "";
   modalOpen: boolean = false;

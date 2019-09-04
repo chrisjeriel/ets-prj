@@ -109,7 +109,7 @@ export class ObjectComponent implements OnInit {
   }
 
   constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,
-    private modalService: NgbModal) { }
+    public modalService: NgbModal) { }
 
   ngOnInit() {
     this.titleService.setTitle('Mtn | Object');

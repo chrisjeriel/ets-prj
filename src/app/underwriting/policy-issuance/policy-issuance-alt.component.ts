@@ -42,6 +42,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
     title:string = "Policy / Policy Issuance / Create Alteration"
     exitLink:string;
     post:boolean = false;
+    line:string = ""; /*Line added. TRBT#PROD_GRADE*/
 
     constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, private us: UnderwritingService) {}
 

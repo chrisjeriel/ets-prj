@@ -46,7 +46,7 @@ export class MtnQuotationWordingsComponent implements OnInit {
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
 
-  constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
+  constructor(public modalService: NgbModal, private mtnService : MaintenanceService) { }
 
   ngOnInit() { 
     if(this.lovCheckBox){

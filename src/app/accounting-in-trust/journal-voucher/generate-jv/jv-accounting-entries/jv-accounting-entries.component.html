@@ -70,8 +70,13 @@
          <div class="form-group col-sm">
              <div class="col-md-12 text-center">
                  <div class="cust-btn-container">
-                     <button type="button" class="cust-btn" (click)="cancel()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Cancel</a></button>
-                     <button type="button" class="cust-btn" (click)="onClickSave()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Save</a></button>
+                     <!-- <button type="button" class="cust-btn" (click)="cancel()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Cancel</a></button>
+                     <button type="button" class="cust-btn" (click)="onClickSave()" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Save</a></button> TRBT#PROD_GRADE -->
+
+                     <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Cancel</a></button>
+                     <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Save</a></button>
+
+                     
                  </div>
              </div>
          </div>
@@ -93,6 +98,7 @@
 </fieldset>
 </form>
 <app-lov [passData]="passLov" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox"></app-lov>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveAcctEntries()"></app-confirm-save>
-<app-cancel-button (onYes)="saveAcctEntries('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
+<app-cancel-button (onYes)="saveAcctEntries()" [url]="'/journal-voucher'" ></app-cancel-button>

@@ -329,7 +329,15 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.dialogMessage = "The total treaty balance must not exceed the JV Amount.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
-    }else{
+    }
+    //Added by Neco 09/04/2019
+    /*else if(Math.abs(this.totalBal) != this.jvDetail.jvAmt){
+      this.dialogMessage = "The total Balance of all outstanding accounts must be equal to the JV Amount.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }*/
+    //end
+    else{
       this.confirm.confirmModal();
     }
   }

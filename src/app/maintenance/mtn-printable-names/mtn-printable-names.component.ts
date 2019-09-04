@@ -30,7 +30,7 @@ export class MtnPrintableNamesComponent implements OnInit {
     keys:['printableName', 'designation']
   };
 
-  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
+  constructor(private maintenanceService: MaintenanceService, public modalService: NgbModal) { }
 
   ngOnInit() {
   }

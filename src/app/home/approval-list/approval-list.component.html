@@ -87,7 +87,8 @@
 				  </tr>
 				  </thead>
 				  <tbody class="app-active-table">
-					<tr *ngFor="let mod of approvalList | paginate: { id:'wf', itemsPerPage: 10, currentPage: p }; index as i" [class.selected]="mod === selectedData" (contextmenu)="onRightClick($event, mod);" (click)="onRowClick($event, mod);">
+					<!-- <tr *ngFor="let mod of approvalList | paginate: { id:'wf', itemsPerPage: 10, currentPage: p }; index as i" [class.selected]="mod === selectedData" (contextmenu)="onRightClick($event, mod);" (click)="onRowClick($event, mod);"> TRBT#PROD_GRADE -->
+					<tr *ngFor="let mod of approvalList | paginate: { id:'wf', itemsPerPage: 10, currentPage: page }; index as i" [class.selected]="mod === selectedData" (contextmenu)="onRightClick($event, mod);" (click)="onRowClick($event, mod);">
 					    <td>{{ mod.module }}</td>
 					    <td>{{ mod.details }}</td>
 					    <td>{{ mod.assignedBy }}</td>
@@ -114,7 +115,9 @@
 				<div class="pagination">
 		            <!--<div class="pagination" *ngIf="passData.hasPagination">-->
 		            <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>-->
-		            <pagination-controls [id]="'wf'" class="my-pagination" (pageChange)="p = $event;" previousLabel="" nextLabel="">
+		            <!-- <pagination-controls [id]="'wf'" class="my-pagination" (pageChange)="p = $event;" previousLabel="" nextLabel="">
+		            </pagination-controls> TRBT#PROD_GRADE -->
+		            <pagination-controls [id]="'wf'" class="my-pagination" (pageChange)="page = $event;" previousLabel="" nextLabel="">
 		            </pagination-controls>
 		            <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
 		        </div>
@@ -126,7 +129,8 @@
 	</div>
 </div>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-confirm-save id="approval" (onYes)="approveRecord()"></app-confirm-save>
 
 <!-- <div>

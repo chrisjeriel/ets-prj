@@ -300,7 +300,7 @@ const appRoutes: Routes = [
     { path: 'user-group-maintenance', component: UserGroupsMaintenanceComponent },
     { path: 'users', component: UsersComponent },
     { path: 'users-maintenance', component: UsersMaintenanceComponent },
-    { path: 'modules-maintenance', component: ModulesMaintenanceComponent },
+    { path: 'modules-maintenance', component: ModulesMaintenanceComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'policy-information', component: PolicyInformationComponent},
     { path: 'pol-oc-inquiry', component: PolOcInquiryComponent},
     { path: 'open-cover-list', component: PolOpenCovListComponent},

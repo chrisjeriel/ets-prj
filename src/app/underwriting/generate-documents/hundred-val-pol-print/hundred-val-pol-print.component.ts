@@ -54,7 +54,7 @@ export class HundredValPolPrintComponent implements OnInit {
 
   tempPolNo: string[] = ['','','','','',''];
 
-  constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, private us: UnderwritingService, private ns: NotesService) { }
+  constructor(private route: ActivatedRoute,private router: Router, public modalService: NgbModal, private us: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
   	//this.retrievePolListing();

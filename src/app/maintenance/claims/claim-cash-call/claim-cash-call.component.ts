@@ -105,7 +105,7 @@ export class ClaimCashCallComponent implements OnInit {
 
   constructor(	private ns: NotesService, 
   				private ms: MaintenanceService, 
-  				private modalService: NgbModal, 
+  				public modalService: NgbModal, 
   				private titleService: Title) { }
 
   ngOnInit() {

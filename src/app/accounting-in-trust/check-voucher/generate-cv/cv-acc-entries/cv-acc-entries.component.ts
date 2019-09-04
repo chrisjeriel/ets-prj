@@ -22,43 +22,44 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
   @ViewChild('warningModal') warningModal: ModalComponent;
   @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-  @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
-  @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
-  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+  @ViewChild('can') can         : CancelButtonComponent;
+  @ViewChild('con') con         : ConfirmSaveComponent;
+  @ViewChild('suc') suc         : SucessDialogComponent;
 
   lovCheckBox:boolean = true;
-  CVAcctEnt: any = {
-    tableData: [],
-    tHeader: ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
-    uneditable:[true,true,true,true,false,false],
-    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt'],
-    dataTypes: ['text','text','text','text','currency','currency'],
-    nData: {
-      showMG: 1,
-      tranId: '',
-      entryId: '',
-      glAcctId: '',
-      glShortCd: '',
-      glShortDesc:'',
-      slTypeCd: '',
-      slTypeName: '',
-      slCd: '',
-      slName: '',
-      creditAmt: '',
-      debitAmt: '',
-      autoTag: 'N',
-      createUser: '',
-      createDate: '',
-      updateUser: '',
-      updateDate: '',
-      edited: true
+
+  cvAcctEntData: any = {
+    tableData      : [],
+    tHeader        : ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
+    uneditable     : [true,true,true,true,false,false],
+    keys           : ['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt'],
+    dataTypes      : ['text','text','text','text','currency','currency'],
+    nData   : {
+      showMG       : 1,
+      tranId       : '',
+      entryId      : '',
+      glAcctId     : '',
+      glShortCd    : '',
+      glShortDesc  :'',
+      slTypeCd     : '',
+      slTypeName   : '',
+      slCd         : '',
+      slName       : '',
+      creditAmt    : '',
+      debitAmt     : '',
+      autoTag      : 'N',
+      createUser   : '',
+      createDate   : '',
+      updateUser   : '',
+      updateDate   : '',
+      edited       : true
     },
-    addFlag: true,
-    deleteFlag: true,
-    editFlag: false,
-    pageLength: 10,
-    widths: [150,290,175,175,160,160],
-    checkFlag:true,
+    addFlag        : true,
+    deleteFlag     : true,
+    editFlag       : false,
+    pageLength     : 10,
+    widths         : [150,290,175,175,160,160],
+    checkFlag      : true,
     magnifyingGlass: ['glShortCd','slTypeName','slName']
   };
 
@@ -79,8 +80,14 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     variance: 0
   }
 
+  params: any = {
+    saveList : [],
+    delList  : []
+  }
+
   subscription: Subscription = new Subscription();
   cvData: any = null;
+  btnCancelMainEnabled:boolean = false;
 
   constructor(private as: AccountingService, private ns: NotesService) { }
 
@@ -101,9 +108,9 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     this.subscription = sub$.subscribe(data => {
       this.cvData = data['cv']['acitCvList'][0];
       this.cvData.cvDate = this.ns.toDateTimeString(this.cvData.cvDate);
-
-      this.CVAcctEnt.tableData = data['en']['list'];
-      this.CVAcctEnt.tableData.forEach(a => {
+      console.log(this.cvData);
+      this.cvAcctEntData.tableData = data['en']['list'];
+      this.cvAcctEntData.tableData.forEach(a => {
         a.createDate = this.ns.toDateTimeString(a.createDate);
         a.updateDate = this.ns.toDateTimeString(a.updateDate);
         a.showMG = 1;
@@ -115,22 +122,6 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
       this.computeTotals();
       this.table.refreshTable();
     });
-
-    /*this.table.overlayLoader = true;
-    this.as.getAcitAcctEntries(this.passData.tranId).subscribe(a => {
-      this.CVAcctEnt.tableData = a['list'];
-      this.CVAcctEnt.tableData.forEach(a => {
-        a.createDate = this.ns.toDateTimeString(a.createDate);
-        a.updateDate = this.ns.toDateTimeString(a.updateDate);
-        a.showMG = 1;
-        if(a.autoTag == 'Y'){
-          a.uneditable = ['glShortCd','debitAmt','creditAmt']
-        }
-      });
-
-      this.computeTotals();
-      this.table.refreshTable();
-    });*/
   }
 
   clickLov(data) {
@@ -170,20 +161,20 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
       this.lovRow.glShortCd = firstRow.shortCode;
       this.lovRow.glShortDesc = firstRow.shortDesc;
 
-      this.CVAcctEnt.tableData = this.CVAcctEnt.tableData.filter(a=>a.glAcctId != '');
+      this.cvAcctEntData.tableData = this.cvAcctEntData.tableData.filter(a=>a.glAcctId != '');
       for(let row of data.data) {
-        this.CVAcctEnt.tableData.push(JSON.parse(JSON.stringify(this.CVAcctEnt.nData)));
-        this.CVAcctEnt.tableData[this.CVAcctEnt.tableData.length - 1].glAcctId = row.glAcctId;
-        this.CVAcctEnt.tableData[this.CVAcctEnt.tableData.length - 1].glShortCd = row.shortCode;
-        this.CVAcctEnt.tableData[this.CVAcctEnt.tableData.length - 1].glShortDesc = row.shortDesc;
+        this.cvAcctEntData.tableData.push(JSON.parse(JSON.stringify(this.cvAcctEntData.nData)));
+        this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].glAcctId = row.glAcctId;
+        this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].glShortCd = row.shortCode;
+        this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].glShortDesc = row.shortDesc;
       }
       this.table.refreshTable();
     }
   }
 
   computeTotals() {   
-    this.totals.credit = this.CVAcctEnt.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
-    this.totals.debit  = this.CVAcctEnt.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat(b.debitAmt)),0);
+    this.totals.credit = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
+    this.totals.debit  = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat(b.debitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;
   }
 
@@ -193,56 +184,85 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     }
 
     setTimeout(() => {
-      this.CVAcctEnt.btnDisabled = this.table.selected.filter(a=>a.checked && a.autoTag == 'Y').length > 0;
+      this.cvAcctEntData.btnDisabled = this.table.selected.filter(a=> a.checked && a.autoTag == 'Y').length > 0;
     }, 0);
   }
 
-  onClickSave(){
-    for(let a of this.CVAcctEnt.tableData) {
-      if(a.edited && !a.deleted &&(a.glAcctId == null || a.glAcctId == '' || a.creditAmt == '' || a.creditAmt == null || isNaN(a.creditAmt)
-        || a.debitAmt == '' || a.debitAmt == null || isNaN(a.debitAmt))) {
-        this.dialogIcon = 'error';
-        this.successDialog.open();
-        return;
-      }
-    }
+  onClickSave(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    this.dialogIcon = '';
+    this.dialogMessage = '';
+    var isEmpty = 0;
 
-    this.confirmSave.confirmModal();
+    this.cvAcctEntData.tableData.forEach(e => {
+      e.tranId = this.cvData.tranId;
+      if(e.glShortCd == '' || e.glShortCd == null || e.debitAmt == '' || e.debitAmt == null || e.creditAmt == '' || e.creditAmt == null){
+        if(!e.deleted){
+          isEmpty = 1;
+          e.fromCancel = false;
+        }else{
+          this.params.delList.push(e);
+        }
+      }else{
+        e.fromCancel = true;
+        if(e.edited && !e.deleted){
+          e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
+          e.createDate    = this.ns.toDateTimeString(e.createDate);
+          e.updateUser    = this.ns.getCurrentUser();
+          e.updateDate    = this.ns.toDateTimeString(0);
+          this.params.saveList.push(e);
+        }else if(e.edited && e.deleted){
+          this.params.delList.push(e);
+        }
+      }
+    });
+
+    console.log(this.cvAcctEntData.tableData);
+    console.log(this.params);
+    if(isEmpty == 1){
+      this.dialogIcon = 'error';
+      this.suc.open();
+      this.params.saveList   = [];
+    }else{
+        if(this.params.saveList.length == 0 && this.params.delList.length == 0){
+          $('.ng-dirty').removeClass('ng-dirty');
+          this.con.confirmModal();
+          this.params.saveList   = [];
+          this.params.delList = [];
+          this.cvAcctEntData.tableData = this.cvAcctEntData.tableData.filter(e => e.glShortCd != '');
+        }else{
+          if(this.cancelFlag == true){
+            this.con.showLoading(true);
+            setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
+          }else{
+            this.con.confirmModal();
+          }
+        }
+    }
   }
 
-  save() {
-    let params: any = {
-      saveList: [],
-      delList: []
+  onSaveAcctEntries() {
+    this.table.overlayLoader = true;
+    console.log(this.params);
+    this.as.saveAcitAcctEntries(this.params)
+    .subscribe(data => {
+      console.log(data);
+      this.getAcctEntries();
+      this.suc.open();
+      this.params.saveList  = [];
+      this.params.delList  = [];
+    });
+  }
+
+  checkCancel(){
+    if(this.cancelFlag){
+      this.can.onNo();
+    }else{
+      this.suc.modal.closeModal();
     }
+  }
 
-    params.saveList = this.CVAcctEnt.tableData.filter(a => a.edited && !a.deleted);
-    params.delList = this.CVAcctEnt.tableData.filter(a => a.deleted);
-
-    params.saveList.forEach(a => {
-      if(!a.add){
-        a.updateUser = this.ns.getCurrentUser();
-        a.updateDate = this.ns.toDateTimeString(0);
-      } else {
-        a.tranId = this.cvData.tranId;
-        a.createUser = this.ns.getCurrentUser();
-        a.createDate = this.ns.toDateTimeString(0);
-        a.updateUser = this.ns.getCurrentUser();
-        a.updateDate = this.ns.toDateTimeString(0);
-      }
-    });
-
-    this.as.saveAcitAcctEntries(params).subscribe(a => {
-      if(a['returnCode']==-1) {
-        this.dialogIcon = 'success';
-        this.successDialog.open();
-        this.table.markAsPristine();
-        this.getAcctEntries();
-      } else {
-        this.dialogIcon = 'error';
-        this.successDialog.open();
-      }
-    });
-
+  cancel(){
+    this.can.clickCancel();
   }
 }

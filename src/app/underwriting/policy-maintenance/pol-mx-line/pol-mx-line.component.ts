@@ -90,7 +90,9 @@ export class PolMxLineComponent implements OnInit {
 		updateUser		: "",
 	};
 
-	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal, private quotationService: QuotationService) { }
+	loading:any;
+
+	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,public modalService: NgbModal, private quotationService: QuotationService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Mtn | Line');

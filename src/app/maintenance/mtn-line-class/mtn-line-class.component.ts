@@ -40,7 +40,7 @@ lineClassListing: any = {
 
   modalOpen:boolean = false;
 
-  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
+  constructor(private maintenanceService: MaintenanceService, public modalService: NgbModal) { }
 
   ngOnInit() {
 

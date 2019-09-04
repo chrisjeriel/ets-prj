@@ -424,7 +424,6 @@ legend.scheduler-border {
 .demo-sidebar .ng-sidebar--animate .ng-sidebar .ng-sidebar--opened .ng-sidebar--left .ng-sidebar--push {
     border: 1px solid gray !important;
     color: blue;
-    padding: 
 }
 /*ng-sidebar component custom css END*/
 
@@ -649,7 +648,7 @@ textarea {
 
 body .ui-state-disabled, body .ui-widget:disabled {
     opacity: 1 !important;
-    cursor: not-allowed;
+    cursor: not-allowed !important;
     background-color: #f5f5f5 !important;
 }
 
@@ -746,4 +745,9 @@ body .ui-accordion .ui-accordion-header {
     line-height: 1 !important;
     margin-bottom: -1px !important;
     margin-top: 5px !important;
+}
+
+body span.ui-state-default.ui-state-disabled {
+    opacity: 0.6 !important;
+    background-color: #f5f5f5 !important;
 }

@@ -11,7 +11,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class MtnBlockComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
-  constructor(private modalService: NgbModal, private maintenanceService : MaintenanceService) { }
+  constructor(public modalService: NgbModal, private maintenanceService : MaintenanceService) { }
 
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passDataBlock: any = {

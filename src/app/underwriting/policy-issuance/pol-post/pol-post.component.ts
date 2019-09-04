@@ -21,6 +21,7 @@ export class PolPostComponent implements OnInit {
   @ViewChild('content') content;
   @ViewChild('successinfo') successinfo;
   @ViewChild('failMsg') failMsg: ModalComponent;
+  @ViewChild('confirmCancel') confirmCancel: ModalComponent;
   @Input() alterationFlag ;
   @Input() policyInfo;
   lineCd :string;
@@ -30,8 +31,9 @@ export class PolPostComponent implements OnInit {
   postBtn: boolean = false;
   altSign: string;
 
-  status:String = '';
-  alt_cancel_tag:String = null;
+  
+
+  cummSi:any;
 
   constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, private modalService: NgbModal,
    private uwService: UnderwritingService, private ns: NotesService, private router: Router) {
@@ -100,6 +102,8 @@ export class PolPostComponent implements OnInit {
         }
         let covData = a['policy'].project.coverage;
         let secCvrs = covData.sectionCovers;
+        this.cummSi = covData.cumTSi;
+        console.log(this.cummSi)
         if(this.alterationFlag){
           // if(secCvrs.every(a=>a.premAmt>=0 && a.sumInsured>=0)){
           //   this.altSign = 'positive';
@@ -188,17 +192,29 @@ export class PolPostComponent implements OnInit {
         }else{
           this.loadMsg = 'Saving Successful.'
           this.progress +=25;
-          this.post();
+          if(this.cummSi == 0){
+            this.confirmCancel.openNoClose();
+          }else{
+            this.post();
+          }
         }
       })
     }
 
+    postParams:any = {
+      updateUser : this.ns.getCurrentUser(),
+      status:'2',
+      altCancelTag: null
+    }
+
+    cancelPol(){
+      this.postParams.status = '5';
+      this.post();
+    }
+
     post(){
-      let params:any = {
-        policyId : this.policyInfo.policyId,
-        updateUser : this.ns.getCurrentUser()
-      }
-      this.uwService.post(params).subscribe(a=>{
+      this.postParams.policyId = this.policyInfo.policyId;
+      this.uwService.post(this.postParams).subscribe(a=>{
         if(a['returnCode']==-1)
           this.showSuccess()
         else

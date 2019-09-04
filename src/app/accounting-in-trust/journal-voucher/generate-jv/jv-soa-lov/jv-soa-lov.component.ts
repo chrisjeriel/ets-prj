@@ -34,7 +34,7 @@ export class JvSoaLovComponent implements OnInit {
   selected: any;
   selects: any[] = [];
 
-  constructor(private ns: NotesService, private maintenanceService: MaintenanceService, private modalService: NgbModal,private accountingService: AccountingService) { }
+  constructor(private ns: NotesService, private maintenanceService: MaintenanceService, public modalService: NgbModal,private accountingService: AccountingService) { }
 
   ngOnInit() {
     if(this.lovCheckBox){
