@@ -39,7 +39,7 @@
 	<legend class="scheduler-border">CV Accounting Entries</legend>
     <div class="input-group" style="margin-bottom: 0 !important;">
         <div class="col-sm" style="padding: 0">
-            <app-cust-editable-non-datatable [passData]="CVAcctEnt" (newClick)="selected=$event" (clickLOV)="clickLov($event)" (tableDataChange)="computeTotals()" (tickChckbx)="tickChckbx($event)"></app-cust-editable-non-datatable>
+            <app-cust-editable-non-datatable [passData]="cvAcctEntData" (newClick)="selected=$event" (clickLOV)="clickLov($event)" (tableDataChange)="cvAcctEntData.tableData=$event;computeTotals()" (tickChckbx)="tickChckbx($event)"></app-cust-editable-non-datatable>
         </div>
     </div>
 
@@ -56,7 +56,7 @@
         <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="totals.variance | number:'1.2-2'" disabled>
     </div>
     <div class="w-100 text-center" style="margin-bottom: 8px">
-        <button class="cust-btn"><a>Cancel</a></button>
+        <button class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
         <button class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
     </div>
 </fieldset>
@@ -109,7 +109,6 @@
 </app-modal>
 
 <app-lov [passData]="passLov" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox"></app-lov>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
-<app-confirm-save (onYes)="save()"></app-confirm-save>
-<!-- <app-cancel-button (onYes)="save('cancel')" (no)="onClickCancel()"></app-cancel-button> -->
-<app-cancel-button (onYes)="save()"></app-cancel-button>
+<app-confirm-save  #con (onYes)="onSaveAcctEntries()"></app-confirm-save>
+<app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/check-voucher'" ></app-cancel-button>
