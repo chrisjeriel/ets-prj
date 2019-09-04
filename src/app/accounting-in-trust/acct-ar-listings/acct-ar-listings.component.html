@@ -25,13 +25,13 @@
 										<input type="radio" name="tranStat" id="statCl" value="closed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
 										<label for="statCl" class="text-left">&nbsp;Closed</label>
 									</div>
-									<div class="col-sm-2">
-										<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
-										<label for="statDl" class="text-left">&nbsp;Cancelled / Deleted</label>
-									</div>
 									<div class="col-sm">
 										<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
 										<label for="statPs" class="text-left">&nbsp;Posted</label>
+									</div>
+									<div class="col-sm-2">
+										<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
+										<label for="statDl" class="text-left">&nbsp;Cancelled / Deleted</label>
 									</div>
 									<div class="col-sm-2"></div>
 								</div>
