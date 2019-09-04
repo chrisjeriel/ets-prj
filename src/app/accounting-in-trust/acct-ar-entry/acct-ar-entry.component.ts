@@ -414,7 +414,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     var sub$ = forkJoin(this.as.getArEntry(tranId, arNo),
                         this.ms.getMtnBank(),
                         this.ms.getMtnBankAcct(),
-                        this.ms.getMtnCurrency('', 'Y')).pipe(map(([ar, bank, bankAcct, curr]) => { return { ar, bank, bankAcct, curr }; }));
+                        this.ms.getMtnCurrency('', 'Y', this.arDate.date)).pipe(map(([ar, bank, bankAcct, curr]) => { return { ar, bank, bankAcct, curr }; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
         console.log('arEntry first');
@@ -739,7 +739,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.currencies = [];
     this.passData.opts[1].vals = [];
     this.passData.opts[1].prev = [];
-    this.ms.getMtnCurrency('','Y').subscribe(
+    this.ms.getMtnCurrency('','Y', this.arDate.date).subscribe(
       (data:any)=>{
         console.log('currencies first');
         if(data.currency.length !== 0){
