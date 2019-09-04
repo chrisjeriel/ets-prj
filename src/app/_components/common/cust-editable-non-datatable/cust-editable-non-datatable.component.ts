@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
-    @ViewChild('myForm') form:any;
+    @ViewChildren('myForm') form: QueryList<any>;
     @ViewChild('api') pagination: any;
     @ViewChild('table') table: ElementRef;
     @ViewChild(SucessDialogComponent) successDiag : SucessDialogComponent;
@@ -381,20 +381,22 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     sort(str,sortBy){
-        this.passData.tableData = this.passData.tableData.sort(function(a, b) {
-            if(sortBy){
-                if(a[str] < b[str]) { return -1; }
-                if(a[str] > b[str]) { return 1; }
-            }else{
-                if(a[str] < b[str]) { return 1; }
-                if(a[str] > b[str]) { return -1; }
-            }
-        });
-        // if($('.ng-dirty').length != 0){
-        //     $('#cust-table-container').addClass('ng-dirty');
-        // }
-        this.sortBy = !this.sortBy;
-        this.search(this.searchString);
+        if(!this.passData.disableSort){
+            this.passData.tableData = this.passData.tableData.sort(function(a, b) {
+                if(sortBy){
+                    if(a[str] < b[str]) { return -1; }
+                    if(a[str] > b[str]) { return 1; }
+                }else{
+                    if(a[str] < b[str]) { return 1; }
+                    if(a[str] > b[str]) { return -1; }
+                }
+            });
+            // if($('.ng-dirty').length != 0){
+            //     $('#cust-table-container').addClass('ng-dirty');
+            // }
+            this.sortBy = !this.sortBy;
+            this.search(this.searchString);
+        }
 
     }
 
@@ -716,7 +718,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }else{
             data.fileName=event.target.files[0].name;
             data.edited=true;
-            this.form.control.markAsDirty();
+            this.markAsDirty();
             this.filesToUpload.push(event.target.files);
             this.uploadedFiles.emit(this.filesToUpload);
         }
@@ -752,13 +754,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }*/
 
     markAsPristine(){
-        $('table.non-datatable' + this.passData.pageID).parent().removeClass('ng-dirty')
-        this.form.control.markAsPristine();
+        $('table.non-datatable' + this.passData.pageID).parent().removeClass('ng-dirty');
+        this.form.forEach(a=>a.control.markAsPristine());
     }
 
     markAsDirty(){
         $('#cust-scroll form').addClass('ng-dirty');
-        this.form.control.markAsDirty();
+        this.form.forEach(a=>a.control.markAsDirty());
+        //this.form.control.markAsDirty();
     }
 
     focusFirst(){
@@ -916,6 +919,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
             }
         }
         this.searchToDb.emit(this.searchQuery);
-        this.loadingFlag = true;
+        this.overlayLoader = true;
+    }
+
+    pressEnterFilter(drop:any){
+        this.dbQuery(this.passData.filters);
+        drop.close();
     }
 }

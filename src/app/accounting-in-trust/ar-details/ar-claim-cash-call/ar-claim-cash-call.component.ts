@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -21,6 +21,8 @@ export class ArClaimCashCallComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   @Input() record: any = {};
+
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
 
   passData: any = {
     tableData: [],
@@ -56,20 +58,20 @@ export class ArClaimCashCallComponent implements OnInit {
         lossDate: '',
         currCd: '',
         currRate: '',
-        cashcallAmt: '',
+        recOverAmt: '',
         localAmt: '',
         showMG: 1
     },
-    total: [null,null,null,null,null,null,null,null, 'Total', 'reserveAmt', 'cumulativeAmt', 'cashcallAmt', 'localAmt'],
+    total: [null,null,null,null,null,null,null,null, 'Total', 'reserveAmt', 'cumulativeAmt', 'recOverAmt', 'localAmt'],
     widths: [120,1,130,120, 150, 250, 1,1, 120, 120, 120, 120, 120, 120],
-    keys: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt', 'cashcallAmt', 'localAmt'],
+    keys: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt', 'recOverAmt', 'localAmt'],
     pinKeysLeft: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt'],
     uneditable: [false,true,true,true,false,true,true,true, true, true,true,false, true],
     small: true
   };
 
   passLov: any = {
-    selector: 'acitArClmRecover',
+    selector: 'clmResHistPayts',
     payeeNo: '',
     currCd: '',
     hide: []
@@ -239,12 +241,18 @@ export class ArClaimCashCallComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
+    if(data !== null){
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      this.emitCreateUpdate.emit(data);
+    }else{
+      this.emitCreateUpdate.emit(null);
+    }
   }
   onTableDataChange(data){
-    if(data.key === 'cashcallAmt'){
+    if(data.key === 'recOverAmt'){
       for(var i = 0; i < data.length; i++){
-        data[i].localAmt = data[i].cashcallAmt * data[i].currRate;
+        data[i].localAmt = data[i].recOverAmt * data[i].currRate;
       }
     }
     this.passData.tableData = data;

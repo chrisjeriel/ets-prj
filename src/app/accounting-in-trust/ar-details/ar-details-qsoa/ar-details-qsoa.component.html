@@ -1,5 +1,5 @@
 <div class="col-sm-12" style="position: relative; padding-left: 0px; padding-right: 0px;">
-	<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="onTableDataChange($event)" (clickLOV)="openLOV($event)">
+	<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)" (clickLOV)="openLOV($event)">
 	</app-cust-editable-non-datatable>
 </div>
 <div class="form-row" *ngIf="record.arStatDesc.toUpperCase() == 'NEW'">

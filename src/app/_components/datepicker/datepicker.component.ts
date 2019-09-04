@@ -20,7 +20,8 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   private spanStyle: any = {
   	width: '100%',
   	position: 'absolute',
-  	display: 'contents'
+  	display: 'contents',
+    'background-color': 'red'
   }
 
   private inputStyle: any = {
@@ -55,7 +56,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   		this.inputStyle['backgroundColor'] = '#fffacd85';
   	}
 
-  	if(this.showIcon && this.type != 'time') {
+  	if(this.type != 'time') {
   		this.spanStyle['position'] = 'relative';
   		this.spanStyle['display'] = 'block';
   		this.inputStyle['position'] = 'absolute';

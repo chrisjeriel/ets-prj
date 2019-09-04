@@ -1718,7 +1718,7 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFeeMainGnrt(prdAsOf?, year?, servFeeAmt?, currCd?, currRt?){
+    getAcctPrqServFee(prdAsOf?, year?, servFeeAmt?, currCd?, currRt?){
 		const params = new HttpParams()
 			.set('prdAsOf', (prdAsOf == null || prdAsOf == undefined ? '' : prdAsOf))
 			.set('year', (year == null || year == undefined ? '' : year))
@@ -1726,7 +1726,7 @@ export class AccountingService {
 			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
 			.set('currRt', (currRt == null || currRt == undefined ? '' : currRt));
 			
-		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitServFeeMainGnrt',{params});
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcctPrqServFee',{params});
 	}
 
 	getAcitArClmRecover(tranId, billId){
@@ -1966,6 +1966,30 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvDefName",{params});
 	}
 
+	saveAcctPrqServFee(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcctPrqServFee',JSON.stringify(params),header);
+	}
+
+	getJVAllocInvtIncListing(allocTranId) {
+		 const params = new HttpParams()
+             .set('allocTranId', (allocTranId === null || allocTranId === undefined ? '' : allocTranId) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
+	}
+
+	updateAcitStatus(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitStatus',JSON.stringify(params),header);
+	}
+
 	printAr(params){
 		let header : any = {
 		    headers: new HttpHeaders({
@@ -1987,23 +2011,49 @@ export class AccountingService {
 		        'Content-Type': 'application/json'
 		    })
 		};
+		
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJvReceivablesAgainstLoss',JSON.stringify(params),header);
 	}
 
-	getJVAllocInvtIncListing(allocTranId) {
-		 const params = new HttpParams()
-             .set('allocTranId', (allocTranId === null || allocTranId === undefined ? '' : allocTranId) )
-        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
+	getAcitCv(tranId?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCv',{params});
 	}
 
-	updateAcitStatus(params){
-		let header : any = {
-		    headers: new HttpHeaders({
-		        'Content-Type': 'application/json'
-		    })
-		};
-		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitStatus',JSON.stringify(params),header);
-	}
+
+	saveAcitCv(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCv',params,header);
+ 
+    }
+
+    getAcitCvList(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('tranId','')
+				.set('cvGenNo','')
+				.set('cvDateFrom','')
+				.set('cvDateTo','')
+				.set('cvStatusDesc','')
+				.set('payee','')
+				.set('particulars','')
+				.set('cvAmt','')
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCv',{params});
+	}	
 
 	getClmResHistPayts(cedingId,payeeNo,currCd){
 		const params = new HttpParams()

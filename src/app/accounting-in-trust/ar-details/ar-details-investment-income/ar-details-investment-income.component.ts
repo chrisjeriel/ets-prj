@@ -23,6 +23,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   @Output() investment: EventEmitter<any> = new EventEmitter();
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
   
   passData: any = {
     tableData:[],
@@ -246,7 +247,13 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
+    if(data !== null){
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      this.emitCreateUpdate.emit(data);
+    }else{
+      this.emitCreateUpdate.emit(null);
+    }
   }
   onTableDataChange(data){
     console.log(data);

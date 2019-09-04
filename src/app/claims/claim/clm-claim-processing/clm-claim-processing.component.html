@@ -20,17 +20,17 @@
                   <div class="input-group">
                     <label class="form-control-sm col-sm-3">Policy No</label>
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[0]" (change)="policyNoChecker($event, 'line')"
-                      style="margin-left: 3px;" ngbTooltip="Line">
+                      style="margin-left: 3px;" ngbTooltip="Line" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[1]" (change)="policyNoChecker($event, 'year')" style="margin-left: 3px;"
-                      ngbTooltip="Year">
+                      ngbTooltip="Year" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-3 cap-input" [(ngModel)]="tempPolNo[2]" (change)="policyNoChecker($event, 'seqNo')" style="margin-left: 3px;"
-                      ngbTooltip="Sequence No">
+                      ngbTooltip="Sequence No" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[3]" (change)="policyNoChecker($event, 'cedingId')" style="margin-left: 3px;"
-                      ngbTooltip="Co Code">
+                      ngbTooltip="Co Code" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-2 cap-input" [(ngModel)]="tempPolNo[4]" (change)="policyNoChecker($event, 'coSeriesNo')" style="margin-left: 3px;"
-                      ngbTooltip="Co Series No">
+                      ngbTooltip="Co Series No" container="body">
                     <input type="text" class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="tempPolNo[5]" (change)="policyNoChecker($event, 'altNo')" style="margin-left: 3px;"
-                      ngbTooltip="Alt No" readonly>
+                      ngbTooltip="Alt No" readonly container="body">
                     <span>&nbsp;</span>
                     <div class="text-search-ico" style=" margin-right: 19px !important;"><a (click)="openPolLOV('lovBtn')"><i class="fa fa-search"></i></a></div>
                   </div>
@@ -78,7 +78,7 @@
               </fieldset>
             </div>
             <div footer class="text-center" style="width:100% !important; margin-top: -17px !important;">
-              <button type="button" class="cust-btn" (click)="clearAddFields(); tempPolNo = ['','','','','','']"><a>Clear</a></button>
+              <button type="button" class="cust-btn" (click)="clearAddFields(); tempPolNo = ['','','','','','000']"><a>Clear</a></button>
               <button type="button" class="cust-btn" (click)="addModal.closeModal(); clearAddFields('exceptPolNo');"><a>Cancel</a></button>
               <button type="button" class="cust-btn" (click)="addModal.closeModal();navigateToGenInfo();" [class.cust-btn-disabled]="policyDetails.policyNo.length === 0" [disabled]="policyDetails.policyNo.length === 0"><a>Next</a></button>
             </div>
@@ -89,7 +89,6 @@
     </ngb-tab>
   </ngb-tabset>
 </div>
-
 
 <!-- ALL LOV MODALS HERE!!!! -->
 
@@ -105,4 +104,21 @@
 
 </app-modal>
 
-<app-mtn-risk id="riskLOV" #riskLOV (selectedData)="setRisks($event)" (cancelBtn)="clearAddFields(); tempPolNo = ['','','','','','']"></app-mtn-risk>
+<app-mtn-risk id="riskLOV" #riskLOV (selectedData)="setRisks($event)" (cancelBtn)="clearAddFields(); tempPolNo = ['','','','','','000']"></app-mtn-risk>
+
+<app-modal class="d-none" #clmProcessingMdl>
+    <div header>Existing Claims</div>
+    <div body style="min-width: 500px !important;">
+        <fieldset class="scheduler-border">
+            <div class="custom-row-inline-inset" style="text-align: center">
+                <p style="margin-bottom: 0px;">Selected Policy No. <strong>{{ refPolNo }}</strong></p>
+                <p style="margin-bottom: 5px;">has existing Claim No/s</p>
+            </div>
+            <app-cust-non-datatable [passData]="passDataLOVTbl" (rowClick)="onRowClickLOVTbl($event)" (newRowDblClick)="selectedLOVTbl=$event; onClickViewLOVTbl($event)" (searchToDb)="searchQueryLOVTbl($event)" #LOVTbl></app-cust-non-datatable>
+        </fieldset>
+    </div>
+    <div footer class="text-center w-100">
+        <button class="cust-btn" type="button" (click)="clmProcessingMdl.closeModal()"><a>Return</a></button>
+        <button class="cust-btn" type="button" (click)="onClickViewLOVTbl($event)" [disabled]="selectedLOVTbl == null"><a>View</a></button>
+    </div>
+</app-modal>

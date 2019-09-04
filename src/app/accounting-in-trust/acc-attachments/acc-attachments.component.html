@@ -9,8 +9,9 @@
             <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
             style="z-index: 1 !important;" readonly [ngModel]="pad(record.arNo, 'arNo')">
             <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
-            <input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm"
-            style="z-index: 1 !important;" readonly [ngModel]="record.arDate">
+            <div class="col-sm" style="padding: 0px">
+                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.arDate"></datepicker>
+            </div>
             <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
             <input type="text" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
             style="z-index: 1 !important;" readonly [ngModel]="record.dcbNo">
@@ -68,7 +69,7 @@
 		<label class="form-control-sm col-sm-1">Last Update</label>
 		<input type="text" class="form-control form-control-sm col-sm" value="10/01/2018 10:45 AM">	
 	</div> -->
-  <div class="form-group col-sm text-center" style="margin-bottom: 5px">
+  <div class="form-group col-sm text-center" style="margin-bottom: 5px" *ngIf="record.arStatDesc.toUpperCase() == 'NEW'">
       <div class="cust-btn-container">
         <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
         <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
@@ -79,24 +80,28 @@
 
 
 
-  <div class="col-sm-12" style="margin-top: 5px !important;padding-left: 0px !important;
+<div class="col-sm-12" style="margin-top: 35px !important;padding-left: 0px !important;
 padding-right: 0px !important;">
-<fieldset class="scheduler-border" style="margin-top: 0px !important; margin-bottom: 10px !important; padding-bottom: 7px !important;">
-  <div class="custom-row-inline-inset">
-    <div class="form-row" style="margin-bottom: -10px;">
-      <div class="input-group">
-        <label class="form-control-sm col-sm-1">Created By</label>
-        <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-        <label class="form-control-sm col-sm-1">Date Created</label>
-        <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45" disabled>
-        <label class="form-control-sm col-sm-1">Last Update By</label>
-        <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-        <label class="form-control-sm col-sm-1">Last Update</label>
-        <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00" disabled>
+  <fieldset class="scheduler-border" style="margin-top: -12px !important; margin-bottom: 10px !important;">
+    <div style="margin-top: 8px !important; margin-bottom: 17px !important;">
+      <div class="form-row" style="margin-bottom: -10px;">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Created By</label>
+          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.createUser" disabled>
+          <label class="form-control-sm col-sm-1">Date Created</label>
+          <div class="col-sm" style="padding: 0px">
+              <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.createDate"></datepicker>
+          </div>
+          <label class="form-control-sm col-sm-1">Last Update By</label>
+          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.updateUser" disabled>
+          <label class="form-control-sm col-sm-1">Last Update</label>
+          <div class="col-sm" style="padding: 0px">
+              <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.updateDate"></datepicker>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</fieldset>
+  </fieldset>
 </div>
 
 

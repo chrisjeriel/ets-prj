@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { ARUnappliedCollection } from '@app/_models';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -19,6 +19,8 @@ export class UnappliedCollectionComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancel: CancelButtonComponent;
+
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -204,6 +206,16 @@ export class UnappliedCollectionComponent implements OnInit {
       }
     }
     this.passData.tableData = data;
+  }
+
+  onRowClick(data){
+    if(data !== null){
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      this.emitCreateUpdate.emit(data);
+    }else{
+      this.emitCreateUpdate.emit(null);
+    }
   }
 
 }

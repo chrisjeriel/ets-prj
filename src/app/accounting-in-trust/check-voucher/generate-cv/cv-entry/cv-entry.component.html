@@ -9,27 +9,24 @@
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">CV. No</label>
                             <div class="input-group col-sm-3 no-padding">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right;margin-left: 2px;">
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="saveAcitCv.cvYear" readonly>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right;margin-left: 3px;" [(ngModel)]="saveAcitCv.cvNo"  readonly>
                             </div>
-                            <!-- <label class="form-control-sm col-sm-1">Date</label>
-                            <input type="date" class="form-control form-control-sm cust-sm col-sm-3" value="2018-10-01" >
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 5px"> -->
                             <label class="form-control-sm col-sm-2 no-margin">Date</label>
                             <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
-                              <datepicker type="datetime" [disabled]="false" [required]="true"></datepicker>
+                              <datepicker [type]="'datetime'" [disabled]="false" [required]="true" [(value)]="saveAcitCv.cvDate"></datepicker>
                             </div>
-                            <label class="form-control-sm col-sm-2">Status</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3">
+                            <label class="form-control-sm col-sm-1">Status</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="saveAcitCv.cvStatusDesc" readonly>
                         </div>
                         <div class="input-group" style="margin-top: -5px">
                             <label class="form-control-sm col-sm-1">Payee</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" appRequired>
-                            <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="saveAcitCv.payee" maxlength="500" appRequired>
+                            <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                         </div>
                         <div class="input-group" style="margin-top: -5px">
                             <label class="form-control-sm col-sm-1">Particulars</label>
-                            <textarea class="form-control form-control-sm cust-sm col-sm text-area-font" style="min-height: 53px" appRequired></textarea>
+                            <textarea class="form-control form-control-sm cust-sm col-sm text-area-font" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.particulars" appRequired></textarea>
                         </div>
                     </div>
                     
@@ -98,72 +95,75 @@
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired>
-                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.bankDesc" maxlength="100" appRequired>
+                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('bank')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Amount</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" appRequired>
-                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" appRequired style="margin-left: 3px;">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="saveAcitCv.currCd" maxlength="3" appRequired>
+                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)]="saveAcitCv.cvAmt" (change)="reCompAmt();" appRequired style="margin-left: 3px;" mask="comma_separator.2">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right"appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" [(ngModel)]="saveAcitCv.currRate" (change)="reCompAmt();" mask="comma_separator.9" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Local Amount</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" readonly>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" [(ngModel)]="saveAcitCv.localAmt" mask="comma_separator.2" readonly>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Prepared By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired>
-                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.preparedByName" appRequired>
+                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('prep-user')"><i class="fa fa-search"></i></a></div>
                     </div>
+
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels"></label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" >
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="saveAcitCv.preparedByDes" readonly>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin">Date Prepared</label>
                         <div class="col-sm dp-cont" style="margin-left: 0px !important">
-                            <datepicker type="datetime" [disabled]="false" [required]="true"></datepicker>
+                            <datepicker [type]="'datetime'" [disabled]="false" [required]="true" [(value)]="saveAcitCv.preparedDate"></datepicker>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank Account No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.bankAcct" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.checkNo" appRequired>
                     </div>
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-3 labels">Check Date</label>
-                        <input type="date" class="form-control form-control-sm cust-sm col-sm-10" value="2018-10-01">
+                        <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
+                        <div class="col-sm dp-cont" style="margin-left: 0px !important">
+                            <datepicker [type]="'datetime'" [disabled]="false" [required]="true" [(value)]="saveAcitCv.checkDate"></datepicker>
+                        </div>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Class</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired>
-                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.checkClassDesc" appRequired>
+                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('class')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Certified Correct</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.certifiedByName" readonly>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels"></label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcitCv.certifiedByDes" readonly>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin">Date Certified</label>
                         <div class="col-sm dp-cont" style="margin-left: 0px !important">
-                            <datepicker type="datetime" [showIcon]="false" [disabled]="true" [required]="true"></datepicker>
+                            <datepicker [type]="'datetime'" [showIcon]="false" [disabled]="true" [required]="true" [(value)]="saveAcitCv.certifiedDate"></datepicker>
                         </div>
                     </div>
                 </div>
@@ -259,7 +259,20 @@
                 </div>
             </div> -->
 
-
+            <div class="form-row">
+                <div class="form-group col-sm" style="margin-bottom: 8px;">
+                    <div class="col-md-13 text-center">
+                        <div class="cust-btn-container">
+                            <button type="button" class="cust-btn">New CV</button>
+                            <button type="button" class="cust-btn" (click)="onClickSave()">Save</button>
+                            <button type="button" class="cust-btn">Cancel CV</button>
+                            <button type="button" class="cust-btn">Certify</button>
+                            <button type="button" class="cust-btn">Approve</button>
+                            <button type="button" class="cust-btn">Print</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
         </fieldset>
@@ -281,3 +294,13 @@
         </fieldset>
     </div>
 </div>
+
+<app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
+<app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')"></app-lov>
+<app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')"></app-lov>
+<app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>
+<app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
+
+<app-confirm-save (onYes)="onSaveAcitCv()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/generate-cv'" ></app-cancel-button>

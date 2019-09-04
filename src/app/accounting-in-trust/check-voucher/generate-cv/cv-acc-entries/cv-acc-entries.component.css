@@ -16,3 +16,7 @@
 	border-left: 1px solid rgb(224,227,231);
 	border-right: 1px solid rgb(224,227,231);
 }
+
+.dp-cont {
+	margin-left: 0 !important;
+}

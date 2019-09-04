@@ -95,7 +95,7 @@ export class MtnClmEventComponent implements OnInit {
 		this.cancelBtn.next();
 	}
 
-	checkCode(eventTypeCd, str, ev, date?) {
+	checkCode(eventTypeCd, str, ev, date?, filt?) {
 		var obj = {
 			eventCd: '',
 		  	eventDesc: ''
@@ -127,12 +127,14 @@ export class MtnClmEventComponent implements OnInit {
 					this.clmEvent.tableData = data['clmEventList'];
 					this.table.refreshTable();
 
+					this.filters = filt;
 					this.modal.openNoClose();
 				} else {
 					obj['ev'] = ev;
 					obj['singleSearchLov'] = true;
 
 					this.selectedData.emit(obj);
+					this.filters = filt;
 					this.modal.openNoClose();
 				}
 			});

@@ -44,7 +44,7 @@ export class AcctArListingsComponent implements OnInit {
           dataType: 'text'
         },
         {
-          key: 'arStatDesc',
+          key: 'arStatus',
           title: 'Status',
           dataType: 'text'
         },
