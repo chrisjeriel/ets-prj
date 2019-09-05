@@ -311,10 +311,25 @@
         <div *ngIf="fromBtn == 'cancel-req'" class="input-group">
             <p class="col-sm-12">Are you sure you want to cancel this Check Voucher?</p>
         </div>
+        <div *ngIf="fromBtn == 'print'" class="input-group">
+            <p class="col-sm-12">Was the printing of Check Voucher successful?</p>
+        </div>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="(fromBtn.toLowerCase() == 'cancel-req')?onClickYesConfirmed('X'):onClickYesConfirmed('A');">Yes</button>
+        <button class="cust-btn" type="button" (click)="onYesConfirmed()">Yes</button>
         <button class="cust-btn" type="button" (click)="confirmMdl.closeModal()">No</button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #warnMdl >
+    <div header>Warning</div>
+    <div body class="container-flex text-center">
+        <div class="input-group">
+            <p class="col-sm-12">{{ warnMsg }}</p>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="warnMdl.closeModal()">Ok</button>
     </div>
 </app-modal>
 
@@ -356,7 +371,7 @@
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="printmMdl.closeModal()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="printmMdl.closeModal()"><a>Print</a></button>
+        <button class="cust-btn" type="button" (click)="printmMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();"><a>Print</a></button>
     </div>
 </app-modal>
 

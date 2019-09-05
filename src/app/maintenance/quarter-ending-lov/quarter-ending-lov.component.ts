@@ -31,6 +31,13 @@ export class QuarterEndingLovComponent implements OnInit {
   quarterval:any;
   quarterEnd:any;
 
+  sendData : any = {
+    fundsHeld : '',
+    quarterEnding : '',
+    premResQuota : '',
+    premRes1surplus : '',
+    premRes2surplus : ''
+  }
   ngOnInit() {
     this.getParameters();
   }
@@ -104,7 +111,8 @@ export class QuarterEndingLovComponent implements OnInit {
     if(this.tranClass !== undefined){
       this.accService.getQuarterPrem(this.quarterEnd,this.cedingId).subscribe((data:any) => {
         console.log(data)
-        this.selectedData.emit({fundsHeld : data.premRes.fundsHeld, quarterVal: data.premRes.quarterEnding})
+        this.sendData = data;
+        this.selectedData.emit(this.sendData)
       });
     }else{
       this.selectedData.emit(this.quarterval);

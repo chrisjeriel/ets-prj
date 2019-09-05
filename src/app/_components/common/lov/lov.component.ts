@@ -57,6 +57,8 @@ export class LovComponent implements OnInit {
   }
 
   select(data){
+    console.log(this.passTable.checkFlag);
+    console.log(this.passData.data);
   	  this.passData.data = data;
   }
 
@@ -70,6 +72,8 @@ export class LovComponent implements OnInit {
       this.passData.data = selects;
       this.selectedData.emit(this.passData);
     }
+
+    this.passData.data = null;
   }
 
   checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?) {
@@ -798,7 +802,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimNo)==-1 && histTypes.includes(data.histType)});
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return histTypes.includes(data.histType)});
         //this.passTable.tableData = data.clmpayments;
         console.log(data.clmpayments);
         this.table.refreshTable();

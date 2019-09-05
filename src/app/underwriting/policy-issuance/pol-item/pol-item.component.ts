@@ -74,7 +74,10 @@ export class PolItemComponent implements OnInit {
         searchFlag:true,
         keys:['quantity','itemDesc','makeYear','deductibleTxt','sumInsured'],
         uneditable: [false,false,false,false,false],
-        pageLength:'unli'
+        pageLength:'unli',
+        limit: {
+            quantity: 3
+        }
 
     }
 
@@ -128,7 +131,11 @@ export class PolItemComponent implements OnInit {
         widths:  ['1','auto','1','1','195'],
         searchFlag : true,
         keys:['quantity','itemDesc','ipl','relativeImp','standbyUnit'],
-        pageLength: 'unli'
+        pageLength: 'unli',
+        limit: {
+            quantity: 3,
+            ipl: 3
+        }
     }
     
     dosGoodsPassData: any = {
@@ -156,7 +163,10 @@ export class PolItemComponent implements OnInit {
         keys:['chamberNo','itemDesc','noClaimPd','sumInsured'],
         pageLength: 5,
         searchFlag:true,
-        pageID: 'dosGoods'
+        pageID: 'dosGoods',
+        limit: {
+            noClaimPd: 3
+        }
     }
 
     dosMachineryPassData: any = {

@@ -9,6 +9,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-jv-entry',
@@ -108,6 +109,8 @@ export class JvEntryComponent implements OnInit {
   allocBut: boolean = false;
   dcBut: boolean = false;
   approvedStat: boolean = false;
+  forApprovedStat: boolean = false;
+  printStat: boolean = false;
   cancelFlag: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
@@ -187,11 +190,13 @@ export class JvEntryComponent implements OnInit {
         }
 
         if(this.entryData.jvStatus == 'F'){
-          this.approveBut = true;
+          this.forApprovedStat = false;
+          this.approveBut = false;
         }
         
         if(this.entryData.jvStatus == 'A'){
           this.printBut = false;
+          this.printStat = false; 
         }else{
           this.printBut = true;
         }
@@ -384,6 +389,7 @@ export class JvEntryComponent implements OnInit {
     this.accService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
       console.log(data);
       this.entryData.approver = data.employee.employeeName;
+      this.entryData.approvedBy = data.employee.userName;
     });
     this.approveJV.openNoClose();
   }
@@ -505,6 +511,8 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickPrint(){
+    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId, '_blank');
     this.printEntries.openNoClose();
   }
 

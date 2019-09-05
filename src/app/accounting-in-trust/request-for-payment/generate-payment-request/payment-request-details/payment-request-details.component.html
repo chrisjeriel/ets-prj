@@ -129,7 +129,7 @@
                   <div class="text-center">
                     <div class="cust-btn-container">
                       <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                      <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                      <button type="button" class="cust-btn" (click)="onClickSave()" [disabled]="requestData?.tranTypeCd == 5 && serviceFeeSubData.tableData.length == 0"><a>Save</a></button>
                     </div>
                   </div>
                 </div>
@@ -236,7 +236,7 @@
 
 <app-confirm-save  #conUnCol (onYes)="onSaveUnCol()"></app-confirm-save>
 <app-sucess-dialog #sucUnCol [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelUncol();"></app-sucess-dialog>
-<app-cancel-button #canUnCol (onYes)="onClickSaveUncol('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+<app-cancel-button #canUnCol (onYes)="onClickSaveUnCol('cancel')" [url]="'/payt-req'" ></app-cancel-button>
 
 <app-confirm-save  #conServFee (onYes)="onSaveServFee()"></app-confirm-save>
 <app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelServFee();"></app-sucess-dialog>

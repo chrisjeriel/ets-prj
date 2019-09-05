@@ -86,6 +86,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
   invIndex:any;
   dialogIcon : any;
   dialogMessage : any;
+  disable:boolean = false;
 
   constructor(private ns: NotesService, private accountingService: AccountingService) { }
 

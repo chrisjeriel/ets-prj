@@ -34,6 +34,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       nData: {
         showMG:1,
         tranId:'',
+        itemNo: '',
         quarterNo : '',
         cedingId : '',
         quarterEnding : '',
@@ -195,7 +196,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   check(data){
-    console.log(data)
     this.emitData.emit({ cedingId: data.ceding,
                          cedingName: data.cedingName
                        });
@@ -248,13 +248,11 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
         }
       }
     }
-    console.log(this.passLov.hide)
     this.lovMdl.openLOV();
   }
 
   setSoa(data){
     console.log(data)
-    console.log(this.quarterTable.indvSelect);
     this.quarterTable.indvSelect.acctOffset = this.quarterTable.indvSelect.acctOffset.filter(a=>a.showMG!=1);
     for (var i = 0; i < data.data.length; i++) {
       this.quarterTable.indvSelect.acctOffset.push(JSON.parse(JSON.stringify(this.passDataOffsetting.nData)));
@@ -307,17 +305,25 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.totalBal = 0;
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.treatyBal = 0;
+      this.totalBal += this.passData.tableData[i].balanceAmt;
       for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
-        this.totalBal += this.passData.tableData[i].balanceAmt;
         if(!this.passData.tableData[i].acctOffset[j].deleted){
           this.treatyBal += this.passData.tableData[i].acctOffset[j].paytAmt;
         }
       }
-      if(this.passData.tableData[i].balanceAmt < this.treatyBal){
+      if((this.passData.tableData[i].balanceAmt < 0 && this.passData.tableData[i].balanceAmt + this.treatyBal  > 0) ||
+         (this.passData.tableData[i].balanceAmt > 0 && this.passData.tableData[i].balanceAmt + this.treatyBal  < 0)){
         errorFlag = true;
         quarterDate = this.passData.tableData[i].quarterEnding;
       }
     }
+
+    //added by NECO 09/04/2019
+    var totalTreatyBal: number = 0;
+    for(var k = 0; k < this.passData.tableData.length; k++){
+      totalTreatyBal += this.passData.tableData[k].balanceAmt;
+    }
+    //End
 
     if(errorFlag){
       quarterDate = this.ns.toDateTimeString(quarterDate);
@@ -325,7 +331,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.dialogMessage = "The total balance of outstanding accounts for offset on Quarter Ending " + quarterDate[0] + " must not exceed its Treaty Balance Amount.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
-    }else if(this.totalBal > this.jvDetail.jvAmt){
+    }else if(totalTreatyBal > this.jvDetail.jvAmt){
       this.dialogMessage = "The total treaty balance must not exceed the JV Amount.";
       this.dialogIcon = "error-message";
       this.successDiag.open();

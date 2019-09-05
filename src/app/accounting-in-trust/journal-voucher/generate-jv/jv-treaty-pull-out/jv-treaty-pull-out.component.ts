@@ -125,6 +125,8 @@ export class JvTreatyPullOutComponent implements OnInit {
     hide: []
   }
 
+  readOnly: boolean = false;
+
   constructor(private ns: NotesService) { }
 
   ngOnInit() {
