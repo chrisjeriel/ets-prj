@@ -194,8 +194,10 @@ export class CvEntryComponent implements OnInit {
         var totalPrl = arrSum(data2['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
         var totalCredit = arrSum(data2['ae']['list'].map(e => e.creditAmt));
         var totalDebit = arrSum(data2['ae']['list'].map(e => e.debitAmt));
-        this.isTotPrlEqualCvAmt = (Number(totalPrl) == Number(recCv[0].cvAmt))?true:false;
-        this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
+        if(this.saveAcitCv.tranId != '' && this.saveAcitCv.tranId != null){
+          this.isTotPrlEqualCvAmt = (Number(totalPrl) == Number(recCv[0].cvAmt))?true:false;
+          this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
+        }
       });
     });
   }

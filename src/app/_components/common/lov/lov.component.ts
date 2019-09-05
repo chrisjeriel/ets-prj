@@ -727,8 +727,9 @@ export class LovComponent implements OnInit {
           this.passTable.tableData =    rec.filter(a => {
                              var mdl = JSON.stringify({invtId: a.invtId});
                              return !limit.includes(mdl);
-                           });
+                           }).map(x => { x.newRec = 1; x.currAmt = x.invtAmt; return x; });
         }
+        console.log(this.passTable.tableData);
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmRecover'){

@@ -299,29 +299,29 @@ export class PaymentRequestDetailsComponent implements OnInit {
     payeeNo    : ''
   };
 
-  tranTypeList    : any;
-  tabTitle        : string = '';
-  limitClmHistTbl : any[] = [];
-  limitHistCat    : string = '';
-  cancelFlag      : boolean;
-  cancelFlagInw   : boolean;
-  cancelFlagTrty  : boolean;
-  cancelFlagInvt  : boolean;
-  cancelFlagOth   : boolean;
-  cancelFlagUnCol : boolean;
-  cancelFlagServFee: boolean;
-  dialogIcon      : string;
-  dialogMessage   : string;
-  warnMsg         : string = '';
-  recPrqTrans     : any;
-  activeOthTab    : boolean = false;
-  activeUnColTab  : boolean = false;
-  trtyIndx        : number;
-  allotedAmt      : any;
-  totalBal        : any;
-  variance        : any;
-  allotedChanged  : boolean = false;
-  totalReqAmt     : any;
+  tranTypeList       : any;
+  tabTitle           : string = '';
+  limitClmHistTbl    : any[] = [];
+  limitHistCat       : string = '';
+  cancelFlag         : boolean;
+  cancelFlagInw      : boolean;
+  cancelFlagTrty     : boolean;
+  cancelFlagInvt     : boolean;
+  cancelFlagOth      : boolean;
+  cancelFlagUnCol    : boolean;
+  cancelFlagServFee  : boolean;
+  dialogIcon         : string;
+  dialogMessage      : string;
+  warnMsg            : string = '';
+  recPrqTrans        : any;
+  activeOthTab       : boolean = false;
+  activeUnColTab     : boolean = false;
+  trtyIndx           : number;
+  allotedAmt         : any;
+  totalBal           : any;
+  variance           : any;
+  allotedChanged     : boolean = false;
+  currentTbl         : any;
 
   params : any =  {
     savePrqTrans     : [],
@@ -340,10 +340,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   yearList        : any;
   currData        : any;
 
-  gnrtType: string = 'periodAsOf';
-  periodAsOfParam: string = null;
-  yearParam: number = null;
-  yearParamOpts: any[] = [];
+  gnrtType        : string = 'periodAsOf';
+  periodAsOfParam : string = null;
+  yearParam       : number = null;
+  yearParamOpts   : any[] = [];
 
 
 
@@ -383,8 +383,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       this.recPrqTrans = data['acitPrqTrans'];
-      this.totalReqAmt = data['acitPrqTrans'].map(e => e.currAmt).reduce((a,b) => a+b,0);
-      console.log(this.totalReqAmt + ' :  this.totalReqAmt');
       if(this.activeOthTab){
         this.othersData.tableData = [];
         this.getOthers();
@@ -427,6 +425,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       return e;
     });
     this.unColTbl.refreshTable();
+    this.currentTbl = this.unappliedColData.tableData;
   }
 
   getOthers(){
@@ -447,6 +446,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
     console.log(this.othersData.tableData);
     this.othTbl.refreshTable();
+    this.currentTbl = this.othersData.tableData;
   }
 
   geAcitInvt(){
@@ -462,6 +462,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.investmentData.tableData = this.investmentData.tableData.flatMap(e => { return e; });
       this.invtTbl.refreshTable();
       console.log(this.investmentData.tableData);
+      this.currentTbl = this.investmentData.tableData.map(e => { e.currAmt = e.invtAmt; return e;});
+      console.log(this.currentTbl);
     });
   }
 
@@ -672,30 +674,57 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                             e.edited = true; e.checked = false;e.createDate = ''; e.createUser = '';
                                             return e;
                                           }); 
+      console.log(this.investmentData.tableData);
       this.invtTbl.refreshTable();
     }
   }
 
   onClickSave(){
-    if(this.activeOthTab){
-      this.onClickSaveOth();
-    }else if(this.activeUnColTab){
-      this.onClickSaveUnCol();
+    var totalAmt = this.recPrqTrans.reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    var currAmt = this.currentTbl.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    console.log(totalAmt);
+    console.log(currAmt);
+    // var ts = this;
+
+    // function showWarning(tbl){
+       
+    //    if(Number(ts.requestData.reqAmt) < (currAmt + totalAmt)){
+    //      ts.warnMsg = 'The sum of all payments under this request must not exceed the requested amount.';
+    //      ts.warnMdl.openNoClose();
+    //      console.log('warning');
+    //      return true;
+    //    }else{
+    //      console.log('no warning');
+    //      return false;
+    //    }
+    // };    
+
+    if(Number(this.requestData.reqAmt) < (totalAmt + currAmt)){
+      this.warnMsg = 'The sum of all payments under this request must not exceed the requested amount.';
+      this.warnMdl.openNoClose();
     }else{
-      if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
-        this.onClickSaveCPC();
-      }else if(this.requestData.tranTypeCd == 4){
-        this.onClickSaveInw();
-      }else if(this.requestData.tranTypeCd == 5){
-        this.onClickSaveServFee();
-      }else if(this.requestData.tranTypeCd == 6){
-        this.onClickSaveTrty();
-      }else if(this.requestData.tranTypeCd == 7){
-        this.onClickSaveInvt();
-      }else if(this.requestData.tranTypeCd == 8){
+
+      if(this.activeOthTab){
         this.onClickSaveOth();
+      }else if(this.activeUnColTab){
+        this.onClickSaveUnCol();
+      }else{
+        if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
+          this.onClickSaveCPC();
+        }else if(this.requestData.tranTypeCd == 4){
+          this.onClickSaveInw();
+        }else if(this.requestData.tranTypeCd == 5){
+          this.onClickSaveServFee();
+        }else if(this.requestData.tranTypeCd == 6){
+          this.onClickSaveTrty();
+        }else if(this.requestData.tranTypeCd == 7){
+          this.onClickSaveInvt();
+        }else if(this.requestData.tranTypeCd == 8){
+          this.onClickSaveOth();
+        }
       }
-    }
+
+   }
   }
 
   onClickSaveUnCol(cancelFlag?){
@@ -740,12 +769,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucUnCol.open();
       this.params.savePrqTrans   = [];
     }else{
-      if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
-        this.warnMsg = 'The Total payments for the Unapplied Collection, Unapplied Collection and Others must not exceed the Requested Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans   = [];
-        this.params.deletePrqTrans = [];
-      }else if(Number(this.requestData.reqAmt) < Number(currAmt)){
+      // if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+      //   this.warnMsg = 'The Total payments for the Unapplied Collection, Unapplied Collection and Others must not exceed the Requested Amount.';
+      //   this.warnMdl.openNoClose();
+      //   this.params.savePrqTrans   = [];
+      //   this.params.deletePrqTrans = [];
+      // }else 
+      if(Number(this.requestData.reqAmt) < Number(currAmt)){
         this.warnMsg = 'The Total Amount for the Unapplied Collection must not exceed the Requested Amount.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans   = [];
@@ -812,12 +842,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucOth.open();
       this.params.savePrqTrans   = [];
     }else{
-      if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
-        this.warnMsg = 'The Total payments for the Unapplied Collection, Unapplied Collection and Others must not exceed the Requested Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans   = [];
-        this.params.deletePrqTrans = [];
-      }else if(Number(this.requestData.reqAmt) < Number(currAmt)){
+      // if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+      //   this.warnMsg = 'The Total payments for the Unapplied Collection, Unapplied Collection and Others must not exceed the Requested Amount.';
+      //   this.warnMdl.openNoClose();
+      //   this.params.savePrqTrans   = [];
+      //   this.params.deletePrqTrans = [];
+      // }else 
+      if(Number(this.requestData.reqAmt) < Number(currAmt)){
         this.warnMsg = 'The Total Amount for the Other Payments must not exceed the Requested Amount.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans   = [];
@@ -846,22 +877,32 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.cancelFlagInvt = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
+    var isEmpty = 0;
     this.investmentData.tableData.forEach(e => {
       e.reqId    = this.rowData.reqId;
-      if(e.edited && !e.deleted){
-        this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.invtId != e.invtId);
-        e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
-        e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
-        e.updateUser    = this.ns.getCurrentUser();
-        e.updateDate    = this.ns.toDateTimeString(0);
-        e.quarterEnding = '';
-        e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
-        e.currAmt       = e.invtAmt;
-        e.itemNo        = e.itemNo;
-        e.localAmt      = Number(e.invtAmt) * Number(e.currRate);
-        this.params.savePrqTrans.push(e);
-      }else if(e.edited && e.deleted){ 
-        this.params.deletePrqTrans.push(e);  
+      if(e.invtCd == '' || e.invtCd == null){
+        if(!e.deleted){
+          isEmpty = 1;
+          e.fromCancel = false;
+        }else{
+          this.params.deletePrqTrans.push(e);
+        }
+      }else{
+        if(e.edited && !e.deleted){
+          this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.invtId != e.invtId);
+          e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
+          e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
+          e.updateUser    = this.ns.getCurrentUser();
+          e.updateDate    = this.ns.toDateTimeString(0);
+          e.quarterEnding = '';
+          e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
+          e.currAmt       = e.invtAmt;
+          e.itemNo        = e.itemNo;
+          e.localAmt      = Number(e.invtAmt) * Number(e.currRate);
+          this.params.savePrqTrans.push(e);
+        }else if(e.edited && e.deleted){ 
+          this.params.deletePrqTrans.push(e);  
+        }
       }
     });
 
@@ -876,12 +917,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.params.savePrqTrans   = [];
         this.params.deletePrqTrans = [];
     }else{
-      if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
-        this.warnMsg = 'The Total payments for the Investment, Unapplied Collection and Others must not exceed the Requested Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans   = [];
-        this.params.deletePrqTrans = [];
-      }else if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
+      // if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+      //   this.warnMsg = 'The Total payments for the Investment, Unapplied Collection and Others must not exceed the Requested Amount.';
+      //   this.warnMdl.openNoClose();
+      //   this.params.savePrqTrans   = [];
+      //   this.params.deletePrqTrans = [];
+      // }else 
+      if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
           $('.ng-dirty').removeClass('ng-dirty');
           this.conInvt.confirmModal();
           this.params.savePrqTrans   = [];
@@ -935,8 +977,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
 
     var currAmt = this.treatyBalanceData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-    var totalAmt = this.treatyBalanceData.tableData.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-
+    
     this.treatyBalanceData.tableData.forEach(function(tblData){
       if(tblData.newRec != 1){
         saveTrty.forEach(function(stData){
@@ -947,7 +988,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           }
         });
       }
-    });
+    }); 
 
     if(isEmpty == 1){
       this.dialogIcon = 'error';
@@ -963,12 +1004,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
       }else{
-        if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
-          this.warnMsg = 'The Total payments for Treaty Balance, Unapplied Collection, and Others must not exceed the Requested Amount.';
-          this.warnMdl.openNoClose();
-          this.params.savePrqTrans   = [];
-          this.params.deletePrqTrans = [];
-        }else if(Number(this.requestData.reqAmt) < Number(currAmt)){
+        // if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+        //   this.warnMsg = 'The Total payments for Treaty Balance, Unapplied Collection, and Others must not exceed the Requested Amount.';
+        //   this.warnMdl.openNoClose();
+        //   this.params.savePrqTrans   = [];
+        //   this.params.deletePrqTrans = [];
+        // }else 
+        if(Number(this.requestData.reqAmt) < Number(currAmt)){
           this.warnMsg = 'The Total Amount of Treaty Balance Due to Participants must not exceed the Requested Amount.';
           this.warnMdl.openNoClose();
           this.params.savePrqTrans   = [];
@@ -1057,12 +1099,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.dialogIcon = 'error';
       this.sucInw.open();
       this.params.savePrqTrans   = [];
-    }else if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
-          this.warnMsg = 'The Total payments for Inward Policy Balance, Unapplied Collection, and Others must not exceed the Requested Amount.';
-          this.warnMdl.openNoClose();
-          this.params.savePrqTrans   = [];
-          this.params.deletePrqTrans = [];
-    }else if(Number(this.requestData.reqAmt) < Number(returnAmt)){
+    }
+    // else if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
+    //       this.warnMsg = 'The Total payments for Inward Policy Balance, Unapplied Collection, and Others must not exceed the Requested Amount.';
+    //       this.warnMdl.openNoClose();
+    //       this.params.savePrqTrans   = [];
+    //       this.params.deletePrqTrans = [];
+    // }
+    else if(Number(this.requestData.reqAmt) < Number(returnAmt)){
       this.warnMsg = 'The Total Inward Policy Balances Returns must not exceed the Requested Amount.';
       this.warnMdl.openNoClose();
       this.params.savePrqTrans   = [];
