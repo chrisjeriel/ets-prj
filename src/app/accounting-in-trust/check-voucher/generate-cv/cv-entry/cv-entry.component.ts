@@ -34,6 +34,7 @@ export class CvEntryComponent implements OnInit {
   @ViewChild('certUserLov') certUserLov       : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent; 
   @ViewChild('printmMdl') printmMdl           : ModalComponent;
+  @ViewChild('warnMdl') warnMdl               : ModalComponent;
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
   @Input() passData: any = {
@@ -76,12 +77,15 @@ export class CvEntryComponent implements OnInit {
 
   dialogMessage   : string = '';
   dialogIcon      : string = '';
+  warnMsg         : string = '';
   cancelFlag      : boolean;
   fromCancel      : boolean;
   private sub     : any;
   cvStatList      : any;
   removeIcon      : boolean;
   fromBtn         : string = '';
+  isTotPrlEqualCvAmt   : boolean = false;
+  isTotDebCredBalanced : boolean = false;
 
   passDataLov  : any = {
     selector     : '',
@@ -176,20 +180,25 @@ export class CvEntryComponent implements OnInit {
       }
 
       this.cvData.emit({tranId: this.saveAcitCv.tranId});
-      //(this.saveAcitCv.cvStatus == 'X')?this.disableFlds(true):this.disableFlds(false);
       ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
       this.setLocalAmt();
-    });
 
-    // if(this.saveAcitCv.cvNo == '' || this.saveAcitCv.cvNo == null){
-    //   this.saveAcitCv.cvStatus = 'N';
-    //   this.saveAcitCv.cvStatusDesc = 'New';
-    //   this.saveAcitCv.cvDate = this.ns.toDateTimeString(0);
-    //   this.saveAcitCv.currCd = 'PHP';
-    //   this.saveAcitCv.preparedBy = this.ns.getCurrentUser();
-    // }else{
-      
-    // }
+      ///for print button
+      var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId))
+                            .pipe(map(([prl,ae]) => { return { prl, ae }; }));
+
+      subRes2.subscribe(data2 => {
+        console.log(data2);
+        var arrSum = function(arr){
+          return arr.reduce((a,b) => a+b,0);
+        };
+        var totalPrl = arrSum(data2['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
+        var totalCredit = arrSum(data2['ae']['list'].map(e => e.creditAmt));
+        var totalDebit = arrSum(data2['ae']['list'].map(e => e.debitAmt));
+        this.isTotPrlEqualCvAmt = (Number(totalPrl) == Number(recCv[0].cvAmt))?true:false;
+        this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
+      });
+    });
   }
 
   onClickNewCv(){
@@ -422,9 +431,21 @@ export class CvEntryComponent implements OnInit {
   // }
 
   onClickPrint(){
-    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
+    console.log('PRL=cvAmt? : ' + this.isTotPrlEqualCvAmt + ' AND ' + 'Credit=Debit? : ' + this.isTotDebCredBalanced);
+    if(!this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
+      this.warnMsg = 'Total amount of attached payments must be equal to CV amount and Total Debit and Credit amounts in the Accounting Entries must be balanced.';
+      this.warnMdl.openNoClose();
+    }else if(this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
+      this.warnMsg = 'Total Debit and Credit amounts in the Accounting Entries must be balanced.';
+      this.warnMdl.openNoClose();
+    }else if(!this.isTotPrlEqualCvAmt && this.isTotDebCredBalanced){
+      this.warnMsg = 'Total amount of attached payments must be equal to CV amount.';
+      this.warnMdl.openNoClose();
+    }else{
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
-    this.printmMdl.openNoClose();
+      this.printmMdl.openNoClose();
+    }
   }
 
   onClickYesConfirmed(stat){
@@ -447,6 +468,17 @@ export class CvEntryComponent implements OnInit {
       this.success.open();
       this.disableFlds(true);
     });
+  }
+
+  onYesConfirmed(){
+    console.log(this.fromBtn);
+    if(this.fromBtn.toLowerCase() == 'print'){
+      this.onClickYesConfirmed('P');
+    }else if(this.fromBtn.toLowerCase() == 'cancel-req'){
+      this.onClickYesConfirmed('X');
+    }else if(this.fromBtn.toLowerCase() == 'approve-req'){
+      this.onClickYesConfirmed('A');
+    }
   }
 
 }

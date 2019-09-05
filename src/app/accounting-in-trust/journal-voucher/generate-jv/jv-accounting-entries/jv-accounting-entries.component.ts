@@ -40,7 +40,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         slName: '',
         creditAmt: 0,
         debitAmt: 0,
-        autoTag: '',
+        autoTag: 'N',
         createUser: this.ns.getCurrentUser(),
         createDate: this.ns.toDateTimeString(0),
         updateUser: this.ns.getCurrentUser(),
@@ -165,6 +165,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         this.accEntries.saveList.push(this.passData.tableData[i]);
+        this.accEntries.saveList[this.accEntries.saveList.length - 1].tranId = this.jvData.tranId;
         this.accEntries.saveList[this.accEntries.saveList.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
         this.accEntries.saveList[this.accEntries.saveList.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
       }
@@ -237,6 +238,27 @@ export class JvAccountingEntriesComponent implements OnInit {
           this.errorFlag = true;
         }
       });
+    }if(this.jvType == 4){
+      this.accountingService.getAcitJVOverdue(this.jvDetails.tranId,'').subscribe((data:any) => {
+        var datas = data.overDueAccts;
+          for (var i = 0; i < datas.length; i++) {
+            total += datas[i].overdueInt
+          }
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+      });
+    }if(this.jvType == 6){
+      this.accountingService.getAcctTrtyBal(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.overDueAccts;
+        console.log(datas);
+          /*for (var i = 0; i < datas.length; i++) {
+            total += datas[i].overdueInt
+          }
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }*/
+      });
     }
   }
 
@@ -291,5 +313,14 @@ export class JvAccountingEntriesComponent implements OnInit {
 
   onTabChange(data){
     console.log(data)
+    this.debitTotal = 0;
+    this.creditTotal = 0;
+
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      this.debitTotal  += this.passData.tableData[i].debitAmt;
+      this.creditTotal += this.passData.tableData[i].creditAmt;
+    }
+
+     this.variance = this.debitTotal - this.creditTotal;
   }
 }

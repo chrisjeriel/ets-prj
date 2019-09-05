@@ -232,7 +232,7 @@ export class UsersComponent implements OnInit {
         this.securityService.getTransactions(accessLevel, this.userData.userId, null, null).subscribe((data: any) => {
           for(var i =0; i < data.transactions.length;i++){
             this.PassDataModuleTrans.tableData.push(data.transactions[i]);
-            this.PassDataModuleTrans.tableData[i].showMG = 1;
+            this.PassDataModuleTrans.tableData[i].showMG = 0;
             this.PassDataModuleTrans.tableData[i].uneditable = ['tranDesc'];
           }
 
@@ -242,7 +242,7 @@ export class UsersComponent implements OnInit {
         this.securityService.getTransactions(accessLevel, null, this.userData.userGrp, null).subscribe((data: any) => {
           for(var i =0; i < data.transactions.length;i++){
             this.PassDataModuleTransUserGroup.tableData.push(data.transactions[i]);
-            this.PassDataModuleTransUserGroup.tableData[i].showMG = 1;
+            this.PassDataModuleTransUserGroup.tableData[i].showMG = 0;
             this.PassDataModuleTransUserGroup.tableData[i].uneditable = ['tranCd', 'tranDesc'];
           }
 
@@ -338,12 +338,27 @@ export class UsersComponent implements OnInit {
 
   onClickSaveTranModules() {
     try {
-      let saveUserTransactions = {
+      this.prepareUserTrans();
+
+      let saveUserTransactions:any = {
         accessLevel : 'USER',
-        transactionList : this.saveTranList
+        transactionList : []
       }
 
-      console.log("saveUserTransactions : ");
+      for (let rec of this.saveTranList) {
+        var tran = {
+          userId: rec.userId,
+          tranCd: rec.tranCd,
+          remarks: rec.remarks,    
+          createUser: rec.createUser,
+          updateUser: rec.updateUser
+        };
+        console.log(tran);
+        saveUserTransactions.transactionList.push(tran);
+      }
+
+
+      console.log("saveUserTransactions");
       console.log(saveUserTransactions);
 
       this.securityService.saveTransactions(saveUserTransactions).subscribe((data:any)=>{
@@ -372,6 +387,12 @@ export class UsersComponent implements OnInit {
     this.saveTranList = [];
     for (var i = 0; i < this.PassDataModuleTrans.tableData.length; i++) {
       if (this.PassDataModuleTrans.tableData[i].edited == true) {
+        this.PassDataModuleTrans.tableData[i].userId = this.userData.userId;
+        this.PassDataModuleTrans.tableData[i].remarks = 'TestData';
+        this.PassDataModuleTrans.tableData[i].createUser = JSON.parse(window.localStorage.currentUser).username;
+        this.PassDataModuleTrans.tableData[i].updateUser = JSON.parse(window.localStorage.currentUser).username;
+        
+
         this.saveTranList.push(this.PassDataModuleTrans.tableData[i]);
       }
     }

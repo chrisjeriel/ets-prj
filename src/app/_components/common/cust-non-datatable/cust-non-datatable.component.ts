@@ -237,6 +237,7 @@ export class CustNonDatatableComponent implements OnInit {
         /*if(this.passData.tableData.length !== 0 ){
             this.loadingFlag = false;
         }*/
+
     }
 
     ngOnInit(): void {
@@ -424,7 +425,7 @@ export class CustNonDatatableComponent implements OnInit {
                    return true;
                 } 
             });
-            this.rowClick.emit({});
+            this.rowClick.emit([]);
             this.selected = [];
             this.refreshTable();
         }
