@@ -426,7 +426,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       return e;
     });
     this.unColTbl.refreshTable();
-    this.currentTbl = this.unappliedColData.tableData;
+    //this.currentTbl = this.unappliedColData.tableData;
   }
 
   getOthers(){
@@ -447,7 +447,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
     console.log(this.othersData.tableData);
     this.othTbl.refreshTable();
-    this.currentTbl = this.othersData.tableData;
+    //this.currentTbl = this.othersData.tableData;
   }
 
   geAcitInvt(){
@@ -463,7 +463,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.investmentData.tableData = this.investmentData.tableData.flatMap(e => { return e; });
       this.invtTbl.refreshTable();
       console.log(this.investmentData.tableData);
-      this.currentTbl = this.investmentData.tableData.map(e => { e.currAmt = e.invtAmt; return e;});
+      //this.currentTbl = this.investmentData.tableData.map(e => { e.currAmt = e.invtAmt; return e;});
       console.log(this.currentTbl);
     });
   }
@@ -681,10 +681,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onClickSave(){
-    var totalAmt = this.recPrqTrans.reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-    var currAmt = this.currentTbl.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-    console.log(totalAmt);
-    console.log(currAmt);
+     var totalAmt = this.recPrqTrans.reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    // var currAmt = this.currentTbl.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+     console.log(totalAmt);
+    // console.log(currAmt);
     // var ts = this;
 
     // function showWarning(tbl){
@@ -700,10 +700,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     //    }
     // };    
 
-    if(Number(this.requestData.reqAmt) < (totalAmt + currAmt)){
-      this.warnMsg = 'The sum of all payments under this request must not exceed the requested amount.';
-      this.warnMdl.openNoClose();
-    }else{
+    // if(Number(this.requestData.reqAmt) < (totalAmt + currAmt)){
+    //   this.warnMsg = 'The sum of all payments under this request must not exceed the requested amount.';
+    //   this.warnMdl.openNoClose();
+    // }else{
 
       if(this.activeOthTab){
         this.onClickSaveOth();
@@ -725,7 +725,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         }
       }
 
-   }
+   //}
   }
 
   onClickSaveUnCol(cancelFlag?){
