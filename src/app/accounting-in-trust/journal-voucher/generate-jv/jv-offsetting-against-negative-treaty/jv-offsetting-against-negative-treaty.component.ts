@@ -230,7 +230,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   openLOV(data){
-    this.passLov.hide = this.claimsOffset.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimNo});
+    this.passLov.hide = this.claimsOffset.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimId});
     console.log(this.passLov.hide)
     this.lovMdl.openLOV();
   }
