@@ -50,7 +50,7 @@ export class ClaimDistributionComponent implements OnInit {
 
   poolDistPassData: any = {
   	tableData: [],
-  	tHeader: ['Treaty','Treaty Company', '1st Ret Line','1st Ret Amount','2nd Ret Line', '2nd Ret Amount'],
+  	tHeader: ['Treaty','Cedant', '1st Ret Line','1st Ret Amount','2nd Ret Line', '2nd Ret Amount'],
   	dataTypes: ['text','text','number','currency','number','currency'],
     keys:['treatyAbbr','cedingAbbr','ret1Lines','ret1Amt','ret2Lines','ret2Amt'],
     total:[null,'Total','ret1Lines','ret1Amt','ret2Lines','ret2Amt'],
@@ -228,7 +228,7 @@ export class ClaimDistributionComponent implements OnInit {
       this.treatyDistPassData.keys = ['treatyAbbr','cedingAbbr','clmPctShare','reserveAmt','paytAmt'];
       this.treatyDistPassData.total = [null,'Total','clmPctShare','reserveAmt','paytAmt'];
 
-      this.poolDistPassData.tHeader =  ['Treaty','Treaty Company', '1st Ret Line','1st Ret Reserve Amount','1st Ret Payment Amount','2nd Ret Line', '2nd Ret Reserve Amount', '2nd Ret Payment Amount'];
+      this.poolDistPassData.tHeader =  ['Treaty','Cedant', '1st Ret Line','1st Ret Reserve Amount','1st Ret Payment Amount','2nd Ret Line', '2nd Ret Reserve Amount', '2nd Ret Payment Amount'];
       this.poolDistPassData.dataTypes =  ['text','text','number','currency','currency','number','currency','currency'];
       this.poolDistPassData.keys = ['treatyAbbr','cedingAbbr','ret1Lines','ret1Amt','ret1PaytAmt','ret2Lines','ret2Amt','ret2PaytAmt'];
       this.poolDistPassData.total = [null,'Total','ret1Lines','ret1Amt','ret1PaytAmt','ret2Lines','ret2Amt','ret2PaytAmt'];
@@ -240,7 +240,7 @@ export class ClaimDistributionComponent implements OnInit {
       this.treatyDistPassData.keys = ['treatyAbbr','cedingAbbr','clmPctShare','reserveAmt'];
       this.treatyDistPassData.total = [null,'Total','clmPctShare','reserveAmt'];
 
-      this.poolDistPassData.tHeader =  ['Treaty','Treaty Company', '1st Ret Line','1st Ret Amount','2nd Ret Line', '2nd Ret Amount'];
+      this.poolDistPassData.tHeader =  ['Treaty','Cedant', '1st Ret Line','1st Ret Amount','2nd Ret Line', '2nd Ret Amount'];
       this.poolDistPassData.dataTypes =  ['text','text','number','currency','number','currency'];
       this.poolDistPassData.keys = ['treatyAbbr','cedingAbbr','ret1Lines','ret1Amt','ret2Lines','ret2Amt'];
       this.poolDistPassData.total = [null,'Total','ret1Lines','ret1Amt','ret2Lines','ret2Amt'];

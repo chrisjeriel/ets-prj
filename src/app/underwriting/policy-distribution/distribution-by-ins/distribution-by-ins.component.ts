@@ -102,7 +102,7 @@ export class DistributionByInsComponent implements OnInit {
 
   poolDistributionData: any = {
       tableData: [],
-      tHeader: ['Section', 'Treaty', 'Treaty Company', '1st Ret Line', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
+      tHeader: ['Section', 'Treaty', 'Cedant', '1st Ret Line', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
       dataTypes: ['text', 'text', 'text', 'number' , 'currency', 'number', 'currency', 'percent', 'currency', 'currency', 'currency'],
       keys: ['section', 'treatyAbbr', 'cedingName', 'retOneLines' , 'retOnePremAmt', 'retTwoLines', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
       widths: [1,1,250,1,140,140,1,140,140,1,140,140,140],

@@ -495,9 +495,12 @@ export class PolCreatePARComponent implements OnInit {
           this.policyNo = data['policyNo'];
 
           $('#convSuccessModal > #modalBtn').trigger('click');
-        } else if (data['coInsStatus'] === 1) {
-          $('#convWarningModal > #modalBtn').trigger('click');
-        }
+        } 
+
+        console.log ("test");
+        // else if (data['coInsStatus'] === 1) {
+        //   $('#convWarningModal > #modalBtn').trigger('click');
+        // }
       });
     } else {
       this.loading = false;
