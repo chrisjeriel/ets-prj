@@ -207,6 +207,10 @@ export class AltParListingComponent implements OnInit {
 
 
      onClickEdit(event){
+
+         //Sample code here
+
+         console.log("testing new serve");
         this.polLine = this.selectedPolicy.policyNo.split('-')[0];
         this.policyNo = this.selectedPolicy.policyNo;
         this.policyId = this.selectedPolicy.policyId;

@@ -103,9 +103,9 @@
                                     <span>{{filt.keys?.to}}</span> -->
                                 </ng-container>
                                  <ng-container *ngSwitchCase="'textspan'">
-                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter() ;" placement="bottom" ngbTooltip="Min Value" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>                
+                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter() ;" placement="bottom" ngbTooltip="Min Value" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency (change)="filt.keys.search2 = valChanged(filt.keys.search2, filt.keys?.search)">                
                                         <span style="line-height: 1;">&ndash;</span>
-                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="Max Value"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>
+                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="Max Value"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency (change)="filt.keys.search2 = valChanged(filt.keys.search2, filt.keys?.search)">
                                 </ng-container>
 
                             </div>

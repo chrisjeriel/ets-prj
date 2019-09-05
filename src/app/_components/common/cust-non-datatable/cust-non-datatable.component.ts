@@ -707,4 +707,12 @@ export class CustNonDatatableComponent implements OnInit {
         
         this.gnrc2.emit(ev);
     }
+
+    valChanged(toVal, fromVal) {
+       if(toVal !== undefined && toVal !== '' && fromVal !== undefined && fromVal !== '') {
+           return Number(fromVal) > Number(toVal) ? '' : toVal;
+       } else {
+           return fromVal === undefined || fromVal === '' ? toVal : '';
+       }
+    }
 }
