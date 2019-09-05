@@ -96,7 +96,11 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
     }
 
     if(changes.minDate && changes.minDate.currentValue) {
-    	this.minimumDate = changes.minDate.currentValue == '' ? null : new Date(changes.minDate.currentValue);
+    	this.minimumDate = changes.minDate.currentValue == '' || changes.minDate.currentValue == undefined || changes.minDate.currentValue == null ? null : new Date(changes.minDate.currentValue);
+    }
+
+    if(changes.maxDate && changes.maxDate.currentValue) {
+      this.maximumDate = changes.maxDate.currentValue == '' || changes.maxDate.currentValue == undefined || changes.maxDate.currentValue == null ? null : new Date(changes.maxDate.currentValue);
     }
   }
 
@@ -127,7 +131,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
     }
   	
   	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {
-  		this.minimumDate = this.minDate == '' ? null : new Date(this.minDate);
+  		this.minimumDate = this.minDate == '' || this.minDate == undefined ? null : new Date(this.minDate);
   	}
   }
 

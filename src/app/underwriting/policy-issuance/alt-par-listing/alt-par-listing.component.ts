@@ -31,7 +31,7 @@ export class AltParListingComponent implements OnInit {
 
     altParListData: any = {
         tHeader: [
-           "Alteration Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
+           "Alteration Policy No", "Type of Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
         ],
         resizable: [
             false, false, true, true, true, true, true, false, true, true, false,
@@ -159,7 +159,6 @@ export class AltParListingComponent implements OnInit {
        this.uwService.getAltParListing(this.searchParams).subscribe(data => {
           var records = data['policyList'];
           this.fetchedData = records;
-          console.log(this.fetchedData);
                for(let rec of records){
                       if(rec.altNo === 0){
                       } else {
@@ -195,7 +194,6 @@ export class AltParListingComponent implements OnInit {
     searchQuery(searchParams){
         this.searchParams = searchParams;
         this.altParListData.tableData = [];
-        console.log(this.searchParams);
         this.selectedPolicy = {};
         this.altParListData.btnDisabled = true;
         this.retrievePolAltListing();
