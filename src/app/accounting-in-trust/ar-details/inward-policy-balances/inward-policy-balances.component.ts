@@ -181,6 +181,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat = selected[i].prevRiCommVat;
       this.passData.tableData[this.passData.tableData.length - 1].prevCharges = selected[i].prevCharges;
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue = selected[i].prevNetDue;
+      /*this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt = selected[i].balPremDue;
+      this.passData.tableData[this.passData.tableData.length - 1].prevRiComm = selected[i].balRiComm;
+      this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat = selected[i].balRiCommVat;
+      this.passData.tableData[this.passData.tableData.length - 1].prevCharges = selected[i].balChargesDue;
+      this.passData.tableData[this.passData.tableData.length - 1].prevNetDue = selected[i].balAmtDue;*/
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment = selected[i].cumPayment;
       this.passData.tableData[this.passData.tableData.length - 1].prevBalance = selected[i].prevBalance;
       
@@ -212,11 +217,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    /*if(this.checkBalance()){
+    if(this.checkBalance()){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Balance must not be greater than the difference between Net Due and Payments.';
+      this.dialogMessage = 'Payment must not be greater than the Balance.';
       this.successDiag.open();
-    }else */if(this.checkVariance()){
+    }else if(this.checkVariance()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the AR Amount.';
       this.successDiag.open();
@@ -396,7 +401,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       console.log(i.netDue);
       console.log(i.totalPayments);
       console.log(i.balPaytAmt)
-      if(i.balPaytAmt > i.netDue - i.totalPayments){
+      if(i.edited && !i.deleted && i.balPaytAmt > i.prevBalance){
         return true;
       }
     }
