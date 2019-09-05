@@ -1,5 +1,5 @@
 
-<app-cust-editable-non-datatable (tableDataChange)="unappliedCollection($event)" [passData]="passData"> </app-cust-editable-non-datatable>
+<app-cust-editable-non-datatable (tableDataChange)="unappliedCollection($event)" (newClick)="onRowClick($event)" [passData]="passData"> </app-cust-editable-non-datatable>
 
 <div class="form-row" *ngIf="passData.checkFlag">
     <div class="form-group col-sm">

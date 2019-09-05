@@ -134,6 +134,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   };
 
   @Input() inquiryFlag: boolean = false;
+  @Input() acctDetails:any = {};
 
   constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, private route: ActivatedRoute, private router: Router, private ns: NotesService) { }
 

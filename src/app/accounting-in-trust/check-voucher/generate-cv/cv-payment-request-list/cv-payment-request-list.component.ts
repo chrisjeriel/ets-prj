@@ -197,6 +197,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
   showLov(){
+    console.log(this.passDataLov);
     this.limitContent = [];
     
     this.passDataPaytReqList.tableData.forEach(e => {

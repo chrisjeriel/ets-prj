@@ -94,21 +94,21 @@
 						</ng-container> -->
 						<ng-container [ngSwitch]="paymentType">
 							<ng-container *ngSwitchCase="'1'">
-								<app-inward-policy-balances [record]="record"></app-inward-policy-balances>
+								<app-inward-policy-balances [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-inward-policy-balances>
 							</ng-container>
 							<ng-container *ngSwitchCase="'2'">
 								<!-- <app-claim-recovery [record]="record"></app-claim-recovery> -->
-								<app-ar-claim-cash-call [record]="record"></app-ar-claim-cash-call>
+								<app-ar-claim-cash-call [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-claim-cash-call>
 							</ng-container>
 							<ng-container *ngSwitchCase="'3'">
-								<app-ar-details-qsoa [record]="record"></app-ar-details-qsoa>
+								<app-ar-details-qsoa [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-details-qsoa>
 							</ng-container>
 							<ng-container *ngSwitchCase="'4'">
 								<!-- <app-ar-claim-cash-call [record]="record"></app-ar-claim-cash-call> -->
-								<app-claim-recovery [record]="record"></app-claim-recovery>
+								<app-claim-recovery [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-claim-recovery>
 							</ng-container>
 							<ng-container *ngSwitchCase="'5'">
-								<app-ar-details-investments [record]="record" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investments>
+								<app-ar-details-investments [record]="record" (emitCreateUpdate)="createUpdate = $event" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investments>
 							</ng-container>
 							<ng-container *ngSwitchCase="'6'">
 								<app-ar-loss-reserve-deposit [record]="record"></app-ar-loss-reserve-deposit>
@@ -128,7 +128,7 @@
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-ar-details-investment-income [record]="record" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investment-income>
+						<app-ar-details-investment-income [record]="record" (emitCreateUpdate)="createUpdate = $event" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investment-income>
 					</div>
 				</div>
 			</ng-template>
@@ -137,7 +137,7 @@
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-unapplied-collection [arDetails]="record"></app-unapplied-collection>
+						<app-unapplied-collection [arDetails]="record" (emitCreateUpdate)="createUpdate = $event"></app-unapplied-collection>
 					</div>
 				</div>
 			</ng-template>
@@ -146,7 +146,7 @@
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-ar-others [arDetails]="record"></app-ar-others>
+						<app-ar-others [arDetails]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-others>
 					</div>
 				</div>
 			</ng-template>
@@ -160,16 +160,16 @@ padding-right: 0px !important;">
 			<div class="form-row" style="margin-bottom: -10px;">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Created By</label>
-					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.createUser" disabled>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="createUpdate == null ? '' : createUpdate.createUser" disabled>
 					<label class="form-control-sm col-sm-1">Date Created</label>
 					<div class="col-sm" style="padding: 0px">
-					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.createDate"></datepicker>
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate == null ? '' : createUpdate.createDate"></datepicker>
 					</div>
 					<label class="form-control-sm col-sm-1">Last Update By</label>
-					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.updateUser" disabled>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="createUpdate == null ? '' : createUpdate.updateUser" disabled>
 					<label class="form-control-sm col-sm-1">Last Update</label>
 					<div class="col-sm" style="padding: 0px">
-					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.updateDate"></datepicker>
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate == null ? '' : createUpdate.updateDate"></datepicker>
 					</div>
 				</div>
 			</div>

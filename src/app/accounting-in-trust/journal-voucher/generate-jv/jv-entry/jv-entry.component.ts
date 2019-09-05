@@ -9,6 +9,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-jv-entry',
@@ -108,6 +109,8 @@ export class JvEntryComponent implements OnInit {
   allocBut: boolean = false;
   dcBut: boolean = false;
   approvedStat: boolean = false;
+  forApprovedStat: boolean = false;
+  printStat: boolean = false;
   cancelFlag: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
@@ -182,12 +185,18 @@ export class JvEntryComponent implements OnInit {
           this.approveBut = false;
         }
 
-        if(this.entryData.jvStatus == 'A'){
+        if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'F'){
           this.approvedStat = true;
         }
 
-        if(this.entryData.jvStatus == 'N' || this.entryData.jvStatus == 'F' || this.entryData.jvStatus == 'A'){
+        if(this.entryData.jvStatus == 'F'){
+          this.forApprovedStat = false;
+          this.approveBut = false;
+        }
+        
+        if(this.entryData.jvStatus == 'A'){
           this.printBut = false;
+          this.printStat = false; 
         }else{
           this.printBut = true;
         }
@@ -331,9 +340,9 @@ export class JvEntryComponent implements OnInit {
     this.jvDatas.refnoDate = this.entryData.refnoDate == '' ? '': this.ns.toDateTimeString(this.entryData.refnoDate);
     this.jvDatas.particulars = this.entryData.particulars;
     this.jvDatas.currCd = this.entryData.currCd;
-    this.jvDatas.currRate = parseFloat(this.entryData.currRate.toString().split(',').join('')),
-    this.jvDatas.jvAmt = parseFloat(this.entryData.jvAmt.toString().split(',').join('')),
-    this.jvDatas.localAmt = parseFloat(this.entryData.localAmt.toString().split(',').join('')),
+    this.jvDatas.currRate =(parseFloat(this.entryData.currRate.toString().split(',').join(''))),
+    this.jvDatas.jvAmt = (parseFloat(this.entryData.jvAmt.toString().split(',').join(''))),
+    this.jvDatas.localAmt = (parseFloat(this.entryData.localAmt.toString().split(',').join(''))),
     this.jvDatas.allocTag = this.entryData.allocTag;
     this.jvDatas.allocTranId = this.entryData.allocTranId;
     this.jvDatas.preparedBy = this.entryData.preparedBy;
@@ -380,6 +389,7 @@ export class JvEntryComponent implements OnInit {
     this.accService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
       console.log(data);
       this.entryData.approver = data.employee.employeeName;
+      this.entryData.approvedBy = data.employee.userName;
     });
     this.approveJV.openNoClose();
   }
@@ -501,6 +511,8 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickPrint(){
+    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId, '_blank');
     this.printEntries.openNoClose();
   }
 
@@ -532,12 +544,18 @@ export class JvEntryComponent implements OnInit {
   }
 
   validateCurr(){
+    console.log(this.entryData.jvAmt)
+    console.log(this.entryData.currRate)
+    this.entryData.jvAmt = (parseFloat(this.entryData.jvAmt.toString().split(',').join('')));
+    this.entryData.currRate = (parseFloat(this.entryData.currRate.toString().split(',').join('')));
     if(this.entryData.jvAmt !== '' && this.entryData.currRate !== ''){
       this.entryData.localAmt = this.entryData.jvAmt * this.entryData.currRate;
       this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+      this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     }else{
       this.entryData.localAmt = null;
     }
+    
   }
 
   onClickCMDM(){
@@ -547,4 +565,5 @@ export class JvEntryComponent implements OnInit {
   onClickAlloc(){
     this.allocJV.openNoClose();
   }
+
 }

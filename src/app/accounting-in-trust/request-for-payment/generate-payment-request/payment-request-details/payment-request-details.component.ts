@@ -344,9 +344,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   periodAsOfParam : string = null;
   yearParam       : number = null;
   yearParamOpts   : any[] = [];
-
-
-
+  qtrParam: number = null;
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
               private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe,private decPipe: DecimalPipe) {
@@ -357,8 +355,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
       $('.globalLoading').removeClass('globalLoading');  
     },0);
     
-    var currYear = new Date().getFullYear() + 1;
-    for(let x = currYear; x >= 2018; x--) {
+    var d = new Date();
+    this.qtrParam = Math.floor((d.getMonth() / 3) + 1);
+    this.yearParam = d.getFullYear();
+
+    for(let x = d.getFullYear(); x >= 2018; x--) {
       this.yearParamOpts.push(x);
     }
 
@@ -397,7 +398,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.inwardPolBalData.tableData = [];
           this.getAcitPrqInwPol();
         }else if(this.requestData.tranTypeCd == 5){
-          //service fee
+          this.getAcctPrqServFee();
         }else if(this.requestData.tranTypeCd == 6){
           this.treatyBalanceData.tableData = [];
           this.getTreaty();
@@ -1455,30 +1456,39 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.getPrqTrans();
   }
 
-  gnrtTypeChanged() {
-    if(this.gnrtType == 'periodAsOf') {
-      this.yearParam = null;
-    } else {
-      this.periodAsOfParam = null;
-    }
-  }
-
-  getAcctPrqServFee() {
+  getAcctPrqServFee(gnrt?) {
     this.servFeeMainTbl.overlayLoader = true;
     this.servFeeSubTbl.overlayLoader = true;
-    this.acctService.getAcctPrqServFee(this.periodAsOfParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
-      this.serviceFeeMainData.tableData = data['mainDistList'];
-      this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
-      this.servFeeMainTbl.refreshTable();
-      this.servFeeSubTbl.refreshTable();
-    });
+    if(gnrt == undefined) {
+      this.acctService.getAcctPrqServFee('normal', this.requestData.reqId).subscribe(data => {
+        this.serviceFeeMainData.tableData = data['mainDistList'];
+        this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+
+        this.servFeeMainTbl.refreshTable();
+        this.servFeeSubTbl.refreshTable();
+
+        this.servFeeMainTbl.markAsDirty();
+        this.servFeeSubTbl.markAsDirty();
+      });
+    } else {
+      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+        this.serviceFeeMainData.tableData = data['mainDistList'];
+        this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+
+        this.servFeeMainTbl.refreshTable();
+        this.servFeeSubTbl.refreshTable();
+
+        this.servFeeMainTbl.markAsDirty();
+        this.servFeeSubTbl.markAsDirty();
+      });
+    }
   }
 
   onSaveServFee() {
     var param = {
       reqId: this.requestData.reqId,
-      prdAsOf: this.periodAsOfParam,
+      quarter: this.qtrParam,
       year: this.yearParam,
       servFeeAmt: this.requestData.reqAmt,
       currCd: this.requestData.currCd,
@@ -1490,10 +1500,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
 
     this.acctService.saveAcctPrqServFee(param).subscribe(data => {
-      console.log(data);
       if(data['returnCode'] == -1) {
         this.dialogIcon = "success";
         this.sucServFee.open();
+        this.getAcctPrqServFee();
       } else {
         this.dialogIcon = "error";
         this.sucServFee.open();
@@ -1506,11 +1516,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.conServFee.confirmModal();
   }
 
-  checkCancelServFee(){
-    if(this.cancelFlagServFee){
+  checkCancelServFee() {
+    if(this.cancelFlagServFee) {
       this.canServFee.onNo();
-    }else{
-      this.sucServFee.modal.closeModal();
     }
   }
 

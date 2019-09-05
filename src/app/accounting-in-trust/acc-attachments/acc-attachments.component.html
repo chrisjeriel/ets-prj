@@ -69,7 +69,7 @@
 		<label class="form-control-sm col-sm-1">Last Update</label>
 		<input type="text" class="form-control form-control-sm col-sm" value="10/01/2018 10:45 AM">	
 	</div> -->
-  <div class="form-group col-sm text-center" style="margin-bottom: 5px">
+  <div class="form-group col-sm text-center" style="margin-bottom: 5px" *ngIf="record.arStatDesc.toUpperCase() == 'NEW'">
       <div class="cust-btn-container">
         <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
         <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>

@@ -5,7 +5,7 @@
           <div class="col-sm-2"></div>
           <label class="form-control-sm col-sm-1">Bank</label>
           <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBank" (ngModelChange)="changeBank($event)" appRequired >
-            <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}} {{selectedBank === bankAcct}}</option>
+            <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
           </select>
           <label class="form-control-sm col-sm-2">Bank Acct. No.</label>
           <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBankAcct" (ngModelChange)="changeBankAcct($event)" appRequired>
@@ -15,8 +15,8 @@
         </div>
       	<!-- <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvPulloutLOV($event)" (tableDataChange)="onTableDataChange($event)">
       	</app-cust-editable-non-datatable> TRBT#PROD_GRADE -->
-        <app-cust-editable-non-datatable [passData]="passData">
-        </app-cust-editable-non-datatable>
+      	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvPulloutLOV()">
+      	</app-cust-editable-non-datatable>
     </div>
   </div>
 </div>
@@ -34,13 +34,9 @@
     </div>
 </div>
 
-<!-- <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov> TRBT#PROD_GRADE -->
-<app-lov #lov>
-<!-- <app-confirm-save (onYes)="save()"></app-confirm-save> TRBT#PROD_GRADE -->
-<app-confirm-save></app-confirm-save>
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
+<app-confirm-save (onYes)="saveInvPullOut()"></app-confirm-save>
 <!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
-<!-- <app-sucess-dialog (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
-<app-sucess-dialog></app-sucess-dialog>
-<!-- <app-cancel-button (onYes)="save('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button> TRBT#PROD_GRADE -->
-<app-cancel-button [url]="'/acct-ar-listings'" ></app-cancel-button>
-
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="null"></app-sucess-dialog>
+<!-- <app-cancel-button (onYes)="saveInvPullOut('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button> TRBT#PROD_GRADE -->
+<app-cancel-button (onYes)="saveInvPullOut()" [url]="'/acct-ar-listings'" ></app-cancel-button>

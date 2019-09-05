@@ -13,6 +13,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -478,4 +479,11 @@ export class PaymentRequestEntryComponent implements OnInit {
       }
 
    }
+
+   //added by Neco 09/04/2019
+   onClickPrint(){
+     window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_PAYT_REQ' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&reqId=' + this.saveAcitPaytReq.reqId, '_blank');
+   }
+   //end
 }

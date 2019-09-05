@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService, UnderwritingService, QuotationService, AccountingService } from '@app/_services';
+import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -47,15 +47,18 @@ export class LovComponent implements OnInit {
   theme =  window.localStorage.getItem("selectedTheme");
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService,
-    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService) { }
+    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, private securityService : SecurityService) { }
 
   ngOnInit() {
   	  // if(this.lovCheckBox){
      //    this.passTable.checkFlag = true;
      //  }
+     console.log(this.lovCheckBox)
   }
 
   select(data){
+    console.log(this.passTable.checkFlag);
+    console.log(this.passData.data);
   	  this.passData.data = data;
   }
 
@@ -69,6 +72,8 @@ export class LovComponent implements OnInit {
       this.passData.data = selects;
       this.selectedData.emit(this.passData);
     }
+
+    this.passData.data = null;
   }
 
   checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?) {
@@ -647,14 +652,27 @@ export class LovComponent implements OnInit {
        })
 
     }else if(this.passData.selector == 'acitSoaDtl'){
-      this.passTable.tHeader = ['SOA No.','Policy No.', 'Inst No.', 'Due Date', 'Balance'];
+      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Balance'];
       this.passTable.widths =[300,300,1,200,200]
-      this.passTable.dataTypes = [ 'text','text', 'sequence-2', 'date', 'currency'];
-      this.passTable.keys = [ 'soaNo','policyNo', 'instNo', 'dueDate', 'balance'];
+      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency'];
+      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'balance'];
       this.passTable.checkFlag = true;
-      this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal, this.passData.currCd).subscribe((a:any)=>{
+      this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
-        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1 });
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        console.log(this.passTable.tableData);
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'acitSoaDtlOverdue'){
+      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Balance'];
+      this.passTable.widths =[300,300,1,200,200]
+      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency'];
+      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'balance'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
+        //this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        console.log(this.passTable.tableData);
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'acitSoaDtlAr'){
@@ -670,12 +688,13 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'acitSoaDtlZeroBal'){
-      this.passTable.tHeader = ['SOA No.','Policy No.', 'Inst No.', 'Due Date', 'Net Due','Payments'];
-      this.passTable.widths =[300,300,1,200,200,200]
-      this.passTable.dataTypes = [ 'text','text', 'sequence-2', 'date', 'currency','currency'];
-      this.passTable.keys = [ 'soaNo','policyNo', 'instNo', 'dueDate', 'totalAmtDue','netDuePayments'];
-      this.passTable.checkFlag = true;
-      this.accountingService.getAcitSoaDtl(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
+      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Balance'];
+      this.passTable.widths =[300,300,1,200,200]
+      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency'];
+      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'balance'];
+      this.passTable.checkFlag = false;
+      console.log(this.passData)
+      this.accountingService.getSoaDtlZero(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.currCd).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
         this.table.refreshTable();
@@ -772,6 +791,21 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
         this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimNo)==-1});
+        //this.passTable.tableData = data.clmpayments;
+        console.log(data.clmpayments);
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'clmResHistPaytsOffset'){
+      var histTypes = [4,5,7,8,9,10];
+      this.passTable.tHeader = ['Claim No','Hist No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Cummulative Payment'];
+      this.passTable.widths =[300,300,300,300,300,300]
+      this.passTable.dataTypes = [ 'text','sequence-2', 'text', 'text', 'currency', 'currency',];
+      this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return histTypes.includes(data.histType)});
+        //this.passTable.tableData = data.clmpayments;
+        console.log(data.clmpayments);
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmCashCall'){
@@ -816,6 +850,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
         var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A');
+        console.log(rec);
         if(this.limitContent.length != 0){
           var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({reqId: a.reqId}));
           this.passTable.tableData =  rec.filter(a => {
@@ -854,6 +889,28 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = false;
       this.mtnService.getMtnBussType(this.passData.bussTypeCd, this.passData.bussTypeName, this.passData.activeTag).subscribe((a:any)=>{
         this.passTable.tableData = a["bussTypeList"];
+        //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'mtnTransactions'){
+      this.passTable.tHeader = ['Tran Code', 'Description'];
+      this.passTable.widths = [77,'auto']
+      this.passTable.dataTypes = [ 'number','text'];
+      this.passTable.keys = [ 'tranCd','tranDesc'];
+      this.passTable.checkFlag = false;
+      this.securityService.getMtnTransactions(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
+        this.passTable.tableData = a["transactions"];
+        //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'mtnModules'){
+      this.passTable.tHeader = ['Module ID', 'Description'];
+      this.passTable.widths = [77,'auto']
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'moduleId','moduleDesc'];
+      this.passTable.checkFlag = false;
+      this.securityService.getMtnModules(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
+        this.passTable.tableData = a["modules"];
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });

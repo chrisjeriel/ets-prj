@@ -1,0 +1,64 @@
+<div>
+    <div class="form-row custom-row-inline-inset">
+         <div class="col-sm-12 text-align">
+            <div class="input-group" style="padding-right: 0px">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+                        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" (change)="checkCode($event)" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()"> TRBT#PROD_GRADE -->
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()">
+                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+         </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
+                <legend class="scheduler-border">Treaty Balance</legend>
+                    <div style="position: relative;margin-top: 10px" >
+                        <!-- <app-cust-editable-non-datatable #quarterTable [passData]="passData" (newClick)="onrowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event);calculateTotal($event)"></app-cust-editable-non-datatable> TRBT#PROD_GRADE -->
+                        <app-cust-editable-non-datatable #quarterTable [passData]="passData" (tableDataChange)="passData.tableData=$event;"></app-cust-editable-non-datatable>
+                    </div>
+            </fieldset>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" style="margin-top: 3px" >
+            <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
+            <legend class="scheduler-border">Investment Pull-Out</legend>
+                <div style="position: relative;margin-top: 10px" >
+                    <app-cust-editable-non-datatable #invTable [passData]="invesmentData"></app-cust-editable-non-datatable>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="form-row" style="margin-top: 13px !important;">
+        <div class="form-group col-sm">
+            <div class="col-md-12 text-center">
+                <div class="cust-btn-container">
+                    <!-- <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="onClickSave()"><a>Save</a></button> TRBT#PROD_GRADE -->
+                    <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly"><a>Save</a></button>
+                </div>
+            </div>
+        </div>
+    </div>	
+</div>
+<app-mtn-payee-ceding id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-payee-ceding>
+<!-- <app-lov [passData]="passLov" (selectedData)="setClaimOffset($event)">
+<app-quarter-ending-lov id="quarterEnd" (selectedData)="setQuarter($event)"></app-quarter-ending-lov> TRBT#PROD_GRADE -->
+<app-lov [passData]="passLov">
+<app-quarter-ending-lov id="quarterEnd"></app-quarter-ending-lov>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog></app-sucess-dialog>
+<!-- <app-confirm-save (onYes)="saveNegativeTreatyBal()"></app-confirm-save>
+<app-cancel-button (onYes)="saveNegativeTreatyBal('cancel')" [url]="'/journal-voucher'" ></app-cancel-button> TRBT#PROD_GRADE -->
+<app-confirm-save ></app-confirm-save>
+<app-cancel-button [url]="'/journal-voucher'" ></app-cancel-button>
