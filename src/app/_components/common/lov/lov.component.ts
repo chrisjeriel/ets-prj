@@ -85,7 +85,7 @@ export class LovComponent implements OnInit {
       console.log(this.passData.data);
       this.passData.data = data;
     }
-  	  // -- this.passData.data = data;
+  	// -- this.passData.data = data;
   }
 
   okBtnClick(){
