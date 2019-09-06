@@ -86,11 +86,9 @@ export class JvPreniumReserveComponent implements OnInit {
 		this.titleService.setTitle("Acct-IT | JV QSOA");
 		this.passData.nData.currCd = this.jvDetail.currCd;
 		this.passData.nData.currRate = this.jvDetail.currRate;
-		if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
-		  	this.passData.disableAdd = false;
-		}else {
-			this.readOnly = true;	
-			this.passData.uneditable = [true,true,true,true,true,true];
+		if(this.jvDetail.statusType !== 'N' && this.jvDetail.statusType !== 'F'){
+		  	this.readOnly = true;	
+		  	this.passData.uneditable = [true,true,true,true,true,true];
 		}
 		this.retrievePremRes();
 	}
@@ -101,6 +99,9 @@ export class JvPreniumReserveComponent implements OnInit {
 			this.totalInterestAmt = 0;
 			this.totalWhtaxAmt = 0;
 			if(data.premResRel.length!= 0){
+				if(this.jvDetail.statusType == 'N'){
+					this.passData.disableAdd = false;
+				}
 				this.premResData.cedingName = data.premResRel[0].cedingName;
 				this.premResData.cedingId = data.premResRel[0].cedingId;
 				this.check(this.premResData);
@@ -198,6 +199,7 @@ export class JvPreniumReserveComponent implements OnInit {
   		console.log(data)
   		this.premResData.cedingName = data.payeeName;
   		this.premResData.cedingId	= data.payeeCd;
+  		this.passData.disableAdd = false;
   		this.ns.lovLoader(data.ev, 0);
   		this.retrievePremRes();
   		this.check(this.premResData);

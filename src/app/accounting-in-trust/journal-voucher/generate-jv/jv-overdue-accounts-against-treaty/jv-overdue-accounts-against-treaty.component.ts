@@ -387,6 +387,15 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].quarterNo = this.passData.tableData[i].quarterNo;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].createDate =  this.ns.toDateTimeString(this.passData.tableData[i].acctOffset[j].createDate);
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].acctOffset[j].updateDate);
+          if(this.passData.tableData[i].acctOffset[j].balance > 0 && this.passData.tableData[i].acctOffset[j].paytAmt > 0){
+              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  1
+          }else if(this.passData.tableData[i].acctOffset[j].balance > 0 && this.passData.tableData[i].acctOffset[j].paytAmt < 0){
+              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  2
+          }else if(this.passData.tableData[i].acctOffset[j].balance < 0 && this.passData.tableData[i].acctOffset[j].paytAmt < 0){
+              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  3
+          }else if(this.passData.tableData[i].acctOffset[j].balance < 0 && this.passData.tableData[i].acctOffset[j].paytAmt > 0){
+              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  4
+          }
         }
 
         if(this.passData.tableData[i].acctOffset[j].deleted){
