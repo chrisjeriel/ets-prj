@@ -323,18 +323,14 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         if(!this.passData.tableData[i].clmOffset[j].deleted){
           if(this.positiveHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
             totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
-            console.log('positive'+totalPaid);
           }else if(this.negativeHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
             totalPaid -= this.passData.tableData[i].clmOffset[j].clmPaytAmt;
-            console.log('negative'+totalPaid);
           }
           //END
           //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt
           if((this.passData.tableData[i].balanceAmt < 0 && this.passData.tableData[i].balanceAmt + totalPaid  > 0) ||
              (this.passData.tableData[i].balanceAmt > 0 && this.passData.tableData[i].balanceAmt + totalPaid  < 0)){
             this.errorFlag = true;
-            console.log('balance'+this.passData.tableData[i].balanceAmt);
-            console.log('condition'+totalPaid);
             break;
           }
         }
@@ -402,6 +398,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding)
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
+        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].actualBalPaid = actualBalPaid;
         if(this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterNo === ''){
           quarterNo = this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding.split('T');
           quarterNo = quarterNo[0].split('-');
@@ -431,9 +428,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
           this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;
         }
       }
-      console.log(this.jvDetails);
-      this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].actualBalPaid = actualBalPaid;
-
     }
 
     this.jvDetails.tranId = this.jvDetail.tranId;

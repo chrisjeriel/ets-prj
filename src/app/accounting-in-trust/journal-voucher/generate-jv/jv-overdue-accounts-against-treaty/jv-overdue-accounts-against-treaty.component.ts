@@ -9,6 +9,7 @@ import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/q
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-overdue-accounts-against-treaty',
@@ -26,6 +27,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   passData: any = {
       tableData: [],
@@ -137,6 +139,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   totalTratyBal: number = 0;
   totalBal: number = 0;
   readOnly: boolean = false;
+  cancelFlag: boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
@@ -384,6 +387,15 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].quarterNo = this.passData.tableData[i].quarterNo;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].createDate =  this.ns.toDateTimeString(this.passData.tableData[i].acctOffset[j].createDate);
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].acctOffset[j].updateDate);
+          if(this.passData.tableData[i].acctOffset[j].balance > 0 && this.passData.tableData[i].acctOffset[j].paytAmt > 0){
+              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  1
+          }else if(this.passData.tableData[i].acctOffset[j].balance > 0 && this.passData.tableData[i].acctOffset[j].paytAmt < 0){
+              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  2
+          }else if(this.passData.tableData[i].acctOffset[j].balance < 0 && this.passData.tableData[i].acctOffset[j].paytAmt < 0){
+              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  3
+          }else if(this.passData.tableData[i].acctOffset[j].balance < 0 && this.passData.tableData[i].acctOffset[j].paytAmt > 0){
+              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  4
+          }
         }
 
         if(this.passData.tableData[i].acctOffset[j].deleted){
@@ -398,7 +410,8 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
-  saveAcctTrty(){
+  saveAcctTrty(cancel?){
+    this.cancelFlag = cancel !== undefined;
     this.prepareData();
     this.accountingService.saveAcitJvAcctTrty(this.jvDetails).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
@@ -415,8 +428,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDetails);
+   this.cancelBtn.clickCancel();
   }
 
   getMtnRate(){

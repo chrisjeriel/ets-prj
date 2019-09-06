@@ -59,7 +59,6 @@ export class LovComponent implements OnInit {
   	  // if(this.lovCheckBox){
      //    this.passTable.checkFlag = true;
      //  }
-     console.log(this.lovCheckBox)
   }
 
   select(data){
@@ -82,10 +81,11 @@ export class LovComponent implements OnInit {
         index += 1;
       }
     }else{
-        console.log(this.passTable.checkFlag);
-        console.log(this.passData.data);
-          this.passData.data = data;
-        }
+      console.log(this.passTable.checkFlag);
+      console.log(this.passData.data);
+      this.passData.data = data;
+    }
+  	  // -- this.passData.data = data;
   }
 
   okBtnClick(){
@@ -103,9 +103,6 @@ export class LovComponent implements OnInit {
   }
 
   checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?) {
-
-    console.log("checkCode in lov component");
-
     if (selector == 'region') {
       if (regionCd === '') {
         this.selectedData.emit({

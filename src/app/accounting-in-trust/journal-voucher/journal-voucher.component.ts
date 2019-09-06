@@ -151,7 +151,6 @@ export class JournalVoucherComponent implements OnInit {
 
   onRowClick(data){
     if(data != null){
-      console.log(data);
       this.dataInfo            = data;
       this.dataInfo.tranId     = data.tranId;
       this.dataInfo.createUser = data.createUser;
