@@ -248,8 +248,8 @@ export class JvEntryComponent implements OnInit {
         this.entryData.particulars =  '';
         this.entryData.currCd = 'PHP';
         this.entryData.currRate = 1;
-        this.entryData.jvAmt = '';
-        this.entryData.localAmt = '';
+        this.entryData.jvAmt = 0;
+        this.entryData.localAmt = 0;
         this.entryData.preparedBy = this.ns.getCurrentUser();
         this.entryData.preparedDate = this.ns.toDateTimeString(0);
         this.entryData.approvedBy = '';
@@ -269,6 +269,8 @@ export class JvEntryComponent implements OnInit {
         this.dcBut = true;
         this.approvedStat = false;
         this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+        this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
+        this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
         this.disableTab.emit(true);
     },0);
   }

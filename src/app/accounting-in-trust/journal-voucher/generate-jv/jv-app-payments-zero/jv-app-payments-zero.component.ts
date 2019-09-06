@@ -4,6 +4,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-app-payments-zero',
@@ -20,7 +21,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
-
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   /*passData: any = {
     tHeaderWithColspan : [{ header: "", span: 1 }, { header: "Policy Information", span: 14 },
          { header: "Payment Details", span: 2 }],     
@@ -162,6 +163,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   totalOverpayment: number = 0;
+  cancelFlag: boolean = false;
 
   constructor(private ns: NotesService, private accService: AccountingService) { }
 

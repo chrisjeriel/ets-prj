@@ -53,7 +53,6 @@ export class LovComponent implements OnInit {
   	  // if(this.lovCheckBox){
      //    this.passTable.checkFlag = true;
      //  }
-     console.log(this.lovCheckBox)
   }
 
   select(data){

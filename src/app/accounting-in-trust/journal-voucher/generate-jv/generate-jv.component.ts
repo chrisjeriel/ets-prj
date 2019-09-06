@@ -69,7 +69,6 @@ export class GenerateJvComponent implements OnInit {
   }
 
   jvInfo(data){
-    console.log(data)
      this.jvData.tranId = data.jvTranId;
      this.jvData.type =  data.jvType;
      this.jvData.jvNo =  data.jvNo;

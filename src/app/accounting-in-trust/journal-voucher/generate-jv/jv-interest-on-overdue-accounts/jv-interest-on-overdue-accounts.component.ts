@@ -209,7 +209,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
         edited.push(this.passData.tableData[i]);
         edited[edited.length - 1].dueDate = this.ns.toDateTimeString(this.passData.tableData[i].dueDate)
         edited[edited.length - 1].autoTag = this.passData.tableData[i].orgOverdue == this.passData.tableData[i].overdueInt ? 'Y':'N';
-        edited[edited.length - 1].interestRate = this.interestRate
+        edited[edited.length - 1].interestRate = this.interestRate;
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
