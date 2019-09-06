@@ -99,19 +99,8 @@ export class CvEntryComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | CV Entry");
-    // this.getAcitCv();
 
     this.sub = this.activatedRoute.params.subscribe(params => {
-      // if(Object.keys(params).length != 0 ){
-      //   console.log('here 1');
-      // //|| (this.rowData.reqId != null && this.rowData.reqId != '')){
-      //   this.saveAcitCv.tranId = this.passData.tranId == '' ? params['tranId'] : this.passData.tranId;
-      //   //this.initDisabled = false;
-      // }else{
-      //   //this.initDisabled = true;
-      //   console.log('here 2');
-      // }
-
       if(this.passData.tranId == '') {
         if(Object.keys(params).length != 0 ){
           this.saveAcitCv.tranId = params['tranId'];
@@ -147,6 +136,7 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv.currRate = 1;
         this.saveAcitCv.checkClass = 'LC';
         this.saveAcitCv.checkClassDesc = recCl.filter(e => e.code == this.saveAcitCv.checkClass).map(e => e.description);
+        this.saveAcitCv.preparedDate = this.ns.toDateTimeString(0);
 
         recPn.forEach(e => {
           if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
@@ -252,6 +242,7 @@ export class CvEntryComponent implements OnInit {
        this.saveAcitCv.checkClass == '' || this.saveAcitCv.checkClass == null){
         this.dialogIcon = 'error';
         this.success.open();
+        this.saveAcitCv.checkDate == '' ? $('.checkDateWarn').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
         $('.warn').focus();
         $('.warn').blur();
         this.fromCancel = false;
