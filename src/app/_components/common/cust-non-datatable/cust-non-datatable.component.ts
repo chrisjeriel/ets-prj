@@ -708,11 +708,15 @@ export class CustNonDatatableComponent implements OnInit {
         this.gnrc2.emit(ev);
     }
 
-    valChanged(toVal, fromVal) {
-       if(toVal !== undefined && toVal !== '' && fromVal !== undefined && fromVal !== '') {
-           return Number(fromVal) > Number(toVal) ? '' : toVal;
-       } else {
-           return fromVal === undefined || fromVal === '' ? toVal : '';
-       }
+    valChanged(type, fromVal, toVal) {
+        if(toVal !== undefined && toVal !== '' && fromVal !== undefined && fromVal !== '') {
+            if(type === 'ts') {
+                return Number(fromVal) > Number(toVal) ? '' : toVal;
+            } else if(type === 'ds') {
+                return new Date(fromVal) > new Date(toVal) ? '' : toVal;
+            }
+        } else {
+            return fromVal === undefined || fromVal === '' ? toVal : '';
+        }
     }
 }
