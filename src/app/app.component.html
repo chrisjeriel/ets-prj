@@ -40,40 +40,40 @@
                                 <fa name="file"></fa>&nbsp;Quotation
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTE001') > -1" -->
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE001') > -1">
                                     <button id="QUOTE001" [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
                                         Processing</button>
                                     <br />
                                 </ng-container>
-                                <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTE012') > -1" -->
-                                    <button id="QUOTE011" [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE012') > -1">
+                                    <button id="QUOTE012" [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
                                         Inquiry</button>
                                     <br>
                                 </ng-container>
-                                <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTE013') > -1" -->
-                                    <button id="QUOTE012" [routerLink]="['/quotation-to-hold-cover']" class="button btn btn-link">Quotation
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE013') > -1">
+                                    <button id="QUOTE013" [routerLink]="['/quotation-to-hold-cover']" class="button btn btn-link">Quotation
                                         to Hold Cover</button>
                                     <br />
                                 </ng-container>
-                                <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTE014') > -1" -->
-                                    <button id="QUOTE013" [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE014') > -1">
+                                    <button id="QUOTE014" [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
                                         Cover Monitoring</button>
                                     <br />
                                 </ng-container>
-                                <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTE015') > -1" -->
-                                    <button id="QUOTE018" [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE015') > -1">
+                                    <button id="QUOTE015" [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
                                         Quote Status</button>
                                     <br />
                                 </ng-container>
-                                <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTE014') > -1" -->
-                                    <button id="QUOTE014" [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
+                                <!-- <ng-container *ngIf="accessibleModules.indexOf('QUOTE014') > -1">
+                                    <button id="QUOTE016" [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
                                         Cover Processing</button>
                                     <br />
                                 </ng-container>
-                                <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTE017') > -1" -->
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE017') > -1">
                                     <button id="QUOTE017" [routerLink]="['/open-cover-inquiry']" class="button btn btn-link"> Open
                                         Cover Inquiry</button>
-                                </ng-container>
+                                </ng-container> -->
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel>

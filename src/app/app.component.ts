@@ -8,22 +8,6 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DOCUMENT } from '@angular/platform-browser';
 import { UserService } from './_services';
 
-/*const params = new HttpParams()
-                .set('riskId',riskId)
-                .set('riskAbbr',riskAbbr)
-                .set('riskName',riskName)
-                .set('regionDesc',regionDesc)
-                .set('provinceDesc',provinceDesc)
-                .set('cityDesc',cityDesc)
-                .set('districtDesc',districtDesc)
-                .set('blockDesc',blockDesc)
-                .set('latitude',latitude)
-                .set('longitude',longitude)
-                .set('activeTag',activeTag);
-
-        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRiskListing', {params}) ;*/
-
-
 @Component({ 
     selector: 'app',
     templateUrl: 'app.component.html',
@@ -55,27 +39,13 @@ export class AppComponent  {
      config: NgbModalConfig,
      private modalService: NgbModal,
      private eRef: ElementRef,
-     @Inject(DOCUMENT) private document
-    ) {
+     @Inject(DOCUMENT) private document) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
         setInterval(() => {
             this.datetime = Date.now();
         }, 1);
         config.backdrop = 'static';
         config.keyboard = false;
-
-
-
-
-        if (this.currentUser != null) {
-          this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {        
-        
-            this.userService.emitAccessModules(data['modulesList']);
-            
-          });
-        }        
-
-        
     }
 
     logout() {
@@ -142,41 +112,35 @@ export class AppComponent  {
     }
 
     applyTheme(){
-      this.theme = window.localStorage.getItem("selectedTheme");
+        this.theme = window.localStorage.getItem("selectedTheme");
     }
 
-
     ngOnInit(){
-      this.theme = window.localStorage.getItem("selectedTheme");
-      this.changeTheme(this.theme);
+        this.theme = window.localStorage.getItem("selectedTheme");
+        this.changeTheme(this.theme);
 
-      this.userService.moduleIdObs.subscribe(value => {
+        this.userService.moduleIdObs.subscribe(value => {
             this.moduleId = value;
-        })
+        });
+
+        if (this.currentUser != null) {
+            this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {
+                console.log("AppComponent : ");
+                console.log(data['modulesList']);
+                console.log("-------------");
+                this.userService.setAccessModules(data['modulesList']);
+                this.userService.emitAccessModules(data['modulesList']);
+            });
+        };
 
         this.userService.accessibleModules.subscribe(value => {
             this.accessibleModules = value;
-        })
 
-        console.log("accessibleModules Retrieved : " + this.accessibleModules);
+            console.log("accessibleModules Retrieved : " + this.accessibleModules);
+        });
+
+        
     }
-
-     /*@HostListener('document:click', ['$event'])
-      clickout(event) {
-        if(this.eRef.nativeElement.contains(event.target)) {
-                      this.changeTheme(this.theme);
-        } else {
-                      this.changeTheme(this.theme);
-        }
-     }*/
-
- /*    @HostListener('document:keyup', ['$event'])
-       handleKeyboardEvent(event: KeyboardEvent) { ''
-              if (event.key == 'Backspace' || event.key == ' ') {
-                this.changeTheme(this.theme);
-              }
-    }*/
-
     
     @HostListener('window:unload', ['$event'])
     unloadHandler(event) {

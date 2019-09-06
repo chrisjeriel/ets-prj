@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
-import { SecurityService, NotesService } from '@app/_services';
+import { SecurityService, NotesService, MaintenanceService } from '@app/_services';
 import { ModuleInfo } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -14,6 +14,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class SecurityModulesComponent implements OnInit {
 
   @ViewChild("modulesList") modulesList: CustEditableNonDatatableComponent;
+  @ViewChild("userListing") userListing: CustEditableNonDatatableComponent;
+  @ViewChild("userGroupListing") userGroupListing: CustEditableNonDatatableComponent;
+
 
   passDataModules: any = {
       tableData: [],
@@ -40,7 +43,8 @@ export class SecurityModulesComponent implements OnInit {
       searchFlag: true,
       opts: [{
           selector: 'moduleGrp',
-          vals: ['A', 'B'],
+          prev: [],
+          vals: []
       }],
       widths: [],
       paginateFlag: true,
@@ -58,28 +62,35 @@ export class SecurityModulesComponent implements OnInit {
       paginateFlag: true,
       infoFlag: true,
       widths: [77,223],
+      uneditable: [true, true],
     }
     
-    PassDatAUserListing: any = {
-    tableData: [['LCUARESMA','Lope Cuaresma','Y']],
-    tHeader: ['User Id', 'User Name', 'Active'],
-    dataTypes: ['text', 'text','checkbox'],
-    pageID: 7,
-    pageLength:5,
-    searchFlag: true,
-    paginateFlag: true,
-    infoFlag: true,
-    widths: [110,225,30],
+    PassDataUserListing: any = {
+      tableData: [],
+      tHeader: ['User Id', 'User Name', 'Active'],
+      keys:['userId','userName','activeTag'],
+      dataTypes: ['text', 'text','checkbox'],
+      uneditable: [true, true, true],
+      pageID: 7,
+      pageLength:5,
+      searchFlag: true,
+      paginateFlag: true,
+      infoFlag: true,
+      widths: [110,225,30],
     }
 
-    PassDataUserGroups: any = {
-      tableData: [['001','Admin'],['002','Engineering']],
-      tHeader: ['User Group', 'Description'],
+    PassDataUserGroupListing: any = {
+      tableData: [],
+      tHeader: ['User Group', 'Descripition'],
+      keys:['userGrp','userGrpDesc'],
       dataTypes: ['text', 'text'],
-      pageID: 6,
-      pageLength:10,
+      uneditable: [true, true],
+      pageID: 7,
+      pageLength:5,
       searchFlag: true,
-      widths: [],
+      paginateFlag: true,
+      infoFlag: true,
+      widths: [110,225],
     }
 
     modulesData : any = {
@@ -92,15 +103,16 @@ export class SecurityModulesComponent implements OnInit {
     edited: any =[];
     deleted: any = [];
 
-    constructor(private securityServices: SecurityService,public modalService: NgbModal, private ns: NotesService) { }
+    constructor(private securityService: SecurityService,public modalService: NgbModal, private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
     ngOnInit() {
       this.getMtnModules();
+      this.getModuleGroup();
     }
 
     getMtnModules() {
       this.passDataModules.tableData = [];
-      this.securityServices.getMtnModules(null, null).subscribe((data: any) => {
+      this.securityService.getMtnModules(null, null).subscribe((data: any) => {
         for(var i =0; i < data.modules.length;i++){
           this.passDataModules.tableData.push(data.modules[i]);
           this.passDataModules.tableData[i].uneditable = ['moduleId'];
@@ -108,6 +120,41 @@ export class SecurityModulesComponent implements OnInit {
 
         this.modulesList.refreshTable();
       });
+    }
+
+    getModuleGroup() {
+      if(this.passDataModules.opts[0].vals.length === 0 && this.passDataModules.opts[0].prev.length === 0){
+        this.maintenanceService.getRefCode('MODULE_GRP').subscribe((data: any) =>{
+            for(var ref of data.refCodeList){
+              this.passDataModules.opts[0].vals.push(ref.code);
+              this.passDataModules.opts[0].prev.push(ref.description);
+            }
+            this.modulesList.refreshTable();
+        });
+      }
+    }
+
+    getModules(accessLevel) {
+      this.PassDataUserListing.tableData = [];
+      this.PassDataUserGroupListing.tableData = [];
+
+      if (accessLevel == 'USER') {
+        this.securityService.getModules(accessLevel, null, null, null, this.modulesData.moduleId).subscribe((data: any) => {
+          for(var i =0; i < data.modules.length;i++){
+            this.PassDataUserListing.tableData.push(data.modules[i]);
+          }
+
+          this.userListing.refreshTable();
+        });
+      } else if (accessLevel == 'USER_GROUP') {
+        this.securityService.getModules(accessLevel, null, null, null, this.modulesData.moduleId).subscribe((data: any) => {
+          for(var i =0; i < data.modules.length;i++){
+            this.PassDataUserGroupListing.tableData.push(data.modules[i]);
+          }
+
+          this.userGroupListing.refreshTable();
+        });
+      }
     }
 
     onRowClick(data){
@@ -119,6 +166,12 @@ export class SecurityModulesComponent implements OnInit {
         this.modulesData.updateDate = this.ns.toDateTimeString(data.updateDate);
       }else{
         this.passDataModules.disableGeneric = true;
+        this.modulesData = {
+          createDate: '',
+          createUser: null,
+          updateDate: '',
+          updateUser: null
+        };
       }
     }
 
@@ -142,10 +195,12 @@ export class SecurityModulesComponent implements OnInit {
     }
 
     user(){
+      this.getModules('USER');
       $('#users #modalBtn').trigger('click');
     }
 
     userGroups(){
+      this.getModules('USER_GROUP');
       $('#userGroup #modalBtn').trigger('click');
     }
 

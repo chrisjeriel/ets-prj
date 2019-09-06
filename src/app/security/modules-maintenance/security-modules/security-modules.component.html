@@ -56,8 +56,8 @@
         <div class="form-row custom-row-inline-inset">
 			<div class="col-sm-12">
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4">Module Id</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6">
+					<label class="form-control-sm col-sm-4">Module</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="modulesData.moduleDesc">
 				</div>
 	        	<fieldset class="scheduler-border">
 	        		<legend class="scheduler-border">Transactions</legend>
@@ -82,14 +82,14 @@
         <div class="form-row custom-row-inline-inset">
 			<div class="col-sm-12">
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4">Module Id</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6">
+					<label class="form-control-sm col-sm-4">Module</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="modulesData.moduleDesc">
 				</div>
 	        	<fieldset class="scheduler-border">
 	        		<legend class="scheduler-border">Users</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable [passData]="PassDatAUserListing"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userListing [passData]="PassDataUserListing"> </app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
@@ -107,14 +107,14 @@
         <div class="form-row custom-row-inline-inset">
 			<div class="col-sm-12">
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4">Module Id</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6">
+					<label class="form-control-sm col-sm-4">Module</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="modulesData.moduleDesc">
 				</div>
 	        	<fieldset class="scheduler-border">
-	        		<legend class="scheduler-border">Users</legend>
+	        		<legend class="scheduler-border">User Group</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable [passData]="PassDataUserGroups"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userGroupListing [passData]="PassDataUserGroupListing"> </app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
