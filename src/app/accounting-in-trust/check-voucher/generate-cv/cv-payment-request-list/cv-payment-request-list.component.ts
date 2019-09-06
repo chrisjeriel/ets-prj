@@ -99,9 +99,6 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
   getCvPaytReqList(){
-    console.log(this.passData.tranId);
-    console.log(this.passData);
- 
     var subRes = forkJoin(this.accountingService.getAcitCv(this.passData.tranId),this.accountingService.getAcitCvPaytReqList(this.passData.tranId))
                        .pipe(map(([cv, pr]) => { return { cv, pr }; }));
 
@@ -155,15 +152,9 @@ export class CvPaymentRequestListComponent implements OnInit {
         this.params.deletePaytReqList.push(e);  
       }
     });
-   
-    console.log(this.cvInfo.cvStatus);
-    console.log(this.passDataPaytReqList.tableData);
-    console.log(this.params.savePaytReqList);
-
+  
     var reqAmt = this.passDataPaytReqList.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reqAmt != null ?parseFloat(b.reqAmt):0),0);
-    console.log(reqAmt);
-    console.log(this.passData.cvAmt);
-    console.log(this.cvInfo.cvAmt);
+ 
     if(Number(this.cvInfo.cvAmt) < Number(reqAmt)){
         this.warnMsg = 'The Total of listed Payment Requests must not exceed the CV Amount.';
         this.warnMdl.openNoClose();
@@ -171,11 +162,9 @@ export class CvPaymentRequestListComponent implements OnInit {
         this.params.deletePaytReqList = [];
     }else{
         if(this.params.savePaytReqList.length == 0 && this.params.deletePaytReqList.length == 0){
-          console.log($('input').hasClass('ng-dirty'));
             if($('input').hasClass('ng-dirty')){
               this.chkCerti();
             }else{
-              console.log('entered here at else');
               $('.ng-dirty').removeClass('ng-dirty');
               this.params.savePaytReqList   = [];
               this.params.deletePaytReqList = [];
@@ -184,7 +173,6 @@ export class CvPaymentRequestListComponent implements OnInit {
             
             this.con.confirmModal();
         }else{
-          console.log(this.cancelFlag);
           if(this.cancelFlag == true){
             this.con.showLoading(true);
             setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
@@ -196,7 +184,6 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
   addDirty(){
-    console.log('Im dirty');
     $('input').addClass('ng-dirty');
   }
 
@@ -207,10 +194,10 @@ export class CvPaymentRequestListComponent implements OnInit {
       e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':((this.cvInfo.cvStatus == 'C')?'N':this.cvInfo.cvStatus);
       return e;
     });
-    console.log(this.params.savePaytReqList);
   }
 
   showLov(){
+    console.log(this.passDataLov);
     this.limitContent = [];
     
     this.passDataPaytReqList.tableData.forEach(e => {

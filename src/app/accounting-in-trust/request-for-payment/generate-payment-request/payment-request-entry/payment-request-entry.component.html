@@ -130,7 +130,7 @@
 	            				<button type="button" class="cust-btn" (click) = "onClickNewReq()">New Request</button>
 	            				<button type="button" class="cust-btn" [disabled]="((saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F') || saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3)" (click)="onClickSave()">Save</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
-	            				<button type="button" class="cust-btn" [disabled] ="initDisabled" (click)="onClickPrint();">Print</button>
+	            				<button type="button" class="cust-btn" [disabled] ="initDisabled" (click)="printMdl.openNoClose()">Print</button>
                       <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="saveAcitPaytReq.reqStatus != 'F'" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
 	            			</div>
 	            		</div>
@@ -201,6 +201,48 @@
         <button class="cust-btn" type="button" (click)="warnMdl.closeModal()">Ok</button>
     </div>
 </app-modal> -->
+
+  <app-modal class="d-none" #printMdl>
+    <div header>Print Request</div>
+    <div body>
+        <div class="container-fluid">
+            <div class="custom-row-inline-inset">
+                <div class="input-group">
+                    <div class="col-sm-4"></div>
+                    <!-- <div class="input-group col-sm-3 labels" style="padding: 0px;">
+                        <input type="checkbox" style="margin-top: 6px;" checked>
+                        <label class="form-control-sm" for="xx">CV</label>
+                    </div>
+                    <div class="input-group col-sm-3 labels" style="padding: 0px;">
+                        <input type="checkbox" style="margin-top: 6px;" checked>
+                        <label class="form-control-sm" for="xx">Check</label>
+                    </div> -->
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">Destination</label>
+                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                        <option>Printer</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">Printer Name</label>
+                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                        <option>EPSON 3600i</option>
+                        <option>BROTHER J100</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">No. of Copies</label>
+                    <input type="number" class="form-control form-control-sm cust-sm col-sm-8 text-right">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center w-100">
+        <button class="cust-btn" type="button" (click)="printMdl.closeModal()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="printMdl.closeModal();onClickPrint()"><a>Print</a></button>
+    </div>
+  </app-modal>
 
 <app-confirm-save (onYes)="onSaveAcitPaytReq()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>

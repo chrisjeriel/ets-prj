@@ -769,8 +769,9 @@ export class LovComponent implements OnInit {
           this.passTable.tableData =    rec.filter(a => {
                              var mdl = JSON.stringify({invtId: a.invtId});
                              return !limit.includes(mdl);
-                           });
+                           }).map(x => { x.newRec = 1; x.currAmt = x.invtAmt; return x; });
         }
+        console.log(this.passTable.tableData);
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmRecover'){
@@ -872,6 +873,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
         var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A');
+        console.log(rec);
         if(this.limitContent.length != 0){
           var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({reqId: a.reqId}));
           this.passTable.tableData =  rec.filter(a => {

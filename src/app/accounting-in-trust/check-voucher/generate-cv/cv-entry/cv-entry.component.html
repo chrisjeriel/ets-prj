@@ -146,7 +146,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
-                        <div class="col-sm dp-cont" style="margin-left: 0px !important">
+                        <div class="col-sm dp-cont checkDateWarn" style="margin-left: 0px !important">
                             <datepicker [type]="'datetime'" [disabled]="saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" [required]="true" [(value)]="saveAcitCv.checkDate"></datepicker>
                         </div>
                     </div>
@@ -272,7 +272,7 @@
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvNo == ''" (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
                             <!-- <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X'">Spoil Check</button> -->
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()">Ok For Printing</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()" [disabled]="saveAcitCv.cvStatus != 'F'">Ok For Printing</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="onClickPrint()">Print</button>
                         </div>
                     </div>
