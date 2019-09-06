@@ -323,14 +323,21 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           break;
         }
       }
-      if(this.selected.add){
+      /*if(this.selected.add){
         this.accountingService.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo).subscribe(
           (soaDtl: any)=>{
             console.log(soaDtl.soaDtlList[0]);
             let soa = soaDtl.soaDtlList[0];
+            console.log(soa.balPremDue);
+            console.log(soa.balRiComm);
+            console.log(soa.balRiCommVat);
+            console.log(data[index].balPaytAmt);
+            console.log(soa.balAmtDue);
+            console.log((soa.balPremDue * (data[index].balPaytAmt / soa.balAmtDue)));
             if(soa.balChargesDue == 0){
               data[index].premAmt =  Math.round((soa.balPremDue * (data[index].balPaytAmt / soa.balAmtDue)) * 100) / 100;
-              data[index].riComm =  Math.round((soa.balRiComm * (data[index].balPaytAmt / soa.balAmtDue)) * 100) / 100;
+              data[index].riComm =  Math.round((soa.balRiComm * (data[index].balPaytAmt / soa.balAmtDue)) * 100) / 
+              100;
               data[index].riCommVat = Math.round((soa.balRiCommVat * (data[index].balPaytAmt / soa.balAmtDue)) * 100) / 100;
               data[index].charges = 0;
               data[index].netDue = data[index].prevBalance - data[index].balPaytAmt; //wrong
@@ -343,16 +350,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
               data[index].netDue = data[index].prevBalance - data[index].balPaytAmt; //wrong
               data[index].totalPayments = data[index].cumPayment + data[index].balPaytAmt;
             }
+            console.log(data[index]);
           }
         );
       }else{
         console.log('aaaaaa');
-        /*this.accountingService.getAcitArInwPolBal(this.record.tranId, 1).subscribe(
-          (data:any)=>{
-            data = data.arInwPolBal.filter(a=>{return a.soaNo == this.selected.soaNo});
-            //compute
-          }
-        );*/
         var sub$ = forkJoin(this.accountingService.getAcitArInwPolBal(this.record.tranId, 1),
                             this.accountingService.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo)).pipe(map(([inw, agingsoa]) => { return { inw, agingsoa}; }));
         this.$sub = sub$.subscribe((forked: any)=>{
@@ -378,8 +380,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
             data[index].netDue = data[index].prevBalance - data[index].balPaytAmt; //wrong
             data[index].totalPayments = data[index].cumPayment + data[index].balPaytAmt;
           }
+          console.log(data[index]);
         });
-      }
+      }*/
     }
 
     //this.passData.tableData = data;
