@@ -109,7 +109,7 @@ export class JvEntryComponent implements OnInit {
   allocBut: boolean = false;
   dcBut: boolean = false;
   approvedStat: boolean = false;
-  forApprovedStat: boolean = false;
+  disableBut: boolean = false;
   printStat: boolean = false;
   cancelFlag: boolean = false;
   dialogIcon : any;
@@ -165,7 +165,7 @@ export class JvEntryComponent implements OnInit {
         this.jvDatas.tranYear = data.transactions.tranYear;
         this.jvDatas.tranClassNo  = data.transactions.tranClassNo;
         this.entryData.jvDate = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
-        this.entryData.refnoDate = this.entryData.refnoDate == null ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
+        this.entryData.refnoDate = this.entryData.refnoDate == '' ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
         this.entryData.preparedDate = this.entryData.preparedDate == null ? '':this.ns.toDateTimeString(this.entryData.preparedDate);
         this.entryData.approvedDate = this.entryData.approvedDate == null ? '':this.ns.toDateTimeString(this.entryData.approvedDate);
         this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
@@ -181,24 +181,20 @@ export class JvEntryComponent implements OnInit {
         this.UploadBut = false;
         this.allocBut = false;
         this.dcBut = false;
-        if(this.entryData.approveJV === 'Y'){
-          this.approveBut = false;
-        }
 
         if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'F'){
           this.approvedStat = true;
+          this.disableBut = true;
+          this.printBut = false;
         }
 
         if(this.entryData.jvStatus == 'F'){
-          this.forApprovedStat = false;
           this.approveBut = false;
+          this.printBut = false;
         }
         
         if(this.entryData.jvStatus == 'A'){
-          this.printBut = false;
-          this.printStat = false; 
-        }else{
-          this.printBut = true;
+          
         }
         this.check(this.entryData)
         this.tabController(this.entryData.tranTypeCd);
@@ -278,7 +274,6 @@ export class JvEntryComponent implements OnInit {
   
   getDefName(){
     this.accService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
-      console.log(data);
       this.entryData.preparedName = data.employee.employeeName;
       this.entryData.preparedPosition = data.employee.designation;
     });
@@ -392,6 +387,7 @@ export class JvEntryComponent implements OnInit {
       console.log(data);
       this.entryData.approver = data.employee.employeeName;
       this.entryData.approvedBy = data.employee.userName;
+      this.entryData.approverDate = this.ns.toDateTimeString(0);
     });
     this.approveJV.openNoClose();
   }

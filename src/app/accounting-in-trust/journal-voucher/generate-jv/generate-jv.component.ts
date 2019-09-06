@@ -87,7 +87,6 @@ export class GenerateJvComponent implements OnInit {
   }
 
   cedingOutput(data){
-    console.log(data)
     this.cedingParams.cedingId = data.cedingId;
     this.cedingParams.cedingName = data.cedingName;
   }

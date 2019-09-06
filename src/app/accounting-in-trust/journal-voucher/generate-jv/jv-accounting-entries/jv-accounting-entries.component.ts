@@ -227,6 +227,18 @@ export class JvAccountingEntriesComponent implements OnInit {
           this.errorFlag = true;
         }
       });
+    }if(this.jvType == 2){
+      this.accountingService.getAcitJVZeroBal(this.jvDetails.tranId,'').subscribe((data:any) => {
+        console.log(data)
+        var datas = data.zeroBal;
+        for (var i = 0; i < datas.length; i++) {
+          total += datas[i].adjBalAmt;
+        }
+
+        if(total != this.jvDetails.jvAmt){
+          this.errorFlag = true;
+        }
+      });
     }if(this.jvType == 3){
       this.accountingService.getAcitJVPremRes(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.premResRel;

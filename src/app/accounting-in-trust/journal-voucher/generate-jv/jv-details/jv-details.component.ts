@@ -34,18 +34,16 @@ export class JvDetailsComponent implements OnInit {
     if(this.jvType == null){
       this.jvType = "";
     }
-    console.log(this.cedingInput)
     this.retrieveJVDetails();
   }
 
   retrieveJVDetails(){
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
-    this.jvDetails.refnoDate = this.ns.toDateTimeString(this.jvDetails.refnoDate);
+    this.jvDetails.refnoDate = this.jvDetails.refnoDate === "" ? "":this.ns.toDateTimeString(this.jvDetails.refnoDate);
   }
 
   ceding(data){
-    console.log('emit on jvDetails')
     this.cedingData.emit({ cedingId: data.cedingId,
                            cedingName: data.cedingName
                        });

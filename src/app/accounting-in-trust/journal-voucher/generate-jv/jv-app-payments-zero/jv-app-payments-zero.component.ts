@@ -173,7 +173,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
           { header: "Payment Details", span: 5 }, { header: "", span: 2 });
     if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
       this.disable = false;
-      this.passData.disableAdd = false;
     }else {
       this.disable = true;
       this.passData.disableAdd = true;
@@ -196,6 +195,9 @@ export class JvAppPaymentsZeroComponent implements OnInit {
       this.totalOverpayment = 0;
 
       if(data.zeroBal.length!=0){
+        if(this.jvDetail.statusType == 'N'){
+          this.passData.disableAdd = false;
+        }
         this.jvDetails.cedingName = data.zeroBal[0].cedingName;
         this.jvDetails.ceding = data.zeroBal[0].cedingId;
         this.passLov.cedingId = data.zeroBal[0].cedingId;
@@ -222,9 +224,9 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
   setCedingcompany(data){
     this.jvDetails.cedingName = data.payeeName;
-    console.log(data)
     this.jvDetails.ceding = data.payeeCd;
     this.passLov.cedingId = data.payeeCd;
+    this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.check(this.jvDetails);
     this.retrieveInwPolZeroBal()
@@ -325,12 +327,20 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     for(var i = 0 ; i < this.passData.tableData.length ; i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         edited.push(this.passData.tableData[i]);
-        edited[edited.length - 1].netDue  = this.passData.tableData[i].prevNetDue;
-        edited[edited.length - 1].prevPaytAmt  = this.passData.tableData[i].cumPayment;
+        edited[edited.length - 1].netDue  = this.passData.tableData[i].remainingBal;
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].updateDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
+        if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].adjBalAmt > 0){
+           edited[edited.length - 1].paytType = 1
+         }else if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].adjBalAmt < 0){
+           edited[edited.length - 1].paytType = 2
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].adjBalAmt < 0){
+           edited[edited.length - 1].paytType = 3
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].adjBalAmt > 0){
+           edited[edited.length - 1].paytType = 4
+         }
       }
 
       if(this.passData.tableData[i].deleted){

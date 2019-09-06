@@ -56,8 +56,6 @@ export class LovComponent implements OnInit {
   }
 
   select(data){
-    console.log(this.passTable.checkFlag);
-    console.log(this.passData.data);
   	  this.passData.data = data;
   }
 
@@ -76,9 +74,6 @@ export class LovComponent implements OnInit {
   }
 
   checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?) {
-
-    console.log("checkCode in lov component");
-
     if (selector == 'region') {
       if (regionCd === '') {
         this.selectedData.emit({
