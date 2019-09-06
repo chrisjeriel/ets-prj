@@ -45,6 +45,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() newClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
+    @Output() newDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() genericBtn : EventEmitter<any> = new EventEmitter();
@@ -390,6 +391,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onRowDblClick(event) {
         this.rowDblClick.next(event);
+    }
+
+    onNewDblClick(event) {
+        this.newDblClick.next(event);
     }
 
     sort(str,sortBy){

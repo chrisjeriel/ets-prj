@@ -276,4 +276,8 @@ export class ClaimsService {
         };
         return this.http.post(environment.prodApiUrl + '/claims-service/redistributeClaimReserveDist',JSON.stringify(params),header);    
     }
+
+    getClaimPaytReqInq(params){
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmPaytReqInq');
+    }
 }

@@ -225,7 +225,7 @@
                 </thead>
 
                 <tbody>
-                    <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect ||(data.checked && passData.checkFlag)" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)" id="{{ ti }}">
+                    <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect ||(data.checked && passData.checkFlag)" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event);onNewDblClick(data)" id="{{ ti }}">
                         <td *ngIf="passData.checkFlag" class="checkbox align-middle">
                             <div *ngIf="passData.checkFlag" style="text-align: center;">
                                 <input *ngIf="!(data===fillData)" type="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" tabindex="-1" class="not-form" [ngModelOptions]="{standalone: true}">
