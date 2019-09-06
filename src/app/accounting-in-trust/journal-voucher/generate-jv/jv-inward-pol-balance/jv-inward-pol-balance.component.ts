@@ -188,6 +188,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
      }else {
        this.passData.disableAdd = true;
        this.passData.btnDisabled = true;
+       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
      this.retrieveInwPol();
