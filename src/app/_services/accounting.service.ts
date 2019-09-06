@@ -2072,4 +2072,10 @@ export class AccountingService {
 			.set('currCd', currCd);
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitClmResHistPayts",{params});
 	}
+
+	getAMortizationList(invtId){
+		const params = new HttpParams()
+		 	.set('invtId', (invtId == null || invtId == undefined ? '' : invtId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAmortize",{params});
+	}
 }

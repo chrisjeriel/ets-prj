@@ -30,17 +30,36 @@ export class InvestmentsComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild("confirmSave") confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('amortizationMdl') amortizationMdl : ModalComponent;
+  @ViewChild('amortization') amortTable: CustEditableNonDatatableComponent;
 
   tableData: any[] = [];	
   tHeader: any[] = [];
   dataTypes: any[] = [];
 
+   passAmortData: any = {
+     tableData : [],
+      tHeader: ["Start Date","End Date","Amort Days","Coupon Days","Coupon","Eff%","Amort","CV","Daily"],
+      dataTypes:["date","date","number","number","currency","currency","currency","currency","currency"],
+      total: [null,null,null,null,null,'TOTAL','amortAmt',null,null],
+      keys: ['startDate', 'endDate', 'amortDays', 'couponDays', 'coupon','effAmt','amortAmt','amortInvtAmt','amortDailyAmt'],
+      pageLength: 15,
+      uneditable: [true,true,true,true,true,true,true,true,true],
+      widths:[1,1,90,90,120,120,120,120,120],
+      paginateFlag: true,
+      infoFlag: true,
+      disableSort : true,
+      pageStatus: true,
+      pagination: true,
+      pageID: '1'
+   };
+
    passData: any = {
    	 tableData: [],
      tHeaderWithColspan : [],
-   	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Security","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value","Pre-Termination Tag","Termination Date","Amortize Unit","Price (Cost)", "Eff%"],
+   	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Security","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value","Pre-Termination Tag","Termination Date","Amortize Unit","Eff%","Price (Cost)"],
    	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-   	 dataTypes: ['reqtext','select','reqtext','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency','checkbox','date','select','currency','percent'],
+   	 dataTypes: ['reqtext','select','reqtext','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency','checkbox','date','select','percent','currency'],
    	 nData: {
           invtId   : null,
           invtCd   : null,
@@ -74,7 +93,7 @@ export class InvestmentsComponent implements OnInit {
           termDate: null,
           amortEff: null
         },
-   	 total:[null,null,null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal',null,null,null,'priceCost', null],
+   	 total:[null,null,null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal',null,null,null,null,'priceCost'],
      opts: [ {selector: 'invtType', prev: [], vals: []},
              {selector: 'invtSecCd', prev: [], vals: []},
              {selector: 'invtStatus', prev: [], vals: []},
@@ -140,12 +159,12 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
-     widths: [130,130,150,150,150,130,1,1,1,100,85,90,80,110,110,110,110,110,1,100,120,110,90],
+     widths: [130,130,150,150,150,130,1,1,1,100,85,90,80,110,110,110,110,110,1,100,120,90,110],
      keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
-            'whtaxAmt','matVal','preTerminatedTag','termDate','amortized','priceCost', 'amortEff']
-   };
+            'whtaxAmt','matVal','preTerminatedTag','termDate','amortized','amortEff','priceCost']
+    };
 
    searchParams: any[] = [];
    subscription: Subscription = new Subscription();
@@ -189,6 +208,7 @@ export class InvestmentsComponent implements OnInit {
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Investments");
+    this.selectedData = [];
     this.retrieveInvestmentsList(this.searchParams);
     this.getWTaxRate();
     this.oldData = this.passData.tableData;
@@ -196,6 +216,7 @@ export class InvestmentsComponent implements OnInit {
     this.passData.tHeaderWithColspan.push({ header: "", span: 20 },
          { header: "Amortization", span: 3 });
     }
+
 
   onTabChange($event: NgbTabChangeEvent) {return ;
   		if ($event.nextId === 'Exit') {
@@ -227,9 +248,9 @@ export class InvestmentsComponent implements OnInit {
                                       a.currSeqNo = parseInt(res[4]);
                                          
                                       if (a.invtStatus === 'F'){
-                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate'];
+                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost'];
                                       } else if(a.invtStatus === 'M' || a.invtStatus === 'O'){
-                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt'];
+                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','priceCost'];
                                       } else {
                                         a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
@@ -239,9 +260,7 @@ export class InvestmentsComponent implements OnInit {
 
                                       if (a.amortized === null || a.amortized === "") {
                                          a.amortEff = null;
-                                      } else {
-                                        this.disableBtn = false;
-                                      }
+                                      } 
 
                                       if (a.preTerminatedTag === 'Y'){
                                         a.termDate = this.ns.toDateTimeString(a.termDate);
@@ -279,7 +298,9 @@ export class InvestmentsComponent implements OnInit {
 
         this.statusList = data['status']['refCodeList'];
         this.statusList.push({code: "", description: "All"});
-
+        
+        this.table.overlayLoader = false;
+        this.disableBtn = true;
         this.table.refreshTable();
       });
   }
@@ -322,7 +343,6 @@ export class InvestmentsComponent implements OnInit {
   onRowClick(data){
     if(data !== null){
       this.selectedData = data;
-      console.log(this.selectedData);
       this.invtRecord.createUser  = data.createUser;
       this.invtRecord.createDate  = this.ns.toDateTimeString(data.createDate).split('T')[0] + ' ' + this.ns.toDateTimeString(data.createDate).split('T')[1];
       this.invtRecord.updateUser  = data.updateUser;
@@ -333,6 +353,15 @@ export class InvestmentsComponent implements OnInit {
        }else{
            this.passData.disableGeneric = false;
        }   
+
+       if(this.selectedData.amortized !== null){
+         this.disableBtn = false;
+         this.selectedData.amortizedDesc = this.getAmortizedDesc(data.amortized);
+         this.selectedData.priceCost = data.priceCost;
+       }else {
+         this.disableBtn = true;
+       }
+       console.log(this.selectedData);
    
     } else {
       this.passData.disableGeneric    = true;
@@ -448,6 +477,9 @@ export class InvestmentsComponent implements OnInit {
                 this.passData.tableData[i].purDate !== null || this.passData.tableData[i].purDate !== ''){
                   this.passData.tableData[i].matPeriod = null;
                }
+           }else if(data.key === 'amortized'){
+             this.passData.tableData[i].priceCost = null;
+             this.disableBtn = true;
            }
 
            //LOGIC-COMPUTATION
@@ -828,7 +860,8 @@ export class InvestmentsComponent implements OnInit {
             this.successDialog.open();
             return;
           } else {
-                this.confirmSave.confirmModal();
+              
+              this.confirmSave.confirmModal();
           }
       }else{
         this.dialogMessage="Please check field values.";
@@ -864,8 +897,8 @@ export class InvestmentsComponent implements OnInit {
 
         if ( !this.isEmptyObject(check.amortized)){
            console.log(check.priceCost + '-' + check.amortEff);
-           if ( Number.isNaN(check.priceCost) || Number.isNaN(check.amortEff) ||
-                check.priceCost === undefined || check.amortEff === undefined ) {
+           if ( Number.isNaN(check.amortEff) ||
+                check.amortEff === undefined ) {
                return false;
            } 
         }
@@ -962,6 +995,25 @@ export class InvestmentsComponent implements OnInit {
                                                         if (a.amortized === null || a.amortized === ""){
                                                             a.priceCost = null;
                                                             a.amortEff = null;
+                                                        }else {
+                                                            var frequency,
+                                                               eff = a.amortEff,
+                                                               cpn = a.intRt,
+                                                               parVal = a.invtAmt,
+                                                               matPeriod = a.matPeriod,
+                                                               noOfPeriods;                                                               
+                                                           if(a.amortized === 'M'){
+                                                              frequency = 12;                                                               
+                                                           } else if (a.amortized === 'Q'){
+                                                              frequency = 4;
+                                                           } else if (a.amortized === 'S'){
+                                                              frequency = 2;
+                                                           } else if (a.amortized === 'Y') {
+                                                              frequency = 1;
+                                                           }
+                                                           noOfPeriods = frequency * matPeriod;
+                                                           a.parCost = this.computeAmortization(frequency,eff/100,cpn/100,parVal,matPeriod,noOfPeriods).toFixed(2);
+
                                                         }
                                                       }
                                                   );
@@ -979,6 +1031,16 @@ export class InvestmentsComponent implements OnInit {
       }  
 
   }
+
+   computeAmortization(frequency?,eff?,cpn?,parVal?,matPeriod?,noOfPeriods?){
+    var investment = (cpn/frequency) * parVal;
+    var pvParDivisor = (1 + (eff/frequency));
+    var pvPar = parVal / Math.pow(pvParDivisor,noOfPeriods);
+    var pvCoupon = (1 - Math.pow(pvParDivisor,-noOfPeriods)) / (eff/frequency);
+    var parCost = (investment * pvCoupon) + pvPar  ;  
+    return parCost;
+  }
+
 
   saveAcitInvt(obj,cancelFlag?){
     this.deletedData = [];
@@ -1006,6 +1068,7 @@ export class InvestmentsComponent implements OnInit {
    }else if (obj === true){
      this.passData.tableData = [];
      this.searchParams = [];
+     this.table.overlayLoader = true;
      this.retrieveInvestmentsList(this.searchParams);
    }
   }
@@ -1045,4 +1108,55 @@ export class InvestmentsComponent implements OnInit {
       } 
   }
 
+  onCLickAmortized(){
+    console.log(this.selectedData);
+   if (this.selectedData.add === true || this.selectedData.priceCost === null || this.selectedData.priceCost === "" ){
+     this.dialogIcon = "error-message";
+     this.dialogMessage = "Amortization is not yet computed."
+     this.successDialog.open();
+   }else {
+       this.amortizationMdl.openNoClose();
+       this.retrieveAmortizationList();
+       this.amortTable.overlayLoader = true
+     
+     
+   }
+  
+  }
+
+  retrieveAmortizationList(){
+      this.accountingService.getAMortizationList(this.selectedData.invtId).subscribe(data => {
+        console.log(data);
+
+
+        var td = data['acitAmortizeList'].map(a => { 
+                                   
+                                      a.starDate = this.ns.toDateTimeString(a.starDate);
+                                      a.endDate = this.ns.toDateTimeString(a.endDate);
+             
+                                      
+                                      
+                                   return a; });
+
+        this.passAmortData.tableData = td;
+        this.amortTable.overlayLoader = true;
+        this.amortTable.refreshTable();
+      });
+  }
+
+  getAmortizedDesc(obj?){
+    var result;
+    if (obj === "M"){
+      result = 'Monthly';
+    } else if ( obj === "Q"){
+      result = 'Quarterly';
+    } else if (obj === "S"){
+      result = 'Semi-Annual';
+    } else if (obj === "Y") {
+      result = 'Yearly';
+    }
+    return result;
+  }
 }
+
+
