@@ -56,7 +56,7 @@ export class ClaimRecoveryComponent implements OnInit {
     total: [null,null,null,null, null, null, 'Total', 'cashcallAmt', 'localAmt'],
     widths: [ 130, 130, 180,1, 250, 1, 100, 120, 120],
     keys: ['claimNo', 'coClmNo', 'policyNo', 'lossDate', 'remarks', 'currCd', 'currRate', 'cashcallAmt', 'localAmt'],
-    uneditable: [false,true,true,true,false,false,false,false,true],
+    uneditable: [false,true,true,true,false,true,true,false,true],
     opts:[
       {
         selector: 'paytType',
