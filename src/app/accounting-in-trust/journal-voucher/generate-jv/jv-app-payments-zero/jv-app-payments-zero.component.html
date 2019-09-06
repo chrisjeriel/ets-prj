@@ -37,6 +37,7 @@
 <app-mtn-payee-ceding id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-payee-ceding>
 <!--<app-mtn-ceding-company-treaty id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company-treaty> -->
 <app-lov [passData]="passLov" (selectedData)="setSoa($event)">
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveAppPaytZero()"></app-confirm-save>
 <app-cancel-button (onYes)="saveAppPaytZero('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

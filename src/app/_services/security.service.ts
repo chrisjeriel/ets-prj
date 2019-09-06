@@ -74,6 +74,6 @@ export class SecurityService {
             'Content-Type': 'application/json'
           })
         };
-        return this.http.post(environment.prodApiUrl + '/security-service/saveTransactions',JSON.stringify(params),header);
+        return this.http.post(environment.prodApiUrl + '/security-service/saveTransactions',params,header);
     }
 }

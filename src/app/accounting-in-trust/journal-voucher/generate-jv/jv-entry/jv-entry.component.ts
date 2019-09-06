@@ -9,6 +9,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-jv-entry',
@@ -512,6 +513,8 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickPrint(){
+    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId, '_blank');
     this.printEntries.openNoClose();
   }
 

@@ -323,13 +323,18 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         if(!this.passData.tableData[i].clmOffset[j].deleted){
           if(this.positiveHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
             totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+            console.log('positive'+totalPaid);
           }else if(this.negativeHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
             totalPaid -= this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+            console.log('negative'+totalPaid);
           }
           //END
           //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt
-          if(this.passData.tableData[i].balanceAmt != totalPaid){
+          if((this.passData.tableData[i].balanceAmt < 0 && this.passData.tableData[i].balanceAmt + totalPaid  > 0) ||
+             (this.passData.tableData[i].balanceAmt > 0 && this.passData.tableData[i].balanceAmt + totalPaid  < 0)){
             this.errorFlag = true;
+            console.log('balance'+this.passData.tableData[i].balanceAmt);
+            console.log('condition'+totalPaid);
             break;
           }
         }
@@ -341,14 +346,21 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
         //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
         //ADDED BY NECO 09/03/2019
-        if(this.positiveHistType.includes(this.passData.tableData[i].histType)){
+        if(this.positiveHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
           totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
-        }else if(this.negativeHistType.includes(this.passData.tableData[i].histType)){
+        }else if(this.negativeHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
           totalPaid -= this.passData.tableData[i].clmOffset[j].clmPaytAmt;
         }
         //END
       }
     }
+
+    //added by NECO 09/04/2019
+    var totalTreatyBal: number = 0;
+    for(var k = 0; k < this.passData.tableData.length; k++){
+      totalTreatyBal += this.passData.tableData[k].balanceAmt;
+    }
+    //End
 
     if(clmPaymentFlag){
         this.dialogMessage = 'The total Paid Amount of claims must not exceed its Hist Amount.' ;
@@ -358,7 +370,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         this.dialogMessage = 'The total Paid Amount of claims for offset on Quarter Ending must not exceed its Treaty Balance Amount.' ;
         this.dialogIcon = "error-message";
         this.successDiag.open();
-    }else if(totalPaid > this.jvDetail.jvAmt){
+    }else if(totalTreatyBal > this.jvDetail.jvAmt){
         this.dialogMessage = 'Total treaty balance must not exceed the JV amount.';
         this.dialogIcon = "error-message";
         this.successDiag.open();
