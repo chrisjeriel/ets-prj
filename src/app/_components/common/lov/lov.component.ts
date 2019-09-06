@@ -74,9 +74,6 @@ export class LovComponent implements OnInit {
           this.table.selected[index].checked = false;
           data = data.filter(a=>{return a.checked == undefined || !a.checked});
           this.table.selected = this.table.selected.filter(b=>{return b.checked});
-          console.log(this.passTable.tableData.map(a=>{return a.processing}).indexOf(i.processing));
-          this.passTable.tableData[this.passTable.tableData.map(a=>{return a.processing}).indexOf(i.processing)].checked = false;
-          this.table.refreshTable();
           console.log(data);
           break;
         }else{
