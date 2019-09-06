@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClaimPaymentRequests } from  '@app/_models';
 import { Router } from '@angular/router';
-import { ClaimsService } from '../../_services';
+import { ClaimsService, NotesService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-payment-requests',
@@ -23,65 +24,44 @@ export class PaymentRequestsComponent implements OnInit {
   pageLength: number;
 
    passData: any = {
-   tableData: [], 
-   tHeader: ['Claim No', 'Insured', 'Ceding Company', 'Hist No', 'Amount Type', 'History Type', 'Curr', 'Amount'],
-   dataTypes: ["text","text","text","number","text","text","text","currency"],
-   resizable: [true, true, true, false, true, true, false, true],
-   filters: [
-            {
-                key: 'ClaimNo',
-                title:'Claim No.',
-                dataType: 'text'
-            },
-            {
-                key: 'insured',
-                title:'Insured',
-                dataType: 'text'
-            },
-            {
-                key: 'cedingCompany',
-                title:'Ceding Company',
-                dataType: 'text'
-            },
-            {
-                key: 'histNo',
-                title:'Hist No',
-                dataType: 'text'
-            },
-            {
-                key: 'amtType',
-                title:'Amount Type',
-                dataType: 'text'
-            },
-            {
-                key: 'histType',
-                title:'History Type',
-                dataType: 'text'
-            },
-            {
-                key: 'curr',
-                title:'Curr',
-                dataType: 'text'
-            },
-            {
-                key: 'amount',
-                title:'Amount',
-                dataType: 'text'
-            },
-        ],
-        pageLength: 10,
-        expireFilter: false, checkFlag: true, tableOnly: false, fixedCol: false, printBtn: false,pagination: true, pageStatus: true,
+     tableData: [], 
+     tHeader: ['Claim No', 'Hist No.', 'Policy No', 'Payment Request No', 'Payee', 'Payment Type', 'Status', 'Curr', 'Amount', 'Particulars','Request Date','Requested By','Acct. Ref. No.','Acct. Tran. Date','Insured','Risk','Loss Date'],
+     dataTypes: ['text','text','text','text','text','text','text','text','currency','text','date','text','text','date','text','text','date'],
+     keys:['claimNo','histNo','policyNo','paytReqNo','payee','paymentType','status','currCd','reqAmount','particulars','reqDate','requestedBy','acctRefNo','tranDate','insuredDesc','riskName','lossDate'],
+     uneditable:[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+     widths:[94,1,166,1],
+    pageLength: 10,
+    searchFlag:true,
+    paginateFlag:true,
+    pageInfoFlag:true
   }
 
+  selected:any = null;
+
    @ViewChild('confirmation') confirmation;
+   @ViewChild('inqTable') inqTable: CustEditableNonDatatableComponent;
    
-  constructor(private claimsService: ClaimsService, private router: Router, private modalService: NgbModal, private titleService: Title) { }
+  constructor(private claimsService: ClaimsService, private router: Router, private modalService: NgbModal, private titleService: Title, private ns: NotesService) { }
 
   ngOnInit() {
   	this.btnDisabled = false;
   	this.btnDisabled_neg = true;
-  	this.titleService.setTitle("Clm | Payment Requests");
-  	this.passData.tableData = this.claimsService.getClaimPaymentRequestList();
+  	this.titleService.setTitle("Clm | Payment Request Inquiry");
+  	this.getList();
+  }
+
+  getList(){
+    this.claimsService.getClaimPaytReqInq(null).subscribe(a=>{
+      this.passData.tableData = a['list'].map(b=>{
+        b.reqDate = this.ns.toDateTimeString(b.reqDate);
+        b.tranDate = this.ns.toDateTimeString(b.tranDate);
+        b.lossDate = this.ns.toDateTimeString(b.lossDate);
+        b.createDate = this.ns.toDateTimeString(b.createDate);
+        b.updateDate = this.ns.toDateTimeString(b.updateDate);
+        return b;
+      });
+      this.inqTable.refreshTable();
+    })
   }
 
   open(content) {
