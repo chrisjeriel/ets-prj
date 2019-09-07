@@ -480,6 +480,8 @@ export class InvestmentsComponent implements OnInit {
            }else if(data.key === 'amortized'){
              this.passData.tableData[i].priceCost = null;
              this.disableBtn = true;
+           }else if(data.key === 'amortEff'){
+             this.passData.tableData[i].priceCost = null;
            }
 
            //LOGIC-COMPUTATION
