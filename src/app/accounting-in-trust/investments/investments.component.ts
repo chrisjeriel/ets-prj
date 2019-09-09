@@ -402,6 +402,8 @@ export class InvestmentsComponent implements OnInit {
     this.ns.lovLoader(data.ev, 0);
   }
 
+  
+
   checkItemCurrency(currencyCd?){
     var maxPHP = 0;
     var maxUSD = 0;
@@ -482,6 +484,10 @@ export class InvestmentsComponent implements OnInit {
              this.disableBtn = true;
            }else if(data.key === 'amortEff'){
              this.passData.tableData[i].priceCost = null;
+           }else if(data.key === 'preTerminatedTag'){
+             if (this.passData.tableData[i].preTerminatedTag === 'N'){
+                this.passData.tableData[i].termDate = null;
+             }
            }
 
            //LOGIC-COMPUTATION
@@ -862,7 +868,6 @@ export class InvestmentsComponent implements OnInit {
             this.successDialog.open();
             return;
           } else {
-              
               this.confirmSave.confirmModal();
           }
       }else{
@@ -900,8 +905,11 @@ export class InvestmentsComponent implements OnInit {
         if ( !this.isEmptyObject(check.amortized)){
            console.log(check.priceCost + '-' + check.amortEff);
            if ( Number.isNaN(check.amortEff) ||
-                check.amortEff === undefined ) {
+                check.amortEff === undefined ||
+                check.amortEff === null) {
                return false;
+           } else {
+             console.log( check.matPeriod % 12);
            } 
         }
                                                                                                                                                                                                                                          
