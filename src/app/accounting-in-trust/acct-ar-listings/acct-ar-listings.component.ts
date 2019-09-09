@@ -107,11 +107,11 @@ export class AcctArListingsComponent implements OnInit {
     this.table.overlayLoader = true;
     this.as.getArList(this.searchParams).subscribe(
       (data: any)=>{
-        if(data.ar.length !== 0){
+        if(data.ar.length !== 0) {
           // this.passData.tableData = data.ar;
           this.passData.tableData = data.ar.filter(a => String(a.arStatDesc).toUpperCase() == this.tranStat.toUpperCase());
-          this.table.refreshTable();
         }
+        this.table.refreshTable();
       },
       (error)=>{
         this.passData.tableData = [];

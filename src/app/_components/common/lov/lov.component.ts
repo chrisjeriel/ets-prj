@@ -62,6 +62,7 @@ export class LovComponent implements OnInit {
   }
 
   select(data){
+    console.log(data);
     if(this.passData.selector.indexOf('acitSoaDtl') == 0){
       var index = 0;
       for(var i of data){

@@ -5,11 +5,11 @@
       <ng-template ngbTabContent>
         <div class="d-flex">
         	<div class="col-sm-1"></div>
-        	<fieldset class="scheduler-border col-sm-10">
+        	<fieldset class="scheduler-border col-sm-10" style="padding-top: 10px !important; padding-bottom: 20px !important;">
         		<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
         		<div class="row justify-content-sm-center pt-1">
         			<div class="col-sm-5 d-flex">
-                <label class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0" style="font-size: 9.5px !important;">Booling Month / Year</label>
+                <label class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0" style="font-size: 9.5px !important;">Booking Month / Year</label>
                 <select class="form-control form-control-sm cust-sm col-sm-5">
                   <option value="Jan">January</option>
                   <option value="Feb">February</option>
@@ -32,7 +32,7 @@
               </div>
             </div>
             <app-cust-non-datatable [passData]="passData" style="margin-top: -20px" class="d-block"></app-cust-non-datatable>
-            <div class="input-group" style="margin-bottom: 5px !important; margin-top: 28px;">
+            <div class="input-group" style="margin-top: 28px;">
              <div class="col-sm text-center">   
               <button type="button" class="cust-btn"><a>Generate to Excel</a></button>
             </div>

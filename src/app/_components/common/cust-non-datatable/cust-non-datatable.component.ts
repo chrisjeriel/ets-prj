@@ -225,7 +225,7 @@ export class CustNonDatatableComponent implements OnInit {
         //this.appComponent.ngOnInit();
         this.loadingTableFlag = false;
         this.overlayLoader = false;
-        this.selected = [];
+        // this.selected = [];
 
         //select the first row
         if(this.passData.tableData.length !== 0 && this.currentIndex !== 0){
@@ -429,15 +429,15 @@ export class CustNonDatatableComponent implements OnInit {
             this.selected = [];
             this.refreshTable();
         }
-         
+        
     }
     
     highlight(data){
         
         this.selected.push(data);
     }
+    
     removeSelected(event, data){
-        
         data.checked = event.target.checked;
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
@@ -445,8 +445,8 @@ export class CustNonDatatableComponent implements OnInit {
             this.selected.push(data);
         }
         this.rowClick.emit(this.selected);
-        
     }
+
     onRowDblClick(event,data) {
         
         if(!this.nullRow){
