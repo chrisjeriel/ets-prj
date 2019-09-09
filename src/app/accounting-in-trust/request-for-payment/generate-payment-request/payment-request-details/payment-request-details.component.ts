@@ -361,8 +361,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.yearParamOpts.push(x);
     }
 
-    // this.getAcitPaytReq();
-    // this.getPrqTrans();
     this.getPaytReqPrqTrans();
   }
 
@@ -466,7 +464,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       return e;
     });
     this.unColTbl.refreshTable();
-    //this.currentTbl = this.unappliedColData.tableData;
   }
 
   getOthers(){
