@@ -44,6 +44,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() gnrc1: EventEmitter<any> = new EventEmitter();
     @Output() gnrc2: EventEmitter<any> = new EventEmitter();
     @Output() export: EventEmitter<any> = new EventEmitter();
+    @Input() preventDefault: boolean = false;;
 
     @ViewChild('paw') page: any;
 
@@ -436,13 +437,17 @@ export class CustNonDatatableComponent implements OnInit {
         
         this.selected.push(data);
     }
-    removeSelected(event, data){
-        
-        data.checked = event.target.checked;
-        if(!event.target.checked){
-            this.selected.splice(this.selected.indexOf(data), 1);
-        }else{
+    removeSelected(event, data, preventDefault?){
+        if(preventDefault !== undefined && preventDefault){
             this.selected.push(data);
+            event.preventDefault();
+        }else{
+            data.checked = event.target.checked;
+            if(!event.target.checked){
+                this.selected.splice(this.selected.indexOf(data), 1);
+            }else{
+                this.selected.push(data);
+            }
         }
         this.rowClick.emit(this.selected);
         

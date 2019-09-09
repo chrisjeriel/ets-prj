@@ -318,7 +318,7 @@
                                 <div *ngIf="!(data===fillData)">
 ======= -->
                         <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }; let a = index;" (click)="onRowClick($event, data, a);" (dblclick)="onRowDblClick($event, data)" [class.selected]="data === indvSelect || selected.includes(data) || data?.checked" (keydown.ArrowUp)="tablePress($event, data, a)" (keydown.ArrowDown)="tablePress($event, data, a)" tabindex="0" style="outline: none" id="tableRow" (keydown.Enter)="enterKey($event, data)">
-                            <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (change)="removeSelected($event, data)" [ngModelOptions]="{standalone: true}" [ngModel]="data.checked"></td>
+                            <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (click)="data.preventDefault ? removeSelected($event, data, true) : null;" (change)="removeSelected($event, data)" [ngModelOptions]="{standalone: true}" [ngModel]="data.checked"></td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngClass]="{'d-none': pinKeys.indexOf(key) != -1, 'checkbox-padding': passData.dataTypes[i] === 'checkbox'}" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
                                 <div *ngIf="!(data===fillData)">
 <!-- >>>>>>> Stashed changes -->
