@@ -59,12 +59,13 @@ export class SecurityService {
 		return this.http.get(environment.prodApiUrl + "/security-service/retrieveTransactions",{params});
 	}
 
-	getModules(accessLevel?, userId?, userGrp?, tranCd?){
+	getModules(accessLevel?, userId?, userGrp?, tranCd?, moduleId?){
 		const params = new HttpParams()
 			.set('accessLevel',accessLevel ===undefined || accessLevel===null ? '' : accessLevel)
 			.set('userId',userId ===undefined || userId===null ? '' : userId)
 			.set('userGrp',userGrp ===undefined || userGrp===null ? '' : userGrp)
 			.set('tranCd',tranCd ===undefined || tranCd===null ? '' : tranCd)
+			.set('moduleId',moduleId ===undefined || moduleId===null ? '' : moduleId)
 		return this.http.get(environment.prodApiUrl + "/security-service/retrieveModules",{params});
 	}
 
@@ -75,5 +76,14 @@ export class SecurityService {
           })
         };
         return this.http.post(environment.prodApiUrl + '/security-service/saveTransactions',params,header);
+    }
+
+    saveModules(params) {
+        let header: any = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        };
+        return this.http.post(environment.prodApiUrl + '/security-service/saveModules',params,header);
     }
 }

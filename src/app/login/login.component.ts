@@ -55,14 +55,14 @@ export class LoginComponent implements OnInit {
 
                     this.userService.userLogin(this.f.username.value.toUpperCase(), this.f.password.value).subscribe(data => {        
           
+                        this.userService.setAccessModules(data['modulesList']);
                         this.userService.emitAccessModules(data['modulesList']);
-
-                        console.log("Login Level : ");
-                        console.log(this.userService.getAccessModules());
 
                     });
 
-                    this.router.navigate([this.returnUrl]);
+                    this.router.navigate([this.returnUrl]).then(() => {
+                        window.location.reload();
+                    });
 
                     
                 },

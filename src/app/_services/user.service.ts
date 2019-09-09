@@ -1,9 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
 import { Subject } from 'rxjs';
+
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -11,6 +11,7 @@ export class UserService {
 
     public accessibleModules = new Subject<any>();
     public moduleIdObs = new Subject<string>();
+    public accessibleModulesArr: string[] = [];
 
     getAll() {
         return this.http.get<User[]>(`${environment.apiUrl}/users`);
@@ -66,11 +67,11 @@ export class UserService {
     }
 
     setAccessModules(data) {
-        this.accessibleModules = data;
+        this.accessibleModulesArr = data;
     }
 
     getAccessModules() {
-        return this.accessibleModules;
+        return this.accessibleModulesArr;
     }
 
     emitAccessModules(val) {

@@ -62,7 +62,7 @@
 
 <app-modal #failMsg class="d-none">
     <div header>&nbsp;</div>
-    <div body>Please check maintenance tables relevant to distribution.</div>
+    <div body>{{failText}}</div>
     <div footer class="w-100 text-right">
         <button class="cust-btn" (click)="failMsg.closeModal();showPost.emit(false)">Ok</button>
     </div>
@@ -74,5 +74,6 @@
     <div footer class="w-100 text-right">
         <button class="cust-btn" (click)="confirmCancel.closeModal();postParams.altCancelTag='Y';cancelPol()">Yes</button>
         <button class="cust-btn" (click)="confirmCancel.closeModal();postParams.altCancelTag='N';post()">No</button>
+        <button class="cust-btn" (click)="modalService.dismissAll()">Cancel</button>
     </div>
 </app-modal>

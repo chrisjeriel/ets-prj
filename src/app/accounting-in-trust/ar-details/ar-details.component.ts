@@ -49,7 +49,7 @@ export class ArDetailsComponent implements OnInit {
   };
 
   @Input() paymentType: string = "";
-  @Input() record: any;
+  @Input() record: any = {};
 
   investmentData: any;
   createUpdate: any;

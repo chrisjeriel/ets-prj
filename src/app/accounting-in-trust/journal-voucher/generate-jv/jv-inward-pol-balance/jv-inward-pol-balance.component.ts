@@ -185,10 +185,10 @@ export class JvInwardPolBalanceComponent implements OnInit {
      
      if(this.jvDetail.statusType == 'N'){
        this.disable = false;
-       this.passData.disableAdd = false;
      }else {
        this.passData.disableAdd = true;
        this.passData.btnDisabled = true;
+       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
      this.retrieveInwPol();
@@ -202,6 +202,9 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.totalBalance = 0;
 
       if(datas.length != 0){
+        if(this.jvDetail.statusType == 'N'){
+          this.passData.disableAdd = false;
+        }
         this.jvDetails.cedingName = datas[0].cedingName;
         this.jvDetails.ceding = datas[0].cedingId;
         this.passLov.cedingId = datas[0].cedingId;
@@ -236,13 +239,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
     this.jvDetails.cedingName = data.payeeName;
     this.jvDetails.ceding = data.payeeCd;
     this.passLov.cedingId = data.payeeCd;
+    this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveInwPol()
     this.check(this.jvDetails);
   }
 
   check(data){
-    console.log(data)
     this.emitData.emit({ cedingId: data.ceding,
                          cedingName: data.cedingName
                        });
@@ -301,10 +304,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.dialogMessage = 'Payment amount cannot be greater than Net Due.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
-    }else if(this.totalBalance > this.jvDetail.jvAmt){
-      this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the JV Amount.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
     }else{
       this.confirm.confirmModal();
     }
@@ -333,11 +332,20 @@ export class JvInwardPolBalanceComponent implements OnInit {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         edited.push(this.passData.tableData[i]);
         edited[edited.length - 1].localAmt = this.passData.tableData[i].paytAmt * this.passData.tableData[i].currRate;
-        edited[edited.length - 1].netDue = Math.round((((this.passData.tableData[i].premAmt - this.passData.tableData[i].riComm - this.passData.tableData[i].riCommVat + this.passData.tableData[i].charges) + 0.000001) *100) / 100);
+        edited[edited.length - 1].netDue = this.passData.tableData[i].remainingBal;
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateDate = this.ns.toDateTimeString(0);
+        if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt > 0){
+           edited[edited.length - 1].paytType = 1
+         }else if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt < 0){
+           edited[edited.length - 1].paytType = 2
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt < 0){
+           edited[edited.length - 1].paytType = 3
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt > 0){
+           edited[edited.length - 1].paytType = 4
+         }
       }
 
       if(this.passData.tableData[i].deleted){

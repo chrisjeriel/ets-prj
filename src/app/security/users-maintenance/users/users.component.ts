@@ -79,6 +79,7 @@ export class UsersComponent implements OnInit {
     paginateFlag: true,
     infoFlag: true,
     widths: [100,400],
+    uneditable: [true,true],
   }
 
   PassDataModule: any = {
@@ -100,6 +101,7 @@ export class UsersComponent implements OnInit {
     paginateFlag: true,
     infoFlag: true,
     widths: [100,400],
+    uneditable: [true,true],
   }
 
   PassDataModuleTransUserGroup: any = {
@@ -150,6 +152,7 @@ export class UsersComponent implements OnInit {
   saveMtnUserParams:any = {};
   fromLOV:string = "";
   saveTranList:any = [];
+  saveModuleList:any = [];
 
   constructor(private securityService: SecurityService, private ns: NotesService, public modalService: NgbModal, private userService: UserService) { }
 
@@ -194,32 +197,36 @@ export class UsersComponent implements OnInit {
     if(data != null){
       this.transData = data;
 
-      this.PassDataModule.tableData = [];
-      this.PassDataModuleUserGroup.tableData = [];
-
-      if (accessLevel == 'USER') {
-        this.securityService.getModules(accessLevel, this.userData.userId, null, this.transData.tranCd).subscribe((data: any) => {
-          for(var i =0; i < data.modules.length;i++){
-            this.PassDataModule.tableData.push(data.modules[i]);
-            this.PassDataModule.tableData[i].showMG = 1;
-            this.PassDataModule.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
-          }
-
-          this.userModules.refreshTable();
-        });
-      } else if (accessLevel == 'USER_GROUP') {
-        this.securityService.getModules(accessLevel, null, this.userData.userGrp, this.transData.tranCd).subscribe((data: any) => {
-          for(var i =0; i < data.modules.length;i++){
-            this.PassDataModuleUserGroup.tableData.push(data.modules[i]);
-            this.PassDataModuleUserGroup.tableData[i].showMG = 1;
-            this.PassDataModuleUserGroup.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
-          }
-
-          this.userGroupModules.refreshTable();
-        });
-      }
+      this.getModules(accessLevel);
     }else{
       this.transData = {};
+    }
+  }
+
+  getModules(accessLevel) {
+    this.PassDataModule.tableData = [];
+    this.PassDataModuleUserGroup.tableData = [];
+
+    if (accessLevel == 'USER') {
+      this.securityService.getModules(accessLevel, this.userData.userId, null, this.transData.tranCd, null).subscribe((data: any) => {
+        for(var i =0; i < data.modules.length;i++){
+          this.PassDataModule.tableData.push(data.modules[i]);
+          this.PassDataModule.tableData[i].showMG = 1;
+          this.PassDataModule.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
+        }
+
+        this.userModules.refreshTable();
+      });
+    } else if (accessLevel == 'USER_GROUP') {
+      this.securityService.getModules(accessLevel, null, this.userData.userGrp, this.transData.tranCd, null).subscribe((data: any) => {
+        for(var i =0; i < data.modules.length;i++){
+          this.PassDataModuleUserGroup.tableData.push(data.modules[i]);
+          this.PassDataModuleUserGroup.tableData[i].showMG = 1;
+          this.PassDataModuleUserGroup.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
+        }
+
+        this.userGroupModules.refreshTable();
+      });
     }
   }
 
@@ -339,43 +346,92 @@ export class UsersComponent implements OnInit {
   onClickSaveTranModules() {
     try {
       this.prepareUserTrans();
+      this.prepareUserModules();
 
-      let saveUserTransactions:any = {
-        accessLevel : 'USER',
-        transactionList : []
-      }
+      
 
-      for (let rec of this.saveTranList) {
-        var tran = {
-          userId: rec.userId,
-          tranCd: rec.tranCd,
-          remarks: rec.remarks,    
-          createUser: rec.createUser,
-          updateUser: rec.updateUser
-        };
-        console.log(tran);
-        saveUserTransactions.transactionList.push(tran);
-      }
+      if (this.saveTranList.length > 0 || this.saveModuleList.length > 0) {
+          if (this.saveTranList.length > 0) {
+            let saveUserTransactions:any = {
+              accessLevel : 'USER',
+              transactionList : []
+            }
+
+            for (let rec of this.saveTranList) {
+              var tran = {
+                userId: rec.userId,
+                tranCd: rec.tranCd,
+                remarks: rec.remarks,    
+                createUser: rec.createUser,
+                updateUser: rec.updateUser
+              };
+              console.log(tran);
+              saveUserTransactions.transactionList.push(tran);
+            }
 
 
-      console.log("saveUserTransactions");
-      console.log(saveUserTransactions);
+            console.log("saveUserTransactions");
+            console.log(saveUserTransactions);
 
-      this.securityService.saveTransactions(saveUserTransactions).subscribe((data:any)=>{
-          console.log("saveTransactions return data");
-          console.log(data);
-          if(data['returnCode'] == 0) {
-            this.dialogIcon = "error";
-            this.successDialog.open();
-          } else{
-            this.dialogIcon = "";
-            this.successDialog.open();
-            this.getTransactions('USER');
+            this.securityService.saveTransactions(saveUserTransactions).subscribe((data:any)=>{
+                console.log("saveTransactions return data");
+                console.log(data);
+                if(data['returnCode'] == 0) {
+                  this.dialogIcon = "error";
+                  this.successDialog.open();
+                } else{
+                  this.dialogIcon = "";
+                  this.successDialog.open();
+                  this.getTransactions('USER');
+                }
+            },
+            (err) => {
+              alert("Exception when calling services [Transaction Saving].");
+            });
           }
-      },
-      (err) => {
-        alert("Exception when calling services.");
-      });
+
+          if (this.saveModuleList.length > 0) {
+            let saveUserModules:any = {
+              accessLevel : 'USER',
+              moduleList : []
+            }
+
+            for (let rec of this.saveModuleList) {
+              var mod = {
+                userId: rec.userId,
+                tranCd: rec.tranCd,
+                moduleId: rec.moduleId,
+                remarks: rec.remarks,    
+                createUser: rec.createUser,
+                updateUser: rec.updateUser
+              };
+              console.log(mod);
+              saveUserModules.moduleList.push(mod);
+            }
+
+
+            console.log("saveUserModules");
+            console.log(saveUserModules);
+
+            this.securityService.saveModules(saveUserModules).subscribe((data:any)=>{
+                console.log("saveModules return data");
+                console.log(data);
+                if(data['returnCode'] == 0) {
+                  this.dialogIcon = "error";
+                  this.successDialog.open();
+                } else{
+                  this.dialogIcon = "";
+                  this.successDialog.open();
+                  this.getModules('USER');
+                }
+            },
+            (err) => {
+              alert("Exception when calling services [Module Saving].");
+            });
+          }
+      } else {
+        alert("Nothing to save.");
+      }
 
     } catch (e) {
       alert("Error in e : " + e);
@@ -400,15 +456,24 @@ export class UsersComponent implements OnInit {
     console.log("this.saveTranList");
     console.log(this.saveTranList);
 
-    /*for (var i = 0; i < this.PassDataModule.tableData.length; i++) {
+  }
+
+  prepareUserModules() {
+    this.saveModuleList = [];
+
+    for (var i = 0; i < this.PassDataModule.tableData.length; i++) {
       if (this.PassDataModule.tableData[i].edited == true) {
-        saveModuleList.push(this.PassDataModule.tableData[i]);
+        this.PassDataModule.tableData[i].userId = this.userData.userId;
+        this.PassDataModule.tableData[i].remarks = 'TestData Modules';
+        this.PassDataModule.tableData[i].createUser = JSON.parse(window.localStorage.currentUser).username;
+        this.PassDataModule.tableData[i].updateUser = JSON.parse(window.localStorage.currentUser).username;
+
+        this.saveModuleList.push(this.PassDataModule.tableData[i]);
       }
-    }*/
-
-    /*console.log("saveModuleList");
-    console.log(saveModuleList);*/
-
+    }
+    
+    console.log("this.saveModuleList");
+    console.log(this.saveModuleList);
   }
 
   onClickSaveConfirmation() {

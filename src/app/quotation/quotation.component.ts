@@ -19,9 +19,6 @@ import { Subject } from 'rxjs';
 })
 export class QuotationComponent implements OnInit {
 	constructor(private route: ActivatedRoute, public modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService, private userService: UserService) { 
-    this.userService.accessibleModules.subscribe(value => {
-        this.accessibleModules = value;
-    })
   }
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('tabset') tabset: any;
@@ -78,18 +75,19 @@ export class QuotationComponent implements OnInit {
   approverList: any[];
   approver:string = '';
   exitLink:string;
-  accessibleModules:any = [];
+  accessibleModules:string [] = [];
 
 	ngOnInit() {
-		this.sub = this.route.params.subscribe(params => {
-            this.line = params['line'];
-            this.inquiryFlag = params['inquiry'];
-            console.log("params['inquiry'] " + params['inquiry']);
-            console.log("QUOTATION COMPONENT: " + JSON.stringify(params));
-            this.exitLink = params['exitLink'];
-        });
+      this.sub = this.route.params.subscribe(params => {
+          this.line = params['line'];
+          this.inquiryFlag = params['inquiry'];
+          console.log("params['inquiry'] " + params['inquiry']);
+          console.log("QUOTATION COMPONENT: " + JSON.stringify(params));
+          this.exitLink = params['exitLink'];
+          this.accessibleModules = this.userService.getAccessModules();
+      });
 
-    
+      
 	}
 
 	showApprovalModal(content) {

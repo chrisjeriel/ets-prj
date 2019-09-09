@@ -35,7 +35,7 @@ export class PolPostComponent implements OnInit {
 
   cummSi:any;
 
-  constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, private modalService: NgbModal,
+  constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, public modalService: NgbModal,
    private uwService: UnderwritingService, private ns: NotesService, private router: Router) {
   	config.backdrop = 'static';
     config.keyboard = false;
@@ -44,6 +44,8 @@ export class PolPostComponent implements OnInit {
     configprogress.animated = true;
     configprogress.height = '20px';
    }
+
+   failText: String;
 
   ngOnInit() {
 
@@ -217,8 +219,14 @@ export class PolPostComponent implements OnInit {
       this.uwService.post(this.postParams).subscribe(a=>{
         if(a['returnCode']==-1)
           this.showSuccess()
-        else
+        else if(a['returnCode']==20000){
+          for(let msg of a['errorList']){
+            this.failText = msg.errorMessage;
+          }
           this.showError();
+        }
+        else
+           this.failText = "Please check maintenance tables relevant to distribution.";
       });
     }
 

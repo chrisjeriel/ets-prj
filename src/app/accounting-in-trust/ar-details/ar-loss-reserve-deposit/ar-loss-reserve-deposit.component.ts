@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { AccountingItLossReserveDepositAr } from '@app/_models';
 import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
 
@@ -7,9 +7,10 @@ import { AccountingService, MaintenanceService, NotesService } from '@app/_servi
   templateUrl: './ar-loss-reserve-deposit.component.html',
   styleUrls: ['./ar-loss-reserve-deposit.component.css']
 })
-export class ArLossReserveDepositComponent implements OnInit {
+export class ArLossReserveDepositComponent implements OnInit, AfterViewInit {
 
   @Input() record: any;
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
 
   lossReserveDepositData: any = {
     tableData: this.accountingService.getAccountingItLossReserveDepositAR(),
@@ -41,6 +42,11 @@ export class ArLossReserveDepositComponent implements OnInit {
         this.payorData.business = this.record.bussTypeName;
       }
     );
+    
+  }
+
+  ngAfterViewInit(){
+    setTimeout(()=>{this.emitCreateUpdate.emit(this.record);},0);
   }
 
 }

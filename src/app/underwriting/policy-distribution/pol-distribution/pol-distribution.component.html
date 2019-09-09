@@ -38,8 +38,8 @@
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.status">
 					<label class="form-control-sm col-sm-1"></label>
 					<label class="form-control-sm col-sm-1" style="text-align: left !important;padding-left: 0;" disabled="disabled"><input type="checkbox" [ngModel]="acctDetails?.instTag=='Y'" disabled="disabled" > &nbsp;Installment</label>
-					<label class="form-control-sm col-sm-2" [class.d-none]="inquiryFlag != true && acctDetails?.instTag=='Y'">Accounting Entry Date</label>
-					<div class="col-sm dp-cont" [class.d-none]="inquiryFlag != true && acctDetails?.instTag=='Y'">
+					<label class="form-control-sm col-sm-2" [class.d-none]="!inquiryFlag || acctDetails?.instTag=='Y'">Accounting Entry Date</label>
+					<div class="col-sm dp-cont" [class.d-none]="!inquiryFlag || acctDetails?.instTag=='Y'">
 						<datepicker [disabled]="true" [type]="'date'" [required]="false" [showIcon]="false" [value]="acctDetails.acctDate?.split('T')[0]"></datepicker>
 					</div>
 				</div>
@@ -106,8 +106,8 @@
 		<div class="col-sm" style="text-align: center; padding: 10px;">
 			<div class="cust-btn-container">
 
-				<app-modal [btnTitle]="'View Pool Dist'" (modalOpened)="retrievePoolDistribution();">
-					<div header>Pool Distribution Per Section</div>
+				<app-modal [btnTitle]="'View Cedant Dist'" (modalOpened)="retrievePoolDistribution();">
+					<div header>Cedant Distribution Per Section</div>
 					<div body>
 						<fieldset class="scheduler-border" style="padding-bottom: 10px !important; margin-bottom: -5px !important; padding-top: 32px !important;">
 							<div class="row" style="padding-top: 5px;">

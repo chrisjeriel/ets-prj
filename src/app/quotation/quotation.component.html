@@ -3,13 +3,13 @@
 	<h4 *ngIf="inquiryFlag">Quotation / Quotation Inquiry</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
 		<ngb-tabset #tabset  (tabChange)="onTabChange($event)">
-		<ngb-tab class="ngb-tab" title="General Info" > <!-- [disabled]="accessibleModules.indexOf('QUOTE002') == -1" -->
+		<ngb-tab class="ngb-tab" title="General Info" [disabled]="accessibleModules.indexOf('QUOTE002') == -1">
 			<ng-template ngbTabContent>
 				<app-general-info (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"
 					(enblEndtTab)="enblEndtTab=$event" (enblOptTab)="enblOptTab=$event"></app-general-info>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab id="idko" [disabled]="quoteInfo.quoteId == ''"> <!-- || accessibleModules.indexOf('QUOTE003') == -1 -->
+		<ngb-tab id="idko" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE003') == -1">
 			<ng-template ngbTabTitle>
 				<div>Coverage</div>
 			</ng-template>
@@ -17,7 +17,7 @@
 				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblEndtTab)="enblOptTab=$event"></app-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblOptTab"> <!-- || accessibleModules.indexOf('QUOTE004') == -1 -->
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblOptTab || accessibleModules.indexOf('QUOTE004') == -1">
 			<ng-template ngbTabTitle>
 				<div>Quote Option</div>
 			</ng-template>
@@ -26,7 +26,7 @@
 			</ng-template>
 		</ngb-tab>
 
-		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblEndtTab"> <!-- || accessibleModules.indexOf('QUOTE005') == -1 -->
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblEndtTab || accessibleModules.indexOf('QUOTE005') == -1">
 			<ng-template ngbTabTitle>
 				<div>Endorsement</div>
 			</ng-template>
@@ -34,8 +34,7 @@
 				<app-quote-endorsement [quotationInfo]="quoteInfo" [endorsementType]="'General'" [inquiryFlag]="inquiryFlag"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop" [disabled]="quoteInfo.quoteId == ''"> <!-- || accessibleModules.indexOf('QUOTE006') == -1 -->
-	<!-- 	<ngb-tab> -->
+		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE006') == -1"> <!--  -->
 			<ng-template ngbTabTitle>
 				<div>ALOP</div>
 			</ng-template>
@@ -43,7 +42,7 @@
 				<app-quo-alop [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-quo-alop>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="quoteInfo.quoteId == ''"> <!-- || accessibleModules.indexOf('QUOTE007') == -1 -->
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE007') == -1">
 			<ng-template ngbTabTitle>
 				<div>Internal Competition</div>
 			</ng-template>
@@ -51,7 +50,7 @@
 				<app-internal-competition [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-internal-competition>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="quoteInfo.quoteId == ''"> <!-- || accessibleModules.indexOf('QUOTE008') == -1 -->
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE008') == -1">
 			<ng-template ngbTabTitle>
 				<div>Attachment</div>
 			</ng-template>
@@ -66,7 +65,7 @@
 			<ng-template ngbTabContent></ng-template>
 		</ngb-tab>
 	
-		<ngb-tab *ngIf="!inquiryFlag" id="approval-tab" [disabled]="quoteInfo.quoteId == ''"> <!-- || accessibleModules.indexOf('QUOTE009') == -1 -->
+		<ngb-tab *ngIf="!inquiryFlag" id="approval-tab" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE009') == -1">
 
 			<ng-template #content>
 				<div class="modal-header">

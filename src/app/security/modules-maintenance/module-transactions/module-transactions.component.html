@@ -10,8 +10,8 @@
 			<div class="col-md-13 text-center">
 				<div class="cust-btn-container">
 					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="modules()"><a>Modules</a></button>
-					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="user()"><a>Users w/ Access</a></button>
-					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" ><a>User Group w/ Access</a></button>
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="onClickUsersWithAccess();"><a>Users w/ Access</a></button>
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="onClickUserGroupWithAccess();"><a>User Group w/ Access</a></button>
 				</div>
 			</div>
 		</div>
@@ -36,13 +36,13 @@
 	        <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
 	            <div class="input-group" style="margin-bottom: -15px !important;">
 	                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-	                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="transactionData.createUser" disabled>
 	                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-	                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="transactionData.createDate" disabled>
 	                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-	                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="transactionData.updateUser" disabled>
 	                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-	                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="transactionData.updateDate" disabled>
 	            </div>
 	        </div>
 	    </fieldset>
@@ -56,8 +56,8 @@
         <div class="form-row custom-row-inline-inset">
 			<div class="col-sm-12">
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4">Tran Code</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly >
+					<label class="form-control-sm col-sm-4">Transaction</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="transactionData.tranDesc" >
 				</div>
 	        	<fieldset class="scheduler-border">
 	        		<legend class="scheduler-border">Module</legend>
@@ -81,14 +81,14 @@
         <div class="form-row custom-row-inline-inset">
 			<div class="col-sm-12">
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4">Tran Code</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6">
+					<label class="form-control-sm col-sm-4">Transaction</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="transactionData.tranDesc">
 				</div>
 	        	<fieldset class="scheduler-border">
 	        		<legend class="scheduler-border">Users</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable [passData]="PassDatAUserListing"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #usersWithAccess [passData]="PassDataUserListing"> </app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
@@ -98,4 +98,29 @@
   	<div footer class="d-flex justify-content-center w-100">                    
         <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
     </div> 
-</app-modal> 
+</app-modal>
+
+<app-modal class="d-none" id="userGroup">
+    <div header>User Group with Access</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">Transaction</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="transactionData.tranDesc">
+				</div>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">User Group</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable #userGroupWithAccess [passData]="PassDataUserGroupListing"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+    </div> 
+</app-modal>

@@ -55,14 +55,14 @@
         <div class="form-row custom-row-inline-inset">
 			<div class="col-sm-12">
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4">User Id</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6">
+					<label class="form-control-sm col-sm-4">User Group</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" [(ngModel)]="userGroupData.userGrpDesc">
 				</div>
 	        	<fieldset class="scheduler-border">
 	        		<legend class="scheduler-border">Module Transaction</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable [passData]="PassDataModuleTrans"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userGroupTransactions (newClick)="onRowClickTrans($event, 'USER_GROUP')" (clickLOV)="clickLOV($event,'transactions')" [passData]="PassDataModuleTrans"> </app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
@@ -70,7 +70,7 @@
 	        		<legend class="scheduler-border">Module</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable [passData]="PassDataModuleUser"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userGroupModules (clickLOV)="clickLOV($event,'modules')" [passData]="PassDataModule"> </app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
@@ -79,7 +79,7 @@
     </div>
   	<div footer class="d-flex justify-content-center w-100">                    
         <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+        <button type="button" class="cust-btn" (click)="onClickSaveTranModules();"><a>Save</a></button>
     </div> 
 </app-modal> 
 
@@ -107,3 +107,7 @@
         <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
     </div> 
 </app-modal> 
+
+
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>

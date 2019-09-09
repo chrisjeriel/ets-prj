@@ -530,11 +530,11 @@ export class CustNonDatatableComponent implements OnInit {
                         this.searchQuery.push(
                             {
                                 key: e.keys.from,
-                                search: (e.keys.search === undefined || !e.enabled) ? '' : (e.keys.search).replace(/[^\d\.\-]/g, "") * 1,
+                                search: (e.keys.search === undefined || !e.enabled || e.keys.search === '') ? '' : (e.keys.search).replace(/[^\d\.\-]/g, "") * 1,
                             },
                              {
                                 key: e.keys.to,
-                                search: (e.keys.search2 === undefined || !e.enabled) ? '' : (e.keys.search2).replace(/[^\d\.\-]/g, "") * 1,
+                                search: (e.keys.search2 === undefined || !e.enabled || e.keys.search2 === '') ? '' : (e.keys.search2).replace(/[^\d\.\-]/g, "") * 1,
                             }
                         );
                     }
@@ -706,5 +706,17 @@ export class CustNonDatatableComponent implements OnInit {
     onClickGeneric2(ev){
         
         this.gnrc2.emit(ev);
+    }
+
+    valChanged(type, fromVal, toVal) {
+        if(toVal !== undefined && toVal !== '' && fromVal !== undefined && fromVal !== '') {
+            if(type === 'ts') {
+                return Number(fromVal) > Number(toVal) ? '' : toVal;
+            } else if(type === 'ds') {
+                return new Date(fromVal) > new Date(toVal) ? '' : toVal;
+            }
+        } else {
+            return fromVal === undefined || fromVal === '' ? toVal : '';
+        }
     }
 }

@@ -56,8 +56,8 @@
                     <div class="form-row" *ngIf="!batchOptionLoading">
                       <div class="input-group" style="margin-bottom: 5px !important;">
                         <input type="text" class="form-control form-control-sm cust-sm col-sm"
-                           required [readonly]="batchOption.openTag != 'N'" [ngModel]="reasonCd" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
-                        <div class="text-search-ico" *ngIf="batchOption.openTag == 'N'">
+                           required [ngModel]="reasonCd" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
+                        <div class="text-search-ico">
                           <a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
                       </div>
                       <div class="input-group" style="margin-bottom: -19px !important;">

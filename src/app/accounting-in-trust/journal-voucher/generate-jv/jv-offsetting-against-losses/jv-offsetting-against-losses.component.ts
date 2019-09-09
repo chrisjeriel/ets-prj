@@ -220,7 +220,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   openLOV(data){
-    this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimNo});
+    this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimId});
     this.clmlovMdl.openLOV();
   }
 

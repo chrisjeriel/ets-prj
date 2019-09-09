@@ -61,7 +61,8 @@ export class PolicyDistributionComponent implements OnInit {
       }
 
       this.inquiryFlag = this.params.fromInq=='true';
-
+      console.log(this.inquiryFlag);
+      console.log(this.params.fromInq=='true')
      this.getInstInfo();
       setTimeout(a=>this.tabset.select("risk"),0);
     });
