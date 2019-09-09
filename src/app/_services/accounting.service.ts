@@ -353,7 +353,6 @@ export class AccountingService {
 
 	getAccInvestments(searchParams : any[]) {
 		var params;
-		console.log(searchParams);
 		if(searchParams.length < 1){
 			params = new HttpParams()
 				.set('invtId','')
@@ -1552,7 +1551,7 @@ export class AccountingService {
 			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
 			.set('payeeNo', (payeeNo == null || payeeNo == undefined ? '' : payeeNo))
 			.set('zeroBal', (zeroBal == null || zeroBal == undefined ? '' : zeroBal))
-			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd));
+			.set('currCd', currCd);
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAgingSoaDtl',{params});	
 	}
 
@@ -1729,9 +1728,11 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFee(prdAsOf?, year?, servFeeAmt?, currCd?, currRt?){
+    getAcctPrqServFee(retType, reqId, quarter?, year?, servFeeAmt?, currCd?, currRt?){
 		const params = new HttpParams()
-			.set('prdAsOf', (prdAsOf == null || prdAsOf == undefined ? '' : prdAsOf))
+			.set('retType', (retType == null || retType == undefined ? '' : retType))
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+			.set('quarter', (quarter == null || quarter == undefined ? '' : quarter))
 			.set('year', (year == null || year == undefined ? '' : year))
 			.set('servFeeAmt', (servFeeAmt == null || servFeeAmt == undefined ? '' : servFeeAmt))
 			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
@@ -1986,12 +1987,6 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcctPrqServFee',JSON.stringify(params),header);
 	}
 
-	getJVAllocInvtIncListing(allocTranId) {
-		 const params = new HttpParams()
-             .set('allocTranId', (allocTranId === null || allocTranId === undefined ? '' : allocTranId) )
-        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
-	}
-
 	updateAcitStatus(params){
 		let header : any = {
 		    headers: new HttpHeaders({
@@ -2010,7 +2005,7 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/printAr',JSON.stringify(params),header);
 	}
 
-	getRecievableLosses(tranId,cedingId){
+	getRecievableLosses(tranId,cedingId?){
 		const params = new HttpParams()
 		 	 .set('tranId', (tranId === null || tranId === undefined ? '' : tranId))
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVRcvblsAgnstLosses",{params});
@@ -2022,15 +2017,13 @@ export class AccountingService {
 		        'Content-Type': 'application/json'
 		    })
 		};
-		
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJvReceivablesAgainstLoss',JSON.stringify(params),header);
 	}
 
 	getAcitCv(tranId?){
 		const params = new HttpParams()
 			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
-
-		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCv',{params});	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCv',{params});
 	}
 
 	saveAcitCv(params){
@@ -2040,7 +2033,6 @@ export class AccountingService {
              })
          };
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCv',params,header);
- 
     }
 
     getAcitCvList(searchParams: any[]){
@@ -2073,9 +2065,122 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitClmResHistPayts",{params});
 	}
 
+
 	getAMortizationList(invtId){
 		const params = new HttpParams()
 		 	.set('invtId', (invtId == null || invtId == undefined ? '' : invtId))
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAmortize",{params});
+    }
+
+	saveAcitCvPaytReqList(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCvPaytReqList',params,header);
+    }
+
+    getAcitCvPaytReqList(tranId?,itemNo?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCvPaytReqList',{params});	
+	}
+
+	approveJV(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/approveJV',JSON.stringify(params),header);
+	}
+
+	getJVAllocInvtIncListing(allocTranId) {
+		 const params = new HttpParams()
+             .set('allocTranId', (allocTranId === null || allocTranId === undefined ? '' : allocTranId) )
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVAllocInvtInc",{params});
+	}
+
+	saveAcitAttachments(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitAttachments',JSON.stringify(params),header);
+	}
+
+	getAcitAttachments(tranId){
+		const params = new HttpParams()
+		 	.set('tranId', tranId);
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAttachments",{params});
+	}
+
+	getJvInvPullout(tranId){
+		const params = new HttpParams()
+		 	.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		 	/*.set('bankCd', (bankCd == null || bankCd == undefined ? '' : bankCd))
+		 	.set('accountNo', (accountNo == null || accountNo == undefined ? '' : accountNo))*/
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInvPullOut",{params});
+	}
+	
+	saveInvPullOut(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvPullOut',JSON.stringify(params),header);
+	}
+
+	updateAcitCvStat(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+   		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAcitCvStat',params,header);
+    }		
+	
+	getJvInvRollOver(tranId){
+		const params = new HttpParams()
+		 	.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVInvRollOver",{params});
+    }
+
+
+	saveInvRollOver(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvRollOver',JSON.stringify(params),header);
+	}
+
+	getSoaDtlZero(policyId,instNo,cedingId,payeeNo,currCd){
+		const params = new HttpParams()
+		.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+		.set('instNo', (instNo == null || instNo == undefined ? '' : instNo))
+		.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+		.set('payeeNo', (payeeNo == null || payeeNo == undefined ? '' : payeeNo))
+		.set('currCd', currCd);
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveSoaAgingZeroLOV",{params});
+	}
+
+	getQuarterPrem(quarterEnd,cedingId){
+		const params = new HttpParams()
+			.set('quarterEnd', (quarterEnd == null || quarterEnd == undefined ? '' : quarterEnd))
+			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveQuarterPremRes",{params});
+	}
+	 
+	getZeroAlt(policyId){
+		const params = new HttpParams()
+			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveSoaAgingZeroAltLOV",{params});
 	}
 }

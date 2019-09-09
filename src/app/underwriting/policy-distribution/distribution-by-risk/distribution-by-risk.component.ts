@@ -33,6 +33,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('warningInvShare') warningInvShareMdl: ModalComponent;
   @ViewChild('confirmAlt') confirmAltMdl: ModalComponent;
   @ViewChild('retLimitReached') retLimitReached: ModalComponent;
+  @ViewChild('warningNegVals') warningNegVals: ModalComponent;
+  
   
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
@@ -181,7 +183,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
   poolDistributionData: any = {
     tableData: [],
-    tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
+    tHeader: ['Treaty', 'Cedant', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
     dataTypes: ['text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
     keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
     widths: [1,250,1,140,140,1,140,140,1,140,140,140],
@@ -253,7 +255,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     sectionIII :0,
   };
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router,
+  constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, private route: ActivatedRoute, private router: Router,
               private ns: NotesService, private ms: MaintenanceService) { }
 
 
@@ -293,7 +295,6 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //NECO 05/31/2019
     retrieveRiskDistribution(){
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
-        console.log(data);
         this.distAlt = data.distAlt;
         this.undistAlt = data.undistAlt;
         this.riskDistributionData = data.distWrisk;
@@ -307,9 +308,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
 
 
         //Check for warnings
-        console.log("Params used in Dist Risk Warnings:");
-        console.log("riskDistId : " + this.riskDistributionData.riskDistId);
-        console.log("altNo :" + this.riskDistributionData.altNo);
+        // console.log("Params used in Dist Risk Warnings:");
+        // console.log("riskDistId : " + this.riskDistributionData.riskDistId);
+        // console.log("altNo :" + this.riskDistributionData.altNo);
 
         if (this.riskDistributionData.altNo != 0 && this.params.fromInq != 'true') {
           this.polService.getPolDistWarning(this.riskDistributionData.riskDistId, this.riskDistributionData.altNo).subscribe((data2: any)=> {
@@ -325,6 +326,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
                   this.warningModalCode = data2.warningList[i].warningCode;
                   this.warningModalMsg = data2.warningList[i].warningMessage;
                   $('#warningModal > #modalBtn').trigger('click');
+                  break;
                 }
                 
               }
@@ -574,10 +576,15 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     }
   //END
 
-
   distribute(){
     if(this.undistAlt.length != 0){
       this.warningUndistAltMdl.openNoClose();
+      return;
+    }
+    console.log(this.treatyDistData.tableData);
+    console.log(this.treatyDistData.tableData.some(a=>{return a['pctShare'] < 0 || a['siAmt'] < 0 || a['premAmt'] < 0 || a['commRt'] < 0 || a['commAmt'] < 0 || a['vatRiComm'] < 0 || a['netDue'] < 0}))
+    if(this.treatyDistData.tableData.some(a=>{return a['pctShare'] < 0 || a['siAmt'] < 0 || a['premAmt'] < 0 || a['commRt'] < 0 || a['commAmt'] < 0 || a['vatRiComm'] < 0 || a['netDue'] < 0})){
+      this.warningNegVals.openNoClose();
       return;
     }
 
@@ -605,7 +612,6 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   }
 
   onClickCancel(){
-    console.log(this.params.exitLink)
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}]);
   }
 

@@ -1,12 +1,17 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
+import { Subject } from 'rxjs';
+
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
     constructor(private http: HttpClient) { }
+
+    public accessibleModules = new Subject<any>();
+    public moduleIdObs = new Subject<string>();
+    public accessibleModulesArr: string[] = [];
 
     getAll() {
         return this.http.get<User[]>(`${environment.apiUrl}/users`);
@@ -36,10 +41,11 @@ export class UserService {
         return this.http.get(environment.prodApiUrl + '/user-service/userLogin', {params});
     }
 
-    retMtnUsers(userId: string){
+    retMtnUsers(userId?: string, userGrp?: string){
          const params = new HttpParams()
-                .set('userId', userId);
-
+            .set('userId',userId ===undefined || userId===null ? '' : userId)
+            .set('userGrp',userGrp ===undefined || userGrp===null ? '' : userGrp);
+            
         return this.http.get(environment.prodApiUrl + '/user-service/retMtnUsers', {params});
     }
 
@@ -49,5 +55,30 @@ export class UserService {
                 .set('lineCd', lineCd)
 
         return this.http.get(environment.prodApiUrl + '/user-service/retrieveMtnUserAmountLimit', {params});
+    }
+
+    saveMtnUser(params) {
+        let header: any = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        };
+        return this.http.post(environment.prodApiUrl + '/user-service/saveMtnUser',params,header);
+    }
+
+    setAccessModules(data) {
+        this.accessibleModulesArr = data;
+    }
+
+    getAccessModules() {
+        return this.accessibleModulesArr;
+    }
+
+    emitAccessModules(val) {
+        this.accessibleModules.next(val);
+    }
+
+    emitModuleId(val) {
+        this.moduleIdObs.next(val);
     }
 }

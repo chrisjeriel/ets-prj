@@ -24,6 +24,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   @Output() investment: EventEmitter<any> = new EventEmitter();
+  @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
   
   passData: any = {
     tableData:[],
@@ -70,7 +71,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     uneditable: [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
     checkFlag: true,
     pageID: 6,
-    widths:[220, 150, 1, 150, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
+    widths:[130, 120, 1, 130, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
   }
 
   passLov: any = {
@@ -93,7 +94,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     console.log(this.record.tranId);
     console.log(this.invData);
     this.passData.nData.tranId = this.record.tranId;
-    this.passLov.searchParams = [{key: 'bankCd', search: this.record.refCd}, {key:'invtStatus', search: 'MATURED'}];
+    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'MATURED'}];
     if(this.invData !== undefined){
       for(var i of this.invData){
         this.passLov.hide.push(i);
@@ -249,7 +250,13 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
+    if(data !== null){
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      this.emitCreateUpdate.emit(data);
+    }else{
+      this.emitCreateUpdate.emit(null);
+    }
   }
   onTableDataChange(data){
     console.log(data);

@@ -49,6 +49,27 @@
                 </div>
               </fieldset>
 
+               <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Reason</legend>
+                <div class="custom-row-inline-inset">
+                  <div>
+                    <div class="form-row" *ngIf="!batchOptionLoading">
+                      <div class="input-group" style="margin-bottom: 5px !important;">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm"
+                           required [ngModel]="reasonCd" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
+                        <div class="text-search-ico">
+                          <a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
+                      </div>
+                      <div class="input-group" style="margin-bottom: -19px !important;">
+                        <textarea type="text" class="form-control form-control-sm cust-sm col-sm" rows="4"
+                           readonly [ngModel]="reasonDesc" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;">
+                        </textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+
               <div class="form-row">
                 <div class="form-group col-sm">
                   <div class="text-center" class="min-width: 100% !important;">
@@ -203,17 +224,14 @@
                       </div>
                     </div>
                   </div>
-                  <br>
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-1" style="margin-left:-3px !important;">Reason</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                           required [readonly]="batchOption.openTag === 'Y'" [ngModel]="claimDetails != null && claimDetails.manual ? claimDetails.reasonCd : claimDetails!=null? reasonCd: ''" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
-                        <div class="text-search-ico" *ngIf="batchOption.openTag !== 'Y'">
-                          <a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
+                           required readonly="readonly" [ngModel]="claimDetails?.reasonCd" (ngModelChange)="reasonCd = $event.toUpperCase();" (change)="checkCode($event, 'reason')">
                         <input type="text" class="form-control form-control-sm cust-sm col-sm"
-                           readonly style="margin-left: 2px !important" [ngModel]="claimDetails != null && claimDetails.manual ? claimDetails.description :claimDetails!=null?reasonDesc:''">
+                           readonly style="margin-left: 2px !important" [ngModel]="claimDetails?.reasonDesc">
                       </div>
                     </div>
 
@@ -318,4 +336,5 @@
 <app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)" #riskMdl></app-mtn-risk>
 <app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)" #cedCoMdl></app-ceding-company>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)" #cessionMdl></app-mtn-type-of-cession>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null;" #successDiagSave></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null;" #successDiagSave></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" #successDiagSave></app-sucess-dialog>

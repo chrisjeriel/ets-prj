@@ -15,7 +15,7 @@ export class WfFormCommonComponent implements OnInit {
 
   constructor(config: NgbModalConfig,
   	 private userService: UserService,
-     private modalService: NgbModal,
+     public modalService: NgbModal,
      private workFlowManagerService: WorkFlowManagerService, 
      private ns: NotesService) { }
   
@@ -110,6 +110,7 @@ export class WfFormCommonComponent implements OnInit {
   dialogIcon:string  = "";
   dialogMessage:string  = "";
   onOkVar: any;
+  mode: boolean;
 
   ngOnInit() {
   	

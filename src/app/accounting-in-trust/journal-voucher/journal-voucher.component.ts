@@ -16,8 +16,8 @@ export class JournalVoucherComponent implements OnInit {
 
   passDataJVListing: any = {
       tableData: [],
-      tHeader: ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Prepared By","JV Status","Amount"],
-      dataTypes: ['text','date','text','text','text','text','text','currency',],
+      tHeader: ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Prepared By","Amount"],
+      dataTypes: ['text','date','text','text','text','text','currency',],
        filters: [
       {
         key: 'jvNo',
@@ -49,11 +49,11 @@ export class JournalVoucherComponent implements OnInit {
         title: 'Prepared By',
         dataType: 'text'
       },
-      {
+      /*{
         key: 'jvStatus',
         title: 'J.V Status',
         dataType: 'text'
-      },
+      },*/
       {
         key: 'amount',
         title: 'Amount',
@@ -67,9 +67,9 @@ export class JournalVoucherComponent implements OnInit {
       pageLength: 10,
       pageStatus: true,
       pagination: true,
-      keys:['jvNo','jvDate','particulars','tranTypeName','refNo','preparedName','jvStatusName','jvAmt'],
-      uneditable:[true,true,true,true,true,true,true,true],
-      colSize: ['120px','98px','171px','335px','110px','118px','95px','115px'],
+      keys:['jvNo','jvDate','particulars','tranTypeName','refNo','preparedName','jvAmt'],
+      uneditable:[true,true,true,true,true,true,true],
+      colSize: ['120px','98px','171px','335px','110px','118px','115px'],
     };
 
     dataInfo : any = {
@@ -80,20 +80,38 @@ export class JournalVoucherComponent implements OnInit {
       updateDate:''
     }
 
+    tranStat: string = 'new';
+
   constructor(private accountingService: AccountingService,private router: Router, private titleService: Title, private ns : NotesService) { }
 
   ngOnInit() {
      this.titleService.setTitle("Acct-IT | Journal Voucher");
-     this.retrieveJVlist();
+
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.retrieveJVlist();
+    }, 0);
   }
 
   retrieveJVlist(){
+    this.table.overlayLoader = true;
     this.accountingService.getJVListing(null).subscribe((data:any) => {
+      this.passDataJVListing.tableData = [];
+
       for(var i=0; i< data.transactions.length;i++){
         this.passDataJVListing.tableData.push(data.transactions[i].jvListings);
         this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo).padStart(8,'0');
         this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].transactions = data.transactions[i];
       }
+
+      this.passDataJVListing.tableData.forEach(a => {
+        if(a.transactions.tranStat != 'O') {
+          a.jvStatus = a.transactions.tranStat;
+          a.jvStatusName = a.transactions.tranStatDesc;
+        }
+      });
+
+      this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.jvStatusName).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
     });
   }

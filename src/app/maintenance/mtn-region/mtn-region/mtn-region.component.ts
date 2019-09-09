@@ -35,7 +35,7 @@ export class MtnRegionComponent implements OnInit {
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
   
-  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal,  private ns: NotesService) { }
+  constructor(private maintenanceService: MaintenanceService, public modalService: NgbModal,  private ns: NotesService) { }
 
   ngOnInit() {
    if(this.lovCheckBox){

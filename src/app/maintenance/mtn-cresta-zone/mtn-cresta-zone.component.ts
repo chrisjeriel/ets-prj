@@ -33,7 +33,7 @@ export class MtnCrestaZoneComponent implements OnInit {
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
 
-  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
+  constructor(private maintenanceService: MaintenanceService, public modalService: NgbModal) { }
 
   ngOnInit() {
     if(this.lovCheckBox){

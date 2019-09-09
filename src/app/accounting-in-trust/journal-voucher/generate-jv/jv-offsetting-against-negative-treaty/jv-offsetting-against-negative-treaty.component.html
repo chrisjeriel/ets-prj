@@ -20,7 +20,8 @@
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
                 <legend class="scheduler-border">Negative Treaty Balance</legend>
                     <div style="position: relative;margin-top: 10px" >
-                        <app-cust-editable-non-datatable #quarterTable [passData]="passData" (newClick)="onrowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event);calculateTotal($event)"></app-cust-editable-non-datatable>
+                        <!-- <app-cust-editable-non-datatable #quarterTable [passData]="passData"(newClick)="onrowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event)"></app-cust-editable-non-datatable> TRBT#PROD_GRADE -->
+                        <app-cust-editable-non-datatable #quarterTable [passData]="passData"(newClick)="onrowClick($event)" (clickLOV)="quarterEndModal()" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event)"></app-cust-editable-non-datatable>
                     </div>
             </fieldset>
         </div>
@@ -40,16 +41,18 @@
         <div class="form-group col-sm">
             <div class="col-md-12 text-center">
                 <div class="cust-btn-container">
-                    <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="cancel()"><a>Cancel</a></button>
-                    <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="onClickSave()"><a>Save</a></button>
+                    <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
         </div>
     </div>	
 </div>
-<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-mtn-payee-ceding id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-payee-ceding>
 <app-lov [passData]="passLov" (selectedData)="setClaimOffset($event)">
 <app-quarter-ending-lov id="quarterEnd" (selectedData)="setQuarter($event)"></app-quarter-ending-lov>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveNegativeTreatyBal()"></app-confirm-save>
-<app-cancel-button (onYes)="saveNegativeTreatyBal('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
+<!-- <app-cancel-button (onYes)="saveNegativeTreatyBal('cancel')" [url]="'/journal-voucher'" ></app-cancel-button> TRBT#PROD_GRADE -->
+<app-cancel-button (onYes)="saveNegativeTreatyBal()" [url]="'/journal-voucher'" ></app-cancel-button>

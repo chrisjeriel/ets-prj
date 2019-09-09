@@ -7,6 +7,9 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
+import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
+import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-jv-entry',
@@ -25,12 +28,29 @@ export class JvEntryComponent implements OnInit {
   @Output() disableTab : EventEmitter<any> = new EventEmitter();  
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
+  @ViewChild('Alloc') allocJV: ModalComponent;
+  @ViewChild('ApproverNames') approverName: MtnPrintableNamesComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
   @ViewChild('PrintEntries') printEntries: ModalComponent;
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(LovComponent)lov: LovComponent;
   @ViewChild('myForm') form:any;
+
+  passData: any = {
+    tableData: [],
+    tHeader: ['Tran Type','Tran No','Tran Date','Payee/Payor', 'Particulars', 'Amount'],
+    dataTypes: ['text','sequence-8','date','text','text','currency'],
+    nData:{
+    },
+    infoFlag: true,
+    paginateFlag: true,
+    pagination: true,
+    pageStatus: true,
+    pageLength: 10,
+    uneditable: [true,true,true,true,true,true],
+    keys:['tranType','tranNo','tranDate','payee','particulars','allocAmt']
+  };
 
   entryData:any = {
     jvYear:'',
@@ -88,11 +108,14 @@ export class JvEntryComponent implements OnInit {
   UploadBut: boolean = false;
   allocBut: boolean = false;
   dcBut: boolean = false;
+  approvedStat: boolean = false;
+  disableBut: boolean = false;
+  printStat: boolean = false;
   cancelFlag: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
 
-  constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe) { }
+  constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe, private router: Router) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acc | Journal Voucher");
@@ -142,7 +165,7 @@ export class JvEntryComponent implements OnInit {
         this.jvDatas.tranYear = data.transactions.tranYear;
         this.jvDatas.tranClassNo  = data.transactions.tranClassNo;
         this.entryData.jvDate = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
-        this.entryData.refnoDate = this.entryData.refnoDate == null ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
+        this.entryData.refnoDate = this.entryData.refnoDate == '' ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
         this.entryData.preparedDate = this.entryData.preparedDate == null ? '':this.ns.toDateTimeString(this.entryData.preparedDate);
         this.entryData.approvedDate = this.entryData.approvedDate == null ? '':this.ns.toDateTimeString(this.entryData.approvedDate);
         this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
@@ -155,14 +178,23 @@ export class JvEntryComponent implements OnInit {
         this.entryData.updateDate = this.ns.toDateTimeString(this.entryData.updateDate);
 
         this.cancelJVBut = false;
-        this.approveBut = false;
         this.UploadBut = false;
         this.allocBut = false;
         this.dcBut = false;
-        if(this.entryData.jvStatus == 'N' || this.entryData.jvStatus == 'F' || this.entryData.jvStatus == 'A'){
+
+        if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'F'){
+          this.approvedStat = true;
+          this.disableBut = true;
           this.printBut = false;
-        }else{
-          this.printBut = true;
+        }
+
+        if(this.entryData.jvStatus == 'F'){
+          this.approveBut = false;
+          this.printBut = false;
+        }
+        
+        if(this.entryData.jvStatus == 'A'){
+          
         }
         this.check(this.entryData)
         this.tabController(this.entryData.tranTypeCd);
@@ -213,11 +245,13 @@ export class JvEntryComponent implements OnInit {
         this.entryData.particulars =  '';
         this.entryData.currCd = 'PHP';
         this.entryData.currRate = 1;
-        this.entryData.jvAmt = '';
-        this.entryData.localAmt = '';
+        this.entryData.jvAmt = 0;
+        this.entryData.localAmt = 0;
         this.entryData.preparedBy = this.ns.getCurrentUser();
         this.entryData.preparedDate = this.ns.toDateTimeString(0);
         this.entryData.approvedBy = '';
+        this.entryData.approvedName ='';
+        this.entryData.approvedPosition = '';
         this.entryData.approvedDate = '';
         this.entryData.createUser = '';
         this.entryData.createDate = '';
@@ -230,14 +264,16 @@ export class JvEntryComponent implements OnInit {
         this.UploadBut = true;
         this.allocBut = true;
         this.dcBut = true;
+        this.approvedStat = false;
         this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+        this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
+        this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
         this.disableTab.emit(true);
     },0);
   }
   
   getDefName(){
     this.accService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
-      console.log(data);
       this.entryData.preparedName = data.employee.employeeName;
       this.entryData.preparedPosition = data.employee.designation;
     });
@@ -298,12 +334,12 @@ export class JvEntryComponent implements OnInit {
     this.jvDatas.tranTypeName = this.entryData.tranTypeName;
     this.jvDatas.autoTag = this.entryData.autoTag;
     this.jvDatas.refnoTranId = this.entryData.refnoTranId == '' ? '': this.entryData.refNoTranId;
-    this.jvDatas.refnoDate = this.ns.toDateTimeString(this.entryData.refnoDate);
+    this.jvDatas.refnoDate = this.entryData.refnoDate == '' ? '': this.ns.toDateTimeString(this.entryData.refnoDate);
     this.jvDatas.particulars = this.entryData.particulars;
     this.jvDatas.currCd = this.entryData.currCd;
-    this.jvDatas.currRate = parseFloat(this.entryData.currRate.toString().split(',').join('')),
-    this.jvDatas.jvAmt = parseFloat(this.entryData.jvAmt.toString().split(',').join('')),
-    this.jvDatas.localAmt = parseFloat(this.entryData.localAmt.toString().split(',').join('')),
+    this.jvDatas.currRate =(parseFloat(this.entryData.currRate.toString().split(',').join(''))),
+    this.jvDatas.jvAmt = (parseFloat(this.entryData.jvAmt.toString().split(',').join(''))),
+    this.jvDatas.localAmt = (parseFloat(this.entryData.localAmt.toString().split(',').join(''))),
     this.jvDatas.allocTag = this.entryData.allocTag;
     this.jvDatas.allocTranId = this.entryData.allocTranId;
     this.jvDatas.preparedBy = this.entryData.preparedBy;
@@ -347,6 +383,12 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickApprove(){
+    this.accService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
+      console.log(data);
+      this.entryData.approver = data.employee.employeeName;
+      this.entryData.approvedBy = data.employee.userName;
+      this.entryData.approverDate = this.ns.toDateTimeString(0);
+    });
     this.approveJV.openNoClose();
   }
 
@@ -444,12 +486,49 @@ export class JvEntryComponent implements OnInit {
     });
   }
 
+  ApproveJVStatus(){
+    this.sendData.tranId = this.tranId;
+    this.sendData.jvNo = parseInt(this.entryData.jvNo);
+    this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.approvedBy  = this.entryData.approvedBy;
+    this.sendData.approvedDate = this.entryData.approverDate === '' ? '':this.ns.toDateTimeString(this.entryData.approvedDate);
+    this.sendData.updateUser = this.ns.getCurrentUser();
+    this.sendData.updateDate = this.ns.toDateTimeString(0);
+    this.accService.approveJV(this.sendData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveJVEntry();
+      }
+    });
+  }
+
   onClickPrint(){
+    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId, '_blank');
     this.printEntries.openNoClose();
   }
 
   onClickPrintable(){
     $('#printableNames #modalBtn').trigger('click');
+  }
+
+  onClickApproval(){
+    this.approverName.modal.openNoClose();
+  }
+
+  getApproveame(){
+    
+  }
+
+  setApproval(data){
+    this.entryData.approvedBy = data.userId;
+    this.entryData.approver = data.printableName;
   }
   
   setPrintable(data){
@@ -463,12 +542,26 @@ export class JvEntryComponent implements OnInit {
   }
 
   validateCurr(){
+    console.log(this.entryData.jvAmt)
+    console.log(this.entryData.currRate)
+    this.entryData.jvAmt = (parseFloat(this.entryData.jvAmt.toString().split(',').join('')));
+    this.entryData.currRate = (parseFloat(this.entryData.currRate.toString().split(',').join('')));
     if(this.entryData.jvAmt !== '' && this.entryData.currRate !== ''){
       this.entryData.localAmt = this.entryData.jvAmt * this.entryData.currRate;
       this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+      this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     }else{
       this.entryData.localAmt = null;
     }
+    
+  }
+
+  onClickCMDM(){
+    this.router.navigate(['/acc-s-credit-debit-memo', {exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
+  }
+
+  onClickAlloc(){
+    this.allocJV.openNoClose();
   }
 
 }

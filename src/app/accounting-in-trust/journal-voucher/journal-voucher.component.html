@@ -1,28 +1,68 @@
 <div class="cust-tabs-container">
-	<h4>Accounting In-Trust/Journal Voucher</h4>
+	<h4>Accounting In-Trust / Journal Voucher</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
 		<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="JV Listings">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
+						<fieldset class="scheduler-border" style="margin-top: 10px !important; padding-top: 3px !important; padding-bottom: 15px !important;">
+							<div class="input-group text-center" style="margin-bottom: -14px !important;">
+								<div class="col-sm">
+									<input type="radio" name="tranStat" id="statNw" value="new" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statNw" class="text-left">&nbsp;New</label>
+								</div>
+								<div class="col-sm">
+									<input type="radio" name="tranStat" id="statAp" value="approved" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statAp" class="text-left">&nbsp;Approved</label>
+								</div>
+								<div class="col-sm">
+									<input type="radio" name="tranStat" id="statPd" value="printed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statPd" class="text-left">&nbsp;Printed</label>
+								</div>
+								<!-- <div class="col-sm">
+									<input type="radio" name="tranStat" id="statCn" value="cancelled" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statCn" class="text-left">&nbsp;Cancelled</label>
+								</div> -->
+								<div class="col-sm">
+									<input type="radio" name="tranStat" id="statFa" value="for approval" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statFa" class="text-left">&nbsp;For Approval</label>
+								</div>
+								<div class="col-sm">
+									<input type="radio" name="tranStat" id="statCl" value="closed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statCl" class="text-left">&nbsp;Closed</label>
+								</div>
+								<div class="col-sm">
+									<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statPs" class="text-left">&nbsp;Posted</label>
+								</div>
+								<div class="col-sm-2">
+									<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statDl" class="text-left">&nbsp;Cancelled / Deleted</label>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-12">
 						<!-- <app-cust-editable-non-datatable  [passData]="passDataJVListing" (newClick)="onRowClick($event)" (rowDblClick)="onDblClick($event)">
                 		</app-cust-editable-non-datatable> -->
 						<app-cust-non-datatable [passData]="passDataJVListing" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (newRowDblClick)="toGenerateJVEdit($event);" (rowClick)="onRowClick($event)"></app-cust-non-datatable> 
 					</div>
 					<div class="col-sm-12">
-						<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
-			        		<div class="input-group" style="margin-top: -10px !important;">
-			            		<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-			            		<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="dataInfo.createUser" readonly>
-			            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
-			            		<input type="datetime-local" class="form-control form-control-sm col-sm-2" [(ngModel)]="dataInfo.createDate" readonly>
-			            		<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-			            		<input type="text" class="form-control form-control-sm col-sm-2"  [(ngModel)]="dataInfo.updateUser" readonly>
-			            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
-			            		<input type="datetime-local" class="form-control form-control-sm col-sm-2" [(ngModel)]="dataInfo.updateDate" readonly>
-			        		</div>
-			    		</div>
+						<fieldset class="scheduler-border" style="padding-top: 3px !important;">
+							<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+				        		<div class="input-group" style="margin-bottom: -14px !important;">
+				            		<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+				            		<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="dataInfo.createUser" readonly>
+				            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
+				            		<input type="datetime-local" class="form-control form-control-sm col-sm-2" [(ngModel)]="dataInfo.createDate" readonly>
+				            		<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+				            		<input type="text" class="form-control form-control-sm col-sm-2"  [(ngModel)]="dataInfo.updateUser" readonly>
+				            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
+				            		<input type="datetime-local" class="form-control form-control-sm col-sm-2" [(ngModel)]="dataInfo.updateDate" readonly>
+				        		</div>
+				    		</div>
+			    		</fieldset>
 					</div>
 				</div>
 			</ng-template>

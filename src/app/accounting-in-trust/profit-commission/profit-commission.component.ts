@@ -137,7 +137,12 @@ export class ProfitCommissionComponent implements OnInit {
 		widths:['auto','auto','auto',120,120],
 		disableSort : true
 	}
-    
+
+	income1:any;		  /* TRBT#PROD_GRADE */
+	outgo1:any;			  /* TRBT#PROD_GRADE */
+	income2:any;		  /* TRBT#PROD_GRADE */
+	outgo2:any;			  /* TRBT#PROD_GRADE */
+
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService) { }
 
   ngOnInit() {

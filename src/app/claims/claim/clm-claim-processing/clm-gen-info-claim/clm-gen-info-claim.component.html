@@ -23,7 +23,7 @@
         <legend class="scheduler-border">Claim Record</legend>
         <div class="form-row custom-row-inline-inset">
             <div class="col-sm-6">
-                <div class="input-group">
+                <div class="input-group"> 
                     <label class="form-control-sm col-sm-2">Claim No</label>
                     <input type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.claimNo" readonly>
                 </div>
@@ -707,8 +707,8 @@
             <fieldset class="scheduler-border" style="margin-right: -7px !important; padding-bottom: 4px !important;padding-top: 4px !important;">
                 <legend class="scheduler-border">Reserve and Payments</legend>
                 <div class="custom-row-inline-inset">
-                    <div class="input-group">
-                        <div class="col-sm input-group">
+                    <div class="input-group" style="margin-bottom: 0 !important;">
+                        <!-- <div class="col-sm input-group">
                             <label class="form-control-sm col-sm-5">Loss Reserve</label>
                             <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.lossResAmt | number:'1.2-2'" readonly>
                         </div>
@@ -719,32 +719,60 @@
                         <div class="col-sm input-group">
                             <label class="form-control-sm col-sm-5">Losses Paid</label>
                             <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.lossPdAmt | number:'1.2-2'" readonly> 
+                        </div> -->
+
+                        <div class="col-sm input-group">
+                            <label class="form-control-sm col-sm-6" style="margin-left: -32px !important;">Loss Reserve</label>
+                            <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.lossResAmt | number:'1.2-2'" readonly>    
                         </div>
-
-
-                        <!-- <label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.lossResAmt | number:'1.2-2'" readonly>
-                        <label class="form-control-sm col-sm-1">Status</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="claimData?.clmReserve?.lossStatus" readonly>
-                        <label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.lossPdAmt | number:'1.2-2'" readonly> -->
+                        <div class="col-sm input-group">
+                            <label class="form-control-sm col-sm-3">Status</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="claimData?.clmReserve?.lossStatus" readonly>
+                        </div>
+                        <div class="col-sm input-group">
+                            <label class="form-control-sm col-sm-6" style="margin-left: -32px !important;">Losses Paid</label>
+                            <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.lossPdAmt | number:'1.2-2'" readonly>     
+                        </div>
                     </div>
-                    <!-- <div class="input-group">
-                        <label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
+                    <div class="input-group" style="margin-bottom: 0 !important;">
+                        <!-- <label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
                         <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.expResAmt | number:'1.2-2'" readonly>
                         <label class="form-control-sm col-sm-1">Status</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="claimData?.clmReserve?.expStatus" readonly>
                         <label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.expPdAmt | number:'1.2-2'" readonly>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.expPdAmt | number:'1.2-2'" readonly> -->
+
+                        <div class="col-sm input-group">
+                            <label class="form-control-sm col-sm-6" style="margin-left: -32px !important;">Expense Reserve</label>
+                            <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.expResAmt | number:'1.2-2'" readonly>   
+                        </div>
+                        <div class="col-sm input-group">
+                            <label class="form-control-sm col-sm-3">Status</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="claimData?.clmReserve?.expStatus" readonly>
+                        </div>
+                        <div class="col-sm input-group">
+                            <label class="form-control-sm col-sm-6" style="margin-left: -32px !important;">Expense Paid</label>
+                            <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.expPdAmt | number:'1.2-2'" readonly>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Total Reserve</label>
+                    <div class="input-group" style="margin-bottom: 0 !important;">
+                        <!-- <label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Total Reserve</label>
                         <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.totalReserve | number:'1.2-2'" readonly>
                         <label class="form-control-sm col-sm-1"></label>
                         <div class="col-sm"></div>
                         <label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Total Payment</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.totalPayment | number:'1.2-2'" readonly>
-                    </div> -->
+                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.totalPayment | number:'1.2-2'" readonly> -->
+
+                        <div class="col-sm input-group">
+                            <label class="form-control-sm col-sm-6" style="margin-left: -36px !important;">Total Reserve</label>
+                            <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.totalReserve | number:'1.2-2'" readonly>
+                        </div>
+                        <div class="col-sm input-group"></div>
+                        <div class="col-sm input-group">
+                            <label class="form-control-sm col-sm-6" style="margin-left: -32px !important;">Total Payment</label>
+                            <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="claimData?.clmReserve?.totalPayment | number:'1.2-2'" readonly>
+                        </div>
+                    </div>
                 </div>
             </fieldset>
         </div>
@@ -800,7 +828,8 @@
     <div header style="width: 600px !important;">Adjusters</div>
     <div body>
         <div id="adj-table">
-            <app-cust-editable-non-datatable #adjTblGI [passData]="adjData" (tableDataChange)="adjData.tableData=$event; clmAdjTDataChange($event);" (newClick)="adjTableRowClick($event)" (genericBtn)="clmAdjClickDelete($event)" (onDelete)="adjTable.onClickDelete('force'); clmAdjClickDelete();" (clickLOV)="showAdjLOV($event)"></app-cust-editable-non-datatable>    
+            <!-- <app-cust-editable-non-datatable #adjTblGI [passData]="adjData" (tableDataChange)="adjData.tableData=$event; clmAdjTDataChange($event);" (newClick)="adjTableRowClick($event)" (genericBtn)="clmAdjClickDelete($event)" (onDelete)="adjTable.onClickDelete('force'); clmAdjClickDelete();" (clickLOV)="showAdjLOV($event)"></app-cust-editable-non-datatable>  TRBT#PROD_GRADE -->
+            <app-cust-editable-non-datatable #adjTblGI [passData]="adjData" (tableDataChange)="adjData.tableData=$event; clmAdjTDataChange($event);" (newClick)="adjTableRowClick($event)" (genericBtn)="clmAdjClickDelete($event)" (onDelete)="adjTable.onClickDelete('force'); clmAdjClickDelete($event);" (clickLOV)="showAdjLOV($event)"></app-cust-editable-non-datatable>
         </div>
     </div>
     <div footer class="text-center" style="width: 100% !important;">

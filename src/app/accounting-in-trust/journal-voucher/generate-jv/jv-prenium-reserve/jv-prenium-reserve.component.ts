@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { QSOABalances } from '@app/_models/';
-import { AccountingService, NotesService } from '@app/_services'
+import { AccountingService, NotesService, MaintenanceService } from '@app/_services'
 import { Title } from '@angular/platform-browser';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { MtnCedingCompanyTreatyComponent } from '@app/maintenance/mtn-ceding-company-treaty/mtn-ceding-company-treaty.component';
+import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 
 @Component({
   selector: 'app-jv-prenium-reserve',
@@ -22,6 +23,7 @@ export class JvPreniumReserveComponent implements OnInit {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+	@ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
 
 	passData: any = {
 		tableData:[],
@@ -29,7 +31,7 @@ export class JvPreniumReserveComponent implements OnInit {
 		dataTypes:['date','text','percent','currency','currency','currency'],
 		total:[null,null,'Total','interestAmt','whtaxAmt','releaseAmt'],
 		addFlag:true,
-		magnifyingGlass: ['quarterEnding'],
+		magnifyingGlass: ['quarterEnding','currCd'],
 		deleteFlag:true,
 		infoFlag:true,
 		paginateFlag:true,	
@@ -37,13 +39,19 @@ export class JvPreniumReserveComponent implements OnInit {
 		btnDisabled: false,
 		pageID:1,
 		nData: {
-			showMG:1,			itemNo: null,
+			showMG:1,
+			colMG:[],			
+			itemNo: null,
 			quarterEnding : '',
 			currCd : '',
 			currRate : '',
 			interestAmt : '',
 			whtaxAmt : '',
 			releaseAmt : '',
+			localAmt : '',
+			premResQuota : '',
+			premRes1surplus : '',
+			premRes2surplus : '',
 			createUser : this.ns.getCurrentUser(),
 			createDate : this.ns.toDateTimeString(0),
 			updateUser : this.ns.getCurrentUser(),
@@ -67,17 +75,20 @@ export class JvPreniumReserveComponent implements OnInit {
 	fundsHeld: number = 0;
 	totalInterestAmt: number = 0;
 	totalWhtaxAmt: number = 0;
+	readOnly: boolean = false;
+	currencies: any = [];
+	dataIndex: any = null;
 
-	constructor(private accService: AccountingService, private titleService: Title, private ns: NotesService) { }
+	constructor(private accService: AccountingService, private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
 	ngOnInit() {
+		console.log(this.jvDetail)
 		this.titleService.setTitle("Acct-IT | JV QSOA");
 		this.passData.nData.currCd = this.jvDetail.currCd;
 		this.passData.nData.currRate = this.jvDetail.currRate;
-		if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
-		  
-		}else {
-
+		if(this.jvDetail.statusType !== 'N' && this.jvDetail.statusType !== 'F'){
+		  	this.readOnly = true;	
+		  	this.passData.uneditable = [true,true,true,true,true,true];
 		}
 		this.retrievePremRes();
 	}
@@ -85,10 +96,12 @@ export class JvPreniumReserveComponent implements OnInit {
 	retrievePremRes(){
 		this.accService.getAcitJVPremRes(this.jvDetail.tranId).subscribe((data:any) => {
 			this.passData.tableData = [];
-			this.passData.disableAdd = false;
 			this.totalInterestAmt = 0;
 			this.totalWhtaxAmt = 0;
 			if(data.premResRel.length!= 0){
+				if(this.jvDetail.statusType == 'N'){
+					this.passData.disableAdd = false;
+				}
 				this.premResData.cedingName = data.premResRel[0].cedingName;
 				this.premResData.cedingId = data.premResRel[0].cedingId;
 				this.check(this.premResData);
@@ -105,18 +118,19 @@ export class JvPreniumReserveComponent implements OnInit {
 	}
 
 	onClickSave(){
-		this.fundsHeld = 0;
+		/*this.fundsHeld = 0;
 		for(var i = 0; i < this.passData.tableData.length; i++){
 			this.fundsHeld += this.passData.tableData[i].releaseAmt;
 		}	
 
-		if(this.fundsHeld > this.jvDetail.jvAmount){
+		if(this.fundsHeld > this.jvDetail.jvAmt){
 			this.dialogMessage = "Total Funds Held Released must not exceed the JV Amount";
 			this.dialogIcon = "error-message";
 			this.successDiag.open();
 		}else{
 			$('#confirm-save #modalBtn2').trigger('click');
-		}
+		}*/
+		$('#confirm-save #modalBtn2').trigger('click');
 	}
 
 	prepareData(){
@@ -161,8 +175,16 @@ export class JvPreniumReserveComponent implements OnInit {
 		});
 	}
 
-	quarterEndModal(){
-		$('#quarterEnd #modalBtn').trigger('click');
+	quarterEndModal(data){
+		console.log(data)
+		if(data.key === 'quarterEnding'){
+			$('#quarterEnd #modalBtn').trigger('click');
+			this.dataIndex = data.index;
+		}else if(data.key == 'currCd'){
+			this.currLov.modal.openNoClose();
+			this.dataIndex = data.index;
+		}
+		
 	}
 
 	cancel(){
@@ -175,8 +197,9 @@ export class JvPreniumReserveComponent implements OnInit {
 
   	setCedingcompany(data){
   		console.log(data)
-  		this.premResData.cedingName = data.cedingName;
-  		this.premResData.cedingId	= data.cedingId;
+  		this.premResData.cedingName = data.payeeName;
+  		this.premResData.cedingId	= data.payeeCd;
+  		this.passData.disableAdd = false;
   		this.ns.lovLoader(data.ev, 0);
   		this.retrievePremRes();
   		this.check(this.premResData);
@@ -206,11 +229,24 @@ export class JvPreniumReserveComponent implements OnInit {
 
     setQuarter(data){
     	console.log(data)
-    	this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
-    	this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-    	this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-    	this.passData.tableData[this.passData.tableData.length - 1].edited = true;
-    	this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = data;
+    	//this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
+    	//this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+    	this.passData.tableData[this.dataIndex].colMG.push('quarterEnding');
+    	this.passData.tableData[this.dataIndex].edited = true;
+    	this.passData.tableData[this.dataIndex].quarterEnding = this.ns.toDateTimeString(data.premRes.quarterEnding);
+    	this.passData.tableData[this.dataIndex].releaseAmt = data.premRes.fundsHeld;
+    	this.passData.tableData[this.dataIndex].localAmt = data.premRes.fundsHeld * this.jvDetail.currRate;
+		this.passData.tableData[this.dataIndex].premResQuota = data.premRes.premResQuota;
+		this.passData.tableData[this.dataIndex].premRes1surplus = data.premRes.premRes1surplus;
+		this.passData.tableData[this.dataIndex].premRes2surplus = data.premRes.premRes2surplus;
+    	this.table.refreshTable();
+    }
+
+    setCurrency(data){
+    	this.passData.tableData[this.dataIndex].colMG.push('currCd');
+    	this.passData.tableData[this.dataIndex].edited = true;
+    	this.passData.tableData[this.dataIndex].currCd = data.currencyCd;
+    	this.passData.tableData[this.dataIndex].currRt = data.currencyRt;
     	this.table.refreshTable();
     }
 }

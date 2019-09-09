@@ -14,7 +14,7 @@
 <div id="cust-tooltip" style="position: absolute;z-index: 99999;background-color: rgb(25,25,25);color: rgb(217,217,217);font-size: 9px !important; display: none ; padding: 3px 5px;">
     test
 </div>
-<ng-sidebar-container style="position: static;" (onBackdropClicked)="_onBackdropClicked()">
+<ng-sidebar-container style="position: static;">
     <ng-sidebar [(opened)]="_opened" [mode]="'push'" [keyClose]="_keyClose" [position]="'left'" [dock]="'true'"
         [dockedSize]="'0px'" [sidebarClass]="'demo-sidebar'" [closeOnClickOutside]="_closeOnClickOutside" *ngIf="currentUser">
 
@@ -27,9 +27,8 @@
                     <h3 class="text-center">
                         PMMSC
                     </h3>
-                    <p>Module Id: QLR101</p>
+                    <p>Module Id: {{ moduleId }}</p>
                     <p>Database: PMMSC</p>
-                    <!--<p>Server Time: Nov 21, 2018 10:32:10 AM</p>-->
                     <p>Server Time: {{datetime | date: 'medium'}}</p>
                     <p>User Id: {{ currentUser.username }}</p>
                 </div>
@@ -46,28 +45,28 @@
                                         Processing</button>
                                     <br />
                                 </ng-container>
-                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE011') > -1">
-                                    <button id="QUOTE011" [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE012') > -1">
+                                    <button id="QUOTE012" [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
                                         Inquiry</button>
                                     <br>
                                 </ng-container>
-                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE012') > -1">
-                                    <button id="QUOTE012" [routerLink]="['/quotation-to-hold-cover']" class="button btn btn-link">Quotation
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE013') > -1">
+                                    <button id="QUOTE013" [routerLink]="['/quotation-to-hold-cover']" class="button btn btn-link">Quotation
                                         to Hold Cover</button>
                                     <br />
                                 </ng-container>
-                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE013') > -1">
-                                    <button id="QUOTE013" [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE014') > -1">
+                                    <button id="QUOTE014" [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
                                         Cover Monitoring</button>
                                     <br />
                                 </ng-container>
-                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE018') > -1">
-                                    <button id="QUOTE018" [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE015') > -1">
+                                    <button id="QUOTE015" [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
                                         Quote Status</button>
                                     <br />
                                 </ng-container>
                                 <!-- <ng-container *ngIf="accessibleModules.indexOf('QUOTE014') > -1">
-                                    <button id="QUOTE014" [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
+                                    <button id="QUOTE016" [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
                                         Cover Processing</button>
                                     <br />
                                 </ng-container>
@@ -85,32 +84,32 @@
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel title="Issuance">
                                         <ng-template ngbPanelContent>
-                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
+                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
                                             <button [routerLink]="['/create-policy']" class="button btn btn-link">Create
                                                 Policy</button>
                                             <br />
                                             </ng-container>
-                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
+                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
                                             <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy
                                                 List</button>
                                             <br />
                                             </ng-container>
-                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
+                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
                                             <button [routerLink]="['/create-alteration']" class="button btn btn-link">Create
                                                 Alteration</button>
                                             <br />
                                             </ng-container>
-                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
+                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
                                             <button [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration
                                                 List</button>
                                             <br />
                                             </ng-container>
-                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
+                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
                                             <button [routerLink]="['/create-open-cover']" class="button btn btn-link">Create
                                                 Open Cover</button>
                                                 <br />
                                             </ng-container>
-                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
+                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
                                             <button [routerLink]="['/open-cover-list']" class="button btn btn-link">Open Cover List</button>
                                                 <br />
                                             </ng-container>
@@ -221,6 +220,8 @@
                                         <ng-template ngbPanelContent>
                                             <button [routerLink]="['claims-inquiry']" class="button btn btn-link">Claims
                                                 Inquiry</button>
+                                            <br />
+                                            <button [routerLink]="['payment-request']" class="button btn btn-link">Claim Payment Request Inquiry</button>
                                             <br />
                                         </ng-template>
                                     </ngb-panel>

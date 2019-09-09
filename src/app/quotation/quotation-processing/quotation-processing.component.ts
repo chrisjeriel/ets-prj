@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
+import { ActivatedRoute, Router } from '@angular/router';
+import { QuotationService, NotesService, MaintenanceService, UserService, AuthenticationService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -9,6 +9,8 @@ import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import * as alasql from 'alasql';
+import { User } from '@app/_models';
+
 
 @Component({
     selector: 'app-quotation-processing',
@@ -31,6 +33,7 @@ export class QuotationProcessingComponent implements OnInit {
     rowData: any[] = [];
     disabledEditBtn: boolean = true;
     disabledCopyBtn: boolean = true;
+    currentUser: User;
 
     line: string = "";
     description: string = "";
@@ -219,14 +222,36 @@ export class QuotationProcessingComponent implements OnInit {
     validationList: any[] = [];
     cessionDescList: any[] = [];
     first = false;
+    accessibleModules: string[] = [];
 
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router,
-                private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService) { }
+    constructor(private route: ActivatedRoute, private quotationService: QuotationService, public modalService: NgbModal, private router: Router,
+                private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService, private userService: UserService,
+                private authenticationService: AuthenticationService) {
+        
+    }
     
     ngOnInit() {
         this.first = true;
         this.titleService.setTitle("Quo | List Of Quotations");
+        this.userService.emitModuleId("QUOTE001");
         this.retrieveQuoteListingMethod();
+        this.getAccessibleModules();
+    }
+
+    getAccessibleModules() {
+        this.accessibleModules = this.userService.getAccessModules();
+
+        if (this.accessibleModules.length <= 0) {
+            console.log("Page reloaded, retrieve modules again.");
+            this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+
+            this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {
+                this.userService.setAccessModules(data['modulesList']);
+                this.userService.emitAccessModules(data['modulesList']);
+
+                this.accessibleModules = this.userService.getAccessModules();
+            });
+        }
     }
 
     retrieveQuoteListingMethod(){

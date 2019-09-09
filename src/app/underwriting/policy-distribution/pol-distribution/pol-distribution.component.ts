@@ -55,7 +55,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
     poolDistributionData: any = {
       tableData: [],
-      tHeader: ['Section', 'Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
+      tHeader: ['Section', 'Treaty', 'Cedant', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amt', 'VAT on R/I Comm', 'Net Due'],
       dataTypes: ['text', 'text', 'text', 'number', 'currency', 'currency', 'number', 'currency', 'currency', 'percent', 'currency', 'currency', 'currency'],
       keys: ['section', 'treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
       widths: [1,1,250,1,140,140,1,140,140,1,140,140,140],
@@ -134,8 +134,9 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   };
 
   @Input() inquiryFlag: boolean = false;
+  @Input() acctDetails:any = {};
 
-  constructor(private polService: UnderwritingService, private titleService: Title, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private ns: NotesService) { }
+  constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, private route: ActivatedRoute, private router: Router, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Distribution");

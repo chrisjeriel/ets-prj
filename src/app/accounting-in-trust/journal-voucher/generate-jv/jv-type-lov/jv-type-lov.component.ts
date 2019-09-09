@@ -30,7 +30,7 @@ export class JvTypeLovComponent implements OnInit {
   modalOpen: boolean = false;
   selected: any;
 
-  constructor(private ns: NotesService, private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
+  constructor(private ns: NotesService, private maintenanceService: MaintenanceService, public modalService: NgbModal) { }
 
   ngOnInit() {
 

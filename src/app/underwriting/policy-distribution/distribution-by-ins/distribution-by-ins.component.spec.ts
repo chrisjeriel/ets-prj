@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MtnClaimsComponent } from './mtn-claims.component';
+import { DistributionByInsComponent } from './distribution-by-ins.component';
 
-describe('MtnClaimsComponent', () => {
-  let component: MtnClaimsComponent;
-  let fixture: ComponentFixture<MtnClaimsComponent>;
+describe('DistributionByInsComponent', () => {
+  let component: DistributionByInsComponent;
+  let fixture: ComponentFixture<DistributionByInsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MtnClaimsComponent ]
+      declarations: [ DistributionByInsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MtnClaimsComponent);
+    fixture = TestBed.createComponent(DistributionByInsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

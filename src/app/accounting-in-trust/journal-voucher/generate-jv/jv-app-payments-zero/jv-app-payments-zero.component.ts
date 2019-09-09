@@ -4,6 +4,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-app-payments-zero',
@@ -15,59 +16,13 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   @Input() jvDetail: any;
   @Input() cedingParams:any;
   @Output() emitData = new EventEmitter<any>();
+
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
-
-  /*InwPolBal: any = {
-   tableData: [], //this.accountingService.getAccJvInPolBalAgainstLoss(),
-    tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments', 'Remaining Balance'],
-    dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
-    nData: {
-      showMG:1,
-      tranId: '',
-      itemNo: '',
-      policyId: '',
-      instNo: '',
-      policyNo: '',
-      coRefNo: '',
-      effDate: '',
-      dueDate: '',
-      currCd: '',
-      currRate: '',
-      premAmt: '',
-      riComm: '',
-      riCommVat: '',
-      charges: '',
-      netDue: '',
-      prevPaytAmt: '',
-      balPaytAmt: '',
-      overdueInt: '',
-      remarks: '',
-      createUser: this.ns.getCurrentUser(),
-      createDate: '',
-      updateUser: this.ns.getCurrentUser(),
-      updateDate: ''
-    },
-    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
-    magnifyingGlass: ['policyNo'],
-    checkFlag: true,
-    addFlag: true,
-    deleteFlag: true,
-    infoFlag: true,
-    paginateFlag: true,
-    disableAdd: true,
-    searchFlag: true,
-    pagination: true,
-    editFlag: false,
-    pageLength: 5,
-    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
-    //widths: [186,51,96,115,115,39,64,116,116,116,116,116,116,116],
-    pageID: 2,
-  };*/
-
-  passData: any = {
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  /*passData: any = {
     tHeaderWithColspan : [{ header: "", span: 1 }, { header: "Policy Information", span: 14 },
          { header: "Payment Details", span: 2 }],     
     tableData: [], //this.accountingService.getAccJvInPolBalAgainstLoss(),
@@ -112,7 +67,36 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','adjBalAmt','localAmt'],
     pageID: 2,
   };
-
+*/
+  passData: any = {
+    tHeaderWithColspan : [],
+    tableData: [],
+    tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments', 'Remaining Balance'],
+    dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
+    nData:{
+      showMG:1,
+      createUser: this.ns.getCurrentUser(),
+      createDate: '',
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: ''
+    },
+    magnifyingGlass: ['policyNo'],
+    checkFlag: true,
+    addFlag: true,
+    deleteFlag: true,
+    infoFlag: true,
+    paginateFlag: true,
+    searchFlag: true,
+    pagination: true,
+    pageStatus: true,
+    selectFlag: false,
+    disableAdd: true,
+    btnDisabled: false,
+    pageLength: 10,
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
+    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','adjBalAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','adjBalAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+  };
   /*passData: any = {
     tableData: [], //this.accountingService.getAccJvInPolBalAgainstLoss(),
     tHeader: ['Policy No.','Inst No.','Co. Ref No.','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due', 'Overpayment (PHP)','Payments','SOA No',],
@@ -169,7 +153,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   passLov: any = {
-    selector: 'acitSoaDtl',
+    selector: 'acitSoaDtlZeroBal',
     cedingId: '',
     zeroBal: 0,
     hide: []
@@ -179,17 +163,22 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   totalOverpayment: number = 0;
+  cancelFlag: boolean = false;
 
   constructor(private ns: NotesService, private accService: AccountingService) { }
 
   ngOnInit() {
     this.passLov.currCd = this.jvDetail.currCd;
-
+    this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
+          { header: "Payment Details", span: 5 }, { header: "", span: 2 });
     if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
       this.disable = false;
     }else {
-       this.passData.disableAdd = true;
+      this.disable = true;
+      this.passData.disableAdd = true;
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
+
     this.retrieveInwPolZeroBal();
     /*if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
       console.log(this.cedingParams)
@@ -203,17 +192,19 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     this.accService.getAcitJVZeroBal(this.jvDetail.tranId,'').subscribe((data:any) => {
       console.log(data)
       this.passData.tableData= [];
-      this.passData.disableAdd = false;
       this.totalOverpayment = 0;
 
       if(data.zeroBal.length!=0){
+        if(this.jvDetail.statusType == 'N'){
+          this.passData.disableAdd = false;
+        }
         this.jvDetails.cedingName = data.zeroBal[0].cedingName;
         this.jvDetails.ceding = data.zeroBal[0].cedingId;
         this.passLov.cedingId = data.zeroBal[0].cedingId;
         this.check(this.jvDetails);
         for(var i = 0 ; i < data.zeroBal.length;i++){
           this.passData.tableData.push(data.zeroBal[i]);
-          this.passData.tableData[this.passData.tableData.length - 1].balance = this.passData.tableData[this.passData.tableData.length - 1].netDue - this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt;  
+          //this.passData.tableData[this.passData.tableData.length - 1].balance = this.passData.tableData[this.passData.tableData.length - 1].netDue - this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt;  
           this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(data.zeroBal[i].effDate);
           this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(data.zeroBal[i].dueDate);
           this.totalOverpayment += data.zeroBal[i].adjBalAmt;
@@ -232,9 +223,10 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   setCedingcompany(data){
-    this.jvDetails.cedingName = data.cedingName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLov.cedingId = data.cedingId;
+    this.jvDetails.cedingName = data.payeeName;
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLov.cedingId = data.payeeCd;
+    this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.check(this.jvDetails);
     this.retrieveInwPolZeroBal()
@@ -249,13 +241,56 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
   openSoaLOV(data){
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
+    console.log(this.passLov)
     this.lovMdl.openLOV();
   }
 
   setSoa(data){
     console.log(data)
+    var balance = data.data.balance;
+    var datas;
+    this.accService.getZeroAlt(data.data.policyId).subscribe((data:any)=> {
+      console.log(data);
+      datas = data.soaDtlList;
+      this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
+      for (var i = 0; i < datas.length; i++) {
+        this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+        this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+        this.passData.tableData[this.passData.tableData.length - 1].edited  = true;
+        this.passData.tableData[this.passData.tableData.length - 1].itemNo = null;
+        this.passData.tableData[this.passData.tableData.length - 1].policyId = datas[i].policyId;
+        this.passData.tableData[this.passData.tableData.length - 1].tranId = this.jvDetail.tranId;
+        this.passData.tableData[this.passData.tableData.length - 1].soaNo = datas[i].soaNo;
+        this.passData.tableData[this.passData.tableData.length - 1].policyNo = datas[i].policyNo;
+        this.passData.tableData[this.passData.tableData.length - 1].coRefNo  = datas[i].coRefNo;
+        this.passData.tableData[this.passData.tableData.length - 1].instNo  = datas[i].instNo;
+        this.passData.tableData[this.passData.tableData.length - 1].effDate  = datas[i].effDate;
+        this.passData.tableData[this.passData.tableData.length - 1].dueDate  = datas[i].dueDate;
+        this.passData.tableData[this.passData.tableData.length - 1].currCd  = datas[i].currCd;
+        this.passData.tableData[this.passData.tableData.length - 1].currRate  = datas[i].currRate;
+        this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt  = datas[i].balPremDue;
+        this.passData.tableData[this.passData.tableData.length - 1].prevRiComm  = datas[i].balRiComm;
+        this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat  = datas[i].balRiCommVat;
+        this.passData.tableData[this.passData.tableData.length - 1].prevCharges  = datas[i].balChargesDue;
+        this.passData.tableData[this.passData.tableData.length - 1].prevNetDue  = datas[i].balPremDue - datas[i].balRiComm - datas[i].balRiCommVat + datas[i].balChargesDue;
+        this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = datas[i].tempPayments + datas[i].totalPayments;
+        this.passData.tableData[this.passData.tableData.length - 1].cumPayment = datas[i].cumPayment;
+        this.passData.tableData[this.passData.tableData.length - 1].balance  = datas[i].balAmtDue;
+        this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = datas[i].balAmtDue;
+        this.passData.tableData[this.passData.tableData.length - 1].localAmt =  this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt * this.jvDetail.currRate;
+        this.passData.tableData[this.passData.tableData.length - 1].premAmt = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt;
+        this.passData.tableData[this.passData.tableData.length - 1].riComm = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevRiComm;
+        this.passData.tableData[this.passData.tableData.length - 1].riCommVat = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat;
+        this.passData.tableData[this.passData.tableData.length - 1].charges = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevCharges;
+        this.passData.tableData[this.passData.tableData.length - 1].netDue = this.passData.tableData[this.passData.tableData.length - 1].premAmt - this.passData.tableData[this.passData.tableData.length - 1].riComm - this.passData.tableData[this.passData.tableData.length - 1].riCommVat + this.passData.tableData[this.passData.tableData.length - 1].charges;
+        this.passData.tableData[this.passData.tableData.length - 1].totalPayt = this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt + this.passData.tableData[this.passData.tableData.length - 1].cumPayment;
+        this.passData.tableData[this.passData.tableData.length - 1].remainingBal = this.passData.tableData[this.passData.tableData.length - 1].prevNetDue - this.passData.tableData[this.passData.tableData.length - 1].totalPayt;
+      }
+      this.table.refreshTable();
+    });
     
-    var overdue = null;
+
+    /*var overdue = null;
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -279,10 +314,10 @@ export class JvAppPaymentsZeroComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue  = data.data[i].balPremDue - data.data[i].balRiComm - data.data[i].balRiCommVat + data.data[i].balChargesDue;
       this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = data.data[i].tempPayments + data.data[i].totalPayments;
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment = data.data[i].cumPayment;
-      this.passData.tableData[this.passData.tableData.length - 1].balance  = data.data[i].balAmtDue;
+      
       this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = null;
     }
-    this.table.refreshTable();
+    this.table.refreshTable();*/
   }
 
   prepareData(){
@@ -292,16 +327,20 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     for(var i = 0 ; i < this.passData.tableData.length ; i++){
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         edited.push(this.passData.tableData[i]);
-        edited[edited.length - 1].premAmt  = this.passData.tableData[i].prevRiComm;
-        edited[edited.length - 1].riComm  = this.passData.tableData[i].prevRiCommVat;
-        edited[edited.length - 1].riCommVat  = this.passData.tableData[i].prevCharges;
-        edited[edited.length - 1].charges  = this.passData.tableData[i].prevNetDue;
-        edited[edited.length - 1].netDue  = this.passData.tableData[i].prevNetDue;
-        edited[edited.length - 1].prevPaytAmt  = this.passData.tableData[i].cumPayment;
+        edited[edited.length - 1].netDue  = this.passData.tableData[i].remainingBal;
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].updateDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
+        if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].adjBalAmt > 0){
+           edited[edited.length - 1].paytType = 1
+         }else if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].adjBalAmt < 0){
+           edited[edited.length - 1].paytType = 2
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].adjBalAmt < 0){
+           edited[edited.length - 1].paytType = 3
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].adjBalAmt > 0){
+           edited[edited.length - 1].paytType = 4
+         }
       }
 
       if(this.passData.tableData[i].deleted){
@@ -334,10 +373,16 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   update(data){
     this.totalOverpayment = 0;
     for(var i = 0 ; i < this.passData.tableData.length; i++){
-      this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].adjBalAmt) ? null:this.passData.tableData[i].adjBalAmt * this.passData.tableData[i].currRate;
-      if(!this.passData.tableData[i].deleted){
-        this.totalOverpayment += isNaN(this.passData.tableData[i].adjBalAmt)? 0:this.passData.tableData[i].adjBalAmt;
-      }
+      this.passData.tableData[i].localAmt = this.jvDetail.currRate * this.passData.tableData[i].adjBalAmt;
+      this.passData.tableData[i].premAmt = (this.passData.tableData[i].adjBalAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevPremAmt;
+      this.passData.tableData[i].riComm = (this.passData.tableData[i].adjBalAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevRiComm;
+      this.passData.tableData[i].riCommVat = (this.passData.tableData[i].adjBalAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevRiCommVat;
+      this.passData.tableData[i].charges = (this.passData.tableData[i].adjBalAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevCharges;
+
+      this.passData.tableData[i].totalPayt = this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment;
+      this.passData.tableData[i].remainingBal = this.passData.tableData[i].prevNetDue - this.passData.tableData[i].totalPayt;
+      
+      this.totalOverpayment += this.passData.tableData[i].adjBalAmt;
     }
     this.table.refreshTable();
   }

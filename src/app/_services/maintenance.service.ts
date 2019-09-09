@@ -75,10 +75,11 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCrestaZone");
 	}
 
-	getMtnCurrency(currencyCd: string, activeTag: string){
+	getMtnCurrency(currencyCd: string, activeTag: string, effDateFrom?){
 		const params = new HttpParams()
 		     .set('currencyCd', currencyCd)
-		     .set('activeTag', activeTag);
+		     .set('activeTag', activeTag)
+		     .set('effDateFrom', effDateFrom == undefined || effDateFrom == null ? '' : effDateFrom);
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCurrency", {params});
 	}
@@ -1297,4 +1298,11 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnBussType', {params});
     }
 
+    getMtnPayeeCeding(payeeClassCd, treatyTag){
+    	const params = new HttpParams()
+    		.set('payeeClassCd', (payeeClassCd === null || payeeClassCd === undefined ? '' : payeeClassCd))
+    		.set('treatyTag', (treatyTag === null || treatyTag === undefined ? '' : treatyTag))
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnPayeeCeding', {params});
+    }
+    
 }

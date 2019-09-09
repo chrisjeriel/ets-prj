@@ -201,7 +201,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   @Output() preventHistory = new EventEmitter<any>();
 
   constructor(private titleService: Title, private clmService: ClaimsService,private ns : NotesService, private mtnService: MaintenanceService, 
-              private polService: UnderwritingService, private modalService: NgbModal) {
+              private polService: UnderwritingService, public modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -675,18 +675,48 @@ export class ClmClaimHistoryComponent implements OnInit {
 
     this.passDataHistory.tableData.forEach((e,i) => {
       if(e.newRec == 1){
+        // if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())){
+        //   this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code != 1).map(e => e.code);
+        //   this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code != 1).map(e => e.description);
+        //   this.passDataHistory.opts[1].vals.unshift(' ');
+        //   this.passDataHistory.opts[1].prev.unshift(' ');
+        // }else{
+        //   this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code == 1 || e.code == 4 || e.code == 5 || e.code == 9).map(e => e.code);
+        //   this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code == 1 || e.code == 4 || e.code == 5 || e.code == 9).map(e => e.description);
+        //   this.passDataHistory.opts[1].vals.unshift(' ');
+        //   this.passDataHistory.opts[1].prev.unshift(' ');
+        // }
+
+        //edit by paul 9/5/2019
+        let validHistTypes:any[] = this.histTypeData;
+
         if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())){
-          this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code != 1).map(e => e.code);
-          this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code != 1).map(e => e.description);
-          this.passDataHistory.opts[1].vals.unshift(' ');
-          this.passDataHistory.opts[1].prev.unshift(' ');
+          validHistTypes = validHistTypes.filter(a=>a.code != 1);
         }else{
-          this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code == 1 || e.code == 4 || e.code == 5).map(e => e.code);
-          this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code == 1 || e.code == 4 || e.code == 5).map(e => e.description);
-          this.passDataHistory.opts[1].vals.unshift(' ');
-          this.passDataHistory.opts[1].prev.unshift(' ');
+          validHistTypes = validHistTypes.filter(a=>a.code != 2 && a.code != 3);
         }
 
+        if(this.passDataHistory.tableData.filter(a=>e.histCategory == a.histCategory && (a.histType==4 || a.histType == 5)).length == 0){
+          validHistTypes = validHistTypes.filter(a=>a.code != 6 && a.code != 7&& a.code != 8);
+        }
+
+        if(this.passDataHistory.tableData.filter(a=>e.histCategory == a.histCategory && (a.histType==9)).length == 0){
+          validHistTypes = validHistTypes.filter(a=>a.code != 10);
+        }
+
+        if(e.histCategory == 'L'){
+          validHistTypes = validHistTypes.filter(a=>a.code != 8);
+        }else{
+          validHistTypes = validHistTypes.filter(a=>a.code != 7);
+        }
+        console.log(this.histTypeData)
+
+        this.passDataHistory.opts[1].vals = validHistTypes.map(e => e.code);
+        this.passDataHistory.opts[1].prev = validHistTypes.map(e => e.description);
+        this.passDataHistory.opts[1].vals.unshift(' ');
+        this.passDataHistory.opts[1].prev.unshift(' ');
+
+        // end
         if(e.histType == 4 || e.histType == 5){
           if(this.passDataApprovedAmt.tableData.length == 0){
             this.warnMsg = 'Please add Approved Amount before proceeding.';
@@ -772,7 +802,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         i.reserveAmt = (isNaN(i.reserveAmt))?0:i.reserveAmt;
         if((i.histCategory != '' || i.histCategory != null) && (i.histType != '' || i.histType != null) && (i.reserveAmt != '' || i.reserveAmt != null)){
           if(Number(i.reserveAmt) != 0){
-            if((i.histType == 3 || i.histType == 6)){
+            if((i.histType == 3 || i.histType == 6 || i.histType == 7 || i.histType == 8 || i.histType == 9)){
               var a = String(i.reserveAmt).split('');
               if(a.some(e2 => e2 == '-')){
                 i.reserveAmt = Number(-Number(a.filter(e => e != '-').join('')));

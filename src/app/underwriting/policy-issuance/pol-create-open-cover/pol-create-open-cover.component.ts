@@ -106,7 +106,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     btnDisabled: boolean = false;
     
     constructor(private titleService: Title, private router: Router, private ns: NotesService, 
-                private us: UnderwritingService, private qs: QuotationService, private modalService: NgbModal,
+                private us: UnderwritingService, private qs: QuotationService, public modalService: NgbModal,
                 private ms: MaintenanceService) { }
 
     ngOnInit() {

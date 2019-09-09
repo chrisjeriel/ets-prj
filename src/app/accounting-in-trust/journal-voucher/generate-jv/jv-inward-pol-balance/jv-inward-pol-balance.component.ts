@@ -3,7 +3,7 @@ import { AccountingService, NotesService, MaintenanceService } from '@app/_servi
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccJvInPolBal} from '@app/_models';
-import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { MtnPayeeCedingComponent } from '@app/maintenance/mtn-payee-ceding/mtn-payee-ceding.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -17,7 +17,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 })
 export class JvInwardPolBalanceComponent implements OnInit {
 
-  @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
+  @ViewChild(MtnPayeeCedingComponent) cedingCoLov: MtnPayeeCedingComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -182,13 +182,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
      this.passLov.currCd = this.jvDetail.currCd;
      this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
           { header: "Payment Details", span: 5 }, { header: "", span: 2 });
-
-     if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+     
+     if(this.jvDetail.statusType == 'N'){
        this.disable = false;
      }else {
        this.passData.disableAdd = true;
        this.passData.btnDisabled = true;
-       //this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
      this.retrieveInwPol();
@@ -198,11 +198,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
     this.accountingService.getJVInwPolBal(this.jvDetail.tranId,'').subscribe((data:any) => {
       console.log(data)
       var datas = data.inwPolBal;
-      this.passData.disableAdd = false;
       this.passData.tableData = [];
       this.totalBalance = 0;
 
       if(datas.length != 0){
+        if(this.jvDetail.statusType == 'N'){
+          this.passData.disableAdd = false;
+        }
         this.jvDetails.cedingName = datas[0].cedingName;
         this.jvDetails.ceding = datas[0].cedingId;
         this.passLov.cedingId = datas[0].cedingId;
@@ -230,21 +232,20 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   checkCode(ev){
      this.ns.lovLoader(ev, 1);
-     this.cedingCoLov.checkCedingCo(this.jvDetails.ceding, ev);
-    
+     //this.cedingCoLov.checkCedingCo(this.jvDetails.ceding, ev);
   }
 
   setCedingcompany(data){
-    this.jvDetails.cedingName = data.cedingName;
-    this.jvDetails.ceding = data.cedingId;
-    this.passLov.cedingId = data.cedingId;
+    this.jvDetails.cedingName = data.payeeName;
+    this.jvDetails.ceding = data.payeeCd;
+    this.passLov.cedingId = data.payeeCd;
+    this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveInwPol()
     this.check(this.jvDetails);
   }
 
   check(data){
-    console.log(data)
     this.emitData.emit({ cedingId: data.ceding,
                          cedingName: data.cedingName
                        });
@@ -293,18 +294,14 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   onClickSave(){
     var errorFlag = false;
-    /*for(var i = 0 ; i < this.passData.tableData.length; i++){
+    for(var i = 0 ; i < this.passData.tableData.length; i++){
       if(!this.passData.tableData[i].deleted && this.passData.tableData[i].prevNetDue < this.passData.tableData[i].paytAmt){
         errorFlag = true;
       }
-    }*/
+    }
 
     if(errorFlag){
       this.dialogMessage = 'Payment amount cannot be greater than Net Due.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else if(this.totalBalance > this.jvDetail.jvAmt){
-      this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the JV Amount.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
@@ -335,11 +332,20 @@ export class JvInwardPolBalanceComponent implements OnInit {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         edited.push(this.passData.tableData[i]);
         edited[edited.length - 1].localAmt = this.passData.tableData[i].paytAmt * this.passData.tableData[i].currRate;
-        edited[edited.length - 1].netDue = Math.round((((this.passData.tableData[i].premAmt - this.passData.tableData[i].riComm - this.passData.tableData[i].riCommVat + this.passData.tableData[i].charges) + 0.000001) *100) / 100);
+        edited[edited.length - 1].netDue = this.passData.tableData[i].remainingBal;
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateDate = this.ns.toDateTimeString(0);
+        if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt > 0){
+           edited[edited.length - 1].paytType = 1
+         }else if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt < 0){
+           edited[edited.length - 1].paytType = 2
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt < 0){
+           edited[edited.length - 1].paytType = 3
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt > 0){
+           edited[edited.length - 1].paytType = 4
+         }
       }
 
       if(this.passData.tableData[i].deleted){

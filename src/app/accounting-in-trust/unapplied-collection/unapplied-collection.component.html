@@ -1,5 +1,5 @@
 
-<app-cust-editable-non-datatable (tableDataChange)="unappliedCollection($event)" [passData]="passData"> </app-cust-editable-non-datatable>
+<app-cust-editable-non-datatable (tableDataChange)="unappliedCollection($event)" (newClick)="onRowClick($event)" [passData]="passData"> </app-cust-editable-non-datatable>
 
 <div class="form-row" *ngIf="passData.checkFlag">
     <div class="form-group col-sm">
@@ -14,5 +14,6 @@
 </div>
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancel.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancel.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancel.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>

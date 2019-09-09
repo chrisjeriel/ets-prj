@@ -12,14 +12,14 @@
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="text-align: right; margin-left:2px" [(ngModel)]="entryData.jvNo" readonly name="entryData.jvNo">
                             <label class="form-control-sm col-sm">Date</label>
                             <div class="col-sm-4 dp-cont">
-                                <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[0]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'d')" [required]="true" name="entryData.jvDate"></datepicker>
+                                <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[0]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'d')" [required]="true" name="entryData.jvDate"  [disabled]="approvedStat"></datepicker>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-4" style="padding: 0;">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <div class="col-sm-2 dp-cont" style="margin-left: -4px !important">
-                            <datepicker [type]="'time'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[1]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'t')" [required]="true"></datepicker>
+                            <datepicker [type]="'time'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[1]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'t')" [required]="true"  [disabled]="approvedStat"></datepicker>
                             </div>
                             <label class="form-control-sm col-sm-2">Status</label>
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="entryData.jvStatusName" readonly name="entryData.jvStatusName">
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" [(ngModel)]="entryData.refNo" name="entryData.refNo">
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" [(ngModel)]="entryData.refNo" name="entryData.refNo" [readonly]="approvedStat">
                     <div style="margin-left: -19px !important;margin-right: 13px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="openLov('refNo')"></i></a></div>
                     <!-- <label class="form-control-sm col-sm-1"></label>
                     <label class="form-control-sm col-sm-2"style="text-align: right;"></label> -->
@@ -37,20 +37,20 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-8">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm required tranTypeName" style="margin-right: 1px !important;" [(ngModel)]="entryData.tranTypeName" appRequired name="entryData.tranTypeName">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm required tranTypeName" style="margin-right: 1px !important;" [(ngModel)]="entryData.tranTypeName" appRequired name="entryData.tranTypeName" [readonly]="approvedStat">
                          <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a (click)="openJVType()"><i class="fa fa-search"></i></a></div> 
                         </div>
                     </div>
                     <label class="form-control-sm col-sm-1" >Ref No Date</label>
                     <div class="col-sm dp-cont" style="margin-left: 6px !important;margin-right: 11px !important">
-                    <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.refnoDate?.split('T')[0]" (valueChange)="entryData.refnoDate = $event" name="entryData.refnoDate"></datepicker>
+                    <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.refnoDate?.split('T')[0]" (valueChange)="entryData.refnoDate = $event" name="entryData.refnoDate" [disabled]="approvedStat"></datepicker>
                     </div>
                 </div>
                 <div class="input-group" style="margin-bottom: -15px !important;">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
                     <div class="col-sm">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <textarea class="form-control form-control-sm required" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="entryData.particulars" appRequired name="entryData.particulars"></textarea>
+                            <textarea class="form-control form-control-sm required" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="entryData.particulars" appRequired name="entryData.particulars" [readonly]="approvedStat"></textarea>
                         </div>
                     </div>
                 </div>
@@ -58,13 +58,13 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2 required currCd" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd" appRequired name="entryData.currCd">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2 required currCd" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd" appRequired name="entryData.currCd" [readonly]="approvedStat">
                             <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="currLov.modal.openNoClose()"></i></a></div>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired [(ngModel)]="entryData.jvAmt" (change)="validateCurr()" appCurrency name="entryData.jvAmt">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired [(ngModel)]="entryData.jvAmt" (change)="validateCurr();" appCurrency name="entryData.jvAmt" [readonly]="approvedStat">
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
                         </div>
                     </div>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-right: 2px !important; text-align: right;" [(ngModel)]="entryData.currRate" appCurrencyRate appRequired name="entryData.currRate" (change)="validateCurr()">
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-right: 2px !important; text-align: right;" [(ngModel)]="entryData.currRate" appCurrencyRate appRequired name="entryData.currRate" (change)="validateCurr()" [readonly]="approvedStat">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Local Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
@@ -77,7 +77,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Prepared By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedName" appRequired name="entryData.preparedName">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedName" appRequired name="entryData.preparedName" [readonly]="approvedStat">
                             <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPrintable()"></i></a></div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                     <div class="col-sm-1"></div>
                     <div class="col-sm-4"> 
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required" style="margin-right: 2px !important" appRequired [(ngModel)]="entryData.preparedPosition" name="entryData.prepared">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required" style="margin-right: 2px !important" appRequired [(ngModel)]="entryData.preparedPosition" name="entryData.prepared" [readonly]="approvedStat">
                         </div>
                     </div>
                     <div class="col-sm-3"></div>
@@ -108,12 +108,16 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Date Prepared</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                           <!--  <div class="col-sm-9 dp-cont">
+                            <datepicker [type]="'datetime'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"  [disabled]="approvedStat"></datepicker>
+                            </div> -->
+
                             <div class="col-sm-5 dp-cont">
-                            <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"></datepicker>
+                            <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"  [disabled]="approvedStat"></datepicker>
                             </div>
 
                             <div class="col-sm-4 dp-cont">
-                            <datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[1]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'t')" appRequired name="entryData.time"></datepicker>
+                            <datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[1]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'t')" appRequired name="entryData.time"  [disabled]="approvedStat"></datepicker>
                             </div>
                         </div>
                     </div>
@@ -136,13 +140,13 @@
                     <div class="col-md-12 text-center">
                         <div class="cust-btn-container" style="margin-top: 10px;">
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="newJV()"><a>New JV</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="saveJVBut" [class.cust-btn-disabled]="saveJVBut" (click)="onClickSave()"><a>Save</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="cancelJVBut" [class.cust-btn-disabled]="cancelJVBut" (click)="onClickCancelJV()"><a>Cancel JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="saveJVBut || disableBut" [class.cust-btn-disabled]="saveJVBut || disableBut" (click)="onClickSave()"><a>Save</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="cancelJVBut" [class.cust-btn-disabled]="cancelJVBut " (click)="onClickCancelJV()"><a>Cancel JV</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approveBut" [class.cust-btn-disabled]="approveBut" (click)="onClickApprove()"><a>Approve</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut" [class.cust-btn-disabled]="printBut" (click)="onClickPrint()"><a>Print</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut" [class.cust-btn-disabled]="UploadBut" (click)="upload()"><a>Upload Acct. Ent</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut" [class.cust-btn-disabled]="allocBut" ><a>Alloc. Trans.</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut" [class.cust-btn-disabled]="dcBut" ><a>DebitCredit Memo</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut || disableBut" [class.cust-btn-disabled]="UploadBut || disableBut " (click)="upload()"><a>Upload Acct. Ent</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut" [class.cust-btn-disabled]="allocBut" (click)="onClickAlloc()"><a>Alloc. Trans.</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut" [class.cust-btn-disabled]="dcBut" (click)="onClickCMDM()"><a>DebitCredit Memo</a></button>
                         </div>
                     </div>
                 </div>
@@ -222,26 +226,49 @@
             <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Are you sure you want to approve this Journal Voucher?</label>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4 text-right labels">Approved By</label>
-                <input type="text" class="form-control form-control-sm col-sm-7" readonly [(ngModel)]="entryData.createUser">
+                <input type="text" class="form-control form-control-sm col-sm-7" readonly [(ngModel)]="entryData.approver">
+                <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickApproval()"></i></a></div>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4 text-right labels">Date Approved</label>
                 <div class="col-sm-7 dp-cont">
-                    <datepicker [type]="'date'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[0]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'d')"></datepicker>
+                    <datepicker [type]="'date'" required [showIcon]="true" [value]="entryData.approverDate?.split('T')[0]" (valueChange)="entryData.approverDate=dc($event,entryData.approverDate,'d')"></datepicker>
                 </div>
             </div>
         </div>
     </div>
     <div footer class="text-center">
-        <button type="button" class="cust-btn" (click)="approveJV.closeModal();"><a>Upload</a></button>
+        <button type="button" class="cust-btn" (click)="ApproveJVStatus();approveJV.closeModal();"><a>Approve</a></button>
         <button type="button" class="cust-btn" (click)="approveJV.closeModal();"><a>Cancel</a></button>
     </div>
 </app-modal>
 
-<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)"></app-mtn-currency>
+<app-modal class="d-none" id="allocation" #Alloc>
+    <div header>Allocated Transactions</div>  
+    <div body style=" max-width: 450px;">
+        <div class="form-row custom-row-inline-inset">
+             <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+        </div>
+    </div>
+    <div footer class="text-center">
+        <div class="form-row" style="margin-top: 13px !important;">
+            <div class="form-group col-sm">
+                <div class="col-md-12 text-center">
+                    <div class="cust-btn-container">
+                        <button type="button" class="cust-btn" (click)="allocJV.closeModal();"><a>Return</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-modal>
+
+<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="entryData.jvDate"></app-mtn-currency>
 <app-jv-type-lov id="jvTypeModal" (selectedData)="setTranType($event)"></app-jv-type-lov>
 <app-mtn-printable-names id="printableNames" (selectedData)="setPrintable($event)"></app-mtn-printable-names>
+<app-mtn-printable-names #ApproverNames (selectedData)="setApproval($event)"></app-mtn-printable-names>
 <app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-confirm-save id="JVEntry" (onYes)="saveJV()"></app-confirm-save>
 <app-cancel-button (onYes)="saveJV('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

@@ -112,8 +112,8 @@
 <div class="form-row">
   <div class="form-group col-sm">
     <div class="col-sm" style="text-align: center; padding: 10px;">
-      <app-modal [btnTitle]="'View Pool Dist'" (modalOpened)="openPoolDistribution()">
-        <div header>Pool Distribution</div>
+      <app-modal [btnTitle]="'View Cedant Dist'" (modalOpened)="openPoolDistribution()">
+        <div header>Cedant Distribution</div>
         <div body>
           <fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
             <div class="row" style="padding-top: 5px;">
@@ -166,7 +166,8 @@
 </div>
 
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()" ></app-cancel-button>
 
@@ -253,7 +254,17 @@
     </div>
     <div footer class="w-100 text-right">
 
-        <button *ngIf="warningModalCode == 'PREV_NOT_POSTED'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="warningModalCode == 'PREV_NOT_POSTED' || warningModalCode == 'MODDED_COMM_RT'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
         <button *ngIf="warningModalCode == 'PREV_HAS_CHANGES'" class="cust-btn" type="button" (click)="save();modalService.dismissAll();"><a>Ok</a></button>
     </div>
+</app-modal>
+
+<app-modal #warningNegVals class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+     Unable to distribute record with negative amounts. Please check Treaty Share and Comm Share Parameters.
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningNegVals.closeModal()" ><a>Ok</a></button>
+  </div>
 </app-modal>

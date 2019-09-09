@@ -26,7 +26,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	@ViewChild('myForm') form:any;
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
-	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal, private router: Router,
+	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, public modalService: NgbModal, private router: Router,
 			    private activatedRoute: ActivatedRoute) { }
 
 	policyListingData: any = {

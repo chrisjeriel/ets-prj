@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.component';
 import { environment } from '@environments/environment';
-import { QuotationService } from '@app/_services';
+import { QuotationService, UserService } from '@app/_services';
 import { first } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
@@ -18,7 +18,8 @@ import { Subject } from 'rxjs';
 	styleUrls: ['./quotation.component.css']
 })
 export class QuotationComponent implements OnInit {
-	constructor(private route: ActivatedRoute,private modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService) { }
+	constructor(private route: ActivatedRoute, public modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService, private userService: UserService) { 
+  }
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('tabset') tabset: any;
   @ViewChild(GeneralInfoComponent) genInfoComponent: GeneralInfoComponent;
@@ -74,15 +75,19 @@ export class QuotationComponent implements OnInit {
   approverList: any[];
   approver:string = '';
   exitLink:string;
+  accessibleModules:string [] = [];
 
 	ngOnInit() {
-		this.sub = this.route.params.subscribe(params => {
-            this.line = params['line'];
-            this.inquiryFlag = params['inquiry'];
-            console.log("params['inquiry'] " + params['inquiry']);
-            console.log("QUOTATION COMPONENT: " + JSON.stringify(params));
-            this.exitLink = params['exitLink'];
-        });
+      this.sub = this.route.params.subscribe(params => {
+          this.line = params['line'];
+          this.inquiryFlag = params['inquiry'];
+          console.log("params['inquiry'] " + params['inquiry']);
+          console.log("QUOTATION COMPONENT: " + JSON.stringify(params));
+          this.exitLink = params['exitLink'];
+          this.accessibleModules = this.userService.getAccessModules();
+      });
+
+      
 	}
 
 	showApprovalModal(content) {

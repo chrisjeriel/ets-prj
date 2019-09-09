@@ -854,7 +854,7 @@
 					</div>
 				</div>
 			</fieldset>
-			<fieldset class="scheduler-border" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+			<fieldset class="scheduler-border">
 				<ng-container *ngIf="savingType == 'modification' || genInfoData?.quoteRevNo != 0">
 					<legend class="scheduler-border">Alteration Wordings</legend>
 					<div class="input-group" style="margin-top: 26px !important;">
@@ -881,7 +881,7 @@
 								<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateUser" readonly>
 							</div>
 						</div>
-						<div class="form-row">
+						<div class="form-row" style="margin-bottom: 24px !important;">
 							<div class="form-group col-sm-6" style="margin-bottom: 8px;">
 								<label tabindex="-1" class="form-control-sm top-label" style="margin-left: 2px !important;">Date Created</label>
 								<!-- <input tabindex="-1" type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createDate" readonly> -->
@@ -974,7 +974,6 @@
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)" [exclude]="excludeCedingCo"></app-ceding-company>
 <app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)"></app-mtn-ceding-company>
-<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>

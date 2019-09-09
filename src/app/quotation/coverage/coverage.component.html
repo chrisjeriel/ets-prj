@@ -134,16 +134,6 @@
 
 
 <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="lineCd" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
-<app-modal class="d-none" id="errorMdl">
-    <div header>Error</div>
-    <div body class="container-flex text-center">
-        <span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">{{ errorMdlMessage }}</span>       
-    </div>
-    <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
-    </div>
-</app-modal>
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
 
 

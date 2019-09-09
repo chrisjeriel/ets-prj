@@ -41,7 +41,7 @@ export class GenerateJvComponent implements OnInit {
   };
 
   disabledTypes: any = [
-      1,2,3,4,5,6,7,8,9
+      1,2,3,4,5,6,7,8,9,10,11
   ];
 
   ngOnInit() {
@@ -87,7 +87,6 @@ export class GenerateJvComponent implements OnInit {
   }
 
   cedingOutput(data){
-    console.log(data)
     this.cedingParams.cedingId = data.cedingId;
     this.cedingParams.cedingName = data.cedingName;
   }

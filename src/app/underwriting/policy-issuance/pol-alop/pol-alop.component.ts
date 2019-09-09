@@ -127,7 +127,7 @@ export class PolAlopComponent implements OnInit {
                      updateDate: null
   };
 
-  constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private route: ActivatedRoute, private titleService: Title, private ns: NotesService, private mtnService: MaintenanceService) { }
+  constructor(private underwritingService: UnderwritingService, public modalService: NgbModal, private route: ActivatedRoute, private titleService: Title, private ns: NotesService, private mtnService: MaintenanceService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | ALOP");

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
-    @ViewChild('myForm') form:any;
+    @ViewChildren('myForm') form: QueryList<any>;
     @ViewChild('api') pagination: any;
     @ViewChild('table') table: ElementRef;
     @ViewChild(SucessDialogComponent) successDiag : SucessDialogComponent;
@@ -45,6 +45,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() newClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
+    @Output() newDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() genericBtn : EventEmitter<any> = new EventEmitter();
@@ -183,6 +184,28 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 $('td input.ng-dirty').removeClass('ng-dirty');
             }
         }, 0);
+
+        //dahil siga ako -paul
+        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 && this.passData.keys === undefined) {
+            this.dataKeys = Object.keys(this.passData.tableData[0]);
+        } else if(this.passData.keys !== undefined){
+            this.dataKeys = this.passData.keys;
+        }else{
+            this.dataKeys = [];
+        }
+
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('edited') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('edited'),1);
+       }
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('checked') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('checked'),1);
+       }
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('deleted') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('deleted'),1);
+       }
+        for (var i = this.dataKeys.length - 1; i >= 0; i--) {
+           this.fillData[this.dataKeys[i]] = null;
+        }
     }
 
     ngOnInit() {
@@ -202,16 +225,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         if(this.passData.tableData.length != 0)
             this.loadingFlag = false;
-
-        // if(this.dataKeys.indexOf('edited') != -1){
-        //   this.dataKeys.pop();
-        // }
-        // if(this.dataKeys.indexOf('checked') != -1){
-        //   this.dataKeys.pop();
-        // }
-        // if(this.dataKeys.indexOf('deleted') != -1){
-        //   this.dataKeys.pop();
-        // }
 
        if(this.dataKeys!==undefined && this.dataKeys.indexOf('edited') != -1){
          this.dataKeys.splice(this.dataKeys.indexOf('edited'),1);
@@ -378,6 +391,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onRowDblClick(event) {
         this.rowDblClick.next(event);
+    }
+
+    onNewDblClick(event) {
+        this.newDblClick.next(event);
     }
 
     sort(str,sortBy){
@@ -718,7 +735,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }else{
             data.fileName=event.target.files[0].name;
             data.edited=true;
-            this.form.control.markAsDirty();
+            this.markAsDirty();
             this.filesToUpload.push(event.target.files);
             this.uploadedFiles.emit(this.filesToUpload);
         }
@@ -754,13 +771,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }*/
 
     markAsPristine(){
-        $('table.non-datatable' + this.passData.pageID).parent().removeClass('ng-dirty')
-        this.form.control.markAsPristine();
+        $('table.non-datatable' + this.passData.pageID).parent().removeClass('ng-dirty');
+        this.form.forEach(a=>a.control.markAsPristine());
     }
 
     markAsDirty(){
         $('#cust-scroll form').addClass('ng-dirty');
-        this.form.control.markAsDirty();
+        this.form.forEach(a=>a.control.markAsDirty());
+        //this.form.control.markAsDirty();
     }
 
     focusFirst(){

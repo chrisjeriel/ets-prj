@@ -77,7 +77,7 @@ export class CvEntryServiceComponent implements OnInit {
       
    }
 
-  constructor(private modalService: NgbModal) { }
+  constructor(public modalService: NgbModal) { }
 
   ngOnInit() {
   }

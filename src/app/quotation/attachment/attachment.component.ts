@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { QuotationService, NotesService, UploadService } from '@app/_services';
+import { QuotationService, NotesService, UploadService, UserService } from '@app/_services';
 import { AttachmentInfo } from '../../_models/Attachment';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -122,7 +122,7 @@ export class AttachmentComponent implements OnInit {
 
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal,private ns : NotesService,
-     private location: Location, private router: Router, private upload: UploadService ) {
+     private location: Location, private router: Router, private upload: UploadService, private userService: UserService ) {
 
     config.placement = 'bottom-right';
     config.autoClose = false;
@@ -131,6 +131,7 @@ export class AttachmentComponent implements OnInit {
   ngOnInit(): void {
 
     this.titleService.setTitle("Quo | Attachment");
+    this.userService.emitModuleId("QUOTE008");
 
     //neco
         if(this.inquiryFlag){

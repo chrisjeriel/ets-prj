@@ -90,11 +90,11 @@
                                     <!-- END OLD -->
                                              
                                     <!-- NEW -->
-                                             <div class="dp-cont col-sm" style="margin-left: 0 !important;" ngbTooltip="From Date" placement="bottom">
-                                                 <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.keys?.search" (valueChange)="filt.keys.search=$event; filt.keys.search2=$event;"></datepicker>
+                                             <div tabindex="0" class="dp-cont col-sm" style="margin-left: 0 !important;" ngbTooltip="From Date" placement="bottom" (keyup.enter)="pressEnterFilter();">
+                                                 <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.keys?.search" (valueChange)="filt.keys.search=$event; filt.keys.search2 = valChanged('ds', filt.keys.search, filt.keys?.search2)"></datepicker> <!-- filt.keys.search2=$event; -->
                                              </div>
                                              <span style="line-height: 1;">&ndash;</span>
-                                             <div class="dp-cont col-sm" style="margin-left: 0 !important;" ngbTooltip="To Date" placement="bottom">
+                                             <div tabindex="0" class="dp-cont col-sm" style="margin-left: 0 !important;" ngbTooltip="To Date" placement="bottom" (keyup.enter)="pressEnterFilter();">
                                                  <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.keys?.search2" (valueChange)="filt.keys.search2=$event" [minDate]="filt.keys?.search"></datepicker>
                                              </div>
                                     <!-- END NEW -->
@@ -103,9 +103,9 @@
                                     <span>{{filt.keys?.to}}</span> -->
                                 </ng-container>
                                  <ng-container *ngSwitchCase="'textspan'">
-                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter() ;" placement="bottom" ngbTooltip="Min Value" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>                
+                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter() ;" placement="bottom" ngbTooltip="Min Value" onkeypress='return  event.charCode >= 48 && event.charCode <= 57' appCurrency (change)="filt.keys.search2 = valChanged('ts', filt.keys.search, filt.keys?.search2)">                
                                         <span style="line-height: 1;">&ndash;</span>
-                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="Max Value"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>
+                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="Max Value"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency (change)="filt.keys.search2 = valChanged('ts', filt.keys.search, filt.keys?.search2)">
                                 </ng-container>
 
                             </div>
@@ -228,7 +228,7 @@
                     <thead >
                         <tr>
                             <th *ngIf="passData.checkFlag && pinKeys.length==0" class="checkbox-container-header isCheckBox">
-                                <input type="checkbox" name="" (change)="selectAll($event.target.checked)" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag">
+                                <input type="checkbox" name="" (change)="selectAll($event.target.checked)" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag" [disabled]="passData.tableData.length == 0">
                             </th>
                             <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]"  [ngClass]="{'sticky': unliFlag, 'isCheckBox': passData.dataTypes[i] == 'checkbox', 'd-none': pinDataHeader.indexOf(tHeader) != -1 }" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <!-- <i class="fa fa-map-pin" (click)="pinColumn($event,i)"></i> -->

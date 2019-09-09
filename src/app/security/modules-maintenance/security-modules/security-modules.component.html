@@ -2,7 +2,7 @@
 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
 	<div class="row">
 		<div class="col-sm-12 cust-margin">
-			<app-cust-editable-non-datatable [passData]="PassData"> </app-cust-editable-non-datatable>
+			<app-cust-editable-non-datatable #modulesList [passData]="passDataModules" (newClick)="onRowClick($event)" (onDelete)="modulesList.onClickDelete('force');" (genericBtn)="deleteModule();"> </app-cust-editable-non-datatable>
 		</div>
 	</div>
 	<div class="form-row">
@@ -21,8 +21,10 @@
 	    <div class="form-group col-sm">
 	        <div class="col-md-13 text-center">
 	            <div class="cust-btn-container" style="margin-top: 10px">
-	                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-	                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+	                <!-- <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+	                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> TRBT#PROD_GRADE -->
+	                <button type="button" class="cust-btn"><a>Cancel</a></button>
+	                <button type="button" class="cust-btn"><a>Save</a></button>
 	            </div>
 	        </div>
 	    </div>
@@ -54,8 +56,8 @@
         <div class="form-row custom-row-inline-inset">
 			<div class="col-sm-12">
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4">Module Id</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6">
+					<label class="form-control-sm col-sm-4">Module</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="modulesData.moduleDesc">
 				</div>
 	        	<fieldset class="scheduler-border">
 	        		<legend class="scheduler-border">Transactions</legend>
@@ -80,14 +82,14 @@
         <div class="form-row custom-row-inline-inset">
 			<div class="col-sm-12">
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4">Module Id</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6">
+					<label class="form-control-sm col-sm-4">Module</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="modulesData.moduleDesc">
 				</div>
 	        	<fieldset class="scheduler-border">
 	        		<legend class="scheduler-border">Users</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable [passData]="PassDatAUserListing"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userListing [passData]="PassDataUserListing"> </app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
@@ -105,14 +107,14 @@
         <div class="form-row custom-row-inline-inset">
 			<div class="col-sm-12">
 				<div class="input-group">
-					<label class="form-control-sm col-sm-4">Module Id</label>
-		        	<input type="text" class="form-control form-control-sm col-sm-6">
+					<label class="form-control-sm col-sm-4">Module</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="modulesData.moduleDesc">
 				</div>
 	        	<fieldset class="scheduler-border">
-	        		<legend class="scheduler-border">Users</legend>
+	        		<legend class="scheduler-border">User Group</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable [passData]="PassDataUserGroups"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userGroupListing [passData]="PassDataUserGroupListing"> </app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
