@@ -132,6 +132,7 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv.cvStatus = 'N';
         this.saveAcitCv.cvStatusDesc = recStat.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
         this.saveAcitCv.cvDate = this.ns.toDateTimeString(0);
+        this.saveAcitCv.cvAmt = 0;
         this.saveAcitCv.currCd = 'PHP';
         this.saveAcitCv.currRate = 1;
         this.saveAcitCv.checkClass = 'LC';
@@ -366,8 +367,8 @@ export class CvEntryComponent implements OnInit {
 
   setLocalAmt(){
     this.saveAcitCv.localAmt = Number(String(this.saveAcitCv.cvAmt).replace(/\,/g,'')) * Number(String(this.saveAcitCv.currRate).replace(/\,/g,''));
-    this.saveAcitCv.cvAmt = (this.saveAcitCv.cvAmt == 0)?'':this.decPipe.transform(Number(String(this.saveAcitCv.cvAmt).replace(/\,/g,'')),'0.2-2');
-    this.saveAcitCv.localAmt = (this.saveAcitCv.localAmt == 0)?'':this.decPipe.transform(Number(String(this.saveAcitCv.localAmt).replace(/\,/g,'')),'0.2-2');
+    this.saveAcitCv.cvAmt =  this.decPipe.transform(Number(String(this.saveAcitCv.cvAmt).replace(/\,/g,'')),'0.2-2');
+    this.saveAcitCv.localAmt = this.decPipe.transform(Number(String(this.saveAcitCv.localAmt).replace(/\,/g,'')),'0.2-2');
     this.saveAcitCv.currRate = (this.saveAcitCv.currRate == 0)?'':this.decPipe.transform(Number(String(this.saveAcitCv.currRate).replace(/\,/g,'')),'0.9-9');
   }
 

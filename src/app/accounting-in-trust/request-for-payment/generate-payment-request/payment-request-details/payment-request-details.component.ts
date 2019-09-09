@@ -625,6 +625,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   reCompInw(){
+    var cantRefund = false;
     this.inwardPolBalData.tableData.forEach(e => {
       e.premAmt      = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
       e.riComm       = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
@@ -632,19 +633,30 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.charges      = Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
       e.totalPayt    = Math.round((e.returnAmt + e.cumPayment) * 100)/100;
       e.remainingBal = Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
+      if(e.returnAmt < 0 && e.cumPayment == 0){
+        cantRefund = true;
+        e.returnAmt = 0;
+      }else{
+        cantRefund = false;
+      }
     });
 
-    if(this.allotedAmt == 0 || this.allotedAmt == '' || this.allotedAmt == null){
-      this.allotedAmt = (this.recPrqTrans.length == 0)?this.requestData.reqAmt:this.recPrqTrans[0].allotedAmt;  
+    if(cantRefund){
+      this.warnMsg = 'Cannot be refunded without Cumulative Payment';
+      this.warnMdl.openNoClose();
     }
 
-    var allAmt = (Number(String(this.allotedAmt).replace(/\,/g,'')) > 0)?Number(String(this.allotedAmt).replace(/\,/g,'')) * Number(-1):Number(String(this.allotedAmt).replace(/\,/g,''));
-    var returnAmtSum = Number(this.inwardPolBalData.tableData.map(e => e.returnAmt).reduce((a,b) => a+b ,0));
-    //this.inwardPolBalData.total[14] = (returnAmtSum > 0)?returnAmtSum * Number(-1):returnAmtSum;
-    this.totalBal = Math.abs(Number(returnAmtSum));
-    this.variance = Math.abs(Number(allAmt)) - Math.abs(Number(returnAmtSum));
-    this.allotedAmt = this.decPipe.transform(Number(allAmt), '0.2-2');
-    this.totalBal = Number(this.totalBal) * Number(-1);
+    // if(this.allotedAmt == 0 || this.allotedAmt == '' || this.allotedAmt == null){
+    //   this.allotedAmt = (this.recPrqTrans.length == 0)?this.requestData.reqAmt:this.recPrqTrans[0].allotedAmt;  
+    // }
+
+    // var allAmt = (Number(String(this.allotedAmt).replace(/\,/g,'')) > 0)?Number(String(this.allotedAmt).replace(/\,/g,'')) * Number(-1):Number(String(this.allotedAmt).replace(/\,/g,''));
+    // var returnAmtSum = Number(this.inwardPolBalData.tableData.map(e => e.returnAmt).reduce((a,b) => a+b ,0));
+    // //this.inwardPolBalData.total[14] = (returnAmtSum > 0)?returnAmtSum * Number(-1):returnAmtSum;
+    // this.totalBal = Math.abs(Number(returnAmtSum));
+    // this.variance = Math.abs(Number(allAmt)) - Math.abs(Number(returnAmtSum));
+    // this.allotedAmt = this.decPipe.transform(Number(allAmt), '0.2-2');
+    // this.totalBal = Number(this.totalBal) * Number(-1);
   }
 
   setData(data, from){
