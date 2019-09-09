@@ -115,7 +115,8 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
         a.updateDate = this.ns.toDateTimeString(a.updateDate);
         a.showMG = 1;
         if(a.autoTag == 'Y'){
-          a.uneditable = ['glShortCd','debitAmt','creditAmt']
+          a.uneditable = ['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt'];
+
         }
       });
 
@@ -196,7 +197,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
 
     this.cvAcctEntData.tableData.forEach(e => {
       e.tranId = this.cvData.tranId;
-      if(e.glShortCd == '' || e.glShortCd == null || e.debitAmt == '' || e.debitAmt == null || e.creditAmt == '' || e.creditAmt == null){
+      if(e.glShortCd == '' || e.glShortCd == null){
         if(!e.deleted){
           isEmpty = 1;
           e.fromCancel = false;

@@ -14,14 +14,21 @@ export class GeneratePaymentRequestComponent implements OnInit {
     reqId : ''
   };
 
+  checkData : any = { 
+    tranId : '',
+    from : ''
+  };
+
   constructor(private activatedRoute: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
     console.log('IM HERE AT GEN PAYT REQ');
   	this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0){
+        console.log(params);
         this.rowData.reqId = params['reqId'];
-        console.log(params['reqId']);
+        this.checkData.from = params['from'];
+        this.checkData.tranId = params['tranId'];
       }
     });
   }
@@ -30,9 +37,12 @@ export class GeneratePaymentRequestComponent implements OnInit {
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
-        this.router.navigateByUrl('/payt-req');
+        if(this.checkData.from.toLowerCase() == 'cv-paytreqlist'){
+          this.router.navigate(['/generate-cv', { tranId : this.checkData.tranId, from: 'payt-req' }], { skipLocationChange: true });
+        }else{
+          this.router.navigateByUrl('/payt-req');
+        }
       } 
-  
   }
 
   // tabController(paymentType){

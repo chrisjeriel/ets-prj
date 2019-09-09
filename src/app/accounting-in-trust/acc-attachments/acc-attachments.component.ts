@@ -52,6 +52,7 @@ export class AccAttachmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.record);
       if(this.record.arStatDesc.toUpperCase() != 'NEW'){
         this.passData.uneditable = [true, true, true];
         this.passData.addFlag = false;

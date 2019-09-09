@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
-    <fieldset class="scheduler-border">
+    <fieldset *ngIf="record.from.toLowerCase() == 'ar'" class="scheduler-border">
       <legend class="scheduler-border">A.R. Info</legend>
       <div class="form-row custom-row-inline-inset">
         <div class="col-sm-6">
@@ -10,7 +10,7 @@
             style="z-index: 1 !important;" readonly [ngModel]="pad(record.arNo, 'arNo')">
             <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
             <div class="col-sm" style="padding: 0px">
-                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.arDate"></datepicker>
+              <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.arDate"></datepicker>
             </div>
             <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
             <input type="text" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
@@ -49,15 +49,50 @@
         </div>
       </div>
     </fieldset>
-  </div>
-</div>
+
+    <fieldset *ngIf="record.from.toLowerCase() == 'cv'" class="scheduler-border">
+      <legend class="scheduler-border">CV Info</legend>
+      <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-8">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">CV No</label>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="record.cvGenNo?.split('-')[0]" style="text-align: right" readonly>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="record.cvGenNo?.split('-')[1]" style="text-align: right; margin-left: 2px;" readonly>
+            <label class="form-control-sm col-sm-1">Date</label>
+            <div class="dp-cont col-sm">
+              <datepicker [type]="'datetime'" [disabled]="true" [showSeconds]="false" [value]="record?.cvDate"></datepicker>
+            </div>
+                  <label class="form-control-sm col-sm-1">Status</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="record?.cvStatusDesc" readonly>
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-1" style="padding-left: 0px !important;">Payee</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="record?.payee" readonly>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" [ngModel]="record?.currCd" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="record?.cvAmt | number:'1.2-2'"readonly>
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="record?.localAmt | number:'1.2-2'" readonly>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
 
 
-<fieldset class="scheduler-border">
-	<legend class="scheduler-border">Attached Files</legend>
-	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
-		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
-	</div>
+      <fieldset class="scheduler-border">
+       <legend class="scheduler-border">Attached Files</legend>
+       <div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
+        <app-cust-editable-non-datatable [passData]="passData" style="width: 100%" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
+      </div>
 
 	<!-- <div class="input-group" style="margin-left: -20px;margin-bottom: -6px !important;">
 		<label class="form-control-sm col-sm-1">Created By</label>
@@ -70,10 +105,10 @@
 		<input type="text" class="form-control form-control-sm col-sm" value="10/01/2018 10:45 AM">	
 	</div> -->
   <div class="form-group col-sm text-center" style="margin-bottom: 5px" *ngIf="record.arStatDesc.toUpperCase() == 'NEW'">
-      <div class="cust-btn-container">
-        <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
-        <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
-      </div>
+    <div class="cust-btn-container">
+      <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
+      <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+    </div>
   </div>
 
 </fieldset>
@@ -82,26 +117,26 @@
 
 <div class="col-sm-12" style="margin-top: 35px !important;padding-left: 0px !important;
 padding-right: 0px !important;">
-  <fieldset class="scheduler-border" style="margin-top: -12px !important; margin-bottom: 10px !important;">
-    <div style="margin-top: 8px !important; margin-bottom: 17px !important;">
-      <div class="form-row" style="margin-bottom: -10px;">
-        <div class="input-group">
-          <label class="form-control-sm col-sm-1">Created By</label>
-          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.createUser" disabled>
-          <label class="form-control-sm col-sm-1">Date Created</label>
-          <div class="col-sm" style="padding: 0px">
-              <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.createDate"></datepicker>
-          </div>
-          <label class="form-control-sm col-sm-1">Last Update By</label>
-          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.updateUser" disabled>
-          <label class="form-control-sm col-sm-1">Last Update</label>
-          <div class="col-sm" style="padding: 0px">
-              <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.updateDate"></datepicker>
-          </div>
+<fieldset class="scheduler-border" style="margin-top: -12px !important; margin-bottom: 10px !important;">
+  <div style="margin-top: 8px !important; margin-bottom: 17px !important;">
+    <div class="form-row" style="margin-bottom: -10px;">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1">Created By</label>
+        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.createUser" disabled>
+        <label class="form-control-sm col-sm-1">Date Created</label>
+        <div class="col-sm" style="padding: 0px">
+          <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.createDate"></datepicker>
+        </div>
+        <label class="form-control-sm col-sm-1">Last Update By</label>
+        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="record?.updateUser" disabled>
+        <label class="form-control-sm col-sm-1">Last Update</label>
+        <div class="col-sm" style="padding: 0px">
+          <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.updateDate"></datepicker>
         </div>
       </div>
     </div>
-  </fieldset>
+  </div>
+</fieldset>
 </div>
 
 

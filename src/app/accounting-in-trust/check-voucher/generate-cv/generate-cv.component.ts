@@ -18,6 +18,11 @@ export class GenerateCvComponent implements OnInit {
     tranId: ''
   };
 
+  record: any = {
+    tranId : '',
+    from : 'cv'
+  };
+
   constructor(private route: ActivatedRoute ,private router: Router,private titleService: Title) { }
 
   ngOnInit() {
@@ -26,6 +31,7 @@ export class GenerateCvComponent implements OnInit {
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
     });
 
+    this.record.tranId = this.passData.tranId;
     this.titleService.setTitle("Acct-IT | Check Voucher");
   }
 
