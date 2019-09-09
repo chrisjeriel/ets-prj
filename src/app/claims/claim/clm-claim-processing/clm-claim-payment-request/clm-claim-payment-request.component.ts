@@ -47,6 +47,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     policyId:''
   }
 
+  @Input()isInquiry;
+
   passLOV:any = {
     selector: 'payee'
   }
