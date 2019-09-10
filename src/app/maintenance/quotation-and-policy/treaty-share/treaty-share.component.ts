@@ -304,7 +304,7 @@ export class TreatyShareComponent implements OnInit {
 		this.treatyYearSelected = ev;
 		this.treatyYearData.disableGeneric = this.treatyYearSelected == undefined || this.treatyYearSelected == '';
 		this.disableCopySetup = this.treatyYearSelected == undefined || this.treatyYearSelected == '' || this.treatyYearSelected.newRec != undefined;
-		this.getMtnTreatyCommRate(); // ilagay sa bawat year ang mga treaty comm
+		this.getMtnTreatyCommRate();
 	}
 
 	onTreatyYearClickDelete(ev) {
@@ -393,10 +393,13 @@ export class TreatyShareComponent implements OnInit {
 		}
 	}*/
 
-	alignTreatyYear() {
+	alignTreatyYear(add?) {
 		setTimeout(() => {
 			// $('#treaty-year-table').find('td').find('input').css('width', '20%');
-			this.treatyYearTable.onRowClick(null, this.treatyYearData.tableData[this.treatyYearData.tableData.length-1]);
+
+			if(add !== undefined) {
+				this.treatyYearTable.onRowClick(null, this.treatyYearData.tableData[this.treatyYearData.tableData.length-1]);
+			}
 
 			if(this.first) {
 				$('.ng-dirty').removeClass('ng-dirty');
