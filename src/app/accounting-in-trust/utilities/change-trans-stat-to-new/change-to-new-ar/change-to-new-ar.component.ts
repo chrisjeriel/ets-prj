@@ -201,7 +201,6 @@ export class ChangeToNewArComponent implements OnInit {
   constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService, public modalService: NgbModal) { }
 
   ngOnInit() {
-    console.log(this.tranFlag);
     if (this.tranFlag === 'AR'){
        this.titleService.setTitle("Acct-IT | Change Transaction Status to New | Acknowledgement Receipt");
        this.retrieveArList();
@@ -222,7 +221,6 @@ export class ChangeToNewArComponent implements OnInit {
           for(var i:number = 1; i<data.ar.length; i++){
               if (data.ar[i].arStatDesc === 'Printed' || data.ar[i].arStatDesc === 'Cancelled' ){
                 this.passDataAR.tableData.push(data.ar[i]);
-                console.log(data.ar[i]);
               }
           }
           this.ARTable.refreshTable();
@@ -237,7 +235,6 @@ export class ChangeToNewArComponent implements OnInit {
 
   retrieveJVlist(){
     this.as.getJVListing(this.searchParams).subscribe((data:any) => {
-      console.log(data);
       for(var i=0; i< data.transactions.length;i++){
         if (data.transactions[i].jvListings.jvStatusName === 'For Approval' || data.transactions[i].jvListings.jvStatusName === 'Approved'
            || data.transactions[i].jvListings.jvStatusName === 'Printed' || data.transactions[i].jvListings.jvStatusName === 'Cancelled'){
@@ -270,7 +267,6 @@ export class ChangeToNewArComponent implements OnInit {
         return i; 
       });
 
-      console.log(rec);
       this.passDataCV.tableData = rec.filter(a => String(a.cvStatus).toUpperCase() === 'F' ||
                                                   String(a.cvStatus).toUpperCase() === 'P' ||
                                                   String(a.cvStatus).toUpperCase() === 'A' ||
@@ -289,7 +285,6 @@ export class ChangeToNewArComponent implements OnInit {
       this.selected = {};
     }else{
       this.selected = data;
-      console.log(data);
       this.record.createUser = this.selected.createUser;
       this.record.createDate = this.ns.toDateTimeString(this.selected.createDate);
       this.record.updateUser = this.selected.updateUser;
