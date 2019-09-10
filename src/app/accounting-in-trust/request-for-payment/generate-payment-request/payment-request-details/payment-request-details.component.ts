@@ -279,7 +279,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     tableData     : [],
     tHeader       : ['Sub-Distribution of Pool & Munich Re','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
     dataTypes     : ['text','percent','text','percent','currency','currency'],
-    keys          : ['cedingName','baseShrPct','currCd','currRt','actualShrAmt','localAmt'],
+    keys          : ['cedingName','actualShrPct','currCd','currRt','actualShrAmt','localAmt'],
     paginateFlag  : true,
     infoFlag      : true,
     checkFlag     : false,
