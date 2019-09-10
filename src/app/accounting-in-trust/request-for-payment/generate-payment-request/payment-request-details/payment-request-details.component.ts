@@ -539,6 +539,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       recAcitSoaDtl.forEach(e => {
         this.inwardPolBalData.tableData.filter(e2 => e.policyId == e2.policyId && e.instNo == e2.instNo).map(e2 => Object.assign(e2,e));
       });
+      console.log(this.inwardPolBalData.tableData);
       this.inwardTbl.refreshTable();
       this.reCompInw();
     });
@@ -635,7 +636,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.remainingBal = Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
       if(e.returnAmt < 0 && e.cumPayment == 0){
         cantRefund = true;
-        e.returnAmt = 0;
+        e.returnAmt    = 0;
+        e.premAmt      = 0;
+        e.riComm       = 0;
+        e.riCommVat    = 0;
+        e.charges      = 0;
+        e.totalPayt    = 0;
+        e.remainingBal = 0;
       }else{
         cantRefund = false;
       }
@@ -717,36 +724,42 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onClickSave(){
-    var totalAmt = this.recPrqTrans.reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-    var ts = this;
-    function showWarning(tbl){
-       var currAmt = tbl.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-       if(Number(ts.requestData.reqAmt) < (currAmt + totalAmt)){
-         ts.warnMsg = 'The sum of all payments under this request must not exceed the requested amount.';
-         ts.warnMdl.openNoClose();
-         return true;
-       }else{
-         return false;
-       }
-    };    
+    // var totalAmt = this.recPrqTrans.reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    // var ts = this;
+    // function showWarning(tbl){
+    //    var currAmt = tbl.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    //    if(Number(ts.requestData.reqAmt) < (currAmt + totalAmt)){
+    //      ts.warnMsg = 'The sum of all payments under this request must not exceed the requested amount.';
+    //      ts.warnMdl.openNoClose();
+    //      return true;
+    //    }else{
+    //      return false;
+    //    }
+    // };    
 
       if(this.activeOthTab){
-        (!showWarning(this.othersData.tableData))?this.onClickSaveOth():'';
+        // (!showWarning(this.othersData.tableData))?this.onClickSaveOth():'';
+        this.onClickSaveOth();
       }else if(this.activeUnColTab){
-        (!showWarning(this.unappliedColData.tableData))?this.onClickSaveUnCol():'';
+        // (!showWarning(this.unappliedColData.tableData))?this.onClickSaveUnCol():'';
+        this.onClickSaveUnCol();
       }else{
         if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
-          (!showWarning(this.cedingCompanyData.tableData))?this.onClickSaveCPC():'';
+          // (!showWarning(this.cedingCompanyData.tableData))?this.onClickSaveCPC():'';
+          this.onClickSaveCPC();
         }else if(this.requestData.tranTypeCd == 4){
-          (!showWarning(this.inwardPolBalData.tableData))?this.onClickSaveInw():'';
+          // (!showWarning(this.inwardPolBalData.tableData))?this.onClickSaveInw():'';
+          this.onClickSaveInw();
         }else if(this.requestData.tranTypeCd == 5){
           this.onClickSaveServFee();
         }else if(this.requestData.tranTypeCd == 6){
           this.onClickSaveTrty();
         }else if(this.requestData.tranTypeCd == 7){
-          (!showWarning(this.investmentData.tableData))?this.onClickSaveInvt():'';
+          // (!showWarning(this.investmentData.tableData))?this.onClickSaveInvt():'';
+          this.onClickSaveInvt();
         }else if(this.requestData.tranTypeCd == 8){
-          (!showWarning(this.othersData.tableData))?this.onClickSaveOth():'';
+          // (!showWarning(this.othersData.tableData))?this.onClickSaveOth():'';
+          this.onClickSaveOth();
         }
       }
   }
@@ -1296,7 +1309,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
         itemNo      : e.itemNo,
         netDue      : e.netDue,
         premAmt     : e.premAmt,
-        prevPaytAmt : Number(e.tempPayments) + Number(e.totalPayments),
+        prevPaytAmt : e.cumPayment,
+        prevBalance : e.balance,
+        newPaytAmt  : e.totalPayt,
+        newBalance  : e.remainingBal,
         reqId       : this.requestData.reqId,
         returnAmt   : e.returnAmt,
         riComm      : e.riComm,

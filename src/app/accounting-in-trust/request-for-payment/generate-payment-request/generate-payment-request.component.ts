@@ -22,7 +22,6 @@ export class GeneratePaymentRequestComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
-    console.log('IM HERE AT GEN PAYT REQ');
   	this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0){
         console.log(params);

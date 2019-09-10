@@ -57,6 +57,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   @Input() passData: any = {
     tranId : ''
   };
+  
   passDataLov  : any = {
     selector  : '',
     payeeCd   : '',

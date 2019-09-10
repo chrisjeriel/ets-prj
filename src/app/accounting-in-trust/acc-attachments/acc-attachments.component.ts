@@ -53,17 +53,33 @@ export class AccAttachmentsComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.record);
-      if(this.record.arStatDesc.toUpperCase() != 'NEW'){
-        this.passData.uneditable = [true, true, true];
-        this.passData.addFlag = false;
-        this.passData.deleteFlag =  false;
-        this.passData.checkFlag = false;
-        this.passData.magnifyingGlass = [];
-      }
-      this.retrieveARAttachment();
+    // if(this.record.from.toLowerCase() == 'ar'){
+    //   if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+    //     this.passData.uneditable = [true, true, true];
+    //     this.passData.addFlag = false;
+    //     this.passData.deleteFlag =  false;
+    //     this.passData.checkFlag = false;
+    //     this.passData.magnifyingGlass = [];
+    //   }
+    // }else if(this.record.from.toLowerCase() == 'cv'){
+    //   if(this.record.cvStatusDesc.toUpperCase() != 'NEW'){
+    //     this.passData.uneditable = [true, true, true];
+    //     this.passData.addFlag = false;
+    //     this.passData.deleteFlag =  false;
+    //     this.passData.checkFlag = false;
+    //     this.passData.magnifyingGlass = [];
+    //   }
+    // }
+    this.retrieveARAttachment();
   }
 
   retrieveARAttachment(){
+      if(this.record.from.toLowerCase() == 'cv'){
+        this.record.cvAmt = Number(String(this.record.cvAmt).replace(/\,/g,'')); 
+        this.record.localAmt = Number(String(this.record.localAmt).replace(/\,/g,''));
+      }
+
+
       this.as.getAcitAttachments(this.record.tranId).subscribe((data: any) =>{
           console.log(data);
           this.passData.tableData = [];
@@ -74,6 +90,25 @@ export class AccAttachmentsComponent implements OnInit {
               }
           }
           this.table.refreshTable();
+          this.table.onRowClick(null,this.passData.tableData[0]);
+
+          if(this.record.from.toLowerCase() == 'ar'){
+            if(this.record.arStatDesc.toUpperCase() != 'NEW'){
+              this.passData.uneditable = [true, true, true];
+              this.passData.addFlag = false;
+              this.passData.deleteFlag =  false;
+              this.passData.checkFlag = false;
+              this.passData.magnifyingGlass = [];
+            }
+          }else if(this.record.from.toLowerCase() == 'cv'){
+            if(this.record.cvStatusDesc.toUpperCase() != 'NEW'){
+              this.passData.uneditable = [true, true, true];
+              this.passData.addFlag = false;
+              this.passData.deleteFlag =  false;
+              this.passData.checkFlag = false;
+              this.passData.magnifyingGlass = [];
+            }
+          }
       });
   }
 
@@ -216,6 +251,20 @@ export class AccAttachmentsComponent implements OnInit {
       }else if(field === 'dcbSeqNo'){
         return String(str).padStart(3, '0');
       }
+    }
+  }
+
+  onRowClick(data){
+    if(data != null){
+      this.record.createDate = this.notes.toDateTimeString(data.createDate);
+      this.record.updateDate = this.notes.toDateTimeString(data.updateDate);
+      this.record.createUser = data.createUser;
+      this.record.updateUser = data.updateUser;
+    }else{
+      this.record.createDate = '';
+      this.record.updateDate = '';
+      this.record.createUser = '';
+      this.record.updateUser = '';
     }
   }
 

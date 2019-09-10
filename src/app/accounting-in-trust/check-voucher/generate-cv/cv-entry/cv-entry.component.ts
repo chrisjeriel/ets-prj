@@ -75,15 +75,15 @@ export class CvEntryComponent implements OnInit {
     updateUser    : ''
   };
 
-  dialogMessage   : string = '';
-  dialogIcon      : string = '';
-  warnMsg         : string = '';
-  cancelFlag      : boolean;
-  fromCancel      : boolean;
-  private sub     : any;
-  cvStatList      : any;
-  removeIcon      : boolean;
-  fromBtn         : string = '';
+  dialogMessage        : string = '';
+  dialogIcon           : string = '';
+  warnMsg              : string = '';
+  cancelFlag           : boolean;
+  fromCancel           : boolean;
+  private sub          : any;
+  cvStatList           : any;
+  removeIcon           : boolean;
+  fromBtn              : string = '';
   isTotPrlEqualCvAmt   : boolean = false;
   isTotDebCredBalanced : boolean = false;
 
@@ -168,9 +168,12 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv = Object.assign(this.saveAcitCv,recCv[0]);
         console.log(recCv);
         console.log(this.saveAcitCv);
+        
       }
 
-      this.cvData.emit({tranId: this.saveAcitCv.tranId});
+      // this.cvData.emit({tranId: this.saveAcitCv.tranId, from: 'cv'});
+      this.saveAcitCv['from'] = 'cv';
+      this.cvData.emit(this.saveAcitCv);
       ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
       this.setLocalAmt();
 
