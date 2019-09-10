@@ -203,7 +203,9 @@ export class InvestmentsComponent implements OnInit {
     matDateTo: any = '';
     matDateFrom: any = '';
     disableBtn: boolean = true;
-
+    maxphp: any = 0;
+    maxusd: any = 0;
+    maxukp: any = 0;
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
   ngOnInit() {
@@ -266,6 +268,31 @@ export class InvestmentsComponent implements OnInit {
                                         a.termDate = this.ns.toDateTimeString(a.termDate);
                                       }
                                       
+                                      var currentTime = new Date();
+                                      var year = currentTime.getFullYear();
+                                      var res = a.invtCd.split("-");
+
+                                      if(a.currCd === 'PHP'){
+                                        if (year === parseInt(res[0]) && a.currCd === res[3]){
+                                               if(this.maxphp < parseInt(res[4])){
+                                                  this.maxphp = parseInt(res[4]);
+                                               }; 
+                                         }
+                                      } else if (a.currCd === 'USD'){
+                                        if (year === parseInt(res[0]) && a.currCd === res[3]){
+                                               if(this.maxusd < parseInt(res[4])){
+                                                  this.maxusd = parseInt(res[4]);
+                                               }; 
+                                         }
+                                      } else if (a.currCd === 'UKP'){
+                                        if (year === parseInt(res[0]) && a.currCd === res[3]){
+                                               if(this.maxukp < parseInt(res[4])){
+                                                  this.maxukp = parseInt(res[4]);
+                                               }; 
+                                         }
+                                      } 
+
+
                                    return a; });
 
         this.passData.tableData = td;
@@ -404,51 +431,46 @@ export class InvestmentsComponent implements OnInit {
 
   
 
-  checkItemCurrency(currencyCd?){
-    var maxPHP = 0;
-    var maxUSD = 0;
-    var maxUKP = 0;
+  checkItemCurrency(currencyCd?){    
+    var maxPHP = this.maxphp;
+    var maxUSD = this.maxusd;
+    var maxUKP = this.maxukp;
     var currentTime = new Date();
     var month = currentTime.getMonth() + 1;
     var year = currentTime.getFullYear();
-
+    
     for(var i= 0; i< this.passData.tableData.length; i++){
       
+     if (this.passData.tableData[i].invtCd !== null){
+      var res = this.passData.tableData[i].invtCd.split("-");
+      
       if(this.passData.tableData[i].currCd === 'PHP'){
-        
-        if (this.passData.tableData[i].invtCd !== null){
-           var res = this.passData.tableData[i].invtCd.split("-");
            if (year === parseInt(res[0]) && this.passData.tableData[i].currCd === res[3]){
-                 if(maxPHP < parseInt(res[4])){
-                    maxPHP = parseInt(res[4]);
-                 }; 
-           }
-        }
-
+                if(maxPHP < parseInt(res[4])){
+                        maxPHP = parseInt(res[4]);
+                } else {
+                        maxPHP = this.maxphp;
+                }; 
+               }
       } else if (this.passData.tableData[i].currCd === 'USD'){
-
-        if (this.passData.tableData[i].invtCd !== null){
-          var res = this.passData.tableData[i].invtCd.split("-");
-
           if (year === parseInt(res[0]) && this.passData.tableData[i].currCd === res[3]){
-            if(maxUSD < parseInt(res[4])){
-                maxUSD = parseInt(res[4]);
-            };
+               console.log(parseInt(res[4]) + ' ' + this.maxusd );
+                if(maxUSD < parseInt(res[4])){
+                       maxUSD = parseInt(res[4]);
+                } else {
+                       maxUSD = this.maxusd;
+                };
           }
-          
-        }
+         
       }  else if (this.passData.tableData[i].currCd === 'UKP'){
-        
-        if (this.passData.tableData[i].invtCd !== null){
-          var res = this.passData.tableData[i].invtCd.split("-");
-
           if (year === parseInt(res[0]) && this.passData.tableData[i].currCd === res[3]){
-            if(maxUKP < parseInt(res[4])){
-                maxUKP = parseInt(res[4]);
-            };
-          }
-          
-        }
+                if(maxUKP < parseInt(res[4])){
+                       maxUKP = parseInt(res[4]);
+                }  else {
+                       maxUKP = this.maxukp;
+                };
+          } 
+      }
     }
   }
         if( currencyCd === 'PHP'){
@@ -591,12 +613,20 @@ export class InvestmentsComponent implements OnInit {
                      } else if (this.passData.tableData[i].currCd === 'UKP'){
                        var currRt = this.getCurrencyRt('UKP');
                        this.passData.tableData[i].currRate = currRt;
-                       var maxUKP = this.checkItemCurrency('UKP');
-                       this.passData.tableData[i].currSeqNo = maxUKP + 1;
+                      
                         if (this.passData.tableData[i].invtCd === null){
-                         this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
+                          var maxUKP = this.checkItemCurrency('UKP');
+                          this.passData.tableData[i].currSeqNo = maxUKP + 1;
+                          this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
                         } else {
-                         this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
+                          var res = this.passData.tableData[i].invtCd.split("-");
+                            if (this.passData.tableData[i].currCd !== res[3]){
+                              var maxUKP = this.checkItemCurrency('UKP');
+                              this.passData.tableData[i].currSeqNo = maxUKP + 1;
+                              this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
+                            }else {
+                               this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
+                            }
                         }  
                      } else if (this.passData.tableData[i].currCd === 'USD'){
                        var currRt = this.getCurrencyRt('USD');
@@ -868,7 +898,7 @@ export class InvestmentsComponent implements OnInit {
             this.successDialog.open();
             return;
           } else {
-              this.confirmSave.confirmModal();
+             this.confirmSave.confirmModal();
           }
       }else{
         this.dialogMessage="Please check field values.";
@@ -909,8 +939,15 @@ export class InvestmentsComponent implements OnInit {
                 check.amortEff === null) {
                return false;
            } else {
-             console.log( check.matPeriod % 12);
-           } 
+             if (check.durUnit === 'Months' ){
+               console.log((check.matPeriod % 12));
+               if ( (check.matPeriod % 12) !== 0) return false;
+             } else if (check.durUnit === 'Years'){
+               if ( (check.matPeriod % 1) !== 0) return false;
+             } else if (check.durUnit === 'Days'){
+               if ( (check.matPeriod % 365) !== 0) return false;
+             }
+           }
         }
                                                                                                                                                                                                                                          
     }
@@ -1010,8 +1047,18 @@ export class InvestmentsComponent implements OnInit {
                                                                eff = a.amortEff,
                                                                cpn = a.intRt,
                                                                parVal = a.invtAmt,
-                                                               matPeriod = a.matPeriod,
-                                                               noOfPeriods;                                                               
+                                                               matPeriod = null,
+                                                               noOfPeriods;
+
+                                                           if(a.durUnit === 'Months'){
+                                                             matPeriod = a.matPeriod / 12;
+                                                           } else if (a.durUnit === 'Days'){
+                                                             matPeriod = a.matPeriod / 365;
+                                                           } else {
+                                                             matPeriod = a.matPeriod
+                                                           }
+
+
                                                            if(a.amortized === 'M'){
                                                               frequency = 12;                                                               
                                                            } else if (a.amortized === 'Q'){
@@ -1021,6 +1068,8 @@ export class InvestmentsComponent implements OnInit {
                                                            } else if (a.amortized === 'Y') {
                                                               frequency = 1;
                                                            }
+
+
                                                            noOfPeriods = frequency * matPeriod;
                                                            a.parCost = this.computeAmortization(frequency,eff/100,cpn/100,parVal,matPeriod,noOfPeriods).toFixed(2);
 
@@ -1135,20 +1184,20 @@ export class InvestmentsComponent implements OnInit {
   }
 
   retrieveAmortizationList(){
+     this.passAmortData.tableData = [];
       this.accountingService.getAMortizationList(this.selectedData.invtId).subscribe(data => {
         console.log(data);
-
-
-        var td = data['acitAmortizeList'].map(a => { 
+        this.passAmortData.tableData.push({startDate: null, endDate: null,amortDays : null,couponDays: null,
+                                          coupon : null,effAmt: null,amortAmt: null,amortInvtAmt: this.selectedData.priceCost,amortDailyAmt: null});
+        data['acitAmortizeList'].map(a => { 
                                    
                                       a.starDate = this.ns.toDateTimeString(a.starDate);
                                       a.endDate = this.ns.toDateTimeString(a.endDate);
-             
+                                      this.passAmortData.tableData.push({startDate: a.startDate, endDate: a.endDate,amortDays : a.amortDays,couponDays: a.couponDays,
+                                          coupon : a.coupon,effAmt: a.effAmt,amortAmt: a.amortAmt,amortInvtAmt: a.amortInvtAmt,amortDailyAmt: a.amortDailyAmt});
                                       
                                       
-                                   return a; });
-
-        this.passAmortData.tableData = td;
+                                   return a; });  
         this.amortTable.overlayLoader = true;
         this.amortTable.refreshTable();
       });

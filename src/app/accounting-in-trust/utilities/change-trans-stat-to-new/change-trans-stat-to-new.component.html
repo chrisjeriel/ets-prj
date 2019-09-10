@@ -3,17 +3,17 @@
 	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="Acknowledge Receipt">
 			<ng-template ngbTabContent>
-				<app-change-to-new-ar></app-change-to-new-ar>
+				<app-change-to-new-ar [tranFlag]="'AR'" ></app-change-to-new-ar>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Check Voucher">
 			<ng-template ngbTabContent>
-				<app-change-to-new-cv></app-change-to-new-cv>
+				<app-change-to-new-ar [tranFlag]="'CV'" ></app-change-to-new-ar>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Journal Voucher">
 			<ng-template ngbTabContent>
-				<app-change-to-new-jv></app-change-to-new-jv>
+				<app-change-to-new-ar [tranFlag]="'JV'" ></app-change-to-new-ar>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="Exit">
