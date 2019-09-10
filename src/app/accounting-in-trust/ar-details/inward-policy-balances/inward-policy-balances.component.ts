@@ -27,8 +27,8 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   passData: any = {
     tableData: [],
-    tHeaderWithColspan: [{header:'', span:1, pinLeft: true},{header: 'Inward Policy Info', span: 13, pinLeft: true}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
-    pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance'],
+    tHeaderWithColspan: [{header:'', span:1},{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+    //pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance'],
     tHeader: ["Policy No","Co. Ref. No.", "Inst No.", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Cumulative Payments", "Balance",
               'Payment Amount', "Premium", "RI Comm", 'Ri Comm Vat', "Charges", 'Total Payments', 'Remaining Balance'],
     dataTypes: ["text","text", "text", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency","currency","currency","currency","currency","currency","currency","currency"],
@@ -64,7 +64,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     widths: [170, 100, 50, 1, 30, 85,110, 110, 110,110,110,110,110,110,110,110,110,110,110,110,],
     keys: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
-    small: true,
+    small: false,
   };
 
   passLov: any = {
@@ -99,7 +99,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
-      this.passData.tHeaderWithColspan= [{header: 'Inward Policy Info', span: 13, pinLeft: true}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}];
+      this.passData.tHeaderWithColspan= [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}];
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;
@@ -133,8 +133,8 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           //this.passData.tableData = data.arInwPolBal;
           for(var i of data.arInwPolBal){
             i.cumPayment = i.prevCumPayment;
-            i.totalPayments = i.cumPayment;
-            i.uneditable = ['balPaytAmt'];
+            i.totalPayments = i.cumPayment + i.balPaytAmt;
+            //i.uneditable = ['balPaytAmt'];
             this.passData.tableData.push(i);
           }
           this.originalValues = data.arInwPolBal;
@@ -233,6 +233,10 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
+    }else if(this.canRefund()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Refund must not exceed cumulative payments.';
+      this.successDiag.open();
     }else{
       this.confirm.confirmModal();
     }
@@ -249,6 +253,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           this.savedData.push(this.passData.tableData[i]);
           this.savedData[this.savedData.length-1].tranId = this.record.tranId;
           this.savedData[this.savedData.length-1].billId = 1; //1 for Inward Policy balances Transaction Type
+          this.savedData[this.savedData.length-1].prevPaytAmt = this.savedData[this.savedData.length-1].cumPayment
+          this.savedData[this.savedData.length-1].newPaytAmt = this.savedData[this.savedData.length-1].totalPayments;
+          this.savedData[this.savedData.length-1].newBalance = this.savedData[this.savedData.length-1].netDue;
           this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
           this.savedData[this.savedData.length-1].createUser = this.ns.getCurrentUser();
           this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
@@ -323,6 +330,20 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           break;
         }
       }
+      console.log(data[index].prevPremAmt);
+      console.log(data[index].prevRiComm);
+      console.log(data[index].prevRiCommVat);
+      console.log(data[index].prevCharges);
+      console.log(data[index].balPaytAmt);
+      console.log(data[index].prevNetDue);
+      data[index].premAmt = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevPremAmt;
+      data[index].riComm = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevRiComm;
+      data[index].riCommVat = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevRiCommVat;
+      data[index].charges = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevCharges;
+
+      data[index].totalPayments = data[index].balPaytAmt + data[index].cumPayment;
+      data[index].netDue = data[index].prevNetDue - data[index].totalPayments;
+      console.log(data);
       /*if(this.selected.add){
         this.accountingService.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo).subscribe(
           (soaDtl: any)=>{
@@ -423,6 +444,16 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     this.computeTotalBalAndVariance();
     if(this.totalBal < 0){
       return true;
+    }
+    return false;
+  }
+
+  canRefund(): boolean{
+    for(var i of this.passData.tableData){
+      if((i.cumPayment < 0 && i.balPaytAmt + i.cumPayment > 0) ||
+         (i.cumPayment > -1 && i.balPaytAmt + i.cumPayment < 0)){
+        return true;
+      }
     }
     return false;
   }

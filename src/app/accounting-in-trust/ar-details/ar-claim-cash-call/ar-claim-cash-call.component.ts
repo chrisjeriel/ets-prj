@@ -26,7 +26,7 @@ export class ArClaimCashCallComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeaderWithColspan: [{header:'', span:1, pinLeft: true},{header: 'Claim Information', span: 11, pinLeft: true}, {header: '', span: 1}, {header: '', span: 1}],
+    tHeaderWithColspan: [{header:'', span:1},{header: 'Claim Information', span: 11}, {header: '', span: 2}],
     tHeader: ['Claim No', 'Hist No', 'Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex Gratia', 'Curr', 'Curr Rate', 'Reserve', 'Cumulative Payment', 'Payment Amount', 'Payment Amount Local'],
     dataTypes: ["text", "number", "text", "text","text","text", "checkbox", "text", "percent", "currency", "currency", "currency", "currency"],
     addFlag: true,
@@ -65,7 +65,7 @@ export class ArClaimCashCallComponent implements OnInit {
     total: [null,null,null,null,null,null,null,null, 'Total', 'reserveAmt', 'cumulativeAmt', 'recOverAmt', 'localAmt'],
     widths: [120,1,130,120, 150, 250, 1,1, 120, 120, 120, 120, 120, 120],
     keys: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt', 'recOverAmt', 'localAmt'],
-    pinKeysLeft: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt'],
+    //pinKeysLeft: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt'],
     uneditable: [false,true,true,true,false,true,true,true, true, true,true,false, true],
     small: true
   };
@@ -96,7 +96,7 @@ export class ArClaimCashCallComponent implements OnInit {
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true,true,true,true,true,true,true,true, true, true,true,true, true];
-      this.passData.tHeaderWithColspan= [{header: 'Claim Information', span: 11, pinLeft: true}, {header: '', span: 1}, {header: '', span: 1}];
+      this.passData.tHeaderWithColspan= [{header: 'Claim Information', span: 11}, {header: '', span: 2}];
       this.passData.addFlag = false;
       this.passData.deleteFlag =  false;
       this.passData.checkFlag = false;
