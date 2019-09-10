@@ -99,7 +99,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
-      this.passData.tHeaderWithColspan= [{header: 'Inward Policy Info', span: 13, pinLeft: true}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}];
+      this.passData.tHeaderWithColspan= [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}];
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;
@@ -233,6 +233,10 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
+    }else if(this.canRefund()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Refund must not exceed cumulative payments.';
+      this.successDiag.open();
     }else{
       this.confirm.confirmModal();
     }
@@ -249,6 +253,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           this.savedData.push(this.passData.tableData[i]);
           this.savedData[this.savedData.length-1].tranId = this.record.tranId;
           this.savedData[this.savedData.length-1].billId = 1; //1 for Inward Policy balances Transaction Type
+          this.savedData[this.savedData.length-1].prevPaytAmt = this.savedData[this.savedData.length-1].cumPayment
+          this.savedData[this.savedData.length-1].newPaytAmt = this.savedData[this.savedData.length-1].totalPayments;
+          this.savedData[this.savedData.length-1].newBalance = this.savedData[this.savedData.length-1].netDue;
           this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
           this.savedData[this.savedData.length-1].createUser = this.ns.getCurrentUser();
           this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
@@ -437,6 +444,16 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     this.computeTotalBalAndVariance();
     if(this.totalBal < 0){
       return true;
+    }
+    return false;
+  }
+
+  canRefund(): boolean{
+    for(var i of this.passData.tableData){
+      if((i.cumPayment < 0 && i.balPaytAmt + i.cumPayment > 0) ||
+         (i.cumPayment > -1 && i.balPaytAmt + i.cumPayment < 0)){
+        return true;
+      }
     }
     return false;
   }
