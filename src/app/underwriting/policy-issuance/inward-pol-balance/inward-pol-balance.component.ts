@@ -49,7 +49,7 @@ export class InwardPolBalanceComponent implements OnInit {
     genericBtn: 'Delete',
     widths: ["1", "1", "1", "auto", "auto", "auto"],
     pageID:'installment',
-    pageLength: 5,
+    pageLength: 'unli-5',
     checkFlag: false
   };
 

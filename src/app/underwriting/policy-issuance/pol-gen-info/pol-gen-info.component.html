@@ -225,7 +225,7 @@
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Issue Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.issueDate?.split('T')[0]" (valueChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.issueDate?.split('T')[0]" (valueChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1];this.updateMinBookingDate();"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
 									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.issueDate?.split('T')[1]" (valueChange)="policyInfo.issueDate=policyInfo.issueDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
@@ -249,7 +249,7 @@
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Effective Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1];this.updateMinBookingDate();;"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
 									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.effDate?.split('T')[1]" (valueChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
@@ -260,7 +260,7 @@
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Booking Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.acctDate?.split('T')[0]" (valueChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1];"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.acctDate?.split('T')[0]" [minDate]="minBookingDate?.split('T')[0]" (valueChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
 									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.acctDate?.split('T')[1]" (valueChange)="policyInfo.acctDate=policyInfo.acctDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
@@ -2251,7 +2251,7 @@
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" appRequired> -->
 
 													<div class="col-sm dp-cont">
-														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1];this.updateMinBookingDate();"></datepicker>
 													</div>
 													<div class="col-sm-3 dp-cont">
 														<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.effDate?.split('T')[1]" (valueChange)="policyInfo.effDate=policyInfo.effDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
@@ -2263,7 +2263,7 @@
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]" appRequired> -->
 
 													<div class="col-sm dp-cont">
-														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.issueDate?.split('T')[0]" (valueChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.issueDate?.split('T')[0]" (valueChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1];this.updateMinBookingDate();"></datepicker>
 													</div>
 													<div class="col-sm-3 dp-cont">
 														<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.issueDate?.split('T')[1]" (valueChange)="policyInfo.issueDate=policyInfo.issueDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
@@ -2287,7 +2287,7 @@
 													<input type="time" class="form-control form-control-sm col-sm-2 req" style="margin-left: 5px;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]" appRequired> -->
 
 													<div class="col-sm dp-cont">
-														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.acctDate?.split('T')[0]" (valueChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]"></datepicker>
+														<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.acctDate?.split('T')[0]" [minDate]="minBookingDate?.split('T')[0]" (valueChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]"></datepicker>
 													</div>
 													<div class="col-sm-3 dp-cont">
 														<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.acctDate?.split('T')[1]" (valueChange)="policyInfo.acctDate=policyInfo.acctDate?.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>
@@ -2637,22 +2637,6 @@
     </div>
     <div footer class="w-100 text-right">
 
-        <button class="cust-btn" type="button" (click)="forceExt = 1; prepareParam(); modalService.dismissAll();"><a>Yes</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
-    </div>
-</app-modal>
-
-<app-modal class="d-none" id="polGenInfoConfirmationModal">
-    <div header>Confirmation</div>
-    <div body style="min-width: 300px !important;">
-        <!-- <fieldset class="scheduler-border" style="padding-top: 5px !important;"> -->
-            <div class="custom-row-inline-inset" style="text-align: center">                
-                <p>Saving the changes will recreate the details of Coverage and<br />
-                Inward Policy Balance. Do you want to proceed?</p>
-            </div>
-        <!-- </fieldset> -->
-    </div>
-    <div footer class="w-100 text-right">
         <button class="cust-btn" type="button" (click)="forceExt = 1; prepareParam(); modalService.dismissAll();"><a>Yes</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>

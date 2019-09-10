@@ -1181,6 +1181,10 @@ export class UnderwritingService {
             .set('policyId', policyId);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolInstTagAcctDate', {params});
     }
+
+    getValidBookingDate(params){
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveValidBookingDate', {params:params});
+    }
 }            
 
             
