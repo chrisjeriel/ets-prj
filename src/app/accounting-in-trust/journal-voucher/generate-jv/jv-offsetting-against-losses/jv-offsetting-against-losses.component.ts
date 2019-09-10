@@ -152,10 +152,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
-    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+    if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
-      this.InwPolBal.disableAdd = false;
-      this.passData.disableAdd = false;
     }else {
       this.readOnly = true;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
@@ -198,6 +196,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.jvDetails.ceding = data.payeeCd;
     this.passLov.cedingId = data.payeeCd;
     this.passLovInw.cedingId = data.payeeCd;
+    this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveClmLosses();
     this.check(this.jvDetails);
@@ -215,6 +214,12 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.itemNo = data.itemNo;
       this.InwPolBal.nData.itemNo = this.itemNo;
       this.InwPolBal.tableData = data.inwPolBal;
+    }
+
+    if(this.jvDetail.statusType == 'N'){
+      this.InwPolBal.disableAdd = false;
+    }else{
+      this.InwPolBal.disableAdd = true;
     }
     this.inwTable.refreshTable();
   }
@@ -383,6 +388,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].itemNo = this.passData.tableData[i].itemNo;
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].inwPolBal[j].createDate);
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].inwPolBal[j].updateDate);
+          this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].netDue = this.passData.tableData[i].inwPolBal[j].remainingBal;
         }
 
         if(this.passData.tableData[i].inwPolBal[j].deleted){
