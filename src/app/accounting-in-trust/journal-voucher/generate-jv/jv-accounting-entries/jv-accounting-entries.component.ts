@@ -263,7 +263,13 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else if(this.jvType === 5){
       this.accountingService.getNegativeTreaty(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.negativeTrty;
+        for (var i = 0; i < datas.length; i++) {
+          total += datas[i].balanceAmt
+        }
 
+        if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
       });
     }else if(this.jvType === 6){
       this.accountingService.getAcctTrtyBal(this.jvDetails.tranId).subscribe((data:any) => {
