@@ -189,6 +189,8 @@ export class PaymentRequestEntryComponent implements OnInit {
 
       this.paytData.emit({reqId: this.saveAcitPaytReq.reqId});
       this.setLocalAmt();
+      console.log(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')));
+      console.log(totalReqAmts)
       this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == Number(totalReqAmts))?true:false;
     });
   }

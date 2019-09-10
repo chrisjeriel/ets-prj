@@ -812,12 +812,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       //   this.params.savePrqTrans   = [];
       //   this.params.deletePrqTrans = [];
       // }else 
-      if(Number(this.requestData.reqAmt) < Number(currAmt)){
-        this.warnMsg = 'The Total Amount for the Unapplied Collection must not exceed the Requested Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans   = [];
-        this.params.deletePrqTrans = [];
-      }else{
+      // if(Number(this.requestData.reqAmt) < Number(currAmt)){
+      //   this.warnMsg = 'The Total Amount for the Unapplied Collection must not exceed the Requested Amount.';
+      //   this.warnMdl.openNoClose();
+      //   this.params.savePrqTrans   = [];
+      //   this.params.deletePrqTrans = [];
+      // }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
           $('.ng-dirty').removeClass('ng-dirty');
           this.conUnCol.confirmModal();
@@ -833,7 +833,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
             this.conUnCol.confirmModal();
           }
         }
-      }
+     // }
     }
   }
 
@@ -885,12 +885,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       //   this.params.savePrqTrans   = [];
       //   this.params.deletePrqTrans = [];
       // }else 
-      if(Number(this.requestData.reqAmt) < Number(currAmt)){
-        this.warnMsg = 'The Total Amount for the Other Payments must not exceed the Requested Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans   = [];
-        this.params.deletePrqTrans = [];
-      }else{
+      // if(Number(this.requestData.reqAmt) < Number(currAmt)){
+      //   this.warnMsg = 'The Total Amount for the Other Payments must not exceed the Requested Amount.';
+      //   this.warnMdl.openNoClose();
+      //   this.params.savePrqTrans   = [];
+      //   this.params.deletePrqTrans = [];
+      // }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
           $('.ng-dirty').removeClass('ng-dirty');
           this.conOth.confirmModal();
@@ -906,7 +906,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
             this.conOth.confirmModal();
           }
         }
-      }
+      //}
     }
   }
 
@@ -1080,7 +1080,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.recPrqTrans.allotedAmt);
     this.inwardPolBalData.tableData.forEach(e => {
       if(e.returnAmt == '' || e.returnAmt == null){
-        isEmpty = 1;
+        if(!e.deleted){
+          isEmpty = 1;
+          e.fromCancel = false;
+        }else{
+          this.params.deletePrqTrans.push(e);
+        }
       }else{
         var rec = {
             allotedAmt      : Math.abs(Number(String(this.allotedAmt).replace(/\,/g,''))),
@@ -1134,12 +1139,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     //       this.params.savePrqTrans   = [];
     //       this.params.deletePrqTrans = [];
     // }
-    else if(Number(this.requestData.reqAmt) < Number(returnAmt)){
-      this.warnMsg = 'The Total Inward Policy Balances Returns must not exceed the Requested Amount.';
-      this.warnMdl.openNoClose();
-      this.params.savePrqTrans   = [];
-      this.params.deletePrqTrans = [];
-    }else{
+    // else if(Number(this.requestData.reqAmt) < Number(returnAmt)){
+    //   this.warnMsg = 'The Total Inward Policy Balances Returns must not exceed the Requested Amount.';
+    //   this.warnMdl.openNoClose();
+    //   this.params.savePrqTrans   = [];
+    //   this.params.deletePrqTrans = [];
+    // }
+    else{
       if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
         (!this.allotedChanged)?$('.ng-dirty').removeClass('ng-dirty'):'';
         console.log('dito pumasok aw');
@@ -1147,11 +1153,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.params.savePrqTrans   = [];
         this.params.deletePrqTrans = [];
         this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '');
-      }else if(this.inwardPolBalData.tableData.some(e => e.returnAmt == 0)){
-        this.warnMsg = 'Please enter a Payment Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans = [];
-      }else{
+      }
+      // else if(this.inwardPolBalData.tableData.some(e => e.returnAmt == 0)){
+      //   this.warnMsg = 'Please enter a Payment Amount.';
+      //   this.warnMdl.openNoClose();
+      //   this.params.savePrqTrans = [];
+      // }
+      else{
         if(this.cancelFlagInw == true){
           this.conInw.showLoading(true);
           setTimeout(() => { try{this.conInw.onClickYes();}catch(e){}},500);

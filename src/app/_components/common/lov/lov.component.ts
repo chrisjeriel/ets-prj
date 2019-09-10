@@ -809,7 +809,11 @@ export class LovComponent implements OnInit {
         } else {
           this.passTable.tableData = rec;
         }
-
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitInvt'){
