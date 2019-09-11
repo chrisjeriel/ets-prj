@@ -345,7 +345,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.table.refreshTable();
   }
 
-  onTabChange(data){
+  tableDataChange(data){
     console.log(data)
     this.debitTotal = 0;
     this.creditTotal = 0;
@@ -356,5 +356,8 @@ export class JvAccountingEntriesComponent implements OnInit {
     }
 
      this.variance = this.debitTotal - this.creditTotal;
+    if(this.variance === 0){
+      this.notBalanced = false;
+    }
   }
 }
