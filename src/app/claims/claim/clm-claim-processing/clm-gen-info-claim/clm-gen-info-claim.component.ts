@@ -14,7 +14,6 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
-import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { tap, mergeMap, map } from 'rxjs/operators';
 
