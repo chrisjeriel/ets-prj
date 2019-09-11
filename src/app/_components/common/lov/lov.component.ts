@@ -64,7 +64,6 @@ export class LovComponent implements OnInit {
   }
 
   select(data){
-    console.log(data);
     if(this.passData.selector.indexOf('acitSoaDtl') == 0){
       var index = 0;
       for(var i of data){
@@ -126,6 +125,8 @@ export class LovComponent implements OnInit {
   okBtnClick(){ 
     let selects:any[] = [];
     if(!this.lovCheckBox){
+      console.log('emiting data');
+      console.log(this.passData);
       this.selectedData.emit(this.passData);
     }
     else{
@@ -758,7 +759,7 @@ export class LovComponent implements OnInit {
         console.log(this.passTable.tableData);
         this.table.refreshTable();
       })
-    }else if(this.passData.selector == 'acitSoaDtlZeroBal'){
+    }else if(this.passData.selector == 'ZeroBal'){
       this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
       this.passTable.widths =[300,300,1,200,200,200,200]
       this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency', 'currency', 'currency'];

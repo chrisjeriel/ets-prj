@@ -182,20 +182,25 @@ export class JvEntryComponent implements OnInit {
         this.allocBut = false;
         this.dcBut = false;
 
-        if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'F'){
+        if(this.entryData.jvStatus == 'A'){
           this.approvedStat = true;
           this.disableBut = true;
           this.printBut = false;
         }
 
         if(this.entryData.jvStatus == 'F'){
+          this.approvedStat = true;
+          this.disableBut = true;
           this.approveBut = false;
           this.printBut = false;
         }
         
-        if(this.entryData.jvStatus == 'A'){
-          
+        if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'X' || this.entryData.jvStatus == 'P'){
+          this.approvedStat = true;
+          this.disableBut = true;
+          this.approveBut = true;
         }
+
         this.check(this.entryData)
         this.tabController(this.entryData.tranTypeCd);
         this.disableTab.emit(false);

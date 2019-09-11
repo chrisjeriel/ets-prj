@@ -23,6 +23,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   @Input() jvDetail:any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
   @ViewChild('invTable') invTable: CustEditableNonDatatableComponent;
+  @ViewChild(QuarterEndingLovComponent) quarterModal: QuarterEndingLovComponent; 
 
   passData: any = {
       tableData: [],
@@ -157,5 +158,8 @@ export class JvTreatyPullOutComponent implements OnInit {
                        });
   }
 
+  quarterEndModal(){
+    this.quarterModal.modal.openNoClose();
+  }
 
 }

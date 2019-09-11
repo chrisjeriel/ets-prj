@@ -30,23 +30,36 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Policy No.','Inst No.','Co. Ref No.', 'Eff Date','Due Date','No. of Days Overdue','Curr','Curr Rate','Premium',"Overdue Interest"],
-    resizable: [ true, true, true, true, true, true, true, true,true,true],
-    dataTypes: ['text','sequence-2','text','date','date','number','text','percent','currency','currency'],
+    tHeader: ['Policy No.','Inst No.','Co. Ref No.', 'Eff Date','Due Date','Actual Overdue Days','Overdue Days w/ Interest','Currency','Currency Rate', 'Interest Rate','Net Due','Overdue Interest'],    
+    dataTypes: ['text','sequence-2','text','date','date','number','number','text','percent','percent','currency','currency'],
     nData: {
       showMG : 1,
+      tranId : '',
+      itemNo : '',
+      cedingId : '',
+      cedingName : '',
+      policyId : '',
       policyNo : '',
-      coRefNo : '',
       instNo : '',
+      soaNo : '',
+      coRefNo : '',
       effDate : '',
       dueDate : '',
-      daysOverdue : '',
+      actualOverdueDays : '',
+      overdueDaysWInt : '',
+      interestRate : '',
+      autoTag : '',
       currCd : '',
       currRate : '',
-      premAmt : '',
-      overdueInt : ''
+      balanceAmt : '',
+      overdueInt : '',
+      localAmt : '',
+      createUser : this.ns.getCurrentUser(),
+      createDate : '',
+      updateUser : this.ns.getCurrentUser(),
+      updateDate : ''
     },
-    total:[null,null,null,null,null,null,null,'Total','premAmt','overdueInt'],
+    //total:[null,null,null,null,null,null,null,'Total','premAmt','overdueInt'],
     magnifyingGlass: ['policyNo'],
     checkFlag: true,
     addFlag: true,
@@ -60,9 +73,9 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     pageLength: 10,
     disableAdd: true,
     btnDisabled: false,
-    widths: [230,1,140,1,1,1,1,85,120,120],
-    uneditable:[true,true,true,true,true,true,true,true,true,false],
-    keys: ['policyNo','instNo','coRefNo','effDate','dueDate','daysOverdue','currCd','currRate','premAmt','overdueInt']
+    //widths: [230,1,140,1,1,1,1,85,120,120],
+    uneditable:[true,true,true,true,true,true,true,true,true,true,false,false],
+    keys: ['policyNo','instNo','coRefNo','effDate','dueDate','actualOverdueDays','overdueDaysWInt','currCd','currRate','interestRate','balanceAmt','overdueInt']
   };
 
   jvDetails: any = {
@@ -151,14 +164,14 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   }
 
   check(data){
-    console.log(data)
     this.emitData.emit({ cedingId: data.ceding,
                          cedingName: data.cedingName
                        });
   }
 
   setSoa(data){
-    console.log(data)
+    console.log(data.data)
+    var overdueDate = new Date();
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -172,33 +185,27 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].instNo  = data.data[i].instNo;
       this.passData.tableData[this.passData.tableData.length - 1].effDate  = data.data[i].effDate;
       this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
-      this.passData.tableData[this.passData.tableData.length - 1].daysOverdue  = parseInt(((new Date(this.jvDetail.jvDate).getTime() - new Date(data.data[i].dueDate).getTime())/ (1000 * 3600 *24)).toString())//new Date(this.ns.toDateTimeString(0)).getDate() - new Date(data.data[i].dueDate).getDate() ;
+      this.passData.tableData[this.passData.tableData.length - 1].balanceAmt = data.data[i].balance;
+      console.log(new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0))
+      console.log(new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0).getTime())
+      console.log(new Date(data.data[i].dueDate))
+      console.log(new Date(data.data[i].dueDate).getTime())
+      this.passData.tableData[this.passData.tableData.length - 1].actualOverdueDays = parseInt(((new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0).getTime() - new Date(data.data[i].dueDate).getTime())/ (1000 * 3600 *24)).toString());
+      this.passData.tableData[this.passData.tableData.length - 1].overdueDaysWInt  = parseInt(((new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0).getTime() - new Date(data.data[i].dueDate).getTime())/ (1000 * 3600 *24)).toString()) - 90;
       this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate  = data.data[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].premAmt  = data.data[i].balPremDue;
       this.passData.tableData[this.passData.tableData.length - 1].autoTag  = 'Y'
       this.passData.tableData[this.passData.tableData.length - 1].interestRate = this.interestRate;
-      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:((data.data[i].balPremDue)*(this.interestRate/100))*(Math.round(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue));
-      this.passData.tableData[this.passData.tableData.length - 1].orgOverdue  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:((data.data[i].balPremDue)*(this.interestRate))*(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue);
+      this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = (this.passData.tableData[this.passData.tableData.length - 1].overdueDaysWInt/30)*(this.interestRate/100)*(this.passData.tableData[this.passData.tableData.length - 1].balanceAmt);
+      //this.passData.tableData[this.passData.tableData.length - 1].overdueInt  = this.passData.tableData[this.passData.tableData.length - 1].daysOverdue < 0 ? 0:((data.data[i].balPremDue)*(this.interestRate/100))*(Math.round(this.passData.tableData[this.passData.tableData.length - 1].daysOverdue));
+      this.passData.tableData[this.passData.tableData.length - 1].orgOverdue  = (this.passData.tableData[this.passData.tableData.length - 1].overdueDaysWInt/30)*(this.interestRate/100)*(this.passData.tableData[this.passData.tableData.length - 1].balanceAmt);
     }
     this.table.refreshTable();
-    //var test =  this.passData.tableData[0].effDate.getDate() - this.ns.toDateTimeString(0).getDate();
   }
 
   onClickSave(){
-    this.totalOverdue = 0;
-    for (var i = 0; i < this.passData.tableData.length; i++) {
-      this.totalOverdue += this.passData.tableData[i].overdueInt;
-    }
-
-    if(this.totalOverdue > this.jvDetail.jvAmt){
-      this.dialogMessage = 'Total Overdue Interest must not exceed the JV Amount.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else {
       this.confirm.confirmModal();
-    }
-    
   }
 
   prepareData(){
@@ -210,6 +217,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
         edited[edited.length - 1].dueDate = this.ns.toDateTimeString(this.passData.tableData[i].dueDate)
         edited[edited.length - 1].autoTag = this.passData.tableData[i].orgOverdue == this.passData.tableData[i].overdueInt ? 'Y':'N';
         edited[edited.length - 1].interestRate = this.interestRate;
+        edited[edited.length - 1].localAmt = this.passData.tableData[i].overdueInt * this.jvDetail.currRate
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
@@ -245,12 +253,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   }
 
   cancel(){
-    //this.cancelBtn.clickCancel();
-    console.log(new Date(this.ns.toDateTimeString(0)).getTime());
-    console.log(new Date(this.ns.toDateTimeString(this.passData.tableData[0].dueDate)).getTime());
-    console.log(new Date(this.ns.toDateTimeString(0)).getTime() - new Date(this.ns.toDateTimeString(this.passData.tableData[0].dueDate)).getTime());
-    console.log(this.ns.toDateTimeString(new Date(this.ns.toDateTimeString(0)).getTime() - new Date(this.ns.toDateTimeString(this.passData.tableData[0].dueDate)).getTime()));
-    //console.log(this.ns.toDateTimeString(new Date(this.ns.toDateTimeString(0)).getTime() - new Date(this.ns.toDateTimeString(this.passData.tableData[0].dueDate)).getTime()));
+    this.cancelBtn.clickCancel();
   }
 
   update(data){
@@ -265,7 +268,6 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   getMtnRate(){
     this.maintenaceService.getMtnParameters('N','OVERDUE_INT_RT').subscribe((data:any) =>{
       this.interestRate = data.parameters[0].paramValueN;
-      console.log(this.interestRate)
     });
   }
 }

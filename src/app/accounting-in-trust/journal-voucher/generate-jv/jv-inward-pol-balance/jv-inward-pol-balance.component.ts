@@ -287,7 +287,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].prevCharges  = data.data[i].prevCharges;
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue  = data.data[i].prevNetDue;
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment  = data.data[i].cumPayment;
-      this.passData.tableData[this.passData.tableData.length - 1].balance  = data.data[i].prevBalance;
+      this.passData.tableData[this.passData.tableData.length - 1].balance  = data.data[i].balance;
     }
     this.table.refreshTable();
   }
