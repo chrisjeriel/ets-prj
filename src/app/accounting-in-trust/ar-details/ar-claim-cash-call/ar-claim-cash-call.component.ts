@@ -27,7 +27,7 @@ export class ArClaimCashCallComponent implements OnInit {
   passData: any = {
     tableData: [],
     tHeaderWithColspan: [{header:'', span:1},{header: 'Claim Information', span: 11}, {header: '', span: 2}],
-    tHeader: ['Claim No', 'Hist No', 'Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex Gratia', 'Curr', 'Curr Rate', 'Reserve', 'Cumulative Payment', 'Payment Amount', 'Payment Amount Local'],
+    tHeader: ['Claim No', 'Hist No', 'Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex Gratia', 'Curr', 'Curr Rate', 'Hist Amount', 'Cumulative Payment', 'Payment Amount', 'Payment Amount Local'],
     dataTypes: ["text", "number", "text", "text","text","text", "checkbox", "text", "percent", "currency", "currency", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
