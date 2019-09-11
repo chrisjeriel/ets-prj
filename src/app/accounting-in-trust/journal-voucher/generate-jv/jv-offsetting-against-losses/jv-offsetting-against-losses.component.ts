@@ -7,6 +7,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-offsetting-against-losses',
@@ -25,6 +26,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   @ViewChild('inwlovMdl') inwlovMdl: LovComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @Output() emitData = new EventEmitter<any>();
 
   passData: any = {
@@ -148,6 +150,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   readOnly:boolean = false;
+  cancelFlag: boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
@@ -400,7 +403,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
-  saveData(){
+  saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     this.accountingService.saveAcitRcvblsLoss(this.jvDetails).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
@@ -417,7 +421,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDetails)
+    this.cancelBtn.clickCancel();
   }
 }

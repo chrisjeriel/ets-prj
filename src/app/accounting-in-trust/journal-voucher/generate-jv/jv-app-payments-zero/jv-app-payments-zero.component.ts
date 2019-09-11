@@ -225,6 +225,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   saveAppPaytZero(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
 
     this.accService.saveAcitZeroBal(this.jvDetails).subscribe((data:any) => {
@@ -257,6 +258,10 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
   onClickSave(){
     this.confirm.confirmModal();
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 
 }
