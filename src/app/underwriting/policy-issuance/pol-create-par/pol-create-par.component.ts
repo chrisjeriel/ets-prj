@@ -89,6 +89,8 @@ export class PolCreatePARComponent implements OnInit {
   filtSearch: any[] = [];
   noSelected: boolean = true;
 
+  sub:any;
+
   constructor(private underwritingService: UnderwritingService, public modalService: NgbModal, private router: Router,
               private titleService: Title, private quoteService: QuotationService, private ns: NotesService, private mtnService: MaintenanceService) {
 
@@ -108,7 +110,8 @@ export class PolCreatePARComponent implements OnInit {
 
   getQuoteListing(param?) {
     this.lovTable.loadingFlag = true;
-    this.quoteService.getQuoProcessingData(param === undefined ? [] : param).subscribe(data => {
+    
+    this.sub = this.quoteService.getQuoProcessingData(param === undefined ? [] : param).subscribe(data => {
       this.quotationList = data['quotationList'];
       this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['quotationNo','cedingName','insuredDesc','riskName'];
@@ -127,11 +130,13 @@ export class PolCreatePARComponent implements OnInit {
           this.selected = this.quotationList[0];
           this.setDetails();
           this.noSelected = false;
-        } else if(this.quotationList.length == 0 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {
-          this.clearFields();
-          this.getQuoteListing();
-          this.showLOV();
-        } else if(this.quotationList.length == 0 && this.searchArr.includes('%%')) {
+        } 
+        // else if(this.quotationList.length == 0 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {
+        //   this.clearFields();
+        //   this.getQuoteListing();
+        //   this.showLOV();
+        // } 
+        else if(this.quotationList.length == 0 && this.searchArr.includes('%%')) {
           this.getQuoteListing();
         } else if(this.searchArr.includes('%%')) {
           this.optionId = '';
@@ -164,7 +169,8 @@ export class PolCreatePARComponent implements OnInit {
 
   getHoldCovListing(param?) {
     this.lovTable.loadingFlag = true;
-    this.quoteService.getQuotationHoldCoverList(param === undefined ? [] : param).subscribe(data => {
+    
+    this.sub = this.quoteService.getQuotationHoldCoverList(param === undefined ? [] : param).subscribe(data => {
       this.holCovList = data['quotationList'];
       this.passDataLOV.tHeader = ['Hold Cover No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['holdCoverNo','cedingName','insuredDesc','riskName'];
@@ -184,11 +190,13 @@ export class PolCreatePARComponent implements OnInit {
         if(this.holCovList.length === 1 && this.hcNo.length == 5 && !this.searchArr.includes('%%')) {  
           this.selected = this.holCovList[0];
           this.setDetails();
-        } else if(this.holCovList.length === 0 && this.hcNo.length == 5 && !this.searchArr.includes('%%')) {
-          this.clearFields();
-          this.getHoldCovListing();
-          this.showLOV();
-        } else if(this.holCovList.length == 0 && this.searchArr.includes('%%')) {
+        } 
+        // else if(this.holCovList.length === 0 && this.hcNo.length == 5 && !this.searchArr.includes('%%')) {
+        //   this.clearFields();
+        //   this.getHoldCovListing();
+        //   this.showLOV();
+        // } 
+        else if(this.holCovList.length == 0 && this.searchArr.includes('%%')) {
           this.getQuoteListing();
         } else if(this.searchArr.includes('%%')) {
           this.optionId = '';
@@ -203,7 +211,9 @@ export class PolCreatePARComponent implements OnInit {
 
   getPolOCListing(param?) {
     this.lovTable.loadingFlag = true;
-    this.underwritingService.getPolListingOc(param === undefined ? [] : param).subscribe(data => {
+
+    
+    this.sub = this.underwritingService.getPolListingOc(param === undefined ? [] : param).subscribe(data => {
       this.polOcList = data['policyList'];
       this.passDataLOV.tHeader = ['Open Cover Policy No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['openPolicyNo','cedingName','insuredDesc','riskName'];
@@ -221,11 +231,13 @@ export class PolCreatePARComponent implements OnInit {
         if(this.polOcList.length === 1 && this.ocNo.length == 7 && !this.searchArr.includes('%%')) {  
           this.selected = this.polOcList[0];
           this.setDetails();
-        } else if(this.polOcList.length === 0 && this.ocNo.length == 7 && !this.searchArr.includes('%%')) {
-          this.clearFields();
-          this.getPolOCListing();
-          this.showLOV();
-        } else if(this.polOcList.length == 0 && this.searchArr.includes('%%')) {
+        } 
+        // else if(this.polOcList.length === 0 && this.ocNo.length == 7 && !this.searchArr.includes('%%')) {
+        //   this.clearFields();
+        //   this.getPolOCListing();
+        //   this.showLOV();
+        // } 
+        else if(this.polOcList.length == 0 && this.searchArr.includes('%%')) {
           this.getQuoteListing();
         } else if(this.searchArr.includes('%%')) {
           this.optionId = '';
@@ -243,6 +255,9 @@ export class PolCreatePARComponent implements OnInit {
     $('.req').focus(function() {
       $(this).css('boxShadow','0 0 0 0.2rem rgba(0, 123, 255, 0.25)');
     })
+    if(this.sub != undefined && this.sub != null){
+      this.sub.unsubscribe();
+    }
 
     switch (str) {
       case 'qu':        
