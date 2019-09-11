@@ -425,7 +425,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       console.log(i.netDue);
       console.log(i.totalPayments);
       console.log(i.balPaytAmt)
-      if(i.edited && !i.deleted && i.balPaytAmt > i.prevBalance){
+      if(i.edited && !i.deleted && Math.abs(i.balPaytAmt) > Math.abs(i.prevBalance)){
         return true;
       }
     }
@@ -450,8 +450,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   canRefund(): boolean{
     for(var i of this.passData.tableData){
-      if((i.cumPayment < 0 && i.balPaytAmt + i.cumPayment > 0) ||
-         (i.cumPayment > -1 && i.balPaytAmt + i.cumPayment < 0)){
+      if(i.edited && !i.deleted &&
+        (i.prevBalance < 0 && i.balPaytAmt + i.cumPayment > 0) ||
+         (i.prevBalance > -1 && i.balPaytAmt + i.cumPayment < 0)){
         return true;
       }
     }
