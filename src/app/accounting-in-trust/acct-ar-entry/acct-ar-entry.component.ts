@@ -112,6 +112,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     arStatus: '',
     tranStat: '',
     arStatDesc: '',
+    tranStatDesc: '',
     dcbYear: '',
     dcbUserCd: '',
     dcbNo: '',
@@ -255,6 +256,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       arStatus: '',
       tranStat: '',
       arStatDesc: '',
+      tranStatDesc: '',
       dcbYear: '',
       dcbUserCd: '',
       dcbNo: '',
@@ -435,7 +437,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arDate.time           = this.arInfo.arDate.split('T')[1];
           this.arInfo.arStatus       = data.ar.arStatus;
           this.arInfo.tranStat       = data.ar.tranStat;
-          this.arInfo.arStatDesc     = data.ar.arStatDesc;
+          this.arInfo.arStatDesc     = data.ar.tranStat == 'P' ? data.ar.tranStatDesc : data.ar.arStatDesc;
           this.arInfo.dcbYear        = data.ar.dcbYear;
           this.arInfo.dcbUserCd      = data.ar.dcbUserCd;
           this.arInfo.dcbNo          = data.ar.dcbNo;
@@ -478,7 +480,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
             this.isCancelled = true;
-          }else if(this.arInfo.arStatDesc.toUpperCase() === 'PRINTED'){
+          }else if(this.arInfo.arStatDesc.toUpperCase() === 'PRINTED' || this.arInfo.arStatDesc.toUpperCase() === 'POSTED'){
             this.passData.addFlag = false;
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
