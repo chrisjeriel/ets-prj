@@ -104,13 +104,15 @@ export class PaymentRequestEntryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle('Acct-IT | Request Entry');
     this.getTranType();
-
     this.sub = this.activatedRoute.params.subscribe(params => {
+      console.log(params);
       if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
-        this.saveAcitPaytReq.reqId = params['reqId'];
+        this.saveAcitPaytReq.reqId = (Object.keys(params).length != 0)?params['reqId']:this.rowData.reqId;
         this.initDisabled = false;
+        console.log('inside'); 
       }else{
         this.initDisabled = true;
+        console.log('outside');
       }
 
       this.getAcitPaytReq();
@@ -121,7 +123,8 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   getAcitPaytReq(){
-    var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACCIT_PAYT_REQST.STATUS'), this.acctService.getAcitPrqTrans(this.saveAcitPaytReq.reqId))
+    console.log(this.saveAcitPaytReq.reqId);
+    var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACIT_PAYMENT_REQUEST.STATUS'), this.acctService.getAcitPrqTrans(this.saveAcitPaytReq.reqId))
                          .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
 
     subRes.subscribe(data => {
@@ -190,7 +193,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.paytData.emit({reqId: this.saveAcitPaytReq.reqId});
       this.setLocalAmt();
       console.log(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')));
-      console.log(totalReqAmts)
+      console.log(totalReqAmts);
       this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == Number(totalReqAmts))?true:false;
     });
   }
@@ -347,7 +350,6 @@ export class PaymentRequestEntryComponent implements OnInit {
 
     this.saveAcitPaytReq.reqAmt = reqAmt;
     this.saveAcitPaytReq.currRate = (Number(currRate) == 0)? '' : currRate;
-
   }
 
   setData(data,from){

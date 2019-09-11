@@ -942,6 +942,16 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.refCodeList;
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'paytReqType'){
+      this.passTable.tHeader = ['Description'];
+      this.passTable.widths =['auto']
+      this.passTable.dataTypes = ['text'];
+      this.passTable.keys = ['description'];
+      this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG').subscribe((a:any)=>{
+        this.passTable.tableData = a.refCodeList.filter(e => e.code == 'C' || e.code == 'P' || e.code == 'S' || e.code == 'Q' || e.code == 'I' || e.code == 'O');
+        this.passTable.tableData.push({code: "O", identifier: "MTN_ACIT_TRAN_TYPE.GROUP_TAG", description: "Others"})
+        this.table.refreshTable();
+      });
     }else if(this.passData.selector == 'paytReqList'){
       this.passTable.tHeader = ['Payment Request No.','Payment Type','Request Date','Particulars','Requested By','Curr','Amount'];
       this.passTable.widths = [120,150,1,120,100,1,120];
@@ -949,7 +959,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['paytReqNo','tranTypeDesc','reqDate','particulars','requestedBy','currCd','reqAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
-        var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A');
+        var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A' && e.paytReqType == this.passData.paytReqType);
         console.log(rec);
         if(this.limitContent.length != 0){
           var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({reqId: a.reqId}));

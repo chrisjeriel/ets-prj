@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { DecimalPipe } from '@angular/common';
-
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -66,6 +66,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     reqId : ''
   };
 
+
   cedingCompanyData: any = {
   	tableData     : [],
   	tHeader       : ['Claim No.','Hist No.','Hist Category','Hist Type','Payment For', 'Insured', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Approved Amount','Payment Amount','Payment Amount (PHP)'],
@@ -89,10 +90,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	paginateFlag  : true,
   	infoFlag      : true,
   	pageID        : 'cedingCompanyData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
-  	checkFlag     : true,
-  	addFlag       : true,
-  	deleteFlag    : true,
-    uneditable    : [true,true,true,true,false,true,true,true,true,true,true,false,true],
+  	checkFlag     : false,
+  	addFlag       : false,
+  	deleteFlag    : false,
+    uneditable    : [true,true,true,true,true,true,true,true,true,true,true,true,true],
   	total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt','approvedAmt','paytAmt', 'localAmt'],
     widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120,120],
     keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','approvedAmt','paytAmt','localAmt']
@@ -342,7 +343,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   periodAsOfParam : string = null;
   yearParam       : number = null;
   yearParamOpts   : any[] = [];
-  qtrParam: number = null;
+  qtrParam        : number = null;
+  private sub     : any;
+  warn            : number = 0;
+
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
               private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe,private decPipe: DecimalPipe) {
@@ -364,7 +368,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.getPaytReqPrqTrans();
   }
 
-  getPaytReqPrqTrans(){
+  getPaytReqPrqTrans(){    
     var subRes = forkJoin(this.acctService.getPaytReq(this.rowData.reqId),this.acctService.getAcitPrqTrans(this.rowData.reqId,''))
                  .pipe(map(([pr,prq]) => { return { pr, prq }; }));
     subRes.subscribe(data => {
@@ -626,7 +630,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   reCompInw(){
-    var cantRefund = false;
+    this.warn = 0;
+    console.log(this.inwardPolBalData.tableData);
     this.inwardPolBalData.tableData.forEach(e => {
       e.premAmt      = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
       e.riComm       = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
@@ -634,24 +639,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.charges      = Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
       e.totalPayt    = Math.round((e.returnAmt + e.cumPayment) * 100)/100;
       e.remainingBal = Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
-      if(e.returnAmt < 0 && e.cumPayment == 0){
-        cantRefund = true;
-        e.returnAmt    = 0;
-        e.premAmt      = 0;
-        e.riComm       = 0;
-        e.riCommVat    = 0;
-        e.charges      = 0;
-        e.totalPayt    = 0;
-        e.remainingBal = 0;
-      }else{
-        cantRefund = false;
-      }
-    });
 
-    if(cantRefund){
-      this.warnMsg = 'Cannot be refunded without Cumulative Payment';
-      this.warnMdl.openNoClose();
-    }
+      if(e.returnAmt < 0){
+        this.warn = (Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0;
+      }else{
+        this.warn = (e.returnAmt > e.balance)?2:0;
+      }
+      
+    });
 
     // if(this.allotedAmt == 0 || this.allotedAmt == '' || this.allotedAmt == null){
     //   this.allotedAmt = (this.recPrqTrans.length == 0)?this.requestData.reqAmt:this.recPrqTrans[0].allotedAmt;  
@@ -659,7 +654,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
     // var allAmt = (Number(String(this.allotedAmt).replace(/\,/g,'')) > 0)?Number(String(this.allotedAmt).replace(/\,/g,'')) * Number(-1):Number(String(this.allotedAmt).replace(/\,/g,''));
     // var returnAmtSum = Number(this.inwardPolBalData.tableData.map(e => e.returnAmt).reduce((a,b) => a+b ,0));
-    // //this.inwardPolBalData.total[14] = (returnAmtSum > 0)?returnAmtSum * Number(-1):returnAmtSum;
+    // // this.inwardPolBalData.total[14] = (returnAmtSum > 0)?returnAmtSum * Number(-1):returnAmtSum;
     // this.totalBal = Math.abs(Number(returnAmtSum));
     // this.variance = Math.abs(Number(allAmt)) - Math.abs(Number(returnAmtSum));
     // this.allotedAmt = this.decPipe.transform(Number(allAmt), '0.2-2');
@@ -1040,12 +1035,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
       }else{
-        if(Number(this.requestData.reqAmt) < Number(currAmt)){
-          this.warnMsg = 'The Total Amount of Treaty Balance Due to Participants must not exceed the Requested Amount.';
-          this.warnMdl.openNoClose();
-          this.params.savePrqTrans   = [];
-          this.params.deletePrqTrans = [];
-        }else{
+        // if(Number(this.requestData.reqAmt) < Number(currAmt)){
+        //   this.warnMsg = 'The Total Amount of Treaty Balance Due to Participants must not exceed the Requested Amount.';
+        //   this.warnMdl.openNoClose();
+        //   this.params.savePrqTrans   = [];
+        //   this.params.deletePrqTrans = [];
+        // }else{
           if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
             $('.ng-dirty').removeClass('ng-dirty');
             this.conTrty.confirmModal();
@@ -1060,7 +1055,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
               this.conTrty.confirmModal();
             }
           }
-        }
+        //}
       }
 
       this.treatyBalanceData.tableData = this.treatyBalanceData.tableData.map(e => {
@@ -1126,12 +1121,28 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.inwardPolBalData.tableData);
     console.log(this.params.savePrqTrans);
     var returnAmt = this.inwardPolBalData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.returnAmt != null ?parseFloat(b.returnAmt):0),0);
+    console.log(returnAmt);
     var totalAmt = this.inwardPolBalData.tableData.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.returnAmt != null ?parseFloat(b.returnAmt):0),0);
-    
+    console.log(this.warn);
     if(isEmpty == 1){
       this.dialogIcon = 'error';
       this.sucInw.open();
       this.params.savePrqTrans   = [];
+    }else if(Number(returnAmt) > 0){
+      this.warnMsg = 'Net balance payment is positive. No value to be refunded. The net balance payments should be negative.';
+      this.warnMdl.openNoClose();
+      this.params.savePrqTrans   = [];
+      this.params.deletePrqTrans = [];
+    }else if(this.warn == 1){
+      this.warnMsg = 'Refund amount must not exceed the Cumulative Payment.';
+      this.warnMdl.openNoClose();
+      this.params.savePrqTrans   = [];
+      this.params.deletePrqTrans = [];
+    }else if(this.warn == 2){
+      this.warnMsg = 'Payment amount must not exceed the Balance amount.';
+      this.warnMdl.openNoClose();
+      this.params.savePrqTrans   = [];
+      this.params.deletePrqTrans = [];
     }
     // else if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
     //       this.warnMsg = 'The Total payments for Inward Policy Balance, Unapplied Collection, and Others must not exceed the Requested Amount.';
@@ -1148,7 +1159,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
     else{
       if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
         (!this.allotedChanged)?$('.ng-dirty').removeClass('ng-dirty'):'';
-        console.log('dito pumasok aw');
         this.conInw.confirmModal();
         this.params.savePrqTrans   = [];
         this.params.deletePrqTrans = [];

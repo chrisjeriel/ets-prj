@@ -209,6 +209,8 @@ export class CvPaymentRequestListComponent implements OnInit {
       this.limitContent.push(e);
     });
     this.passDataLov.selector = 'paytReqList';
+    console.log(this.cvInfo.paytReqType);
+    this.passDataLov.paytReqType = this.cvInfo.paytReqType;
     this.paytReqLov.openLOV();
   }
 

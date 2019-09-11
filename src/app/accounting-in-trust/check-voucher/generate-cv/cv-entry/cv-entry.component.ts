@@ -29,6 +29,7 @@ export class CvEntryComponent implements OnInit {
   @ViewChild('bankLov') bankLov               : LovComponent;
   @ViewChild('bankAcctLov') bankAcctLov       : LovComponent;
   @ViewChild('classLov') classLov             : LovComponent;
+  @ViewChild('paytReqTypeLov') paytReqTypeLov : LovComponent;
   @ViewChild('currLov') currLov               : MtnCurrencyComponent;
   @ViewChild('prepUserLov') prepUserLov       : MtnUsersComponent;
   @ViewChild('certUserLov') certUserLov       : MtnUsersComponent;
@@ -63,6 +64,7 @@ export class CvEntryComponent implements OnInit {
     localAmt      : '',
     mainTranId    : '',
     particulars   : '',
+    paytReqType   : '',
     payee         : '',
     payeeCd       : '',
     payeeClassCd  : '',
@@ -117,14 +119,15 @@ export class CvEntryComponent implements OnInit {
 
   getAcitCv(){
     console.log(this.saveAcitCv.tranId);
-    var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCH.CV_STATUS'))
-                          .pipe(map(([cv,pn,cl,stat]) => { return { cv, pn, cl,stat }; }));
+    var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG'))
+                          .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
     subRes.subscribe(data => {
       console.log(data);
       var recPn = data['pn']['printableNames'];
       var recCl = data['cl']['refCodeList'];
       var recStat = data['stat']['refCodeList'];
+      var recPrt  = data['prt']['refCodeList'];
       this.cvStatList = recStat;
 
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
@@ -221,6 +224,7 @@ export class CvEntryComponent implements OnInit {
       localAmt      : '',
       mainTranId    : '',
       particulars   : '',
+      paytReqType   : '',
       payee         : '',
       payeeNo       : '',
       postDate      : '',
@@ -243,7 +247,7 @@ export class CvEntryComponent implements OnInit {
        this.saveAcitCv.cvAmt == '' || this.saveAcitCv.cvAmt == null || this.saveAcitCv.cvAmt == 0 ||  this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null || this.saveAcitCv.currCd == '' || 
        this.saveAcitCv.currCd == null || this.saveAcitCv.currRate == '' || this.saveAcitCv.currRate == null || this.saveAcitCv.checkDate == '' || this.saveAcitCv.checkDate == null ||
        this.saveAcitCv.preparedBy == '' || this.saveAcitCv.preparedBy == null || this.saveAcitCv.preparedDate == '' || this.saveAcitCv.preparedDate == null || 
-       this.saveAcitCv.checkClass == '' || this.saveAcitCv.checkClass == null){
+       this.saveAcitCv.checkClass == '' || this.saveAcitCv.checkClass == null || this.saveAcitCv.paytReqType == '' || this.saveAcitCv.paytReqType == null ){
         this.dialogIcon = 'error';
         this.success.open();
         this.saveAcitCv.checkDate == '' ? $('.checkDateWarn').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
@@ -286,6 +290,7 @@ export class CvEntryComponent implements OnInit {
       localAmt         : Number(String(this.saveAcitCv.localAmt).replace(/\,/g,'')),
       mainTranId       : this.saveAcitCv.mainTranId,
       particulars      : this.saveAcitCv.particulars,
+      paytReqType      : this.saveAcitCv.paytReqType,
       payee            : this.saveAcitCv.payee,
       payeeCd          : this.saveAcitCv.payeeCd,
       payeeClassCd     : this.saveAcitCv.payeeClassCd,
@@ -326,6 +331,9 @@ export class CvEntryComponent implements OnInit {
     }else if(fromUser.toLowerCase() == 'class'){
       this.passDataLov.selector = 'checkClass';
       this.classLov.openLOV();
+    }else if(fromUser.toLowerCase() == 'paytreqtype'){
+      this.passDataLov.selector = 'paytReqType';
+      this.paytReqTypeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'curr'){
       this.currLov.modal.openNoClose();
     }else if(fromUser.toLowerCase() == 'prep-user'){
@@ -353,6 +361,9 @@ export class CvEntryComponent implements OnInit {
     }else if(from.toLowerCase() == 'class'){
       this.saveAcitCv.checkClassDesc   = data.data.description;
       this.saveAcitCv.checkClass = data.data.code;
+    }else if(from.toLowerCase() == 'paytreqtype'){
+      this.saveAcitCv.paytReqTypeDesc   = data.data.description;
+      this.saveAcitCv.paytReqType = data.data.code;
     }else  if(from.toLowerCase() == 'curr'){
       this.saveAcitCv.currCd = data.currencyCd;
       this.saveAcitCv.currRate =  data.currencyRt;
