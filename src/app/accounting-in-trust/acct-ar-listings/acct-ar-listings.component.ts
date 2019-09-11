@@ -90,7 +90,7 @@ export class AcctArListingsComponent implements OnInit {
     updateDate: ''
   }
 
-  tranStat: string = 'new';
+  tranStat: string = 'open';
 
   constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService) { }
 
@@ -109,7 +109,7 @@ export class AcctArListingsComponent implements OnInit {
       (data: any)=>{
         if(data.ar.length !== 0) {
           // this.passData.tableData = data.ar;
-          this.passData.tableData = data.ar.filter(a => String(a.arStatDesc).toUpperCase() == this.tranStat.toUpperCase());
+          this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
         }
         this.table.refreshTable();
       },

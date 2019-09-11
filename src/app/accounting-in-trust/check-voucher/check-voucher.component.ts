@@ -99,7 +99,7 @@ export class CheckVoucherComponent implements OnInit {
         i.preparedDate   = this.ns.toDateTimeString(i.preparedDate);
         i.certifiedDate  = this.ns.toDateTimeString(i.certifiedDate);
 
-        if(i.mainTranStat != 'O') {
+        if(i.mainTranStat != 'O' && i.mainTranStat != 'C') {
           i.cvStatus = i.mainTranStat;
           i.cvStatusDesc = i.mainTranStatDesc;
         }
