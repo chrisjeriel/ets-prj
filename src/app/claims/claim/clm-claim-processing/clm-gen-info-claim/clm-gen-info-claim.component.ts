@@ -14,6 +14,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
+import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { tap, mergeMap, map } from 'rxjs/operators';
 
@@ -36,6 +37,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   @ViewChild('successDialog') successDialog: SucessDialogComponent;
   @ViewChild('cancelBtn') cancelBtn: CancelButtonComponent;
   @ViewChild('statusLOV') statusLOV: MtnClaimStatusLovComponent;
+  @ViewChild('usersLov') usersLov: MtnUsersComponent;
 
   line: string;
   sub: any;
@@ -193,6 +195,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   adjLOVRow: number;
   dialogIcon: string = "";
   dialogMessage: string = "";
+  cancelAdj: boolean = false;
   cancel: boolean = false;
 
   claimId: number = 0;
@@ -458,6 +461,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   setProcessedBy(ev) {
     this.claimData.processedBy = ev.userId;
+    this.ns.lovLoader(ev.ev, 0);
   }
 
   showClmEventLOV() {
@@ -622,11 +626,11 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error';
       this.adjSuccessDialog.open();
 
-      this.cancel = false;
+      this.cancelAdj = false;
       return;
     }
 
-    if(!this.cancel) {
+    if(!this.cancelAdj) {
       this.adjConfirmSave.confirmModal();  
     } else {
       this.adjSave(false);
@@ -634,9 +638,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   adjSave(cancel?) {
-    this.cancel = cancel !== undefined;
+    this.cancelAdj = cancel !== undefined;
 
-    if(this.cancel && cancel) {
+    if(this.cancelAdj && cancel) {
       this.onAdjClickSave();
       return;
     }
@@ -992,6 +996,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.clmEventLOV.checkCode(eventTypeCd, this.claimData.eventDesc, ev, d, filt);
       } else if(str === 'mainAdj') {
         this.adjusterLOVMain.checkCode(this.claimData.adjId, ev);
+      } else if(str === 'processedBy') {
+        this.usersLov.checkCode(this.claimData.processedBy, ev);
       }
     });
   }
