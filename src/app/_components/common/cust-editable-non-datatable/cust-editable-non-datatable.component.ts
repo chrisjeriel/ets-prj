@@ -390,11 +390,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onRowDblClick(event) {
-        this.rowDblClick.next(event);
+        this.rowDblClick.emit(event);
     }
 
     onNewDblClick(event) {
-        this.newDblClick.next(event);
+        this.newDblClick.emit(event);
     }
 
     sort(str,sortBy){

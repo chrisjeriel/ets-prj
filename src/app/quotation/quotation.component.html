@@ -65,7 +65,7 @@
 			<ng-template ngbTabContent></ng-template>
 		</ngb-tab>
 	
-		<ngb-tab *ngIf="!inquiryFlag" id="approval-tab" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE009') == -1">
+		<ngb-tab *ngIf="!inquiryFlag" id="approval-tab" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE009') == -1  || !enblEndtTab">
 
 			<ng-template #content>
 				<div class="modal-header">
@@ -89,7 +89,7 @@
 											</div>
 											<div class="w-100 text-center">
 												<button class="cust-btn" (click)="approveQuotation();" [disabled]="quoteInfo.statusDesc == 'Approved' || quoteInfo.statusDesc == 'Released'">{{ approveText }}</button>
-												<button class="cust-btn" (click)="rejectQuotation();" [disabled]="approveText=='For Approval' || approveText=='Rejected'">Rejected</button>
+												<button class="cust-btn" (click)="rejectQuotation();" [disabled]="approveText=='For Approval' || this.quoteInfo.statusDesc=='Rejected'">Rejected</button>
 											</div>
 										</div>
 									</div>

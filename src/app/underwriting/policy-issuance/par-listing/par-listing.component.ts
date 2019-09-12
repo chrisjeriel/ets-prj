@@ -222,7 +222,7 @@ export class ParListingComponent implements OnInit {
         this.policyNo = this.uwService.rowData[0];
 
         this.uwService.getPolAlop(this.policyId, this.policyNo).subscribe((data: any) => {
-
+            this.uwService.fromCreateAlt = false;
             if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
@@ -250,6 +250,7 @@ export class ParListingComponent implements OnInit {
         this.insuredDesc = this.selectedPolicy.insured;
 
         this.uwService.getPolAlop(this.policyId, this.policyNo).subscribe((data: any) => {
+            this.uwService.fromCreateAlt = false;
             if (this.selectedPolicy.status === 'In Progress' || this.selectedPolicy.status === 'Approved') {
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
