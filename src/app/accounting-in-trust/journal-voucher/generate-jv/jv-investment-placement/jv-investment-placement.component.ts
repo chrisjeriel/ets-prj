@@ -140,7 +140,9 @@ export class JvInvestmentPlacementComponent implements OnInit {
       this.passData.tableData = [];
       if(data.invPlacement.length !== 0){
         for (var i = 0; i < data.invPlacement.length; i++) {
-          this.passData.tableData.push(data.invPlacement[i]);
+          if(data.invPlacement[i].bank === this.selectedBankCd && data.invPlacement[i].bankAcct === this.accountNo){
+            this.passData.tableData.push(data.invPlacement[i]);
+          }
         }
       }
       
@@ -210,6 +212,7 @@ export class JvInvestmentPlacementComponent implements OnInit {
   }
 
   saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     console.log(this.jvDetails)
     this.accService.saveInvPlacement(this.jvDetails).subscribe((data:any) => {
