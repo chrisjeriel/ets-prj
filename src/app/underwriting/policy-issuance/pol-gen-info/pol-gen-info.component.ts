@@ -22,6 +22,8 @@ import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.co
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { FormsModule }   from '@angular/forms';
+
 @Component({
   selector: 'app-pol-gen-info',
   templateUrl: './pol-gen-info.component.html',
@@ -29,6 +31,7 @@ import { map } from 'rxjs/operators';
 })
 export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('main') cancelBtn : CancelButtonComponent;
+  @ViewChild('myForm') form:  any;
   //add by paul for deductibles
   @ViewChild('dedCancel') dedCancelBtn : CancelButtonComponent;
   @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
@@ -332,9 +335,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.getPolGenInfo();
 
     if(this.newAlt) {
-      setTimeout(() => { $('.req').addClass('ng-dirty') }, 0);
+      this.form.control.markAsDirty();
     } else {
-      setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') }, 1000);
+      setTimeout(() => { this.form.control.markAsPristine() }, 1000);
     }
  
     this.getValidBookingMth();
@@ -552,13 +555,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   updateMinBookingDate(){
     let lowerDate = this.ns.toDate(this.policyInfo.issueDate) > this.ns.toDate(this.policyInfo.effDate) ? this.policyInfo.effDate : this.policyInfo.issueDate;
-    this.minBookingDate = this.ns.toDate(lowerDate) > this.ns.toDate(this.earliestBookingDate) ? lowerDate : this.earliestBookingDate;
+    this.minBookingDate = lowerDate==undefined && this.ns.toDate(lowerDate) > this.ns.toDate(this.earliestBookingDate) ? lowerDate : this.earliestBookingDate;
 
   }
 
   showLineClassLOV(){  
     $('#lineClassLOV #modalBtn').trigger('click');
-    $('#lineClassLOV #modalBtn').addClass('ng-dirty')
+    this.form.control.markAsDirty();
   }
 
   setLineClass(data){
@@ -569,7 +572,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   showRiskLOV(){
     $('#riskLOV #modalBtn').trigger('click');
-    $('#riskLOV #modalBtn').addClass('ng-dirty')
+    this.form.control.markAsDirty();
   }
 
   setRisk(data){
@@ -581,7 +584,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   showOpeningWordingLov(){
     $('#wordingOpeningIdLov #modalBtn').trigger('click');
-    $('#wordingOpeningIdLov #modalBtn').addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   setOpeningWording(data) {
@@ -591,7 +594,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   checkCode(ev, field) {
     this.ns.lovLoader(ev, 1);
-      $(ev.target).addClass('ng-dirty');
+      this.form.control.markAsDirty();
 
       if(field === 'cedingCo') {
         this.policyInfo.cedingId = this.pad(this.policyInfo.cedingId);
@@ -638,18 +641,18 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   showPrincipalLOV() {
     this.insuredLovs.first.openLOV();
     //$('#principalLOV #modalBtn').trigger('click');
-    $('#principalLOV #modalBtn').addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   showContractorLOV(){
     this.insuredLovs.last.openLOV();
     $('#contractorLOV #modalBtn').trigger('click');
-    $('#contractorLOV #modalBtn').addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   showObjectLOV() {
     $('#objIdLov #modalBtn').trigger('click');
-    $('#objIdLov #modalBtn').addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   setPrincipal(data){
@@ -990,7 +993,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          this.dialogMessage = "";
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');
-         /*this.form.control.markAsPristine();*/
+         this.form.control.markAsPristine();
          this.forceExt = 0;
 
 
@@ -1174,7 +1177,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     }else{
 
     }
-    $('#lov').addClass('ng-dirty');
+    this.form.control.markAsDirty();
     this.lov.openLOV();
   }
 
@@ -1184,7 +1187,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   cbToggle(ev) {
-    $(ev.target).addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   //validates params before going to web service
@@ -1242,7 +1245,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   showIntLOV(){
     $('#intLOV #modalBtn').trigger('click');
-    $('#intLOV #modalBtn').addClass('ng-dirty')
+    this.form.control.markAsDirty();
   }
 
   setInt(event){
@@ -1262,7 +1265,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   // ----------------------------from risk-----------------------------------------------------------
   oldValue:any;
   checkCodeLoc(ev, field){
-        $(ev).addClass('ng-dirty');
+        this.form.control.markAsDirty();
         if(field === 'region'){
             this.oldValue = this.policyInfo.project.regionCd;
             if (this.policyInfo.project.regionCd == null || this.policyInfo.project.regionCd == '') {

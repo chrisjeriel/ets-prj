@@ -468,6 +468,7 @@ export class PolCreatePARComponent implements OnInit {
 
     this.underwritingService.toPolInfo = [];
     this.underwritingService.toPolInfo.push("edit", line);
+    this.underwritingService.fromCreateAlt = false;
     this.router.navigate(['/policy-issuance', { line: line, policyNo: this.policyNo, policyId: this.policyId, editPol: true }], { skipLocationChange: true });
   }
 

@@ -117,15 +117,15 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
 
     switch (this.selected.histCategory) {
       case "A":
-        params.reqPrefix = 'CEP';
+        // params.reqPrefix = 'CEP';
         params.tranTypeCd = 1
         break;
       case "O":
-        params.reqPrefix = 'CEO';
+        // params.reqPrefix = 'CEO';
         params.tranTypeCd = 2
         break;
       case "L":
-        params.reqPrefix = 'CPC';
+        // params.reqPrefix = 'CPC';
         params.tranTypeCd = 3
         break;  
       default:
@@ -139,6 +139,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
       // this.success.open();
       this.selected.paytReqId =  data['reqIdOut'];
       this.selected.paytReqStat = 'A';
+      this.selected.tranTypeCd = params.tranTypeCd;
       let params2:any = {saveClmPaytReq:[this.selected]};
       this.cs.saveClaimPaytReq(JSON.stringify(params2)).subscribe(a=>{
         this.getClmPaytReq();
@@ -146,6 +147,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
       let params3:any = {
         deletePrqTrans:[],
         savePrqTrans: [{
+          tranTypeCd : params.tranTypeCd,
           reqId:  this.selected.paytReqId,
           itemNo:  1,
           claimId:  this.claimInfo.claimId,
