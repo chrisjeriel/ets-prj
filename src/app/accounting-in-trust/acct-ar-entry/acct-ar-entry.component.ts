@@ -558,7 +558,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             updateDate: this.arInfo.updateDate,
             cedingId: this.arInfo.payeeNo,
             bussTypeName: this.arInfo.bussTypeName,
-            refCd: this.arInfo.refCd
+            refCd: this.arInfo.refCd,
+            from: 'ar'
           }
           this.emitArInfo.emit(arDetailParams);
 
