@@ -16,6 +16,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.component';
 
@@ -46,6 +47,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
   @ViewChild('dedLov') lov : LovComponent;
   @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
+  @ViewChild('genInfoConSave') genInfoConSave: ConfirmSaveComponent;
+  @ViewChild('dedConSave') dedConSave: ConfirmSaveComponent;
   lovCheckBox:boolean;
   passLOVData:any = {
     selector: '',
@@ -555,7 +558,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   updateMinBookingDate(){
     let lowerDate = this.ns.toDate(this.policyInfo.issueDate) > this.ns.toDate(this.policyInfo.effDate) ? this.policyInfo.effDate : this.policyInfo.issueDate;
-    this.minBookingDate = lowerDate==undefined && this.ns.toDate(lowerDate) > this.ns.toDate(this.earliestBookingDate) ? lowerDate : this.earliestBookingDate;
+    console.log(lowerDate)
+    this.minBookingDate = lowerDate!=undefined && this.ns.toDate(lowerDate) > this.ns.toDate(this.earliestBookingDate) ? lowerDate : this.earliestBookingDate;
 
   }
 
@@ -1041,7 +1045,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       $('.globalLoading').css('display','block');
       this.onExpiryChange();
     } else  {
-      $('#confirm-save #modalBtn2').trigger('click');
+      this.genInfoConSave.confirmModal()
     }
   }
 
@@ -1628,6 +1632,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.changeAlopMdl.openNoClose();
       }else if(this.cancelFlag){
        this.cancelBtn.onNo()
+      }
+    }
+
+    onClickOkDed(){
+      if(this.cancelFlag && this.dialogIcon != 'error'){
+       this.dedCancelBtn.onNo()
       }
     }
 }
