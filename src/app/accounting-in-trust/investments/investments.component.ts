@@ -220,7 +220,7 @@ export class InvestmentsComponent implements OnInit {
     }
 
 
-  onTabChange($event: NgbTabChangeEvent) {return ;
+  onTabChange($event: NgbTabChangeEvent) {
   		if ($event.nextId === 'Exit') {
     		this.router.navigateByUrl('');
   		} 
