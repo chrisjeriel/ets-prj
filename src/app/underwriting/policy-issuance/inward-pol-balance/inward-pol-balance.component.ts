@@ -64,7 +64,7 @@ export class InwardPolBalanceComponent implements OnInit {
     addFlag: true,
     genericBtn: 'Delete',
     widths: [1,'auto','auto'],
-    pageLength: 5,
+    pageLength: 'unli-5',
     pageID:'otherCharges',
     nData:{
       instNo: 0,
@@ -279,6 +279,11 @@ export class InwardPolBalanceComponent implements OnInit {
   onClickSave(){
     if(this.instllmentTable.getSum('premAmt') == this.totalPrem)
       this.confirmSave.confirmModal();
+    else if(this.passData.tableData.every(a=>a.premAmt != 0)){
+      this.dialogIcon = 'error';
+      //this.dialogMsg = 'Total Premium must be equal to the sum of premium per installment.';
+      this.successDiag.open();
+    }
     else{
       this.dialogIcon = 'error-message';
       this.dialogMsg = 'Total Premium must be equal to the sum of premium per installment.';
@@ -302,7 +307,8 @@ export class InwardPolBalanceComponent implements OnInit {
        this.passData.tableData = this.passData.tableData.filter(a=> a!=this.instllmentTable.indvSelect);
        this.instllmentTable.refreshTable();
     }else{
-      this.instllmentTable.indvSelect.deleted = true;
+      this.instllmentTable.selected = [this.instllmentTable.indvSelect];
+      this.instllmentTable.confirmDelete();
     }
     this.passData2.tableData = [];
     this.passData2.disableAdd = true;
@@ -313,20 +319,20 @@ export class InwardPolBalanceComponent implements OnInit {
   }
 
   delOth(){
-   if(this.otherTable.indvSelect.add){
-       this.passData2.tableData = this.passData2.tableData.filter(a=> a!=this.otherTable.indvSelect);
-       this.otherTable.refreshTable();
-    }else{
-      this.otherTable.indvSelect.deleted = true;
-    }
+   // if(this.otherTable.indvSelect.add){
+   //     this.passData2.tableData = this.passData2.tableData.filter(a=> a!=this.otherTable.indvSelect);
+   //     this.otherTable.refreshTable();
+   //  }else{
+   //    this.otherTable.indvSelect.deleted = true;
+   //  }
+    this.otherTable.selected = [this.otherTable.indvSelect];
+    this.otherTable.confirmDelete();
     this.instllmentTable.indvSelect.otherCharges = this.passData2.tableData;
-    this.otherTable.markAsDirty();
     this.otherTable.refreshTable();
-    this.compute();
   }
 
   onOtherClick(data){
-    if(data == null){
+    if(this.otherTable.indvSelect == null){
       this.passData2.disableGeneric = true;
     }else{
       this.passData2.disableGeneric = false;
