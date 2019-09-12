@@ -138,9 +138,12 @@ export class JvInvestmentPlacementComponent implements OnInit {
     this.accService.getInvPlacement(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data);
       this.passData.tableData = [];
-      for (var i = 0; i < data.invPlacement.length; i++) {
-        this.passData.tableData.push(data.invPlacement[i]);
+      if(data.invPlacement.length !== 0){
+        for (var i = 0; i < data.invPlacement.length; i++) {
+          this.passData.tableData.push(data.invPlacement[i]);
+        }
       }
+      
       this.table.refreshTable();
     });
   }
