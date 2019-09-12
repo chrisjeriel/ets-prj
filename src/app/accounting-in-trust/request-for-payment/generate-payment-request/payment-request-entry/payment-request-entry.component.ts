@@ -471,7 +471,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       var updatePaytReqStats = {
         reqId       : this.saveAcitPaytReq.reqId,
         reqStatus   : 'A',
-        updateUser  : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.approvedBy
+        updateUser  : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.savePrintables.approvedBy
       };
 
       console.log(JSON.stringify(updatePaytReqStats));

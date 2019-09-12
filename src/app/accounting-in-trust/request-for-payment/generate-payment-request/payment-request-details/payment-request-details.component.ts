@@ -776,7 +776,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
         }
       }else{
         e.fromCancel = true;
-        if(e.edited && !e.deleted){
+        if(e.edited && !e.deleted){ //['transdtlTypeDesc','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+          this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.transdtlTypeDesc != e.transdtlTypeDesc && i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
+                                                                     i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = '';
@@ -850,7 +852,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
         }
       }else{
         e.fromCancel = true;
-        if(e.edited && !e.deleted){
+        if(e.edited && !e.deleted){ //['itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+          this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
+                                                                     i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = '';
@@ -920,6 +924,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.params.deletePrqTrans.push(e);
         }
       }else{
+        e.fromCancel = true;
         if(e.edited && !e.deleted){
           this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.invtId != e.invtId);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
@@ -994,6 +999,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }else{
         e.fromCancel = true;
         if(e.edited && !e.deleted){
+          this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.quarterEnding != e.quarterEnding);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = e.quarterEnding;
@@ -1298,7 +1304,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveInvt(){
-    this.invtTbl.overlayLoader = true;
     console.log(this.params);
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
@@ -1319,7 +1324,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       saveAcitPrqInwPol   : []
     };
 
-    this.inwardPolBalData.tableData.forEach(e => {
+    this.inwardPolBalData.tableData.forEach((e,i) => {
       var rec = {
         charges     : e.charges,
         createUser  : (e.createUser == '' || e.createUser == null)?this.ns.getCurrentUser():e.createUser,
@@ -1349,13 +1354,30 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
 
     console.log(prqInwPol);
-    var saveSubs = forkJoin(this.acctService.saveAcitPrqTrans(JSON.stringify(this.params)),this.acctService.saveAcitPrqInwPol(JSON.stringify(prqInwPol)))
-                           .pipe(map(([trans,inw]) => { return { trans,inw }; }));
 
-    saveSubs.subscribe(data =>{
+    console.log(this.params);
+
+    for(var i = 0; i < this.params.savePrqTrans.length; i++) {
+      this.params.savePrqTrans[i]['inwPol'] = prqInwPol.saveAcitPrqInwPol[i];
+    }
+
+    console.log(this.params);
+    console.log(this.params.savePrqTrans);
+    console.log(this.params.savePrqTrans.length);
+
+    // var saveSubs = forkJoin(this.acctService.saveAcitPrqTrans(JSON.stringify(this.params)),this.acctService.saveAcitPrqInwPol(JSON.stringify(prqInwPol)))
+    //                        .pipe(map(([trans,inw]) => { return { trans,inw }; }));
+
+    // saveSubs.subscribe(data =>{
+    //   console.log(data);
+    //   this.getPaytReqPrqTrans();
+    //   this.sucInw.open();
+    //   this.params.savePrqTrans  = [];
+    //   this.params.deletePrqTrans  = [];
+    // });
+    this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
+    .subscribe(data => {
       console.log(data);
-      // this.getPrqTrans();
-      // this.getAcitPaytReq();
       this.getPaytReqPrqTrans();
       this.sucInw.open();
       this.params.savePrqTrans  = [];
