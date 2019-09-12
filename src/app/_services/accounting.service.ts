@@ -2181,4 +2181,20 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVTrtyInvt',JSON.stringify(params),header);
 	}
+
+	getInvPlacement(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvInvPlacement",{params});
+	}
+
+	saveInvPlacement(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvPlacement',JSON.stringify(params),header);
+	}
+
 }
