@@ -20,7 +20,7 @@
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
                 <legend class="scheduler-border">Treaty Balance</legend>
                     <div style="position: relative;margin-top: 10px" >
-                        <app-cust-editable-non-datatable #quarterTable [passData]="passData" (newClick)="onrowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData=$event;updateTreaty($event)"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable #quarterTable [passData]="passData" (newClick)="onrowClick($event)" (clickLOV)="quarterEndModal($event)" (tableDataChange)="passData.tableData = $event;updateTreaty($event)"></app-cust-editable-non-datatable>
                     </div>
             </fieldset>
         </div>
@@ -31,7 +31,7 @@
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
             <legend class="scheduler-border">Investment Pull-Out</legend>
                 <div style="position: relative;margin-top: 10px" >
-                    <app-cust-editable-non-datatable #invTable [passData]="invesmentData" (clickLOV)="openLOV($event)" (tableDataChange)="invesmentData.tableData = $event;quarterTable.indvSelect.trtyInvmt=$event;update($event)"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #invTable [passData]="invesmentData" (clickLOV)="openLOV($event)" (tableDataChange)="invesmentData.tableData = $event;update($event)"></app-cust-editable-non-datatable>
                 </div>
             </fieldset>
         </div>

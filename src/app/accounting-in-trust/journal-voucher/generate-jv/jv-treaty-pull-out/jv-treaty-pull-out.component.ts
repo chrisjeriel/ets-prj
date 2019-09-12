@@ -145,6 +145,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   retrieveInvPullOut(){
     this.accountingService.getTrtyInv(this.jvDetail.tranId).subscribe((data:any) =>{
       console.log(data)
+      this.passData.tableData = [];
       if(data.acctTreatyBal.length != 0){
         this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName
         for (var i = 0; i < data.acctTreatyBal.length; i++) {
@@ -224,6 +225,7 @@ export class JvTreatyPullOutComponent implements OnInit {
     this.invesmentData.tableData = this.invesmentData.tableData.filter((a) => a.showMG != 1);
     for(var  i=0; i < data.data.length;i++){
       this.invesmentData.tableData.push(JSON.parse(JSON.stringify(this.invesmentData.nData)));
+      this.quarterTable.indvSelect.trtyInvmt.push(data.data[i]);
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].showMG = 0;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].edited  = true;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].itemNo = null;
@@ -250,6 +252,7 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].maturityValue = data.data[i].matVal;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].localAmt = data.data[i].matVal * this.jvDetail.currRate;
     }
+    this.quarterTable.indvSelect.trtyInvmt = this.invesmentData.tableData;
     this.invTable.refreshTable();
     console.log(this.passData.tableData)
   }
@@ -285,7 +288,7 @@ export class JvTreatyPullOutComponent implements OnInit {
         if(!this.passData.tableData[i].trtyInvmt[j].deleted && this.passData.tableData[i].trtyInvmt[j].edited){
           this.jvDetails.saveTrtyInvt.push(this.passData.tableData[i].trtyInvmt[j]);
           actualBalPaid += this.passData.tableData[i].trtyInvmt[j].maturityValue;
-          this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].tranId  = this.jvDetails.tranId;
+          this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].tranId  = this.jvDetail.tranId;
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].quarterNo  = this.passData.tableData[i].quarterNo;
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].trtyInvmt[j].createDate);
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].trtyInvmt[j].updateDate);
@@ -294,6 +297,9 @@ export class JvTreatyPullOutComponent implements OnInit {
 
       this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].actualBalPaid = actualBalPaid;
     }
+
+    this.jvDetails.tranId = this.jvDetail.tranId;
+    this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
   saveData(cancelFlag?){
@@ -324,6 +330,10 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   update(data){
-    console.log(this.quarterTable.indvSelect.trtyInvmt)
+    console.log('datachange')
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      this.passData.tableData[i].maturityValue = this.passData.tableData[i].maturityValue * 1;
+    }
+    this.invTable.refreshTable();
   }
 }

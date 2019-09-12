@@ -152,8 +152,6 @@ export class JvInvestmentPlacementComponent implements OnInit {
   }
 
   cancel(){
-    console.log(this.selectedBank)
-    console.log(this.selectedBankAcct)
     this.cancelBtn.clickCancel();
   }
 
@@ -162,7 +160,6 @@ export class JvInvestmentPlacementComponent implements OnInit {
   }
 
   setSelectedData(data){
-    console.log(data.data)
     let selected = data.data;
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i < selected.length; i++){
