@@ -172,7 +172,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   retrieveClmLosses(){
-    this.accountingService.getRecievableLosses(this.jvDetail.tranId).subscribe((data:any) => {
+    this.accountingService.getRecievableLosses(this.jvDetail.tranId,null).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
       if(data.receivables.length!=0){

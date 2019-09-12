@@ -127,6 +127,7 @@ export class RegionComponent implements OnInit {
   }
 
   onRowClick(event){
+    console.log(event);
   	if(event !== null){
   		this.selectedData = event;
   		this.regionCd = event.regionCd;
@@ -169,7 +170,7 @@ export class RegionComponent implements OnInit {
   	this.regionCdArray = [];
       for(let check of this.passData.tableData){
       	this.regionCdArray.push(check.regionCd);
-        if(check.regionCd === null || Number.isNaN(check.regionCd)  || check.description === undefined || check.description.length === 0){
+        if(check.regionCd === null || Number.isNaN(check.regionCd)  || check.description === null || check.description === undefined || check.description.length === 0){
           return false;
         }
       }
@@ -179,10 +180,12 @@ export class RegionComponent implements OnInit {
   onClickSaveRegion(cancelFlag?){
     
     this.cancelFlag = cancelFlag !== undefined;
+    console.log(this.cancelFlag);
      if(this.cancelFlag){
         if(this.checkFields()){
           let regionCds:string[] = this.regionTable.passData.tableData.map(a=>a.regionCd);
           if(regionCds.some((a,i)=>regionCds.indexOf(a)!=i)){
+            this.cancelFlag = false;
             this.dialogMessage = 'Unable to save the record. Region Code must be unique.';
             this.dialogIcon = 'error-message';
             this.successDialog.open();
@@ -191,6 +194,7 @@ export class RegionComponent implements OnInit {
             this.saveDataRegion();
           }
         }else{
+          this.cancelFlag = false;
           this.dialogMessage="Please fill up required fields.";
           this.dialogIcon = "error";
           this.successDialog.open();
