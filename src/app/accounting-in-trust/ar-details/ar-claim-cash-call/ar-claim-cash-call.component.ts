@@ -71,7 +71,7 @@ export class ArClaimCashCallComponent implements OnInit {
   };
 
   passLov: any = {
-    selector: 'clmResHistPayts',
+    selector: 'acitArClmRecover',
     payeeNo: '',
     currCd: '',
     hide: []
