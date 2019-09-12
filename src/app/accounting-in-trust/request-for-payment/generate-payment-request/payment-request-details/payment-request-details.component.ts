@@ -345,7 +345,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   yearParamOpts   : any[] = [];
   qtrParam        : number = null;
   private sub     : any;
-  warn            : number = 0;
+  warn            : any[] = [];
 
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
@@ -630,7 +630,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   reCompInw(){
-    this.warn = 0;
+    this.warn = [];
     console.log(this.inwardPolBalData.tableData);
     this.inwardPolBalData.tableData.forEach(e => {
       e.premAmt      = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
@@ -641,9 +641,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.remainingBal = Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
 
       if(e.returnAmt < 0){
-        this.warn = (Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0;
+        this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0);
       }else{
-        this.warn = (e.returnAmt > e.balance)?2:0;
+        this.warn.push((e.returnAmt > e.balance)?2:0);
       }
       
     });
@@ -777,8 +777,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }else{
         e.fromCancel = true;
         if(e.edited && !e.deleted){ //['transdtlTypeDesc','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
-          this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.transdtlTypeDesc != e.transdtlTypeDesc && i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
-                                                                     i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
+          // this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.transdtlType != e.transdtlType && i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
+          //                                                            i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = '';
@@ -1139,12 +1139,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.warnMdl.openNoClose();
       this.params.savePrqTrans   = [];
       this.params.deletePrqTrans = [];
-    }else if(this.warn == 1){
+    }else if(this.warn.some(e => e == 1)){
       this.warnMsg = 'Refund amount must not exceed the Cumulative Payment.';
       this.warnMdl.openNoClose();
       this.params.savePrqTrans   = [];
       this.params.deletePrqTrans = [];
-    }else if(this.warn == 2){
+    }else if(this.warn.some(e => e == 2)){
       this.warnMsg = 'Payment amount must not exceed the Balance amount.';
       this.warnMdl.openNoClose();
       this.params.savePrqTrans   = [];
@@ -1257,7 +1257,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveUnCol(){
-    this.unColTbl.overlayLoader = true;
     console.log(this.params);
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
@@ -1272,7 +1271,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveOth(){
-    this.othTbl.overlayLoader = true;
     console.log(this.params);
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
@@ -1287,7 +1285,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveTrty(){
-    this.treatyTbl.overlayLoader = true;
     this.params.savePrqTrans = this.params.savePrqTrans.map(e => { 
         e.quarterEnding = this.ns.toDateTimeString(e.quartEndingSave); 
       return e; 
@@ -1318,7 +1315,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveInw(){
-    this.inwardTbl.overlayLoader = true;
     var prqInwPol = {
       deleteAcitPrqInwPol : [],
       saveAcitPrqInwPol   : []
@@ -1386,7 +1382,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onSaveCPC(){
-    this.cedCompTbl.overlayLoader = true
     console.log(this.params);
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
