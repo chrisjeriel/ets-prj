@@ -127,6 +127,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     prDate: '',
     prPreparedBy: '',
     payeeNo: '',
+    payeeClassCd: '',
     payor: '',
     mailAddress: '',
     bussTypeCd: '',
@@ -271,6 +272,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       prDate: '',
       prPreparedBy: '',
       payeeNo: '',
+      payeeClassCd: '',
       payor: '',
       mailAddress: '',
       bussTypeCd: '',
@@ -392,6 +394,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     console.log(data);
     if(data.selector === 'payee'){
       this.arInfo.payeeNo = data.data.payeeNo;
+      this.arInfo.payeeClassCd = data.data.payeeClassCd;
       this.arInfo.payor = data.data.payeeName;
       this.arInfo.tin = data.data.tin;
       this.arInfo.bussTypeCd = data.data.bussTypeCd;
@@ -454,6 +457,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.prDate.time           = this.arInfo.prDate.split('T')[1];
           this.arInfo.prPreparedBy   = data.ar.prPreparedBy;
           this.arInfo.payeeNo        = data.ar.payeeNo;
+          this.arInfo.payeeClassCd   = data.ar.payeeClassCd;
           this.arInfo.payor          = data.ar.payor;
           this.arInfo.mailAddress    = data.ar.mailAddress;
           this.arInfo.bussTypeCd     = data.ar.bussTypeCd;
