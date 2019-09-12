@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { DecimalPipe } from '@angular/common';
-
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -66,6 +66,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     reqId : ''
   };
 
+
   cedingCompanyData: any = {
   	tableData     : [],
   	tHeader       : ['Claim No.','Hist No.','Hist Category','Hist Type','Payment For', 'Insured', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Approved Amount','Payment Amount','Payment Amount (PHP)'],
@@ -89,10 +90,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	paginateFlag  : true,
   	infoFlag      : true,
   	pageID        : 'cedingCompanyData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
-  	checkFlag     : true,
-  	addFlag       : true,
-  	deleteFlag    : true,
-    uneditable    : [true,true,true,true,false,true,true,true,true,true,true,false,true],
+  	checkFlag     : false,
+  	addFlag       : false,
+  	deleteFlag    : false,
+    uneditable    : [true,true,true,true,true,true,true,true,true,true,true,true,true],
   	total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt','approvedAmt','paytAmt', 'localAmt'],
     widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120,120],
     keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','approvedAmt','paytAmt','localAmt']
@@ -342,7 +343,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   periodAsOfParam : string = null;
   yearParam       : number = null;
   yearParamOpts   : any[] = [];
-  qtrParam: number = null;
+  qtrParam        : number = null;
+  private sub     : any;
+  warn            : number = 0;
+
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
               private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe,private decPipe: DecimalPipe) {
@@ -361,12 +365,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.yearParamOpts.push(x);
     }
 
-    // this.getAcitPaytReq();
-    // this.getPrqTrans();
     this.getPaytReqPrqTrans();
   }
 
-  getPaytReqPrqTrans(){
+  getPaytReqPrqTrans(){    
     var subRes = forkJoin(this.acctService.getPaytReq(this.rowData.reqId),this.acctService.getAcitPrqTrans(this.rowData.reqId,''))
                  .pipe(map(([pr,prq]) => { return { pr, prq }; }));
     subRes.subscribe(data => {
@@ -466,7 +468,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       return e;
     });
     this.unColTbl.refreshTable();
-    //this.currentTbl = this.unappliedColData.tableData;
   }
 
   getOthers(){
@@ -542,6 +543,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       recAcitSoaDtl.forEach(e => {
         this.inwardPolBalData.tableData.filter(e2 => e.policyId == e2.policyId && e.instNo == e2.instNo).map(e2 => Object.assign(e2,e));
       });
+      console.log(this.inwardPolBalData.tableData);
       this.inwardTbl.refreshTable();
       this.reCompInw();
     });
@@ -628,6 +630,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   reCompInw(){
+    this.warn = 0;
+    console.log(this.inwardPolBalData.tableData);
     this.inwardPolBalData.tableData.forEach(e => {
       e.premAmt      = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
       e.riComm       = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
@@ -635,19 +639,26 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.charges      = Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
       e.totalPayt    = Math.round((e.returnAmt + e.cumPayment) * 100)/100;
       e.remainingBal = Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
+
+      if(e.returnAmt < 0){
+        this.warn = (Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0;
+      }else{
+        this.warn = (e.returnAmt > e.balance)?2:0;
+      }
+      
     });
 
-    if(this.allotedAmt == 0 || this.allotedAmt == '' || this.allotedAmt == null){
-      this.allotedAmt = (this.recPrqTrans.length == 0)?this.requestData.reqAmt:this.recPrqTrans[0].allotedAmt;  
-    }
+    // if(this.allotedAmt == 0 || this.allotedAmt == '' || this.allotedAmt == null){
+    //   this.allotedAmt = (this.recPrqTrans.length == 0)?this.requestData.reqAmt:this.recPrqTrans[0].allotedAmt;  
+    // }
 
-    var allAmt = (Number(String(this.allotedAmt).replace(/\,/g,'')) > 0)?Number(String(this.allotedAmt).replace(/\,/g,'')) * Number(-1):Number(String(this.allotedAmt).replace(/\,/g,''));
-    var returnAmtSum = Number(this.inwardPolBalData.tableData.map(e => e.returnAmt).reduce((a,b) => a+b ,0));
-    //this.inwardPolBalData.total[14] = (returnAmtSum > 0)?returnAmtSum * Number(-1):returnAmtSum;
-    this.totalBal = Math.abs(Number(returnAmtSum));
-    this.variance = Math.abs(Number(allAmt)) - Math.abs(Number(returnAmtSum));
-    this.allotedAmt = this.decPipe.transform(Number(allAmt), '0.2-2');
-    this.totalBal = Number(this.totalBal) * Number(-1);
+    // var allAmt = (Number(String(this.allotedAmt).replace(/\,/g,'')) > 0)?Number(String(this.allotedAmt).replace(/\,/g,'')) * Number(-1):Number(String(this.allotedAmt).replace(/\,/g,''));
+    // var returnAmtSum = Number(this.inwardPolBalData.tableData.map(e => e.returnAmt).reduce((a,b) => a+b ,0));
+    // // this.inwardPolBalData.total[14] = (returnAmtSum > 0)?returnAmtSum * Number(-1):returnAmtSum;
+    // this.totalBal = Math.abs(Number(returnAmtSum));
+    // this.variance = Math.abs(Number(allAmt)) - Math.abs(Number(returnAmtSum));
+    // this.allotedAmt = this.decPipe.transform(Number(allAmt), '0.2-2');
+    // this.totalBal = Number(this.totalBal) * Number(-1);
   }
 
   setData(data, from){
@@ -708,36 +719,42 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onClickSave(){
-    var totalAmt = this.recPrqTrans.reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-    var ts = this;
-    function showWarning(tbl){
-       var currAmt = tbl.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-       if(Number(ts.requestData.reqAmt) < (currAmt + totalAmt)){
-         ts.warnMsg = 'The sum of all payments under this request must not exceed the requested amount.';
-         ts.warnMdl.openNoClose();
-         return true;
-       }else{
-         return false;
-       }
-    };    
+    // var totalAmt = this.recPrqTrans.reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    // var ts = this;
+    // function showWarning(tbl){
+    //    var currAmt = tbl.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
+    //    if(Number(ts.requestData.reqAmt) < (currAmt + totalAmt)){
+    //      ts.warnMsg = 'The sum of all payments under this request must not exceed the requested amount.';
+    //      ts.warnMdl.openNoClose();
+    //      return true;
+    //    }else{
+    //      return false;
+    //    }
+    // };    
 
       if(this.activeOthTab){
-        (!showWarning(this.othersData.tableData))?this.onClickSaveOth():'';
+        // (!showWarning(this.othersData.tableData))?this.onClickSaveOth():'';
+        this.onClickSaveOth();
       }else if(this.activeUnColTab){
-        (!showWarning(this.unappliedColData.tableData))?this.onClickSaveUnCol():'';
+        // (!showWarning(this.unappliedColData.tableData))?this.onClickSaveUnCol():'';
+        this.onClickSaveUnCol();
       }else{
         if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
-          (!showWarning(this.cedingCompanyData.tableData))?this.onClickSaveCPC():'';
+          // (!showWarning(this.cedingCompanyData.tableData))?this.onClickSaveCPC():'';
+          this.onClickSaveCPC();
         }else if(this.requestData.tranTypeCd == 4){
-          (!showWarning(this.inwardPolBalData.tableData))?this.onClickSaveInw():'';
+          // (!showWarning(this.inwardPolBalData.tableData))?this.onClickSaveInw():'';
+          this.onClickSaveInw();
         }else if(this.requestData.tranTypeCd == 5){
           this.onClickSaveServFee();
         }else if(this.requestData.tranTypeCd == 6){
           this.onClickSaveTrty();
         }else if(this.requestData.tranTypeCd == 7){
-          (!showWarning(this.investmentData.tableData))?this.onClickSaveInvt():'';
+          // (!showWarning(this.investmentData.tableData))?this.onClickSaveInvt():'';
+          this.onClickSaveInvt();
         }else if(this.requestData.tranTypeCd == 8){
-          (!showWarning(this.othersData.tableData))?this.onClickSaveOth():'';
+          // (!showWarning(this.othersData.tableData))?this.onClickSaveOth():'';
+          this.onClickSaveOth();
         }
       }
   }
@@ -790,12 +807,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       //   this.params.savePrqTrans   = [];
       //   this.params.deletePrqTrans = [];
       // }else 
-      if(Number(this.requestData.reqAmt) < Number(currAmt)){
-        this.warnMsg = 'The Total Amount for the Unapplied Collection must not exceed the Requested Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans   = [];
-        this.params.deletePrqTrans = [];
-      }else{
+      // if(Number(this.requestData.reqAmt) < Number(currAmt)){
+      //   this.warnMsg = 'The Total Amount for the Unapplied Collection must not exceed the Requested Amount.';
+      //   this.warnMdl.openNoClose();
+      //   this.params.savePrqTrans   = [];
+      //   this.params.deletePrqTrans = [];
+      // }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
           $('.ng-dirty').removeClass('ng-dirty');
           this.conUnCol.confirmModal();
@@ -811,7 +828,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
             this.conUnCol.confirmModal();
           }
         }
-      }
+     // }
     }
   }
 
@@ -863,12 +880,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       //   this.params.savePrqTrans   = [];
       //   this.params.deletePrqTrans = [];
       // }else 
-      if(Number(this.requestData.reqAmt) < Number(currAmt)){
-        this.warnMsg = 'The Total Amount for the Other Payments must not exceed the Requested Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans   = [];
-        this.params.deletePrqTrans = [];
-      }else{
+      // if(Number(this.requestData.reqAmt) < Number(currAmt)){
+      //   this.warnMsg = 'The Total Amount for the Other Payments must not exceed the Requested Amount.';
+      //   this.warnMdl.openNoClose();
+      //   this.params.savePrqTrans   = [];
+      //   this.params.deletePrqTrans = [];
+      // }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
           $('.ng-dirty').removeClass('ng-dirty');
           this.conOth.confirmModal();
@@ -884,7 +901,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
             this.conOth.confirmModal();
           }
         }
-      }
+      //}
     }
   }
 
@@ -1018,12 +1035,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
       }else{
-        if(Number(this.requestData.reqAmt) < Number(currAmt)){
-          this.warnMsg = 'The Total Amount of Treaty Balance Due to Participants must not exceed the Requested Amount.';
-          this.warnMdl.openNoClose();
-          this.params.savePrqTrans   = [];
-          this.params.deletePrqTrans = [];
-        }else{
+        // if(Number(this.requestData.reqAmt) < Number(currAmt)){
+        //   this.warnMsg = 'The Total Amount of Treaty Balance Due to Participants must not exceed the Requested Amount.';
+        //   this.warnMdl.openNoClose();
+        //   this.params.savePrqTrans   = [];
+        //   this.params.deletePrqTrans = [];
+        // }else{
           if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
             $('.ng-dirty').removeClass('ng-dirty');
             this.conTrty.confirmModal();
@@ -1038,7 +1055,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
               this.conTrty.confirmModal();
             }
           }
-        }
+        //}
       }
 
       this.treatyBalanceData.tableData = this.treatyBalanceData.tableData.map(e => {
@@ -1058,7 +1075,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.recPrqTrans.allotedAmt);
     this.inwardPolBalData.tableData.forEach(e => {
       if(e.returnAmt == '' || e.returnAmt == null){
-        isEmpty = 1;
+        if(!e.deleted){
+          isEmpty = 1;
+          e.fromCancel = false;
+        }else{
+          this.params.deletePrqTrans.push(e);
+        }
       }else{
         var rec = {
             allotedAmt      : Math.abs(Number(String(this.allotedAmt).replace(/\,/g,''))),
@@ -1099,12 +1121,28 @@ export class PaymentRequestDetailsComponent implements OnInit {
     console.log(this.inwardPolBalData.tableData);
     console.log(this.params.savePrqTrans);
     var returnAmt = this.inwardPolBalData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.returnAmt != null ?parseFloat(b.returnAmt):0),0);
+    console.log(returnAmt);
     var totalAmt = this.inwardPolBalData.tableData.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.returnAmt != null ?parseFloat(b.returnAmt):0),0);
-    
+    console.log(this.warn);
     if(isEmpty == 1){
       this.dialogIcon = 'error';
       this.sucInw.open();
       this.params.savePrqTrans   = [];
+    }else if(Number(returnAmt) > 0){
+      this.warnMsg = 'Net balance payment is positive. No value to be refunded. The net balance payments should be negative.';
+      this.warnMdl.openNoClose();
+      this.params.savePrqTrans   = [];
+      this.params.deletePrqTrans = [];
+    }else if(this.warn == 1){
+      this.warnMsg = 'Refund amount must not exceed the Cumulative Payment.';
+      this.warnMdl.openNoClose();
+      this.params.savePrqTrans   = [];
+      this.params.deletePrqTrans = [];
+    }else if(this.warn == 2){
+      this.warnMsg = 'Payment amount must not exceed the Balance amount.';
+      this.warnMdl.openNoClose();
+      this.params.savePrqTrans   = [];
+      this.params.deletePrqTrans = [];
     }
     // else if(Number(this.requestData.reqAmt) < (Number(totalAmt) + Number(this.totalReqAmt))){
     //       this.warnMsg = 'The Total payments for Inward Policy Balance, Unapplied Collection, and Others must not exceed the Requested Amount.';
@@ -1112,24 +1150,26 @@ export class PaymentRequestDetailsComponent implements OnInit {
     //       this.params.savePrqTrans   = [];
     //       this.params.deletePrqTrans = [];
     // }
-    else if(Number(this.requestData.reqAmt) < Number(returnAmt)){
-      this.warnMsg = 'The Total Inward Policy Balances Returns must not exceed the Requested Amount.';
-      this.warnMdl.openNoClose();
-      this.params.savePrqTrans   = [];
-      this.params.deletePrqTrans = [];
-    }else{
+    // else if(Number(this.requestData.reqAmt) < Number(returnAmt)){
+    //   this.warnMsg = 'The Total Inward Policy Balances Returns must not exceed the Requested Amount.';
+    //   this.warnMdl.openNoClose();
+    //   this.params.savePrqTrans   = [];
+    //   this.params.deletePrqTrans = [];
+    // }
+    else{
       if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
         (!this.allotedChanged)?$('.ng-dirty').removeClass('ng-dirty'):'';
-        console.log('dito pumasok aw');
         this.conInw.confirmModal();
         this.params.savePrqTrans   = [];
         this.params.deletePrqTrans = [];
         this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '');
-      }else if(this.inwardPolBalData.tableData.some(e => e.returnAmt == 0)){
-        this.warnMsg = 'Please enter a Payment Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans = [];
-      }else{
+      }
+      // else if(this.inwardPolBalData.tableData.some(e => e.returnAmt == 0)){
+      //   this.warnMsg = 'Please enter a Payment Amount.';
+      //   this.warnMdl.openNoClose();
+      //   this.params.savePrqTrans = [];
+      // }
+      else{
         if(this.cancelFlagInw == true){
           this.conInw.showLoading(true);
           setTimeout(() => { try{this.conInw.onClickYes();}catch(e){}},500);
@@ -1287,7 +1327,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
         itemNo      : e.itemNo,
         netDue      : e.netDue,
         premAmt     : e.premAmt,
-        prevPaytAmt : Number(e.tempPayments) + Number(e.totalPayments),
+        prevPaytAmt : e.cumPayment,
+        prevBalance : e.balance,
+        newPaytAmt  : e.totalPayt,
+        newBalance  : e.remainingBal,
         reqId       : this.requestData.reqId,
         returnAmt   : e.returnAmt,
         riComm      : e.riComm,

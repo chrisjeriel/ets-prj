@@ -41,7 +41,7 @@
               <div class="input-group">
                 <div class="col-sm"></div>
                 <div class="col-sm-12">
-                  <app-cust-editable-non-datatable id="prTbl" #paytReqTbl [passData]="passDataPaytReqList" (clickLOV)="showLov()" (newClick)="onRowClick($event)"  (tableDataChange)="passDataPaytReqList.tableData=$event;">
+                  <app-cust-editable-non-datatable id="prTbl" #paytReqTbl [passData]="passDataPaytReqList" (clickLOV)="showLov()" (newClick)="onRowClick($event)" (tableDataChange)="passDataPaytReqList.tableData=$event;">
                     <!-- <ng-container controls-r>
                       <div class="align" style="position: absolute;left: 130px">
                           <label class="form-control-sm">For Certification</label> 
@@ -59,7 +59,7 @@
                   <div class="cust-btn-container">
                     <button type="button" class="cust-btn"><a>Cancel</a></button>
                     <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-                    <button type="button" class="cust-btn"><a>View Details</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickViewDetails()" [disabled]="!paytData.enabViewDtl">View Details</button>
                   </div>
                 </div>
               </div>

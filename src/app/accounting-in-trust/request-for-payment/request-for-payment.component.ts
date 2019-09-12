@@ -85,8 +85,13 @@ export class RequestForPaymentComponent implements OnInit {
 
         return i;
       });
-
       this.passData.tableData = rec.filter(a => String(a.reqStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
+      if(this.passData.tableData.length > 0){
+        this.table.onRowClick(null, this.passData.tableData[0],0);
+        this.passData.btnDisabled = false;
+      }else{
+        this.passData.btnDisabled = true;
+      }
       this.table.refreshTable();
     });
   }

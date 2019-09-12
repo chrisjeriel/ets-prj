@@ -118,7 +118,7 @@
                     <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr();"></app-cust-editable-non-datatable>
                 </ng-container>
               </ng-container>
-              <div class="form-row" style="margin-top: 40px !important;">
+              <div class="form-row" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3">
                 <div class="form-group col-sm">
                   <div class="text-center">
                     <div class="cust-btn-container">
@@ -154,7 +154,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab *ngIf="requestData?.tranTypeCd != 8 && requestData?.tranTypeCd != 4 && requestData?.tranTypeCd != 5" id="othTabId">
+      <ngb-tab *ngIf="requestData?.tranTypeCd == 4 || requestData?.tranTypeCd == 6 || requestData?.tranTypeCd == 7" id="othTabId">
       <!-- <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="othTabId"> -->
         <ng-template ngbTabTitle>
           <div>Others</div>
