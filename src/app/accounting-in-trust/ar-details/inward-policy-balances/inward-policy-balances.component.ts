@@ -223,7 +223,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.successDiag.open();
     }else if(this.checkVariance()){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the AR Amount.';
+      this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the AR Amount or Alloted Policy Balance Payments.';
       this.successDiag.open();
     }else if(this.checkAlloted()){
       this.dialogIcon = 'error-message';
@@ -236,6 +236,14 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     }else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
+      this.successDiag.open();
+    }else if(this.allotedVsArAmt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Alloted Policy Balance Payments must not exceed the AR Amount.';
+      this.successDiag.open();
+    }else if(this.zeroAmount()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Payment amount must not be zero.';
       this.successDiag.open();
     }else{
       this.confirm.confirmModal();
@@ -322,27 +330,37 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   onTableDataChange(data){
     console.log(data);
     console.log(this.originalValues);
-    let index = 0;
+    //let index = 0;
     if(data.key === 'balPaytAmt'){
-      for(var i = 0; i < this.passData.tableData.length; i++){
+      /*for(var i = 0; i < this.passData.tableData.length; i++){
         if(data[i].soaNo === this.selected.soaNo){
           index = i;
           break;
         }
-      }
-      console.log(data[index].prevPremAmt);
+      }*/
+      /*console.log(data[index].prevPremAmt);
       console.log(data[index].prevRiComm);
       console.log(data[index].prevRiCommVat);
       console.log(data[index].prevCharges);
       console.log(data[index].balPaytAmt);
-      console.log(data[index].prevNetDue);
-      data[index].premAmt = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevPremAmt;
+      console.log(data[index].prevNetDue);*/
+
+      for(var index = 0; index < this.passData.tableData.length; index++){
+        data[index].premAmt = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevPremAmt;
+        data[index].riComm = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevRiComm;
+        data[index].riCommVat = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevRiCommVat;
+        data[index].charges = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevCharges;
+
+        data[index].totalPayments = data[index].balPaytAmt + data[index].cumPayment;
+        data[index].netDue = data[index].prevNetDue - data[index].totalPayments;
+      }
+      /*data[index].premAmt = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevPremAmt;
       data[index].riComm = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevRiComm;
       data[index].riCommVat = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevRiCommVat;
       data[index].charges = (data[index].balPaytAmt/data[index].prevNetDue) * data[index].prevCharges;
 
       data[index].totalPayments = data[index].balPaytAmt + data[index].cumPayment;
-      data[index].netDue = data[index].prevNetDue - data[index].totalPayments;
+      data[index].netDue = data[index].prevNetDue - data[index].totalPayments;*/
       console.log(data);
       /*if(this.selected.add){
         this.accountingService.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo).subscribe(
@@ -438,6 +456,24 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       return true;
     }
     return false;
+  }
+
+  allotedVsArAmt(){
+    console.log(this.record.arAmt);
+    if(this.allotedAmt > this.record.arAmt){
+      return true;
+    }
+    return false;
+  }
+
+  zeroAmount(){
+     for(var i of this.passData.tableData){
+       if(i.edited && !i.deleted &&
+         (i.balPaytAmt == 0)){
+         return true;
+       }
+     }
+     return false;
   }
 
   checkNetPayments(){

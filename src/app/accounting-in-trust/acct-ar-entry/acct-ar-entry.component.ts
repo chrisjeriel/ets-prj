@@ -101,6 +101,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   dialogIcon: string = '';
   dialogMessage: string = '';
+  dcbStatus: string = '';
 
   arInfo: any = {
     tranId: '',
@@ -111,11 +112,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     arDate: '',
     arStatus: '',
     tranStat: '',
-    arStatDesc: '',
+    arStatDesc: 'New',
     tranStatDesc: '',
     dcbYear: '',
     dcbUserCd: '',
     dcbNo: '',
+    dcbStatus: '',
     dcbBank: '',
     dcbBankName: '',
     dcbBankAcct: '',
@@ -143,6 +145,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     rstrctTranUp: '',
     arDtlSum: '',
     acctEntriesSum: '',
+    allocTag: 'N'
   }
 
   arDate: any = {
@@ -257,10 +260,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       arStatus: '',
       tranStat: '',
       arStatDesc: '',
-      tranStatDesc: '',
+      tranStatDesc: 'New',
       dcbYear: '',
       dcbUserCd: '',
       dcbNo: '',
+      dcbStatus: '',
       dcbBank: '',
       dcbBankName: '',
       dcbBankAcct: '',
@@ -291,6 +295,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       rstrctTranUp: '',
       arDtlSum: '',
       acctEntriesSum: '',
+      allocTag: ''
     }
     this.prDate = {
       date: '',
@@ -444,6 +449,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.dcbYear        = data.ar.dcbYear;
           this.arInfo.dcbUserCd      = data.ar.dcbUserCd;
           this.arInfo.dcbNo          = data.ar.dcbNo;
+          this.arInfo.dcbStatus      = data.ar.dcbStatus;
+          this.dcbStatus             = data.ar.dcbStatus;
           this.arInfo.dcbBank        = data.ar.dcbBank;
           this.arInfo.dcbBankName    = data.ar.dcbBankName;
           this.arInfo.dcbBankAcct    = data.ar.dcbBankAcct;
@@ -626,6 +633,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     else if(this.arAmtEqualsPayt()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Total amount of payment details is not equal to the AR Amount.';
+      this.successDiag.open();
+    }else if(this.dcbStatusCheck()){
+
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
       this.successDiag.open();
     }
     else{
@@ -816,6 +829,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }else{
           this.arInfo.dcbYear = data.dcbNoList[0].dcbYear;
           this.arInfo.dcbNo = data.dcbNoList[0].dcbNo;
+          this.dcbStatus   = data.dcbNoList[0].dcbStatus;
         }
       }
     );
@@ -923,9 +937,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   arAmtEqualsPayt(): boolean{
     let totalPayts = 0;
     for(var i of this.passData.tableData){
-      totalPayts += i.paytAmt;
+      totalPayts += i.paytAmt * i.currRate;
     }
-    if(this.arInfo.arAmt !== totalPayts){
+    if(this.arInfo.arAmt * this.arInfo.currRate !== totalPayts){
       return true;
     }else{
       return false;
@@ -941,6 +955,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   balanceAcctEntries(): boolean{
     if(this.arInfo.acctEntriesSum != 0){
+      return true;
+    }
+    return false;
+  }
+
+  dcbStatusCheck(): boolean {
+    if(this.dcbStatus !== 'O'){
       return true;
     }
     return false;
