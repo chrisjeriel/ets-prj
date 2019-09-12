@@ -6,6 +6,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-investment-pull-out',
@@ -19,6 +20,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   passData: any = {
     tableData:[],
@@ -92,6 +94,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
   accountNo:any;
   dialogIcon : any;
   dialogMessage : any;
+  cancelFlag: boolean = false;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
@@ -170,7 +173,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
       return c1.bank === c2.bankCd;
   }*/
 
-  openInvPulloutLOV(){
+  openInvPulloutLOV(data){
     this.passLov.searchParams = [{key: 'bankCd', search: this.selectedBankCd}, {key:'invtStatus', search: 'MATURED'}];
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
     this.lovMdl.openLOV();
@@ -234,7 +237,8 @@ export class JvInvestmentPullOutComponent implements OnInit {
     }
   }
 
-  saveInvPullOut(){
+  saveInvPullOut(cancelFlag?){
+
     this.prepareData();
 
     this.accService.saveInvPullOut(this.jvDetails).subscribe((data:any) => {
@@ -254,5 +258,10 @@ export class JvInvestmentPullOutComponent implements OnInit {
   cancel(){
     this.prepareData();
     console.log(this.jvDetails);
+    this.cancelBtn.clickCancel();
+  }
+
+  onTableDataChange(data){
+    console.log(data)
   }
 }
