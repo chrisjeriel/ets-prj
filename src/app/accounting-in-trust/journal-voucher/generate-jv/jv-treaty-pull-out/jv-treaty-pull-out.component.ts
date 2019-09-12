@@ -10,6 +10,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-treaty-pull-out',
@@ -27,6 +28,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   passData: any = {
       tableData: [],
@@ -129,6 +131,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   quarterNo: any = '';
+  cancelFlag: boolean = false;
 
   constructor(private ns: NotesService, private accountingService: AccountingService) { }
 
@@ -175,7 +178,7 @@ export class JvTreatyPullOutComponent implements OnInit {
                        });
   }
 
-  quarterEndModal(){
+  quarterEndModal(data){
     this.quarterModal.modal.openNoClose();
   }
 
@@ -317,6 +320,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   cancel(){
     this.prepareData();
     console.log(this.jvDetails)
+    this.cancelBtn.clickCancel();
   }
 
   update(data){
