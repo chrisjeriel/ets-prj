@@ -70,21 +70,17 @@ export class LovComponent implements OnInit {
         if(i.processing !== null && i.processing !== undefined){
           this.dialogIcon = 'info';
           this.dialogMessage = 'This policy installment is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ i.processing+ ' first.';
-          console.log(data);
           i.checked = false;
           this.table.selected[index].checked = false;
           data = data.filter(a=>{return a.checked});
-          console.log(data);
           this.table.selected = this.table.selected.filter(b=>{return b.checked});
           this.passTable.tableData[this.passTable.tableData.indexOf(i)].checked = false;
-          console.log(this.passTable.tableData[this.passTable.tableData.indexOf(i)])
           setTimeout(()=>{
             this.successDiag.open();
             this.table.refreshTable();
           },0)
           break;
         }else{
-          console.log(data);
           this.passData.data = data.filter(a=>{return a.checked});
         }
         index += 1;
@@ -95,28 +91,25 @@ export class LovComponent implements OnInit {
         if(i.processing !== null && i.processing !== undefined){
           this.dialogIcon = 'info';
           this.dialogMessage = 'This claim history is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ i.processing+ ' first.';
-          console.log(data);
           i.checked = false;
           this.table.selected[index].checked = false;
           data = data.filter(a=>{return a.checked});
-          console.log(data);
           this.table.selected = this.table.selected.filter(b=>{return b.checked});
           this.passTable.tableData[this.passTable.tableData.indexOf(i)].checked = false;
-          console.log(this.passTable.tableData[this.passTable.tableData.indexOf(i)])
           setTimeout(()=>{
             this.successDiag.open();
             this.table.refreshTable();
           },0)
           break;
         }else{
-          console.log(data);
           this.passData.data = data.filter(a=>{return a.checked});
         }
         index += 1;
       }
     }else{
-      console.log(this.passTable.checkFlag);
-      console.log(this.passData.data);
+      console.log('emit data')
+      console.log(this.lovCheckBox)
+      console.log(data)
       this.passData.data = data;
     }
   	// -- this.passData.data = data;
@@ -125,12 +118,11 @@ export class LovComponent implements OnInit {
   okBtnClick(){ 
     let selects:any[] = [];
     if(!this.lovCheckBox){
-      console.log('emiting data');
-      console.log(this.passData);
       this.selectedData.emit(this.passData);
     }
     else{
       selects = this.passTable.tableData.filter(a=>a.checked);
+      console.log(selects)
       this.passData.data = selects;
       this.selectedData.emit(this.passData);
     }
@@ -439,7 +431,6 @@ export class LovComponent implements OnInit {
                 'districtCd',
                 'districtDesc'];
       this.mtnService.getMtnDistrict(this.passData.regionCd,this.passData.provinceCd,this.passData.cityCd,undefined, 'Y').subscribe((data: any) => {
-        console.log(data);
         for (var a = 0; a < data.region.length; a++) {
           for (var b = 0; b < data.region[a].provinceList.length; b++) {
             for (var c = 0; c < data.region[a].provinceList[b].cityList.length; c++) {
@@ -470,7 +461,6 @@ export class LovComponent implements OnInit {
         this.passData.params.deductibleCd,this.passData.params.coverCd,this.passData.params.endtCd,this.passData.params.activeTag,
         this.passData.params.defaultTag
         ).subscribe((data: any) => {
-          console.log(this.passData.hide);
           this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
           if(this.passData.endtCd !== undefined){
             this.passTable.tableData = this.passTable.tableData.filter(data=> data.endtCd==this.passData.endtCd || data.endtCd == 0  )
@@ -765,7 +755,6 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency', 'currency', 'currency'];
       this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'netDue', 'totalPayments', 'balance'];
       this.passTable.checkFlag = false;
-      console.log(this.passData)
       this.accountingService.getSoaDtlZero(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.currCd).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
@@ -826,7 +815,6 @@ export class LovComponent implements OnInit {
       this.accountingService.getAccInvestments([])
       .subscribe((data:any)=>{
         var rec = data["invtList"].filter(e => e.invtStatus == 'F');
-        console.log(this.limitContent);
         if(this.limitContent.length != 0){
           var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({invtId: a.invtId}));
           this.passTable.tableData =    rec.filter(a => {
@@ -834,7 +822,6 @@ export class LovComponent implements OnInit {
                              return !limit.includes(mdl);
                            }).map(x => { x.newRec = 1; x.currAmt = x.invtAmt; return x; });
         }
-        console.log(this.passTable.tableData);
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmRecover'){
@@ -883,7 +870,6 @@ export class LovComponent implements OnInit {
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
         this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1});
         //this.passTable.tableData = data.clmpayments;
-        console.log(data.clmpayments);
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
             i.preventDefault = true;
@@ -901,7 +887,6 @@ export class LovComponent implements OnInit {
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
         this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && histTypes.includes(data.histType)});
         //this.passTable.tableData = data.clmpayments;
-        console.log(data.clmpayments);
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
             i.preventDefault = true;
@@ -961,12 +946,10 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
         var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A' && e.paytReqType == this.passData.paytReqType);
-        console.log(rec);
         if(this.limitContent.length != 0){
           var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({reqId: a.reqId}));
           this.passTable.tableData =  rec.filter(a => {
                              var mdl = JSON.stringify({reqId: a.reqId});
-                             console.log(mdl);
                              return !limit.includes(mdl);
                            });
         }
