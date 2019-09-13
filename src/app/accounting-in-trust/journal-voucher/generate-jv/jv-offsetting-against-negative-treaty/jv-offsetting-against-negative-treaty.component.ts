@@ -320,7 +320,28 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     var clmPaymentFlag = false;
     var totalPaid = 0;
 
+
     for (var i = 0; i < this.passData.tableData.length; i++) {
+      totalPaid = 0;
+      for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
+        totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        if(totalPaid > this.passData.tableData[i].balanceAmt){
+          this.errorFlag = true;
+          break;
+        }
+      }
+    }
+
+    if(this.errorFlag){
+        this.dialogMessage = 'The total Paid Amount of claims for offset on Quarter Ending must not exceed its Treaty Balance Amount.' ;
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
+
+    
+    /*for (var i = 0; i < this.passData.tableData.length; i++) {
       totalPaid = 0;
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
         //ADDED BY NECO 09/03/2019
@@ -340,8 +361,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         }
       }
     }
-
-    totalPaid = 0;
+*/
+    /*totalPaid = 0;
     for (var i = 0; i <  this.passData.tableData.length; i++) {
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
         //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
@@ -353,30 +374,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         }
         //END
       }
-    }
-
-    //added by NECO 09/04/2019
-    var totalTreatyBal: number = 0;
-    for(var k = 0; k < this.passData.tableData.length; k++){
-      totalTreatyBal += this.passData.tableData[k].balanceAmt;
-    }
-    //End
-
-    if(clmPaymentFlag){
-        this.dialogMessage = 'The total Paid Amount of claims must not exceed its Hist Amount.' ;
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-    }else if(this.errorFlag){
-        this.dialogMessage = 'The total Paid Amount of claims for offset on Quarter Ending must not exceed its Treaty Balance Amount.' ;
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-    }else if(totalTreatyBal > this.jvDetail.jvAmt){
-        this.dialogMessage = 'Total treaty balance must not exceed the JV amount.';
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-    }else{
-      this.confirm.confirmModal();
-    }
+    }*/
   }
 
   update(data){
