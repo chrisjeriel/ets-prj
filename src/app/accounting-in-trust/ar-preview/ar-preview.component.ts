@@ -213,7 +213,8 @@ export class ArPreviewComponent implements OnInit {
           a.showMG = 1;
           //F is full, L is limited, N is restricted
           if(a.updateLevel == 'N'){
-            a.uneditable = ['glShortCd','debitAmt','creditAmt']
+            a.uneditable = ['glShortCd','debitAmt','creditAmt'];
+            a.showMG = 0;
           }
         })
         this.computeTotals();
@@ -427,10 +428,13 @@ export class ArPreviewComponent implements OnInit {
   }
 
   tickChckbx(data){
-    if(data.checked && data.autoTag == 'Y'){
+    console.log(data)
+    if(data.checked && data.autoTag == 'Y' && (data.updateLevel == 'L' || data.updateLevel == 'N')){
       this.warnDeleteAuto.openNoClose();
+        this.acctEntryTbl.selected = this.acctEntryTbl.selected.filter(a=>(data.updateLevel != 'L' && data.updateLevel != 'N'));
+        console.log(this.acctEntryTbl.selected);
     }
-    this.accEntriesData.btnDisabled = this.acctEntryTbl.selected.filter(a=>a.checked && a.autoTag == 'Y').length > 0;
+    this.accEntriesData.btnDisabled = this.acctEntryTbl.selected.filter(a=>a.checked && a.autoTag == 'Y' && (data.updateLevel == 'L' || data.updateLevel == 'N')).length > 0;
   }
 
   computeTotals(){   

@@ -825,31 +825,23 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmRecover'){
-      /*this.passTable.tHeader = ['Claim No.','Co. Claim No.', 'Policy No.', 'Loss Date'];
-      this.passTable.widths =[300,300,300,150]
-      this.passTable.dataTypes = [ 'text','text', 'text', 'date'];
-      this.passTable.keys = [ 'claimNo','coClmNo', 'policyNo', 'lossDate'];
-      this.passTable.checkFlag = true;*/
-      this.passTable.tHeader = ['Claim No.','Hist. No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Paid Amount'];
-      this.passTable.widths =[250,100,200,250,300,300]
+      var histTypes = [7,8,9];
+      this.passTable.tHeader = ['Claim No','Hist No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Cummulative Payment'];
+      this.passTable.widths =[300,300,300,300,300,300]
       this.passTable.dataTypes = [ 'text','sequence-2', 'text', 'text', 'currency', 'currency',];
       this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
       this.passTable.checkFlag = true;
-      /*this.accountingService.getAcitArClmRecoverLov(this.passData.payeeNo, this.passData.currCd).subscribe((a:any)=>{
-        //this.passTable.tableData = a["soaDtlList"];
-        this.passTable.tableData = a.claimList.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1});
-        this.table.refreshTable();
-      })*/
-      this.accountingService.getClmResHistPayts(null,this.passData.payeeNo, this.passData.currCd).subscribe((a:any)=>{
-        //this.passTable.tableData = a["soaDtlList"];
-        this.passTable.tableData = a.clmpayments.filter((data)=>{return  this.passData.hide.indexOf(data.claimId)==-1 && (data.histType === 7 || data.histType === 8)});
+      this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
+        console.log(data.clmpayments);
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && histTypes.includes(data.histType)});
+        //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
             i.preventDefault = true;
           }
         }
         this.table.refreshTable();
-      })
+      });
     }else if(this.passData.selector == 'acitArInvPullout'){
       this.passTable.tHeader = ['Investment Code','Certificate No.', 'Investment', 'Investment Income', 'Bank Charge', 'Withholding Tax'];
       this.passTable.widths =[300,300,300,300,300,300]
