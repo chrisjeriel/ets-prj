@@ -854,13 +854,14 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'clmResHistPayts'){
+      var clmStatus = ['TC', 'CD', 'DN', 'CP'];
       this.passTable.tHeader = ['Claim No','Hist No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Cummulative Payment'];
       this.passTable.widths =[300,300,300,300,300,300]
       this.passTable.dataTypes = [ 'text','sequence-2', 'text', 'text', 'currency', 'currency',];
       this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1});
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && !clmStatus.includes(data.clmStatCd)});
         //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
@@ -871,13 +872,14 @@ export class LovComponent implements OnInit {
       });
     }else if(this.passData.selector == 'clmResHistPaytsOffset'){
       var histTypes = [4,5,7,8,9,10];
+      var clmStatus = ['TC', 'CD', 'DN', 'CP'];
       this.passTable.tHeader = ['Claim No','Hist No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Cummulative Payment'];
       this.passTable.widths =[300,300,300,300,300,300]
       this.passTable.dataTypes = [ 'text','sequence-2', 'text', 'text', 'currency', 'currency',];
       this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && histTypes.includes(data.histType)});
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && histTypes.includes(data.histType) && !clmStatus.includes(data.clmStatCd)});
         //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
