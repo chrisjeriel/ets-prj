@@ -256,14 +256,14 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   onClickSave(){
-    /*if(this.refundError()){
+    if(this.refundError()){
       this.dialogMessage = 'Refund must not exceed cummulative payments.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
-      
-    }*/
-    this.confirm.confirmModal();
+      this.confirm.confirmModal();
+    }
+    //this.confirm.confirmModal();
   }
 
   cancel(){
@@ -273,10 +273,10 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   refundError():boolean{
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(!this.passData.tableData[i].deleted){
-        if((this.passData.tableData[i].cumPayment > -1 &&  
+        if((this.passData.tableData[i].prevNetDue > 0 &&  this.passData.tableData[i].adjBalAmt < 0 &&
             this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment < 0)  ||
            
-           (this.passData.tableData[i].cumPayment < 0 && 
+           (this.passData.tableData[i].prevNetDue < 0 && this.passData.tableData[i].adjBalAmt > 0 &&
             this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment > 0)
           ){
           return true;

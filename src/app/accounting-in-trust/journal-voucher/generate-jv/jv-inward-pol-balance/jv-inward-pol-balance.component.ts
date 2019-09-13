@@ -388,11 +388,11 @@ export class JvInwardPolBalanceComponent implements OnInit {
   refundError():boolean{
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(!this.passData.tableData[i].deleted){
-        if((this.passData.tableData[i].cumPayment > -1 &&  
-            this.passData.tableData[i].paytAmt + this.passData.tableData[i].cumPayment < 0)  ||
+        if((this.passData.tableData[i].prevNetDue > 0 &&  this.passData.tableData[i].adjBalAmt < 0 &&
+            this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment < 0)  ||
            
-           (this.passData.tableData[i].cumPayment < 0 && 
-            this.passData.tableData[i].paytAmt + this.passData.tableData[i].cumPayment > 0)
+           (this.passData.tableData[i].prevNetDue < 0 && this.passData.tableData[i].adjBalAmt > 0 &&
+            this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment > 0)
           ){
           return true;
         }
