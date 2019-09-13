@@ -169,11 +169,11 @@ export class ArClaimCashCallComponent implements OnInit {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
       this.successDiag.open();
-    }else if(this.netPaymentsCheck()){
+    }/*else if(this.netPaymentsCheck()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
-    }else{
+    }*/else{
       this.confirm.confirmModal();
     }
   }
@@ -278,8 +278,10 @@ export class ArClaimCashCallComponent implements OnInit {
   reserveCheck(): boolean{
     for(var i of this.passData.tableData){
       if(i.edited && !i.deleted && 
-        (i.reserveAmt > 0 && i.reserveAmt - i.cumulativeAmt < i.localAmt) ||
-        (i.reserveAmt < 0 && i.reserveAmt - i.cumulativeAmt > i.localAmt)){
+        ((i.reserveAmt < 0 && i.localAmt < 0 && i.localAmt < i.reserveAmt - i.cumulativeAmt) ||
+          (i.reserveAmt > 0 && i.localAmt > 0 && i.localAmt > i.reserveAmt - i.cumulativeAmt))){  
+        /*(i.reserveAmt > 0 && i.reserveAmt - i.cumulativeAmt < i.localAmt) ||
+        (i.reserveAmt < 0 && i.reserveAmt - i.cumulativeAmt > i.localAmt)){*/
         return true;
       }
     }

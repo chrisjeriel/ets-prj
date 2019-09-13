@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter, Input} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject, forkJoin } from 'rxjs';
 import { ClaimsService, MaintenanceService, NotesService, UserService } from '@app/_services';
@@ -33,7 +33,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         addFlag:true,
   };
 
-  claimInfo = {
+  claimInfo:any = {
         claimId: '',
         claimNo: '',
         projId: '',
@@ -69,6 +69,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
 
   @ViewChild('tabset') tabset: any;
 
+  activeIdString:string = 'geninfo';
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(
@@ -77,6 +78,15 @@ export class ClaimComponent implements OnInit, OnDestroy {
           this.isInquiry = true;
         }else{
           this.isInquiry = false;
+        }
+
+        if(params['tab']!=undefined){
+          console.log(params)
+          this.activeIdString=params['tab'];
+          this.claimInfo = params;
+          this.disableClmHistory = false;
+          this.disableNextTabs = false;
+          this.disablePaytReq = false;
         }
       }
     );
@@ -139,7 +149,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
     this.disableClmHistory = ev.disableClmHistory;
     this.disableNextTabs = ev.disableNextTabs;
     this.disablePaytReq = ev.disablePaytReq;
-
+    console.log(this.claimInfo);
   }
   
   showWarnMdl(event) {

@@ -35,7 +35,7 @@
 						 	  	<div class="row">
 					                <div class="col-sm-12" style="margin-top: 14px; margin-bottom: -20px" >
 					                   <!--  <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button> -->
-					                    <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;onClickDelInvt(this.deleteBool);"  (tableDataChange)="update($event);" (searchToDb)="searchQuery($event)"></app-cust-editable-non-datatable>
+					                    <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;onClickDelInvt(this.deleteBool);this.disableBtn=true;"  (tableDataChange)="update($event);" (searchToDb)="searchQuery($event)"></app-cust-editable-non-datatable>
 					                </div>
             					</div>
 	            				<div class="row">
@@ -76,6 +76,7 @@
 									<div class="form-group col-sm">
 										<div class="col-md-13 text-center">
 											<div class="cust-btn-container">
+											<button type="button" class="cust-btn" (click)="onCLickAmortized()" [disabled]="disableBtn"><a>Amortization</a></button>
 											<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
 								            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 											</div>
@@ -93,6 +94,57 @@
 			</ngb-tab>
 		</ngb-tabset>
 </div>
+
+
+<app-modal [btnTitle]="'Amortization'" hidden id="modaAmortization" #amortizationMdl>
+    <div header>Amortization</div>
+	<div body>
+		<div class="col-sm-3" style="padding-bottom: 9px;padding: 0px">
+			<fieldset class="scheduler-border">
+					<div class="custom-row-inline-inset">
+						<div class="input-group" style="margin-bottom: -6px !important; margin-top: 10px ! important">
+							<label class="form-control-sm col-sm-5" style="padding-top:0px !important;text-align: left !important; height: 15px ! important">CPN %</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="this.selectedData.intRt | number:'1.10-10'" readonly style="border: none; height: 15px ! important">
+						</div>
+							<div class="input-group" style="margin-bottom: -6px !important;">
+								<label class="form-control-sm col-sm-5" style="padding-top:0px !important;text-align: left !important; height: 15px ! important">Int. Pay</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="this.selectedData.amortizedDesc" readonly style="border: none; height: 15px ! important">
+							</div>
+							<div class="input-group" style="margin-bottom: -6px !important;">
+								<label class="form-control-sm col-sm-5" style="padding-top:0px !important;text-align: left !important;height: 15px ! important">Price Par</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="this.selectedData.invtAmt  | number: '1.2-2'" readonly style="border: none;height: 15px ! important">
+							</div>
+							<div class="input-group" style="margin-bottom: -6px !important;">
+								<label class="form-control-sm col-sm-5" style="padding-top:0px !important;text-align: left !important;height: 15px ! important">Bought</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="this.selectedData.purDate | date: 'dd-MMM-yyyy' " readonly style="border: none;height: 15px ! important">
+							</div>
+							<div class="input-group" style="margin-bottom: -6px !important;">
+								<label class="form-control-sm col-sm-5" style="padding-top:0px !important;text-align: left !important;height: 15px ! important">Price (Cost)</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="this.selectedData.priceCost  | number: '1.2-2'" readonly style="border: none;height: 15px ! important">
+							</div>
+							<div class="input-group" style="margin-bottom: -6px !important;">
+								<label class="form-control-sm col-sm-5" style="padding-top:0px !important;text-align: left !important;height: 15px ! important">Maturity</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="this.selectedData.matVal  | number: '1.2-2'" readonly style="border: none;height: 15px ! important">
+							</div>
+							<div class="input-group" style="margin-bottom: -6px !important;">
+								<label class="form-control-sm col-sm-5" style="padding-top:0px !important;text-align: left !important;height: 15px ! important">Eff%</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="this.selectedData.amortEff | number:'1.10-10'" readonly style="border: none;height: 15px ! important">
+							</div>
+					</div>
+			</fieldset>
+		</div>
+		<div class="custom-row-inline-inset">
+			<app-cust-editable-non-datatable #amortization [passData]="passAmortData"></app-cust-editable-non-datatable>	
+		</div> 
+     </div>
+	<div footer class="text-center" style="width: 100% !important;">
+		<div >
+			<button class="cust-btn" type="button" (click)="amortizationMdl.closeModal();"><a>Return</a></button>
+		</div>
+	</div>
+
+</app-modal>
+
 
 <app-mtn-bank (selectedData)="setSelectedBank($event)" ></app-mtn-bank>
 <app-mtn-acct-int-duration (selectedData)="setSelectedDuration($event)"></app-mtn-acct-int-duration>

@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 
 
@@ -21,24 +22,11 @@ export class ProfitCommissionComponent implements OnInit {
     @ViewChild('profitCommMdl') profitCommMdl : ModalComponent;
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     @ViewChild('profitComm') profitCommtable: CustEditableNonDatatableComponent;
+    @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
-    yearList: any[] = [];
-    monthList: any[] = [ {key: 1, value: 'January'},
-    					 {key: 2, value: 'February'},
-    					 {key: 3, value: 'March'},
-    					 {key: 4, value: 'April'},
-    					 {key: 5, value: 'May'},
-    					 {key: 6, value: 'June'},
-    					 {key: 7, value: 'July'},
-    					 {key: 8, value: 'August'},
-    					 {key: 9, value: 'September'},
-    					 {key: 10,value: 'October'},
-    					 {key: 11, value: 'November'},
-    					 {key: 12, value: 'December'},]
-    fromYearCd: any;
-    fromMonthCd: any;
-    toMonthCd: any;
-    toYearCd: any;
+
+	dateFrom : any = '';
+	dateTo: any = '';   
     yearCdLov: any;
     monthCdLov: any;
     cedingDesc: any = '';
@@ -54,6 +42,13 @@ export class ProfitCommissionComponent implements OnInit {
   	cedingAbbr : any = '';
   	quotaIncome : any;
   	dataAll :any;
+  	diff: any;
+  	income: any;
+  	searchParams: any[] = [];
+    profCommDateTo: any = '';
+    profCommDateFrom: any = '';
+    dialogIcon: string = '';
+    dialogMessage: string = '';
 
 	passData:any = {
 		tableData: [],
@@ -140,6 +135,7 @@ export class ProfitCommissionComponent implements OnInit {
 		pageLength: 12,
 		uneditable: [true,true,true,true,true],
 		widths:['auto','auto','auto',120,120],
+		disableSort : true
 	}
 
 	income1:any;		  /* TRBT#PROD_GRADE */
@@ -153,8 +149,7 @@ export class ProfitCommissionComponent implements OnInit {
   	this.titleService.setTitle("Acct-IT | Profit Commission Statement");
   	this.queryModal.mdlOptions = { centered: true, backdrop: 'static', windowClass: "modal-size" };
   	/*this.queryModal.openNoClose();*/
-  	this.getYearList();
-  	this.getProfCommList();
+  	this.getProfCommList(this.searchParams);
   	this.dataAll = this.passData.tableData;
   }
 
@@ -164,11 +159,6 @@ export class ProfitCommissionComponent implements OnInit {
       } 
   	}
 
-  	getYearList(){
-  		for (let i = 0; i<100; i++){
-  			this.yearList.push(2000 + i);
-  		}
-  	}
 
   	showCedCompLOV(){
   	  this.cedingCoLOV.modal.openNoClose();
@@ -205,14 +195,19 @@ export class ProfitCommissionComponent implements OnInit {
   	}
 
   	onRowClick(event){
+  		console.log(event);
 	  	if(event !== null){
 	  		this.selectedData 	= event;
 	  		this.cedingCompDesc = event.company;
 	  		this.month 			= event.month;
 	  		this.year 			= event.year;
 	  	    this.passData.disableGeneric = false;
+	  	    this.diff = event.income - event.outgo;
+	  	    this.income = event.income;
+	  	    this.disableBtn = false;
 	  	} else {
 	  	    this.passData.disableGeneric = true;
+	  	    this.disableBtn = true;
 	  	}
   }
 
@@ -225,8 +220,8 @@ export class ProfitCommissionComponent implements OnInit {
   	this.profitCommtable.refreshTable(); 
   }
 
-  	getProfCommList(){
-  		this.as.getProfitCommSumm().subscribe(data => {
+  	getProfCommList(search?){
+  		this.as.getProfitCommSumm(search).subscribe(data => {
       		var records = data['acitProfCommSummList'];
 			for(let rec of records){
 				this.passData.tableData.push({
@@ -291,11 +286,25 @@ export class ProfitCommissionComponent implements OnInit {
   	}
 
   	searchProfitComm(){
-  		this.passData.tableData = [];
-  		this.table.overlayLoader = true;
-  		this.passData.tableData = this.dataAll.filter(a=>a.cedingId === this.cedingId && 
-  														 a.month >= this.fromMonthCd && a.month <= this.toMonthCd &&
-  														 a.year >= this.fromYearCd && a.year <= this.toYearCd );
-  		this.table.refreshTable();
+       if(this.dateTo < this.dateFrom){
+        this.dialogMessage="To Date must be greater than From Date";
+        this.dialogIcon = "error-message";
+        this.successDialog.open();
+     }else {
+        this.cedingId === null   || this.cedingId === undefined ?'':this.cedingId;
+        this.dateFrom === null || this.dateFrom === undefined ?'':this.dateFrom;
+        this.dateTo === null || this.dateTo === undefined ?'':this.dateTo;
+        this.passData.tableData = [];
+        this.table.overlayLoader = true;
+
+        this.searchParams = [{key: "cedingId", search: this.cedingId },
+                             {key: "dateTo", search: this.dateTo },
+                             {key: "dateFrom", search: this.dateFrom },
+                             ]; 
+        console.log(this.searchParams);
+        this.getProfCommList(this.searchParams)
+                    
   	}
+
+  }
 }

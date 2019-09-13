@@ -440,10 +440,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   checkBalance(){
     for(var i of this.passData.tableData){
-      console.log(i.netDue);
-      console.log(i.totalPayments);
-      console.log(i.balPaytAmt)
-      if(i.edited && !i.deleted && Math.abs(i.balPaytAmt) > Math.abs(i.prevBalance)){
+      if(i.edited && !i.deleted &&
+        ((i.prevNetDue < 0 && i.balPaytAmt < 0 && i.balPaytAmt < i.prevBalance) ||
+          (i.prevNetDue > 0 && i.balPaytAmt > 0 && i.balPaytAmt > i.prevBalance))){  
+        console.log(i.prevBalance);
+        console.log(i.balPaytAmt)
         return true;
       }
     }
@@ -487,8 +488,12 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   canRefund(): boolean{
     for(var i of this.passData.tableData){
       if(i.edited && !i.deleted &&
-        (i.prevBalance < 0 && i.balPaytAmt + i.cumPayment > 0) ||
-         (i.prevBalance > -1 && i.balPaytAmt + i.cumPayment < 0)){
+        (i.cumPayment < 0 && i.balPaytAmt + i.cumPayment > 0) ||
+         (i.cumPayment > -1 && i.balPaytAmt + i.cumPayment < 0)){
+        /*(i.prevBalance < 0 && i.balPaytAmt + i.cumPayment > 0) ||
+         (i.prevBalance > -1 && i.balPaytAmt + i.cumPayment > 0)){*/
+        console.log(i.cumPayment);
+        console.log(i.balPaytAmt)
         return true;
       }
     }

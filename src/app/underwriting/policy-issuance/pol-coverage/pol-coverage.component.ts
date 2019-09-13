@@ -1124,8 +1124,8 @@ export class PolCoverageComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareAlterationSave()
-    console.log(this.altCoverageData);
+    //this.prepareAlterationSave()
+    //console.log(this.altCoverageData);
     this.cancelBtn.clickCancel();
   }
 
