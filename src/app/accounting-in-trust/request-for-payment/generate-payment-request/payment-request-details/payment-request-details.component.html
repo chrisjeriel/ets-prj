@@ -118,7 +118,7 @@
                     <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr();"></app-cust-editable-non-datatable>
                 </ng-container>
               </ng-container>
-              <div class="form-row" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3">
+              <div class="form-row" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
                 <div class="form-group col-sm">
                   <div class="text-center">
                     <div class="cust-btn-container">
