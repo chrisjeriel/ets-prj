@@ -162,11 +162,11 @@
                         <div class="input-group alignment" style="margin-bottom: -13px !important;">
                             <label class="form-control-sm col-sm-3 text-right">Month</label>
                             <select id="m-list" [(ngModel)]="monthCdLov" class="form-control form-control-sm cust-sm col-sm-5">
-								<option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option>
+								<!-- <option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option> -->
 							</select>
 							<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Year</label>
 							<select id="y-list" [(ngModel)]="yearCdLov" class="form-control form-control-sm cust-sm col-sm-3">
-								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
+								<!-- <option *ngFor="let y of yearList" [value]="y">{{ y }}</option> -->
 							</select>
                         </div>
                      </div>
@@ -183,4 +183,4 @@
 
 <app-ceding-company #cedingComp (selectedData)="setSelectedCedComp($event);"></app-ceding-company>
 <app-ceding-company #cedingCompModal (selectedData)="setSelectedCedCompModal($event);"></app-ceding-company>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cancelBtn.onNo():null" ></app-sucess-dialog>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cancelBtn.onNo():null" ></app-sucess-dialog> -->
