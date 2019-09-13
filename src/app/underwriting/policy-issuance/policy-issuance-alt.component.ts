@@ -44,6 +44,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
     post:boolean = false;
     line:string = ""; /*Line added. TRBT#PROD_GRADE*/
 
+    disableCov:boolean = false;
+
     constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, public us: UnderwritingService) {}
 
     ngOnInit() {
@@ -68,6 +70,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
               this.policyInfo.policyNo = params['policyNo'];
               this.policyInfo.prevPolicyId = params['prevPolicyId'] ;
             }
+
+            this.disableCov = params['sumInsured'] == null;
 
             // if(this.us.fromCreateAlt) {
 

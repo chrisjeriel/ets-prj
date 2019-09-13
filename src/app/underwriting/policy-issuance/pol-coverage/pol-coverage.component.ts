@@ -763,6 +763,10 @@ export class PolCoverageComponent implements OnInit {
   getPolCoverage(){
      // this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
      this.coverageData.holdCoverPremAmt = "";
+
+     if(this.policyInfo.lastAffectingPolId != undefined){
+       this.policyId = this.policyInfo.lastAffectingPolId
+     }
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
           this.passDataSectionCover.tableData = [];
           this.projId = data.policy.project.projId;
@@ -1546,7 +1550,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   updateAlteration(data){
-    console.log('updated')
     this.prevsectionISi     = 0;
     this.prevsectionIPrem   = 0;
     this.altsectionIPrem    = 0;
@@ -1589,7 +1592,6 @@ export class PolCoverageComponent implements OnInit {
     }   
 
     this.getEditableAlt();
-    console.log(this.passData.tableData)
     for(var j=0;j<this.passData.tableData.length;j++){
       // PAUL COMPUTE EXTENSION
         if(this.policyInfo.extensionTag == 'Y' && 0 > this.passData.tableData[j].sumInsured  && this.passData.tableData[j].exDiscTag != 'Y'){
@@ -1984,7 +1986,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
    onClickSaveAlt(){
-     console.log('pasok')
      for( var i= 0; i< this.passData.tableData.length;i++){
       if(this.passData.tableData[i].cumSi < 0 && this.passData.tableData[i].addSi == 'Y'){
         this.errorFlag = true;

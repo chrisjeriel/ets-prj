@@ -12,17 +12,17 @@
 				<app-pol-item></app-pol-item>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="us.fromCreateAlt" title="Coverage">
+		<ngb-tab [disabled]="us.fromCreateAlt || (disableCov && policyInfo.fromInq == 'true')" title="Coverage">
 			<ng-template ngbTabContent>
 				<app-pol-coverage [policyInfo]="policyInfo" [alteration]="true"></app-pol-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="us.fromCreateAlt" title="ALOP" *ngIf="policyInfo.showPolAlop">
+		<ngb-tab [disabled]="us.fromCreateAlt || (disableCov && policyInfo.fromInq == 'true')" title="ALOP" *ngIf="policyInfo.showPolAlop">
 			<ng-template ngbTabContent>
 				<app-pol-alop [policyInfo]="policyInfo" [alterFlag]="true"></app-pol-alop>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="us.fromCreateAlt" title="Inward Pol Balance">
+		<ngb-tab [disabled]="us.fromCreateAlt || (disableCov && policyInfo.fromInq == 'true')" title="Inward Pol Balance">
 			<ng-template ngbTabContent>
 				<app-inward-pol-balance [policyInfo]="policyInfo"></app-inward-pol-balance>
 			</ng-template>

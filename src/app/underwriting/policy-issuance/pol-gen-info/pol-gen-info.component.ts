@@ -339,9 +339,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     if(this.newAlt) {
       this.form.control.markAsDirty();
-    } else {
-      setTimeout(() => { this.form.control.markAsPristine() }, 1000);
-    }
+    } 
+    //else {
+      //setTimeout(() => { this.form.control.markAsPristine() }, 1000);
+    //}
  
     this.getValidBookingMth();
   }
@@ -727,7 +728,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
               });  */
 
               this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
-                   this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+                   this.policyInfo.coInsuranceFlag = (data.policy.length > 1)? true : false;
 
                    this.emitPolicyInfoId.emit({
                     refPolicyId: this.refPolicyId,
@@ -774,7 +775,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         });  */
 
         this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
-             this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+             this.policyInfo.coInsuranceFlag = (data.policy.length > 1)? true : false;
 
              this.emitPolicyInfoId.emit({
               refPolicyId: this.refPolicyId,
