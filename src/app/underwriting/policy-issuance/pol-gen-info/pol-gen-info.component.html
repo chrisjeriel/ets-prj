@@ -981,7 +981,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input name="input197" type="checkbox" [checked]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y') ? 'N' : 'Y';" disabled>
+										<input name="input197" type="checkbox" [ngModel]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input name="input198" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Booked" disabled class="form-control form-control-sm white-bg">
@@ -991,7 +991,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input name="input199" type="checkbox" [checked]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y') ? 'N' : 'Y';" disabled>
+										<input name="input199" type="checkbox" [ngModel]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input name="input200" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Alteration" disabled class="form-control form-control-sm white-bg">
@@ -1003,7 +1003,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input name="input201" type="checkbox" [checked]="policyInfo.govtTag === 'Y'" (change)="policyInfo.govtTag = (policyInfo.govtTag === 'Y') ? 'N' : 'Y';">
+										<input name="input201" type="checkbox" [ngModel]="policyInfo.govtTag === 'Y'" (change)="policyInfo.govtTag = (policyInfo.govtTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
 								<input name="input202" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Government" disabled class="form-control form-control-sm white-bg">
@@ -1013,7 +1013,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input name="input203" type="checkbox" [checked]="policyInfo.specialPolicyTag === 'Y'" (change)="policyInfo.specialPolicyTag = (policyInfo.specialPolicyTag === 'Y') ? 'N' : 'Y';">
+										<input name="input203" type="checkbox" [ngModel]="policyInfo.specialPolicyTag === 'Y'" (change)="policyInfo.specialPolicyTag = (policyInfo.specialPolicyTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
 								<input name="input204" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Special Policy" disabled class="form-control form-control-sm white-bg">
@@ -1026,7 +1026,7 @@
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
 										<!-- <input name="input205" type="checkbox" [(ngModel)]="ocChecked"> -->
-										<input name="input206" type="checkbox" [checked]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y') ? 'N' : 'Y';" disabled>
+										<input name="input206" type="checkbox" [ngModel]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input name="input207" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Open Cover" disabled class="form-control form-control-sm white-bg">
@@ -1036,7 +1036,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input name="input208" type="checkbox" [checked]="policyInfo.instTag === 'Y'" (change)="policyInfo.instTag = (policyInfo.instTag === 'Y') ? 'N' : 'Y';">
+										<input name="input208" type="checkbox" [ngModel]="policyInfo.instTag === 'Y'" (change)="policyInfo.instTag = (policyInfo.instTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
 								<input name="input209" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Installment" disabled class="form-control form-control-sm white-bg">
@@ -1048,7 +1048,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input name="input210" type="checkbox" [checked]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y') ? 'N' : 'Y';" disabled>
+										<input name="input210" type="checkbox" [ngModel]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input name="input211" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Hold Cover" disabled class="form-control form-control-sm white-bg">
@@ -1058,7 +1058,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input name="input212" type="checkbox" [checked]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y') ? 'N' : 'Y';" disabled>
+										<input name="input212" type="checkbox" [ngModel]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input name="input213" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Extension" disabled class="form-control form-control-sm white-bg">
@@ -1071,7 +1071,7 @@
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
 										<!-- <input name="input214" type="checkbox" [(ngModel)]="decChecked" (click)="toggleRadioBtnSet();"> -->
-										<input name="input215" type="checkbox" [checked]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y') ? 'N' : 'Y'; toggleRadioBtnSet();" disabled>
+										<input name="input215" type="checkbox" [ngModel]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y') ? 'N' : 'Y'; toggleRadioBtnSet();" disabled>
 									</div>
 								</div>
 								<input name="input216" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Declaration" disabled class="form-control form-control-sm white-bg">
@@ -1081,7 +1081,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input name="input217" type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y') ? 'N' : 'Y';" disabled>
+										<input name="input217" type="checkbox" [ngModel]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input name="input218" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Exclude Distribution" disabled class="form-control form-control-sm white-bg">
@@ -2426,7 +2426,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input448" type="checkbox" [checked]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
+									<input name="input448" type="checkbox" [ngModel]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
 							<input name="input449" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Booked" disabled class="form-control form-control-sm white-bg">
@@ -2436,7 +2436,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input450" type="checkbox" [checked]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
+									<input name="input450" type="checkbox" [ngModel]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
 							<input name="input451" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Alteration" disabled class="form-control form-control-sm white-bg">
@@ -2448,7 +2448,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input452" type="checkbox" [checked]="policyInfo.govtTag === 'Y'" (change)="policyInfo.govtTag = (policyInfo.govtTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+									<input name="input452" type="checkbox" [ngModel]="policyInfo.govtTag === 'Y'" (change)="policyInfo.govtTag = (policyInfo.govtTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
 							<input name="input453" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Government" disabled class="form-control form-control-sm white-bg">
@@ -2458,7 +2458,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input454" type="checkbox" [checked]="policyInfo.specialPolicyTag === 'Y'" (change)="policyInfo.specialPolicyTag = (policyInfo.specialPolicyTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+									<input name="input454" type="checkbox" [ngModel]="policyInfo.specialPolicyTag === 'Y'" (change)="policyInfo.specialPolicyTag = (policyInfo.specialPolicyTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
 							<input name="input455" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Special Policy" disabled class="form-control form-control-sm white-bg">
@@ -2470,7 +2470,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input456" type="checkbox" [checked]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
+									<input name="input456" type="checkbox" [ngModel]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
 							<input name="input457" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Open Cover" disabled class="form-control form-control-sm white-bg">
@@ -2480,7 +2480,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input458" type="checkbox" [checked]="policyInfo.instTag === 'Y'" (change)="policyInfo.instTag = (policyInfo.instTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
+									<input name="input458" type="checkbox" [ngModel]="policyInfo.instTag === 'Y'" (change)="policyInfo.instTag = (policyInfo.instTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
 							<input name="input459" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Installment" disabled class="form-control form-control-sm white-bg">
@@ -2492,7 +2492,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input460" type="checkbox" [checked]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
+									<input name="input460" type="checkbox" [ngModel]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
 							<input name="input461" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Hold Cover" disabled class="form-control form-control-sm white-bg">
@@ -2502,7 +2502,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input462" type="checkbox" [checked]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
+									<input name="input462" type="checkbox" [ngModel]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
 							<input name="input463" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Extension" disabled class="form-control form-control-sm white-bg">
@@ -2514,7 +2514,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input464" type="checkbox" [checked]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y')? 'N' : 'Y'; toggleRadioBtnSet();" disabled>
+									<input name="input464" type="checkbox" [ngModel]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y')? 'N' : 'Y'; toggleRadioBtnSet();" disabled>
 								</div>
 							</div>
 							<input name="input465" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Declaration" disabled class="form-control form-control-sm white-bg">
@@ -2524,7 +2524,7 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input name="input466" type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+									<input name="input466" type="checkbox" [ngModel]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
 							<input name="input467" type="text" style="font-size: 11px !important; margin-left: 0px !important;" value="Exclude Distribution" disabled class="form-control form-control-sm white-bg">
@@ -2686,5 +2686,5 @@
 </app-modal>
 <app-cancel-button #dedCancel (onYes)="saveDeductibles('cancel')" (no)="deductiblesModal.closeModal()"></app-cancel-button>
 <app-sucess-dialog #dedSuccess [message]="dialogMsg" [icon]="dialogIcon" (onOk)="onClickOkDed()"></app-sucess-dialog>
-<app-confirm-save #dedConSave (onYes)="saveDeductibles();"></app-confirm-save>
+<app-confirm-save #dedConSave (onYes)="saveDeductibles();" [form]="deductiblesTable.form?.first"></app-confirm-save>
 </form>
