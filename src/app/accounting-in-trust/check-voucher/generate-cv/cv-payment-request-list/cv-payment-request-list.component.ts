@@ -238,13 +238,14 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
    onRowClick(event){
+     console.log(event);
     if(event != null){
       this.paytData.reqId = event.reqId;
       this.paytData.createUser = event.createUser;
       this.paytData.createDate = this.ns.toDateTimeString(event.createDate);
       this.paytData.updateUser = event.updateUser;
       this.paytData.updateDate = this.ns.toDateTimeString(event.updateDate);
-      this.paytData.enabViewDtl = true;
+      this.paytData.enabViewDtl = (event.paytReqNo != '')?true:false;
     }else{
       this.paytData.enabViewDtl = false;
     }
