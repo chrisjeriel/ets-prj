@@ -488,8 +488,8 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   canRefund(): boolean{
     for(var i of this.passData.tableData){
       if(i.edited && !i.deleted &&
-        (i.cumPayment < 0 && i.balPaytAmt + i.cumPayment > 0) ||
-         (i.cumPayment > -1 && i.balPaytAmt + i.cumPayment < 0)){
+        (i.prevNetDue < 0 && i.balPaytAmt > 0 && i.balPaytAmt + i.cumPayment > 0) ||
+         (i.prevNetDue > 0 && i.balPaytAmt < 0 && i.balPaytAmt + i.cumPayment < 0)){
         /*(i.prevBalance < 0 && i.balPaytAmt + i.cumPayment > 0) ||
          (i.prevBalance > -1 && i.balPaytAmt + i.cumPayment > 0)){*/
         console.log(i.cumPayment);
