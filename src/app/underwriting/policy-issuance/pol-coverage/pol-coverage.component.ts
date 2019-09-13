@@ -922,27 +922,31 @@ export class PolCoverageComponent implements OnInit {
 
   onClickCat(){
     if(!this.alteration){
-      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
-        this.promptClickCat = true;
-        this.onClickSave();
-      }else{
-        this.promptClickCat = false;
-        this.getCATPerils();
-        setTimeout(()=>{
-          this.catPerilMdl.openNoClose();
-        },0);
-      }
+      // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+      //   this.promptClickCat = true;
+      //   this.onClickSave();
+      // }else{
+      //   this.promptClickCat = false;
+      //   this.getCATPerils();
+      //   setTimeout(()=>{
+      //     this.catPerilMdl.openNoClose();
+      //   },0);
+      // }
+      this.getCATPerils();
+      this.catPerilMdl.openNoClose();
     }else{
-      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
-        this.promptClickCat = true;
-        this.onClickSaveAlt();
-      }else{
-        this.promptClickCat = false;
-        this.getCATPerils();
-        setTimeout(()=>{
-          this.catPerilMdlAlt.openNoClose();
-        },0);
-      }
+      // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+      //   this.promptClickCat = true;
+      //   this.onClickSaveAlt();
+      // }else{
+      //   this.promptClickCat = false;
+      //   this.getCATPerils();
+      //   setTimeout(()=>{
+      //     this.catPerilMdlAlt.openNoClose();
+      //   },0);
+      // }
+      this.getCATPerils();
+      this.catPerilMdlAlt.openNoClose();
     }
   }
 
