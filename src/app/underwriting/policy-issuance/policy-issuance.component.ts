@@ -59,6 +59,7 @@ export class PolicyIssuanceComponent implements OnInit {
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
+            this.policyInfo.insuredDesc = params['insured'];
             if(this.fromInq == 'true'){
               this.title = "Policy / Inquiry / Policy Inquiry";
             }
@@ -131,7 +132,10 @@ export class PolicyIssuanceComponent implements OnInit {
 
   getPolInfo(event){      
       //this.policyInfo = event;
-
+      // for (let i of Object.keys(event)) {
+      //   if(this.policyInfo[i] == undefined || this.policyInfo[i]==null)
+      //     this.policyInfo[i] = event[i]
+      // }
       this.policyInfo.policyId = event.policyId;
       this.policyInfo.insuredDesc =  event.insuredDesc;
       this.policyInfo.riskId =  event.riskId;

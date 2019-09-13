@@ -445,9 +445,8 @@ export class PolCoverageComponent implements OnInit {
       this.passDataDeductibles.checkFlag = false;
       this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       this.passDataCATPerils.uneditable = [true,true,true]
-
       this.passData.tHeaderWithColspan.shift();
-      this.passData2.tHeaderWithColspan.shift();
+      //this.passData2.tHeaderWithColspan.shift();
 
     }
   }
@@ -787,6 +786,12 @@ export class PolCoverageComponent implements OnInit {
           this.totalPrem = 0;
           var infoData = data.policy.project.coverage.sectionCovers;
             for(var i = 0; i < infoData.length;i++){
+
+              if(this.policyInfo.fromSummary){
+                infoData[i].sumInsured = infoData[i].cumSi
+                infoData[i].premAmt = infoData[i].cumPrem
+              }
+
               this.passDataSectionCover.tableData.push(infoData[i]);
               this.passDataSectionCover.tableData[i].cumPrem = this.passDataSectionCover.tableData[i].discountTag == 'Y' ? this.passDataSectionCover.tableData[i].cumPrem:this.passDataSectionCover.tableData[i].cumSi * (this.passDataSectionCover.tableData[i].premRt /100 )
               
