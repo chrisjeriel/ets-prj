@@ -9,6 +9,7 @@ import { DummyInfo } from '../../../_models';
 import { FormsModule }   from '@angular/forms';
 import { NotesService, UploadService } from '@app/_services';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'app-cust-editable-non-datatable',
@@ -18,7 +19,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
-    @ViewChildren('myForm') form: QueryList<any>;
+    @ViewChildren('myForm') form: QueryList<NgForm>;
     @ViewChild('api') pagination: any;
     @ViewChild('table') table: ElementRef;
     @ViewChild(SucessDialogComponent) successDiag : SucessDialogComponent;
