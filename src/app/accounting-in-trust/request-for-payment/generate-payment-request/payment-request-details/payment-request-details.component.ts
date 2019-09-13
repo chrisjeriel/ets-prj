@@ -646,6 +646,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.warn.push((e.returnAmt > e.balance)?2:0);
       }
       
+      
     });
 
     // if(this.allotedAmt == 0 || this.allotedAmt == '' || this.allotedAmt == null){
