@@ -217,6 +217,8 @@ export class JvInvestmentRollOverComponent implements OnInit {
   			this.jvDetails.delRollOver.push(this.passData.tableData[i]);
   		}
   	}
+    this.jvDetails.tranId = this.jvDetail.tranId;
+    this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
   saveData(){

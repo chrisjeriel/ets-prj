@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
   <h4>Claim / {{isInquiry ? 'Claim Inquiry' : 'Claim Processing'}}</h4>
-  <ngb-tabset #tabset (tabChange)="onTabChange($event)">
+  <ngb-tabset #tabset (tabChange)="onTabChange($event)" [activeId]="activeIdString">
     <ngb-tab title="General Info" id="geninfo">
       <ng-template ngbTabContent>
         <app-clm-gen-info-claim (emitClaimInfoId)="getClmInfo($event)" [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-clm-gen-info-claim>
@@ -21,9 +21,9 @@
         <app-claim-distribution [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-claim-distribution>
       </ng-template>
     </ngb-tab>
-    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs || disablePaytReq" title="Generate Payment Request">
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs || disablePaytReq" title="Generate Payment Request" id="paymentRequest">
       <ng-template ngbTabContent>
-        <app-clm-claim-payment-request [claimInfo]="claimInfo"></app-clm-claim-payment-request>
+        <app-clm-claim-payment-request [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-clm-claim-payment-request>
       </ng-template>
     </ngb-tab>
     <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Attachment" id="attachment">

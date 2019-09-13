@@ -1181,6 +1181,20 @@ export class UnderwritingService {
             .set('policyId', policyId);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolInstTagAcctDate', {params});
     }
+
+    getValidBookingDate(params){
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveValidBookingDate', {params:params});
+    }
+
+    updateOCStatus(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolOpenCoverStatus',JSON.stringify(params),header);
+        
+    }
 }            
 
             

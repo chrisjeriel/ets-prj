@@ -215,7 +215,7 @@ export class JvAccountingEntriesComponent implements OnInit {
   retrieveJVDetails(){
     var total = 0;
     this.errorFlag = false;
-    if(this.jvType == 1){
+    if(this.jvType === 1){
       this.accountingService.getJVInwPolBal(this.jvDetails.tranId,'').subscribe((data:any) => {
         var datas = data.inwPolBal;
 
@@ -227,7 +227,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           this.errorFlag = true;
         }
       });
-    }if(this.jvType == 2){
+    }else if(this.jvType === 2){
       this.accountingService.getAcitJVZeroBal(this.jvDetails.tranId,'').subscribe((data:any) => {
         console.log(data)
         var datas = data.zeroBal;
@@ -239,7 +239,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           this.errorFlag = true;
         }
       });
-    }if(this.jvType == 3){
+    }else if(this.jvType === 3){
       this.accountingService.getAcitJVPremRes(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.premResRel;
         for (var i = 0; i < datas.length; i++) {
@@ -250,7 +250,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           this.errorFlag = true;
         }
       });
-    }if(this.jvType == 4){
+    }else if(this.jvType === 4){
       this.accountingService.getAcitJVOverdue(this.jvDetails.tranId,'').subscribe((data:any) => {
         var datas = data.overDueAccts;
           for (var i = 0; i < datas.length; i++) {
@@ -260,16 +260,38 @@ export class JvAccountingEntriesComponent implements OnInit {
             this.errorFlag = true;
           }
       });
-    }if(this.jvType == 6){
+    }else if(this.jvType === 5){
+      this.accountingService.getNegativeTreaty(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.negativeTrty;
+        for (var i = 0; i < datas.length; i++) {
+          total += datas[i].balanceAmt
+        }
+
+        if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+      });
+    }else if(this.jvType === 6){
       this.accountingService.getAcctTrtyBal(this.jvDetails.tranId).subscribe((data:any) => {
-        var datas = data.overDueAccts;
+        var datas = data.acctTreatyBal;
         console.log(datas);
-          /*for (var i = 0; i < datas.length; i++) {
-            total += datas[i].overdueInt
+          for (var i = 0; i < datas.length; i++) {
+            total += datas[i].balanceAmt
           }
           if(total != this.jvDetails.jvAmt){
             this.errorFlag = true;
-          }*/
+          }
+      });
+    }else if(this.jvType === 7){
+      this.accountingService.getRecievableLosses(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.receivables;
+        console.log(datas);
+          for (var i = 0; i < datas.length; i++) {
+            total += datas[i].clmPaytAmt
+          }
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
       });
     }
   }
@@ -323,7 +345,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.table.refreshTable();
   }
 
-  onTabChange(data){
+  tableDataChange(data){
     console.log(data)
     this.debitTotal = 0;
     this.creditTotal = 0;
@@ -334,5 +356,8 @@ export class JvAccountingEntriesComponent implements OnInit {
     }
 
      this.variance = this.debitTotal - this.creditTotal;
+    if(this.variance === 0){
+      this.notBalanced = false;
+    }
   }
 }

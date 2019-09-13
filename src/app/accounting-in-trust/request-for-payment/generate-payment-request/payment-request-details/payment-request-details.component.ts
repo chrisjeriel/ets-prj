@@ -280,7 +280,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     tableData     : [],
     tHeader       : ['Sub-Distribution of Pool & Munich Re','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
     dataTypes     : ['text','percent','text','percent','currency','currency'],
-    keys          : ['cedingName','baseShrPct','currCd','currRt','actualShrAmt','localAmt'],
+    keys          : ['cedingName','actualShrPct','currCd','currRt','actualShrAmt','localAmt'],
     paginateFlag  : true,
     infoFlag      : true,
     checkFlag     : false,
@@ -354,7 +354,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() => {
-      $('.globalLoading').removeClass('globalLoading;')  
+      $('.globalLoading').removeClass('globalLoading;');
     },0);
     
     var d = new Date();
@@ -1522,8 +1522,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getAcctPrqServFee(gnrt?) {
-    this.servFeeMainTbl.overlayLoader = true;
-    this.servFeeSubTbl.overlayLoader = true;
+    setTimeout(() => {
+      this.servFeeMainTbl.refreshTable();
+      this.servFeeSubTbl.refreshTable();
+      this.servFeeMainTbl.overlayLoader = true;
+      this.servFeeSubTbl.overlayLoader = true;
+    }, 0);
 
     if(gnrt == undefined) {
       this.acctService.getAcctPrqServFee('normal', this.requestData.reqId).subscribe(data => {

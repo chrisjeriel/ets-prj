@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {  NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
+import { UnderwritingService, NotesService} from '@app/_services';
 
 @Component({
   selector: 'app-pol-issuance-open-cover-letter',
@@ -11,7 +12,7 @@ import { Subject } from 'rxjs';
 })
 export class PolIssuanceOpenCoverLetterComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal) { }
+  constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, private uw: UnderwritingService, private ns: NotesService) { }
 
   @ViewChild('tabset') tabset: any;
   policyInfo:any;
@@ -22,6 +23,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
   ngOnInit() {
   	this.route.params.subscribe(a=>{
   		this.policyInfo = a;
+      console.log(this.policyInfo);
       this.inqFlag = a['inqFlag'] == 'true';
       if(this.inqFlag){
         this.title = "Policy / Inquiry / Open Cover Inquiry /"
@@ -65,6 +67,14 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
 
     showApprovalModal(content) {
       this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+    }
+
+    changeOpenCovStatus(){
+      let params:any = {
+                          policyIdOc:this.policyInfo.policyIdOc,
+                          updateUser:this.ns.getCurrentUser()
+                        };
+      this.uw.updateOCStatus(params).subscribe(a=>console.log(a));
     }
 
 }

@@ -138,7 +138,7 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Processed By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.processedBy" appRequired tabindex="7" [readonly]="isInquiry">
+                            <input type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.processedBy" (ngModelChange)="claimData.processedBy=$event.toUpperCase()" (change)="checkCode($event, 'processedBy')" appRequired tabindex="7" [readonly]="isInquiry">
                             <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                 <a><i class="fa fa-search" (click)="showUsersLOV()"></i></a>
                             </div>
@@ -844,10 +844,10 @@
 <app-mtn-clm-event-type #clmEventTypeLOV id="clmEventTypeLOV" (selectedData)="setClmEventType($event)" [filters]="clmEventTypeFilter"></app-mtn-clm-event-type>
 <app-mtn-adjuster #adjusterLOV (selectedData)="setSelectedAdjuster($event)" [exclude]="hiddenAdj" [lovCheckBox]="true"></app-mtn-adjuster>
 <app-mtn-adjuster #adjusterLOVMain (selectedData)="setSelectedMainAdjuster($event)" ></app-mtn-adjuster>
-<app-mtn-users id="usersLOV" (selectedData)="setProcessedBy($event)"></app-mtn-users>
+<app-mtn-users #usersLov id="usersLOV" (selectedData)="setProcessedBy($event)"></app-mtn-users>
 
 <app-confirm-save #adjConfirmSave (onYes)="adjSave()"></app-confirm-save>
-<app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? modalService.dismissAll() : null"></app-sucess-dialog>
+<app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelAdj ? modalService.dismissAll() : null"></app-sucess-dialog>
 <app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="modalService.dismissAll(); onCancelNo()"></app-cancel-button>
 
 <app-confirm-save #confirmSave (onYes)="save()"></app-confirm-save>

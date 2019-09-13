@@ -78,10 +78,10 @@ export class RequestForPaymentComponent implements OnInit {
         i.createDate = this.ns.toDateTimeString(i.createDate);
         i.updateDate = this.ns.toDateTimeString(i.updateDate);
 
-        if(i.tranStat != null && i.tranStat != 'O') {
+        /*if(i.tranStat != null && i.tranStat != 'O') {
           i.reqStatus = i.tranStat;
           i.reqStatusDesc = i.tranStatDesc;
-        }
+        }*/
 
         return i;
       });

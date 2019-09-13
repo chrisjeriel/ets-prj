@@ -68,4 +68,30 @@ export class PaymentRequestsComponent implements OnInit {
         this.modalService.dismissAll();
         this.modalService.open(this.confirmation,  { centered: true, windowClass : 'modal-size'} );
     }
+
+
+  toPaytReq(data){
+    console.log(data)
+    let line = data.policyNo.split('-')[0];
+      this.router.navigate(
+                      ['/claims-claim', {
+                          from: 'edit',
+                          readonly: true,
+                          claimId: data.claimId,
+                          claimNo: data.claimNo,
+                          line: line,
+                          exitLink: 'payment-request',
+                          tab: 'paymentRequest',
+
+                          clmStatus:data.clmStatus,
+                          insuredDesc:data.insuredDesc,
+                          policyId:data.policyId,
+                          policyNo:data.policyNo,
+                          projId:data.projId,
+                          riskId:'',
+                          riskName:data.riskName,
+                      }],
+                      { skipLocationChange: true }
+        );
+  }
 }

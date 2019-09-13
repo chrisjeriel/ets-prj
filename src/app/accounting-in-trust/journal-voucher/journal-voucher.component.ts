@@ -105,7 +105,7 @@ export class JournalVoucherComponent implements OnInit {
       }
 
       this.passDataJVListing.tableData.forEach(a => {
-        if(a.transactions.tranStat != 'O') {
+        if(a.transactions.tranStat != 'O' && a.transactions.tranStat != 'C') {
           a.jvStatus = a.transactions.tranStat;
           a.jvStatusName = a.transactions.tranStatDesc;
         }

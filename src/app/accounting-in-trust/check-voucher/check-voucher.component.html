@@ -8,7 +8,7 @@
 					<div class="col-sm-12">
 						<fieldset class="scheduler-border" style="margin-top: 10px !important; padding-top: 3px !important; padding-bottom: 15px !important;">
 							<div class="input-group text-center" style="margin-bottom: -14px !important;">
-								<div class="col-sm">
+								<!-- <div class="col-sm">
 									<input type="radio" name="tranStat" id="statNw" value="new" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
 									<label for="statNw" class="text-left">&nbsp;New</label>
 								</div>
@@ -24,10 +24,6 @@
 									<input type="radio" name="tranStat" id="statPr" value="printed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
 									<label for="statPr" class="text-left">&nbsp;Printed</label>
 								</div>
-								<!-- <div class="col-sm">
-									<input type="radio" name="tranStat" id="statCn" value="cancelled" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
-									<label for="statCn" class="text-left">&nbsp;Cancelled</label>
-								</div> -->
 								<div class="col-sm">
 									<input type="radio" name="tranStat" id="statCl" value="closed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
 									<label for="statCl" class="text-left">&nbsp;Closed</label>
@@ -39,6 +35,20 @@
 								<div class="col-sm-2">
 									<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
 									<label for="statDl" class="text-left">&nbsp;Cancelled / Deleted</label>
+								</div> -->
+								<div class="w-100 text-center">
+									<input type="radio" name="tranStat" id="statNw" value="new" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+									<label for="statNw" class="text-left cust-mg">&nbsp;New</label>
+									<input type="radio" name="tranStat" id="statFc" value="for finance checking" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+									<label for="statFc" class="text-left cust-mg">&nbsp;For Finance Checking</label>
+									<input type="radio" name="tranStat" id="statOk" value="ok for printing" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+									<label for="statOk" class="text-left cust-mg">&nbsp;OK for Printing</label>
+									<input type="radio" name="tranStat" id="statPr" value="printed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+									<label for="statPr" class="text-left cust-mg">&nbsp;Printed</label>
+									<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+									<label for="statPs" class="text-left cust-mg">&nbsp;Posted</label>
+									<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="getAcitCv()">
+									<label for="statDl" class="text-left">&nbsp;Cancelled</label>
 								</div>
 							</div>
 						</fieldset>
