@@ -168,11 +168,11 @@ export class JvAppPaymentsZeroComponent implements OnInit {
         this.passData.tableData[this.passData.tableData.length - 1].dueDate  = datas[i].dueDate;
         this.passData.tableData[this.passData.tableData.length - 1].currCd  = datas[i].currCd;
         this.passData.tableData[this.passData.tableData.length - 1].currRate  = datas[i].currRate;
-        this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt  = datas[i].balPremDue;
-        this.passData.tableData[this.passData.tableData.length - 1].prevRiComm  = datas[i].balRiComm;
-        this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat  = datas[i].balRiCommVat;
-        this.passData.tableData[this.passData.tableData.length - 1].prevCharges  = datas[i].balChargesDue;
-        this.passData.tableData[this.passData.tableData.length - 1].prevNetDue  = datas[i].balPremDue - datas[i].balRiComm - datas[i].balRiCommVat + datas[i].balChargesDue;
+        this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt  = datas[i].prevPremAmt;
+        this.passData.tableData[this.passData.tableData.length - 1].prevRiComm  = datas[i].prevRiComm;
+        this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat  = datas[i].prevRiCommVat;
+        this.passData.tableData[this.passData.tableData.length - 1].prevCharges  = datas[i].prevCharges;
+        this.passData.tableData[this.passData.tableData.length - 1].prevNetDue  = datas[i].prevPremAmt - datas[i].prevRiComm - datas[i].prevRiCommVat + datas[i].prevCharges;
         this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = datas[i].tempPayments + datas[i].totalPayments;
         this.passData.tableData[this.passData.tableData.length - 1].cumPayment = datas[i].cumPayment;
         this.passData.tableData[this.passData.tableData.length - 1].balance  = datas[i].balAmtDue;
