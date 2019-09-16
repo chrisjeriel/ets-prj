@@ -96,6 +96,13 @@ export class AcctArListingsComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Acknowledgement Receipt");
+    this.as.cvFilter = '';
+    this.as.jvFilter = '';
+    this.as.prqFilter = '';
+
+    if(this.as.arFilter != '') {
+      this.tranStat = this.as.arFilter;
+    }
 
     setTimeout(() => {
       this.table.refreshTable();
@@ -130,10 +137,12 @@ export class AcctArListingsComponent implements OnInit {
    }
 
   toGenerateARAdd() {
+    this.as.arFilter = this.tranStat;
   	this.router.navigate(['/accounting-in-trust', { action: 'add' }], { skipLocationChange: true });
   }
 
   toGenerateAREdit(data) {
+    this.as.arFilter = this.tranStat;
     console.log(data);
     this.record = {
       tranId: data.tranId,
@@ -146,7 +155,7 @@ export class AcctArListingsComponent implements OnInit {
       amount: data.arAmt
     }
 
-    this.router.navigate(['/accounting-in-trust', { slctd: JSON.stringify(this.record), action: 'edit' }], { skipLocationChange: true });
+    this.router.navigate(['/accounting-in-trust', { slctd: JSON.stringify(this.record), action: 'edit', tranStat: this.tranStat }], { skipLocationChange: true });
   }
 
   onRowClick(data){
