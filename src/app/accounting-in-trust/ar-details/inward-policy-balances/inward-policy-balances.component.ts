@@ -25,7 +25,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   @Input() record: any = {};
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
 
-  passData: any = {
+  /*passData: any = {
     tableData: [],
     tHeaderWithColspan: [{header:'', span:1},{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
     //pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance'],
@@ -60,12 +60,13 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
         showMG: 1
     },
     total: [null,null,null, null, null, 'Total', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'],
-/*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
     widths: [170, 100, 50, 1, 30, 85,110, 110, 110,110,110,110,110,110,110,110,110,110,110,110,],
     keys: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
     small: false,
-  };
+  };*/
+
+  passData: any = {};
 
   passLov: any = {
     selector: 'acitSoaDtlAr',
@@ -91,10 +92,13 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   selected: any;
   $sub: any;
 
-  constructor(private titleService: Title, private accountingService: AccountingService, private ns: NotesService) { }
+  constructor(private titleService: Title, private as: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Inward Policy Balances");
+    //call function in accounting.service.ts
+    this.passData = this.as.getInwardPolicyKeys('AR');
+    //end
     console.log(this.record.payeeNo);
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
@@ -123,7 +127,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   retrieveInwPolBal(){
     this.passData.tableData = [];
-    this.accountingService.getAcitArInwPolBal(this.record.tranId, 1).subscribe( //billId for Inward Policy Balances is always 1
+    this.as.getAcitArInwPolBal(this.record.tranId, 1).subscribe( //billId for Inward Policy Balances is always 1
       (data: any)=>{
         if(data.arInwPolBal.length !== 0){
           this.allotedAmt = data.arInwPolBal[0].allotedAmt;
@@ -152,7 +156,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   retrieveAgingSoaDtl(){
-    this.accountingService.getAcitSoaDtl('','','',this.record.payeeNo).subscribe(
+    this.as.getAcitSoaDtl('','','',this.record.payeeNo).subscribe(
       (data: any)=>{
         data.soaDtlList = data.soaDtlList.filter(a=>{console.log(a);return a.balance > -1;});
         this.passData.tableData = data.soaDtlList;
@@ -292,7 +296,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     }
     console.log(params);
 
-    this.accountingService.saveAcitArInwPolBal(params).subscribe(
+    this.as.saveAcitArInwPolBal(params).subscribe(
       (data:any)=>{
         if(data.returnCode === 0){
           this.dialogIcon = 'error';
@@ -363,7 +367,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       data[index].netDue = data[index].prevNetDue - data[index].totalPayments;*/
       console.log(data);
       /*if(this.selected.add){
-        this.accountingService.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo).subscribe(
+        this.as.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo).subscribe(
           (soaDtl: any)=>{
             console.log(soaDtl.soaDtlList[0]);
             let soa = soaDtl.soaDtlList[0];
@@ -394,8 +398,8 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
         );
       }else{
         console.log('aaaaaa');
-        var sub$ = forkJoin(this.accountingService.getAcitArInwPolBal(this.record.tranId, 1),
-                            this.accountingService.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo)).pipe(map(([inw, agingsoa]) => { return { inw, agingsoa}; }));
+        var sub$ = forkJoin(this.as.getAcitArInwPolBal(this.record.tranId, 1),
+                            this.as.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo)).pipe(map(([inw, agingsoa]) => { return { inw, agingsoa}; }));
         this.$sub = sub$.subscribe((forked: any)=>{
           let inwPolBal = forked.inw.arInwPolBal.filter(a=>{return a.soaNo == this.selected.soaNo})[0];
           let agingSoa  = forked.agingsoa.soaDtlList[0];
@@ -432,6 +436,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   parseCurrency(data){
     return parseFloat(data.replace(/,/g, ''));
   }
+
 
   //ALL VALIDATIONS STARTS HERE
   checkVariance(): boolean{
