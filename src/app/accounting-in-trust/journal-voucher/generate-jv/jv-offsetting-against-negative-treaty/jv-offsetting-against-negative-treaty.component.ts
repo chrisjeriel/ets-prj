@@ -456,4 +456,15 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   cancel(){
     this.cancelBtn.clickCancel();
   }
+
+  refundError():boolean{
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(!this.passData.tableData[i].deleted){
+        if(1==1){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }

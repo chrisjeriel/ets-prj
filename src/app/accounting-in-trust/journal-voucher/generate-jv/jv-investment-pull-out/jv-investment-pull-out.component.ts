@@ -95,6 +95,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   cancelFlag: boolean = false;
+  sub: any;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
@@ -104,16 +105,33 @@ export class JvInvestmentPullOutComponent implements OnInit {
     //this.getInvPullout();
   }
 
+  ngOnDestroy(){
+    this.sub.unsubscribe();
+    if(this.forkSub !== undefined){
+      this.forkSub.unsubscribe();
+    }
+  }
+
   getBank(){
     this.banks = [];
     this.bankAccts = [];
 
-    this.ms.getMtnBank().subscribe((data:any) => {
+    /*this.ms.getMtnBank().subscribe((data:any) => {
       for (var i = 0; i < data.bankList.length; ++i) {
         this.banks.push(data.bankList[i]);
       }
       console.log(this.banks)
     });
+*/
+  
+    var join = forkJoin(this.ms.getMtnBank(),
+                        this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => {return {bank, bankAcct}; }));
+
+    this.forkSub = join.subscribe((data: any) =>{
+      console.log(data)
+    });
+
+    console.log(this.forkSub);
   }
 
   changeBank(data){

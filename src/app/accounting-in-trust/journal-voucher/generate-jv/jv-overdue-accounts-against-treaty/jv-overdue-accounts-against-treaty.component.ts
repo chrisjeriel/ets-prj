@@ -66,7 +66,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       widths: [203,50,130,130,130],
   }
 
-  passDataOffsetting: any = {
+  /*passDataOffsetting: any = {
     tHeaderWithColspan : [],
     tableData: [],
     tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments', 'Remaining Balance'],
@@ -115,7 +115,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     pageLength: 5,
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
     keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
-  };
+  };*/
 
   jvDetails: any = {
     cedingName: '',
@@ -140,6 +140,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   totalBal: number = 0;
   readOnly: boolean = false;
   cancelFlag: boolean = false;
+  passDataOffsetting: any = {};
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
@@ -147,9 +148,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.passLov.currCd = this.jvDetail.currCd;
     this.passData.nData.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
-    this.passDataOffsetting.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
-         { header: "Payment Details", span: 5 }, { header: "", span: 2 });
-
+    //this.passDataOffsetting.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
+    //     { header: "Payment Details", span: 5 }, { header: "", span: 2 });
+    this.passData = this.accountingService.getInwardPolicyKeys('JV');
     if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
       this.readOnly = false;
     }else {
@@ -425,4 +426,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.interestRate = data.parameters[0].paramValueN;
     });
   }
+
+  
 }

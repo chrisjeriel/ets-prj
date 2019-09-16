@@ -101,7 +101,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     console.log(this.jvType)
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
-    this.jvDetails.refnoDate = this.ns.toDateTimeString(this.jvDetails.refnoDate);
+    this.jvDetails.refnoDate = this.jvDetails.refnoDate === "" ? "":this.ns.toDateTimeString(this.jvDetails.refnoDate);
 
     if(this.jvDetails.statusType == 'N'){
       this.passData.disableAdd = false;
@@ -232,7 +232,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         console.log(data)
         var datas = data.zeroBal;
         for (var i = 0; i < datas.length; i++) {
-          total += datas[i].adjBalAmt;
+          total += datas[i].paytAmt;
         }
 
         if(total != this.jvDetails.jvAmt){

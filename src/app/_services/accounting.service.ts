@@ -163,6 +163,7 @@ export class AccountingService {
 			this.passData.keys = ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
 			this.passData.total = [null,null,null, null, null, 'Total', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
 		}else if('JV' == tranClass){
+			this.passData.nData = {policyNo : '',coRefNo : '',instNo : '',dueDate : '',currCd : '',currRate : '',prevPremAmt : '',prevRiComm : '',prevRiCommVat : '',prevCharges : '',prevNetDue : '',cumPayment : '',balance : '',paytAmt : '',premAmt : '',riComm : '',riCommVat : '',charges : '',totalPayt : '',remainingBal : '', showMG:1};
 			this.passData.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
     		this.passData.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
 		}else if('PRQ' == tranClass){

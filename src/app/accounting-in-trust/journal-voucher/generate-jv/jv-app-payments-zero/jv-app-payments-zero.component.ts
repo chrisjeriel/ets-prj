@@ -23,7 +23,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   
-  passData: any = {
+  /*passData: any = {
     tHeaderWithColspan : [],
     tableData: [],
     tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments', 'Remaining Balance'],
@@ -49,9 +49,9 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     btnDisabled: false,
     pageLength: 10,
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
-    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','adjBalAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
-    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','adjBalAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
-  };
+    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+  };*/
 
   jvDetails: any = {
     cedingName: '',
@@ -66,6 +66,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     hide: []
   }
 
+  passData: any = {};
   disable: boolean = true;
   dialogIcon : any;
   dialogMessage : any;
@@ -76,8 +77,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
   ngOnInit() {
     this.passLov.currCd = this.jvDetail.currCd;
-    this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
-          { header: "Payment Details", span: 5 }, { header: "", span: 2 });
+    this.passData = this.accService.getInwardPolicyKeys('JV');
     if(this.jvDetail.statusType == 'N'){
       this.disable = false;
     }else {
@@ -105,14 +105,14 @@ export class JvAppPaymentsZeroComponent implements OnInit {
         this.check(this.jvDetails);
         for(var i = 0 ; i < data.zeroBal.length;i++){
           this.passData.tableData.push(data.zeroBal[i]);
-          //this.passData.tableData[this.passData.tableData.length - 1].balance = this.passData.tableData[this.passData.tableData.length - 1].netDue - this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt;  
+          //this.passData.tableData[this.passData.tableData.length - 1].balance = this.passData.tableData[this.passData.tableData.length - 1].netDue - this.passData.tableData[this.passData.tableData.length - 1].paytAmt;  
           this.passData.tableData[this.passData.tableData.length - 1].effDate = this.ns.toDateTimeString(data.zeroBal[i].effDate);
           this.passData.tableData[this.passData.tableData.length - 1].dueDate = this.ns.toDateTimeString(data.zeroBal[i].dueDate);
-          this.totalOverpayment += data.zeroBal[i].adjBalAmt;
+          this.totalOverpayment += data.zeroBal[i].paytAmt;
         }
         
         /*if(this.passData.tableData[this.passData.tableData.length - 1].okDelete = 'N'){
-           this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['adjBalAmt'];
+           this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paytAmt'];
         }*/
       }
       this.table.refreshTable();
@@ -176,14 +176,14 @@ export class JvAppPaymentsZeroComponent implements OnInit {
         this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = datas[i].tempPayments + datas[i].totalPayments;
         this.passData.tableData[this.passData.tableData.length - 1].cumPayment = datas[i].cumPayment;
         this.passData.tableData[this.passData.tableData.length - 1].balance  = datas[i].balAmtDue;
-        this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = datas[i].balAmtDue;
-        this.passData.tableData[this.passData.tableData.length - 1].localAmt =  this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt * this.jvDetail.currRate;
-        this.passData.tableData[this.passData.tableData.length - 1].premAmt = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt;
-        this.passData.tableData[this.passData.tableData.length - 1].riComm = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevRiComm;
-        this.passData.tableData[this.passData.tableData.length - 1].riCommVat = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat;
-        this.passData.tableData[this.passData.tableData.length - 1].charges = (this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * this.passData.tableData[this.passData.tableData.length - 1].prevCharges;
+        this.passData.tableData[this.passData.tableData.length - 1].paytAmt  = datas[i].balAmtDue;
+        this.passData.tableData[this.passData.tableData.length - 1].localAmt =  datas[i].balAmtDue * this.jvDetail.currRate;
+        this.passData.tableData[this.passData.tableData.length - 1].premAmt = (datas[i].balAmtDue/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * datas[i].prevPremAmt;
+        this.passData.tableData[this.passData.tableData.length - 1].riComm = (datas[i].balAmtDue/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * datas[i].prevRiComm;
+        this.passData.tableData[this.passData.tableData.length - 1].riCommVat = (datas[i].balAmtDue/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * datas[i].prevRiCommVat;
+        this.passData.tableData[this.passData.tableData.length - 1].charges = (datas[i].balAmtDue/this.passData.tableData[this.passData.tableData.length - 1].prevNetDue) * datas[i].prevCharges;
         this.passData.tableData[this.passData.tableData.length - 1].netDue = this.passData.tableData[this.passData.tableData.length - 1].premAmt - this.passData.tableData[this.passData.tableData.length - 1].riComm - this.passData.tableData[this.passData.tableData.length - 1].riCommVat + this.passData.tableData[this.passData.tableData.length - 1].charges;
-        this.passData.tableData[this.passData.tableData.length - 1].totalPayt = this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt + this.passData.tableData[this.passData.tableData.length - 1].cumPayment;
+        this.passData.tableData[this.passData.tableData.length - 1].totalPayt = datas[i].balAmtDue + datas[i].cumPayment;
         this.passData.tableData[this.passData.tableData.length - 1].remainingBal = this.passData.tableData[this.passData.tableData.length - 1].prevNetDue - this.passData.tableData[this.passData.tableData.length - 1].totalPayt;
       }
       this.table.refreshTable();
@@ -202,13 +202,13 @@ export class JvAppPaymentsZeroComponent implements OnInit {
         edited[edited.length - 1].updateDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
-        if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].adjBalAmt > 0){
+        if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt > 0){
            edited[edited.length - 1].paytType = 1
-         }else if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].adjBalAmt < 0){
+         }else if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt < 0){
            edited[edited.length - 1].paytType = 2
-         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].adjBalAmt < 0){
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt < 0){
            edited[edited.length - 1].paytType = 3
-         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].adjBalAmt > 0){
+         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt > 0){
            edited[edited.length - 1].paytType = 4
          }
       }
@@ -243,13 +243,13 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
   update(data){
     for(var i = 0 ; i < this.passData.tableData.length; i++){
-      this.passData.tableData[i].localAmt = this.jvDetail.currRate * this.passData.tableData[i].adjBalAmt;
-      this.passData.tableData[i].premAmt = (this.passData.tableData[i].adjBalAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevPremAmt;
-      this.passData.tableData[i].riComm = (this.passData.tableData[i].adjBalAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevRiComm;
-      this.passData.tableData[i].riCommVat = (this.passData.tableData[i].adjBalAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevRiCommVat;
-      this.passData.tableData[i].charges = (this.passData.tableData[i].adjBalAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevCharges;
+      this.passData.tableData[i].localAmt = this.jvDetail.currRate * this.passData.tableData[i].paytAmt;
+      this.passData.tableData[i].premAmt = (this.passData.tableData[i].paytAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevPremAmt;
+      this.passData.tableData[i].riComm = (this.passData.tableData[i].paytAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevRiComm;
+      this.passData.tableData[i].riCommVat = (this.passData.tableData[i].paytAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevRiCommVat;
+      this.passData.tableData[i].charges = (this.passData.tableData[i].paytAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevCharges;
 
-      this.passData.tableData[i].totalPayt = this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment;
+      this.passData.tableData[i].totalPayt = this.passData.tableData[i].paytAmt + this.passData.tableData[i].cumPayment;
       this.passData.tableData[i].remainingBal = this.passData.tableData[i].prevNetDue - this.passData.tableData[i].totalPayt;
     }
     this.table.refreshTable();
@@ -273,11 +273,11 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   refundError():boolean{
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(!this.passData.tableData[i].deleted){
-        if((this.passData.tableData[i].prevNetDue > 0 &&  this.passData.tableData[i].adjBalAmt < 0 &&
-            this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment < 0)  ||
+        if((this.passData.tableData[i].prevNetDue > 0 &&  this.passData.tableData[i].paytAmt < 0 &&
+            this.passData.tableData[i].paytAmt + this.passData.tableData[i].cumPayment < 0)  ||
            
-           (this.passData.tableData[i].prevNetDue < 0 && this.passData.tableData[i].adjBalAmt > 0 &&
-            this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment > 0)
+           (this.passData.tableData[i].prevNetDue < 0 && this.passData.tableData[i].paytAmt > 0 &&
+            this.passData.tableData[i].paytAmt + this.passData.tableData[i].cumPayment > 0)
           ){
           return true;
         }

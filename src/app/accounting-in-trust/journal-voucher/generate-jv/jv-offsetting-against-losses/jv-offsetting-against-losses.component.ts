@@ -75,7 +75,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     pageLength: 5,
   }
 
-  InwPolBal: any = {
+ /* InwPolBal: any = {
    tHeaderWithColspan : [{ header: "", span: 1 }, { header: "Policy Information", span: 14 },
          { header: "Payment Details", span: 5 }, { header: "", span: 2 }], 
     tableData: [], //this.accountingService.getAccJvInPolBalAgainstLoss(),
@@ -123,7 +123,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
     //widths: [186,51,96,115,115,39,64,116,116,116,116,116,116,116],
     pageID: 2,
-  };
+  };*/
 
   jvDetails: any = {
     cedingName: '',
@@ -145,6 +145,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     hide: []
   };
 
+  InwPolBal: any = {};
   itemNo: any;
   interestRate: any;
   dialogIcon : any;
@@ -167,6 +168,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.passLovInw.currCd = this.jvDetail.currCd;  
     this.passData.nData.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
+    this.InwPolBal = this.accountingService.getInwardPolicyKeys('JV');
     this.passLov.currCd = this.jvDetail.currCd;
     this.retrieveClmLosses();
   }
