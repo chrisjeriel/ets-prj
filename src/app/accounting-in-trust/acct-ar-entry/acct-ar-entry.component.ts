@@ -506,6 +506,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
           //currencies
           this.currencies = [];
+          this.passData.opts[1].vals = [];
+          this.passData.opts[1].prev = [];
           if(curr.currency.length !== 0){
             for(var l of curr.currency){
               if(this.isAdd && 'PHP' === l.currencyCd){
