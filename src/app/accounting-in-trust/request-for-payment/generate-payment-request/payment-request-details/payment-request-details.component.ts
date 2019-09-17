@@ -633,6 +633,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.warn = [];
     console.log(this.inwardPolBalData.tableData);
     this.inwardPolBalData.tableData.forEach(e => {
+      if(e.newRec == 1){
+        e.returnAmt = e.prevBalance;
+      }
       e.premAmt      = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
       e.riComm       = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
       e.riCommVat    = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
