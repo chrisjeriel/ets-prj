@@ -137,7 +137,7 @@ export class AcctArListingsComponent implements OnInit {
     console.log(data);
     this.record = {
       tranId: data.tranId,
-      arNo: data.arNo,
+      arNo: data.arNo == null ? '' : data.arNo,
       payor: data.payor,
       arDate: data.arDate,
       paymentType: data.tranTypeName,
