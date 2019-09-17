@@ -18,7 +18,7 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important;">
-                <legend class="scheduler-border">Negative Treaty Balance</legend>
+                <legend class="scheduler-border">Treaty Balance</legend>
                     <div style="position: relative;margin-top: 10px" >
                         <app-cust-editable-non-datatable #quarterTable [passData]="passData"(newClick)="onrowClick($event)" (clickLOV)="quarterEndModal()" (tableDataChange)="passData.tableData=$event;updateTreatyBal($event)"></app-cust-editable-non-datatable>
                     </div>

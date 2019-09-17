@@ -27,9 +27,9 @@ export class JvPreniumReserveComponent implements OnInit {
 
 	passData: any = {
 		tableData:[],
-		tHeader:['Quarter Ending','Currency','Currency Rate','Interest on Premium','Withholding Tax','Funds Held Released'],
-		dataTypes:['date','text','percent','currency','currency','currency'],
-		total:[null,null,'Total','interestAmt','whtaxAmt','releaseAmt'],
+		tHeader:['Quarter Ending','Currency','Currency Rate','Funds Held Released','Interest Rate','Interest on Premium','Withholding Tax'],
+		dataTypes:['date','text','percent','currency','percent','currency','currency'],
+		total:[null,null,'Total','releaseAmt',null,'interestAmt','whtaxAmt'],
 		addFlag:true,
 		magnifyingGlass: ['quarterEnding','currCd'],
 		deleteFlag:true,
@@ -45,6 +45,7 @@ export class JvPreniumReserveComponent implements OnInit {
 			quarterEnding : '',
 			currCd : '',
 			currRate : '',
+			interestRate: '',
 			interestAmt : '',
 			whtaxAmt : '',
 			releaseAmt : '',
@@ -58,9 +59,9 @@ export class JvPreniumReserveComponent implements OnInit {
 			updateDate : this.ns.toDateTimeString(0)
 		},
 		checkFlag: true,
-		uneditable: [true,false,false,false,false,false],
-		keys:['quarterEnding', 'currCd', 'currRate', 'interestAmt', 'whtaxAmt', 'releaseAmt'],
-		widths:[150,195,195,195,195,195]
+		uneditable: [true,false,false,false,false,false,false],
+		keys:['quarterEnding', 'currCd', 'currRate', 'releaseAmt', 'interestRate' ,'interestAmt', 'whtaxAmt'],
+		widths:[150,80,95,210,105,240,240]
 	}
 
 	premResData: any  = {

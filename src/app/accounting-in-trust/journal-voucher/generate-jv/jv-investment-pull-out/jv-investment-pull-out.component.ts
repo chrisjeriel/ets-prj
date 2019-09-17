@@ -130,7 +130,8 @@ export class JvInvestmentPullOutComponent implements OnInit {
     this.forkSub = join.subscribe((data: any) =>{
       console.log(data)
     });
-
+    this.banks = this.forkSub.bank.bankList;
+    this.bankAccts = this.forkSub.bankAcct.bankAcctList;
     console.log(this.forkSub);
   }
 
@@ -162,6 +163,11 @@ export class JvInvestmentPullOutComponent implements OnInit {
     this.accService.getJvInvPullout(this.jvDetail.tranId/*,this.selectedBankCd,this.accountNo*/).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
+      for (var j = 0; j < this.bankAccts.length; j++) {
+        if(1==1){
+          
+        }
+      }
       if(data.pullOut.length !== 0){
         for (var i = 0; i < data.pullOut.length; i++) {
           if(data.pullOut[i].bank === this.selectedBankCd && data.pullOut[i].bankAcct === this.accountNo){

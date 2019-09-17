@@ -246,7 +246,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   setClaimOffset(data){
-    console.log(data)
+    console.log(data.data)
     this.passData.tableData = this.passData.tableData.filter((a) => a.showMG != 1);
     for(var  i=0; i < data.data.length;i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -281,7 +281,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   setSoa(data){
-    console.log(data)
+    console.log(data.data)
     var overdue = 0;
     this.clmTable.indvSelect.inwPolBal = this.clmTable.indvSelect.inwPolBal.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){

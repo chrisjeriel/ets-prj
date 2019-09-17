@@ -150,7 +150,8 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.passData.nData.currRate = this.jvDetail.currRate;
     //this.passDataOffsetting.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
     //     { header: "Payment Details", span: 5 }, { header: "", span: 2 });
-    this.passData = this.accountingService.getInwardPolicyKeys('JV');
+    this.passDataOffsetting = this.accountingService.getInwardPolicyKeys('JV');
+    this.passDataOffsetting.nData = {showMG:1,tranId : '',quarterNo : '',itemNo : '',policyId : '',policyNo : '',soaNo : '',coRefNo : '',effDate : '',dueDate : '',instNo : '',currCd : '',currRate : '',premAmt : '',riComm : '',riCommVat : '',charges : '',netDue : '',prevPaytAmt : '',balPaytAmt : '',overdueInt : '',remarks : '',createUser : this.ns.getCurrentUser(),createDate : '',updateUser : this.ns.getCurrentUser(),updateDate : ''}
     if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
       this.readOnly = false;
     }else {
@@ -210,7 +211,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.disableAdd = false;
       this.passDataOffsetting.nData.quarterNo = this.quarterNo;
       this.passDataOffsetting.tableData = data.acctOffset;
-      console.log('pasok')
       this.trytytrans.refreshTable();
     }
   }
@@ -253,7 +253,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   setSoa(data){
-    console.log(data)
+    console.log(data.data)
     this.quarterTable.indvSelect.acctOffset = this.quarterTable.indvSelect.acctOffset.filter(a=>a.showMG!=1);
     for (var i = 0; i < data.data.length; i++) {
       this.quarterTable.indvSelect.acctOffset.push(JSON.parse(JSON.stringify(this.passDataOffsetting.nData)));
@@ -278,6 +278,15 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].prevPaytAmt  = data.data[i].totalPayments;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].cumPayment = data.data[i].cumPayment;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].balance = data.data[i].prevBalance;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].paytAmt = data.data[i].balAmtDue;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].localAmt = data.data[i].balAmtDue * this.jvDetail.currRate;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].premAmt = data.data[i].balPremDue;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riComm = data.data[i].balRiComm;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riCommVat = data.data[i].balRiCommVat;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].charges = data.data[i].balChargesDue;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].totalPayt = data.data[i].cumPayment + data.data[i].balAmtDue;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].remainingBal = data.data[i].balance - (data.data[i].cumPayment + data.data[i].balAmtDue);
+      
     }
     this.trytytrans.refreshTable();
     this.quarterTable.onRowClick(null,this.quarterTable.indvSelect);
@@ -301,7 +310,19 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
 
 
   onClickSave(){
-    var errorFlag = false;
+
+    if(!this.validPayment()){
+      this.dialogMessage = 'Payment for selected policy is not proportion to payment for Treaty Balance.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
+
+
+
+
+    /*var errorFlag = false;
     var quarterDate :any;
     this.totalBal = 0;
     for (var i = 0; i < this.passData.tableData.length; i++) {
@@ -338,15 +359,29 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.successDiag.open();
     }
     //Added by Neco 09/04/2019
-    /*else if(Math.abs(this.totalBal) != this.jvDetail.jvAmt){
+    else if(Math.abs(this.totalBal) != this.jvDetail.jvAmt){
       this.dialogMessage = "The total Balance of all outstanding accounts must be equal to the JV Amount.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
-    }*/
+    }
     //end
     else{
       this.confirm.confirmModal();
+    }*/
+  }
+
+  validPayment() :boolean{
+    var inwPayment = 0;
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
+        inwPayment += this.passData.tableData[i].acctOffset[j].paytAmt;
+      }
+
+      if(inwPayment - this.passData.tableData[i].balanceAmt == 0){
+        return true;
+      }
     }
+    return false;
   }
 
   prepareData(){
