@@ -289,11 +289,12 @@ export class PaymentRequestEntryComponent implements OnInit {
 
   onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
+    (this.saveAcitPaytReq.reqAmt < 0)?this.saveAcitPaytReq.reqAmt = '':'';
     if(this.reqDateDate == '' || this.reqDateDate == null || this.reqDateTime == '' || this.reqDateTime == null || this.saveAcitPaytReq.payee == '' || 
       this.saveAcitPaytReq.payee == null || this.saveAcitPaytReq.currCd == '' || this.saveAcitPaytReq.currCd == null || this.saveAcitPaytReq.particulars == '' ||
       this.saveAcitPaytReq.particulars == null || this.saveAcitPaytReq.preparedBy == '' || this.saveAcitPaytReq.preparedBy == null || 
       this.saveAcitPaytReq.requestedBy == '' || this.saveAcitPaytReq.requestedBy == null || this.saveAcitPaytReq.tranTypeCd == '' || this.saveAcitPaytReq.tranTypeCd == null ||
-      this.saveAcitPaytReq.currRate == '' || this.saveAcitPaytReq.currRate == null){
+      this.saveAcitPaytReq.currRate == '' || this.saveAcitPaytReq.currRate == null || this.saveAcitPaytReq.reqAmt < 0 || this.saveAcitPaytReq.reqAmt == '' || this.saveAcitPaytReq.reqAmt == null){
         this.dialogIcon = 'error';
         this.success.open();
         $('.warn').focus();

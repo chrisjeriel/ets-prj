@@ -101,7 +101,7 @@ export class AccAttachmentsComponent implements OnInit {
               this.passData.magnifyingGlass = [];
             }
           }else if(this.record.from.toLowerCase() == 'cv'){
-            if(this.record.cvStatusDesc.toUpperCase() != 'NEW'){
+            if(this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F'){
               this.passData.uneditable = [true, true, true];
               this.passData.addFlag = false;
               this.passData.deleteFlag =  false;
