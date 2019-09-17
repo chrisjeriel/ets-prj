@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { JVAccountingEntries } from '@app/_models'
 import { AccountingService, NotesService } from '@app/_services'
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
@@ -16,6 +16,7 @@ export class JvAccountingEntriesComponent implements OnInit {
 
    @Input() jvData:any;
    @Input() jvType:any;
+   @Output() emitData = new EventEmitter<any>();
    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
    @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -94,6 +95,8 @@ export class JvAccountingEntriesComponent implements OnInit {
   notBalanced: boolean = true;
   lovCheckBox:boolean = true;
   lovRow:any;
+  cancelFlag: boolean = false;
+  rowData:any;
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
@@ -108,7 +111,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.readOnly = false;
     }else {
       this.readOnly = true;
-       this.passData.uneditable = [true,true,true,true,true,true]
+      this.passData.uneditable = [true,true,true,true,true,true]
     }
     this.retrieveAcctEntries();
     this.retrieveJVDetails();
@@ -116,6 +119,7 @@ export class JvAccountingEntriesComponent implements OnInit {
 
   retrieveAcctEntries(){
     this.accountingService.getAcitAcctEntries(this.jvData.tranId).subscribe((data:any) => {
+      console.log(data)
       this.passData.tableData = [];
       this.debitTotal = 0;
       this.creditTotal = 0;
@@ -129,7 +133,6 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.notBalanced = false;
       }
       this.table.refreshTable();
-      console.log(data)
     });
   }
 
@@ -149,7 +152,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.dialogIcon = "error-message";
         this.successDiag.open();
       }else if(this.errorFlag){
-        this.dialogMessage = 'Total Balance for Selected Policy Transactions must be equal to JV Amount.';
+        this.dialogMessage = 'Total Amount in Details must be equal to JV Amount.';
         this.dialogIcon = "error-message";
         this.successDiag.open();
       }else{
@@ -158,7 +161,17 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else{
       this.confirm.confirmModal();
     }
-    
+  }
+
+  onRowclick(data){
+    console.log(data)
+    if(data !== null){
+      this.rowData = data;
+      this.rowData.createDate = this.ns.toDateTimeString(this.rowData.createDate);
+      this.rowData.updateDate = this.ns.toDateTimeString(this.rowData.updateDate);
+    }else{
+      this.rowData = [];
+    }
   }
 
   prepareData(){
@@ -191,6 +204,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.retrieveJVEntry();
         this.retrieveAcctEntries();
         this.form.control.markAsPristine();
       }
@@ -403,5 +417,18 @@ export class JvAccountingEntriesComponent implements OnInit {
     if(this.variance === 0){
       this.notBalanced = false;
     }
+  }
+
+  retrieveJVEntry(){
+    this.accountingService.getJVEntry(this.jvDetails.tranId).subscribe((data:any) => {
+      console.log(data)
+      if(data.transactions.jvListings.jvStatus == 'F'){
+        this.readOnly = true;
+        this.passData.disableAdd = true;
+        this.passData.uneditable = [true,true,true,true,true,true]
+        this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
+        this
+      }
+    });
   }
 }

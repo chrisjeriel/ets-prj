@@ -162,14 +162,15 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.readOnly = true;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
       this.InwPolBal.uneditable =  [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
-      this.InwPolBal.disableAdd = true;
     }
 
     this.passLovInw.currCd = this.jvDetail.currCd;  
     this.passData.nData.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.InwPolBal = this.accountingService.getInwardPolicyKeys('JV');
+    this.InwPolBal.nData = {showMG:1,tranId: '',itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
     this.passLov.currCd = this.jvDetail.currCd;
+    this.InwPolBal.disableAdd = true;
     this.retrieveClmLosses();
   }
 
@@ -177,6 +178,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.accountingService.getRecievableLosses(this.jvDetail.tranId,null).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
+      this.InwPolBal.tableData = [];
       if(data.receivables.length!=0){
         this.jvDetails.cedingName = data.receivables[0].cedingName;
         this.jvDetails.cedingId = data.receivables[0].cedingId;
@@ -185,6 +187,10 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
         for(var i = 0 ; i < data.receivables.length; i++){
           this.passData.tableData.push(data.receivables[i]);
           this.clmTable.onRowClick(null, this.passData.tableData[0]);
+        }
+
+        if(this.jvDetail.statusType == 'N'){
+          this.passData.disableAdd = false;
         }
       }
      
@@ -269,8 +275,11 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].insuredDesc = data.data[i].insuredDesc;
       this.passData.tableData[this.passData.tableData.length - 1].reserveAmt = data.data[i].reserveAmt;
       this.passData.tableData[this.passData.tableData.length - 1].paytAmt = data.data[i].cumulativeAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].clmPaytAmt = data.data[i].reserveAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = data.data[i].reserveAmt * this.jvDetail.currRate;
     }
     this.clmTable.refreshTable();
+    this.clmTable.onRowClick(null, this.passData.tableData[0]);
   }
 
   updateClaim(data){
@@ -282,31 +291,39 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
   setSoa(data){
     console.log(data.data)
-    var overdue = 0;
+
     this.clmTable.indvSelect.inwPolBal = this.clmTable.indvSelect.inwPolBal.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){
       this.clmTable.indvSelect.inwPolBal.push(JSON.parse(JSON.stringify(this.InwPolBal.nData)));
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].showMG       = 0;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].edited       = true;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].itemNo       = null;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].policyId     = data.data[i].policyId;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].tranId       = this.jvDetail.tranId;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].soaNo        = data.data[i].soaNo;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].policyNo     = data.data[i].policyNo;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].coRefNo      = data.data[i].coRefNo;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].instNo       = data.data[i].instNo;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].effDate      = data.data[i].effDate;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].dueDate      = data.data[i].dueDate;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].currCd       = data.data[i].currCd;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].currRate     = data.data[i].currRate;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].showMG           = 0;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].edited           = true;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].itemNo           = null;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].policyId         = data.data[i].policyId;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].tranId           = this.jvDetail.tranId;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].soaNo            = data.data[i].soaNo;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].policyNo         = data.data[i].policyNo;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].coRefNo          = data.data[i].coRefNo;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].instNo           = data.data[i].instNo;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].effDate          = data.data[i].effDate;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].dueDate          = data.data[i].dueDate;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].currCd           = data.data[i].currCd;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].currRate         = data.data[i].currRate;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevPremAmt      = data.data[i].balPremDue;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevRiComm       = data.data[i].balRiComm;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevRiCommVat    = data.data[i].balRiCommVat;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevCharges      = data.data[i].balChargesDue;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevNetDue       = data.data[i].prevNetDue;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevPaytAmt       = data.data[i].totalPayments;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevPaytAmt      = data.data[i].totalPayments;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].cumPayment       = data.data[i].cumPayment;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].balance       = data.data[i].prevBalance;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].balance          = data.data[i].prevBalance;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].paytAmt          = data.data[i].balAmtDue;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].localAmt         = data.data[i].balAmtDue * this.jvDetail.currRate;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].premAmt          = data.data[i].balPremDue;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riComm           = data.data[i].balRiComm;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riCommVat        = data.data[i].balRiCommVat;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].charges          = data.data[i].balChargesDue;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].totalPayt        = data.data[i].cumPayment + data.data[i].balAmtDue;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].remainingBal     = data.data[i].balance - (data.data[i].cumPayment + data.data[i].balAmtDue);
     }
     this.inwTable.refreshTable();
     this.clmTable.onRowClick(null,this.clmTable.indvSelect);
@@ -336,7 +353,17 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   onClickSave(){
-    var clmPayment = 0;
+     if(!this.validPayment()){
+       this.dialogMessage = 'Total payment for claim is not proportional to payment for selected policies.' ;
+       this.dialogIcon = "error-message";
+       this.successDiag.open();
+     }else{
+       this.confirm.confirmModal();
+     }
+
+
+
+    /*var clmPayment = 0;
     var inwPayment = 0;
     var errorFlag = false;
     for (var i = 0; i < this.passData.tableData.length; i++) {
@@ -362,8 +389,22 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.successDiag.open();
     }else{
       this.confirm.confirmModal();
-    }
+    }*/
     
+  }
+
+  validPayment() : boolean{
+    var inwPayment = 0;
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      inwPayment = 0;
+      for (var j = 0; j < this.passData.tableData[i].inwPolBal.length; j++) {
+        inwPayment += this.passData.tableData[i].inwPolBal[j].paytAmt;
+      }
+      if(this.passData.tableData[i].clmPaytAmt - inwPayment == 0){
+        return true;
+      }
+    }
+    return false;
   }
 
   prepareData(){

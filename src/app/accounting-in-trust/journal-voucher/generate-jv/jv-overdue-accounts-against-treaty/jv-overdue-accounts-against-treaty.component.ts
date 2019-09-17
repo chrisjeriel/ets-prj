@@ -373,6 +373,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   validPayment() :boolean{
     var inwPayment = 0;
     for (var i = 0; i < this.passData.tableData.length; i++) {
+      inwPayment = 0;
       for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
         inwPayment += this.passData.tableData[i].acctOffset[j].paytAmt;
       }
