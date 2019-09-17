@@ -27,9 +27,9 @@ export class JvPreniumReserveComponent implements OnInit {
 
 	passData: any = {
 		tableData:[],
-		tHeader:['Quarter Ending','Currency','Currency Rate','Funds Held Released','Interest Rate','Interest on Premium','Withholding Tax'],
-		dataTypes:['date','text','percent','currency','percent','currency','currency'],
-		total:[null,null,'Total','releaseAmt',null,'interestAmt','whtaxAmt'],
+		tHeader:['Quarter Ending','Currency','Currency Rate','Funds Held Released','Interest Rate','Interest on Premium','Withholding Tax Rate','Withholding Tax'],
+		dataTypes:['date','text','percent','currency','percent','currency','percent','currency'],
+		total:[null,null,'Total','releaseAmt',null,'interestAmt',null,'whtaxAmt'],
 		addFlag:true,
 		magnifyingGlass: ['quarterEnding','currCd'],
 		deleteFlag:true,
@@ -47,6 +47,7 @@ export class JvPreniumReserveComponent implements OnInit {
 			currRate : '',
 			interestRate: '',
 			interestAmt : '',
+			whtaxAmtRate: '',
 			whtaxAmt : '',
 			releaseAmt : '',
 			localAmt : '',
@@ -59,9 +60,9 @@ export class JvPreniumReserveComponent implements OnInit {
 			updateDate : this.ns.toDateTimeString(0)
 		},
 		checkFlag: true,
-		uneditable: [true,false,false,false,false,false,false],
-		keys:['quarterEnding', 'currCd', 'currRate', 'releaseAmt', 'interestRate' ,'interestAmt', 'whtaxAmt'],
-		widths:[150,80,95,210,105,240,240]
+		uneditable: [true,false,false,false,false,false,false,false],
+		keys:['quarterEnding', 'currCd', 'currRate', 'releaseAmt', 'interestRate' ,'interestAmt','whtaxRate', 'whtaxAmt'],
+		widths:[150,80,95,210,105,125,105,125]
 	}
 
 	premResData: any  = {
@@ -79,11 +80,14 @@ export class JvPreniumReserveComponent implements OnInit {
 	readOnly: boolean = false;
 	currencies: any = [];
 	dataIndex: any = null;
+	intRate: number;
+	whtaxRate: number;
 
 	constructor(private accService: AccountingService, private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
 	ngOnInit() {
-		console.log(this.jvDetail)
+		this.getIntRate();
+		this.getWhtxRate();
 		this.titleService.setTitle("Acct-IT | JV QSOA");
 		this.passData.nData.currCd = this.jvDetail.currCd;
 		this.passData.nData.currRate = this.jvDetail.currRate;
@@ -119,18 +123,6 @@ export class JvPreniumReserveComponent implements OnInit {
 	}
 
 	onClickSave(){
-		/*this.fundsHeld = 0;
-		for(var i = 0; i < this.passData.tableData.length; i++){
-			this.fundsHeld += this.passData.tableData[i].releaseAmt;
-		}	
-
-		if(this.fundsHeld > this.jvDetail.jvAmt){
-			this.dialogMessage = "Total Funds Held Released must not exceed the JV Amount";
-			this.dialogIcon = "error-message";
-			this.successDiag.open();
-		}else{
-			$('#confirm-save #modalBtn2').trigger('click');
-		}*/
 		$('#confirm-save #modalBtn2').trigger('click');
 	}
 
@@ -230,16 +222,20 @@ export class JvPreniumReserveComponent implements OnInit {
 
     setQuarter(data){
     	console.log(data)
-    	//this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
-    	//this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
     	this.passData.tableData[this.dataIndex].colMG.push('quarterEnding');
     	this.passData.tableData[this.dataIndex].edited = true;
     	this.passData.tableData[this.dataIndex].quarterEnding = this.ns.toDateTimeString(data.premRes.quarterEnding);
     	this.passData.tableData[this.dataIndex].releaseAmt = data.premRes.fundsHeld;
     	this.passData.tableData[this.dataIndex].localAmt = data.premRes.fundsHeld * this.jvDetail.currRate;
+    	this.passData.tableData[this.dataIndex].interestRate = this.intRate;
+    	this.passData.tableData[this.dataIndex].interestAmt = data.premRes.fundsHeld * this.intRate;
+    	this.passData.tableData[this.dataIndex].whtaxRate = this.whtaxRate;
+    	this.passData.tableData[this.dataIndex].whtaxAmt = this.passData.tableData[this.dataIndex].interestAmt * this.whtaxRate;
 		this.passData.tableData[this.dataIndex].premResQuota = data.premRes.premResQuota;
 		this.passData.tableData[this.dataIndex].premRes1surplus = data.premRes.premRes1surplus;
 		this.passData.tableData[this.dataIndex].premRes2surplus = data.premRes.premRes2surplus;
+		this.totalInterestAmt = this.passData.tableData[this.dataIndex].interestAmt;
+		this.totalWhtaxAmt 	  = this.passData.tableData[this.dataIndex].whtaxAmt;
     	this.table.refreshTable();
     }
 
@@ -249,5 +245,17 @@ export class JvPreniumReserveComponent implements OnInit {
     	this.passData.tableData[this.dataIndex].currCd = data.currencyCd;
     	this.passData.tableData[this.dataIndex].currRt = data.currencyRt;
     	this.table.refreshTable();
+    }
+
+    getIntRate(){
+    	this.maintenanceService.getMtnParameters('N','UPR_INT_RT_ON_PREM').subscribe((data:any) =>{
+    	  this.intRate = parseInt(data.parameters[0].paramValueN);
+    	});
+    }
+
+    getWhtxRate(){
+    	this.maintenanceService.getMtnParameters('N','UPR_WHTAX_RT_ON_INT').subscribe((data:any) =>{
+    	  this.whtaxRate = parseInt(data.parameters[0].paramValueN);
+    	});
     }
 }
