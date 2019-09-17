@@ -153,6 +153,8 @@ export class ArClaimCashCallComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].cumulativeAmt = selected[i].cumulativeAmt;
       this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currencyCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currencyRt;
+      this.passData.tableData[this.passData.tableData.length - 1].recOverAmt = selected[i].reserveAmt - selected[i].cumulativeAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = (selected[i].reserveAmt - selected[i].cumulativeAmt) * selected[i].currencyRt;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['claimNo'];

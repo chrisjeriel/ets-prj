@@ -27,13 +27,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   passData: any = {
         tableData: [],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
-        dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
+        dataTypes: ['reqSelect','text','percent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
         widths: [130,70,100,130,180,1,150,100,180,210],
         keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass', 'remarks'],
-        uneditable: [false,false,false,false,false,false,false,false,false, false],
+        uneditable: [false,true,true,false,false,false,false,false,false, false],
         pageID: 1,
         addFlag: true,
         genericBtn: 'Delete',
@@ -363,10 +363,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   changeCurrency(data){
     this.selectedCurrency = data;
+    this.passData.nData.currCd = data;
     this.arInfo.currCd = data;
     for(var i of this.currencies){
       if(i.currencyCd == data){
         this.arInfo.currRate = i.currencyRt;
+        this.passData.nData.currRate = i.currencyRt;
         setTimeout(()=>{
           $('.rate').focus().blur();
         },0);
@@ -522,16 +524,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           }
           console.log(data.ar.paytDtl);
           //this.passData.tableData          = data.ar.paytDtl;
+          //tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
+          //dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
           this.passData.tableData = [];
           for(var i of data.ar.paytDtl){
             i.uneditable = [];
             if(i.paytMode !== 'BT' && i.paytMode !== 'CK' && i.paytMode !== 'CR'){
               i.uneditable.push('bank');
               i.uneditable.push('bankAcct');
+              this.passData.dataTypes[4] = 'select';
+              this.passData.dataTypes[5] = 'text'; 
             }
             if(i.paytMode !== 'CK'){
               if(i.paytMode !== 'CR'){
                 i.uneditable.push('checkNo');
+                this.passData.dataTypes[5] = 'text'; 
               }
               i.uneditable.push('checkDate');
               i.uneditable.push('checkClass');
@@ -927,7 +934,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     for(var i of this.passData.tableData){
       if(i.paytMode == 'BT' && (i.bank.length === 0 || i.bankAcct.length === 0)){
         return true;
-      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
+      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
         return true;
       }else if(i.paytMode == 'CR' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0)){
         return true;

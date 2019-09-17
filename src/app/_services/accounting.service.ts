@@ -20,8 +20,8 @@ export class AccountingService {
 	    dataTypes: ["text","text", "text", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency","currency","currency","currency","currency","currency","currency","currency"],
 	    addFlag: true,
 	    deleteFlag: true,
-	    infoFlag: true,
-	    paginateFlag: true,
+	    /*infoFlag: true,
+	    paginateFlag: true,*/
 	    checkFlag: true,
 	    magnifyingGlass: ['policyNo'],
 	    pageLength: 'unli',
@@ -47,7 +47,7 @@ export class AccountingService {
 	    },
 	    total: [],
 	/*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
-	    widths: [170, 100, 50, 1, 30, 85,110, 110, 110,110,110,110,110,110,110,110,110,110,110,110,],
+	    widths: [170, 100, 1, 1, 30, 85,1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,],
 	    keys: [],
 	    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
 	    small: false,
@@ -159,6 +159,7 @@ export class AccountingService {
 	constructor(private http: HttpClient) { }
 
 	getInwardPolicyKeys(tranClass){
+		//this.passData.tableData = new Array(10);
 		if('AR' == tranClass){
 			this.passData.keys = ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
 			this.passData.total = [null,null,null, null, null, 'Total', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
@@ -169,7 +170,9 @@ export class AccountingService {
 			this.passData.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
 			this.passData.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
 		}
-		return this.passData;
+		return Object.create(this.passData);
+
+		//remember to set passData.pageLength to 'unli' in your local component.
 	}	
 
 	getAmountDetails() {
