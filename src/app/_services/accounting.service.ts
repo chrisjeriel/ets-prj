@@ -156,6 +156,11 @@ export class AccountingService {
 	accJvInPolBalAgainstLoss: AccJvInPolBalAgainstLoss[] = [];
 	accJvOutAccOffset:    AccJvOutAccOffset[] = [];
 
+	arFilter: string = '';
+	cvFilter: string = '';
+	jvFilter: string = '';
+	prqFilter: string = '';
+
 	constructor(private http: HttpClient) { }
 
 	getInwardPolicyKeys(tranClass){

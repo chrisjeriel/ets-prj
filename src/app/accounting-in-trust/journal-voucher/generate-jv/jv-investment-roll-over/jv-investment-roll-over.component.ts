@@ -4,6 +4,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-investment-roll-over',
@@ -18,6 +19,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
    @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
    @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
    passData: any = {
    	tHeaderWithColspan : [],
@@ -87,6 +89,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   disable:boolean = false;
+  cancelFlag: boolean = false;
 
   constructor(private ns: NotesService, private accountingService: AccountingService) { }
 
@@ -184,11 +187,12 @@ export class JvInvestmentRollOverComponent implements OnInit {
 
   onClickSave(){
   	var errorFlag = false;
-  	/*for (var i = 0; i < this.passData.tableData.length; i++) {
+  	for (var i = 0; i < this.passData.tableData.length; i++) {
       if(this.passData.tableData[i].srcMaturityValue !== this.passData.tableData[i].invtAmt){
       	errorFlag = true;
       }
-    }*/
+    }
+
     if(errorFlag){
     	this.dialogMessage = "Maturity value must be equal to investment amount.";
     	this.dialogIcon = "error-message";
@@ -221,7 +225,8 @@ export class JvInvestmentRollOverComponent implements OnInit {
     this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
-  saveData(){
+  saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
   	this.prepareData();
   	console.log(this.jvDetails);
   	this.accountingService.saveInvRollOver(this.jvDetails).subscribe((data:any) => {
@@ -239,7 +244,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
   }
 
   cancel(){
-  	this.prepareData();
-  	console.log(this.jvDetails);
+    this.cancelBtn.clickCancel();
   }
 }

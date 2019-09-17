@@ -97,7 +97,9 @@ export class PolicyInformationComponent implements OnInit {
 
   goToPolicy(){
     let link:string = this.selectedPol.policyNo.split('-')[5] == '000' ? '/policy-issuance' : '/policy-issuance-alt';
-    
+    if(this.selectedPol.policyNo.split('-')[5] == '000'){
+      this.UwService.fromCreateAlt = false;
+    }
     this.router.navigate([link, {policyId:this.selectedPol.policyId,
                                               fromInq:true,
                                               policyNo: this.selectedPol.policyNo,

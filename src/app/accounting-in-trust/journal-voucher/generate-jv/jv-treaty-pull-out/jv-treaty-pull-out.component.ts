@@ -303,6 +303,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     this.accountingService.saveTrtyInv(this.jvDetails).subscribe((data:any) => {
       console.log(data)

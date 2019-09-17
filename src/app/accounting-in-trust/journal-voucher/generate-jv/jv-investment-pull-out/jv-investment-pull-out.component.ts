@@ -116,20 +116,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
     });
   }
 
-  //   var sub$ = forkJoin(this.ms.getMtnBank(),
-  //                       this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => { return {bank, bankAcct }; }));
-
-  //   this.forkSub = sub$.subscribe((data:any) =>{
-
-      
-
-  //     for (var j = 0; j < data.bankAcct.bankAcctList.length; j++) {
-  //       this.bankAccts.push( data.bankAcct.bankAcctList[j]);
-  //     }
-
-  //   });
-  // }
-
   changeBank(data){
     this.passData.tableData = [];
     this.table.refreshTable();
@@ -159,19 +145,15 @@ export class JvInvestmentPullOutComponent implements OnInit {
       console.log(data)
       this.passData.tableData = [];
       if(data.pullOut.length !== 0){
-        /*this.selectedBank = data.pullOut[0];
-        this.selectedBankAcct = data.pullOut[0];*/
         for (var i = 0; i < data.pullOut.length; i++) {
-          this.passData.tableData.push(data.pullOut[i]);
+          if(data.pullOut[i].bank === this.selectedBankCd && data.pullOut[i].bankAcct === this.accountNo){
+            this.passData.tableData.push(data.pullOut[i]);
+          }
         }
       }
       this.table.refreshTable();
     });
   }
-
-  /*compareBankFn(c1: any, c2: any): boolean {
-      return c1.bank === c2.bankCd;
-  }*/
 
   openInvPulloutLOV(data){
     this.passLov.searchParams = [{key: 'bankCd', search: this.selectedBankCd}, {key:'invtStatus', search: 'MATURED'}];
@@ -241,7 +223,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   saveInvPullOut(cancelFlag?){
-
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
 
     this.accService.saveInvPullOut(this.jvDetails).subscribe((data:any) => {
@@ -259,8 +241,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDetails);
     this.cancelBtn.clickCancel();
   }
 

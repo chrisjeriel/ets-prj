@@ -268,8 +268,8 @@ export class JvAccountingEntriesComponent implements OnInit {
         }
 
         if(total != this.jvDetails.jvAmt){
-            this.errorFlag = true;
-          }
+          this.errorFlag = true;
+        }
       });
     }else if(this.jvType === 6){
       this.accountingService.getAcctTrtyBal(this.jvDetails.tranId).subscribe((data:any) => {
@@ -288,6 +288,50 @@ export class JvAccountingEntriesComponent implements OnInit {
         console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].clmPaytAmt
+          }
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+      });
+    }else if(this.jvType === 8){
+      this.accountingService.getJvInvRollOver(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.invtRollOver;
+        console.log(datas);
+          for (var i = 0; i < datas.length; i++) {
+            total += datas[i].maturityValue
+          }
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+      });
+    }else if(this.jvType === 9){
+      this.accountingService.getJvInvPullout(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.pullOut;
+        console.log(datas);
+          for (var i = 0; i < datas.length; i++) {
+            total += datas[i].maturityValue
+          }
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+      });
+    }else if(this.jvType === 10){
+      this.accountingService.getInvPlacement(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.invPlacement;
+        console.log(datas);
+          for (var i = 0; i < datas.length; i++) {
+            total += datas[i].invtAmt
+          }
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+      });
+    }else if(this.jvType === 11){
+      this.accountingService.getTrtyInv(this.jvDetails.tranId).subscribe((data:any) =>{
+        var datas = data.acctTreatyBal;
+        console.log(datas);
+          for (var i = 0; i < datas.length; i++) {
+            total += datas[i].balanceAmt
           }
           if(total != this.jvDetails.jvAmt){
             this.errorFlag = true;

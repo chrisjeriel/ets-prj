@@ -186,10 +186,6 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].effDate  = data.data[i].effDate;
       this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
       this.passData.tableData[this.passData.tableData.length - 1].balanceAmt = data.data[i].balance;
-      console.log(new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0))
-      console.log(new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0).getTime())
-      console.log(new Date(data.data[i].dueDate))
-      console.log(new Date(data.data[i].dueDate).getTime())
       this.passData.tableData[this.passData.tableData.length - 1].actualOverdueDays = parseInt(((new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0).getTime() - new Date(data.data[i].dueDate).getTime())/ (1000 * 3600 *24)).toString());
       this.passData.tableData[this.passData.tableData.length - 1].overdueDaysWInt  = parseInt(((new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0).getTime() - new Date(data.data[i].dueDate).getTime())/ (1000 * 3600 *24)).toString()) - 90;
       this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
