@@ -20,8 +20,8 @@ export class AccountingService {
 	    dataTypes: ["text","text", "text", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency","currency","currency","currency","currency","currency","currency","currency"],
 	    addFlag: true,
 	    deleteFlag: true,
-	    /*infoFlag: true,
-	    paginateFlag: true,*/
+	    infoFlag: true,
+	    //paginateFlag: true,
 	    checkFlag: true,
 	    magnifyingGlass: ['policyNo'],
 	    pageLength: 'unli',

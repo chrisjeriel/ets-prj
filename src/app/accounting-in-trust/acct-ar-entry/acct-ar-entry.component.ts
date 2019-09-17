@@ -817,6 +817,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.bankAccts = data.bankAcctList;
             this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null });
           }
+          if(this.bankAccts.length == 1){
+            this.selectedBankAcct = this.bankAccts[0];
+            this.arInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
+            this.arInfo.dcbBankAcctNo = this.selectedBankAcct.accountNo;
+          }
           if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
             this.arInfo.dcbBankAcct = '';
             this.arInfo.dcbBankAcctNo = '';
@@ -1130,6 +1135,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
            //bankAcct
            if(data.bankAcct.bankAcctList.length !== 0){
                this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null});
+               if(this.bankAccts.length == 1){
+                 this.selectedBankAcct = this.bankAccts[0];
+                 this.arInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
+                 this.arInfo.dcbBankAcctNo = this.selectedBankAcct.accountNo;
+               }
                if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
                  this.arInfo.dcbBankAcct = '';
                  this.arInfo.dcbBankAcctNo = '';
