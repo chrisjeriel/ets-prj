@@ -166,6 +166,8 @@ export class ClaimRecoveryComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].cashcallAmt = selected[i].reserveAmt == null ? selected[i].tsiAmt : selected[i].reserveAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = this.passData.tableData[this.passData.tableData.length - 1].cashcallAmt * selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['claimNo'];
     }
     this.table.refreshTable();

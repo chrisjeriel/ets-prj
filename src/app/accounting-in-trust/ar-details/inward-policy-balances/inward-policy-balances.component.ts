@@ -243,11 +243,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
-    }else if(this.canRefund()){
+    }/*else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
       this.successDiag.open();
-    }else if(this.allotedVsArAmt()){
+    }*/else if(this.allotedVsArAmt()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Alloted Policy Balance Payments must not exceed the AR Amount.';
       this.successDiag.open();
