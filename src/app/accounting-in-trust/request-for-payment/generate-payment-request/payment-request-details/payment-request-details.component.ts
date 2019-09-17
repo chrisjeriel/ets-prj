@@ -99,13 +99,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','approvedAmt','paytAmt','localAmt']
   };
 
-  inwardPolBalData: any = {
+  /*inwardPolBalData: any = {
     tHeaderWithColspan : [{ header: "", span: 1 },
                           { header: "Policy Information", span: 14 },
                           { header: "Payment Details", span: 5 },
                           { header: "", span: 2 }],
     tableData     : [],
-    tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments','Remaining Balance'],
+    tHeader: ['Policy No.','Inst  No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments','Remaining Balance'],
     dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
     magnifyingGlass : ['policyNo'],
     nData: {
@@ -138,7 +138,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
     // widths        : [200,1,110,1,110,120,120,120,120,120,120,120,120],
     // keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
     keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
-  };
+  };*/
+
+  inwardPolBalData: any = {};
 
   treatyBalanceData: any = {
     tableData     : [],
@@ -389,6 +391,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.cedingCompanyData.tableData = [];
           this.getClmHist();
         }else if(this.requestData.tranTypeCd == 4){
+          this.inwardPolBalData = this.acctService.getInwardPolicyKeys('PRQ');
           this.inwardPolBalData.tableData = [];
           this.getAcitPrqInwPol();
         }else if(this.requestData.tranTypeCd == 5){

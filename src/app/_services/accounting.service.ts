@@ -10,6 +10,50 @@ import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEnt
 })
 export class AccountingService {
 
+	//Inward Policy Balances - ACCT_IN_TRUST
+	  passData: any = {
+	    tableData: [],
+	    tHeaderWithColspan: [{header:'', span:1},{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+	    //pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance'],
+	    tHeader: ["Policy No","Co. Ref. No.", "Inst No.", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Cumulative Payments", "Balance",
+	              'Payment Amount', "Premium", "RI Comm", 'Ri Comm Vat', "Charges", 'Total Payments', 'Remaining Balance'],
+	    dataTypes: ["text","text", "text", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency","currency","currency","currency","currency","currency","currency","currency"],
+	    addFlag: true,
+	    deleteFlag: true,
+	    /*infoFlag: true,
+	    paginateFlag: true,*/
+	    checkFlag: true,
+	    magnifyingGlass: ['policyNo'],
+	    pageLength: 'unli',
+	    nData: {
+	        tranId: '',
+	        billId: '',
+	        itemNo: '',
+	        policyId: '',
+	        policyNo: '',
+	        coRefNo: '',
+	        instNo: '',
+	        dueDate: '',
+	        currCd: '',
+	        currRate: '',
+	        balPremDue: '',
+	        balRiComm: '',
+	        balChargesDue: '',
+	        netDue: '',
+	        totalPayments: '',
+	        balance: '',
+	        balOverdueInt: '',
+	        showMG: 1
+	    },
+	    total: [],
+	/*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
+	    widths: [170, 100, 1, 1, 30, 85,1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,],
+	    keys: [],
+	    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
+	    small: false,
+	  };
+	//END
+
 	arDetails: ARDetails[] = [];
 	accountingEntries: AccountingEntries[] = [];
 	cvListing: CVListing[] = [];
@@ -113,6 +157,23 @@ export class AccountingService {
 	accJvOutAccOffset:    AccJvOutAccOffset[] = [];
 
 	constructor(private http: HttpClient) { }
+
+	getInwardPolicyKeys(tranClass){
+		//this.passData.tableData = new Array(10);
+		if('AR' == tranClass){
+			this.passData.keys = ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
+			this.passData.total = [null,null,null, null, null, 'Total', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
+		}else if('JV' == tranClass){
+			this.passData.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    		this.passData.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+		}else if('PRQ' == tranClass){
+			this.passData.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+			this.passData.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+		}
+		return Object.create(this.passData);
+
+		//remember to set passData.pageLength to 'unli' in your local component.
+	}	
 
 	getAmountDetails() {
 		this.arDetails = [
