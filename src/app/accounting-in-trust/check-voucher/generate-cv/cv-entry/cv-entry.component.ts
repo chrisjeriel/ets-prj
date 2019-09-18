@@ -195,7 +195,7 @@ export class CvEntryComponent implements OnInit {
         var totalCredit = arrSum(data2['ae']['list'].map(e => e.creditAmt));
         var totalDebit = arrSum(data2['ae']['list'].map(e => e.debitAmt));
         if(this.saveAcitCv.tranId != '' && this.saveAcitCv.tranId != null){
-          this.isTotPrlEqualCvAmt = (Number(totalPrl) == Number(recCv[0].cvAmt))?true:false;
+          this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
           this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
         }
       });

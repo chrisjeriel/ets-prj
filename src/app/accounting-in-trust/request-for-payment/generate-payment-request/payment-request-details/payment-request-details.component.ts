@@ -573,6 +573,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                                                 e2.updateUser = e.updateUser;
                                                                 e2.createDate = e.createDate;
                                                                 e2.updateDate = e.updateDate;
+                                                                e2.approvedAmt = (e.approvedAmt == '' || e.approvedAmt == null)?0:e.approvedAmt;
                                                                 e2.paytAmt    = (e.currAmt == '' || e.currAmt == null)?0:e.currAmt;
                                                                 e2.localAmt   = (e.localAmt == '' || e.localAmt == null)?0:e.localAmt; 
                                                                 e2.itemNo     = e.itemNo;
