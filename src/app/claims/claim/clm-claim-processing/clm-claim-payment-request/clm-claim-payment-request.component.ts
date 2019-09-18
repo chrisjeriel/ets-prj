@@ -85,6 +85,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     this.selected = ev == null || (Object.entries(ev).length === 0 && ev.constructor === Object) ? null : ev;
     this.disableGenerateBtn = this.selected == null || this.selected.paytReqNo != null;
     this.disableCancelBtn = this.selected == null || this.selected.paytReqNo == null;
+    console.log(ev)
   }
 
   generateRequest(){
@@ -98,7 +99,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
       localAmt        : this.selected.reserveAmt * this.selected.currencyRt,
       particulars     : this.selected.particulars,
       payee           : this.selected.payee,
-      payeeNo         : this.selected.payeeNo,
+      payeeCd         : this.selected.payeeNo,
+      payeeClassCd    : '1',
       preparedBy      : this.ns.getCurrentUser(),
       preparedDate    : this.ns.toDateTimeString(0),
       reqAmt          : this.selected.reserveAmt,
