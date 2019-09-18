@@ -677,6 +677,7 @@ export class LovComponent implements OnInit {
       this.passTable.widths =[250,500]
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'shortCode','shortDesc'];
+      this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnAcitChartAcct(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"];
         this.table.refreshTable();
@@ -686,6 +687,7 @@ export class LovComponent implements OnInit {
       this.passTable.widths =[250,500]
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'slTypeCd','slTypeName'];
+      this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnSlType(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"];
         this.table.refreshTable();
@@ -695,6 +697,7 @@ export class LovComponent implements OnInit {
       this.passTable.widths =['auto']
       this.passTable.dataTypes = [ 'text'];
       this.passTable.keys = [ 'slName'];
+      this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
        this.passTable.tableData = a["list"];
        this.table.refreshTable();

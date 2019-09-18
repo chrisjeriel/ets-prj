@@ -319,10 +319,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   openLOV(type){
     if(type === 'payor'){
       this.passLov.selector = 'payee';
-      if(this.arInfo.tranTypeCd == '5'){
+      if(this.arInfo.tranTypeCd == '5'){ //get only the banks if investment pullout
         this.passLov.payeeClassCd = 3;
+      }else if(this.arInfo.tranTypeCd == '8'){ //get everyone if others
+        this.passLov.payeeClassCd = null;
       }else{
-        this.passLov.payeeClassCd = 1;
+        this.passLov.payeeClassCd = 1; //get only cedants
       }
     }else if(type === 'business'){
       this.passLov.selector = 'mtnBussType';
