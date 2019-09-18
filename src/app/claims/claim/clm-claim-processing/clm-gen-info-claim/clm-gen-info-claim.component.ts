@@ -760,6 +760,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.disableAdjusterBtn = false;
 
         this.retrieveClmGenInfo();
+        $('.ng-dirty').removeClass('ng-dirty');
       } else if(data['returnCode'] == 0) {
         this.dialogIcon = 'error';
         this.dialogMessage = data['errorList'][0].errorMessage;

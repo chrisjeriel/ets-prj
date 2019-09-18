@@ -30,6 +30,7 @@ export class PolPostComponent implements OnInit {
   @Output() showPost: EventEmitter<boolean> = new EventEmitter<boolean>();
   postBtn: boolean = false;
   altSign: string;
+  affectingTag:boolean = true;
 
   
 
@@ -99,6 +100,7 @@ export class PolPostComponent implements OnInit {
       this.uwService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe(a=>{
         if(a['policy'] == null){
           this.progress +=50;
+          this.affectingTag = false;
           this.post();
           return;
         }

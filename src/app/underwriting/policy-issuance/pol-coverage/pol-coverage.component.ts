@@ -445,9 +445,8 @@ export class PolCoverageComponent implements OnInit {
       this.passDataDeductibles.checkFlag = false;
       this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
       this.passDataCATPerils.uneditable = [true,true,true]
-
       this.passData.tHeaderWithColspan.shift();
-      this.passData2.tHeaderWithColspan.shift();
+      //this.passData2.tHeaderWithColspan.shift();
 
     }
   }
@@ -764,6 +763,10 @@ export class PolCoverageComponent implements OnInit {
   getPolCoverage(){
      // this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
      this.coverageData.holdCoverPremAmt = "";
+
+     if(this.policyInfo.lastAffectingPolId != undefined){
+       this.policyId = this.policyInfo.lastAffectingPolId
+     }
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
           this.passDataSectionCover.tableData = [];
           this.projId = data.policy.project.projId;
@@ -787,6 +790,12 @@ export class PolCoverageComponent implements OnInit {
           this.totalPrem = 0;
           var infoData = data.policy.project.coverage.sectionCovers;
             for(var i = 0; i < infoData.length;i++){
+
+              if(this.policyInfo.fromSummary){
+                infoData[i].sumInsured = infoData[i].cumSi
+                infoData[i].premAmt = infoData[i].cumPrem
+              }
+
               this.passDataSectionCover.tableData.push(infoData[i]);
               this.passDataSectionCover.tableData[i].cumPrem = this.passDataSectionCover.tableData[i].discountTag == 'Y' ? this.passDataSectionCover.tableData[i].cumPrem:this.passDataSectionCover.tableData[i].cumSi * (this.passDataSectionCover.tableData[i].premRt /100 )
               
@@ -922,27 +931,31 @@ export class PolCoverageComponent implements OnInit {
 
   onClickCat(){
     if(!this.alteration){
-      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
-        this.promptClickCat = true;
-        this.onClickSave();
-      }else{
-        this.promptClickCat = false;
-        this.getCATPerils();
-        setTimeout(()=>{
-          this.catPerilMdl.openNoClose();
-        },0);
-      }
+      // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+      //   this.promptClickCat = true;
+      //   this.onClickSave();
+      // }else{
+      //   this.promptClickCat = false;
+      //   this.getCATPerils();
+      //   setTimeout(()=>{
+      //     this.catPerilMdl.openNoClose();
+      //   },0);
+      // }
+      this.getCATPerils();
+      this.catPerilMdl.openNoClose();
     }else{
-      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
-        this.promptClickCat = true;
-        this.onClickSaveAlt();
-      }else{
-        this.promptClickCat = false;
-        this.getCATPerils();
-        setTimeout(()=>{
-          this.catPerilMdlAlt.openNoClose();
-        },0);
-      }
+      // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+      //   this.promptClickCat = true;
+      //   this.onClickSaveAlt();
+      // }else{
+      //   this.promptClickCat = false;
+      //   this.getCATPerils();
+      //   setTimeout(()=>{
+      //     this.catPerilMdlAlt.openNoClose();
+      //   },0);
+      // }
+      this.getCATPerils();
+      this.catPerilMdlAlt.openNoClose();
     }
   }
 
@@ -1537,7 +1550,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   updateAlteration(data){
-    console.log('updated')
     this.prevsectionISi     = 0;
     this.prevsectionIPrem   = 0;
     this.altsectionIPrem    = 0;
@@ -1580,7 +1592,6 @@ export class PolCoverageComponent implements OnInit {
     }   
 
     this.getEditableAlt();
-    console.log(this.passData.tableData)
     for(var j=0;j<this.passData.tableData.length;j++){
       // PAUL COMPUTE EXTENSION
         if(this.policyInfo.extensionTag == 'Y' && 0 > this.passData.tableData[j].sumInsured  && this.passData.tableData[j].exDiscTag != 'Y'){
@@ -1975,7 +1986,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
    onClickSaveAlt(){
-     console.log('pasok')
      for( var i= 0; i< this.passData.tableData.length;i++){
       if(this.passData.tableData[i].cumSi < 0 && this.passData.tableData[i].addSi == 'Y'){
         this.errorFlag = true;

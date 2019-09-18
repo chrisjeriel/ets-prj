@@ -98,6 +98,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     this.titleService.setTitle("Acct-IT | Inward Policy Balances");
     //call function in accounting.service.ts
     this.passData = this.as.getInwardPolicyKeys('AR');
+    //this.passData.pageLength = 'unli';
     //end
     console.log(this.record.payeeNo);
     this.passLov.payeeNo = this.record.payeeNo;
@@ -127,14 +128,16 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   retrieveInwPolBal(){
     this.passData.tableData = [];
+    console.log('nani');
     this.as.getAcitArInwPolBal(this.record.tranId, 1).subscribe( //billId for Inward Policy Balances is always 1
       (data: any)=>{
         if(data.arInwPolBal.length !== 0){
-          this.allotedAmt = data.arInwPolBal[0].allotedAmt;
+          this.allotedAmt = data.arInwPolBal[0].allotedAmt == null ? this.record.arAmt : data.arInwPolBal[0].allotedAmt;
           setTimeout(()=>{
             $('.alloted').focus().blur();
           }, 0);
           //this.passData.tableData = data.arInwPolBal;
+          data.arInwPolBal = data.arInwPolBal.filter(a=>{return a.tranId != null});
           for(var i of data.arInwPolBal){
             i.cumPayment = i.prevCumPayment;
             i.totalPayments = i.cumPayment + i.balPaytAmt;
@@ -151,6 +154,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
         }
         this.computeTotalBalAndVariance();
         console.log(this.originalValues);
+      },
+      (error)=>{
+        console.log(error);
       }
     );
   }
@@ -192,14 +198,14 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue = selected[i].balAmtDue;*/
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment = selected[i].cumPayment;
       this.passData.tableData[this.passData.tableData.length - 1].prevBalance = selected[i].prevBalance;
-      
-      /*this.passData.tableData[this.passData.tableData.length - 1].premAmt = selected[i].prevPremAmt;
-      this.passData.tableData[this.passData.tableData.length - 1].riComm = selected[i].prevRiComm;
-      this.passData.tableData[this.passData.tableData.length - 1].riCommVat = selected[i].prevRiCommVat;
-      this.passData.tableData[this.passData.tableData.length - 1].charges = selected[i].prevCharges;
+      this.passData.tableData[this.passData.tableData.length - 1].balPaytAmt = selected[i].prevBalance;
+      this.passData.tableData[this.passData.tableData.length - 1].premAmt = (selected[i].prevBalance/selected[i].prevNetDue) * selected[i].prevPremAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].riComm = (selected[i].prevBalance/selected[i].prevNetDue) * selected[i].prevRiComm;
+      this.passData.tableData[this.passData.tableData.length - 1].riCommVat = (selected[i].prevBalance/selected[i].prevNetDue) * selected[i].prevRiCommVat;
+      this.passData.tableData[this.passData.tableData.length - 1].charges = (selected[i].prevBalance/selected[i].prevNetDue) * selected[i].prevCharges;
       this.passData.tableData[this.passData.tableData.length - 1].balPaytAmt = selected[i].prevBalance;
       this.passData.tableData[this.passData.tableData.length - 1].totalPayments = selected[i].cumPayment + selected[i].prevBalance;
-      this.passData.tableData[this.passData.tableData.length - 1].netDue = 0;*/
+      this.passData.tableData[this.passData.tableData.length - 1].netDue = 0;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['soaNo'];
@@ -225,7 +231,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment must not be greater than the Balance.';
       this.successDiag.open();
-    }else if(this.checkVariance()){
+    }/*else if(this.checkVariance()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the AR Amount or Alloted Policy Balance Payments.';
       this.successDiag.open();
@@ -233,11 +239,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the Alloted Policy Balance Payments.';
       this.successDiag.open();
-    }else if(this.checkNetPayments()){
+    }*/else if(this.checkNetPayments()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
-    }else if(this.canRefund()){
+    }/*else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
       this.successDiag.open();
@@ -245,7 +251,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Alloted Policy Balance Payments must not exceed the AR Amount.';
       this.successDiag.open();
-    }else if(this.zeroAmount()){
+    }*/else if(this.zeroAmount()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment amount must not be zero.';
       this.successDiag.open();

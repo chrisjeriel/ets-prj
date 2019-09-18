@@ -97,7 +97,9 @@ export class PolicyInformationComponent implements OnInit {
 
   goToPolicy(){
     let link:string = this.selectedPol.policyNo.split('-')[5] == '000' ? '/policy-issuance' : '/policy-issuance-alt';
-    
+    if(this.selectedPol.policyNo.split('-')[5] == '000'){
+      this.UwService.fromCreateAlt = false;
+    }
     this.router.navigate([link, {policyId:this.selectedPol.policyId,
                                               fromInq:true,
                                               policyNo: this.selectedPol.policyNo,
@@ -107,7 +109,8 @@ export class PolicyInformationComponent implements OnInit {
                                               insured: this.selectedPol.insured,
                                               editPol: true,
                                               status: this.selectedPol.status,
-                                              exitLink: '/policy-information'
+                                              exitLink: '/policy-information',
+                                              sumInsured: this.selectedPol.sumInsured
                                               }], { skipLocationChange: true });
   }
 
@@ -177,6 +180,7 @@ export class PolicyInformationComponent implements OnInit {
      insured: this.policyInfo.insuredDesc,
      editPol: true,
      status: this.policyInfo.status,
+     lastAffectingPolId: this.policyInfo.lastAffectingPolId
     }
 
     if(this.fromClm) {

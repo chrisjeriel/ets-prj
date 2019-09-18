@@ -122,6 +122,7 @@ export class PolOcInquiryComponent implements OnInit {
                   dataType: 'text'
               },
           ],
+      exportFlag: true          
   };
 
   policyInfo:any = {
@@ -210,6 +211,32 @@ export class PolOcInquiryComponent implements OnInit {
          this.listTable.refreshTable();
        })
    }
+
+   export(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'PolPoolDist_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+      //tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
+      //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
+     alasql('SELECT openPolicyNo AS OpenCoverPolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, totalSi AS MaxSi, issueDate AS IssueDate, inceptDate AS InceptionDate, expiryDate AS ExpiryDate, acctDate AS AccountingDate, statusDesc AS Status ' +
+            'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+  }
 
 
 }

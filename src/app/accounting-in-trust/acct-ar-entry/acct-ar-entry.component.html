@@ -7,7 +7,7 @@
 			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
-				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="arInfo.arNo" (change)="arInfo.arNo = pad($event.target.value, 'arNo')" appRequired (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled || isPrinted" name="arNo">
+				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="arInfo.arNo" (change)="arInfo.arNo = pad($event.target.value, 'arNo')" (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled || isPrinted" name="arNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
 					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date); retrieveCurrency();" [disabled]="arInfo.arStatDesc?.toUpperCase() !== 'NEW' || arInfo.dcbStatus == 'T' || arInfo.dcbStatus == 'C'"></datepicker>
@@ -54,8 +54,8 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled || isPrinted || disablePayor || arInfo.rstrctTranUp === 1" name="payor">
-				<div class="text-search-ico" (click)="openLOV('payor')" *ngIf="!isCancelled && !isPrinted && !disablePayor && arInfo.rstrctTranUp !== 1"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled || isPrinted || disablePayor || arInfo.rstrctTranUp === 1 || arInfo.tranTypeCd.length == 0" name="payor">
+				<div class="text-search-ico" (click)="openLOV('payor')" *ngIf="!isCancelled && !isPrinted && !disablePayor && arInfo.rstrctTranUp !== 1 && arInfo.tranTypeCd.length != 0"><a><i class="fa fa-search"></i></a></div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>

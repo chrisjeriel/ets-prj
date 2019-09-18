@@ -27,13 +27,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   passData: any = {
         tableData: [],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
-        dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
+        dataTypes: ['reqSelect','text','percent','reqCurrency','reqSelect','text','reqTxt','reqDate','reqSelect', 'text'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
         widths: [130,70,100,130,180,1,150,100,180,210],
         keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass', 'remarks'],
-        uneditable: [false,false,false,false,false,false,false,false,false, false],
+        uneditable: [false,true,true,false,false,false,false,false,false, false],
         pageID: 1,
         addFlag: true,
         genericBtn: 'Delete',
@@ -319,10 +319,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   openLOV(type){
     if(type === 'payor'){
       this.passLov.selector = 'payee';
-      if(this.arInfo.tranTypeCd == '5'){
+      if(this.arInfo.tranTypeCd == '5'){ //get only the banks if investment pullout
         this.passLov.payeeClassCd = 3;
+      }else if(this.arInfo.tranTypeCd == '8'){ //get everyone if others
+        this.passLov.payeeClassCd = null;
       }else{
-        this.passLov.payeeClassCd = 1;
+        this.passLov.payeeClassCd = 1; //get only cedants
       }
     }else if(type === 'business'){
       this.passLov.selector = 'mtnBussType';
@@ -363,10 +365,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   changeCurrency(data){
     this.selectedCurrency = data;
+    this.passData.nData.currCd = data;
     this.arInfo.currCd = data;
     for(var i of this.currencies){
       if(i.currencyCd == data){
         this.arInfo.currRate = i.currencyRt;
+        this.passData.nData.currRate = i.currencyRt;
         setTimeout(()=>{
           $('.rate').focus().blur();
         },0);
@@ -522,16 +526,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           }
           console.log(data.ar.paytDtl);
           //this.passData.tableData          = data.ar.paytDtl;
+          //tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
+          //dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
           this.passData.tableData = [];
           for(var i of data.ar.paytDtl){
             i.uneditable = [];
             if(i.paytMode !== 'BT' && i.paytMode !== 'CK' && i.paytMode !== 'CR'){
               i.uneditable.push('bank');
               i.uneditable.push('bankAcct');
+              this.passData.dataTypes[4] = 'select';
+              this.passData.dataTypes[5] = 'text'; 
             }
             if(i.paytMode !== 'CK'){
               if(i.paytMode !== 'CR'){
                 i.uneditable.push('checkNo');
+                this.passData.dataTypes[5] = 'text'; 
               }
               i.uneditable.push('checkDate');
               i.uneditable.push('checkClass');
@@ -688,8 +697,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       (data:any)=>{
         if(data.returnCode === 0){
           if(data.errorList !== undefined || (data.errorList !== undefined && data.errorList.length !== 0)){
-            this.dialogMessage = data.errorList[0].errorMessage === undefined ? '' : data.errorList[0].errorMessage;
-            this.dialogIcon = data.errorList[0].errorMessage === undefined  ? 'error' : 'error-message';
+            this.dialogMessage = data.errorList[0] === undefined ? '' : data.errorList[0].errorMessage;
+            this.dialogIcon = data.errorList[0] === undefined  ? 'error' : 'error-message';
           }else{
             this.dialogIcon = 'error';
           }
@@ -810,6 +819,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.bankAccts = data.bankAcctList;
             this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null });
           }
+          if(this.bankAccts.length == 1){
+            this.selectedBankAcct = this.bankAccts[0];
+            this.arInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
+            this.arInfo.dcbBankAcctNo = this.selectedBankAcct.accountNo;
+          }
           if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
             this.arInfo.dcbBankAcct = '';
             this.arInfo.dcbBankAcctNo = '';
@@ -927,7 +941,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     for(var i of this.passData.tableData){
       if(i.paytMode == 'BT' && (i.bank.length === 0 || i.bankAcct.length === 0)){
         return true;
-      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
+      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
         return true;
       }else if(i.paytMode == 'CR' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0)){
         return true;
@@ -1123,6 +1137,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
            //bankAcct
            if(data.bankAcct.bankAcctList.length !== 0){
                this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null});
+               if(this.bankAccts.length == 1){
+                 this.selectedBankAcct = this.bankAccts[0];
+                 this.arInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
+                 this.arInfo.dcbBankAcctNo = this.selectedBankAcct.accountNo;
+               }
                if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
                  this.arInfo.dcbBankAcct = '';
                  this.arInfo.dcbBankAcctNo = '';

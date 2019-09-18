@@ -73,7 +73,7 @@ export class InvestmentsComponent implements OnInit {
           intRt    : null,
           purDate  : null,
           matDate  : null,
-          cucurrCd : null,
+          currCd : null,
           currRate : null,
           invtAmt  : null,
           incomeAmt: null,

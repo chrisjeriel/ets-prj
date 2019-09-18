@@ -88,6 +88,7 @@ export class CvEntryComponent implements OnInit {
   fromBtn              : string = '';
   isTotPrlEqualCvAmt   : boolean = false;
   isTotDebCredBalanced : boolean = false;
+  bankAcctList         : any;
 
   passDataLov  : any = {
     selector     : '',
@@ -141,6 +142,7 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv.checkClass = 'LC';
         this.saveAcitCv.checkClassDesc = recCl.filter(e => e.code == this.saveAcitCv.checkClass).map(e => e.description);
         this.saveAcitCv.preparedDate = this.ns.toDateTimeString(0);
+        this.saveAcitCv.checkDate = this.ns.toDateTimeString(0);
 
         recPn.forEach(e => {
           if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
@@ -181,11 +183,12 @@ export class CvEntryComponent implements OnInit {
       this.setLocalAmt();
 
       ///for print button
-      var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId))
-                            .pipe(map(([prl,ae]) => { return { prl, ae }; }));
+      var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId), this.mtnService.getMtnBankAcct())
+                            .pipe(map(([prl,ae,ba]) => { return { prl, ae, ba }; }));
 
       subRes2.subscribe(data2 => {
         console.log(data2);
+        this.bankAcctList = data2['ba']['bankAcctList'];
         var arrSum = function(arr){
           return arr.reduce((a,b) => a+b,0);
         };
@@ -244,7 +247,7 @@ export class CvEntryComponent implements OnInit {
 
     if(this.saveAcitCv.cvDate == null || this.saveAcitCv.cvDate == '' || this.saveAcitCv.payee == '' ||  this.saveAcitCv.payee == null || this.saveAcitCv.particulars == '' || 
        this.saveAcitCv.particulars == null || this.saveAcitCv.bank == '' || this.saveAcitCv.bank == null || this.saveAcitCv.bankAcct == '' || this.saveAcitCv.bankAcct == null ||
-       this.saveAcitCv.cvAmt == '' || this.saveAcitCv.cvAmt == null || this.saveAcitCv.cvAmt == 0 ||  this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null || this.saveAcitCv.currCd == '' || 
+       this.saveAcitCv.cvAmt == '' || this.saveAcitCv.cvAmt == null || this.saveAcitCv.cvAmt < 0 ||  this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null || this.saveAcitCv.currCd == '' || 
        this.saveAcitCv.currCd == null || this.saveAcitCv.currRate == '' || this.saveAcitCv.currRate == null || this.saveAcitCv.checkDate == '' || this.saveAcitCv.checkDate == null ||
        this.saveAcitCv.preparedBy == '' || this.saveAcitCv.preparedBy == null || this.saveAcitCv.preparedDate == '' || this.saveAcitCv.preparedDate == null || 
        this.saveAcitCv.checkClass == '' || this.saveAcitCv.checkClass == null || this.saveAcitCv.paytReqType == '' || this.saveAcitCv.paytReqType == null ){
@@ -326,6 +329,7 @@ export class CvEntryComponent implements OnInit {
       this.bankLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank-acct'){
       this.passDataLov.selector = 'bankAcct';
+      this.passDataLov.currCd = this.saveAcitCv.currCd;
       this.passDataLov.bankCd = this.saveAcitCv.bank;
       this.bankAcctLov.openLOV();
     }else if(fromUser.toLowerCase() == 'class'){
@@ -355,6 +359,11 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.bank = data.data.bankCd;
       this.saveAcitCv.bankAcctDesc = '';
       this.saveAcitCv.bankAcct = '';
+      var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcitCv.currCd && e.acItGlDepNo != null);
+      if(ba.length == 1){
+        this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
+        this.saveAcitCv.bankAcct = ba[0].bankAcctCd; 
+      }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
       this.saveAcitCv.bankAcct = data.data.bankAcctCd;
@@ -367,6 +376,12 @@ export class CvEntryComponent implements OnInit {
     }else  if(from.toLowerCase() == 'curr'){
       this.saveAcitCv.currCd = data.currencyCd;
       this.saveAcitCv.currRate =  data.currencyRt;
+      var ba = this.bankAcctList.filter(e => e.bankCd == this.saveAcitCv.bank && e.currCd == data.currencyCd && e.acItGlDepNo != null);
+      console.log(ba);
+      if(ba.length == 1){
+        this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
+        this.saveAcitCv.bankAcct = ba[0].bankAcctCd; 
+      }
       this.setLocalAmt();
     }else if(from.toLowerCase() == 'prep-user'){
       this.saveAcitCv.preparedByName = data.printableName;

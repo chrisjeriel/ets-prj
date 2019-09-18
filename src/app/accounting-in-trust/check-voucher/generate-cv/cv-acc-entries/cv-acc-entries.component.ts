@@ -122,6 +122,14 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
 
       this.computeTotals();
       this.table.refreshTable();
+
+      if(this.cvData.cvStatus != 'N' && this.cvData.cvStatus != 'F'){
+        this.cvAcctEntData.addFlag = false;
+        this.cvAcctEntData.deleteFlag = false;
+        this.cvAcctEntData.uneditable = this.cvAcctEntData.uneditable.map(e => e = true);
+        this.cvAcctEntData.magnifyingGlass = [];
+        this.cvAcctEntData.checkFlag = false;
+      }
     });
   }
 

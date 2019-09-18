@@ -23,7 +23,7 @@ import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.co
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { FormsModule }   from '@angular/forms';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-pol-gen-info',
@@ -32,7 +32,7 @@ import { FormsModule }   from '@angular/forms';
 })
 export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('main') cancelBtn : CancelButtonComponent;
-  @ViewChild('myForm') form:  any;
+  @ViewChild('myForm') form:  NgForm;
   //add by paul for deductibles
   @ViewChild('dedCancel') dedCancelBtn : CancelButtonComponent;
   @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
@@ -339,9 +339,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     if(this.newAlt) {
       this.form.control.markAsDirty();
-    } else {
-      setTimeout(() => { this.form.control.markAsPristine() }, 1000);
-    }
+    } 
+    //else {
+      //setTimeout(() => { this.form.control.markAsPristine() }, 1000);
+    //}
  
     this.getValidBookingMth();
   }
@@ -545,8 +546,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
         this.policyInfo.issueDate = this.ns.toDateTimeString(new Date());
         this.policyInfo.effDate = this.policyInfo.inceptDate;
+        this.form.control.markAsDirty();
         this.getValidBookingMth(this.policyInfo.issueDate,this.policyInfo.effDate);
       }else{
+        setTimeout(a=>this.form.control.markAsPristine(),0);
         this.updateMinBookingDate();
       }
 
@@ -726,7 +729,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
               });  */
 
               this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
-                   this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+                   this.policyInfo.coInsuranceFlag = (data.policy.length > 1)? true : false;
 
                    this.emitPolicyInfoId.emit({
                     refPolicyId: this.refPolicyId,
@@ -773,7 +776,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         });  */
 
         this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
-             this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+             this.policyInfo.coInsuranceFlag = (data.policy.length > 1)? true : false;
 
              this.emitPolicyInfoId.emit({
               refPolicyId: this.refPolicyId,
@@ -1061,7 +1064,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   getDeductibles(){
-    this.deductiblesTable.loadingFlag = true;
+    //this.deductiblesTable.loadingFlag = true;
     let params : any = {
       policyId:this.policyId,
       policyNo:'',
@@ -1081,6 +1084,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       else
         this.passDataDeductibles.tableData = [];
       this.deductiblesTable.refreshTable();
+      this.deductiblesTable.markAsPristine();
     });
   }
 
@@ -1092,12 +1096,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     };
     params.saveDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && !a.deleted && a.deductibleCd!==null);
     params.deleteDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && a.deleted && a.deductibleCd!==null);
-    if(params.saveDeductibleList.length==0 && params.deleteDeductibleList.length==0){
-      this.dialogMsg = 'Nothing to save.'
-      this.dialogIcon = 'info'
-      this.successDlg.open();
-      return;
-    }
+    
     for(let ded of params.saveDeductibleList){
       if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
         this.dialogIcon = "error";
@@ -1105,7 +1104,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         return null;
       }
     }
-    this.deductiblesTable.loadingFlag = true;
+    //this.deductiblesTable.loadingFlag = true;
     this.underwritingService.savePolDeductibles(params).subscribe(data=>{
         if(data['returnCode'] == -1){
           this.dialogIcon = '';
@@ -1628,9 +1627,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     }
 
     onClickOk(){
-      if(this.checkAlopFlag){
+      if(this.checkAlopFlag && this.dialogIcon != 'error'){
         this.changeAlopMdl.openNoClose();
-      }else if(this.cancelFlag){
+      }else if(this.cancelFlag && this.dialogIcon != 'error'){
        this.cancelBtn.onNo()
       }
     }
