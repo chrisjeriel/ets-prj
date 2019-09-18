@@ -28,7 +28,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
 
   lovCheckBox:boolean = true;
 
-  cvAcctEntData: any = {
+  /*cvAcctEntData: any = {
     tableData      : [],
     tHeader        : ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
     uneditable     : [true,true,true,true,false,false],
@@ -61,7 +61,9 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     widths         : [150,290,175,175,160,160],
     checkFlag      : true,
     magnifyingGlass: ['glShortCd','slTypeName','slName']
-  };
+  };*/
+
+  cvAcctEntData: any = {};
 
   passLov:any = {
     selector: '',
@@ -92,6 +94,8 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
   constructor(private as: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
+    this.cvAcctEntData = this.as.getAccEntriesPassData();
+    this.cvAcctEntData.nData.autoTag = 'N';
     setTimeout(() => { this.table.refreshTable(); }, 0);
     this.getAcctEntries();
   }
@@ -114,9 +118,17 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
         a.createDate = this.ns.toDateTimeString(a.createDate);
         a.updateDate = this.ns.toDateTimeString(a.updateDate);
         a.showMG = 1;
-        if(a.autoTag == 'Y'){
+        /*if(a.autoTag == 'Y'){
           a.uneditable = ['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt'];
+        }*/
 
+        if(a.updateLevel == 'N') {
+          a.uneditable = ['glShortCd','foreignDebitAmt','foreignCreditAmt'];
+          a.showMG = 0;
+        } else if(a.updateLevel == 'L') {
+          a.uneditable = ['glShortCd'];
+          a.colMG = ['glShortCd'];
+          a.showMG = 1;
         }
       });
 

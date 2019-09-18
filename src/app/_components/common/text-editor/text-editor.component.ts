@@ -95,6 +95,6 @@ export class TextEditorComponent implements OnInit, OnChanges {
   }
 
   emitValue() {
-    this.fetchContent.next(this.editorContent);
+    this.fetchContent.next(this.editorContent.trim());
   }
 }
