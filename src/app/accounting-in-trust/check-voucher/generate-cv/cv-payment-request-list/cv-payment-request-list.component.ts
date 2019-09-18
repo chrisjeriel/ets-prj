@@ -120,7 +120,11 @@ export class CvPaymentRequestListComponent implements OnInit {
       this.passDataLov.currCd  = this.cvInfo.currCd;
       this.passDataPaytReqList.tableData = recPr;
       this.paytReqTbl.refreshTable();
-
+      if(this.cvInfo.cvStatus != 'N' && this.cvInfo.cvStatus != 'F'){
+        this.passDataPaytReqList.addFlag = false;
+        this.passDataPaytReqList.deleteFlag = false;
+        this.passDataPaytReqList.checkFlag = false;
+      }
     });
   }
 
@@ -141,11 +145,20 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
+    var isEmpty = 0;
     this.passDataPaytReqList.tableData.forEach(e => {
       e.tranId    = this.passData.tranId;
       e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':((this.cvInfo.cvStatus == 'C')?'N':this.cvInfo.cvStatus);
-
+      if(e.paytReqNo == '' || e.paytReqNo == null){
+        if(!e.deleted){
+          isEmpty = 1;
+          e.fromCancel = false;
+        }else{
+          this.params.deletePaytReqList.push(e);
+        }
+      }
       if(e.edited && !e.deleted){
+        e.fromCancel = true;
         this.params.savePaytReqList = this.params.savePaytReqList.filter(i => i.reqId != e.reqId);
         e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
         e.createDate    = this.ns.toDateTimeString(e.createDate);
@@ -158,14 +171,19 @@ export class CvPaymentRequestListComponent implements OnInit {
       }
     });
   
-    var reqAmt = this.passDataPaytReqList.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reqAmt != null ?parseFloat(b.reqAmt):0),0);
+   // var reqAmt = this.passDataPaytReqList.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reqAmt != null ?parseFloat(b.reqAmt):0),0);
  
-    if(Number(this.cvInfo.cvAmt) < Number(reqAmt)){
-        this.warnMsg = 'The Total of listed Payment Requests must not exceed the CV Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePaytReqList   = [];
-        this.params.deletePaytReqList = [];
-    }else{
+    // if(Number(this.cvInfo.cvAmt) < Number(reqAmt)){
+    //     this.warnMsg = 'The Total of listed Payment Requests must not exceed the CV Amount.';
+    //     this.warnMdl.openNoClose();
+    //     this.params.savePaytReqList   = [];
+    //     this.params.deletePaytReqList = [];
+    // }else{
+      if(isEmpty){
+        this.dialogIcon = 'error';
+        this.suc.open();
+        this.params.savePaytReqList = [];
+      }else{
         if(this.params.savePaytReqList.length == 0 && this.params.deletePaytReqList.length == 0){
             if($('input').hasClass('ng-dirty')){
               this.chkCerti();
@@ -175,7 +193,6 @@ export class CvPaymentRequestListComponent implements OnInit {
               this.params.deletePaytReqList = [];
               this.passDataPaytReqList.tableData = this.passDataPaytReqList.tableData.filter(e => e.reqId != '');
             }
-            
             this.con.confirmModal();
         }else{
           if(this.cancelFlag == true){
@@ -185,7 +202,8 @@ export class CvPaymentRequestListComponent implements OnInit {
             this.con.confirmModal();
           }
         }
-    }
+      }
+    //}
   }
 
   addDirty(){

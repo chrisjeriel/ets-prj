@@ -786,16 +786,17 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal)
       .subscribe((a:any)=>{
          // (Number(e.totalPayments) + Number(e.tempPayments)) > 0
-        var rec = a["soaDtlList"].filter(e => e.payeeNo == this.passData.payeeNo).map(a => { a.returnAmt = a.paytAmt; return a; });//.map(e => { e.newRec = 1; e.prevPaytAmt = (Number(e.totalPayments) + Number(e.tempPayments)); return e; });
-        if(this.limitContent.length != 0) {
-          var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({policyId: a.policyId, instNo: a.instNo}));
-          this.passTable.tableData =    rec.filter(a => {
-                             var mdl = JSON.stringify({policyId: a.policyId, instNo: a.instNo});
-                             return !limit.includes(mdl);
-                           });
-        } else {
-          this.passTable.tableData = rec;
-        }
+        var rec = a["soaDtlList"].filter(e => e.payeeNo == this.passData.payeeNo).map(a => { a.returnAmt = a.paytAmt; return a; });
+        // if(this.limitContent.length != 0) {
+        //   var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({policyId: a.policyId, instNo: a.instNo}));
+        //   this.passTable.tableData =    rec.filter(a => {
+        //                      var mdl = JSON.stringify({policyId: a.policyId, instNo: a.instNo});
+        //                      return !limit.includes(mdl);
+        //                    }).map(e => { e.returnAmt = e.prevBalance; return e; });
+        // } else {
+        //   this.passTable.tableData = rec;
+        // }
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}).map(e => { e.returnAmt = e.prevBalance; return e; });
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
             i.preventDefault = true;
@@ -963,7 +964,7 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'accountName','accountNo'];
       this.mtnService.getMtnBankAcct(this.passData.bankCd).subscribe((a:any)=>{
-        this.passTable.tableData = a.bankAcctList;
+        this.passTable.tableData = a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acItGlDepNo != null);
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'mtnBussType'){
