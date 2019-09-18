@@ -48,6 +48,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         updateDate: this.ns.toDateTimeString(0),
         showMG:1,
         colMG: [],
+        uneditable:[],
         edited: true
     },
     paginateFlag: true,
@@ -101,7 +102,6 @@ export class JvAccountingEntriesComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
-    console.log(this.jvType)
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
     this.jvDetails.refnoDate = this.jvDetails.refnoDate === "" ? "":this.ns.toDateTimeString(this.jvDetails.refnoDate);
@@ -128,6 +128,12 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.debitTotal += data.list[i].debitAmt;
         this.creditTotal += data.list[i].creditAmt;
       }
+      this.passData.tableData.forEach((a) => { 
+        if(a.updateLevel == 'N'){
+          a.uneditable = ['glShortCd','debitAmt','creditAmt'];
+        }
+      });
+
       this.variance = this.debitTotal - this.creditTotal;
       if(this.variance === 0){
         this.notBalanced = false;
@@ -281,7 +287,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           total += datas[i].balanceAmt
         }
 
-        if(total + this.jvDetails.jvAmt !== 0 ){
+        if(total !== this.jvDetails.jvAmt){
           this.errorFlag = true;
         }
       });

@@ -223,8 +223,12 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     console.log(data)
     if(data != null && data.itemNo != ''){
       this.itemNo = data.itemNo;
+      this.InwPolBal.disableAdd = false;
       this.InwPolBal.nData.itemNo = this.itemNo;
       this.InwPolBal.tableData = data.inwPolBal;
+    }else{
+      this.InwPolBal.disableAdd = true;
+      this.InwPolBal.tableData = [];
     }
 
     if(this.jvDetail.statusType == 'N'){
@@ -357,6 +361,14 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
        this.dialogMessage = 'Total payment for claim is not proportional to payment for selected policies.' ;
        this.dialogIcon = "error-message";
        this.successDiag.open();
+     }else if(!this.claimPayment()){
+       this.dialogMessage = 'Claim payment cannot be greater than Hist amount.' ;
+       this.dialogIcon = "error-message";
+       this.successDiag.open();
+     }else if(!this.inwPayment()){
+       this.dialogMessage = 'Policy payment cannot be greater than Balance.' ;
+       this.dialogIcon = "error-message";
+       this.successDiag.open();
      }else{
        this.confirm.confirmModal();
      }
@@ -402,6 +414,26 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       }
       if(this.passData.tableData[i].clmPaytAmt - inwPayment == 0){
         return true;
+      }
+    }
+    return false;
+  }
+
+  claimPayment() : boolean{
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].clmPaytAmt <= this.passData.tableData[i].reserveAmt){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  inwPayment() :boolean{
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      for (var j = 0; j < this.passData.tableData[i].inwPolBal.length; j++) {
+        if(this.passData.tableData[i].inwPolBal[j].paytAmt <= this.passData.tableData[i].inwPolBal[j].balance){
+          return true;
+        }
       }
     }
     return false;

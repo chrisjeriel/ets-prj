@@ -491,6 +491,10 @@ export class InvestmentsComponent implements OnInit {
   }
 
   update(data){
+    keys: ['invtCd','bank','certNo','invtType',
+            'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
+            'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
+            'whtaxAmt','matVal','preTerminatedTag','termDate','amortized','amortEff','priceCost']
       for(var i= 0; i< this.passData.tableData.length; i++){
 
          if(this.passData.tableData[i].edited || this.passData.tableData[i].add){
@@ -534,6 +538,7 @@ export class InvestmentsComponent implements OnInit {
                            matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);                     
                          }  
                           time = parseFloat(matPeriod)/360;
+                          console.log(time)
                        } else if (this.passData.tableData[i].durUnit === 'Months'){
                          if(data.key === 'matPeriod'){
                            matPeriod = this.passData.tableData[i].matPeriod
