@@ -427,7 +427,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   retrieveArEntry(tranId, arNo){
     var sub$ = forkJoin(this.as.getArEntry(tranId, arNo),
-                        this.ms.getMtnBank(),
+                        this.ms.getMtnBank(null,null,'Y',null),
                         this.ms.getMtnBankAcct(),
                         this.ms.getMtnCurrency('', 'Y', this.arDate.date)).pipe(map(([ar, bank, bankAcct, curr]) => { return { ar, bank, bankAcct, curr }; }));
     this.forkSub = sub$.subscribe(
@@ -597,11 +597,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         //bank
         if(bankData.bankList.length !== 0){
           for(var i of bankData.bankList){
-            this.banks.push(i);
+            //this.banks.push(i);
             this.passData.opts[2].vals.push(i.bankCd);
             this.passData.opts[2].prev.push(i.officialName);
           }
-          this.banks = bankData.bankList;
+          this.banks = bankData.bankList.filter(a=>{return a.dcbTag == 'Y'});
         }
         //bankAcct
         if(bankAcctData.bankAcctList.length !== 0){
@@ -670,7 +670,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       }
       else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
           this.deletedData.push(this.passData.tableData[i]);
-          this.savedData[this.savedData.length-1].checkDate = this.ns.toDateTimeString(this.savedData[this.savedData.length-1].checkDate);
+          this.deletedData[this.deletedData.length-1].checkDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].checkDate);
       }
     }
 
@@ -794,17 +794,28 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   retrieveMtnBank(){
     
-    this.banks = [];
+    //this.banks = [];
     this.passData.opts[2].vals = [];
     this.passData.opts[2].prev = [];
-    this.ms.getMtnBank().subscribe(
+    this.ms.getMtnBank(null,null,'Y', null).subscribe(
       (data:any)=>{
         if(data.bankList.length !== 0){
           for(var i of data.bankList){
-            this.banks.push(i);
+            //this.banks.push(i);
             this.passData.opts[2].vals.push(i.bankCd);
             this.passData.opts[2].prev.push(i.officialName);
           }
+          //this.banks = data.bankList;
+        }
+      }
+    );
+  }
+
+  retrieveDCBBanks(){
+    this.banks = [];
+    this.ms.getMtnBank(null,null, 'Y', 'Y').subscribe(
+      (data:any)=>{
+        if(data.bankList.length !== 0){
           this.banks = data.bankList;
         }
       }
@@ -813,7 +824,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   retrieveMtnBankAcct(){
     this.bankAccts = [];
-    this.ms.getMtnBankAcct(this.selectedBank.bankCd).subscribe(
+    this.ms.getMtnBankAcct(this.selectedBank.bankCd,null,null,'Y').subscribe(
         (data:any)=>{
           if(data.bankAcctList.length !== 0){
             this.bankAccts = data.bankAcctList;
@@ -953,9 +964,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   arAmtEqualsPayt(): boolean{
     let totalPayts = 0;
     for(var i of this.passData.tableData){
-      totalPayts += i.paytAmt * i.currRate;
+      if(!i.deleted){
+        totalPayts += i.paytAmt * i.currRate;
+      }
     }
     if(this.arInfo.arAmt * this.arInfo.currRate !== totalPayts){
+      console.log(this.arInfo.arAmt * this.arInfo.currRate);
+      console.log(totalPayts);
       return true;
     }else{
       return false;
@@ -1106,7 +1121,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.banks = [];
     this.bankAccts = [];
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
-                        this.ms.getMtnBank(),
+                        this.ms.getMtnBank(null,null, 'Y'),
                         this.ms.getMtnBankAcct()).pipe(map(([dcb, bank, bankAcct]) => { return { dcb, bank, bankAcct }; }));
     this.forkSub = sub$.subscribe(
       (data:any)=>{
@@ -1128,15 +1143,15 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
              this.passData.opts[2].vals = [];
              this.passData.opts[2].prev = [];
              for(var i of data.bank.bankList){
-               this.banks.push(i);
+               //this.banks.push(i);
                this.passData.opts[2].vals.push(i.bankCd);
                this.passData.opts[2].prev.push(i.officialName);
              }
-             //this.banks = data.bank.bankList;
+             this.banks = data.bank.bankList.filter(a=>{return a.dcbTag == 'Y'});
            }
            //bankAcct
            if(data.bankAcct.bankAcctList.length !== 0){
-               this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null});
+               this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null && a.dcbTag == 'Y'});
                if(this.bankAccts.length == 1){
                  this.selectedBankAcct = this.bankAccts[0];
                  this.arInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
