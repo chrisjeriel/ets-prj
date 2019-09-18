@@ -107,7 +107,7 @@ export class JournalVoucherComponent implements OnInit {
 
       for(var i=0; i< data.transactions.length;i++){
         this.passDataJVListing.tableData.push(data.transactions[i].jvListings);
-        this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo).padStart(8,'0');
+        this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo);
         this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].transactions = data.transactions[i];
       }
 

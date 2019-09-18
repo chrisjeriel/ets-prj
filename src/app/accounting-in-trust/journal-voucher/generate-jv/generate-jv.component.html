@@ -17,7 +17,7 @@
 			</ngb-tab>
 			<ngb-tab class="ngb-tab" title="Accounting Entries" [disabled]="disableTab">
 				<ng-template ngbTabContent>
-					<app-jv-accounting-entries [jvData]="jvData" [jvType]="jvType"></app-jv-accounting-entries>
+					<app-jv-accounting-entries [jvData]="jvData" [jvType]="jvType" (emitData)="jvData.statusType = statusType"></app-jv-accounting-entries>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab [disabled]=" disableTab">

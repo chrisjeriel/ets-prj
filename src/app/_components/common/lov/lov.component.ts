@@ -107,9 +107,6 @@ export class LovComponent implements OnInit {
         index += 1;
       }
     }else{
-      console.log('emit data')
-      console.log(this.lovCheckBox)
-      console.log(data)
       this.passData.data = data;
     }
   	// -- this.passData.data = data;
