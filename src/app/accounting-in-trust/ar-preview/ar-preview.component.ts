@@ -215,6 +215,10 @@ export class ArPreviewComponent implements OnInit {
           if(a.updateLevel == 'N'){
             a.uneditable = ['glShortCd','debitAmt','creditAmt'];
             a.showMG = 0;
+          }else if(a.updateLevel == 'L'){
+            a.uneditable = ['glShortCd'];
+            a.colMG = ['glShortCd'];
+            a.showMG = 1;
           }
         })
         this.computeTotals();
