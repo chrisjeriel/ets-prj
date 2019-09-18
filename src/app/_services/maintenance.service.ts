@@ -1160,19 +1160,21 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBookingMonth", {params});
     }
 
-    getMtnBank(bankCd?, officialName?, activeTag?){
+    getMtnBank(bankCd?, officialName?, activeTag?, dcbTag?){
     	const params = new HttpParams()
     				.set('bankCd', (bankCd === null || bankCd === undefined ? '' : bankCd))
     				.set('officialName', (officialName === null || officialName === undefined ? '' : officialName))
     	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
+    	     		.set('dcbTag', (dcbTag === null || dcbTag === undefined ? '' : dcbTag));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBank", {params});
     }
 
-    getMtnBankAcct(bankCd?, bankAcctCd?, accountNo?){
+    getMtnBankAcct(bankCd?, bankAcctCd?, accountNo?, dcbTag?){
     	const params = new HttpParams()
     				.set('bankCd', (bankCd === null || bankCd === undefined ? '' : bankCd))
     				.set('bankAcctCd', (bankAcctCd === null || bankAcctCd === undefined ? '' : bankAcctCd))
     	     		.set('accountNo', (accountNo === null || accountNo === undefined ? '' : accountNo))
+    	     		.set('dcbTag', (dcbTag === null || dcbTag === undefined ? '' : dcbTag));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBankAcct", {params});
     }
 
