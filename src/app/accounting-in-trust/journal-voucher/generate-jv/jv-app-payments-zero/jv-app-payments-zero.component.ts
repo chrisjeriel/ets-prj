@@ -22,52 +22,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-  /*passData: any = {
-    tHeaderWithColspan : [{ header: "", span: 1 }, { header: "Policy Information", span: 14 },
-         { header: "Payment Details", span: 2 }],     
-    tableData: [], //this.accountingService.getAccJvInPolBalAgainstLoss(),
-    tHeader: ['Policy No.','Inst No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance','Overpayments','Overpayment (PHP)'],
-    dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
-    nData: {
-       showMG: 1,
-       soaNo : '',
-       policyNo : '',
-       corefNo : '',
-       instNo : '',
-       effDate : '',
-       dueDate : '',
-       currCd : '',
-       currRate : '',
-       premAmt : '',
-       riComm : '',
-       riCommVat : '',
-       charges : '',
-       netDue : '',
-       prevPaytAmt : '',
-       balance : '',
-       adjBalAmt : '',
-       localAmt: ''
-    },
-    //total:[null,null,null,null,null,null,'Total','premAmt', 'riComm','riCommVat', 'charges', 'netDue', 'prevPaytAmt', 'balance', 'adjBalAmt','localAmt'],
-    magnifyingGlass: ['policyNo'],
-    checkFlag: true,
-    addFlag: true,
-    deleteFlag: true,
-    infoFlag: true,
-    paginateFlag: true,
-    searchFlag: true,
-    pagination: true,
-    pageStatus: true,
-    selectFlag: false,
-    disableAdd: true,
-    btnDisabled: false,
-    pageLength: 10,
-    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true],
-    //widths: [215,200,160,50,115,115,40,155,130,130,120,130,130,130,130,85,85],
-    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','adjBalAmt','localAmt'],
-    pageID: 2,
-  };
-*/
+  
   passData: any = {
     tHeaderWithColspan : [],
     tableData: [],
@@ -97,54 +52,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','adjBalAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
     keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','adjBalAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
   };
-  /*passData: any = {
-    tableData: [], //this.accountingService.getAccJvInPolBalAgainstLoss(),
-    tHeader: ['Policy No.','Inst No.','Co. Ref No.','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due', 'Overpayment (PHP)','Payments','SOA No',],
-    dataTypes: ['text','sequence-2','currency', 'currency','text','percent','currency','currency','currency','currency','currency','currency','text','text','date','date'],
-    nData: {
-       showMG: 1,
-       soaNo : '',
-       policyNo : '',
-       corefNo : '',
-       instNo : '',
-       effDate : '',
-       dueDate : '',
-       currCd : '',
-       currRate : '',
-       premAmt : '',
-       riComm : '',
-       riCommVat : '',
-       charges : '',
-       netDue : '',
-       prevPaytAmt : '',
-       balance : '',
-       adjBalAmt : '',
-       localAmt: '',
-       createDate:'',
-       createUser: '',
-       updateUser: '',
-       updateDate: ''
-    },
-    total:[null,'Total','adjBalAmt','localAmt',null,null,'prevPaytAmt','netDue','premAmt', 'riComm','riCommVat', 'charges', null, null, null, null],
-    magnifyingGlass: ['policyNo'],
-    checkFlag: true,
-    addFlag: true,
-    //highlight:[true,true,true,true,true,true,true,true,false,true,true,true,false,false,false,true],
-    deleteFlag: true,
-    infoFlag: true,
-    paginateFlag: true,
-    searchFlag: true,
-    pagination: true,
-    pageStatus: true,
-    selectFlag: false,
-    disableAdd: true,
-    btnDisabled: false,
-    pageLength: 10,
-    uneditable: [true,true,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true],
-    widths: [163,50,100,100,37,84,100,100,100,100,100,100,180,130,130,130],
-    keys:['policyNo','instNo','adjBalAmt','localAmt','currCd','currRate','prevPaytAmt','netDue', 'premAmt', 'riComm','riCommVat', 'charges','soaNo','coRefNo','effDate','dueDate'],
-    pageID: 2,
-  };*/
 
   jvDetails: any = {
     cedingName: '',
@@ -153,7 +60,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   passLov: any = {
-    selector: 'acitSoaDtlZeroBal',
+    selector: 'ZeroBal',
     cedingId: '',
     zeroBal: 0,
     hide: []
@@ -171,7 +78,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     this.passLov.currCd = this.jvDetail.currCd;
     this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
           { header: "Payment Details", span: 5 }, { header: "", span: 2 });
-    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+    if(this.jvDetail.statusType == 'N'){
       this.disable = false;
     }else {
       this.disable = true;
@@ -180,12 +87,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     }
 
     this.retrieveInwPolZeroBal();
-    /*if(this.cedingParams.cedingId != undefined || this.cedingParams.cedingId != null){
-      console.log(this.cedingParams)
-      this.jvDetails.ceding = this.cedingParams.cedingId;
-      this.jvDetails.cedingName = this.cedingParams.cedingName;
-      this.retrieveInwPolZeroBal();
-    }*/
   }
 
   retrieveInwPolZeroBal(){
@@ -246,7 +147,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   setSoa(data){
-    console.log(data)
     var balance = data.data.balance;
     var datas;
     this.accService.getZeroAlt(data.data.policyId).subscribe((data:any)=> {
@@ -288,36 +188,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
       }
       this.table.refreshTable();
     });
-    
-
-    /*var overdue = null;
-    this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
-    for(var i = 0 ; i < data.data.length; i++){
-      this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-      this.passData.tableData[this.passData.tableData.length - 1].edited  = true;
-      this.passData.tableData[this.passData.tableData.length - 1].itemNo = null;
-      this.passData.tableData[this.passData.tableData.length - 1].policyId = data.data[i].policyId;
-      this.passData.tableData[this.passData.tableData.length - 1].tranId = this.jvDetail.tranId;
-      this.passData.tableData[this.passData.tableData.length - 1].soaNo = data.data[i].soaNo;
-      this.passData.tableData[this.passData.tableData.length - 1].policyNo = data.data[i].policyNo;
-      this.passData.tableData[this.passData.tableData.length - 1].coRefNo  = data.data[i].coRefNo;
-      this.passData.tableData[this.passData.tableData.length - 1].instNo  = data.data[i].instNo;
-      this.passData.tableData[this.passData.tableData.length - 1].effDate  = data.data[i].effDate;
-      this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
-      this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
-      this.passData.tableData[this.passData.tableData.length - 1].currRate  = data.data[i].currRate;
-      this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt  = data.data[i].balPremDue;
-      this.passData.tableData[this.passData.tableData.length - 1].prevRiComm  = data.data[i].balRiComm;
-      this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat  = data.data[i].balRiCommVat;
-      this.passData.tableData[this.passData.tableData.length - 1].prevCharges  = data.data[i].balChargesDue;
-      this.passData.tableData[this.passData.tableData.length - 1].prevNetDue  = data.data[i].balPremDue - data.data[i].balRiComm - data.data[i].balRiCommVat + data.data[i].balChargesDue;
-      this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt  = data.data[i].tempPayments + data.data[i].totalPayments;
-      this.passData.tableData[this.passData.tableData.length - 1].cumPayment = data.data[i].cumPayment;
-      
-      this.passData.tableData[this.passData.tableData.length - 1].adjBalAmt  = null;
-    }
-    this.table.refreshTable();*/
   }
 
   prepareData(){
@@ -354,6 +224,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   saveAppPaytZero(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
 
     this.accService.saveAcitZeroBal(this.jvDetails).subscribe((data:any) => {
@@ -371,7 +242,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   update(data){
-    this.totalOverpayment = 0;
     for(var i = 0 ; i < this.passData.tableData.length; i++){
       this.passData.tableData[i].localAmt = this.jvDetail.currRate * this.passData.tableData[i].adjBalAmt;
       this.passData.tableData[i].premAmt = (this.passData.tableData[i].adjBalAmt/this.passData.tableData[i].prevNetDue) * this.passData.tableData[i].prevPremAmt;
@@ -381,20 +251,38 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
       this.passData.tableData[i].totalPayt = this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment;
       this.passData.tableData[i].remainingBal = this.passData.tableData[i].prevNetDue - this.passData.tableData[i].totalPayt;
-      
-      this.totalOverpayment += this.passData.tableData[i].adjBalAmt;
     }
     this.table.refreshTable();
   }
 
   onClickSave(){
-    if(this.totalOverpayment > this.jvDetail.jvAmt){
-      this.dialogMessage = 'Total Overpayments for the policies with zero balance must not exceed the JV Amount.';
+    /*if(this.refundError()){
+      this.dialogMessage = 'Refund must not exceed cummulative payments.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
-      this.confirm.confirmModal();
-    }
+      
+    }*/
+    this.confirm.confirmModal();
   }
 
+  cancel(){
+    this.cancelBtn.clickCancel();
+  }
+
+  refundError():boolean{
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(!this.passData.tableData[i].deleted){
+        if((this.passData.tableData[i].cumPayment > -1 &&  
+            this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment < 0)  ||
+           
+           (this.passData.tableData[i].cumPayment < 0 && 
+            this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment > 0)
+          ){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }

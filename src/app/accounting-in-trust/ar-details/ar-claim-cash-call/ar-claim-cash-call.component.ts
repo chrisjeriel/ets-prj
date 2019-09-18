@@ -26,8 +26,8 @@ export class ArClaimCashCallComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeaderWithColspan: [{header:'', span:1, pinLeft: true},{header: 'Claim Information', span: 11, pinLeft: true}, {header: '', span: 1}, {header: '', span: 1}],
-    tHeader: ['Claim No', 'Hist No', 'Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex Gratia', 'Curr', 'Curr Rate', 'Reserve', 'Cumulative Payment', 'Payment Amount', 'Payment Amount Local'],
+    tHeaderWithColspan: [{header:'', span:1},{header: 'Claim Information', span: 11}, {header: '', span: 2}],
+    tHeader: ['Claim No', 'Hist No', 'Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex Gratia', 'Curr', 'Curr Rate', 'Hist Amount', 'Cumulative Payment', 'Payment Amount', 'Payment Amount Local'],
     dataTypes: ["text", "number", "text", "text","text","text", "checkbox", "text", "percent", "currency", "currency", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
@@ -63,15 +63,15 @@ export class ArClaimCashCallComponent implements OnInit {
         showMG: 1
     },
     total: [null,null,null,null,null,null,null,null, 'Total', 'reserveAmt', 'cumulativeAmt', 'recOverAmt', 'localAmt'],
-    widths: [120,1,130,120, 150, 250, 1,1, 120, 120, 120, 120, 120, 120],
+    widths: [100,1,1,1, 150, 250, 1,1, 100, 120, 120, 120, 120, 120],
     keys: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt', 'recOverAmt', 'localAmt'],
-    pinKeysLeft: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt'],
+    //pinKeysLeft: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt'],
     uneditable: [false,true,true,true,false,true,true,true, true, true,true,false, true],
-    small: true
+    //small: true
   };
 
   passLov: any = {
-    selector: 'clmResHistPayts',
+    selector: 'acitArClmRecover',
     payeeNo: '',
     currCd: '',
     hide: []
@@ -96,7 +96,7 @@ export class ArClaimCashCallComponent implements OnInit {
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true,true,true,true,true,true,true,true, true, true,true,true, true];
-      this.passData.tHeaderWithColspan= [{header: 'Claim Information', span: 11, pinLeft: true}, {header: '', span: 1}, {header: '', span: 1}];
+      this.passData.tHeaderWithColspan= [{header: 'Claim Information', span: 11}, {header: '', span: 2}];
       this.passData.addFlag = false;
       this.passData.deleteFlag =  false;
       this.passData.checkFlag = false;
@@ -161,7 +161,21 @@ export class ArClaimCashCallComponent implements OnInit {
   }
 
   onClickSave(){
+    if(this.reserveCheck()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Payment amount must not exceed the Reserve Amount';
+      this.successDiag.open();
+    }else if(this.canRefund()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Refund must not exceed cumulative payments.';
+      this.successDiag.open();
+    }/*else if(this.netPaymentsCheck()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Net payments must be positive.';
+      this.successDiag.open();
+    }*/else{
       this.confirm.confirmModal();
+    }
   }
 
   save(cancelFlag?){
@@ -261,14 +275,40 @@ export class ArClaimCashCallComponent implements OnInit {
 
   //ALL VALIDATIONS STARTS HERE
 
-  checkBalance(){
+  reserveCheck(): boolean{
     for(var i of this.passData.tableData){
-      console.log(i.netDue);
-      console.log(i.totalPayments);
-      console.log(i.balPaytAmt)
-      if(i.balPaytAmt > i.netDue - i.totalPayments){
+      if(i.edited && !i.deleted && 
+        ((i.reserveAmt < 0 && i.localAmt < 0 && i.localAmt < i.reserveAmt - i.cumulativeAmt) ||
+          (i.reserveAmt > 0 && i.localAmt > 0 && i.localAmt > i.reserveAmt - i.cumulativeAmt))){  
+        /*(i.reserveAmt > 0 && i.reserveAmt - i.cumulativeAmt < i.localAmt) ||
+        (i.reserveAmt < 0 && i.reserveAmt - i.cumulativeAmt > i.localAmt)){*/
         return true;
       }
+    }
+    return false;
+  }
+
+  canRefund(): boolean{
+    for(var i of this.passData.tableData){
+      if(i.edited && !i.deleted &&
+        (i.reserveAmt < 0 && i.localAmt + i.cumulativeAmt > 0) ||
+         (i.reserveAmt > -1 && i.localAmt + i.cumulativeAmt < 0)){
+        console.log(i);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  netPaymentsCheck(): boolean {
+    let netPayments: number = 0;
+    for(var i of this.passData.tableData){
+      if(i.edited && !i.deleted){
+        netPayments += i.localAmt;
+      }
+    }
+    if(netPayments < 0){
+      return true;
     }
     return false;
   }

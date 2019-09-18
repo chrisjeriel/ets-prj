@@ -62,6 +62,13 @@ export class RequestForPaymentComponent implements OnInit {
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Request for Payment");
     // this.getPaytReq();
+    this.acctService.arFilter = '';
+    this.acctService.cvFilter = '';
+    this.acctService.jvFilter = '';
+
+    if(this.acctService.prqFilter != '') {
+      this.tranStat = this.acctService.prqFilter;
+    }
 
     setTimeout(() => {
       this.table.refreshTable();
@@ -78,15 +85,20 @@ export class RequestForPaymentComponent implements OnInit {
         i.createDate = this.ns.toDateTimeString(i.createDate);
         i.updateDate = this.ns.toDateTimeString(i.updateDate);
 
-        if(i.tranStat != null && i.tranStat != 'O') {
+        /*if(i.tranStat != null && i.tranStat != 'O') {
           i.reqStatus = i.tranStat;
           i.reqStatusDesc = i.tranStatDesc;
-        }
+        }*/
 
         return i;
       });
-
       this.passData.tableData = rec.filter(a => String(a.reqStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
+      if(this.passData.tableData.length > 0){
+        this.table.onRowClick(null, this.passData.tableData[0],0);
+        this.passData.btnDisabled = false;
+      }else{
+        this.passData.btnDisabled = true;
+      }
       this.table.refreshTable();
     });
   }
@@ -124,12 +136,14 @@ export class RequestForPaymentComponent implements OnInit {
   }
 
   onClickAdd(event){
+    this.acctService.prqFilter = this.tranStat;
     setTimeout(() => {
       this.router.navigate(['/generate-payt-req'], { skipLocationChange: true });
     },100);
   }
 
   onClickEdit(event){
+    this.acctService.prqFilter = this.tranStat;
     setTimeout(() => {
       this.router.navigate(['/generate-payt-req', { reqId : this.rowData.reqId , from: 'req-payt-list' }], { skipLocationChange: true });
     },100);
@@ -146,6 +160,7 @@ export class RequestForPaymentComponent implements OnInit {
   }
 
   onRowDblClick(data){
+    this.acctService.prqFilter = this.tranStat;
     console.log(data);
     if(data !== null){
       setTimeout(() => {

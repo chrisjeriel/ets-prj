@@ -188,7 +188,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   setCedingcompany(data){
-    console.log(data)
     this.jvDetails.cedingName = data.payeeName;
     this.jvDetails.ceding = data.payeeCd;
     this.passLov.cedingId = data.payeeCd;
@@ -205,7 +204,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data)
     if(data!=null && data.quarterNo != ''){
       this.quarterNo = data.quarterNo;
       this.passDataOffsetting.disableAdd = false;
@@ -221,7 +219,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   setQuarter(data){
-      console.log(data)
       var quarterNo = null;
       this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -292,7 +289,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.tableData[i].riComm = (this.passDataOffsetting.tableData[i].paytAmt / this.passDataOffsetting.tableData[i].prevNetDue) * this.passDataOffsetting.tableData[i].prevRiComm;
       this.passDataOffsetting.tableData[i].riCommVat = (this.passDataOffsetting.tableData[i].paytAmt / this.passDataOffsetting.tableData[i].prevNetDue) * this.passDataOffsetting.tableData[i].prevRiCommVat;
       this.passDataOffsetting.tableData[i].charges = (this.passDataOffsetting.tableData[i].paytAmt / this.passDataOffsetting.tableData[i].prevNetDue) * this.passDataOffsetting.tableData[i].prevCharges;
-      this.passDataOffsetting.tableData[i].netDue = this.passDataOffsetting.tableData[i].premAmt - this.passDataOffsetting.tableData[i].riComm - this.passDataOffsetting.tableData[i].riCommVat + this.passDataOffsetting.tableData[i].charges;
+      this.passDataOffsetting.tableData[i].netDue = this.passDataOffsetting.tableData[i].remainingBal;
 
       this.passDataOffsetting.tableData[i].totalPayt = this.passDataOffsetting.tableData[i].paytAmt + this.passDataOffsetting.tableData[i].cumPayment;
       this.passDataOffsetting.tableData[i].remainingBal = this.passDataOffsetting.tableData[i].prevNetDue - this.passDataOffsetting.tableData[i].totalPayt;
@@ -383,19 +380,11 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
           this.jvDetails.saveInwPolOffset.push(this.passData.tableData[i].acctOffset[j]);
           actualBalPaid += this.passData.tableData[i].acctOffset[j].paytAmt;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].balPaytAmt = this.passData.tableData[i].acctOffset[j].remainingBal;
-          this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].tranId = this.jvDetail.tranId;
-          this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].quarterNo = this.passData.tableData[i].quarterNo;
+          this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].tranId     = this.jvDetail.tranId;
+          this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].quarterNo  = this.passData.tableData[i].quarterNo;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].createDate =  this.ns.toDateTimeString(this.passData.tableData[i].acctOffset[j].createDate);
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].acctOffset[j].updateDate);
-          if(this.passData.tableData[i].acctOffset[j].balance > 0 && this.passData.tableData[i].acctOffset[j].paytAmt > 0){
-              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  1
-          }else if(this.passData.tableData[i].acctOffset[j].balance > 0 && this.passData.tableData[i].acctOffset[j].paytAmt < 0){
-              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  2
-          }else if(this.passData.tableData[i].acctOffset[j].balance < 0 && this.passData.tableData[i].acctOffset[j].paytAmt < 0){
-              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  3
-          }else if(this.passData.tableData[i].acctOffset[j].balance < 0 && this.passData.tableData[i].acctOffset[j].paytAmt > 0){
-              this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].paytType =  4
-          }
+          this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].netDue     = this.passData.tableData[i].acctOffset[j].remainingBal;
         }
 
         if(this.passData.tableData[i].acctOffset[j].deleted){

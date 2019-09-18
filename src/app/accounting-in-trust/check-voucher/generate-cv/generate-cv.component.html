@@ -7,7 +7,7 @@
 					<div>CV Entry</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-entry (cvData)="passData=$event; test();" [passData]="passData"></app-cv-entry>
+					<app-cv-entry (cvData)="passData=$event;" [passData]="passData"></app-cv-entry>
 				</ng-template>
 			</ngb-tab>
 
@@ -43,7 +43,8 @@
 					<div>Attachments</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-attachment></app-cv-attachment>
+					<!-- <app-cv-attachment></app-cv-attachment> -->
+					<app-acc-attachments [record]="passData"></app-acc-attachments>
 				</ng-template>
 			</ngb-tab>
 			<!-- <ngb-tab>

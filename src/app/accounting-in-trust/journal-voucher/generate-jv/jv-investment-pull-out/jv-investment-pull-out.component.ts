@@ -6,6 +6,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-investment-pull-out',
@@ -19,6 +20,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   passData: any = {
     tableData:[],
@@ -92,6 +94,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
   accountNo:any;
   dialogIcon : any;
   dialogMessage : any;
+  cancelFlag: boolean = false;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
@@ -112,20 +115,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
       console.log(this.banks)
     });
   }
-
-  //   var sub$ = forkJoin(this.ms.getMtnBank(),
-  //                       this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => { return {bank, bankAcct }; }));
-
-  //   this.forkSub = sub$.subscribe((data:any) =>{
-
-      
-
-  //     for (var j = 0; j < data.bankAcct.bankAcctList.length; j++) {
-  //       this.bankAccts.push( data.bankAcct.bankAcctList[j]);
-  //     }
-
-  //   });
-  // }
 
   changeBank(data){
     this.passData.tableData = [];
@@ -156,21 +145,17 @@ export class JvInvestmentPullOutComponent implements OnInit {
       console.log(data)
       this.passData.tableData = [];
       if(data.pullOut.length !== 0){
-        /*this.selectedBank = data.pullOut[0];
-        this.selectedBankAcct = data.pullOut[0];*/
         for (var i = 0; i < data.pullOut.length; i++) {
-          this.passData.tableData.push(data.pullOut[i]);
+          if(data.pullOut[i].bank === this.selectedBankCd && data.pullOut[i].bankAcct === this.accountNo){
+            this.passData.tableData.push(data.pullOut[i]);
+          }
         }
       }
       this.table.refreshTable();
     });
   }
 
-  /*compareBankFn(c1: any, c2: any): boolean {
-      return c1.bank === c2.bankCd;
-  }*/
-
-  openInvPulloutLOV(){
+  openInvPulloutLOV(data){
     this.passLov.searchParams = [{key: 'bankCd', search: this.selectedBankCd}, {key:'invtStatus', search: 'MATURED'}];
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
     this.lovMdl.openLOV();
@@ -232,9 +217,13 @@ export class JvInvestmentPullOutComponent implements OnInit {
         this.jvDetails.delInvPullOut.push(this.passData.tableData[i]);
       }
     }
+
+    this.jvDetails.tranId = this.jvDetail.tranId;
+    this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
-  saveInvPullOut(){
+  saveInvPullOut(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
 
     this.accService.saveInvPullOut(this.jvDetails).subscribe((data:any) => {
@@ -252,7 +241,10 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDetails);
+    this.cancelBtn.clickCancel();
+  }
+
+  onTableDataChange(data){
+    console.log(data)
   }
 }

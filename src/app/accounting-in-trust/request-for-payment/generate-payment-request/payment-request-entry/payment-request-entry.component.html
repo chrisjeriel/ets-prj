@@ -192,15 +192,15 @@
     </div>
 </app-modal>
 
-<!-- <app-modal class="d-none" #warnMdl >
+<app-modal class="d-none" #warnMdl >
     <div header style="min-width:460px !important;">Warning</div>
     <div body class="container-flex text-center">
-      <p>Please check field values</p>
+      <p>{{ warnMsg }}</p>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="warnMdl.closeModal()">Ok</button>
     </div>
-</app-modal> -->
+</app-modal>
 
   <app-modal class="d-none" #printMdl>
     <div header>Print Request</div>

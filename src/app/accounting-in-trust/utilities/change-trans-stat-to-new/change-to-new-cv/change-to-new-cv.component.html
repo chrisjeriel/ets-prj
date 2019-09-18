@@ -1,17 +1,43 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">List of Records</legend>
-	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
-		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+
+	<div class="form-row custom-row-inline-inset" style="margin-top: 15px ! important;">
+		<div class="col-sm-12">
+			<!-- <app-cust-editable-non-datatable (newClick)="onRowClick($event)" [passData]="passData" (searchToDb)="searchQuery($event)" (genericBtn)="onChange($event)"></app-cust-editable-non-datatable> -->
+			<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+		</div>
 	</div>
 
 	<div class="input-group" style="margin-left: -20px;">
 		<label class="form-control-sm col-sm-1">Created By</label>
-		<input type="text" class="form-control form-control-sm col-sm" value="cuaresma">
+		<input type="text" class="form-control form-control-sm col-sm" [ngModel]="cvRecord.createUser">
 		<label class="form-control-sm col-sm-1">Date Created</label>
-		<input type="datetime-local" class="form-control form-control-sm col-sm" [value]="dateCreated">	
+		<!-- <input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="arRecord.dateCreated">	 -->
+		<div class="col-sm" style="padding: 0px">
+			<datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="cvRecord.createDate"></datepicker>
+		</div>
 		<label class="form-control-sm col-sm-1">Last Updated By</label>
-		<input type="text" class="form-control form-control-sm col-sm" value="cuaresma">
+		<input type="text" class="form-control form-control-sm col-sm" [ngModel]="cvRecord.updateUser">
 		<label class="form-control-sm col-sm-1">Last Update</label>
-		<input type="datetime-local" class="form-control form-control-sm col-sm" [value]="lastUpdate"> 	
+		<!-- <input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="arRecord.dateUpdate"> -->
+		<div class="col-sm" style="padding: 0px">
+			<datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="cvRecord.updateDate"></datepicker>
+		</div> 	
 	</div>
 </fieldset>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+
+<app-modal class="d-none" id="confirmModal">
+    <div header>Confirmation</div>
+    <div body style="width: 350px !important;">
+            <div class="custom-row-inline-inset text-justify" style="margin-bottom : -16px ! important; margin-top : -5px ! important">       
+                <p>Are you sure you want to change the status of the selected transaction/s to <b> New </b>?</p>
+            </div>
+    </div>
+    <div footer class="w-100 text-right">
+    	<!-- <button class="cust-btn" type="button" (click)="onChangeStatus(this.selectedData);modalService.dismissAll()"><a>Yes</a></button> -->
+    	<!-- <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>No</a></button> -->
+    	<button class="cust-btn" type="button"><a>Yes</a></button>
+        <button class="cust-btn" type="button"><a>No</a></button>
+    </div>
+</app-modal>

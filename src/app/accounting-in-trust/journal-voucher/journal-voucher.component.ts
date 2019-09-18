@@ -86,6 +86,13 @@ export class JournalVoucherComponent implements OnInit {
 
   ngOnInit() {
      this.titleService.setTitle("Acct-IT | Journal Voucher");
+    this.accountingService.arFilter = '';
+    this.accountingService.cvFilter = '';
+    this.accountingService.prqFilter = '';
+
+    if(this.accountingService.jvFilter != '') {
+      this.tranStat = this.accountingService.jvFilter;
+    }
 
     setTimeout(() => {
       this.table.refreshTable();
@@ -105,7 +112,7 @@ export class JournalVoucherComponent implements OnInit {
       }
 
       this.passDataJVListing.tableData.forEach(a => {
-        if(a.transactions.tranStat != 'O') {
+        if(a.transactions.tranStat != 'O' && a.transactions.tranStat != 'C') {
           a.jvStatus = a.transactions.tranStat;
           a.jvStatusName = a.transactions.tranStatDesc;
         }
@@ -120,15 +127,18 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   onClickAdd(event){
+    this.accountingService.jvFilter = this.tranStat;
       this.router.navigate(['/generate-jv', {from: 'add',
                                              exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
   }
 
   onClickEdit(event){
+    this.accountingService.jvFilter = this.tranStat;
       this.router.navigate(['/generate-jv']); 
   }
 
   toGenerateJVEdit(event) {
+    this.accountingService.jvFilter = this.tranStat;
     this.router.navigate(['/generate-jv', { tranId            : event.tranId,
                                             tranTypeCd        : event.trantypeCd,
                                             closeDateTran     : event.transactions.closeDate, 

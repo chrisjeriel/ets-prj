@@ -10,6 +10,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-offsetting-against-negative-treaty',
@@ -28,6 +29,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(QuarterEndingLovComponent) quarterModal: QuarterEndingLovComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+
   /*passData: any = {
     tableData: this.accountingService.getAgainstNegativeTreaty(),
     tHeader: ['Quarter Ending','Currency', 'Currency Rate', 'Amount','Amount(PHP)'],
@@ -147,6 +150,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   errorFlag: boolean = false;
   disable: boolean = true;
   readOnly :boolean = false;
+  cancelFlag: boolean = false;
 
   //ADDED BY NECO 09/03/2019
   positiveHistType: number[] = [4,5,10];
@@ -316,7 +320,28 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     var clmPaymentFlag = false;
     var totalPaid = 0;
 
+
     for (var i = 0; i < this.passData.tableData.length; i++) {
+      totalPaid = 0;
+      for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
+        totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        if(totalPaid > this.passData.tableData[i].balanceAmt){
+          this.errorFlag = true;
+          break;
+        }
+      }
+    }
+
+    if(this.errorFlag){
+        this.dialogMessage = 'The total Paid Amount of claims for offset on Quarter Ending must not exceed its Treaty Balance Amount.' ;
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
+
+    
+    /*for (var i = 0; i < this.passData.tableData.length; i++) {
       totalPaid = 0;
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
         //ADDED BY NECO 09/03/2019
@@ -336,8 +361,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         }
       }
     }
-
-    totalPaid = 0;
+*/
+    /*totalPaid = 0;
     for (var i = 0; i <  this.passData.tableData.length; i++) {
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
         //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
@@ -349,30 +374,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         }
         //END
       }
-    }
-
-    //added by NECO 09/04/2019
-    var totalTreatyBal: number = 0;
-    for(var k = 0; k < this.passData.tableData.length; k++){
-      totalTreatyBal += this.passData.tableData[k].balanceAmt;
-    }
-    //End
-
-    if(clmPaymentFlag){
-        this.dialogMessage = 'The total Paid Amount of claims must not exceed its Hist Amount.' ;
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-    }else if(this.errorFlag){
-        this.dialogMessage = 'The total Paid Amount of claims for offset on Quarter Ending must not exceed its Treaty Balance Amount.' ;
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-    }else if(totalTreatyBal > this.jvDetail.jvAmt){
-        this.dialogMessage = 'Total treaty balance must not exceed the JV amount.';
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-    }else{
-      this.confirm.confirmModal();
-    }
+    }*/
   }
 
   update(data){
@@ -434,7 +436,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
-  saveNegativeTreatyBal(){
+  saveNegativeTreatyBal(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     this.accountingService.saveAcitJvNegTreaty(this.jvDetails).subscribe((data:any) => {
         if(data['returnCode'] != -1) {
@@ -451,15 +454,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDetails);
+    this.cancelBtn.clickCancel();
   }
 }
-
-
-/*this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].instNo = data.data[i].;
-this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].paymentFor = data.data[i].;
-this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].currAmt = data.data[i].;
-this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].localAmt = data.data[i].;
-this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].remarks = data.data[i].;
-this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].exGratia = data.data[i].;*/

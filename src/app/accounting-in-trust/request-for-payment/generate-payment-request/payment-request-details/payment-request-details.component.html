@@ -82,7 +82,7 @@
                             </ng-container>
                           </select>
                           <div class="col-sm-1"></div>
-                          <button class="cust-btn" (click)="getAcctPrqServFee('gnrt')" [disabled]="qtrParam == null || yearParam == null" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important;">Distribute</button>
+                          <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="qtrParam == null || yearParam == null" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important;">Distribute</button>
                         </div>
                         <div class="col-sm-3"></div>
                     </div>
@@ -118,7 +118,7 @@
                     <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr();"></app-cust-editable-non-datatable>
                 </ng-container>
               </ng-container>
-              <div class="form-row" style="margin-top: 40px !important;">
+              <div class="form-row" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
                 <div class="form-group col-sm">
                   <div class="text-center">
                     <div class="cust-btn-container">
@@ -154,7 +154,7 @@
           </div>
         </ng-template>
       </ngb-tab>
-      <ngb-tab *ngIf="requestData?.tranTypeCd != 8 && requestData?.tranTypeCd != 4 && requestData?.tranTypeCd != 5" id="othTabId">
+      <ngb-tab *ngIf="requestData?.tranTypeCd == 4 || requestData?.tranTypeCd == 6 || requestData?.tranTypeCd == 7" id="othTabId">
       <!-- <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="othTabId"> -->
         <ng-template ngbTabTitle>
           <div>Others</div>

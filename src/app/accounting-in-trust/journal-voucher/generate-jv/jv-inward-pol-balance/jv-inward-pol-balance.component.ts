@@ -287,7 +287,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].prevCharges  = data.data[i].prevCharges;
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue  = data.data[i].prevNetDue;
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment  = data.data[i].cumPayment;
-      this.passData.tableData[this.passData.tableData.length - 1].balance  = data.data[i].prevBalance;
+      this.passData.tableData[this.passData.tableData.length - 1].balance  = data.data[i].balance;
     }
     this.table.refreshTable();
   }
@@ -302,6 +302,10 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
     if(errorFlag){
       this.dialogMessage = 'Payment amount cannot be greater than Net Due.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.refundError()){
+      this.dialogMessage = 'Refund must not exceed cummulative payments.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
@@ -379,5 +383,21 @@ export class JvInwardPolBalanceComponent implements OnInit {
   cancel(){
     this.cancelBtn.clickCancel();
   }
-
+  keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+ 
+  refundError():boolean{
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(!this.passData.tableData[i].deleted){
+        if((this.passData.tableData[i].cumPayment > -1 &&  
+            this.passData.tableData[i].paytAmt + this.passData.tableData[i].cumPayment < 0)  ||
+           
+           (this.passData.tableData[i].cumPayment < 0 && 
+            this.passData.tableData[i].paytAmt + this.passData.tableData[i].cumPayment > 0)
+          ){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }

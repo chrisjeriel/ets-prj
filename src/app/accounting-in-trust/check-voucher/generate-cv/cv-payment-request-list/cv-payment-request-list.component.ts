@@ -11,6 +11,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cv-payment-request-list',
@@ -56,6 +57,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   @Input() passData: any = {
     tranId : ''
   };
+  
   passDataLov  : any = {
     selector  : '',
     payeeCd   : '',
@@ -77,11 +79,13 @@ export class CvPaymentRequestListComponent implements OnInit {
     currCd   : ''
   };
 
-  paytData: any ={
+  paytData: any = {
+    reqId      : '',
     createUser : '',
     createDate : '',
     updateUser : '',
-    updateDate : ''
+    updateDate : '',
+    enabViewDtl : false
   };
 
   cancelFlag     : boolean;
@@ -91,7 +95,8 @@ export class CvPaymentRequestListComponent implements OnInit {
   limitContent   : any[] = [];
 
 
-  constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, public modalService: NgbModal) { }
+  constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, 
+              public modalService: NgbModal, private router : Router) { }
 
   ngOnInit() {
     this.titleService.setTitle(" Acct | CV | Payment Request List");
@@ -204,6 +209,8 @@ export class CvPaymentRequestListComponent implements OnInit {
       this.limitContent.push(e);
     });
     this.passDataLov.selector = 'paytReqList';
+    console.log(this.cvInfo.paytReqType);
+    this.passDataLov.paytReqType = this.cvInfo.paytReqType;
     this.paytReqLov.openLOV();
   }
 
@@ -231,11 +238,16 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
    onRowClick(event){
+     console.log(event);
     if(event != null){
+      this.paytData.reqId = event.reqId;
       this.paytData.createUser = event.createUser;
       this.paytData.createDate = this.ns.toDateTimeString(event.createDate);
       this.paytData.updateUser = event.updateUser;
       this.paytData.updateDate = this.ns.toDateTimeString(event.updateDate);
+      this.paytData.enabViewDtl = (event.paytReqNo != '')?true:false;
+    }else{
+      this.paytData.enabViewDtl = false;
     }
   }
 
@@ -247,4 +259,9 @@ export class CvPaymentRequestListComponent implements OnInit {
     }
   }
 
+  onClickViewDetails(){
+    setTimeout(() => {
+      this.router.navigate(['/generate-payt-req', { tranId : this.passData.tranId ,reqId : this.paytData.reqId , from: 'cv-paytreqlist' }], { skipLocationChange: true });
+    },100);
+  }
 }

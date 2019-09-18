@@ -7,6 +7,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-offsetting-against-losses',
@@ -25,6 +26,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   @ViewChild('inwlovMdl') inwlovMdl: LovComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @Output() emitData = new EventEmitter<any>();
 
   passData: any = {
@@ -148,14 +150,13 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   readOnly:boolean = false;
+  cancelFlag: boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
-    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+    if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
-      this.InwPolBal.disableAdd = false;
-      this.passData.disableAdd = false;
     }else {
       this.readOnly = true;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
@@ -171,7 +172,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   retrieveClmLosses(){
-    this.accountingService.getRecievableLosses(this.jvDetail.tranId).subscribe((data:any) => {
+    this.accountingService.getRecievableLosses(this.jvDetail.tranId,null).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
       if(data.receivables.length!=0){
@@ -198,6 +199,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.jvDetails.ceding = data.payeeCd;
     this.passLov.cedingId = data.payeeCd;
     this.passLovInw.cedingId = data.payeeCd;
+    this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveClmLosses();
     this.check(this.jvDetails);
@@ -215,6 +217,12 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.itemNo = data.itemNo;
       this.InwPolBal.nData.itemNo = this.itemNo;
       this.InwPolBal.tableData = data.inwPolBal;
+    }
+
+    if(this.jvDetail.statusType == 'N'){
+      this.InwPolBal.disableAdd = false;
+    }else{
+      this.InwPolBal.disableAdd = true;
     }
     this.inwTable.refreshTable();
   }
@@ -383,6 +391,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].itemNo = this.passData.tableData[i].itemNo;
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].inwPolBal[j].createDate);
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].inwPolBal[j].updateDate);
+          this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].netDue = this.passData.tableData[i].inwPolBal[j].remainingBal;
         }
 
         if(this.passData.tableData[i].inwPolBal[j].deleted){
@@ -394,7 +403,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
-  saveData(){
+  saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     this.accountingService.saveAcitRcvblsLoss(this.jvDetails).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
@@ -411,7 +421,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDetails)
+    this.cancelBtn.clickCancel();
   }
 }

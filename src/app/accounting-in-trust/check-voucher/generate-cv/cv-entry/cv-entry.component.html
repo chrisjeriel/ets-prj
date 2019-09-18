@@ -3,21 +3,24 @@
         <fieldset class="scheduler-border">
             <legend class="scheduler-border">CV Info</legend>
             <div class="d-flex">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-10">
+                <!-- <div class="col-sm-1"></div> -->
+                <div class="col-sm-12">
                     <div class="form-row" style="margin-top: 13.5px !important;margin-bottom: 13.5px !important;">
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">CV. No</label>
-                            <div class="input-group col-sm-3 no-padding">
+                            <div class="input-group col-sm-2 no-padding">
                                 <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="saveAcitCv.cvYear" readonly>
                                 <input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right;margin-left: 3px;" [(ngModel)]="saveAcitCv.cvNo"  readonly>
                             </div>
-                            <label class="form-control-sm col-sm-2 no-margin">Date</label>
-                            <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
+                            <label class="form-control-sm col-sm-1 no-margin" style="margin-left: -40px !important;">Date</label>
+                            <div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
                               <datepicker [type]="'datetime'" [disabled]="saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" [required]="true" [(value)]="saveAcitCv.cvDate"></datepicker>
                           </div>
-                          <label class="form-control-sm col-sm-1">Status</label>
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="saveAcitCv.cvStatusDesc" readonly>
+                          <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1">Status</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="saveAcitCv.cvStatusDesc" readonly>
+                          <label class="form-control-sm col-sm-2" style="margin-left: -40px !important;">Payment Request Type</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcitCv.paytReqTypeDesc" maxlength="500" appRequired>
+                          <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('paytReqType')"><i class="fa fa-search"></i></a></div>
                       </div>
                       <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Payee</label>
@@ -31,7 +34,7 @@
                 </div>
 
             </div>
-            <div class="col-sm-1"></div>
+            <!-- <div class="col-sm-1"></div> -->
         </div>
     </fieldset>
 </div>
@@ -379,6 +382,7 @@
 <app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')" ></app-lov>
 <app-lov #bankAcctLov [passData]="passDataLov" (selectedData)="setData($event,'bank-acct')" ></app-lov>
 <app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')" ></app-lov>
+<app-lov #paytReqTypeLov [passData]="passDataLov" (selectedData)="setData($event,'paytReqType')" ></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>
 <app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
 <app-mtn-printable-names #certUserLov (selectedData)="setData($event,'cert-user')"></app-mtn-printable-names>

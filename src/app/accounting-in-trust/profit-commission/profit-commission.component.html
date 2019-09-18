@@ -12,21 +12,11 @@
 							<div class="text-search-ico" (click)="showCedCompLOV()"><a><i class="fa fa-search"></i></a></div>
 							<label class="form-control-sm text-right" style="margin-left: 10px">Period</label>
 							<label class="form-control-sm" style="padding-left:10px !important;">From</label>
-							<select id="m-list" [(ngModel)]="fromMonthCd" class="form-control form-control-sm cust-sm col-sm-1">
-								<option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option>
-							</select>
-							<select id="y-list" [(ngModel)]="fromYearCd" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 2px">
-								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
-							</select>
+							<input [(ngModel)]="dateFrom" class = "textbox-n form-control form-control-sm cust-sm col-sm-2" type = "text" onfocus = "(this.type = 'date')"  id = "date">
 							<label class="form-control-sm text-right" style="margin-left: 10px">To</label>
-							<select id="m-list" [(ngModel)]="toMonthCd" class="form-control form-control-sm cust-sm col-sm-1" style="padding-left:10px !important;">
-								<option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option>
-							</select>
-							<select id="y-list" [(ngModel)]="toYearCd" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 2px">
-								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
-							</select>
+							<input [(ngModel)]="dateTo" class = "textbox-n form-control form-control-sm cust-sm col-sm-2" type = "text" onfocus = "(this.type = 'date')"  id = "date">
 							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
-								<button type="button" class="cust-btn" [disabled]="cedingDesc == '' || fromMonthCd == undefined || fromYearCd == undefined || toMonthCd == undefined || toYearCd == undefined" (click)="searchProfitComm()"><a>Search</a></button>
+								<button type="button" class="cust-btn" (click)="searchProfitComm()"><a>Search</a></button>
 							</div>
 						</div>
 					</div>
@@ -72,8 +62,8 @@
         <div class="input-group" style="margin-bottom: -25px !important;">
 			<label class="form-control-sm col-sm-9" style="padding-left:8.5px !important;text-align: left !important;">PROFIT / (LOSS)</label>
 			<div class="input-group col-sm-3" style="padding: 0px">
-				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="font-weight: bold;" [ngModel]="income1 | number: '1.2-2'" (onModelChange)="income1=$event" readonly>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="margin-left: 2px !important; font-weight: bold;" [ngModel]="outgo1 | number: '1.2-2'" (onModelChange)="outgo1=$event" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="font-weight: bold;" [ngModel]="0 | number: '1.2-2'" (onModelChange)="income1=$event" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="margin-left: 2px !important; font-weight: bold;" [ngModel]="this.diff | number: '1.2-2'" (onModelChange)="this.diff=$event" readonly>
 			</div>
 		</div>
 		<div class="input-group" style="margin-bottom: -3px !important;">
@@ -83,8 +73,8 @@
 		<div class="input-group" style="margin-bottom: -25px !important;">
 			<label class="form-control-sm col-sm-9" style="padding-left:0px !important;text-align: left !important;"></label>
 				<div class="input-group col-sm-3" style="padding: 0px">
-					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="income2 | number: '1.2-2'" (onModelChange)="income2=$event"style="font-weight: bold;" readonly>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="margin-left: 2px !important;font-weight: bold;" [ngModel]="outgo2 | number: '1.2-2'" (onModelChange)="outgo2=$event" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="this.income | number: '1.2-2'" (onModelChange)="this.income=$event"style="font-weight: bold;" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="margin-left: 2px !important;font-weight: bold;" [ngModel]="this.income | number: '1.2-2'" (onModelChange)="this.income=$event" readonly>
 				</div>
 		</div>
 		<div class="input-group" style="margin-bottom: -3px !important;">
@@ -172,11 +162,11 @@
                         <div class="input-group alignment" style="margin-bottom: -13px !important;">
                             <label class="form-control-sm col-sm-3 text-right">Month</label>
                             <select id="m-list" [(ngModel)]="monthCdLov" class="form-control form-control-sm cust-sm col-sm-5">
-								<option *ngFor="let m of monthList" [value]="m">{{ m }}</option>
+								<!-- <option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option> -->
 							</select>
 							<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Year</label>
 							<select id="y-list" [(ngModel)]="yearCdLov" class="form-control form-control-sm cust-sm col-sm-3">
-								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
+								<!-- <option *ngFor="let y of yearList" [value]="y">{{ y }}</option> -->
 							</select>
                         </div>
                      </div>
@@ -193,3 +183,4 @@
 
 <app-ceding-company #cedingComp (selectedData)="setSelectedCedComp($event);"></app-ceding-company>
 <app-ceding-company #cedingCompModal (selectedData)="setSelectedCedCompModal($event);"></app-ceding-company>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cancelBtn.onNo():null" ></app-sucess-dialog> -->

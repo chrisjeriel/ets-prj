@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
@@ -111,6 +111,11 @@ export class AccountingService {
 	batchOR2: BatchOR2[] = [];
 	accJvInPolBalAgainstLoss: AccJvInPolBalAgainstLoss[] = [];
 	accJvOutAccOffset:    AccJvOutAccOffset[] = [];
+
+	arFilter: string = '';
+	cvFilter: string = '';
+	jvFilter: string = '';
+	prqFilter: string = '';
 
 	constructor(private http: HttpClient) { }
 
@@ -1315,12 +1320,22 @@ export class AccountingService {
 		return this.batchOR2;
 	}
 
-	getProfitCommSumm(profcommId?,cedingId?,month?,year?){
-		const params = new HttpParams()
-			.set('profcommId',profcommId ===undefined || profcommId===null ? '' : profcommId)
-			.set('cedingId',cedingId ===undefined || cedingId===null ? '' : cedingId)
-			.set('month',month ===undefined || month===null ? '' : month)
-			.set('month',year ===undefined || year===null ? '' : year)
+	getProfitCommSumm(searchParams : any[]){
+		var params;
+		console.log(searchParams);
+		if(searchParams.length < 1){
+			params = new HttpParams()
+				.set('profcommId','')
+				.set('cedingId','')
+				.set('dateTo','')
+				.set('dateFrom','')
+		}else{
+			params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+		}
+
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitProfCommSumm",{params});
 	}
 
@@ -2055,6 +2070,13 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitClmResHistPayts",{params});
 	}
 
+
+	getAMortizationList(invtId){
+		const params = new HttpParams()
+		 	.set('invtId', (invtId == null || invtId == undefined ? '' : invtId))
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitAmortize",{params});
+    }
+
 	saveAcitCvPaytReqList(params){
          let header : any = {
              headers: new HttpHeaders({
@@ -2166,4 +2188,35 @@ export class AccountingService {
 			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveSoaAgingZeroAltLOV",{params});
 	}
+
+	getTrtyInv(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvInvmtOffset",{params});
+	}
+
+	saveTrtyInv(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVTrtyInvt',JSON.stringify(params),header);
+	}
+
+	getInvPlacement(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvInvPlacement",{params});
+	}
+
+	saveInvPlacement(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvPlacement',JSON.stringify(params),header);
+	}
+
 }

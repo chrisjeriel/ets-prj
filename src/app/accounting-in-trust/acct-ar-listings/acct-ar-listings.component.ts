@@ -90,12 +90,19 @@ export class AcctArListingsComponent implements OnInit {
     updateDate: ''
   }
 
-  tranStat: string = 'new';
+  tranStat: string = 'open';
 
   constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Acknowledgement Receipt");
+    this.as.cvFilter = '';
+    this.as.jvFilter = '';
+    this.as.prqFilter = '';
+
+    if(this.as.arFilter != '') {
+      this.tranStat = this.as.arFilter;
+    }
 
     setTimeout(() => {
       this.table.refreshTable();
@@ -107,11 +114,11 @@ export class AcctArListingsComponent implements OnInit {
     this.table.overlayLoader = true;
     this.as.getArList(this.searchParams).subscribe(
       (data: any)=>{
-        if(data.ar.length !== 0){
+        if(data.ar.length !== 0) {
           // this.passData.tableData = data.ar;
-          this.passData.tableData = data.ar.filter(a => String(a.arStatDesc).toUpperCase() == this.tranStat.toUpperCase());
-          this.table.refreshTable();
+          this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
         }
+        this.table.refreshTable();
       },
       (error)=>{
         this.passData.tableData = [];
@@ -130,10 +137,12 @@ export class AcctArListingsComponent implements OnInit {
    }
 
   toGenerateARAdd() {
+    this.as.arFilter = this.tranStat;
   	this.router.navigate(['/accounting-in-trust', { action: 'add' }], { skipLocationChange: true });
   }
 
   toGenerateAREdit(data) {
+    this.as.arFilter = this.tranStat;
     console.log(data);
     this.record = {
       tranId: data.tranId,
@@ -146,7 +155,7 @@ export class AcctArListingsComponent implements OnInit {
       amount: data.arAmt
     }
 
-    this.router.navigate(['/accounting-in-trust', { slctd: JSON.stringify(this.record), action: 'edit' }], { skipLocationChange: true });
+    this.router.navigate(['/accounting-in-trust', { slctd: JSON.stringify(this.record), action: 'edit', tranStat: this.tranStat }], { skipLocationChange: true });
   }
 
   onRowClick(data){
