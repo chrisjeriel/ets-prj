@@ -160,7 +160,7 @@ export class ArPreviewComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    console.log(this.record.tranId);
+    this.accEntriesData = this.accountingService.getAccEntriesPassData();
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
@@ -179,7 +179,6 @@ export class ArPreviewComponent implements OnInit {
     this.getMtnCurrency();
     //this.retrieveAmtDtl();
     this.retrieveAcctEntry();
-    this.accEntriesData = this.accountingService.getAccEntriesPassData();
   }
 
   onTabChange(event){
