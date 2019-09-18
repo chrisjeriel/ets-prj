@@ -676,7 +676,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'shortCode','shortDesc'];
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnAcitChartAcct(this.passData.params).subscribe(a=>{
-        this.passTable.tableData = a["list"];
+        this.passTable.tableData = a["list"].sort((a, b) => a.shortCode - b.shortCode);
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'slType'){
@@ -686,17 +686,17 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'slTypeCd','slTypeName'];
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnSlType(this.passData.params).subscribe(a=>{
-        this.passTable.tableData = a["list"];
+        this.passTable.tableData = a["list"];//.sort((a, b) => a.slTypeCd - b.slTypeCd);
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'sl'){
       this.passTable.tHeader = ['SL Name'];
       this.passTable.widths =['auto']
       this.passTable.dataTypes = [ 'text'];
-      this.passTable.keys = [ 'slName'];
+      this.passTable.keys = ['slName'];
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
-       this.passTable.tableData = a["list"];
+       this.passTable.tableData = a["list"].sort((a, b) => a.slName - b.slName);
        this.table.refreshTable();
        })
 
