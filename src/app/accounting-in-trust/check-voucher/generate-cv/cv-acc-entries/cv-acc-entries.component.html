@@ -24,12 +24,12 @@
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" [ngModel]="cvData?.currCd" readonly>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvData?.cvAmt" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvData?.cvAmt | number:'1.2-2'" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvData?.localAmt" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvData?.localAmt | number:'1.2-2'" readonly>
             </div>
         </div>
     </div>
@@ -55,7 +55,7 @@
         <label class="form-control-sm cust-sm col-sm" style="margin-left: -1px !important;"></label>
         <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="totals.variance | number:'1.2-2'" disabled>
     </div>
-    <div class="w-100 text-center" style="margin-bottom: 8px">
+    <div class="w-100 text-center" style="margin-bottom: 8px" *ngIf="cvData?.cvStatus == 'N' || cvData?.cvStatus == 'F'">
         <button class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
         <button class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
     </div>

@@ -29,7 +29,7 @@
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly> 
                   <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.localAmt | number:'1.2-2'" readonly>
                 </div>
               </div>
@@ -53,7 +53,7 @@
                 <div class="col-sm"></div>
               </div>
             </div>
-            <div class="form-row">
+            <div class="form-row" *ngIf="cvInfo?.cvStatus == 'N' || cvInfo?.cvStatus == 'F'">
               <div class="form-group col-sm">
                 <div class="text-center">
                   <div class="cust-btn-container">

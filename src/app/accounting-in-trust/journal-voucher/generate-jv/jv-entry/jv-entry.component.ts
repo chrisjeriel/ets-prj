@@ -173,7 +173,7 @@ export class JvEntryComponent implements OnInit {
         this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
 
         //this.entryData.jvNo = this.entryData.jvNo;
-        this.entryData.jvNo = String(this.entryData.jvNo).padStart(8,'0');
+        //this.entryData.jvNo = String(this.entryData.jvNo).padStart(8,'0');
         this.entryData.createDate = this.ns.toDateTimeString(this.entryData.createDate);
         this.entryData.updateDate = this.ns.toDateTimeString(this.entryData.updateDate);
 

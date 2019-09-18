@@ -44,7 +44,9 @@ export class PolicyIssuanceAltComponent implements OnInit {
     post:boolean = false;
     line:string = ""; /*Line added. TRBT#PROD_GRADE*/
 
-    constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, private us: UnderwritingService) {}
+    disableCov:boolean = false;
+
+    constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, public us: UnderwritingService) {}
 
     ngOnInit() {
          this.sub = this.route.params.subscribe(params => {
@@ -55,7 +57,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
             // this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
-
+            this.policyInfo.insuredDesc = params['insured'];
             this.policyInfo.fromInq = params['fromInq'];
             if(this.policyInfo.fromInq == 'true'){
               this.title = "Policy / Inquiry / Policy Inquiry";
@@ -64,8 +66,12 @@ export class PolicyIssuanceAltComponent implements OnInit {
             /* If not new alt */
             console.log(this.us.fromCreateAlt);
             if(!this.us.fromCreateAlt) {
+              this.policyInfo.policyId = params['policyId'];
+              this.policyInfo.policyNo = params['policyNo'];
               this.policyInfo.prevPolicyId = params['prevPolicyId'] ;
             }
+
+            this.disableCov = params['sumInsured'] == null;
 
             // if(this.us.fromCreateAlt) {
 
@@ -136,6 +142,11 @@ export class PolicyIssuanceAltComponent implements OnInit {
 
     getPolInfo(event){      
         //this.policyInfo = event;
+      // for (let i of Object.keys(event)) {
+      //   if(this.policyInfo[i] == undefined || this.policyInfo[i]==null)
+      //     this.policyInfo[i] = event[i]
+      // }
+
       this.policyInfo.policyId = event.policyId;
       this.policyInfo.policyNo = event.policyNo;
       this.policyInfo.insuredDesc = event.insuredDesc;

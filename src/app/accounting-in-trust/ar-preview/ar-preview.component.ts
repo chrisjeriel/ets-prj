@@ -63,7 +63,7 @@ export class ArPreviewComponent implements OnInit {
     }]
   }
 
-  accEntriesData: any = {
+  /*accEntriesData: any = {
     tableData: [],
     tHeader: ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
     uneditable:[true,true,true,true,false,false],
@@ -97,7 +97,9 @@ export class ArPreviewComponent implements OnInit {
     checkFlag:true,
     magnifyingGlass: ['glShortCd','slTypeName','slName'],
     total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt']
-  };
+  };*/
+
+  accEntriesData: any = {};
 
   /*accEntriesData: any = {
     tableData: [
@@ -158,7 +160,7 @@ export class ArPreviewComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    console.log(this.record.tranId);
+    this.accEntriesData = this.accountingService.getAccEntriesPassData();
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
@@ -385,6 +387,8 @@ export class ArPreviewComponent implements OnInit {
     if(data.selector == 'slType'){
       this.lovRow.slTypeName = data.data.slTypeName;
       this.lovRow.slTypeCd = data.data.slTypeCd;
+      this.lovRow.slName = '';
+      this.lovRow.slCd = '';
     }else if(data.selector == 'sl'){
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
