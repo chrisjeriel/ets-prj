@@ -306,7 +306,8 @@ export class PolCreateOpenCoverComponent implements OnInit {
         if(this.splitQuoteNo.length === 5 && this.optionData.optionId !== '' && 
            this.inceptDate.date !== '' && this.inceptDate.time !== '' &&
            this.expiryDate.date !== '' && this.expiryDate.time !== ''){
-            $('#confirm-save #modalBtn2').trigger('click');
+            //$('#confirm-save #modalBtn2').trigger('click');
+            this.convertion();
         }else{
             //please fill required fields
             this.dialogIcon = 'info';
@@ -317,6 +318,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     convertion(cancelFlag?){
+        $('.globalLoading').css('display','block');
         this.cancelFlag = cancelFlag !== undefined;  
         /*let parsedQuotationNo: string = this.splitQuoteNo[0] + this.splitQuoteNo[1] +
                                         parseInt(this.splitQuoteNo[2]).toString() + parseInt(this.splitQuoteNo[3]).toString() +

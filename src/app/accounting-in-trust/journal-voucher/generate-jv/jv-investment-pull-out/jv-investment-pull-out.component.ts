@@ -95,40 +95,35 @@ export class JvInvestmentPullOutComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   cancelFlag: boolean = false;
+  sub: any;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
   ngOnInit() {
     //this.getInvPullout();
     this.getBank();
-    //this.getInvPullout();
+    setTimeout(() => {this.getInvPullout()},0);
   }
 
-  getBank(){
+ getBank(){
     this.banks = [];
     this.bankAccts = [];
+    
+    /*this.ms.getMtnBank().subscribe((data:any) => {
+        for (var i = 0; i < data.bankList.length; ++i) {
+          this.banks.push(data.bankList[i]);
+        }
+    });*/
 
-    this.ms.getMtnBank().subscribe((data:any) => {
-      for (var i = 0; i < data.bankList.length; ++i) {
-        this.banks.push(data.bankList[i]);
-      }
-      console.log(this.banks)
+    var join = forkJoin(this.ms.getMtnBank(),
+                        this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => {return {bank, bankAcct}; }));
+
+    this.forkSub = join.subscribe((data: any) =>{
+      this.banks = data.bank.bankList;
+      this.bankAccts = data.bankAcct.bankAcctList;
+      this.getInvPullout();
     });
   }
-
-  //   var sub$ = forkJoin(this.ms.getMtnBank(),
-  //                       this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => { return {bank, bankAcct }; }));
-
-  //   this.forkSub = sub$.subscribe((data:any) =>{
-
-      
-
-  //     for (var j = 0; j < data.bankAcct.bankAcctList.length; j++) {
-  //       this.bankAccts.push( data.bankAcct.bankAcctList[j]);
-  //     }
-
-  //   });
-  // }
 
   changeBank(data){
     this.passData.tableData = [];
@@ -149,29 +144,34 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   changeBankAcct(data){
-    console.log(data)
     this.accountNo = data.bankAcctCd;
     this.getInvPullout();
   }
 
   getInvPullout(){
-    this.accService.getJvInvPullout(this.jvDetail.tranId/*,this.selectedBankCd,this.accountNo*/).subscribe((data:any) => {
+    this.accService.getJvInvPullout(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data)
+      var bank;
+      var bankAcct;
       this.passData.tableData = [];
       if(data.pullOut.length !== 0){
-        /*this.selectedBank = data.pullOut[0];
-        this.selectedBankAcct = data.pullOut[0];*/
+        bank     = this.banks.filter(a => { return a.bankCd === data.pullOut[0].bank});
+        bankAcct = this.bankAccts.filter(a => { return a.bankCd === data.pullOut[0].bank && a.bankAcctCd === data.pullOut[0].bankAcct});
+        this.bankAccts = this.bankAccts.filter(a => { return a.bankCd === data.pullOut[0].bank});
+        this.selectedBank = bank[0];
+        this.selectedBankCd = this.selectedBank.bankCd;
+        this.selectedBankAcct = bankAcct[0];
+        this.accountNo =  this.selectedBankAcct.bankAcctCd;
+
         for (var i = 0; i < data.pullOut.length; i++) {
-          this.passData.tableData.push(data.pullOut[i]);
+          if(data.pullOut[i].bank === this.selectedBankCd && data.pullOut[i].bankAcct === this.accountNo){
+            this.passData.tableData.push(data.pullOut[i]);
+          }
         }
       }
       this.table.refreshTable();
     });
   }
-
-  /*compareBankFn(c1: any, c2: any): boolean {
-      return c1.bank === c2.bankCd;
-  }*/
 
   openInvPulloutLOV(data){
     this.passLov.searchParams = [{key: 'bankCd', search: this.selectedBankCd}, {key:'invtStatus', search: 'MATURED'}];
@@ -241,7 +241,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   saveInvPullOut(cancelFlag?){
-
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
 
     this.accService.saveInvPullOut(this.jvDetails).subscribe((data:any) => {
@@ -259,8 +259,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDetails);
     this.cancelBtn.clickCancel();
   }
 

@@ -80,6 +80,13 @@ export class CheckVoucherComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Check Voucher");
+    this.acctService.arFilter = '';
+    this.acctService.jvFilter = '';
+    this.acctService.prqFilter = '';
+
+    if(this.acctService.cvFilter != '') {
+      this.tranStat = this.acctService.cvFilter;
+    }
 
     setTimeout(() => {
       this.table.refreshTable();
@@ -149,12 +156,14 @@ export class CheckVoucherComponent implements OnInit {
 
 
   onClickAdd(event){
+    this.acctService.cvFilter = this.tranStat;
     setTimeout(() => {
       this.router.navigate(['/generate-cv'], { skipLocationChange: true });
     },100);
   }
 
   onClickEdit(event){
+    this.acctService.cvFilter = this.tranStat;
     setTimeout(() => {
       this.router.navigate(['/generate-cv', { tranId : this.rowData.tranId , from: 'cv-list' }], { skipLocationChange: true });
     },100);
@@ -171,6 +180,7 @@ export class CheckVoucherComponent implements OnInit {
   }
 
   onRowDblClick(data){
+    this.acctService.cvFilter = this.tranStat;
     console.log(data);
     if(data !== null){
       setTimeout(() => {

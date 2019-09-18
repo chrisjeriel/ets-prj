@@ -14,7 +14,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   @Input() readonly: boolean = false;
   @Input() required: boolean = false;
   @Input() table: boolean = false;
-  @Input() editablePrev: boolean = false;
+  @Input() editablePrev: boolean = true;
  
   @Output() fetchContent: EventEmitter<any> = new EventEmitter<any>();
 

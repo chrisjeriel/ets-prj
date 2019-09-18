@@ -86,6 +86,13 @@ export class JournalVoucherComponent implements OnInit {
 
   ngOnInit() {
      this.titleService.setTitle("Acct-IT | Journal Voucher");
+    this.accountingService.arFilter = '';
+    this.accountingService.cvFilter = '';
+    this.accountingService.prqFilter = '';
+
+    if(this.accountingService.jvFilter != '') {
+      this.tranStat = this.accountingService.jvFilter;
+    }
 
     setTimeout(() => {
       this.table.refreshTable();
@@ -100,7 +107,7 @@ export class JournalVoucherComponent implements OnInit {
 
       for(var i=0; i< data.transactions.length;i++){
         this.passDataJVListing.tableData.push(data.transactions[i].jvListings);
-        this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo).padStart(8,'0');
+        this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo);
         this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].transactions = data.transactions[i];
       }
 
@@ -120,15 +127,18 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   onClickAdd(event){
+    this.accountingService.jvFilter = this.tranStat;
       this.router.navigate(['/generate-jv', {from: 'add',
                                              exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
   }
 
   onClickEdit(event){
+    this.accountingService.jvFilter = this.tranStat;
       this.router.navigate(['/generate-jv']); 
   }
 
   toGenerateJVEdit(event) {
+    this.accountingService.jvFilter = this.tranStat;
     this.router.navigate(['/generate-jv', { tranId            : event.tranId,
                                             tranTypeCd        : event.trantypeCd,
                                             closeDateTran     : event.transactions.closeDate, 

@@ -213,12 +213,12 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
         if(doneAlt.length == 0) {
           this.underwritingService.fromCreateAlt = true;        
-          this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: this.polNo.join('-'), policyId: this.selected.policyId, editPol: true }], { skipLocationChange: true });
+          this.router.navigate(['/policy-issuance-alt', { exitLink:'create-alteration',line: line, policyNo: this.polNo.join('-'), policyId: this.selected.policyId, editPol: true }], { skipLocationChange: true });
         } else {
           doneAlt.sort((a, b) => a.altNo - b.altNo);
           var x = doneAlt[doneAlt.length-1];
           this.underwritingService.fromCreateAlt = true;
-          this.router.navigate(['/policy-issuance-alt', { line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true }], { skipLocationChange: true });
+          this.router.navigate(['/policy-issuance-alt', { exitLink:'create-alteration',line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true }], { skipLocationChange: true });
         }
       } else if(coInsStatus == 1) {
         this.warningMsg = 2;

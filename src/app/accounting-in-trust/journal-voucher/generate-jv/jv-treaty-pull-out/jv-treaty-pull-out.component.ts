@@ -138,7 +138,13 @@ export class JvTreatyPullOutComponent implements OnInit {
   ngOnInit() {
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
-  	this.passData.disableAdd = false;
+    this.passData.disableAdd = true;
+    this.invesmentData.disableAdd = true;
+    if(this.jvDetail.statusType == 'N'){
+      this.readOnly = false;
+    }else {
+      this.readOnly = true;
+    }
   	this.retrieveInvPullOut();
   }
 
@@ -148,16 +154,18 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.passData.tableData = [];
       if(data.acctTreatyBal.length != 0){
         this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName
+        this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
         for (var i = 0; i < data.acctTreatyBal.length; i++) {
           this.passData.tableData.push(data.acctTreatyBal[i]);
           this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.acctTreatyBal[i].quarterEnding);
         }
         this.quarterTable.refreshTable();
         this.quarterTable.onRowClick(null,this.passData.tableData[0]);
+        if(this.jvDetail.statusType == 'N'){
+          this.passData.disableAdd = false;
+        }
       }
     });
-    
-   
   }
 
   showCedingCompanyLOV(){
@@ -167,9 +175,9 @@ export class JvTreatyPullOutComponent implements OnInit {
   setCedingcompany(data){
     console.log(data)
     this.jvDetails.cedingName = data.payeeName;
-    this.jvDetails.ceding = data.payeeCd;
+    this.jvDetails.cedingId = data.payeeCd;
+    this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
-    //this.retrieveNegativeTreaty();
     this.check(this.jvDetails);
   }
 
@@ -188,6 +196,7 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.quarterNo = data.quarterNo;
       this.invesmentData.quarterNo = this.quarterNo;
       this.invesmentData.tableData = data.trtyInvmt;
+      this.invesmentData.disableAdd = false;
     }else if(data!==null){
       this.invesmentData.disableAdd = false;
       this.invesmentData.tableData = [];
@@ -222,44 +231,43 @@ export class JvTreatyPullOutComponent implements OnInit {
 
   setSelectedData(data){
     console.log(data.data);
-    this.invesmentData.tableData = this.invesmentData.tableData.filter((a) => a.showMG != 1);
+    this.quarterTable.indvSelect.trtyInvmt = this.quarterTable.indvSelect.trtyInvmt.filter(a=>a.showMG!=1);
     for(var  i=0; i < data.data.length;i++){
-      this.invesmentData.tableData.push(JSON.parse(JSON.stringify(this.invesmentData.nData)));
-      this.quarterTable.indvSelect.trtyInvmt.push(data.data[i]);
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].showMG = 0;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].edited  = true;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].itemNo = null;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].tranId = this.jvDetail.tranId; 
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].invtId = data.data[i].invtId;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].invtCode = data.data[i].invtCd;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].certNo = data.data[i].certNo;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].invtType = data.data[i].invtType;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].invtTypeDesc = data.data[i].invtTypeDesc;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].invtSecCd = data.data[i].invtSecCd;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].securityDesc = data.data[i].invtSecDesc;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].maturityPeriod = data.data[i].matPeriod;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].durationUnit = data.data[i].durUnit;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].interestRate = data.data[i].intRt;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].purchasedDate = data.data[i].purDate;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].maturityDate = data.data[i].matDate;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pulloutType = 'F';
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].currCd = data.data[i].currCd;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].currRate = data.data[i].currRate;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].invtAmt = data.data[i].invtAmt;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].incomeAmt = data.data[i].incomeAmt;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].bankCharge = data.data[i].bankCharge;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].whtaxAmt = data.data[i].whtaxAmt;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].maturityValue = data.data[i].matVal;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].localAmt = data.data[i].matVal * this.jvDetail.currRate;
+      this.quarterTable.indvSelect.trtyInvmt.push(JSON.parse(JSON.stringify(this.invesmentData.nData)));
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].showMG = 0;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].edited  = true;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].itemNo = null;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].tranId = this.jvDetail.tranId; 
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].invtId = data.data[i].invtId;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].invtCode = data.data[i].invtCd;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].certNo = data.data[i].certNo;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].invtType = data.data[i].invtType;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].invtTypeDesc = data.data[i].invtTypeDesc;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].invtSecCd = data.data[i].invtSecCd;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].securityDesc = data.data[i].invtSecDesc;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].maturityPeriod = data.data[i].matPeriod;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].durationUnit = data.data[i].durUnit;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].interestRate = data.data[i].intRt;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].purchasedDate = data.data[i].purDate;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].maturityDate = data.data[i].matDate;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].pulloutType = 'F';
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].currCd = data.data[i].currCd;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].currRate = data.data[i].currRate;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].invtAmt = data.data[i].invtAmt;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].incomeAmt = data.data[i].incomeAmt;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].bankCharge = data.data[i].bankCharge;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].whtaxAmt = data.data[i].whtaxAmt;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].maturityValue = data.data[i].matVal;
+      this.quarterTable.indvSelect.trtyInvmt[this.quarterTable.indvSelect.trtyInvmt.length - 1].localAmt = data.data[i].matVal * this.jvDetail.currRate;
     }
-    this.quarterTable.indvSelect.trtyInvmt = this.invesmentData.tableData;
     this.invTable.refreshTable();
-    console.log(this.passData.tableData)
+    this.quarterTable.onRowClick(null,this.quarterTable.indvSelect);
   }
 
   openLOV(data){
     this.passLov.searchParams = [{key: 'bankCd', search: ''}, {key:'invtStatus', search: 'MATURED'}];
-    this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
+    this.passLov.hide = this.invesmentData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
+    console.log(this.passLov.hide);
     this.lovMdl.openLOV();
   }
 
@@ -272,7 +280,7 @@ export class JvTreatyPullOutComponent implements OnInit {
       if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveaccTrty.push(this.passData.tableData[i]);
         this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].tranId = this.jvDetail.tranId;
-        this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].cedingId = this.jvDetails.ceding;
+        this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].cedingId = this.jvDetails.cedingId;
         this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding);
         this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
         this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
@@ -285,7 +293,7 @@ export class JvTreatyPullOutComponent implements OnInit {
       }
       
       for (var j = 0; j < this.passData.tableData[i].trtyInvmt.length; j++) {
-        if(!this.passData.tableData[i].trtyInvmt[j].deleted && this.passData.tableData[i].trtyInvmt[j].edited){
+        if(!this.passData.tableData[i].trtyInvmt[j].deleted){
           this.jvDetails.saveTrtyInvt.push(this.passData.tableData[i].trtyInvmt[j]);
           actualBalPaid += this.passData.tableData[i].trtyInvmt[j].maturityValue;
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].tranId  = this.jvDetail.tranId;
@@ -303,7 +311,9 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
+    console.log(this.jvDetails);
     this.accountingService.saveTrtyInv(this.jvDetails).subscribe((data:any) => {
       console.log(data)
       if(data['returnCode'] != -1) {

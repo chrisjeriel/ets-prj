@@ -154,6 +154,7 @@ export class PolEndorsementComponent implements OnInit {
                 this.passData.tableData.forEach(a=>{
                     if(a.policyId!= this.policyInfo.policyId){
                         a.policyId = this.policyInfo.policyId;
+                        a.edited = true;
                     }
                 })
                 this.passData.tableData.forEach(a=>{

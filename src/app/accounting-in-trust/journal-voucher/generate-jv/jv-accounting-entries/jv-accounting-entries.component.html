@@ -43,7 +43,7 @@
     <legend class="scheduler-border">JV Accounting Entries</legend>
      <div class="row">
         <div class="col-sm-12" style="margin-top: 14px">
-            <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)"  (tableDataChange)="tableDataChange($event)">
+            <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)"  (tableDataChange)="tableDataChange($event)" (newClick)="onRowclick($event)">
                 <ng-container controls-r>
                     <div class="align" style="position: absolute;left: 130px">
                         <label class="form-control-sm">For Approval</label> 
@@ -81,19 +81,18 @@
     <div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" disabled>
+            <input type="text" class="form-control form-control-sm col-sm-2" name="rowData.createUser" [ngModel]="rowData?.createUser" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-            <input type="datetime-local" class="form-control form-control-sm col-sm-2" disabled>
+            <input type="datetime-local" class="form-control form-control-sm col-sm-2" name="rowData.createDate" [ngModel]="rowData?.createDate" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" disabled>
+            <input type="text" class="form-control form-control-sm col-sm-2" name="rowData.updateUser" [ngModel]="rowData?.updateUser" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-            <input type="datetime-local" class="form-control form-control-sm col-sm-2" disabled>
+            <input type="datetime-local" class="form-control form-control-sm col-sm-2" name="rowData.updateDate" [ngModel]="rowData?.updateDate" disabled>
         </div>
     </div>
 </fieldset>
 </form>
 <app-lov [passData]="passLov" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox"></app-lov>
-<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveAcctEntries()"></app-confirm-save>
 <app-cancel-button (onYes)="saveAcctEntries()" [url]="'/journal-voucher'" ></app-cancel-button>

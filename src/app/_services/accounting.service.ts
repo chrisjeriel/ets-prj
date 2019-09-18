@@ -11,7 +11,7 @@ import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEnt
 export class AccountingService {
 
 	//Inward Policy Balances - ACCT_IN_TRUST
-	  passData: any = {
+	  passDataInwPolBal: any = {
 	    tableData: [],
 	    tHeaderWithColspan: [{header:'', span:1},{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
 	    //pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance'],
@@ -20,8 +20,8 @@ export class AccountingService {
 	    dataTypes: ["text","text", "text", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency","currency","currency","currency","currency","currency","currency","currency"],
 	    addFlag: true,
 	    deleteFlag: true,
-	    /*infoFlag: true,
-	    paginateFlag: true,*/
+	    infoFlag: true,
+	    //paginateFlag: true,
 	    checkFlag: true,
 	    magnifyingGlass: ['policyNo'],
 	    pageLength: 'unli',
@@ -53,6 +53,42 @@ export class AccountingService {
 	    small: false,
 	  };
 	//END
+
+	passDataAccEntries: any = {
+	    tableData: [],
+	    tHeader: ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
+	    uneditable:[true,true,true,true,false,false],
+	    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt'],
+	    dataTypes: ['text','text','text','text','currency','currency'],
+	    nData: {
+	        tranId: '',
+	        entryId: '',
+	        glAcctId: '',
+	        glShortCd: '',
+	        glShortDesc:'',
+	        slTypeCd: '',
+	        slTypeName: '',
+	        slCd: '',
+	        slName: '',
+	        creditAmt: 0,
+	        debitAmt: 0,
+	        autoTag: '',
+	        createUser: '',
+	        createDate: '',
+	        updateUser: '',
+	        updateDate: '',
+	        showMG:1,
+	        edited: true
+	      },
+	    addFlag: true,
+	    deleteFlag: true,
+	    editFlag: false,
+	    pageLength: 10,
+	    widths: [205,305,163,176,122,154],
+	    checkFlag:true,
+	    magnifyingGlass: ['glShortCd','slTypeName','slName'],
+	    total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt']
+  	};
 
 	arDetails: ARDetails[] = [];
 	accountingEntries: AccountingEntries[] = [];
@@ -156,24 +192,31 @@ export class AccountingService {
 	accJvInPolBalAgainstLoss: AccJvInPolBalAgainstLoss[] = [];
 	accJvOutAccOffset:    AccJvOutAccOffset[] = [];
 
+	arFilter: string = '';
+	cvFilter: string = '';
+	jvFilter: string = '';
+	prqFilter: string = '';
+
 	constructor(private http: HttpClient) { }
 
 	getInwardPolicyKeys(tranClass){
-		//this.passData.tableData = new Array(10);
 		if('AR' == tranClass){
-			this.passData.keys = ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
-			this.passData.total = [null,null,null, null, null, 'Total', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
+			this.passDataInwPolBal.keys = ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
+			this.passDataInwPolBal.total = [null,null,null, null, null, 'Total', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
 		}else if('JV' == tranClass){
-			this.passData.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
-    		this.passData.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+			this.passDataInwPolBal.nData = {policyNo : '',coRefNo : '',instNo : '',dueDate : '',currCd : '',currRate : '',prevPremAmt : '',prevRiComm : '',prevRiCommVat : '',prevCharges : '',prevNetDue : '',cumPayment : '',balance : '',paytAmt : '',premAmt : '',riComm : '',riCommVat : '',charges : '',totalPayt : '',remainingBal : '', showMG:1};
+			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    		this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
 		}else if('PRQ' == tranClass){
-			this.passData.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
-			this.passData.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+			this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
 		}
-		return Object.create(this.passData);
+		return Object.create(this.passDataInwPolBal);
+	}
 
-		//remember to set passData.pageLength to 'unli' in your local component.
-	}	
+	getAccEntriesPassData() {
+		return Object.create(this.passDataAccEntries);
+	}
 
 	getAmountDetails() {
 		this.arDetails = [

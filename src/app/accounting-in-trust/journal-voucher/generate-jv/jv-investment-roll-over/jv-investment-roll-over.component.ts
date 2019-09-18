@@ -4,6 +4,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-investment-roll-over',
@@ -18,6 +19,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
    @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
    @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
    passData: any = {
    	tHeaderWithColspan : [],
@@ -87,11 +89,12 @@ export class JvInvestmentRollOverComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   disable:boolean = false;
+  cancelFlag: boolean = false;
 
   constructor(private ns: NotesService, private accountingService: AccountingService) { }
 
   ngOnInit() {
-  	this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Investment Source", span: 16 }, { header: "Investment Source", span: 16 });
+  	this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Investment Source", span: 16 }, { header: "New Investment", span: 16 });
   	this.getInvRollOut();
   }
 
@@ -104,7 +107,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
   		this.lovMdl.openLOV();
   	}else if(data.key === 'invtCode'){
   		this.passLov.searchParams = [{key:'invtStatus', search: 'MATURED'}];
-  		this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
+  		this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.srcInvtCode});
   		this.invIndex = data.index;
   		this.newlovMdl.openLOV();
   	}
@@ -114,25 +117,25 @@ export class JvInvestmentRollOverComponent implements OnInit {
   	console.log(data)
   	let selected = data.data;
   	  this.passData.tableData[this.invIndex].colMG.push('srcInvtCode');
-	    this.passData.tableData[this.invIndex].edited				= true;
-	    this.passData.tableData[this.invIndex].srcInvtId 			= selected[0].invtId; 
-      this.passData.tableData[this.invIndex].srcInvtCode 		= selected[0].invtCd; 
-      this.passData.tableData[this.invIndex].srcCertNo 			= selected[0].certNo;
-      this.passData.tableData[this.invIndex].srcInvtType 		= selected[0].invtType;
-      this.passData.tableData[this.invIndex].srcInvtTypeDesc 	= selected[0].invtTypeDesc;
-      this.passData.tableData[this.invIndex].srcInvtSecCd 		= selected[0].invtSecCd;
-      this.passData.tableData[this.invIndex].srcSecurityDesc 	= selected[0].securityDesc;
+	    this.passData.tableData[this.invIndex].edited				      = true;
+	    this.passData.tableData[this.invIndex].srcInvtId 			    = selected[0].invtId; 
+      this.passData.tableData[this.invIndex].srcInvtCode 		    = selected[0].invtCd; 
+      this.passData.tableData[this.invIndex].srcCertNo 			    = selected[0].certNo;
+      this.passData.tableData[this.invIndex].srcInvtType 		    = selected[0].invtType;
+      this.passData.tableData[this.invIndex].srcInvtTypeDesc 	  = selected[0].invtTypeDesc;
+      this.passData.tableData[this.invIndex].srcInvtSecCd 		  = selected[0].invtSecCd;
+      this.passData.tableData[this.invIndex].srcSecurityDesc 	  = selected[0].securityDesc;
       this.passData.tableData[this.invIndex].srcMaturityPeriod 	= selected[0].matPeriod;
-      this.passData.tableData[this.invIndex].srcDurationUnit 	= selected[0].durUnit;
+      this.passData.tableData[this.invIndex].srcDurationUnit 	  = selected[0].durUnit;
       this.passData.tableData[this.invIndex].srcPurchasedDate 	= selected[0].purDate;
-      this.passData.tableData[this.invIndex].srcMaturityDate 	= selected[0].matDate;
-      this.passData.tableData[this.invIndex].srcCurrCd 			= selected[0].currCd;
-      this.passData.tableData[this.invIndex].srcCurrencyRt 		= selected[0].currRate;
-      this.passData.tableData[this.invIndex].srcInterestRate 	= selected[0].intRt;
-      this.passData.tableData[this.invIndex].srcInvtAmt 		= selected[0].invtAmt;
-      this.passData.tableData[this.invIndex].srcIncomeAmt 		= selected[0].incomeAmt;
-      this.passData.tableData[this.invIndex].srcBankCharge 		= selected[0].bankCharge;
-      this.passData.tableData[this.invIndex].srcWhtaxAmt 		= selected[0].whtaxAmt;
+      this.passData.tableData[this.invIndex].srcMaturityDate 	  = selected[0].matDate;
+      this.passData.tableData[this.invIndex].srcCurrCd 			    = selected[0].currCd;
+      this.passData.tableData[this.invIndex].srcCurrencyRt 		  = selected[0].currRate;
+      this.passData.tableData[this.invIndex].srcInterestRate 	  = selected[0].intRt;
+      this.passData.tableData[this.invIndex].srcInvtAmt 		    = selected[0].invtAmt;
+      this.passData.tableData[this.invIndex].srcIncomeAmt 		  = selected[0].incomeAmt;
+      this.passData.tableData[this.invIndex].srcBankCharge 		  = selected[0].bankCharge;
+      this.passData.tableData[this.invIndex].srcWhtaxAmt 		    = selected[0].whtaxAmt;
       this.passData.tableData[this.invIndex].srcMaturityValue 	= selected[0].matVal;
 
       this.table.refreshTable();
@@ -184,13 +187,14 @@ export class JvInvestmentRollOverComponent implements OnInit {
 
   onClickSave(){
   	var errorFlag = false;
-  	/*for (var i = 0; i < this.passData.tableData.length; i++) {
+  	for (var i = 0; i < this.passData.tableData.length; i++) {
       if(this.passData.tableData[i].srcMaturityValue !== this.passData.tableData[i].invtAmt){
       	errorFlag = true;
       }
-    }*/
+    }
+
     if(errorFlag){
-    	this.dialogMessage = "Maturity value must be equal to investment amount.";
+    	this.dialogMessage = "Maturity value of Source Investment must be equal to New Investment Amount.";
     	this.dialogIcon = "error-message";
     	this.successDiag.open();
     }else{
@@ -221,7 +225,8 @@ export class JvInvestmentRollOverComponent implements OnInit {
     this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
-  saveData(){
+  saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
   	this.prepareData();
   	console.log(this.jvDetails);
   	this.accountingService.saveInvRollOver(this.jvDetails).subscribe((data:any) => {
@@ -239,7 +244,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
   }
 
   cancel(){
-  	this.prepareData();
-  	console.log(this.jvDetails);
+    this.cancelBtn.clickCancel();
   }
 }

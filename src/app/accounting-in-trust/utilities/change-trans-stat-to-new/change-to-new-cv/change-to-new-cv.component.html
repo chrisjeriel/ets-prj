@@ -3,7 +3,8 @@
 
 	<div class="form-row custom-row-inline-inset" style="margin-top: 15px ! important;">
 		<div class="col-sm-12">
-			<app-cust-editable-non-datatable (newClick)="onRowClick($event)" [passData]="passData" (searchToDb)="searchQuery($event)" (genericBtn)="onChange($event)"></app-cust-editable-non-datatable>
+			<!-- <app-cust-editable-non-datatable (newClick)="onRowClick($event)" [passData]="passData" (searchToDb)="searchQuery($event)" (genericBtn)="onChange($event)"></app-cust-editable-non-datatable> -->
+			<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
 		</div>
 	</div>
 
@@ -34,7 +35,9 @@
             </div>
     </div>
     <div footer class="w-100 text-right">
-    	<button class="cust-btn" type="button" (click)="onChangeStatus(this.selectedData);modalService.dismissAll()"><a>Yes</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>No</a></button>
+    	<!-- <button class="cust-btn" type="button" (click)="onChangeStatus(this.selectedData);modalService.dismissAll()"><a>Yes</a></button> -->
+    	<!-- <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>No</a></button> -->
+    	<button class="cust-btn" type="button"><a>Yes</a></button>
+        <button class="cust-btn" type="button"><a>No</a></button>
     </div>
 </app-modal>

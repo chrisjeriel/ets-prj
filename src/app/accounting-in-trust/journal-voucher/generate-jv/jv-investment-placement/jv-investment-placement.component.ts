@@ -100,11 +100,20 @@ export class JvInvestmentPlacementComponent implements OnInit {
     this.banks = [];
     this.bankAccts = [];
 
-    this.ms.getMtnBank().subscribe((data:any) => {
+    /*this.ms.getMtnBank().subscribe((data:any) => {
       for (var i = 0; i < data.bankList.length; ++i) {
         this.banks.push(data.bankList[i]);
       }
       console.log(this.banks)
+    });*/
+
+    var join = forkJoin(this.ms.getMtnBank(),
+                        this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => {return {bank, bankAcct}; }));
+
+    this.forkSub = join.subscribe((data: any) =>{
+      this.banks = data.bank.bankList;
+      this.bankAccts = data.bankAcct.bankAcctList;
+      this.retrieveInvPlacement();
     });
   }
 
@@ -137,10 +146,22 @@ export class JvInvestmentPlacementComponent implements OnInit {
   retrieveInvPlacement(){
     this.accService.getInvPlacement(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data);
+      var bank, bankAcct;
       this.passData.tableData = [];
       if(data.invPlacement.length !== 0){
+        bank     = this.banks.filter(a => { return a.bankCd === data.invPlacement[0].bank});
+        bankAcct = this.bankAccts.filter(a => { return a.bankCd === data.invPlacement[0].bank && a.bankAcctCd === data.invPlacement[0].bankAcct});
+        this.bankAccts = this.bankAccts.filter(a => { return a.bankCd === data.invPlacement[0].bank});
+        this.selectedBank = bank[0];
+        this.selectedBankCd = this.selectedBank.bankCd;
+        this.selectedBankAcct = bankAcct[0];
+        this.accountNo =  this.selectedBankAcct.bankAcctCd;
+
+
         for (var i = 0; i < data.invPlacement.length; i++) {
-          this.passData.tableData.push(data.invPlacement[i]);
+          if(data.invPlacement[i].bank === this.selectedBankCd && data.invPlacement[i].bankAcct === this.accountNo){
+            this.passData.tableData.push(data.invPlacement[i]);
+          }
         }
       }
       
@@ -194,7 +215,7 @@ export class JvInvestmentPlacementComponent implements OnInit {
     this.jvDetails.saveInvPlacement = [];
 
     for (var i = 0; i < this.passData.tableData.length; i++) {
-      if(!this.passData.tableData[i].deleted && this.passData.tableData[i].edited){
+      if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveInvPlacement.push(this.passData.tableData[i]);
         this.jvDetails.saveInvPlacement[this.jvDetails.saveInvPlacement.length - 1].bank = this.selectedBankCd;
         this.jvDetails.saveInvPlacement[this.jvDetails.saveInvPlacement.length - 1].bankAcct = this.accountNo;
@@ -206,10 +227,12 @@ export class JvInvestmentPlacementComponent implements OnInit {
         this.jvDetails.delInvPlacement.push(this.passData.tableData[i]);
       }
     }
-
+    this.jvDetails.tranId = this.jvDetail.tranId;
+    this.jvDetails.tranType = this.jvDetail.tranType;
   }
 
   saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     console.log(this.jvDetails)
     this.accService.saveInvPlacement(this.jvDetails).subscribe((data:any) => {

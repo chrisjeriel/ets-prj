@@ -269,32 +269,32 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   setClaimOffset(data){
-    console.log(data)
-    this.claimsOffset.tableData = this.claimsOffset.tableData.filter((a) => a.showMG != 1);
+    console.log(data.data)
+    this.quarterTable.indvSelect.clmOffset = this.quarterTable.indvSelect.clmOffset.filter(a=>a.showMG!=1);
     for(var  i=0; i < data.data.length;i++){
-      this.claimsOffset.tableData.push(JSON.parse(JSON.stringify(this.claimsOffset.nData)));
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].showMG = 0;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].edited  = true;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].itemNo = null;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].claimId = data.data[i].claimId;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].projId = data.data[i].projId;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histNo = data.data[i].histNo;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].policyId = data.data[i].policyId;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].currCd = this.jvDetail.currCd;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].currRate = this.jvDetail.currRate;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].claimNo = data.data[i].claimNo;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histCategoryDesc = data.data[i].histCategoryDesc;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histCategory = data.data[i].histCategory;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histType = data.data[i].histType;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].histTypeDesc = data.data[i].histTypeDesc;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].insuredDesc = data.data[i].insuredDesc;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].reserveAmt = data.data[i].reserveAmt;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].paytAmt = data.data[i].cumulativeAmt;
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].clmPaytAmt = null; 
-      this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].localAmt = null; //change to currency rt
-      //this.claimsOffset.tableData[this.claimsOffset.tableData.length - 1].quarterNo = this.quarterTable.indvSelect.quarterNo;;
+      this.quarterTable.indvSelect.clmOffset.push(JSON.parse(JSON.stringify(this.claimsOffset.nData)));
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].showMG = 0;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].edited  = true;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].itemNo = null;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].claimId = data.data[i].claimId;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].projId = data.data[i].projId;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].histNo = data.data[i].histNo;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].policyId = data.data[i].policyId;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].currCd = this.jvDetail.currCd;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].currRate = this.jvDetail.currRate;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].claimNo = data.data[i].claimNo;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].histCategoryDesc = data.data[i].histCategoryDesc;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].histCategory = data.data[i].histCategory;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].histType = data.data[i].histType;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].histTypeDesc = data.data[i].histTypeDesc;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].insuredDesc = data.data[i].insuredDesc;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].reserveAmt = data.data[i].reserveAmt;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].paytAmt = data.data[i].cumulativeAmt;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].clmPaytAmt = data.data[i].reserveAmt;
+      this.quarterTable.indvSelect.clmOffset[this.quarterTable.indvSelect.clmOffset.length - 1].localAmt = data.data[i].reserveAmt * this.jvDetail.currRate;
     }
     this.trytytransTable.refreshTable();
+    this.quarterTable.onRowClick(null,this.quarterTable.indvSelect);
   }
 
   onrowClick(data){
@@ -316,67 +316,69 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   onClickSave(){
-    this.errorFlag = false;
-    var clmPaymentFlag = false;
-    var totalPaid = 0;
-
-    for (var i = 0; i < this.passData.tableData.length; i++) {
-      totalPaid = 0;
-      for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
-        //ADDED BY NECO 09/03/2019
-        if(!this.passData.tableData[i].clmOffset[j].deleted){
-          if(this.positiveHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
-            totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
-          }else if(this.negativeHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
-            totalPaid -= this.passData.tableData[i].clmOffset[j].clmPaytAmt;
-          }
-          //END
-          //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt
-          if((this.passData.tableData[i].balanceAmt < 0 && this.passData.tableData[i].balanceAmt + totalPaid  > 0) ||
-             (this.passData.tableData[i].balanceAmt > 0 && this.passData.tableData[i].balanceAmt + totalPaid  < 0)){
-            this.errorFlag = true;
-            break;
-          }
-        }
-      }
-    }
-
-    totalPaid = 0;
-    for (var i = 0; i <  this.passData.tableData.length; i++) {
-      for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
-        //totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
-        //ADDED BY NECO 09/03/2019
-        if(this.positiveHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
-          totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
-        }else if(this.negativeHistType.includes(this.passData.tableData[i].clmOffset[j].histType)){
-          totalPaid -= this.passData.tableData[i].clmOffset[j].clmPaytAmt;
-        }
-        //END
-      }
-    }
-
-    //added by NECO 09/04/2019
-    var totalTreatyBal: number = 0;
-    for(var k = 0; k < this.passData.tableData.length; k++){
-      totalTreatyBal += this.passData.tableData[k].balanceAmt;
-    }
-    //End
-
-    if(clmPaymentFlag){
-        this.dialogMessage = 'The total Paid Amount of claims must not exceed its Hist Amount.' ;
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-    }else if(this.errorFlag){
-        this.dialogMessage = 'The total Paid Amount of claims for offset on Quarter Ending must not exceed its Treaty Balance Amount.' ;
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-    }else if(totalTreatyBal > this.jvDetail.jvAmt){
-        this.dialogMessage = 'Total treaty balance must not exceed the JV amount.';
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
+    if(!this.validPayment()){
+      this.dialogMessage = 'Payment for selected claim is not proportion to payment for Treaty Balance.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(!this.validHistAmt()){
+      this.dialogMessage = 'Paid Amount must not greater than Hist Amount.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
     }else{
       this.confirm.confirmModal();
     }
+  }
+
+  validPayment() : boolean{
+    var totalPaid = 0;
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      totalPaid = 0;
+      for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
+        totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+      }
+      if(totalPaid + this.passData.tableData[i].balanceAmt == 0){
+        return true;
+        break;
+      }
+    }
+    return false;
+  }
+
+  validHistAmt() : boolean{
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
+        if(this.passData.tableData[i].clmOffset[j].clmPaytAmt <= this.passData.tableData[i].clmOffset[j].reserveAmt){
+          console.log('condition true')
+          return true;
+          break;
+        }
+      }
+    }
+     return false;
+  }
+
+  balanceTreaty() : boolean{
+    this.errorFlag = false;
+    var clmPaymentFlag = false;
+    var totalPaid = 0;
+    var totalTreaty = 0;
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      totalPaid = 0;
+
+      for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
+        totalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        totalTreaty += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
+        if(totalPaid > this.passData.tableData[i].balanceAmt){
+          this.errorFlag = true;
+          break;
+        }
+      }
+
+      if(totalTreaty !== this.passData.tableData[i].balanceAmt){
+
+      }
+    }
+    return true;
   }
 
   update(data){
@@ -457,5 +459,16 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  refundError():boolean{
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(!this.passData.tableData[i].deleted){
+        if(1==1){
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

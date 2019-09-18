@@ -231,7 +231,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment must not be greater than the Balance.';
       this.successDiag.open();
-    }else if(this.checkVariance()){
+    }/*else if(this.checkVariance()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the AR Amount or Alloted Policy Balance Payments.';
       this.successDiag.open();
@@ -239,11 +239,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Total Balance for Selected Policy Transactions must not exceed the Alloted Policy Balance Payments.';
       this.successDiag.open();
-    }else if(this.checkNetPayments()){
+    }*/else if(this.checkNetPayments()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
-    }else if(this.canRefund()){
+    }/*else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
       this.successDiag.open();
@@ -251,7 +251,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Alloted Policy Balance Payments must not exceed the AR Amount.';
       this.successDiag.open();
-    }else if(this.zeroAmount()){
+    }*/else if(this.zeroAmount()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment amount must not be zero.';
       this.successDiag.open();
