@@ -549,6 +549,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.form.control.markAsDirty();
         this.getValidBookingMth(this.policyInfo.issueDate,this.policyInfo.effDate);
       }else{
+        setTimeout(a=>this.form.control.markAsPristine(),0);
         this.updateMinBookingDate();
       }
 
