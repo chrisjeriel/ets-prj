@@ -53,7 +53,12 @@
             </app-cust-editable-non-datatable>
         </div>
      </div>
-     <div class="form-row custom-row-inline-inset">
+     <div class="input-group" style="margin-top: 7px;">
+         <label class="form-control-sm cust-sm col-sm-8" style="margin-left: 3px !important;"></label>
+         <label class="form-control-sm col-sm-2" >Variance</label>
+         <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="variance | number:'1.2-2'" disabled="disabled" name="jvDetails.variance">
+     </div>
+     <!-- <div class="form-row custom-row-inline-inset">
          <div class="col-sm-12">
              <div class="input-group">
                 <label class="form-control-sm col-sm">Total Debit and Credit</label>
@@ -65,7 +70,7 @@
                 <input type="text" [ngModel]="variance | number:'1.2-2'" (ngModelChange)="variance = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly name="jvDetails.variance">
             </div>
         </div>
-     </div>
+     </div> -->
      <div class="form-row" style="margin-top: 13px !important;">
          <div class="form-group col-sm">
              <div class="col-md-12 text-center">
