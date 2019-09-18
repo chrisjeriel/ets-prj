@@ -65,23 +65,25 @@ export class PaymentRequestEntryComponent implements OnInit {
     updateUser      : ''
   };
 
-  dialogMessage   : string = '';
-  dialogIcon      : string = '';
-  cancelFlag      : boolean;
-  reqDateDate     : string = '';
-  reqDateTime     : string = '';
-  fromCancel      : boolean;
-  acitPaytReq     : any;
-  tranTypeList    : any[] = [];
-  private sub     : any;
-  initDisabled    : boolean;
-  fromBtn         : string = '';
-  prqStatList     : any;
+  dialogMessage     : string = '';
+  dialogIcon        : string = '';
+  cancelFlag        : boolean;
+  reqDateDate       : string = '';
+  reqDateTime       : string = '';
+  fromCancel        : boolean;
+  acitPaytReq       : any;
+  tranTypeList      : any[] = [];
+  private sub       : any;
+  initDisabled      : boolean;
+  fromBtn           : string = '';
+  prqStatList       : any;
   isReqAmtEqDtlAmts : boolean = false;
-  warnMsg         : string = '';
+  warnMsg           : string = '';
+  disablePayee      : boolean = false;
+  removeIcon        : boolean = false;
 
   @Output() paytData : EventEmitter<any> = new EventEmitter();
-  @Input() rowData: any = {
+  @Input() rowData   : any = {
     reqId : ''
   };
 
@@ -131,8 +133,11 @@ export class PaymentRequestEntryComponent implements OnInit {
       console.log(data);
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
-      var totalReqAmts = (data['prq']['acitPrqTrans'].length == 0)?0:data['prq']['acitPrqTrans'].map(e => e.currAmt).reduce((a,b) => a+b,0);
-      
+      var recPrq = data['prq']['acitPrqTrans'];
+      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0);
+      this.disablePayee = (recPrq.length == 0)?false:true;
+      console.log(this.disablePayee);
+      console.log(recPrq.length);
       this.prqStatList = recStat;
 
       $('.globalLoading').css('display','none');
@@ -198,9 +203,14 @@ export class PaymentRequestEntryComponent implements OnInit {
     });
   }
 
+  // disableFlds(con:boolean){
+  //   $('.warn').prop('readonly',con);
+  //   (con)?$('.magni-icon').remove():'';
+  // }
   disableFlds(con:boolean){
     $('.warn').prop('readonly',con);
-    (con)?$('.magni-icon').remove():'';
+    this.removeIcon = (con)?true:false;
+    console.log(this.removeIcon + ' >>> removeIcon');
   }
 
   onClickNewReq(){
@@ -289,24 +299,32 @@ export class PaymentRequestEntryComponent implements OnInit {
 
   onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
-    (this.saveAcitPaytReq.reqAmt < 0)?this.saveAcitPaytReq.reqAmt = '':'';
+    this.dialogIcon = '';
+    this.dialogMessage = '';
+    
     if(this.reqDateDate == '' || this.reqDateDate == null || this.reqDateTime == '' || this.reqDateTime == null || this.saveAcitPaytReq.payee == '' || 
       this.saveAcitPaytReq.payee == null || this.saveAcitPaytReq.currCd == '' || this.saveAcitPaytReq.currCd == null || this.saveAcitPaytReq.particulars == '' ||
       this.saveAcitPaytReq.particulars == null || this.saveAcitPaytReq.preparedBy == '' || this.saveAcitPaytReq.preparedBy == null || 
       this.saveAcitPaytReq.requestedBy == '' || this.saveAcitPaytReq.requestedBy == null || this.saveAcitPaytReq.tranTypeCd == '' || this.saveAcitPaytReq.tranTypeCd == null ||
-      this.saveAcitPaytReq.currRate == '' || this.saveAcitPaytReq.currRate == null || this.saveAcitPaytReq.reqAmt < 0 || this.saveAcitPaytReq.reqAmt == '' || this.saveAcitPaytReq.reqAmt == null){
+      this.saveAcitPaytReq.currRate == '' || this.saveAcitPaytReq.currRate == null  || this.saveAcitPaytReq.reqAmt == '' || this.saveAcitPaytReq.reqAmt == null){
         this.dialogIcon = 'error';
         this.success.open();
         $('.warn').focus();
         $('.warn').blur();
         this.fromCancel = false;
     }else{
-      this.fromCancel = true;
-      if(this.cancelFlag == true){
-        this.cs.showLoading(true);
-        setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+      if(this.saveAcitPaytReq.reqAmt < 0){
+        this.warnMsg = 'Request Amount should be positive.';
+        this.warnMdl.openNoClose();
+        this.fromCancel = false;
       }else{
-        this.cs.confirmModal();
+        this.fromCancel = true;
+        if(this.cancelFlag == true){
+          this.cs.showLoading(true);
+          setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
+        }else{
+          this.cs.confirmModal();
+        }
       }
     }
   }
