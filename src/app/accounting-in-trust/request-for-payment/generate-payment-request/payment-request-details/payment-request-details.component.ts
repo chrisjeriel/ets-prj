@@ -611,8 +611,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   showLOV(event, from){
-    this.limitContent = [];
-
     if(from.toUpperCase() == 'LOVCEDTBL'){
       this.cedingCompanyData.tableData.forEach(e => {
         this.limitClmHistTbl.push(e);
@@ -621,9 +619,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.limitData.histType = [4,5];
       this.clmHistLov.modal.openNoClose();
     }else if(from.toUpperCase() == 'LOVINWARDTBL'){
-      this.inwardPolBalData.tableData.forEach(e =>{
-        this.limitContent.push(e);
-      });
       this.passData.currCd = this.requestData.currCd;
       this.passData.selector = 'acitSoaDtlPrq';
       this.passData.payeeNo = this.requestData.payeeCd;
@@ -633,10 +628,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.trtyIndx = event.index;
       this.trtyLov.modal.openNoClose();
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
-      this.investmentData.tableData.forEach(e =>{
-        this.limitContent.push(e);
-      });
       this.passData.selector = 'acitInvt';
+      this.passData.hide = this.investmentData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtId});
       this.invtLov.openLOV();
     }
   }
@@ -702,7 +695,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       recAgingSoaDtl.forEach(e => {
         if(this.inwardPolBalData.tableData.some(e2 => e2.policyId != e.policyId && e2.instNo != e.instNo)){
           this.inwardPolBalData.tableData.push(e);
-          this.limitContent.push(e);
+          //this.limitContent.push(e);
         }
       });
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '')
@@ -996,7 +989,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.dialogIcon = '';
     this.dialogMessage = '';
     var isNotUnique : boolean ;
-    var saveTrty = this.params.savePrqTrans;
     var isEmpty = 0;
     var ts = this;
     this.treatyBalanceData.tableData.forEach(e => {
@@ -1026,8 +1018,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }
     });
 
+    var saveTrty = this.params.savePrqTrans;
     var currAmt = this.treatyBalanceData.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
-    
+
     this.treatyBalanceData.tableData.forEach(function(tblData){
       if(tblData.newRec != 1){
         saveTrty.forEach(function(stData){

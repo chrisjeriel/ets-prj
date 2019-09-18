@@ -169,14 +169,13 @@ export class CvEntryComponent implements OnInit {
           });
           return e;
         });
-        //this.saveAcitCv = recCv[0];
+
         this.saveAcitCv = Object.assign(this.saveAcitCv,recCv[0]);
         console.log(recCv);
         console.log(this.saveAcitCv);
         
       }
 
-      // this.cvData.emit({tranId: this.saveAcitCv.tranId, from: 'cv'});
       this.saveAcitCv['from'] = 'cv';
       this.cvData.emit(this.saveAcitCv);
       ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
@@ -431,29 +430,7 @@ export class CvEntryComponent implements OnInit {
     this.saveAcitCv.bankAcct = '';
   }
 
-  // onYesCancelCv(){
-  //   $('.globalLoading').css('display','block');
-  //   this.confirmMdl.closeModal();
-  //   var updateAcitCvStat = {
-  //     tranId       : this.saveAcitCv.tranId,
-  //     cvStatus     : 'X',
-  //     updateUser  : this.ns.getCurrentUser()
-  //   };
-  //   console.log(updateAcitCvStat);
-  //   this.accountingService.updateAcitCvStat(JSON.stringify(updateAcitCvStat))
-  //   .subscribe(data => {
-  //     console.log(data);
-  //     $('.globalLoading').css('display','none');
-  //     this.saveAcitCv.cvStatus = 'X';
-  //     this.saveAcitCv.cvStatusDesc = this.cvStatList.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
-  //     this.dialogIcon = '';
-  //     this.dialogMessage = '';
-  //     this.success.open();
-  //     this.disableFlds(true);
-  //   });
-  // }
-
-  onClickPrint(){
+  onClickOkPrint(){
     console.log('PRL=cvAmt? : ' + this.isTotPrlEqualCvAmt + ' AND ' + 'Credit=Debit? : ' + this.isTotDebCredBalanced);
     if(!this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
       this.warnMsg = 'Total amount of attached payments must be equal to CV amount and Total Debit and Credit amounts in the Accounting Entries must be balanced.';
@@ -465,10 +442,17 @@ export class CvEntryComponent implements OnInit {
       this.warnMsg = 'Total amount of attached payments must be equal to CV amount.';
       this.warnMdl.openNoClose();
     }else{
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
-      this.printmMdl.openNoClose();
+      // window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
+      //                 this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+      // this.printmMdl.openNoClose();
+      this.fromBtn = 'approve-req';
+      this.confirmMdl.openNoClose();
     }
+  }
+
+  print(){
+    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
   }
 
   onClickYesConfirmed(stat){

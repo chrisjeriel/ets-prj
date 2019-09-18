@@ -31,8 +31,8 @@
    		                <div class="input-group" style="margin-bottom: -14px !important;">
                              <label class="form-control-sm col-sm-1" style="height: auto;">Payee</label>
                              <div class="p-0 col-sm-7" style="position: relative;">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" maxlength="250" [(ngModel)]="saveAcitPaytReq.payee" maxlength="500" appRequired>
-                                <div *ngIf="!removeIcon" style="position:absolute;right: 6px !important;top: -1px ;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" maxlength="250" [(ngModel)]="saveAcitPaytReq.payee" maxlength="500" appRequired [disabled]="disablePayee">
+                                <div *ngIf="!removeIcon && !disablePayee" style="position:absolute;right: 6px !important;top: -1px ;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                               </div>
    		                    <label class="form-control-sm col-sm-1">Payment Type</label>
       	                    	<div class="input-group col-sm-3" style="padding: 0px;">

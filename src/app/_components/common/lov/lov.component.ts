@@ -788,17 +788,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag  = true;
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal)
       .subscribe((a:any)=>{
-         // (Number(e.totalPayments) + Number(e.tempPayments)) > 0
         var rec = a["soaDtlList"].filter(e => e.payeeNo == this.passData.payeeNo).map(a => { a.returnAmt = a.paytAmt; return a; });
-        // if(this.limitContent.length != 0) {
-        //   var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({policyId: a.policyId, instNo: a.instNo}));
-        //   this.passTable.tableData =    rec.filter(a => {
-        //                      var mdl = JSON.stringify({policyId: a.policyId, instNo: a.instNo});
-        //                      return !limit.includes(mdl);
-        //                    }).map(e => { e.returnAmt = e.prevBalance; return e; });
-        // } else {
-        //   this.passTable.tableData = rec;
-        // }
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}).map(e => { e.returnAmt = e.prevBalance; return e; });
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
@@ -816,13 +806,8 @@ export class LovComponent implements OnInit {
       this.accountingService.getAccInvestments([])
       .subscribe((data:any)=>{
         var rec = data["invtList"].filter(e => e.invtStatus == 'F');
-        if(this.limitContent.length != 0){
-          var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({invtId: a.invtId}));
-          this.passTable.tableData =    rec.filter(a => {
-                             var mdl = JSON.stringify({invtId: a.invtId});
-                             return !limit.includes(mdl);
-                           }).map(x => { x.newRec = 1; x.currAmt = x.invtAmt; return x; });
-        }
+        console.log(rec);
+        this.passTable.tableData = rec.filter((a)=> { return  this.passData.hide.indexOf(a.invtId)==-1 });
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmRecover'){
@@ -941,13 +926,14 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
         var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A' && e.paytReqType == this.passData.paytReqType);
-        if(this.limitContent.length != 0){
-          var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({reqId: a.reqId}));
-          this.passTable.tableData =  rec.filter(a => {
-                             var mdl = JSON.stringify({reqId: a.reqId});
-                             return !limit.includes(mdl);
-                           });
-        }
+        // if(this.limitContent.length != 0){
+        //   var limit = this.limitContent.filter(a => a.showMG != 1).map(a => JSON.stringify({reqId: a.reqId}));
+        //   this.passTable.tableData =  rec.filter(a => {
+        //                      var mdl = JSON.stringify({reqId: a.reqId});
+        //                      return !limit.includes(mdl);
+        //                    });
+        // }
+        this.passTable.tableData = a.acitPaytReq.filter((data)=>{return  this.passData.hide.indexOf(data.reqId)==-1});
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'mtnBussType'){

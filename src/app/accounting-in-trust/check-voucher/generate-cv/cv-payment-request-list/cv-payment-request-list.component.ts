@@ -221,12 +221,13 @@ export class CvPaymentRequestListComponent implements OnInit {
 
   showLov(){
     console.log(this.passDataLov);
-    this.limitContent = [];
+    // this.limitContent = [];
     
-    this.passDataPaytReqList.tableData.forEach(e => {
-      this.limitContent.push(e);
-    });
+    // this.passDataPaytReqList.tableData.forEach(e => {
+    //   this.limitContent.push(e);
+    // });
     this.passDataLov.selector = 'paytReqList';
+    this.passDataLov.hide = this.passDataPaytReqList.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.reqId});
     console.log(this.cvInfo.paytReqType);
     this.passDataLov.paytReqType = this.cvInfo.paytReqType;
     this.paytReqLov.openLOV();
