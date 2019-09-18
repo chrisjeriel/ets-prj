@@ -412,11 +412,7 @@
                                     <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
                                     <ng-container *ngSwitchCase="'text-editor'">
                                         <div style="max-height: 21px; max-width: 91%">
-                                            <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);">
-                                                <!-- <ng-container icon-1> -->
-                                                } }
-                                                <!--                                             <a ><i class="fa fa-search"></i></a> -->
-                                                <!--                                         </ng-container> -->
+                                            <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);" [editablePrev]="false">
                                             </text-editor>
                                         </div>
                                     </ng-container>
@@ -849,11 +845,7 @@
                                         <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
                                         <ng-container *ngSwitchCase="'text-editor'">
                                             <div style="max-height: 21px; max-width: 91%">
-                                                <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);">
-                                                    <!-- <ng-container icon-1> -->
-                                                    } }
-                                                    <!--                                             <a ><i class="fa fa-search"></i></a> -->
-                                                    <!--                                         </ng-container> -->
+                                                <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);" [editablePrev]="false">
                                                 </text-editor>
                                             </div>
                                         </ng-container>
@@ -1303,7 +1295,7 @@
                                     <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
                                     <ng-container *ngSwitchCase="'text-editor'">
                                         <div style="max-height: 21px; max-width: 91%">
-                                            <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);">
+                                            <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);" [editablePrev]="false">
                                             </text-editor>
                                         </div>
                                     </ng-container>
