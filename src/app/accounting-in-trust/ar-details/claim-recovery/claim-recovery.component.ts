@@ -108,7 +108,7 @@ export class ClaimRecoveryComponent implements OnInit {
   openClmCashCallLov(data){
     this.passLov.payeeNo = this.record.payeeNo;
     this.passLov.currCd = this.record.currCd;
-    this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimId});
+    this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return JSON.stringify({claimId: a.claimId, histNo: a.histNo})});
     console.log(this.passLov.hide);
     this.clmCashCallIndex = data.index;
     this.lovMdl.openLOV();
@@ -165,13 +165,13 @@ export class ClaimRecoveryComponent implements OnInit {
   onClickSave(){
     if(this.reserveCheck()){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Payment amount must not exceed the Reserve Amount';
+      this.dialogMessage = 'Payment amount must not exceed the Hist Amount';
       this.successDiag.open();
-    }else if(this.canRefund()){
+    }/*else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
       this.successDiag.open();
-    }/*else if(this.netPaymentsCheck()){
+    }*//*else if(this.netPaymentsCheck()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
@@ -280,8 +280,8 @@ export class ClaimRecoveryComponent implements OnInit {
   reserveCheck(): boolean{
     for(var i of this.passData.tableData){
       if(i.edited && !i.deleted && 
-        ((i.reserveAmt < 0 && i.localAmt < 0 && i.localAmt < i.reserveAmt - i.cumulativeAmt) ||
-          (i.reserveAmt > 0 && i.localAmt > 0 && i.localAmt > i.reserveAmt - i.cumulativeAmt))){  
+        ((i.reserveAmt < 0 && i.recOverAmt < 0 && i.recOverAmt < i.reserveAmt - i.cumulativeAmt) ||
+          (i.reserveAmt > 0 && i.recOverAmt > 0 && i.recOverAmt > i.reserveAmt - i.cumulativeAmt))){  
         /*(i.reserveAmt > 0 && i.reserveAmt - i.cumulativeAmt < i.localAmt) ||
         (i.reserveAmt < 0 && i.reserveAmt - i.cumulativeAmt > i.localAmt)){*/
         return true;
