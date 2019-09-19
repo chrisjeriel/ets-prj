@@ -1006,7 +1006,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     //this.arInfo.particulars = this.paymentTypes.map(a=>{return a.defaultParticulars}).indexOf(data)
     for(var i of this.paymentTypes){
       if(i.tranTypeCd == data){
-        this.arInfo.particulars = i.defaultParticulars;
+        this.arInfo.particulars = i.defaultParticulars == null ? '' : i.defaultParticulars;
         break;
       }
     }

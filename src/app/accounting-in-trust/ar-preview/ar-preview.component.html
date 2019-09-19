@@ -107,7 +107,7 @@
 							    </div>
 							</div>
 							<div class="text-center col-sm-12" style="margin-bottom: 7px;" *ngIf="record.arStatDesc.toUpperCase() == 'NEW'">
-							    <button class="cust-btn">Cancel</button>
+							    <button class="cust-btn" (click)="onClickCancel()">Cancel</button>
 							    <button class="cust-btn" (click)="onClickSave()">Save</button>
 							</div>
 						</div>

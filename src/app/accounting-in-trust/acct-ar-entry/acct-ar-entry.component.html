@@ -79,7 +79,7 @@
 						</select>
 						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
-						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" appOtherRates [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP'" name="rate">
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" appCurrencyRate [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP'" name="rate">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>

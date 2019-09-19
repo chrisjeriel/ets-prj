@@ -280,8 +280,8 @@ export class ClaimRecoveryComponent implements OnInit {
   reserveCheck(): boolean{
     for(var i of this.passData.tableData){
       if(i.edited && !i.deleted && 
-        ((i.reserveAmt < 0 && i.localAmt < 0 && i.localAmt < i.reserveAmt - i.cumulativeAmt) ||
-          (i.reserveAmt > 0 && i.localAmt > 0 && i.localAmt > i.reserveAmt - i.cumulativeAmt))){  
+        ((i.reserveAmt < 0 && i.recOverAmt < 0 && i.recOverAmt < i.reserveAmt - i.cumulativeAmt) ||
+          (i.reserveAmt > 0 && i.recOverAmt > 0 && i.recOverAmt > i.reserveAmt - i.cumulativeAmt))){  
         /*(i.reserveAmt > 0 && i.reserveAmt - i.cumulativeAmt < i.localAmt) ||
         (i.reserveAmt < 0 && i.reserveAmt - i.cumulativeAmt > i.localAmt)){*/
         return true;
