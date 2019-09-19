@@ -716,6 +716,21 @@ export class LovComponent implements OnInit {
         }
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acitSoaDtlJVOverdue'){
+      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.widths =[300,300,1,200,200,200,200]
+      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency', 'currency', 'currency'];
+      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getSoaOverdue(this.passData.policyId, this.passData.instNo, this.passData.cedingId,this.passData.currCd).subscribe((a:any)=>{
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
+        this.table.refreshTable();
+      })
     }else if(this.passData.selector == 'acitSoaDtlOverdue'){
       this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
       this.passTable.widths =[300,300,1,200,200,200,200]

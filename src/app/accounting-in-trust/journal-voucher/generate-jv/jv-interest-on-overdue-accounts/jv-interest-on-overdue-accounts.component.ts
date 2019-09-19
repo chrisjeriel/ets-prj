@@ -83,7 +83,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   }
 
   passLov: any = {
-    selector: 'acitSoaDtl',
+    selector: 'acitSoaDtlJVOverdue',
     cedingId: '',
     hide: []
   }
