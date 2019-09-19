@@ -39,21 +39,24 @@
 	<legend class="scheduler-border">CV Accounting Entries</legend>
     <div class="input-group" style="margin-bottom: 0 !important;">
         <div class="col-sm" style="padding: 0">
-            <app-cust-editable-non-datatable [passData]="cvAcctEntData" (newClick)="selected=$event" (clickLOV)="clickLov($event)" (tableDataChange)="cvAcctEntData.tableData=$event;computeTotals()" (tickChckbx)="tickChckbx($event)"></app-cust-editable-non-datatable>
+            <app-cust-editable-non-datatable [passData]="cvAcctEntData" (newClick)="selected=$event" (clickLOV)="clickLov($event)" (tableDataChange)="cvAcctEntData.tableData=$event;computeTotals()" (tickChckbx)="tickChckbx($event)">
+                <ng-container controls-r>
+                    <button class="cust-btn" style="margin-right: 0px !important;">Print AE</button>
+                </ng-container>
+            </app-cust-editable-non-datatable>
         </div>
     </div>
 
-    <div class="input-group">
+    <!-- <div class="input-group">
         <label class="form-control-sm cust-sm col-sm-7" style="margin-right: -40px !important;"></label>
         <label class="form-control-sm col-sm-2">Total Debit and Credit</label>
         <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="totals.debit | number:'1.2-2'" disabled>
         <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="totals.credit | number:'1.2-2'" disabled>
-    </div>
-    <div class="input-group" style="margin-bottom: 0 !important;">
-        <label class="form-control-sm cust-sm col-sm-7" style="margin-right: -40px !important;"></label>
+    </div> -->
+    <div class="input-group" style="margin-top: 7px !important;">
+        <label class="form-control-sm cust-sm col-sm-8" style="margin-left: 3px !important;"></label>
         <label class="form-control-sm col-sm-2" >Variance</label>
-        <label class="form-control-sm cust-sm col-sm" style="margin-left: -1px !important;"></label>
-        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="totals.variance | number:'1.2-2'" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="totals.variance | number:'1.2-2'" disabled>
     </div>
     <div class="w-100 text-center" style="margin-bottom: 8px" *ngIf="cvData?.cvStatus == 'N' || cvData?.cvStatus == 'F'">
         <button class="cust-btn" (click)="cancel()"><a>Cancel</a></button>

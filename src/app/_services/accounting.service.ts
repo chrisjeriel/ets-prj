@@ -56,10 +56,10 @@ export class AccountingService {
 
 	passDataAccEntries: any = {
 	    tableData: [],
-	    tHeader: ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
-	    uneditable:[true,true,true,true,false,false],
-	    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt'],
-	    dataTypes: ['text','text','text','text','currency','currency'],
+	    tHeader: ['Account Code','Account Name','SL Type','SL Name','Local Debit','Local Credit','Debit','Credit'],
+	    uneditable:[true,true,true,true,true,true,false,false],
+	    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt','foreignDebitAmt','foreignCreditAmt'],
+	    dataTypes: ['text','text','text','text','currency','currency','currency','currency'],
 	    nData: {
 	        tranId: '',
 	        entryId: '',
@@ -72,6 +72,8 @@ export class AccountingService {
 	        slName: '',
 	        creditAmt: 0,
 	        debitAmt: 0,
+	        foreignDebitAmt: 0,
+	        foreignCreditAmt: 0,
 	        autoTag: '',
 	        createUser: '',
 	        createDate: '',
@@ -84,10 +86,10 @@ export class AccountingService {
 	    deleteFlag: true,
 	    editFlag: false,
 	    pageLength: 10,
-	    widths: [205,305,163,176,122,154],
-	    checkFlag:true,
+	    widths: [105,240,125,170,120,120,120,120],
+	    checkFlag: true,
 	    magnifyingGlass: ['glShortCd','slTypeName','slName'],
-	    total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt']
+	    total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt','foreignDebitAmt','foreignCreditAmt']
   	};
 
 	arDetails: ARDetails[] = [];

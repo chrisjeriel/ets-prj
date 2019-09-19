@@ -160,7 +160,8 @@ export class ArPreviewComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    console.log(this.record.tranId);
+    console.log(this.record.currRate);
+    this.accEntriesData = this.accountingService.getAccEntriesPassData();
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
@@ -179,7 +180,6 @@ export class ArPreviewComponent implements OnInit {
     this.getMtnCurrency();
     //this.retrieveAmtDtl();
     this.retrieveAcctEntry();
-    this.accEntriesData = this.accountingService.getAccEntriesPassData();
   }
 
   onTabChange(event){
@@ -216,7 +216,7 @@ export class ArPreviewComponent implements OnInit {
           a.showMG = 1;
           //F is full, L is limited, N is restricted
           if(a.updateLevel == 'N'){
-            a.uneditable = ['glShortCd','debitAmt','creditAmt'];
+            a.uneditable = ['glShortCd','debitAmt','creditAmt', 'foreignDebitAmt', 'foreignCreditAmt'];
             a.showMG = 0;
           }else if(a.updateLevel == 'L'){
             a.uneditable = ['glShortCd'];
@@ -295,7 +295,11 @@ export class ArPreviewComponent implements OnInit {
         }
       );*/
    // }else if(this.currentTab === 'acctEntries'){
-      this.savedData = this.accEntriesData.tableData.filter(a=>a.edited && !a.deleted);
+      this.savedData = this.accEntriesData.tableData.filter(a=>a.edited && !a.deleted).map(b=>{b.createUser = this.ns.getCurrentUser();
+                                                                                               b.createDate = this.ns.toDateTimeString(0);
+                                                                                               b.updateUser = this.ns.getCurrentUser();
+                                                                                               b.updateDate = this.ns.toDateTimeString(0);
+                                                                                               return b;});
       this.deletedData = this.accEntriesData.tableData.filter(a=>a.deleted);
       console.log(this.savedData);
       console.log(this.deletedData);
@@ -451,6 +455,15 @@ export class ArPreviewComponent implements OnInit {
     this.totals.credit = this.accEntriesData.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
     this.totals.debit  = this.accEntriesData.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat( b.debitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;
+  }
+
+  acctEntriesTableDataChange(data){
+    if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
+      for(var i = 0; i < this.accEntriesData.tableData.length; i++){
+        this.accEntriesData.tableData[i].debitAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignDebitAmt;
+        this.accEntriesData.tableData[i].creditAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignCreditAmt;
+      }
+    }
   }
 
    export(){
