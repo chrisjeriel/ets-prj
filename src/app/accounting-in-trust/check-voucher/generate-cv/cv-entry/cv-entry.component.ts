@@ -201,6 +201,7 @@ export class CvEntryComponent implements OnInit {
       });
     });
   }
+  
 
   onClickNewCv(){
     $('.globalLoading').css('display','block');
