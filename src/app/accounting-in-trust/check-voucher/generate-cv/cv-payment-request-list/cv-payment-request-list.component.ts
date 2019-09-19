@@ -129,7 +129,6 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
   onSavePaytReqList(){
-    //this.paytReqTbl.overlayLoader = true;
     console.log(this.params);
     this.accountingService.saveAcitCvPaytReqList(JSON.stringify(this.params))
     .subscribe(data => {
@@ -148,7 +147,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     var isEmpty = 0;
     this.passDataPaytReqList.tableData.forEach(e => {
       e.tranId    = this.passData.tranId;
-      e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':((this.cvInfo.cvStatus == 'C')?'N':this.cvInfo.cvStatus);
+      e.cvStatus  = this.cvInfo.cvStatus;
       if(e.paytReqNo == '' || e.paytReqNo == null){
         if(!e.deleted){
           isEmpty = 1;
@@ -171,14 +170,7 @@ export class CvPaymentRequestListComponent implements OnInit {
       }
     });
   
-   // var reqAmt = this.passDataPaytReqList.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reqAmt != null ?parseFloat(b.reqAmt):0),0);
- 
-    // if(Number(this.cvInfo.cvAmt) < Number(reqAmt)){
-    //     this.warnMsg = 'The Total of listed Payment Requests must not exceed the CV Amount.';
-    //     this.warnMdl.openNoClose();
-    //     this.params.savePaytReqList   = [];
-    //     this.params.deletePaytReqList = [];
-    // }else{
+    console.log(this.passDataPaytReqList.tableData);
       if(isEmpty){
         this.dialogIcon = 'error';
         this.suc.open();
@@ -203,7 +195,6 @@ export class CvPaymentRequestListComponent implements OnInit {
           }
         }
       }
-    //}
   }
 
   addDirty(){

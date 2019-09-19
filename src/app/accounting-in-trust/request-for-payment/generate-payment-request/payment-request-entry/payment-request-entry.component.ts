@@ -79,7 +79,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   prqStatList       : any;
   isReqAmtEqDtlAmts : boolean = false;
   warnMsg           : string = '';
-  disablePayee      : boolean = false;
+  existsInReqDtl      : boolean = false;
   removeIcon        : boolean = false;
 
   @Output() paytData : EventEmitter<any> = new EventEmitter();
@@ -166,8 +166,8 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
         this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
         this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
-        this.disablePayee = (recPrq.length == 0)?false:true;
-        console.log(this.disablePayee);
+        this.existsInReqDtl = (this.saveAcitPaytReq.reqStatus == 'N')?false:true;
+        console.log(this.existsInReqDtl);
         console.log(recPrq.length);
         (this.saveAcitPaytReq.tranTypeCd == 1 || this.saveAcitPaytReq.tranTypeCd == 2 || this.saveAcitPaytReq.tranTypeCd == 3)
             ?this.disableFlds(true)
@@ -195,14 +195,14 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.setLocalAmt();
       console.log(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')));
       console.log(totalReqAmts);
-      this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == Number(totalReqAmts))?true:false;
+      if(this.saveAcitPaytReq.tranTypeCd == 5){
+        this.isReqAmtEqDtlAmts = true;
+      }else{
+        this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
+      }
     });
   }
 
-  // disableFlds(con:boolean){
-  //   $('.warn').prop('readonly',con);
-  //   (con)?$('.magni-icon').remove():'';
-  // }
   disableFlds(con:boolean){
     $('.warn').prop('readonly',con);
     this.removeIcon = (con)?true:false;
@@ -243,7 +243,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       updateUser      : ''
     };
     this.initDisabled = true;
-    this.disablePayee = false;
+    this.existsInReqDtl = false;
     this.disableFlds(false);
     this.getAcitPaytReq();
     this.getTranType();
@@ -500,6 +500,7 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.dialogIcon = '';
         this.dialogMessage = '';
         this.success.open();
+        this.disableFlds(true);
       });
   }
 

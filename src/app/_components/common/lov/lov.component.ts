@@ -63,7 +63,7 @@ export class LovComponent implements OnInit {
      //  }
   }
 
-  // pinaikli ko lang, pabalik sa dati pag mali - YELE
+  // pinaikli ko lang, pabalik sa dati pag may mali - YELE
   select(data){
     var index = 0;
     var ref = '';
@@ -88,7 +88,9 @@ export class LovComponent implements OnInit {
     }else if(this.passData.selector.indexOf('clmResHistPayts') == 0 || this.passData.selector == 'acitArClmRecover'){
       this.dialogMessage = 'This claim history is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
     }else if(this.passData.selector == 'paytReqList'){
-      this.dialogMessage = 'This payment request is being processed for payment in another transaction. Please finalize the transaction with CV No. '+ ref + ' first.';
+      this.dialogMessage = 'This Payment Request is being processed for payment in another transaction. Please finalize the transaction with Check Voucher No. '+ ref + ' first.';
+    }else if(this.passData.selector == 'acitInvt'){
+      this.dialogMessage = 'This Investment (Placement) is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
     }else{
       this.passData.data = data;
     }
@@ -860,8 +862,12 @@ export class LovComponent implements OnInit {
       this.accountingService.getAccInvestments([])
       .subscribe((data:any)=>{
         var rec = data["invtList"].filter(e => e.invtStatus == 'F');
-        console.log(rec);
         this.passTable.tableData = rec.filter((a)=> { return  this.passData.hide.indexOf(a.invtId)==-1 });
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArClmRecover'){

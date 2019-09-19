@@ -31,8 +31,8 @@
    		                <div class="input-group" style="margin-bottom: -14px !important;">
                              <label class="form-control-sm col-sm-1" style="height: auto;">Payee</label>
                              <div class="p-0 col-sm-7" style="position: relative;">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" maxlength="250" [(ngModel)]="saveAcitPaytReq.payee" maxlength="500" appRequired [disabled]="disablePayee">
-                                <div *ngIf="!removeIcon && !disablePayee" style="position:absolute;right: 6px !important;top: -1px ;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" maxlength="250" [(ngModel)]="saveAcitPaytReq.payee" maxlength="500" appRequired [disabled]="existsInReqDtl">
+                                <div *ngIf="!removeIcon && !existsInReqDtl" style="position:absolute;right: 6px !important;top: -1px ;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                               </div>
    		                    <label class="form-control-sm col-sm-1">Payment Type</label>
       	                    	<div class="input-group col-sm-3" style="padding: 0px;">
@@ -46,8 +46,8 @@
    		                <div class="input-group">
    		                    <label class="form-control-sm col-sm-1 labels">Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
-                              <input type="text" class="form-control form-control-sm cust-sm col-sm-3 warn cap-input" maxlength="3" [ngModel]="saveAcitPaytReq.currCd" (ngModelChange)="saveAcitPaytReq.currCd=$event" (change)="checkCode($event,'curr')" appRequired>
-                              <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;" *ngIf="!removeIcon"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
+                              <input type="text" class="form-control form-control-sm cust-sm col-sm-3 warn cap-input" maxlength="3" [ngModel]="saveAcitPaytReq.currCd" (ngModelChange)="saveAcitPaytReq.currCd=$event" (change)="checkCode($event,'curr')" appRequired [disabled]="existsInReqDtl">
+                              <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;" *ngIf="!removeIcon && !existsInReqDtl"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
                               <input *ngIf="saveAcitPaytReq.reqStatus != 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;" [ngModel]="saveAcitPaytReq.reqAmt" (ngModelChange)="saveAcitPaytReq.reqAmt=$event" appRequired (change)="setLocalAmt();" numbers-only maxlength="24">
                               <input *ngIf="saveAcitPaytReq.reqStatus == 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 2px ! important;"  [(ngModel)]="saveAcitPaytReq.reqAmt"  numbers-only maxlength="26" readonly>
                              </div>
@@ -55,7 +55,7 @@
                              <!-- [ngModel]="saveAcitPaytReq.currRate | number:'1.10-10'" -->
                              <input class="form-control form-control-sm cust-sm col-sm-3 warn text-right" type="text"  
                              [ngModel]="saveAcitPaytReq.currRate" 
-                             (ngModelChange)="saveAcitPaytReq.currRate=$event" (change)="setLocalAmt();" maxlength="32" appRequired numbers-only>
+                             (ngModelChange)="saveAcitPaytReq.currRate=$event" (change)="setLocalAmt();" maxlength="32" appRequired numbers-only [disabled]="existsInReqDtl">
                              <label class="form-control-sm col-sm-1 labels">Local Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
                                 <input type="text" class="form-control form-control-sm cust-sm col-sm-4" value="PHP" readonly>

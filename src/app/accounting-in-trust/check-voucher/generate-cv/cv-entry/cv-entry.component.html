@@ -24,8 +24,8 @@
                       </div>
                       <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Payee</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcitCv.payee" maxlength="500" appRequired>
-                        <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcitCv.payee" maxlength="500" appRequired [disabled]="disablePayee">
+                        <div *ngIf="!removeIcon && !disablePayee" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Particulars</label>
