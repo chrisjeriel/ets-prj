@@ -275,7 +275,8 @@ export class JvInvestmentRollOverComponent implements OnInit {
     }
 
   update(data){  
-    for (var i = 0; i < this.passData.tableData.length; i++) {
+    console.log(data)
+    /*for (var i = 0; i < this.passData.tableData.length; i++) {
       var principal = parseFloat(this.passData.tableData[i].invtAmt),
                rate = parseFloat(this.passData.tableData[i].interestRate)/100,
                time,
@@ -325,7 +326,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
          console.log(withHTaxAmt)
        }
     }
-    this.table.refreshTable();
+    this.table.refreshTable();*/
   }
 
   getWTaxRate(){

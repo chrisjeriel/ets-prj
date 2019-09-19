@@ -212,6 +212,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.nData.quarterNo = this.quarterNo;
       this.passDataOffsetting.tableData = data.acctOffset;
       this.trytytrans.refreshTable();
+    }else{
+      this.passDataOffsetting.disableAdd = true;
+      this.passDataOffsetting.tableData = [];
     }
   }
 
@@ -310,14 +313,15 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
 
 
   onClickSave(){
-
-    if(!this.validPayment()){
+    this.confirm.confirmModal();
+    
+    /*if(!this.validPayment()){
       this.dialogMessage = 'Payment for selected policy is not proportion to payment for Treaty Balance.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
       this.confirm.confirmModal();
-    }
+    }*/
 
 
 

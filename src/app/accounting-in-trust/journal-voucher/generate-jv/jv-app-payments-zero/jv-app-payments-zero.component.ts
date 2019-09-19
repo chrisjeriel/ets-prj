@@ -78,11 +78,13 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   ngOnInit() {
     this.passLov.currCd = this.jvDetail.currCd;
     this.passData = this.accService.getInwardPolicyKeys('JV');
+    this.passData.disableAdd = true;
     if(this.jvDetail.statusType == 'N'){
       this.disable = false;
     }else {
       this.disable = true;
-      this.passData.disableAdd = true;
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
 
@@ -147,6 +149,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   setSoa(data){
+    console.log(data.data)
     var balance = data.data.balance;
     var datas;
     this.accService.getZeroAlt(data.data.policyId).subscribe((data:any)=> {
