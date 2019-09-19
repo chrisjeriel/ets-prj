@@ -165,13 +165,13 @@ export class ClaimRecoveryComponent implements OnInit {
   onClickSave(){
     if(this.reserveCheck()){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Payment amount must not exceed the Reserve Amount';
+      this.dialogMessage = 'Payment amount must not exceed the Hist Amount';
       this.successDiag.open();
-    }else if(this.canRefund()){
+    }/*else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
       this.successDiag.open();
-    }/*else if(this.netPaymentsCheck()){
+    }*//*else if(this.netPaymentsCheck()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
