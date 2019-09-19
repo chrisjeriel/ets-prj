@@ -44,7 +44,7 @@
 				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.prNo" [readonly]="isCancelled || isPrinted" name="prNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;" [disabled]="isCancelled || isPrinted"></datepicker>
+					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;prDate.time = prDate.time == null || prDate.time == '' ? '08:00' : prDate.time;" [disabled]="isCancelled || isPrinted"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
 					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled || isPrinted"></datepicker>
