@@ -24,7 +24,7 @@ export class JvAccountingEntriesComponent implements OnInit {
    @ViewChild('myForm') form:any;
    @ViewChild(LovComponent) lov: LovComponent;
 
-   passData: any = {
+   /*passData: any = {
     tableData: [],
     tHeader: ['Account Code', 'Account Name', 'SL Type', 'SL Name', 'Debit', 'Credit'],
     dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
@@ -60,7 +60,9 @@ export class JvAccountingEntriesComponent implements OnInit {
     disableAdd: true,
     //total: [null, null, null, 'Total', null, null],
     keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt']
-  }
+  }*/
+
+  passData: any = {};
   
   jvDetails : any = {
      jvNo: '', 
@@ -102,6 +104,7 @@ export class JvAccountingEntriesComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
+    this.passData = this.accountingService.getAccEntriesPassData();
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
     this.jvDetails.refnoDate = this.jvDetails.refnoDate === "" ? "":this.ns.toDateTimeString(this.jvDetails.refnoDate);
@@ -111,7 +114,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.readOnly = false;
     }else {
       this.readOnly = true;
-      this.passData.uneditable = [true,true,true,true,true,true]
+      this.passData.uneditable = [true,true,true,true,true,true,true,true]
     }
     this.retrieveAcctEntries();
     this.retrieveJVDetails();
@@ -124,6 +127,18 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.debitTotal = 0;
       this.creditTotal = 0;
       for (var i = 0; i < data.list.length; i++) {
+        if(data.list[i].updateLevel == 'N') {
+          data.list[i].uneditable = ['glShortCd','foreignDebitAmt','foreignCreditAmt'];
+          data.list[i].showMG = 0;
+        } else if(data.list[i].updateLevel == 'L') {
+          data.list[i].uneditable = ['glShortCd'];
+          data.list[i].colMG = ['glShortCd'];
+          data.list[i].showMG = 1;
+        } else {
+          data.list[i].uneditable = ['glShortDesc','debitAmt','creditAmt'];
+          data.list[i].showMG = 1;
+        }
+
         this.passData.tableData.push(data.list[i]);
         this.debitTotal += data.list[i].debitAmt;
         this.creditTotal += data.list[i].creditAmt;
@@ -431,7 +446,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       if(data.transactions.jvListings.jvStatus == 'F'){
         this.readOnly = true;
         this.passData.disableAdd = true;
-        this.passData.uneditable = [true,true,true,true,true,true]
+        this.passData.uneditable = [true,true,true,true,true,true,true,true]
         this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
         this
       }
