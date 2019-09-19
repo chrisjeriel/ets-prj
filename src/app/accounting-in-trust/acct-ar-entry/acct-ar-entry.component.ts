@@ -377,7 +377,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         break;
       }
     }
+    //apply changes to payment details
+    for(var j = 0; j < this.passData.tableData.length; j++){
+      this.passData.tableData[j].currCd = this.selectedCurrency;
+      this.passData.tableData[j].currRate = this.arInfo.currRate;
+    }
+    this.paytDtlTbl.refreshTable();
     this.retrieveMtnBankAcct();
+  }
+
+  changeCurrencyRt(){
+    for(var i = 0; i < this.passData.tableData.length; i++){
+      this.passData.tableData[i].currRate = this.arInfo.currRate;
+      this.passData.nData.currRate = this.arInfo.currRate;
+    }
+    this.paytDtlTbl.refreshTable();
   }
 
   changeDcbBank(data){
