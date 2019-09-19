@@ -394,6 +394,8 @@ export class JvAccountingEntriesComponent implements OnInit {
     if(data.selector == 'slType'){
       this.lovRow.slTypeName = data.data.slTypeName;
       this.lovRow.slTypeCd = data.data.slTypeCd;
+      this.lovRow.slName = '';
+      this.lovRow.slCd = '';
     }else if(data.selector == 'sl'){
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
