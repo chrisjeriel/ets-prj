@@ -156,9 +156,14 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
+    this.passData.disableAdd = true;
     if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
     }else {
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.InwPolBal.addFlag = false;
+      this.InwPolBal.deleteFlag = false;
       this.readOnly = true;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
       this.InwPolBal.uneditable =  [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
@@ -357,7 +362,9 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   onClickSave(){
-     if(!this.validPayment()){
+    this.confirm.confirmModal();
+
+     /*if(!this.validPayment()){
        this.dialogMessage = 'Total payment for claim is not proportional to payment for selected policies.' ;
        this.dialogIcon = "error-message";
        this.successDiag.open();
@@ -371,7 +378,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
        this.successDiag.open();
      }else{
        this.confirm.confirmModal();
-     }
+     }*/
 
 
 
