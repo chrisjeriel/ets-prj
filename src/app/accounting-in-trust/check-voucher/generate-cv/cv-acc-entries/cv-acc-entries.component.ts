@@ -10,6 +10,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as alasql from 'alasql';
+
 
 @Component({
   selector: 'app-cv-acc-entries',
@@ -131,7 +133,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
           a.showMG = 1;
         }
       });
-
+      console.log(this.cvAcctEntData);
       this.computeTotals();
       this.table.refreshTable();
 
@@ -170,6 +172,8 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     if(data.selector == 'slType') {
       this.lovRow.slTypeName = data.data.slTypeName;
       this.lovRow.slTypeCd = data.data.slTypeCd;
+      this.lovRow.slName = '';
+      this.lovRow.slCd = '';
     }else if(data.selector == 'sl') {
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
@@ -194,8 +198,13 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
   }
 
   computeTotals() {   
-    this.totals.credit = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
-    this.totals.debit  = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat(b.debitAmt)),0);
+    this.cvAcctEntData.tableData.forEach(e => {
+      e.creditAmt = Number(this.cvData.currRate) * Number(e.foreignCreditAmt);
+      e.debitAmt = Number(this.cvData.currRate) * Number(e.foreignDebitAmt);
+    });
+
+    this.totals.credit = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.foreignCreditAmt == null || Number.isNaN(b.foreignCreditAmt) || b.foreignCreditAmt==undefined || b.foreignCreditAmt.length == 0?0:parseFloat(b.foreignCreditAmt)),0);
+    this.totals.debit  = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.foreignDebitAmt  == null || Number.isNaN(b.foreignDebitAmt) || b.foreignDebitAmt ==undefined || b.foreignDebitAmt.length  == 0?0:parseFloat(b.foreignDebitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;
   }
 
@@ -263,7 +272,6 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
   }
 
   onSaveAcctEntries() {
-    this.table.overlayLoader = true;
     console.log(this.params);
     this.as.saveAcitAcctEntries(this.params)
     .subscribe(data => {
@@ -285,5 +293,29 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
 
   cancel(){
     this.can.clickCancel();
+  }
+
+  printAe(){
+     var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      var hr = String(today.getHours()).padStart(2,'0');
+      var min = String(today.getMinutes()).padStart(2,'0');
+      var sec = String(today.getSeconds()).padStart(2,'0');
+      var ms = today.getMilliseconds()
+      var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'AccountingEntriesList_'+currDate+'.xlsx'
+    var mystyle = {
+      headers:true, 
+      column: {style:{Font:{Bold:"1"}}}
+    };
+
+    alasql.fn.datetime = function(dateStr) {
+      var date = new Date(dateStr);
+      return date.toLocaleString();
+    };
+
+    alasql('SELECT glShortCd AS AccountCode, glShortDesc AS AccountName, (CASE WHEN slTypeName IS NULL THEN ' +"''"+' ELSE slTypeName END) AS SLType,(CASE WHEN slName IS NULL THEN ' +"''"+' ELSE slName END) AS SLName, debitAmt AS LocalDebitAmount, creditAmt AS LocalCreditAmount, foreignDebitAmt AS ForeignDebitAmount, foreignCreditAmt AS ForeignCreditAmount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.cvAcctEntData.tableData]);
   }
 }

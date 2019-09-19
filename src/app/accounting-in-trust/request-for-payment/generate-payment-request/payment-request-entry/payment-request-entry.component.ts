@@ -79,7 +79,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   prqStatList       : any;
   isReqAmtEqDtlAmts : boolean = false;
   warnMsg           : string = '';
-  disablePayee      : boolean = false;
+  existsInReqDtl      : boolean = false;
   removeIcon        : boolean = false;
 
   @Output() paytData : EventEmitter<any> = new EventEmitter();
@@ -107,14 +107,11 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.titleService.setTitle('Acct-IT | Request Entry');
     this.getTranType();
     this.sub = this.activatedRoute.params.subscribe(params => {
-      console.log(params);
       if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
         this.saveAcitPaytReq.reqId = (Object.keys(params).length != 0)?params['reqId']:this.rowData.reqId;
         this.initDisabled = false;
-        console.log('inside'); 
       }else{
         this.initDisabled = true;
-        console.log('outside');
       }
 
       this.getAcitPaytReq();
@@ -135,13 +132,9 @@ export class PaymentRequestEntryComponent implements OnInit {
       var recStat = data['stat']['refCodeList'];
       var recPrq = data['prq']['acitPrqTrans'];
       var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0);
-      this.disablePayee = (recPrq.length == 0)?false:true;
-      console.log(this.disablePayee);
-      console.log(recPrq.length);
       this.prqStatList = recStat;
 
       $('.globalLoading').css('display','none');
-
       if(!this.initDisabled){
          var recPr =  data['pr']['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
@@ -173,6 +166,9 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
         this.reqDateDate = this.saveAcitPaytReq.reqDate.split('T')[0];
         this.reqDateTime = this.saveAcitPaytReq.reqDate.split('T')[1];
+        this.existsInReqDtl = (this.saveAcitPaytReq.reqStatus == 'N')?false:true;
+        console.log(this.existsInReqDtl);
+        console.log(recPrq.length);
         (this.saveAcitPaytReq.tranTypeCd == 1 || this.saveAcitPaytReq.tranTypeCd == 2 || this.saveAcitPaytReq.tranTypeCd == 3)
             ?this.disableFlds(true)
             :((this.saveAcitPaytReq.reqStatus == 'N' || this.saveAcitPaytReq.reqStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
@@ -199,14 +195,14 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.setLocalAmt();
       console.log(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')));
       console.log(totalReqAmts);
-      this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == Number(totalReqAmts))?true:false;
+      if(this.saveAcitPaytReq.tranTypeCd == 5){
+        this.isReqAmtEqDtlAmts = true;
+      }else{
+        this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
+      }
     });
   }
 
-  // disableFlds(con:boolean){
-  //   $('.warn').prop('readonly',con);
-  //   (con)?$('.magni-icon').remove():'';
-  // }
   disableFlds(con:boolean){
     $('.warn').prop('readonly',con);
     this.removeIcon = (con)?true:false;
@@ -247,8 +243,9 @@ export class PaymentRequestEntryComponent implements OnInit {
       updateUser      : ''
     };
     this.initDisabled = true;
-    this.getAcitPaytReq();
+    this.existsInReqDtl = false;
     this.disableFlds(false);
+    this.getAcitPaytReq();
     this.getTranType();
   }
 
@@ -503,6 +500,7 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.dialogIcon = '';
         this.dialogMessage = '';
         this.success.open();
+        this.disableFlds(true);
       });
   }
 
