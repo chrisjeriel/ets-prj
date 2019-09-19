@@ -834,7 +834,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
         console.log(data.clmpayments);
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && histTypes.includes(data.histType)});
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return !this.passData.hide.includes(JSON.stringify({claimId: data.claimId, histNo: data.histNo})) && histTypes.includes(data.histType)});
         //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
@@ -862,7 +862,8 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && !clmStatus.includes(data.clmStatCd)});
+        this.passTable.tableData = data.clmpayments.filter((data)=> { 
+                                                                      return !this.passData.hide.includes(JSON.stringify({claimId: data.claimId, histNo: data.histNo})) && !clmStatus.includes(data.clmStatCd)});
         //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
@@ -880,7 +881,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && histTypes.includes(data.histType) && !clmStatus.includes(data.clmStatCd)});
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return !this.passData.hide.includes(JSON.stringify({claimId: data.claimId, histNo: data.histNo})) && histTypes.includes(data.histType) && !clmStatus.includes(data.clmStatCd)});
         //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){

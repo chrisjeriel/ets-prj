@@ -108,7 +108,7 @@ export class ClaimRecoveryComponent implements OnInit {
   openClmCashCallLov(data){
     this.passLov.payeeNo = this.record.payeeNo;
     this.passLov.currCd = this.record.currCd;
-    this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimId});
+    this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return JSON.stringify({claimId: a.claimId, histNo: a.histNo})});
     console.log(this.passLov.hide);
     this.clmCashCallIndex = data.index;
     this.lovMdl.openLOV();
