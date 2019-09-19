@@ -152,10 +152,14 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     //     { header: "Payment Details", span: 5 }, { header: "", span: 2 });
     this.passDataOffsetting = this.accountingService.getInwardPolicyKeys('JV');
     this.passDataOffsetting.nData = {showMG:1,tranId : '',quarterNo : '',itemNo : '',policyId : '',policyNo : '',soaNo : '',coRefNo : '',effDate : '',dueDate : '',instNo : '',currCd : '',currRate : '',premAmt : '',riComm : '',riCommVat : '',charges : '',netDue : '',prevPaytAmt : '',balPaytAmt : '',overdueInt : '',remarks : '',createUser : this.ns.getCurrentUser(),createDate : '',updateUser : this.ns.getCurrentUser(),updateDate : ''}
-    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+    if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
     }else {
       this.readOnly = true;
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passDataOffsetting.addFlag = false;
+      this.passDataOffsetting.deleteFlag = false;
       this.passData.uneditable = [true,true,true,true,true];
       this.passData.disableAdd = true;
       this.passDataOffsetting.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true];
@@ -212,6 +216,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.nData.quarterNo = this.quarterNo;
       this.passDataOffsetting.tableData = data.acctOffset;
       this.trytytrans.refreshTable();
+    }else{
+      this.passDataOffsetting.disableAdd = true;
+      this.passDataOffsetting.tableData = [];
     }
   }
 
@@ -310,14 +317,15 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
 
 
   onClickSave(){
+    this.confirm.confirmModal();
 
-    if(!this.validPayment()){
+    /*if(!this.validPayment()){
       this.dialogMessage = 'Payment for selected policy is not proportion to payment for Treaty Balance.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
       this.confirm.confirmModal();
-    }
+    }*/
 
 
 

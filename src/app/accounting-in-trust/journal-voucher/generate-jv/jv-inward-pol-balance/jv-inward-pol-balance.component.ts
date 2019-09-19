@@ -183,11 +183,12 @@ export class JvInwardPolBalanceComponent implements OnInit {
      this.passLov.currCd = this.jvDetail.currCd;
      this.passData = this.accountingService.getInwardPolicyKeys('JV');
      this.passData.magnifyingGlass = ['policyNo'];
-
+     this.passData.disableAdd = true;
      if(this.jvDetail.statusType == 'N'){
        this.disable = false;
      }else {
-       this.passData.disableAdd = true;
+       this.passData.addFlag = false;
+       this.passData.deleteFlag = false;
        this.passData.btnDisabled = true;
        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
@@ -201,7 +202,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
       var datas = data.inwPolBal;
       this.passData.tableData = [];
       this.totalBalance = 0;
-
+      console.log(datas.length)
       if(datas.length != 0){
         if(this.jvDetail.statusType == 'N'){
           this.passData.disableAdd = false;
@@ -296,7 +297,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].riCommVat = data.data[i].balRiCommVat;
       this.passData.tableData[this.passData.tableData.length - 1].charges = data.data[i].balChargesDue;
       this.passData.tableData[this.passData.tableData.length - 1].totalPayt = data.data[i].cumPayment + data.data[i].balAmtDue;
-      this.passData.tableData[this.passData.tableData.length - 1].remainingBal = data.data[i].balance - (data.data[i].cumPayment + data.data[i].balAmtDue);
+      this.passData.tableData[this.passData.tableData.length - 1].remainingBal = data.data[i].prevNetDue  - (data.data[i].cumPayment + data.data[i].balAmtDue);
     }
     this.table.refreshTable();
   }
@@ -397,11 +398,11 @@ export class JvInwardPolBalanceComponent implements OnInit {
   refundError():boolean{
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(!this.passData.tableData[i].deleted){
-        if((this.passData.tableData[i].prevNetDue > 0 &&  this.passData.tableData[i].adjBalAmt < 0 &&
-            this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment < 0)  ||
+        if((this.passData.tableData[i].prevNetDue > 0 &&  this.passData.tableData[i].paytAmt < 0 &&
+            this.passData.tableData[i].paytAmt + this.passData.tableData[i].cumPayment < 0)  ||
            
-           (this.passData.tableData[i].prevNetDue < 0 && this.passData.tableData[i].adjBalAmt > 0 &&
-            this.passData.tableData[i].adjBalAmt + this.passData.tableData[i].cumPayment > 0)
+           (this.passData.tableData[i].prevNetDue < 0 && this.passData.tableData[i].paytAmt > 0 &&
+            this.passData.tableData[i].paytAmt + this.passData.tableData[i].cumPayment > 0)
           ){
           return true;
         }
