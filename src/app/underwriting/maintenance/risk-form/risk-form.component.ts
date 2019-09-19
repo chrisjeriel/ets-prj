@@ -182,7 +182,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             this.passLOV.districtCd = this.riskData.districtCd;
         }
         this.passLOV.selector = selector;
-        $('#lov #modalBtn').trigger('click');
+        this.lovMdl.openLOV();
     }
 
     setLOVField(data){

@@ -186,6 +186,7 @@ export class HundredValPolPrintComponent implements OnInit {
 
 	navigate(){
 		if(this.flawlessTransaction){
+			$('.ng-dirty').removeClass('ng-dirty');
 			this.router.navigate(['/pol-value-coverage', { 
                                                         policyId: this.policyInfo.policyId,
                                                         policyNo: this.policyInfo.policyNo,

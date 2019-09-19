@@ -5,7 +5,7 @@
             <ng-template ngbTabContent>
                 <div>
                     <!--<button type="button" [routerLink]="['/pol-dist']" style="z-index: 1000; position: relative; top: -13px !important;" class="cust-btn" (click)="add()">Add</button>-->
-                    <app-cust-non-datatable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="selected=$event;gotoInfo()" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+                    <app-cust-non-datatable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="selected=$event;gotoInfo()" (searchToDb)="searchQuery($event)" (export)="export()"></app-cust-non-datatable>
                 </div>
             </ng-template>
         </ngb-tab>

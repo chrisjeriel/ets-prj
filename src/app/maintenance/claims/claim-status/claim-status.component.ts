@@ -19,8 +19,13 @@ export class ClaimStatusComponent implements OnInit {
   passData: any = {
     tHeader: [ "Status Code","Description",'O/C',"Active","Remarks"],
     tableData:[],
-    dataTypes: ['text','text', 'checkbox', 'checkbox','text'],
+    dataTypes: ['text','text', 'select', 'checkbox','text'],
     tooltip:[null,null,'Open / Close',null,null],
+    opts: [{
+            selector: 'openTag',
+            prev: ['Open','Close'],
+            vals: ['Y','N'],
+        }],
     nData: {
       statusCode: null,
       description: null,
@@ -41,7 +46,7 @@ export class ClaimStatusComponent implements OnInit {
     paginateFlag: true,
     infoFlag: true,
     uneditable:[false,false,false,false,false],
-    widths:[200,400,55,55,450],
+    widths:[1,'auto',73,1,'auto'],
     keys:['statusCode','description','openTag','activeTag','remarks']
   };
 

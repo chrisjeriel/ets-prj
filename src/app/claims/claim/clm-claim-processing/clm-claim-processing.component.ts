@@ -41,11 +41,6 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
             dataType: 'text'
         },
         {
-            key: 'cedingName',
-            title:'Ceding Name',
-            dataType: 'text'
-        },
-        {
             key: 'clmStatus',
             title:'Status',
             dataType: 'text'
@@ -53,6 +48,11 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
         {
             key: 'policyNo',
             title:'Policy No.',
+            dataType: 'text'
+        },
+        {
+            key: 'cedingName',
+            title:'Ceding Company',
             dataType: 'text'
         },
         {
@@ -72,6 +72,11 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
               },
               title: 'Loss Date',
               dataType: 'datespan'
+        },
+        {
+            key: 'currencyCd',
+            title:'Currency',
+            dataType: 'text'
         },
         {
              keys: {
@@ -95,15 +100,10 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
             dataType: 'text'
         },
         {
-            key: 'currencyCd',
-            title:'Currency',
-            dataType: 'text'
-        },
-        {
             key: 'processedBy',
             title:'Processed By',
             dataType: 'text'
-        },
+        }
     ],
   };
 
@@ -220,7 +220,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   retrieveClaimsList(){
     this.cs.getClaimsListing(this.searchParams).subscribe((data : any)=>{
       if(data != null){
-        data.claimsList = data.claimsList.filter(a=>{return a.clmStatCd !== 'TC' && a.clmStatCd !== 'CD' && (a.lossStatCd !== 'CD')});
+        //data.claimsList = data.claimsList.filter(a=>{return a.clmStatCd !== 'TC' && a.clmStatCd !== 'CD' && (a.lossStatCd !== 'CD')});
         for(var i of data.claimsList){
           for(var j of i.clmAdjusterList){
             if(i.adjName === null){
@@ -257,7 +257,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     this.polListTbl.overlayLoader = true;
     this.policyListingData.tableData = [];
     this.us.getParListing([/*{key: 'statusDesc', search: 'IN FORCE'},*/ 
-                           {key: 'policyNo', search: (this.noDataFound || this.isFromRisk) && lovBtn === undefined ? '' : this.tempPolNo.join('%-%')},
+                           {key: 'policyNo', search: (this.noDataFound || this.isFromRisk) && lovBtn === undefined ? '%-000' : this.tempPolNo.join('%-%')},
                            {key: 'riskName', search: !this.isFromRisk ? '' : String(this.policyDetails.riskName).toUpperCase()}]).subscribe((data: any)=>{
       //this.clearAddFields();
       console.log(data.policyList.length);
@@ -410,7 +410,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(data){
-    if(data === null || (data !== null && Object.keys(data).length !== 0)){
+    if((data !== null && Object.keys(data).length !== 0)){
       this.selected = data;
       this.passData.btnDisabled = false;
     }else{
@@ -501,6 +501,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
    }
 
    setRisks(data){
+     console.log(data)
         this.policyDetails.riskId = String(data.riskId).padStart(3, '0');
         this.policyDetails.riskName = data.riskName;
         this.ns.lovLoader(data.ev, 0);
