@@ -41,8 +41,8 @@
 <div class="row">
   <div class="col-sm-6">
     <fieldset class="scheduler-border">
-      <form #myForm="ngForm">
         <legend class="scheduler-border">Distribution Parameters</legend>
+      <form #myForm="ngForm">
         <div style="margin-top: 53px !important;margin-bottom: 53px !important;">
           <div class="input-group">
             <label class="form-control-sm col-sm-5">One Retention Line</label>
@@ -161,7 +161,7 @@
       </app-modal>
       <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()" ><a>Cancel</a></button>
       <button type="button" class="cust-btn" (click)="onClickSave()" [class.d-none]="controlHidden.saveBtn"><a>Save</a></button>
-      <button type="button" class="cust-btn" (click)="save()" ><a>Test Save</a></button>
+      <!-- <button type="button" class="cust-btn" (click)="save()" ><a>Test Save</a></button> -->
       <button type="button" class="cust-btn" (click)="distribute()" [class.d-none]="controlHidden.distributeBtn" ><a>Distribute</a></button>
     </div>
   </div>
