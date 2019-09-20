@@ -32,6 +32,7 @@
 
 <ng-container *ngIf="type == 'date'" #dtpl>
 <p-calendar 
+	#cal
 	[ngModel]="datepickerVal"
 	(ngModelChange)="datepickerVal=$event; valueUpdated()"
 	[showIcon]="!disabled"
