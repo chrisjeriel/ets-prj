@@ -156,6 +156,10 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
+    this.passLovInw.currCd = this.jvDetail.currCd;  
+    this.passData.nData.currCd = this.jvDetail.currCd;
+    this.passData.nData.currRate = this.jvDetail.currRate;
+    this.InwPolBal = this.accountingService.getInwardPolicyKeys('JV');
     this.passData.disableAdd = true;
     if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
@@ -164,15 +168,14 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.passData.deleteFlag = false;
       this.InwPolBal.addFlag = false;
       this.InwPolBal.deleteFlag = false;
+      this.passData.checkFlag = false;
+      this.InwPolBal.checkFlag = false;
       this.readOnly = true;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
       this.InwPolBal.uneditable =  [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
 
-    this.passLovInw.currCd = this.jvDetail.currCd;  
-    this.passData.nData.currCd = this.jvDetail.currCd;
-    this.passData.nData.currRate = this.jvDetail.currRate;
-    this.InwPolBal = this.accountingService.getInwardPolicyKeys('JV');
+   
     this.InwPolBal.nData = {showMG:1,tranId: '',itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
     this.passLov.currCd = this.jvDetail.currCd;
     this.InwPolBal.disableAdd = true;

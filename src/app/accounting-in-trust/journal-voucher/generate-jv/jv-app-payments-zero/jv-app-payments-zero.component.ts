@@ -85,6 +85,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
       this.disable = true;
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
+      this.passData.checkFlag =  false;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
 

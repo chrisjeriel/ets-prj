@@ -116,6 +116,7 @@ export class JvTreatyPullOutComponent implements OnInit {
 
   jvDetails: any = {
     cedingName: '',
+    delaccTrty: [],
     deleteaccTrty: [],
     saveaccTrty:[],
     saveTrtyInvt: []
@@ -274,6 +275,8 @@ export class JvTreatyPullOutComponent implements OnInit {
   prepareData(){
     this.jvDetails.saveaccTrty = [];
     this.jvDetails.saveTrtyInvt = [];
+    this.jvDetails.delaccTrty = [];
+    this.jvDetails.delTrtyInvt = [];
     var quarterNo;
     var actualBalPaid = 0;
     for (var i = 0; i < this.passData.tableData.length; i++) {
@@ -291,6 +294,10 @@ export class JvTreatyPullOutComponent implements OnInit {
           this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].quarterNo =  parseInt(quarterNo); 
         }
       }
+
+      if(this.passData.tableData[i].deleted){
+        this.jvDetails.delaccTrty.push(this.passData.tableData[i]);
+      }
       
       for (var j = 0; j < this.passData.tableData[i].trtyInvmt.length; j++) {
         if(!this.passData.tableData[i].trtyInvmt[j].deleted){
@@ -301,6 +308,10 @@ export class JvTreatyPullOutComponent implements OnInit {
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].trtyInvmt[j].createDate);
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].trtyInvmt[j].updateDate);
         }
+      }
+
+      if(this.passData.tableData[i].trtyInvmt[j].deleted){
+        this.jvDetails.delTrtyInvt.push(this.passData.tableData[i].trtyInvmt[j]);
       }
 
       this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].actualBalPaid = actualBalPaid;

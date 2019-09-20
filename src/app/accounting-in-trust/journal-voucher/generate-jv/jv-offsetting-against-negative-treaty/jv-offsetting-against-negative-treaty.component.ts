@@ -169,6 +169,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     }else {
       this.readOnly = true;
       this.passData.addFlag = false;
+      this.passData.checkFlag = false;
+      this.claimsOffset.checkFlag = false;
       this.passData.deleteFlag = false;
       this.claimsOffset.addFlag = false;
       this.claimsOffset.deleteFlag = false;
