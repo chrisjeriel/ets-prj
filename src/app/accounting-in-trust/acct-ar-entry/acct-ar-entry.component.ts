@@ -381,6 +381,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     for(var j = 0; j < this.passData.tableData.length; j++){
       this.passData.tableData[j].currCd = this.selectedCurrency;
       this.passData.tableData[j].currRate = this.arInfo.currRate;
+      this.passData.tableData[j].edited = true;
     }
     this.paytDtlTbl.refreshTable();
     this.retrieveMtnBankAcct();
@@ -390,6 +391,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     for(var i = 0; i < this.passData.tableData.length; i++){
       this.passData.tableData[i].currRate = this.arInfo.currRate;
       this.passData.nData.currRate = this.arInfo.currRate;
+      this.passData.tableData[i].edited = true;
     }
     this.paytDtlTbl.refreshTable();
   }
