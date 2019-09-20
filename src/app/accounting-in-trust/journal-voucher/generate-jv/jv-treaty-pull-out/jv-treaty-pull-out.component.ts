@@ -308,10 +308,10 @@ export class JvTreatyPullOutComponent implements OnInit {
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].trtyInvmt[j].createDate);
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].trtyInvmt[j].updateDate);
         }
-      }
 
-      if(this.passData.tableData[i].trtyInvmt[j].deleted){
-        this.jvDetails.delTrtyInvt.push(this.passData.tableData[i].trtyInvmt[j]);
+        if(this.passData.tableData[i].trtyInvmt[j].deleted){
+          this.jvDetails.delTrtyInvt.push(this.passData.tableData[i].trtyInvmt[j]);
+        }
       }
 
       this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].actualBalPaid = actualBalPaid;
