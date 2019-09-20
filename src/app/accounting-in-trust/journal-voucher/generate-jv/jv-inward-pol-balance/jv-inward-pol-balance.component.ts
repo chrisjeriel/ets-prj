@@ -189,6 +189,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
      }else {
        this.passData.addFlag = false;
        this.passData.deleteFlag = false;
+       this.passData.checkFlag =  false;
        this.passData.btnDisabled = true;
        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
@@ -312,10 +313,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
     if(errorFlag){
       this.dialogMessage = 'Payment amount cannot be greater than Net Due.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else if(this.refundError()){
-      this.dialogMessage = 'Refund must not exceed cummulative payments.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
