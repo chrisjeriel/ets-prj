@@ -40,7 +40,7 @@
 							</fieldset>
 						</div>
 						<div class="col-sm-12">
-							<app-cust-non-datatable (add)="toGenerateARAdd();" (edit)="toGenerateARAdd();" (rowClick)="onRowClick($event)" (newRowDblClick)="toGenerateAREdit($event);" [passData]="passData" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+							<app-cust-non-datatable (add)="toGenerateARAdd();" (edit)="toGenerateARAdd();" (rowClick)="onRowClick($event)" (newRowDblClick)="toGenerateAREdit($event);" [passData]="passData" (searchToDb)="searchQuery($event)" (export)="export();"></app-cust-non-datatable>
 						</div>
 						<div class="col-sm-12">
 							<fieldset class="scheduler-border" style="padding-top: 3px !important;">
