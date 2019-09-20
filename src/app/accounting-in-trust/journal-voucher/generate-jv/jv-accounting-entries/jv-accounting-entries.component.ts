@@ -116,6 +116,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else {
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
+      this.passData.checkFlag = false;
       this.readOnly = true;
       this.passData.uneditable = [true,true,true,true,true,true,true,true]
     }
