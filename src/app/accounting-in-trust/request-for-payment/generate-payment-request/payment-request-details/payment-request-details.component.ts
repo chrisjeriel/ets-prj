@@ -657,7 +657,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       });
       this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '')
                                             .map(e => { 
-                                                e.edited = true; e.checked = false; e.createDate = ''; e.createUser = '';
+                                                //e.edited = true; 
+                                                e.checked = false; e.createDate = ''; e.createUser = '';
                                                 e.premAmt   = '';
                                                 e.riComm    = '';
                                                 e.riCommVat = '';
