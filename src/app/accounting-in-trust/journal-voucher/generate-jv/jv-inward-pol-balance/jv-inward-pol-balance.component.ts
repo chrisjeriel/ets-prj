@@ -315,6 +315,10 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.dialogMessage = 'Payment amount cannot be greater than Net Due.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
+    }else if(this.refundError()){
+      this.dialogMessage = 'Refund must not exceed cummulative payments.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
     }else{
       this.confirm.confirmModal();
     }
