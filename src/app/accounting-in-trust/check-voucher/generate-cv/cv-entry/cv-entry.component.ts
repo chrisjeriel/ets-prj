@@ -137,8 +137,8 @@ export class CvEntryComponent implements OnInit {
       this.bankAcctList = data['ba']['bankAcctList'];
       var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
       var totalPrl = arrSum(data['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
-      var totalCredit = arrSum(data['ae']['list'].map(e => e.creditAmt));
-      var totalDebit = arrSum(data['ae']['list'].map(e => e.debitAmt));
+      var totalCredit = arrSum(data['ae']['list'].map(e => e.foreignCreditAmt));
+      var totalDebit = arrSum(data['ae']['list'].map(e => e.foreignDebitAmt));
 
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
         $('.globalLoading').css('display','none');
@@ -193,6 +193,8 @@ export class CvEntryComponent implements OnInit {
       if(this.saveAcitCv.tranId != '' && this.saveAcitCv.tranId != null){
         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
+        console.log(totalCredit);
+        console.log(totalDebit);
       }
     });
   }
