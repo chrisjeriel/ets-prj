@@ -89,7 +89,7 @@ export class CvEntryComponent implements OnInit {
   isTotPrlEqualCvAmt   : boolean = false;
   isTotDebCredBalanced : boolean = false;
   bankAcctList         : any;
-  disablePayee         : boolean = false;
+  existsInCvDtl         : boolean = false;
 
   passDataLov  : any = {
     selector     : '',
@@ -182,7 +182,7 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv = Object.assign(this.saveAcitCv,recCv[0]);
         console.log(recCv);
         console.log(this.saveAcitCv);
-        this.disablePayee = ((data['prl']['acitCvPaytReqList']).length == 0)?false:true;
+        this.existsInCvDtl = ((data['prl']['acitCvPaytReqList']).length == 0)?false:true;
       }
 
       this.saveAcitCv['from'] = 'cv';
@@ -277,7 +277,7 @@ export class CvEntryComponent implements OnInit {
   //         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
   //         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
   //       }
-  //       this.disablePayee = ((data2['prl']['acitCvPaytReqList']).length == 0)?false:true;
+  //       this.existsInCvDtl = ((data2['prl']['acitCvPaytReqList']).length == 0)?false:true;
   //     });
   //   });
   // }
@@ -320,7 +320,7 @@ export class CvEntryComponent implements OnInit {
     };
     this.getAcitCv();
     this.disableFlds(false);
-    this.disablePayee = false;
+    this.existsInCvDtl = false;
   }
 
   onClickSave(cancelFlag?){
