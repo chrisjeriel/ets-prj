@@ -160,14 +160,13 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.debitTotal = 0;
     this.creditTotal = 0;
     this.variance = 0;
-    console.log(this.jvDetails.forApproval === 'Y')
     if(this.jvDetails.forApproval === 'Y'){
       for (var i = 0; i < this.passData.tableData.length; i++) {
         this.debitTotal += this.passData.tableData[i].foreignDebitAmt;
         this.creditTotal += this.passData.tableData[i].foreignCreditAmt;
       }
       this.variance = this.debitTotal - this.creditTotal;
-
+      this.variance = Math.round(this.variance * 100)/100
       if(this.variance != 0){
         this.dialogMessage = "Accounting Entries does not tally.";
         this.dialogIcon = "error-message";
@@ -290,7 +289,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           break;
         }
       }
-      this.errorMessage = 'Payment for selected claim is not proportion to payment for Treaty Balance.';
+      this.errorMessage = 'Payment for selected claim is not proportional to payment for Treaty Balance.';
       return false;
     }else if(this.jvType === 6){
       var inwPayment = 0;
@@ -299,12 +298,11 @@ export class JvAccountingEntriesComponent implements OnInit {
         for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
           inwPayment += this.detailDatas[i].acctOffset[j].paytAmt;
         }
-
-        if(inwPayment - this.detailDatas[i].balanceAmt == 0){
+        if(Math.round((this.detailDatas[i].balanceAmt - inwPayment)  * 100)/100 == 0){
           return true;
         }
       }
-      this.errorMessage = 'Payment for selected claim is not proportion to payment for Treaty Balance.';
+      this.errorMessage = 'Payment for selected policy is not proportional to payment for Treaty Balance.';
       return false;
     }else if(this.jvType === 7){
       var inwPayment = 0;
@@ -317,7 +315,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           return true;
         }
       }
-      this.errorMessage = 'Payment for selected claim is not proportion to payment for Treaty Balance.';
+      this.errorMessage = 'Payment for selected claim is not proportional to payment for Treaty Balance.';
       return false;
     }
   }
@@ -362,18 +360,30 @@ export class JvAccountingEntriesComponent implements OnInit {
         }
       }
     }else if(this.jvType === 6){
-      /*var inwPayment = 0;
-      for (var i = 0; i < this.detailDatas.length; i++) {
-        inwPayment = 0;
-        for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
-          inwPayment += this.detailDatas[i].acctOffset[j].paytAmt;
-        }
 
-        if(inwPayment - this.detailDatas[i].balanceAmt == 0){
-          return true;
+      for (var i = 0; i < this.detailDatas.length; i++) {
+        for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
+          if(!this.detailDatas[i].acctOffset[j].deleted){
+            if((this.detailDatas[i].acctOffset[j].prevNetDue > 0 &&  this.detailDatas[i].acctOffset[j].paytAmt < 0 &&
+                this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment < 0)  ||
+               
+               (this.detailDatas[i].acctOffset[j].prevNetDue < 0 && this.detailDatas[i].acctOffset[j].paytAmt > 0 &&
+                this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment > 0)
+              ){
+                errorFlag = true;
+                break;
+            }
+          }
         }
       }
-      return false;*/
+
+      if(errorFlag){
+        this.errorMessage = 'Refund must not exceed cummulative payments.';
+        return false;
+      }else{
+        return true;
+      }
+
     }else if(this.jvType === 7){
       for (var i = 0; i < this.detailDatas.length; i++) {
         if(this.detailDatas[i].clmPaytAmt <= this.detailDatas[i].reserveAmt){

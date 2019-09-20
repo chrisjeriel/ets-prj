@@ -287,14 +287,14 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].prevPaytAmt  = data.data[i].totalPayments;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].cumPayment = data.data[i].cumPayment;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].balance = data.data[i].prevBalance;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].paytAmt = data.data[i].balAmtDue;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].localAmt = data.data[i].balAmtDue * this.jvDetail.currRate;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].premAmt = data.data[i].balPremDue;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riComm = data.data[i].balRiComm;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riCommVat = data.data[i].balRiCommVat;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].charges = data.data[i].balChargesDue;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].totalPayt = data.data[i].cumPayment + data.data[i].balAmtDue;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].remainingBal = data.data[i].balance - (data.data[i].cumPayment + data.data[i].balAmtDue);
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].paytAmt = data.data[i].prevBalance;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].localAmt = data.data[i].prevBalance * this.jvDetail.currRate;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].premAmt = data.data[i].prevPremAmt;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riComm = data.data[i].prevRiComm;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riCommVat = data.data[i].prevRiCommVat;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].charges = data.data[i].prevCharges;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].totalPayt = data.data[i].cumPayment + data.data[i].prevBalance;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].remainingBal = data.data[i].prevNetDue - (data.data[i].cumPayment + data.data[i].prevBalance);
       
     }
     this.trytytrans.refreshTable();
