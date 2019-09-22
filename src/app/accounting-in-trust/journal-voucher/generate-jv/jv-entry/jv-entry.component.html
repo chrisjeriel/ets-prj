@@ -86,7 +86,6 @@
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                              <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="entryData.approvedName" readonly name="entryData.approvedBy">
-                            <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                         </div>
                     </div>
                 </div>
@@ -146,7 +145,7 @@
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut" [class.cust-btn-disabled]="printBut" (click)="onClickPrint()"><a>Print</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut || disableBut" [class.cust-btn-disabled]="UploadBut || disableBut " (click)="upload()"><a>Upload Acct. Ent</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut" [class.cust-btn-disabled]="allocBut" (click)="onClickAlloc()"><a>Alloc. Trans.</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut" [class.cust-btn-disabled]="dcBut" (click)="onClickCMDM()"><a>DebitCredit Memo</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut" [class.cust-btn-disabled]="dcBut" (click)="onClickCMDM()"><a>Debit/Credit Memo</a></button>
                         </div>
                     </div>
                 </div>

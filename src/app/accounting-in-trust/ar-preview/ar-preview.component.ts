@@ -233,6 +233,10 @@ export class ArPreviewComponent implements OnInit {
      this.confirm.confirmModal();
   }
 
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
+  }
+
   save(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     //prepare params from table
@@ -322,6 +326,7 @@ export class ArPreviewComponent implements OnInit {
           this.dialogIcon = 'success';
           this.successDiag.open();
           this.acctEntryTbl.markAsPristine();
+          console.log('marked as pristine');
           this.retrieveAcctEntry();
         }else{
           this.dialogIcon = 'error';

@@ -41,45 +41,47 @@
 <div class="row">
   <div class="col-sm-6">
     <fieldset class="scheduler-border">
-      <legend class="scheduler-border">Distribution Parameters</legend>
-      <div style="margin-top: 53px !important;margin-bottom: 53px !important;">
-        <div class="input-group">
-          <label class="form-control-sm col-sm-5">One Retention Line</label>
-          <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.retLineAmt" (ngModelChange)="riskDistributionData.retLineAmt = $event ; treatyTable.markAsDirty();" appCurrency [readonly]="controlDisabled.oneRetLine" (change)="checkLimit()">
-        </div>
-        <div class="input-group">
-          <label class="form-control-sm col-sm-5">1st Retention Line</label>
-          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-4" readonly [ngModel]="riskDistributionData?.retOneLines">
-        </div>
-        <div class="input-group">
-          <label class="form-control-sm col-sm-5">2nd Retention Line</label>
-          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-4" readonly [ngModel]="riskDistributionData?.retTwoLines">
-        </div>
-        <div class="input-group" style="margin-bottom: 0px !important;">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-8">
-            <app-cust-editable-non-datatable #limit [passData]="limitsData">
-            </app-cust-editable-non-datatable>
-          </div>
-          <div class="col-sm-3"></div>
-        </div>
-        <div class="input-group">
-          <div class="input-group" [class.d-none]="controlHidden.seciitrtyLimit">
-            <label class="form-control-sm col-sm-5">Section II Treaty Limit</label>
-            <input type="text" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.trtyLimitSec2" [readonly]="controlDisabled.seciitrtyLimit" appCurrency (ngModelChange)="riskDistributionData.trtyLimitSec2 = $event ; treatyTable.markAsDirty();">
-          </div>
-          <div class="input-group" [class.d-none]="controlHidden.seciiPremTag">
-            <div class="col-sm-5">
-            </div>
-            <input type="checkbox" [ngModel]="riskDistributionData?.seciiPremTag == 'Y'" (ngModelChange)="$event ? riskDistributionData.seciiPremTag = 'Y' : riskDistributionData.seciiPremTag = 'N';readOnlyAll() ; treatyTable.markAsDirty();" [disabled]="controlDisabled.seciiPremTag">
-            <label class="form-control-sm col-sm-4 text-left pt-0" style="text-align: left !important;">Consider Sec II Treaty Limit</label>
+        <legend class="scheduler-border">Distribution Parameters</legend>
+      <form #myForm="ngForm">
+        <div style="margin-top: 53px !important;margin-bottom: 53px !important;">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-5">One Retention Line</label>
+            <input name="input1" type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.retLineAmt" (ngModelChange)="riskDistributionData.retLineAmt = $event ; treatyTable.markAsDirty();" appCurrency [readonly]="controlDisabled.oneRetLine" (change)="checkLimit()">
           </div>
           <div class="input-group">
-            <label class="form-control-sm col-sm-5">VAT on R/I Rate (%)</label>
-            <input type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.vatRiRt | number: '1.10-10'" readonly>
+            <label class="form-control-sm col-sm-5">1st Retention Line</label>
+            <input name="input2" type="text" class="form-control form-control-sm txt-content-rght col-sm-4" readonly [ngModel]="riskDistributionData?.retOneLines">
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-5">2nd Retention Line</label>
+            <input name="input3" type="text" class="form-control form-control-sm txt-content-rght col-sm-4" readonly [ngModel]="riskDistributionData?.retTwoLines">
+          </div>
+          <div class="input-group" style="margin-bottom: 0px !important;">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+              <app-cust-editable-non-datatable #limit [passData]="limitsData">
+              </app-cust-editable-non-datatable>
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="input-group">
+            <div class="input-group" [class.d-none]="controlHidden.seciitrtyLimit">
+              <label class="form-control-sm col-sm-5">Section II Treaty Limit</label>
+              <input name="input4" type="text" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.trtyLimitSec2" [readonly]="controlDisabled.seciitrtyLimit" appCurrency (ngModelChange)="riskDistributionData.trtyLimitSec2 = $event ; treatyTable.markAsDirty();">
+            </div>
+            <div class="input-group" [class.d-none]="controlHidden.seciiPremTag">
+              <div class="col-sm-5">
+              </div>
+              <input name="input5" type="checkbox" [ngModel]="riskDistributionData?.seciiPremTag == 'Y'" (ngModelChange)="$event ? riskDistributionData.seciiPremTag = 'Y' : riskDistributionData.seciiPremTag = 'N';readOnlyAll() ; treatyTable.markAsDirty();" [disabled]="controlDisabled.seciiPremTag">
+              <label class="form-control-sm col-sm-4 text-left pt-0" style="text-align: left !important;">Consider Sec II Treaty Limit</label>
+            </div>
+            <div class="input-group">
+              <label class="form-control-sm col-sm-5">VAT on R/I Rate (%)</label>
+              <input name="input6" type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.vatRiRt | number: '1.10-10'" readonly>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </fieldset>
   </div>
 
@@ -159,7 +161,7 @@
       </app-modal>
       <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()" ><a>Cancel</a></button>
       <button type="button" class="cust-btn" (click)="onClickSave()" [class.d-none]="controlHidden.saveBtn"><a>Save</a></button>
-      <button type="button" class="cust-btn" (click)="save()" ><a>Test Save</a></button>
+      <!-- <button type="button" class="cust-btn" (click)="save()" ><a>Test Save</a></button> -->
       <button type="button" class="cust-btn" (click)="distribute()" [class.d-none]="controlHidden.distributeBtn" ><a>Distribute</a></button>
     </div>
   </div>

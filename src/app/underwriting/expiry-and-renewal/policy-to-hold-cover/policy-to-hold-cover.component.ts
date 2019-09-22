@@ -225,7 +225,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.us.retrievePolHoldCover(policyId,'', holdCovId).subscribe((data: any)=>{
 			console.log(data.policy.holdCoverList);
 			for(let rec of data.policy.holdCoverList){
-				if(rec.status !== '6' && rec.status !== '5'){
+				//if(rec.status !== '6' && rec.status !== '5'){
 					this.polHoldCoverParams.policyId				= rec.policyId;
 					this.polHoldCoverParams.holdCovId				= rec.holdCovId;
 					this.polHoldCoverParams.lineCd					= rec.lineCd;
@@ -246,7 +246,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 					this.polHoldCoverParams.updateDate				= this.noteService.toDateTimeString(rec.updateDate);
 					this.statusDesc 								= rec.statusDesc;
 					this.holdCoverNo 								= rec.holdCovNo;
-				}
+				//}
 			}
 
 			if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
@@ -269,6 +269,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				this.isReleasing = false;
 			}
 			this.loading = false;
+
+			if(this.polHoldCoverParams.status == '5' || this.polHoldCoverParams.status == '6'){
+				this.isForViewing = true;
+			}
 		});
 	}
 
@@ -417,13 +421,13 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.polHoldCoverParams.lineCd = this.policyInfo.policyNo.split('-')[0];
 		this.tempPolNo = this.policyInfo.policyNo.split('-');
 		//if selected policy is already in hold cover
-		if(this.policyInfo.statusDesc === 'On Hold Cover'){
+		//if(this.policyInfo.statusDesc === 'On Hold Cover'){
 			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
-		}
+		//}
 		//else clear all fields
-		else{
-			this.clearHcFields();
-		}
+		// else{
+		// 	this.clearHcFields();
+		// }
 	}
 
 	onClickCancel(){

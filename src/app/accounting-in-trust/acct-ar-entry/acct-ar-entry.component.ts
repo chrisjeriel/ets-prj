@@ -259,8 +259,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       arDate: '',
       arStatus: '',
       tranStat: '',
-      arStatDesc: '',
-      tranStatDesc: 'New',
+      arStatDesc: 'New',
+      tranStatDesc: '',
       dcbYear: '',
       dcbUserCd: '',
       dcbNo: '',
@@ -377,7 +377,23 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         break;
       }
     }
+    //apply changes to payment details
+    for(var j = 0; j < this.passData.tableData.length; j++){
+      this.passData.tableData[j].currCd = this.selectedCurrency;
+      this.passData.tableData[j].currRate = this.arInfo.currRate;
+      this.passData.tableData[j].edited = true;
+    }
+    this.paytDtlTbl.refreshTable();
     this.retrieveMtnBankAcct();
+  }
+
+  changeCurrencyRt(){
+    for(var i = 0; i < this.passData.tableData.length; i++){
+      this.passData.tableData[i].currRate = this.arInfo.currRate;
+      this.passData.nData.currRate = this.arInfo.currRate;
+      this.passData.tableData[i].edited = true;
+    }
+    this.paytDtlTbl.refreshTable();
   }
 
   changeDcbBank(data){
@@ -978,7 +994,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   arAmtEqualsArDtlPayt(): boolean{
-    if(this.arInfo.arDtlSum != this.arInfo.arAmt){
+    if(this.arInfo.arDtlSum != this.arInfo.arAmt * this.arInfo.currRate){
       return true;
     }
     return false;
@@ -1006,7 +1022,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     //this.arInfo.particulars = this.paymentTypes.map(a=>{return a.defaultParticulars}).indexOf(data)
     for(var i of this.paymentTypes){
       if(i.tranTypeCd == data){
-        this.arInfo.particulars = i.defaultParticulars;
+        this.arInfo.particulars = i.defaultParticulars == null ? '' : i.defaultParticulars;
         break;
       }
     }

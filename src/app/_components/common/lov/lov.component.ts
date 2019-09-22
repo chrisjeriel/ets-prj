@@ -732,7 +732,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'shortCode','shortDesc'];
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnAcitChartAcct(this.passData.params).subscribe(a=>{
-        this.passTable.tableData = a["list"].sort((a, b) => a.shortCode - b.shortCode);
+        this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode));
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'slType'){
@@ -742,7 +742,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'slTypeCd','slTypeName'];
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnSlType(this.passData.params).subscribe(a=>{
-        this.passTable.tableData = a["list"];//.sort((a, b) => a.slTypeCd - b.slTypeCd);
+        this.passTable.tableData = a["list"].sort((a, b) => a.slTypeCd - b.slTypeCd);
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'sl'){
@@ -752,7 +752,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['slName'];
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
-       this.passTable.tableData = a["list"].sort((a, b) => a.slName - b.slName);
+       this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
        this.table.refreshTable();
        })
 
@@ -764,6 +764,21 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'acitSoaDtlJVOverdue'){
+      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.widths =[300,300,1,200,200,200,200]
+      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency', 'currency', 'currency'];
+      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
+      this.passTable.checkFlag = true;
+      this.accountingService.getSoaOverdue(this.passData.policyId, this.passData.instNo, this.passData.cedingId,this.passData.currCd).subscribe((a:any)=>{
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
@@ -879,7 +894,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
         console.log(data.clmpayments);
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && histTypes.includes(data.histType)});
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return !this.passData.hide.includes(JSON.stringify({claimId: data.claimId, histNo: data.histNo})) && histTypes.includes(data.histType)});
         //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
@@ -907,7 +922,8 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && !clmStatus.includes(data.clmStatCd)});
+        this.passTable.tableData = data.clmpayments.filter((data)=> { 
+                                                                      return !this.passData.hide.includes(JSON.stringify({claimId: data.claimId, histNo: data.histNo})) && !clmStatus.includes(data.clmStatCd)});
         //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
@@ -925,7 +941,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return this.passData.hide.indexOf(data.claimId)==-1 && histTypes.includes(data.histType) && !clmStatus.includes(data.clmStatCd)});
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return !this.passData.hide.includes(JSON.stringify({claimId: data.claimId, histNo: data.histNo})) && histTypes.includes(data.histType) && !clmStatus.includes(data.clmStatCd)});
         //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){

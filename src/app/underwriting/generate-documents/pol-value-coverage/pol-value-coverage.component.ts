@@ -87,7 +87,7 @@ export class PolValueCoverageComponent implements OnInit {
         widths: [1, 1, 1, 1, 1, 1],
         magnifyingGlass: ['deductibleCd'],
         keys:['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
-        uneditable: [true,true,false,false,false],
+        uneditable: [true,true,true,true,true],
         tableData:[],
         pageID:'deductibles',
         disableAdd: true, 
@@ -103,7 +103,7 @@ export class PolValueCoverageComponent implements OnInit {
           endtCd: "0",
           updateDate: this.ns.toDateTimeString(0),
           updateUser:JSON.parse(window.localStorage.currentUser).username
-        }
+        },
     };
 
     fullCoverageDetails : any = {
@@ -354,6 +354,8 @@ export class PolValueCoverageComponent implements OnInit {
       this.secCoversLov.checkCode(data.ev.target.value, data.ev);
     }   
 
+    this.passData.tableData
+
     for(var i = 0; i< this.passData.tableData.length;i++){
       this.passData.tableData[i].premAmt = this.passData.tableData[i].discountTag == 'Y' ? this.passData.tableData[i].premAmt: this.passData.tableData[i].sumInsured * (this.passData.tableData[i].premRt/100);
       if(this.line == 'CAR' || this.line == 'EAR'){
@@ -463,7 +465,7 @@ export class PolValueCoverageComponent implements OnInit {
   console.log(this.fullCoverageDetails.treatyShare) ;
     for(var i = 0; i < this.passData.tableData.length;i++){
       this.passData.tableData[i].edited    = true;
-      this.passData.tableData[i].sumInsured = this.passData.tableData[i].orgSumInsured == null ? 0:this.passData.tableData[i].orgSumInsured / (this.fullCoverageDetails.treatyShare * 100)
+      this.passData.tableData[i].sumInsured = this.passData.tableData[i].orgSumInsured == null ? 0:this.passData.tableData[i].orgSumInsured / (this.fullCoverageDetails.treatyShare / 100)
       this.passData.tableData[i].premRt     = this.passData.tableData[i].orgSumInsured == null ? 0:this.passData.tableData[i].premRt
       this.passData.tableData[i].premAmt    = this.passData.tableData[i].sumInsured * (this.passData.tableData[i].premRt/100);
     }

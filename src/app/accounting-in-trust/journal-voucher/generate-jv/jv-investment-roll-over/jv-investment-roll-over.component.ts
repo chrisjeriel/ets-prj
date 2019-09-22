@@ -5,6 +5,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-jv-investment-roll-over',
@@ -90,12 +91,14 @@ export class JvInvestmentRollOverComponent implements OnInit {
   dialogMessage : any;
   disable:boolean = false;
   cancelFlag: boolean = false;
+  wtaxRate: any;
 
-  constructor(private ns: NotesService, private accountingService: AccountingService) { }
+  constructor(private ns: NotesService, private accountingService: AccountingService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
   	this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Investment Source", span: 16 }, { header: "New Investment", span: 16 });
   	this.getInvRollOut();
+    this.getWTaxRate();
   }
 
 
@@ -106,7 +109,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
   		this.invIndex = data.index;
   		this.lovMdl.openLOV();
   	}else if(data.key === 'invtCode'){
-  		this.passLov.searchParams = [{key:'invtStatus', search: 'MATURED'}];
+  		this.passLov.searchParams = [{key:'invtStatus', search: 'FOR PLACEMENT'}];
   		this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.srcInvtCode});
   		this.invIndex = data.index;
   		this.newlovMdl.openLOV();
@@ -145,28 +148,27 @@ export class JvInvestmentRollOverComponent implements OnInit {
   	console.log(data)
   	let selected = data.data;
   	  this.passData.tableData[this.invIndex].colMG.push('invtCode');
-  	  this.passData.tableData[this.invIndex].edited				= true;
-	    this.passData.tableData[this.invIndex].invtId 			= selected[0].invtId; 
-      this.passData.tableData[this.invIndex].invtCode 			= selected[0].invtCd; 
-      this.passData.tableData[this.invIndex].certNo 			= selected[0].certNo;
-      this.passData.tableData[this.invIndex].invtType 			= parseInt(selected[0].invtType);
+  	  this.passData.tableData[this.invIndex].edited				    = true;
+	    this.passData.tableData[this.invIndex].invtId 			    = selected[0].invtId; 
+      this.passData.tableData[this.invIndex].invtCode 			  = selected[0].invtCd; 
+      this.passData.tableData[this.invIndex].certNo 			    = selected[0].certNo;
+      this.passData.tableData[this.invIndex].invtType 			  = parseInt(selected[0].invtType);
       this.passData.tableData[this.invIndex].invtTypeDesc 		= selected[0].invtTypeDesc;
-      this.passData.tableData[this.invIndex].invtSecCd 			= parseInt(selected[0].invtSecCd);
+      this.passData.tableData[this.invIndex].invtSecCd 			  = parseInt(selected[0].invtSecCd);
       this.passData.tableData[this.invIndex].securityDesc 		= selected[0].securityDesc;
       this.passData.tableData[this.invIndex].maturityPeriod 	= selected[0].matPeriod;
       this.passData.tableData[this.invIndex].durationUnit 		= selected[0].durUnit;
       this.passData.tableData[this.invIndex].purchasedDate 		= selected[0].purDate;
       this.passData.tableData[this.invIndex].maturityDate 		= selected[0].matDate;
-      this.passData.tableData[this.invIndex].currCd 			= selected[0].currCd;
-      this.passData.tableData[this.invIndex].currRate 			= selected[0].currRate;
+      this.passData.tableData[this.invIndex].currCd 			    = selected[0].currCd;
+      this.passData.tableData[this.invIndex].currRate 			  = selected[0].currRate;
       this.passData.tableData[this.invIndex].interestRate 		= selected[0].intRt;
-      this.passData.tableData[this.invIndex].invtAmt 			= selected[0].invtAmt;
-      this.passData.tableData[this.invIndex].incomeAmt 			= selected[0].incomeAmt;
-      this.passData.tableData[this.invIndex].bankCharge 		= selected[0].bankCharge;
-      this.passData.tableData[this.invIndex].whtaxAmt 			= selected[0].whtaxAmt;
+      this.passData.tableData[this.invIndex].invtAmt 			    = this.passData.tableData[this.invIndex].srcMaturityValue;
+      this.passData.tableData[this.invIndex].incomeAmt 			  = selected[0].incomeAmt;
+      this.passData.tableData[this.invIndex].bankCharge 		  = selected[0].bankCharge;
+      this.passData.tableData[this.invIndex].whtaxAmt 			  = selected[0].whtaxAmt;
       this.passData.tableData[this.invIndex].maturityValue 		= selected[0].matVal;
-      this.passData.tableData[this.invIndex].pulloutType		= 'F';
-
+      this.passData.tableData[this.invIndex].pulloutType		  = 'F';
     this.table.refreshTable();
   }
 
@@ -245,5 +247,93 @@ export class JvInvestmentRollOverComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  computeMatPeriod(date1,date2,unit){
+     var to_date = new Date(date1);
+     var from_date = new Date(date2);
+
+     var diffDays = Math.floor(Math.abs(<any>from_date - <any>to_date) / (1000*60*60*24));
+     var diffMonths = (to_date.getFullYear()*12 + to_date.getMonth()) - (from_date.getFullYear()*12 + from_date.getMonth());
+     var diffYears = (to_date.getFullYear()) - (from_date.getFullYear());
+
+     if(unit === 'Days'){
+        return diffDays;
+     } else if (unit === 'Months'){
+        return diffMonths;
+     } else if (unit === 'Years'){
+       return diffYears;
+     }
+
+    } 
+  getMaturationPeriod(unit,tblpurDate,tblmatDate){
+      var matPeriod;
+      matPeriod = this.computeMatPeriod(tblmatDate,
+                                        tblpurDate,
+                                        unit);
+      return matPeriod;
+    }
+
+  update(data){  
+    console.log(data)
+    /*for (var i = 0; i < this.passData.tableData.length; i++) {
+      var principal = parseFloat(this.passData.tableData[i].invtAmt),
+               rate = parseFloat(this.passData.tableData[i].interestRate)/100,
+               time,
+               matPeriod;
+
+      if(this.passData.tableData[i].durationUnit === 'Days'){
+        if(data.key === 'matPeriod'){
+          matPeriod = this.passData.tableData[i].matPeriod
+        }else {
+          matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purchasedDate,this.passData.tableData[i].maturityDate);                     
+        }  
+         time = parseFloat(matPeriod)/360;
+      }else if (this.passData.tableData[i].durationUnit === 'Months'){
+         if(data.key === 'matPeriod'){
+           matPeriod = this.passData.tableData[i].matPeriod
+         }else {
+           matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purchasedDate,this.passData.tableData[i].maturityDate);                     
+         }
+         time = parseFloat(matPeriod)/12;
+       } else if (this.passData.tableData[i].durationUnit === 'Years'){
+         if(data.key === 'matPeriod'){
+           matPeriod = this.passData.tableData[i].matPeriod
+         }else {
+           matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purchasedDate,this.passData.tableData[i].maturityDate);                     
+         }
+         time = parseFloat(matPeriod);
+       }
+       this.passData.tableData[i].incomeAmt = principal * rate * time;
+       var invtIncome = this.passData.tableData[i].incomeAmt;
+
+       if(invtIncome !== null){
+         console.log()
+         var taxRate = this.wtaxRate / 100,
+         withHTaxAmt = invtIncome * taxRate,
+         bankCharges = isNaN(this.passData.tableData[i].bankCharge) ? null : this.passData.tableData[i].bankCharge,
+         matVal;
+
+         if(Number.isNaN(bankCharges)){
+           matVal = principal + invtIncome - withHTaxAmt;
+         } else {
+           matVal = principal + invtIncome - bankCharges - withHTaxAmt;
+         }
+
+         this.passData.tableData[i].whtaxAmt = withHTaxAmt;
+         this.passData.tableData[i].maturityValue = matVal;
+         console.log(this.passData.tableData[i].whtaxAmt)
+         console.log(withHTaxAmt)
+       }
+    }
+    this.table.refreshTable();*/
+  }
+
+  getWTaxRate(){
+    var wtaxRt;
+    this.maintenanceService.getMtnParameters('N','INVT_WHTAX_RT').subscribe((data:any) => {
+        this.wtaxRate = parseInt(data.parameters[0].paramValueN);
+    });
+
   }
 }
