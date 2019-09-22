@@ -286,7 +286,6 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.dialogMessage = '';
       this.success.open();
       this.saveAcitPaytReq.reqId =  data['reqIdOut'];
-      // this.paytData.emit({reqId:data['reqIdOut']});
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
       this.initDisabled = false;
