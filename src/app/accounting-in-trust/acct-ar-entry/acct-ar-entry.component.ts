@@ -966,7 +966,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   paytModeValidation(): boolean{
     for(var i of this.passData.tableData){
-      if(i.paytMode == 'BT' && (i.bank.length === 0 || i.bankAcct.length === 0)){
+      if(i.paytMode == 'BT' && (i.bank == null || i.bankAcct == null || i.bank.length === 0 || i.bankAcct.length === 0)){
         return true;
       }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
         return true;
