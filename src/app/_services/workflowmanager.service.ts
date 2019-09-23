@@ -51,6 +51,11 @@ export class WorkFlowManagerService {
         return this.http.post(environment.prodApiUrl +'/work-flow-service/saveNotes',JSON.stringify(params),header);
     }
 
+    retrieveWfmTransactions(tranTitle: string){
+         const params = new HttpParams()
+                .set('tranTitle', tranTitle);
 
+        return this.http.get(environment.prodApiUrl + '/work-flow-service/retTransactions', {params});
+    }
 
 }
