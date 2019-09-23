@@ -14,6 +14,7 @@ import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -32,6 +33,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('printMdl') printMdl             : ModalComponent;
   @ViewChild('mainLov') mainLov               : LovComponent;
+  @ViewChild('myForm') form                   : NgForm;
 
   saveAcitPaytReq : any = {
     paytReqNo       : '',
@@ -131,7 +133,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
       var recPrq = data['prq']['acitPrqTrans'];
-      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0);
+      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => Math.abs(a)+Math.abs(b),0);
       this.prqStatList = recStat;
 
       $('.globalLoading').css('display','none');
@@ -290,6 +292,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
       this.initDisabled = false;
       this.getAcitPaytReq();
+      this.form.control.markAsPristine();
     });
   }
 
@@ -368,7 +371,8 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    $('input').addClass('ng-dirty');
+    // $('input').addClass('ng-dirty');
+    this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);
     if(from.toLowerCase() == 'curr'){
       this.saveAcitPaytReq.currCd = data.currencyCd;
