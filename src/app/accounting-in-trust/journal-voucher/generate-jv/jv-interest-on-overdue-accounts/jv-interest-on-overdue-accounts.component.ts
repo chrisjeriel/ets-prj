@@ -109,6 +109,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     if(this.jvDetail.statusType == 'N'){
       this.disable = false;
     }else {
+      this.passData.checkFlag =  false;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true];
       this.disable = true;
       this.passData.btnDisabled = true;

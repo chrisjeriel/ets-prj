@@ -158,6 +158,8 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.readOnly = true;
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
+      this.passData.checkFlag = false;
+      this.passDataOffsetting.checkFlag = false;
       this.passDataOffsetting.addFlag = false;
       this.passDataOffsetting.deleteFlag = false;
       this.passData.uneditable = [true,true,true,true,true];

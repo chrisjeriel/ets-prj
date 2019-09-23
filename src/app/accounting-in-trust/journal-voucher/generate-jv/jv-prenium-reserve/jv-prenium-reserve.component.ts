@@ -91,9 +91,12 @@ export class JvPreniumReserveComponent implements OnInit {
 		this.titleService.setTitle("Acct-IT | JV QSOA");
 		this.passData.nData.currCd = this.jvDetail.currCd;
 		this.passData.nData.currRate = this.jvDetail.currRate;
-		if(this.jvDetail.statusType !== 'N' && this.jvDetail.statusType !== 'F'){
+		if(this.jvDetail.statusType !== 'N'){
 		  	this.readOnly = true;	
 		  	this.passData.uneditable = [true,true,true,true,true,true];
+		  	this.passData.checkFlag =  false;
+		  	this.passData.addFlag = false;
+       		this.passData.deleteFlag = false;
 		}
 		this.retrievePremRes();
 	}
