@@ -9,7 +9,7 @@
             			<div class="form-row custom-row-inline-inset">
             				<div class="input-group" style="margin-bottom: -14px ! important">
             					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="filtCedingName">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="filtCedingName" placeholder="All">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showFiltCedingCoLOV()"></i></a></div>
             					<label class="form-control-sm" style="padding-left:20px">Period:</label>
             					<label class="form-control-sm" style="margin-left: 5px !important">From</label>
@@ -20,7 +20,9 @@
 									<option value="4">4th Quarter</option>
 								</select>
 								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important" [(ngModel)]="filtFromYear">
-									<option value="2018">2018</option>
+									<ng-container *ngFor="let y of yearParamOpts">
+										<option [value]="y">{{ y }}</option>
+									</ng-container>
 								</select>
 								<label class="form-control-sm" style="margin-left: 5px ! important">To</label>
 						   		<select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="filtToQtr">
@@ -30,7 +32,9 @@
 									<option value="4">4th Quarter</option>
 								</select>
 								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important" [(ngModel)]="filtToYear">
-									<option value="2018">2018</option>
+									<ng-container *ngFor="let y of yearParamOpts">
+										<option [value]="y">{{ y }}</option>
+									</ng-container>
 								</select>
 								<button type="button" class="cust col-sm-1" style="margin-left: 20px !important;" (click)="onClickSearch()">Search</button>
 	    					</div>
@@ -77,8 +81,7 @@
 			<div class="input-group">
 				<div class="col-sm-2"></div>
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-4"
-				placeholder="Charter Ping An">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4" placeholder="Charter Ping An" readonly>
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Quarter Ending</label>
 				<!-- <input type="date" class="form-control form-control-sm cust-sm col-sm-2"
 				value="2018-03-31"> -->
@@ -185,7 +188,7 @@
             </div>
             <div class="input-group">
             	<label class="form-control-sm col-sm-2">Quarter</label>
-            	<select class="form-control form-control-sm cust-sm col-sm-3" appRequired>
+            	<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="mdlQtrParam">
 					<option value="1">First Quarter</option>
 					<option value="2">Second Quarter</option>
 					<option value="3">Third Quarter</option>
@@ -193,11 +196,10 @@
 				</select>
 				<div class="col-sm-2"></div>
 				<label class="form-control-sm col-sm-2">Year</label>
-				<select class="form-control form-control-sm cust-sm col-sm-3" appRequired>
-					<option value="2017">2017</option>
-					<option value="2018">2018</option>
-					<option value="2019">2019</option>
-					<option value="2020">2020</option>
+				<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="mdlYearParam">
+					<ng-container *ngFor="let y of yearParamOpts">
+						<option [value]="y">{{ y }}</option>
+					</ng-container>
 				</select>
             </div>
         </fieldset>

@@ -194,11 +194,22 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	gnrtCedingName: string = '';
 	gnrtQtr: number = 1;
 	gnrtYear: number = 1;
+	mdlQtrParam: number = 1;
+	mdlYearParam: number = 1;
+	yearParamOpts: any[] = [];
 
 	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | QSOA Inquiry");
+
+		var d = new Date();
+	    this.mdlQtrParam = Math.floor((d.getMonth() / 3) + 1);
+	    this.mdlYearParam = d.getFullYear();
+
+	    for(let x = d.getFullYear(); x >= 2018; x--) {
+	    	this.yearParamOpts.push(x);
+	    }
 
 		this.showGenerateModal();
 	}
