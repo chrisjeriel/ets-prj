@@ -445,6 +445,7 @@ export class JvEntryComponent implements OnInit {
     this.sendData.tranId = this.tranId;
     this.sendData.jvNo = parseInt(this.entryData.jvNo);
     this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.tranType = this.entryData.tranTypeCd;
     this.sendData.updateUser = this.ns.getCurrentUser();
     this.sendData.updateDate = this.ns.toDateTimeString(0);
 

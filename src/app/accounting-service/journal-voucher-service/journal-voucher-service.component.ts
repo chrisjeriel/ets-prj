@@ -70,17 +70,18 @@ status: string="";
   constructor(private accountingService: AccountingService,private router: Router, private titleService: Title) { }
 
   ngOnInit() {
-     this.titleService.setTitle("Acct-Service | Journal Voucher");
+    this.titleService.setTitle("Acct-Service | Journal Voucher");
   }
 
   onClickAdd(event){
-    this.router.navigate(['/generate-jv-service'], { skipLocationChange: true }); 
+    this.router.navigate(['/generate-jv-service', {from: 'add',
+                                           exitLink:'/journal-voucher'}], { skipLocationChange: true });
   }
 
   onClickEdit(event){
-    this.router.navigate(['/generate-jv-service',
+    /*this.router.navigate(['/generate-jv-service',
       {jvType: this.type} 
-      ], { skipLocationChange: true });
+      ], { skipLocationChange: true });*/
   }
 
   onRowClick(data){
@@ -103,6 +104,27 @@ status: string="";
            this.router.navigate(['/generate-jv-service', {jvType: this.type}], { skipLocationChange: true });
        }
     }
+  }
+
+  toGenerateJVEdit(event) {
+    this.router.navigate(['/generate-jv', { tranId            : event.tranId,
+                                            tranTypeCd        : event.trantypeCd,
+                                            closeDateTran     : event.transactions.closeDate, 
+                                            createDateTran    : event.transactions.createDate, 
+                                            createUserTran    : event.transactions.createUser, 
+                                            deleteDateTran    : event.transactions.deleteDate,
+                                            postDateTran      : event.transactions.postDate, 
+                                            tranClassTran     : event.transactions.tranClass, 
+                                            tranClassNoTran   : event.transactions.tranClassNo, 
+                                            tranDateTran      : event.transactions.tranDate, 
+                                            tranIdTran        : event.transactions.tranId, 
+                                            tranStatTran      : event.transactions.tranStat, 
+                                            tranYearTran      : event.transactions.tranYear, 
+                                            updateDateTran    : event.transactions.updateDate, 
+                                            updateUserTran    : event.transactions.updateUser, 
+                                            from              : 'jv-listing', 
+                                            exitLink          : '/journal-voucher-service'}], 
+                                          { skipLocationChange: true });
   }
 
 

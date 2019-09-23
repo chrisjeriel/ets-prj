@@ -137,7 +137,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   check(data){
-    console.log(data)
     this.emitData.emit({ cedingId: data.ceding,
                          cedingName: data.cedingName
                        });

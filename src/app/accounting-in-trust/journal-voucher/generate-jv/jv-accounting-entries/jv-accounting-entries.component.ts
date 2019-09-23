@@ -114,6 +114,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.passData.disableAdd = false;
       this.readOnly = false;
     }else {
+      this.notBalanced = true;
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;
@@ -149,7 +150,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
 
       this.variance = this.debitTotal - this.creditTotal;
-      if(this.variance === 0){
+      if(this.variance === 0 && this.jvDetails.statusType == 'N'){
         this.notBalanced = false;
       }
       this.table.refreshTable();
@@ -167,6 +168,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
       this.variance = this.debitTotal - this.creditTotal;
       this.variance = Math.round(this.variance * 100)/100
+
       if(this.variance != 0){
         this.dialogMessage = "Accounting Entries does not tally.";
         this.dialogIcon = "error-message";
@@ -283,7 +285,6 @@ export class JvAccountingEntriesComponent implements OnInit {
         for (var j = 0; j < this.detailDatas[i].clmOffset.length; j++) {
           totalPaid += this.detailDatas[i].clmOffset[j].clmPaytAmt;
         }
-
         if(totalPaid + this.detailDatas[i].balanceAmt == 0){
           return true;
           break;
@@ -406,14 +407,13 @@ export class JvAccountingEntriesComponent implements OnInit {
         for(var i = 0; i < datas.length; i++){
           total += datas[i].paytAmt;
         }
-
+        console.log(total);
         if(total != this.jvDetails.jvAmt){
           this.errorFlag = true;
         }
       });
     }else if(this.jvType === 2){
       this.accountingService.getAcitJVZeroBal(this.jvDetails.tranId,'').subscribe((data:any) => {
-        console.log(data)
         var datas = data.zeroBal;
         for (var i = 0; i < datas.length; i++) {
           total += datas[i].paytAmt;
@@ -460,7 +460,6 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.accountingService.getAcctTrtyBal(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.acctTreatyBal;
         this.detailDatas = data.acctTreatyBal;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].balanceAmt
           }
@@ -472,7 +471,6 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.accountingService.getRecievableLosses(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.receivables;
         this.detailDatas = data.receivables;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].clmPaytAmt
           }
@@ -483,7 +481,6 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else if(this.jvType === 8){
       this.accountingService.getJvInvRollOver(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.invtRollOver;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].maturityValue
           }
@@ -494,7 +491,6 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else if(this.jvType === 9){
       this.accountingService.getJvInvPullout(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.pullOut;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].maturityValue
           }
@@ -505,7 +501,6 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else if(this.jvType === 10){
       this.accountingService.getInvPlacement(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.invPlacement;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].invtAmt
           }
@@ -516,7 +511,6 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else if(this.jvType === 11){
       this.accountingService.getTrtyInv(this.jvDetails.tranId).subscribe((data:any) =>{
         var datas = data.acctTreatyBal;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].balanceAmt
           }

@@ -342,7 +342,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   updateInw(data){
-    console.log('pasol')
     for (var i = 0; i < this.InwPolBal.tableData.length; i++) {
       this.InwPolBal.tableData[i].premAmt     = (this.InwPolBal.tableData[i].paytAmt / this.InwPolBal.tableData[i].prevNetDue) * this.InwPolBal.tableData[i].prevPremAmt;
       this.InwPolBal.tableData[i].riComm      = (this.InwPolBal.tableData[i].paytAmt / this.InwPolBal.tableData[i].prevNetDue) * this.InwPolBal.tableData[i].prevRiComm;
@@ -353,7 +352,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.InwPolBal.tableData[i].totalPayt   = this.InwPolBal.tableData[i].paytAmt + this.InwPolBal.tableData[i].cumPayment;
       this.InwPolBal.tableData[i].remainingBal = this.InwPolBal.tableData[i].prevNetDue - this.InwPolBal.tableData[i].totalPayt;
       this.InwPolBal.tableData[i].localAmt     = this.InwPolBal.tableData[i].paytAmt * 1;
-      console.log('pasol')
     }
     this.inwTable.refreshTable();
   }

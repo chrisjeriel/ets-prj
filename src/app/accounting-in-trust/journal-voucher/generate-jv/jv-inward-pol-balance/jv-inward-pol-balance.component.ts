@@ -377,8 +377,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   cancel(){
     this.cancelBtn.clickCancel();
   }
-  keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
- 
+
   refundError():boolean{
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(!this.passData.tableData[i].deleted){

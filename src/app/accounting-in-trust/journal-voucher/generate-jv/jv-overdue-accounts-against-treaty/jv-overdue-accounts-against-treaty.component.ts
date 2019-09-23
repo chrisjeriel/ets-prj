@@ -439,7 +439,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
           this.jvDetails.delInwPolOffset[this.jvDetails.delInwPolOffset.length - 1].tranId = this.jvDetail.tranId;
         }
       }
-      this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].actualBalPaid = actualBalPaid;
+      if(!this.passData.tableData[i].deleted){
+        this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].actualBalPaid = actualBalPaid;
+      }
     }
 
     this.jvDetails.tranId = this.jvDetail.tranId;
