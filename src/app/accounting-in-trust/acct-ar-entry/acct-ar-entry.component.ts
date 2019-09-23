@@ -1031,6 +1031,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.ms.getMtnPayee().subscribe(
         (data:any)=>{
           data.payeeList = data.payeeList.filter(a=>{return a.payeeName == 'Philippine Machinery Management Services Corporation'});
+          this.arInfo.payeeClassCd = data.payeeList[0].payeeClassCd;
           this.arInfo.payeeNo = data.payeeList[0].payeeNo;
           this.arInfo.payor = data.payeeList[0].payeeName;
           this.arInfo.mailAddress = data.payeeList[0].mailAddress;
