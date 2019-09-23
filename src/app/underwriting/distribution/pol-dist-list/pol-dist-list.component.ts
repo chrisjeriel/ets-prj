@@ -82,6 +82,7 @@ export class PolDistListComponent implements OnInit {
         addFlag: false,
         pagination: true,
         pageStatus: true,
+        exportFlag: true
 
     }
 
@@ -105,6 +106,7 @@ export class PolDistListComponent implements OnInit {
     }
 
     searchQuery(searchParams){
+        console.log(searchParams);
         this.searchParams = searchParams;
         this.passData.tableData = [];
         //this.passData.btnDisabled = true;
@@ -122,6 +124,31 @@ export class PolDistListComponent implements OnInit {
                                                  riskName: this.selected.riskName,
                                                  exitLink: '/pol-dist-list'
                                                  }], { skipLocationChange: true });
+   }
+
+   export(){
+      var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'DistributionList_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+      //keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
+     alasql('SELECT distId AS DistNo,riskDistId AS RiskDistNo,status AS Status,lineCd AS Line,policyNo AS PolicyNo,cedingName AS CedingCompany,insuredDesc AS Insured,riskName AS Risk,currencyCd AS Currency,totalSi AS SumInsured,datetime(distDate) AS DistributionDate,datetime(acctDate) AS AccountingDate INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
    }
 
 }

@@ -94,7 +94,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
     this.modalRef.close();
   }
 
-  emitValue() {
-    this.fetchContent.next(this.editorContent);
+  emitValue(blurEv?) {
+    this.fetchContent.next(blurEv === undefined ? this.editorContent : blurEv.range == null && this.editorContent != null ? this.editorContent.trim() : this.editorContent);
   }
 }

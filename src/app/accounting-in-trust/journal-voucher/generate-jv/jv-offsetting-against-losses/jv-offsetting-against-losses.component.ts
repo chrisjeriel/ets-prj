@@ -156,18 +156,26 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
+    this.passLovInw.currCd = this.jvDetail.currCd;  
+    this.passData.nData.currCd = this.jvDetail.currCd;
+    this.passData.nData.currRate = this.jvDetail.currRate;
+    this.InwPolBal = this.accountingService.getInwardPolicyKeys('JV');
+    this.passData.disableAdd = true;
     if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
     }else {
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.InwPolBal.addFlag = false;
+      this.InwPolBal.deleteFlag = false;
+      this.passData.checkFlag = false;
+      this.InwPolBal.checkFlag = false;
       this.readOnly = true;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
       this.InwPolBal.uneditable =  [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
 
-    this.passLovInw.currCd = this.jvDetail.currCd;  
-    this.passData.nData.currCd = this.jvDetail.currCd;
-    this.passData.nData.currRate = this.jvDetail.currRate;
-    this.InwPolBal = this.accountingService.getInwardPolicyKeys('JV');
+   
     this.InwPolBal.nData = {showMG:1,tranId: '',itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
     this.passLov.currCd = this.jvDetail.currCd;
     this.InwPolBal.disableAdd = true;
@@ -223,8 +231,12 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     console.log(data)
     if(data != null && data.itemNo != ''){
       this.itemNo = data.itemNo;
+      this.InwPolBal.disableAdd = false;
       this.InwPolBal.nData.itemNo = this.itemNo;
       this.InwPolBal.tableData = data.inwPolBal;
+    }else{
+      this.InwPolBal.disableAdd = true;
+      this.InwPolBal.tableData = [];
     }
 
     if(this.jvDetail.statusType == 'N'){
@@ -353,13 +365,23 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   onClickSave(){
-     if(!this.validPayment()){
+    this.confirm.confirmModal();
+
+     /*if(!this.validPayment()){
        this.dialogMessage = 'Total payment for claim is not proportional to payment for selected policies.' ;
+       this.dialogIcon = "error-message";
+       this.successDiag.open();
+     }else if(!this.claimPayment()){
+       this.dialogMessage = 'Claim payment cannot be greater than Hist amount.' ;
+       this.dialogIcon = "error-message";
+       this.successDiag.open();
+     }else if(!this.inwPayment()){
+       this.dialogMessage = 'Policy payment cannot be greater than Balance.' ;
        this.dialogIcon = "error-message";
        this.successDiag.open();
      }else{
        this.confirm.confirmModal();
-     }
+     }*/
 
 
 
@@ -402,6 +424,26 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       }
       if(this.passData.tableData[i].clmPaytAmt - inwPayment == 0){
         return true;
+      }
+    }
+    return false;
+  }
+
+  claimPayment() : boolean{
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].clmPaytAmt <= this.passData.tableData[i].reserveAmt){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  inwPayment() :boolean{
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      for (var j = 0; j < this.passData.tableData[i].inwPolBal.length; j++) {
+        if(this.passData.tableData[i].inwPolBal[j].paytAmt <= this.passData.tableData[i].inwPolBal[j].balance){
+          return true;
+        }
       }
     }
     return false;
