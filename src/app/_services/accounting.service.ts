@@ -2328,4 +2328,46 @@ export class AccountingService {
 		.set('currCd', currCd);
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSoaDue",{params});
 	}
+
+	getAcsePaytReqList(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('reqId','')
+				.set('paytReqNo','')
+				.set('tranTypeDesc','')
+				.set('reqDateFrom','')
+				.set('reqDateTo','')
+				.set('reqStatusDesc','')
+				.set('payee','')
+				.set('currCd','')
+				.set('reqAmt','')
+				.set('particulars','')
+				.set('requestedBy','')
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcsePaytReq',{params});	
+	}
+
+	getAcsePaytReq(reqId?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcsePaytReq',{params});	
+	}
+
+	saveAcsePaytReq(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePaytReq',params,header);
+ 
+    }
 }

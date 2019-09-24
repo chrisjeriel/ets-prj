@@ -179,6 +179,11 @@ export class CvEntryComponent implements OnInit {
               this.saveAcitCv.preparedBy = e2.userId;
               e.preparedByDes = e2.designation;
             }
+            if(e.certifiedBy == e2.userId){
+              e.certifiedByName = e2.printableName;
+              this.saveAcitCv.certifiedBy = e2.userId;
+              e.certifiedByDes = e2.designation;
+            }
           });
           return e;
         });

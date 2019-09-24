@@ -588,6 +588,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.trtyLov.modal.openNoClose();
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
       this.passData.selector = 'acitInvt';
+      this.passData.currCd = this.requestData.currCd;
       this.passData.hide = this.investmentData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtId});
       this.invtLov.openLOV();
     }

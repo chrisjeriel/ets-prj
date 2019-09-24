@@ -1314,5 +1314,16 @@ export class MaintenanceService{
     		.set('checkNo', (checkNo === null || checkNo === undefined ? '' : checkNo))
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAcitCheckSeries', {params});
     }
+
+    getMtnAcseTranType(tranClass?, tranTypeCd?, typePrefix?, autoTag?, baeTag?, activeTag?){
+    	const params = new HttpParams()
+    				.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+    	     		.set('tranTypeCd', (tranTypeCd === null || tranTypeCd === undefined ? '' : tranTypeCd))
+    	     		.set('typePrefix', (typePrefix === null || typePrefix === undefined ? '' : typePrefix))
+    	     		.set('autoTag', (autoTag === null || autoTag === undefined ? '' : autoTag))
+    	     		.set('baeTag', (baeTag === null || baeTag === undefined ? '' : baeTag))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseTranType", {params});
+    }
     
 }
