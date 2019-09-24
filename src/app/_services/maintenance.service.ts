@@ -1326,5 +1326,19 @@ export class MaintenanceService{
     	     		.set('dcbStatus', (dcbStatus === null || dcbStatus === undefined ? '' : dcbStatus))
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseDCBNo", {params});
     }
+
+    saveMtnAcseDCBNo(delDCBNo, saveDCBNo){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         let params : any = {
+         	delDCBNo: delDCBNo,
+         	saveDCBNo: saveDCBNo
+         }
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcseDCBNo', JSON.stringify(params), header);
+
+	}
     
 }
