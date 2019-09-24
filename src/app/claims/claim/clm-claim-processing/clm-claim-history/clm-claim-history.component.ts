@@ -432,6 +432,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         this.preVal.expStatCd = this.clmHistoryData.expStatCd;    
         this.successResStat.open();
         this.dirtyCounter.resStats = 0;
+        this.limitHistType();
         this.addDirtyHistTbl();
       });
   }
@@ -705,6 +706,11 @@ export class ClmClaimHistoryComponent implements OnInit {
         //edit by paul 9/5/2019
         let validHistTypes:any[] = this.histTypeData;
 
+        if((e.histCategory == 'L' && this.preVal.lossStatCd=='CD') || ((e.histCategory == 'O' || e.histCategory == 'A') && this.preVal.expStatCd=='CD')){
+          validHistTypes = validHistTypes.filter(a=>a.code != 2 && a.code != 3 && a.code != 1 && a.code != 6);
+        }
+
+
         if(
             this.passDataHistory.tableData.filter(a=>a.newRec!= 1 && e.histCategory == a.histCategory && a.histType==1 ).length != 0
           ){
@@ -972,6 +978,8 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   showResStatMdl(){
     this.resStatMdl.openNoClose();
+    this.clmHistoryData.lossStatCd = this.preVal.lossStatCd;
+    this.clmHistoryData.expStatCd = this.preVal.expStatCd;
     this.removeDirtyAppTbl();
     this.removeDirtyHistTbl();
     this.preVal.lossStatCd = this.clmHistoryData.lossStatCd;
