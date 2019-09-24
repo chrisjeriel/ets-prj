@@ -894,7 +894,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag = true;
       this.accountingService.getClmResHistPayts(this.passData.cedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
         console.log(data.clmpayments);
-        this.passTable.tableData = data.clmpayments.filter((data)=> {return !this.passData.hide.includes(JSON.stringify({claimId: data.claimId, histNo: data.histNo})) && histTypes.includes(data.histType)});
+        this.passTable.tableData = data.clmpayments.filter((data)=> {return !this.passData.hide.includes(JSON.stringify({claimId: data.claimId, histNo: data.histNo})) && histTypes.includes(data.histType) && (data.reserveAmt - data.cumulativeAmt) !== 0});
         //this.passTable.tableData = data.clmpayments;
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
