@@ -120,7 +120,6 @@ export class PaymentRequestEntryComponent implements OnInit {
     });
 
     (this.saveAcitPaytReq.reqStatus == 'X')?this.cancelledStats():'';
-    
   }
 
   getAcitPaytReq(){
