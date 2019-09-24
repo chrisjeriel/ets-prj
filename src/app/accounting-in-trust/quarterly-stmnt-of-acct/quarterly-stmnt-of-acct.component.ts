@@ -18,6 +18,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	@ViewChild('generateModal') generateModal: ModalComponent;
 	@ViewChild('qsoaListTbl') qsoaListTbl: CustEditableNonDatatableComponent;
 	@ViewChild('filtCedingCoLOV') filtCedingCoLOV: CedingCompanyComponent;
+	@ViewChild('gnrtCedingCoLOV') gnrtCedingCoLOV: CedingCompanyComponent;
 
 	comStmt:boolean = false;
 	receivables:boolean = false;
@@ -185,7 +186,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 
 	confMsg: number = 1;
 	filtCedingId: string = '';
-	filtCedingName: String = '';
+	filtCedingName: string = '';
 	filtFromQtr: number = null;
 	filtFromYear: number = null;
 	filtToQtr: number = null;
@@ -290,5 +291,14 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	setFiltCedingCo(ev) {
 		this.filtCedingId = ev.cedingId;
 		this.filtCedingName = ev.cedingName;
+	}
+
+	showGnrtCedingCoLOV() {
+		this.gnrtCedingCoLOV.modal.openNoClose();
+	}
+
+	setGnrtCedingCo(ev) {
+		this.gnrtCedingId = ev.cedingId;
+		this.gnrtCedingName = ev.cedingName;
 	}
 }

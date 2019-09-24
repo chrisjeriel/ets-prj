@@ -178,8 +178,8 @@
         <fieldset class="scheduler-border" style="padding-top: 25px !important; padding-bottom: 20px !important;">
             <div class="input-group">
             	<label class="form-control-sm col-sm-2">Company</label>
-            	<input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired placeholder="All">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+            	<input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired placeholder="All" [(ngModel)]="gnrtCedingName">
+				<div class="text-search-ico"><a><i class="fa fa-search" (click)="showGnrtCedingCoLOV()"></i></a></div>
             </div>
             <div class="input-group">
             	<label class="form-control-sm col-sm-2">Quarter</label>
@@ -228,3 +228,4 @@
 </app-modal>
 
 <app-ceding-company #filtCedingCoLOV (selectedData)="setFiltCedingCo($event)"></app-ceding-company>
+<app-ceding-company #gnrtCedingCoLOV (selectedData)="setGnrtCedingCo($event)"></app-ceding-company>
