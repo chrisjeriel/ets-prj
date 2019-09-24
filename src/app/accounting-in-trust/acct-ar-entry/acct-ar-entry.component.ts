@@ -750,6 +750,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   updateArStatus(){
     if(!this.isPrinted){
+      this.loading = true;
       let params: any = {
         tranId: this.arInfo.tranId,
         arNo: this.arInfo.arNo,
@@ -772,7 +773,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   //ALL RETRIEVALS FROM MAINTENANCE IS HERE
   retrievePaymentType(){
     this.paymentTypes = [];
-    this.ms.getMtnAcitTranType('AR').subscribe(
+    this.ms.getMtnAcitTranType('AR',null,null,null,null,'Y').subscribe(
       (data:any)=>{
         if(data.tranTypeList.length !== 0){
           data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});

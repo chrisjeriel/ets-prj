@@ -438,68 +438,68 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   retrieveOrEntry(tranId, orNo){
-    var sub$ = forkJoin(this.as.getArEntry(tranId, orNo),
+    var sub$ = forkJoin(this.as.getAcseOrEntry(tranId, orNo),
                         this.ms.getMtnBank(null,null,'Y',null),
                         this.ms.getMtnBankAcct(),
-                        this.ms.getMtnCurrency('', 'Y', this.orDate.date)).pipe(map(([ar, bank, bankAcct, curr]) => { return { ar, bank, bankAcct, curr }; }));
+                        this.ms.getMtnCurrency('', 'Y', this.orDate.date)).pipe(map(([or, bank, bankAcct, curr]) => { return { or, bank, bankAcct, curr }; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
         console.log('arEntry first');
-        let data = forkData.ar;
+        let data = forkData.or;
         let bankData = forkData.bank;
         let bankAcctData = forkData.bankAcct;
         let curr = forkData.curr;
         console.log(data);
         //ar
-        if(data.ar !== null){
-          this.orInfo.tranId         = data.ar.tranId;
-          this.orInfo.orNo           = this.pad(data.ar.orNo, 'orNo');
-          this.orInfo.formattedOrNo  = data.ar.formattedOrNo;
-          this.orInfo.orNoDigits     = data.ar.orNoDigits;
-          this.orInfo.orDate         = this.ns.toDateTimeString(data.ar.orDate);
+        if(data.or !== null){
+          this.orInfo.tranId         = data.orEntry.tranId;
+          this.orInfo.orNo           = this.pad(data.orEntry.orNo, 'orNo');
+          this.orInfo.formattedOrNo  = data.orEntry.formattedOrNo;
+          this.orInfo.orNoDigits     = data.orEntry.orNoDigits;
+          this.orInfo.orDate         = this.ns.toDateTimeString(data.orEntry.orDate);
           this.orDate.date           = this.orInfo.orDate.split('T')[0];
           this.orDate.time           = this.orInfo.orDate.split('T')[1];
-          this.orInfo.orStatus       = data.ar.orStatus;
-          this.orInfo.tranStat       = data.ar.tranStat;
-          this.orInfo.orStatDesc     = data.ar.tranStat == 'P' ? data.ar.tranStatDesc : data.ar.orStatDesc;
-          this.orInfo.dcbYear        = data.ar.dcbYear;
-          this.orInfo.dcbUserCd      = data.ar.dcbUserCd;
-          this.orInfo.dcbNo          = data.ar.dcbNo;
-          this.orInfo.dcbStatus      = data.ar.dcbStatus;
-          this.dcbStatus             = data.ar.dcbStatus;
-          this.orInfo.dcbBank        = data.ar.dcbBank;
-          this.orInfo.dcbBankName    = data.ar.dcbBankName;
-          this.orInfo.dcbBankAcct    = data.ar.dcbBankAcct;
-          this.orInfo.dcbBankAcctNo  = data.ar.dcbBankAcctNo;
-          this.orInfo.refNo          = data.ar.refNo;
-          this.orInfo.tranTypeCd     = data.ar.tranTypeCd;
-          this.orInfo.tranTypeName   = data.ar.tranTypeName;
-          this.orInfo.prNo           = data.ar.prNo;
-          this.orInfo.prDate         = this.ns.toDateTimeString(data.ar.prDate);
+          this.orInfo.orStatus       = data.orEntry.orStatus;
+          this.orInfo.tranStat       = data.orEntry.tranStat;
+          this.orInfo.orStatDesc     = data.orEntry.tranStat == 'P' ? data.orEntry.tranStatDesc : data.orEntry.orStatDesc;
+          this.orInfo.dcbYear        = data.orEntry.dcbYear;
+          this.orInfo.dcbUserCd      = data.orEntry.dcbUserCd;
+          this.orInfo.dcbNo          = data.orEntry.dcbNo;
+          this.orInfo.dcbStatus      = data.orEntry.dcbStatus;
+          this.dcbStatus             = data.orEntry.dcbStatus;
+          this.orInfo.dcbBank        = data.orEntry.dcbBank;
+          this.orInfo.dcbBankName    = data.orEntry.dcbBankName;
+          this.orInfo.dcbBankAcct    = data.orEntry.dcbBankAcct;
+          this.orInfo.dcbBankAcctNo  = data.orEntry.dcbBankAcctNo;
+          this.orInfo.refNo          = data.orEntry.refNo;
+          this.orInfo.tranTypeCd     = data.orEntry.tranTypeCd;
+          this.orInfo.tranTypeName   = data.orEntry.tranTypeName;
+          this.orInfo.prNo           = data.orEntry.prNo;
+          this.orInfo.prDate         = this.ns.toDateTimeString(data.orEntry.prDate);
           this.prDate.date           = this.orInfo.prDate.split('T')[0];
           this.prDate.time           = this.orInfo.prDate.split('T')[1];
-          this.orInfo.prPreparedBy   = data.ar.prPreparedBy;
-          this.orInfo.payeeNo        = data.ar.payeeNo;
-          this.orInfo.payeeClassCd   = data.ar.payeeClassCd;
-          this.orInfo.payor          = data.ar.payor;
-          this.orInfo.mailAddress    = data.ar.mailAddress;
-          this.orInfo.bussTypeCd     = data.ar.bussTypeCd;
-          this.orInfo.tin            = data.ar.tin;
-          this.orInfo.refCd          = data.ar.refCd;
-          this.orInfo.currCd         = data.ar.currCd;
-          this.orInfo.orAmt          = data.ar.orAmt;
-          this.orInfo.currRate       = data.ar.currRate;
-          this.orInfo.particulars    = data.ar.particulars;
-          this.orInfo.createUser     = data.ar.createUser;
-          this.orInfo.createDate     = this.ns.toDateTimeString(data.ar.createDate);
-          this.orInfo.updateUser     = data.ar.updateUser;
-          this.orInfo.updateDate     = this.ns.toDateTimeString(data.ar.updateDate);
-          this.orInfo.cedingId       = data.ar.cedingId;
-          this.orInfo.bussTypeName   = data.ar.bussTypeName;
-          this.orInfo.rstrctTranUp   = data.ar.rstrctTranUp;
-          this.orInfo.orDtlSum       = data.ar.orDtlSum;
-          this.orInfo.acctEntriesSum = data.ar.acctEntriesSum;
-          this.selectedCurrency       = data.ar.currCd;
+          this.orInfo.prPreparedBy   = data.orEntry.prPreparedBy;
+          this.orInfo.payeeNo        = data.orEntry.payeeNo;
+          this.orInfo.payeeClassCd   = data.orEntry.payeeClassCd;
+          this.orInfo.payor          = data.orEntry.payor;
+          this.orInfo.mailAddress    = data.orEntry.mailAddress;
+          this.orInfo.bussTypeCd     = data.orEntry.bussTypeCd;
+          this.orInfo.tin            = data.orEntry.tin;
+          this.orInfo.refCd          = data.orEntry.refCd;
+          this.orInfo.currCd         = data.orEntry.currCd;
+          this.orInfo.orAmt          = data.orEntry.orAmt;
+          this.orInfo.currRate       = data.orEntry.currRate;
+          this.orInfo.particulars    = data.orEntry.particulars;
+          this.orInfo.createUser     = data.orEntry.createUser;
+          this.orInfo.createDate     = this.ns.toDateTimeString(data.orEntry.createDate);
+          this.orInfo.updateUser     = data.orEntry.updateUser;
+          this.orInfo.updateDate     = this.ns.toDateTimeString(data.orEntry.updateDate);
+          this.orInfo.cedingId       = data.orEntry.cedingId;
+          this.orInfo.bussTypeName   = data.orEntry.bussTypeName;
+          this.orInfo.rstrctTranUp   = data.orEntry.rstrctTranUp;
+          this.orInfo.orDtlSum       = data.orEntry.orDtlSum;
+          this.orInfo.acctEntriesSum = data.orEntry.acctEntriesSum;
+          this.selectedCurrency       = data.orEntry.currCd;
           if(this.orInfo.orStatDesc.toUpperCase() === 'DELETED' || this.orInfo.orStatDesc.toUpperCase() === 'CANCELED'){
           //if(this.orInfo.orStatDesc.toUpperCase() !== 'NEW'){
             //this.passData.dataTypes = ['select','select','percent','currency','select','text','text','date','select'];
@@ -536,12 +536,12 @@ export class AcctOrEntryComponent implements OnInit {
               this.passData.opts[1].prev.push(l.currencyCd);
             }
           }
-          console.log(data.ar.paytDtl);
-          //this.passData.tableData          = data.ar.paytDtl;
+          console.log(data.orEntry.paytDtl);
+          //this.passData.tableData          = data.orEntry.paytDtl;
           //tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
           //dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
           this.passData.tableData = [];
-          for(var i of data.ar.paytDtl){
+          for(var i of data.orEntry.paytDtl){
             i.uneditable = [];
             if(i.paytMode !== 'BT' && i.paytMode !== 'CK' && i.paytMode !== 'CR'){
               i.uneditable.push('bank');
@@ -566,12 +566,12 @@ export class AcctOrEntryComponent implements OnInit {
             }
             this.passData.tableData.push(i);
           }
-          this.selectedBank.bankCd         = data.ar.dcbBank;
-          this.selectedBankAcct.bankAcctCd = data.ar.dcbBankAcct;
+          this.selectedBank.bankCd         = data.orEntry.dcbBank;
+          this.selectedBankAcct.bankAcctCd = data.orEntry.dcbBankAcct;
           this.paytDtlTbl.refreshTable();
           this.onChange.emit({ type: this.orInfo.tranTypeCd });
           this.disableTab.emit(false);
-          let arDetailParams = {
+          let orDetailParams = {
             tranId: this.orInfo.tranId,
             formattedOrNo: this.orInfo.formattedOrNo,
             orNo: this.orInfo.orNo,
@@ -593,9 +593,9 @@ export class AcctOrEntryComponent implements OnInit {
             cedingId: this.orInfo.payeeNo,
             bussTypeName: this.orInfo.bussTypeName,
             refCd: this.orInfo.refCd,
-            from: 'ar'
+            from: 'or'
           }
-          this.emitOrInfo.emit(arDetailParams);
+          this.emitOrInfo.emit(orDetailParams);
 
           setTimeout(()=>{
             $('#orNo').focus();
@@ -641,7 +641,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   onClickSave(){
-    if(this.checkorInfoFields() || this.checkPaytDtlFields() || this.paytModeValidation() || this.passData.tableData.length === 0){ //empty required fields?
+    if(this.checkOrInfoFields() || this.checkPaytDtlFields() || this.paytModeValidation() || this.passData.tableData.length === 0){ //empty required fields?
       this.dialogIcon = 'error';
       this.successDiag.open();
       $('.required').focus().blur();
@@ -655,12 +655,12 @@ export class AcctOrEntryComponent implements OnInit {
     }*/
     else if(this.orAmtEqualsPayt()){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Total amount of payment details is not equal to the AR Amount.';
+      this.dialogMessage = 'Total amount of payment details is not equal to the OR Amount.';
       this.successDiag.open();
     }else if(this.dcbStatusCheck()){
 
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage = 'O.R. cannot be saved. DCB No. is '; 
       this.dialogMessage += this.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
       this.successDiag.open();
     }
@@ -705,7 +705,7 @@ export class AcctOrEntryComponent implements OnInit {
     params.savePaytDtl = this.savedData;
 
     //save
-    this.as.saveAcitArTrans(params).subscribe(
+    this.as.saveAcseOrEntry(params).subscribe(
       (data:any)=>{
         if(data.returnCode === 0){
           if(data.errorList !== undefined || (data.errorList !== undefined && data.errorList.length !== 0)){
@@ -729,13 +729,13 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   print(){
-    if(this.orAmtEqualsArDtlPayt()){
+    if(this.orAmtEqualsOrDtlPayt()){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'AR cannot be printed. Total Payments in AR Details must be equal to AR Amount';
+      this.dialogMessage = 'OR cannot be printed. Total Payments in OR Details must be equal to OR Amount';
       this.successDiag.open();
     }else if(this.balanceAcctEntries()){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'AR cannot be printed. Accounting Entries must have zero variance.';
+      this.dialogMessage = 'OR cannot be printed. Accounting Entries must have zero variance.';
       this.successDiag.open();
     }else{
       window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
@@ -756,7 +756,7 @@ export class AcctOrEntryComponent implements OnInit {
         (data:any)=>{
           if(data.returnCode == 0){
             this.dialogIcon = 'error-message';
-            this.dialogIcon = 'An error has occured when updating AR status';
+            this.dialogIcon = 'An error has occured when updating OR status';
           }else{
             this.retrieveOrEntry(this.orInfo.tranId, this.orInfo.orNo);
           }
@@ -768,7 +768,7 @@ export class AcctOrEntryComponent implements OnInit {
   //ALL RETRIEVALS FROM MAINTENANCE IS HERE
   retrievePaymentType(){
     this.paymentTypes = [];
-    this.ms.getMtnAcitTranType('AR').subscribe(
+    this.ms.getMtnAcseTranType('OR',null,null,null,null,'Y').subscribe(
       (data:any)=>{
         if(data.tranTypeList.length !== 0){
           data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
@@ -881,16 +881,16 @@ export class AcctOrEntryComponent implements OnInit {
          if(data.dcbUserList.length === 1){
            this.orInfo.dcbUserCd = data.dcbUserList[0].dcbUserCd;
            //set default dcb bank
-           this.selectedBank.bankCd = data.dcbUserList[0].defaultArBank;
-           this.selectedBank.officialName = data.dcbUserList[0].arBankName;
+           this.selectedBank.bankCd = data.dcbUserList[0].defaultOrBank;
+           this.selectedBank.officialName = data.dcbUserList[0].orBankName;
            this.orInfo.dcbBank = this.selectedBank.bankCd;
            this.orInfo.dcbBankName = this.selectedBank.officialName;
 
            //set default dcb bank acct
            this.retrieveMtnBankAcct();
-           this.selectedBankAcct.bankCd = data.dcbUserList[0].defaultArBank;
-           this.selectedBankAcct.bankAcctCd = data.dcbUserList[0].defaultArBankAcct;
-           this.selectedBankAcct.accountNo = data.dcbUserList[0].arBankAcctNo;
+           this.selectedBankAcct.bankCd = data.dcbUserList[0].defaultOrBank;
+           this.selectedBankAcct.bankAcctCd = data.dcbUserList[0].defaultOrBankAcct;
+           this.selectedBankAcct.accountNo = data.dcbUserList[0].orBankAcctNo;
            this.orInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
            this.orInfo.dcbBankAcctNo = this.selectedBankAcct.accountNo;
          }
@@ -913,7 +913,7 @@ export class AcctOrEntryComponent implements OnInit {
       updateUser: this.ns.getCurrentUser()
     });
 
-    this.ms.saveMtnAcitDCBNo([],saveDCBNo).subscribe(
+    this.ms.saveMtnAcseDCBNo([],saveDCBNo).subscribe(
       (data:any)=>{
         if(data.returnCode === 0){
           //when there's an error, pop something up idk
@@ -928,7 +928,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   //VALIDATION STARTS HERE
-  checkorInfoFields(): boolean{
+  checkOrInfoFields(): boolean{
     if(
        this.orDate.date.length === 0 || this.orDate.time.length === 0 ||
        this.orInfo.dcbYear.length === 0 || this.orInfo.dcbUserCd.length === 0 ||
@@ -989,7 +989,7 @@ export class AcctOrEntryComponent implements OnInit {
     }
   }
 
-  orAmtEqualsArDtlPayt(): boolean{
+  orAmtEqualsOrDtlPayt(): boolean{
     if(this.orInfo.orDtlSum != this.orInfo.orAmt * this.orInfo.currRate){
       return true;
     }
@@ -1140,14 +1140,14 @@ export class AcctOrEntryComponent implements OnInit {
       (data:any)=>{
            this.orInfo.dcbUserCd = data.dcb.dcbUserList[0].dcbUserCd;
         //set default dcb bank
-           this.selectedBank.bankCd = data.dcb.dcbUserList[0].defaultArBank;
-           this.selectedBank.officialName = data.dcb.dcbUserList[0].arBankName;
+           this.selectedBank.bankCd = data.dcb.dcbUserList[0].defaultOrBank;
+           this.selectedBank.officialName = data.dcb.dcbUserList[0].orBankName;
            this.orInfo.dcbBank = this.selectedBank.bankCd;
            this.orInfo.dcbBankName = this.selectedBank.officialName;
         //set default dcb bank account
-           this.selectedBankAcct.bankCd = data.dcb.dcbUserList[0].defaultArBank;
-           this.selectedBankAcct.bankAcctCd = data.dcb.dcbUserList[0].defaultArBankAcct;
-           this.selectedBankAcct.accountNo = data.dcb.dcbUserList[0].arBankAcctNo;
+           this.selectedBankAcct.bankCd = data.dcb.dcbUserList[0].defaultOrBank;
+           this.selectedBankAcct.bankAcctCd = data.dcb.dcbUserList[0].defaultOrBankAcct;
+           this.selectedBankAcct.accountNo = data.dcb.dcbUserList[0].orBankAcctNo;
            this.orInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
            this.orInfo.dcbBankAcctNo = this.selectedBankAcct.accountNo;
 
