@@ -11,8 +11,8 @@
             					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
 								<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="filtCedingName" placeholder="All">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showFiltCedingCoLOV()"></i></a></div>
-            					<label class="form-control-sm" style="padding-left:20px">Period:</label>
-            					<label class="form-control-sm" style="margin-left: 5px !important">From</label>
+            					<label class="form-control-sm col-sm-1">Period:</label>
+            					<label class="form-control-sm">From</label>
             					<select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="filtFromQtr">
 									<option value="1">1st Quarter</option>
 									<option value="2">2nd Quarter</option>
@@ -79,14 +79,12 @@
 	<div class="modal-body" style="max-width: 1090px !important;">
 		<div *ngIf="!summary" class="custom-row-inline-inset">
 			<div class="input-group">
-				<div class="col-sm-2"></div>
-				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-4" placeholder="Charter Ping An" readonly>
-				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Quarter Ending</label>
-				<!-- <input type="date" class="form-control form-control-sm cust-sm col-sm-2"
-				value="2018-03-31"> -->
+				<div class="col-sm-1"></div>
+				<label class="form-control-sm col-sm-1" style="margin-left: 15px !important;">Company</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4" value="Charter Ping An" disabled>
+				<label class="form-control-sm col-sm-2">Quarter Ending</label>
 				<div class="dp-cont col-sm-2">
-					<datepicker [type]="'date'" [value]="'2018-03-31'"></datepicker>
+					<datepicker [type]="'date'" [disabled]="true" [value]="'2018-03-31'"></datepicker>
 				</div>
 				<div class="col-sm-2"></div>
 			</div>
@@ -114,15 +112,13 @@
 					<div class="input-group">
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-5" style="text-align: left !important;">Company Share on Outstanding Claims</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"
-						value="4,703,270.49" numbers-only>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"	value="4,703,270.49" numbers-only readonly>
 						<div class="col-sm-1"></div>
 					</div>
 					<div class="input-group">
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-5" style="text-align: left !important;">Loss Reserve Deposit</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"
-						value="581,859.90" numbers-only>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"	value="581,859.90" numbers-only readonly>
 						<div class="col-sm-1"></div>
 					</div>
 				</fieldset>
@@ -131,21 +127,20 @@
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-4" style="text-align: left !important;">BALANCE IN YOUR FAVOR</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						[ngModel]="balanceDebit | number: '1.2-2'" (ngModelChange)="balanceDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px; font-weight: bold;">
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="margin-left: 3px !important;" numbers-only style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="balanceCredit | number: '1.2-2'" (ngModelChange)="balanceCredit=$event">
+						[ngModel]="balanceDebit | number: '1.2-2'" (ngModelChange)="balanceDebit=$event" numbers-only style="max-width: 139px; font-weight: bold; z-index: 3;" readonly>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" numbers-only style="margin-left: 3px !important; min-width: 142px; font-weight: bold; z-index: 3;" [ngModel]="balanceCredit | number: '1.2-2'" (ngModelChange)="balanceCredit=$event" readonly>
 					</div>
-					<div class="input-group" style="margin-bottom: -25px !important;margin-top: -20px !important;">
-						<div class="col-sm-6"></div>
-						<div class="col-sm">------------------------------------------------------------------------</div>
+					<div class="input-group" style="margin-bottom: 10px !important; margin-top: -30px !important;">
+						<div class="col-sm-5"></div>
+						<div class="col-sm" style="padding-left: 0; padding-right: 0; border-bottom: 1px dashed; margin-right: 1em;">&nbsp;</div>
 					</div>
 					<div class="input-group">
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-4" style="text-align: left !important;">TOTAL DEBITS AND CREDITS</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						[ngModel]="totalDebit | number: '1.2-2'" (ngModelChange)="totalDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px; font-weight: bold;">
+						[ngModel]="totalDebit | number: '1.2-2'" (ngModelChange)="totalDebit=$event" numbers-only style="max-width: 139px; font-weight: bold;" readonly>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="totalCredit | number: '1.2-2'" (ngModelChange)="totalCredit=$event">
+						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="totalCredit | number: '1.2-2'" (ngModelChange)="totalCredit=$event" readonly>
 					</div>
 				</div>
 			</div>
