@@ -36,9 +36,9 @@ export class TextEditorComponent implements OnInit, OnChanges {
       this.style['border'] = '0';
     }
 
-    if(this.readonly && !this.required) {
+    if(this.readonly && !this.required && !this.table) {
       this.style['background'] = '#f5f5f5';
-    } else if(this.required && !this.readonly) {
+    } else if(this.required && !this.readonly && !this.table) {
       this.style['background'] = '#fffacd85';
     }
 
