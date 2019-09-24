@@ -91,7 +91,7 @@ export class ClaimRecoveryComponent implements OnInit {
   constructor(private titleService: Title, private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-IT | Claim Cash Call");
+    this.titleService.setTitle("Acct-IT | Claim Recovery / Overpayment");
     console.log(this.record.payeeNo);
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){

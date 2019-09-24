@@ -2328,4 +2328,57 @@ export class AccountingService {
 		.set('currCd', currCd);
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSoaDue",{params});
 	}
+
+	/*
+	 *
+	 *
+	 *	ACCOUNTING SERVICE STARTS HERE
+     *
+     *
+     */
+
+     getAcseOrList(searchParams: any[]){
+		var params;
+         if(searchParams.length < 1){
+              params = new HttpParams()
+          		 .set('orType', '')
+                 .set('orNo','')
+                 .set('payor', '')
+                 .set('orDateFrom', '')
+                 .set('orDateTo','')
+                 .set('tranTypeName','')
+                 .set('orStatDesc','')
+                 .set('particulars','')
+                 .set('orAmtFrom','')
+                 .set('orAmtTo','')
+                 // .set('paginationRequest.position',null)
+                 // .set('paginationRequest.count',null)
+                 // .set('sortRequest.sortKey',null)
+                 // .set('sortRequest.order',null);
+         }
+         else{
+              params = new HttpParams();
+             for(var i of searchParams){
+                 params = params.append(i.key, i.search);
+             }
+         }
+          return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrList',{params});
+	}
+
+	getAcseOrEntry(tranId, orNo?){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('orNo', (orNo == null || orNo == undefined ? '' : orNo));
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrEntry',{params});
+	}
+
+	saveAcseOrEntry(params){
+    	 let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrEntry',params,header);
+    }
+
 }

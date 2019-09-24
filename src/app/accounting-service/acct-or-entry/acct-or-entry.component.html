@@ -1,166 +1,134 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
 <div class="row">
 	<div class="col-sm-10">
+		<form #myForm="ngForm">
 		<fieldset class="scheduler-border" style="margin-right: -10px !important; padding-top: 10px !important; padding-bottom: 10px !important;">
-			<legend class="scheduler-border">O.R. Info</legend>
+			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
-				<label class="form-control-sm col-sm-1">O.R. No.</label>
-				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-3" [(ngModel)]="record.arNo">
-				<div class="col-sm-4" style="padding: 0;">
-					<div class="input-group">
-						<label class="form-control-sm col-sm-4">O.R. Date</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm-6" value="2019-10-01">
-						<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-3">
-					</div>
+				<label class="form-control-sm col-sm-1">A.R. No.</label>
+				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="arInfo.arNo" (change)="arInfo.arNo = pad($event.target.value, 'arNo')" (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled || isPrinted" name="arNo">
+				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
+				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
+					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date); retrieveCurrency();" [disabled]="arInfo.arStatDesc?.toUpperCase() !== 'NEW' || arInfo.dcbStatus == 'T' || arInfo.dcbStatus == 'C'"></datepicker>
 				</div>
-				<div class="col-sm" style="padding: 0;">
-					<div class="input-group">
-						<label class="form-control-sm col-sm-4">Status</label>
-						<input type="text" placeholder="New" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="record.status">
-					</div>
-				</div>				
-				<!-- <label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Payment Type</label> -->
-				<!-- <input type="text" placeholder="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm-3" (change)="tabController($event);" [(ngModel)]="record.paymentType"> -->
-				<!-- <select class="form-control form-control-sm cust-sm col-sm-3 cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
-					<option value="Inward Policy Balances">Inward Policy Balances</option>
-					<option value="Claim Recovery">Claim Recovery</option>
-					<option value="QSOA">QSOA</option>
-				</select> -->
-				<!-- <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+				<div class="col-sm-1 dp-cont">
+					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="arInfo.arStatDesc?.toUpperCase() !== 'NEW' || arInfo.dcbStatus == 'T' || arInfo.dcbStatus == 'C'"></datepicker>
+				</div>
+				<label class="form-control-sm col-sm-2">Status</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="arInfo.arStatDesc" readonly name="arStat">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">DCB No.</label>
-				<div class="form-control-sm cust-sm col-sm-3" style="padding: 0;">
+				<div class="form-control-sm cust-sm col-sm-2" style="padding: 0;">
 					<div class="input-group">
-						<input type="text" placeholder="2018" class="form-control form-control-sm text-right cust-sm col-sm-4">
-						<input type="text" placeholder="001" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4">
-						<input type="text" placeholder="55" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4">
+						<input type="text" class="form-control form-control-sm text-right cust-sm col-sm-6" [ngModel]="arInfo.dcbYear" name="dcbYear" readonly>
+						<!-- <input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4" [ngModel]="arInfo.dcbUserCd" readonly name="dcbUserCd"> -->
+						<input type="text" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-6" [ngModel]="pad(arInfo.dcbNo, 'dcbSeqNo')" name="dcbNo" readonly>
 					</div>
 				</div>
-				<!-- <div class="col-sm-4"></div> -->
-				<div class="col-sm-4" style="padding: 0;">
+				<div class="col-sm-4" style="padding: 0px !important;">
 					<div class="input-group">
-						<label class="form-control-sm col-sm-4">Reference No.</label>
-						<input type="text" placeholder="INV-000001" class="form-control form-control-sm cust-sm col-sm">
+						<label class="form-control-sm col-sm-3" style="margin-right: -2px !important;padding-left: 0px !important;">Reference No.</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.refNo" name="refNo" [readonly]="isCancelled || isPrinted">
 					</div>
 				</div>
-				<div class="col-sm" style="padding: 0;">
-					<div class="input-group">
-						<label class="form-control-sm col-sm-4">Payment Type</label>
-						<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
-							<option value="Official Receipt">Official Receipt</option>
-							<option value="Official Receipt Service Fee Local">Official Receipt Service Fee Local</option>
-							<option value="Official Receipt Service Fee Munich Re">Official Receipt Service Fee Munich Re</option>
-						</select>		
-					</div>
-				</div>				
+				<label class="form-control-sm col-sm-2">Payment Type</label>
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="arInfo.tranTypeCd" (ngModelChange)="changeTranType($event);" appRequired [disabled]="isCancelled || isPrinted || arInfo.rstrctTranUp === 1" name="tranType">
+					<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
+				</select>
+				<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled || isPrinted" [ngModel]="arInfo.tranTypeName"> -->
 			</div>
-			
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
-				<input type="text" placeholder="888543" class="form-control form-control-sm cust-sm text-right col-sm-3">
-				<div class="col-sm-4" style="padding: 0;">
-					<div class="input-group">
-						<label class="form-control-sm col-sm-4">P.R. Date</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm-6" value="2019-10-01">
-						<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-3">
-					</div>
+				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="arInfo.prNo" [readonly]="isCancelled || isPrinted" name="prNo">
+				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
+				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
+					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;prDate.time = prDate.time == null || prDate.time == '' ? '08:00' : prDate.time;" [disabled]="isCancelled || isPrinted"></datepicker>
 				</div>
-				<div class="col-sm" style="padding: 0;">
-					<div class="input-group">
-						<label class="form-control-sm col-sm-4">P.R. Prepared By</label>
-						<input type="text" placeholder="Ma. Cecilia Dela Paz - Castro" class="form-control form-control-sm cust-sm col-sm">
-					</div>
+				<div class="col-sm-1 dp-cont">
+					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled || isPrinted"></datepicker>
 				</div>
+				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.prPreparedBy" [readonly]="isCancelled || isPrinted" name="preparedBy">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" placeholder="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm" [(ngModel)]="record.payor">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled || isPrinted || disablePayor || arInfo.rstrctTranUp === 1 || arInfo.tranTypeCd.length == 0" name="payor">
+				<div class="text-search-ico" (click)="openLOV('payor')" *ngIf="!isCancelled && !isPrinted && !disablePayor && arInfo.rstrctTranUp !== 1 && arInfo.tranTypeCd.length != 0"><a><i class="fa fa-search"></i></a></div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
-				<textarea placeholder="Col. Boni Serrano Road E. Delos Santos Ave., Quezon City, Metro Manila, Philippines 1209" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;"></textarea>
-				<!-- <div class="form-control-sm col-sm edtr-cont" style="height: 42px;">
-					<text-editor [editorPlaceholder]="'16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209'" (fetchContent)="test($event)"></text-editor>
-				</div> -->
+				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" [(ngModel)]="arInfo.mailAddress" name="address" [readonly]="isCancelled || isPrinted"></textarea>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Business</label>
-				<input type="text" placeholder="Non-Life Insurance" class="form-control form-control-sm cust-sm col-sm-6">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-6 business" [(ngModel)]="arInfo.bussTypeName" name="business" [readonly]="isCancelled || isPrinted">
+				<div class="text-search-ico" (click)="openLOV('business')" *ngIf="!isCancelled && !isPrinted"><a><i class="fa fa-search"></i></a></div>
 				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
-				<input type="text" placeholder="777 - 888 - 999 - 0000" class="form-control form-control-sm cust-sm col-sm-3">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="arInfo.tin" name="tin" [readonly]="isCancelled || isPrinted">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Amount</label>
 				<div class="col-sm-6" style="padding: 0;">
 					<div class="input-group">
-						<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-2">
-						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-						<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4">
+						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.currCd" appRequired>
+						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || arInfo.rstrctTranUp === 1" name="amt">
+							<option *ngFor="let curr of passData.opts[1].prev" [ngValue]="curr">{{curr}}</option>
+						</select>
+						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
-						<input type="text" placeholder="1.000000" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3">
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" (change)="changeCurrencyRt();" appCurrencyRate [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP' || arInfo.rstrctTranUp === 1" name="rate">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>
-				<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-1">
-				<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-2">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-1" value="PHP" name="localAmt" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-2" [ngModel]="(arInfo.arAmt*arInfo.currRate) | number:'1.2-2'" name="localamt2" readonly>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
-				<textarea placeholder="Representing payment for premium of policy CAR-2018-00001-99-0001-000" class="form-control form-control-sm col-sm" [(ngModel)]="record.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;"></textarea>
-				<!-- <div class="form-control-sm col-sm edtr-cont" style="height: 60px;">
-					<text-editor [editorContent]="itest" [editorPlaceholder]="'Representing payment for premium of policy CAR-2018-00001-99-0001-000'"></text-editor>
-				</div> -->
+				<textarea class="form-control form-control-sm col-sm required" [(ngModel)]="arInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired [readonly]="isCancelled || isPrinted" name="particulars"></textarea>
 			</div>
 		</fieldset>
+		</form>
 	</div>
+
 	<div class="col-sm-2">
-		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 9px !important; padding-bottom: 3px !important;">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 14px !important; padding-bottom: 13px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-			<div class="input-group">
+			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center" style="margin-bottom: 8px !important;">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">New OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="newAr()">New AR</button>
 				</div>
-				<!-- <div class="col-sm-12 text-center" style="margin-bottom: 2px !important;"> -->
-				<div class="input-group">
-					<!-- <input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center"> -->
-					<label class="form-control-sm col-sm-4 mb-1" style="margin-left: 5px">Type</label>
-					<select class="form-control form-control-sm cust-sm col-sm-6 cust-sm" style="width: 100%">
-						<option value="Official Receipt">VAT O.R.</option>
-						<option value="Official Receipt Service Fee Local">Non-VAT O.R.</option>
-					</select>
-					<div class="col-sm-1"></div>
+				<div class="col-sm-12 text-center" style="margin-bottom: 2px !important;">
+					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center" readonly>
 				</div>				
 			</div>
-			<!-- <div class="input-group cust-ig">
-				<div class="col-sm-12 text-center">
-					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center">
-				</div>	
-			</div> -->
 		</fieldset>
-		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 16px !important; padding-bottom: 16px !important;">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 12px !important; padding-bottom: 12px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Cancel</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || isPrinted" [class.cust-btn-disabled]="isAdd || isCancelled || isPrinted" (click)="openCancelModal()">Cancel AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Save</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();" [disabled]="isCancelled || isPrinted" [class.cust-btn-disabled]="isCancelled || isPrinted">Save</button>
 				</div>					
 			</div>
 		</fieldset>
-		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 15px !important; padding-bottom: 15px !important;">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 11px !important; padding-bottom: 11px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Print OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'PRINTED'" (click)="print();">Print AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Reprint OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'" (click)="print();">Reprint AR</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -170,58 +138,27 @@
 	<div class="col-sm-12">
 		<fieldset class="scheduler-border" style="padding-top: 10px !important;">
 			<legend class="scheduler-border">Payment Details</legend>
-			<div class="input-group cust-ig px-5">
-				<label class="form-control-sm col-sm-1">DCB Bank</label>
-				<input type="text" placeholder="Bank of the Philippine Islands" class="form-control form-control-sm cust-sm col-sm-6">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-				<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
-				<input type="text" placeholder="627-147839-8" class="form-control form-control-sm cust-sm col-sm-3">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-			</div>
 			<div class="row">
 				<div class="col-sm-12">
-					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+						<div class="input-group cust-ig">
+							<div class="col-sm-1"></div>
+							<label class="form-control-sm col-sm-1">DCB Bank</label>
+							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="arInfo.dcbBankName" appRequired>
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+							<select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired [disabled]="isCancelled || isPrinted">
+								<option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
+							</select>
+							<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
+							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.dcbBankAcctNo" appRequired>
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+							<select class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired [disabled]="isCancelled || isPrinted">
+								<option *ngFor="let bankAcct of bankAccts" [ngValue]="bankAcct">{{bankAcct.accountNo}}</option>
+							</select>
+							<div class="col-sm-1"></div>
+						</div>
+					<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="paytDtlTbl.onClickDelete('a')" (tableDataChange)="onTableDataChange($event)" #paytDtl></app-cust-editable-non-datatable>
 				</div>
 			</div>
-			<!-- <div class="row">
-				<div class="col-sm-5">
-					<div class="input-group cust-ig">
-						<label class="form-control-sm col-sm-2">P.R. No.</label>
-						<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-2">
-						<label class="form-control-sm col-sm-2">Date</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm-4" value="2019-01-01">
-						<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-2" style="margin-right: -2px;">
-					</div>
-					<div class="input-group cust-ig">
-						<label class="form-control-sm col-sm-2">Prepared By</label>
-						<input type="text" placeholder="Ma. Cecilia Dela Paz - Castro" class="form-control form-control-sm cust-sm col-sm-8">
-						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-					</div>
-					<div class="input-group cust-ig">
-						<label class="form-control-sm col-sm-2"></label>
-						<input type="text" placeholder="Accountant II" class="form-control form-control-sm cust-sm col-sm-8">
-					</div>
-				</div>
-				<div class="col-sm-7">
-					<div class="input-group cust-ig">
-						<label class="form-control-sm col-sm-2"></label>
-					</div>
-					<div class="input-group cust-ig">
-						<span class="col-sm-1"></span>
-						<label class="form-control-sm col-sm-2">Created By</label>
-						<input type="text" placeholder="cuaresma" class="form-control form-control-sm cust-sm col-sm">
-						<label class="form-control-sm col-sm-2">Date Created</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm" value="2019-01-01">
-					</div>
-					<div class="input-group cust-ig">
-						<span class="col-sm-1"></span>
-						<label class="form-control-sm col-sm-2">Last Update By</label>
-						<input type="text" placeholder="cuaresma" class="form-control form-control-sm cust-sm col-sm">
-						<label class="form-control-sm col-sm-2">Last Update</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm" value="2019-01-01">
-					</div>
-				</div>
-			</div> -->
 		</fieldset>
 	</div>
 </div>
@@ -232,15 +169,59 @@ padding-right: 0px !important;">
 			<div class="form-row" style="margin-bottom: -10px;">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-1">Created By</label>
-					<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="arInfo.createUser" disabled>
 					<label class="form-control-sm col-sm-1">Date Created</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45" disabled>
+					<div class="col-sm" style="padding: 0px">
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="arInfo.createDate"></datepicker>
+					</div>
 					<label class="form-control-sm col-sm-1">Last Update By</label>
-					<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="arInfo.updateUser" disabled>
 					<label class="form-control-sm col-sm-1">Last Update</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00" disabled>
+					<div class="col-sm" style="padding: 0px">
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="arInfo.updateDate"></datepicker>
+					</div>
 				</div>
 			</div>
 		</div>
 	</fieldset>
 </div>
+
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
+
+<app-modal class="d-none" #cancelMdl>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Are you sure you want to cancel this AR?</p>
+	  </div>
+	</div>
+	<div footer>
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="cancelMdl.closeModal();cancelAr();"><a>Yes</a></button>
+          <button class="cust-btn" type="button" (click)="cancelMdl.closeModal();"><a>No</a></button>
+        </div>
+      </div>
+  	</div>
+</app-modal>
+
+<app-modal class="d-none" #printModal>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Was the printing of AR successful?</p>
+	  </div>
+	</div>
+	<div footer>
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="printMdl.closeModal();updateArStatus();"><a>Yes</a></button>
+          <button class="cust-btn" type="button" (click)="printMdl.closeModal();"><a>No</a></button>
+        </div>
+      </div>
+  	</div>
+</app-modal>

@@ -2,25 +2,67 @@
 	<h4>Accounting Service / Official Receipt</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
 		<ngb-tabset>
-			<ngb-tab class="ngb-tab" title="OR Listings">
+			<ngb-tab class="ngb-tab" title="AR Listings">
 				<ng-template ngbTabContent>
 					<div class="row">
 						<div class="col-sm-12">
-							<app-cust-non-datatable (add)="toGenerateORAdd();" (edit)="toGenerateORAdd();" (rowClick)="onRowClick($event)" (rowDblClick)="toGenerateOREdit($event);" [passData]="passData"></app-cust-non-datatable>
+							<fieldset class="scheduler-border" style="margin-top: 10px !important; padding-top: 3px !important; padding-bottom: 15px !important;">
+								<div class="input-group text-center" style="margin-bottom: -14px !important;">
+									<!-- <div class="col-sm-2"></div>
+									<div class="col-sm">
+										<input type="radio" name="tranStat" id="statNw" value="new" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveOrList()">
+										<label for="statNw" class="text-left">&nbsp;New</label>
+									</div>
+									<div class="col-sm">
+										<input type="radio" name="tranStat" id="statPr" value="printed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveOrList()">
+										<label for="statPr" class="text-left">&nbsp;Printed</label>
+									</div>
+									<div class="col-sm">
+										<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveOrList()">
+										<label for="statPs" class="text-left">&nbsp;Posted</label>
+									</div>
+									<div class="col-sm-2">
+										<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveOrList()">
+										<label for="statDl" class="text-left">&nbsp;Cancelled</label>
+									</div>
+									<div class="col-sm-2"></div> -->
+									<div class="w-100 text-center">
+										<input type="radio" name="tranStat" id="statNw" value="open" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveOrList()">
+										<label for="statNw" class="text-left cust-mg">&nbsp;New</label>
+										<input type="radio" name="tranStat" id="statPr" value="closed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveOrList()">
+										<label for="statPr" class="text-left cust-mg">&nbsp;Printed</label>
+										<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveOrList()">
+										<label for="statPs" class="text-left cust-mg">&nbsp;Posted</label>
+										<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveOrList()">
+										<label for="statDl" class="text-left">&nbsp;Cancelled</label>
+									</div>
+								</div>
+							</fieldset>
 						</div>
 						<div class="col-sm-12">
-							<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
-				        		<div class="input-group" style="margin-top: -10px !important;">
-				            		<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-				            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-				            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
-				            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-				            		<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-				            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-				            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
-				            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-				        		</div>
-				    		</div>
+							<app-cust-non-datatable (add)="toGenerateORAdd();" (edit)="toGenerateOREdit(selected);" (rowClick)="onRowClick($event)" (newRowDblClick)="toGenerateOREdit($event);" [passData]="passData" (searchToDb)="searchQuery($event)" (export)="export();"></app-cust-non-datatable>
+						</div>
+						<div class="col-sm-12">
+							<fieldset class="scheduler-border" style="padding-top: 3px !important;">
+								<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+					        		<div class="input-group" style="margin-bottom: -14px !important;">
+					            		<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+					            		<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="otherInfo.createUser" disabled>
+					            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
+					            		<!-- <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="otherInfo.createDate" disabled> -->
+					            		<div class="col-sm" style="padding: 0px">
+					            		    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="otherInfo.createDate"></datepicker>
+					            		</div>
+					            		<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+					            		<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="otherInfo.updateUser" disabled>
+					            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
+					            		<!-- <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="otherInfo.updateDate" disabled> -->
+					            		<div class="col-sm" style="padding: 0px">
+					            		    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="otherInfo.updateDate"></datepicker>
+					            		</div>
+					        		</div>
+					    		</div>
+							</fieldset>
 						</div>
 					</div>
 				</ng-template>
