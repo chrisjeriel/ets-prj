@@ -1058,4 +1058,15 @@ export class QuotationService {
         return this.http.post(environment.prodApiUrl + '/quote-service/updateQuoteStatus',JSON.stringify(params),header);
     }
 
+    newGetQuoProcessingData(params) {   
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListing', {params:params})
+            .pipe(
+                map(a=>this.showMsgs(a)),catchError(e=>{
+                    this.conError();
+                    throw e;
+                })
+            );
+       
+    }
+
 }

@@ -61,7 +61,11 @@ export class QuotationProcessingComponent implements OnInit {
     cedingCode: any;
     cedingName: any;
 
-    searchParams: any[] = [];
+    searchParams: any = {
+        statusArr:['1','2','P','R'],
+        'paginationRequest.count':20,
+        'paginationRequest.position':1,   
+    };
 
     passData: any = {
         tableData: [],
@@ -256,25 +260,28 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     retrieveQuoteListingMethod(){
-        this.passData.tableData = [];
-        this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
+        this.quotationService.newGetQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
+            this.passData.count = data['length'];
             this.fetchedData = records;
 
             this.validationList = records.filter(a => ['REQUESTED','IN PROGRESS','RELEASED','CONCLUDED','CONCLUDED (THRU ANOTHER CEDANT)',
                                                        'ON HOLD COVER','CONCLUDED (EXPIRED HOLD COVER)'].includes(a.status.toUpperCase()));
 
-            this.passData.tableData = records.filter(a => ['IN PROGRESS','REQUESTED','PENDING APPROVAL','REJECTED'].includes(a.status.toUpperCase()))
+            
+            this.table.refreshTable();
+            this.table.placeData(records//.filter(a => ['IN PROGRESS','REQUESTED','PENDING APPROVAL','REJECTED'].includes(a.status.toUpperCase()))
                                              .map(i => {
-                                                 i.riskId = i.project.riskId;
-                                                 i.riskName = i.project.riskName;
-                                                 i.objectDesc = i.project.objectDesc;
-                                                 i.site = i.project.site;
+                                                 if(i.project != null){
+                                                     i.riskId = i.project.riskId;
+                                                     i.riskName = i.project.riskName;
+                                                     i.objectDesc = i.project.objectDesc;
+                                                     i.site = i.project.site;
+                                                 }
                                                  i.issueDate = this.ns.toDateTimeString(i.issueDate);
                                                  i.expiryDate = this.ns.toDateTimeString(i.expiryDate);
                                                  return i;
-                                             });
-            this.table.refreshTable();
+                                             }));
         });
     }
 
@@ -330,8 +337,11 @@ export class QuotationProcessingComponent implements OnInit {
     //Method for DB query
     searchQuery(searchParams){
         console.log(searchParams);
-        this.searchParams = searchParams;
-        this.passData.tableData = [];
+        //this.searchParams = searchParams;
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
+        //this.passData.tableData = [];
         this.retrieveQuoteListingMethod();
     }
 
