@@ -2329,6 +2329,13 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSoaDue",{params});
 	}
 
+
+	getACSEJvList(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVList",{params});
+	}
+
 	saveAcitQsoa(params){
 		let header: any = {
 		    headers: new HttpHeaders({

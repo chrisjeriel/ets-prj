@@ -277,7 +277,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         }
 
     }else if(this.jvType === 2){
-      
+      return true;
     }else if(this.jvType === 5){
       var totalPaid = 0;
       for (var i = 0; i < this.detailDatas.length; i++) {
@@ -319,6 +319,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.errorMessage = 'Payment for selected claim is not proportional to payment for Treaty Balance.';
       return false;
     }
+    return true;
   }
 
   validPaytAmt() : boolean{
@@ -405,6 +406,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.errorMessage = 'Paid Amount must not greater than Hist Amount.';
       return false;
     }
+    return true;
   }
 
   retrieveJVDetails(){
@@ -463,7 +465,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           total += datas[i].balanceAmt
         }
 
-        if(total !== this.jvDetails.jvAmt){
+        if(total + this.jvDetails.jvAmt !== 0){
           this.errorFlag = true;
         }
       });

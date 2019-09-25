@@ -76,9 +76,7 @@ amountDetailsData: any = {
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
-    if(this.jvType === null){
-      this.jvType = "";
-    }
+    this.jvType === 'MISCELLANEOUS / OTHERS';
     console.log(this.jvType);
   }
 
