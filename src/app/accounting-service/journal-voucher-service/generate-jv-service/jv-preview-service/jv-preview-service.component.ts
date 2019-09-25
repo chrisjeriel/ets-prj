@@ -73,6 +73,20 @@ amountDetailsData: any = {
     infoFlag:true
   }
 
+  jvDetails : any = {
+     jvNo: '', 
+     jvYear: '', 
+     jvDate: '', 
+     jvType: '',
+     jvStatus: '',
+     refnoDate: '',
+     refnoTranId: '',
+     currCd: '',
+     currRate: '',
+     jvAmt: '',
+     localAmt: ''
+  };
+
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {

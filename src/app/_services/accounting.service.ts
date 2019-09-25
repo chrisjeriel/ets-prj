@@ -2447,4 +2447,10 @@ export class AccountingService {
          };
    		return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcsePaytReqStat',params,header);
     }
+
+    getACSEJvEntry(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVEntry",{params});
+	}
 }

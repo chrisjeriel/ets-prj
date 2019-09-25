@@ -18,10 +18,8 @@ export class GenerateJvServiceComponent implements OnInit {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      console.log(params)
-      /*this.exitLink = params['link'] !== undefined ? params['link'] : 'journal-voucher-service';
+      this.exitLink = params['link'] !== undefined ? params['link'] : 'journal-voucher-service';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
-      this.jvType = params['jvType'];*/
     });
     //console.log(this.jvType);
   }
