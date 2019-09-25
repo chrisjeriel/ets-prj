@@ -1,61 +1,162 @@
 <fieldset class="scheduler-border">
-	<legend class="scheduler-border">JV Info</legend>
-	<div class="form-row custom-row-inline-inset">
-		<div class="col-sm-9">
-			<div class="input-group cust-ig">
-				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV No</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-				placeholder="2018" style="text-align: right;text-align: right;" readonly>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-				placeholder="00000001" style="text-align: right; margin-left: 2px;text-align: right;" readonly>
-				<label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
-				<input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
-				<span class="col-sm-3"></span>
-				<label class="form-control-sm col-sm-1">Status</label>
-				<input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" readonly>
-			</div>
-			<div class="input-group cust-ig">
-				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV Type</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm" [placeholder]="jvType"
-				readonly>
-				<label class="form-control-sm col-sm-1 text-right">Ref No</label>
-				<input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017 - 00023974" readonly>
-				<label class="form-control-sm col-sm-1">Date</label>
-				<input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
-			</div>
-		</div>
-		<div class="col-sm-3">
-			<div class="input-group cust-ig">
-				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
-                 <!-- <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-                           <option value="PHP">PHP</option>
-                           <option value="EUR">EUR</option>
-                           <option value="USD">USD</option>
-                       </select> -->
-                       <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
-                       placeholder="PHP" readonly>
-                       <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 2px !important;"
-                       placeholder="27,153.30" readonly>
-                   </div>
-                   <div class="input-group cust-ig">
-                   	<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>                
-                 <!-- <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-                           <option value="PHP">PHP</option>
-                           <option value="EUR">EUR</option>
-                           <option value="USD">USD</option>
-                       </select> -->
-                       <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
-                       placeholder="PHP" readonly>
-                       <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 2px !important;"
-                       placeholder="27,153.30" readonly>
-                   </div>
-               </div>
-           </div>
-       </fieldset>
+    <legend class="scheduler-border">JV Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-9">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                 style="text-align: right;text-align: right;" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                 style="text-align: right; margin-left: 2px;text-align: right;" readonly>
+                <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
+                <div class="col-sm-2 dp-cont">
+                    <datepicker [type]="'date'" [required]="true" disabled></datepicker>
+                </div>
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly>
+                <label class="form-control-sm col-sm-1 text-right">Ref No</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV Type</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm"
+                readonly>
+                
+                <label class="form-control-sm col-sm-1">Ref No Date</label>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  readonly>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" (ngModelChange)="jvDetails.jvAmt =$event" style="margin-left: 2px !important;" readonly>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" (ngModelChange)="jvDetails.localAmt = $event" style="margin-left: 2px !important;" readonly>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<div class="cust-tabs-container" style="margin-top: 10px;">
+  <ngb-tabset>
+    <ngb-tab class="ngb-tab" title="Tax Details">
+      <ng-template ngbTabContent>
+        <app-jv-preview-tax-details></app-jv-preview-tax-details>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>
+<fieldset class="scheduler-border" style="margin-top: 18px !important; ">
+  <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+    <div class="input-group cust-ig">
+      <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+      <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+      <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+      <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+      <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+      <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+      <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+      <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+    </div>
+  </div>
+</fieldset>
 
-       <div class="cust-tabs-container border-tab" style="margin-top: 10px;">
+<!-- <div class="cust-tabs-container border-tab" style="margin-top: 10px;">
+  <ngb-tabset>
+    <ngb-tab *ngIf="1 === 1" class="ngb-tab" title="Amount Details">
+      <ng-template ngbTabContent>
+          <div class="input-group cust-border" style="padding-top: 0.6em">
+            <div class="col-sm-12">
+              <app-cust-editable-non-datatable [passData]="amountDetailsData" (tableDataChange)="plusMinus($event)">
+                <ng-container controls-r>
+                  <label class="form-control-sm" style="text-align: left !important">Auto Compute</label>
+                  <input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
+                </ng-container>
+              </app-cust-editable-non-datatable>
+            </div>
+          </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab *ngIf="1 === 1"  class="ngb-tab" title="Tax Details">
+      <ng-template ngbTabContent>
+        <div class="input-group cust-border" style="padding-top: 0.6em">
+          <div class="col-sm-12">
+            <fieldset class="scheduler-border">
+              <legend class="scheduler-border">VAT Details</legend>
+              <div class="custom-row-inline-inset">
+                <app-cust-editable-non-datatable [passData]="accountingVATTaxDetails"></app-cust-editable-non-datatable>
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-sm-12">
+            <fieldset class="scheduler-border" style="margin-bottom:10px !important;">
+              <legend class="scheduler-border">Creditable WTax Details</legend>
+              <div class="custom-row-inline-inset">
+                <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails" (tableDataChange)="computeWTax($event)">
+                  <ng-container controls-r>
+                    <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
+                  </ng-container>
+                </app-cust-editable-non-datatable>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div> -->
+
+
+
+
+
+<!-- <div class="cust-tabs-container border-tab" style="margin-top: 10px;">
+  <ngb-tabset>
+    <ngb-tab *ngIf="1 === 1" class="ngb-tab" title="Amount Details">
+      <ng-template ngbTabContent>
+        <ng-container [ngSwitch]="jvType">
+             <div *ngSwitchCase="1">Amount Details</div>
+         </ng-container>
+      </ng-template>
+      <ng-template ngbTabContent>
+        <div class="input-group cust-border" style="padding-top: 0.6em">
+          <div class="col-sm-12">
+            <app-cust-editable-non-datatable [passData]="amountDetailsData" (tableDataChange)="plusMinus($event)">
+              <ng-container controls-r>
+                <label class="form-control-sm" style="text-align: left !important">Auto Compute</label>
+                <input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
+              </ng-container>
+            </app-cust-editable-non-datatable>
+          </div>
+        </div>
+      </ng-template>
+  </ngb-tabset>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       <!-- <div class="cust-tabs-container border-tab" style="margin-top: 10px;">
        	<ngb-tabset>
           <ngb-tab *ngIf="jvType.toUpperCase() === 'MISCELLANEOUS / OTHERS'" class="ngb-tab" title="Amount Details">
+          <ngb-tab *ngIf="1 === 1" class="ngb-tab" title="Amount Details">
             <ng-template ngbTabContent>
                 <div class="input-group cust-border" style="padding-top: 0.6em">
                   <div class="col-sm-12">
@@ -70,6 +171,7 @@
             </ng-template>
           </ngb-tab>
           <ngb-tab *ngIf="jvType.toUpperCase() === 'MISCELLANEOUS / OTHERS'" class="ngb-tab" title="Tax Details">
+          <ngb-tab *ngIf="1 === 1"  class="ngb-tab" title="Tax Details">
             <ng-template ngbTabContent>
               <div class="input-group cust-border" style="padding-top: 0.6em">
                 <div class="col-sm-12">
@@ -94,7 +196,9 @@
                 </div>
               </div>
             </ng-template>
-          </ngb-tab>
+          </ngb-tab> -->
+
+
 <!--        		<ngb-tab>
        			<ng-template ngbTabTitle>
        				<div>Amount Details</div>
@@ -141,7 +245,9 @@
        				</div>
        			</ng-template>
        		</ngb-tab> -->
-       		<ngb-tab>
+
+
+       		<!-- <ngb-tab>
             <ng-template ngbTabTitle>
               <div>Amount Details</div>
             </ng-template>
@@ -172,20 +278,7 @@
        					</div>
        				</div>
        			</ng-template>
-       		</ngb-tab>        
-       	</ngb-tabset>
-       </div>
-       <fieldset class="scheduler-border" style="margin-top: 18px !important; ">
-       	<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
-       		<div class="input-group cust-ig">
-       			<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-       			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-       			<label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-       			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-       			<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-       			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-       			<label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-       			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-       		</div>
-       	</div>
-       </fieldset>
+       		</ngb-tab>    -->     
+       	<!-- </ngb-tabset>
+       </div> -->
+       

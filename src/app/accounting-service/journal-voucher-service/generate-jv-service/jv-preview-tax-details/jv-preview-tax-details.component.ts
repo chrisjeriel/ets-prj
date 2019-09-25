@@ -9,50 +9,46 @@ import { ORPreVATDetails , ORPreCreditableWTaxDetails } from '@app/_models';
 })
 export class JvPreviewTaxDetailsComponent implements OnInit {
   
-     passDataAccountingVATTaxDetails: any = {
+     passData: any = {
       tableData: [],
-      tHeader: ['VAT Type', 'BIR RLF Purchase Type', 'Payor', 'Base Amount', 'VAT Amount'],
-      dataTypes: ['text', 'text', 'text', 'currency', 'currency'],
+      tHeader: ['#', 'Gen Type', 'Tax Code', 'Description', 'BIR RLF Purchase Type', 'Tax Rate', 'Payor', 'Base Amount', 'Tax Amount'],
+      //tHeader: ['VAT Type', 'BIR RLF Purchase Type', 'Payor', 'Base Amount', 'VAT Amount'],
+      dataTypes: ['number', 'text', 'text', 'text', 'text', 'percent', 'text', 'currency', 'currency'],
       //opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
-  	  nData: new ORPreVATDetails(null,null,null,null,null),
+  	  nData: {},//new ORPreVATDetails(null,null,null,null,null),
       pageID: 3,
       addFlag: true,
       deleteFlag: true,
-      total: [null, null, null, 'Total', 'vatAmount'],
+      //total: [null, null, null, 'Total', 'vatAmount'],
       pageLength:5,
       genericBtn: 'Save',
-      widths: [150,250,'auto',150,150,],
+      //widths: [150,250,'auto',150,150,],
       paginateFlag:true,
       infoFlag:true
     }
 
-    passDataAccountingCreditableTaxDetails: any = {
+    passDataCreditable: any = {
      tableData: [],
-      tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
-      dataTypes: ['text', 'text', 'percent','text', 'currency', 'currency'],
-      // opts:[
-      //   {
-      //     selector: 'birTaxCode',
-      //     vals: ['WC002', 'WC010', 'WC020'],
-      //   }
-      // ],
-      nData: new ORPreCreditableWTaxDetails(null,null,null,null,null,null),
-      pageID: 4,
-      addFlag: true,
-      deleteFlag: true,
-      pageLength:5,
-      total: [null, null, null, null,'Total', 'wTaxAmount'],
-      widths: [130,200,150,'auto',150,150,],
-      genericBtn: 'Save',
-      paginateFlag:true,
-      infoFlag:true
+     tHeader: ['#', 'Gen Type', 'BIR Tax Code', 'Description', 'WTax Rate', 'Payor', 'Base Amount', 'Tax Amount'],
+      //tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
+     dataTypes: ['number', 'text', 'text', 'text', 'percent','text', 'currency', 'currency'],
+     nData: {}, //new ORPreCreditableWTaxDetails(null,null,null,null,null,null),
+     pageID: 4,
+     addFlag: true,
+     deleteFlag: true,
+     pageLength:5,
+     //total: [null, null, null, null,'Total', 'wTaxAmount'],
+     widths: [130,200,150,'auto',150,150,],
+     genericBtn: 'Save',
+     paginateFlag:true,
+     infoFlag:true
     }
 
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
-  	this.passDataAccountingVATTaxDetails.tableData = this.accountingService.getORPrevTaxDetails();
-  	this.passDataAccountingCreditableTaxDetails.tableData = this.accountingService.getORPrevCredWTaxDetails();
+  	this.passData.tableData = this.accountingService.getORPrevTaxDetails();
+  	this.passDataCreditable.tableData = this.accountingService.getORPrevCredWTaxDetails();
   }
 
      

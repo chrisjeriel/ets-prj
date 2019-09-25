@@ -1,61 +1,54 @@
+<form #myForm="ngForm">
 <div class="row">
     <div class="col-sm-12">
         <fieldset class="scheduler-border">
             <legend class="scheduler-border">JV Info</legend>
-               <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;margin-right: 5px !important; padding-top: 10px !important;">
-                <div class="input-group" style="margin-bottom: -21px !important;">
+               <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;margin-right: 5px !important;">
+                <div class="input-group" style="margin-top: 14px !important;margin-bottom: -20px !important;">
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV No</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" style="margin-right: 2px !important" placeholder="2018">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" placeholder="00000001">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 2px !important" style="text-align: right;" readonly name="entryData.jvYear">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="text-align: right; margin-left:2px" readonly name="entryData.jvNo">
                             <label class="form-control-sm col-sm">Date</label>
-                             <input type="date" class="form-control form-control-sm cust-sm col-sm-4 text-right" value="2018-10-01" style="margin-right: 2px;">
+                            <div class="col-sm-4 dp-cont">
+                                <datepicker [type]="'date'" [showIcon]="true"></datepicker>
+                            </div>
                         </div>
                     </div>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: -10px !important;" placeholder="10:45 AM">
-                    <span class="col-sm-3"></span>
-                    <label class="form-control-sm col-sm-1">Status</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="New">
-                </div>
-                <div class="input-group" style="margin-bottom: -14px !important">
-                    <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-4" style="padding: 0;">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" placeholder=""   [(ngModel)]="data" (change)="tabController($event);">               
-                        <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                                <!-- <select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="data" (change)="tabController($event);">
-                                    <option value="Service Fee Receivable for the Quarter" [selected]="data == 'Service Fee Receivable for the Quarter'">Service Fee Receivable for the Quarter</option>
-                                    <option value="Collected Certificate of Withholding Tax" [selected]="data == 'Collected Certificate of Withholding Tax'">Collected Certificate of Withholding Tax</option>
-                                    <option value="Uncollected Certificate of Withholding Tax" [selected]="data == 'Uncollected Certificate of Withholding Tax'">Uncollected Certificate of Withholding Tax</option>
-                                    <option value="Payment of Service to In-Trust" [selected]="data == 'Payment of Service to In-Trust'">Payment of Service to In-Trust</option>
-                                    <option value="Regular Payroll" [selected]="data == 'Regular Payroll'">Regular Payroll</option>
-                                    <option value="Mid-Year Bonus and Other Bonuses" [selected]="data == 'Mid-Year Bonus and Other Bonuses'">Mid-Year Bonus and Other Bonuses</option>
-                                    <option value="13th Month Pay" [selected]="data == '13th Month Pay'">13th Month Pay</option>
-                                    <option value="Profit Sharing" [selected]="data == 'Profit Sharing'">Profit Sharing</option>
-                                    <option value="Monthly Depreciation Expense" [selected]="data == 'Monthly Depreciation Expense'">Monthly Depreciation Expense</option>
-                                    <option value="Miscellaneous / Others" [selected]="data == 'Miscellaneous / Others'">Miscellaneous / Others</option>
-                                </select> -->
+                            <div class="col-sm-2 dp-cont" style="margin-left: -4px !important">
+                            <datepicker [type]="'time'" [showIcon]="true"></datepicker>
+                            </div>
+                            <label class="form-control-sm col-sm-2">Status</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-5" readonly [(ngModel)]="this.entryData.jvStatusName" name="entryData.jvStatusName">
+                            <label class="form-control-sm col-sm-2">Auto</label> 
+                            <input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px" [checked]="entryData.autoTag === 'Y'" (change)="entryData.autoTag = (entryData.autoTag === 'Y') ? 'N' : 'Y'" disabled name="entryData.autoTag">
                         </div>
                     </div>
-                    <label class="form-control-sm col-sm-1">Ref No</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017-00023974">
-                    <div style="margin-left: -19px !important;margin-right: 3px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                   <!--  <select class="form-control form-control-sm cust-sm col-sm-2">
-                        <option>2017-00023974</option>
-                        <option>2017-00023463</option>
-                        <option>2017-00023432</option>
-                    </select> -->
-                    <label class="form-control-sm col-sm-1" style="margin-left: -10px;">Ref No Date</label>    
-                    <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-2" value="2017-12-31T09:00" >
+                    <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" name="entryData.refNo" [readonly]="approvedStat">
+                    <div style="margin-left: -19px !important;margin-right: 13px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="openLov('refNo')"></i></a></div>
                 </div>
-                <br/>
-                <br/>
+                <div class="input-group" style="margin-bottom: -13px !important">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
+                    <div class="col-sm-8">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm required tranTypeName" style="margin-right: 1px !important;" appRequired name="entryData.tranTypeName" [readonly]="approvedStat">
+                         <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a (click)="openJVType()"><i class="fa fa-search"></i></a></div> 
+                        </div>
+                    </div>
+                    <label class="form-control-sm col-sm-1" >Ref No Date</label>
+                    <div class="col-sm dp-cont" style="margin-left: 6px !important;margin-right: 11px !important">
+                    <datepicker [type]="'date'" [showIcon]="true"></datepicker>
+                    </div>
+                </div>
                 <div class="input-group" style="margin-bottom: -15px !important;">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
                     <div class="col-sm">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" placeholder="To correct entries in JV No.____________________________"></textarea>
+                            <textarea class="form-control form-control-sm required" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;"  appRequired name="entryData.particulars" [readonly]="approvedStat"></textarea>
                         </div>
                     </div>
                 </div>
@@ -63,47 +56,34 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP">
-                            <!-- <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;">
-                                <option>PHP</option>
-                                <option>USD</option>
-                                <option>EUR</option>
-                            </select> -->
-                            <div style="margin-left: -15px !important;margin-right: 4px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;" placeholder="27,513.20">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2 required currCd" style="margin-right: -1px !important;" [(ngModel)]="this.entryData.currCd" appRequired name="entryData.currCd" [readonly]="approvedStat">
+                            <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="currLov.modal.openNoClose()"></i></a></div>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired (change)="validateCurr();" appCurrency name="entryData.jvAmt" [readonly]="approvedStat" [(ngModel)]="this.entryData.jvAmt">
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
                         </div>
                     </div>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="1.000000" style="margin-right: 2px !important; text-align: right;">
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-right: 2px !important; text-align: right;" appCurrencyRate appRequired name="entryData.currRate" (change)="validateCurr()" [readonly]="approvedStat" [(ngModel)]="this.entryData.currRate">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Local Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: 2px !important;">
-                            <!-- <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;">
-                                <option>PHP</option>
-                                <option>USD</option>
-                                <option>EUR</option>
-                            </select> -->
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;" value="PHP" readonly tabindex="-1" name="entryData.localCurr">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="text-align: right;" tabindex="-1" readonly appCurrency name="entryData.localAmt" [(ngModel)]="this.entryData.localAmt">
                         </div>
                     </div>
                 </div>
-                <br />
-                <br />
-                <div class="input-group">
+                <div class="input-group" style="margin-top: 20px !important;">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Prepared By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" placeholder="Ma. Cecilia Dela Paz -Castro">
-                            <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" appRequired name="entryData.preparedName" [readonly]="approvedStat" [(ngModel)]="this.entryData.preparedName">
+                            <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPrintable()"></i></a></div>
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
                     <label class="form-control-sm col-sm-1" style="height: auto;">Approved By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                             <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Jose Reyes">
-                            <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                             <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly name="entryData.approvedBy">
                         </div>
                     </div>
                 </div>
@@ -111,13 +91,13 @@
                     <div class="col-sm-1"></div>
                     <div class="col-sm-4"> 
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" placeholder="Accountant I">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required" style="margin-right: 2px !important" appRequired name="entryData.prepared" [readonly]="approvedStat" [(ngModel)]="this.entryData.preparedPosition">
                         </div>
                     </div>
                     <div class="col-sm-3"></div>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                             <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Comptroller">
+                             <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly name="entryData.approved">
                         </div>
                     </div>
                 </div>
@@ -125,14 +105,25 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Date Prepared</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" value="2018-10-01T08:45">
+                            <div class="col-sm-5 dp-cont">
+                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"  [disabled]="approvedStat"></datepicker>
+                            </div>
+
+                            <div class="col-sm-4 dp-cont">
+                                <datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[1]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'t')" appRequired name="entryData.time"  [disabled]="approvedStat"></datepicker>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
                     <label class="form-control-sm col-sm-1" style="height: auto;">Date Approved</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                             <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" value="2018-10-04T13:30">
+                            <div class="col-sm dp-cont">
+                                <datepicker [type]="'date'" required [showIcon]="true"></datepicker>
+                            </div>
+                            <div class="col-sm dp-cont">
+                                <datepicker [type]="'time'" required [showIcon]="true"></datepicker>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -141,18 +132,14 @@
                 <div class="form-group col-sm">
                     <div class="col-md-12 text-center">
                         <div class="cust-btn-container" style="margin-top: 10px;">
-                           <!--  <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>New JV</a></button>
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Save</a></button>
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Cancel JV</a></button>
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Print JV</a></button>
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Upload</a></button> -->
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>New JV</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Save</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Cancel JV</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Print JV</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Upload Acct. Ent</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>DebitCredit Memo</a></button>
-
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="newJV()"><a>New JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat" ><a>Save</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Cancel JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Approve</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Print</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat "><a>Upload Acct. Ent</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Alloc. Trans.</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Debit/Credit Memo</a></button>
                         </div>
                     </div>
                 </div>
@@ -160,19 +147,20 @@
         </fieldset>
     </div>
     <div class="col-sm-12">
-            <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
-                <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
-                    <div class="input-group" style="margin-bottom: -15px !important;">
-                        <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-                        <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-                        <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-                        <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-                    </div>
+        <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+            <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+                <div class="input-group" style="margin-bottom: -15px !important;">
+                    <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+                    <input type="text" class="form-control form-control-sm col-sm-2" readonly name="entryData.createUser">
+                    <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly name="entryData.createDate">
+                    <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+                    <input type="text" class="form-control form-control-sm col-sm-2" readonly name="entryData.updateUser">
+                    <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly name="entryData.updateDate">
                 </div>
-            </fieldset>
-        </div>
+            </div>
+        </fieldset>
+    </div>
 </div>
+</form>

@@ -18,11 +18,12 @@ export class GenerateJvServiceComponent implements OnInit {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      this.exitLink = params['link'] !== undefined ? params['link'] : 'journal-voucher-service';
+      console.log(params)
+      /*this.exitLink = params['link'] !== undefined ? params['link'] : 'journal-voucher-service';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
-      this.jvType = params['jvType'];
+      this.jvType = params['jvType'];*/
     });
-    console.log(this.jvType);
+    //console.log(this.jvType);
   }
 
   onTabChange($event: NgbTabChangeEvent) {
