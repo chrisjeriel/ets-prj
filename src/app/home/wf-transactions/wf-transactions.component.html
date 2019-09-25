@@ -74,7 +74,32 @@
 
 <div class="reminder-container" style="padding: 0px">
 	<div class="row">
-	  <div class="col-sm-4 col-cards">
+	  <div class="col-sm-4 col-cards" *ngFor="let tran of transactionList; index as i">
+		    <div class="card">
+		      <div class="card-body card-grad-img" style="text-align: right !important;">
+		      	<div class="row">
+		      		<div class="" style="text-align: center !important; padding: 5px;">
+			      		<img style="height: 85.266px; max-height: 85.266px;" src="{{tran.imgUrl}}">
+			      	</div>
+			      	<div class="" style="padding-top: 5px; height: 85.266px; max-height: 85.266px; width: 95px; text-align: right; float:right;">
+			      		<span class="card-text card-count">{{ tran.tranCount }}</span>
+				        <br/>
+				        <span class="card-text card-adtext">{{ tran.tranText }}</span>
+				      	<br/>
+				      	<span class="card-title">{{ tran.tranTitle }}</span>
+			      	</div>
+		      	</div>
+		      </div>
+		    </div>
+	  </div>
+	</div>
+</div>
+
+
+
+
+
+<!-- <div class="col-sm-4 col-cards">
 	    <div class="card">
 	      <div class="card-body card-grad-img" style="text-align: right !important;">
 	      	<div class="row">
@@ -181,6 +206,4 @@
 	      	</div>
 	      </div>
 	    </div>
-	  </div>
-	</div>
-</div>
+	  </div> -->

@@ -74,12 +74,12 @@
 					<div class="input-group">
 						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="arInfo.currCd" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted" name="amt">
+						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || arInfo.rstrctTranUp === 1" name="amt">
 							<option *ngFor="let curr of passData.opts[1].prev" [ngValue]="curr">{{curr}}</option>
 						</select>
 						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
-						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" (change)="changeCurrencyRt();" appCurrencyRate [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP'" name="rate">
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" (change)="changeCurrencyRt();" appCurrencyRate [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP' || arInfo.rstrctTranUp === 1" name="rate">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-acc-s-generate-request',
@@ -10,29 +10,26 @@ import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 export class AccSGenerateRequestComponent implements OnInit {
 
   private sub: any;
-  rowData: any;
+  rowData: any = {
+    reqId : ''
+  };
 
-  paymentData: any = {};
+  checkData : any = { 
+    tranId : '',
+    from : ''
+  };
 
-  paymentType: any;
+  constructor(private activatedRoute: ActivatedRoute,  private router: Router) { }
 
-  constructor(private route: ActivatedRoute,  private router: Router) { }
-
-  ngOnInit() {
-  	this.sub = this.route.params.subscribe(params => {
-      this.paymentData = {
-      		reqNo: params['reqNo'],
-      		payee: params['payee'],
-      		paymentType: params['paymentType'],
-      		status: params['status'],
-      		amount: params['amount'],
-      		currency: params['currency'],
-      		particulars: params['particulars'],
-      		reqDate: params['reqDate'],
-      		reqBy: params['reqBy']
+ ngOnInit() {
+    this.sub = this.activatedRoute.params.subscribe(params => {
+      if(Object.keys(params).length != 0){
+        console.log(params);
+        this.rowData.reqId = params['reqId'];
+        this.checkData.from = params['from'];
+        this.checkData.tranId = params['tranId'];
       }
     });
-    this.paymentType = this.paymentData.paymentType;
   }
 
 
@@ -42,13 +39,14 @@ export class AccSGenerateRequestComponent implements OnInit {
   
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
-        this.router.navigateByUrl('');
+        $event.preventDefault();
+        if(this.checkData.from.toLowerCase() == 'cv-paytreqlist'){
+          this.router.navigate(['/generate-cv-service', { tranId : this.checkData.tranId, from: 'acc-s-request-for-payment' }], { skipLocationChange: true });
+        }else{
+          this.router.navigateByUrl('/acc-s-request-for-payment');
+        }
       } 
-  
   }
 
-  tabController(paymentType){
-    this.paymentType = paymentType;
-  }
 
 }

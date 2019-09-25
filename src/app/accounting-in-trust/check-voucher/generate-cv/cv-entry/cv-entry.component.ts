@@ -89,7 +89,8 @@ export class CvEntryComponent implements OnInit {
   isTotPrlEqualCvAmt   : boolean = false;
   isTotDebCredBalanced : boolean = false;
   bankAcctList         : any;
-  disablePayee         : boolean = false;
+  checkSeriesList      : any;
+  existsInCvDtl        : boolean = false;
 
   passDataLov  : any = {
     selector     : '',
@@ -123,22 +124,25 @@ export class CvEntryComponent implements OnInit {
     var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG'))
                           .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
-    var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId), this.mtnService.getMtnBankAcct(),subRes)
-                            .pipe(map(([prl,ae,ba,sub1]) => { return { prl, ae, ba, sub1 }; }));
+    var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcitCheckSeries(),subRes)
+                            .pipe(map(([prl,ae,ba,cn,sub1]) => { return { prl, ae, ba, cn, sub1 }; }));
 
     subRes2.subscribe(data => {
       console.log(data);
-      var recPn = data['sub1']['pn']['printableNames'];
-      var recCl = data['sub1']['cl']['refCodeList'];
+      var recPn   = data['sub1']['pn']['printableNames'];
+      var recCl   = data['sub1']['cl']['refCodeList'];
       var recStat = data['sub1']['stat']['refCodeList'];
       var recPrt  = data['sub1']['prt']['refCodeList'];
-      this.cvStatList = recStat;
+      var recCn   = data['cn']['checkSeriesList'];
+
+      this.cvStatList      = recStat;
+      this.checkSeriesList = recCn;
 
       this.bankAcctList = data['ba']['bankAcctList'];
       var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
       var totalPrl = arrSum(data['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
-      var totalCredit = arrSum(data['ae']['list'].map(e => e.creditAmt));
-      var totalDebit = arrSum(data['ae']['list'].map(e => e.debitAmt));
+      var totalCredit = arrSum(data['ae']['list'].map(e => e.foreignCreditAmt));
+      var totalDebit = arrSum(data['ae']['list'].map(e => e.foreignDebitAmt));
 
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
         $('.globalLoading').css('display','none');
@@ -175,6 +179,11 @@ export class CvEntryComponent implements OnInit {
               this.saveAcitCv.preparedBy = e2.userId;
               e.preparedByDes = e2.designation;
             }
+            if(e.certifiedBy == e2.userId){
+              e.certifiedByName = e2.printableName;
+              this.saveAcitCv.certifiedBy = e2.userId;
+              e.certifiedByDes = e2.designation;
+            }
           });
           return e;
         });
@@ -182,7 +191,7 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv = Object.assign(this.saveAcitCv,recCv[0]);
         console.log(recCv);
         console.log(this.saveAcitCv);
-        this.disablePayee = ((data['prl']['acitCvPaytReqList']).length == 0)?false:true;
+        this.existsInCvDtl = ((data['prl']['acitCvPaytReqList']).length == 0)?false:true;
       }
 
       this.saveAcitCv['from'] = 'cv';
@@ -193,6 +202,8 @@ export class CvEntryComponent implements OnInit {
       if(this.saveAcitCv.tranId != '' && this.saveAcitCv.tranId != null){
         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
+        console.log(totalCredit);
+        console.log(totalDebit);
       }
     });
   }
@@ -277,7 +288,7 @@ export class CvEntryComponent implements OnInit {
   //         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
   //         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
   //       }
-  //       this.disablePayee = ((data2['prl']['acitCvPaytReqList']).length == 0)?false:true;
+  //       this.existsInCvDtl = ((data2['prl']['acitCvPaytReqList']).length == 0)?false:true;
   //     });
   //   });
   // }
@@ -320,7 +331,7 @@ export class CvEntryComponent implements OnInit {
     };
     this.getAcitCv();
     this.disableFlds(false);
-    this.disablePayee = false;
+    this.existsInCvDtl = false;
   }
 
   onClickSave(cancelFlag?){
@@ -443,11 +454,19 @@ export class CvEntryComponent implements OnInit {
       var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcitCv.currCd && e.acItGlDepNo != null);
       if(ba.length == 1){
         this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
-        this.saveAcitCv.bankAcct = ba[0].bankAcctCd; 
+        this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
+        var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+        if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+          this.saveAcitCv.checkNo = chkNo[0].checkNo;
+        } 
       }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
       this.saveAcitCv.bankAcct = data.data.bankAcctCd;
+      var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+      if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+        this.saveAcitCv.checkNo = chkNo[0].checkNo;
+      }
     }else if(from.toLowerCase() == 'class'){
       this.saveAcitCv.checkClassDesc   = data.data.description;
       this.saveAcitCv.checkClass = data.data.code;
@@ -504,7 +523,6 @@ export class CvEntryComponent implements OnInit {
   disableFlds(con:boolean){
     $('.warn').prop('readonly',con);
     this.removeIcon = (con)?true:false;
-    console.log(this.removeIcon + ' >>> removeIcon');
   }
 
   setBankAcctData(){
@@ -524,9 +542,6 @@ export class CvEntryComponent implements OnInit {
       this.warnMsg = 'Total amount of attached payments must be equal to CV amount.';
       this.warnMdl.openNoClose();
     }else{
-      // window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
-      //                 this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
-      // this.printmMdl.openNoClose();
       this.fromBtn = 'approve-req';
       this.confirmMdl.openNoClose();
     }

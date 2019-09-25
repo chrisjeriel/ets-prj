@@ -5,8 +5,10 @@ import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { AccountingService } from '@app/_services/accounting.service';
+import { NotesService } from '@app/_services/notes.service';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-quarterly-stmnt-of-acct',
@@ -18,6 +20,8 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	@ViewChild('generateModal') generateModal: ModalComponent;
 	@ViewChild('qsoaListTbl') qsoaListTbl: CustEditableNonDatatableComponent;
 	@ViewChild('filtCedingCoLOV') filtCedingCoLOV: CedingCompanyComponent;
+	@ViewChild('gnrtCedingCoLOV') gnrtCedingCoLOV: CedingCompanyComponent;
+	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
 	comStmt:boolean = false;
 	receivables:boolean = false;
@@ -185,7 +189,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 
 	confMsg: number = 1;
 	filtCedingId: string = '';
-	filtCedingName: String = '';
+	filtCedingName: string = '';
 	filtFromQtr: number = null;
 	filtFromYear: number = null;
 	filtToQtr: number = null;
@@ -194,11 +198,23 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	gnrtCedingName: string = '';
 	gnrtQtr: number = 1;
 	gnrtYear: number = 1;
+	yearParamOpts: any[] = [];
 
-	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService) { }
+	dialogIcon: string = '';
+	dialogMessage: string = '';
+
+	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService, private ns: NotesService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | QSOA Inquiry");
+
+		var d = new Date();
+	    this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
+	    this.gnrtYear = d.getFullYear();
+
+	    for(let x = d.getFullYear(); x >= 2018; x--) {
+	    	this.yearParamOpts.push(x);
+	    }
 
 		this.showGenerateModal();
 	}
@@ -279,5 +295,46 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	setFiltCedingCo(ev) {
 		this.filtCedingId = ev.cedingId;
 		this.filtCedingName = ev.cedingName;
+	}
+
+	showGnrtCedingCoLOV() {
+		this.gnrtCedingCoLOV.modal.openNoClose();
+	}
+
+	setGnrtCedingCo(ev) {
+		this.gnrtCedingId = ev.cedingId;
+		this.gnrtCedingName = ev.cedingName;
+	}
+
+	saveAcitQsoa() {
+		var param = {
+			cedingId: this.gnrtCedingId,
+			gnrtQtr: this.gnrtQtr,
+			gnrtYear: this.gnrtYear,
+			createUser: this.ns.getCurrentUser(),
+			createDate: this.ns.toDateTimeString(0),
+			updateUser: this.ns.getCurrentUser(),
+			updateDate: this.ns.toDateTimeString(0)
+		}
+
+		this.as.saveAcitQsoa(param).subscribe(data => {
+			if(data['returnCode'] == -1) {
+				this.dialogIcon = 'success-message';
+				this.dialogMessage = 'QSOA successfully generated'
+				this.successDialog.open();
+				
+				this.filtCedingId = this.gnrtCedingId;
+				this.filtCedingName = this.gnrtCedingName;
+				this.filtFromQtr = this.gnrtQtr;
+				this.filtFromYear = this.gnrtYear
+				this.filtToQtr = this.gnrtQtr;
+				this.filtToYear = this.gnrtYear
+
+				this.onClickSearch();
+			} else {
+				this.dialogIcon = 'error';
+				this.successDialog.open();
+			}
+		});
 	}
 }

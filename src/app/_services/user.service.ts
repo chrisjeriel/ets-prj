@@ -66,6 +66,15 @@ export class UserService {
         return this.http.post(environment.prodApiUrl + '/user-service/saveMtnUser',params,header);
     }
 
+    saveMtnUserGrp(params) {
+        let header: any = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        };
+        return this.http.post(environment.prodApiUrl + '/user-service/saveMtnUserGrp',params,header);
+    }
+
     setAccessModules(data) {
         this.accessibleModulesArr = data;
     }

@@ -2329,9 +2329,122 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSoaDue",{params});
 	}
 
+
 	getACSEJvList(tranId){
 		const params = new HttpParams()
 			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
 		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVList",{params});
 	}
+
+	saveAcitQsoa(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitQSOA',JSON.stringify(params),header);
+	}
+
+	/*
+	 *
+	 *
+	 *	ACCOUNTING SERVICE STARTS HERE
+     *
+     *
+     */
+
+     getAcseOrList(searchParams: any[]){
+		var params;
+         if(searchParams.length < 1){
+              params = new HttpParams()
+          		 .set('orType', '')
+                 .set('orNo','')
+                 .set('payor', '')
+                 .set('orDateFrom', '')
+                 .set('orDateTo','')
+                 .set('tranTypeName','')
+                 .set('orStatDesc','')
+                 .set('particulars','')
+                 .set('orAmtFrom','')
+                 .set('orAmtTo','')
+                 // .set('paginationRequest.position',null)
+                 // .set('paginationRequest.count',null)
+                 // .set('sortRequest.sortKey',null)
+                 // .set('sortRequest.order',null);
+         }
+         else{
+              params = new HttpParams();
+             for(var i of searchParams){
+                 params = params.append(i.key, i.search);
+             }
+         }
+          return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrList',{params});
+	}
+
+	getAcseOrEntry(tranId, orNo?){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('orNo', (orNo == null || orNo == undefined ? '' : orNo));
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrEntry',{params});
+	}
+
+	saveAcseOrEntry(params){
+    	 let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrEntry',params,header);
+    }
+
+	getAcsePaytReqList(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('reqId','')
+				.set('paytReqNo','')
+				.set('tranTypeDesc','')
+				.set('reqDateFrom','')
+				.set('reqDateTo','')
+				.set('reqStatusDesc','')
+				.set('payee','')
+				.set('currCd','')
+				.set('reqAmt','')
+				.set('particulars','')
+				.set('requestedBy','')
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcsePaytReq',{params});	
+	}
+
+	getAcsePaytReq(reqId?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcsePaytReq',{params});	
+	}
+
+	saveAcsePaytReq(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePaytReq',params,header);
+    }
+
+    updateAcsePaytReqStat(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+   		return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcsePaytReqStat',params,header);
+    }
 }

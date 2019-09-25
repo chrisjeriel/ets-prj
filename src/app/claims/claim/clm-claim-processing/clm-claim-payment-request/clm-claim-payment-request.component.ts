@@ -5,6 +5,7 @@ import { ClaimsService, NotesService, UnderwritingService, AccountingService } f
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-clm-claim-payment-request',
@@ -16,6 +17,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
   @ViewChild(LovComponent) lov: LovComponent;
+  @ViewChild(SucessDialogComponent) diag: SucessDialogComponent;
 
   passData: any = {
     tableData: [],
@@ -53,6 +55,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     selector: 'payee'
   }
 
+  diagIcon:String;
+
   constructor(private titleService: Title, private router: Router, private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService,
               private as:AccountingService) { }
 
@@ -83,8 +87,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
 
   onRowClick(ev) {
     this.selected = ev == null || (Object.entries(ev).length === 0 && ev.constructor === Object) ? null : ev;
-    this.disableGenerateBtn = this.selected == null || this.selected.paytReqNo != null;
-    this.disableCancelBtn = this.selected == null || this.selected.paytReqNo == null;
+    this.disableGenerateBtn = this.selected == null || (this.selected.paytReqNo != null && this.selected.paytReqStat != 'X');
+    this.disableCancelBtn = this.selected == null || this.selected.paytReqNo == null || this.selected.paytReqStat == 'X';
     console.log(ev)
   }
 
@@ -139,12 +143,23 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
       // this.dialogIcon = '';
       // this.dialogMessage = '';
       // this.success.open();
+      if(data['returnCode']==-1){
+          this.table.markAsPristine();
+          this.diagIcon = 'success';
+          this.diag.open();
+      }else{
+          this.diagIcon = 'error';
+          this.table.loadingFlag = false;
+          this.diag.open();
+          return;
+      }
+
       this.selected.paytReqId =  data['reqIdOut'];
       this.selected.paytReqStat = 'A';
       this.selected.tranTypeCd = params.tranTypeCd;
       let params2:any = {saveClmPaytReq:[this.selected]};
       this.cs.saveClaimPaytReq(JSON.stringify(params2)).subscribe(a=>{
-        this.getClmPaytReq();
+          this.getClmPaytReq();
       })
       let params3:any = {
         deletePrqTrans:[],
@@ -174,7 +189,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
         }]
       }
       this.as.saveAcitPrqTrans(JSON.stringify(params3)).subscribe(a=>{
-        console.log(a)
+        
       })
     });
 

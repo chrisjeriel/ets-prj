@@ -58,7 +58,7 @@
         <label class="form-control-sm col-sm-2" >Variance</label>
         <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="totals.variance | number:'1.2-2'" disabled>
     </div>
-    <div class="w-100 text-center" style="margin-bottom: 8px" *ngIf="cvData?.cvStatus == 'N' || cvData?.cvStatus == 'F'">
+    <div class="w-100 text-center" style="margin-bottom: 8px; margin-top: 15px !important;" *ngIf="cvData?.cvStatus == 'N' || cvData?.cvStatus == 'F'">
         <button class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
         <button class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
     </div>

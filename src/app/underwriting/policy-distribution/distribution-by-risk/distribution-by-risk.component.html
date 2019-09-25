@@ -37,12 +37,13 @@
     </fieldset>
   </div>
 </div>
-
+<form #myForm="ngForm">
 <div class="row">
+
+  
   <div class="col-sm-6">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Distribution Parameters</legend>
-      <form #myForm="ngForm">
         <div style="margin-top: 53px !important;margin-bottom: 53px !important;">
           <div class="input-group">
             <label class="form-control-sm col-sm-5">One Retention Line</label>
@@ -81,7 +82,7 @@
             </div>
           </div>
         </div>
-      </form>
+      
     </fieldset>
   </div>
 
@@ -91,16 +92,16 @@
       <div style="margin-top: 10px; margin-bottom: 8px;">
             <app-cust-editable-non-datatable #wparam [passData]="wparamData" (genericBtn)="onClickDelete($event)" (onDelete)="wparam.onClickDelete('a')"  (clickLOV)="openCedingCoLOV($event)">
               <ng-container controls-r>
-                <input type="checkbox" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc = 'Y' : riskDistributionData.autoCalc = 'N';readOnlyAll() ; treatyTable.markAsDirty();$event? this.riskDistributionData.seciiPremTag = 'N':null;" [disabled]="controlDisabled.autoCalc">
+                <input type="checkbox" name="autoCalc" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc = 'Y' : riskDistributionData.autoCalc = 'N';readOnlyAll() ;$event? this.riskDistributionData.seciiPremTag = 'N':null;" [disabled]="controlDisabled.autoCalc">
                 <label class="form-control-sm">Auto Calculation</label>
               </ng-container>
             </app-cust-editable-non-datatable>
       </div>
     </fieldset>
   </div>
-
+  
 </div>
-
+</form>
 <div>
   <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
     <legend class="scheduler-border">Treaty Distribution</legend>

@@ -11,19 +11,33 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AcctOrOfficialReceiptComponent implements OnInit {
   passDataOfficialReceipt : any = {
-    tableData: this.accountingService.getOfficialReceipt(),
-    tHeader : ["Item","Reference No","Payor","Curr","Curr Rate","Amount","Amount(PHP)"],
-    dataTypes: ["text","text","text","text","percent","currency","currency"],
+    tableData: [],
+    tHeader : ["Item","Reference No","Curr","Curr Rate","Amount","Amount(PHP)"],
+    dataTypes: ["text","text","text","percent","currency","currency"],
     addFlag: true,
     deleteFlag: true,
-    genericBtn: 'Save',
     checkFlag: true,
     infoFlag: true,
     pageLength: 10,
     paginateFlag: true,
-    total: [null,null,null,null,'Total','amount','amountPHP'],
-    nData: new OfficialReceipt(null,null,null,null,null,null,null),
-    widths: ['auto',120,'auto',1,100,120,120]
+    total: [null,null,null,'Total','amount','amountPHP'],
+    nData: {
+        tranId: '',
+        billId: '',
+        itemNo: '',
+        itemName: '',
+        currCd: '',
+        currRate: '',
+        currAmt: 0,
+        localAmt: 0,
+        refNo: '',
+        remarks: '',
+        createUser: '',
+        createDate: '',
+        updateUser: '',
+        updateDate: ''
+    },
+    widths: ['auto',120,1,100,120,120]
   }
 
   passDataServiceFeeLocal: any = {
@@ -87,7 +101,9 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
     checkFlag: true
   }
 
-  @Input() paymentType: string = "type";
+  @Input() paymentType: string = "";
+  @Input() record: any = {};
+  createUpdate: any;
 
   constructor(private accountingService: AccountingService, private titleService: Title,public modalService: NgbModal) { }
   

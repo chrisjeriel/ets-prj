@@ -85,17 +85,17 @@
       <ngb-tabset>
         <ngb-tab>
           <ng-template ngbTabTitle>
-            <ng-container [ngSwitch]="paymentType.toUpperCase()">
-              <div *ngSwitchCase="'OFFICIAL RECEIPT'">Official Receipt</div>
-              <div *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE LOCAL'">Official Receipt Service Fee Local</div>
-              <div *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE MUNICH RE'">Official Receipt Service Fee Munich Re</div>
+            <ng-container [ngSwitch]="paymentType">
+              <div *ngSwitchCase="'1'">Official Receipt</div>
+              <div *ngSwitchCase="'2'">Official Receipt Service Fee Local</div>
+              <div *ngSwitchCase="'3'">Official Receipt Service Fee Munich Re</div>
             </ng-container>
           </ng-template>
           <ng-template ngbTabContent>
             <div class="input-group cust-border" style="padding-top: 0.6em">
               <div class="col-sm-12">
-                <ng-container [ngSwitch]="paymentType.toUpperCase()">
-                  <ng-container *ngSwitchCase="'OFFICIAL RECEIPT'">
+                <ng-container [ngSwitch]="paymentType">
+                  <ng-container *ngSwitchCase="'1'">
                     <div class="input-group">
                       <div class="col-sm">
                           <app-cust-editable-non-datatable [passData]="passDataOfficialReceipt">
@@ -104,7 +104,7 @@
                       </div>
                     </div>
                   </ng-container>
-                  <ng-container *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE LOCAL'">
+                  <ng-container *ngSwitchCase="'2'">
                     <div class="input-group">
                         <div class="col-sm-2"></div>
                         <div class="col-sm-8">
@@ -113,7 +113,7 @@
                         <div class="col-sm-2"></div>
                     </div>
                   </ng-container>
-                  <ng-container *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE MUNICH RE'">
+                  <ng-container *ngSwitchCase="'3'">
                       <div class="input-group">
                           <div class="col-sm-2"></div>
                           <div class="col-sm-8">

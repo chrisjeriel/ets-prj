@@ -25,6 +25,8 @@ import { map } from 'rxjs/operators';
 
 import {NgForm} from '@angular/forms';
 
+import { DatepickerComponent } from '@app/_components/datepicker/datepicker.component';
+
 @Component({
   selector: 'app-pol-gen-info',
   templateUrl: './pol-gen-info.component.html',
@@ -41,6 +43,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
   @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
+  @ViewChildren(DatepickerComponent) dps: QueryList<DatepickerComponent>;
   @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
@@ -1001,6 +1004,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');
          this.form.control.markAsPristine();
+         this.dps.forEach(a=>a.markAsPristine());
          this.forceExt = 0;
 
 
