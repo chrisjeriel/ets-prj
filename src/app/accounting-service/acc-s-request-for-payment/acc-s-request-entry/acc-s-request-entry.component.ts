@@ -424,32 +424,90 @@ export class AccSRequestEntryComponent implements OnInit {
     }
   }
 
-  onCancelReq(){
-    this.fromBtn = 'cancel-req';
-  }
+  // onCancelReq(){
+  //   this.fromBtn = 'cancel-req';
+  // }
 
-  onYesCancelReq(){
+  onClickYesConfirmed(stat){
     $('.globalLoading').css('display','block');
     this.confirmMdl.closeModal();
     var updatePaytReqStats = {
-      reqId       : this.saveAcsePaytReq.reqId,
-      reqStatus   : 'X',
-      updateUser  : this.ns.getCurrentUser()
+      approvedBy   : (this.saveAcsePaytReq.approvedBy == '' || this.saveAcsePaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcsePaytReq.approvedBy,
+      approvedDate : (this.saveAcsePaytReq.approvedDate == '' || this.saveAcsePaytReq.approvedDate == null)?this.ns.toDateTimeString(0):this.saveAcsePaytReq.approvedDate,
+      reqId        : this.saveAcsePaytReq.reqId,
+      reqStatus    : stat,
+      updateUser   : this.ns.getCurrentUser()
     };
 
     console.log(JSON.stringify(updatePaytReqStats));
-    // this.acctService.updateAcsePaytReqStat(JSON.stringify(updatePaytReqStats))
-    // .subscribe(data => {
-    //   console.log(data);
-    //   $('.globalLoading').css('display','none');
-    //   this.saveAcsePaytReq.reqStatusDesc = 'Cancelled';
-    //   this.saveAcsePaytReq.reqStatus = 'X';
-    //   this.dialogIcon = '';
-    //   this.dialogMessage = '';
-    //   this.success.open();
-    //   this.cancelledStats();
-    // });
+    this.acctService.updateAcsePaytReqStat(JSON.stringify(updatePaytReqStats))
+    .subscribe(data => {
+      console.log(data);
+      $('.globalLoading').css('display','none');
+      // this.saveAcsePaytReq.reqStatus = stat;
+      // this.saveAcsePaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcsePaytReq.reqStatus).map(e => e.description);
+      this.dialogIcon = '';
+      this.dialogMessage = '';
+      this.success.open();
+      this.disableFlds(true);
+      this.getAcsePaytReq();
+    });
   }
+
+  onYesConfirmed(){
+    console.log(this.fromBtn);
+    if(this.fromBtn.toLowerCase() == 'cancel-req'){
+      this.onClickYesConfirmed('X');
+    }else if(this.fromBtn.toLowerCase() == 'approve'){
+      this.onClickYesConfirmed('A');
+    }
+  }
+
+  // onYesCancelReq(){
+  //   $('.globalLoading').css('display','block');
+  //   this.confirmMdl.closeModal();
+  //   var updatePaytReqStats = {
+  //     reqId       : this.saveAcsePaytReq.reqId,
+  //     reqStatus   : 'X',
+  //     updateUser  : this.ns.getCurrentUser()
+  //   };
+
+  //   console.log(JSON.stringify(updatePaytReqStats));
+  //   this.acctService.updateAcsePaytReqStat(JSON.stringify(updatePaytReqStats))
+  //   .subscribe(data => {
+  //     console.log(data);
+  //     $('.globalLoading').css('display','none');
+  //     this.saveAcsePaytReq.reqStatusDesc = 'Cancelled';
+  //     this.saveAcsePaytReq.reqStatus = 'X';
+  //     this.dialogIcon = '';
+  //     this.dialogMessage = '';
+  //     this.success.open();
+  //     this.cancelledStats();
+  //   });
+  // }
+
+  // onYesAppby(){   
+  //   $('.globalLoading').css('display','block');
+  //   this.confirmMdl.closeModal();
+  //     var updatePaytReqStats = {
+  //       reqId       : this.saveAcsePaytReq.reqId,
+  //       reqStatus   : 'A',
+  //       updateUser  : (this.saveAcsePaytReq.approvedBy == '' || this.saveAcsePaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcsePaytReq.approvedBy
+  //   };
+
+  //     console.log(JSON.stringify(updatePaytReqStats));
+  //     this.acctService.updateAcsePaytReqStat(JSON.stringify(updatePaytReqStats))
+  //     .subscribe(data => {
+  //       console.log(data);
+  //       $('.globalLoading').css('display','none');
+  //       this.saveAcsePaytReq.reqStatus = 'A';
+  //       this.saveAcsePaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcsePaytReq.reqStatus).map(e => e.description);
+  //       this.dialogIcon = '';
+  //       this.dialogMessage = '';
+  //       this.success.open();
+  //       this.disableFlds(true);
+  //     });
+  // }
 
   checkCancel(){
     if(this.cancelFlag == true){
@@ -474,38 +532,6 @@ export class AccSRequestEntryComponent implements OnInit {
     }
     // (from.toLowerCase() == 'approve')?this.saveAcsePaytReq.reqStatusNew = '':'';
   }
-
-  onNoAppby(){
-    this.saveAcsePaytReq.approvedBy = '';
-    this.saveAcsePaytReq.approvedDate = '';
-    this.saveAcsePaytReq.approvedName = '';
-    this.saveAcsePaytReq.approvedDes = '';
-    this.confirmMdl.closeModal();
-  }
-
-  onYesAppby(){   
-      $('.globalLoading').css('display','block');
-      this.confirmMdl.closeModal();
-      var updatePaytReqStats = {
-        reqId       : this.saveAcsePaytReq.reqId,
-        reqStatus   : 'A',
-        updateUser  : (this.saveAcsePaytReq.approvedBy == '' || this.saveAcsePaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcsePaytReq.approvedBy
-      };
-
-      console.log(JSON.stringify(updatePaytReqStats));
-      // this.acctService.updateAcsePaytReqStat(JSON.stringify(updatePaytReqStats))
-      // .subscribe(data => {
-      //   console.log(data);
-      //   $('.globalLoading').css('display','none');
-      //   this.saveAcsePaytReq.reqStatus = 'A';
-      //   this.saveAcsePaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcsePaytReq.reqStatus).map(e => e.description);
-      //   this.dialogIcon = '';
-      //   this.dialogMessage = '';
-      //   this.success.open();
-      //   this.disableFlds(true);
-      // });
-  }
-
 
   onTabChange($event: NgbTabChangeEvent) {
 

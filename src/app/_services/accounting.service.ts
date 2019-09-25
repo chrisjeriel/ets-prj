@@ -2370,4 +2370,14 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePaytReq',params,header);
  
     }
+
+    updateAcsePaytReqStat(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+   		return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcsePaytReqStat',params,header);
+ 
+    } 
 }

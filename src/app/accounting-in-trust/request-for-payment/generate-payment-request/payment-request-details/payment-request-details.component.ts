@@ -447,7 +447,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       //e.currCd = (e.currCd == '' || e.currCd == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd)):e.currCd;
       return e;
     });
-    this.othTbl.refreshTable();
+    setTimeout(() => {this.othTbl.refreshTable();},0);
   }
 
   getAcitInvt(){
@@ -481,7 +481,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       return e; 
     });
 
-    this.treatyTbl.refreshTable();
+    setTimeout(() => {this.treatyTbl.refreshTable();},0);
   }
 
   getAcitPrqInwPol(){

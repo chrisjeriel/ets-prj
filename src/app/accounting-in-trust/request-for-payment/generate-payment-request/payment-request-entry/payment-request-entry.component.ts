@@ -424,17 +424,19 @@ export class PaymentRequestEntryComponent implements OnInit {
     }
   }
 
-  onCancelReq(){
-    this.fromBtn = 'cancel-req';
-  }
+  // onCancelReq(){
+  //   this.fromBtn = 'cancel-req';
+  // }
 
-  onYesCancelReq(){
+  onClickYesConfirmed(stat){
     $('.globalLoading').css('display','block');
     this.confirmMdl.closeModal();
     var updatePaytReqStats = {
-      reqId       : this.saveAcitPaytReq.reqId,
-      reqStatus   : 'X',
-      updateUser  : this.ns.getCurrentUser()
+      approvedBy   : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.approvedBy,
+      approvedDate : (this.saveAcitPaytReq.approvedDate == '' || this.saveAcitPaytReq.approvedDate == null)?this.ns.toDateTimeString(0):this.saveAcitPaytReq.approvedDate,
+      reqId        : this.saveAcitPaytReq.reqId,
+      reqStatus    : stat,
+      updateUser   : this.ns.getCurrentUser()
     };
 
     console.log(JSON.stringify(updatePaytReqStats));
@@ -442,14 +444,75 @@ export class PaymentRequestEntryComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       $('.globalLoading').css('display','none');
-      this.saveAcitPaytReq.reqStatusDesc = 'Cancelled';
-      this.saveAcitPaytReq.reqStatus = 'X';
+      // this.saveAcitPaytReq.reqStatus = stat;
+      // this.saveAcitPaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
       this.dialogIcon = '';
       this.dialogMessage = '';
       this.success.open();
-      this.cancelledStats();
+      this.disableFlds(true);
+      //this.initDisabled = (stat == 'X')?true:false;
+      this.getAcitPaytReq();
     });
   }
+
+  onYesConfirmed(){
+    console.log(this.fromBtn);
+    if(this.fromBtn.toLowerCase() == 'cancel-req'){
+      this.onClickYesConfirmed('X');
+    }else if(this.fromBtn.toLowerCase() == 'approve'){
+      this.onClickYesConfirmed('A');
+    }
+  }
+
+  // onYesCancelReq(){
+  //   $('.globalLoading').css('display','block');
+  //   this.confirmMdl.closeModal();
+  //   var updatePaytReqStats = {
+  //     approvedBy   : this.savePrintables.approvedBy,
+  //     approvedDate : this.saveAcitPaytReq.approvedDate,
+  //     reqId        : this.saveAcitPaytReq.reqId,
+  //     reqStatus    : 'X',
+  //     updateUser   : this.ns.getCurrentUser()
+  //   };
+
+  //   console.log(JSON.stringify(updatePaytReqStats));
+  //   this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
+  //   .subscribe(data => {
+  //     console.log(data);
+  //     $('.globalLoading').css('display','none');
+  //     this.saveAcitPaytReq.reqStatusDesc = 'Cancelled';
+  //     this.saveAcitPaytReq.reqStatus = 'X';
+  //     this.dialogIcon = '';
+  //     this.dialogMessage = '';
+  //     this.success.open();
+  //     this.cancelledStats();
+  //   });
+  // }
+
+  // onYesAppby(){   
+  //     $('.globalLoading').css('display','block');
+  //     this.confirmMdl.closeModal();
+  //     var updatePaytReqStats = {
+  //       approvedBy   : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.approvedBy,
+  //       approvedDate : (this.saveAcitPaytReq.approvedDate == '' || this.saveAcitPaytReq.approvedDate == null)?this.ns.toDateTimeString(0):this.saveAcitPaytReq.approvedDate,
+  //       reqId        : this.saveAcitPaytReq.reqId,
+  //       reqStatus    : 'A',
+  //       updateUser   : this.ns.getCurrentUser()
+  //     };
+
+  //     console.log(JSON.stringify(updatePaytReqStats));
+  //     this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
+  //     .subscribe(data => {
+  //       console.log(data);
+  //       $('.globalLoading').css('display','none');
+  //       this.saveAcitPaytReq.reqStatus = 'A';
+  //       this.saveAcitPaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
+  //       this.dialogIcon = '';
+  //       this.dialogMessage = '';
+  //       this.success.open();
+  //       this.disableFlds(true);
+  //     });
+  // }
 
   checkCancel(){
     if(this.cancelFlag == true){
@@ -482,30 +545,6 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.saveAcitPaytReq.approvedDes = '';
     this.confirmMdl.closeModal();
   }
-
-  onYesAppby(){   
-      $('.globalLoading').css('display','block');
-      this.confirmMdl.closeModal();
-      var updatePaytReqStats = {
-        reqId       : this.saveAcitPaytReq.reqId,
-        reqStatus   : 'A',
-        updateUser  : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.savePrintables.approvedBy
-      };
-
-      console.log(JSON.stringify(updatePaytReqStats));
-      this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
-      .subscribe(data => {
-        console.log(data);
-        $('.globalLoading').css('display','none');
-        this.saveAcitPaytReq.reqStatus = 'A';
-        this.saveAcitPaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
-        this.dialogIcon = '';
-        this.dialogMessage = '';
-        this.success.open();
-        this.disableFlds(true);
-      });
-  }
-
 
   onTabChange($event: NgbTabChangeEvent) {
 

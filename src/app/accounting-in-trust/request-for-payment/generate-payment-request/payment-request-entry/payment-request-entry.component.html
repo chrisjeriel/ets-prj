@@ -187,9 +187,11 @@
         </div>
       </div>
     </div>
-    <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?onYesCancelReq():onYesAppby();">Yes</button>
-        <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?confirmMdl.closeModal():onNoAppby();">No</button>
+    <div footer class="d-flex justify-content-center w-100">               
+        <!-- <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?onYesCancelReq():onYesAppby();">Yes</button>
+        <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?confirmMdl.closeModal():onNoAppby();">No</button> -->
+        <button class="cust-btn" type="button" (click)="onYesConfirmed()">Yes</button>
+        <button class="cust-btn" type="button" (click)="confirmMdl.closeModal()">No</button>
     </div>
 </app-modal>
 
