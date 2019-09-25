@@ -26,6 +26,10 @@ export class AccountingServiceComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private titleService: Title) { }
   exitLink: string;
   exitTab: string;
+
+  disableTab: boolean = true;
+  orDetailsParam: any;
+
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
       this.exitLink = params['link'] !== undefined ? params['link'] : 'acct-or-listings';
