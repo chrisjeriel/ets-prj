@@ -421,11 +421,11 @@ export class PaymentRequestEntryComponent implements OnInit {
     }else if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
       if(this.saveAcitPaytReq.tranTypeCd == 5){
-        this.passDataLov.showFirst = 2;
+        this.passDataLov.payeeClassCd = 2;
       }else if(this.saveAcitPaytReq.tranTypeCd == 7){
-        this.passDataLov.showFirst = 3;
+        this.passDataLov.payeeClassCd = 3;
       }else{
-        this.passDataLov.showFirst = 1;
+        this.passDataLov.payeeClassCd = 1;
       }
       this.mainLov.openLOV();
     }
