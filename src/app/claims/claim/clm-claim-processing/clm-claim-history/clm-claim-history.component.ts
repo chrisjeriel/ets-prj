@@ -690,7 +690,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         //edit by paul 9/5/2019
         let validHistTypes:any[] = this.histTypeData;
 
-        if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())){
+        if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase() && a.histType == 1)){
           validHistTypes = validHistTypes.filter(a=>a.code != 1);
         }else{
           validHistTypes = validHistTypes.filter(a=>a.code != 2 && a.code != 3);

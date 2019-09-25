@@ -157,6 +157,7 @@ export class AccAttachmentsComponent implements OnInit {
             }
             this.successDiag.open();
             this.retrieveARAttachment();
+            this.table.markAsPristine();
         }
       });
       

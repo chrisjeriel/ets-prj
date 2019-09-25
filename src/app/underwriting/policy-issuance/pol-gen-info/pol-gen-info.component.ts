@@ -25,6 +25,8 @@ import { map } from 'rxjs/operators';
 
 import {NgForm} from '@angular/forms';
 
+import { DatepickerComponent } from '@app/_components/datepicker/datepicker.component';
+
 @Component({
   selector: 'app-pol-gen-info',
   templateUrl: './pol-gen-info.component.html',
@@ -41,6 +43,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
   @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
+  @ViewChildren(DatepickerComponent) dps: QueryList<DatepickerComponent>;
   @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
@@ -852,12 +855,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "intmId"          : this.policyInfo.intmId,
       "ipl"             : this.policyInfo.project.ipl,
       "issueDate"       : this.policyInfo.issueDate,
-      "lapseFrom"       : this.policyInfo.lapseFrom == 'T' ? '' : this.policyInfo.lapseFrom,
-      "lapseTo"         : this.policyInfo.lapseTo == 'T' ? '' : this.policyInfo.lapseTo,
+      "lapseFrom"       : this.policyInfo.lapseFrom == 'T' ? '' : this.policyInfo.lapseFrom.replace('undefined',''),
+      "lapseTo"         : this.policyInfo.lapseTo == 'T' ? '' : this.policyInfo.lapseTo.replace('undefined',''),
       "lineCd"          : this.policyInfo.lineCd,
       "lineClassCd"     : this.policyInfo.lineClassCd,
-      "maintenanceFrom" : this.policyInfo.maintenanceFrom == 'T' ? '' : this.policyInfo.maintenanceFrom,
-      "maintenanceTo"   : this.policyInfo.maintenanceTo == 'T' ? '' : this.policyInfo.maintenanceTo,
+      "maintenanceFrom" : this.policyInfo.maintenanceFrom == 'T' ? '' : this.policyInfo.maintenanceFrom.replace('undefined',''),
+      "maintenanceTo"   : this.policyInfo.maintenanceTo == 'T' ? '' : this.policyInfo.maintenanceTo.replace('undefined',''),
       "mbiRefNo"        : this.policyInfo.mbiRefNo,
       "minDepTag"       : this.policyInfo.minDepTag,
       "noClaimPd"       : this.policyInfo.project.noClaimPd,
@@ -1001,6 +1004,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');
          this.form.control.markAsPristine();
+         this.dps.forEach(a=>a.markAsPristine());
          this.forceExt = 0;
 
 

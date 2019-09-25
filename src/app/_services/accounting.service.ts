@@ -2320,4 +2320,12 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvPlacement',JSON.stringify(params),header);
 	}
 
+	getSoaOverdue(policyId,instNo,cedingId,currCd){
+		const params = new HttpParams()
+		.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+		.set('instNo', (instNo == null || instNo == undefined ? '' : instNo))
+		.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+		.set('currCd', currCd);
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSoaDue",{params});
+	}
 }

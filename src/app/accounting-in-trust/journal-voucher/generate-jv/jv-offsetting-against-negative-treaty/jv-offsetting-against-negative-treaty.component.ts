@@ -164,10 +164,16 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.passData.nData.currCd = this.jvDetail.currCd;
     this.passLov.currCd = this.jvDetail.currCd;
     
-    if(this.jvDetail.statusType == 'N' || this.jvDetail.statusType == 'F'){
+    if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
     }else {
       this.readOnly = true;
+      this.passData.addFlag = false;
+      this.passData.checkFlag = false;
+      this.claimsOffset.checkFlag = false;
+      this.passData.deleteFlag = false;
+      this.claimsOffset.addFlag = false;
+      this.claimsOffset.deleteFlag = false;
       this.passData.uneditable = [true,true,true,true,true];
       this.passData.disableAdd = true;
       this.claimsOffset.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
@@ -235,15 +241,13 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   openLOV(data){
-    this.passLov.hide = this.claimsOffset.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimId});
+    this.passLov.hide = this.claimsOffset.tableData.filter((a)=>{return !a.deleted}).map((a)=> {return JSON.stringify({claimId: a.claimId, histNo:a.histNo})});  
     console.log(this.passLov.hide)
     this.lovMdl.openLOV();
   }
 
   quarterEndModal(){
-    console.log('test')
     this.quarterModal.modal.openNoClose();
-    //$('#quarterEnd #modalBtn').trigger('click');
   }
 
   setQuarter(data){
@@ -259,6 +263,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       quarterNo = quarterNo[0]+quarterNo[1];
       this.passData.tableData[this.passData.tableData.length - 1].quarterNo = parseInt(quarterNo); 
       this.quarterTable.refreshTable();
+      this.quarterTable.onRowClick(null, this.passData.tableData[0]);
   }
 
   updateTreatyBal(data){
@@ -316,7 +321,9 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   onClickSave(){
-    if(!this.validPayment()){
+    this.confirm.confirmModal();
+    
+    /*if(!this.validPayment()){
       this.dialogMessage = 'Payment for selected claim is not proportion to payment for Treaty Balance.';
       this.dialogIcon = "error-message";
       this.successDiag.open();
@@ -326,7 +333,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.successDiag.open();
     }else{
       this.confirm.confirmModal();
-    }
+    }*/
   }
 
   validPayment() : boolean{

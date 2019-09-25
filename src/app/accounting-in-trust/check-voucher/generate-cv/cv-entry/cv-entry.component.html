@@ -24,8 +24,8 @@
                       </div>
                       <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Payee</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcitCv.payee" maxlength="500" appRequired>
-                        <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcitCv.payee" maxlength="500" appRequired [disabled]="existsInCvDtl">
+                        <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Particulars</label>
@@ -103,13 +103,13 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Amount</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 warn" [(ngModel)]="saveAcitCv.currCd" maxlength="3" appRequired>
-                        <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2 warn" [(ngModel)]="saveAcitCv.currCd" maxlength="3" appRequired [disabled]="existsInCvDtl">
+                        <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm text-right warn" maxlength="24" [(ngModel)]="saveAcitCv.cvAmt" (change)="setLocalAmt();" numbers-only appRequired style="margin-left: 3px;">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right warn" maxlength="32" [(ngModel)]="saveAcitCv.currRate" (change)="setLocalAmt();" numbers-only appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right warn" maxlength="32" [(ngModel)]="saveAcitCv.currRate" (change)="setLocalAmt();" numbers-only appRequired [disabled]="existsInCvDtl">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Local Amount</label>
@@ -274,9 +274,10 @@
                             <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvNo == ''" (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
-                            <!-- <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X'">Spoil Check</button> -->
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()" [disabled]="saveAcitCv.cvStatus != 'F'">Ok For Printing</button>
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="onClickPrint()">Print</button>
+                            <!-- <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()" [disabled]="saveAcitCv.cvStatus != 'F'">Ok For Printing</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="onClickPrint()">Print</button> -->
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="fromBtn='print';printmMdl.openNoClose();">Print</button>
                         </div>
                     </div>
                 </div>
@@ -374,7 +375,7 @@
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="printmMdl.closeModal()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="printmMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();"><a>Print</a></button>
+        <button class="cust-btn" type="button" (click)="printmMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();"><a>Print</a></button>
     </div>
 </app-modal>
 

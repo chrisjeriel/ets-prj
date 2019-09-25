@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild, Renderer2 } from '@angular/core';
 import { NotesService } from '@app/_services'
+import { Calendar } from 'primeng/calendar';
 
 @Component({
   selector: 'datepicker',
@@ -8,7 +9,7 @@ import { NotesService } from '@app/_services'
 })
 export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
 
-  constructor(private ns: NotesService) { }
+  constructor(private ns: NotesService, private renderer: Renderer2) { }
 
   private datepickerVal: any = null;
   private minimumDate: any = null;
@@ -46,6 +47,12 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   @Input() tabindex: any = null;
   @Input() name: any = null;
   @Input() table: boolean = false;
+
+  @ViewChild(Calendar) cal: Calendar;
+
+  markAsPristine(){
+    this.renderer.removeClass(this.cal.el.nativeElement,'ng-dirty');
+  }
 
   ngOnInit() {
     this.minimumDate = new Date(this.minDate);
@@ -151,6 +158,8 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   			dateString = this.datepickerVal == null ? '' : dateString.split('T')[1];
   			break;
   	}
+
+    this.renderer.addClass(this.cal.el.nativeElement,'ng-dirty');
 
   	this.valueChange.emit(dateString);
   }

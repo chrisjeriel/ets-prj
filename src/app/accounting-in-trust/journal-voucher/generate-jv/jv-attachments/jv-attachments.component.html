@@ -5,39 +5,37 @@
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV No</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                placeholder="2015" style="text-align: right;text-align: right;" readonly>
+                 style="text-align: right;text-align: right;" [(ngModel)]="jvDetails.jvYear" readonly>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
-                placeholder="00000001" style="text-align: right; margin-left: 2px;text-align: right;" readonly>
+                 style="text-align: right; margin-left: 2px;text-align: right;" [(ngModel)]="jvDetails.jvNo" readonly>
                 <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
-                <!-- <label class="form-control-sm col-sm-1 text-right">Tran ID</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="000284723" style="text-align: right;text-align: right;" readonly> -->
-                <label class="form-control-sm col-sm-3"></label>
+                <div class="col-sm-2 dp-cont">
+                    <datepicker [type]="'date'" [value]="jvDetails.jvDate?.split('T')[0]" [required]="true" disabled></datepicker>
+                </div>
                 <label class="form-control-sm col-sm-1">Status</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.jvStatus" readonly>
+                <label class="form-control-sm col-sm-1 text-right">Ref No</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoTranId" readonly>
             </div>
             <div class="input-group">
-                <label class="form-control-sm col-sm-1" style="padding-left:0px !impor  tant;">JV Type</label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Error Correction"
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV Type</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="jvDetails.jvType"
                 readonly>
-                <label class="form-control-sm col-sm-1 text-right">Ref No</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017 - 00023974" readonly>
-                <label class="form-control-sm col-sm-1">Date</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
+                
+                <label class="form-control-sm col-sm-1">Ref No Date</label>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.refnoDate" readonly>
             </div>
         </div>
         <div class="col-sm-3">
             <div class="input-group">
                 <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
-                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 2px !important;"
-                placeholder="27,153.30" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.currCd" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.jvAmt | number:'1.2-2'" (ngModelChange)="jvDetails.jvAmt =$event" style="margin-left: 2px !important;" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 2px !important;"
-                placeholder="27,153.30" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly [(ngModel)]="jvDetails.currCd">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.localAmt | number:'1.2-2'" (ngModelChange)="jvDetails.localAmt = $event" style="margin-left: 2px !important;" readonly>
             </div>
         </div>
     </div>
@@ -85,8 +83,8 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px;">
-			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<button type="button" class="cust-btn"><a>Save</a></button>
+			<button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" ><a>Cancel</a></button>
+            <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="onClickSave()"><a>Save</a></button>
 		</div>
 		</div>
 	</div>
