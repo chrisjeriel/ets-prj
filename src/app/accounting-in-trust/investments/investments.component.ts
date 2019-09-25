@@ -491,10 +491,11 @@ export class InvestmentsComponent implements OnInit {
   }
 
   update(data){
-    keys: ['invtCd','bank','certNo','invtType',
+    /*keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
-            'whtaxAmt','matVal','preTerminatedTag','termDate','amortized','amortEff','priceCost']
+            'whtaxAmt','matVal','preTerminatedTag','termDate','amortized','amortEff','priceCost']*/
+     
       for(var i= 0; i< this.passData.tableData.length; i++){
 
          if(this.passData.tableData[i].edited || this.passData.tableData[i].add){
@@ -561,6 +562,7 @@ export class InvestmentsComponent implements OnInit {
 
                  if(invtIncome === null){
                  }else {
+                   console.log(this.wtaxRate);
                    var taxRate = parseFloat(this.wtaxRate) / 100,
                        
                        withHTaxAmt = invtIncome * taxRate,
@@ -572,6 +574,7 @@ export class InvestmentsComponent implements OnInit {
                        } else {
                          matVal = principal + invtIncome - bankCharges - withHTaxAmt;
                        }
+                       console.log(withHTaxAmt + '-' + matVal);
 
                        this.passData.tableData[i].whtaxAmt = withHTaxAmt;
                        this.passData.tableData[i].matVal = matVal;
