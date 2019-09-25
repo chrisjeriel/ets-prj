@@ -132,7 +132,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
       var recPrq = data['prq']['acitPrqTrans'];
-      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => Math.abs(a)+Math.abs(b),0);
+      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0);
       this.prqStatList = recStat;
 
       $('.globalLoading').css('display','none');
@@ -311,7 +311,7 @@ export class PaymentRequestEntryComponent implements OnInit {
         $('.warn').blur();
         this.fromCancel = false;
     }else{
-      if(this.saveAcitPaytReq.reqAmt < 0){
+      if(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) < 0){
         this.warnMsg = 'Request Amount should be positive.';
         this.warnMdl.openNoClose();
         this.fromCancel = false;
@@ -420,6 +420,13 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.appUserLov.modal.openNoClose();
     }else if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
+      if(this.saveAcitPaytReq.tranTypeCd == 5){
+        this.passDataLov.showFirst = 2;
+      }else if(this.saveAcitPaytReq.tranTypeCd == 7){
+        this.passDataLov.showFirst = 3;
+      }else{
+        this.passDataLov.showFirst = 1;
+      }
       this.mainLov.openLOV();
     }
   }
