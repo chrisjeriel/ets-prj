@@ -143,22 +143,6 @@ export class UnderwritingService {
     }
 
     getParListing(searchParams: any []) {
-  /*      this.parListingData = [
-            new PARListing("CAR-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2018"), new Date(), "In Progress"),
-            new PARListing("CAR-2018-000002-088-0001-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",1080000,131000, new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-30-2018"), "In Progress"),
-            new PARListing("CAR-2018-000002-088-0002-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",8090000,131000, new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2018"), "In Progress"),
-            new PARListing("CAR-2018-000002-088-0003-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",9000000,131000, new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-30-2018"), "In Progress"),
-            new PARListing("CAR-2018-000002-088-0004-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-30-2018"), "In Progress"),
-            new PARListing("CAR-2018-000002-088-0005-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-30-2018"), "In Progress"),
-            new PARListing("CEC-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("EAR-2018-000002-098-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("EEI-2018-000002-091-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Force"),
-            new PARListing("MBI-2018-000002-092-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Force"),
-            new PARListing("BVP-2018-000002-093-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("MLP-2018-000002-094-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("DOS-2018-000002-095-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-        ];
-        return this.parListingData;*/
         var params;
         if(searchParams.length < 1){
              params = new HttpParams()

@@ -5,6 +5,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { WorkFlowManagerService, NotesService, UserService } from '@app/_services';
 import { finalize } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-wf-form-common',
@@ -22,29 +23,19 @@ export class WfFormCommonComponent implements OnInit {
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild("recipientsTable") recipientsTable: CustEditableNonDatatableComponent;
 
   recipientsData: any = {
-        tableData: [ {
-        	type: "Note",
-        	title: "Sample Note",
-        	assignedTo: "Totzkie",
-        	dateAssigned: [2019, 2, 21, 0, 0, 0, 0]
-        },
-        {
-        	type: "Reminder",
-        	title: "Sample Reminder",
-        	assignedTo: "Inahbelles",
-        	dateAssigned: [2019, 2, 21, 0, 0, 0, 0]
-        } ],
-        tHeader: ['Type', 'Title', 'Assigned To', 'Date Assigned'],
-        dataTypes: ['text','text', 'text','date'],
-        keys: ['type', 'title', 'assignedTo','dateAssigned'],
+        tableData: [],
+        tHeader: ['Type', 'Title', 'Note' 'Assigned To', 'Date Assigned'],
+        dataTypes: ['text','text', 'text', 'text', 'date'],
+        keys: ['type', 'title', 'note', 'assignedTo','createDate'],
         //widths: [60,'auto',100,'auto'],
         nData:{
             type: null,
             title: null,
             assignedTo: null,
-            dateAssigned: [2019, 2, 21, 0, 0, 0, 0],
+            createDate: 0,
         },
         pageLength: 15,
         deleteFlag: true,
@@ -53,7 +44,7 @@ export class WfFormCommonComponent implements OnInit {
         infoFlag: true,
         searchFlag: true,
         pageID: 2,
-        uneditable: [true,true,true,true],
+        uneditable: [true,true,true,true,true],
   }
 
   usersListing: any = {
@@ -89,18 +80,24 @@ export class WfFormCommonComponent implements OnInit {
 
   createInfo: any = { 
   					createdBy: "Test",
-				  	dateCreated: [2019, 2, 21, 0, 0, 0, 0],
+				  	dateCreated: 0,
 				  };			  
 
   updateInfo: any = { 
   					updatedBy: "Test",
-				  	lastUpdate: [2019, 2, 21, 0, 0, 0, 0],
+				  	lastUpdate: 0,
 				  };
 
   //Notes Variables
   titleNote: string = "";
   notes: string = "";
   @Input() quotationInfo: any = {};
+  @Input() policyInfo: any = {
+    policyId : null,
+    policyNo : null
+  };
+  @Input() claimInfo: any = {};
+  @Input() moduleSource: string = "";
   disablebtnBool: boolean = false;
   disableAssignTo: boolean = true;
   disableAssignToMany: boolean = true;
@@ -110,10 +107,37 @@ export class WfFormCommonComponent implements OnInit {
   dialogIcon:string  = "";
   dialogMessage:string  = "";
   onOkVar: any;
-  mode: boolean;
+  mode:string = "reminder";
+  referenceId:string = "";
+  details:string = "";
+
+  saveNotesParams: any = {
+    noteList : [],
+    delNoteList : []
+  };
+
+  saveReminderParams: any = {
+    reminderList : [],
+    delReminderList : []
+  };
 
   ngOnInit() {
-  	
+  	console.log("NG ON INIT : ");
+    console.log(this.quotationInfo);
+    console.log(this.policyInfo);
+    console.log(this.claimInfo);
+    this.referenceId = (this.moduleSource == 'Quotation') ? this.quotationInfo.quoteId : (this.moduleSource == 'Policy' ? this.policyInfo.policyId : this.claimInfo.claimId);
+    this.details = (this.moduleSource == 'Quotation') ? this.quotationInfo.quotationNo : (this.moduleSource == 'Policy' ? this.policyInfo.policyNo : this.claimInfo.claimNo);
+
+    if (this.mode == 'note') {
+      this.recipientsData.keys = ['type', 'title', 'note', 'assignedTo','createDate'];
+      this.recipientsData.tHeader: ['Type', 'Title', 'Note' 'Assigned To', 'Date Assigned'],
+    } else if (this.mode == 'reminder') {
+      this.recipientsData.keys = ['type', 'title', 'reminder', 'assignedTo','createDate'];
+      this.recipientsData.tHeader: ['Type', 'Title', 'Reminder' 'Assigned To', 'Date Assigned'],
+    }
+
+    this.loadTable();
   }
 
   onClickSave() {
@@ -159,13 +183,13 @@ export class WfFormCommonComponent implements OnInit {
   }
 
   showUsersLOV(obj){
-	if(parseInt(obj) === 0){
-	  $('#usersToManyMdl #modalBtn').trigger('click');
-      $('#usersToManyMdl #modalBtn').addClass('ng-dirty');
-	} else if (parseInt(obj) === 1) {
-	  $('#usersLOV #modalBtn').trigger('click');
-	  $('#usersLOV #modalBtn').addClass('ng-dirty');
-	}
+  	if(parseInt(obj) === 0){
+  	  $('#usersToManyMdl #modalBtn').trigger('click');
+        $('#usersToManyMdl #modalBtn').addClass('ng-dirty');
+  	} else if (parseInt(obj) === 1) {
+  	  $('#usersLOV #modalBtn').trigger('click');
+  	  $('#usersLOV #modalBtn').addClass('ng-dirty');
+  	}
   }
 
   clear(obj){
@@ -200,11 +224,11 @@ export class WfFormCommonComponent implements OnInit {
   }
 
   setCheckRecords(){
-	if(this.isEmptyObject(this.userInfoToMany)){
-	
-	}else{
-		var array = this.userInfoToMany.split(",");
-	}
+  	if(this.isEmptyObject(this.userInfoToMany)){
+  	
+  	}else{
+  		var array = this.userInfoToMany.split(",");
+  	}
 
   	for( var j = 0; j < array.length; j ++){
    	   	for(var i = 0; i < this.usersListing.tableData.length; i++){
@@ -216,8 +240,8 @@ export class WfFormCommonComponent implements OnInit {
   }
 
   setPreparedBy(event){
-	this.userInfo.userId = event.userId;
-	this.userInfo.userName = event.userName;
+	  this.userInfo.userId = event.userId;
+	  this.userInfo.userName = event.userName;
   	this.modalService.dismissAll();
   }
 
@@ -240,7 +264,8 @@ export class WfFormCommonComponent implements OnInit {
 	        this.onOkVar = "showUsersLOV";
 	        this.successDiag.open();
 	    } else {
-	    	var records = this.selects;
+	    
+      var records = this.selects;
 			var temp: string = "";
 			for(let rec of records){
 				temp = rec.userId + "," + temp;
@@ -250,61 +275,169 @@ export class WfFormCommonComponent implements OnInit {
   }
 
   saveNotesAndReminders() {
-  	if (this.boolValue == '3') {
-  		if (this.selects.length > 0) {
-  			for (var i = this.selects.length - 1; i >= 0; i--) {
-  				var saveNoteParams = this.prepareSaveNoteParams(this.selects[i].userId);
-  				this.callServiceSaveNotes(saveNoteParams);
-  			}
-  		}
-  	}
 
-  	/*var saveNoteInfoParam = {
-  	    "noteId" 		: null,
-		"title" 		: this.titleNote,
-		"note" 			: this.notes,
-		"module" 		: "Quotation",
-		"referenceId" 	: this.quotationInfo.quoteId,
-		"details" 		: this.quotationInfo.quotationNo,
-		"assignedTo" 	: "CPI",
-		"status" 		: "A",
-		"createUser" 	: JSON.parse(window.localStorage.currentUser).username,
-		"createDate" 	: this.ns.toDateTimeString(0),
-		"updateUser" 	: JSON.parse(window.localStorage.currentUser).username,
-		"updateDate" 	: this.ns.toDateTimeString(0),
-    };
+    this.prepareParams();
 
-    console.log(saveNoteInfoParam);*/
+    console.log("saveNotesAndReminders");
+    console.log(this.saveNotesParams);
+    console.log("---------------------");
 
-    
+    if (this.mode == 'note') {
+
+      this.workFlowManagerService.saveWfmNotes(this.saveNotesParams).subscribe((data: any)=>{
+          if (data.errorList.length > 0) {
+            alert("Error during saving");
+          } else {
+            alert("Saved successfully.");
+            this.loadTable();
+          }
+      });
+
+    } else if (this.mode == 'reminder') {
+
+    }
+
   }
 
-  prepareSaveNoteParams(assignedTo) {
-  	var saveNoteInfoParam = {
-  	    "noteId" 		: null,
-		"title" 		: this.titleNote,
-		"note" 			: this.notes,
-		"module" 		: "Quotation",
-		"referenceId" 	: this.quotationInfo.quoteId,
-		"details" 		: this.quotationInfo.quotationNo,
-		"assignedTo" 	: assignedTo,
-		"status" 		: "A",
-		"createUser" 	: JSON.parse(window.localStorage.currentUser).username,
-		"createDate" 	: this.ns.toDateTimeString(0),
-		"updateUser" 	: JSON.parse(window.localStorage.currentUser).username,
-		"updateDate" 	: this.ns.toDateTimeString(0),
+  prepareParams() {
+    this.saveNotesParams = {
+      noteList : [],
+      delNoteList : []
+    };
+    this.saveReminderParams = {
+      reminderList : [],
+      delReminderList : []
     };
 
-    return saveNoteInfoParam;
-  }
+    var noteList = [];
+    var delNoteList = [];
+    var reminderList : [];
+    var delReminderList : [];
 
-  callServiceSaveNotes(saveNoteInfoParam) {
-  	this.workFlowManagerService.saveWfmNotes(saveNoteInfoParam).subscribe((data: any)=>{
-        if (data.errorList.length > 0) {
-        	alert("Error during saving");
-        } else {
-        	alert("Saved successfully.");
+    if (this.mode == 'note') {
+
+      if (this.boolValue == 1) {
+        //Assign to me
+        var note = {};
+
+        note = {
+            "noteId"       : null,
+            "title"        : this.titleNote,
+            "note"         : this.notes,
+            "module"       : this.moduleSource,
+            "referenceId"  : this.referenceId,
+            "details"      : this.details,
+            "assignedTo"   : JSON.parse(window.localStorage.currentUser).username,
+            "status"       : "A",
+            "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "createDate"   : this.ns.toDateTimeString(0),
+            "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "updateDate"   : this.ns.toDateTimeString(0),
+        };
+
+        noteList.push(note);
+
+      } else if (this.boolValue == 2) {
+        //Assign to user userInfo.userId
+
+        var note = {};
+
+        note = {
+            "noteId"       : null,
+            "title"        : this.titleNote,
+            "note"         : this.notes,
+            "module"       : this.moduleSource,
+            "referenceId"  : this.referenceId,
+            "details"      : this.details,
+            "assignedTo"   : this.userInfo.userId,
+            "status"       : "A",
+            "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "createDate"   : this.ns.toDateTimeString(0),
+            "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "updateDate"   : this.ns.toDateTimeString(0),
+        };
+
+        noteList.push(note);
+
+      } else if (this.boolValue == 3) {
+        //Assign to many this.selects
+
+        for (var i = 0; i < this.selects.length; i++) {
+          var note = {};
+
+          note = {
+              "noteId"       : null,
+              "title"        : this.titleNote,
+              "note"         : this.notes,
+              "module"       : this.moduleSource,
+              "referenceId"  : this.referenceId,
+              "details"      : this.details,
+              "assignedTo"   : this.selects[i].userId,
+              "status"       : "A",
+              "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "createDate"   : this.ns.toDateTimeString(0),
+              "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "updateDate"   : this.ns.toDateTimeString(0),
+          };
+
+          noteList.push(note);
         }
-    });
+
+      } else {
+
+      }
+
+    } else if (this.mode == 'reminder') {
+
+    }
+
+    this.saveNotesParams = {
+      noteList : noteList,
+      delNoteList : delNoteList
+    };
+    this.saveReminderParams = {
+      reminderList : reminderList,
+      delReminderList : delReminderList
+    };
+
+  }
+
+  switchScreen() {
+    if (this.mode == 'reminder') {
+      this.mode = 'note';
+    } else {
+      this.mode = 'reminder';
+    }
+    this.loadTable();
+  }
+
+  loadTable() {
+    this.recipientsData.tableData = [];
+
+    if (this.mode == 'note') {
+      try {
+
+        var createUser = JSON.parse(window.localStorage.currentUser).username;
+
+        this.workFlowManagerService.retrieveWfmNotes('', '', createUser, this.moduleSource, this.referenceId).subscribe((data: any)=>{
+            if (data.noteList.length > 0) {          
+              for(let rec of data.noteList){
+                rec.type = 'Note';
+                this.recipientsData.tableData.push(rec);
+              }
+
+              this.recipientsTable.refreshTable();
+            } else {
+              alert("Saved successfully.");
+            }
+        });
+      } catch(e) {
+        alert("Error calling WFM Services in loadTable(): " + e);
+      } finally {
+
+      }
+    }
+
+    this.recipientsTable.refreshTable();
   }
 }

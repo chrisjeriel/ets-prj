@@ -131,7 +131,15 @@
 				
 			</ng-template>
 		</ngb-tab>
-		 <ngb-tab id="Exit" *ngIf="!fromSummary">
+		<ngb-tab id="NotesReminders" *ngIf="!fromSummary && policyInfo.fromInq != 'true'">
+				<ng-template ngbTabTitle>
+					<div>Notes & Reminders</div>
+				</ng-template>
+    			<ng-template ngbTabContent>
+    				<app-wf-form-common [moduleSource]="'Policy'" [policyInfo]="policyInfo"></app-wf-form-common>
+    			</ng-template>
+  		</ngb-tab>
+		<ngb-tab id="Exit" *ngIf="!fromSummary">
 				<ng-template ngbTabTitle>
 					<div>Exit</div>
 				</ng-template>

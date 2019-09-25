@@ -32,7 +32,9 @@ export class PolicyIssuanceComponent implements OnInit {
         coInsuranceFlag: false,
         fromSummary:false,
         cedingName:'',
-        lastAffectingPolId:undefined
+        lastAffectingPolId:undefined,
+        quoteId:'',
+        quotationNo: '',
   }
   @Input() fromSummary = false;
 
@@ -60,8 +62,12 @@ export class PolicyIssuanceComponent implements OnInit {
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
-             this.policyInfo.lastAffectingPolId = params['lastAffectingPolId'];
+            this.policyInfo.lastAffectingPolId = params['lastAffectingPolId'];
             this.policyInfo.insuredDesc = params['insured'];
+
+            this.policyInfo.quoteId = params['quoteId'];
+            this.policyInfo.quotationNo = params['quotationNo'];
+
             if(this.fromInq == 'true'){
               this.title = "Policy / Inquiry / Policy Inquiry";
             }

@@ -15,11 +15,13 @@ export class WorkFlowManagerService {
     }
 
 
-    retrieveWfmReminders(reminderId: string, assignedTo: string , createUser: string ){
+    retrieveWfmReminders(reminderId: string, assignedTo: string , createUser: string, module?: string, referenceId?: string){
          const params = new HttpParams()
                 .set('reminderId', reminderId)
                 .set('assignedTo', assignedTo)
-                .set('createUser', createUser);
+                .set('createUser', createUser)
+                .set('module', module)
+                .set('referenceId', referenceId);
 
         return this.http.get(environment.prodApiUrl + '/work-flow-service/retReminders', {params});
     }
@@ -33,11 +35,13 @@ export class WorkFlowManagerService {
         return this.http.post(environment.prodApiUrl +'/work-flow-service/saveReminders',JSON.stringify(params),header);
     }
 
-    retrieveWfmNotes(noteId: string, assignedTo: string , createUser: string ){
+    retrieveWfmNotes(noteId: string, assignedTo: string , createUser: string, module?: string, referenceId?: string){
          const params = new HttpParams()
                 .set('noteId', noteId)
                 .set('assignedTo', assignedTo)
-                .set('createUser', createUser);
+                .set('createUser', createUser)
+                .set('module', module)
+                .set('referenceId', referenceId);
 
         return this.http.get(environment.prodApiUrl + '/work-flow-service/retNotes', {params});
     }
@@ -48,7 +52,7 @@ export class WorkFlowManagerService {
                 'Content-Type': 'application/json'
             })
         }
-        return this.http.post(environment.prodApiUrl +'/work-flow-service/saveNotes',JSON.stringify(params),header);
+        return this.http.post(environment.prodApiUrl +'/work-flow-service/saveNotes',params,header);
     }
 
     retrieveWfmTransactions(tranTitle: string){
