@@ -2328,4 +2328,14 @@ export class AccountingService {
 		.set('currCd', currCd);
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSoaDue",{params});
 	}
+
+	saveAcitQsoa(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitQSOA',JSON.stringify(params),header);
+	}
 }

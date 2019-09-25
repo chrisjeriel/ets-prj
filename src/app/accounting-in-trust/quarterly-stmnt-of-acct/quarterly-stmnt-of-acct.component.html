@@ -183,7 +183,7 @@
             </div>
             <div class="input-group">
             	<label class="form-control-sm col-sm-2">Quarter</label>
-            	<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="mdlQtrParam">
+            	<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="gnrtQtr">
 					<option value="1">First Quarter</option>
 					<option value="2">Second Quarter</option>
 					<option value="3">Third Quarter</option>
@@ -191,7 +191,7 @@
 				</select>
 				<div class="col-sm-2"></div>
 				<label class="form-control-sm col-sm-2">Year</label>
-				<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="mdlYearParam">
+				<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="gnrtYear">
 					<ng-container *ngFor="let y of yearParamOpts">
 						<option [value]="y">{{ y }}</option>
 					</ng-container>
@@ -200,7 +200,7 @@
         </fieldset>
     </div>
     <div footer class="w-100 text-center">
-    	<button class="cust-btn" type="button" (click)="showConfModal()"><a>Generate QSOA</a></button>
+    	<button class="cust-btn" type="button" (click)="saveAcitQsoa()"><a>Generate QSOA</a></button>
     	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>View QSOA</a></button>
     	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Cancel</a></button>
     </div>
@@ -229,3 +229,4 @@
 
 <app-ceding-company #filtCedingCoLOV (selectedData)="setFiltCedingCo($event)"></app-ceding-company>
 <app-ceding-company #gnrtCedingCoLOV (selectedData)="setGnrtCedingCo($event)"></app-ceding-company>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
