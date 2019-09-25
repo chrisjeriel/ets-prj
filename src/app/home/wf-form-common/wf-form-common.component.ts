@@ -27,7 +27,7 @@ export class WfFormCommonComponent implements OnInit {
 
   recipientsData: any = {
         tableData: [],
-        tHeader: ['Type', 'Title', 'Note' 'Assigned To', 'Date Assigned'],
+        tHeader: ['Type', 'Title', 'Note', 'Assigned To', 'Date Assigned'],
         dataTypes: ['text','text', 'text', 'text', 'date'],
         keys: ['type', 'title', 'note', 'assignedTo','createDate'],
         //widths: [60,'auto',100,'auto'],
@@ -131,10 +131,10 @@ export class WfFormCommonComponent implements OnInit {
 
     if (this.mode == 'note') {
       this.recipientsData.keys = ['type', 'title', 'note', 'assignedTo','createDate'];
-      this.recipientsData.tHeader: ['Type', 'Title', 'Note' 'Assigned To', 'Date Assigned'],
+      this.recipientsData.tHeader = ['Type', 'Title', 'Note', 'Assigned To', 'Date Assigned'];
     } else if (this.mode == 'reminder') {
       this.recipientsData.keys = ['type', 'title', 'reminder', 'assignedTo','createDate'];
-      this.recipientsData.tHeader: ['Type', 'Title', 'Reminder' 'Assigned To', 'Date Assigned'],
+      this.recipientsData.tHeader = ['Type', 'Title', 'Reminder', 'Assigned To', 'Date Assigned'];
     }
 
     this.loadTable();
@@ -428,7 +428,7 @@ export class WfFormCommonComponent implements OnInit {
 
               this.recipientsTable.refreshTable();
             } else {
-              alert("Saved successfully.");
+              //alert("Saved successfully.");
             }
         });
       } catch(e) {
