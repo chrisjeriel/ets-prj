@@ -598,12 +598,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.warn = [];
     console.log(this.inwardPolBalData.tableData);
     this.inwardPolBalData.tableData.forEach(e => {
-      e.premAmt      = Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
-      e.riComm       = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
-      e.riCommVat    = Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
-      e.charges      = Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
-      e.totalPayt    = Math.round((e.returnAmt + e.cumPayment) * 100)/100;
-      e.remainingBal = Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
+      e.premAmt      = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
+      e.riComm       = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
+      e.riCommVat    = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
+      e.charges      = isNaN(Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100)?0:Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
+      e.totalPayt    = isNaN(Math.round((e.returnAmt + e.cumPayment) * 100)/100)?0:Math.round((e.returnAmt + e.cumPayment) * 100)/100;
+      e.remainingBal = isNaN(Math.round((e.prevNetDue - e.totalPayt) * 100)/100)?0:Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
 
       if(e.prevBalance < 0) {
         if(e.returnAmt > 0){
@@ -662,12 +662,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                             .map(e => { 
                                                 //e.edited = true; 
                                                 e.checked = false; e.createDate = ''; e.createUser = '';
-                                                e.premAmt   = '';
-                                                e.riComm    = '';
-                                                e.riCommVat = '';
-                                                e.charges   = '';
+                                                e.premAmt   = 0;
+                                                e.riComm    = 0;
+                                                e.riCommVat = 0;
+                                                e.charges   = 0;
                                                 (e.returnAmt == '' || e.returnAmt == null)?e.newRec=1:'';
-                                                e.returnAmt = (e.newRec==1)?0:e.returnAmt;
+                                                (e.newRec==1)?e.returnAmt=0:'';
                                                 return e;
                                             });
       this.inwardTbl.refreshTable();
