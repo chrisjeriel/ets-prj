@@ -164,8 +164,8 @@
                         <div class="col-sm-12">
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-2">Loss Details</label>
-                                <div class="form-control-sm col-sm edtr-cont" style="height: 35px;">
-                                    <text-editor [editorContent]="claimData.lossDtl" (fetchContent)="claimData.lossDtl = $event" [readonly]="isInquiry" [required]="!isInquiry">
+                                <div class="form-control-sm col-sm-10 edtr-cont" style="height: 35px;">
+                                    <text-editor [editorContent]="claimData.lossDtl" (fetchContent)="claimData.lossDtl = $event" [readonly]="isInquiry" [required]="!isInquiry" [formName]="'lossDtl'">
                                     </text-editor>
                                 </div>
                             </div>
@@ -174,8 +174,8 @@
                         <div class="col-sm-12">
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-2">Remarks</label>
-                                <div class="form-control-sm col-sm edtr-cont" style="height: 34px;">
-                                    <text-editor [editorContent]="claimData.remarks" (fetchContent)="claimData.remarks = $event" [readonly]="isInquiry">
+                                <div class="form-control-sm col-sm-10 edtr-cont" style="height: 34px;">
+                                    <text-editor [editorContent]="claimData.remarks" (fetchContent)="claimData.remarks = $event" [readonly]="isInquiry" [formName]="'remarks'">
                                     </text-editor>
                                 </div>
                             </div>
@@ -913,3 +913,5 @@
         <button *ngIf="mdlType == 'ref'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>
+
+<button (click)="testMe()">test</button>

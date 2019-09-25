@@ -232,6 +232,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.ns.formGroup.reset();
     this.maxDate = this.ns.toDateTimeString(0).split('T')[0];
 
     this.titleService.setTitle("Clm | General Info");
@@ -768,6 +769,13 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.disableAdjusterBtn = false;
 
         this.retrieveClmGenInfo();
+
+        // Object.keys(this.ns.formGroup.controls).forEach(key => {
+        //   this.ns.formGroup.get(key).markAsPristine();
+        // });
+
+        // this.ns.formGroup.markAsPristine();
+        this.ns.formGroup.reset();
         this.myForm.control.markAsPristine();
       } else if(data['returnCode'] == 0) {
         this.dialogIcon = 'error';
@@ -1021,4 +1029,12 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
     return String(val).padStart(num, '0');
   }
+
+  /*testMe() {
+    console.log(this.ns.formGroup);
+    setTimeout(() => {
+      this.ns.formGroup.markAsPristine();
+      console.log(this.ns.formGroup);
+    }, 5000);
+  }*/
 }

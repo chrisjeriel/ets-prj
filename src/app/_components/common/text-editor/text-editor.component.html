@@ -16,9 +16,11 @@
 	</div>	
 </div>
 
-<quill-editor id="quill-editor" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event; emitValue();" [style]="style" [modules]="{toolbar: false}" [readOnly]="readonly || !editablePrev" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'text'" (onSelectionChanged)="emitValue($event)"></quill-editor>
+<form #edtrPrevForm="ngForm">
+	<quill-editor name="textEditorPrev" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event; emitValue();" [style]="style" [modules]="{toolbar: false}" [readOnly]="readonly || !editablePrev" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'text'" (onSelectionChanged)="emitValue($event)"></quill-editor>
+</form>
 
-<ng-template #content>
+<!-- <ng-template #content>
 	<div class="modal-header">
 		<span class="modal-title" id="modal-basic-title">Text Editor</span>
 	</div>
@@ -32,14 +34,30 @@
 			<button *ngIf="!readonly" class="cust-btn" type="button" (click)="closeTextEditorModal($event)"><a>Ok</a></button>
 		</div>
 	</div>
-</ng-template>
+</ng-template> -->
+
+<form #edtrMdlForm="ngForm">
+	<app-modal class="d-none" #edtrMdl>
+		<div header>Text Editor</div>
+	    <div body class="text-editor-container">
+	        <quill-editor name="textEditor" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent=$event" [style]="{height: '300px', width: '900px', font: '11px arial', padding: '5px 10px'}" [modules]="{toolbar: !readonly}" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'text'" [readOnly]="readonly"></quill-editor>
+	    </div>
+	    <div footer class="text-center w-100">
+	        <div class="cust-btn-container">
+				<button *ngIf="readonly" class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Close</a></button>
+				<button *ngIf="!readonly" class="cust-btn" type="button" (click)="onClickCancel(confirm)"><a>Cancel</a></button>
+				<button *ngIf="!readonly" class="cust-btn" type="button" (click)="closeTextEditorModal($event)"><a>Ok</a></button>
+			</div>
+	    </div>
+	</app-modal>
+</form>
 
 <ng-template #confirm>
 	<div class="modal-header">
 		<span class="modal-title" id="modal-basic-title">Confirmation</span>
 	</div>
 	<div class="modal-body" style="text-align: center;">Changes will not be saved. Proceed?</div>
-	<div class="modal-footer d-flex justify-content-center w-100">
+	<div class="modal-footer w-100 text-center">
 		<div class="cust-btn-container">
 			<button class="cust-btn" type="button" (click)="onClickYes()"><a>Yes</a></button>
 			<button class="cust-btn" type="button" (click)="onClickNo()"><a>No</a></button>

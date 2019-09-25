@@ -1,12 +1,19 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { NgForm } from '@angular/forms';
+import { NotesService } from '@app/_services/notes.service';
+
 
 @Component({
   selector: 'text-editor',
   templateUrl: './text-editor.component.html',
   styleUrls: ['./text-editor.component.css']
 })
-export class TextEditorComponent implements OnInit, OnChanges {
+export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
+  @ViewChild('edtrMdl') edtrMdl: ModalComponent;
+  @ViewChild('edtrMdlForm') edtrMdlForm:  NgForm;
+  @ViewChild('edtrPrevForm') edtrPrevForm:  NgForm;
 
   @Input() editorContent: any = '';
   @Input() editorPlaceholder: any = null;
@@ -15,6 +22,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   @Input() required: boolean = false;
   @Input() table: boolean = false;
   @Input() editablePrev: boolean = true;
+  @Input() formName: string = 'formName' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
  
   @Output() fetchContent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -29,7 +37,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   oldValue: any = '';
   modalRef: NgbModalRef;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private ns: NotesService) { }
 
   ngOnInit() {
     if(this.table){
@@ -41,7 +49,6 @@ export class TextEditorComponent implements OnInit, OnChanges {
     } else if(this.required && !this.readonly && !this.table) {
       this.style['background'] = '#fffacd85';
     }
-
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -54,15 +61,20 @@ export class TextEditorComponent implements OnInit, OnChanges {
     }
   }
 
+  ngAfterViewInit() {
+    this.ns.formGroup.addControl(this.formName, this.edtrPrevForm.form);
+  }
+
   showTextEditorModal(content) {
     this.oldValue = this.editorContent;
-    this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+    // this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+    this.edtrMdl.openNoClose();
   }
 
   closeTextEditorModal(event) {
   	this.emitValue();
   	this.modalService.dismissAll();
-    $('#quill-editor').addClass('ng-dirty');
+    this.edtrMdlForm.form.markAsPristine();
   }
 
   checkStyle() {
@@ -77,7 +89,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
 
   onClickCancel(confirm) {
     setTimeout(() => {
-      if($('div.text-editor-container').find('quill-editor').hasClass('ng-dirty')) {
+      if(this.edtrMdlForm.dirty) {  
         this.modalRef = this.modalService.open(confirm, { centered: true, backdrop: 'static', windowClass: "modal-size" });
       } else {
         this.modalService.dismissAll();
