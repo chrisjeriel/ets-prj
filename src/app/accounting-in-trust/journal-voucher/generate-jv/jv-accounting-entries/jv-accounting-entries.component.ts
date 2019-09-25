@@ -362,7 +362,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
     }else if(this.jvType === 6){
 
-      for (var i = 0; i < this.detailDatas.length; i++) {
+      /*for (var i = 0; i < this.detailDatas.length; i++) {
         for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
           if(!this.detailDatas[i].acctOffset[j].deleted){
             if((this.detailDatas[i].acctOffset[j].prevNetDue > 0 &&  this.detailDatas[i].acctOffset[j].paytAmt < 0 &&
@@ -376,10 +376,21 @@ export class JvAccountingEntriesComponent implements OnInit {
             }
           }
         }
+      }*/
+
+      for (var i = 0; i < this.detailDatas.length; i++) {
+        for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
+          if(!this.detailDatas[i].acctOffset[j].deleted){
+            if(this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment > this.detailDatas[i].acctOffset[j].prevNetDue){
+              errorFlag = true;
+              break;
+            }
+          }
+        }
       }
 
       if(errorFlag){
-        this.errorMessage = 'Refund must not exceed cummulative payments.';
+        this.errorMessage = 'Paid Amount must not greater than Net Due.';
         return false;
       }else{
         return true;

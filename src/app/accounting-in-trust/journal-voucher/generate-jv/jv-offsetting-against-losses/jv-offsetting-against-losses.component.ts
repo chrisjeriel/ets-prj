@@ -479,6 +479,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
         if(this.passData.tableData[i].inwPolBal[j].deleted){
           this.jvDetails.delInwPol.push(this.passData.tableData[i].inwPolBal[j]);
+          this.jvDetails.delInwPol[this.jvDetails.delInwPol.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].inwPolBal[j].updateDate);
         }
       }
     }

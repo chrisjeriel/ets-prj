@@ -91,6 +91,8 @@ export class LovComponent implements OnInit {
       this.dialogMessage = 'This Payment Request is being processed for payment in another transaction. Please finalize the transaction with Check Voucher No. '+ ref + ' first.';
     }else if(this.passData.selector == 'acitInvt'){
       this.dialogMessage = 'This Investment (Placement) is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+    }else if(this.passData.selector == 'acitArInvPullout'){
+      this.dialogMessage = 'This Investment (Placement) is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
     }else{
       this.passData.data = data;
     }
@@ -912,6 +914,11 @@ export class LovComponent implements OnInit {
       this.accountingService.getAccInvestments(this.passData.searchParams).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.invtList.filter((data)=>{return  this.passData.hide.indexOf(data.invtCd)==-1});
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'clmResHistPayts'){
