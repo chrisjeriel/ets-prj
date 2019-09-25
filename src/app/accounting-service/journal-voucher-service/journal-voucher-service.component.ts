@@ -37,7 +37,7 @@ export class JournalVoucherServiceComponent implements OnInit {
 
   onClickAdd(event){
     this.router.navigate(['/generate-jv-service', {from: 'add',
-                                           exitLink:'/journal-voucher'}], { skipLocationChange: true });
+                                           exitLink:'/journal-voucher-service'}], { skipLocationChange: true });
   }
 
   retrieveJVlist(){
