@@ -447,7 +447,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       //e.currCd = (e.currCd == '' || e.currCd == null)?String(this.currData.filter(e2 => e.currCd == e2.currencyCd)):e.currCd;
       return e;
     });
-    this.othTbl.refreshTable();
+    setTimeout(() => {this.othTbl.refreshTable();},0);
   }
 
   getAcitInvt(){
@@ -455,6 +455,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     .subscribe(data => {
       var recACitInvt = data['invtList'];
 
+      this.investmentData.tableData = [];
       this.recPrqTrans.forEach(e => {
         this.investmentData.tableData.push(recACitInvt.filter(e2 => e2.invtId == e.invtId).map(e2 => { e2.itemNo = e.itemNo; return e2; }));
       });
@@ -480,7 +481,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       return e; 
     });
 
-    this.treatyTbl.refreshTable();
+    setTimeout(() => {this.treatyTbl.refreshTable();},0);
   }
 
   getAcitPrqInwPol(){
@@ -492,6 +493,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       var recAcitPrqInwPol = data['inwPol']['acitPrqInwPolList'];
       var recAcitSoaDtl    = data['soaDtl']['soaDtlList'];
 
+      this.inwardPolBalData.tableData = [];
       this.recPrqTrans.forEach(e => {
           this.inwardPolBalData.tableData.push(recAcitPrqInwPol.filter(e2 => e2.itemNo == e.itemNo && e2.reqId == e.reqId)
                                                                       .map(e2 => {
@@ -586,6 +588,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.trtyLov.modal.openNoClose();
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
       this.passData.selector = 'acitInvt';
+      this.passData.currCd = this.requestData.currCd;
       this.passData.hide = this.investmentData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtId});
       this.invtLov.openLOV();
     }
@@ -733,9 +736,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
         }
       }else{
         e.fromCancel = true;
-        if(e.edited && !e.deleted){ //['transdtlTypeDesc','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
-          // this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.transdtlType != e.transdtlType && i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
-          //                                                            i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
+        if(e.edited && !e.deleted){
+          this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.transdtlType != e.transdtlType && i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
+                                                                     i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = '';
@@ -773,7 +776,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       //   this.params.deletePrqTrans = [];
       // }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-          $('.ng-dirty').removeClass('ng-dirty');
+          // $('.ng-dirty').removeClass('ng-dirty');
+          this.unColTbl.markAsPristine();
           this.conUnCol.confirmModal();
           this.params.savePrqTrans   = [];
           this.params.deletePrqTrans = [];
@@ -809,7 +813,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         }
       }else{
         e.fromCancel = true;
-        if(e.edited && !e.deleted){ //['itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+        if(e.edited && !e.deleted){
           this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
                                                                      i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
@@ -848,7 +852,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       //   this.params.deletePrqTrans = [];
       // }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-          $('.ng-dirty').removeClass('ng-dirty');
+          // $('.ng-dirty').removeClass('ng-dirty');
+          this.othTbl.markAsPristine();
           this.conOth.confirmModal();
           this.params.savePrqTrans   = [];
           this.params.deletePrqTrans = [];
@@ -923,7 +928,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.params.savePrqTrans   = [];
       }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-          $('.ng-dirty').removeClass('ng-dirty');
+          // $('.ng-dirty').removeClass('ng-dirty');
+          this.invtTbl.markAsPristine();
           this.conInvt.confirmModal();
           this.params.savePrqTrans   = [];
           this.params.deletePrqTrans = [];
@@ -1012,7 +1018,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
         //   this.params.deletePrqTrans = [];
         // }else{
           if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-            $('.ng-dirty').removeClass('ng-dirty');
+            // $('.ng-dirty').removeClass('ng-dirty');
+            this.treatyTbl.markAsPristine();
             this.conTrty.confirmModal();
             this.params.savePrqTrans   = [];
             this.params.deletePrqTrans = [];
@@ -1128,7 +1135,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     // }
     else{
       if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-        (!this.allotedChanged)?$('.ng-dirty').removeClass('ng-dirty'):'';
+        // (!this.allotedChanged)?$('.ng-dirty').removeClass('ng-dirty'):'';
+        (!this.allotedChanged)?this.inwardTbl.markAsPristine():'';
         this.conInw.confirmModal();
         this.params.savePrqTrans   = [];
         this.params.deletePrqTrans = [];
@@ -1204,7 +1212,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.params.deletePrqTrans = [];
     }else{
       if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-        $('.ng-dirty').removeClass('ng-dirty');
+        // $('.ng-dirty').removeClass('ng-dirty');
+        this.cedCompTbl.markAsPristine();
         this.conClm.confirmModal();
         this.params.savePrqTrans   = [];
         this.params.deletePrqTrans = [];
@@ -1447,17 +1456,23 @@ export class PaymentRequestDetailsComponent implements OnInit {
   addDirty(from){
     console.log(from);
     if(from == 'cedTbl'){
-      $('#cedTbl').addClass('ng-dirty');
+      // $('#cedTbl').addClass('ng-dirty');
+      this.cedCompTbl.markAsDirty();
     }else if(from == 'inwTbl'){
-      $('#inwTbl').addClass('ng-dirty'); 
+      // $('#inwTbl').addClass('ng-dirty'); 
+      this.inwardTbl.markAsDirty();
     }else if(from == 'invtTbl'){
-      $('#invtTbl').addClass('ng-dirty');
+      // $('#invtTbl').addClass('ng-dirty');
+      this.invtTbl.markAsDirty();
     }else if(from == 'trtyTbl'){
-      $('#trtyTbl').addClass('ng-dirty');
+      // $('#trtyTbl').addClass('ng-dirty');
+      this.treatyTbl.markAsDirty();
     }else if(from == 'othTbl'){
-      $('#othTbl').addClass('ng-dirty');
+      // $('#othTbl').addClass('ng-dirty');
+      this.othTbl.markAsDirty();
     }else if(from == 'unColTbl'){
-      $('#unColTbl').addClass('ng-dirty');
+      // $('#unColTbl').addClass('ng-dirty');
+      this.unColTbl.markAsDirty();
     }
   }
 
@@ -1474,7 +1489,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-   // var chk = false;
     if($event.nextId.toUpperCase() == 'UNCOLTABID'){
       this.activeUnColTab = true;
       this.activeOthTab = false;
@@ -1482,16 +1496,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.activeOthTab = true;
       this.activeUnColTab = false;
     }else{
-      // if(this.requestData.tranTypeCd == 4){
-      //   this.inwardPolBalData = this.acctService.getInwardPolicyKeys('PRQ');
-      //   this.inwardPolBalData.tableData = [];
-      //   this.getAcitPrqInwPol();
-      //   chk = true;
-      // }
-      // this.activeOthTab = false;
+      this.activeOthTab = false;
       this.activeUnColTab = false;
     }
-    //chk?'':this.getPaytReqPrqTrans();
     this.getPaytReqPrqTrans();
   }
 

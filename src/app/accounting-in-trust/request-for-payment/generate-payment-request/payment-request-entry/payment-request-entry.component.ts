@@ -14,6 +14,7 @@ import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -32,6 +33,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('printMdl') printMdl             : ModalComponent;
   @ViewChild('mainLov') mainLov               : LovComponent;
+  @ViewChild('myForm') form                   : NgForm;
 
   saveAcitPaytReq : any = {
     paytReqNo       : '',
@@ -118,7 +120,6 @@ export class PaymentRequestEntryComponent implements OnInit {
     });
 
     (this.saveAcitPaytReq.reqStatus == 'X')?this.cancelledStats():'';
-    
   }
 
   getAcitPaytReq(){
@@ -131,7 +132,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
       var recPrq = data['prq']['acitPrqTrans'];
-      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0);
+      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => Math.abs(a)+Math.abs(b),0);
       this.prqStatList = recStat;
 
       $('.globalLoading').css('display','none');
@@ -286,11 +287,11 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.dialogMessage = '';
       this.success.open();
       this.saveAcitPaytReq.reqId =  data['reqIdOut'];
-      // this.paytData.emit({reqId:data['reqIdOut']});
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcitPaytReq.paytReqNo);
       this.initDisabled = false;
       this.getAcitPaytReq();
+      this.form.control.markAsPristine();
     });
   }
 
@@ -369,7 +370,8 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    $('input').addClass('ng-dirty');
+    // $('input').addClass('ng-dirty');
+    this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);
     if(from.toLowerCase() == 'curr'){
       this.saveAcitPaytReq.currCd = data.currencyCd;
@@ -422,17 +424,19 @@ export class PaymentRequestEntryComponent implements OnInit {
     }
   }
 
-  onCancelReq(){
-    this.fromBtn = 'cancel-req';
-  }
+  // onCancelReq(){
+  //   this.fromBtn = 'cancel-req';
+  // }
 
-  onYesCancelReq(){
+  onClickYesConfirmed(stat){
     $('.globalLoading').css('display','block');
     this.confirmMdl.closeModal();
     var updatePaytReqStats = {
-      reqId       : this.saveAcitPaytReq.reqId,
-      reqStatus   : 'X',
-      updateUser  : this.ns.getCurrentUser()
+      approvedBy   : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.approvedBy,
+      approvedDate : (this.saveAcitPaytReq.approvedDate == '' || this.saveAcitPaytReq.approvedDate == null)?this.ns.toDateTimeString(0):this.saveAcitPaytReq.approvedDate,
+      reqId        : this.saveAcitPaytReq.reqId,
+      reqStatus    : stat,
+      updateUser   : this.ns.getCurrentUser()
     };
 
     console.log(JSON.stringify(updatePaytReqStats));
@@ -440,14 +444,75 @@ export class PaymentRequestEntryComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       $('.globalLoading').css('display','none');
-      this.saveAcitPaytReq.reqStatusDesc = 'Cancelled';
-      this.saveAcitPaytReq.reqStatus = 'X';
+      // this.saveAcitPaytReq.reqStatus = stat;
+      // this.saveAcitPaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
       this.dialogIcon = '';
       this.dialogMessage = '';
       this.success.open();
-      this.cancelledStats();
+      this.disableFlds(true);
+      //this.initDisabled = (stat == 'X')?true:false;
+      this.getAcitPaytReq();
     });
   }
+
+  onYesConfirmed(){
+    console.log(this.fromBtn);
+    if(this.fromBtn.toLowerCase() == 'cancel-req'){
+      this.onClickYesConfirmed('X');
+    }else if(this.fromBtn.toLowerCase() == 'approve'){
+      this.onClickYesConfirmed('A');
+    }
+  }
+
+  // onYesCancelReq(){
+  //   $('.globalLoading').css('display','block');
+  //   this.confirmMdl.closeModal();
+  //   var updatePaytReqStats = {
+  //     approvedBy   : this.savePrintables.approvedBy,
+  //     approvedDate : this.saveAcitPaytReq.approvedDate,
+  //     reqId        : this.saveAcitPaytReq.reqId,
+  //     reqStatus    : 'X',
+  //     updateUser   : this.ns.getCurrentUser()
+  //   };
+
+  //   console.log(JSON.stringify(updatePaytReqStats));
+  //   this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
+  //   .subscribe(data => {
+  //     console.log(data);
+  //     $('.globalLoading').css('display','none');
+  //     this.saveAcitPaytReq.reqStatusDesc = 'Cancelled';
+  //     this.saveAcitPaytReq.reqStatus = 'X';
+  //     this.dialogIcon = '';
+  //     this.dialogMessage = '';
+  //     this.success.open();
+  //     this.cancelledStats();
+  //   });
+  // }
+
+  // onYesAppby(){   
+  //     $('.globalLoading').css('display','block');
+  //     this.confirmMdl.closeModal();
+  //     var updatePaytReqStats = {
+  //       approvedBy   : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.approvedBy,
+  //       approvedDate : (this.saveAcitPaytReq.approvedDate == '' || this.saveAcitPaytReq.approvedDate == null)?this.ns.toDateTimeString(0):this.saveAcitPaytReq.approvedDate,
+  //       reqId        : this.saveAcitPaytReq.reqId,
+  //       reqStatus    : 'A',
+  //       updateUser   : this.ns.getCurrentUser()
+  //     };
+
+  //     console.log(JSON.stringify(updatePaytReqStats));
+  //     this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
+  //     .subscribe(data => {
+  //       console.log(data);
+  //       $('.globalLoading').css('display','none');
+  //       this.saveAcitPaytReq.reqStatus = 'A';
+  //       this.saveAcitPaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
+  //       this.dialogIcon = '';
+  //       this.dialogMessage = '';
+  //       this.success.open();
+  //       this.disableFlds(true);
+  //     });
+  // }
 
   checkCancel(){
     if(this.cancelFlag == true){
@@ -480,30 +545,6 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.saveAcitPaytReq.approvedDes = '';
     this.confirmMdl.closeModal();
   }
-
-  onYesAppby(){   
-      $('.globalLoading').css('display','block');
-      this.confirmMdl.closeModal();
-      var updatePaytReqStats = {
-        reqId       : this.saveAcitPaytReq.reqId,
-        reqStatus   : 'A',
-        updateUser  : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.savePrintables.approvedBy
-      };
-
-      console.log(JSON.stringify(updatePaytReqStats));
-      this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
-      .subscribe(data => {
-        console.log(data);
-        $('.globalLoading').css('display','none');
-        this.saveAcitPaytReq.reqStatus = 'A';
-        this.saveAcitPaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
-        this.dialogIcon = '';
-        this.dialogMessage = '';
-        this.success.open();
-        this.disableFlds(true);
-      });
-  }
-
 
   onTabChange($event: NgbTabChangeEvent) {
 

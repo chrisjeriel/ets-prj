@@ -19,8 +19,8 @@
                           <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1">Status</label>
                           <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="saveAcitCv.cvStatusDesc" readonly>
                           <label class="form-control-sm col-sm-2" style="margin-left: -40px !important;">Payment Request Type</label>
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcitCv.paytReqTypeDesc" maxlength="500" appRequired>
-                          <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('paytReqType')"><i class="fa fa-search"></i></a></div>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcitCv.paytReqTypeDesc" maxlength="500" appRequired [disabled]="existsInCvDtl">
+                          <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('paytReqType')"><i class="fa fa-search"></i></a></div>
                       </div>
                       <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Payee</label>
@@ -145,7 +145,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [(ngModel)]="saveAcitCv.checkNo" appRequired>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [disabled]="saveAcitCv.bankAcctDesc == '' || saveAcitCv.bankAcctDesc == null" [(ngModel)]="saveAcitCv.checkNo" appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>

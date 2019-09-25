@@ -891,7 +891,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag  = true;
       this.accountingService.getAccInvestments([])
       .subscribe((data:any)=>{
-        var rec = data["invtList"].filter(e => e.invtStatus == 'F');
+        var rec = data["invtList"].filter(e => e.invtStatus == 'F' && e.currCd == this.passData.currCd);
         this.passTable.tableData = rec.filter((a)=> { return  this.passData.hide.indexOf(a.invtId)==-1 });
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
