@@ -457,6 +457,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveClmOffset.push(this.passData.tableData[i]);
+        this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].itemNo = i+1;
         this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].tranId = this.jvDetail.tranId;
         this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].exGratia = this.passData.tableData[i].exGratia == null ? 'N':'Y';
         this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
@@ -506,5 +507,9 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  update(){
+    console.log('pasok')
   }
 }

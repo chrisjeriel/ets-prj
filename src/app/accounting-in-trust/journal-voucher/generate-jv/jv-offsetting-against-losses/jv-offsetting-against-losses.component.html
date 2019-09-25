@@ -20,7 +20,7 @@
 			<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
 				<legend class="scheduler-border">Claims Losses</legend>
 			 	 <div class="col-sm-12" style="margin-top: 15px" >
-			 	 	 <app-cust-editable-non-datatable #clmTable [passData]="passData" (newClick)="onrowClick($event)" (tableDataChange)="passData.tableData = $event;updateClaim($event)" (clickLOV)="openLOV($event)"></app-cust-editable-non-datatable>
+			 	 	 <app-cust-editable-non-datatable #clmTable [passData]="passData" (newClick)="onrowClick($event)" (tableDataChange)="passData.tableData = $event;updateClaim($event);update()" (clickLOV)="openLOV($event)"></app-cust-editable-non-datatable>
 			 	 </div>
 			</fieldset>
 		</div>
