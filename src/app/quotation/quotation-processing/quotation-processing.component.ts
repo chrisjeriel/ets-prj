@@ -11,6 +11,7 @@ import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol
 import * as alasql from 'alasql';
 import { User } from '@app/_models';
 
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 @Component({
     selector: 'app-quotation-processing',
@@ -18,7 +19,7 @@ import { User } from '@app/_models';
     styleUrls: ['./quotation-processing.component.css']
 })
 export class QuotationProcessingComponent implements OnInit {
-    @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+    @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
     @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
