@@ -65,43 +65,52 @@ export class LovComponent implements OnInit {
 
   // pinaikli ko lang, pabalik sa dati pag may mali - YELE
   select(data){
+    console.log(data);
     var index = 0;
     var ref = '';
     var processingCount = 0;
-    for(var el of data){
-      if(el.processing != null && el.processing != undefined){
-        ref = el.processing;
-        el.checked = false;
-        this.table.selected[index].checked = false;
-        processingCount = data.filter(a=>{return a.processing}).length;
-        data = data.filter(a=>{return a.checked});
-        this.table.selected = this.table.selected.filter(b=>{return b.checked});
-        this.passTable.tableData[this.passTable.tableData.indexOf(el)].checked = false;
-        this.dialogIcon = 'info';
-        if(processingCount > 1){
-          this.dialogMessage = 'Some of the items were not selected because they\'re currently being processed in another transactions.';
-        }else if(this.passData.selector.indexOf('acitSoaDtl') == 0){
-          this.dialogMessage = 'This policy installment is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
-          this.passData.data = data.filter(a=>{return a.checked});
-        }else if(this.passData.selector.indexOf('clmResHistPayts') == 0 || this.passData.selector == 'acitArClmRecover'){
-          this.dialogMessage = 'This claim history is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
-          this.passData.data = data.filter(a=>{return a.checked});
-        }else if(this.passData.selector == 'paytReqList'){
-          this.dialogMessage = 'This Payment Request is being processed for payment in another transaction. Please finalize the transaction with Check Voucher No. '+ ref + ' first.';
-          this.passData.data = data.filter(a=>{return a.checked});
-        }else if(this.passData.selector == 'acitInvt'){
-          this.dialogMessage = 'This Investment (Placement) is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
-          this.passData.data = data.filter(a=>{return a.checked});
+    if(Array.isArray(data)){
+      for(var el of data){
+        if(el.processing != null && el.processing != undefined){
+          ref = el.processing;
+          el.checked = false;
+          this.table.selected[index].checked = false;
+          processingCount = data.filter(a=>{return a.processing}).length;
+          data = data.filter(a=>{return a.checked});
+          this.table.selected = this.table.selected.filter(b=>{return b.checked});
+          this.passTable.tableData[this.passTable.tableData.indexOf(el)].checked = false;
+          this.dialogIcon = 'info';
+          if(processingCount > 1){
+            this.dialogMessage = 'Some of the items were not selected because they\'re currently being processed in another transactions.';
+            this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector.indexOf('acitSoaDtl') == 0){
+            this.dialogMessage = 'This policy installment is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector.indexOf('clmResHistPayts') == 0 || this.passData.selector == 'acitArClmRecover'){
+            this.dialogMessage = 'This claim history is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'paytReqList'){
+            this.dialogMessage = 'This Payment Request is being processed for payment in another transaction. Please finalize the transaction with Check Voucher No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'acitInvt'){
+            this.dialogMessage = 'This Investment (Placement) is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
+          }else{
+            console.log(data);
+            this.passData.data = data;
+          }
+          setTimeout(()=>{this.successDiag.open();this.table.refreshTable();},0)
+          break;
         }else{
+          //this.passData.data = data.filter(a=>{return a.checked});
+          console.log(data);
           this.passData.data = data;
         }
-        setTimeout(()=>{this.successDiag.open();this.table.refreshTable();},0)
-        break;
-      }else{
-        this.passData.data = data.filter(a=>{return a.checked});
+        index += 1;
       }
-      index += 1;
-    };
+    }else{
+      this.passData.data = data;
+    }
   }
   // END YELE
 
