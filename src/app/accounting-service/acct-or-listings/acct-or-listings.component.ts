@@ -120,6 +120,7 @@ export class AcctOrListingsComponent implements OnInit {
     this.table.overlayLoader = true;
     this.as.getAcseOrList(this.searchParams).subscribe(
       (data: any)=>{
+        console.log(data);
         if(data.orList.length !== 0) {
           // this.passData.tableData = data.ar;
           this.passData.tableData = data.orList.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());

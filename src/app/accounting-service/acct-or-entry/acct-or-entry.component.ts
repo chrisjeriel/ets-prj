@@ -617,7 +617,7 @@ export class AcctOrEntryComponent implements OnInit {
         }
         //bankAcct
         if(bankAcctData.bankAcctList.length !== 0){
-            this.bankAccts = bankAcctData.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null});
+            this.bankAccts = bankAcctData.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo !== null && a.acItGlDepNo === null});
             if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.orInfo.dcbBankAcctNo) == -1){
               this.orInfo.dcbBankAcct = '';
               this.orInfo.dcbBankAcctNo = '';
@@ -840,7 +840,7 @@ export class AcctOrEntryComponent implements OnInit {
         (data:any)=>{
           if(data.bankAcctList.length !== 0){
             this.bankAccts = data.bankAcctList;
-            this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null });
+            this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo !== null && a.acItGlDepNo === null });
           }
           if(this.bankAccts.length == 1){
             this.selectedBankAcct = this.bankAccts[0];
