@@ -102,12 +102,13 @@ export class LovComponent implements OnInit {
           setTimeout(()=>{this.successDiag.open();this.table.refreshTable();},0)
           break;
         }else{
-          //this.passData.data = data.filter(a=>{return a.checked});
           console.log(data);
           this.passData.data = data;
         }
         index += 1;
       };
+    }else{
+      this.passData.data = data;
     };
   }
   // END YELE
