@@ -15,6 +15,7 @@ import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-cv-entry',
@@ -36,6 +37,7 @@ export class CvEntryComponent implements OnInit {
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent; 
   @ViewChild('printmMdl') printmMdl           : ModalComponent;
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
+  @ViewChild('myForm') form                   : NgForm;
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
   @Input() passData: any = {
@@ -408,6 +410,7 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.tranId = data['tranIdOut'];
       this.saveAcitCv.mainTranId = data['mainTranIdOut'];
       this.getAcitCv();
+      this.form.control.markAsPristine();
     });
   }
 
@@ -440,7 +443,8 @@ export class CvEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    $('input').addClass('ng-dirty');
+    // $('input').addClass('ng-dirty');
+    this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);
     if(from.toLowerCase() == 'payee'){
       this.saveAcitCv.payee   = data.data.payeeName;

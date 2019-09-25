@@ -724,6 +724,11 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'payeeName','payeeClassName'];
       this.mtnService.getMtnPayee(this.passData.payeeNo, this.passData.payeeClassCd).subscribe(a=>{
         this.passTable.tableData = a["payeeList"];
+        this.passTable.tableData.sort(s => {
+          if(s.payeeClassCd == this.passData.showFirst){
+            return -1;
+          }
+        });
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'acitChartAcct'){

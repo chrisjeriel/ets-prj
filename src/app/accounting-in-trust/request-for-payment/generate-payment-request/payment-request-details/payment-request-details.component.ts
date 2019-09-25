@@ -1289,6 +1289,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }else{
         this.dialogIcon = 'error';
       }
+
       this.sucInvt.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
@@ -1385,7 +1386,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.cancelFlag){
       this.canClm.onNo();
     }else{
-      this.sucClm.modal.closeModal();
+      // this.sucClm.modal.closeModal();
+      this.sucClm.modal.modalRef.close();
     }
   }
 
@@ -1393,7 +1395,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.cancelFlagInw){
       this.canInw.onNo();
     }else{
-      this.sucInw.modal.closeModal();
+      //this.sucInw.modal.closeModal();
+      this.sucInw.modal.modalRef.close();
     }
   }
 
@@ -1401,7 +1404,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.cancelFlagTrty){
       this.canTrty.onNo();
     }else{
-      this.sucTrty.modal.closeModal();
+      // this.sucTrty.modal.closeModal();
+      this.sucTrty.modal.modalRef.close();
     }
   }
 
@@ -1409,7 +1413,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.cancelFlagInvt){
       this.canInvt.onNo();
     }else{
-      this.sucInvt.modal.closeModal();
+      // this.sucInvt.modal.closeModal();
+      this.sucInvt.modal.modalRef.close();
     }
   }
 
@@ -1417,7 +1422,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.cancelFlagUnCol){
       this.canUnCol.onNo();
     }else{
-      this.sucUnCol.modal.closeModal();
+      // this.sucUnCol.modal.closeModal();
+      this.sucUnCol.modal.modalRef.close();
     }
   }
 
@@ -1425,7 +1431,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.cancelFlagOth){
       this.canOth.onNo();
     }else{
-      this.sucOth.modal.closeModal();
+      // this.sucOth.modal.closeModal();
+      this.sucOth.modal.modalRef.close();
     }
   }
 
