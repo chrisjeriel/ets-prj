@@ -107,10 +107,8 @@ export class LovComponent implements OnInit {
           this.passData.data = data;
         }
         index += 1;
-      }
-    }else{
-      this.passData.data = data;
-    }
+      };
+    };
   }
   // END YELE
 
@@ -929,6 +927,11 @@ export class LovComponent implements OnInit {
       this.accountingService.getAccInvestments(this.passData.searchParams).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.invtList.filter((data)=>{return  this.passData.hide.indexOf(data.invtCd)==-1});
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'clmResHistPayts'){

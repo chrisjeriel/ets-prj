@@ -304,24 +304,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   }
 
   onClickSave(){
-    var errorFlag = false;
-    for(var i = 0 ; i < this.passData.tableData.length; i++){
-      if(!this.passData.tableData[i].deleted && this.passData.tableData[i].prevNetDue < this.passData.tableData[i].paytAmt){
-        errorFlag = true;
-      }
-    }
-
-    if(errorFlag){
-      this.dialogMessage = 'Payment amount cannot be greater than Net Due.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else if(this.refundError()){
-      this.dialogMessage = 'Refund must not exceed cummulative payments.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else{
-      this.confirm.confirmModal();
-    }
+    this.confirm.confirmModal();
   }
 
   update(data){
@@ -394,8 +377,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   cancel(){
     this.cancelBtn.clickCancel();
   }
-  keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
- 
+
   refundError():boolean{
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(!this.passData.tableData[i].deleted){

@@ -312,7 +312,7 @@ export class JvTreatyPullOutComponent implements OnInit {
         if(this.passData.tableData[i].trtyInvmt[j].deleted){
           this.jvDetails.delTrtyInvt.push(this.passData.tableData[i].trtyInvmt[j]);
         }
-      }
+      }  
 
       this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].actualBalPaid = actualBalPaid;
     }
